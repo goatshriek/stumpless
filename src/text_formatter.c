@@ -12,6 +12,20 @@
 #include <value_list.h>
 
 StumplessFormattedOutput *
+StumplessBooleanArrayValueAsText( StumplessValue * value )
+{
+  StumplessValueList * output = BooleanArrayValueAsValueList( value );
+  return TextFormattedOutputFromValueList( output );
+}
+
+StumplessFormattedOutput *
+StumplessBooleanValueAsText( StumplessValue * value )
+{
+  StumplessValueList * output = BooleanValueAsValueList( value );
+  return TextFormattedOutputFromValueList( output );
+}
+
+StumplessFormattedOutput *
 StumplessEntryAsText( StumplessEntry * entry )
 {
   return TextFormattedOutputFromValueList( EntryAsValueList( entry ) );
@@ -83,63 +97,14 @@ StumplessValueTypeAsText( StumplessValueType type )
 
 static
 StumplessValueList *
-BooleanArrayValueAsValueList( StumplessValue * value )
+BooleanArrayValueAsValueList( StumplessValue * )
 {
-  if( value == NULL )
-    return NULL;
-  
-  StumplessValueList * output = StumplessNewValueList();
-  if( output == NULL )
-    return NULL;
-  
-  NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
-  
-  
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
-  if( configuration == NULL )
-    return NULL;
-  const char * name = configuration->profiles[value->index]->name;
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, name ) )
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
-  
-  return output;
-
+  return NULL;
 }
 
 static
 StumplessValueList *
 BooleanValueAsValueList( StumplessValue * )
-{
-  return NULL;
-}
-
-static
-StumplessValueList *
-CharArrayValueAsValueList( StumplessValue * )
-{
-  return NULL;
-}
-
-static
-StumplessValueList *
-CharValueAsValueList( StumplessValue * )
-{
-  return NULL;
-}
-
-static
-StumplessValueList *
-DoubleArrayValueAsValueList( StumplessValue * )
-{
-  return NULL;
-}
-
-static
-StumplessValueList *
-DoubleValueAsValueList( StumplessValue * )
 {
   return NULL;
 }
@@ -381,6 +346,58 @@ EventSummaryAsValueList( StumplessEvent * event )
     
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
   }
+  
+  return output;
+}
+
+static
+StumplessValueList *
+GenericArrayValueAsValueList( StumplessValue * )
+{
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueList * output = StumplessArrayValueToValueList( value );
+  if( output == NULL )
+    return NULL;
+  
+  StumplessValue * separator = StumplessValueFromString( ", " );
+  NULL_ON_FAILURE( StumplessAddSeparatorToValueList( output, separator ) )
+
+  NULL_ON_FAILURE( StumplessPrependStringToValueList( output, "[" ) )
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, "] (" ) )
+  
+  StumplessCustomProfile * profile = StumplessFindProfileByIndex( value->index );
+  if( profile == NULL )
+    return NULL;
+  NULL_ON_FAILURE( StumplessAppendValueLists( output, profile->name ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
+  
+  return output;
+}
+
+static
+StumplessValueList *
+GenericValueAsValueList( StumplessValue * )
+{
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueList * output = StumplessNewValueList();
+  if( output == NULL )
+    return NULL;
+  
+  NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
+  
+  StumplessCustomProfile * profile = StumplessFindProfileByIndex( value->index );
+  if( profile == NULL )
+    return NULL;
+  NULL_ON_FAILURE( StumplessAppendValueLists( output, profile->name ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
   
   return output;
 }
