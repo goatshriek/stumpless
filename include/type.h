@@ -24,10 +24,10 @@ struct StumplessFormattedOutput;
 union StumplessFormattedPayload;
 struct StumplessHTTConfiguration;
 struct StumplessLevel;
-struct StumplessMultithreadingConfiguration;
 struct StumplessOutputProfile;
 struct StumplessSortingConfiguration;
 struct StumplessStringConfiguration;
+struct StumplessThreadingConfiguration;
 struct StumplessValue;
 union StumplessValueData;
 struct StumplessValueList;
@@ -52,11 +52,10 @@ typedef struct StumplessFormattedOutput StumplessFormattedOutput;
 typedef union StumplessFormattedPayload StumplessFormattedPayload;
 typedef struct StumplessHTTPConfiguration StumplessHTTPConfiguration;
 typedef struct StumplessLevel StumplessLevel;
-typedef struct StumplessMultithreadingConfiguration
-        StumplessMultithreadingConfiguration;
 typedef struct StumplessOutputProfile StumplessOutputProfile;
 typedef struct StumplessSortingConfiguration StumplessSortingConfiguration;
 typedef struct StumplessStringConfiguration StumplessStringConfiguration;
+typedef struct StumplessThreadingConfiguration StumplessThreadingConfiguration;
 typedef struct StumplessValue StumplessValue;
 typedef union StumplessValueData StumplessValueData;
 typedef struct StumplessValueList StumplessValueList;
@@ -117,7 +116,7 @@ struct StumplessByteList {
 struct StumplessConfiguration {
   StumplessFileConfiguration * file;
   StumplessHTTPConfiguration * http;
-  StumplessMultithreadingConfiguration * multithreading;
+  StumplessThreadingConfiguration * multithreading;
   unsigned output_profile_count;
   StumplessOutputProfile ** output_profiles;
   StumplessSortingConfiguration * sorting;
@@ -173,10 +172,6 @@ struct StumplessLevel {
   const char * name;
 };
 
-struct StumplessMultithreadingConfiguration {
-  unsigned short enabled;
-};
-
 struct StumplessOutputProfile {
   StumplessStatusCode ( *to_http )( StumplessFormattedOutput * );
   const char * name;
@@ -194,6 +189,10 @@ struct StumplessSortingConfiguration {
 
 struct StumplessStringConfiguration {
   size_t buffer_size;
+};
+
+struct StumplessThreadingConfiguration {
+  unsigned short enabled;
 };
 
 struct StumplessValue {
