@@ -83,6 +83,69 @@ StumplessValueTypeAsText( StumplessValueType type )
 
 static
 StumplessValueList *
+BooleanArrayValueAsValueList( StumplessValue * value )
+{
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueList * output = StumplessNewValueList();
+  if( output == NULL )
+    return NULL;
+  
+  NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
+  
+  
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  if( configuration == NULL )
+    return NULL;
+  const char * name = configuration->profiles[value->index]->name;
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, name ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
+  
+  return output;
+
+}
+
+static
+StumplessValueList *
+BooleanValueAsValueList( StumplessValue * )
+{
+  return NULL;
+}
+
+static
+StumplessValueList *
+CharArrayValueAsValueList( StumplessValue * )
+{
+  return NULL;
+}
+
+static
+StumplessValueList *
+CharValueAsValueList( StumplessValue * )
+{
+  return NULL;
+}
+
+static
+StumplessValueList *
+DoubleArrayValueAsValueList( StumplessValue * )
+{
+  return NULL;
+}
+
+static
+StumplessValueList *
+DoubleValueAsValueList( StumplessValue * )
+{
+  return NULL;
+}
+
+static
+StumplessValueList *
 EntryAsValueList( StumplessEntry * entry )
 {
   if( entry == NULL )

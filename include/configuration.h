@@ -6,7 +6,10 @@
 StumplessProfileIndex
 StumplessAddCustomProfile( StumplessCustomProfile * );
 
-StumplessProfileIndex
+StumplessCustomProfile *
+StumplessFindProfileByIndex( StumplessProfileIndex );
+
+StumplessCustomProfile *
 StumplessFindProfileByName( const char * );
 
 StumplessConfiguration *

@@ -103,7 +103,6 @@ typedef union {
 } StumplessValueData;
 
 typedef unsigned int StumplessProfileIndex;
-extern const unsigned int STUMPLESS_INVALID_INDEX;
 
 typedef struct {
   const char * format;

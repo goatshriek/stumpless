@@ -16,8 +16,6 @@ profile->text_formatter = NULL;                                                \
 profile->xml_formatter = NULL;                                                 \
 StumplessAddCustomProfile( profile );
 
-const unsigned int STUMPLESS_INVALID_INDEX = UINT_MAX;
-
 static StumplessConfiguration * configuration = NULL;
 static unsigned profile_array_capacity = 0;
 
@@ -35,18 +33,30 @@ StumplessAddCustomProfile( StumplessCustomProfile * profile )
   return index;
 }
 
-StumplessProfileIndex
+StumplessCustomProfile *
+StumplessFindProfileByIndex( StumplessProfileIndex index )
+{
+  if( configuration == NULL )
+    StumplessInitializeConfiguration();
+  
+  if( index >= configuration->profile_count )
+    return NULL;
+  else
+    return configuration->profiles[index];
+}
+
+StumplessCustomProfile *
 StumplessFindProfileByName( const char * name )
 {
   if( configuration == NULL )
-    return STUMPLESS_INVALID_INDEX;
+    StumplessInitializeConfiguration();
   
   unsigned i;
   for( i = 0; i < configuration->profile_count; i++ )
     if( strcmp( configuration->profiles[i]->name, name ) == 0 )
-      return i;
+      return configuration->profiles[i];
   
-  return STUMPLESS_INVALID_INDEX;
+  return NULL;
 }
 
 StumplessConfiguration *
