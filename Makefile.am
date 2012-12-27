@@ -1,0 +1,2 @@
+AUTOMAKE_OPTIONS = -Wall -Werror
+SUBDIRS = src
