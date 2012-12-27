@@ -4,6 +4,7 @@ AC_PREREQ([2.68])
 
 AC_INIT([stumpless], [0.0.1], [joelanderson3@yahoo.com])
 AM_INIT_AUTOMAKE
+LT_INIT
 
 AC_CONFIG_SRCDIR([src/logger.c])
 AC_CONFIG_HEADERS([include/build.h])

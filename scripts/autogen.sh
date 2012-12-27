@@ -1,3 +1,8 @@
 #!/bin/sh
 
-aclocal && automake && autoconf && mkdir build && cd build && ../configure
+aclocal \
+&& automake --add-missing \
+&& autoconf \
+&& mkdir build \
+&& cd build \
+&& ../configure

@@ -3,8 +3,8 @@
 
 typedef struct {
   // members of the struct
-} LoconConfiguration;
+} StumplessConfiguration;
 
-extern LoconConfiguration configuration;
+extern StumplessConfiguration configuration;
 
 #endif
