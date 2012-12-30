@@ -1,5 +1,5 @@
 #ifndef STUMPLESS_CONFIGURATION_H
-#define STUMPLESS_CONFIGURATION_
+#define STUMPLESS_CONFIGURATION_H
 
 #include "types.h"
 
