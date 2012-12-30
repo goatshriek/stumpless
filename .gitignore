@@ -2,5 +2,9 @@
 autom4te.cache*
 aclocal.m4
 configure
+config.guess
+config.sub
+depcomp
+ltmain.sh
 Makefile
 Makefile.in

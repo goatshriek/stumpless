@@ -1,9 +1,7 @@
 #ifndef STUMPLESS_CONFIGURATION_H
-#define STUMPLESS_CONFIGURATION_H
+#define STUMPLESS_CONFIGURATION_
 
-typedef struct {
-  // members of the struct
-} StumplessConfiguration;
+#include "types.h"
 
 extern StumplessConfiguration configuration;
 
