@@ -1,5 +1,11 @@
 AUTOMAKE_OPTIONS = -Wall -Werror
 
-lib_LTLIBRARIES = libstumpless.la
+ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src
+vpath %.h include
+vpath %.c src
+
+include src/Makefile.am
+#lib_LTLIBRARIES = libstumpless.la
+#libstumpless_la_CFLAGS = -I $(top_srcdir)/include
+#libstumpless_la_SOURCES = src/logger.c

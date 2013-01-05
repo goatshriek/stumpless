@@ -1,6 +1,8 @@
 #ifndef STUMPLESS_LOGGER_H
 #define STUMPLESS_LOGGER_H
 
-// logging functions
+#include "types.h"
+
+void compile_test ();
 
 #endif

@@ -7,8 +7,7 @@ AM_INIT_AUTOMAKE
 LT_INIT
 
 AC_CONFIG_SRCDIR([src/logger.c])
-AC_CONFIG_HEADERS([include/build.h])
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile])
 
 # Checks for programs.
 AC_PROG_CC
