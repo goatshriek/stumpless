@@ -3,11 +3,13 @@
 AC_PREREQ([2.68])
 
 AC_INIT([stumpless], [0.0.1], [joelanderson3@yahoo.com])
-AM_INIT_AUTOMAKE
 LT_INIT
 
 AC_CONFIG_SRCDIR([src/logger.c])
 AC_CONFIG_FILES([Makefile])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE
 
 # Checks for programs.
 AC_PROG_CC
@@ -15,6 +17,7 @@ AC_PROG_CC
 # Checks for libraries.
 
 # Checks for header files.
+AC_CHECK_HEADERS([stdlib.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
