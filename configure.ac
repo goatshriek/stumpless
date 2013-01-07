@@ -6,7 +6,13 @@ AC_INIT([stumpless], [0.0.1], [joelanderson3@yahoo.com])
 LT_INIT
 
 AC_CONFIG_SRCDIR([src/logger.c])
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile])i
+
+# todo - need to fix the AC_CONFIG_AUX_DIR macr to work
+#AC_CONFIG_AUX_DIR([config])
+
+# todo - need to figure out why autoheader is failing here
+#AC_CONFIG_HEADERS([incude/config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE
