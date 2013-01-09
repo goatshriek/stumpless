@@ -11,7 +11,6 @@ AC_CONFIG_FILES([Makefile])i
 # todo - need to fix the AC_CONFIG_AUX_DIR macr to work
 #AC_CONFIG_AUX_DIR([config])
 
-# todo - need to figure out why autoheader is failing here
 AC_CONFIG_HEADERS([include/config.h])
 
 AC_CONFIG_MACRO_DIR([m4])

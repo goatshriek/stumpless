@@ -5,5 +5,9 @@
 int
 main( void )
 {
-  return EXIT_SUCCESS;
+  StumplessStatusCode result = StumplessLogDebug( "testing" );
+  if( result == STUMPLESS_SUCCESS )
+    return EXIT_SUCCESS;
+  else
+    return EXIT_FAILURE;
 }
