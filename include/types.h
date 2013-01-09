@@ -48,6 +48,7 @@ typedef enum StumplessOutputMode {
   STUMPLESS_FILE_MODE,
   STUMPLESS_HTTP_MODE,
   STUMPLESS_MYSQL_MODE,
+  STUMPLESS_STRING_MODE,
   STUMPLESS_TCP_MODE
 } StumplessOutputMode;
 
@@ -64,12 +65,47 @@ typedef enum StumplessStatusCode {
   STUMPLESS_PARSE_ERROR
 } StumplessStatusCode;
 
+typedef enum StumplessSortingMethod {
+  STUMPLESS_BUBBLE_SORT,
+  STUMPLESS_CUSTOM_SORT,
+  STUMPLESS_INSERTION_SORT,
+  STUMPLESS_MERGE_SORT,
+  STUMPLESS_QUICK_SORT,
+  STUMPLESS_SHELL_SORT
+} StumplessSortingMethod;
+
+typedef enum StumplessHTTPMethod {
+  STUMPLESS_DELETE,
+  STUMPLESS_GET,
+  STUMPLESS_POST,
+  STUMPLESS_PUT
+} StumplessHTTPMethod;
+
 typedef struct {
   FILE * current_file;
 } StumplessFileConfiguration;
 
 typedef struct {
+  StumplessHTTPMethod method;
+} StumplessHTTPConfiguration;
+
+typedef struct {
+  unsigned short enable_multithreading;
+} StumplessMultithreadingConfiguration;
+
+typedef struct {
+  StumplessSortingMethod entry_method;
+  StumplessSortingMethod log_method;
+  unsigned short ascending;
+  // function for custom entry sorting
+  // function for custom log sorting
+} StumplessSortingConfiguration;
+
+typedef struct {
   StumplessFileConfiguration * file;
+  StumplessHTTPConfiguration * http;
+  StumplessMultithreadingConfiguration * multithreading;
+  StumplessSortingConfiguration * sorting;
 } StumplessConfiguration;
 
 #endif
