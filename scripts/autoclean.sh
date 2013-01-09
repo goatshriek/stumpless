@@ -7,3 +7,4 @@ rm -rf build
 rm -rf autom4te.cache
 rm configure
 rm Makefile.in
+rm include/config.h.in

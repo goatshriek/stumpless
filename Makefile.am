@@ -8,8 +8,8 @@ vpath %.c src test/function test/performance test/portability
 AM_CFLAGS = -I $(top_srcdir)/include
 
 stumpless_includedir = $(pkgincludedir)
-stumpless_include_HEADERS = include/stumpless.h \
-                            include/logger.h \
+stumpless_include_HEADERS = include/logger.h \
+                            include/stumpless.h \
                             include/types.h
 
 include src/Makefile.am
