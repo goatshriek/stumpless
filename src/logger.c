@@ -1,11 +1,31 @@
-#include "format_methods.h"
-#include "logger.h"
-#include "output_methods.h"
+#include <logger.h>
 
-#include <stdio.h>
-
-void
-compile_test ()
+StumplessStatusCode
+StumplessLogDebug( const char * message )
 {
-  printf("success");
+  return STUMPLESS_SUCCESS;
+}
+
+StumplessStatusCode
+StumplessLogError( const char * message )
+{
+  return STUMPLESS_SUCCESS;
+}
+
+StumplessStatusCode
+StumplessLogFatal( const char * message )
+{
+  return STUMPLESS_SUCCESS;
+}
+
+StumplessStatusCode
+StumplessLogInfo( const char * message )
+{
+  return STUMPLESS_SUCCESS;
+}
+
+StumplessStatusCode
+StumplessLogWarning( const char * message )
+{
+  return STUMPLESS_SUCCESS;
 }

@@ -11,3 +11,4 @@ stumpless_include_HEADERS = include/stumpless.h \
                             include/types.h
 
 include src/Makefile.am
+include test/Makefile.am
