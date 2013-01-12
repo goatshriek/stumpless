@@ -3,13 +3,5 @@ m4/*
 autom4te.cache*
 aclocal.m4
 build/*
-compile
-config.guess
-config.sub
-configure
-depcomp
-install-sh
-ltmain.sh
 Makefile
 Makefile.in
-missing
