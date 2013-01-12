@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include <configuration.h>
 #include <types.h>
 
@@ -12,7 +14,14 @@ StumplessGetConfiguration( void )
 StumplessStatusCode
 StumplessInitializeConfiguration( void )
 {
-  return STUMPLESS_SUCCESS;
+  stumpless_configuration = malloc( sizeof( StumplessConfiguration ) );
+  
+  // todo need to add initialization of struct members
+  
+  if( stumpless_configuration == NULL )
+    return STUMPLESS_FAILURE;
+  else
+    return STUMPLESS_SUCCESS;
 }
 
 StumplessStatusCode
