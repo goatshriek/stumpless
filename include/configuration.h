@@ -3,9 +3,10 @@
 
 #include <types.h>
 
-extern StumplessConfiguration * configuration;
+extern StumplessConfiguration * stumpless_configuration;
 
 StumplessConfiguration * StumplessGetConfiguration( void );
 StumplessStatusCode StumplessInitializeConfiguration( void );
+StumplessStatusCode StumplessSetConfiguration( StumplessConfiguration * );
 
 #endif

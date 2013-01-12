@@ -3,27 +3,37 @@
 
 #include <stumpless.h>
 
-int test_initialization( void );
+const char * test_initialization( void );
 
 int
 main( void )
 {
-  return test_initialization();
+  unsigned failure_count = 0;
+  const char * result;
+
+  result = test_initialization();
+  if( result != NULL ){
+    printf( "Initialization Test Failed: %s\n", result );
+    failure_count++;
+  }
+
+  if( failure_count > 0 )
+    return EXIT_FAILURE;
+  else
+    return EXIT_SUCCESS;
 }
 
-int
+const char *
 test_initialization( void )
 {
-  StumplessConfiguration * result = StumplessGetConfiguration();
-  if( result != NULL )
-    return EXIT_FAILURE;
+  if( stumpless_configuration != NULL )
+    return "starting configuration was not empty";
   
-  StumplessLogInfo( "testing testing 1 2 3..." );
+  if( StumplessInitializeConfiguration() != STUMPLESS_SUCCESS )
+    return "initialization method returned error code";
+
+  if( stumpless_configuration == NULL )
+    return "configuration was not initialized after call";
   
-  if( result == NULL ){
-    printf( "The configuration was not initialized.\n" );
-    return EXIT_FAILURE;
-  }
-  
-  return EXIT_SUCCESS;
+  return NULL;
 }
