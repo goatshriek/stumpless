@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = -Wall -Werror
+AUTOMAKE_OPTIONS = -Wall subdir-objects parallel-tests color-tests
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -8,7 +8,8 @@ vpath %.c src test/function test/performance test/portability
 AM_CFLAGS = -I $(top_srcdir)/include
 
 stumpless_includedir = $(pkgincludedir)
-stumpless_include_HEADERS = include/logger.h \
+stumpless_include_HEADERS = include/configuration.h \
+                            include/logger.h \
                             include/stumpless.h \
                             include/types.h
 

@@ -1,6 +1,5 @@
-TESTS = test/function/quick_logs
-check_PROGRAMS = test/function/quick_logs
+check_PROGRAMS = test/function/configuration \
+                 test/function/quick_loggers
+TESTS = $(check_PROGRAMS)
 
 include test/function/Makefile.am
-#include test/performance/Makefile.am
-#include test/portability/Makefile.am
