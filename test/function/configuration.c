@@ -35,5 +35,17 @@ test_initialization( void )
   if( stumpless_configuration == NULL )
     return "configuration was not initialized after call";
   
+  if( stumpless_configuration->file == NULL )
+    return "file configuration was not initialized";
+  
+  if( stumpless_configuration->http == NULL )
+    return "http configuration was not initialized";
+  
+  if( stumpless_configuration->multithreading == NULL )
+    return "multithreading configuration was not initialized";
+  
+  if( stumpless_configuration->sorting == NULL )
+    return "sorting configuration was not initialized";
+  
   return NULL;
 }

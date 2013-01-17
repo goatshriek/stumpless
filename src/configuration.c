@@ -15,13 +15,26 @@ StumplessStatusCode
 StumplessInitializeConfiguration( void )
 {
   stumpless_configuration = malloc( sizeof( StumplessConfiguration ) );
-  
-  // todo need to add initialization of struct members
-  
   if( stumpless_configuration == NULL )
-    return STUMPLESS_FAILURE;
-  else
-    return STUMPLESS_SUCCESS;
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+
+  stumpless_configuration->file = malloc( sizeof( StumplessFileConfiguration ) );
+  if( stumpless_configuration->file == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+
+  stumpless_configuration->http = malloc( sizeof( StumplessHTTPConfiguration ) );
+  if( stumpless_configuration->http == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  stumpless_configuration->multithreading = malloc( sizeof( StumplessMultithreadingConfiguration ) );
+  if( stumpless_configuration->multithreading == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  stumpless_configuration->sorting = malloc( sizeof( StumplessSortingConfiguration ) );
+  if( stumpless_configuration->sorting == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+
+  return STUMPLESS_SUCCESS;
 }
 
 StumplessStatusCode
