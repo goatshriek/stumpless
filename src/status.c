@@ -8,29 +8,27 @@ StumplessStatusToString( StumplessStatusCode code )
 {
   switch( code ){
     case STUMPLESS_SUCCESS:
-      break;
+      return "no failures reported";
     case STUMPLESS_FAILURE:
-      break;
+      return "failure";
     case STUMPLESS_FILE_FAILURE:
-      break;
+      return "file operation failure";
     case STUMPLESS_FILE_READ_FAILURE:
-      break;
+      return "file read failure";
     case STUMPLESS_FILE_WRITE_FAILURE:
-      break;
+      return "file write failure";
     case STUMPLESS_FILE_OPEN_FAILURE:
-      break;
+      return "file open failure";
     case STUMPLESS_FILE_CLOSE_FAILURE:
-      break;
+      return "file close failure";
     case STUMPLESS_INCORRECT_FILE_SIGNATURE:
-      break;
+      return "file has incorrect signature";
     case STUMPLESS_MEMORY_ALLOCATION_FAILURE:
-      break;
+      return "memory allocation failure";
     case STUMPLESS_PARSE_FAILURE:
-      break;
+      return "parse failure";
     default:
       return NULL;
   }
-  
-  return NULL;
 }
 

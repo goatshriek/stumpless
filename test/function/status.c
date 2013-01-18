@@ -55,4 +55,6 @@ test_status_to_string( void )
   
   if( StumplessStatusToString( STUMPLESS_PARSE_FAILURE ) == NULL )
     return "parsing failure code was not properly converted";
+  
+  return NULL;
 }
