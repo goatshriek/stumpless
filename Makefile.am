@@ -10,6 +10,7 @@ AM_CFLAGS = -I $(top_srcdir)/include
 stumpless_includedir = $(pkgincludedir)
 stumpless_include_HEADERS = include/configuration.h \
                             include/logger.h \
+                            include/status.h \
                             include/stumpless.h \
                             include/types.h
 

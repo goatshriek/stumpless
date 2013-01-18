@@ -3,5 +3,6 @@
 
 #include <configuration.h>
 #include <logger.h>
+#include <status.h>
 
 #endif
