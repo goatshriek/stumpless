@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_LEVELS_H
-#define STUMPLESS_LEVELS_H
+#ifndef STUMPLESS_LEVEL_H
+#define STUMPLESS_LEVEL_H
 
 #include <types.h>
 

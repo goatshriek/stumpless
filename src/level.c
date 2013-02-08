@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <levels.h>
+#include <level.h>
 #include <types.h>
 
 StumplessLevel *
