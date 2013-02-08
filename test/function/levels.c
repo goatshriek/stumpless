@@ -74,7 +74,7 @@ test_to_string( void )
   StumplessLevel * level = NULL;
   char * description = StumplessLevelToString( level );
   if( description != NULL )
-    return "the description was not null for a null level pointer";
+    return "the description was not null for a null pointer";
   
   level = StumplessGetInfoLevel();
   description = StumplessLevelToString( level );

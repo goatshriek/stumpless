@@ -83,7 +83,8 @@ StumplessLevelToString( StumplessLevel * level )
   
   // todo may be able to save memory by calculating a
   //      more exact size of this string
-  size_t string_length = strlen( level->name ) + 10 + 9;
+  size_t number_length = 10;
+  size_t string_length = strlen( level->name ) + number_length + 9;
   char * description = malloc( sizeof( char ) * string_length );
   if( description == NULL )
     return NULL;

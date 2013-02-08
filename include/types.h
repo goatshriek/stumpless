@@ -39,17 +39,26 @@ typedef union {
 
 typedef struct {
   StumplessEventAttributeType type;
-  StumplessEventAttributeValue * value;
   StumplessEventAttributeValue * default_value;
 } StumplessEventAttribute;
 
 typedef struct {
-  unsigned id;
+  StumplessEventAttribute * event_attribute;
+  StumplessEventAttributeValue * value;
+} StumplessEntryAttribute;
+
+typedef struct {
   const char * name;
   StumplessLevel * level;
   StumplessEventAttribute ** attributes;
   unsigned attribute_count;
 } StumplessEvent;
+
+typedef struct {
+  const char * description;
+  StumplessEvent * event;
+  StumplessEntryAttribute ** entry_attributes;
+} StumplessEntry;
 
 typedef enum StumplessOutputFormat {
   STUMPLESS_CSV,
