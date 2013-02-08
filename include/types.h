@@ -38,6 +38,7 @@ typedef union {
 } StumplessEventAttributeValue;
 
 typedef struct {
+  const char * name;
   StumplessEventAttributeType type;
   StumplessEventAttributeValue * default_value;
 } StumplessEventAttribute;

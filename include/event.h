@@ -4,5 +4,11 @@
 #include <types.h>
 
 char * StumplessEventToString( StumplessEvent * );
+StumplessEvent * StumplessGetDebugEvent( void );
+StumplessEvent * StumplessGetErrorEvent( void );
+StumplessEvent * StumplessGetEventForLevel( StumplessLevel * );
+StumplessEvent * StumplessGetFatalEvent( void );
+StumplessEvent * StumplessGetInfoEvent( void );
+StumplessEvent * StumplessGetWarningEvent( void );
 
 #endif

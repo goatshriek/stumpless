@@ -1,11 +1,11 @@
 test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_LDADD = libstumpless.la
 
-test_function_events_SOURCES = test/function/events.c
-test_function_events_LDADD = libstumpless.la
+test_function_event_SOURCES = test/function/event.c
+test_function_event_LDADD = libstumpless.la
 
-test_function_levels_SOURCES = test/function/levels.c
-test_function_levels_LDADD = libstumpless.la
+test_function_level_SOURCES = test/function/level.c
+test_function_level_LDADD = libstumpless.la
 
 test_function_quick_loggers_SOURCES =  test/function/quick_loggers.c
 test_function_quick_loggers_LDADD = libstumpless.la
