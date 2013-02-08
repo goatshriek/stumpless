@@ -1,4 +1,6 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <levels.h>
 #include <types.h>
@@ -71,4 +73,22 @@ StumplessGetWarningLevel( void )
   warning->name = "warning";
   
   return warning;
+}
+
+char *
+StumplessLevelToString( StumplessLevel * level )
+{
+  if( level == NULL )
+    return NULL;
+  
+  // todo may be able to save memory by calculating a
+  //      more exact size of this string
+  size_t string_length = strlen( level->name ) + 10 + 9;
+  char * description = malloc( sizeof( char ) * string_length );
+  if( description == NULL )
+    return NULL;
+  
+  sprintf( description, "%s: level %d", level->name, level->level );
+  
+  return description;
 }

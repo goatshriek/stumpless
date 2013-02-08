@@ -8,5 +8,6 @@ StumplessLevel * StumplessGetErrorLevel( void );
 StumplessLevel * StumplessGetFatalLevel( void );
 StumplessLevel * StumplessGetInfoLevel( void );
 StumplessLevel * StumplessGetWarningLevel( void );
+char * StumplessLevelToString( StumplessLevel * );
 
 #endif

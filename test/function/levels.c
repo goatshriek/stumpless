@@ -5,6 +5,7 @@
 #include <stumpless.h>
 
 const char * test_default_levels( void );
+const char * test_to_string( void );
 
 int
 main( void )
@@ -15,6 +16,12 @@ main( void )
   result = test_default_levels();
   if( result != NULL ){
     printf( "Default Level Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_to_string();
+  if( result != NULL ){
+    printf( "To String Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -57,6 +64,22 @@ test_default_levels( void )
     return "warning level was not properly created";
   if( strcmp( warning->name, "warning" ) != 0 )
     return "warning level was not properly named";
+  
+  return NULL;
+}
+
+const char *
+test_to_string( void )
+{
+  StumplessLevel * level = NULL;
+  char * description = StumplessLevelToString( level );
+  if( description != NULL )
+    return "the description was not null for a null level pointer";
+  
+  level = StumplessGetInfoLevel();
+  description = StumplessLevelToString( level );
+  if( description == NULL )
+    return "the description string was null for a non-null level pointer";
   
   return NULL;
 }
