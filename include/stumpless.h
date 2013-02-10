@@ -6,5 +6,7 @@
 #include <level.h>
 #include <logger.h>
 #include <status.h>
+#include <text_formatter.h>
+#include <types.h>
 
 #endif

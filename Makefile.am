@@ -14,6 +14,7 @@ stumpless_include_HEADERS = include/configuration.h \
                             include/logger.h \
                             include/status.h \
                             include/stumpless.h \
+                            include/text_formatter.h \
                             include/types.h
 
 include src/Makefile.am
