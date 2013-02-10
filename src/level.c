@@ -80,16 +80,30 @@ StumplessLevelToString( StumplessLevel * level )
 {
   if( level == NULL )
     return NULL;
-  
+ 
+  char * str;
+   
   // todo may be able to save memory by calculating a
   //      more exact size of this string
   size_t number_length = 10;
-  size_t string_length = strlen( level->name ) + number_length + 9;
-  char * description = malloc( sizeof( char ) * string_length );
-  if( description == NULL )
-    return NULL;
   
-  sprintf( description, "%s: level %d", level->name, level->level );
+  // todo need to check for empty strings as well
+  if( level->name == NULL ){
+    size_t str_length = number_length + 7;
+    str = malloc( sizeof( char ) * str_length );
+    if( str == NULL )
+      return NULL;
+
+    sprintf( str, "level %d", level->level);
+  } else {
+    size_t name_length = strlen( level->name );
+    size_t str_length = number_length + name_length + 9;
+    str = malloc( sizeof( char ) * str_length );
+    if( str == NULL )
+      return NULL;
+
+    sprintf( str, "%s: level %d", level->name, level->level );
+  }
   
-  return description;
+  return str;
 }
