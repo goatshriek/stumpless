@@ -6,7 +6,7 @@
 char * StumplessEventToString( StumplessEvent * );
 StumplessEvent * StumplessGetDebugEvent( void );
 StumplessEvent * StumplessGetErrorEvent( void );
-StumplessEvent * StumplessGetEventForLevel( StumplessLevel * );
+StumplessEvent * StumplessEventForLevel( StumplessLevel * );
 StumplessEvent * StumplessGetFatalEvent( void );
 StumplessEvent * StumplessGetInfoEvent( void );
 StumplessEvent * StumplessGetWarningEvent( void );

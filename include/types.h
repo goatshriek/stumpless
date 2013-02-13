@@ -19,7 +19,7 @@ typedef enum StumplessStatusCode {
 } StumplessStatusCode;
 
 typedef struct {
-  unsigned level;
+  unsigned value;
   const char * name;
 } StumplessLevel;
 
@@ -40,6 +40,7 @@ typedef union {
 typedef struct {
   const char * name;
   StumplessEventAttributeType type;
+  const char * format;
   StumplessEventAttributeValue * default_value;
 } StumplessEventAttribute;
 

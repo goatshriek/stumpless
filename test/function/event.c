@@ -19,7 +19,13 @@ main( void )
     printf( "Default Events Test Failed: %s\n", result );
     failure_count++;
   }
-   
+  
+  result = test_event_for_level();
+  if( result != NULL ){
+    printf( "Event For Level Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
   result = test_to_string();
   if( result != NULL ){
     printf( "To String Test Failed: %s\n", result );
@@ -38,30 +44,50 @@ test_default_events( void )
   StumplessEvent * event = StumplessGetDebugEvent();
   if( event == NULL )
     return "debug event was null";
+  if( event->level == NULL )
+    return "debug event's level was null";
+  if( event->level->name == NULL )
+    return "debug event's level did not have a name";
   if( strcmp( event->level->name, "debug" ) != 0 )
     return "the event does not have a debug level";
   
   event = StumplessGetErrorEvent();
   if( event == NULL )
     return "error event was null";
+  if( event->level == NULL )
+    return "error event's level was null";
+  if( event->level->name == NULL )
+    return "error event's level did not have a name";
   if( strcmp( event->level->name, "error" ) != 0 )
     return "the event does not have a error level";
   
   event = StumplessGetFatalEvent();
   if( event == NULL )
     return "fatal event was null";
+  if( event->level == NULL )
+    return "fatal event's level was null";
+  if( event->level->name == NULL )
+    return "fatal event's level did not have a name";
   if( strcmp( event->level->name, "fatal" ) != 0 )
     return "the event does not have a fatal level";
   
   event = StumplessGetInfoEvent();
   if( event == NULL )
     return "info event was null";
+  if( event->level == NULL )
+    return "info event's level was null";
+  if( event->level->name == NULL )
+    return "info event's level did not have a name";
   if( strcmp( event->level->name, "info" ) != 0 )
     return "the event does not have a info level";
   
   event = StumplessGetWarningEvent();
   if( event == NULL )
     return "warning event was null";
+  if( event->level == NULL )
+    return "warning event's level was null";
+  if( event->level->name == NULL )
+    return "warning event's level did not have a name";
   if( strcmp( event->level->name, "warning" ) != 0 )
     return "the event does not have a warning level";
   
@@ -74,10 +100,10 @@ test_event_for_level( void )
   StumplessLevel * level = malloc( sizeof( StumplessLevel ) );
   if( level == NULL )
     return "memory allocation failure during testing";
-  level->level = 512;
+  level->value = 512;
   level->name = "testing level";
   
-  StumplessEvent * event = StumplessGetEventForLevel( level );
+  StumplessEvent * event = StumplessEventForLevel( level );
   if( event == NULL )
     return "event could not be created";
   if( event->level != level )

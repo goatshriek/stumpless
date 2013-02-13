@@ -9,27 +9,31 @@
 char *
 StumplessEventToString( StumplessEvent * event )
 {
-  return StumplessGetEventAsText( event );
+  return StumplessEventAsText( event );
 }
 
 StumplessEvent *
 StumplessGetDebugEvent( void )
 {
-  return StumplessGetEventForLevel( StumplessGetDebugLevel() );
+  return StumplessEventForLevel( StumplessGetDebugLevel() );
 }
 
 StumplessEvent *
 StumplessGetErrorEvent( void )
 {
-  return StumplessGetEventForLevel( StumplessGetErrorLevel() );
+  return StumplessEventForLevel( StumplessGetErrorLevel() );
 }
 
 StumplessEvent *
-StumplessGetEventForLevel( StumplessLevel * level )
+StumplessEventForLevel( StumplessLevel * level )
 {
+  if( level == NULL )
+    return NULL;
+  
+  
   StumplessEvent * event = malloc( sizeof( StumplessEvent ) );
   
-  if( level == NULL || event == NULL )
+  if( event == NULL )
     return NULL;
   
   event->name = NULL;
@@ -42,17 +46,17 @@ StumplessGetEventForLevel( StumplessLevel * level )
 StumplessEvent *
 StumplessGetFatalEvent( void )
 {
-  return StumplessGetEventForLevel( StumplessGetFatalLevel() );
+  return StumplessEventForLevel( StumplessGetFatalLevel() );
 }
 
 StumplessEvent *
 StumplessGetInfoEvent( void )
 {
-  return StumplessGetEventForLevel( StumplessGetInfoLevel() );
+  return StumplessEventForLevel( StumplessGetInfoLevel() );
 }
 
 StumplessEvent *
 StumplessGetWarningEvent( void )
 {
-  return StumplessGetEventForLevel( StumplessGetWarningLevel() );
+  return StumplessEventForLevel( StumplessGetWarningLevel() );
 }

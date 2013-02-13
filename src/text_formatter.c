@@ -5,7 +5,17 @@
 #include <text_formatter.h>
 
 char *
-StumplessGetEventAsText( StumplessEvent * event )
+StumplessEntryAsText( StumplessEntry * entry )
+{
+  if( entry == NULL )
+    return NULL;
+  
+  // todo need to make this method encompass more possible cases
+  return NULL;
+}
+
+char *
+StumplessEventAsText( StumplessEvent * event )
 {
   if( event == NULL )
     return NULL;
@@ -21,7 +31,7 @@ StumplessGetEventAsText( StumplessEvent * event )
 
   size_t name_length = strlen( name );
   
-  char * level_string = StumplessGetLevelAsText( event->level );
+  char * level_string = StumplessLevelAsText( event->level );
   size_t level_length = strlen( level_string );
   
   size_t str_length = name_length + level_length + 4;
@@ -36,7 +46,7 @@ StumplessGetEventAsText( StumplessEvent * event )
 }
 
 char *
-StumplessGetLevelAsText( StumplessLevel * level )
+StumplessLevelAsText( StumplessLevel * level )
 {
   if( level == NULL )
     return NULL;
@@ -54,7 +64,7 @@ StumplessGetLevelAsText( StumplessLevel * level )
     if( str == NULL )
       return NULL;
 
-    sprintf( str, "level %d", level->level);
+    sprintf( str, "level %d", level->value);
   } else {
     size_t name_length = strlen( level->name );
     size_t str_length = number_length + name_length + 9;
@@ -62,7 +72,7 @@ StumplessGetLevelAsText( StumplessLevel * level )
     if( str == NULL )
       return NULL;
 
-    sprintf( str, "%s: level %d", level->name, level->level );
+    sprintf( str, "%s: level %d", level->name, level->value );
   }
   
   return str;

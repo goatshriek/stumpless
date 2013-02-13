@@ -35,12 +35,12 @@ const char *
 test_event_formatter( void )
 {
   StumplessEvent * event = NULL;
-  char * description = StumplessEventToString( event );
+  char * description = StumplessEventAsText( event );
   if( description != NULL )
     return "the description was not null for a null pointer";
   
   event = StumplessGetDebugEvent();
-  description = StumplessEventToString( event );
+  description = StumplessEventAsText( event );
   if( description == NULL )
     return "the description was null for a valid event pointer";
   
@@ -51,12 +51,12 @@ const char *
 test_level_formatter( void )
 {
   StumplessLevel * level = NULL;
-  char * description = StumplessGetLevelAsText( level );
+  char * description = StumplessLevelAsText( level );
   if( description != NULL )
     return "the description was not null for a null pointer";
   
   level = StumplessGetInfoLevel();
-  description = StumplessGetLevelAsText( level );
+  description = StumplessLevelAsText( level );
   if( description == NULL )
     return "the description string was null for a valid level pointer";
   

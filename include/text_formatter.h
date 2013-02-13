@@ -3,7 +3,8 @@
 
 #include <types.h>
 
-char * StumplessGetEventAsText( StumplessEvent * );
-char * StumplessGetLevelAsText( StumplessLevel * );
+char * StumplessEntryAsText( StumplessEntry * );
+char * StumplessEventAsText( StumplessEvent * );
+char * StumplessLevelAsText( StumplessLevel * );
 
 #endif

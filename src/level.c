@@ -14,7 +14,7 @@ StumplessGetDebugLevel( void )
   if( debug == NULL )
     return NULL;
   
-  debug->level = 30;
+  debug->value = 30;
   debug->name = "debug";
   
   return debug;
@@ -28,7 +28,7 @@ StumplessGetErrorLevel( void )
   if( error == NULL )
     return NULL;
   
-  error->level = 10;
+  error->value = 10;
   error->name = "error";
   
   return error;
@@ -42,7 +42,7 @@ StumplessGetFatalLevel( void )
   if( fatal == NULL )
     return NULL;
   
-  fatal->level = 0;
+  fatal->value = 0;
   fatal->name = "fatal";
   
   return fatal;
@@ -56,7 +56,7 @@ StumplessGetInfoLevel( void )
   if( info == NULL )
     return NULL;
   
-  info->level = 40;
+  info->value = 40;
   info->name = "info";
   
   return info;
@@ -70,7 +70,7 @@ StumplessGetWarningLevel( void )
   if( warning == NULL )
     return NULL;
   
-  warning->level = 20;
+  warning->value = 20;
   warning->name = "warning";
   
   return warning;
@@ -79,5 +79,5 @@ StumplessGetWarningLevel( void )
 char *
 StumplessLevelToString( StumplessLevel * level )
 {
-  return StumplessGetLevelAsText( level );
+  return StumplessLevelAsText( level );
 }
