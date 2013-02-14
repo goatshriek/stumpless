@@ -60,5 +60,9 @@ test_level_formatter( void )
   if( description == NULL )
     return "the description string was null for a valid level pointer";
   
+  level->name = "";
+  description = StumplessLevelAsText( level );
+  // use strchr to check for ':' character
+  
   return NULL;
 }

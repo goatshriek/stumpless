@@ -58,6 +58,7 @@ StumplessLevelAsText( StumplessLevel * level )
   size_t number_length = 10;
   
   // todo need to check for empty strings as well
+  
   if( level->name == NULL ){
     size_t str_length = number_length + 7;
     str = malloc( sizeof( char ) * str_length );
