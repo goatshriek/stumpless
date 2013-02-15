@@ -13,5 +13,8 @@ test_function_quick_loggers_LDADD = libstumpless.la
 test_function_status_SOURCES = test/function/status.c
 test_function_status_LDADD = libstumpless.la
 
+test_function_string_helper_SOURCES = test/function/string_helper.c \
+                                      src/string_helper.c
+
 test_function_text_formatter_SOURCES = test/function/text_formatter.c
 test_function_text_formatter_LDADD = libstumpless.la
