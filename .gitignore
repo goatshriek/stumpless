@@ -3,5 +3,6 @@ m4/*
 autom4te.cache*
 aclocal.m4
 build/*
+configure
 Makefile
 Makefile.in
