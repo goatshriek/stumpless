@@ -84,7 +84,11 @@ test_level_formatter( void )
   
   level->name = NULL;
   output = StumplessLevelAsText( level );
-  // todo use strchr to check for ':' character
+  if( output == NULL || output->payload == NULL
+      || output->payload->str == NULL )
+    return "the output was not properly created for a level with no name";
+  if( strchr( output->payload->str, ':' ) != NULL )
+    return "a colon was detected in the output for a level without a name";
   
   return NULL;
 }

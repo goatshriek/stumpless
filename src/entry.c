@@ -8,7 +8,12 @@
 char *
 StumplessEntryToString( StumplessEntry * entry )
 {
-  return StumplessEntryAsText( entry )->payload->str;
+  StumplessFormattedOutput * output =  StumplessEntryAsText( entry );
+  
+  if( output == NULL )
+    return NULL;
+  
+  return output->payload->str;
 }
 
 StumplessEntry *
@@ -23,14 +28,14 @@ StumplessEntryForEvent( StumplessEvent * event )
   if( event == NULL )
     return NULL;
   
-  StumplessEntry * entry = malloc( sizeof( StumplessEvent ) );
+  StumplessEntry * entry = malloc( sizeof( StumplessEntry ) );
   
   if( entry == NULL )
     return NULL;
   
   entry->event = event;
   
-  return event;
+  return entry;
 }
 
 StumplessEntry *

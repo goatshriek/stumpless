@@ -1,6 +1,9 @@
 test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_LDADD = libstumpless.la
 
+test_function_entry_SOURCES = test/function/entry.c
+test_function_entry_LDADD = libstumpless.la
+
 test_function_event_SOURCES = test/function/event.c
 test_function_event_LDADD = libstumpless.la
 
@@ -14,7 +17,8 @@ test_function_status_SOURCES = test/function/status.c
 test_function_status_LDADD = libstumpless.la
 
 test_function_string_helper_SOURCES = test/function/string_helper.c \
-                                      src/string_helper.c
+                                      include/string_helper.h
+test_function_string_helper_LDADD = libstumpless.la
 
 test_function_text_formatter_SOURCES = test/function/text_formatter.c
 test_function_text_formatter_LDADD = libstumpless.la

@@ -48,7 +48,9 @@ test_default_entries( void )
     return "the debug entry did not have an event";
   if( debug->event->level == NULL )
     return "the debug entry's event did not have a level";
-  if( strcmp( debug->event->level, "debug" ) != 0 )
+  if( debug->event->level->name == NULL )
+    return "the debug entry's level did not have a name";
+  if( strcmp( debug->event->level->name, "debug" ) != 0 )
     return "the debug entry's event did not have the proper level";
   
   StumplessEntry * error = StumplessGetErrorEntry();
@@ -58,7 +60,9 @@ test_default_entries( void )
     return "the error entry did not have an event";
   if( error->event->level == NULL )
     return "the error entry's event did not have a level";
-  if( strcmp( error->event->level, "error" ) != 0 )
+  if( error->event->level->name == NULL )
+    return "the error entry's level did not have a name";
+  if( strcmp( error->event->level->name, "error" ) != 0 )
     return "the error entry's event did not have the proper level";
   
   StumplessEntry * fatal = StumplessGetFatalEntry();
@@ -68,7 +72,9 @@ test_default_entries( void )
     return "the fatal entry did not have an event";
   if( fatal->event->level == NULL )
     return "the fatal entry's event did not have a level";
-  if( strcmp( fatal->event->level, "fatal" ) != 0 )
+  if( fatal->event->level->name == NULL )
+    return "the fatal entry's level did not have a name";
+  if( strcmp( fatal->event->level->name, "fatal" ) != 0 )
     return "the fatal entry's event did not have the proper level";
   
   StumplessEntry * info = StumplessGetInfoEntry();
@@ -78,7 +84,9 @@ test_default_entries( void )
     return "the info entry did not have an event";
   if( info->event->level == NULL )
     return "the info entry's event did not have a level";
-  if( strcmp( info->event->level, "info" ) != 0 )
+  if( info->event->level->name == NULL )
+    return "the info entry's level did not have a name";
+  if( strcmp( info->event->level->name, "info" ) != 0 )
     return "the info entry's event did not have the proper level";
   
   StumplessEntry * warning = StumplessGetWarningEntry();
@@ -88,7 +96,9 @@ test_default_entries( void )
     return "the warning entry did not have an event";
   if( warning->event->level == NULL )
     return "the warning entry's event did not have a level";
-  if( strcmp( warning->event->level, "warning" ) != 0 )
+  if( warning->event->level->name == NULL )
+    return "the warning entry's level did not have a name";
+  if( strcmp( warning->event->level->name, "warning" ) != 0 )
     return "the warning entry's event did not have the proper level";
   
   return NULL;
@@ -116,6 +126,15 @@ test_entry_for_event( void )
 const char *
 test_to_string( void )
 {
-  // todo need to write this test
+  StumplessEntry * entry = NULL;
+  char * description = StumplessEntryToString( entry );
+  if( description != NULL )
+    return "the description was not null for a null pointer";
+  
+  entry = StumplessGetDebugEntry();
+  description = StumplessEntryToString( entry );
+  if( description == NULL )
+    return "the description was null for a valid entry pointer";
+  
   return NULL;
 }
