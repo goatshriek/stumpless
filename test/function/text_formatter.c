@@ -35,14 +35,25 @@ const char *
 test_event_formatter( void )
 {
   StumplessEvent * event = NULL;
-  char * description = StumplessEventAsText( event );
-  if( description != NULL )
-    return "the description was not null for a null pointer";
+  StumplessFormattedOutput * output;
+
+  output = StumplessEventAsText( event );
+  if( output != NULL )
+    return "the output was not null for a null pointer";
   
   event = StumplessGetDebugEvent();
-  description = StumplessEventAsText( event );
-  if( description == NULL )
-    return "the description was null for a valid event pointer";
+  output = StumplessEventAsText( event );
+  if( output == NULL )
+    return "the output was null for a valid event pointer";
+  
+  if( output->format != STUMPLESS_TEXT )
+    return "the output did not have a text format";
+  
+  if( output->payload == NULL )
+    return "the output payload was not properly created";
+  
+  if( output->payload->str == NULL )
+    return "the payload did not have an output string";
   
   return NULL;
 }
@@ -51,18 +62,29 @@ const char *
 test_level_formatter( void )
 {
   StumplessLevel * level = NULL;
-  char * description = StumplessLevelAsText( level );
-  if( description != NULL )
-    return "the description was not null for a null pointer";
+  StumplessFormattedOutput * output;
+  
+  output = StumplessLevelAsText( level );
+  if( output != NULL )
+    return "the output was not null for a null pointer";
   
   level = StumplessGetInfoLevel();
-  description = StumplessLevelAsText( level );
-  if( description == NULL )
-    return "the description string was null for a valid level pointer";
+  output = StumplessLevelAsText( level );
+  if( output == NULL )
+    return "the output was null for a valid level pointer";
   
-  level->name = "";
-  description = StumplessLevelAsText( level );
-  // use strchr to check for ':' character
+  if( output->format != STUMPLESS_TEXT )
+    return "the output did not have a text format";
+  
+  if( output->payload == NULL )
+    return "the output payload was not properly created";
+  
+  if( output->payload->str == NULL )
+    return "the payload did not have an output string";
+  
+  level->name = NULL;
+  output = StumplessLevelAsText( level );
+  // todo use strchr to check for ':' character
   
   return NULL;
 }

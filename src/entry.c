@@ -8,7 +8,7 @@
 char *
 StumplessEntryToString( StumplessEntry * entry )
 {
-  return StumplessEntryAsText( entry );
+  return StumplessEntryAsText( entry )->payload->str;
 }
 
 StumplessEntry *

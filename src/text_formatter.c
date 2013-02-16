@@ -4,7 +4,27 @@
 
 #include <text_formatter.h>
 
-char *
+static
+StumplessFormattedOutput *
+GetTextFormattedOutput( void ){
+  StumplessFormattedOutput * output;
+  StumplessFormattedPayload * payload;
+
+  output = malloc( sizeof( StumplessFormattedOutput ) );
+  if( output == NULL )
+    return NULL;
+  
+  payload = malloc( sizeof( StumplessFormattedPayload ) );
+  if( payload == NULL )
+    return NULL;
+  
+  output->format = STUMPLESS_TEXT;
+  output->payload = payload;
+  
+  return output;
+}
+
+StumplessFormattedOutput *
 StumplessEntryAsText( StumplessEntry * entry )
 {
   if( entry == NULL )
@@ -14,50 +34,61 @@ StumplessEntryAsText( StumplessEntry * entry )
   return NULL;
 }
 
-char *
+StumplessFormattedOutput *
 StumplessEventAsText( StumplessEvent * event )
 {
   if( event == NULL )
     return NULL;
   
-  // todo need to add more customization to this method
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+   
   char * str;
   
-  const char * name;
-  if( event->name == NULL )
-    name = "Event";
-  else
-    name = event->name;
+  if( event->name == NULL ){
+    if( event->level == NULL ){
+      if( event->attribute_count == 0 ){
+        str = "";
+      } else {
+        // todo
+      }
+    } else {
 
-  size_t name_length = strlen( name );
+    }
+  } else {
+    if( event->level == NULL ){
+      if( event->attribute_count == 0 ){
+
+      } else {
+
+      }
+    } else {
+
+    }
+    
+  }
   
-  char * level_string = StumplessLevelAsText( event->level );
-  size_t level_length = strlen( level_string );
+  output->payload->str = str;
   
-  size_t str_length = name_length + level_length + 4;
-  
-  str = malloc( sizeof( char ) * str_length );
-  if( str == NULL )
-    return NULL;
-  
-  sprintf( str, "%s (%s)", name, level_string );
-  
-  return str;
+  return output;
 }
 
-char *
+StumplessFormattedOutput *
 StumplessLevelAsText( StumplessLevel * level )
 {
   if( level == NULL )
     return NULL;
  
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+  
   char * str;
    
   // todo may be able to save memory by calculating a
   //      more exact size of this string
   size_t number_length = 10;
-  
-  // todo need to check for empty strings as well
   
   if( level->name == NULL ){
     size_t str_length = number_length + 7;
@@ -76,5 +107,7 @@ StumplessLevelAsText( StumplessLevel * level )
     sprintf( str, "%s: level %d", level->name, level->value );
   }
   
-  return str;
+  output->payload->str = str;
+  
+  return output;
 }

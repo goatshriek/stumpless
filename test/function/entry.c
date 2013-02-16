@@ -116,5 +116,6 @@ test_entry_for_event( void )
 const char *
 test_to_string( void )
 {
+  // todo need to write this test
   return NULL;
 }

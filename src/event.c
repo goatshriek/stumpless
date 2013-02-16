@@ -9,7 +9,12 @@
 char *
 StumplessEventToString( StumplessEvent * event )
 {
-  return StumplessEventAsText( event );
+  StumplessFormattedOutput * output = StumplessEventAsText( event );
+  
+  if( event == NULL )
+    return NULL;
+  
+  return output->payload->str;
 }
 
 StumplessEvent *

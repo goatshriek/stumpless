@@ -62,12 +62,29 @@ typedef struct {
   StumplessEntryAttribute ** entry_attributes;
 } StumplessEntry;
 
+typedef unsigned char StumplessByte;
+
+typedef struct {
+  StumplessByte * bytes;
+  unsigned byte_count;
+} StumplessByteSet;
+
 typedef enum StumplessOutputFormat {
   STUMPLESS_CSV,
   STUMPLESS_JSON,
   STUMPLESS_TEXT,
   STUMPLESS_XML
 } StumplessOutputFormat;
+
+typedef union {
+  StumplessByteSet * bytes;
+  char * str;
+} StumplessFormattedPayload;
+
+typedef struct {
+  StumplessOutputFormat format;
+  StumplessFormattedPayload * payload;
+} StumplessFormattedOutput;
 
 typedef enum StumplessOutputMode {
   STUMPLESS_FILE_MODE,

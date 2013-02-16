@@ -28,12 +28,18 @@ const char *
 test_is_empty( void )
 {
   unsigned short result = is_empty( " \f\n\r\t\v" );
+
+  if( !is_empty( NULL ) )
+    return "a NULL pointer was not empty";
   
   if( result == 0 )
     return "a string of all whitespace caharcters was not empty";
   
   if( result != 6 )
     return "the result of the call was not the length of the string";
+  
+  if( is_empty( "this string is definitely not empty" ) )
+    return "a non-empty string was designated as empty";
   
   return NULL;
 }
