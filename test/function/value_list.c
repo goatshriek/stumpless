@@ -43,29 +43,42 @@ test_list_appender( void )
 {
   StumplessStatusCode status;
   StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return "the list was not created";
   
-  /*status = StumplessAppendToValueList( list, "test" );
+  StumplessValue * val_1 = StumplessValueFromString( "test" );
+  StumplessValue * val_2 = StumplessValueFromString( "string" );
+  StumplessValue * val_3 = StumplessValueFromString( "tor" );
+  StumplessValue * val_4 = StumplessValueFromString( "testing" );
+  
+  status = StumplessAppendToValueList( list, val_1 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  status = StumplessAppendToValueList( list, "string" );
+  status = StumplessAppendToValueList( list, val_2 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  status = StumplessAppendToValueList( list, "for" );
+  status = StumplessAppendToValueList( list, val_3 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  status = StumplessAppendToValueList( list, "testing" );
+  status = StumplessAppendToValueList( list, val_4 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  if( strcmp( list->first->value->data->c_p, "test" ) != 0 )
-    return "the first string was not correct";
+  if( list->first == NULL )
+    return "the list did not have a first node";
   
-  if( strcmp( list->last->value->data->c_p, "testing" ) != 0 )
-    return "the last string was not correct";
-  */
+  if( list->first->value != val_1 )
+    return "the first value was not correct";
+  
+  if( list->last == NULL )
+    return "the list did not have a last node";
+  
+  if( list->last->value != val_4 )
+    return "the last value was not correct";
+  
   return NULL;
 }
 
@@ -91,5 +104,14 @@ test_list_constructor( void )
 const char *
 test_list_destructor( void )
 {
+  StumplessValueList * list = StumplessNewValueList();
+  
+  if( list == NULL )
+    return "the list was not created";
+  
+  StumplessStatusCode status = StumplessDestroyValueList( list );
+  if( status != STUMPLESS_SUCCESS )
+    return "the list was not completely destroyed";
+  
   return NULL;
 }
