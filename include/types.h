@@ -26,27 +26,89 @@ typedef struct {
 typedef enum StumplessEventAttributeType {
   STUMPLESS_UNSIGNED_SHORT,
   STUMPLESS_UNSIGNED_SHORT_POINTER,
-  STUMPLESS_SIGNED_SHORT,
-  STUMPLESS_SIGNED_SHORT_POINTER
-} StumplessEventAttributeType;
+  STUMPLESS_SHORT,
+  STUMPLESS_SHORT_POINTER,
+  STUMPLESS_UNSIGNED_INT,
+  STUMPLESS_UNSIGNED_INT_POINTER,
+  STUMPLESS_INT,
+  STUMPLESS_INT_POINTER,
+  STUMPLESS_UNSIGNED_LONG,
+  STUMPLESS_UNSIGNED_LONG_POINTER,
+  STUMPLESS_LONG,
+  STUMPLESS_LONG_POINTER,
+  STUMPLESS_UNSIGNED_LONG_LONG,
+  STUMPLESS_UNSIGNED_LONG_LONG_POINTER,
+  STUMPLESS_LONG_LONG,
+  STUMPLESS_LONG_LONG_POINTER,
+  STUMPLESS_UNSIGNED_CHAR,
+  STUMPLESS_UNSIGNED_CHAR_POINTER,
+  STUMPLESS_CHAR,
+  STUMPLESS_CHAR_POINTER,
+  STUMPLESS_FLOAT,
+  STUMPLESS_FLOAT_POINTER,
+  STUMPLESS_DOUBLE,
+  STUMPLESS_DOUBLE_POINTER,
+  STUMPLESS_LONG_DOUBLE,
+  STUMPLESS_LONG_DOUBLE_POINTER,
+  STUMPLESS_VOID_POINTER
+} StumplessValueType;
 
 typedef union {
   unsigned short u_s;
   unsigned short * u_s_p;
-  signed short s_s;
-  signed short * s_s_p;
-} StumplessEventAttributeValue;
+  signed short s;
+  signed short * s_p;
+  unsigned int u_i;
+  unsigned int * u_i_p;
+  signed int i;
+  signed int * i_p;
+  unsigned long u_l;
+  unsigned long * u_l_p;
+  signed long l;
+  signed long * l_p;
+  unsigned long long u_l_l;
+  unsigned long long * u_l_l_p;
+  signed long long l_l;
+  signed long long * l_l_p;
+  unsigned char u_c;
+  unsigned char * u_c_p;
+  signed char c;
+  signed char * c_p;
+  float f;
+  float * f_p;
+  double d;
+  double * d_p;
+  long double l_d;
+  long double * l_d_p;
+  void * v_p;
+} StumplessValueData;
+
+typedef struct {
+  const char * format;
+  StumplessValueType type;
+  StumplessValueData * data;
+  unsigned length;
+  size_t max_value_length;  // todo this is a potential security problem
+} StumplessValue;
+
+typedef struct value_node {
+  StumplessValue * value;
+  struct value_node * next;
+} StumplessValueListNode;
+
+typedef struct {
+  StumplessValueListNode * first;
+  StumplessValueListNode * last;
+} StumplessValueList;
 
 typedef struct {
   const char * name;
-  StumplessEventAttributeType type;
-  const char * format;
-  StumplessEventAttributeValue * default_value;
+  StumplessValue * value;
 } StumplessEventAttribute;
 
 typedef struct {
   StumplessEventAttribute * event_attribute;
-  StumplessEventAttributeValue * value;
+  StumplessValue * value;
 } StumplessEntryAttribute;
 
 typedef struct {
@@ -67,7 +129,7 @@ typedef unsigned char StumplessByte;
 typedef struct {
   StumplessByte * bytes;
   unsigned byte_count;
-} StumplessByteSet;
+} StumplessByteList;
 
 typedef enum StumplessOutputFormat {
   STUMPLESS_CSV,
@@ -77,8 +139,9 @@ typedef enum StumplessOutputFormat {
 } StumplessOutputFormat;
 
 typedef union {
-  StumplessByteSet * bytes;
-  char * str;
+  StumplessByteList * bytes;
+  StumplessValueList * strings;
+  char * str; // todo needs to be removed when ready
 } StumplessFormattedPayload;
 
 typedef struct {

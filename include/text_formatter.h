@@ -3,10 +3,28 @@
 
 #include <types.h>
 
-StumplessFormattedOutput * StumplessEntryAsText( StumplessEntry * );
-StumplessFormattedOutput * StumplessEventAsText( StumplessEvent * );
+StumplessFormattedOutput *
+StumplessEntryAsText( StumplessEntry * );
+
+StumplessFormattedOutput *
+StumplessEventAsText( StumplessEvent * );
+
+StumplessFormattedOutput *
+StumplessEventAsTextWithoutAttributes( StumplessEvent * );
+
 StumplessFormattedOutput * 
-  StumplessEventAttributeAsText( StumplessEventAttribute * );
-StumplessFormattedOutput * StumplessLevelAsText( StumplessLevel * );
+StumplessEventAttributeAsText( StumplessEventAttribute * );
+
+StumplessFormattedOutput *
+StumplessEventAttributeAsTextShortened( StumplessEventAttribute * );
+
+StumplessFormattedOutput *
+StumplessEventAttributeListAsText( StumplessEvent * );
+
+StumplessFormattedOutput *
+StumplessLevelAsText( StumplessLevel * );
+
+StumplessFormattedOutput *
+StumplessEventAttributeValueAsText( StumplessEventAttribute * );
 
 #endif
