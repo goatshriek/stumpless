@@ -15,7 +15,7 @@ StumplessDestroyValueList( StumplessValueList * set )
 }
 
 StumplessValueList *
-StumplessGetNewValueList( void )
+StumplessNewValueList( void )
 {
 
   return STUMPLESS_SUCCESS;

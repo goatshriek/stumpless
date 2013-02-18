@@ -10,7 +10,7 @@ StumplessStatusCode
 StumplessDestroyValueList( StumplessValueList * );
 
 StumplessValueList *
-StumplessGetNewValueList( void );
+StumplessNewValueList( void );
 
 char *
 StumplessValueListToString( StumplessValueList * );

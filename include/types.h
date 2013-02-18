@@ -88,7 +88,6 @@ typedef struct {
   StumplessValueType type;
   StumplessValueData * data;
   unsigned length;
-  size_t max_value_length;  // todo this is a potential security problem
 } StumplessValue;
 
 typedef struct value_node {
@@ -132,6 +131,7 @@ typedef struct {
 } StumplessByteList;
 
 typedef enum StumplessOutputFormat {
+  STUMPLESS_BINARY,
   STUMPLESS_CSV,
   STUMPLESS_JSON,
   STUMPLESS_TEXT,
@@ -141,7 +141,6 @@ typedef enum StumplessOutputFormat {
 typedef union {
   StumplessByteList * bytes;
   StumplessValueList * strings;
-  char * str; // todo needs to be removed when ready
 } StumplessFormattedPayload;
 
 typedef struct {

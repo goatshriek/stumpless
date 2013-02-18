@@ -25,6 +25,6 @@ StumplessFormattedOutput *
 StumplessLevelAsText( StumplessLevel * );
 
 StumplessFormattedOutput *
-StumplessEventAttributeValueAsText( StumplessEventAttribute * );
+StumplessValueAsText( StumplessValue * );
 
 #endif

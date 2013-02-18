@@ -71,7 +71,7 @@ StumplessEventAsText( StumplessEvent * event )
     
   }
   
-  output->payload->str = str;
+  //output->payload->str = str;
   
   return output;
 }
@@ -95,7 +95,8 @@ StumplessEventAsTextWithoutAttributes( StumplessEvent * event )
       StumplessFormattedOutput * level = StumplessLevelAsText( event->level );
       if( level == NULL )
         return NULL;
-      char * level_string = level->payload->str;
+      //char * level_string = level->payload->str;
+      char * level_string = "testing";
       
       size_t level_length = strlen( level_string );
       size_t str_length = level_length + 7;
@@ -119,7 +120,8 @@ StumplessEventAsTextWithoutAttributes( StumplessEvent * event )
       StumplessFormattedOutput * level = StumplessLevelAsText( event->level );
       if( level == NULL )
         return NULL;
-      char * level_string = level->payload->str;
+      //char * level_string = level->payload->str;
+      char * level_string = "testing";
       
       size_t level_length = strlen( level_string );
       size_t str_length = name_length + level_length + 4;
@@ -131,7 +133,7 @@ StumplessEventAsTextWithoutAttributes( StumplessEvent * event )
     }
   }
   
-  output->payload->str = str;
+  //output->payload->str = str;
   
   return output;
 }
@@ -197,7 +199,7 @@ StumplessLevelAsText( StumplessLevel * level )
     sprintf( str, "%s: level %d", level->name, level->value );
   }
   
-  output->payload->str = str;
+  //output->payload->str = str;
   
   return output;
 }

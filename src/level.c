@@ -84,5 +84,6 @@ StumplessLevelToString( StumplessLevel * level )
   if( output == NULL )
     return NULL;
   
-  return output->payload->str;
+  // todo implement
+  return NULL;
 }

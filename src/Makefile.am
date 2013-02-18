@@ -7,4 +7,5 @@ libstumpless_la_SOURCES = src/configuration.c \
                           src/status.c \
                           src/string_helper.c \
                           src/text_formatter.c \
+                          src/value.c \
                           src/value_list.c

@@ -42,9 +42,9 @@ const char *
 test_list_appender( void )
 {
   StumplessStatusCode status;
-  StumplessValueList * list = StumplessGetNewStringList();
+  StumplessValueList * list = StumplessNewValueList();
   
-  status = StumplessAppendToValueList( list, "test" );
+  /*status = StumplessAppendToValueList( list, "test" );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
@@ -60,12 +60,12 @@ test_list_appender( void )
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  if( strcmp( list->first->str, "test" ) != 0 )
+  if( strcmp( list->first->value->data->c_p, "test" ) != 0 )
     return "the first string was not correct";
   
-  if( strcmp( list->last->str, "testing" ) != 0 )
+  if( strcmp( list->last->value->data->c_p, "testing" ) != 0 )
     return "the last string was not correct";
-  
+  */
   return NULL;
 }
 
@@ -74,7 +74,7 @@ test_list_constructor( void )
 {
   StumplessValueList * list = NULL;
   
-  list = StumplessGetNewValueList();
+  list = StumplessNewValueList();
   
   if( list == NULL )
     return "the list was not created";

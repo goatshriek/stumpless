@@ -23,5 +23,8 @@ test_function_string_helper_LDADD = libstumpless.la
 test_function_text_formatter_SOURCES = test/function/text_formatter.c
 test_function_text_formatter_LDADD = libstumpless.la
 
+test_function_value_SOURCES = test/function/value.c
+test_function_value_LDADD = libstumpless.la
+
 test_function_value_list_SOURCES = test/function/value_list.c
 test_function_value_list_LDADD = libstumpless.la

@@ -6,6 +6,7 @@ check_PROGRAMS = test/function/configuration \
                  test/function/status \
                  test/function/string_helper \
                  test/function/text_formatter \
+                 test/function/value \
                  test/function/value_list
 TESTS = $(check_PROGRAMS)
 

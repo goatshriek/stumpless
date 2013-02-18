@@ -13,7 +13,8 @@ StumplessEntryToString( StumplessEntry * entry )
   if( output == NULL )
     return NULL;
   
-  return output->payload->str;
+  // todo finish
+  return NULL;
 }
 
 StumplessEntry *
