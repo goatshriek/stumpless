@@ -8,7 +8,7 @@
 StumplessStatusCode
 StumplessAppendToValueList( StumplessValueList *, StumplessValue * );
 
-StumplessStatusCode
+void
 StumplessDestroyValueList( StumplessValueList * );
 
 StumplessValueList *

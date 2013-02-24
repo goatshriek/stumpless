@@ -4,6 +4,16 @@
 #include <types.h>
 #include <value.h>
 
+void
+StumplessDestroyValue( StumplessValue * value )
+{
+  free( value->data );
+  
+  free( value );
+  
+  return;
+}
+
 StumplessValue *
 StumplessValueFromString( char * str )
 {

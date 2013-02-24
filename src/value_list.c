@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include <value.h>
 #include <value_list.h>
 #include <types.h>
 
@@ -29,14 +30,25 @@ StumplessAppendToValueList( StumplessValueList * list, StumplessValue * value )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
+void
 StumplessDestroyValueList( StumplessValueList * list )
 {
-  // todo need to destroy the rest of the list
+  StumplessValueListNode * prev = NULL;
+  StumplessValueListNode * node = list->first;
+  
+  while( node != NULL ){
+    if( prev != NULL ){
+      StumplessDestroyValue( prev->value );
+      free( prev );
+    }
+    
+    prev = node;
+    node = node->next;
+  }
   
   free( list );
   
-  return STUMPLESS_FAILURE;
+  return;
 }
 
 StumplessValueList *

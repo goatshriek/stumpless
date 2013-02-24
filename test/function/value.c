@@ -4,6 +4,7 @@
 
 #include <stumpless.h>
 
+const char * test_destructor( void );
 const char * test_value_from_string( void );
 
 int
@@ -11,6 +12,12 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
+  
+  result = test_destructor();
+  if( result != NULL ){
+    printf( "Destructor Test Failed: %s\n", result );
+    failure_count++;
+  }
   
   result = test_value_from_string();
   if( result != NULL ){
@@ -22,6 +29,18 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_destructor( void )
+{
+  StumplessValue * value = StumplessValueFromString( "testing value" );
+  if( value == NULL )
+    return "the value could not be created";
+  
+  StumplessDestroyValue( value );
+  
+  return NULL;
 }
 
 const char *

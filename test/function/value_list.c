@@ -109,9 +109,20 @@ test_list_destructor( void )
   if( list == NULL )
     return "the list was not created";
   
-  StumplessStatusCode status = StumplessDestroyValueList( list );
-  if( status != STUMPLESS_SUCCESS )
-    return "the list was not completely destroyed";
+  StumplessDestroyValueList( list );
+  
+  list = StumplessNewValueList();
+  
+  if( list == NULL )
+     return "the list was not created";
+  
+  StumplessValue * val_1 = StumplessValueFromString( "test" );
+  StumplessValue * val_2 = StumplessValueFromString( "string" );
+  
+  StumplessAppendToValueList( list, val_1 );
+  StumplessAppendToValueList( list, val_2 );
+  
+  StumplessDestroyValueList( list );
   
   return NULL;
 }

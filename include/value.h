@@ -3,6 +3,9 @@
 
 #include <types.h>
 
+void
+StumplessDestroyValue( StumplessValue * );
+
 StumplessValue *
 StumplessValueFromString( char * );
 
