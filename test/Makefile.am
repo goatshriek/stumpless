@@ -1,6 +1,7 @@
 check_PROGRAMS = test/function/configuration \
                  test/function/entry \
                  test/function/event \
+                 test/function/file_output \
                  test/function/level \
                  test/function/quick_loggers \
                  test/function/status \

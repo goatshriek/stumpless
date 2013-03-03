@@ -9,4 +9,7 @@ StumplessDestroyValue( StumplessValue * );
 StumplessValue *
 StumplessValueFromString( char * );
 
+StumplessStatusCode
+StumplessWriteValueToStream( FILE *, StumplessValue * );
+
 #endif

@@ -88,6 +88,10 @@ test_value_formatter( void )
   
   value = GetTestValueUnsignedShort();
   output = StumplessValueAsText( value );
+  if( output == NULL )
+    return "the output was null for a valid value";
+  if( output->format != STUMPLESS_TEXT )
+    return "the output did not have the correct type";
   
   return NULL;
 }

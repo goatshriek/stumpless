@@ -7,6 +7,9 @@ test_function_entry_LDADD = libstumpless.la
 test_function_event_SOURCES = test/function/event.c
 test_function_event_LDADD = libstumpless.la
 
+test_function_file_output_SOURCES = test/function/file_output.c
+test_function_file_output_LDADD = libstumpless.la
+
 test_function_level_SOURCES = test/function/level.c
 test_function_level_LDADD = libstumpless.la
 

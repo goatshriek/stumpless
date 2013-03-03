@@ -24,7 +24,7 @@ typedef struct {
   const char * name;
 } StumplessLevel;
 
-typedef enum StumplessEventAttributeType {
+typedef enum StumplessValueType {
   STUMPLESS_UNSIGNED_SHORT,
   STUMPLESS_UNSIGNED_SHORT_POINTER,
   STUMPLESS_SHORT,
@@ -51,6 +51,7 @@ typedef enum StumplessEventAttributeType {
   STUMPLESS_DOUBLE_POINTER,
   STUMPLESS_LONG_DOUBLE,
   STUMPLESS_LONG_DOUBLE_POINTER,
+  STUMPLESS_STRING,
   STUMPLESS_VOID_POINTER
 } StumplessValueType;
 
@@ -141,7 +142,7 @@ typedef enum StumplessOutputFormat {
 
 typedef union {
   StumplessByteList * bytes;
-  StumplessValueList * strings;
+  StumplessValueList * values;
 } StumplessFormattedPayload;
 
 typedef struct {

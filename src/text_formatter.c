@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <text_formatter.h>
+#include <value_list.h>
 
 static
 StumplessFormattedOutput *
@@ -16,6 +17,10 @@ GetTextFormattedOutput( void ){
   
   payload = malloc( sizeof( StumplessFormattedPayload ) );
   if( payload == NULL )
+    return NULL;
+  
+  payload->values = StumplessNewValueList();
+  if( payload->values == NULL )
     return NULL;
   
   output->format = STUMPLESS_TEXT;
@@ -176,13 +181,7 @@ StumplessLevelAsText( StumplessLevel * level )
   if( output == NULL )
     return NULL;
   
-  char * str;
-   
-  // todo may be able to save memory by calculating a
-  //      more exact size of this string
-  size_t number_length = 10;
-  
-  if( level->name == NULL ){
+  /*if( level->name == NULL ){
     size_t str_length = number_length + 7;
     str = malloc( sizeof( char ) * str_length );
     if( str == NULL )
@@ -197,9 +196,7 @@ StumplessLevelAsText( StumplessLevel * level )
       return NULL;
 
     sprintf( str, "%s: level %d", level->name, level->value );
-  }
-  
-  //output->payload->str = str;
+  }*/
   
   return output;
 }
@@ -214,44 +211,10 @@ StumplessValueAsText( StumplessValue * value )
   if( output == NULL )
     return NULL;
   
-  // todo use the max_value_length of the attribute to create string
-  char * str;
+  StumplessValueList * list = output->payload->values;
+  StumplessStatusCode status = StumplessAppendToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
   
-  // todo here is another case where determining number length could be
-  //      very beneficial with respect to memory usage
-  switch( value->type ){
-    case STUMPLESS_UNSIGNED_SHORT:
-    case STUMPLESS_SHORT:
-    case STUMPLESS_UNSIGNED_INT:
-    case STUMPLESS_INT:
-    case STUMPLESS_UNSIGNED_LONG:
-    case STUMPLESS_LONG:
-    case STUMPLESS_UNSIGNED_LONG_LONG:
-    case STUMPLESS_LONG_LONG:
-    case STUMPLESS_UNSIGNED_CHAR:
-    case STUMPLESS_CHAR:
-    case STUMPLESS_FLOAT:
-    case STUMPLESS_DOUBLE:
-    case STUMPLESS_LONG_DOUBLE:
-      break;
-    case STUMPLESS_UNSIGNED_SHORT_POINTER:
-    case STUMPLESS_SHORT_POINTER:
-    case STUMPLESS_UNSIGNED_INT_POINTER:
-    case STUMPLESS_INT_POINTER:
-    case STUMPLESS_UNSIGNED_LONG_POINTER:
-    case STUMPLESS_LONG_POINTER:
-    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
-    case STUMPLESS_LONG_LONG_POINTER:
-    case STUMPLESS_UNSIGNED_CHAR_POINTER:
-    case STUMPLESS_CHAR_POINTER:
-    case STUMPLESS_FLOAT_POINTER:
-    case STUMPLESS_DOUBLE_POINTER:
-    case STUMPLESS_LONG_DOUBLE_POINTER:
-      break;
-    case STUMPLESS_VOID_POINTER:
-      break;
-    default:
-      return NULL;
-  }
-  return NULL;
+  return output;
 }

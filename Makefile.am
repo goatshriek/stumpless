@@ -11,6 +11,7 @@ stumpless_includedir = $(pkgincludedir)
 stumpless_include_HEADERS = include/configuration.h \
                             include/entry.h \
                             include/event.h \
+                            include/file_output.h \
                             include/level.h \
                             include/logger.h \
                             include/status.h \
