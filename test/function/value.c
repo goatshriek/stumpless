@@ -5,7 +5,9 @@
 #include <stumpless.h>
 
 const char * test_destructor( void );
+const char * test_into_string( void );
 const char * test_stream_write( void );
+const char * test_to_string( void );
 const char * test_value_from_string( void );
 
 StumplessValue * GetTestArrayValue( void );
@@ -23,9 +25,21 @@ main( void )
     failure_count++;
   }
   
+  result = test_into_string();
+  if( result != NULL ){
+    printf( "Write Into String Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
   result = test_stream_write();
   if( result != NULL ){
     printf( "Stream Write Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_to_string();
+  if( result != NULL ){
+    printf( "To String Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -51,6 +65,33 @@ test_destructor( void )
     return "the value could not be created";
   
   StumplessDestroyValue( value );
+  
+  return NULL;
+}
+
+const char *
+test_into_string( void )
+{
+  StumplessValue * value = GetTestVoidValue();
+  if( value == NULL )
+    return "the test value could not be created";
+  
+  char str[11];
+  
+  StumplessStatusCode status = StumplessValueIntoString( NULL, value );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty string did not generate the correct error";
+  
+  status = StumplessValueIntoString( str, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty list did not generate the correct error";
+  
+  status = StumplessValueIntoString( str, value );
+  if( status != STUMPLESS_SUCCESS )
+    return "a correct value and string generated an error";
+ 
+  if( strstr( str, "cdefghij" ) == NULL )
+    return "the string did not have the correct contents in it";
   
   return NULL;
 }
@@ -90,6 +131,28 @@ test_stream_write( void )
   status = StumplessWriteValueToStream( stdout, value );
   if( status != STUMPLESS_SUCCESS )
     return "the void pointer was not handled properly";
+  
+  return NULL;
+}
+
+const char *
+test_to_string( void )
+{
+  StumplessValue * value = GetTestArrayValue();
+  if( value == NULL )
+    return "the test value could not be created";
+  char * str;
+  
+  str = StumplessValueToString( NULL );
+  if( str != NULL )
+    return "a null value did not create a null string";
+  
+  str = StumplessValueToString( value );
+  if( str == NULL )
+    return "a valid value returned a null string";
+  
+  if( strstr( str, "123456" ) == NULL )
+    return "the string did not contain the value's contents";
   
   return NULL;
 }

@@ -47,5 +47,8 @@ test_initialization( void )
   if( stumpless_configuration->sorting == NULL )
     return "sorting configuration was not initialized";
   
+  if( stumpless_configuration->string == NULL )
+    return "string configuration was not initialized";
+  
   return NULL;
 }

@@ -16,13 +16,19 @@ typedef enum StumplessStatusCode {
   STUMPLESS_FILE_WRITE_FAILURE,
   STUMPLESS_INCORRECT_FILE_SIGNATURE,
   STUMPLESS_MEMORY_ALLOCATION_FAILURE,
-  STUMPLESS_PARSE_FAILURE
+  STUMPLESS_PARSE_FAILURE,
+  STUMPLESS_STRING_WRITE_FAILURE
 } StumplessStatusCode;
 
 typedef struct {
   unsigned value;
   const char * name;
 } StumplessLevel;
+
+typedef enum {
+  STUMPLESS_TRUE = 1,
+  STUMPLESS_FALSE = 0
+} StumplessBoolean;
 
 typedef enum StumplessValueType {
   STUMPLESS_UNSIGNED_SHORT,
@@ -51,6 +57,7 @@ typedef enum StumplessValueType {
   STUMPLESS_DOUBLE_POINTER,
   STUMPLESS_LONG_DOUBLE,
   STUMPLESS_LONG_DOUBLE_POINTER,
+  STUMPLESS_BOOLEAN,
   STUMPLESS_STRING,
   STUMPLESS_VOID_POINTER
 } StumplessValueType;
@@ -82,6 +89,7 @@ typedef union {
   double * d_p;
   long double l_d;
   long double * l_d_p;
+  StumplessBoolean boolean;
   void * v_p;
 } StumplessValueData;
 
@@ -195,10 +203,15 @@ typedef struct {
 } StumplessSortingConfiguration;
 
 typedef struct {
+  size_t buffer_size;
+} StumplessStringConfiguration;
+
+typedef struct {
   StumplessFileConfiguration * file;
   StumplessHTTPConfiguration * http;
   StumplessMultithreadingConfiguration * multithreading;
   StumplessSortingConfiguration * sorting;
+  StumplessStringConfiguration * string;
 } StumplessConfiguration;
 
 #endif

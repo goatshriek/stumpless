@@ -17,6 +17,9 @@ StumplessDestroyValueList( StumplessValueList * );
 StumplessValueList *
 StumplessNewValueList( void );
 
+StumplessStatusCode
+StumplessValueListIntoString( char *, StumplessValueList * );
+
 short
 StumplessValueListIsEmpty( StumplessValueList * );
 

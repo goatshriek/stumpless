@@ -89,6 +89,12 @@ StumplessNewValueList( void )
   return list;
 }
 
+StumplessStatusCode
+StumplessValueListIntoString( char * str, StumplessValueList * list )
+{
+  return STUMPLESS_FAILURE;
+}
+
 short
 StumplessValueListIsEmpty( StumplessValueList * list )
 {

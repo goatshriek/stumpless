@@ -33,6 +33,11 @@ StumplessInitializeConfiguration( void )
   stumpless_configuration->sorting = malloc( sizeof( StumplessSortingConfiguration ) );
   if( stumpless_configuration->sorting == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  stumpless_configuration->string = malloc( sizeof( StumplessStringConfiguration ) );
+  if( stumpless_configuration->sorting == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  stumpless_configuration->string->buffer_size = 100;
 
   return STUMPLESS_SUCCESS;
 }

@@ -8,9 +8,11 @@ const char * test_destructive_write( void );
 const char * test_list_appender( void );
 const char * test_list_constructor( void );
 const char * test_list_destructor( void );
+const char * test_into_string( void );
 const char * test_is_empty( void );
 const char * test_stream_write( void );
 const char * test_string_appender( void );
+const char * test_to_string( void );
 
 StumplessValueList * GetTestList( void );
 
@@ -41,6 +43,12 @@ main( void )
   result = test_list_destructor();
   if( result != NULL ){
     printf( "List Destrutor Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_into_string();
+  if( result != NULL ){
+    printf( "Write Into String Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -176,6 +184,32 @@ test_list_destructor( void )
 }
 
 const char *
+test_into_string( void )
+{
+  StumplessValueList * list = GetTestList();
+  if( list == NULL )
+    return "the test list could not be created";
+  char str[1000];
+  
+  StumplessStatusCode status = StumplessValueListIntoString( NULL, list );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty string did not generate the correct error";
+  
+  status = StumplessValueListIntoString( str, list );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+     return "an empty list did not generate the correct error";
+  
+  status = StumplessValueListIntoString( str, list );
+  if( status != STUMPLESS_SUCCESS )
+    return "a valid string was not properly written into";
+  
+  if( strstr( str, "testing" ) == NULL )
+    return "the new string did not contain the list strings";
+  
+  return NULL;
+}
+
+const char *
 test_is_empty( void )
 {
   StumplessValueList * list = NULL;
@@ -238,6 +272,28 @@ test_string_appender( void )
   
   if( strcmp( list->last->value->data->c_p, "str" ) != 0 )
     return "the list's last member was not the appended string";
+  
+  return NULL;
+}
+
+const char *
+test_to_string( void )
+{
+  StumplessValueList * list = GetTestList();
+  if( list == NULL )
+    return "the test list could not be created";
+  char * str;
+  
+  str = StumplessValueListToString( NULL );
+  if( str != NULL )
+    return "a null list did not return a null string";
+  
+  str = StumplessValueListToString( list );
+  if( str == NULL )
+    return "a valid list returend a null string";
+  
+  if( strstr( str, "testing" ) == NULL )
+    return "the new string did not contain the list strings";
   
   return NULL;
 }

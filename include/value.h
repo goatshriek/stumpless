@@ -10,6 +10,12 @@ StumplessValue *
 StumplessValueFromString( char * );
 
 StumplessStatusCode
+StumplessValueIntoString( char *, StumplessValue * );
+
+char *
+StumplessValueToString( StumplessValue * );
+
+StumplessStatusCode
 StumplessWriteValueToStream( FILE *, StumplessValue * );
 
 #endif
