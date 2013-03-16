@@ -6,6 +6,44 @@
 #include <types.h>
 #include <value.h>
 
+#define SINGLE_VALUE_INTO_STREAM( single_value, default_format )               \
+if( format == NULL )                                                           \
+  result = fprintf( stream, default_format, single_value );                    \
+else                                                                           \
+  result = fprintf( stream, format, single_value );
+
+#define ARRAY_INTO_STREAM( array, default_format )                             \
+for( i = 0; i < length; i++ ){                                                 \
+  if( format == NULL )                                                         \
+    result = fprintf( stream, default_format, array[i] );                      \
+  else                                                                         \
+    result = fprintf( stream, format, array[i] );                              \
+                                                                               \
+  if( result < 0)                                                              \
+    break;                                                                     \
+}
+
+#define SINGLE_VALUE_INTO_STRING( single_value, default_format )               \
+if( format == NULL )                                                           \
+  result = sprintf( str, default_format, single_value );                       \
+else                                                                           \
+  result = sprintf( str, format, single_value );
+
+#define ARRAY_INTO_STRING( array, default_format )                             \
+str[0] = '\0';                                                                 \
+for( i = 0; i < length; i++ ){                                                 \
+  if( format == NULL )                                                         \
+    result = sprintf( buffer, default_format, array[i] );                      \
+  else                                                                         \
+    result = sprintf( buffer, format, array[i] );                              \
+                                                                               \
+  if( result < 0)                                                              \
+    break;                                                                     \
+                                                                               \
+  buffer[buffer_size - 1] = '\0';                                              \
+  strncat( str, buffer, buffer_size - 1 );                                     \
+}
+
 void
 StumplessDestroyValue( StumplessValue * value )
 {
@@ -60,8 +98,6 @@ StumplessValueIntoString( char * str, StumplessValue * value )
   char * buffer = malloc( buffer_size );
   if( buffer == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
-  size_t remaining_buffer = buffer_size - 1;
-  size_t buffer_str_length;
   
   const char * format = value->format;
   unsigned length = value->length;
@@ -70,153 +106,91 @@ StumplessValueIntoString( char * str, StumplessValue * value )
   
   switch( value->type ){
     case STUMPLESS_UNSIGNED_SHORT:
-      if( format == NULL )
-        result = sprintf( str, "%i", data->u_s );
-      else
-        result = sprintf( str, format, data->u_s );
+      SINGLE_VALUE_INTO_STRING( data->u_s, "%i" )
       break;
     case STUMPLESS_SHORT:
-      if( format == NULL )
-        result = sprintf( str, "%i", data->s );
-      else
-        result = sprintf( str, format, data->s );
+      SINGLE_VALUE_INTO_STRING( data->s, "%i" )
       break;
     case STUMPLESS_UNSIGNED_INT:
-      if( format == NULL )
-        result = sprintf( str, "%i", data->u_i );
-      else
-        result = sprintf( str, format, data->u_i );
+      SINGLE_VALUE_INTO_STRING( data->u_i, "%i" )
       break;
     case STUMPLESS_INT:
-      if( format == NULL )
-        result = sprintf( str, "%i", data->i );
-      else
-        result = sprintf( str, format, data->i );
+      SINGLE_VALUE_INTO_STRING( data->i, "%i" )
       break;
     case STUMPLESS_UNSIGNED_LONG:
-      if( format == NULL )
-        result = sprintf( str, "%li", data->u_l );
-      else
-        result = sprintf( str, format, data->u_l );
+      SINGLE_VALUE_INTO_STRING( data->u_l, "%li" )
       break;
     case STUMPLESS_LONG:
-      if( format == NULL )
-        result = sprintf( str, "%li", data->l );
-      else
-        result = sprintf( str, format, data->l );
+      SINGLE_VALUE_INTO_STRING( data->l, "%li" )
       break;
     case STUMPLESS_UNSIGNED_LONG_LONG:
-      if( format == NULL )
-        result = sprintf( str, "%lli", data->u_l_l );
-      else
-        result = sprintf( str, format, data->u_l_l );
+      SINGLE_VALUE_INTO_STRING( data->u_l_l, "%lli" )
       break;
     case STUMPLESS_LONG_LONG:
-      if( format == NULL )
-        result = sprintf( str, "%lli", data->l_l );
-      else
-        result = sprintf( str, format, data->l_l );
+      SINGLE_VALUE_INTO_STRING( data->l_l, "%lli" )
       break;
     case STUMPLESS_UNSIGNED_CHAR:
-      if( format == NULL )
-        result = sprintf( str, "%c", data->u_c );
-      else
-        result = sprintf( str, format, data->u_c );
+      SINGLE_VALUE_INTO_STRING( data->u_c, "%c" )
       break;
     case STUMPLESS_CHAR:
-      if( format == NULL )
-        result = sprintf( str, "%c", data->c );
-      else
-        result = sprintf( str, format, data->c );
+      SINGLE_VALUE_INTO_STRING( data->c, "%c" )
       break;
     case STUMPLESS_FLOAT:
-      if( format == NULL )
-        result = sprintf( str, "%g", data->f );
-      else
-        result = sprintf( str, format, data->f );
+      SINGLE_VALUE_INTO_STRING( data->f, "%g" )
       break;
     case STUMPLESS_DOUBLE:
-      if( format == NULL )
-        result = sprintf( str, "%g", data->d );
-      else
-        result = sprintf( str, format, data->d );
+      SINGLE_VALUE_INTO_STRING( data->d, "%g" )
       break;
     case STUMPLESS_LONG_DOUBLE:
-      if( format == NULL )
-        result = sprintf( str, "%Lg", data->l_d );
-      else
-        result = sprintf( str, format, data->l_d );
+      SINGLE_VALUE_INTO_STRING( data->l_d, "%Lg" )
       break;
     case STUMPLESS_UNSIGNED_SHORT_POINTER:
+      ARRAY_INTO_STRING( data->u_s_p, "%i" )
       break;
     case STUMPLESS_SHORT_POINTER:
+      ARRAY_INTO_STRING( data->s_p, "%i" )
       break;
     case STUMPLESS_UNSIGNED_INT_POINTER:
+      ARRAY_INTO_STRING( data->u_i_p, "%i" )
       break;
     case STUMPLESS_INT_POINTER:
-      str[0] = '\0';
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = sprintf( buffer, "%i", data->i_p[i] );
-        else
-          result = sprintf( buffer, format, data->i_p[i] );
-        
-        if( result < 0)
-          break;
-        
-        buffer[buffer_size - 1] = '\0';
-        buffer_str_length = strlen( buffer );
-        if( buffer_str_length > remaining_buffer )
-          return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
-        
-        strncat( str, buffer, remaining_buffer );
-        remaining_buffer -= buffer_str_length;
-      }
+      ARRAY_INTO_STRING( data->i_p, "%i" )
       break;
     case STUMPLESS_UNSIGNED_LONG_POINTER:
+      ARRAY_INTO_STRING( data->u_l_p, "%li" )
       break;
     case STUMPLESS_LONG_POINTER:
+      ARRAY_INTO_STRING( data->l_p, "%li" )
       break;
     case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
+      ARRAY_INTO_STRING( data->u_l_l_p, "%lli" )
       break;
     case STUMPLESS_LONG_LONG_POINTER:
+      ARRAY_INTO_STRING( data->l_l_p, "%lli" )
       break;
     case STUMPLESS_UNSIGNED_CHAR_POINTER:
+      ARRAY_INTO_STRING( data->u_c_p, "%c" )
       break;
     case STUMPLESS_CHAR_POINTER:
+      ARRAY_INTO_STRING( data->c_p, "%c" )
       break;
     case STUMPLESS_FLOAT_POINTER:
+      ARRAY_INTO_STRING( data->f_p, "%g" )
       break;
     case STUMPLESS_DOUBLE_POINTER:
+      ARRAY_INTO_STRING( data->d_p, "%g" )
       break;
     case STUMPLESS_LONG_DOUBLE_POINTER:
+      ARRAY_INTO_STRING( data->l_d_p, "%Lg" )
+      break;
+    case STUMPLESS_BOOLEAN:
       break;
     case STUMPLESS_STRING:
-      if( format == NULL )
-        result = sprintf( str, "%s", data->c_p );
-      else
-        result = sprintf( str, format, data->c_p );
+      SINGLE_VALUE_INTO_STRING( data->c_p, "%s" )
       break;
     case STUMPLESS_VOID_POINTER:
       cast_data = ( char * )data->v_p;
-      str[0] = '\0';
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = sprintf( buffer, "%c", cast_data[i] );
-        else
-          result = sprintf( buffer, format, cast_data[i] );
-        
-        if( result < 0)
-          break;
-        
-        buffer[buffer_size - 1] = '\0';
-        buffer_str_length = strlen( buffer );
-        if( buffer_str_length > remaining_buffer )
-          return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
-        
-        strncat( str, buffer, remaining_buffer );
-        remaining_buffer -= buffer_str_length;
-      }
+      ARRAY_INTO_STRING( cast_data, "%c" )
       break;
     default:
       return STUMPLESS_FAILURE;
@@ -268,231 +242,87 @@ StumplessWriteValueToStream( FILE * stream, StumplessValue * value )
   
   switch( value->type ){
     case STUMPLESS_UNSIGNED_SHORT:
-      if( format == NULL )
-        result = fprintf( stream, "%i", data->u_s );
-      else
-        result = fprintf( stream, format, data->u_s );
+      SINGLE_VALUE_INTO_STREAM( data->u_s, "%i" )
       break;
     case STUMPLESS_SHORT:
-      if( format == NULL )
-        result = fprintf( stream, "%i", data->s );
-      else
-        result = fprintf( stream, format, data->s );
+      SINGLE_VALUE_INTO_STREAM( data->s, "%i" )
       break;
     case STUMPLESS_UNSIGNED_INT:
-      if( format == NULL )
-        result = fprintf( stream, "%i", data->u_i );
-      else
-        result = fprintf( stream, format, data->u_i );
+      SINGLE_VALUE_INTO_STREAM( data->u_i, "%i" )
       break;
     case STUMPLESS_INT:
-      if( format == NULL )
-        result = fprintf( stream, "%i", data->i );
-      else
-        result = fprintf( stream, format, data->i );
+      SINGLE_VALUE_INTO_STREAM( data->i, "%i" )
       break;
     case STUMPLESS_UNSIGNED_LONG:
-      if( format == NULL )
-        result = fprintf( stream, "%li", data->u_l );
-      else
-        result = fprintf( stream, format, data->u_l );
+      SINGLE_VALUE_INTO_STREAM( data->u_l, "%li" )
       break;
     case STUMPLESS_LONG:
-      if( format == NULL )
-        result = fprintf( stream, "%li", data->l );
-      else
-        result = fprintf( stream, format, data->l );
+      SINGLE_VALUE_INTO_STREAM( data->l, "%li" )
       break;
     case STUMPLESS_UNSIGNED_LONG_LONG:
-      if( format == NULL )
-        result = fprintf( stream, "%lli", data->u_l_l );
-      else
-        result = fprintf( stream, format, data->u_l_l );
+      SINGLE_VALUE_INTO_STREAM( data->u_l_l, "%lli" )
       break;
     case STUMPLESS_LONG_LONG:
-      if( format == NULL )
-        result = fprintf( stream, "%lli", data->l_l );
-      else
-        result = fprintf( stream, format, data->l_l );
+      SINGLE_VALUE_INTO_STREAM( data->l_l, "%lli" )
       break;
     case STUMPLESS_UNSIGNED_CHAR:
-      if( format == NULL )
-        result = fprintf( stream, "%c", data->u_c );
-      else
-        result = fprintf( stream, format, data->u_c );
+      SINGLE_VALUE_INTO_STREAM( data->u_c, "%c" )
       break;
     case STUMPLESS_CHAR:
-      if( format == NULL )
-        result = fprintf( stream, "%c", data->c );
-      else
-        result = fprintf( stream, format, data->c );
+      SINGLE_VALUE_INTO_STREAM( data->c, "%c" )
       break;
     case STUMPLESS_FLOAT:
-      if( format == NULL )
-        result = fprintf( stream, "%g", data->f );
-      else
-        result = fprintf( stream, format, data->f );
+      SINGLE_VALUE_INTO_STREAM( data->f, "%g" )
       break;
     case STUMPLESS_DOUBLE:
-      if( format == NULL )
-        result = fprintf( stream, "%g", data->d );
-      else
-        result = fprintf( stream, format, data->d );
+      SINGLE_VALUE_INTO_STREAM( data->d, "%g" )
       break;
     case STUMPLESS_LONG_DOUBLE:
-      if( format == NULL )
-        result = fprintf( stream, "%Lg", data->l_d );
-      else
-        result = fprintf( stream, format, data->l_d );
+      SINGLE_VALUE_INTO_STREAM( data->l_d, "%Lg" )
       break;
     case STUMPLESS_UNSIGNED_SHORT_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%i", data->u_s_p[i] );
-        else
-          result = fprintf( stream, format, data->u_s_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->u_s_p, "%i" )
       break;
     case STUMPLESS_SHORT_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%i", data->s_p[i] );
-        else
-          result = fprintf( stream, format, data->s_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->s_p, "%i" )
       break;
     case STUMPLESS_UNSIGNED_INT_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%i", data->u_i_p[i] );
-        else
-          result = fprintf( stream, format, data->u_i_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->u_i_p, "%i" )
       break;
     case STUMPLESS_INT_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%i", data->i_p[i] );
-        else
-          result = fprintf( stream, format, data->i_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->i_p, "%i" )
       break;
     case STUMPLESS_UNSIGNED_LONG_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%li", data->u_l_p[i] );
-        else
-          result = fprintf( stream, format, data->u_l_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->u_l_p, "%li" )
       break;
     case STUMPLESS_LONG_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%li", data->l_p[i] );
-        else
-          result = fprintf( stream, format, data->l_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->l_p, "%li" )
       break;
     case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%lli", data->u_l_l_p[i] );
-        else
-          result = fprintf( stream, format, data->u_l_l_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->u_l_l_p, "%lli" )
       break;
     case STUMPLESS_LONG_LONG_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%lli", data->l_l_p[i] );
-        else
-          result = fprintf( stream, format, data->l_l_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->l_l_p, "%lli" )
       break;
     case STUMPLESS_UNSIGNED_CHAR_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%c", data->u_c_p[i] );
-        else
-          result = fprintf( stream, format, data->u_c_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->u_c_p, "%c" )
       break;
     case STUMPLESS_CHAR_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%c", data->c_p[i] );
-        else
-          result = fprintf( stream, format, data->c_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->c_p, "%c" )
       break;
     case STUMPLESS_FLOAT_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%g", data->f_p[i] );
-        else
-          result = fprintf( stream, format, data->f_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->f_p, "%g" )
       break;
     case STUMPLESS_DOUBLE_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%g", data->d_p[i] );
-        else
-          result = fprintf( stream, format, data->d_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->d_p, "%g" )
       break;
     case STUMPLESS_LONG_DOUBLE_POINTER:
-      for( i = 0; i < length; i++ ){
-        if( format == NULL )
-          result = fprintf( stream, "%Lg", data->l_d_p[i] );
-        else
-          result = fprintf( stream, format, data->l_d_p[i] );
-        
-        if( result < 0)
-          break;
-      }
+      ARRAY_INTO_STREAM( data->l_d_p, "%Lg" )
+      break;
+    case STUMPLESS_BOOLEAN:
       break;
     case STUMPLESS_STRING:
-      if( format == NULL )
-        result = fprintf( stream, "%s", data->c_p );
-      else
-        result = fprintf( stream, format, data->c_p );
+      SINGLE_VALUE_INTO_STREAM( data->c_p, "%s" )
       break;
     case STUMPLESS_VOID_POINTER:
       result = fwrite( value->data->v_p, value->length, 1, stream );

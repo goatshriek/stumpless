@@ -11,6 +11,7 @@ const char * test_to_string( void );
 const char * test_value_from_string( void );
 
 StumplessValue * GetTestArrayValue( void );
+StumplessValue * GetTestUnsignedIntValue( void );
 StumplessValue * GetTestVoidValue( void );
 
 int
@@ -88,10 +89,18 @@ test_into_string( void )
   
   status = StumplessValueIntoString( str, value );
   if( status != STUMPLESS_SUCCESS )
-    return "a correct value and string generated an error";
+    return "a correct void pointer value and string generated an error";
  
   if( strstr( str, "cdefghij" ) == NULL )
     return "the string did not have the correct contents in it";
+  
+  value = GetTestUnsignedIntValue();
+  status = StumplessValueIntoString( str, value );
+  if( status != STUMPLESS_SUCCESS )
+    return "a singular unsigned int value and string generated an error";
+  
+  if( strcmp( str, "34") != 0 )
+    return "the unsigned int string did not match the value's data";
   
   return NULL;
 }
@@ -204,6 +213,23 @@ GetTestArrayValue( void )
   value->data->i_p[8] = 8;
   value->data->i_p[9] = 9;
   value->length = 10;
+  
+  return value;
+}
+
+StumplessValue *
+GetTestUnsignedIntValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  
+  value->type = STUMPLESS_UNSIGNED_INT;
+  value->data->u_i = 34;
   
   return value;
 }

@@ -18,23 +18,28 @@ StumplessInitializeConfiguration( void )
   if( stumpless_configuration == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
 
-  stumpless_configuration->file = malloc( sizeof( StumplessFileConfiguration ) );
+  size_t required_size = sizeof( StumplessFileConfiguration );
+  stumpless_configuration->file = malloc( required_size );
   if( stumpless_configuration->file == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
 
-  stumpless_configuration->http = malloc( sizeof( StumplessHTTPConfiguration ) );
+  required_size = sizeof( StumplessHTTPConfiguration );
+  stumpless_configuration->http = malloc( required_size );
   if( stumpless_configuration->http == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  stumpless_configuration->multithreading = malloc( sizeof( StumplessMultithreadingConfiguration ) );
+  required_size = sizeof( StumplessMultithreadingConfiguration );
+  stumpless_configuration->multithreading = malloc( required_size );
   if( stumpless_configuration->multithreading == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  stumpless_configuration->sorting = malloc( sizeof( StumplessSortingConfiguration ) );
+  required_size = sizeof( StumplessSortingConfiguration );
+  stumpless_configuration->sorting = malloc( required_size );
   if( stumpless_configuration->sorting == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  stumpless_configuration->string = malloc( sizeof( StumplessStringConfiguration ) );
+  required_size = sizeof( StumplessStringConfiguration );
+  stumpless_configuration->string = malloc( required_size );
   if( stumpless_configuration->sorting == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   stumpless_configuration->string->buffer_size = 100;
