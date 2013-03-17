@@ -216,5 +216,7 @@ StumplessValueAsText( StumplessValue * value )
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
+  // todo finish implementing
+  
   return output;
 }

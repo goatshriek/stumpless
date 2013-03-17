@@ -25,9 +25,14 @@ typedef struct {
   const char * name;
 } StumplessLevel;
 
-typedef enum {
-  STUMPLESS_TRUE = 1,
-  STUMPLESS_FALSE = 0
+typedef struct {
+  char * true_messsage;
+  char * false_message;
+} StumplessBooleanFormat;
+
+typedef struct {
+  short value;
+  StumplessBooleanFormat format;
 } StumplessBoolean;
 
 typedef enum StumplessValueType {
