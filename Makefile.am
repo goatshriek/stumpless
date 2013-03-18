@@ -8,7 +8,8 @@ vpath %.c src test/function test/performance test/portability
 AM_CFLAGS = -I $(top_srcdir)/include
 
 stumpless_includedir = $(pkgincludedir)
-stumpless_include_HEADERS = include/configuration.h \
+stumpless_include_HEADERS = include/boolean.h \
+                            include/configuration.h \
                             include/entry.h \
                             include/event.h \
                             include/file_output.h \

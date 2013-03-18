@@ -1,0 +1,6 @@
+#ifndef STUMPLESS_BOOLEAN_H
+#define STUMPLESS_BOOLEAN_H
+
+
+
+#endif

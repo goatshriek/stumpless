@@ -1,3 +1,6 @@
+test_function_boolean_SOURCES = test/function/boolean.c
+test_function_boolean_LDADD = libstumpless.la
+
 test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_LDADD = libstumpless.la
 

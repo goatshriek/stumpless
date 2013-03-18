@@ -1,4 +1,5 @@
-check_PROGRAMS = test/function/configuration \
+check_PROGRAMS = test/function/boolean \
+                 test/function/configuration \
                  test/function/entry \
                  test/function/event \
                  test/function/file_output \

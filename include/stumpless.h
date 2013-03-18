@@ -1,6 +1,7 @@
 #ifndef STUMPLESS_H
 #define STUMPLESS_H
 
+#include <boolean.h>
 #include <configuration.h>
 #include <entry.h>
 #include <event.h>
