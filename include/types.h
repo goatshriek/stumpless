@@ -26,13 +26,13 @@ typedef struct {
 } StumplessLevel;
 
 typedef struct {
-  char * true_messsage;
+  char * true_message;
   char * false_message;
 } StumplessBooleanFormat;
 
 typedef struct {
   short value;
-  StumplessBooleanFormat format;
+  StumplessBooleanFormat * format;
 } StumplessBoolean;
 
 typedef enum StumplessValueType {
