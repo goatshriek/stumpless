@@ -3,6 +3,12 @@
 
 #include <string_helper.h>
 
+char *
+copy_string( char * str )
+{
+  return NULL;
+}
+
 // returns 0 if the string contains anything other than whitespace
 // otherwise returns a non-zero value (the length of the string, or
 // 1 for a NULL pointer)

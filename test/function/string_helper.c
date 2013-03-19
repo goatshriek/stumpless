@@ -4,6 +4,7 @@
 
 #include <string_helper.h>
 
+const char * test_copy_string( void );
 const char * test_is_empty( void );
 
 int
@@ -11,6 +12,12 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
+  
+  result = test_copy_string();
+  if( result != NULL ){
+    printf( "Copy String Test Failed: %s\n", result );
+    failure_count++;
+  }
   
   result = test_is_empty();
   if( result != NULL ){
@@ -22,6 +29,25 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_copy_string( void )
+{
+  char * copy = copy_string( NULL );
+  if( copy != NULL )
+    return "a null string did not have a null copy";
+  
+  char * original = "unique of course";
+  copy = copy_string( original );
+  if( copy == NULL )
+    return "the copy was null for a non-null string";
+  if( copy == original )
+    return "the copy was not actually a copy";
+  if( strcmp( copy, original ) != 0 )
+    return "the copied strings were not equivalent";
+  
+  return NULL;
 }
 
 const char *

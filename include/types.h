@@ -26,8 +26,8 @@ typedef struct {
 } StumplessLevel;
 
 typedef struct {
-  char * true_message;
-  char * false_message;
+  char * true_description;
+  char * false_description;
 } StumplessBooleanFormat;
 
 typedef struct {

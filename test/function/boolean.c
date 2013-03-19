@@ -33,7 +33,13 @@ test_to_string( void )
   if( boolean == NULL )
     return "the test boolean value could not be created";
   
-  char * str = StumplessBooleanToString( boolean );
+  char * str = StumplessBooleanToString( NULL );
+  if( str != NULL )
+    return "the string was not null for a null pointer";
+  
+  str = StumplessBooleanToString( boolean );
+  if( str == NULL )
+    return "the string was null for a non-null boolean";
   if( strcmp( str, "true" ) != 0 )
     return "the test boolean value did not yield the correct string output";
   
@@ -52,8 +58,8 @@ GetTestBoolean( void )
     return NULL;
   
   boolean->value = 1;
-  boolean->format->true_message = "true";
-  boolean->format->false_message = "false";
+  boolean->format->true_description = "true";
+  boolean->format->false_description = "false";
   
   return boolean;
 }
