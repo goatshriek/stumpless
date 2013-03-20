@@ -94,7 +94,7 @@ typedef union {
   double * d_p;
   long double l_d;
   long double * l_d_p;
-  StumplessBoolean boolean;
+  StumplessBoolean * boolean;
   void * v_p;
 } StumplessValueData;
 

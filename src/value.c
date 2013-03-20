@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <boolean.h>
 #include <configuration.h>
 #include <types.h>
 #include <value.h>
@@ -93,7 +94,7 @@ StumplessValueIntoString( char * str, StumplessValue * value )
   }
    
   StumplessValueData * data = value->data;
-  char * cast_data;
+  char * temp_str;
   size_t buffer_size = stumpless_configuration->string->buffer_size;
   char * buffer = malloc( buffer_size );
   if( buffer == NULL )
@@ -184,13 +185,17 @@ StumplessValueIntoString( char * str, StumplessValue * value )
       ARRAY_INTO_STRING( data->l_d_p, "%Lg" )
       break;
     case STUMPLESS_BOOLEAN:
+      temp_str = StumplessBooleanToString( data->boolean );
+      if( temp_str != NULL )
+        strcpy( str, temp_str );
+      return STUMPLESS_SUCCESS;
       break;
     case STUMPLESS_STRING:
       SINGLE_VALUE_INTO_STRING( data->c_p, "%s" )
       break;
     case STUMPLESS_VOID_POINTER:
-      cast_data = ( char * )data->v_p;
-      ARRAY_INTO_STRING( cast_data, "%c" )
+      temp_str = ( char * )data->v_p;
+      ARRAY_INTO_STRING( temp_str, "%c" )
       break;
     default:
       return STUMPLESS_FAILURE;
@@ -235,6 +240,7 @@ StumplessWriteValueToStream( FILE * stream, StumplessValue * value )
     return STUMPLESS_EMPTY_ARGUMENT;
   
   StumplessValueData * data = value->data;
+  char * temp_str;
   const char * format = value->format;
   unsigned length = value->length;
   unsigned i;
@@ -320,6 +326,8 @@ StumplessWriteValueToStream( FILE * stream, StumplessValue * value )
       ARRAY_INTO_STREAM( data->l_d_p, "%Lg" )
       break;
     case STUMPLESS_BOOLEAN:
+      temp_str = StumplessBooleanToString( data->boolean );
+      result = fprintf( stream, "%s", temp_str );
       break;
     case STUMPLESS_STRING:
       SINGLE_VALUE_INTO_STREAM( data->c_p, "%s" )
