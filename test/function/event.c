@@ -128,6 +128,8 @@ test_to_string( void )
   description = StumplessEventToString( event );
   if( description == NULL )
     return "the description was null for a valid event pointer";
+  if( strstr( description, "debug" ) == NULL )
+    return "the description did not contain the name of the event";
   
   return NULL;
 }

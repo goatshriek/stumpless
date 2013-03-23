@@ -3,6 +3,7 @@ check_PROGRAMS = test/function/boolean \
                  test/function/entry \
                  test/function/event \
                  test/function/file_output \
+                 test/function/formatted_output \
                  test/function/level \
                  test/function/quick_loggers \
                  test/function/status \

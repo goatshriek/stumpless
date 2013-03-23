@@ -49,16 +49,12 @@ StumplessEventAsText( StumplessEvent * event )
   if( output == NULL )
     return NULL;
    
-  char * str;
-  
-  // todo use the eventwithoutattributes method to build this one
-  
   if( event->name == NULL ){
     if( event->level == NULL ){
       if( event->attribute_count == 0 ){
-        str = "";
+        
       } else {
-        // todo
+        
       }
     } else {
 
@@ -66,14 +62,13 @@ StumplessEventAsText( StumplessEvent * event )
   } else {
     if( event->level == NULL ){
       if( event->attribute_count == 0 ){
-
+        
       } else {
-
+        
       }
     } else {
-
+      
     }
-    
   }
   
   return output;

@@ -6,6 +6,7 @@
 #include <entry.h>
 #include <event.h>
 #include <file_output.h>
+#include <formatted_output.h>
 #include <level.h>
 #include <logger.h>
 #include <status.h>

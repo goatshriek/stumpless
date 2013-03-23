@@ -5,6 +5,7 @@
 #include <event.h>
 #include <level.h>
 #include <text_formatter.h>
+#include <value_list.h>
 
 char *
 StumplessEventToString( StumplessEvent * event )
