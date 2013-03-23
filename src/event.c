@@ -13,9 +13,8 @@ StumplessEventToString( StumplessEvent * event )
   
   if( event == NULL )
     return NULL;
-  
-  // todo implement
-  return NULL;
+  else
+    return StumplessValueListToString( output->payload->values );
 }
 
 StumplessEvent *

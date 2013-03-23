@@ -111,7 +111,7 @@ typedef struct {
 } StumplessValueList;
 
 typedef struct {
-  const char * name;
+  char * name;
   StumplessValue * value;
 } StumplessEventAttribute;
 

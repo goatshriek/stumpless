@@ -76,13 +76,11 @@ StumplessEventAsText( StumplessEvent * event )
     
   }
   
-  //output->payload->str = str;
-  
   return output;
 }
 
 StumplessFormattedOutput *
-StumplessEventAsTextWithoutAttributes( StumplessEvent * event )
+StumplessEventSummaryAsText( StumplessEvent * event )
 {
   if( event == NULL )
     return NULL;
@@ -138,8 +136,6 @@ StumplessEventAsTextWithoutAttributes( StumplessEvent * event )
     }
   }
   
-  //output->payload->str = str;
-  
   return output;
 }
 
@@ -151,7 +147,7 @@ StumplessEventAttributeAsText( StumplessEventAttribute * attribute )
 }
 
 StumplessFormattedOutput *
-StumplessEventAttributeAsTextShortened( StumplessEventAttribute * attribute )
+StumplessEventAttributeSummaryAsText( StumplessEventAttribute * attribute )
 {
   if( attribute == NULL )
     return NULL;
@@ -166,7 +162,6 @@ StumplessEventAttributeListAsText( StumplessEvent * event )
 {
   if( event == NULL )
     return NULL;
-  
   
   return NULL;
 }
@@ -217,8 +212,6 @@ StumplessValueAsText( StumplessValue * value )
   StumplessStatusCode status = StumplessAppendToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
-  
-  // todo finish implementing
   
   return output;
 }

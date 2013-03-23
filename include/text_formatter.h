@@ -10,13 +10,13 @@ StumplessFormattedOutput *
 StumplessEventAsText( StumplessEvent * );
 
 StumplessFormattedOutput *
-StumplessEventAsTextWithoutAttributes( StumplessEvent * );
+StumplessEventSummaryAsText( StumplessEvent * );
 
 StumplessFormattedOutput * 
 StumplessEventAttributeAsText( StumplessEventAttribute * );
 
 StumplessFormattedOutput *
-StumplessEventAttributeAsTextShortened( StumplessEventAttribute * );
+StumplessEventAttributeSummaryAsText( StumplessEventAttribute * );
 
 StumplessFormattedOutput *
 StumplessEventAttributeListAsText( StumplessEvent * );
