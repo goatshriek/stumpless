@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 
+#include <configuration.h>
 #include <value.h>
 #include <value_list.h>
 #include <types.h>
@@ -92,7 +94,33 @@ StumplessNewValueList( void )
 StumplessStatusCode
 StumplessValueListIntoString( char * str, StumplessValueList * list )
 {
-  return STUMPLESS_FAILURE;
+  if( str == NULL || list == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  StumplessStatusCode status;
+  str[0] = '\0';
+  
+  if( stumpless_configuration == NULL ){
+    status = StumplessInitializeConfiguration();
+    if( status != STUMPLESS_SUCCESS )
+      return status;
+  }
+  
+  size_t buffer_size = stumpless_configuration->string->buffer_size;
+  char * buffer = malloc( sizeof( char ) * buffer_size + 1 );
+  if( buffer == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  StumplessValueListNode * node = list->first;
+  char * value_str;
+  while( node != NULL ){
+    value_str = StumplessValueToString( node->value );
+    if( value_str != NULL )
+      strncat( str, value_str, buffer_size );
+    node = node->next;
+  }
+  
+  return STUMPLESS_SUCCESS;
 }
 
 short
@@ -107,7 +135,15 @@ StumplessValueListIsEmpty( StumplessValueList * list )
 char *
 StumplessValueListToString( StumplessValueList * list )
 {
-  return NULL;
+  size_t buffer_size = stumpless_configuration->string->buffer_size;
+  char * list_str = malloc( sizeof( char ) * buffer_size + 1 );
+  
+  StumplessStatusCode status = StumplessValueListIntoString( list_str, list );
+  
+  if( status == STUMPLESS_SUCCESS )
+    return list_str;
+  else
+    return NULL;
 }
 
 StumplessStatusCode

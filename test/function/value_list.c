@@ -195,7 +195,7 @@ test_into_string( void )
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty string did not generate the correct error";
   
-  status = StumplessValueListIntoString( str, list );
+  status = StumplessValueListIntoString( str, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
      return "an empty list did not generate the correct error";
   
