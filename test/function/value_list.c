@@ -13,6 +13,7 @@ const char * test_is_empty( void );
 const char * test_stream_write( void );
 const char * test_string_appender( void );
 const char * test_to_string( void );
+const char * test_unsigned_int_appender( void );
 
 StumplessValueList * GetTestList( void );
 
@@ -67,6 +68,12 @@ main( void )
   result = test_string_appender();
   if( result != NULL ){
     printf( "String Appender Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_unsigned_int_appender();
+  if( result != NULL ){
+    printf( "Unsigned Appender Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -294,6 +301,30 @@ test_to_string( void )
   
   if( strstr( str, "testing" ) == NULL )
     return "the new string did not contain the list strings";
+  
+  return NULL;
+}
+
+const char *
+test_unsigned_int_appender( void )
+{
+  StumplessValueList * list = GetTestList();
+  if( list == NULL )
+    return "the test list could not be created";
+  
+  StumplessStatusCode status;
+  status = StumplessAppendUnsignedIntToValueList( NULL, 3 );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a null list did not generate the proper error";
+  
+  status = StumplessAppendUnsignedIntToValueList( list, 4 );
+  if( status != STUMPLESS_SUCCESS )
+    return "an unsigned number was not correctly appended to the list";
+  
+  if( list->last->value->type != STUMPLESS_UNSIGNED_INT )
+    return "the new value was not an unsigned int";
+  if( list->last->value->data->u_i != 4 )
+    return "the new value did not have the intended value";
   
   return NULL;
 }

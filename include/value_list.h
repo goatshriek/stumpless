@@ -9,6 +9,9 @@ StumplessStatusCode
 StumplessAppendStringToValueList( StumplessValueList *, char * );
 
 StumplessStatusCode
+StumplessAppendUnsignedIntToValueList( StumplessValueList *, unsigned );
+
+StumplessStatusCode
 StumplessAppendToValueList( StumplessValueList *, StumplessValue * );
 
 void

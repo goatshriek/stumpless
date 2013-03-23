@@ -9,6 +9,7 @@ const char * test_into_string( void );
 const char * test_stream_write( void );
 const char * test_to_string( void );
 const char * test_value_from_string( void );
+const char * test_value_from_unsigned_int( void );
 
 StumplessValue * GetTestArrayValue( void );
 StumplessValue * GetTestUnsignedIntValue( void );
@@ -47,6 +48,12 @@ main( void )
   result = test_value_from_string();
   if( result != NULL ){
     printf( "Value From String Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_value_from_unsigned_int();
+  if( result != NULL ){
+    printf( "Value From Unsigned Int Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -184,6 +191,22 @@ test_value_from_string( void )
     return "the value did not have any data";
   if( strcmp( value->data->c_p, "test string 'n such" ) != 0 )
     return "the value string did not match the initial string";
+  
+  return NULL;
+}
+
+const char *
+test_value_from_unsigned_int( void )
+{
+  StumplessValue * value = NULL;
+  
+  value = StumplessValueFromUnsignedInt( 3 );
+  if( value == NULL )
+    return "the value could not be created";
+  if( value->type != STUMPLESS_UNSIGNED_INT )
+    return "the created value did not have an unsigned int type";
+  if( value->data == NULL || value->data->u_i != 3 )
+    return "the value did not contain the correct number";
   
   return NULL;
 }

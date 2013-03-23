@@ -21,11 +21,6 @@ typedef enum StumplessStatusCode {
 } StumplessStatusCode;
 
 typedef struct {
-  unsigned value;
-  const char * name;
-} StumplessLevel;
-
-typedef struct {
   char * true_description;
   char * false_description;
 } StumplessBooleanFormat;
@@ -124,6 +119,11 @@ typedef struct {
   StumplessEventAttribute * event_attribute;
   StumplessValue * value;
 } StumplessEntryAttribute;
+
+typedef struct {
+  unsigned value;
+  const char * name;
+} StumplessLevel;
 
 typedef struct {
   const char * name;

@@ -79,6 +79,24 @@ StumplessValueFromString( char * str )
   return value;
 }
 
+StumplessValue *
+StumplessValueFromUnsignedInt( unsigned num )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  
+  value->format = "%d";
+  value->type = STUMPLESS_UNSIGNED_INT;
+  value->data->u_i = num;
+  
+  return value;
+}
+
 StumplessStatusCode
 StumplessValueIntoString( char * str, StumplessValue * value )
 { 

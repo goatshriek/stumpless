@@ -5,6 +5,7 @@
 #include <level.h>
 #include <text_formatter.h>
 #include <types.h>
+#include <value_list.h>
 
 StumplessLevel *
 StumplessGetDebugLevel( void )
@@ -83,7 +84,6 @@ StumplessLevelToString( StumplessLevel * level )
   
   if( output == NULL )
     return NULL;
-  
-  // todo implement
-  return NULL;
+  else
+    return StumplessValueListToString( output->payload->values );
 }

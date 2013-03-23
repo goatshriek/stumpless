@@ -181,6 +181,8 @@ StumplessLevelAsText( StumplessLevel * level )
   if( output == NULL )
     return NULL;
   
+  
+  
   /*if( level->name == NULL ){
     size_t str_length = number_length + 7;
     str = malloc( sizeof( char ) * str_length );

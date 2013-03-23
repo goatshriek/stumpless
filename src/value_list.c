@@ -57,6 +57,19 @@ StumplessAppendToValueList( StumplessValueList * list, StumplessValue * value )
   return STUMPLESS_SUCCESS;
 }
 
+StumplessStatusCode
+StumplessAppendUnsignedIntToValueList( StumplessValueList * list, unsigned num )
+{
+  if( list == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  StumplessValue * value = StumplessValueFromUnsignedInt( num );
+  if( value == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  else
+    return StumplessAppendToValueList( list, value );
+}
+
 void
 StumplessDestroyValueList( StumplessValueList * list )
 {
@@ -135,10 +148,17 @@ StumplessValueListIsEmpty( StumplessValueList * list )
 char *
 StumplessValueListToString( StumplessValueList * list )
 {
+  StumplessStatusCode status;
+  if( stumpless_configuration == NULL ){
+    status = StumplessInitializeConfiguration();
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+  }
+  
   size_t buffer_size = stumpless_configuration->string->buffer_size;
   char * list_str = malloc( sizeof( char ) * buffer_size + 1 );
   
-  StumplessStatusCode status = StumplessValueListIntoString( list_str, list );
+  status = StumplessValueListIntoString( list_str, list );
   
   if( status == STUMPLESS_SUCCESS )
     return list_str;

@@ -9,6 +9,9 @@ StumplessDestroyValue( StumplessValue * );
 StumplessValue *
 StumplessValueFromString( char * );
 
+StumplessValue *
+StumplessValueFromUnsignedInt( unsigned );
+
 StumplessStatusCode
 StumplessValueIntoString( char *, StumplessValue * );
 
