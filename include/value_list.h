@@ -6,13 +6,17 @@
 #include <types.h>
 
 StumplessStatusCode
+StumplessAppendValueListToValueList( StumplessValueList *,
+                                     StumplessValueList * );
+
+StumplessStatusCode
 StumplessAppendStringToValueList( StumplessValueList *, char * );
 
 StumplessStatusCode
 StumplessAppendUnsignedIntToValueList( StumplessValueList *, unsigned );
 
 StumplessStatusCode
-StumplessAppendToValueList( StumplessValueList *, StumplessValue * );
+StumplessAppendValueToValueList( StumplessValueList *, StumplessValue * );
 
 void
 StumplessDestroyValueList( StumplessValueList * );

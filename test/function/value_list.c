@@ -14,6 +14,7 @@ const char * test_stream_write( void );
 const char * test_string_appender( void );
 const char * test_to_string( void );
 const char * test_unsigned_int_appender( void );
+const char * test_value_appender( void );
 
 StumplessValueList * GetTestList( void );
 
@@ -29,15 +30,15 @@ main( void )
     failure_count++;
   }
   
-  result = test_list_constructor();
+  result = test_list_appender();
   if( result != NULL ){
-    printf( "List Constructor Test Failed: %s\n", result );
+    printf( "List Appender Test Failed: %s\n", result );
     failure_count++;
   }
   
-  result = test_list_appender();
+  result = test_list_constructor();
   if( result != NULL ){
-    printf( "Append to List Test Failed: %s\n", result );
+    printf( "List Constructor Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -77,6 +78,12 @@ main( void )
     failure_count++;
   }
   
+  result = test_value_appender();
+  if( result != NULL ){
+    printf( "Value Appender Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -111,42 +118,35 @@ const char *
 test_list_appender( void )
 {
   StumplessStatusCode status;
-  StumplessValueList * list = StumplessNewValueList();
-  if( list == NULL )
-    return "the list was not created";
   
-  StumplessValue * val_1 = StumplessValueFromString( "test" );
-  StumplessValue * val_2 = StumplessValueFromString( "string" );
-  StumplessValue * val_3 = StumplessValueFromString( "tor" );
-  StumplessValue * val_4 = StumplessValueFromString( "testing" );
-  
-  status = StumplessAppendToValueList( list, val_1 );
+  StumplessValueList * list_1 = GetTestList();
+  if( list_1 == NULL )
+    return "the first test list could not be created";
+
+  StumplessValueList * list_2 = GetTestList();
+  if( list_2 == NULL )
+    return "the second test list could not be created";
+  status = StumplessAppendStringToValueList( list_2, "this should be last" );
   if( status != STUMPLESS_SUCCESS )
-    return "the node was not successfully added";
+    return "an extra value could not be added to the second list";
   
-  status = StumplessAppendToValueList( list, val_2 );
+  status = StumplessAppendValueListToValueList( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "empty arguments did not generate the appropriate error";
+  
+  status = StumplessAppendValueListToValueList( list_1, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty first argument did not generate the appropriate error";
+  
+  status = StumplessAppendValueListToValueList( NULL, list_2 );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty second argument did not generate the appropriate error";
+  
+  status = StumplessAppendValueListToValueList( list_1, list_2 );
   if( status != STUMPLESS_SUCCESS )
-    return "the node was not successfully added";
-  
-  status = StumplessAppendToValueList( list, val_3 );
-  if( status != STUMPLESS_SUCCESS )
-    return "the node was not successfully added";
-  
-  status = StumplessAppendToValueList( list, val_4 );
-  if( status != STUMPLESS_SUCCESS )
-    return "the node was not successfully added";
-  
-  if( list->first == NULL )
-    return "the list did not have a first node";
-  
-  if( list->first->value != val_1 )
-    return "the first value was not correct";
-  
-  if( list->last == NULL )
-    return "the list did not have a last node";
-  
-  if( list->last->value != val_4 )
-    return "the last value was not correct";
+    return "the list was not successfully appended";
+  if( strcmp( list_1->last->value->data->c_p, "this should be last" ) != 0 )
+    return "the lists were not properly appended";
   
   return NULL;
 }
@@ -329,6 +329,50 @@ test_unsigned_int_appender( void )
   return NULL;
 }
 
+const char *
+test_value_appender( void )
+{
+  StumplessStatusCode status;
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return "the list was not created";
+  
+  StumplessValue * val_1 = StumplessValueFromString( "test" );
+  StumplessValue * val_2 = StumplessValueFromString( "string" );
+  StumplessValue * val_3 = StumplessValueFromString( "tor" );
+  StumplessValue * val_4 = StumplessValueFromString( "testing" );
+  
+  status = StumplessAppendValueToValueList( list, val_1 );
+  if( status != STUMPLESS_SUCCESS )
+    return "the node was not successfully added";
+  
+  status = StumplessAppendValueToValueList( list, val_2 );
+  if( status != STUMPLESS_SUCCESS )
+    return "the node was not successfully added";
+  
+  status = StumplessAppendValueToValueList( list, val_3 );
+  if( status != STUMPLESS_SUCCESS )
+    return "the node was not successfully added";
+  
+  status = StumplessAppendValueToValueList( list, val_4 );
+  if( status != STUMPLESS_SUCCESS )
+    return "the node was not successfully added";
+  
+  if( list->first == NULL )
+    return "the list did not have a first node";
+  
+  if( list->first->value != val_1 )
+    return "the first value was not correct";
+  
+  if( list->last == NULL )
+    return "the list did not have a last node";
+  
+  if( list->last->value != val_4 )
+    return "the last value was not correct";
+  
+  return NULL;
+}
+
 StumplessValueList *
 GetTestList( void )
 {
@@ -342,19 +386,19 @@ GetTestList( void )
   StumplessValue * val_3 = StumplessValueFromString( "tor" );
   StumplessValue * val_4 = StumplessValueFromString( "testing" );
   
-  status = StumplessAppendToValueList( list, val_1 );
+  status = StumplessAppendValueToValueList( list, val_1 );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendToValueList( list, val_2 );
+  status = StumplessAppendValueToValueList( list, val_2 );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendToValueList( list, val_3 );
+  status = StumplessAppendValueToValueList( list, val_3 );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendToValueList( list, val_4 );
+  status = StumplessAppendValueToValueList( list, val_4 );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   

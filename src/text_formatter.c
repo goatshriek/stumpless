@@ -204,7 +204,7 @@ StumplessValueAsText( StumplessValue * value )
     return NULL;
   
   StumplessValueList * list = output->payload->values;
-  StumplessStatusCode status = StumplessAppendToValueList( list, value );
+  StumplessStatusCode status = StumplessAppendValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   

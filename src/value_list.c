@@ -19,6 +19,13 @@ DestroyValueListNode( StumplessValueListNode * node )
 }
 
 StumplessStatusCode
+StumplessAppendValueListToValueList( StumplessValueList * beginning,
+                                     StumplessValueList * end )
+{
+  return STUMPLESS_FAILURE;
+}
+
+StumplessStatusCode
 StumplessAppendStringToValueList( StumplessValueList * list, char * str )
 {
   if( list == NULL || str == NULL )
@@ -28,11 +35,12 @@ StumplessAppendStringToValueList( StumplessValueList * list, char * str )
   if( value == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  return StumplessAppendToValueList( list, value );
+  return StumplessAppendValueToValueList( list, value );
 }
 
 StumplessStatusCode
-StumplessAppendToValueList( StumplessValueList * list, StumplessValue * value )
+StumplessAppendValueToValueList( StumplessValueList * list,
+                                 StumplessValue * value )
 {
   if( list == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -67,7 +75,7 @@ StumplessAppendUnsignedIntToValueList( StumplessValueList * list, unsigned num )
   if( value == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   else
-    return StumplessAppendToValueList( list, value );
+    return StumplessAppendValueToValueList( list, value );
 }
 
 void
