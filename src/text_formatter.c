@@ -181,24 +181,24 @@ StumplessLevelAsText( StumplessLevel * level )
   if( output == NULL )
     return NULL;
   
+  StumplessValueList * list = output->payload->values;
+  StumplessStatusCode status;
   
+  if( level->name != NULL ){
+    status = StumplessAppendStringToValueList( list, level->name );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+    status = StumplessAppendStringToValueList( list, ": " );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+  }
   
-  /*if( level->name == NULL ){
-    size_t str_length = number_length + 7;
-    str = malloc( sizeof( char ) * str_length );
-    if( str == NULL )
-      return NULL;
-
-    sprintf( str, "level %d", level->value);
-  } else {
-    size_t name_length = strlen( level->name );
-    size_t str_length = number_length + name_length + 9;
-    str = malloc( sizeof( char ) * str_length );
-    if( str == NULL )
-      return NULL;
-
-    sprintf( str, "%s: level %d", level->name, level->value );
-  }*/
+  status = StumplessAppendStringToValueList( list, "level " );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  status = StumplessAppendUnsignedIntToValueList( list, level->value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
   
   return output;
 }

@@ -80,6 +80,8 @@ test_to_string( void )
   description = StumplessLevelToString( level );
   if( description == NULL )
     return "the description string was null for a non-null level pointer";
+  if( strstr( description, "info" ) == NULL )
+    return "the description did not contain the level's description";
   
   return NULL;
 }

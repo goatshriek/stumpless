@@ -122,7 +122,7 @@ typedef struct {
 
 typedef struct {
   unsigned value;
-  const char * name;
+  char * name;
 } StumplessLevel;
 
 typedef struct {
