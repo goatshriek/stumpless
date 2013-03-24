@@ -4,6 +4,7 @@
 
 #include <stumpless.h>
 
+const char * test_copy( void );
 const char * test_destructive_write( void );
 const char * test_list_appender( void );
 const char * test_list_constructor( void );
@@ -23,6 +24,12 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
+  
+  result = test_copy();
+  if( result != NULL ){
+    printf( "Copy Test Failed: %s\n", result );
+    failure_count++;
+  }
   
   result = test_destructive_write();
   if( result != NULL ){
@@ -88,6 +95,31 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_copy( void )
+{
+  StumplessValueList * list = GetTestList();
+  StumplessValueList * copy;
+  
+  copy = StumplessCopyValueList( NULL );
+  if( copy != NULL )
+    return "the copy was not null for a null pointer";
+  
+  copy = StumplessCopyValueList( list );
+  if( copy == NULL )
+    return "the copy was null for a non-null pointer";
+  if( copy == list )
+    return "the copy was equal to the original list";
+  if( copy->first == NULL )
+    return "the copy did not actually contain any information";
+  if( copy->first == list->first )
+    return "the copy's nodes were the same instead of a copy";
+  if( copy->first->value != list->first->value )
+    return "the copy did not have the same values";
+  
+  return NULL;
 }
 
 const char *

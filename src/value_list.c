@@ -6,6 +6,27 @@
 #include <value_list.h>
 #include <types.h>
 
+
+static
+StumplessStatusCode
+AppendValueListNodeToValueList ( StumplessValueList * list,
+                                 StumplessValueListNode * node )
+{
+  if( list == NULL || node == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  node->next = NULL;
+  
+  if( list->first == NULL ){
+    list->first = list->last = node;
+  } else {
+    list->last->next = node;
+    list->last = node;
+  }
+  
+  return STUMPLESS_SUCCESS;
+}
+
 static
 void
 DestroyValueListNode( StumplessValueListNode * node )
@@ -19,13 +40,6 @@ DestroyValueListNode( StumplessValueListNode * node )
 }
 
 StumplessStatusCode
-StumplessAppendValueListToValueList( StumplessValueList * beginning,
-                                     StumplessValueList * end )
-{
-  return STUMPLESS_FAILURE;
-}
-
-StumplessStatusCode
 StumplessAppendStringToValueList( StumplessValueList * list, char * str )
 {
   if( list == NULL || str == NULL )
@@ -36,6 +50,41 @@ StumplessAppendStringToValueList( StumplessValueList * list, char * str )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
   return StumplessAppendValueToValueList( list, value );
+}
+
+StumplessStatusCode
+StumplessAppendUnsignedIntToValueList( StumplessValueList * list, unsigned num )
+{
+  if( list == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  StumplessValue * value = StumplessValueFromUnsignedInt( num );
+  if( value == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  else
+    return StumplessAppendValueToValueList( list, value );
+}
+
+StumplessStatusCode
+StumplessAppendValueListToValueList( StumplessValueList * beginning,
+                                     StumplessValueList * end )
+{
+  if( beginning == NULL || end == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  StumplessValueList * copy = StumplessCopyValueList( end );
+  if( copy == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  if( beginning->first == NULL )
+    beginning->first = copy->first;
+  else
+    beginning->last->next = copy->first;
+  beginning->last = copy->last;
+  
+  free( copy );
+  
+  return STUMPLESS_SUCCESS;
 }
 
 StumplessStatusCode
@@ -53,29 +102,40 @@ StumplessAppendValueToValueList( StumplessValueList * list,
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
   node->value = value;
-  node->next = NULL;
   
-  if( list->last == NULL ){
-    list->first = list->last = node;
-  } else {
-    list->last->next = node;
-    list->last = node;
-  }
-  
-  return STUMPLESS_SUCCESS;
+  return AppendValueListNodeToValueList( list, node );
 }
 
-StumplessStatusCode
-StumplessAppendUnsignedIntToValueList( StumplessValueList * list, unsigned num )
+StumplessValueList *
+StumplessCopyValueList( StumplessValueList * list )
 {
   if( list == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return NULL;
   
-  StumplessValue * value = StumplessValueFromUnsignedInt( num );
-  if( value == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
-  else
-    return StumplessAppendValueToValueList( list, value );
+  StumplessValueList * copy = malloc( sizeof( StumplessValueList ) );
+  if( copy == NULL )
+    return NULL;
+  
+  copy->first = copy->last =  NULL;
+  
+  StumplessValueListNode * node = list->first;
+  StumplessValueListNode * copied_node;
+  StumplessStatusCode status;
+  while( node != NULL ){
+    copied_node = malloc( sizeof( StumplessValueListNode ) );
+    if( copied_node == NULL )
+      return NULL;
+    
+    status = AppendValueListNodeToValueList( copy, copied_node );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+    
+    copied_node->value = node->value; 
+    
+    node = node->next;
+  }
+  
+  return copy;
 }
 
 void

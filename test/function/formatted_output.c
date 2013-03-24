@@ -52,10 +52,10 @@ test_appender( void )
   if( status != STUMPLESS_INCOMPATIBLE_ARGUMENTS )
     return "two different format types did not generate the appropriate error";
   
-  status = StumplessAppendFormattedOutput( output_1, output_3 );
+  status = StumplessAppendFormattedOutput( output_2, output_3 );
   if( status != STUMPLESS_SUCCESS )
     return "the appending of one valid output to another was unsuccessful";
-  if( output_1->payload->values->first->next->next->next == NULL )
+  if( output_2->payload->values->first->next->next->next == NULL )
     return "the outputs were not appended";
   
   return NULL;

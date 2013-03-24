@@ -11,8 +11,6 @@ StumplessAppendFormattedOutput( StumplessFormattedOutput * beginning,
   if( beginning->format != end->format )
     return STUMPLESS_INCOMPATIBLE_ARGUMENTS;
   
-  
-  
   switch( beginning->format ){
     case STUMPLESS_TEXT:
       return StumplessAppendValueListToValueList( beginning->payload->values,
