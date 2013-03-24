@@ -107,52 +107,7 @@ StumplessEventSummaryAsText( StumplessEvent * event )
   if( output == NULL )
     return NULL;
   
-  /*char * str;
-  
-  if( event->name == NULL ){
-    if( event->level == NULL ){
-      str = "";
-    } else {
-      StumplessFormattedOutput * level = StumplessLevelAsText( event->level );
-      if( level == NULL )
-        return NULL;
-      //char * level_string = level->payload->str;
-      char * level_string = "testing";
-      
-      size_t level_length = strlen( level_string );
-      size_t str_length = level_length + 7;
-      str = malloc( sizeof( char ) * str_length );
-      if( str == NULL )
-        return NULL;
-      
-      sprintf( str, "%s event", level_string );
-    }
-  } else {
-    size_t name_length = strlen( event->name );
-    
-    if( event->level == NULL ){
-      size_t str_length = name_length + 1;
-      str = malloc( sizeof( char ) * str_length );
-      if( str == NULL )
-        return NULL;
-      
-      sprintf( str, "%s", event->name );
-    } else {
-      StumplessFormattedOutput * level = StumplessLevelAsText( event->level );
-      if( level == NULL )
-        return NULL;
-      //char * level_string = level->payload->str;
-      char * level_string = "testing";
-      
-      size_t level_length = strlen( level_string );
-      size_t str_length = name_length + level_length + 4;
-      str = malloc( sizeof( char ) * str_length );
-      if( str == NULL )
-        return NULL;
-      
-      sprintf( str, "%s (%s)", event->name, level_string );
-    }
-  }*/
+  // todo need to implement
   
   return output;
 }
@@ -180,6 +135,8 @@ StumplessEventAttributeListAsText( StumplessEvent * event )
 {
   if( event == NULL )
     return NULL;
+  
+  // todo need to implement
   
   return NULL;
 }
