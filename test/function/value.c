@@ -6,6 +6,7 @@
 
 const char * test_destructor( void );
 const char * test_into_string( void );
+const char * test_outside_access ( void );
 const char * test_stream_write( void );
 const char * test_to_string( void );
 const char * test_value_from_string( void );
@@ -31,6 +32,11 @@ main( void )
   if( result != NULL ){
     printf( "Write Into String Test Failed: %s\n", result );
     failure_count++;
+  }
+  
+  result = test_outside_access();
+  if( result != NULL ){
+    printf( "Outside Access Test Failed: %s\n", result );
   }
   
   result = test_stream_write();
@@ -108,6 +114,39 @@ test_into_string( void )
   
   if( strcmp( str, "34") != 0 )
     return "the unsigned int string did not match the value's data";
+  
+  return NULL;
+}
+
+const char *
+test_outside_access( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return "the test value could not be created";
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return "the test value's data could not be created";
+  
+  long * num_list = malloc( sizeof( float ) * 7 );
+  if( num_list == NULL )
+    return "the test array could not be created";
+  
+  num_list[0] = 4;
+  num_list[1] = 7;
+  num_list[2] = 3;
+  num_list[3] = 666;
+  num_list[4] = 0;
+  num_list[5] = 5;
+  num_list[6] = 45;
+  
+  value->data->l_p = num_list;
+  
+  num_list[2] = 4;
+  
+  if( value->data->f_p[2] != 4 )
+    return "the array held by the value could not be modified from the outside";
   
   return NULL;
 }
@@ -224,17 +263,19 @@ GetTestArrayValue( void )
   
   value->format = "%d";
   value->type = STUMPLESS_INT_POINTER;
-  value->data->i_p = malloc( sizeof( int ) * 10 );
-  value->data->i_p[0] = 0;
-  value->data->i_p[1] = 1;
-  value->data->i_p[2] = 2;
-  value->data->i_p[3] = 3;
-  value->data->i_p[4] = 4;
-  value->data->i_p[5] = 5;
-  value->data->i_p[6] = 6;
-  value->data->i_p[7] = 7;
-  value->data->i_p[8] = 8;
-  value->data->i_p[9] = 9;
+  int * num_list = malloc( sizeof( int ) * 10 );
+  num_list[0] = 0;
+  num_list[1] = 1;
+  num_list[2] = 2;
+  num_list[3] = 3;
+  num_list[4] = 4;
+  num_list[5] = 5;
+  num_list[6] = 6;
+  num_list[7] = 7;
+  num_list[8] = 8;
+  num_list[9] = 9;
+  
+  value->data->i_p = num_list;
   value->length = 10;
   
   return value;

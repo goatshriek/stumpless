@@ -65,33 +65,33 @@ typedef enum StumplessValueType {
 
 typedef union {
   unsigned short u_s;
-  unsigned short * u_s_p;
+  const unsigned short * u_s_p;
   signed short s;
-  signed short * s_p;
+  const signed short * s_p;
   unsigned int u_i;
-  unsigned int * u_i_p;
+  const unsigned int * u_i_p;
   signed int i;
-  signed int * i_p;
+  const signed int * i_p;
   unsigned long u_l;
-  unsigned long * u_l_p;
+  const unsigned long * u_l_p;
   signed long l;
-  signed long * l_p;
+  const signed long * l_p;
   unsigned long long u_l_l;
-  unsigned long long * u_l_l_p;
+  const unsigned long long * u_l_l_p;
   signed long long l_l;
-  signed long long * l_l_p;
+  const signed long long * l_l_p;
   unsigned char u_c;
-  unsigned char * u_c_p;
+  const unsigned char * u_c_p;
   signed char c;
-  signed char * c_p;
+  const signed char * c_p;
   float f;
-  float * f_p;
+  const float * f_p;
   double d;
-  double * d_p;
+  const double * d_p;
   long double l_d;
-  long double * l_d_p;
+  const long double * l_d_p;
   StumplessBoolean * boolean;
-  void * v_p;
+  const void * v_p;
 } StumplessValueData;
 
 typedef struct {
