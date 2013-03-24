@@ -4,17 +4,21 @@
 #include <event.h>
 #include <text_formatter.h>
 #include <types.h>
+#include <value_list.h>
 
 char *
 StumplessEntryToString( StumplessEntry * entry )
 {
+  if( entry == NULL )
+    return NULL;
+  
   StumplessFormattedOutput * output =  StumplessEntryAsText( entry );
   
   if( output == NULL )
     return NULL;
+  else
+    return StumplessValueListToString( output->payload->values );
   
-  // todo finish
-  return NULL;
 }
 
 StumplessEntry *

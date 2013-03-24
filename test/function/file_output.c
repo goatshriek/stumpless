@@ -30,7 +30,8 @@ test_file_write( void )
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a null file pointer did not generate the correct error";
   
-  FILE * file = fopen( "tmp/file_write", "w" );
+  //FILE * file = fopen( "tmp/file_write", "w" );
+  FILE * file = tmpfile();
   if( file == NULL )
     return "the test file could not be opened";
   
@@ -41,8 +42,8 @@ test_file_write( void )
   if( fclose( file ) != 0 )
     return "the test file could not be closed";
   
-  if( remove( "tmp/file_write" ) != 0 )
-    return "the test file could not be removed";
+  //if( remove( "tmp/file_write" ) != 0 )
+  //  return "the test file could not be removed";
   
   return NULL;
 }

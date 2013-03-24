@@ -10,9 +10,12 @@
 char *
 StumplessEventToString( StumplessEvent * event )
 {
+  if( event == NULL )
+    return NULL;
+  
   StumplessFormattedOutput * output = StumplessEventAsText( event );
   
-  if( event == NULL )
+  if( output == NULL )
     return NULL;
   else
     return StumplessValueListToString( output->payload->values );
