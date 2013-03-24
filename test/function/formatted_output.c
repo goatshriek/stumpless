@@ -6,6 +6,7 @@
 
 const char * test_output_appender( void );
 const char * test_string_appender( void );
+const char * test_unsigned_int_appender( void );
 
 StumplessFormattedOutput * GetTestByteOutput( void );
 StumplessFormattedOutput * GetTestTextOutput( void );
@@ -25,6 +26,12 @@ main( void )
   result = test_string_appender();
   if( result != NULL ){
     printf( "String Appender Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_unsigned_int_appender();
+  if( result != NULL ){
+    printf( "Unsigned Int Appender Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -95,6 +102,27 @@ test_string_appender( void )
     return "the string was not actually appended to the output list";
   
   return NULL;
+}
+
+const char *
+test_unsigned_int_appender( void )
+{
+  StumplessStatusCode status;
+  StumplessFormattedOutput * output = GetTestTextOutput();
+  if( output == NULL )
+    return "the test output could not be created";
+  
+  status = StumplessAppendUnsignedIntToFormattedOutput( NULL, 3 );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a null output did not generate the appropriate error";
+  
+  status = StumplessAppendUnsignedIntToFormattedOutput( output, 27 );
+  if( status != STUMPLESS_SUCCESS )
+    return "the number was not properly appended";
+  if( output->payload->values->last->value->data->u_i != 27 )
+    return "the number was not actually appended to the output list";
+  
+  return NULL; 
 }
 
 StumplessFormattedOutput *

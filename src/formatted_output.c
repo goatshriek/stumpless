@@ -24,5 +24,29 @@ StumplessStatusCode
 StumplessAppendStringToFormattedOutput( StumplessFormattedOutput * output,
                                         char * str )
 {
-  return STUMPLESS_FAILURE;
+  if( output == NULL || str == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  switch( output->format ){
+    case STUMPLESS_TEXT:
+      return StumplessAppendStringToValueList( output->payload->values, str );
+    default:
+      return STUMPLESS_FAILURE;
+  }
+}
+
+StumplessStatusCode
+StumplessAppendUnsignedIntToFormattedOutput( StumplessFormattedOutput * output,
+                                             unsigned num )
+{
+  if( output == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  switch( output->format ){
+    case STUMPLESS_TEXT:
+      return StumplessAppendUnsignedIntToValueList( output->payload->values,
+                                                    num );
+    default:
+      return STUMPLESS_FAILURE;
+  }
 }

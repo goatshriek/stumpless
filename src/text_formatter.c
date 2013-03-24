@@ -172,22 +172,22 @@ StumplessLevelAsText( StumplessLevel * level )
   if( output == NULL )
     return NULL;
   
-  StumplessValueList * list = output->payload->values;
   StumplessStatusCode status;
   
   if( level->name != NULL ){
-    status = StumplessAppendStringToValueList( list, level->name );
+    status = StumplessAppendStringToFormattedOutput( output, level->name );
     if( status != STUMPLESS_SUCCESS )
       return NULL;
-    status = StumplessAppendStringToValueList( list, ": " );
+    
+    status = StumplessAppendStringToFormattedOutput( output, ": " );
     if( status != STUMPLESS_SUCCESS )
       return NULL;
   }
   
-  status = StumplessAppendStringToValueList( list, "level " );
+  status = StumplessAppendStringToFormattedOutput( output, "level " );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
-  status = StumplessAppendUnsignedIntToValueList( list, level->value );
+  status = StumplessAppendUnsignedIntToFormattedOutput( output, level->value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
