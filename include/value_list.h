@@ -6,7 +6,7 @@
 #include <types.h>
 
 StumplessStatusCode
-StumplessAppendStringToValueList( StumplessValueList *, char * );
+StumplessAppendStringToValueList( StumplessValueList *, const char * );
 
 StumplessStatusCode
 StumplessAppendUnsignedIntToValueList( StumplessValueList *, unsigned );

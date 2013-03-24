@@ -7,7 +7,7 @@ void
 StumplessDestroyValue( StumplessValue * );
 
 StumplessValue *
-StumplessValueFromString( char * );
+StumplessValueFromString( const char * );
 
 StumplessValue *
 StumplessValueFromUnsignedInt( unsigned );

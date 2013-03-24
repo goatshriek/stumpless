@@ -59,7 +59,7 @@ StumplessDestroyValue( StumplessValue * value )
 }
 
 StumplessValue *
-StumplessValueFromString( char * str )
+StumplessValueFromString( const char * str )
 {
   if( str == NULL )
     return NULL;

@@ -8,7 +8,8 @@ StumplessAppendFormattedOutputs( StumplessFormattedOutput *,
                                  StumplessFormattedOutput * );
 
 StumplessStatusCode
-StumplessAppendStringToFormattedOutput( StumplessFormattedOutput *, char * );
+StumplessAppendStringToFormattedOutput( StumplessFormattedOutput *,
+                                        const char * );
 
 StumplessStatusCode
 StumplessAppendUnsignedIntToFormattedOutput( StumplessFormattedOutput *,

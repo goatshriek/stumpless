@@ -40,7 +40,7 @@ DestroyValueListNode( StumplessValueListNode * node )
 }
 
 StumplessStatusCode
-StumplessAppendStringToValueList( StumplessValueList * list, char * str )
+StumplessAppendStringToValueList( StumplessValueList * list, const char * str )
 {
   if( list == NULL || str == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;

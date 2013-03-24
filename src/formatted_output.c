@@ -22,7 +22,7 @@ StumplessAppendFormattedOutputs( StumplessFormattedOutput * beginning,
 
 StumplessStatusCode
 StumplessAppendStringToFormattedOutput( StumplessFormattedOutput * output,
-                                        char * str )
+                                        const char * str )
 {
   if( output == NULL || str == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
