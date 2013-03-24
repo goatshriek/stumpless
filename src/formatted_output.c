@@ -19,3 +19,10 @@ StumplessAppendFormattedOutputs( StumplessFormattedOutput * beginning,
       return STUMPLESS_FAILURE;
   }
 }
+
+StumplessStatusCode
+StumplessAppendStringToFormattedOutput( StumplessFormattedOutput * output,
+                                        char * str )
+{
+  return STUMPLESS_FAILURE;
+}

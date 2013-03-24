@@ -7,4 +7,7 @@ StumplessStatusCode
 StumplessAppendFormattedOutputs( StumplessFormattedOutput *,
                                  StumplessFormattedOutput * );
 
+StumplessStatusCode
+StumplessAppendStringToFormattedOutput( StumplessFormattedOutput *, char * );
+
 #endif

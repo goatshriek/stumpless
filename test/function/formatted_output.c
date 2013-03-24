@@ -4,7 +4,8 @@
 
 #include <stumpless.h>
 
-const char * test_appender( void );
+const char * test_output_appender( void );
+const char * test_string_appender( void );
 
 StumplessFormattedOutput * GetTestByteOutput( void );
 StumplessFormattedOutput * GetTestTextOutput( void );
@@ -15,9 +16,15 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_appender();
+  result = test_output_appender();
   if( result != NULL ){
-    printf( "Appender Test Failed: %s\n", result );
+    printf( "Output Appender Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_string_appender();
+  if( result != NULL ){
+    printf( "String Appender Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -28,7 +35,7 @@ main( void )
 }
 
 const char *
-test_appender( void )
+test_output_appender( void )
 {
   StumplessFormattedOutput * output_1 = GetTestByteOutput();
   StumplessFormattedOutput * output_2 = GetTestTextOutput();
@@ -57,6 +64,35 @@ test_appender( void )
     return "the appending of one valid output to another was unsuccessful";
   if( output_2->payload->values->first->next->next->next == NULL )
     return "the outputs were not appended";
+  
+  return NULL;
+}
+
+const char *
+test_string_appender( void )
+{
+  StumplessStatusCode status;
+  StumplessFormattedOutput * output = GetTestTextOutput();
+  if( output == NULL )
+    return "the test output could not be created";
+  
+  status = StumplessAppendStringToFormattedOutput( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "two empty arguments did not generate the appropriate error";
+  
+  status = StumplessAppendStringToFormattedOutput( output, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a null string did not generate the appropriate error";
+  
+  status = StumplessAppendStringToFormattedOutput( NULL, "empty output" );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a null output did not generate the appropriate error";
+  
+  status = StumplessAppendStringToFormattedOutput( output, "sucka" );
+  if( status != STUMPLESS_SUCCESS )
+    return "the string was not properly appended";
+  if( strcmp( output->payload->values->last->value->data->c_p , "sucka" ) != 0 )
+    return "the string was not actually appended to the output list";
   
   return NULL;
 }
