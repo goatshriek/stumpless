@@ -4,7 +4,7 @@
 #include <types.h>
 
 StumplessStatusCode
-StumplessAppendFormattedOutput( StumplessFormattedOutput *,
-                                StumplessFormattedOutput * );
+StumplessAppendFormattedOutputs( StumplessFormattedOutput *,
+                                 StumplessFormattedOutput * );
 
 #endif

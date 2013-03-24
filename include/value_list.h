@@ -12,8 +12,7 @@ StumplessStatusCode
 StumplessAppendUnsignedIntToValueList( StumplessValueList *, unsigned );
 
 StumplessStatusCode
-StumplessAppendValueListToValueList( StumplessValueList *,
-                                     StumplessValueList * );
+StumplessAppendValueLists( StumplessValueList *, StumplessValueList * );
 
 StumplessStatusCode
 StumplessAppendValueToValueList( StumplessValueList *, StumplessValue * );

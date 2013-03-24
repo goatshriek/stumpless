@@ -66,8 +66,7 @@ StumplessAppendUnsignedIntToValueList( StumplessValueList * list, unsigned num )
 }
 
 StumplessStatusCode
-StumplessAppendValueListToValueList( StumplessValueList * beginning,
-                                     StumplessValueList * end )
+StumplessAppendValueLists( StumplessValueList * beginning,                                                 StumplessValueList * end )
 {
   if( beginning == NULL || end == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;

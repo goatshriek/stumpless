@@ -36,23 +36,23 @@ test_appender( void )
   
   StumplessStatusCode status;
   
-  status = StumplessAppendFormattedOutput( NULL, output_1 );
+  status = StumplessAppendFormattedOutputs( NULL, output_1 );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty argument did not generate the appropriate error";
   
-  status = StumplessAppendFormattedOutput( output_1, NULL );
+  status = StumplessAppendFormattedOutputs( output_1, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty argument did not generate the appropriate error";
   
-  status = StumplessAppendFormattedOutput( NULL, NULL );
+  status = StumplessAppendFormattedOutputs( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty argument did not generate the appropriate error";
   
-  status = StumplessAppendFormattedOutput( output_1, output_2 );
+  status = StumplessAppendFormattedOutputs( output_1, output_2 );
   if( status != STUMPLESS_INCOMPATIBLE_ARGUMENTS )
     return "two different format types did not generate the appropriate error";
   
-  status = StumplessAppendFormattedOutput( output_2, output_3 );
+  status = StumplessAppendFormattedOutputs( output_2, output_3 );
   if( status != STUMPLESS_SUCCESS )
     return "the appending of one valid output to another was unsuccessful";
   if( output_2->payload->values->first->next->next->next == NULL )

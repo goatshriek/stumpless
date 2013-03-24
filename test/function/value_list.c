@@ -162,19 +162,19 @@ test_list_appender( void )
   if( status != STUMPLESS_SUCCESS )
     return "an extra value could not be added to the second list";
   
-  status = StumplessAppendValueListToValueList( NULL, NULL );
+  status = StumplessAppendValueLists( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "empty arguments did not generate the appropriate error";
   
-  status = StumplessAppendValueListToValueList( list_1, NULL );
+  status = StumplessAppendValueLists( list_1, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty first argument did not generate the appropriate error";
   
-  status = StumplessAppendValueListToValueList( NULL, list_2 );
+  status = StumplessAppendValueLists( NULL, list_2 );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty second argument did not generate the appropriate error";
   
-  status = StumplessAppendValueListToValueList( list_1, list_2 );
+  status = StumplessAppendValueLists( list_1, list_2 );
   if( status != STUMPLESS_SUCCESS )
     return "the list was not successfully appended";
   if( strcmp( list_1->last->value->data->c_p, "this should be last" ) != 0 )
