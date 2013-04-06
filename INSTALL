@@ -1,0 +1,11 @@
+dependencies needed for development:
+autoconf
+automake
+libtool
+make
+
+commands to run:
+libtoolize
+aclocal --install
+automake --add-missing
+autoheader
