@@ -53,6 +53,21 @@ StumplessAppendUnsignedIntToFormattedOutput( StumplessFormattedOutput * output,
 }
 
 StumplessStatusCode
+StumplessAppendValueToFormattedOutput( StumplessFormattedOutput * output,
+                                       StumplessValue * value )
+{
+  if( output == NULL || value == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  switch( output->format ){
+    case STUMPLESS_TEXT:
+      return StumplessAppendValueToValueList( output->payload->values, value );
+    default:
+      return STUMPLESS_FAILURE;
+  }
+}
+
+StumplessStatusCode
 StumplessFormattedOutputIntoString( char * str,
                                     StumplessFormattedOutput * output )
 {

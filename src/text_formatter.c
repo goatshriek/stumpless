@@ -100,6 +100,68 @@ StumplessEventAsText( StumplessEvent * event )
 }
 
 StumplessFormattedOutput *
+StumplessEventAttributeAsText( StumplessEventAttribute * attribute )
+{
+  if( attribute == NULL )
+    return NULL;
+  
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+  
+  StumplessStatusCode status;
+  
+  if( attribute->name == NULL )
+    status = StumplessAppendStringToFormattedOutput( output, "attribute" );
+  else
+    status = StumplessAppendStringToFormattedOutput( output, attribute->name );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  if( attribute->default_value != NULL ){
+    status = StumplessAppendStringToFormattedOutput( output, ": " );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+    
+    status = StumplessAppendValueToFormattedOutput( output,
+                                                    attribute->default_value );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+  }
+  
+  return output;
+}
+
+StumplessFormattedOutput *
+StumplessEventAttributeListAsText( StumplessEvent * event )
+{
+  if( event == NULL || event->attributes == NULL )
+    return NULL;
+  
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+  
+  unsigned int i = 0;
+  StumplessFormattedOutput * attribute_output;
+  StumplessStatusCode status;
+  while( i < event->attribute_count ){
+    attribute_output = StumplessEventAttributeAsText( event->attributes[i] );
+    status = StumplessAppendFormattedOutputs( output, attribute_output );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+    
+    if( ++i < event->attribute_count ){
+      status = StumplessAppendStringToFormattedOutput( output, ", " );
+      if( status != STUMPLESS_SUCCESS )
+        return NULL;
+    }
+  }
+  
+  return output;
+}
+
+StumplessFormattedOutput *
 StumplessEventSummaryAsText( StumplessEvent * event )
 {
   if( event == NULL )
@@ -112,35 +174,6 @@ StumplessEventSummaryAsText( StumplessEvent * event )
   // todo need to implement
   
   return output;
-}
-
-StumplessFormattedOutput *
-StumplessEventAttributeAsText( StumplessEventAttribute * attribute )
-{
-  // todo need to implement
-  return NULL;
-}
-
-StumplessFormattedOutput *
-StumplessEventAttributeSummaryAsText( StumplessEventAttribute * attribute )
-{
-  if( attribute == NULL )
-    return NULL;
-  
-  // todo will need eventattributevalue as text method
-  
-  return NULL;
-}
-
-StumplessFormattedOutput *
-StumplessEventAttributeListAsText( StumplessEvent * event )
-{
-  if( event == NULL )
-    return NULL;
-  
-  // todo need to implement
-  
-  return NULL;
 }
 
 StumplessFormattedOutput *

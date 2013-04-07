@@ -4,6 +4,7 @@
 
 #include <stumpless.h>
 
+const char * test_event_attribute_formatter( void );
 const char * test_event_formatter( void );
 const char * test_level_formatter( void );
 const char * test_value_formatter( void );
@@ -18,6 +19,12 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
+  
+  result = test_event_attribute_formatter();
+  if( result != NULL ){
+    printf( "Event Attribute Formatter Test Failed: %s\n", result );
+    failure_count++;
+  }
   
   result = test_event_formatter();
   if( result != NULL ){
@@ -44,6 +51,50 @@ main( void )
 }
 
 const char *
+test_event_attribute_formatter( void )
+{
+  StumplessFormattedOutput * output;
+  StumplessEventAttribute * attribute;
+  char * str;
+  
+  attribute = malloc( sizeof( StumplessEventAttribute ) );
+  if( attribute == NULL )
+    return "the test attribute could not be created";
+  
+  output = StumplessEventAttributeAsText( NULL );
+  if( output != NULL )
+    return "an empty attribute did not generate the appropriate error";
+  
+  attribute->name = NULL;
+  attribute->default_value = NULL;
+  
+  output = StumplessEventAttributeAsText( attribute );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "attribute" ) != 0 )
+    return "an empty attribute did not generate correct string";
+  
+  attribute->name = "Test Attribute";
+  output = StumplessEventAttributeAsText( attribute );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, attribute->name ) != 0 )
+    return "an attribute with only a name was not formatted correctly";
+  
+  attribute->default_value = StumplessValueFromString( "default value" );
+  output = StumplessEventAttributeAsText( attribute );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Attribute: default value" ) != 0 )
+    return "a full attribute was not formatted correctly";
+  
+  attribute->name = NULL;
+  output = StumplessEventAttributeAsText( attribute );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "attribute: default value" ) != 0 )
+    return "an attribute with only a default value was not formatted correctly";
+  
+  return NULL;
+}
+
+const char *
 test_event_formatter( void )
 {
   StumplessEvent * event = NULL;
@@ -66,8 +117,8 @@ test_event_formatter( void )
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
     return "the output was not created";
-  if( strcmp( str, "" ) != 0 )
-    return "an empty event did not generate an empy string";
+  if( strcmp( str, "event" ) != 0 )
+    return "an empty event did not generate the correct string";
   
   // creating the values to give the event for each test
   const char * name = "Test Event";
@@ -100,32 +151,34 @@ test_event_formatter( void )
     return "an event with only a level was not formatted correctly";
   
   event->attributes = list;
+  event->attribute_count = 3;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
     return "the output was not created";
   // todo see if the formatting here can be fixed with a backslash
-  if( strcmp( str, "Test Level: level 42 event: attr_0: val_0, attribute: val_1, attr_2" ) != 0 )
+  printf( "%s\n", str );
+  if( strcmp( str, "Test Level: level 42 event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
     return "an event without a name was not formatted correctly";
   
   event->name = name;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
     return "the output was not created";
-  if( strcmp( str, "Test Event (Test Level: level 42): attr_0: val_0, attribute: val_1, attr_2" ) != 0 )
+  if( strcmp( str, "Test Event (Test Level: level 42): attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
     return "an event with all components was not formatted correctly";
   
   event->level = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
     return "the output was not created";
-  if( strcmp( str, "Test Event: attr_0: val_0, attribute: val_1, attr_2" ) != 0 )
+  if( strcmp( str, "Test Event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
     return "an event without a level was not formatted correctly";
   
   event->name = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
     return "the output was not created";
-  if( strcmp( str, "event: attr_0: val_0, attribute: val_1, attr_2" ) != 0 )
+  if( strcmp( str, "event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
     return "an event with only a list was not formatted correctly";
   
   return NULL;
@@ -199,7 +252,7 @@ GetTestEventAttributeList( void )
   StumplessEventAttribute * attr_1 = malloc( sizeof( StumplessEventAttribute ));
   StumplessEventAttribute * attr_2 = malloc( sizeof( StumplessEventAttribute ));
   list = malloc( sizeof( StumplessEventAttribute * ) * 3 );
-  if( attr_0 == NULL || attr_1 == NULL || attr_2 == NULL || list )
+  if( attr_0 == NULL || attr_1 == NULL || attr_2 == NULL || list == NULL )
     return NULL;
   
   attr_0->name = "attr_0 name";

@@ -9,6 +9,7 @@ const char * test_output_appender( void );
 const char * test_string_appender( void );
 const char * test_to_string( void );
 const char * test_unsigned_int_appender( void );
+const char * test_value_appender( void );
 
 StumplessFormattedOutput * GetTestByteOutput( void );
 StumplessFormattedOutput * GetTestTextOutput( void );
@@ -46,6 +47,12 @@ main( void )
   result = test_unsigned_int_appender();
   if( result != NULL ){
     printf( "Unsigned Int Appender Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_value_appender();
+  if( result != NULL ){
+    printf( "Value Appender Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -193,6 +200,45 @@ test_unsigned_int_appender( void )
     return "the number was not actually appended to the output list";
   
   return NULL; 
+}
+
+const char *
+test_value_appender( void )
+{
+  StumplessStatusCode status;
+  StumplessFormattedOutput * output = GetTestTextOutput();
+  if( output == NULL )
+    return "the test output could not be created";
+  
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return "the test value could not be created";
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return "the test value data could not be created";
+  value->type = STUMPLESS_STRING;
+  value->data->c_p = "Test Value";
+  
+  status = StumplessAppendValueToFormattedOutput( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "two empty arguments did not generate the appropriate error";
+  
+  status = StumplessAppendValueToFormattedOutput( output, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty value did not generate the appropriate error";
+  
+  status = StumplessAppendValueToFormattedOutput( NULL, value );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty output did not generate the appropriate error";
+  
+  status = StumplessAppendValueToFormattedOutput( output, value );
+  if( status != STUMPLESS_SUCCESS )
+    return "the value was not successfully appended";
+  const char * last_value = output->payload->values->last->value->data->c_p;
+  if( strcmp( last_value, "Test Value" ) != 0 )
+    return "the value was not actually appended to the list";
+  
+  return NULL;
 }
 
 StumplessFormattedOutput *

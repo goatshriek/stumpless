@@ -16,6 +16,10 @@ StumplessAppendUnsignedIntToFormattedOutput( StumplessFormattedOutput *,
                                              unsigned );
 
 StumplessStatusCode
+StumplessAppendValueToFormattedOutput( StumplessFormattedOutput *,
+                                       StumplessValue * );
+
+StumplessStatusCode
 StumplessFormattedOutputIntoString( char *, StumplessFormattedOutput * );
 
 char *

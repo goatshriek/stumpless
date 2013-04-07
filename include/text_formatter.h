@@ -9,17 +9,14 @@ StumplessEntryAsText( StumplessEntry * );
 StumplessFormattedOutput *
 StumplessEventAsText( StumplessEvent * );
 
-StumplessFormattedOutput *
-StumplessEventSummaryAsText( StumplessEvent * );
-
 StumplessFormattedOutput * 
 StumplessEventAttributeAsText( StumplessEventAttribute * );
 
 StumplessFormattedOutput *
-StumplessEventAttributeSummaryAsText( StumplessEventAttribute * );
+StumplessEventAttributeListAsText( StumplessEvent * );
 
 StumplessFormattedOutput *
-StumplessEventAttributeListAsText( StumplessEvent * );
+StumplessEventSummaryAsText( StumplessEvent * );
 
 StumplessFormattedOutput *
 StumplessLevelAsText( StumplessLevel * );
