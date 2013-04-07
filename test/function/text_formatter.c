@@ -8,10 +8,10 @@
 
 const char * test_event_attribute_formatter( void );
 const char * test_event_formatter( void );
+const char * test_event_summary_formatter( void );
 const char * test_level_formatter( void );
 const char * test_value_formatter( void );
 
-StumplessEvent * GetTestEvent( void );
 StumplessEventAttribute ** GetTestEventAttributeList( void );
 StumplessLevel * GetTestLevel( void );
 StumplessValue * GetTestValueUnsignedShort( void );
@@ -31,6 +31,12 @@ main( void )
   result = test_event_formatter();
   if( result != NULL ){
     printf( "Event Formatter Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_event_summary_formatter();
+  if( result != NULL ){
+    printf( "Event Summary Formatter Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -122,6 +128,7 @@ test_event_formatter( void )
   if( strcmp( str, "event" ) != 0 )
     return "an empty event did not generate the correct string";
   
+  // todo replace this usage with the builder module
   // creating the values to give the event for each test
   const char * name = "Test Event";
   StumplessLevel * level = GetTestLevel();
@@ -158,7 +165,6 @@ test_event_formatter( void )
   if( str == NULL )
     return "the output was not created";
   // todo see if the formatting here can be fixed with a backslash
-  printf( "%s\n", str );
   if( strcmp( str, "Test Level: level 42 event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
     return "an event without a name was not formatted correctly";
   
@@ -182,6 +188,46 @@ test_event_formatter( void )
     return "the output was not created";
   if( strcmp( str, "event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
     return "an event with only a list was not formatted correctly";
+  
+  return NULL;
+}
+
+const char *
+test_event_summary_formatter( void )
+{
+  StumplessFormattedOutput * output;
+  char * str;
+  
+  output = StumplessEventSummaryAsText( NULL );
+  if( output != NULL )
+    return "a null event did not return null output";
+  
+  StumplessEvent * event = BuildEvent();
+  if( event == NULL )
+    return "could not build the test event";
+  
+  output = StumplessEventSummaryAsText( event );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Event (Test Level: level 42)" ) != 0 )
+    return "a full event did not generate the correct summary";
+  
+  event->name = NULL;
+  output = StumplessEventSummaryAsText( event );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Level: level 42 event" ) != 0 )
+    return "an event without a name did not generate the correct summary";
+  
+  event->level = NULL;
+  output = StumplessEventSummaryAsText( event );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "event" ) != 0 )
+    return "an empty event did not generate the correct summary";
+  
+  event->name = "Test Event";
+  output = StumplessEventSummaryAsText( event );
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Event" ) != 0 )
+    return "an event without a level did not generate the correct summary";
   
   return NULL;
 }
@@ -235,13 +281,6 @@ test_value_formatter( void )
   if( output->format != STUMPLESS_TEXT )
     return "the output did not have the correct type";
   
-  return NULL;
-}
-
-StumplessEvent *
-GetTestEvent( void )
-{
-  // todo need to implement
   return NULL;
 }
 

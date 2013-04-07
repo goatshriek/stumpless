@@ -3,7 +3,13 @@
 
 #include <stumpless.h>
 
-StumplessEventAttribute *
-BuildEventAttribute( void );
+StumplessEvent *
+BuildEvent( void );
+
+StumplessEventAttribute **
+BuildEventAttributeList( void );
+
+StumplessLevel *
+BuildLevel( void );
 
 #endif

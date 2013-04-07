@@ -48,41 +48,9 @@ StumplessEventAsText( StumplessEvent * event )
     return NULL;
   
   StumplessStatusCode status;
-  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  StumplessFormattedOutput * output = StumplessEventSummaryAsText( event );
   if( output == NULL )
     return NULL;
-   
-  if( event->name == NULL ){
-    if( event->level == NULL ){
-      status = StumplessAppendStringToFormattedOutput( output, "event" );
-      if( status != STUMPLESS_SUCCESS )
-        return NULL;
-    } else {
-      output = StumplessLevelAsText( event->level );
-      status = StumplessAppendStringToFormattedOutput( output, " event" );
-      if( status != STUMPLESS_SUCCESS )
-        return NULL;
-    }
-  } else {
-    status = StumplessAppendStringToFormattedOutput( output, event->name );
-    if( status != STUMPLESS_SUCCESS )
-      return NULL;
-    if( event->level != NULL ) {
-      status = StumplessAppendStringToFormattedOutput( output, " (" );
-      if( status != STUMPLESS_SUCCESS )
-        return NULL;
-      
-      StumplessFormattedOutput * level_output;
-      level_output = StumplessLevelAsText( event->level );
-      status = StumplessAppendFormattedOutputs( output, level_output );
-      if( status != STUMPLESS_SUCCESS )
-        return NULL;
-      
-      status = StumplessAppendStringToFormattedOutput( output, ")" );
-      if( status != STUMPLESS_SUCCESS )
-        return NULL;
-    }
-  }
   
   if( event->attribute_count > 0 ){
     status = StumplessAppendStringToFormattedOutput( output, ": " );
@@ -171,7 +139,39 @@ StumplessEventSummaryAsText( StumplessEvent * event )
   if( output == NULL )
     return NULL;
   
-  // todo need to implement
+  StumplessStatusCode status;
+  
+  if( event->name == NULL ){
+    if( event->level == NULL ){
+      status = StumplessAppendStringToFormattedOutput( output, "event" );
+      if( status != STUMPLESS_SUCCESS )
+        return NULL;
+    } else {
+      output = StumplessLevelAsText( event->level );
+      status = StumplessAppendStringToFormattedOutput( output, " event" );
+      if( status != STUMPLESS_SUCCESS )
+        return NULL;
+    }
+  } else {
+    status = StumplessAppendStringToFormattedOutput( output, event->name );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+    if( event->level != NULL ) {
+      status = StumplessAppendStringToFormattedOutput( output, " (" );
+      if( status != STUMPLESS_SUCCESS )
+        return NULL;
+      
+      StumplessFormattedOutput * level_output;
+      level_output = StumplessLevelAsText( event->level );
+      status = StumplessAppendFormattedOutputs( output, level_output );
+      if( status != STUMPLESS_SUCCESS )
+        return NULL;
+      
+      status = StumplessAppendStringToFormattedOutput( output, ")" );
+      if( status != STUMPLESS_SUCCESS )
+        return NULL;
+    }
+  }
   
   return output;
 }
