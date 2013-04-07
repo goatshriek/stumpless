@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <string_helper.h>
+#include "string_helper.h"
 
 const char * test_copy_string( void );
 const char * test_is_empty( void );

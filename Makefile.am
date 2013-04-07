@@ -2,8 +2,8 @@ AUTOMAKE_OPTIONS = -Wall subdir-objects parallel-tests color-tests
 
 ACLOCAL_AMFLAGS = -I m4
 
-vpath %.h include
-vpath %.c src test/function test/performance test/portability
+vpath %.h include test/include
+vpath %.c src test/function test/helper test/performance test/portability
 
 AM_CFLAGS = -I $(top_srcdir)/include
 

@@ -4,6 +4,8 @@
 
 #include <stumpless.h>
 
+#include "builder.h"
+
 const char * test_event_attribute_formatter( void );
 const char * test_event_formatter( void );
 const char * test_level_formatter( void );

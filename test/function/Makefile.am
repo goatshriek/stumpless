@@ -1,3 +1,5 @@
+test_flags = $(AM_CFLAGS) -I $(top_srcdir)/test/include
+
 test_function_boolean_SOURCES = test/function/boolean.c
 test_function_boolean_LDADD = libstumpless.la
 
@@ -29,7 +31,10 @@ test_function_string_helper_SOURCES = test/function/string_helper.c \
                                       include/string_helper.h
 test_function_string_helper_LDADD = libstumpless.la
 
-test_function_text_formatter_SOURCES = test/function/text_formatter.c
+test_function_text_formatter_SOURCES = test/function/text_formatter.c \
+                                       test/helper/builder.c \
+                                       test/include/builder.h
+test_function_text_formatter_CFLAGS = $(test_flags)
 test_function_text_formatter_LDADD = libstumpless.la
 
 test_function_value_SOURCES = test/function/value.c
