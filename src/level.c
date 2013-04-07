@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <formatted_output.h>
 #include <level.h>
 #include <text_formatter.h>
 #include <types.h>
@@ -81,9 +82,5 @@ char *
 StumplessLevelToString( StumplessLevel * level )
 {
   StumplessFormattedOutput * output = StumplessLevelAsText( level );
-  
-  if( output == NULL )
-    return NULL;
-  else
-    return StumplessValueListToString( output->payload->values );
+  return StumplessFormattedOutputToString( output );
 }

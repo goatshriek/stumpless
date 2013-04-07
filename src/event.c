@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <event.h>
+#include <formatted_output.h>
 #include <level.h>
 #include <text_formatter.h>
 #include <value_list.h>
@@ -10,15 +11,8 @@
 char *
 StumplessEventToString( StumplessEvent * event )
 {
-  if( event == NULL )
-    return NULL;
-  
   StumplessFormattedOutput * output = StumplessEventAsText( event );
-  
-  if( output == NULL )
-    return NULL;
-  else
-    return StumplessValueListToString( output->payload->values );
+  return StumplessFormattedOutputToString( output );
 }
 
 StumplessEvent *

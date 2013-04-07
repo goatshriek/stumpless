@@ -4,8 +4,10 @@
 
 #include <stumpless.h>
 
+const char * test_into_string( void );
 const char * test_output_appender( void );
 const char * test_string_appender( void );
+const char * test_to_string( void );
 const char * test_unsigned_int_appender( void );
 
 StumplessFormattedOutput * GetTestByteOutput( void );
@@ -16,6 +18,12 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
+  
+  result = test_into_string();
+  if( result != NULL ){
+    printf( "Into String Test Failed: %s\n", result );
+    failure_count++;
+  }
   
   result = test_output_appender();
   if( result != NULL ){
@@ -29,6 +37,12 @@ main( void )
     failure_count++;
   }
   
+  result = test_to_string();
+  if( result != NULL ){
+    printf( "To String Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
   result = test_unsigned_int_appender();
   if( result != NULL ){
     printf( "Unsigned Int Appender Test Failed: %s\n", result );
@@ -39,6 +53,38 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_into_string( void )
+{
+  StumplessFormattedOutput * output = GetTestTextOutput();
+  if( output == NULL )
+    return "the test output cold not be created";
+  
+  char buffer[21];
+  StumplessStatusCode status;
+  
+  status = StumplessFormattedOutputIntoString( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "empty arguments did not generate the appropriate error";
+  
+  status = StumplessFormattedOutputIntoString( NULL, output );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a NULL output did not generate the appropriate error";
+  
+  status = StumplessFormattedOutputIntoString( buffer, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a NULL string did not generate the appropriate error";
+  
+  status = StumplessFormattedOutputIntoString( buffer, output );
+  if( status != STUMPLESS_SUCCESS )
+    return "the string was not properly written to";
+  
+  if( strcmp( buffer, "test 1\ntest 2\ntest 3" ) != 0 )
+    return "the string written was not equivalent to the output's contents";
+  
+  return NULL;
 }
 
 const char *
@@ -100,6 +146,30 @@ test_string_appender( void )
     return "the string was not properly appended";
   if( strcmp( output->payload->values->last->value->data->c_p , "sucka" ) != 0 )
     return "the string was not actually appended to the output list";
+  
+  return NULL;
+}
+
+const char *
+test_to_string( void )
+{
+  StumplessFormattedOutput * output = GetTestTextOutput();
+  if( output == NULL )
+    return "the test output cold not be created";
+  
+  char * buffer;
+  StumplessStatusCode status;
+  
+  buffer = StumplessFormattedOutputToString( NULL );
+  if( buffer != NULL )
+    return "a NULL output did not generate the appropriate error";
+  
+  buffer = StumplessFormattedOutputToString( output );
+  if( buffer == NULL )
+    return "a valid output did not generate a string";
+  
+  if( strcmp( buffer, "test 1\ntest 2\ntest 3" ) != 0 )
+    return "the string written was not equivalent to the output's contents";
   
   return NULL;
 }

@@ -2,6 +2,7 @@
 
 #include <entry.h>
 #include <event.h>
+#include <formatted_output.h>
 #include <text_formatter.h>
 #include <types.h>
 #include <value_list.h>
@@ -9,16 +10,8 @@
 char *
 StumplessEntryToString( StumplessEntry * entry )
 {
-  if( entry == NULL )
-    return NULL;
-  
   StumplessFormattedOutput * output =  StumplessEntryAsText( entry );
-  
-  if( output == NULL )
-    return NULL;
-  else
-    return StumplessValueListToString( output->payload->values );
-  
+  return StumplessFormattedOutputToString( output ); 
 }
 
 StumplessEntry *

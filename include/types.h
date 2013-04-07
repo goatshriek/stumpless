@@ -112,8 +112,8 @@ typedef struct {
 } StumplessValueList;
 
 typedef struct {
-  char * name;
-  StumplessValue * value;
+  const char * name;
+  StumplessValue * default_value;
 } StumplessEventAttribute;
 
 typedef struct {
@@ -123,7 +123,7 @@ typedef struct {
 
 typedef struct {
   unsigned value;
-  char * name;
+  const char * name;
 } StumplessLevel;
 
 typedef struct {

@@ -36,6 +36,8 @@ StumplessEntryAsText( StumplessEntry * entry )
   if( entry == NULL )
     return NULL;
   
+  // todo need to implement
+  
   return NULL;
 }
 
