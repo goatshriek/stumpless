@@ -3,8 +3,20 @@
 
 #include <stumpless.h>
 
+StumplessEntry *
+BuildEntry( void );
+
+StumplessEntryAttribute *
+BuildEntryAttribute( void );
+
+StumplessEntryAttribute **
+BuildEntryAttributeList( void );
+
 StumplessEvent *
 BuildEvent( void );
+
+StumplessEventAttribute *
+BuildEventAttribute( void );
 
 StumplessEventAttribute **
 BuildEventAttributeList( void );

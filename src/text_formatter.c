@@ -42,6 +42,20 @@ StumplessEntryAsText( StumplessEntry * entry )
 }
 
 StumplessFormattedOutput *
+StumplessEntryAttributeAsText( StumplessEntryAttribute * attribute )
+{
+  // todo need to implement
+  
+  return NULL;
+}
+
+StumplessFormattedOutput *
+StumplessEntryAttributeListAsText( StumplessEntry * entry )
+{
+  return NULL;
+}
+
+StumplessFormattedOutput *
 StumplessEventAsText( StumplessEvent * event )
 {
   if( event == NULL )

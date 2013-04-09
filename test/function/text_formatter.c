@@ -6,6 +6,9 @@
 
 #include "builder.h"
 
+const char * test_entry_formatter( void );
+const char * test_entry_attribute_formatter( void );
+const char * test_entry_attribute_list_formatter( void );
 const char * test_event_attribute_formatter( void );
 const char * test_event_formatter( void );
 const char * test_event_summary_formatter( void );
@@ -21,6 +24,24 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
+  
+  result = test_entry_formatter();
+  if( result != NULL ){
+    printf( "Entry Formatter Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_entry_attribute_formatter();
+  if( result != NULL ){
+    printf( "Entry Attribute Formatter Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_entry_attribute_list_formatter();
+  if( result != NULL ){
+    printf( "Entry Attribute List Formatter Test Failed: %s\n", result );
+    failure_count++;
+  }
   
   result = test_event_attribute_formatter();
   if( result != NULL ){
@@ -56,6 +77,147 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+// todo see if a backslash can clean up the formatting in this test
+const char *
+test_entry_formatter( void )
+{
+  StumplessEntry * entry = BuildEntry();
+  if( entry == NULL )
+    return "could not build the test entry";
+  
+  StumplessFormattedOutput * output;
+  char * str;
+  
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value, attribute: not 37, attribute: unnamed value" ) != 0 )
+    return "a full entry was not properly formatted";
+  
+  entry->description = NULL;
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Event (Test Level: level 42): Test Attribute 0: default value, attribute: not 37, attribute: unnamed value" ) != 0 )
+    return "an entry without a description was not properly formatted";
+  
+  entry->event = NULL;
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Attribute 0: default value, attribute: not 37, attribute: unnamed value" ) != 0 )
+    return "an entry with only attributes was not properly formatted";
+  
+  entry->description = "Test Entry";
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Entry: Test Attribute 0: default value, attribute: not 37, attribute: unnamed value" ) != 0 )
+    return "an entry without an event was not properly formatted";
+  
+  entry->attributes = NULL;
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Entry" ) != 0 )
+    return "an event with only a description was not properly formatted";
+  
+  entry->event = BuildEvent();
+  if( entry->event == NULL )
+    return "could not build the test event";
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "" ) != 0 )
+    return "an entry without an attribute list was not properly formatted";
+  
+  entry->description = NULL;
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Event (level: 42)" ) != 0 )
+    return "an entry with only an event was not properly formatted";
+  
+  entry->event = NULL;
+  output = StumplessEntryAsText( entry );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "entry" ) != 0 )
+    return "an entry event did not return the proper output";
+  
+  return NULL;
+}
+
+const char *
+test_entry_attribute_formatter( void )
+{
+  StumplessEntryAttribute * attribute = BuildEntryAttribute();
+  if( attribute == NULL )
+    return "could not build the test entry attribute";
+  
+  StumplessFormattedOutput * output;
+  output = StumplessEntryAttributeAsText( attribute );
+  if( output == NULL )
+    return "the output was not created";
+  char * str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Event Attribute: Test Value" ) != 0 )
+    return "a full entry attribute was not formatted correctly";
+  
+  attribute->value = NULL;
+  output = StumplessEntryAttributeAsText( attribute );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Event Attribute: Test Default Value" ) != 0 )
+    return "an entry attribute without a set value was not formatted correctly";
+  
+  attribute->event_attribute->name = NULL;
+  output = StumplessEntryAttributeAsText( attribute );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "attribute: Test Default Value" ) != 0 )
+    return "the entry attribute was not formatted correctly";
+  
+  attribute->event_attribute->default_value = NULL;
+  output = StumplessEntryAttributeAsText( attribute );
+  if( output == NULL )
+    return "the output was not created";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "" ) != 0 )
+    return "an entry attribute with no value did not return an empty string";
+  
+  return NULL;
+}
+
+const char *
+test_entry_attribute_list_formatter( void )
+{
+  StumplessEntry * entry = BuildEntry();
+  if( entry == NULL )
+    return "could not build the test entry";
+  
+  char * str;
+  StumplessFormattedOutput * output;
+  output = StumplessEntryAttributeListAsText( entry );
+  if( output == NULL )
+    return "the output could not be created";
+  str = StumplessFormattedOutputToString( output );
+  // todo see if a backslash can fix the formatting here
+  if( strcmp( str, "Test Attribute 0: default value, attribute: not 37, attribute: unnamed value" ) != 0 )
+    return "the list was not formatted correctly";
+  
+  return NULL;
 }
 
 const char *

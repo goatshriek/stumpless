@@ -7,6 +7,12 @@ StumplessFormattedOutput *
 StumplessEntryAsText( StumplessEntry * );
 
 StumplessFormattedOutput *
+StumplessEntryAttributeAsText( StumplessEntryAttribute * );
+
+StumplessFormattedOutput *
+StumplessEntryAttributeListAsText( StumplessEntry * );
+
+StumplessFormattedOutput *
 StumplessEventAsText( StumplessEvent * );
 
 StumplessFormattedOutput * 

@@ -1,4 +1,87 @@
+#include <stdlib.h>
+
+#include <stumpless.h>
+
 #include "builder.h"
+
+StumplessEntry *
+BuildEntry( void )
+{
+  StumplessEntry * entry = malloc( sizeof( StumplessEntry ) );
+  if( entry == NULL )
+    return NULL;
+  
+  entry->description = "Test Entry";
+  entry->event = BuildEvent();
+  entry->attributes = BuildEntryAttributeList();
+  
+  return entry;
+}
+
+StumplessEntryAttribute *
+BuildEntryAttribute( void )
+{
+  StumplessEntryAttribute * attribute;
+  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  
+  attribute->event_attribute = BuildEventAttribute();
+  attribute->value = StumplessValueFromString( "Test Value" );
+  
+  return attribute;
+}
+
+StumplessEntryAttribute **
+BuildEntryAttributeList( void )
+{
+  StumplessEntryAttribute ** list;
+  list = malloc( sizeof( StumplessEntryAttribute * ) * 5 );
+  if( list == NULL )
+    return NULL;
+  
+  StumplessEventAttribute ** event_attribute_list = BuildEventAttributeList();
+  if( event_attribute_list == NULL )
+    return NULL;
+  
+  StumplessEntryAttribute * attribute;
+  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  attribute->event_attribute = event_attribute_list[0];
+  attribute->value = NULL;
+  list[0] = attribute;
+  
+  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  attribute->event_attribute = event_attribute_list[1];
+  attribute->value = StumplessValueFromString( "not 37" );
+  list[1] = attribute;
+  
+  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  attribute->event_attribute = event_attribute_list[2];
+  attribute->value = NULL;
+  list[2] = attribute;
+  
+  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  attribute->event_attribute = event_attribute_list[3];
+  attribute->value = StumplessValueFromString( "unnamed value" );
+  list[3] = attribute;
+  
+  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  attribute->event_attribute = NULL;
+  attribute->value = StumplessValueFromString( "value without attribute" );
+  list[4] = attribute;
+  
+  return list;
+}
 
 StumplessEvent *
 BuildEvent( void )
@@ -21,6 +104,20 @@ BuildEvent( void )
   return event;
 }
 
+StumplessEventAttribute *
+BuildEventAttribute( void )
+{
+  StumplessEventAttribute * attribute;
+  attribute = malloc( sizeof( StumplessEventAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  
+  attribute->name = "Test Event Attribute";
+  attribute->default_value = StumplessValueFromString( "Test Default Value" );
+  
+  return attribute;
+}
+
 StumplessEventAttribute **
 BuildEventAttributeList( void )
 {
@@ -41,13 +138,13 @@ BuildEventAttributeList( void )
   if( attr_1 == NULL )
     return NULL;
   attr_1->name = NULL;
-  attr_1->default_value = StumplessValueFromString( "default value" );
+  attr_1->default_value = StumplessValueFromUnsignedInt( 37 );
   
   StumplessEventAttribute * attr_2;
   attr_2 = malloc( sizeof( StumplessEventAttribute ) );
   if( attr_2 == NULL )
     return NULL;
-  attr_2->name = "Test Attribute 0";
+  attr_2->name = "Test Attribute 2";
   attr_2->default_value = NULL;
   
   StumplessEventAttribute * attr_3;
