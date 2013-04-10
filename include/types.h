@@ -137,6 +137,7 @@ typedef struct {
   const char * description;
   StumplessEvent * event;
   StumplessEntryAttribute ** attributes;
+  unsigned attribute_count;
 } StumplessEntry;
 
 typedef unsigned char StumplessByte;

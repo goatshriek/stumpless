@@ -82,6 +82,12 @@ StumplessFormattedOutputIntoString( char * str,
   }
 }
 
+unsigned short
+StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+{
+  return 0;
+}
+
 char *
 StumplessFormattedOutputToString( StumplessFormattedOutput * output )
 {

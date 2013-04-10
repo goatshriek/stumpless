@@ -44,14 +44,54 @@ StumplessEntryAsText( StumplessEntry * entry )
 StumplessFormattedOutput *
 StumplessEntryAttributeAsText( StumplessEntryAttribute * attribute )
 {
-  // todo need to implement
+  if( attribute == NULL )
+    return NULL;
   
-  return NULL;
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+  
+  StumplessValue * attribute_value;
+  if( attribute->value != NULL )
+    attribute_value = attribute->value;
+  else if( attribute->event_attribute->default_value != NULL )
+    attribute_value = attribute->event_attribute->default_value;
+  else
+    return NULL;
+ 
+  const char * attribute_name;
+  if( attribute->event_attribute->name == NULL )
+    attribute_name = "attribute";
+  else
+    attribute_name = attribute->event_attribute->name;
+  
+  StumplessStatusCode status;
+  status = StumplessAppendStringToFormattedOutput( output, attribute_name );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  status = StumplessAppendStringToFormattedOutput( output, ": " );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  status = StumplessAppendValueToFormattedOutput( output, attribute_value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  return output;
 }
 
 StumplessFormattedOutput *
 StumplessEntryAttributeListAsText( StumplessEntry * entry )
 {
+  if( entry == NULL )
+    return NULL;
+  
+  unsigned i;
+  for( i = 0; i < entry->attribute_count; i++ ){
+    
+  }
+  
   return NULL;
 }
 
@@ -225,6 +265,8 @@ StumplessLevelAsText( StumplessLevel * level )
 StumplessFormattedOutput *
 StumplessValueAsText( StumplessValue * value )
 {
+  // todo add the type of the value to this output
+  
   if( value == NULL )
     return NULL;
   

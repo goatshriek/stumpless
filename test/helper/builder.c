@@ -14,6 +14,7 @@ BuildEntry( void )
   entry->description = "Test Entry";
   entry->event = BuildEvent();
   entry->attributes = BuildEntryAttributeList();
+  entry->attribute_count = 5;
   
   return entry;
 }
@@ -174,4 +175,38 @@ BuildLevel( void )
   level->value = 42;
   
   return level;
+}
+
+StumplessFormattedOutput *
+BuildTextFormattedOutput( void )
+{
+  StumplessFormattedOutput * output;
+  output = malloc( sizeof( StumplessFormattedOutput ) );
+  if( output == NULL )
+    return NULL;
+  
+  output->format = STUMPLESS_TEXT;
+  
+  output->payload = malloc( sizeof( StumplessFormattedPayload ) );
+  if( output->payload == NULL )
+    return NULL;
+  
+  output->payload->values = StumplessNewValueList();
+  if( output->payload->values == NULL )
+    return NULL;
+  
+  StumplessStatusCode status;
+  status = StumplessAppendStringToFormattedOutput( output, "First" );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  status = StumplessAppendStringToFormattedOutput( output, " Second" );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  status = StumplessAppendStringToFormattedOutput( output, " Third" );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  return output;
 }

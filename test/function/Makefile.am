@@ -15,7 +15,10 @@ test_function_event_LDADD = libstumpless.la
 test_function_file_output_SOURCES = test/function/file_output.c
 test_function_file_output_LDADD = libstumpless.la
 
-test_function_formatted_output_SOURCES = test/function/formatted_output.c
+test_function_formatted_output_SOURCES = test/function/formatted_output.c \
+                                         test/helper/builder.c \
+                                         test/include/builder.h
+test_function_formatted_output_CFLAGS = $(test_flags)
 test_function_formatted_output_LDADD = libstumpless.la
 
 test_function_level_SOURCES = test/function/level.c

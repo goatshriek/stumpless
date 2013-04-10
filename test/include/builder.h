@@ -24,4 +24,7 @@ BuildEventAttributeList( void );
 StumplessLevel *
 BuildLevel( void );
 
+StumplessFormattedOutput *
+BuildTextFormattedOutput( void );
+
 #endif

@@ -22,6 +22,9 @@ StumplessAppendValueToFormattedOutput( StumplessFormattedOutput *,
 StumplessStatusCode
 StumplessFormattedOutputIntoString( char *, StumplessFormattedOutput * );
 
+unsigned short
+StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * );
+
 char *
 StumplessFormattedOutputToString( StumplessFormattedOutput * );
 

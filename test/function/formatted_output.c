@@ -4,7 +4,10 @@
 
 #include <stumpless.h>
 
+#include "builder.h"
+
 const char * test_into_string( void );
+const char * test_is_empty( void );
 const char * test_output_appender( void );
 const char * test_string_appender( void );
 const char * test_to_string( void );
@@ -23,6 +26,12 @@ main( void )
   result = test_into_string();
   if( result != NULL ){
     printf( "Into String Test Failed: %s\n", result );
+    failure_count++;
+  }
+  
+  result = test_is_empty();
+  if( result != NULL ){
+    printf( "Is Empty Test Failed: %s\n", result );
     failure_count++;
   }
   
@@ -90,6 +99,29 @@ test_into_string( void )
   
   if( strcmp( buffer, "test 1\ntest 2\ntest 3" ) != 0 )
     return "the string written was not equivalent to the output's contents";
+  
+  return NULL;
+}
+
+const char *
+test_is_empty( void )
+{
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
+  if( output == NULL )
+    return "could not build test text output";
+  
+  if( StumplessFormattedOutputIsEmpty( output ) )
+    return "a full output was marked as empty";
+  
+  output->payload->values = NULL;
+  if( !StumplessFormattedOutputIsEmpty( output ) )
+    return "an output with a null list was not marked as empty";
+  
+  output->payload->values = StumplessNewValueList();
+  if( output->payload->values == NULL )
+    return "could not create a new value list";
+  if( !StumplessFormattedOutputIsEmpty( output ) )
+    return "an output with an empty list was not marked as empty";
   
   return NULL;
 }
