@@ -13,6 +13,9 @@ StumplessFormattedOutput *
 StumplessEntryAttributeListAsText( StumplessEntry * );
 
 StumplessFormattedOutput *
+StumplessEntrySummaryAsText( StumplessEntry * );
+
+StumplessFormattedOutput *
 StumplessEventAsText( StumplessEvent * );
 
 StumplessFormattedOutput * 

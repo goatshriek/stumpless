@@ -14,7 +14,7 @@ BuildEntry( void )
   entry->description = "Test Entry";
   entry->event = BuildEvent();
   entry->attributes = BuildEntryAttributeList();
-  entry->attribute_count = 5;
+  entry->attribute_count = 6;
   
   return entry;
 }
@@ -37,7 +37,7 @@ StumplessEntryAttribute **
 BuildEntryAttributeList( void )
 {
   StumplessEntryAttribute ** list;
-  list = malloc( sizeof( StumplessEntryAttribute * ) * 5 );
+  list = malloc( sizeof( StumplessEntryAttribute * ) * 6 );
   if( list == NULL )
     return NULL;
   
@@ -78,8 +78,15 @@ BuildEntryAttributeList( void )
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NULL;
-  attribute->value = StumplessValueFromString( "value without attribute" );
+  attribute->value = StumplessValueFromString( "no event attribute" );
   list[4] = attribute;
+  
+  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+  attribute->event_attribute = NULL;
+  attribute->value = NULL;
+  list[5] = attribute;
   
   return list;
 }

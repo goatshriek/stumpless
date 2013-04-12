@@ -29,7 +29,7 @@ StumplessNewValueList( void );
 StumplessStatusCode
 StumplessValueListIntoString( char *, StumplessValueList * );
 
-short
+unsigned short
 StumplessValueListIsEmpty( StumplessValueList * );
 
 char *

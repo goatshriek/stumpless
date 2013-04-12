@@ -85,6 +85,13 @@ StumplessFormattedOutputIntoString( char * str,
 unsigned short
 StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 {
+  if( output == NULL || output->payload == NULL )
+    return 1;
+  
+  switch( output->format ){
+    case STUMPLESS_TEXT:
+      return StumplessValueListIsEmpty( output->payload->values );
+  }
   return 0;
 }
 

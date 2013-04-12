@@ -36,9 +36,27 @@ StumplessEntryAsText( StumplessEntry * entry )
   if( entry == NULL )
     return NULL;
   
-  // todo need to implement
+  StumplessFormattedOutput * output = StumplessEntrySummaryAsText( entry );
+  if( output == NULL )
+    return NULL;
   
-  return NULL;
+  StumplessStatusCode status;
+  StumplessFormattedOutput * attributes;
+  if( entry->attribute_count > 0 && entry->attributes != NULL ){
+    status = StumplessAppendStringToFormattedOutput( output, ": " );
+    if( status != STUMPLESS_SUCCESS ) 
+      return NULL;
+    
+    attributes = StumplessEntryAttributeListAsText( entry );
+    if( attributes == NULL )
+      return NULL;
+    
+    status = StumplessAppendFormattedOutputs( output, attributes );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+  }
+  
+  return output;
 }
 
 StumplessFormattedOutput *
@@ -51,19 +69,20 @@ StumplessEntryAttributeAsText( StumplessEntryAttribute * attribute )
   if( output == NULL )
     return NULL;
   
+  StumplessEventAttribute * event_attribute = attribute->event_attribute;
   StumplessValue * attribute_value;
   if( attribute->value != NULL )
     attribute_value = attribute->value;
-  else if( attribute->event_attribute->default_value != NULL )
-    attribute_value = attribute->event_attribute->default_value;
+  else if( event_attribute != NULL && event_attribute->default_value != NULL )
+    attribute_value = event_attribute->default_value;
   else
     return NULL;
- 
+  
   const char * attribute_name;
-  if( attribute->event_attribute->name == NULL )
+  if( event_attribute == NULL || event_attribute->name == NULL )
     attribute_name = "attribute";
   else
-    attribute_name = attribute->event_attribute->name;
+    attribute_name = event_attribute->name;
   
   StumplessStatusCode status;
   status = StumplessAppendStringToFormattedOutput( output, attribute_name );
@@ -84,15 +103,73 @@ StumplessEntryAttributeAsText( StumplessEntryAttribute * attribute )
 StumplessFormattedOutput *
 StumplessEntryAttributeListAsText( StumplessEntry * entry )
 {
+  if( entry == NULL || entry->attributes == NULL )
+    return NULL;
+  
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+  
+  StumplessStatusCode status;
+  StumplessFormattedOutput * attribute;
+  unsigned i;
+  for( i = 0; i < entry->attribute_count; i++ ){
+    attribute = StumplessEntryAttributeAsText( entry->attributes[i] );
+    if( attribute == NULL )
+      continue;
+    
+    if( !StumplessFormattedOutputIsEmpty( output ) ){
+      status = StumplessAppendStringToFormattedOutput( output, ", " );
+      if( status != STUMPLESS_SUCCESS ) 
+        return NULL;
+    }
+    
+    status = StumplessAppendFormattedOutputs( output, attribute );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+  }
+  
+  return output;
+}
+
+StumplessFormattedOutput *
+StumplessEntrySummaryAsText( StumplessEntry * entry )
+{
   if( entry == NULL )
     return NULL;
   
-  unsigned i;
-  for( i = 0; i < entry->attribute_count; i++ ){
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+  
+  const char * description;
+  if( entry->description == NULL )
+    description = "entry";
+  else
+    description = entry->description;
+  
+  StumplessStatusCode status;
+  status = StumplessAppendStringToFormattedOutput( output, description );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  StumplessFormattedOutput * event;
+  if( entry->event != NULL ){
+    status = StumplessAppendStringToFormattedOutput( output, " [" );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
+      
+    event = StumplessEventSummaryAsText( entry->event );
+    status = StumplessAppendFormattedOutputs( output, event );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
     
+    status = StumplessAppendStringToFormattedOutput( output, "]" );
+    if( status != STUMPLESS_SUCCESS )
+      return NULL;
   }
   
-  return NULL;
+  return output;
 }
 
 StumplessFormattedOutput *

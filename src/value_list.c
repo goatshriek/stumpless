@@ -203,13 +203,10 @@ StumplessValueListIntoString( char * str, StumplessValueList * list )
   return STUMPLESS_SUCCESS;
 }
 
-short
+unsigned short
 StumplessValueListIsEmpty( StumplessValueList * list )
 {
-  if( list == NULL )
-    return 1;
-  else
-    return list->first == NULL;
+  return list == NULL || list->first == NULL;
 }
 
 char *
