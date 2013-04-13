@@ -51,8 +51,5 @@ StumplessStatusCode
 StumplessSetConfiguration( StumplessConfiguration * new_configuration )
 {
   stumpless_configuration = new_configuration;
-  if( stumpless_configuration == new_configuration )
-    return STUMPLESS_SUCCESS;
-  else
-    return STUMPLESS_FAILURE;
+  return STUMPLESS_SUCCESS;
 }

@@ -4,6 +4,7 @@
 
 #include <boolean.h>
 #include <configuration.h>
+#include <status.h>
 #include <types.h>
 #include <value.h>
 
@@ -103,13 +104,8 @@ StumplessValueIntoString( char * str, StumplessValue * value )
   if( str == NULL || value == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
  
-  StumplessStatusCode status;
-  
-  if( stumpless_configuration == NULL ){
-    status = StumplessInitializeConfiguration(); 
-    if( status != STUMPLESS_SUCCESS )
-      return status;
-  }
+  if( stumpless_configuration == NULL )
+    STATUS_ON_FAILURE( StumplessInitializeConfiguration() )
    
   StumplessValueData * data = value->data;
   char * temp_str;
@@ -231,24 +227,17 @@ StumplessValueToString( StumplessValue * value )
   if( value == NULL )
     return NULL;
   
-  StumplessStatusCode status;
-  
-  if( stumpless_configuration == NULL ){
-    status = StumplessInitializeConfiguration();
-    if( status != STUMPLESS_SUCCESS )
-      return NULL;
-  }
+  if( stumpless_configuration == NULL )
+    NULL_ON_FAILURE( StumplessInitializeConfiguration() )
   
   size_t buffer_size = stumpless_configuration->string->buffer_size;
   char * str = malloc( sizeof( char ) * buffer_size );
   if( str == NULL )
     return NULL;
   
-  status = StumplessValueIntoString( str, value );
-  if( status != STUMPLESS_SUCCESS )
-    return NULL;
-  else
-    return str;
+  NULL_ON_FAILURE( StumplessValueIntoString( str, value ) )
+  
+  return str;
 }
 
 StumplessStatusCode

@@ -2,9 +2,10 @@
 #include <string.h>
 
 #include <configuration.h>
+#include <status.h>
+#include <types.h>
 #include <value.h>
 #include <value_list.h>
-#include <types.h>
 
 
 static
@@ -119,15 +120,12 @@ StumplessCopyValueList( StumplessValueList * list )
   
   StumplessValueListNode * node = list->first;
   StumplessValueListNode * copied_node;
-  StumplessStatusCode status;
   while( node != NULL ){
     copied_node = malloc( sizeof( StumplessValueListNode ) );
     if( copied_node == NULL )
       return NULL;
     
-    status = AppendValueListNodeToValueList( copy, copied_node );
-    if( status != STUMPLESS_SUCCESS )
-      return NULL;
+    NULL_ON_FAILURE( AppendValueListNodeToValueList( copy, copied_node ) )
     
     copied_node->value = node->value; 
     
@@ -180,11 +178,8 @@ StumplessValueListIntoString( char * str, StumplessValueList * list )
   StumplessStatusCode status;
   str[0] = '\0';
   
-  if( stumpless_configuration == NULL ){
-    status = StumplessInitializeConfiguration();
-    if( status != STUMPLESS_SUCCESS )
-      return status;
-  }
+  if( stumpless_configuration == NULL )
+    STATUS_ON_FAILURE( StumplessInitializeConfiguration() )
   
   size_t buffer_size = stumpless_configuration->string->buffer_size;
   char * buffer = malloc( sizeof( char ) * buffer_size + 1 );
@@ -212,22 +207,15 @@ StumplessValueListIsEmpty( StumplessValueList * list )
 char *
 StumplessValueListToString( StumplessValueList * list )
 {
-  StumplessStatusCode status;
-  if( stumpless_configuration == NULL ){
-    status = StumplessInitializeConfiguration();
-    if( status != STUMPLESS_SUCCESS )
-      return NULL;
-  }
+  if( stumpless_configuration == NULL )
+    NULL_ON_FAILURE( StumplessInitializeConfiguration() )
   
   size_t buffer_size = stumpless_configuration->string->buffer_size;
   char * list_str = malloc( sizeof( char ) * buffer_size + 1 );
   
-  status = StumplessValueListIntoString( list_str, list );
+  NULL_ON_FAILURE( StumplessValueListIntoString( list_str, list ) )
   
-  if( status == STUMPLESS_SUCCESS )
-    return list_str;
-  else
-    return NULL;
+  return list_str;
 }
 
 StumplessStatusCode
@@ -236,14 +224,11 @@ StumplessWriteAndDestroyValueList( FILE * stream, StumplessValueList * list )
   if( stream == NULL || list == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessStatusCode status;
   StumplessValueListNode * previous = NULL;
   StumplessValueListNode * current = list->first;
   
   while( current != NULL ){
-    status = StumplessWriteValueToStream( stream, current->value );
-    if( status != STUMPLESS_SUCCESS )
-      return status;
+    STATUS_ON_FAILURE( StumplessWriteValueToStream( stream, current->value ) )
     
     previous = current;
     current = current->next;
@@ -260,13 +245,10 @@ StumplessWriteValueListToStream( FILE * stream, StumplessValueList * list )
   if( stream == NULL || list == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessStatusCode status;
   StumplessValueListNode * current = list->first;
   
   while( current != NULL ){
-    status = StumplessWriteValueToStream( stream, current->value );
-    if( status != STUMPLESS_SUCCESS )
-      return status;
+    STATUS_ON_FAILURE( StumplessWriteValueToStream( stream, current->value ) )
     
     current = current->next;
   }
