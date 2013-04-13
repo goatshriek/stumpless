@@ -1,11 +1,7 @@
-dependencies needed for development:
+The following packages need to be installed for development:
 autoconf
 automake
 libtool
-make
+make (along with a compatible C compiler)
 
-commands to run:
-libtoolize
-aclocal --install
-automake --add-missing
-autoheader
+To install the package after cloning the repository, simply run the dev-install script [scripts/dev-install.sh] to generate the required files in the repository. These files are necessary to build and test the library, but are not included in the repository as they can be easily generated.
