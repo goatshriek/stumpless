@@ -320,6 +320,47 @@ BuildUnsignedShortValue( void )
   return value;
 }
 
+StumplessValueList *
+BuildValueList( void )
+{
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  StumplessStatusCode status;
+  StumplessValue * value;
+  
+  value = BuildIntArrayValue();
+  if( value == NULL )
+    return NULL;
+  status = StumplessAppendValueToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  value = BuildUnsignedIntValue();
+  if( value == NULL )
+    return NULL;
+  status = StumplessAppendValueToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  value = BuildUnsignedShortValue();
+  if( value == NULL )
+    return NULL;
+  status = StumplessAppendValueToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  value = BuildVoidValue();
+  if( value == NULL )
+    return NULL;
+  status = StumplessAppendValueToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
+  return list;
+}
+
 StumplessValue *
 BuildVoidValue( void )
 {

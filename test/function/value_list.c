@@ -19,8 +19,6 @@ const char * test_to_string( void );
 const char * test_unsigned_int_appender( void );
 const char * test_value_appender( void );
 
-StumplessValueList * GetTestList( void );
-
 int
 main( void )
 {
@@ -102,7 +100,10 @@ main( void )
 const char *
 test_copy( void )
 {
-  StumplessValueList * list = GetTestList();
+  StumplessValueList * list = BuildValueList();
+  if( list == NULL )
+    return "could not build the test list";
+  
   StumplessValueList * copy;
   
   copy = StumplessCopyValueList( NULL );
@@ -137,9 +138,9 @@ test_destructive_write( void )
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a null file did not generate the correct error";
   
-  StumplessValueList * list = GetTestList();
+  StumplessValueList * list = BuildValueList();
   if( list == NULL )
-    return "the test list could not be created";
+    return "could not build the test list";
   
   status = StumplessWriteAndDestroyValueList( stdout, list );
   if( status != STUMPLESS_SUCCESS )
@@ -153,13 +154,13 @@ test_list_appender( void )
 {
   StumplessStatusCode status;
   
-  StumplessValueList * list_1 = GetTestList();
+  StumplessValueList * list_1 = BuildValueList();
   if( list_1 == NULL )
-    return "the first test list could not be created";
+    return "could not build the first list";
 
-  StumplessValueList * list_2 = GetTestList();
+  StumplessValueList * list_2 = BuildValueList();
   if( list_2 == NULL )
-    return "the second test list could not be created";
+    return "could not build the second list";
   status = StumplessAppendStringToValueList( list_2, "this should be last" );
   if( status != STUMPLESS_SUCCESS )
     return "an extra value could not be added to the second list";
@@ -214,10 +215,9 @@ test_list_destructor( void )
   
   StumplessDestroyValueList( list );
   
-  list = GetTestList();
-  
+  list = BuildValueList();
   if( list == NULL )
-     return "the list was not created";
+     return "could not build the test list";
   
   StumplessDestroyValueList( list );
   
@@ -227,9 +227,9 @@ test_list_destructor( void )
 const char *
 test_into_string( void )
 {
-  StumplessValueList * list = GetTestList();
+  StumplessValueList * list = BuildValueList();
   if( list == NULL )
-    return "the test list could not be created";
+    return "could not build the test list";
   char str[1000];
   
   StumplessStatusCode status = StumplessValueListIntoString( NULL, list );
@@ -244,8 +244,8 @@ test_into_string( void )
   if( status != STUMPLESS_SUCCESS )
     return "a valid string was not properly written into";
   
-  if( strstr( str, "testing" ) == NULL )
-    return "the new string did not contain the list strings";
+  if( strstr( str, "abcdefgh" ) == NULL )
+    return "the new string did not contain parts of the list";
   
   return NULL;
 }
@@ -261,7 +261,9 @@ test_is_empty( void )
   if( !StumplessValueListIsEmpty( list ) )
     return "a newly created list pointer was not deemed empty";
   
-  list = GetTestList();
+  list = BuildValueList();
+  if( list == NULL )
+    return "could not build the test list";
   if( StumplessValueListIsEmpty( list ) )
     return "a full list was deemed empty";
   
@@ -271,9 +273,9 @@ test_is_empty( void )
 const char *
 test_stream_write( void )
 {
-  StumplessValueList * list = GetTestList();
+  StumplessValueList * list = BuildValueList();
   if( list == NULL )
-    return "the test list could not be created";
+    return "could not build the test list";
   
   StumplessStatusCode status = StumplessWriteValueListToStream( stdout, list );
   if( status != STUMPLESS_SUCCESS )
@@ -290,9 +292,9 @@ test_string_appender( void )
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty list did not generate the correct error";
   
-  StumplessValueList * list = GetTestList();
+  StumplessValueList * list = BuildValueList();
   if( list == NULL )
-    return "the test list could not be created";
+    return "could not build the test list";
   
   status = StumplessAppendStringToValueList( list, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
@@ -320,9 +322,9 @@ test_string_appender( void )
 const char *
 test_to_string( void )
 {
-  StumplessValueList * list = GetTestList();
+  StumplessValueList * list = BuildValueList();
   if( list == NULL )
-    return "the test list could not be created";
+    return "could not build the test list";
   char * str;
   
   str = StumplessValueListToString( NULL );
@@ -342,9 +344,9 @@ test_to_string( void )
 const char *
 test_unsigned_int_appender( void )
 {
-  StumplessValueList * list = GetTestList();
+  StumplessValueList * list = BuildValueList();
   if( list == NULL )
-    return "the test list could not be created";
+    return "could not build the test list";
   
   StumplessStatusCode status;
   status = StumplessAppendUnsignedIntToValueList( NULL, 3 );
@@ -405,36 +407,4 @@ test_value_appender( void )
     return "the last value was not correct";
   
   return NULL;
-}
-
-StumplessValueList *
-GetTestList( void )
-{
-  StumplessStatusCode status;
-  StumplessValueList * list = StumplessNewValueList();
-  if( list == NULL )
-    return NULL;
-  
-  StumplessValue * val_1 = StumplessValueFromString( "test" );
-  StumplessValue * val_2 = StumplessValueFromString( "string" );
-  StumplessValue * val_3 = StumplessValueFromString( "tor" );
-  StumplessValue * val_4 = StumplessValueFromString( "testing" );
-  
-  status = StumplessAppendValueToValueList( list, val_1 );
-  if( status != STUMPLESS_SUCCESS )
-    return NULL;
-  
-  status = StumplessAppendValueToValueList( list, val_2 );
-  if( status != STUMPLESS_SUCCESS )
-    return NULL;
-  
-  status = StumplessAppendValueToValueList( list, val_3 );
-  if( status != STUMPLESS_SUCCESS )
-    return NULL;
-  
-  status = StumplessAppendValueToValueList( list, val_4 );
-  if( status != STUMPLESS_SUCCESS )
-    return NULL;
-  
-  return list;
 }

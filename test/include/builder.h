@@ -42,6 +42,9 @@ BuildUnsignedIntValue( void );
 StumplessValue *
 BuildUnsignedShortValue( void );
 
+StumplessValueList *
+BuildValueList( void );
+
 StumplessValue *
 BuildVoidValue( void );
 
