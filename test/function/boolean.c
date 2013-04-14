@@ -4,9 +4,9 @@
 
 #include <stumpless.h>
 
-const char * test_to_string( void );
+#include "builder.h"
 
-StumplessBoolean * GetTestBoolean( void );
+const char * test_to_string( void );
 
 int
 main( void )
@@ -29,9 +29,9 @@ main( void )
 const char *
 test_to_string( void )
 {
-  StumplessBoolean * boolean = GetTestBoolean();
+  StumplessBoolean * boolean = BuildBoolean();
   if( boolean == NULL )
-    return "the test boolean value could not be created";
+    return "could not build the test boolean";
   
   char * str = StumplessBooleanToString( NULL );
   if( str != NULL )
@@ -44,22 +44,4 @@ test_to_string( void )
     return "the test boolean value did not yield the correct string output";
   
   return NULL;
-}
-
-StumplessBoolean *
-GetTestBoolean( void )
-{
-  StumplessBoolean * boolean = malloc( sizeof( StumplessBoolean ) );
-  if( boolean == NULL )
-    return NULL;
-  
-  boolean->format = malloc( sizeof( StumplessBooleanFormat ) );
-  if( boolean->format == NULL )
-    return NULL;
-  
-  boolean->value = 1;
-  boolean->format->true_description = "true";
-  boolean->format->false_description = "false";
-  
-  return boolean;
 }

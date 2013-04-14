@@ -3,6 +3,9 @@
 
 #include <stumpless.h>
 
+StumplessBoolean *
+BuildBoolean( void );
+
 StumplessFormattedOutput *
 BuildByteFormattedOutput( void );
 

@@ -4,6 +4,24 @@
 
 #include "builder.h"
 
+StumplessBoolean *
+BuildBoolean( void )
+{
+  StumplessBoolean * boolean = malloc( sizeof( StumplessBoolean ) );
+  if( boolean == NULL )
+    return NULL;
+  
+  boolean->format = malloc( sizeof( StumplessBooleanFormat ) );
+  if( boolean->format == NULL )
+    return NULL;
+  
+  boolean->value = 1;
+  boolean->format->true_description = "true";
+  boolean->format->false_description = "false";
+  
+  return boolean;
+}
+
 StumplessFormattedOutput *
 BuildByteFormattedOutput( void )
 {
