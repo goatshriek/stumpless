@@ -13,4 +13,6 @@ check_PROGRAMS = test/function/boolean \
                  test/function/value_list
 TESTS = $(check_PROGRAMS)
 
+include test/helper/Makefile.am
+
 include test/function/Makefile.am
