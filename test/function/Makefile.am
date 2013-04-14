@@ -6,33 +6,40 @@ test_function_boolean_CFLAGS = $(test_flags)
 test_function_boolean_LDADD = $(test_libraries)
 
 test_function_configuration_SOURCES = test/function/configuration.c
-test_function_configuration_LDADD = libstumpless.la
+test_function_configuration_CFLAGS = $(test_flags)
+test_function_configuration_LDADD = $(test_libraries)
 
 test_function_entry_SOURCES = test/function/entry.c
-test_function_entry_LDADD = libstumpless.la
+test_function_entry_CFLAGS = $(test_flags)
+test_function_entry_LDADD = $(test_libraries)
 
 test_function_event_SOURCES = test/function/event.c
-test_function_event_LDADD = libstumpless.la
+test_function_event_CFLAGS = $(test_flags)
+test_function_event_LDADD = $(test_libraries)
 
 test_function_file_output_SOURCES = test/function/file_output.c
-test_function_file_output_LDADD = libstumpless.la
+test_function_file_output_CFLAGS = $(test_flags)
+test_function_file_output_LDADD = $(test_libraries)
 
 test_function_formatted_output_SOURCES = test/function/formatted_output.c
 test_function_formatted_output_CFLAGS = $(test_flags)
 test_function_formatted_output_LDADD = $(test_libraries)
 
 test_function_level_SOURCES = test/function/level.c
-test_function_level_LDADD = libstumpless.la
+test_function_level_CFLAGS = $(test_flags)
+test_function_level_LDADD = $(test_libraries)
 
 test_function_quick_loggers_SOURCES =  test/function/quick_loggers.c
-test_function_quick_loggers_LDADD = libstumpless.la
+test_function_quick_loggers_CFLAGS = $(test_flags)
+test_function_quick_loggers_LDADD = $(test_libraries)
 
 test_function_status_SOURCES = test/function/status.c
-test_function_status_LDADD = libstumpless.la
+test_function_status_CFLAGS = $(test_flags)
+test_function_status_LDADD = $(test_libraries)
 
-test_function_string_helper_SOURCES = test/function/string_helper.c \
-                                      include/string_helper.h
-test_function_string_helper_LDADD = libstumpless.la
+test_function_string_helper_SOURCES = test/function/string_helper.c
+test_function_string_helper_CFLAGS = $(test_flags)
+test_function_string_helper_LDADD = $(test_libraries)
 
 test_function_text_formatter_SOURCES = test/function/text_formatter.c
 test_function_text_formatter_CFLAGS = $(test_flags)

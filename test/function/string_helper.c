@@ -4,6 +4,8 @@
 
 #include "string_helper.h"
 
+#include "helper.h"
+
 const char * test_copy_string( void );
 const char * test_is_empty( void );
 
@@ -13,17 +15,8 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_copy_string();
-  if( result != NULL ){
-    printf( "Copy String Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_is_empty();
-  if( result != NULL ){
-    printf( "Is Empty Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_copy_string, "Copy String Test Failed: %s\n" )
+  RUN_TEST( test_is_empty, "Is Empty Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

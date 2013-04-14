@@ -20,47 +20,14 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_into_string();
-  if( result != NULL ){
-    printf( "Into String Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_is_empty();
-  if( result != NULL ){
-    printf( "Is Empty Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_output_appender();
-  if( result != NULL ){
-    printf( "Output Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_string_appender();
-  if( result != NULL ){
-    printf( "String Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_to_string();
-  if( result != NULL ){
-    printf( "To String Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_unsigned_int_appender();
-  if( result != NULL ){
-    printf( "Unsigned Int Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_value_appender();
-  if( result != NULL ){
-    printf( "Value Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_into_string, "Into String Test Failed: %s\n" )
+  RUN_TEST( test_is_empty, "Is Empty Test Failed: %s\n" )
+  RUN_TEST( test_output_appender, "Output Appender Test Failed: %s\n" )
+  RUN_TEST( test_string_appender, "String Appender Test Failed: %s\n" )
+  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
+  RUN_TEST( test_unsigned_int_appender,
+            "Unsigned Int Appender Test Failed: %s\n" )
+  RUN_TEST( test_value_appender, "Value Appender Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

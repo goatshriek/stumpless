@@ -4,6 +4,8 @@
 
 #include <stumpless.h>
 
+#include "helper.h"
+
 const char * test_default_entries( void );
 const char * test_entry_for_event( void );
 const char * test_to_string( void );
@@ -14,23 +16,9 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_default_entries();
-  if( result != NULL ){
-    printf( "Default Entry Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_entry_for_event();
-  if( result != NULL ){
-    printf( "Entry For Event Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_to_string();
-  if( result != NULL ){
-    printf( "To String Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_default_entries, "Default Entry Test Failed: %s\n" )
+  RUN_TEST( test_entry_for_event, "Entry For Event Test Failed: %s\n" )
+  RUN_TEST( test_to_string, "To String Test: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

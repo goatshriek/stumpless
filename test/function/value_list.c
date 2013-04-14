@@ -25,71 +25,18 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_copy();
-  if( result != NULL ){
-    printf( "Copy Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_destructive_write();
-  if( result != NULL ){
-    printf( "Destructive Write Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_list_appender();
-  if( result != NULL ){
-    printf( "List Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_list_constructor();
-  if( result != NULL ){
-    printf( "List Constructor Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_list_destructor();
-  if( result != NULL ){
-    printf( "List Destrutor Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_into_string();
-  if( result != NULL ){
-    printf( "Write Into String Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_is_empty();
-  if( result != NULL ){
-    printf( "Is Empty Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_stream_write();
-  if( result != NULL ){
-    printf( "Stream Write Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_string_appender();
-  if( result != NULL ){
-    printf( "String Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_unsigned_int_appender();
-  if( result != NULL ){
-    printf( "Unsigned Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_value_appender();
-  if( result != NULL ){
-    printf( "Value Appender Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_copy, "Copy Test Failed: %s\n" )
+  RUN_TEST( test_destructive_write, "Destructive Write Test Failed: %s\n" )
+  RUN_TEST( test_list_appender, "List Appender Test Failed: %s\n" )
+  RUN_TEST( test_list_constructor, "List Constructor Test Failed: %s\n" )
+  RUN_TEST( test_list_destructor, "List Destructor Test Failed: %s\n" )
+  RUN_TEST( test_into_string, "Write Into String Test Failed: %s\n" )
+  RUN_TEST( test_is_empty, "Is Empty Test Failed: %s\n" )
+  RUN_TEST( test_stream_write, "Stream Write Test Failed: %s\n" )
+  RUN_TEST( test_string_appender, "String Appender Test Failed: %s\n" )
+  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
+  RUN_TEST( test_unsigned_int_appender, "Unsigned Appender Test Failed: %s\n" )
+  RUN_TEST( test_value_appender, "Value Appender Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -335,8 +282,8 @@ test_to_string( void )
   if( str == NULL )
     return "a valid list returend a null string";
   
-  if( strstr( str, "testing" ) == NULL )
-    return "the new string did not contain the list strings";
+  if( strstr( str, "abcdefg" ) == NULL )
+    return "the new string did not contain parts of the list";
   
   return NULL;
 }

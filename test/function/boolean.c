@@ -14,11 +14,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_to_string();
-  if( result != NULL ){
-    printf( "To String Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

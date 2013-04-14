@@ -20,46 +20,14 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_destructor();
-  if( result != NULL ){
-    printf( "Destructor Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_into_string();
-  if( result != NULL ){
-    printf( "Write Into String Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_outside_access();
-  if( result != NULL ){
-    printf( "Outside Access Test Failed: %s\n", result );
-  }
-  
-  result = test_stream_write();
-  if( result != NULL ){
-    printf( "Stream Write Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_to_string();
-  if( result != NULL ){
-    printf( "To String Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_value_from_string();
-  if( result != NULL ){
-    printf( "Value From String Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_value_from_unsigned_int();
-  if( result != NULL ){
-    printf( "Value From Unsigned Int Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_destructor, "Destructor Test Failed: %s\n" )
+  RUN_TEST( test_into_string, "Write Into String Test Failed: %s\n" )
+  RUN_TEST( test_outside_access, "Outside Access Test Failed: %s\n" )
+  RUN_TEST( test_stream_write, "Stream Write Test Failed: %s\n" )
+  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
+  RUN_TEST( test_value_from_string, "Value From String Test Failed: %s\n" )
+  RUN_TEST( test_value_from_unsigned_int,
+            "Value From Unsigned Int Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

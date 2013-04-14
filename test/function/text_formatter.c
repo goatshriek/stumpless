@@ -22,59 +22,21 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_entry_formatter();
-  if( result != NULL ){
-    printf( "Entry Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_entry_attribute_formatter();
-  if( result != NULL ){
-    printf( "Entry Attribute Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_entry_attribute_list_formatter();
-  if( result != NULL ){
-    printf( "Entry Attribute List Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_entry_summary_formatter();
-  if( result != NULL ){
-    printf( "Entry Summary Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-   
-  result = test_event_attribute_formatter();
-  if( result != NULL ){
-    printf( "Event Attribute Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_event_formatter();
-  if( result != NULL ){
-    printf( "Event Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_event_summary_formatter();
-  if( result != NULL ){
-    printf( "Event Summary Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_level_formatter();
-  if( result != NULL ){
-    printf( "Level Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
-  
-  result = test_value_formatter();
-  if( result != NULL ){
-    printf( "Event Attribute Value Formatter Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_entry_formatter, "Entry Formatter Test Failed: %s\n" )
+  RUN_TEST( test_entry_attribute_formatter,
+            "Entry Attribute Formatter Test Failed: %s\n" )
+  RUN_TEST( test_entry_attribute_list_formatter,
+            "Entry Attribute List Formatter Test Failed: %s\n" )
+  RUN_TEST( test_entry_summary_formatter,
+            "Entry Summary Formatter Test Failed: %s\n" )
+  RUN_TEST( test_event_attribute_formatter,
+            "Event Attribute Formatter Test Failed: %s\n" )
+  RUN_TEST( test_event_formatter, "Event Formatter Test Failed: %s\n" )
+  RUN_TEST( test_event_summary_formatter,
+            "Event Summary Formatter Test Failed: %s\n" )
+  RUN_TEST( test_level_formatter, "Level Formatter Test Failed: %s\n" )
+  RUN_TEST( test_value_formatter,
+            "Event Attribute Value Formatter Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

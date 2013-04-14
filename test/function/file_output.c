@@ -3,6 +3,8 @@
 
 #include <stumpless.h>
 
+#include "helper.h"
+
 const char * test_file_write( void );
 
 int
@@ -11,11 +13,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_file_write();
-  if( result != NULL ){
-    printf( "File Write Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_file_write, "File Write Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

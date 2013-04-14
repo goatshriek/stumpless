@@ -3,6 +3,8 @@
 
 #include <stumpless.h>
 
+#include "helper.h"
+
 const char * test_initialization( void );
 
 int
@@ -10,12 +12,8 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
-
-  result = test_initialization();
-  if( result != NULL ){
-    printf( "Initialization Test Failed: %s\n", result );
-    failure_count++;
-  }
+  
+  RUN_TEST( test_initialization, "Initalization Test Failed: %s\n" )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;

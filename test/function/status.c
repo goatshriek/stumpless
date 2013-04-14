@@ -3,7 +3,9 @@
 
 #include <stumpless.h>
 
-const char * test_status_to_string( void );
+#include "helper.h"
+
+const char * test_to_string( void );
 
 int
 main( void )
@@ -11,11 +13,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  result = test_status_to_string();
-  if( result != NULL ){
-    printf( "Status to String Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -24,7 +22,7 @@ main( void )
 }
 
 const char *
-test_status_to_string( void )
+test_to_string( void )
 {
   if( StumplessStatusToString( STUMPLESS_SUCCESS ) == NULL )
     return "success code was not properly converted";

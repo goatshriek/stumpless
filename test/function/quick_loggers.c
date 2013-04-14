@@ -3,6 +3,8 @@
 
 #include <stumpless.h>
 
+#include "helper.h"
+
 const char * test_configuration_initializations( void );
 const char * test_status_codes( void );
 
@@ -12,17 +14,9 @@ main( void )
   unsigned failure_count = 0;
   const char * result = NULL;
   
-  result = test_configuration_initializations();
-  if( result != NULL ){
-    printf( "Configuration Initializations Test Failed: %s\n", result );
-    failure_count++;
-  }
-
-  result = test_status_codes();
-  if( result != NULL ){
-    printf( "Status Code Test Failed: %s\n", result );
-    failure_count++;
-  }
+  RUN_TEST( test_configuration_initializations,
+            "Configuration Initializations Test Failed: %s\n" )
+  RUN_TEST( test_status_codes, "Status Code Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
