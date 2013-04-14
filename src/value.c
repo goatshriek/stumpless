@@ -121,25 +121,25 @@ StumplessValueIntoString( char * str, StumplessValue * value )
   
   switch( value->type ){
     case STUMPLESS_UNSIGNED_SHORT:
-      SINGLE_VALUE_INTO_STRING( data->u_s, "%i" )
+      SINGLE_VALUE_INTO_STRING( data->u_s, "%hu" )
       break;
     case STUMPLESS_SHORT:
       SINGLE_VALUE_INTO_STRING( data->s, "%i" )
       break;
     case STUMPLESS_UNSIGNED_INT:
-      SINGLE_VALUE_INTO_STRING( data->u_i, "%i" )
+      SINGLE_VALUE_INTO_STRING( data->u_i, "%u" )
       break;
     case STUMPLESS_INT:
       SINGLE_VALUE_INTO_STRING( data->i, "%i" )
       break;
     case STUMPLESS_UNSIGNED_LONG:
-      SINGLE_VALUE_INTO_STRING( data->u_l, "%li" )
+      SINGLE_VALUE_INTO_STRING( data->u_l, "%lu" )
       break;
     case STUMPLESS_LONG:
       SINGLE_VALUE_INTO_STRING( data->l, "%li" )
       break;
     case STUMPLESS_UNSIGNED_LONG_LONG:
-      SINGLE_VALUE_INTO_STRING( data->u_l_l, "%lli" )
+      SINGLE_VALUE_INTO_STRING( data->u_l_l, "%llu" )
       break;
     case STUMPLESS_LONG_LONG:
       SINGLE_VALUE_INTO_STRING( data->l_l, "%lli" )
@@ -160,25 +160,25 @@ StumplessValueIntoString( char * str, StumplessValue * value )
       SINGLE_VALUE_INTO_STRING( data->l_d, "%Lg" )
       break;
     case STUMPLESS_UNSIGNED_SHORT_POINTER:
-      ARRAY_INTO_STRING( data->u_s_p, "%i" )
+      ARRAY_INTO_STRING( data->u_s_p, "%hu" )
       break;
     case STUMPLESS_SHORT_POINTER:
       ARRAY_INTO_STRING( data->s_p, "%i" )
       break;
     case STUMPLESS_UNSIGNED_INT_POINTER:
-      ARRAY_INTO_STRING( data->u_i_p, "%i" )
+      ARRAY_INTO_STRING( data->u_i_p, "%u" )
       break;
     case STUMPLESS_INT_POINTER:
       ARRAY_INTO_STRING( data->i_p, "%i" )
       break;
     case STUMPLESS_UNSIGNED_LONG_POINTER:
-      ARRAY_INTO_STRING( data->u_l_p, "%li" )
+      ARRAY_INTO_STRING( data->u_l_p, "%lu" )
       break;
     case STUMPLESS_LONG_POINTER:
       ARRAY_INTO_STRING( data->l_p, "%li" )
       break;
     case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
-      ARRAY_INTO_STRING( data->u_l_l_p, "%lli" )
+      ARRAY_INTO_STRING( data->u_l_l_p, "%llu" )
       break;
     case STUMPLESS_LONG_LONG_POINTER:
       ARRAY_INTO_STRING( data->l_l_p, "%lli" )

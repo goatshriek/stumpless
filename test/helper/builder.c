@@ -202,6 +202,41 @@ BuildEventAttributeList( void )
   return list;
 }
 
+StumplessValue *
+BuildIntArrayValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->format = NULL;
+  value->type = STUMPLESS_INT_POINTER;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  
+  int * array = malloc( sizeof( int ) * 10 );
+  if( array == NULL )
+    return NULL;
+  
+  array[0] = 0;
+  array[1] = 1;
+  array[2] = 2;
+  array[3] = 3;
+  array[4] = 4;
+  array[5] = 5;
+  array[6] = 6;
+  array[7] = 7;
+  array[8] = 8;
+  array[9] = 9;
+  
+  value->data->i_p = array;
+  value->length = 10;
+  
+  return value;
+}
+
 StumplessLevel *
 BuildLevel( void )
 {
@@ -250,7 +285,7 @@ BuildTextFormattedOutput( void )
 }
 
 StumplessValue *
-BuildUnsignedShortValue( void )
+BuildUnsignedIntValue( void )
 {
   StumplessValue * value = malloc( sizeof( StumplessValue ) );
   if( value == NULL )
@@ -262,7 +297,59 @@ BuildUnsignedShortValue( void )
   value->data = malloc( sizeof( StumplessValueData ) );
   if( value->data == NULL )
     return NULL;
-  value->data->u_i = 736;
+  value->data->u_i = 4294967196u;
+  
+  return value;
+}
+
+StumplessValue *
+BuildUnsignedShortValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->format = NULL;
+  value->type = STUMPLESS_UNSIGNED_SHORT;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  value->data->u_s = 65000u;
+  
+  return value;
+}
+
+StumplessValue *
+BuildVoidValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->type = STUMPLESS_VOID_POINTER;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  
+  char * generic = malloc( sizeof( char ) * 10 );
+  if( generic == NULL )
+    return NULL;
+  
+  generic[0] = 'a';
+  generic[1] = 'b';
+  generic[2] = 'c';
+  generic[3] = 'd';
+  generic[4] = 'e';
+  generic[5] = 'f';
+  generic[6] = 'g';
+  generic[7] = 'h';
+  generic[8] = 'i';
+  generic[9] = 'j';
+  
+  value->data->v_p = (void *) generic;
+  value->length = sizeof( char ) * 10;
   
   return value;
 }

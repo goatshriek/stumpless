@@ -39,7 +39,9 @@ test_function_text_formatter_CFLAGS = $(test_flags)
 test_function_text_formatter_LDADD = $(test_libraries)
 
 test_function_value_SOURCES = test/function/value.c
-test_function_value_LDADD = libstumpless.la
+test_function_value_CFLAGS = $(test_flags)
+test_function_value_LDADD = $(test_libraries)
 
 test_function_value_list_SOURCES = test/function/value_list.c
-test_function_value_list_LDADD = libstumpless.la
+test_function_value_list_CFLAGS = $(test_flags)
+test_function_value_list_LDADD = $(test_libraries)

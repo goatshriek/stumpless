@@ -27,6 +27,9 @@ BuildEventAttribute( void );
 StumplessEventAttribute **
 BuildEventAttributeList( void );
 
+StumplessValue *
+BuildIntArrayValue( void );
+
 StumplessLevel *
 BuildLevel( void );
 
@@ -34,6 +37,12 @@ StumplessFormattedOutput *
 BuildTextFormattedOutput( void );
 
 StumplessValue *
+BuildUnsignedIntValue( void );
+
+StumplessValue *
 BuildUnsignedShortValue( void );
+
+StumplessValue *
+BuildVoidValue( void );
 
 #endif

@@ -4,6 +4,8 @@
 
 #include <stumpless.h>
 
+#include "builder.h"
+
 const char * test_destructor( void );
 const char * test_into_string( void );
 const char * test_outside_access ( void );
@@ -11,10 +13,6 @@ const char * test_stream_write( void );
 const char * test_to_string( void );
 const char * test_value_from_string( void );
 const char * test_value_from_unsigned_int( void );
-
-StumplessValue * GetTestArrayValue( void );
-StumplessValue * GetTestUnsignedIntValue( void );
-StumplessValue * GetTestVoidValue( void );
 
 int
 main( void )
@@ -86,9 +84,9 @@ test_destructor( void )
 const char *
 test_into_string( void )
 {
-  StumplessValue * value = GetTestVoidValue();
+  StumplessValue * value = BuildVoidValue();
   if( value == NULL )
-    return "the test value could not be created";
+    return "could not build the test value";
   
   char str[11];
   
@@ -107,12 +105,12 @@ test_into_string( void )
   if( strstr( str, "cdefghij" ) == NULL )
     return "the string did not have the correct contents in it";
   
-  value = GetTestUnsignedIntValue();
+  value = BuildUnsignedIntValue();
   status = StumplessValueIntoString( str, value );
   if( status != STUMPLESS_SUCCESS )
     return "a singular unsigned int value and string generated an error";
   
-  if( strcmp( str, "34") != 0 )
+  if( strcmp( str, "4294967196") != 0 )
     return "the unsigned int string did not match the value's data";
   
   return NULL;
@@ -145,7 +143,7 @@ test_outside_access( void )
   
   num_list[2] = 4;
   
-  if( value->data->f_p[2] != 4 )
+  if( value->data->l_p[2] != 4 )
     return "the array held by the value could not be modified from the outside";
   
   return NULL;
@@ -172,7 +170,7 @@ test_stream_write( void )
   if( status != STUMPLESS_SUCCESS )
     return "a value without a format specifier generated an error";
   
-  value = GetTestArrayValue();
+  value = BuildIntArrayValue();
   status = StumplessWriteValueToStream( stdout, value );
   if( status != STUMPLESS_SUCCESS )
     return "a value with an array were not written to the stream successfully";
@@ -182,7 +180,9 @@ test_stream_write( void )
   if( status != STUMPLESS_SUCCESS )
     return "a value array without a format specifier generated an error";
   
-  value = GetTestVoidValue();
+  value = BuildVoidValue();
+  if( value == NULL )
+    return "could not build the test value";
   status = StumplessWriteValueToStream( stdout, value );
   if( status != STUMPLESS_SUCCESS )
     return "the void pointer was not handled properly";
@@ -193,7 +193,7 @@ test_stream_write( void )
 const char *
 test_to_string( void )
 {
-  StumplessValue * value = GetTestArrayValue();
+  StumplessValue * value = BuildIntArrayValue();
   if( value == NULL )
     return "the test value could not be created";
   char * str;
@@ -248,85 +248,4 @@ test_value_from_unsigned_int( void )
     return "the value did not contain the correct number";
   
   return NULL;
-}
-
-StumplessValue *
-GetTestArrayValue( void )
-{
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
-  if( value == NULL )
-    return NULL;
-  
-  value->data = malloc( sizeof( StumplessValueData ) );
-  if( value->data == NULL )
-    return NULL;
-  
-  value->format = "%d";
-  value->type = STUMPLESS_INT_POINTER;
-  int * num_list = malloc( sizeof( int ) * 10 );
-  num_list[0] = 0;
-  num_list[1] = 1;
-  num_list[2] = 2;
-  num_list[3] = 3;
-  num_list[4] = 4;
-  num_list[5] = 5;
-  num_list[6] = 6;
-  num_list[7] = 7;
-  num_list[8] = 8;
-  num_list[9] = 9;
-  
-  value->data->i_p = num_list;
-  value->length = 10;
-  
-  return value;
-}
-
-StumplessValue *
-GetTestUnsignedIntValue( void )
-{
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
-  if( value == NULL )
-    return NULL;
-  
-  value->data = malloc( sizeof( StumplessValueData ) );
-  if( value->data == NULL )
-    return NULL;
-  
-  value->type = STUMPLESS_UNSIGNED_INT;
-  value->data->u_i = 34;
-  
-  return value;
-}
-
-StumplessValue *
-GetTestVoidValue( void )
-{
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
-  if( value == NULL )
-    return NULL;
-  
-  value->data = malloc( sizeof( StumplessValueData ) );
-  if( value->data == NULL )
-    return NULL;
-  
-  value->type = STUMPLESS_VOID_POINTER;
-  char * generic = malloc( sizeof( char ) * 10 );
-  if( generic == NULL )
-    return NULL;
-  
-  generic[0] = 'a';
-  generic[1] = 'b';
-  generic[2] = 'c';
-  generic[3] = 'd';
-  generic[4] = 'e';
-  generic[5] = 'f';
-  generic[6] = 'g';
-  generic[7] = 'h';
-  generic[8] = 'i';
-  generic[9] = 'j';
-  
-  value->data->v_p = (void *) generic;
-  value->length = sizeof( char ) * 10;
-  
-  return value;
 }
