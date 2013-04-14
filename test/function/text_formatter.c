@@ -16,10 +16,6 @@ const char * test_event_summary_formatter( void );
 const char * test_level_formatter( void );
 const char * test_value_formatter( void );
 
-StumplessEventAttribute ** GetTestEventAttributeList( void );
-StumplessLevel * GetTestLevel( void );
-StumplessValue * GetTestValueUnsignedShort( void );
-
 int
 main( void )
 {
@@ -321,80 +317,66 @@ test_event_formatter( void )
   if( output != NULL )
     return "the output was not null for a null pointer";
   
-  event = malloc( sizeof( StumplessEvent ) );
+  event = BuildEvent();
   if( event == NULL )
-    return "the test event could not be created";
-  
-  event->name = NULL;
-  event->level = NULL;
-  event->attributes = NULL;
-  event->attribute_count = 0;
+    return "could not build the test event";
   
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, "event" ) != 0 )
-    return "an empty event did not generate the correct string";
-  
-  // todo replace this usage with the builder module
-  // creating the values to give the event for each test
-  const char * name = "Test Event";
-  StumplessLevel * level = GetTestLevel();
-  if( level == NULL )
-    return "the test level could not be created";
-  StumplessEventAttribute ** list = GetTestEventAttributeList();
-  if( list == NULL )
-    return "the test event attribute list could not be created";
-  
-  event->name = name;
-  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
-  if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, name ) != 0 )
-    return "an event with only a name was not formatted correctly";
-  
-  event->level = level;
-  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
-  if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, "Test Event (Test Level: level 42)" ) != 0 )
-    return "an event without a list was not formatted correctly";
+    return "a full event could not be formatted";
+  if( strcmp( str, "Test Event (Test Level: level 42): Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
+    return "a full event was not properly formatted";
   
   event->name = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, "Test Level: level 42 event" ) != 0 )
-    return "an event with only a level was not formatted correctly";
-  
-  event->attributes = list;
-  event->attribute_count = 3;
-  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
-  if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, "Test Level: level 42 event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
+    return "an event without a name could not be formatted";
+  if( strcmp( str, "event (Test Level: level 42): Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
     return "an event without a name was not formatted correctly";
   
-  event->name = name;
-  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
-  if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, "Test Event (Test Level: level 42): attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
-    return "an event with all components was not formatted correctly";
-  
   event->level = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, "Test Event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
+    return "an event with only an attribute list could not be formatted";
+  if( strcmp( str, "event: Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
+    return "an event with only an attribute list was not formatted correctly";
+  
+  event->name = "Test Event";
+  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
+  if( str == NULL )
+    return "an event without a level could not be formatted";
+  if( strcmp( str, "Test Event: Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
     return "an event without a level was not formatted correctly";
+  
+  event->attributes = NULL;
+  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
+  if( str == NULL )
+    return "an event with only a name could not be formatted";
+  if( strcmp( str, "Test Event" ) != 0 )
+    return "an event with only a name was not formatted correctly";
+  
+  event->level = BuildLevel();
+  if( event->level == NULL )
+    return "could not build the test level";
+  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
+  if( str == NULL )
+    return "an event without an attribute list could not be formatted";
+  if( strcmp( str, "Test Event (Test Level: level 42)" ) != 0 )
+    return "an event without an attribute list was not formatted correctly";
   
   event->name = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
-    return "the output was not created";
-  if( strcmp( str, "event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
-    return "an event with only a list was not formatted correctly";
+    return "an event with only a level could not be formatted";
+  if( strcmp( str, "event (Test Level: level 42)" ) != 0 )
+    return "an event without a level was not formatted correctly";
+  
+  event->level = NULL;
+  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
+  if( str == NULL )
+    return "an empty event could not be formatted";
+  if( strcmp( str, "event" ) != 0 )
+    return "an empty event was not formatted correctly";
   
   return NULL;
 }
@@ -420,9 +402,11 @@ test_event_summary_formatter( void )
   
   event->name = NULL;
   output = StumplessEventSummaryAsText( event );
+  if( output == NULL )
+    return "an event without a name could not be formatted";
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Level: level 42 event" ) != 0 )
-    return "an event without a name did not generate the correct summary";
+  if( strcmp( str, "event (Test Level: level 42)" ) != 0 )
+    return "an event without a name was not formatted correctly";
   
   event->level = NULL;
   output = StumplessEventSummaryAsText( event );
@@ -444,29 +428,30 @@ test_level_formatter( void )
 {
   StumplessLevel * level = NULL;
   StumplessFormattedOutput * output;
-  char * string_output;
+  char * str;
   
   output = StumplessLevelAsText( level );
   if( output != NULL )
     return "the output was not null for a null pointer";
   
-  level = malloc( sizeof( StumplessLevel ) );
+  level = BuildLevel();
   if( level == NULL )
-    return "the test level could not be created";
+    return "could not build the test level";
   
-  level->value = 30;
+  output = StumplessLevelAsText( level );
+  if( output == NULL )
+    return "a full level could not be formatted";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "Test Level: level 42" ) != 0 )
+    return "a full level was not formatted correctly";
+  
   level->name = NULL;
   output = StumplessLevelAsText( level );
-  string_output = StumplessFormattedOutputToString( output );
-  if( strcmp( string_output, "level 30" ) != 0 )
-    return "the output was not correct for a level with no name";
-  
-  level->value = 67;
-  level->name = "Test Level";
-  output = StumplessLevelAsText( level );
-  string_output = StumplessFormattedOutputToString( output );
-  if( strcmp( string_output, "Test Level: level 67" ) != 0 )
-    return "the output was not correct for a level with a name";
+  if( output == NULL )
+    return "a level with no name could not be formatted";
+  str = StumplessFormattedOutputToString( output );
+  if( strcmp( str, "level 42" ) != 0 )
+    return "a level with no name was not formatted correctly";
   
   return NULL;
 }
@@ -481,7 +466,7 @@ test_value_formatter( void )
   if( output != NULL )
     return "the output was not null for a null pointer";
   
-  value = GetTestValueUnsignedShort();
+  value = BuildUnsignedShortValue();
   output = StumplessValueAsText( value );
   if( output == NULL )
     return "the output was null for a valid value";
@@ -489,64 +474,4 @@ test_value_formatter( void )
     return "the output did not have the correct type";
   
   return NULL;
-}
-
-StumplessEventAttribute **
-GetTestEventAttributeList( void )
-{
-  StumplessEventAttribute ** list;
-  
-  StumplessEventAttribute * attr_0 = malloc( sizeof( StumplessEventAttribute ));
-  StumplessEventAttribute * attr_1 = malloc( sizeof( StumplessEventAttribute ));
-  StumplessEventAttribute * attr_2 = malloc( sizeof( StumplessEventAttribute ));
-  list = malloc( sizeof( StumplessEventAttribute * ) * 3 );
-  if( attr_0 == NULL || attr_1 == NULL || attr_2 == NULL || list == NULL )
-    return NULL;
-  
-  attr_0->name = "attr_0 name";
-  attr_0->default_value = StumplessValueFromString( "val_0" );
-  
-  attr_1->name = NULL;
-  attr_1->default_value = StumplessValueFromString( "val_1" );
-  
-  attr_2->name = "attr_2 name";
-  attr_2->default_value = NULL;
-  
-  list[0] = attr_0;
-  list[1] = attr_1;
-  list[2] = attr_2;
-  
-  return list;
-}
-
-StumplessLevel *
-GetTestLevel( void )
-{
-  StumplessLevel * level = malloc( sizeof( StumplessLevel ) );
-  if( level == NULL )
-    return NULL;
-  
-  level->value = 42;
-  level->name = "Test Level";
-  return level;
-}
-
-StumplessValue *
-GetTestValueUnsignedShort( void )
-{
-  StumplessValue * value;
-  
-  value = malloc( sizeof( StumplessValue ) );
-  if( value == NULL )
-    return NULL;
-  
-  value->type = STUMPLESS_UNSIGNED_SHORT;
-  value->data = malloc( sizeof( StumplessValueData ) );
-  if( value->data == NULL )
-    return NULL;
-  
-  value->data->u_s = 3;
-  value->length = 0;
-  
-  return value;
 }

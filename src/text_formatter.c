@@ -42,7 +42,7 @@ StumplessEntryAsText( StumplessEntry * entry )
     return NULL;
   
   StumplessFormattedOutput * attributes;
-  if( entry->attribute_count > 0 && entry->attributes != NULL ){
+  if( entry->attributes != NULL && entry->attribute_count > 0 ){
     NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, ": " ) )
     
     attributes = StumplessEntryAttributeListAsText( entry );
@@ -162,7 +162,7 @@ StumplessEventAsText( StumplessEvent * event )
   if( output == NULL )
     return NULL;
   
-  if( event->attribute_count > 0 ){
+  if( event->attributes != NULL && event->attribute_count > 0 ){
     status = StumplessAppendStringToFormattedOutput( output, ": " );
     NULL_ON_FAILURE( status )
     
@@ -187,10 +187,12 @@ StumplessEventAttributeAsText( StumplessEventAttribute * attribute )
   
   StumplessStatusCode status;
   
+  const char * name;
   if( attribute->name == NULL )
-    status = StumplessAppendStringToFormattedOutput( output, "attribute" );
+    name = "attribute";
   else
-    status = StumplessAppendStringToFormattedOutput( output, attribute->name );
+    name = attribute->name;
+  status = StumplessAppendStringToFormattedOutput( output, name );
   NULL_ON_FAILURE( status )
   
   if( attribute->default_value != NULL ){
@@ -214,16 +216,18 @@ StumplessEventAttributeListAsText( StumplessEvent * event )
   if( output == NULL )
     return NULL;
   
-  unsigned int i = 0;
-  StumplessFormattedOutput * attribute_output;
+  unsigned i;
+  StumplessFormattedOutput * attribute;
   StumplessStatusCode status;
-  while( i < event->attribute_count ){
-    attribute_output = StumplessEventAttributeAsText( event->attributes[i] );
-    status = StumplessAppendFormattedOutputs( output, attribute_output );
-    NULL_ON_FAILURE( status )
+  for( i = 0; i < event->attribute_count; i++ ){
+    attribute = StumplessEventAttributeAsText( event->attributes[i] );
+    if( attribute == NULL )
+      continue;
     
-    if( ++i < event->attribute_count )
+    if( !StumplessFormattedOutputIsEmpty( output ) )
       NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, ", " ) )
+    
+    NULL_ON_FAILURE( StumplessAppendFormattedOutputs( output, attribute ) )
   }
   
   return output;
@@ -239,30 +243,19 @@ StumplessEventSummaryAsText( StumplessEvent * event )
   if( output == NULL )
     return NULL;
   
+  const char * event_name = event->name == NULL ? "event" : event->name;
   StumplessStatusCode status;
+  status = StumplessAppendStringToFormattedOutput( output, event_name );
+  NULL_ON_FAILURE( status );
   
-  if( event->name == NULL ){
-    if( event->level == NULL ){
-      status = StumplessAppendStringToFormattedOutput( output, "event" );
-      NULL_ON_FAILURE( status )
-    } else {
-      output = StumplessLevelAsText( event->level );
-      status = StumplessAppendStringToFormattedOutput( output, " event" );
-      NULL_ON_FAILURE( status )
-    }
-  } else {
-    status = StumplessAppendStringToFormattedOutput( output, event->name );
-    NULL_ON_FAILURE( status )
+  if( event->level != NULL ){
+    NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, " (" ) )
     
-    if( event->level != NULL ) {
-      NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, " (" ) )
-      
-      StumplessFormattedOutput * level_output;
-      level_output = StumplessLevelAsText( event->level );
-      NULL_ON_FAILURE( StumplessAppendFormattedOutputs( output, level_output ) )
-      
-      NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, ")" ) )
-    }
+    StumplessFormattedOutput * level_output;  
+    level_output = StumplessLevelAsText( event->level );
+    NULL_ON_FAILURE( StumplessAppendFormattedOutputs( output, level_output ) )
+    
+    NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, ")" ) )
   }
   
   return output;

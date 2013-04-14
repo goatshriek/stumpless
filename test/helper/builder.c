@@ -217,3 +217,21 @@ BuildTextFormattedOutput( void )
   
   return output;
 }
+
+StumplessValue *
+BuildUnsignedShortValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->format = NULL;
+  value->type = STUMPLESS_UNSIGNED_INT;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  value->data->u_i = 736;
+  
+  return value;
+}

@@ -27,4 +27,7 @@ BuildLevel( void );
 StumplessFormattedOutput *
 BuildTextFormattedOutput( void );
 
+StumplessValue *
+BuildUnsignedShortValue( void );
+
 #endif
