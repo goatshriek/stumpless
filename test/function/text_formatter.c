@@ -4,7 +4,7 @@
 
 #include <stumpless.h>
 
-#include "builder.h"
+#include "helper.h"
 
 const char * test_entry_formatter( void );
 const char * test_entry_attribute_formatter( void );

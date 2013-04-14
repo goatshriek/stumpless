@@ -4,7 +4,7 @@
 
 #include <stumpless.h>
 
-#include "builder.h"
+#include "helper.h"
 
 const char * test_to_string( void );
 

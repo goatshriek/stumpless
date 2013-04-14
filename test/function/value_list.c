@@ -4,6 +4,8 @@
 
 #include <stumpless.h>
 
+#include "helper.h"
+
 const char * test_copy( void );
 const char * test_destructive_write( void );
 const char * test_list_appender( void );
