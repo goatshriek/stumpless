@@ -86,7 +86,6 @@ main( void )
     return EXIT_SUCCESS;
 }
 
-// todo see if a backslash can clean up the formatting in this test
 const char *
 test_entry_formatter( void )
 {
@@ -143,7 +142,6 @@ test_entry_formatter( void )
   if( output == NULL )
     return "an entry without attributes could not be formatted";
   str = StumplessFormattedOutputToString( output );
-  printf( "%s\n", str );
   if( strcmp( str, "Test Entry [Test Event (Test Level: level 42)]" ) != 0 )
     return "an entry without attributes was not properly formatted";
   
@@ -218,7 +216,6 @@ test_entry_attribute_list_formatter( void )
   if( output == NULL )
     return "the output could not be created";
   str = StumplessFormattedOutputToString( output );
-  // todo see if a backslash can fix the formatting here
   if( strcmp( str, "Test Attribute 0: default value, attribute: not 37, attribute: unnamed value, attribute: no event attribute" ) != 0 )
     return "the list was not formatted correctly";
   
@@ -375,7 +372,6 @@ test_event_formatter( void )
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   if( str == NULL )
     return "the output was not created";
-  // todo see if the formatting here can be fixed with a backslash
   if( strcmp( str, "Test Level: level 42 event: attr_0 name: val_0, attribute: val_1, attr_2 name" ) != 0 )
     return "an event without a name was not formatted correctly";
   
