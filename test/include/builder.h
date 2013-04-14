@@ -3,6 +3,9 @@
 
 #include <stumpless.h>
 
+StumplessFormattedOutput *
+BuildByteFormattedOutput( void );
+
 StumplessEntry *
 BuildEntry( void );
 

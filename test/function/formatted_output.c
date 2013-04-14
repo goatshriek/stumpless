@@ -14,9 +14,6 @@ const char * test_to_string( void );
 const char * test_unsigned_int_appender( void );
 const char * test_value_appender( void );
 
-StumplessFormattedOutput * GetTestByteOutput( void );
-StumplessFormattedOutput * GetTestTextOutput( void );
-
 int
 main( void )
 {
@@ -74,11 +71,11 @@ main( void )
 const char *
 test_into_string( void )
 {
-  StumplessFormattedOutput * output = GetTestTextOutput();
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
   if( output == NULL )
-    return "the test output cold not be created";
+    return "could not build the test output";
   
-  char buffer[21];
+  char buffer[19];
   StumplessStatusCode status;
   
   status = StumplessFormattedOutputIntoString( NULL, NULL );
@@ -97,7 +94,7 @@ test_into_string( void )
   if( status != STUMPLESS_SUCCESS )
     return "the string was not properly written to";
   
-  if( strcmp( buffer, "test 1\ntest 2\ntest 3" ) != 0 )
+  if( strcmp( buffer, "First\nSecond\nThird" ) != 0 )
     return "the string written was not equivalent to the output's contents";
   
   return NULL;
@@ -129,9 +126,15 @@ test_is_empty( void )
 const char *
 test_output_appender( void )
 {
-  StumplessFormattedOutput * output_1 = GetTestByteOutput();
-  StumplessFormattedOutput * output_2 = GetTestTextOutput();
-  StumplessFormattedOutput * output_3 = GetTestTextOutput();
+  StumplessFormattedOutput * output_1 = BuildByteFormattedOutput();
+  if( output_1 == NULL )
+    return "could not build the first output";
+  StumplessFormattedOutput * output_2 = BuildTextFormattedOutput();
+  if( output_2 == NULL )
+    return "could not build the second output";
+  StumplessFormattedOutput * output_3 = BuildTextFormattedOutput();
+  if( output_3 == NULL )
+    return "could not build the third output";
   
   StumplessStatusCode status;
   
@@ -164,7 +167,7 @@ const char *
 test_string_appender( void )
 {
   StumplessStatusCode status;
-  StumplessFormattedOutput * output = GetTestTextOutput();
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
   if( output == NULL )
     return "the test output could not be created";
   
@@ -192,9 +195,9 @@ test_string_appender( void )
 const char *
 test_to_string( void )
 {
-  StumplessFormattedOutput * output = GetTestTextOutput();
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
   if( output == NULL )
-    return "the test output cold not be created";
+    return "could not build the test output";
   
   char * buffer;
   StumplessStatusCode status;
@@ -207,7 +210,7 @@ test_to_string( void )
   if( buffer == NULL )
     return "a valid output did not generate a string";
   
-  if( strcmp( buffer, "test 1\ntest 2\ntest 3" ) != 0 )
+  if( strcmp( buffer, "First\nSecond\nThird" ) != 0 )
     return "the string written was not equivalent to the output's contents";
   
   return NULL;
@@ -217,9 +220,9 @@ const char *
 test_unsigned_int_appender( void )
 {
   StumplessStatusCode status;
-  StumplessFormattedOutput * output = GetTestTextOutput();
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
   if( output == NULL )
-    return "the test output could not be created";
+    return "could not build the test output";
   
   status = StumplessAppendUnsignedIntToFormattedOutput( NULL, 3 );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
@@ -238,9 +241,9 @@ const char *
 test_value_appender( void )
 {
   StumplessStatusCode status;
-  StumplessFormattedOutput * output = GetTestTextOutput();
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
   if( output == NULL )
-    return "the test output could not be created";
+    return "could not build the test output";
   
   StumplessValue * value = malloc( sizeof( StumplessValue ) );
   if( value == NULL )
@@ -271,41 +274,4 @@ test_value_appender( void )
     return "the value was not actually appended to the list";
   
   return NULL;
-}
-
-StumplessFormattedOutput *
-GetTestByteOutput( void )
-{
-  StumplessFormattedOutput * output;
-  output = malloc( sizeof( StumplessFormattedOutput ) );
-  if( output == NULL )
-    return NULL;
-  
-  output->format = STUMPLESS_BINARY;
-  
-  return output;
-}
-
-StumplessFormattedOutput *
-GetTestTextOutput( void )
-{
-  StumplessFormattedOutput * output;
-  output = malloc( sizeof( StumplessFormattedOutput ) );
-  if( output == NULL )
-    return NULL;
-  
-  output->format = STUMPLESS_TEXT;
-  output->payload = malloc( sizeof( StumplessFormattedPayload ) );
-  if( output->payload == NULL )
-    return NULL;
-  
-  output->payload->values = StumplessNewValueList();
-  if( output->payload->values == NULL )
-    return NULL;
-  
-  StumplessAppendStringToValueList( output->payload->values, "test 1\n" );
-  StumplessAppendStringToValueList( output->payload->values, "test 2\n" );
-  StumplessAppendStringToValueList( output->payload->values, "test 3" );
-  
-  return output;
 }

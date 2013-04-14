@@ -4,6 +4,19 @@
 
 #include "builder.h"
 
+StumplessFormattedOutput *
+BuildByteFormattedOutput( void )
+{
+  StumplessFormattedOutput * output;
+  output = malloc( sizeof( StumplessFormattedOutput ) );
+  if( output == NULL )
+    return NULL;
+  
+  output->format = STUMPLESS_BINARY;
+  
+  return output;
+}
+
 StumplessEntry *
 BuildEntry( void )
 {
@@ -203,15 +216,15 @@ BuildTextFormattedOutput( void )
     return NULL;
   
   StumplessStatusCode status;
-  status = StumplessAppendStringToFormattedOutput( output, "First" );
+  status = StumplessAppendStringToFormattedOutput( output, "First\n" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendStringToFormattedOutput( output, " Second" );
+  status = StumplessAppendStringToFormattedOutput( output, "Second\n" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendStringToFormattedOutput( output, " Third" );
+  status = StumplessAppendStringToFormattedOutput( output, "Third" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
