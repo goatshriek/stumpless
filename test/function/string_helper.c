@@ -8,6 +8,8 @@
 
 const char * test_copy_string( void );
 const char * test_is_empty( void );
+const char * test_replace_char( void );
+const char * test_title_case( void );
 
 int
 main( void )
@@ -17,6 +19,8 @@ main( void )
   
   RUN_TEST( test_copy_string, "Copy String Test Failed: %s\n" )
   RUN_TEST( test_is_empty, "Is Empty Test Failed: %s\n" )
+  RUN_TEST( test_replace_char, "Replace Character Test Failed: %s\n" )
+  RUN_TEST( test_title_case, "Title Case Test Failed: %s\n" )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -59,6 +63,30 @@ test_is_empty( void )
   
   if( is_empty( "this string is definitely not empty" ) )
     return "a non-empty string was designated as empty";
+  
+  return NULL;
+}
+
+const char *
+test_replace_char( void )
+{
+  char * str = replace_char( "sucka_punch_you", '_', ' ' );
+  if( str == NULL )
+    return "could not build the new string";
+  if( strcmp( str, "sucka punch you" ) != 0 )
+    return "the target characters were not replaced";
+  
+  return NULL;
+}
+
+const char *
+test_title_case( void )
+{
+  char * str = title_case( "i'm the original string" );
+  if( str == NULL )
+    return "could not build the new string";
+  if( strcmp( str, "I'm The Original String" ) != 0 )
+    return "the new string was not title-cased";
   
   return NULL;
 }
