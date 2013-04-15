@@ -20,14 +20,13 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( test_destructor, "Destructor Test Failed: %s\n" )
-  RUN_TEST( test_into_string, "Write Into String Test Failed: %s\n" )
-  RUN_TEST( test_outside_access, "Outside Access Test Failed: %s\n" )
-  RUN_TEST( test_stream_write, "Stream Write Test Failed: %s\n" )
-  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
-  RUN_TEST( test_value_from_string, "Value From String Test Failed: %s\n" )
-  RUN_TEST( test_value_from_unsigned_int,
-            "Value From Unsigned Int Test Failed: %s\n" )
+  RUN_TEST( destructor )
+  RUN_TEST( into_string )
+  RUN_TEST( outside_access )
+  RUN_TEST( stream_write )
+  RUN_TEST( to_string )
+  RUN_TEST( value_from_string )
+  RUN_TEST( value_from_unsigned_int )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

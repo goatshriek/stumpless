@@ -22,21 +22,15 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( test_entry_formatter, "Entry Formatter Test Failed: %s\n" )
-  RUN_TEST( test_entry_attribute_formatter,
-            "Entry Attribute Formatter Test Failed: %s\n" )
-  RUN_TEST( test_entry_attribute_list_formatter,
-            "Entry Attribute List Formatter Test Failed: %s\n" )
-  RUN_TEST( test_entry_summary_formatter,
-            "Entry Summary Formatter Test Failed: %s\n" )
-  RUN_TEST( test_event_attribute_formatter,
-            "Event Attribute Formatter Test Failed: %s\n" )
-  RUN_TEST( test_event_formatter, "Event Formatter Test Failed: %s\n" )
-  RUN_TEST( test_event_summary_formatter,
-            "Event Summary Formatter Test Failed: %s\n" )
-  RUN_TEST( test_level_formatter, "Level Formatter Test Failed: %s\n" )
-  RUN_TEST( test_value_formatter,
-            "Event Attribute Value Formatter Test Failed: %s\n" )
+  RUN_TEST( entry_formatter )
+  RUN_TEST( entry_attribute_formatter )
+  RUN_TEST( entry_attribute_list_formatter )
+  RUN_TEST( entry_summary_formatter )
+  RUN_TEST( event_attribute_formatter )
+  RUN_TEST( event_formatter )
+  RUN_TEST( event_summary_formatter )
+  RUN_TEST( level_formatter )
+  RUN_TEST( value_formatter )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

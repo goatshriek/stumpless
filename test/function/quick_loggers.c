@@ -14,9 +14,8 @@ main( void )
   unsigned failure_count = 0;
   const char * result = NULL;
   
-  RUN_TEST( test_configuration_initializations,
-            "Configuration Initializations Test Failed: %s\n" )
-  RUN_TEST( test_status_codes, "Status Code Test Failed: %s\n" )
+  RUN_TEST( configuration_initializations )
+  RUN_TEST( status_codes )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

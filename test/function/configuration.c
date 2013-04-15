@@ -13,7 +13,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( test_initialization, "Initalization Test Failed: %s\n" )
+  RUN_TEST( initialization )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;

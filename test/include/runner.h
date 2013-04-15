@@ -3,10 +3,13 @@
 
 #include <stdlib.h>
 
-#define RUN_TEST( test, fail_message )                                         \
-result = test();                                                               \
+#include "string_helper.h"
+
+#define RUN_TEST( test )                                                       \
+result = test_##test();                                                        \
 if( result != NULL ){                                                          \
-  printf( fail_message, result );                                              \
+  char * test_name = title_case( replace_char( #test, '_', ' ' ) );            \
+  printf( "%s Test Failed: %s\n", test_name, result );                         \
   failure_count++;                                                             \
 }
 

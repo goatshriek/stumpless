@@ -13,7 +13,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( test_file_write, "File Write Test Failed: %s\n" )
+  RUN_TEST( file_write )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

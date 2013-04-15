@@ -17,10 +17,10 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( test_copy_string, "Copy String Test Failed: %s\n" )
-  RUN_TEST( test_is_empty, "Is Empty Test Failed: %s\n" )
-  RUN_TEST( test_replace_char, "Replace Character Test Failed: %s\n" )
-  RUN_TEST( test_title_case, "Title Case Test Failed: %s\n" )
+  RUN_TEST( copy_string )
+  RUN_TEST( is_empty )
+  RUN_TEST( replace_char )
+  RUN_TEST( title_case )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

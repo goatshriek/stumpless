@@ -20,14 +20,13 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( test_into_string, "Into String Test Failed: %s\n" )
-  RUN_TEST( test_is_empty, "Is Empty Test Failed: %s\n" )
-  RUN_TEST( test_output_appender, "Output Appender Test Failed: %s\n" )
-  RUN_TEST( test_string_appender, "String Appender Test Failed: %s\n" )
-  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
-  RUN_TEST( test_unsigned_int_appender,
-            "Unsigned Int Appender Test Failed: %s\n" )
-  RUN_TEST( test_value_appender, "Value Appender Test Failed: %s\n" )
+  RUN_TEST( into_string )
+  RUN_TEST( is_empty )
+  RUN_TEST( output_appender )
+  RUN_TEST( string_appender )
+  RUN_TEST( to_string )
+  RUN_TEST( unsigned_int_appender )
+  RUN_TEST( value_appender )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

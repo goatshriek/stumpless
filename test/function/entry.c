@@ -16,9 +16,9 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( test_default_entries, "Default Entry Test Failed: %s\n" )
-  RUN_TEST( test_entry_for_event, "Entry For Event Test Failed: %s\n" )
-  RUN_TEST( test_to_string, "To String Test: %s\n" )
+  RUN_TEST( default_entries )
+  RUN_TEST( entry_for_event )
+  RUN_TEST( to_string )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

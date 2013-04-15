@@ -15,8 +15,8 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
  
-  RUN_TEST( test_default_levels, "Default Level Test Failed: %s\n" )
-  RUN_TEST( test_to_string, "To String Test Failed: %s\n" )
+  RUN_TEST( default_levels )
+  RUN_TEST( to_string )
    
   if( failure_count > 0 )
     return EXIT_FAILURE;
