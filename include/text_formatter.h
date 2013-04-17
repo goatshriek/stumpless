@@ -33,4 +33,7 @@ StumplessLevelAsText( StumplessLevel * );
 StumplessFormattedOutput *
 StumplessValueAsText( StumplessValue * );
 
+StumplessFormattedOutput *
+StumplessValueTypeAsText( StumplessValueType );
+
 #endif

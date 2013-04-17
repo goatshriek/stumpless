@@ -4,7 +4,7 @@
 
 #include <boolean.h>
 #include <configuration.h>
-#include <status.h>
+#include <status_checker.h>
 #include <types.h>
 #include <value.h>
 

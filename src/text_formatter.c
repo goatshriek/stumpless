@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include <formatted_output.h>
-#include <status.h>
+#include <status_checker.h>
 #include <text_formatter.h>
 #include <value_list.h>
 
@@ -292,8 +292,6 @@ StumplessLevelAsText( StumplessLevel * level )
 StumplessFormattedOutput *
 StumplessValueAsText( StumplessValue * value )
 {
-  // todo add the type of the value to this output
-  
   if( value == NULL )
     return NULL;
   
@@ -303,6 +301,86 @@ StumplessValueAsText( StumplessValue * value )
   
   StumplessValueList * list = output->payload->values;
   NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value ) )
+  
+  return output;
+}
+
+StumplessFormattedOutput *
+StumplessValueTypeAsText( StumplessValueType type )
+{
+  StumplessFormattedOutput * output = GetTextFormattedOutput();
+  if( output == NULL )
+    return NULL;
+  
+  const char * name;
+  
+  switch( type ){
+    case STUMPLESS_UNSIGNED_SHORT:
+    case STUMPLESS_UNSIGNED_SHORT_POINTER:
+      name = "unsigned short";
+      break;
+    case STUMPLESS_SHORT:
+    case STUMPLESS_SHORT_POINTER:
+      name = "short";
+      break;
+    case STUMPLESS_UNSIGNED_INT:
+    case STUMPLESS_UNSIGNED_INT_POINTER:
+      name = "unsigned int";
+      break;
+    case STUMPLESS_INT:
+    case STUMPLESS_INT_POINTER:
+      name = "int";
+      break;
+    case STUMPLESS_UNSIGNED_LONG:
+    case STUMPLESS_UNSIGNED_LONG_POINTER:
+      name = "unsigned long";
+      break;
+    case STUMPLESS_LONG:
+    case STUMPLESS_LONG_POINTER:
+      name = "long";
+      break;
+    case STUMPLESS_UNSIGNED_LONG_LONG:
+    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
+      name = "unsigned long long";
+      break;
+    case STUMPLESS_LONG_LONG:
+    case STUMPLESS_LONG_LONG_POINTER:
+      name = "long long";
+      break;
+    case STUMPLESS_UNSIGNED_CHAR:
+    case STUMPLESS_UNSIGNED_CHAR_POINTER:
+      name = "unsigned char";
+      break;
+    case STUMPLESS_CHAR:
+    case STUMPLESS_CHAR_POINTER:
+      name = "char";
+      break;
+    case STUMPLESS_FLOAT:
+    case STUMPLESS_FLOAT_POINTER:
+      name = "float";
+      break;
+    case STUMPLESS_DOUBLE:
+    case STUMPLESS_DOUBLE_POINTER: 
+      name = "double";
+      break;
+    case STUMPLESS_LONG_DOUBLE:
+    case STUMPLESS_LONG_DOUBLE_POINTER:
+      name = "long double";
+      break;
+    case STUMPLESS_BOOLEAN:
+      name = "boolean";
+      break;
+    case STUMPLESS_STRING:
+      name = "string";
+      break;
+    case STUMPLESS_VOID_POINTER:
+      name = "void";
+      break;
+    default:
+      return NULL;
+  }
+  
+  NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, name ) )
   
   return output;
 }
