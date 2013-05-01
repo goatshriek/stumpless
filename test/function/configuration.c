@@ -24,28 +24,27 @@ main( void )
 const char *
 test_initialization( void )
 {
-  if( stumpless_configuration != NULL )
-    return "starting configuration was not empty";
-  
   if( StumplessInitializeConfiguration() != STUMPLESS_SUCCESS )
     return "initialization method returned error code";
 
-  if( stumpless_configuration == NULL )
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  
+  if( configuration == NULL )
     return "configuration was not initialized after call";
   
-  if( stumpless_configuration->file == NULL )
+  if( configuration->file == NULL )
     return "file configuration was not initialized";
   
-  if( stumpless_configuration->http == NULL )
+  if( configuration->http == NULL )
     return "http configuration was not initialized";
   
-  if( stumpless_configuration->multithreading == NULL )
+  if( configuration->multithreading == NULL )
     return "multithreading configuration was not initialized";
   
-  if( stumpless_configuration->sorting == NULL )
+  if( configuration->sorting == NULL )
     return "sorting configuration was not initialized";
   
-  if( stumpless_configuration->string == NULL )
+  if( configuration->string == NULL )
     return "string configuration was not initialized";
   
   return NULL;

@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <configuration.h>
-#include <status.h>
+#include <status_checker.h>
 #include <types.h>
 #include <value.h>
 #include <value_list.h>
@@ -178,10 +178,8 @@ StumplessValueListIntoString( char * str, StumplessValueList * list )
   StumplessStatusCode status;
   str[0] = '\0';
   
-  if( stumpless_configuration == NULL )
-    STATUS_ON_FAILURE( StumplessInitializeConfiguration() )
-  
-  size_t buffer_size = stumpless_configuration->string->buffer_size;
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  size_t buffer_size = configuration->string->buffer_size;
   char * buffer = malloc( sizeof( char ) * buffer_size + 1 );
   if( buffer == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
@@ -207,10 +205,8 @@ StumplessValueListIsEmpty( StumplessValueList * list )
 char *
 StumplessValueListToString( StumplessValueList * list )
 {
-  if( stumpless_configuration == NULL )
-    NULL_ON_FAILURE( StumplessInitializeConfiguration() )
-  
-  size_t buffer_size = stumpless_configuration->string->buffer_size;
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  size_t buffer_size = configuration->string->buffer_size;
   char * list_str = malloc( sizeof( char ) * buffer_size + 1 );
   
   NULL_ON_FAILURE( StumplessValueListIntoString( list_str, list ) )

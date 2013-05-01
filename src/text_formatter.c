@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include <formatted_output.h>
-#include <status.h>
+#include <status_checker.h>
 #include <text_formatter.h>
 #include <value_list.h>
 

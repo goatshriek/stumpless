@@ -8,8 +8,6 @@ StumplessLogDebug( const char * message )
 {
   StumplessStatusCode result = STUMPLESS_SUCCESS;
   
-  if( stumpless_configuration == NULL )
-    result = StumplessInitializeConfiguration();
   
   return result;
 }
@@ -19,8 +17,6 @@ StumplessLogError( const char * message )
 {
   StumplessStatusCode result = STUMPLESS_SUCCESS;
   
-  if( stumpless_configuration == NULL )
-    result = StumplessInitializeConfiguration();
   
   return result;
 }
@@ -30,8 +26,6 @@ StumplessLogFatal( const char * message )
 {
   StumplessStatusCode result = STUMPLESS_SUCCESS;
   
-  if( stumpless_configuration == NULL )
-    result = StumplessInitializeConfiguration();
   
   return result;
 }
@@ -41,8 +35,6 @@ StumplessLogInfo( const char * message )
 {
   StumplessStatusCode result = STUMPLESS_SUCCESS;
   
-  if( stumpless_configuration == NULL )
-    result = StumplessInitializeConfiguration();
   
   return result;
 }
@@ -52,8 +44,6 @@ StumplessLogWarning( const char * message )
 {
   StumplessStatusCode result = STUMPLESS_SUCCESS;
   
-  if( stumpless_configuration == NULL )
-    result = StumplessInitializeConfiguration();
   
   return result;
 }

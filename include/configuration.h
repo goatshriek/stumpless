@@ -3,8 +3,6 @@
 
 #include <types.h>
 
-extern StumplessConfiguration * stumpless_configuration;
-
 StumplessConfiguration * StumplessGetConfiguration( void );
 StumplessStatusCode StumplessInitializeConfiguration( void );
 StumplessStatusCode StumplessSetConfiguration( StumplessConfiguration * );
