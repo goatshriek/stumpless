@@ -15,8 +15,14 @@ StumplessValueFromUnsignedInt( unsigned );
 StumplessStatusCode
 StumplessValueIntoString( char *, StumplessValue * );
 
+unsigned short
+StumplessValueIsArray( StumplessValue * );
+
 char *
 StumplessValueToString( StumplessValue * );
+
+const char *
+StumplessValueTypeDefaultFormat( StumplessValueType );
 
 StumplessStatusCode
 StumplessWriteValueToStream( FILE *, StumplessValue * );

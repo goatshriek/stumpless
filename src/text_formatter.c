@@ -316,56 +316,82 @@ StumplessValueTypeAsText( StumplessValueType type )
   
   switch( type ){
     case STUMPLESS_UNSIGNED_SHORT:
-    case STUMPLESS_UNSIGNED_SHORT_POINTER:
       name = "unsigned short";
       break;
+    case STUMPLESS_UNSIGNED_SHORT_POINTER:
+      name = "unsigned short array";
+      break;
     case STUMPLESS_SHORT:
-    case STUMPLESS_SHORT_POINTER:
       name = "short";
       break;
+    case STUMPLESS_SHORT_POINTER:
+      name = "short array";
+      break;
     case STUMPLESS_UNSIGNED_INT:
-    case STUMPLESS_UNSIGNED_INT_POINTER:
       name = "unsigned int";
       break;
+    case STUMPLESS_UNSIGNED_INT_POINTER:
+      name = "unsigned int array";
+      break;
     case STUMPLESS_INT:
-    case STUMPLESS_INT_POINTER:
       name = "int";
       break;
+    case STUMPLESS_INT_POINTER:
+      name = "int array";
+      break;
     case STUMPLESS_UNSIGNED_LONG:
+      name = "unsigned long";
+      break;
     case STUMPLESS_UNSIGNED_LONG_POINTER:
       name = "unsigned long";
       break;
     case STUMPLESS_LONG:
-    case STUMPLESS_LONG_POINTER:
       name = "long";
       break;
+    case STUMPLESS_LONG_POINTER:
+      name = "long array";
+      break;
     case STUMPLESS_UNSIGNED_LONG_LONG:
-    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
       name = "unsigned long long";
       break;
+    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
+      name = "unsigned long long array";
+      break;
     case STUMPLESS_LONG_LONG:
-    case STUMPLESS_LONG_LONG_POINTER:
       name = "long long";
       break;
+    case STUMPLESS_LONG_LONG_POINTER:
+      name = "long long break";
+      break;
     case STUMPLESS_UNSIGNED_CHAR:
-    case STUMPLESS_UNSIGNED_CHAR_POINTER:
       name = "unsigned char";
       break;
+    case STUMPLESS_UNSIGNED_CHAR_POINTER:
+      name = "unsigned char array";
+      break;
     case STUMPLESS_CHAR:
-    case STUMPLESS_CHAR_POINTER:
       name = "char";
       break;
+    case STUMPLESS_CHAR_POINTER:
+      name = "char array";
+      break;
     case STUMPLESS_FLOAT:
-    case STUMPLESS_FLOAT_POINTER:
       name = "float";
       break;
+    case STUMPLESS_FLOAT_POINTER:
+      name = "float array";
+      break;
     case STUMPLESS_DOUBLE:
-    case STUMPLESS_DOUBLE_POINTER: 
       name = "double";
       break;
+    case STUMPLESS_DOUBLE_POINTER: 
+      name = "double array";
+      break;
     case STUMPLESS_LONG_DOUBLE:
-    case STUMPLESS_LONG_DOUBLE_POINTER:
       name = "long double";
+      break;
+    case STUMPLESS_LONG_DOUBLE_POINTER:
+      name = "long double array";
       break;
     case STUMPLESS_BOOLEAN:
       name = "boolean";

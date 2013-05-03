@@ -221,6 +221,29 @@ StumplessValueIntoString( char * str, StumplessValue * value )
     return STUMPLESS_SUCCESS;
 }
 
+unsigned short
+StumplessValueIsArray( StumplessValue * value )
+{
+  switch( value->type ){
+    case STUMPLESS_UNSIGNED_SHORT_POINTER:
+    case STUMPLESS_SHORT_POINTER:
+    case STUMPLESS_UNSIGNED_INT_POINTER:
+    case STUMPLESS_INT_POINTER:
+    case STUMPLESS_UNSIGNED_LONG_POINTER:
+    case STUMPLESS_LONG_POINTER:
+    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
+    case STUMPLESS_LONG_LONG_POINTER:
+    case STUMPLESS_UNSIGNED_CHAR_POINTER:
+    case STUMPLESS_CHAR_POINTER:
+    case STUMPLESS_FLOAT_POINTER:
+    case STUMPLESS_DOUBLE_POINTER:
+    case STUMPLESS_LONG_DOUBLE_POINTER:
+      return 1;
+    default:
+      return 0;
+  }
+}
+
 char *
 StumplessValueToString( StumplessValue * value )
 {
@@ -238,6 +261,12 @@ StumplessValueToString( StumplessValue * value )
   NULL_ON_FAILURE( StumplessValueIntoString( str, value ) )
   
   return str;
+}
+
+const char *
+StumplessValueTypeDefaultFromat( StumplessValueType type )
+{
+  return NULL;
 }
 
 StumplessStatusCode

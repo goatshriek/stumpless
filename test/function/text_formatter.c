@@ -15,6 +15,7 @@ const char * test_event_formatter( void );
 const char * test_event_summary_formatter( void );
 const char * test_level_formatter( void );
 const char * test_value_formatter( void );
+const char * test_value_type_formatter( void );
 
 int
 main( void )
@@ -31,6 +32,7 @@ main( void )
   RUN_TEST( event_summary_formatter )
   RUN_TEST( level_formatter )
   RUN_TEST( value_formatter )
+  RUN_TEST( value_type_formatter )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -444,6 +446,33 @@ test_value_formatter( void )
   str = StumplessFormattedOutputToString( output );
   if( strcmp( str, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int)" ) != 0 )
     return "an array value was not formatted correctly";
+  
+  return NULL;
+}
+
+const char *
+test_value_type_formatter( void )
+{
+  StumplessFormattedOutput * output;
+  char * str;
+  
+  output = StumplessValueTypeAsText( STUMPLESS_UNSIGNED_INT );
+  if( output == NULL )
+    return "the output could not be created for an unsigned int";
+  str = StumplessFormattedOutputToString( output );
+  if( str == NULL )
+    return "the unsigned int output could not be converted to a string";
+  if( strcmp( str, "unsigned int" ) != 0 )
+    return "the type was not formatted correctly";
+  
+  output = StumplessValueTypeAsText( STUMPLESS_CHAR_POINTER );
+  if( output == NULL )
+    return "the output could not be created for a char pointer";
+  str = StumplessFormattedOutputToString( output );
+  if( str == NULL )
+    return "the char pointer output could not be converted to a string";
+  if( strcmp( str, "char array" ) )
+    return "the char array was not formatted correctly";
   
   return NULL;
 }
