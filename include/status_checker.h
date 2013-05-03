@@ -15,5 +15,4 @@ if( (status) != STUMPLESS_SUCCESS ){                                           \
   return status;                                                               \
 }
 
-
 #endif

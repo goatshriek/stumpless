@@ -104,12 +104,10 @@ StumplessValueIntoString( char * str, StumplessValue * value )
   if( str == NULL || value == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
  
-  if( stumpless_configuration == NULL )
-    STATUS_ON_FAILURE( StumplessInitializeConfiguration() )
-   
   StumplessValueData * data = value->data;
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
   char * temp_str;
-  size_t buffer_size = stumpless_configuration->string->buffer_size;
+  size_t buffer_size = configuration->string->buffer_size;
   char * buffer = malloc( buffer_size );
   if( buffer == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
@@ -250,10 +248,8 @@ StumplessValueToString( StumplessValue * value )
   if( value == NULL )
     return NULL;
   
-  if( stumpless_configuration == NULL )
-    NULL_ON_FAILURE( StumplessInitializeConfiguration() )
-  
-  size_t buffer_size = stumpless_configuration->string->buffer_size;
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  size_t buffer_size = configuration->string->buffer_size;
   char * str = malloc( sizeof( char ) * buffer_size );
   if( str == NULL )
     return NULL;

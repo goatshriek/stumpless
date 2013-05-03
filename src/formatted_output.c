@@ -103,13 +103,8 @@ StumplessFormattedOutputToString( StumplessFormattedOutput * output )
   
   StumplessStatusCode status;
   
-  if( stumpless_configuration == NULL ){
-    status = StumplessInitializeConfiguration();
-    if( status != STUMPLESS_SUCCESS )
-      return NULL;
-  }
-  
-  size_t buffer_size = stumpless_configuration->string->buffer_size;
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  size_t buffer_size = configuration->string->buffer_size;
   char * str = malloc( sizeof( char ) * buffer_size );
   if( str == NULL )
     return NULL;

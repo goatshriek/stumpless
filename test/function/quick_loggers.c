@@ -26,29 +26,24 @@ main( void )
 const char *
 test_configuration_initializations( void )
 {
-  stumpless_configuration = NULL;
   StumplessLogDebug( "debug message\n" );
-  if( stumpless_configuration == NULL )
+  if( StumplessGetConfiguration() == NULL )
     return "configuration was not initialized after StumplessLogDebug";
   
-  stumpless_configuration = NULL;
   StumplessLogError( "error message\n" );
-  if( stumpless_configuration == NULL )
+  if( StumplessGetConfiguration() == NULL )
     return "configuration was not initialized after StumplessLogError";
   
-  stumpless_configuration = NULL;
   StumplessLogFatal( "fatal message\n" );
-  if( stumpless_configuration == NULL )
+  if( StumplessGetConfiguration() == NULL )
     return "configuration was not initialized after StumplessLogFatal";
   
-  stumpless_configuration = NULL;
   StumplessLogInfo( "information message\n" );
-  if( stumpless_configuration == NULL )
+  if( StumplessGetConfiguration() == NULL )
     return "configuration was not initialized after StumplessLogInfo";
   
-  stumpless_configuration = NULL;
   StumplessLogWarning( "warning message\n" );
-  if( stumpless_configuration == NULL )
+  if( StumplessGetConfiguration() == NULL )
     return "configuration was not initialized after StumplessLogWarning";
 
   return NULL;
