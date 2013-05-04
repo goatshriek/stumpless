@@ -7,6 +7,7 @@
 #include <status_checker.h>
 #include <types.h>
 #include <value.h>
+#include <value_list.h>
 
 #define SINGLE_VALUE_INTO_STREAM( member )                                     \
 result = fprintf( stream, format, data->member );
@@ -37,6 +38,43 @@ for( i = 0; i < length; i++ ){                                                 \
 StumplessValueList *
 StumplessArrayValueToValueList( StumplessValue * value )
 {
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  StumplessValueData * data = value->data;
+  if( data == NULL )
+    return list;
+  
+  StumplessValue * value_i;
+  unsigned i;
+  unsigned length = value->length;
+  switch( value->type ){
+    case STUMPLESS_UNSIGNED_SHORT_POINTER:
+    case STUMPLESS_SHORT_POINTER:
+    case STUMPLESS_UNSIGNED_INT_POINTER:
+      for( i = 0; i < length; i++){
+        value_i = StumplessValueFromUnsignedInt( data->u_i_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
+    case STUMPLESS_INT_POINTER:
+    case STUMPLESS_UNSIGNED_LONG_POINTER:
+    case STUMPLESS_LONG_POINTER:
+    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
+    case STUMPLESS_LONG_LONG_POINTER:
+    case STUMPLESS_UNSIGNED_CHAR_POINTER:
+    case STUMPLESS_CHAR_POINTER:
+    case STUMPLESS_FLOAT_POINTER:
+    case STUMPLESS_DOUBLE_POINTER:
+    case STUMPLESS_LONG_DOUBLE_POINTER:
+    default:
+      return NULL;
+  }
+  
   return NULL;
 }
 
