@@ -6,6 +6,7 @@
 
 #include "helper.h"
 
+const char * test_default_format( void );
 const char * test_destructor( void );
 const char * test_into_string( void );
 const char * test_outside_access ( void );
@@ -20,6 +21,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
+  RUN_TEST( default_format )
   RUN_TEST( destructor )
   RUN_TEST( into_string )
   RUN_TEST( outside_access )
@@ -32,6 +34,28 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_default_format( void )
+{
+  StumplessValue * value = BuildUnsignedShortValue();
+  if( value == NULL )
+    return "the first test value could not be built";
+  const char * format = StumplessValueTypeDefaultFormat( value->type );
+  if( format == NULL )
+    return "the default format could not be retrieved";
+  if( strcmp( format, "%hu" ) != 0 )
+    return "an unsigned short did not have the proper format";
+  
+  value = BuildIntArrayValue();
+  format = StumplessValueTypeDefaultFormat( value->type );
+  if( format == NULL )
+    return "the default format could not be retrieved";
+  if( strcmp( format, "%i" ) != 0 )
+    return "an int array did not have the proper format";
+  
+  return NULL;
 }
 
 const char *
@@ -140,7 +164,7 @@ test_stream_write( void )
   value = BuildIntArrayValue();
   status = StumplessWriteValueToStream( stdout, value );
   if( status != STUMPLESS_SUCCESS )
-    return "a value with an array were not written to the stream successfully";
+    return "a value with an array was not written to the stream successfully";
   
   value->format = NULL;
   status = StumplessWriteValueToStream( stdout, value );
