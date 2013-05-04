@@ -45,6 +45,8 @@ test_array_value_to_value_list( void )
 {
   StumplessValue * value = BuildUnsignedShortValue();
   FAIL_IF_NULL( value, "could not build the test short value" )
+  StumplessValueList * list = StumplessArrayValueToValueList( value );
+  FAIL_IF_NOT_NULL( list, "a non-array value was converted to a list" )
   
   return NULL;
 }

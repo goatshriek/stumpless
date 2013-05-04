@@ -3,6 +3,10 @@
 
 #include <stdlib.h>
 
+#define FAIL_IF_NOT_NULL( value, message )                                     \
+if( value != NULL )                                                            \
+  return message;
+
 #define FAIL_IF_NULL( value, message )                                         \
 if( value == NULL )                                                            \
   return message;
