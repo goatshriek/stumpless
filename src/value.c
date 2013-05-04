@@ -35,7 +35,7 @@ for( i = 0; i < length; i++ ){                                                 \
 }
 
 StumplessValueList *
-StumplessAraayValueToValueList( StumplesValue * value )
+StumplessAraayValueToValueList( StumplessValue * value )
 {
   return NULL;
 }

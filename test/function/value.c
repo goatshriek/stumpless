@@ -43,7 +43,8 @@ main( void )
 const char *
 test_array_value_to_value_list( void )
 {
-  
+  StumplessValue * value = BuildUnsignedShortValue();
+  FAIL_IF_NULL( value, "could not build the test short value" )
   
   return NULL;
 }
