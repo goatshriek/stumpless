@@ -35,6 +35,20 @@ BuildByteFormattedOutput( void )
   return output;
 }
 
+StumplessValue *
+BuildEmptyUnsignedIntArrayValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->type = STUMPLESS_UNSIGNED_INT_POINTER;
+  value->data = NULL;
+  value->length = 0;
+  
+  return value;
+}
+
 StumplessEntry *
 BuildEntry( void )
 {

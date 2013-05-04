@@ -48,6 +48,32 @@ test_array_value_to_value_list( void )
   StumplessValueList * list = StumplessArrayValueToValueList( value );
   FAIL_IF_NOT_NULL( list, "a non-array value was converted to a list" )
   
+  value = BuildEmptyUnsignedIntArrayValue();
+  FAIL_IF_NULL( value, "could not build the test empty array value" )
+  list = StumplessArrayValueToValueList( value );
+  FAIL_IF_NULL( list, "a list could not be built from an empty array value" )
+  if( !StumplessValueListIsEmpty( list ) )
+    return "an empty list was not empty for an empty array value"; 
+  
+  value = BuildIntArrayValue();
+  FAIL_IF_NULL( value, "could not build the test int array value" )
+  list = StumplessArrayValueToValueList( value );
+  FAIL_IF_NULL( list, "a list could not be built from an int array value" )
+  
+  FAIL_IF_NULL( list->first, "the generated list was empty" )
+  FAIL_IF_NULL( list->first->value, "the list nodes were invalid" )
+  if( list->first->value->type != STUMPLESS_INT )
+    return "the values of the list did not have the proper type";
+  if( list->first->value->data->i != 0 )
+    return "the values of the list did not reflect the original array";
+  
+  FAIL_IF_NULL( list->last, "the generated list was not invalid" )
+  FAIL_IF_NULL( list->last->value, "the list nodes were invalid" )
+  if( list->last->value->type != STUMPLESS_INT )
+    return "the values of the list did not have the proper type";
+  if( list->last->value->data->i != 9 )
+    return "the values of the list did not reflect the original array";
+ 
   return NULL;
 }
 
