@@ -34,6 +34,12 @@ for( i = 0; i < length; i++ ){                                                 \
   strncat( str, buffer, buffer_size - 1 );                                     \
 }
 
+StumplessValueList *
+StumplessAraayValueToValueList( StumplesValue * value )
+{
+  return NULL;
+}
+
 void
 StumplessDestroyValue( StumplessValue * value )
 {

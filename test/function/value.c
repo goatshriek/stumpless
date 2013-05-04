@@ -6,9 +6,11 @@
 
 #include "helper.h"
 
+const char * test_array_value_to_value_list( void );
 const char * test_default_format( void );
 const char * test_destructor( void );
 const char * test_into_string( void );
+const char * test_is_array( void );
 const char * test_outside_access ( void );
 const char * test_stream_write( void );
 const char * test_to_string( void );
@@ -21,9 +23,11 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
+  RUN_TEST( array_value_to_value_list )
   RUN_TEST( default_format )
   RUN_TEST( destructor )
   RUN_TEST( into_string )
+  RUN_TEST( is_array )
   RUN_TEST( outside_access )
   RUN_TEST( stream_write )
   RUN_TEST( to_string )
@@ -34,6 +38,14 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_array_value_to_value_list( void )
+{
+  
+  
+  return NULL;
 }
 
 const char *
@@ -103,6 +115,30 @@ test_into_string( void )
   
   if( strcmp( str, "4294967196") != 0 )
     return "the unsigned int string did not match the value's data";
+  
+  return NULL;
+}
+
+const char *
+test_is_array( void )
+{
+  StumplessValue * value = BuildUnsignedShortValue();
+  if( value == NULL )
+    return "could not build the test value";
+  if( StumplessValueIsArray( value ) )
+    return "a non-array value was listed as an array";
+  
+  value = BuildIntArrayValue();
+  if( value == NULL )
+    return "could not build the test array value";
+  if( !StumplessValueIsArray( value ) )
+    return "an array value was listed as not an array";
+  
+  value = BuildVoidValue();
+  if( value == NULL )
+    return "could not build the test void value";
+  if( StumplessValueIsArray( value ) )
+    return "a void array was listed as an array";
   
   return NULL;
 }

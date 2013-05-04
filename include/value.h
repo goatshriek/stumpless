@@ -3,6 +3,9 @@
 
 #include <types.h>
 
+StumplessValueList *
+StumplessArrayValueToValueList( StumplessValue * );
+
 void
 StumplessDestroyValue( StumplessValue * );
 
