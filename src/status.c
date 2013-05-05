@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include <status.h>
-#include <types.h>
+#include <type.h>
 
 const char *
 StumplessStatusToString( StumplessStatusCode code )

@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_FORMATTED_OUTPUT_H
 #define STUMPLESS_FORMATTED_OUTPUT_H
 
-#include <types.h>
+#include <type.h>
 
 StumplessStatusCode
 StumplessAppendFormattedOutputs( StumplessFormattedOutput *,

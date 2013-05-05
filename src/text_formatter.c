@@ -5,6 +5,7 @@
 #include <formatted_output.h>
 #include <status_checker.h>
 #include <text_formatter.h>
+#include <type.h>
 #include <value_list.h>
 
 static

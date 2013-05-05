@@ -2,7 +2,7 @@
 
 #include <boolean.h>
 #include <string_helper.h>
-#include <types.h>
+#include <type.h>
 
 char *
 StumplessBooleanToString( StumplessBoolean * boolean )

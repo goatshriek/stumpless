@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_LOGGER_H
 #define STUMPLESS_LOGGER_H
 
-#include <types.h>
+#include <type.h>
 
 StumplessStatusCode StumplessLogDebug( const char * );
 StumplessStatusCode StumplessLogError( const char * );

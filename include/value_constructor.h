@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_VALUE_CONSTRUCTOR_H
 #define STUMPLESS_VALUE_CONSTRUCTOR_H
 
-#include <types.h>
+#include <type.h>
 
 StumplessValue *
 StumplessValueFromChar( char );

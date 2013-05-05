@@ -6,6 +6,7 @@
 #include <formatted_output.h>
 #include <level.h>
 #include <text_formatter.h>
+#include <type.h>
 #include <value_list.h>
 
 char *

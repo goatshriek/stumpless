@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include <types.h>
+#include <type.h>
 
 StumplessStatusCode
 StumplessAppendStringToValueList( StumplessValueList *, const char * );

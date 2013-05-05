@@ -1,6 +1,6 @@
 #include <configuration.h>
 #include <formatted_output.h>
-#include <types.h>
+#include <type.h>
 
 StumplessStatusCode
 StumplessAppendFormattedOutputs( StumplessFormattedOutput * beginning,

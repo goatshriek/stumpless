@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_VALUE_H
 #define STUMPLESS_VALUE_H
 
-#include <types.h>
+#include <type.h>
 
 StumplessValueList *
 StumplessArrayValueToValueList( StumplessValue * );

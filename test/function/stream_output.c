@@ -5,7 +5,7 @@
 
 #include "helper.h"
 
-const char * test_file_write( void );
+const char * test_write( void );
 
 int
 main( void )
@@ -13,7 +13,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( file_write )
+  RUN_TEST( write )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -22,9 +22,9 @@ main( void )
 }
 
 const char *
-test_file_write( void )
+test_write( void )
 {
-  StumplessStatusCode status = StumplessWriteToFile( NULL, NULL );
+  StumplessStatusCode status = StumplessWriteToStream( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a null file pointer did not generate the correct error";
   
@@ -33,7 +33,7 @@ test_file_write( void )
   if( file == NULL )
     return "the test file could not be opened";
   
-  status = StumplessWriteToFile( file, NULL );
+  status = StumplessWriteToStream( file, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty output parameter did not generate the correct error";
   

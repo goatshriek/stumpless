@@ -2,6 +2,7 @@
 
 #include <configuration.h>
 #include <logger.h>
+#include <type.h>
 
 StumplessStatusCode
 StumplessLogDebug( const char * message )

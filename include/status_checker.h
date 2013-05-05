@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include <types.h>
+#include <type.h>
 
 #define NULL_ON_FAILURE( status )                                              \
 if( (status) != STUMPLESS_SUCCESS ){                                           \

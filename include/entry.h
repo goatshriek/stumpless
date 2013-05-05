@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_ENTRY_H
 #define STUMPLESS_ENTRY_H
 
-#include <types.h>
+#include <type.h>
 
 char * StumplessEntryToString( StumplessEntry * );
 StumplessEntry * StumplessGetDebugEntry( void );

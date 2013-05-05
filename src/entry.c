@@ -4,7 +4,7 @@
 #include <event.h>
 #include <formatted_output.h>
 #include <text_formatter.h>
-#include <types.h>
+#include <type.h>
 #include <value_list.h>
 
 char *

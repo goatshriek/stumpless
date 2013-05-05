@@ -17,10 +17,6 @@ test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
 
-test_function_file_output_SOURCES = test/function/file_output.c
-test_function_file_output_CFLAGS = $(test_flags)
-test_function_file_output_LDADD = $(test_libraries)
-
 test_function_formatted_output_SOURCES = test/function/formatted_output.c
 test_function_formatted_output_CFLAGS = $(test_flags)
 test_function_formatted_output_LDADD = $(test_libraries)
@@ -29,13 +25,17 @@ test_function_level_SOURCES = test/function/level.c
 test_function_level_CFLAGS = $(test_flags)
 test_function_level_LDADD = $(test_libraries)
 
-test_function_quick_loggers_SOURCES =  test/function/quick_loggers.c
-test_function_quick_loggers_CFLAGS = $(test_flags)
-test_function_quick_loggers_LDADD = $(test_libraries)
+test_function_quick_logger_SOURCES =  test/function/quick_logger.c
+test_function_quick_logger_CFLAGS = $(test_flags)
+test_function_quick_logger_LDADD = $(test_libraries)
 
 test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)
+
+test_function_stream_output_SOURCES = test/function/stream_output.c
+test_function_stream_output_CFLAGS = $(test_flags)
+test_function_stream_output_LDADD = $(test_libraries)
 
 test_function_string_helper_SOURCES = test/function/string_helper.c
 test_function_string_helper_CFLAGS = $(test_flags)

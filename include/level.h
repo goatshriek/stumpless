@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_LEVEL_H
 #define STUMPLESS_LEVEL_H
 
-#include <types.h>
+#include <type.h>
 
 StumplessLevel * StumplessGetDebugLevel( void );
 StumplessLevel * StumplessGetErrorLevel( void );

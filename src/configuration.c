@@ -2,7 +2,7 @@
 
 #include <configuration.h>
 #include <status_checker.h>
-#include <types.h>
+#include <type.h>
 
 static StumplessConfiguration * configuration = NULL;
 

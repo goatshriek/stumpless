@@ -2,11 +2,11 @@ check_PROGRAMS = test/function/boolean \
                  test/function/configuration \
                  test/function/entry \
                  test/function/event \
-                 test/function/file_output \
                  test/function/formatted_output \
                  test/function/level \
-                 test/function/quick_loggers \
+                 test/function/quick_logger \
                  test/function/status \
+                 test/function/stream_output \
                  test/function/string_helper \
                  test/function/text_formatter \
                  test/function/value \
