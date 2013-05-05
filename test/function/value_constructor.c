@@ -51,48 +51,112 @@ main( void )
 const char *
 test_from_char( void )
 {
+  StumplessValue * value = StumplessValueFromChar( 'c' );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_CHAR )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->c != 'c' )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_double( void )
 {
+  StumplessValue * value = StumplessValueFromDouble( 3.456 );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_DOUBLE )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->d != 3.456 )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_float( void )
 {
+  StumplessValue * value = StumplessValueFromFloat( 789.6 );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_FLOAT )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->f != 789.6 )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_int( void )
 {
+  StumplessValue * value = StumplessValueFromInt( 1234 );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_INT )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->i != 1234 )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_long( void )
 {
+  StumplessValue * value = StumplessValueFromLong( 123456789L );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_LONG )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->l != 123456789L )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_long_double( void )
 {
+  StumplessValue * value = StumplessValueFromLongDouble( 5.23e34 );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_LONG_DOUBLE )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->l_d != 5.23e34 )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_long_long( void )
 {
+  StumplessValue * value = StumplessValueFromLongLong( 1234567890987654321LL );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_LONG_LONG )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->c != 1234567890987654321LL )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_short( void )
 {
+  StumplessValue * value = StumplessValueFromShort( 127 );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_SHORT )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->s != 127 )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
@@ -121,6 +185,14 @@ test_from_string( void )
 const char *
 test_from_unsigned_char( void )
 {
+  StumplessValue * value = StumplessValueFromUnsignedChar( 156U );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_UNSIGNED_CHAR )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->u_c != 156U )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
@@ -143,17 +215,41 @@ test_from_unsigned_int( void )
 const char *
 test_from_unsigned_long( void )
 {
+  StumplessValue * value = StumplessValueFromUnsignedLong( 123456789UL );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_UNSIGNED_LONG )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->u_l != 123456789UL )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_unsigned_long_long( void )
 {
+  StumplessValue * value = StumplessValueFromUnsignedLongLong( 1234567890987654321ULL );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_UNSIGNED_LONG_LONG )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->u_l_l != 1234567890987654321ULL )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
 
 const char *
 test_from_unsigned_short( void )
 {
+  StumplessValue * value = StumplessValueFromUnsignedShort( 250U );
+  FAIL_IF_NULL( value, "the value could not be built" )
+  if( value->type != STUMPLESS_UNSIGNED_SHORT )
+    return "the value did not have the correct type";
+  FAIL_IF_NULL( value->data, "the value did not have any data" )
+  if( value->data->u_s != 250U )
+    return "the value did not have the correct data";
+  
   return NULL;
 }
