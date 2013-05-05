@@ -13,6 +13,7 @@
 #include <text_formatter.h>
 #include <types.h>
 #include <value.h>
+#include <value_constructor.h>
 #include <value_list.h>
 
 #endif

@@ -9,12 +9,6 @@ StumplessArrayValueToValueList( StumplessValue * );
 void
 StumplessDestroyValue( StumplessValue * );
 
-StumplessValue *
-StumplessValueFromString( const char * );
-
-StumplessValue *
-StumplessValueFromUnsignedInt( unsigned );
-
 StumplessStatusCode
 StumplessValueIntoString( char *, StumplessValue * );
 

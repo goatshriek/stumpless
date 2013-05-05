@@ -5,8 +5,8 @@
 #include <status_checker.h>
 #include <types.h>
 #include <value.h>
+#include <value_constructor.h>
 #include <value_list.h>
-
 
 static
 StumplessStatusCode

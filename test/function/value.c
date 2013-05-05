@@ -14,8 +14,6 @@ const char * test_is_array( void );
 const char * test_outside_access ( void );
 const char * test_stream_write( void );
 const char * test_to_string( void );
-const char * test_value_from_string( void );
-const char * test_value_from_unsigned_int( void );
 
 int
 main( void )
@@ -31,8 +29,6 @@ main( void )
   RUN_TEST( outside_access )
   RUN_TEST( stream_write )
   RUN_TEST( to_string )
-  RUN_TEST( value_from_string )
-  RUN_TEST( value_from_unsigned_int )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -264,44 +260,6 @@ test_to_string( void )
   
   if( strstr( str, "123456" ) == NULL )
     return "the string did not contain the value's contents";
-  
-  return NULL;
-}
-
-const char *
-test_value_from_string( void )
-{
-  StumplessValue * value = NULL;
-  
-  value = StumplessValueFromString( NULL );
-  if( value != NULL )
-    return "a null value was not returned for a null string";
-  
-  value = StumplessValueFromString( "test string 'n such" );
-  if( value == NULL )
-    return "a null value was returned for a non-null string";
-  if( value->type != STUMPLESS_STRING )
-    return "the value did not have a string type";
-  if( value->data == NULL )
-    return "the value did not have any data";
-  if( strcmp( value->data->c_p, "test string 'n such" ) != 0 )
-    return "the value string did not match the initial string";
-  
-  return NULL;
-}
-
-const char *
-test_value_from_unsigned_int( void )
-{
-  StumplessValue * value = NULL;
-  
-  value = StumplessValueFromUnsignedInt( 3 );
-  if( value == NULL )
-    return "the value could not be created";
-  if( value->type != STUMPLESS_UNSIGNED_INT )
-    return "the created value did not have an unsigned int type";
-  if( value->data == NULL || value->data->u_i != 3 )
-    return "the value did not contain the correct number";
   
   return NULL;
 }

@@ -91,45 +91,6 @@ StumplessDestroyValue( StumplessValue * value )
   return;
 }
 
-StumplessValue *
-StumplessValueFromString( const char * str )
-{
-  if( str == NULL )
-    return NULL;
-  
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
-  if( value == NULL )
-    return NULL;
-  
-  value->data = malloc( sizeof( StumplessValueData ) );
-  if( value->data == NULL )
-    return NULL;
- 
-  value->format = "%s"; 
-  value->type = STUMPLESS_STRING;
-  value->data->c_p = str;
-  
-  return value;
-}
-
-StumplessValue *
-StumplessValueFromUnsignedInt( unsigned num )
-{
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
-  if( value == NULL )
-    return NULL;
-  
-  value->data = malloc( sizeof( StumplessValueData ) );
-  if( value->data == NULL )
-    return NULL;
-  
-  value->format = "%d";
-  value->type = STUMPLESS_UNSIGNED_INT;
-  value->data->u_i = num;
-  
-  return value;
-}
-
 StumplessStatusCode
 StumplessValueIntoString( char * str, StumplessValue * value )
 { 
