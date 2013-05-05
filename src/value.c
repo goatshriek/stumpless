@@ -55,7 +55,17 @@ StumplessArrayValueToValueList( StumplessValue * value )
   unsigned length = value->length;
   switch( value->type ){
     case STUMPLESS_UNSIGNED_SHORT_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromUnsignedShort( data->u_s_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_SHORT_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromShort( data->s_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break; 
     case STUMPLESS_UNSIGNED_INT_POINTER:
       for( i = 0; i < length; i++){
         value_i = StumplessValueFromUnsignedInt( data->u_i_p[i] );
@@ -63,20 +73,76 @@ StumplessArrayValueToValueList( StumplessValue * value )
       }
       break;
     case STUMPLESS_INT_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromInt( data->i_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_UNSIGNED_LONG_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromUnsignedLong( data->u_l_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_LONG_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromLong( data->l_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromUnsignedLongLong( data->l_l_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_LONG_LONG_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromLongLong( data->l_l_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_UNSIGNED_CHAR_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromUnsignedChar( data->u_c_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
+    case STUMPLESS_SIGNED_CHAR_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromSignedChar( data->s_c_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_CHAR_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromChar( data->c_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_FLOAT_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromFloat( data->f_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_DOUBLE_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromDouble( data->d_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     case STUMPLESS_LONG_DOUBLE_POINTER:
+      for( i = 0; i < length; i++ ){
+        value_i = StumplessValueFromLongDouble( data->l_d_p[i] );
+        NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )
+      }
+      break;
     default:
       return NULL;
   }
   
-  return NULL;
+  return list;
 }
 
 void
@@ -229,6 +295,7 @@ StumplessValueIsArray( StumplessValue * value )
     case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
     case STUMPLESS_LONG_LONG_POINTER:
     case STUMPLESS_UNSIGNED_CHAR_POINTER:
+    case STUMPLESS_SIGNED_CHAR_POINTER:
     case STUMPLESS_CHAR_POINTER:
     case STUMPLESS_FLOAT_POINTER:
     case STUMPLESS_DOUBLE_POINTER:
@@ -285,8 +352,10 @@ StumplessValueTypeDefaultFormat( StumplessValueType type )
     case STUMPLESS_LONG_LONG_POINTER:
       return "%lli";
     case STUMPLESS_UNSIGNED_CHAR:
+    case STUMPLESS_SIGNED_CHAR:
     case STUMPLESS_CHAR:
     case STUMPLESS_UNSIGNED_CHAR_POINTER:
+    case STUMPLESS_SIGNED_CHAR_POINTER:
     case STUMPLESS_CHAR_POINTER:
       return "%c";
     case STUMPLESS_FLOAT:
