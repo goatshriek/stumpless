@@ -41,6 +41,13 @@ DestroyValueListNode( StumplessValueListNode * node )
 }
 
 StumplessStatusCode
+StumplessAddSeparatorToValueList( StumplessValueList * list,
+                                  StumplessValue * separator )
+{
+  return STUMPLESS_FAILURE;
+}
+
+StumplessStatusCode
 StumplessAppendStringToValueList( StumplessValueList * list, const char * str )
 {
   if( list == NULL || str == NULL )
@@ -168,6 +175,19 @@ StumplessNewValueList( void )
   list->last = NULL;
   
   return list;
+}
+
+StumplessStatusCode
+StumplessPrependStringToValueList( StumplessValueList * list, const char * str )
+{
+  return STUMPLESS_FAILURE;
+}
+
+StumplessStatusCode
+StumplessPrependValueToValueList( StumplessValueList * list,
+                                  StumplessValue * value )
+{
+  return STUMPLESS_FAILURE;
 }
 
 StumplessStatusCode

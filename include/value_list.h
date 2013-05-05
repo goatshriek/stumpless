@@ -6,6 +6,9 @@
 #include <type.h>
 
 StumplessStatusCode
+StumplessAddSeparatorToValueList( StumplessValueList *, StumplessValue * );
+
+StumplessStatusCode
 StumplessAppendStringToValueList( StumplessValueList *, const char * );
 
 StumplessStatusCode
@@ -25,6 +28,12 @@ StumplessDestroyValueList( StumplessValueList * );
 
 StumplessValueList *
 StumplessNewValueList( void );
+
+StumplessStatusCode
+StumplessPrependStringToValueList( StumplessValueList *, const char * );
+
+StumplessStatusCode
+StumplessPrependValueToValueList( StumplessValueList *, StumplessValue * );
 
 StumplessStatusCode
 StumplessValueListIntoString( char *, StumplessValueList * );

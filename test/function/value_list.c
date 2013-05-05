@@ -6,14 +6,17 @@
 
 #include "helper.h"
 
+const char * test_appender( void );
+const char * test_constructor( void );
 const char * test_copy( void );
-const char * test_list_appender( void );
-const char * test_list_constructor( void );
-const char * test_list_destructor( void );
+const char * test_destructor( void );
 const char * test_into_string( void );
 const char * test_is_empty( void );
+const char * test_prepender( void );
+const char * test_separator( void );
 const char * test_stream_write( void );
 const char * test_string_appender( void );
+const char * test_string_prepender( void );
 const char * test_to_string( void );
 const char * test_unsigned_int_appender( void );
 const char * test_value_appender( void );
@@ -24,14 +27,17 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
+  RUN_TEST( appender )
+  RUN_TEST( constructor )
   RUN_TEST( copy )
-  RUN_TEST( list_appender )
-  RUN_TEST( list_constructor )
-  RUN_TEST( list_destructor )
+  RUN_TEST( destructor )
   RUN_TEST( into_string )
   RUN_TEST( is_empty )
+  RUN_TEST( prepender )
+  RUN_TEST( separator )
   RUN_TEST( stream_write )
   RUN_TEST( string_appender )
+  RUN_TEST( string_prepender )
   RUN_TEST( to_string )
   RUN_TEST( unsigned_int_appender )
   RUN_TEST( value_appender )
@@ -43,35 +49,7 @@ main( void )
 }
 
 const char *
-test_copy( void )
-{
-  StumplessValueList * list = BuildValueList();
-  if( list == NULL )
-    return "could not build the test list";
-  
-  StumplessValueList * copy;
-  
-  copy = StumplessCopyValueList( NULL );
-  if( copy != NULL )
-    return "the copy was not null for a null pointer";
-  
-  copy = StumplessCopyValueList( list );
-  if( copy == NULL )
-    return "the copy was null for a non-null pointer";
-  if( copy == list )
-    return "the copy was equal to the original list";
-  if( copy->first == NULL )
-    return "the copy did not actually contain any information";
-  if( copy->first == list->first )
-    return "the copy's nodes were the same instead of a copy";
-  if( copy->first->value != list->first->value )
-    return "the copy did not have the same values";
-  
-  return NULL;
-}
-
-const char *
-test_list_appender( void )
+test_appender( void )
 {
   StumplessStatusCode status;
   
@@ -108,7 +86,7 @@ test_list_appender( void )
 }
 
 const char *
-test_list_constructor( void )
+test_constructor( void )
 {
   StumplessValueList * list = NULL;
   
@@ -127,7 +105,35 @@ test_list_constructor( void )
 }
 
 const char *
-test_list_destructor( void )
+test_copy( void )
+{
+  StumplessValueList * list = BuildValueList();
+  if( list == NULL )
+    return "could not build the test list";
+  
+  StumplessValueList * copy;
+  
+  copy = StumplessCopyValueList( NULL );
+  if( copy != NULL )
+    return "the copy was not null for a null pointer";
+  
+  copy = StumplessCopyValueList( list );
+  if( copy == NULL )
+    return "the copy was null for a non-null pointer";
+  if( copy == list )
+    return "the copy was equal to the original list";
+  if( copy->first == NULL )
+    return "the copy did not actually contain any information";
+  if( copy->first == list->first )
+    return "the copy's nodes were the same instead of a copy";
+  if( copy->first->value != list->first->value )
+    return "the copy did not have the same values";
+  
+  return NULL;
+}
+
+const char *
+test_destructor( void )
 {
   StumplessValueList * list = StumplessNewValueList();
   
@@ -192,6 +198,18 @@ test_is_empty( void )
 }
 
 const char *
+test_prepender( void )
+{
+  return NULL;
+}
+
+const char *
+test_separator( void )
+{
+  return NULL;
+}
+
+const char *
 test_stream_write( void )
 {
   StumplessValueList * list = BuildValueList();
@@ -237,6 +255,12 @@ test_string_appender( void )
   if( strcmp( list->last->value->data->c_p, "str" ) != 0 )
     return "the list's last member was not the appended string";
   
+  return NULL;
+}
+
+const char *
+test_string_prepender( void )
+{
   return NULL;
 }
 
