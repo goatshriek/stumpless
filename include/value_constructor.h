@@ -28,6 +28,9 @@ StumplessValue *
 StumplessValueFromShort( short );
 
 StumplessValue *
+StumplessValueFromSignedChar( signed char );
+
+StumplessValue *
 StumplessValueFromString( const char * );
 
 StumplessValue *

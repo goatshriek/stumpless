@@ -7,6 +7,7 @@
 #include <status_checker.h>
 #include <type.h>
 #include <value.h>
+#include <value_constructor.h>
 #include <value_list.h>
 
 #define SINGLE_VALUE_INTO_STREAM( member )                                     \

@@ -48,10 +48,12 @@ typedef enum StumplessValueType {
   STUMPLESS_UNSIGNED_LONG_LONG_POINTER,
   STUMPLESS_LONG_LONG,
   STUMPLESS_LONG_LONG_POINTER,
-  STUMPLESS_UNSIGNED_CHAR,
-  STUMPLESS_UNSIGNED_CHAR_POINTER,
   STUMPLESS_CHAR,
   STUMPLESS_CHAR_POINTER,
+  STUMPLESS_SIGNED_CHAR,
+  STUMPLESS_SIGNED_CHAR_POINTER,
+  STUMPLESS_UNSIGNED_CHAR,
+  STUMPLESS_UNSIGNED_CHAR_POINTER,
   STUMPLESS_FLOAT,
   STUMPLESS_FLOAT_POINTER,
   STUMPLESS_DOUBLE,
@@ -80,10 +82,12 @@ typedef union {
   const unsigned long long * u_l_l_p;
   signed long long l_l;
   const signed long long * l_l_p;
+  char c;
+  const char * c_p;
+  signed char s_c;
+  const signed char * s_c_p;
   unsigned char u_c;
   const unsigned char * u_c_p;
-  signed char c;
-  const signed char * c_p;
   float f;
   const float * f_p;
   double d;
