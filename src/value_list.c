@@ -67,7 +67,8 @@ StumplessAppendUnsignedIntToValueList( StumplessValueList * list, unsigned num )
 }
 
 StumplessStatusCode
-StumplessAppendValueLists( StumplessValueList * beginning,                                                 StumplessValueList * end )
+StumplessAppendValueLists( StumplessValueList * beginning,
+                           StumplessValueList * end )
 {
   if( beginning == NULL || end == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -212,27 +213,6 @@ StumplessValueListToString( StumplessValueList * list )
   NULL_ON_FAILURE( StumplessValueListIntoString( list_str, list ) )
   
   return list_str;
-}
-
-StumplessStatusCode
-StumplessWriteAndDestroyValueList( FILE * stream, StumplessValueList * list )
-{
-  if( stream == NULL || list == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
-  
-  StumplessValueListNode * previous = NULL;
-  StumplessValueListNode * current = list->first;
-  
-  while( current != NULL ){
-    STATUS_ON_FAILURE( StumplessWriteValueToStream( stream, current->value ) )
-    
-    previous = current;
-    current = current->next;
-    DestroyValueListNode( previous );
-  }
-  
-  free( list );
-  return STUMPLESS_SUCCESS;
 }
 
 StumplessStatusCode

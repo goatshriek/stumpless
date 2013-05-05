@@ -36,9 +36,6 @@ char *
 StumplessValueListToString( StumplessValueList * );
 
 StumplessStatusCode
-StumplessWriteAndDestroyValueList( FILE *, StumplessValueList * );
-
-StumplessStatusCode
 StumplessWriteValueListToStream( FILE *, StumplessValueList * );
 
 #endif

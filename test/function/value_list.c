@@ -7,7 +7,6 @@
 #include "helper.h"
 
 const char * test_copy( void );
-const char * test_destructive_write( void );
 const char * test_list_appender( void );
 const char * test_list_constructor( void );
 const char * test_list_destructor( void );
@@ -26,7 +25,6 @@ main( void )
   const char * result;
   
   RUN_TEST( copy )
-  RUN_TEST( destructive_write )
   RUN_TEST( list_appender )
   RUN_TEST( list_constructor )
   RUN_TEST( list_destructor )
@@ -68,30 +66,6 @@ test_copy( void )
     return "the copy's nodes were the same instead of a copy";
   if( copy->first->value != list->first->value )
     return "the copy did not have the same values";
-  
-  return NULL;
-}
-
-const char *
-test_destructive_write( void )
-{
-  StumplessStatusCode status;
-  
-  status = StumplessWriteAndDestroyValueList( NULL, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a null file did not generate the correct error";
-  
-  status = StumplessWriteAndDestroyValueList( stdout, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a null file did not generate the correct error";
-  
-  StumplessValueList * list = BuildValueList();
-  if( list == NULL )
-    return "could not build the test list";
-  
-  status = StumplessWriteAndDestroyValueList( stdout, list );
-  if( status != STUMPLESS_SUCCESS )
-    return "the list was not correctly written to the output";
   
   return NULL;
 }
