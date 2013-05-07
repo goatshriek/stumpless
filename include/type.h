@@ -62,6 +62,7 @@ typedef enum StumplessValueType {
   STUMPLESS_LONG_DOUBLE_POINTER,
   STUMPLESS_BOOLEAN,
   STUMPLESS_STRING,
+  STUMPLESS_STRING_POINTER,
   STUMPLESS_VOID_POINTER
 } StumplessValueType;
 
@@ -94,6 +95,7 @@ typedef union {
   const double * d_p;
   long double l_d;
   const long double * l_d_p;
+  const char ** str_p;
   StumplessBoolean * boolean;
   const void * v_p;
 } StumplessValueData;

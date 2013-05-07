@@ -200,12 +200,66 @@ test_is_empty( void )
 const char *
 test_prepender( void )
 {
+  StumplessValueList * list = StumplessNewValueList();
+  FAIL_IF_NULL( list, "could not build a new test list" )
+  
+  StumplessValue * value = BuildIntValue();
+  FAIL_IF_NULL( list, "could not build the test value" );
+  
+  StumplessStatusCode status = StumplessPrependValueToValueList( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "two empty arguments did not generate the appropriate status code";
+  
+  status = StumplessPrependValueToValueList( list, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty value did not generate the appropriate status code";
+  
+  status = StumplessPrependValueToValueList( NULL, value );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a NULL list did not generate the approprate status code";
+ 
+  status = StumplessPrependValueToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return "a value could not be prepended to an empty list";
+  FAIL_IF_NULL( list->first, "the list still did not have any members" )
+  FAIL_IF_NULL( list->first->value, "the list's nodes were invalid" )
+  if( list->first->value != value )
+    return "the value was not actually prepended to the list";
+  
+  list = BuildValueList();
+  FAIL_IF_NULL( list, "could not build a populated test list" ) 
+  value = BuildIntArrayValue();
+  FAIL_IF_NULL( list, "could not build a test array value" )
+  status = StumplessPrependValueToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return "the value was not correctly prepended to a populated list";
+  FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
+  FAIL_IF_NULL( list->first->value, "the new element did not have a value" )
+  if( list->first->value != value )
+    return "the value was not actually prepended to a full list";
+  
   return NULL;
 }
 
 const char *
 test_separator( void )
 {
+  StumplessValueList * list = BuildValueListOfStrings();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  StumplessValue * separator = StumplessValueFromString( ", " );
+  FAIL_IF_NULL( separator, "could not build the test separator value" )
+  
+  StumplessStatusCode status;
+  status = StumplessAddSeparatorToValueList( list, separator );
+  if( status != STUMPLESS_SUCCESS )
+    return "the separator was not properly added to the list";
+  
+  char * test_str = StumplessValueListToString( list );
+  FAIL_IF_NULL( test_str, "the list could not be converted to a string" )
+  if( strcmp( test_str, "this, is, a, test, list" ) != 0 )
+    return "the separator was not added between all elements of the list";
+  
   return NULL;
 }
 
@@ -261,6 +315,45 @@ test_string_appender( void )
 const char *
 test_string_prepender( void )
 {
+  StumplessValueList * list = StumplessNewValueList();
+  FAIL_IF_NULL( list, "could not build a new test list" )
+  
+  StumplessStatusCode status = StumplessPrependStringToValueList( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "two empty arguments did not generate the appropriate status code";
+  
+  status = StumplessPrependStringToValueList( list, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a null string did not generate the appropriate status code";
+  
+  status = StumplessPrependStringToValueList( NULL, "shouldn't work" );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a NULL list did not generate the approprate status code";
+  
+  status = StumplessPrependStringToValueList( list, "lonely little guy" );
+  if( status != STUMPLESS_SUCCESS )
+    return "a string could not be prepended to an empty list";
+  FAIL_IF_NULL( list->first, "the list still did not have any members" )
+  FAIL_IF_NULL( list->first->value, "the list's nodes were invalid" )
+  FAIL_IF_NULL( list->first->value->data, "the new value did not have any data" )
+  if( list->first->value->type != STUMPLESS_STRING )
+    return "the new value was not a string";
+  if( strcmp( list->first->value->data->c_p, "lonely little guy" ) != 0 )
+    return "the new string was not equivalent to the added one";
+  
+  list = BuildValueList();
+  FAIL_IF_NULL( list, "could not build a populated test list" ) 
+  status = StumplessPrependStringToValueList( list, "new beginning" );
+  if( status != STUMPLESS_SUCCESS )
+    return "the string was not correctly prepended to a populated list";
+  FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
+  FAIL_IF_NULL( list->first->value, "the new element did not have a value" )
+  FAIL_IF_NULL( list->first->value->data, "the new value did not have any data" )
+  if( list->first->value->type != STUMPLESS_STRING )
+    return "the new value was not a string";
+  if( strcmp( list->first->value->data->c_p, "new beginning" ) != 0 )
+    return "the new string was not equivalent to the added one";
+  
   return NULL;
 }
 

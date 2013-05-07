@@ -300,6 +300,7 @@ StumplessValueIsArray( StumplessValue * value )
     case STUMPLESS_FLOAT_POINTER:
     case STUMPLESS_DOUBLE_POINTER:
     case STUMPLESS_LONG_DOUBLE_POINTER:
+    case STUMPLESS_STRING_POINTER:
       return 1;
     default:
       return 0;

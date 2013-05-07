@@ -251,6 +251,23 @@ BuildIntArrayValue( void )
   return value;
 }
 
+StumplessValue *
+BuildIntValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  
+  value->type = STUMPLESS_INT;
+  value->data->i = 45678;
+  
+  return value;
+}
+
 StumplessLevel *
 BuildLevel( void )
 {
@@ -262,6 +279,22 @@ BuildLevel( void )
   level->value = 42;
   
   return level;
+}
+
+StumplessValueList *
+BuildValueListOfStrings( void )
+{
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  StumplessAppendStringToValueList( list, "this" );
+  StumplessAppendStringToValueList( list, "is" );
+  StumplessAppendStringToValueList( list, "a" );
+  StumplessAppendStringToValueList( list, "test" );
+  StumplessAppendStringToValueList( list, "list" );
+  
+  return list;
 }
 
 StumplessFormattedOutput *

@@ -33,8 +33,14 @@ BuildEventAttributeList( void );
 StumplessValue *
 BuildIntArrayValue( void );
 
+StumplessValue *
+BuildIntValue( void );
+
 StumplessLevel *
 BuildLevel( void );
+
+StumplessValueList *
+BuildValueListOfStrings( void );
 
 StumplessFormattedOutput *
 BuildTextFormattedOutput( void );
