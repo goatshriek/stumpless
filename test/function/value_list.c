@@ -257,6 +257,7 @@ test_separator( void )
   
   char * test_str = StumplessValueListToString( list );
   FAIL_IF_NULL( test_str, "the list could not be converted to a string" )
+  printf( "\n%s\n", test_str );
   if( strcmp( test_str, "this, is, a, test, list" ) != 0 )
     return "the separator was not added between all elements of the list";
   

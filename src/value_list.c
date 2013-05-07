@@ -10,20 +10,20 @@
 
 static
 StumplessStatusCode
-AppendValueListNodeToValueList ( StumplessValueList * list,
-                                 StumplessValueListNode * node )
+AppendValueListNodeToValueList( StumplessValueList * list,
+                                StumplessValueListNode * node )
 {
   if( list == NULL || node == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
   node->next = NULL;
   
-  if( list->first == NULL ){
-    list->first = list->last = node;
-  } else {
+  if( list->first == NULL )
+    list->first = node;
+  else
     list->last->next = node;
-    list->last = node;
-  }
+  
+  list->last = node;
   
   return STUMPLESS_SUCCESS;
 }
@@ -40,11 +40,44 @@ DestroyValueListNode( StumplessValueListNode * node )
   free( node );
 }
 
+static
+StumplessStatusCode
+PrependValueListNodeToValueList( StumplessValueList * list,
+                                 StumplessValueListNode * node )
+{
+  if( list == NULL || node == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  node->next = list->first;
+  list->first = node;
+  
+  if( list->last == NULL )
+    list->last = node;
+  
+  return STUMPLESS_SUCCESS;
+}
+
 StumplessStatusCode
 StumplessAddSeparatorToValueList( StumplessValueList * list,
                                   StumplessValue * separator )
 {
-  return STUMPLESS_FAILURE;
+  if( list == NULL || separator == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  StumplessValueListNode * new_node;
+  StumplessValueListNode * current = list->first;
+  while( current != list->last ){
+    new_node = malloc( sizeof( StumplessValueListNode ) );
+    if( new_node == NULL )
+      return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    new_node->value = separator;
+    new_node->next = current->next;
+    current->next = new_node;
+    
+    current = new_node->next;
+  }
+  
+  return STUMPLESS_SUCCESS;
 }
 
 StumplessStatusCode
@@ -99,11 +132,8 @@ StumplessStatusCode
 StumplessAppendValueToValueList( StumplessValueList * list,
                                  StumplessValue * value )
 {
-  if( list == NULL )
+  if( list == NULL || value == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
-  
-  if( value == NULL )
-    return STUMPLESS_SUCCESS;
   
   StumplessValueListNode * node = malloc( sizeof( StumplessValueListNode ) );
   if( node == NULL )
@@ -180,14 +210,30 @@ StumplessNewValueList( void )
 StumplessStatusCode
 StumplessPrependStringToValueList( StumplessValueList * list, const char * str )
 {
-  return STUMPLESS_FAILURE;
+  if( list == NULL || str == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  StumplessValue * value = StumplessValueFromString( str );
+  if( value == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  return StumplessPrependValueToValueList( list, value );
 }
 
 StumplessStatusCode
 StumplessPrependValueToValueList( StumplessValueList * list,
                                   StumplessValue * value )
 {
-  return STUMPLESS_FAILURE;
+  if( list == NULL || value == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  StumplessValueListNode * node = malloc( sizeof( StumplessValueListNode ) );
+  if( node == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  node->value = value;
+  
+  return PrependValueListNodeToValueList( list, node );
 }
 
 StumplessStatusCode
