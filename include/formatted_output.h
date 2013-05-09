@@ -28,4 +28,12 @@ StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * );
 char *
 StumplessFormattedOutputToString( StumplessFormattedOutput * );
 
+StumplessStatusCode
+StumplessPrependStringToFormattedOutput( StumplessFormattedOutput *,
+                                         const char * );
+
+StumplessStatusCode
+StumplessPrependValueToFormattedOutput( StumplessFormattedOutput *,
+                                        StumplessValue * );
+
 #endif

@@ -281,20 +281,21 @@ BuildLevel( void )
   return level;
 }
 
-StumplessValueList *
-BuildValueListOfStrings( void )
+StumplessValue *
+BuildStringValue( void )
 {
-  StumplessValueList * list = StumplessNewValueList();
-  if( list == NULL )
+  StumplessValue * value = malloc( sizeof( StumplessValue * ) );
+  if( value == NULL )
     return NULL;
   
-  StumplessAppendStringToValueList( list, "this" );
-  StumplessAppendStringToValueList( list, "is" );
-  StumplessAppendStringToValueList( list, "a" );
-  StumplessAppendStringToValueList( list, "test" );
-  StumplessAppendStringToValueList( list, "list" );
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
   
-  return list;
+  value->type = STUMPLESS_STRING;
+  value->data->c_p = "Test String Value";
+  
+  return value;
 }
 
 StumplessFormattedOutput *
@@ -404,6 +405,22 @@ BuildValueList( void )
   status = StumplessAppendValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
+  
+  return list;
+}
+
+StumplessValueList *
+BuildValueListOfStrings( void )
+{
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  StumplessAppendStringToValueList( list, "this" );
+  StumplessAppendStringToValueList( list, "is" );
+  StumplessAppendStringToValueList( list, "a" );
+  StumplessAppendStringToValueList( list, "test" );
+  StumplessAppendStringToValueList( list, "list" );
   
   return list;
 }

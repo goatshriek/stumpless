@@ -39,8 +39,8 @@ BuildIntValue( void );
 StumplessLevel *
 BuildLevel( void );
 
-StumplessValueList *
-BuildValueListOfStrings( void );
+StumplessValue *
+BuildStringValue( void );
 
 StumplessFormattedOutput *
 BuildTextFormattedOutput( void );
@@ -53,6 +53,9 @@ BuildUnsignedShortValue( void );
 
 StumplessValueList *
 BuildValueList( void );
+
+StumplessValueList *
+BuildValueListOfStrings( void );
 
 StumplessValue *
 BuildVoidValue( void );

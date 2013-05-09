@@ -10,9 +10,11 @@ const char * test_into_string( void );
 const char * test_is_empty( void );
 const char * test_output_appender( void );
 const char * test_string_appender( void );
+const char * test_string_prepender( void );
 const char * test_to_string( void );
 const char * test_unsigned_int_appender( void );
 const char * test_value_appender( void );
+const char * test_value_prepender( void );
 
 int
 main( void )
@@ -24,9 +26,11 @@ main( void )
   RUN_TEST( is_empty )
   RUN_TEST( output_appender )
   RUN_TEST( string_appender )
+  RUN_TEST( string_prepender )
   RUN_TEST( to_string )
   RUN_TEST( unsigned_int_appender )
   RUN_TEST( value_appender )
+  RUN_TEST( value_prepender )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -38,8 +42,7 @@ const char *
 test_into_string( void )
 {
   StumplessFormattedOutput * output = BuildTextFormattedOutput();
-  if( output == NULL )
-    return "could not build the test output";
+  FAIL_IF_NULL( output, "could not build the test output" )
   
   char buffer[19];
   StumplessStatusCode status;
@@ -70,8 +73,7 @@ const char *
 test_is_empty( void )
 {
   StumplessFormattedOutput * output = BuildTextFormattedOutput();
-  if( output == NULL )
-    return "could not build test text output";
+  FAIL_IF_NULL( output, "could not build test text output" )
   
   if( StumplessFormattedOutputIsEmpty( output ) )
     return "a full output was marked as empty";
@@ -93,14 +95,13 @@ const char *
 test_output_appender( void )
 {
   StumplessFormattedOutput * output_1 = BuildByteFormattedOutput();
-  if( output_1 == NULL )
-    return "could not build the first output";
+  FAIL_IF_NULL( output_1, "could not build the first output" )
+  
   StumplessFormattedOutput * output_2 = BuildTextFormattedOutput();
-  if( output_2 == NULL )
-    return "could not build the second output";
+  FAIL_IF_NULL( output_2, "could not build the second output" )
+  
   StumplessFormattedOutput * output_3 = BuildTextFormattedOutput();
-  if( output_3 == NULL )
-    return "could not build the third output";
+  FAIL_IF_NULL( output_3, "could not build the third output" )
   
   StumplessStatusCode status;
   
@@ -134,20 +135,19 @@ test_string_appender( void )
 {
   StumplessStatusCode status;
   StumplessFormattedOutput * output = BuildTextFormattedOutput();
-  if( output == NULL )
-    return "the test output could not be created";
+  FAIL_IF_NULL( output, "the test output could not be created" )
   
   status = StumplessAppendStringToFormattedOutput( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "two empty arguments did not generate the appropriate error";
+    return "two empty arguments did not generate the appropriate status code";
   
   status = StumplessAppendStringToFormattedOutput( output, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a null string did not generate the appropriate error";
+    return "a null string did not generate the appropriate status code";
   
   status = StumplessAppendStringToFormattedOutput( NULL, "empty output" );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a null output did not generate the appropriate error";
+    return "a null output did not generate the appropriate status code";
   
   status = StumplessAppendStringToFormattedOutput( output, "sucka" );
   if( status != STUMPLESS_SUCCESS )
@@ -159,22 +159,47 @@ test_string_appender( void )
 }
 
 const char *
+test_string_prepender( void )
+{
+  StumplessStatusCode status;
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
+  FAIL_IF_NULL( output, "could not build the test output" )
+  
+  status = StumplessPrependStringToFormattedOutput( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "two empty arguments did not generate the approprate status code";
+   
+  status = StumplessPrependStringToFormattedOutput( output, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a null string did not generate the appropriate status code";
+  
+  status = StumplessPrependStringToFormattedOutput( NULL, "empty output" );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "a null output did not generate the appropriate status code";
+  
+  status = StumplessPrependStringToFormattedOutput( output, "sucka" );
+  if( status != STUMPLESS_SUCCESS )
+    return "the string was not properly prepended";
+  if( strcmp( output->payload->values->first->value->data->c_p , "sucka" ) != 0 )
+    return "the string was not actually prepended to the output list";
+  
+  return NULL;
+}
+
+const char *
 test_to_string( void )
 {
   StumplessFormattedOutput * output = BuildTextFormattedOutput();
-  if( output == NULL )
-    return "could not build the test output";
+  FAIL_IF_NULL( output, "could not build the test output" )
   
   char * buffer;
   StumplessStatusCode status;
   
   buffer = StumplessFormattedOutputToString( NULL );
-  if( buffer != NULL )
-    return "a NULL output did not generate the appropriate error";
+  FAIL_IF_NOT_NULL( buffer, "a NULL output did not generate the appropriate error" )
   
   buffer = StumplessFormattedOutputToString( output );
-  if( buffer == NULL )
-    return "a valid output did not generate a string";
+  FAIL_IF_NULL( buffer, "a valid output did not generate a string" )
   
   if( strcmp( buffer, "First\nSecond\nThird" ) != 0 )
     return "the string written was not equivalent to the output's contents";
@@ -187,8 +212,7 @@ test_unsigned_int_appender( void )
 {
   StumplessStatusCode status;
   StumplessFormattedOutput * output = BuildTextFormattedOutput();
-  if( output == NULL )
-    return "could not build the test output";
+  FAIL_IF_NULL( output, "could not build the test output" )
   
   status = StumplessAppendUnsignedIntToFormattedOutput( NULL, 3 );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
@@ -208,35 +232,60 @@ test_value_appender( void )
 {
   StumplessStatusCode status;
   StumplessFormattedOutput * output = BuildTextFormattedOutput();
-  if( output == NULL )
-    return "could not build the test output";
+  FAIL_IF_NULL( output,  "could not build the test output" )
   
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
-  if( value == NULL )
-    return "the test value could not be created";
-  value->data = malloc( sizeof( StumplessValueData ) );
-  if( value->data == NULL )
-    return "the test value data could not be created";
-  value->type = STUMPLESS_STRING;
-  value->data->c_p = "Test Value";
+  StumplessValue * value = BuildStringValue();
+  FAIL_IF_NULL( value, "could not build the test value" )
   
   status = StumplessAppendValueToFormattedOutput( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "two empty arguments did not generate the appropriate error";
+    return "two empty arguments did not generate the appropriate status code";
   
   status = StumplessAppendValueToFormattedOutput( output, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty value did not generate the appropriate error";
+    return "an empty value did not generate the appropriate status code";
   
   status = StumplessAppendValueToFormattedOutput( NULL, value );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty output did not generate the appropriate error";
+    return "an empty output did not generate the appropriate status code";
   
   status = StumplessAppendValueToFormattedOutput( output, value );
   if( status != STUMPLESS_SUCCESS )
     return "the value was not successfully appended";
   const char * last_value = output->payload->values->last->value->data->c_p;
-  if( strcmp( last_value, "Test Value" ) != 0 )
+  if( strcmp( last_value, "Test String Value" ) != 0 )
+    return "the value was not actually appended to the list";
+  
+  return NULL;
+}
+
+const char *
+test_value_prepender( void )
+{
+  StumplessStatusCode status;
+  StumplessFormattedOutput * output = BuildTextFormattedOutput();
+  FAIL_IF_NULL( output,  "could not build the test output" )
+  
+  StumplessValue * value = BuildIntArrayValue();
+  FAIL_IF_NULL( value, "could not build the test value" )
+  
+  status = StumplessPrependValueToFormattedOutput( NULL, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "two empty arguments did not generate the appropriate status code";
+  
+  status = StumplessPrependValueToFormattedOutput( output, NULL );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty value did not generate the appropriate status code";
+  
+  status = StumplessPrependValueToFormattedOutput( NULL, value );
+  if( status != STUMPLESS_EMPTY_ARGUMENT )
+    return "an empty output did not generate the appropriate status code";
+  
+  status = StumplessPrependValueToFormattedOutput( output, value );
+  if( status != STUMPLESS_SUCCESS )
+    return "the value was not successfully appended";
+  const char * first_value = output->payload->values->first->value->data->c_p;
+  if( strcmp( first_value, "Test String Value" ) != 0 )
     return "the value was not actually appended to the list";
   
   return NULL;

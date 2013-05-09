@@ -115,3 +115,17 @@ StumplessFormattedOutputToString( StumplessFormattedOutput * output )
   else
     return str;
 }
+
+StumplessStatusCode
+StumplessPrependStringToFormattedOutput( StumplessFormattedOutput * output,
+                                         const char * str )
+{
+  return STUMPLESS_FAILURE;
+}
+
+StumplessStatusCode
+StumplessPrependValueToFormattedOutput( StumplessFormattedOutput * output,
+                                        StumplessValue * value )
+{
+  return STUMPLESS_FAILURE;
+}
