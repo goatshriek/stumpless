@@ -3,6 +3,12 @@
 
 #include <type.h>
 
+// todo need to go through and remove appending and prepending functions
+// they do not fit with the encapsulation purpose of the formatted output
+// and instead open up internal functionality that should be  hidden
+// instead, operations needing these functions should act directly on the
+// underlying ValueList structure
+
 StumplessStatusCode
 StumplessAppendFormattedOutputs( StumplessFormattedOutput *,
                                  StumplessFormattedOutput * );

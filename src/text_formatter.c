@@ -6,6 +6,8 @@
 #include <status_checker.h>
 #include <text_formatter.h>
 #include <type.h>
+#include <value.h>
+#include <value_constructor.h>
 #include <value_list.h>
 
 static
@@ -301,7 +303,23 @@ StumplessValueAsText( StumplessValue * value )
     return NULL;
   
   StumplessValueList * list = output->payload->values;
-  NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value ) )
+  StumplessValue * separator;
+  StumplessValueList * array;
+  if( StumplessValueIsArray( value ) ){
+    separator = StumplessValueFromString( ", " );
+    array = StumplessArrayValueToValueList( value );
+    NULL_ON_FAILURE( StumplessAddSeparatorToValueList( array, separator ) )
+    NULL_ON_FAILURE( StumplessPrependStringToValueList( array, "[" ) )
+    NULL_ON_FAILURE( StumplessAppendStringToValueList( array, "]" ) )
+    NULL_ON_FAILURE( StumplessAppendValueLists( list, array ) )
+  } else {
+    NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value ) )
+  }
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( list, " (" ) )
+  StumplessValueType type = value->type;
+  StumplessAppendFormattedOutputs( output, StumplessValueTypeAsText( type ) );
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( list, ")" ) )
   
   return output;
 }

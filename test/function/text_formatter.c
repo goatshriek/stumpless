@@ -435,7 +435,7 @@ test_value_formatter( void )
     return "the output did not have the correct type";
   str = StumplessFormattedOutputToString( output );
   if( strcmp( str, "65000 (unsigned short)" ) != 0 )
-    return "an unsigned int value was not formatted correctly";
+    return "an unsigned short value was not formatted correctly";
   
   value = BuildIntArrayValue();
   if( value == NULL )
@@ -444,7 +444,8 @@ test_value_formatter( void )
   if( output == NULL )
     return "could not format an array value";
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int)" ) != 0 )
+  printf( "\n%s\n", str );
+  if( strcmp( str, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int array)" ) != 0 )
     return "an array value was not formatted correctly";
   
   return NULL;
