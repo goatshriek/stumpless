@@ -12,6 +12,26 @@
 
 static
 StumplessFormattedOutput *
+BuildTextFormattedOutput( StumplessValueList * list )
+{
+  StumplessFormattedOutput * output;
+  output = malloc( sizeof( StumplessFormattedOutput ) );
+  if( output == NULL )
+    return NULL;
+  
+  StumplessFormattedPayload * payload;
+  payload = malloc( sizeof( StumplessFormattedPayload ) );
+  if( payload == NULL )
+    return NULL;
+  
+  output->format = STUMPLESS_TEXT;
+  output->payload->values = list;
+  
+  return output;
+}
+
+static
+StumplessFormattedOutput *
 GetTextFormattedOutput( void ){
   StumplessFormattedOutput * output;
   StumplessFormattedPayload * payload;
