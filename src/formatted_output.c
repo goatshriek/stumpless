@@ -120,12 +120,28 @@ StumplessStatusCode
 StumplessPrependStringToFormattedOutput( StumplessFormattedOutput * output,
                                          const char * str )
 {
-  return STUMPLESS_FAILURE;
+  if( output == NULL || str == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  switch( output->format ){
+    case STUMPLESS_TEXT:
+      return StumplessPrependStringToValueList( output->payload->values, str );
+    default:
+      return STUMPLESS_FAILURE;
+  }
 }
 
 StumplessStatusCode
 StumplessPrependValueToFormattedOutput( StumplessFormattedOutput * output,
                                         StumplessValue * value )
 {
-  return STUMPLESS_FAILURE;
+  if( output == NULL || value == NULL )
+    return STUMPLESS_EMPTY_ARGUMENT;
+  
+  switch( output->format ){
+    case STUMPLESS_TEXT:
+      return StumplessPrependValueToValueList( output->payload->values, value );
+    default:
+      return STUMPLESS_FAILURE;
+  }
 }

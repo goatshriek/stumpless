@@ -266,7 +266,7 @@ test_value_prepender( void )
   StumplessFormattedOutput * output = BuildTextFormattedOutput();
   FAIL_IF_NULL( output,  "could not build the test output" )
   
-  StumplessValue * value = BuildIntArrayValue();
+  StumplessValue * value = BuildStringValue();
   FAIL_IF_NULL( value, "could not build the test value" )
   
   status = StumplessPrependValueToFormattedOutput( NULL, NULL );
