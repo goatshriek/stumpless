@@ -11,6 +11,7 @@ const char * test_entry_attribute_formatter( void );
 const char * test_entry_attribute_list_formatter( void );
 const char * test_entry_summary_formatter( void );
 const char * test_event_attribute_formatter( void );
+const char * test_event_attribute_list_formatter( void );
 const char * test_event_formatter( void );
 const char * test_event_summary_formatter( void );
 const char * test_level_formatter( void );
@@ -28,6 +29,7 @@ main( void )
   RUN_TEST( entry_attribute_list_formatter )
   RUN_TEST( entry_summary_formatter )
   RUN_TEST( event_attribute_formatter )
+  RUN_TEST( event_attribute_list_formatter )
   RUN_TEST( event_formatter )
   RUN_TEST( event_summary_formatter )
   RUN_TEST( level_formatter )
@@ -265,6 +267,22 @@ test_event_attribute_formatter( void )
 }
 
 const char *
+test_event_attribute_list_formatter( void )
+{
+  StumplessEvent * event = BuildEvent();
+  FAIL_IF_NULL( event, "could not build the test event" )
+  
+  StumplessFormattedOutput * output;
+  output = StumplessEventAttributeListAsText( NULL );
+  FAIL_IF_NOT_NULL( output, "the output was not null for a null event" )
+  
+  output = StumplessEventAttributeListAsText( event );
+  FAIL_IF_NULL( output, "a null output was created for a non null event" )
+  
+  return NULL;
+}
+
+const char *
 test_event_formatter( void )
 {
   StumplessEvent * event = NULL;
@@ -279,9 +297,12 @@ test_event_formatter( void )
   if( event == NULL )
     return "could not build the test event";
   
-  str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
-  if( str == NULL )
+  output = StumplessEventAsText( event );
+  if( output == NULL )
     return "a full event could not be formatted";
+  str = StumplessFormattedOutputToString( output );
+  if( str == NULL )
+    return "the output could not be converted to a string";
   if( strcmp( str, "Test Event (Test Level: level 42): Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
     return "a full event was not properly formatted";
   
@@ -444,7 +465,6 @@ test_value_formatter( void )
   if( output == NULL )
     return "could not format an array value";
   str = StumplessFormattedOutputToString( output );
-  printf( "\n%s\n", str );
   if( strcmp( str, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int array)" ) != 0 )
     return "an array value was not formatted correctly";
   
