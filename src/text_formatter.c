@@ -35,22 +35,28 @@ StumplessEntryAsText( StumplessEntry * entry )
   if( entry == NULL )
     return NULL;
   
-  StumplessFormattedOutput * output = StumplessEntrySummaryAsText( entry );
-  if( output == NULL )
+  StumplessFormattedOutput * summary = StumplessEntrySummaryAsText( entry );
+  if( summary == NULL || summary->payload == NULL )
     return NULL;
+  StumplessValueList * output = summary->payload->values;
+  free( summary->payload );
+  free( summary );
   
   StumplessFormattedOutput * attributes;
   if( entry->attributes != NULL && entry->attribute_count > 0 ){
-    NULL_ON_FAILURE( StumplessAppendStringToFormattedOutput( output, ": " ) )
+    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
     
     attributes = StumplessEntryAttributeListAsText( entry );
-    if( attributes == NULL )
+    if( attributes == NULL || attributes->payload == NULL )
       return NULL;
+    StumplessValueList * attribute_values = attributes->payload->values;
+    free( attributes->payload );
+    free( attributes );
     
-    NULL_ON_FAILURE( StumplessAppendFormattedOutputs( output, attributes ) )
+    NULL_ON_FAILURE( StumplessAppendValueLists( output, attribute_values ) )
   }
   
-  return output;
+  return BuildTextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
@@ -88,7 +94,6 @@ StumplessEntryAttributeAsText( StumplessEntryAttribute * attribute )
   NULL_ON_FAILURE( status )
   
   return BuildTextFormattedOutputFromValueList( output );
-
 }
 
 StumplessFormattedOutput *
@@ -169,21 +174,27 @@ StumplessEventAsText( StumplessEvent * event )
     return NULL;
   
   StumplessStatusCode status;
-  StumplessFormattedOutput * output = StumplessEventSummaryAsText( event );
-  if( output == NULL )
+  StumplessFormattedOutput * summary = StumplessEventSummaryAsText( event );
+  if( summary == NULL || summary->payload == NULL )
     return NULL;
+  StumplessValueList * output = summary->payload->values;
   
   if( event->attributes != NULL && event->attribute_count > 0 ){
-    status = StumplessAppendStringToFormattedOutput( output, ": " );
-    NULL_ON_FAILURE( status )
+    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
     
     StumplessFormattedOutput * attribute_output;
     attribute_output = StumplessEventAttributeListAsText( event );
-    status = StumplessAppendFormattedOutputs( output, attribute_output );
+    if( attribute_output == NULL || attribute_output->payload == NULL )
+      return NULL;
+    StumplessValueList * attribute_values = attribute_output->payload->values;
+    free( attribute_output->payload );
+    free( attribute_output );
+    
+    status = StumplessAppendValueLists( output, attribute_values );
     NULL_ON_FAILURE( status )
   }
   
-  return output;
+  return BuildTextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *

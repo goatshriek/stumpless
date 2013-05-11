@@ -312,22 +312,24 @@ BuildTextFormattedOutput( void )
   if( output->payload == NULL )
     return NULL;
   
-  output->payload->values = StumplessNewValueList();
-  if( output->payload->values == NULL )
+  StumplessValueList * values = StumplessNewValueList();
+  if( values == NULL )
     return NULL;
   
   StumplessStatusCode status;
-  status = StumplessAppendStringToFormattedOutput( output, "First\n" );
+  status = StumplessAppendStringToValueList( values, "First\n" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendStringToFormattedOutput( output, "Second\n" );
+  status = StumplessAppendStringToValueList( values, "Second\n" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendStringToFormattedOutput( output, "Third" );
+  status = StumplessAppendStringToValueList( values, "Third" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
+  
+  output->payload->values = values;
   
   return output;
 }
