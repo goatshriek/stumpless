@@ -52,31 +52,30 @@ test_entry_formatter( void )
   char * str;
   
   output = StumplessEntryAsText( entry );
-  if( output == NULL )
-    return "a full entry could not be formatted";
+  FAIL_IF_NULL( output, "a full entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value, attribute: not 37, attribute: unnamed value, attribute: no event attribute" ) != 0 )
+  if( strcmp( str, "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
     return "a full entry was not properly formatted";
   
   entry->description = NULL;
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without a description was not formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value, attribute: not 37, attribute: unnamed value, attribute: no event attribute" ) != 0 )
+  if( strcmp( str, "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
     return "an entry without a description was not properly formatted";
   
   entry->event = NULL;
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry with only attributes was not formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry: Test Attribute 0: default value, attribute: not 37, attribute: unnamed value, attribute: no event attribute" ) != 0 )
+  if( strcmp( str, "entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
     return "an entry with only attributes was not properly formatted";
   
   entry->description = "Test Entry";
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry: Test Attribute 0: default value, attribute: not 37, attribute: unnamed value, attribute: no event attribute" ) != 0 )
+  if( strcmp( str, "Test Entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
     return "an entry without an event was not properly formatted";
   
   entry->attributes = NULL;
@@ -121,21 +120,21 @@ test_entry_attribute_formatter( void )
   output = StumplessEntryAttributeAsText( attribute );
   FAIL_IF_NULL( output, "a full entry attribute could not be formatted" )
   char * str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Event Attribute: Test Value" ) != 0 )
+  if( strcmp( str, "Test Event Attribute: Test Value (string)" ) != 0 )
     return "a full entry attribute was not formatted correctly";
   
   attribute->value = NULL;
   output = StumplessEntryAttributeAsText( attribute );
   FAIL_IF_NULL( output, "an attribute without a set value could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Event Attribute: Test Default Value" ) != 0 )
+  if( strcmp( str, "Test Event Attribute: Test Default Value (string)" ) != 0 )
     return "an attribute without a set value was not formatted correctly";
   
   attribute->event_attribute->name = NULL;
   output = StumplessEntryAttributeAsText( attribute );
   FAIL_IF_NULL( output, "an attribute with a default value was not formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "attribute: Test Default Value" ) != 0 )
+  if( strcmp( str, "attribute: Test Default Value (string)" ) != 0 )
     return "an attribute with a default value was not formatted correctly";
   
   attribute->event_attribute->default_value = NULL;
@@ -156,7 +155,7 @@ test_entry_attribute_list_formatter( void )
   output = StumplessEntryAttributeListAsText( entry );
   FAIL_IF_NULL( output, "the output could not be created" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Attribute 0: default value, attribute: not 37, attribute: unnamed value, attribute: no event attribute" ) != 0 )
+  if( strcmp( str, "Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
     return "the list was not formatted correctly";
   
   return NULL;

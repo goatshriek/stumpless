@@ -117,13 +117,6 @@ EntryAttributeAsValueList( StumplessEntryAttribute * attribute )
     return NULL;
   
   StumplessEventAttribute * event_attribute = attribute->event_attribute;
-  StumplessValue * attribute_value;
-  if( attribute->value != NULL )
-    attribute_value = attribute->value;
-  else if( event_attribute != NULL && event_attribute->default_value != NULL )
-    attribute_value = event_attribute->default_value;
-  else
-    return NULL;
   
   const char * attribute_name;
   if( event_attribute == NULL || event_attribute->name == NULL )
@@ -132,13 +125,22 @@ EntryAttributeAsValueList( StumplessEntryAttribute * attribute )
     attribute_name = event_attribute->name;
   
   StumplessStatusCode status;
-  status = StumplessAppendStringToValueList( output, attribute_name );
-  NULL_ON_FAILURE( status )
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, attribute_name ) )
   
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) );
   
-  status = StumplessAppendValueToValueList( output, attribute_value );
-  NULL_ON_FAILURE( status )
+  StumplessValue * attribute_value;
+  if( attribute->value != NULL )
+    attribute_value = attribute->value;
+  else if( event_attribute != NULL && event_attribute->default_value != NULL )
+    attribute_value = event_attribute->default_value;
+  else
+    return NULL;
+  
+  StumplessValueList * values = ValueAsValueList( attribute_value );
+  if( values == NULL )
+    return NULL;
+  NULL_ON_FAILURE( StumplessAppendValueLists( output, values ) )
   
   return output;
 }
@@ -503,6 +505,9 @@ ValueTypeAsValueList( StumplessValueType type )
       break;
     case STUMPLESS_STRING:
       name = "string";
+      break;
+    case STUMPLESS_STRING_POINTER:
+      name = "string array";
       break;
     case STUMPLESS_VOID_POINTER:
       name = "void";
