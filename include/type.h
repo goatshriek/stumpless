@@ -31,6 +31,16 @@ typedef struct {
   StumplessBooleanFormat * format;
 } StumplessBoolean;
 
+typedef struct {
+  unsigned id;
+  const char * name;
+} StumplessCustomType;
+
+typedef struct {
+  StumplessCustomType * type;
+  void * data;
+} StumplessCustomData;
+
 typedef enum StumplessValueType {
   STUMPLESS_UNSIGNED_SHORT,
   STUMPLESS_UNSIGNED_SHORT_POINTER,
@@ -63,7 +73,8 @@ typedef enum StumplessValueType {
   STUMPLESS_BOOLEAN,
   STUMPLESS_STRING,
   STUMPLESS_STRING_POINTER,
-  STUMPLESS_VOID_POINTER
+  STUMPLESS_VOID_POINTER,
+  STUMPLESS_CUSTOM_DATA
 } StumplessValueType;
 
 typedef union {
@@ -96,8 +107,9 @@ typedef union {
   long double l_d;
   const long double * l_d_p;
   const char ** str_p;
-  StumplessBoolean * boolean;
   const void * v_p;
+  StumplessBoolean * boolean;
+  StumplessCustomData * custom;
 } StumplessValueData;
 
 typedef struct {
