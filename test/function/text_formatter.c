@@ -230,13 +230,13 @@ test_event_attribute_formatter( void )
   attribute->default_value = StumplessValueFromString( "default value" );
   output = StumplessEventAttributeAsText( attribute );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Attribute: default value" ) != 0 )
+  if( strcmp( str, "Test Attribute: default value (string)" ) != 0 )
     return "a full attribute was not formatted correctly";
   
   attribute->name = NULL;
   output = StumplessEventAttributeAsText( attribute );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "attribute: default value" ) != 0 )
+  if( strcmp( str, "attribute: default value (string)" ) != 0 )
     return "an attribute with only a default value was not formatted correctly";
   
   return NULL;
@@ -275,25 +275,25 @@ test_event_formatter( void )
   FAIL_IF_NULL( output, "a full event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string" )
-  if( strcmp( str, "Test Event (Test Level: level 42): Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
+  if( strcmp( str, "Test Event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
     return "a full event was not properly formatted";
   
   event->name = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event without a name could not be formatted" )
-  if( strcmp( str, "event (Test Level: level 42): Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
+  if( strcmp( str, "event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
     return "an event without a name was not formatted correctly";
   
   event->level = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event with only an attribute list could not be formatted" )
-  if( strcmp( str, "event: Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
+  if( strcmp( str, "event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
     return "an event with only an attribute list was not formatted correctly";
   
   event->name = "Test Event";
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event without a level could not be formatted" )
-  if( strcmp( str, "Test Event: Test Attribute 0: default value, attribute: 37, Test Attribute 2, attribute" ) != 0 )
+  if( strcmp( str, "Test Event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
     return "an event without a level was not formatted correctly";
   
   event->attributes = NULL;

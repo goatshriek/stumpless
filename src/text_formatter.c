@@ -245,8 +245,6 @@ EventAttributeAsValueList( StumplessEventAttribute * attribute )
   if( output == NULL )
     return NULL;
   
-  StumplessStatusCode status;
-  
   const char * name;
   if( attribute->name == NULL )
     name = "attribute";
@@ -257,9 +255,10 @@ EventAttributeAsValueList( StumplessEventAttribute * attribute )
   if( attribute->default_value != NULL ){
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
     
-    status = StumplessAppendValueToValueList( output,
-                                              attribute->default_value );
-    NULL_ON_FAILURE( status )
+    StumplessValueList * default_value;
+    default_value = ValueAsValueList( attribute->default_value );
+    
+    NULL_ON_FAILURE( StumplessAppendValueLists( output, default_value ) )
   }
   
   return output; 
