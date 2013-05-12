@@ -14,9 +14,9 @@ if( (value) == NULL ){                                                         \
 }
 
 
-#define STRINGS_EQUAL( expected, actual, message )                             \
+#define ASSERT_STRINGS_EQUAL( expected, actual, message )                      \
 if( strcmp( (expected), (actual) ) != 0 ){                                     \
-  printf( "Expected: %s, Instead was: %s\n" );                                 \
+  printf( "Expected: %s, Instead was: %s\n", (expected), (actual) );           \
   return (message);                                                            \
 }
 

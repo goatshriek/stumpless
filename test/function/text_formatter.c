@@ -54,58 +54,62 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "a full entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
-    return "a full entry was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+                        str,
+                        "a full entry was not properly formatted" )
   
   entry->description = NULL;
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without a description was not formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
-    return "an entry without a description was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+                        str,
+                        "an entry without a description was not properly formatted" )
   
   entry->event = NULL;
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry with only attributes was not formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
-    return "an entry with only attributes was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+                        str,
+                        "an entry with only attributes was not properly formatted" )
   
   entry->description = "Test Entry";
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
-    return "an entry without an event was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "Test Entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+                        str,
+                        "an entry without an event was not properly formatted" )
   
   entry->attributes = NULL;
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry with only a description could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry" ) != 0 )
-    return "an entry with only a description was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "Test Entry", str,
+                        "an entry with only a description was not properly formatted" )
   
   entry->event = BuildEvent();
   FAIL_IF_NULL( entry->event, "could not build the test event" )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without attributes could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry [Test Event (Test Level: level 42)]" ) != 0 )
-    return "an entry without attributes was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]", str,
+                        "an entry without attributes was not properly formatted" )
   
   entry->description = NULL;
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry with only an event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry [Test Event (Test Level: level 42)]" ) != 0 )
-    return "an entry with only an event was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]", str,
+                        "an entry with only an event was not properly formatted" )
   
   entry->event = NULL;
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an empty entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry" ) != 0 )
-    return "an empty entry did not return the proper output";
+  ASSERT_STRINGS_EQUAL( "entry", str,
+                        "an empty entry did not return the proper output" )
   
   return NULL;
 }
@@ -120,22 +124,23 @@ test_entry_attribute_formatter( void )
   output = StumplessEntryAttributeAsText( attribute );
   FAIL_IF_NULL( output, "a full entry attribute could not be formatted" )
   char * str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Event Attribute: Test Value (string)" ) != 0 )
-    return "a full entry attribute was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Value (string)", str,
+                        "a full entry attribute was not formatted correctly" )
   
   attribute->value = NULL;
   output = StumplessEntryAttributeAsText( attribute );
   FAIL_IF_NULL( output, "an attribute without a set value could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Event Attribute: Test Default Value (string)" ) != 0 )
-    return "an attribute without a set value was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Default Value (string)",
+                        str,
+                        "an attribute without a set value was not formatted correctly" )
   
   attribute->event_attribute->name = NULL;
   output = StumplessEntryAttributeAsText( attribute );
   FAIL_IF_NULL( output, "an attribute with a default value was not formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "attribute: Test Default Value (string)" ) != 0 )
-    return "an attribute with a default value was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "attribute: Test Default Value (string)", str,
+                        "an attribute with a default value was not formatted correctly" )
   
   attribute->event_attribute->default_value = NULL;
   output = StumplessEntryAttributeAsText( attribute );
@@ -155,8 +160,9 @@ test_entry_attribute_list_formatter( void )
   output = StumplessEntryAttributeListAsText( entry );
   FAIL_IF_NULL( output, "the output could not be created" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)" ) != 0 )
-    return "the list was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+                        str,
+                        "the list was not formatted correctly" )
   
   return NULL;
 }
@@ -173,29 +179,29 @@ test_entry_summary_formatter( void )
   output = StumplessEntrySummaryAsText( entry );
   FAIL_IF_NULL( output, "a full entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry [Test Event (Test Level: level 42)]" ) != 0 )
-    return "a full entry was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]", str,
+                        "a full entry was not properly formatted" )
   
   entry->description = NULL;
   output = StumplessEntrySummaryAsText( entry );
   FAIL_IF_NULL( output, "an entry without a description could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry [Test Event (Test Level: level 42)]" ) != 0 )
-    return "an entry without a description was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]", str,
+                        "an entry without a description was not properly formatted" )
   
   entry->event = NULL;
   output = StumplessEntrySummaryAsText( entry );
   FAIL_IF_NULL( output, "an empty entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "entry" ) != 0 )
-    return "an empty entry was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "entry", str,
+                        "an empty entry was not properly formatted" )
   
   entry->description = "Test Entry";
   output = StumplessEntrySummaryAsText( entry );
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Entry" ) != 0 )
-    return "an entry without an event was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "Test Entry", str,
+                        "an entry without an event was not properly formatted" )
   
   return NULL;
 }
@@ -211,33 +217,34 @@ test_event_attribute_formatter( void )
   FAIL_IF_NULL( attribute, "the test attribute could not be created" )
   
   output = StumplessEventAttributeAsText( NULL );
-  FAIL_IF_NOT_NULL( output, "an empty attribute did not generate the appropriate error" )
+  FAIL_IF_NOT_NULL( output,
+                    "an empty attribute did not generate the appropriate error" )
   
   attribute->name = NULL;
   attribute->default_value = NULL;
   
   output = StumplessEventAttributeAsText( attribute );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "attribute" ) != 0 )
-    return "an empty attribute did not generate correct string";
+  ASSERT_STRINGS_EQUAL( "attribute", str,
+                        "an empty attribute did not generate correct string" )
   
   attribute->name = "Test Attribute";
   output = StumplessEventAttributeAsText( attribute );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, attribute->name ) != 0 )
-    return "an attribute with only a name was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( attribute->name, str,
+                        "an attribute with only a name was not formatted correctly" )
   
   attribute->default_value = StumplessValueFromString( "default value" );
   output = StumplessEventAttributeAsText( attribute );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Attribute: default value (string)" ) != 0 )
-    return "a full attribute was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "Test Attribute: default value (string)", str,
+                        "a full attribute was not formatted correctly" )
   
   attribute->name = NULL;
   output = StumplessEventAttributeAsText( attribute );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "attribute: default value (string)" ) != 0 )
-    return "an attribute with only a default value was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "attribute: default value (string)", str,
+                        "an attribute with only a default value was not formatted correctly" )
   
   return NULL;
 }
@@ -275,51 +282,55 @@ test_event_formatter( void )
   FAIL_IF_NULL( output, "a full event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string" )
-  if( strcmp( str, "Test Event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
-    return "a full event was not properly formatted";
+  ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+                        str,
+                        "a full event was not properly formatted" )
   
   event->name = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event without a name could not be formatted" )
-  if( strcmp( str, "event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
-    return "an event without a name was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+                        str,
+                        "an event without a name was not formatted correctly" )
   
   event->level = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event with only an attribute list could not be formatted" )
-  if( strcmp( str, "event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
-    return "an event with only an attribute list was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+                        str,
+                        "an event with only an attribute list was not formatted correctly" )
   
   event->name = "Test Event";
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event without a level could not be formatted" )
-  if( strcmp( str, "Test Event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute" ) != 0 )
-    return "an event without a level was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "Test Event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+                        str,
+                        "an event without a level was not formatted correctly" )
   
   event->attributes = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event with only a name could not be formatted" )
-  if( strcmp( str, "Test Event" ) != 0 )
-    return "an event with only a name was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "Test Event", str,
+                        "an event with only a name was not formatted correctly" )
   
   event->level = BuildLevel();
   FAIL_IF_NULL( event->level, "could not build the test level" )
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event without an attribute list could not be formatted" )
-  if( strcmp( str, "Test Event (Test Level: level 42)" ) != 0 )
-    return "an event without an attribute list was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42)", str,
+                        "an event without an attribute list was not formatted correctly" )
   
   event->name = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an event with only a level could not be formatted" )
-  if( strcmp( str, "event (Test Level: level 42)" ) != 0 )
-    return "an event without a level was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "event (Test Level: level 42)", str,
+                        "an event without a level was not formatted correctly" )
   
   event->level = NULL;
   str = StumplessFormattedOutputToString( StumplessEventAsText( event ) );
   FAIL_IF_NULL( str, "an empty event could not be formatted" )
-  if( strcmp( str, "event" ) != 0 )
-    return "an empty event was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "event", str,
+                        "an empty event was not formatted correctly" )
   
   return NULL;
 }
@@ -338,27 +349,27 @@ test_event_summary_formatter( void )
   
   output = StumplessEventSummaryAsText( event );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Event (Test Level: level 42)" ) != 0 )
-    return "a full event did not generate the correct summary";
+  ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42)", str,
+                        "a full event did not generate the correct summary" )
   
   event->name = NULL;
   output = StumplessEventSummaryAsText( event );
   FAIL_IF_NULL( output, "an event without a name could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "event (Test Level: level 42)" ) != 0 )
-    return "an event without a name was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "event (Test Level: level 42)", str,
+                        "an event without a name was not formatted correctly" )
   
   event->level = NULL;
   output = StumplessEventSummaryAsText( event );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "event" ) != 0 )
-    return "an empty event did not generate the correct summary";
+  ASSERT_STRINGS_EQUAL( "event", str,
+                        "an empty event did not generate the correct summary" )
   
   event->name = "Test Event";
   output = StumplessEventSummaryAsText( event );
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Event" ) != 0 )
-    return "an event without a level did not generate the correct summary";
+  ASSERT_STRINGS_EQUAL( "Test Event", str,
+                        "an event without a level did not generate the correct summary" )
   
   return NULL;
 }
@@ -366,28 +377,24 @@ test_event_summary_formatter( void )
 const char *
 test_level_formatter( void )
 {
-  StumplessLevel * level = NULL;
-  StumplessFormattedOutput * output;
-  char * str;
-  
-  output = StumplessLevelAsText( level );
+  StumplessFormattedOutput * output = StumplessLevelAsText( NULL );
   FAIL_IF_NOT_NULL( output, "the output was not null for a null pointer" )
   
-  level = BuildLevel();
+  StumplessLevel * level = BuildLevel();
   FAIL_IF_NULL( level, "could not build the test level" )
   
   output = StumplessLevelAsText( level );
   FAIL_IF_NULL( output, "a full level could not be formatted" )
-  str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "Test Level: level 42" ) != 0 )
-    return "a full level was not formatted correctly";
+  char * str = StumplessFormattedOutputToString( output );
+  ASSERT_STRINGS_EQUAL( "Test Level: level 42", str,
+                        "a full level was not formatted correctly" )
   
   level->name = NULL;
   output = StumplessLevelAsText( level );
   FAIL_IF_NULL( output, "a level with no name could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "level 42" ) != 0 )
-    return "a level with no name was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "level 42", str,
+                        "a level with no name was not formatted correctly" )
   
   return NULL;
 }
@@ -395,30 +402,26 @@ test_level_formatter( void )
 const char *
 test_value_formatter( void )
 {
-  StumplessValue * value = NULL;
-  StumplessFormattedOutput * output;
-  char * str;
-  
-  output = StumplessValueAsText( value );
+  StumplessFormattedOutput * output = StumplessValueAsText( NULL );
   FAIL_IF_NOT_NULL( output, "the output was not null for a null pointer" )
   
-  value = BuildUnsignedShortValue();
+  StumplessValue * value = BuildUnsignedShortValue();
   FAIL_IF_NULL( value, "could not build test unsigned short value" )
   output = StumplessValueAsText( value );
   FAIL_IF_NULL( output, "the output was null for a valid value" )
   if( output->format != STUMPLESS_TEXT )
     return "the output did not have the correct type";
-  str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "65000 (unsigned short)" ) != 0 )
-    return "an unsigned short value was not formatted correctly";
+  char * str = StumplessFormattedOutputToString( output );
+  ASSERT_STRINGS_EQUAL( "65000 (unsigned short)", str,
+                        "an unsigned short value was not formatted correctly" )
   
   value = BuildIntArrayValue();
   FAIL_IF_NULL( value, "could not build test array value" )
   output = StumplessValueAsText( value );
   FAIL_IF_NULL( output, "could not format an array value" )
   str = StumplessFormattedOutputToString( output );
-  if( strcmp( str, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int array)" ) != 0 )
-    return "an array value was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int array)", str,
+                        "an array value was not formatted correctly" )
   
   return NULL;
 }
@@ -427,21 +430,19 @@ const char *
 test_value_type_formatter( void )
 {
   StumplessFormattedOutput * output;
-  char * str;
-  
   output = StumplessValueTypeAsText( STUMPLESS_UNSIGNED_INT );
   FAIL_IF_NULL( output, "the output could not be created for an unsigned int" )
-  str = StumplessFormattedOutputToString( output );
+  char * str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the unsigned int output could not be converted to a string" )
-  if( strcmp( str, "unsigned int" ) != 0 )
-    return "the type was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "unsigned int", str,
+                        "the type was not formatted correctly" )
   
   output = StumplessValueTypeAsText( STUMPLESS_CHAR_POINTER );
   FAIL_IF_NULL( output, "the output could not be created for a char pointer" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the char pointer output could not be converted to a string" )
-  if( strcmp( str, "char array" ) )
-    return "the char array was not formatted correctly";
+  ASSERT_STRINGS_EQUAL( "char array", str,
+                        "the char array was not formatted correctly" )
   
   return NULL;
 }
