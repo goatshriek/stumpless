@@ -3,8 +3,13 @@
 
 #include <type.h>
 
-StumplessConfiguration * StumplessGetConfiguration( void );
-StumplessStatusCode StumplessInitializeConfiguration( void );
-StumplessStatusCode StumplessSetConfiguration( StumplessConfiguration * );
+StumplessConfiguration *
+StumplessGetConfiguration( void );
+
+StumplessStatusCode
+StumplessInitializeConfiguration( void );
+
+StumplessStatusCode
+StumplessSetConfiguration( StumplessConfiguration * );
 
 #endif

@@ -12,6 +12,7 @@ const char * test_destructor( void );
 const char * test_into_string( void );
 const char * test_is_array( void );
 const char * test_outside_access ( void );
+const char * test_profile_index( void );
 const char * test_stream_write( void );
 const char * test_to_string( void );
 
@@ -27,6 +28,7 @@ main( void )
   RUN_TEST( into_string )
   RUN_TEST( is_array )
   RUN_TEST( outside_access )
+  RUN_TEST( profile_index )
   RUN_TEST( stream_write )
   RUN_TEST( to_string )
   
@@ -198,6 +200,12 @@ test_outside_access( void )
   if( value->data->l_p[2] != 4 )
     return "the array held by the value could not be modified from the outside";
   
+  return NULL;
+}
+
+const char *
+test_profile_index( void )
+{
   return NULL;
 }
 

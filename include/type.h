@@ -70,10 +70,10 @@ typedef enum StumplessValueType {
   STUMPLESS_DOUBLE_POINTER,
   STUMPLESS_LONG_DOUBLE,
   STUMPLESS_LONG_DOUBLE_POINTER,
-  STUMPLESS_BOOLEAN,
   STUMPLESS_STRING,
   STUMPLESS_STRING_POINTER,
   STUMPLESS_VOID_POINTER,
+  STUMPLESS_BOOLEAN,
   STUMPLESS_CUSTOM_DATA
 } StumplessValueType;
 
@@ -223,8 +223,6 @@ typedef struct {
   StumplessSortingMethod entry_method;
   StumplessSortingMethod log_method;
   unsigned short ascending;
-  // function for custom entry sorting
-  // function for custom log sorting
 } StumplessSortingConfiguration;
 
 typedef struct {

@@ -158,6 +158,12 @@ StumplessDestroyValue( StumplessValue * value )
   return;
 }
 
+unsigned
+StumplessValueProfileIndex( StumplessValue * value )
+{
+  return 0;
+}
+
 StumplessStatusCode
 StumplessValueIntoString( char * str, StumplessValue * value )
 { 

@@ -9,6 +9,9 @@ StumplessArrayValueToValueList( StumplessValue * );
 void
 StumplessDestroyValue( StumplessValue * );
 
+unsigned
+StumplessValueProfileIndex( StumplessValue * );
+
 StumplessStatusCode
 StumplessValueIntoString( char *, StumplessValue * );
 
