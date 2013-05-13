@@ -232,11 +232,21 @@ typedef struct {
 } StumplessStringConfiguration;
 
 typedef struct {
+  StumplessFormattedOutput * ( *binary_formatter )( StumplessValue * );
+  StumplessFormattedOutput * ( *csv_formatter )( StumplessValue * );
+  StumplessFormattedOutput * ( *json_formatter )( StumplessValue * );
+  StumplessFormattedOutput * ( *text_formatter )( StumplessValue * );
+  StumplessFormattedOutput * ( *xml_formatter )( StumplessValue * );
+} StumplessCustomProfile;
+
+typedef struct {
   StumplessFileConfiguration * file;
   StumplessHTTPConfiguration * http;
   StumplessMultithreadingConfiguration * multithreading;
   StumplessSortingConfiguration * sorting;
   StumplessStringConfiguration * string;
+  StumplessCustomProfile ** profiles;
+  unsigned profile_count;
 } StumplessConfiguration;
 
 #endif
