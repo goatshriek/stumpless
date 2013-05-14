@@ -9,6 +9,10 @@ test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_CFLAGS = $(test_flags)
 test_function_configuration_LDADD = $(test_libraries)
 
+test_function_custom_profile_SOURCES = test/function/custom_profile.c
+test_function_custom_profile_CFLAGS = $(test_flags)
+test_function_custom_profile_LDADD = $(test_libraries)
+
 test_function_entry_SOURCES = test/function/entry.c
 test_function_entry_CFLAGS = $(test_flags)
 test_function_entry_LDADD = $(test_libraries)
