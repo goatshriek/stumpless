@@ -31,16 +31,6 @@ typedef struct {
   StumplessBooleanFormat * format;
 } StumplessBoolean;
 
-typedef struct {
-  unsigned id;
-  const char * name;
-} StumplessCustomType;
-
-typedef struct {
-  StumplessCustomType * type;
-  void * data;
-} StumplessCustomData;
-
 typedef enum StumplessValueType {
   STUMPLESS_UNSIGNED_SHORT,
   STUMPLESS_UNSIGNED_SHORT_POINTER,
@@ -75,7 +65,7 @@ typedef enum StumplessValueType {
   STUMPLESS_VOID_POINTER,
   STUMPLESS_BOOLEAN,
   STUMPLESS_CUSTOM_DATA
-} StumplessValueType;
+} StumplessValueType; // todo remove
 
 typedef union {
   unsigned short u_s;
@@ -108,15 +98,17 @@ typedef union {
   const long double * l_d_p;
   const char ** str_p;
   const void * v_p;
-  StumplessBoolean * boolean;
-  StumplessCustomData * custom;
+  const StumplessBoolean * boolean; // todo remove
 } StumplessValueData;
+
+typedef unsigned int StumplessProfileIndex;
 
 typedef struct {
   const char * format;
-  StumplessValueType type;
+  StumplessValueType type; // todo remove
   StumplessValueData * data;
   unsigned length;
+  StumplessProfileIndex profile;
 } StumplessValue;
 
 typedef struct value_node {
@@ -230,6 +222,7 @@ typedef struct {
 } StumplessStringConfiguration;
 
 typedef struct {
+  const char * name;
   StumplessFormattedOutput * ( *binary_formatter )( StumplessValue * );
   StumplessFormattedOutput * ( *csv_formatter )( StumplessValue * );
   StumplessFormattedOutput * ( *json_formatter )( StumplessValue * );
