@@ -70,6 +70,12 @@ StumplessLevelAsText( StumplessLevel * level )
 }
 
 StumplessFormattedOutput *
+StumplessUnsignedIntValueAsText( StumplessValue * value )
+{
+  return TextFormattedOutputFromValueList( UnsignedIntAsValueList( value ) );
+}
+
+StumplessFormattedOutput *
 StumplessValueAsText( StumplessValue * value )
 {
   return TextFormattedOutputFromValueList( ValueAsValueList( value ) );

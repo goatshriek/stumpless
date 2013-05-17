@@ -98,7 +98,7 @@ typedef union {
   const long double * l_d_p;
   const char ** str_p;
   const void * v_p;
-  const StumplessBoolean * boolean; // todo remove
+  StumplessBoolean * boolean; // todo remove
 } StumplessValueData;
 
 typedef unsigned int StumplessProfileIndex;
