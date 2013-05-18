@@ -5,6 +5,7 @@
 
 #include "helper.h"
 
+const char * test_add_new_profile( void );
 const char * test_initialization( void );
 const char * test_profile_initialization( void );
 
@@ -14,6 +15,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
+  RUN_TEST( add_new_profile )
   RUN_TEST( initialization )
   RUN_TEST( profile_initialization )
 
@@ -21,6 +23,12 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_add_new_profile( void )
+{
+  return NULL;
 }
 
 const char *

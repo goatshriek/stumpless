@@ -5,6 +5,13 @@
 #include <type.h>
 
 static StumplessConfiguration * configuration = NULL;
+static unsigned profile_size = 0;
+
+StumplessProfileIndex
+StumplessAddNewCustomProfile( StumplessCustomProfile * profile )
+{
+  return 0;
+}
 
 StumplessConfiguration *
 StumplessGetConfiguration( void )
@@ -54,6 +61,8 @@ StumplessInitializeConfiguration( void )
 StumplessStatusCode
 StumplessInitializeProfiles( void )
 {
+  configuration->profile_count = 0;
+  
   return STUMPLESS_FAILURE;
 }
 

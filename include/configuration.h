@@ -3,6 +3,9 @@
 
 #include <type.h>
 
+StumplessProfileIndex
+StumplessAddNewCustomProfile( StumplessCustomProfile * );
+
 StumplessConfiguration *
 StumplessGetConfiguration( void );
 
