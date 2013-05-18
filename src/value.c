@@ -172,6 +172,9 @@ StumplessValueIntoString( char * str, StumplessValue * value )
  
   StumplessValueData * data = value->data;
   StumplessConfiguration * configuration = StumplessGetConfiguration();
+  if( configuration == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
   char * temp_str;
   size_t buffer_size = configuration->string->buffer_size;
   char * buffer = malloc( buffer_size );

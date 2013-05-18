@@ -10,6 +10,9 @@ StumplessStatusCode
 StumplessInitializeConfiguration( void );
 
 StumplessStatusCode
+StumplessInitializeProfiles( void );
+
+StumplessStatusCode
 StumplessSetConfiguration( StumplessConfiguration * );
 
 #endif

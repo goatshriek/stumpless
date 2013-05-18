@@ -39,6 +39,9 @@ StumplessFormattedOutputToString( StumplessFormattedOutput * output )
   StumplessStatusCode status;
   
   StumplessConfiguration * configuration = StumplessGetConfiguration();
+  if( configuration == NULL )
+    return NULL;
+  
   size_t buffer_size = configuration->string->buffer_size;
   char * str = malloc( sizeof( char ) * buffer_size );
   if( str == NULL )

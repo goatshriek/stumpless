@@ -44,11 +44,17 @@ StumplessInitializeConfiguration( void )
   
   required_size = sizeof( StumplessStringConfiguration );
   configuration->string = malloc( required_size );
-  if( configuration->sorting == NULL )
+  if( configuration->string == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   configuration->string->buffer_size = 100;
 
-  return STUMPLESS_SUCCESS;
+  return StumplessInitializeProfiles();
+}
+
+StumplessStatusCode
+StumplessInitializeProfiles( void )
+{
+  return STUMPLESS_FAILURE;
 }
 
 StumplessStatusCode

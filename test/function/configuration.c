@@ -6,6 +6,7 @@
 #include "helper.h"
 
 const char * test_initialization( void );
+const char * test_profile_initialization( void );
 
 int
 main( void )
@@ -14,6 +15,7 @@ main( void )
   const char * result;
   
   RUN_TEST( initialization )
+  RUN_TEST( profile_initialization )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -46,6 +48,20 @@ test_initialization( void )
   
   if( configuration->string == NULL )
     return "string configuration was not initialized";
+  
+  return NULL;
+}
+
+const char *
+test_profile_initialization( void )
+{
+  if( StumplessInitializeProfiles() != STUMPLESS_SUCCESS )
+    return "intializing the profiles was not successful";
+  
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  FAIL_IF_NULL( configuration, "the configuration could not be returned" )
+  
+  FAIL_IF_NULL( configuration->profiles, "the profiles were not initialized" )
   
   return NULL;
 }

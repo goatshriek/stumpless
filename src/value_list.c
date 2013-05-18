@@ -246,6 +246,9 @@ StumplessValueListIntoString( char * str, StumplessValueList * list )
   str[0] = '\0';
   
   StumplessConfiguration * configuration = StumplessGetConfiguration();
+  if( configuration == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
   size_t buffer_size = configuration->string->buffer_size;
   char * buffer = malloc( sizeof( char ) * buffer_size + 1 );
   if( buffer == NULL )

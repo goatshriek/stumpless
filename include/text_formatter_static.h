@@ -5,7 +5,7 @@
 
 static
 StumplessValueList *
-BooleanArrayValueAsValueList( StumplessValue * )
+BooleanArrayValueAsValueList( StumplessValue * );
 
 static
 StumplessValueList *
@@ -85,7 +85,7 @@ LongArrayValueAsValueList( StumplessValue * );
 
 static
 StumplessValueList *
-LongDoubleArrayValueAsValueList( StumplessValue * )
+LongDoubleArrayValueAsValueList( StumplessValue * );
 
 static
 StumplessValueList *
@@ -129,7 +129,7 @@ StringValueAsValueList( StumplessValue * );
 
 static
 StumplessFormattedOutput *
-TextFormattedOutputFromValueList( StumplessValue * );
+TextFormattedOutputFromValueList( StumplessValueList * );
 
 static
 StumplessValueList *

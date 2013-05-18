@@ -54,6 +54,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "a full entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for a full entry" )
   ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
                         "a full entry was not properly formatted" )
@@ -62,6 +63,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without a description was not formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without a description" )
   ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
                         "an entry without a description was not properly formatted" )
@@ -70,6 +72,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry with only attributes was not formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only attributes" )
   ASSERT_STRINGS_EQUAL( "entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
                         "an entry with only attributes was not properly formatted" )
@@ -78,6 +81,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without an event" )
   ASSERT_STRINGS_EQUAL( "Test Entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
                         "an entry without an event was not properly formatted" )
@@ -86,6 +90,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry with only a description could not be formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only a description" )
   ASSERT_STRINGS_EQUAL( "Test Entry", str,
                         "an entry with only a description was not properly formatted" )
   
@@ -94,6 +99,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry without attributes could not be formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without attributes" )
   ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]", str,
                         "an entry without attributes was not properly formatted" )
   
@@ -101,6 +107,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an entry with only an event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only an event" )
   ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]", str,
                         "an entry with only an event was not properly formatted" )
   
@@ -108,6 +115,7 @@ test_entry_formatter( void )
   output = StumplessEntryAsText( entry );
   FAIL_IF_NULL( output, "an empty entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an empty entry" )
   ASSERT_STRINGS_EQUAL( "entry", str,
                         "an empty entry did not return the proper output" )
   
