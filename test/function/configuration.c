@@ -6,6 +6,7 @@
 #include "helper.h"
 
 const char * test_add_new_profile( void );
+const char * test_find_profile_by_name( void );
 const char * test_initialization( void );
 const char * test_profile_initialization( void );
 
@@ -16,6 +17,7 @@ main( void )
   const char * result;
   
   RUN_TEST( add_new_profile )
+  RUN_TEST( find_profile_by_name )
   RUN_TEST( initialization )
   RUN_TEST( profile_initialization )
 
@@ -34,10 +36,27 @@ test_add_new_profile( void )
   StumplessProfileIndex index = StumplessAddCustomProfile( profile );
   
   StumplessConfiguration * configuration = StumplessGetConfiguration();
-  FAIL_IF_NULL( configuration, "the configuration could not be built" )
+  FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
   if( configuration->profiles[index] != profile )
     return "the profile was not actually added to the list";
+  
+  return NULL;
+}
+
+const char *
+test_find_profile_by_name( void )
+{
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
+  
+  StumplessProfileIndex index = StumplessFindProfileByName( "Short" );
+  if( index == STUMPLESS_INVALID_INDEX )
+    return "an existing profile could not be found";
+  
+  index = StumplessFindProfileByName( "non-existent" );
+  if( index != STUMPLESS_INVALID_INDEX )
+    return "a non-existing profile was found";
   
   return NULL;
 }
