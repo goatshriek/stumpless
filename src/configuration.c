@@ -5,12 +5,20 @@
 #include <type.h>
 
 static StumplessConfiguration * configuration = NULL;
-static unsigned profile_size = 0;
+static unsigned profile_array_capacity = 0;
 
 StumplessProfileIndex
 StumplessAddCustomProfile( StumplessCustomProfile * profile )
 {
-  return 0;
+  if( configuration == NULL )
+    StumplessInitializeConfiguration();
+  
+  StumplessProfileIndex index = configuration->profile_count;
+  
+  configuration->profiles[index] = profile;
+  configuration->profile_count++;
+  
+  return index;
 }
 
 StumplessConfiguration *
@@ -62,6 +70,13 @@ StumplessStatusCode
 StumplessInitializeProfiles( void )
 {
   configuration->profile_count = 0;
+  
+  profile_array_capacity = 100;
+  size_t array_size;
+  array_size = profile_array_capacity * sizeof( StumplessCustomProfile );
+  configuration->profiles = malloc( array_size );
+  if( configuration->profiles == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
   return STUMPLESS_FAILURE;
 }
