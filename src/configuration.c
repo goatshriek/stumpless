@@ -4,6 +4,18 @@
 #include <status_checker.h>
 #include <type.h>
 
+#define ADD_PROFILE( profile_name, prefix )                                    \
+profile = malloc( sizeof( StumplessCustomProfile ) );                          \
+if( profile == NULL )                                                          \
+  return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
+profile->name = profile_name;                                                  \
+profile->binary_formatter = NULL;                                              \
+profile->csv_formatter = NULL;                                                 \
+profile->json_formatter = NULL;                                                \
+profile->text_formatter = NULL;                                                \
+profile->xml_formatter = NULL;                                                 \
+StumplessAddCustomProfile( profile );
+
 static StumplessConfiguration * configuration = NULL;
 static unsigned profile_array_capacity = 0;
 
@@ -78,7 +90,11 @@ StumplessInitializeProfiles( void )
   if( configuration->profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  return STUMPLESS_FAILURE;
+  StumplessCustomProfile * profile;
+  
+  ADD_PROFILE( "Short", Short )
+  
+  return STUMPLESS_SUCCESS;
 }
 
 StumplessStatusCode
