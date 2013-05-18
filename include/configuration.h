@@ -4,7 +4,7 @@
 #include <type.h>
 
 StumplessProfileIndex
-StumplessAddNewCustomProfile( StumplessCustomProfile * );
+StumplessAddCustomProfile( StumplessCustomProfile * );
 
 StumplessConfiguration *
 StumplessGetConfiguration( void );

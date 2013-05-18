@@ -28,6 +28,17 @@ main( void )
 const char *
 test_add_new_profile( void )
 {
+  StumplessCustomProfile * profile = BuildCustomProfile();
+  FAIL_IF_NULL( profile, "could not build the test profile" )
+  
+  StumplessProfileIndex index = StumplessAddCustomProfile( profile );
+  
+  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  FAIL_IF_NULL( configuration, "the configuration could not be built" )
+  
+  if( configuration->profiles[index] != profile )
+    return "the profile was not actually added to the list";
+  
   return NULL;
 }
 

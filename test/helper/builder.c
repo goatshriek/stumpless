@@ -35,6 +35,23 @@ BuildByteFormattedOutput( void )
   return output;
 }
 
+StumplessCustomProfile *
+BuildCustomProfile( void )
+{
+  StumplessCustomProfile * profile = malloc( sizeof( StumplessCustomProfile ) );
+  if( profile == NULL )
+    return NULL;
+  
+  profile->name = "Test Profile";
+  profile->binary_formatter = NULL;
+  profile->csv_formatter = NULL;
+  profile->json_formatter = NULL;
+  profile->text_formatter = NULL;
+  profile->xml_formatter = NULL;
+  
+  return profile;
+}
+
 StumplessValue *
 BuildEmptyUnsignedIntArrayValue( void )
 {

@@ -8,7 +8,7 @@ static StumplessConfiguration * configuration = NULL;
 static unsigned profile_size = 0;
 
 StumplessProfileIndex
-StumplessAddNewCustomProfile( StumplessCustomProfile * profile )
+StumplessAddCustomProfile( StumplessCustomProfile * profile )
 {
   return 0;
 }

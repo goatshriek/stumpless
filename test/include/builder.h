@@ -9,6 +9,9 @@ BuildBoolean( void );
 StumplessFormattedOutput *
 BuildByteFormattedOutput( void );
 
+StumplessCustomProfile *
+BuildCustomProfile( void );
+
 StumplessValue *
 BuildEmptyUnsignedIntArrayValue( void );
 
