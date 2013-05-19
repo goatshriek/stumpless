@@ -224,6 +224,7 @@ typedef struct {
 
 typedef struct {
   const char * name;
+  StumplessValueList * ( *value_list_converter )( StumplessValue * );
   StumplessFormattedOutput * ( *binary_formatter )( StumplessValue * );
   StumplessFormattedOutput * ( *csv_formatter )( StumplessValue * );
   StumplessFormattedOutput * ( *json_formatter )( StumplessValue * );

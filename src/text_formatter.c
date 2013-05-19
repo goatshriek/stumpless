@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <configuration.h>
 #include <formatted_output.h>
 #include <status_checker.h>
 #include <text_formatter.h>
@@ -78,6 +79,20 @@ StumplessEventSummaryAsText( StumplessEvent * event )
 }
 
 StumplessFormattedOutput *
+StumplessGenericArrayValueAsText( StumplessValue * value )
+{
+  StumplessValueList * output = GenericArrayValueAsValueList( value );
+  return TextFormattedOutputFromValueList( output );
+}
+
+StumplessFormattedOutput *
+StumplessGenericValueAsText( StumplessValue * value )
+{
+  StumplessValueList * output = GenericValueAsValueList( value );
+  return TextFormattedOutputFromValueList( output );
+}
+
+StumplessFormattedOutput *
 StumplessLevelAsText( StumplessLevel * level )
 {
   return TextFormattedOutputFromValueList( LevelAsValueList( level ) );
@@ -97,14 +112,14 @@ StumplessValueTypeAsText( StumplessValueType type )
 
 static
 StumplessValueList *
-BooleanArrayValueAsValueList( StumplessValue * )
+BooleanArrayValueAsValueList( StumplessValue * value )
 {
   return NULL;
 }
 
 static
 StumplessValueList *
-BooleanValueAsValueList( StumplessValue * )
+BooleanValueAsValueList( StumplessValue * value )
 {
   return NULL;
 }
@@ -352,12 +367,17 @@ EventSummaryAsValueList( StumplessEvent * event )
 
 static
 StumplessValueList *
-GenericArrayValueAsValueList( StumplessValue * )
+GenericArrayValueAsValueList( StumplessValue * value )
 {
   if( value == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessArrayValueToValueList( value );
+  StumplessCustomProfile * profile;
+  profile = StumplessFindProfileByIndex( value->profile );
+  if( profile == NULL )
+    return NULL;
+  
+  StumplessValueList * output = profile->value_list_converter( value );
   if( output == NULL )
     return NULL;
   
@@ -367,10 +387,7 @@ GenericArrayValueAsValueList( StumplessValue * )
   NULL_ON_FAILURE( StumplessPrependStringToValueList( output, "[" ) )
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, "] (" ) )
   
-  StumplessCustomProfile * profile = StumplessFindProfileByIndex( value->index );
-  if( profile == NULL )
-    return NULL;
-  NULL_ON_FAILURE( StumplessAppendValueLists( output, profile->name ) )
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
   
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
   
@@ -379,7 +396,7 @@ GenericArrayValueAsValueList( StumplessValue * )
 
 static
 StumplessValueList *
-GenericValueAsValueList( StumplessValue * )
+GenericValueAsValueList( StumplessValue * value )
 {
   if( value == NULL )
     return NULL;
@@ -392,10 +409,11 @@ GenericValueAsValueList( StumplessValue * )
   
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
   
-  StumplessCustomProfile * profile = StumplessFindProfileByIndex( value->index );
+  StumplessCustomProfile * profile;
+  profile = StumplessFindProfileByIndex( value->profile );
   if( profile == NULL )
     return NULL;
-  NULL_ON_FAILURE( StumplessAppendValueLists( output, profile->name ) )
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
   
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
   

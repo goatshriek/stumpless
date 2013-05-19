@@ -10,6 +10,27 @@
 #include <value_constructor.h>
 #include <value_list.h>
 
+#define ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( name, data_member )                \
+StumplessValueList *                                                           \
+Stumpless##name##ArrayValueAsValueList( StumplessValue * value )               \
+{                                                                              \
+  StumplessValueList * list = StumplessNewValueList();                         \
+  if( list == NULL )                                                           \
+    return NULL;                                                               \
+                                                                               \
+  StumplessValueData * data = value->data;                                     \
+  StumplessValue * value_i;                                                    \
+  unsigned i;                                                                  \
+  unsigned length = value->length;                                             \
+                                                                               \
+  for( i = 0; i < length; i++ ){                                               \
+    value_i = StumplessValueFrom##name( data->data_member[i] );                \
+    NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )        \
+  }                                                                            \
+                                                                               \
+  return list;                                                                 \
+}
+
 #define SINGLE_VALUE_INTO_STREAM( member )                                     \
 result = fprintf( stream, format, data->member );
 
@@ -145,6 +166,14 @@ StumplessArrayValueToValueList( StumplessValue * value )
   return list;
 }
 
+StumplessValueList *
+StumplessBooleanArrayValueAsValueList( StumplessValue * value )
+{
+  return NULL;
+}
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Char, c_p )
+
 void
 StumplessDestroyValue( StumplessValue * value )
 {
@@ -158,11 +187,37 @@ StumplessDestroyValue( StumplessValue * value )
   return;
 }
 
-unsigned
-StumplessValueProfileIndex( StumplessValue * value )
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Double, d_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Float, f_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Int, i_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Long, l_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongDouble, l_d_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongLong, l_l_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Short, s_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( SignedChar, s_c_p )
+
+StumplessValueList *
+StumplessStringArrayValueAsValueList( StumplessValue * value )
 {
-  return 0;
+  return NULL;
 }
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedChar, u_c_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedInt, u_i_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedLong, u_l_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedLongLong, u_l_l_p )
+
+ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedShort, u_s_p )
 
 StumplessStatusCode
 StumplessValueIntoString( char * str, StumplessValue * value )

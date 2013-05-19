@@ -40,6 +40,9 @@ StumplessFormattedOutput *
 StumplessGenericValueAsText( StumplessValue * );
 
 StumplessFormattedOutput *
+StumplessLevelAsText( StumplessLevel * );
+
+StumplessFormattedOutput *
 StumplessValueAsText( StumplessValue * );
 
 StumplessFormattedOutput *

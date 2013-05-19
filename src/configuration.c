@@ -2,17 +2,33 @@
 
 #include <configuration.h>
 #include <status_checker.h>
+#include <text_formatter.h>
 #include <type.h>
+#include <value.h>
 
-#define ADD_PROFILE( profile_name, prefix )                                    \
+#define ADD_ARRAY_VALUE_PROFILE( profile_name, prefix )                        \
 profile = malloc( sizeof( StumplessCustomProfile ) );                          \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
+profile->value_list_converter = &Stumpless##prefix##ValueAsValueList;          \
 profile->binary_formatter = NULL;                                              \
 profile->csv_formatter = NULL;                                                 \
 profile->json_formatter = NULL;                                                \
-profile->text_formatter = NULL;                                                \
+profile->text_formatter = &StumplessGenericArrayValueAsText;                   \
+profile->xml_formatter = NULL;                                                 \
+StumplessAddCustomProfile( profile );
+
+#define ADD_SINGLE_VALUE_PROFILE( profile_name, prefix )                       \
+profile = malloc( sizeof( StumplessCustomProfile ) );                          \
+if( profile == NULL )                                                          \
+  return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
+profile->name = profile_name;                                                  \
+profile->value_list_converter = NULL;                                          \
+profile->binary_formatter = NULL;                                              \
+profile->csv_formatter = NULL;                                                 \
+profile->json_formatter = NULL;                                                \
+profile->text_formatter = &StumplessGenericValueAsText;                        \
 profile->xml_formatter = NULL;                                                 \
 StumplessAddCustomProfile( profile );
 
@@ -118,7 +134,8 @@ StumplessInitializeProfiles( void )
   
   StumplessCustomProfile * profile;
   
-  ADD_PROFILE( "Short", Short )
+  ADD_ARRAY_VALUE_PROFILE( "Short Array", ShortArray ) 
+  ADD_SINGLE_VALUE_PROFILE( "Short", Short )
   
   return STUMPLESS_SUCCESS;
 }
