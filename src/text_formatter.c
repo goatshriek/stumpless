@@ -372,8 +372,7 @@ GenericArrayValueAsValueList( StumplessValue * value )
   if( value == NULL )
     return NULL;
   
-  StumplessTypeProfile * profile;
-  profile = StumplessFindProfileByIndex( value->profile );
+  StumplessTypeProfile * profile = value->profile;
   if( profile == NULL )
     return NULL;
   
@@ -401,6 +400,11 @@ GenericValueAsValueList( StumplessValue * value )
   if( value == NULL )
     return NULL;
   
+  StumplessTypeProfile * profile;
+  profile = value->profile;
+  if( profile == NULL )
+    return NULL;
+  
   StumplessValueList * output = StumplessNewValueList();
   if( output == NULL )
     return NULL;
@@ -408,11 +412,7 @@ GenericValueAsValueList( StumplessValue * value )
   NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
   
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
-  
-  StumplessTypeProfile * profile;
-  profile = StumplessFindProfileByIndex( value->profile );
-  if( profile == NULL )
-    return NULL;
+
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
   
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )

@@ -35,30 +35,18 @@ StumplessAddTypeProfile( profile );
 static StumplessConfiguration * configuration = NULL;
 static unsigned profile_array_capacity = 0;
 
-StumplessProfileIndex
+StumplessStatusCode
 StumplessAddTypeProfile( StumplessTypeProfile * profile )
 {
   if( configuration == NULL )
     StumplessInitializeConfiguration();
   
-  StumplessProfileIndex index = configuration->profile_count;
+  unsigned index = configuration->profile_count;
   
   configuration->profiles[index] = profile;
   configuration->profile_count++;
   
-  return index;
-}
-
-StumplessTypeProfile *
-StumplessFindProfileByIndex( StumplessProfileIndex index )
-{
-  if( configuration == NULL )
-    StumplessInitializeConfiguration();
-  
-  if( index >= configuration->profile_count )
-    return NULL;
-  else
-    return configuration->profiles[index];
+  return STUMPLESS_SUCCESS;
 }
 
 StumplessTypeProfile *

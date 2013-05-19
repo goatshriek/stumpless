@@ -102,25 +102,41 @@ typedef union {
   StumplessBoolean * boolean; // todo remove
 } StumplessValueData;
 
-typedef unsigned int StumplessProfileIndex;
+struct StumplessFormattedOutput;
+struct StumplessValue;
+struct StumplessValueList;
+
+typedef struct StumplessFormattedOutput StumplessFormattedOutput;
+typedef struct StumplessValue StumplessValue;
+typedef struct StumplessValueList StumplessValueList;
 
 typedef struct {
+  const char * name;
+  struct StumplessValueList * ( *value_list_converter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *binary_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *csv_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *json_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *text_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *xml_formatter )( struct StumplessValue * );
+} StumplessTypeProfile;
+
+struct StumplessValue {
   const char * format;
   StumplessValueType type; // todo remove
   StumplessValueData * data;
   unsigned length;
-  StumplessProfileIndex profile;
-} StumplessValue;
+  StumplessTypeProfile * profile;
+};
 
 typedef struct value_node {
   StumplessValue * value;
   struct value_node * next;
 } StumplessValueListNode;
 
-typedef struct {
+struct StumplessValueList {
   StumplessValueListNode * first;
   StumplessValueListNode * last;
-} StumplessValueList;
+};
 
 typedef struct {
   const char * name;
@@ -166,15 +182,15 @@ typedef enum StumplessOutputFormat {
   STUMPLESS_XML
 } StumplessOutputFormat;
 
-typedef union {
+typedef union StumplessFormattedPayload {
   StumplessByteList * bytes;
   StumplessValueList * values;
 } StumplessFormattedPayload;
 
-typedef struct {
+struct StumplessFormattedOutput {
   StumplessOutputFormat format;
   StumplessFormattedPayload * payload;
-} StumplessFormattedOutput;
+};
 
 typedef enum StumplessOutputMode {
   STUMPLESS_FILE_MODE,
@@ -222,15 +238,6 @@ typedef struct {
   size_t buffer_size;
 } StumplessStringConfiguration;
 
-typedef struct {
-  const char * name;
-  StumplessValueList * ( *value_list_converter )( StumplessValue * );
-  StumplessFormattedOutput * ( *binary_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *csv_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *json_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *text_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *xml_formatter )( StumplessValue * );
-} StumplessTypeProfile;
 
 typedef struct {
   StumplessFileConfiguration * file;

@@ -3,11 +3,8 @@
 
 #include <type.h>
 
-StumplessProfileIndex
+StumplessStatusCode
 StumplessAddTypeProfile( StumplessTypeProfile * );
-
-StumplessTypeProfile *
-StumplessFindProfileByIndex( StumplessProfileIndex );
 
 StumplessTypeProfile *
 StumplessFindProfileByName( const char * );

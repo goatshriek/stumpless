@@ -6,7 +6,6 @@
 #include "helper.h"
 
 const char * test_add_new_profile( void );
-const char * test_find_profile_by_index( void );
 const char * test_find_profile_by_name( void );
 const char * test_initialization( void );
 const char * test_profile_initialization( void );
@@ -18,7 +17,6 @@ main( void )
   const char * result;
   
   RUN_TEST( add_new_profile )
-  RUN_TEST( find_profile_by_index )
   RUN_TEST( find_profile_by_name )
   RUN_TEST( initialization )
   RUN_TEST( profile_initialization )
@@ -35,28 +33,15 @@ test_add_new_profile( void )
   StumplessTypeProfile * profile = BuildTypeProfile();
   FAIL_IF_NULL( profile, "could not build the test profile" )
   
-  StumplessProfileIndex index = StumplessAddTypeProfile( profile );
+  StumplessStatusCode status = StumplessAddTypeProfile( profile );
+  if( status != STUMPLESS_SUCCESS )
+    return "the node was not successfully added";
   
   StumplessConfiguration * configuration = StumplessGetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  if( configuration->profiles[index] != profile )
+  if( StumplessFindProfileByName( profile->name ) != profile )
     return "the profile was not actually added to the list";
-  
-  return NULL;
-}
-
-const char *
-test_find_profile_by_index( void )
-{
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
-  FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
-  
-  StumplessTypeProfile * profile = StumplessFindProfileByIndex( 1 );
-  FAIL_IF_NULL( profile, "an existing profile could not be found" )
-  
-  profile = StumplessFindProfileByIndex( UINT_MAX );
-  FAIL_IF_NOT_NULL( profile, "a non-existing profile was found" )
   
   return NULL;
 }
