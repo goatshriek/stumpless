@@ -32,10 +32,10 @@ main( void )
 const char *
 test_add_new_profile( void )
 {
-  StumplessCustomProfile * profile = BuildCustomProfile();
+  StumplessTypeProfile * profile = BuildTypeProfile();
   FAIL_IF_NULL( profile, "could not build the test profile" )
   
-  StumplessProfileIndex index = StumplessAddCustomProfile( profile );
+  StumplessProfileIndex index = StumplessAddTypeProfile( profile );
   
   StumplessConfiguration * configuration = StumplessGetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
@@ -52,7 +52,7 @@ test_find_profile_by_index( void )
   StumplessConfiguration * configuration = StumplessGetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  StumplessCustomProfile * profile = StumplessFindProfileByIndex( 1 );
+  StumplessTypeProfile * profile = StumplessFindProfileByIndex( 1 );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
   profile = StumplessFindProfileByIndex( UINT_MAX );
@@ -67,7 +67,7 @@ test_find_profile_by_name( void )
   StumplessConfiguration * configuration = StumplessGetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  StumplessCustomProfile * profile = StumplessFindProfileByName( "Short" );
+  StumplessTypeProfile * profile = StumplessFindProfileByName( "Short" );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
   profile = StumplessFindProfileByName( "non-existent" );

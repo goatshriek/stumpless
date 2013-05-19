@@ -7,7 +7,7 @@
 #include <value.h>
 
 #define ADD_ARRAY_VALUE_PROFILE( profile_name, type_name )                     \
-profile = malloc( sizeof( StumplessCustomProfile ) );                          \
+profile = malloc( sizeof( StumplessTypeProfile ) );                            \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
@@ -17,10 +17,10 @@ profile->csv_formatter = NULL;                                                 \
 profile->json_formatter = NULL;                                                \
 profile->text_formatter = &StumplessGenericArrayValueAsText;                   \
 profile->xml_formatter = NULL;                                                 \
-StumplessAddCustomProfile( profile );
+StumplessAddTypeProfile( profile );
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
-profile = malloc( sizeof( StumplessCustomProfile ) );                          \
+profile = malloc( sizeof( StumplessTypeProfile ) );                            \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
@@ -30,13 +30,13 @@ profile->csv_formatter = NULL;                                                 \
 profile->json_formatter = NULL;                                                \
 profile->text_formatter = &StumplessGenericValueAsText;                        \
 profile->xml_formatter = NULL;                                                 \
-StumplessAddCustomProfile( profile );
+StumplessAddTypeProfile( profile );
 
 static StumplessConfiguration * configuration = NULL;
 static unsigned profile_array_capacity = 0;
 
 StumplessProfileIndex
-StumplessAddCustomProfile( StumplessCustomProfile * profile )
+StumplessAddTypeProfile( StumplessTypeProfile * profile )
 {
   if( configuration == NULL )
     StumplessInitializeConfiguration();
@@ -49,7 +49,7 @@ StumplessAddCustomProfile( StumplessCustomProfile * profile )
   return index;
 }
 
-StumplessCustomProfile *
+StumplessTypeProfile *
 StumplessFindProfileByIndex( StumplessProfileIndex index )
 {
   if( configuration == NULL )
@@ -61,7 +61,7 @@ StumplessFindProfileByIndex( StumplessProfileIndex index )
     return configuration->profiles[index];
 }
 
-StumplessCustomProfile *
+StumplessTypeProfile *
 StumplessFindProfileByName( const char * name )
 {
   if( configuration == NULL )
@@ -127,12 +127,12 @@ StumplessInitializeProfiles( void )
   
   profile_array_capacity = 100;
   size_t array_size;
-  array_size = profile_array_capacity * sizeof( StumplessCustomProfile );
+  array_size = profile_array_capacity * sizeof( StumplessTypeProfile );
   configuration->profiles = malloc( array_size );
   if( configuration->profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  StumplessCustomProfile * profile;
+  StumplessTypeProfile * profile;
   
   ADD_ARRAY_VALUE_PROFILE( "Boolean Array", BooleanArray )
   ADD_ARRAY_VALUE_PROFILE( "Char Array", CharArray )

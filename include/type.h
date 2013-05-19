@@ -230,7 +230,7 @@ typedef struct {
   StumplessFormattedOutput * ( *json_formatter )( StumplessValue * );
   StumplessFormattedOutput * ( *text_formatter )( StumplessValue * );
   StumplessFormattedOutput * ( *xml_formatter )( StumplessValue * );
-} StumplessCustomProfile;
+} StumplessTypeProfile;
 
 typedef struct {
   StumplessFileConfiguration * file;
@@ -238,7 +238,7 @@ typedef struct {
   StumplessMultithreadingConfiguration * multithreading;
   StumplessSortingConfiguration * sorting;
   StumplessStringConfiguration * string;
-  StumplessCustomProfile ** profiles;
+  StumplessTypeProfile ** profiles;
   unsigned profile_count;
 } StumplessConfiguration;
 

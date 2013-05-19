@@ -4,12 +4,12 @@
 #include <type.h>
 
 StumplessProfileIndex
-StumplessAddCustomProfile( StumplessCustomProfile * );
+StumplessAddTypeProfile( StumplessTypeProfile * );
 
-StumplessCustomProfile *
+StumplessTypeProfile *
 StumplessFindProfileByIndex( StumplessProfileIndex );
 
-StumplessCustomProfile *
+StumplessTypeProfile *
 StumplessFindProfileByName( const char * );
 
 StumplessConfiguration *
