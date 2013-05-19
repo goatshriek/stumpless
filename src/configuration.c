@@ -6,12 +6,12 @@
 #include <type.h>
 #include <value.h>
 
-#define ADD_ARRAY_VALUE_PROFILE( profile_name, prefix )                        \
+#define ADD_ARRAY_VALUE_PROFILE( profile_name, type_name )                     \
 profile = malloc( sizeof( StumplessCustomProfile ) );                          \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
-profile->value_list_converter = &Stumpless##prefix##ValueAsValueList;          \
+profile->value_list_converter = &Stumpless##type_name##ValueAsValueList;       \
 profile->binary_formatter = NULL;                                              \
 profile->csv_formatter = NULL;                                                 \
 profile->json_formatter = NULL;                                                \
@@ -19,7 +19,7 @@ profile->text_formatter = &StumplessGenericArrayValueAsText;                   \
 profile->xml_formatter = NULL;                                                 \
 StumplessAddCustomProfile( profile );
 
-#define ADD_SINGLE_VALUE_PROFILE( profile_name, prefix )                       \
+#define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
 profile = malloc( sizeof( StumplessCustomProfile ) );                          \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
@@ -134,8 +134,39 @@ StumplessInitializeProfiles( void )
   
   StumplessCustomProfile * profile;
   
-  ADD_ARRAY_VALUE_PROFILE( "Short Array", ShortArray ) 
+  ADD_ARRAY_VALUE_PROFILE( "Boolean Array", BooleanArray )
+  ADD_ARRAY_VALUE_PROFILE( "Char Array", CharArray )
+  ADD_ARRAY_VALUE_PROFILE( "Float Array", FloatArray )
+  ADD_ARRAY_VALUE_PROFILE( "Double Array", DoubleArray )
+  ADD_ARRAY_VALUE_PROFILE( "Int Array", IntArray )
+  ADD_ARRAY_VALUE_PROFILE( "Long Array", LongArray )
+  ADD_ARRAY_VALUE_PROFILE( "Long Double Array", LongDoubleArray )
+  ADD_ARRAY_VALUE_PROFILE( "Long Long Array", LongLongArray )
+  ADD_ARRAY_VALUE_PROFILE( "Short Array", ShortArray )
+  ADD_ARRAY_VALUE_PROFILE( "Signed Char Array", SignedCharArray )
+  ADD_ARRAY_VALUE_PROFILE( "String Array", StringArray )
+  ADD_ARRAY_VALUE_PROFILE( "Unsigned Char Array", UnsignedCharArray )
+  ADD_ARRAY_VALUE_PROFILE( "Unsigned Int Array", UnsignedIntArray )
+  ADD_ARRAY_VALUE_PROFILE( "Unsigned Long Array", UnsignedLongArray )
+  ADD_ARRAY_VALUE_PROFILE( "Unsigned Long Long Array", UnsignedLongLongArray )
+  ADD_ARRAY_VALUE_PROFILE( "Unsigned Short Array", UnsignedShortArray )
+  
+  ADD_SINGLE_VALUE_PROFILE( "Boolean", Boolean )
+  ADD_SINGLE_VALUE_PROFILE( "Char", Char )
+  ADD_SINGLE_VALUE_PROFILE( "Float", Float )
+  ADD_SINGLE_VALUE_PROFILE( "Double", Double )
+  ADD_SINGLE_VALUE_PROFILE( "Int", Int )
+  ADD_SINGLE_VALUE_PROFILE( "Long", Long )
+  ADD_SINGLE_VALUE_PROFILE( "Long Double", LongDouble )
+  ADD_SINGLE_VALUE_PROFILE( "Long Long", LongLong )
   ADD_SINGLE_VALUE_PROFILE( "Short", Short )
+  ADD_SINGLE_VALUE_PROFILE( "Signed Char", SignedChar )
+  ADD_SINGLE_VALUE_PROFILE( "String", String )
+  ADD_SINGLE_VALUE_PROFILE( "Unsigned Char", UnsignedChar )
+  ADD_SINGLE_VALUE_PROFILE( "Unsigned Int", UnsignedInt )
+  ADD_SINGLE_VALUE_PROFILE( "Unsigned Long", UnsignedLong )
+  ADD_SINGLE_VALUE_PROFILE( "Unsigned Long Long", UnsignedLongLong )
+  ADD_SINGLE_VALUE_PROFILE( "Unsigned Short", UnsignedShort )
   
   return STUMPLESS_SUCCESS;
 }
