@@ -6,7 +6,103 @@
 #include <stdlib.h>
 #include <time.h>
 
-typedef enum StumplessStatusCode {
+
+enum StumplessHTTPMethod;
+enum StumplessOutputFormat;
+enum StumplessOutputMode;
+enum StumplessSortingMethod;
+enum StumplessStatusCode;
+enum StumplessValueType; // todo remove
+
+struct StumplessBoolean;
+struct StumplessBooleanFormat;
+struct StumplessByteList;
+struct StumplessConfiguration;
+struct StumplessEntry;
+struct StumplessEntryAttribute;
+struct StumplessEvent;
+struct StumplessEventAttribute;
+struct StumplessFileConfiguration;
+struct StumplessFormattedOutput;
+union StumplessFormattedPayload;
+struct StumplessHTTConfiguration;
+struct StumplessLevel;
+struct StumplessMultithreadingConfiguration;
+struct StumplessSortingConfiguration;
+struct StumplessStringConfiguration;
+struct StumplessTypeProfile;
+struct StumplessValue;
+union StumplessValueData;
+struct StumplessValueList;
+struct StumplessValueListNode;
+
+
+typedef enum StumplessHTTPMethod StumplessHTTPMethod;
+typedef enum StumplessOutputFormat StumplessOutputFormat;
+typedef enum StumplessOutputMode StumplessOutputMode;
+typedef enum StumplessSortingMethod StumplessSortingMethod;
+typedef enum StumplessStatusCode StumplessStatusCode;
+typedef enum StumplessValueType StumplessValueType; // todo remove
+
+typedef struct StumplessBoolean StumplessBoolean;
+typedef struct StumplessBooleanFormat StumplessBooleanFormat;
+typedef struct StumplessByteList StumplessByteList;
+typedef struct StumplessConfiguration StumplessConfiguration;
+typedef struct StumplessEntry StumplessEntry;
+typedef struct StumplessEntryAttribute StumplessEntryAttribute;
+typedef struct StumplessEvent StumplessEvent;
+typedef struct StumplessEventAttribute StumplessEventAttribute;
+typedef struct StumplessFileConfiguration StumplessFileConfiguration;
+typedef struct StumplessFormattedOutput StumplessFormattedOutput;
+typedef union StumplessFormattedPayload StumplessFormattedPayload;
+typedef struct StumplessHTTPConfiguration StumplessHTTPConfiguration;
+typedef struct StumplessLevel StumplessLevel;
+typedef struct StumplessMultithreadingConfiguration
+        StumplessMultithreadingConfiguration;
+typedef struct StumplessSortingConfiguration StumplessSortingConfiguration;
+typedef struct StumplessStringConfiguration StumplessStringConfiguration;
+typedef struct StumplessTypeProfile StumplessTypeProfile;
+typedef struct StumplessValue StumplessValue;
+typedef union StumplessValueData StumplessValueData;
+typedef struct StumplessValueList StumplessValueList;
+typedef struct StumplessValueListNode StumplessValueListNode;
+
+
+typedef unsigned char StumplessByte;
+
+enum StumplessHTTPMethod {
+  STUMPLESS_DELETE,
+  STUMPLESS_GET,
+  STUMPLESS_POST,
+  STUMPLESS_PUT
+};
+
+enum StumplessOutputFormat {
+  STUMPLESS_BINARY,
+  STUMPLESS_CSV,
+  STUMPLESS_JSON,
+  STUMPLESS_TEXT,
+  STUMPLESS_XML
+};
+
+enum StumplessOutputMode {
+  STUMPLESS_FILE_MODE,
+  STUMPLESS_HTTP_MODE,
+  STUMPLESS_MYSQL_MODE,
+  STUMPLESS_STRING_MODE,
+  STUMPLESS_TCP_MODE
+};
+
+enum StumplessSortingMethod {
+  STUMPLESS_BUBBLE_SORT,
+  STUMPLESS_CUSTOM_SORT,
+  STUMPLESS_INSERTION_SORT,
+  STUMPLESS_MERGE_SORT,
+  STUMPLESS_QUICK_SORT,
+  STUMPLESS_SHELL_SORT
+};
+
+enum StumplessStatusCode {
   STUMPLESS_SUCCESS = EXIT_SUCCESS,
   STUMPLESS_FAILURE,
   STUMPLESS_EMPTY_ARGUMENT,
@@ -20,19 +116,9 @@ typedef enum StumplessStatusCode {
   STUMPLESS_MEMORY_ALLOCATION_FAILURE,
   STUMPLESS_PARSE_FAILURE,
   STUMPLESS_STRING_WRITE_FAILURE
-} StumplessStatusCode;
+};
 
-typedef struct {
-  char * true_description;
-  char * false_description;
-} StumplessBooleanFormat;
-
-typedef struct {
-  short value;
-  StumplessBooleanFormat * format;
-} StumplessBoolean;
-
-typedef enum StumplessValueType {
+enum StumplessValueType {
   STUMPLESS_UNSIGNED_SHORT,
   STUMPLESS_UNSIGNED_SHORT_POINTER,
   STUMPLESS_SHORT,
@@ -66,9 +152,114 @@ typedef enum StumplessValueType {
   STUMPLESS_VOID_POINTER,
   STUMPLESS_BOOLEAN,
   STUMPLESS_CUSTOM_DATA
-} StumplessValueType; // todo remove
+}; // todo remove
 
-typedef union {
+
+struct StumplessBoolean {
+  short value;
+  StumplessBooleanFormat * format;
+};
+
+struct StumplessBooleanFormat {
+  char * true_description;
+  char * false_description;
+};
+
+struct StumplessByteList {
+  StumplessByte * bytes;
+  unsigned byte_count;
+};
+
+struct StumplessConfiguration {
+  StumplessFileConfiguration * file;
+  StumplessHTTPConfiguration * http;
+  StumplessMultithreadingConfiguration * multithreading;
+  StumplessSortingConfiguration * sorting;
+  StumplessStringConfiguration * string;
+  StumplessTypeProfile ** profiles;
+  unsigned profile_count;
+};
+
+struct StumplessEntry {
+  const char * description;
+  StumplessEvent * event;
+  StumplessEntryAttribute ** attributes;
+  unsigned attribute_count;
+};
+
+struct StumplessEntryAttribute {
+  StumplessEventAttribute * event_attribute;
+  StumplessValue * value;
+};
+
+struct StumplessEvent {
+  const char * name;
+  StumplessLevel * level;
+  StumplessEventAttribute ** attributes;
+  unsigned attribute_count;
+};
+
+struct StumplessEventAttribute {
+  const char * name;
+  StumplessValue * default_value;
+};
+
+struct StumplessFileConfiguration {
+  FILE * current_file;
+};
+
+struct StumplessFormattedOutput {
+  StumplessOutputFormat format;
+  StumplessFormattedPayload * payload;
+};
+
+union StumplessFormattedPayload {
+  StumplessByteList * bytes;
+  StumplessValueList * values;
+};
+
+struct StumplessHTTPConfiguration {
+  StumplessHTTPMethod method;
+};
+
+struct StumplessLevel {
+  unsigned value;
+  const char * name;
+};
+
+struct StumplessMultithreadingConfiguration {
+  unsigned short enabled;
+};
+
+struct StumplessSortingConfiguration {
+  StumplessSortingMethod entry_method;
+  StumplessSortingMethod log_method;
+  unsigned short ascending;
+};
+
+struct StumplessStringConfiguration {
+  size_t buffer_size;
+};
+
+struct StumplessTypeProfile {
+  const char * name;
+  struct StumplessValueList * ( *value_list_converter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *binary_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *csv_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *json_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *text_formatter )( struct StumplessValue * );
+  struct StumplessFormattedOutput * ( *xml_formatter )( struct StumplessValue * );
+};
+
+struct StumplessValue {
+  const char * format;
+  StumplessValueType type; // todo remove
+  StumplessValueData * data;
+  unsigned length;
+  StumplessTypeProfile * profile;
+};
+
+union StumplessValueData {
   unsigned short u_s;
   const unsigned short * u_s_p;
   signed short s;
@@ -100,153 +291,16 @@ typedef union {
   const char ** str_p;
   const void * v_p;
   StumplessBoolean * boolean; // todo remove
-} StumplessValueData;
-
-struct StumplessFormattedOutput;
-struct StumplessValue;
-struct StumplessValueList;
-
-typedef struct StumplessFormattedOutput StumplessFormattedOutput;
-typedef struct StumplessValue StumplessValue;
-typedef struct StumplessValueList StumplessValueList;
-
-typedef struct {
-  const char * name;
-  struct StumplessValueList * ( *value_list_converter )( struct StumplessValue * );
-  struct StumplessFormattedOutput * ( *binary_formatter )( struct StumplessValue * );
-  struct StumplessFormattedOutput * ( *csv_formatter )( struct StumplessValue * );
-  struct StumplessFormattedOutput * ( *json_formatter )( struct StumplessValue * );
-  struct StumplessFormattedOutput * ( *text_formatter )( struct StumplessValue * );
-  struct StumplessFormattedOutput * ( *xml_formatter )( struct StumplessValue * );
-} StumplessTypeProfile;
-
-struct StumplessValue {
-  const char * format;
-  StumplessValueType type; // todo remove
-  StumplessValueData * data;
-  unsigned length;
-  StumplessTypeProfile * profile;
 };
-
-typedef struct value_node {
-  StumplessValue * value;
-  struct value_node * next;
-} StumplessValueListNode;
 
 struct StumplessValueList {
   StumplessValueListNode * first;
   StumplessValueListNode * last;
 };
 
-typedef struct {
-  const char * name;
-  StumplessValue * default_value;
-} StumplessEventAttribute;
-
-typedef struct {
-  StumplessEventAttribute * event_attribute;
+struct StumplessValueListNode {
   StumplessValue * value;
-} StumplessEntryAttribute;
-
-typedef struct {
-  unsigned value;
-  const char * name;
-} StumplessLevel;
-
-typedef struct {
-  const char * name;
-  StumplessLevel * level;
-  StumplessEventAttribute ** attributes;
-  unsigned attribute_count;
-} StumplessEvent;
-
-typedef struct {
-  const char * description;
-  StumplessEvent * event;
-  StumplessEntryAttribute ** attributes;
-  unsigned attribute_count;
-} StumplessEntry;
-
-typedef unsigned char StumplessByte;
-
-typedef struct {
-  StumplessByte * bytes;
-  unsigned byte_count;
-} StumplessByteList;
-
-typedef enum StumplessOutputFormat {
-  STUMPLESS_BINARY,
-  STUMPLESS_CSV,
-  STUMPLESS_JSON,
-  STUMPLESS_TEXT,
-  STUMPLESS_XML
-} StumplessOutputFormat;
-
-typedef union StumplessFormattedPayload {
-  StumplessByteList * bytes;
-  StumplessValueList * values;
-} StumplessFormattedPayload;
-
-struct StumplessFormattedOutput {
-  StumplessOutputFormat format;
-  StumplessFormattedPayload * payload;
+  StumplessValueListNode * next;
 };
-
-typedef enum StumplessOutputMode {
-  STUMPLESS_FILE_MODE,
-  STUMPLESS_HTTP_MODE,
-  STUMPLESS_MYSQL_MODE,
-  STUMPLESS_STRING_MODE,
-  STUMPLESS_TCP_MODE
-} StumplessOutputMode;
-
-typedef enum StumplessSortingMethod {
-  STUMPLESS_BUBBLE_SORT,
-  STUMPLESS_CUSTOM_SORT,
-  STUMPLESS_INSERTION_SORT,
-  STUMPLESS_MERGE_SORT,
-  STUMPLESS_QUICK_SORT,
-  STUMPLESS_SHELL_SORT
-} StumplessSortingMethod;
-
-typedef enum StumplessHTTPMethod {
-  STUMPLESS_DELETE,
-  STUMPLESS_GET,
-  STUMPLESS_POST,
-  STUMPLESS_PUT
-} StumplessHTTPMethod;
-
-typedef struct {
-  FILE * current_file;
-} StumplessFileConfiguration;
-
-typedef struct {
-  StumplessHTTPMethod method;
-} StumplessHTTPConfiguration;
-
-typedef struct {
-  unsigned short enable_multithreading;
-} StumplessMultithreadingConfiguration;
-
-typedef struct {
-  StumplessSortingMethod entry_method;
-  StumplessSortingMethod log_method;
-  unsigned short ascending;
-} StumplessSortingConfiguration;
-
-typedef struct {
-  size_t buffer_size;
-} StumplessStringConfiguration;
-
-
-typedef struct {
-  StumplessFileConfiguration * file;
-  StumplessHTTPConfiguration * http;
-  StumplessMultithreadingConfiguration * multithreading;
-  StumplessSortingConfiguration * sorting;
-  StumplessStringConfiguration * string;
-  StumplessTypeProfile ** profiles;
-  unsigned profile_count;
-} StumplessConfiguration;
 
 #endif
