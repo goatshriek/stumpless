@@ -4,6 +4,9 @@
 #include <type.h>
 
 StumplessValue *
+StumplessValueFromBoolean( const StumplessBoolean * );
+
+StumplessValue *
 StumplessValueFromChar( char );
 
 StumplessValue *

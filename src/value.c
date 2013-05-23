@@ -14,6 +14,10 @@
 StumplessValueList *                                                           \
 Stumpless##name##ArrayValueAsValueList( StumplessValue * value )               \
 {                                                                              \
+  if( value == NULL || value->data == NULL                                     \
+   || value->data->data_member == NULL )                                       \
+    return NULL;                                                               \
+                                                                               \
   StumplessValueList * list = StumplessNewValueList();                         \
   if( list == NULL )                                                           \
     return NULL;                                                               \
@@ -21,9 +25,8 @@ Stumpless##name##ArrayValueAsValueList( StumplessValue * value )               \
   StumplessValueData * data = value->data;                                     \
   StumplessValue * value_i;                                                    \
   unsigned i;                                                                  \
-  unsigned length = value->length;                                             \
                                                                                \
-  for( i = 0; i < length; i++ ){                                               \
+  for( i = 0; i < value->length; i++ ){                                        \
     value_i = StumplessValueFrom##name( data->data_member[i] );                \
     NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )        \
   }                                                                            \
@@ -169,7 +172,25 @@ StumplessArrayValueToValueList( StumplessValue * value )
 StumplessValueList *
 StumplessBooleanArrayValueAsValueList( StumplessValue * value )
 {
-  return NULL;
+  if( value == NULL || value->data == NULL || value->data->v_p == NULL )
+    return NULL;
+  
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  const StumplessBoolean ** boolean_list;
+  boolean_list = (const StumplessBoolean **) value->data->v_p;
+  StumplessValue * boolean_value;
+  
+  unsigned i; 
+  
+  for( i = 0; i < value->length; i++ ){
+    boolean_value = StumplessValueFromBoolean( boolean_list[i] );
+    NULL_ON_FAILURE( StumplessAppendValueToValueList( list, boolean_value ) )
+  }
+  
+  return list;
 }
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Char, c_p )
@@ -206,7 +227,24 @@ ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( SignedChar, s_c_p )
 StumplessValueList *
 StumplessStringArrayValueAsValueList( StumplessValue * value )
 {
-  return NULL;
+  if( value == NULL || value->data == NULL || value->data->v_p == NULL )
+    return NULL;
+  
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  const char ** string_list = (const char **) value->data->v_p;
+  StumplessValue * string_value;
+  
+  unsigned i; 
+  
+  for( i = 0; i < value->length; i++ ){
+    string_value = StumplessValueFromString( string_list[i] );
+    NULL_ON_FAILURE( StumplessAppendValueToValueList( list, string_value ) )
+  }
+  
+  return list;
 }
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedChar, u_c_p )

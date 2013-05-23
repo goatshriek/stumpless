@@ -13,6 +13,20 @@ if( value->data == NULL )                                                      \
   return NULL;
 
 StumplessValue *
+StumplessValueFromBoolean( const StumplessBoolean * boolean )
+{
+  CREATE_VALUE
+  
+  value->profile = StumplessFindProfileByName( "Boolean" );
+  if( value->profile == NULL )
+    return NULL;
+  
+  value->data->v_p = (void *) boolean;
+  
+  return value;
+}
+
+StumplessValue *
 StumplessValueFromChar( char character )
 {
   CREATE_VALUE
