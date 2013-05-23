@@ -171,7 +171,7 @@ test_into_string( void )
   if( status != STUMPLESS_SUCCESS )
     return "a valid string was not properly written into";
   
-  if( strstr( str, "abcdefgh" ) == NULL )
+  if( strstr( str, "234567" ) == NULL )
     return "the new string did not contain parts of the list";
   
   return NULL;
@@ -374,7 +374,7 @@ test_to_string( void )
   if( str == NULL )
     return "a valid list returend a null string";
   
-  if( strstr( str, "abcdefg" ) == NULL )
+  if( strstr( str, "3456789" ) == NULL )
     return "the new string did not contain parts of the list";
   
   return NULL;
