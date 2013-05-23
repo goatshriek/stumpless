@@ -10,7 +10,7 @@
 char *
 StumplessEntryToString( StumplessEntry * entry )
 {
-  StumplessFormattedOutput * output =  StumplessEntryAsText( entry );
+  StumplessFormattedOutput * output =  StumplessEntryToText( entry );
   return StumplessFormattedOutputToString( output ); 
 }
 

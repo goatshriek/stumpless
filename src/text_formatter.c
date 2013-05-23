@@ -13,85 +13,85 @@
 #include <value_list.h>
 
 StumplessFormattedOutput *
-StumplessEntryAsText( StumplessEntry * entry )
+StumplessEntryToText( StumplessEntry * entry )
 {
   return TextFormattedOutputFromValueList( EntryAsValueList( entry ) );
 }
 
 StumplessFormattedOutput *
-StumplessEntryAttributeAsText( StumplessEntryAttribute * attribute )
+StumplessEntryAttributeToText( StumplessEntryAttribute * attribute )
 {
   StumplessValueList * output = EntryAttributeAsValueList( attribute );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
-StumplessEntryAttributeListAsText( StumplessEntry * entry )
+StumplessEntryAttributeListToText( StumplessEntry * entry )
 {
   StumplessValueList * output = EntryAttributeListAsValueList( entry );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
-StumplessEntrySummaryAsText( StumplessEntry * entry )
+StumplessEntrySummaryToText( StumplessEntry * entry )
 {
   return TextFormattedOutputFromValueList( EntrySummaryAsValueList( entry ) );
 }
 
 StumplessFormattedOutput *
-StumplessEventAsText( StumplessEvent * event )
+StumplessEventToText( StumplessEvent * event )
 {
   return TextFormattedOutputFromValueList( EventAsValueList( event ) );
 }
 
 StumplessFormattedOutput *
-StumplessEventAttributeAsText( StumplessEventAttribute * attribute )
+StumplessEventAttributeToText( StumplessEventAttribute * attribute )
 {
   StumplessValueList * output = EventAttributeAsValueList( attribute );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
-StumplessEventAttributeListAsText( StumplessEvent * event )
+StumplessEventAttributeListToText( StumplessEvent * event )
 {
   StumplessValueList * output = EventAttributeListAsValueList( event );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
-StumplessEventSummaryAsText( StumplessEvent * event )
+StumplessEventSummaryToText( StumplessEvent * event )
 {
   return TextFormattedOutputFromValueList( EventSummaryAsValueList( event ) );
 }
 
 StumplessFormattedOutput *
-StumplessGenericArrayValueAsText( StumplessValue * value )
+StumplessGenericArrayValueToText( StumplessValue * value )
 {
   StumplessValueList * output = GenericArrayValueAsValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
-StumplessGenericValueAsText( StumplessValue * value )
+StumplessGenericValueToText( StumplessValue * value )
 {
   StumplessValueList * output = GenericValueAsValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
-StumplessLevelAsText( StumplessLevel * level )
+StumplessLevelToText( StumplessLevel * level )
 {
   return TextFormattedOutputFromValueList( LevelAsValueList( level ) );
 }
 
 StumplessFormattedOutput * // todo remove this function
-StumplessValueAsText( StumplessValue * value )
+StumplessValueToText( StumplessValue * value )
 {
   return TextFormattedOutputFromValueList( ValueAsValueList( value ) );
 }
 
 StumplessFormattedOutput * // todo remove this function
-StumplessValueTypeAsText( StumplessValueType type )
+StumplessValueTypeToText( StumplessValueType type )
 {
   return TextFormattedOutputFromValueList( ValueTypeAsValueList( type ) );
 }
@@ -467,7 +467,7 @@ ValueAsValueList( StumplessValue * value )
   
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
   
-  StumplessFormattedOutput * type = StumplessValueTypeAsText( value->type );
+  StumplessFormattedOutput * type = StumplessValueTypeToText( value->type );
   if( type == NULL || type->payload == NULL )
     return NULL;
   StumplessValueList * type_values = type->payload->values;

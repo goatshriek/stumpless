@@ -12,7 +12,7 @@
 char *
 StumplessEventToString( StumplessEvent * event )
 {
-  StumplessFormattedOutput * output = StumplessEventAsText( event );
+  StumplessFormattedOutput * output = StumplessEventToText( event );
   return StumplessFormattedOutputToString( output );
 }
 

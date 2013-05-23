@@ -81,6 +81,6 @@ StumplessGetWarningLevel( void )
 char *
 StumplessLevelToString( StumplessLevel * level )
 {
-  StumplessFormattedOutput * output = StumplessLevelAsText( level );
+  StumplessFormattedOutput * output = StumplessLevelToText( level );
   return StumplessFormattedOutputToString( output );
 }

@@ -4,42 +4,42 @@
 #include <type.h>
 
 StumplessFormattedOutput *
-StumplessEntryAsText( StumplessEntry * );
+StumplessEntryToText( StumplessEntry * );
 
 StumplessFormattedOutput *
-StumplessEntryAttributeAsText( StumplessEntryAttribute * );
+StumplessEntryAttributeToText( StumplessEntryAttribute * );
 
 StumplessFormattedOutput *
-StumplessEntryAttributeListAsText( StumplessEntry * );
+StumplessEntryAttributeListToText( StumplessEntry * );
 
 StumplessFormattedOutput *
-StumplessEntrySummaryAsText( StumplessEntry * );
+StumplessEntrySummaryToText( StumplessEntry * );
 
 StumplessFormattedOutput *
-StumplessEventAsText( StumplessEvent * );
+StumplessEventToText( StumplessEvent * );
 
 StumplessFormattedOutput * 
-StumplessEventAttributeAsText( StumplessEventAttribute * );
+StumplessEventAttributeToText( StumplessEventAttribute * );
 
 StumplessFormattedOutput *
-StumplessEventAttributeListAsText( StumplessEvent * );
+StumplessEventAttributeListToText( StumplessEvent * );
 
 StumplessFormattedOutput *
-StumplessEventSummaryAsText( StumplessEvent * );
+StumplessEventSummaryToText( StumplessEvent * );
 
 StumplessFormattedOutput *
-StumplessGenericArrayValueAsText( StumplessValue * );
+StumplessGenericArrayValueToText( StumplessValue * );
 
 StumplessFormattedOutput *
-StumplessGenericValueAsText( StumplessValue * );
+StumplessGenericValueToText( StumplessValue * );
 
 StumplessFormattedOutput *
-StumplessLevelAsText( StumplessLevel * );
+StumplessLevelToText( StumplessLevel * );
 
 StumplessFormattedOutput * // todo remove this function
-StumplessValueAsText( StumplessValue * );
+StumplessValueToText( StumplessValue * );
 
 StumplessFormattedOutput * // todo remove this function
-StumplessValueTypeAsText( StumplessValueType );
+StumplessValueTypeToText( StumplessValueType );
 
 #endif
