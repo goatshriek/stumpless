@@ -7,13 +7,13 @@ StumplessValueList * // todo remove this function
 StumplessArrayValueToValueList( StumplessValue * );
 
 StumplessValueList *
-StumplessBooleanArrayValueAsValueList( StumplessValue * );
+StumplessBooleanArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessBooleanValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessCharArrayValueAsValueList( StumplessValue * );
+StumplessCharArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessCharValueToString( StumplessValue * );
@@ -22,85 +22,85 @@ void
 StumplessDestroyValue( StumplessValue * );
 
 StumplessValueList *
-StumplessDoubleArrayValueAsValueList( StumplessValue * );
+StumplessDoubleArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessDoubleValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessFloatArrayValueAsValueList( StumplessValue * );
+StumplessFloatArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessFloatValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessIntArrayValueAsValueList( StumplessValue * );
+StumplessIntArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessIntValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessLongArrayValueAsValueList( StumplessValue * );
+StumplessLongArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessLongValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessLongDoubleArrayValueAsValueList( StumplessValue * );
+StumplessLongDoubleArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessLongDoubleValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessLongLongArrayValueAsValueList( StumplessValue * );
+StumplessLongLongArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessLongLongValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessShortArrayValueAsValueList( StumplessValue * );
+StumplessShortArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessShortValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessSignedCharArrayValueAsValueList( StumplessValue * );
+StumplessSignedCharArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessSignedCharValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessStringArrayValueAsValueList( StumplessValue * );
+StumplessStringArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessStringValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessUnsignedCharArrayValueAsValueList( StumplessValue * );
+StumplessUnsignedCharArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessUnsignedCharValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessUnsignedIntArrayValueAsValueList( StumplessValue * );
+StumplessUnsignedIntArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessUnsignedIntValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessUnsignedLongArrayValueAsValueList( StumplessValue * );
+StumplessUnsignedLongArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessUnsignedLongValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessUnsignedLongLongArrayValueAsValueList( StumplessValue * );
+StumplessUnsignedLongLongArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessUnsignedLongLongValueToString( StumplessValue * );
 
 StumplessValueList *
-StumplessUnsignedShortArrayValueAsValueList( StumplessValue * );
+StumplessUnsignedShortArrayValueToValueList( StumplessValue * );
 
 char *
 StumplessUnsignedShortValueToString( StumplessValue * );

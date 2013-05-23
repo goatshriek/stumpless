@@ -16,7 +16,7 @@ profile->to_csv = NULL;                                                        \
 profile->to_json = NULL;                                                       \
 profile->to_string = NULL;                                                     \
 profile->to_text = &StumplessGenericArrayValueToText;                          \
-profile->to_value_list = &Stumpless##type_name##ValueAsValueList;              \
+profile->to_value_list = &Stumpless##type_name##ValueToValueList;              \
 profile->to_xml = NULL;                                                        \
 StumplessAddTypeProfile( profile );
 
@@ -28,7 +28,7 @@ profile->name = profile_name;                                                  \
 profile->to_binary = NULL;                                                     \
 profile->to_csv = NULL;                                                        \
 profile->to_json = NULL;                                                       \
-profile->to_string = &Stumpless##type_name##ToString;                          \
+profile->to_string = &Stumpless##type_name##ValueToString;                     \
 profile->to_text = &StumplessGenericValueToText;                               \
 profile->to_value_list = NULL;                                                 \
 profile->to_xml = NULL;                                                        \

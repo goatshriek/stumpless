@@ -11,9 +11,9 @@
 #include <value_constructor.h>
 #include <value_list.h>
 
-#define ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( name, data_member )                \
+#define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \
 StumplessValueList *                                                           \
-Stumpless##name##ArrayValueAsValueList( StumplessValue * value )               \
+Stumpless##name##ArrayValueToValueList( StumplessValue * value )               \
 {                                                                              \
   if( value == NULL || value->data == NULL                                     \
    || value->data->data_member == NULL )                                       \
@@ -211,7 +211,7 @@ StumplessArrayValueToValueList( StumplessValue * value )
 }
 
 StumplessValueList *
-StumplessBooleanArrayValueAsValueList( StumplessValue * value )
+StumplessBooleanArrayValueToValueList( StumplessValue * value )
 {
   if( value == NULL || value->data == NULL || value->data->v_p == NULL )
     return NULL;
@@ -261,7 +261,7 @@ StumplessBooleanValueToString( StumplessValue * value )
   return str;
 }
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Char, c_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Char, c_p )
 
 VALUE_TO_STRING_FUNCTION( Char, c, "%c" )
 
@@ -278,40 +278,40 @@ StumplessDestroyValue( StumplessValue * value )
   return;
 }
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Double, d_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Double, d_p )
 
 VALUE_TO_STRING_FUNCTION( Double, d, "%g" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Float, f_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Float, f_p )
 
 VALUE_TO_STRING_FUNCTION( Float, f, "%g" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Int, i_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Int, i_p )
 
 VALUE_TO_STRING_FUNCTION( Int, i, "%i" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Long, l_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Long, l_p )
 
 VALUE_TO_STRING_FUNCTION( Long, l, "%li" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongDouble, l_d_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( LongDouble, l_d_p )
 
 VALUE_TO_STRING_FUNCTION( LongDouble, l_d, "%Lg" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongLong, l_l_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( LongLong, l_l_p )
 
 VALUE_TO_STRING_FUNCTION( LongLong, l_l, "%lli" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Short, s_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Short, s_p )
 
 VALUE_TO_STRING_FUNCTION( Short, s, "%hi" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( SignedChar, s_c_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( SignedChar, s_c_p )
 
 VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
 StumplessValueList *
-StumplessStringArrayValueAsValueList( StumplessValue * value )
+StumplessStringArrayValueToValueList( StumplessValue * value )
 {
   if( value == NULL || value->data == NULL || value->data->v_p == NULL )
     return NULL;
@@ -352,23 +352,23 @@ StumplessStringValueToString( StumplessValue * value )
   return str;
 }
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedChar, u_c_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedChar, u_c_p )
 
 VALUE_TO_STRING_FUNCTION( UnsignedChar, u_c, "%c" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedInt, u_i_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedInt, u_i_p )
 
 VALUE_TO_STRING_FUNCTION( UnsignedInt, u_i, "%u" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedLong, u_l_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedLong, u_l_p )
 
 VALUE_TO_STRING_FUNCTION( UnsignedLong, u_l, "%lu" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedLongLong, u_l_l_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedLongLong, u_l_l_p )
 
 VALUE_TO_STRING_FUNCTION( UnsignedLongLong, u_l_l, "%llu" )
 
-ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedShort, u_s_p )
+ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedShort, u_s_p )
 
 VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 

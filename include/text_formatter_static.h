@@ -5,47 +5,47 @@
 
 static
 StumplessValueList *
-EntryAsValueList( StumplessEntry * );
+EntryToValueList( StumplessEntry * );
 
 static
 StumplessValueList *
-EntryAttributeAsValueList( StumplessEntryAttribute * );
+EntryAttributeToValueList( StumplessEntryAttribute * );
 
 static
 StumplessValueList *
-EntryAttributeListAsValueList( StumplessEntry * );
+EntryAttributeListToValueList( StumplessEntry * );
 
 static
 StumplessValueList *
-EntrySummaryAsValueList( StumplessEntry * );
+EntrySummaryToValueList( StumplessEntry * );
 
 static
 StumplessValueList *
-EventAsValueList( StumplessEvent * );
+EventToValueList( StumplessEvent * );
 
 static
 StumplessValueList *
-EventAttributeAsValueList( StumplessEventAttribute * );
+EventAttributeToValueList( StumplessEventAttribute * );
 
 static
 StumplessValueList *
-EventAttributeListAsValueList( StumplessEvent * );
+EventAttributeListToValueList( StumplessEvent * );
 
 static
 StumplessValueList *
-EventSummaryAsValueList( StumplessEvent * );
+EventSummaryToValueList( StumplessEvent * );
 
 static
 StumplessValueList *
-GenericArrayValueAsValueList( StumplessValue * );
+GenericArrayValueToValueList( StumplessValue * );
 
 static
 StumplessValueList *
-GenericValueAsValueList( StumplessValue * );
+GenericValueToValueList( StumplessValue * );
 
 static
 StumplessValueList *
-LevelAsValueList( StumplessLevel * );
+LevelToValueList( StumplessLevel * );
 
 static
 StumplessFormattedOutput *
@@ -53,10 +53,10 @@ TextFormattedOutputFromValueList( StumplessValueList * );
 
 static
 StumplessValueList * // todo remove this function
-ValueAsValueList( StumplessValue * );
+ValueToValueList( StumplessValue * );
 
 static
 StumplessValueList * // todo remove this function
-ValueTypeAsValueList( StumplessValueType );
+ValueTypeToValueList( StumplessValueType );
 
 #endif

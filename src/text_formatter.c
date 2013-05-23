@@ -15,102 +15,102 @@
 StumplessFormattedOutput *
 StumplessEntryToText( StumplessEntry * entry )
 {
-  return TextFormattedOutputFromValueList( EntryAsValueList( entry ) );
+  return TextFormattedOutputFromValueList( EntryToValueList( entry ) );
 }
 
 StumplessFormattedOutput *
 StumplessEntryAttributeToText( StumplessEntryAttribute * attribute )
 {
-  StumplessValueList * output = EntryAttributeAsValueList( attribute );
+  StumplessValueList * output = EntryAttributeToValueList( attribute );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
 StumplessEntryAttributeListToText( StumplessEntry * entry )
 {
-  StumplessValueList * output = EntryAttributeListAsValueList( entry );
+  StumplessValueList * output = EntryAttributeListToValueList( entry );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
 StumplessEntrySummaryToText( StumplessEntry * entry )
 {
-  return TextFormattedOutputFromValueList( EntrySummaryAsValueList( entry ) );
+  return TextFormattedOutputFromValueList( EntrySummaryToValueList( entry ) );
 }
 
 StumplessFormattedOutput *
 StumplessEventToText( StumplessEvent * event )
 {
-  return TextFormattedOutputFromValueList( EventAsValueList( event ) );
+  return TextFormattedOutputFromValueList( EventToValueList( event ) );
 }
 
 StumplessFormattedOutput *
 StumplessEventAttributeToText( StumplessEventAttribute * attribute )
 {
-  StumplessValueList * output = EventAttributeAsValueList( attribute );
+  StumplessValueList * output = EventAttributeToValueList( attribute );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
 StumplessEventAttributeListToText( StumplessEvent * event )
 {
-  StumplessValueList * output = EventAttributeListAsValueList( event );
+  StumplessValueList * output = EventAttributeListToValueList( event );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
 StumplessEventSummaryToText( StumplessEvent * event )
 {
-  return TextFormattedOutputFromValueList( EventSummaryAsValueList( event ) );
+  return TextFormattedOutputFromValueList( EventSummaryToValueList( event ) );
 }
 
 StumplessFormattedOutput *
 StumplessGenericArrayValueToText( StumplessValue * value )
 {
-  StumplessValueList * output = GenericArrayValueAsValueList( value );
+  StumplessValueList * output = GenericArrayValueToValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
 StumplessGenericValueToText( StumplessValue * value )
 {
-  StumplessValueList * output = GenericValueAsValueList( value );
+  StumplessValueList * output = GenericValueToValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
 StumplessFormattedOutput *
 StumplessLevelToText( StumplessLevel * level )
 {
-  return TextFormattedOutputFromValueList( LevelAsValueList( level ) );
+  return TextFormattedOutputFromValueList( LevelToValueList( level ) );
 }
 
 StumplessFormattedOutput * // todo remove this function
 StumplessValueToText( StumplessValue * value )
 {
-  return TextFormattedOutputFromValueList( ValueAsValueList( value ) );
+  return TextFormattedOutputFromValueList( ValueToValueList( value ) );
 }
 
 StumplessFormattedOutput * // todo remove this function
 StumplessValueTypeToText( StumplessValueType type )
 {
-  return TextFormattedOutputFromValueList( ValueTypeAsValueList( type ) );
+  return TextFormattedOutputFromValueList( ValueTypeToValueList( type ) );
 }
 
 static
 StumplessValueList *
-EntryAsValueList( StumplessEntry * entry )
+EntryToValueList( StumplessEntry * entry )
 {
   if( entry == NULL )
     return NULL;
   
-  StumplessValueList * output = EntrySummaryAsValueList( entry );
+  StumplessValueList * output = EntrySummaryToValueList( entry );
   if( output == NULL )
     return NULL;
   
   if( entry->attributes != NULL && entry->attribute_count > 0 ){
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
     
-    StumplessValueList * attributes = EntryAttributeListAsValueList( entry );
+    StumplessValueList * attributes = EntryAttributeListToValueList( entry );
     if( attributes == NULL )
       return NULL;
     
@@ -122,7 +122,7 @@ EntryAsValueList( StumplessEntry * entry )
 
 static
 StumplessValueList *
-EntryAttributeAsValueList( StumplessEntryAttribute * attribute )
+EntryAttributeToValueList( StumplessEntryAttribute * attribute )
 {
   if( attribute == NULL )
     return NULL;
@@ -152,7 +152,7 @@ EntryAttributeAsValueList( StumplessEntryAttribute * attribute )
   else
     return NULL;
   
-  StumplessValueList * values = ValueAsValueList( attribute_value );
+  StumplessValueList * values = ValueToValueList( attribute_value );
   if( values == NULL )
     return NULL;
   NULL_ON_FAILURE( StumplessAppendValueLists( output, values ) )
@@ -162,7 +162,7 @@ EntryAttributeAsValueList( StumplessEntryAttribute * attribute )
 
 static
 StumplessValueList *
-EntryAttributeListAsValueList( StumplessEntry * entry )
+EntryAttributeListToValueList( StumplessEntry * entry )
 {
   if( entry == NULL || entry->attributes == NULL )
     return NULL;
@@ -174,7 +174,7 @@ EntryAttributeListAsValueList( StumplessEntry * entry )
   StumplessValueList * attribute;
   unsigned i;
   for( i = 0; i < entry->attribute_count; i++ ){
-    attribute = EntryAttributeAsValueList( entry->attributes[i] );
+    attribute = EntryAttributeToValueList( entry->attributes[i] );
     if( attribute == NULL )
       continue;
     
@@ -189,7 +189,7 @@ EntryAttributeListAsValueList( StumplessEntry * entry )
 
 static
 StumplessValueList *
-EntrySummaryAsValueList( StumplessEntry * entry )
+EntrySummaryToValueList( StumplessEntry * entry )
 {
   if( entry == NULL )
     return NULL;
@@ -212,7 +212,7 @@ EntrySummaryAsValueList( StumplessEntry * entry )
   if( entry->event != NULL ){
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " [" ) )
       
-    event = EventSummaryAsValueList( entry->event );
+    event = EventSummaryToValueList( entry->event );
     if( event == NULL )
       return NULL;
     
@@ -226,20 +226,20 @@ EntrySummaryAsValueList( StumplessEntry * entry )
 
 static
 StumplessValueList *
-EventAsValueList( StumplessEvent * event )
+EventToValueList( StumplessEvent * event )
 {
   if( event == NULL )
     return NULL;
   
   StumplessStatusCode status;
-  StumplessValueList * output = EventSummaryAsValueList( event );
+  StumplessValueList * output = EventSummaryToValueList( event );
   if( output == NULL )
     return NULL;
   
   if( event->attributes != NULL && event->attribute_count > 0 ){
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
     
-    StumplessValueList * attributes = EventAttributeListAsValueList( event );
+    StumplessValueList * attributes = EventAttributeListToValueList( event );
     if( attributes == NULL )
       return NULL;
     
@@ -251,7 +251,7 @@ EventAsValueList( StumplessEvent * event )
 
 static
 StumplessValueList *
-EventAttributeAsValueList( StumplessEventAttribute * attribute )
+EventAttributeToValueList( StumplessEventAttribute * attribute )
 {
   if( attribute == NULL )
     return NULL;
@@ -271,7 +271,7 @@ EventAttributeAsValueList( StumplessEventAttribute * attribute )
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
     
     StumplessValueList * default_value;
-    default_value = ValueAsValueList( attribute->default_value );
+    default_value = ValueToValueList( attribute->default_value );
     
     NULL_ON_FAILURE( StumplessAppendValueLists( output, default_value ) )
   }
@@ -281,7 +281,7 @@ EventAttributeAsValueList( StumplessEventAttribute * attribute )
 
 static
 StumplessValueList *
-EventAttributeListAsValueList( StumplessEvent * event )
+EventAttributeListToValueList( StumplessEvent * event )
 {
   if( event == NULL || event->attributes == NULL )
     return NULL;
@@ -293,7 +293,7 @@ EventAttributeListAsValueList( StumplessEvent * event )
   unsigned i;
   StumplessValueList * attribute;
   for( i = 0; i < event->attribute_count; i++ ){
-    attribute = EventAttributeAsValueList( event->attributes[i] );
+    attribute = EventAttributeToValueList( event->attributes[i] );
     if( attribute == NULL )
       continue;
     
@@ -308,7 +308,7 @@ EventAttributeListAsValueList( StumplessEvent * event )
 
 static
 StumplessValueList *
-EventSummaryAsValueList( StumplessEvent * event )
+EventSummaryToValueList( StumplessEvent * event )
 {
   if( event == NULL )
     return NULL;
@@ -325,7 +325,7 @@ EventSummaryAsValueList( StumplessEvent * event )
   if( event->level != NULL ){
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
     
-    StumplessValueList * level = LevelAsValueList( event->level );
+    StumplessValueList * level = LevelToValueList( event->level );
     if( level == NULL )
       return NULL;
     
@@ -339,7 +339,7 @@ EventSummaryAsValueList( StumplessEvent * event )
 
 static
 StumplessValueList *
-GenericArrayValueAsValueList( StumplessValue * value )
+GenericArrayValueToValueList( StumplessValue * value )
 {
   if( value == NULL )
     return NULL;
@@ -367,7 +367,7 @@ GenericArrayValueAsValueList( StumplessValue * value )
 
 static
 StumplessValueList *
-GenericValueAsValueList( StumplessValue * value )
+GenericValueToValueList( StumplessValue * value )
 {
   if( value == NULL )
     return NULL;
@@ -394,7 +394,7 @@ GenericValueAsValueList( StumplessValue * value )
 
 static
 StumplessValueList *
-LevelAsValueList( StumplessLevel * level )
+LevelToValueList( StumplessLevel * level )
 {
   if( level == NULL )
     return NULL;
@@ -445,7 +445,7 @@ TextFormattedOutputFromValueList( StumplessValueList * list )
 
 static
 StumplessValueList * // todo remove this function
-ValueAsValueList( StumplessValue * value )
+ValueToValueList( StumplessValue * value )
 {
   if( value == NULL )
     return NULL;
@@ -482,7 +482,7 @@ ValueAsValueList( StumplessValue * value )
 
 static
 StumplessValueList * // todo remove this function
-ValueTypeAsValueList( StumplessValueType type )
+ValueTypeToValueList( StumplessValueType type )
 {
   StumplessValueList * output = StumplessNewValueList();
   if( output == NULL )
