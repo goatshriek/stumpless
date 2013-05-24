@@ -7,6 +7,7 @@
 
 #include "helper.h"
 
+const char * test_from_boolean( void );
 const char * test_from_char( void );
 const char * test_from_double( void );
 const char * test_from_float( void );
@@ -29,6 +30,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
+  RUN_TEST( from_boolean )
   RUN_TEST( from_char )
   RUN_TEST( from_double )
   RUN_TEST( from_float )
@@ -52,11 +54,28 @@ main( void )
 }
 
 const char *
+test_from_boolean( void )
+{
+  StumplessBoolean * boolean = StumplessBuildBoolean();
+  FAIL_IF_NULL( boolean, "could not build the test boolean" )
+  
+  StumplessValue * value = StumplessValueFromBoolean( NULL );
+  FAIL_IF_NOT_NULL( value, "a null boolean did not generate a null value" )
+  
+  value = StumplessValueFromBoolean( boolean );
+  FAIL_IF_NULL( value, "a non-null boolean generated a null value" )
+  if( strcmp( value->profile->name, "Boolean" ) != 0 )
+    return "the created value did not have the correct type";
+  
+  return "need to implement";
+}
+
+const char *
 test_from_char( void )
 {
   StumplessValue * value = StumplessValueFromChar( CHAR_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_CHAR )
+  if( strcmp( value->profile->name, "Char" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->c != CHAR_MAX )
@@ -72,7 +91,7 @@ test_from_double( void )
   
   StumplessValue * value = StumplessValueFromDouble( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_DOUBLE )
+  if( strcmp( value->profile->name, "Double" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->d != test_value )
@@ -88,7 +107,7 @@ test_from_float( void )
   
   StumplessValue * value = StumplessValueFromFloat( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_FLOAT )
+  if( strcmp( value->profile->name, "Float" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->f != test_value )

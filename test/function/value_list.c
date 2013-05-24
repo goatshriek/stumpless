@@ -337,7 +337,7 @@ test_string_prepender( void )
   FAIL_IF_NULL( list->first, "the list still did not have any members" )
   FAIL_IF_NULL( list->first->value, "the list's nodes were invalid" )
   FAIL_IF_NULL( list->first->value->data, "the new value did not have any data" )
-  if( list->first->value->type != STUMPLESS_STRING )
+  if( strcmp( list->first->value->profile->name, "String" ) != 0 )
     return "the new value was not a string";
   if( strcmp( list->first->value->data->c_p, "lonely little guy" ) != 0 )
     return "the new string was not equivalent to the added one";
@@ -350,7 +350,7 @@ test_string_prepender( void )
   FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
   FAIL_IF_NULL( list->first->value, "the new element did not have a value" )
   FAIL_IF_NULL( list->first->value->data, "the new value did not have any data" )
-  if( list->first->value->type != STUMPLESS_STRING )
+  if( strcmp( list->first->value->profile->name, "String" ) != 0 )
     return "the new value was not a string";
   if( strcmp( list->first->value->data->c_p, "new beginning" ) != 0 )
     return "the new string was not equivalent to the added one";
@@ -396,7 +396,7 @@ test_unsigned_int_appender( void )
   if( status != STUMPLESS_SUCCESS )
     return "an unsigned number was not correctly appended to the list";
   
-  if( list->last->value->type != STUMPLESS_UNSIGNED_INT )
+  if( strcmp( list->last->value->profile->name, "Unsigned Int" ) != 0 )
     return "the new value was not an unsigned int";
   if( list->last->value->data->u_i != 4 )
     return "the new value did not have the intended value";

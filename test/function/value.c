@@ -12,7 +12,6 @@ const char * test_destructor( void );
 const char * test_into_string( void );
 const char * test_is_array( void );
 const char * test_outside_access ( void );
-const char * test_profile_index( void );
 const char * test_stream_write( void );
 const char * test_to_string( void );
 
@@ -28,7 +27,6 @@ main( void )
   RUN_TEST( into_string )
   RUN_TEST( is_array )
   RUN_TEST( outside_access )
-  RUN_TEST( profile_index )
   RUN_TEST( stream_write )
   RUN_TEST( to_string )
   
@@ -60,14 +58,14 @@ test_array_value_to_value_list( void )
   
   FAIL_IF_NULL( list->first, "the generated list was empty" )
   FAIL_IF_NULL( list->first->value, "the list nodes were invalid" )
-  if( list->first->value->type != STUMPLESS_INT )
+  if( strcmp( list->first->value->profile->name, "Int" ) != 0 )
     return "the values of the list did not have the proper type";
   if( list->first->value->data->i != 0 )
     return "the values of the list did not reflect the original array";
   
   FAIL_IF_NULL( list->last, "the generated list was not invalid" )
   FAIL_IF_NULL( list->last->value, "the list nodes were invalid" )
-  if( list->last->value->type != STUMPLESS_INT )
+  if( strcmp( list->last->value->profile->name, "Int" ) != 0 )
     return "the values of the list did not have the proper type";
   if( list->last->value->data->i != 9 )
     return "the values of the list did not reflect the original array";
@@ -200,12 +198,6 @@ test_outside_access( void )
   if( value->data->l_p[2] != 4 )
     return "the array held by the value could not be modified from the outside";
   
-  return NULL;
-}
-
-const char *
-test_profile_index( void )
-{
   return NULL;
 }
 
