@@ -13,20 +13,6 @@
 #include <value_list.h>
 
 StumplessFormattedOutput *
-StumplessBooleanArrayValueAsText( StumplessValue * value )
-{
-  StumplessValueList * output = BooleanArrayValueAsValueList( value );
-  return TextFormattedOutputFromValueList( output );
-}
-
-StumplessFormattedOutput *
-StumplessBooleanValueAsText( StumplessValue * value )
-{
-  StumplessValueList * output = BooleanValueAsValueList( value );
-  return TextFormattedOutputFromValueList( output );
-}
-
-StumplessFormattedOutput *
 StumplessEntryAsText( StumplessEntry * entry )
 {
   return TextFormattedOutputFromValueList( EntryAsValueList( entry ) );
@@ -98,30 +84,16 @@ StumplessLevelAsText( StumplessLevel * level )
   return TextFormattedOutputFromValueList( LevelAsValueList( level ) );
 }
 
-StumplessFormattedOutput *
+StumplessFormattedOutput * // todo remove this function
 StumplessValueAsText( StumplessValue * value )
 {
   return TextFormattedOutputFromValueList( ValueAsValueList( value ) );
 }
 
-StumplessFormattedOutput *
+StumplessFormattedOutput * // todo remove this function
 StumplessValueTypeAsText( StumplessValueType type )
 {
   return TextFormattedOutputFromValueList( ValueTypeAsValueList( type ) );
-}
-
-static
-StumplessValueList *
-BooleanArrayValueAsValueList( StumplessValue * value )
-{
-  return NULL;
-}
-
-static
-StumplessValueList *
-BooleanValueAsValueList( StumplessValue * value )
-{
-  return NULL;
 }
 
 static
@@ -472,7 +444,7 @@ TextFormattedOutputFromValueList( StumplessValueList * list )
 }
 
 static
-StumplessValueList *
+StumplessValueList * // todo remove this function
 ValueAsValueList( StumplessValue * value )
 {
   if( value == NULL )
@@ -509,7 +481,7 @@ ValueAsValueList( StumplessValue * value )
 }
 
 static
-StumplessValueList *
+StumplessValueList * // todo remove this function
 ValueTypeAsValueList( StumplessValueType type )
 {
   StumplessValueList * output = StumplessNewValueList();

@@ -243,6 +243,7 @@ struct StumplessStringConfiguration {
 
 struct StumplessTypeProfile {
   const char * name;
+  char * ( *string_converter )( StumplessValue * );
   StumplessValueList * ( *value_list_converter )( StumplessValue * );
   StumplessFormattedOutput * ( *binary_formatter )( StumplessValue * );
   StumplessFormattedOutput * ( *csv_formatter )( StumplessValue * );

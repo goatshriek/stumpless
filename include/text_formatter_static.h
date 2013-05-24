@@ -5,14 +5,6 @@
 
 static
 StumplessValueList *
-BooleanArrayValueAsValueList( StumplessValue * );
-
-static
-StumplessValueList *
-BooleanValueAsValueList( StumplessValue * );
-
-static
-StumplessValueList *
 EntryAsValueList( StumplessEntry * );
 
 static
@@ -60,11 +52,11 @@ StumplessFormattedOutput *
 TextFormattedOutputFromValueList( StumplessValueList * );
 
 static
-StumplessValueList *
+StumplessValueList * // todo remove this function
 ValueAsValueList( StumplessValue * );
 
 static
-StumplessValueList *
+StumplessValueList * // todo remove this function
 ValueTypeAsValueList( StumplessValueType );
 
 #endif

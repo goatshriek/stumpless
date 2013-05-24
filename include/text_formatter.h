@@ -4,12 +4,6 @@
 #include <type.h>
 
 StumplessFormattedOutput *
-StumplessBooleanArrayValueAsText( StumplessValue * );
-
-StumplessFormattedOutput *
-StumplessBooleanValueAsText( StumplessValue * );
-
-StumplessFormattedOutput *
 StumplessEntryAsText( StumplessEntry * );
 
 StumplessFormattedOutput *
@@ -42,10 +36,10 @@ StumplessGenericValueAsText( StumplessValue * );
 StumplessFormattedOutput *
 StumplessLevelAsText( StumplessLevel * );
 
-StumplessFormattedOutput *
+StumplessFormattedOutput * // todo remove this function
 StumplessValueAsText( StumplessValue * );
 
-StumplessFormattedOutput *
+StumplessFormattedOutput * // todo remove this function
 StumplessValueTypeAsText( StumplessValueType );
 
 #endif
