@@ -15,6 +15,9 @@ if( value->data == NULL )                                                      \
 StumplessValue *
 StumplessValueFromBoolean( const StumplessBoolean * boolean )
 {
+  if( boolean == NULL )
+    return NULL;
+  
   CREATE_VALUE
   
   value->profile = StumplessFindProfileByName( "Boolean" );

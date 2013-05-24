@@ -11,12 +11,13 @@ profile = malloc( sizeof( StumplessTypeProfile ) );                            \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
-profile->value_list_converter = &Stumpless##type_name##ValueAsValueList;       \
-profile->binary_formatter = NULL;                                              \
-profile->csv_formatter = NULL;                                                 \
-profile->json_formatter = NULL;                                                \
-profile->text_formatter = &StumplessGenericArrayValueAsText;                   \
-profile->xml_formatter = NULL;                                                 \
+profile->to_binary = NULL;                                                     \
+profile->to_csv = NULL;                                                        \
+profile->to_json = NULL;                                                       \
+profile->to_string = NULL;                                                     \
+profile->to_text = &StumplessGenericArrayValueAsText;                          \
+profile->to_value_list = &Stumpless##type_name##ValueAsValueList;              \
+profile->to_xml = NULL;                                                        \
 StumplessAddTypeProfile( profile );
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
@@ -24,12 +25,13 @@ profile = malloc( sizeof( StumplessTypeProfile ) );                            \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
-profile->value_list_converter = NULL;                                          \
-profile->binary_formatter = NULL;                                              \
-profile->csv_formatter = NULL;                                                 \
-profile->json_formatter = NULL;                                                \
-profile->text_formatter = &StumplessGenericValueAsText;                        \
-profile->xml_formatter = NULL;                                                 \
+profile->to_binary = NULL;                                                     \
+profile->to_csv = NULL;                                                        \
+profile->to_json = NULL;                                                       \
+profile->to_string = NULL;                                                     \
+profile->to_text = &StumplessGenericValueAsText;                               \
+profile->to_value_list = NULL;                                                 \
+profile->to_xml = NULL;                                                        \
 StumplessAddTypeProfile( profile );
 
 static StumplessConfiguration * configuration = NULL;

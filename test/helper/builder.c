@@ -361,11 +361,13 @@ BuildTypeProfile( void )
     return NULL;
   
   profile->name = "Test Profile";
-  profile->binary_formatter = NULL;
-  profile->csv_formatter = NULL;
-  profile->json_formatter = NULL;
-  profile->text_formatter = NULL;
-  profile->xml_formatter = NULL;
+  profile->to_binary = NULL;
+  profile->to_csv = NULL;
+  profile->to_json = NULL;
+  profile->to_string = NULL;
+  profile->to_text = NULL;
+  profile->to_value_list = NULL;
+  profile->to_xml = NULL;
   
   return profile;
 }

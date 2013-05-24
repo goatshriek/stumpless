@@ -348,7 +348,7 @@ GenericArrayValueAsValueList( StumplessValue * value )
   if( profile == NULL )
     return NULL;
   
-  StumplessValueList * output = profile->value_list_converter( value );
+  StumplessValueList * output = profile->to_value_list( value );
   if( output == NULL )
     return NULL;
   

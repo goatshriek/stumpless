@@ -56,7 +56,7 @@ main( void )
 const char *
 test_from_boolean( void )
 {
-  StumplessBoolean * boolean = StumplessBuildBoolean();
+  StumplessBoolean * boolean = BuildBoolean();
   FAIL_IF_NULL( boolean, "could not build the test boolean" )
   
   StumplessValue * value = StumplessValueFromBoolean( NULL );
@@ -67,7 +67,7 @@ test_from_boolean( void )
   if( strcmp( value->profile->name, "Boolean" ) != 0 )
     return "the created value did not have the correct type";
   
-  return "need to implement";
+  return NULL;
 }
 
 const char *

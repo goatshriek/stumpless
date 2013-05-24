@@ -243,13 +243,13 @@ struct StumplessStringConfiguration {
 
 struct StumplessTypeProfile {
   const char * name;
-  char * ( *string_converter )( StumplessValue * );
-  StumplessValueList * ( *value_list_converter )( StumplessValue * );
-  StumplessFormattedOutput * ( *binary_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *csv_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *json_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *text_formatter )( StumplessValue * );
-  StumplessFormattedOutput * ( *xml_formatter )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_binary )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_csv )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_json )( StumplessValue * );
+  char * ( *to_string )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_text )( StumplessValue * );
+  StumplessValueList * ( *to_value_list )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_xml )( StumplessValue * );
 };
 
 struct StumplessValue {
