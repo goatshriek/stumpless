@@ -41,8 +41,7 @@ Stumpless##name##ArrayValueAsValueList( StumplessValue * value )               \
 char *                                                                         \
 Stumpless##name##ValueToString( StumplessValue * value )                       \
 {                                                                              \
-  if( value == NULL || value->data == NULL                                     \
-   || value->data->data_member == NULL )                                       \
+  if( value == NULL || value->data == NULL )                                   \
     return NULL;                                                               \
                                                                                \
   const char * format = value->format == NULL ? default_format : value->format;\
@@ -56,6 +55,7 @@ Stumpless##name##ValueToString( StumplessValue * value )                       \
   if( buffer == NULL )                                                         \
     return NULL;                                                               \
                                                                                \
+  buffer[0] = '\0';                                                            \
   int result = sprintf( buffer, format, value->data->data_member );            \
   if( result < 0 )                                                             \
     return NULL;                                                               \
@@ -64,6 +64,10 @@ Stumpless##name##ValueToString( StumplessValue * value )                       \
   free( buffer );                                                              \
                                                                                \
   char * str = malloc( sizeof( char ) * required_size );                       \
+  if( str == NULL )                                                            \
+    return NULL;                                                               \
+                                                                               \
+  str[0] = '\0';                                                               \
   result = sprintf( str, format, value->data->data_member );                   \
   if( result < 0 )                                                             \
     return NULL;                                                               \
@@ -233,7 +237,28 @@ StumplessBooleanArrayValueAsValueList( StumplessValue * value )
 char *
 StumplessBooleanValueToString( StumplessValue * value )
 {
-  return NULL;
+  if( value == NULL || value->data == NULL || value->data->v_p == NULL )
+    return NULL;
+  
+  StumplessBoolean * boolean = (StumplessBoolean * ) value->data->v_p;
+  
+  const char * description;
+  if( boolean->value )
+    description = boolean->format->true_description;
+  else
+    description = boolean->format->false_description;
+  
+  size_t str_length = strlen( description );
+  
+  char * str = malloc( sizeof( char ) * ( str_length + 1 ) );
+  if( str == NULL )
+    return NULL;
+  
+  str[0] = '\0';
+  strncpy( str, description, str_length );
+  str[str_length] = '\0';
+  
+  return str;
 }
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Char, c_p )
@@ -271,19 +296,19 @@ VALUE_TO_STRING_FUNCTION( Long, l, "%li" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongDouble, l_d_p )
 
-VALUE_TO_STRING_FUNCTION( LongDouble, l_d, "" )
+VALUE_TO_STRING_FUNCTION( LongDouble, l_d, "%Lg" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongLong, l_l_p )
 
-VALUE_TO_STRING_FUNCTION( LongLong, l_l, "" )
+VALUE_TO_STRING_FUNCTION( LongLong, l_l, "%lli" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Short, s_p )
 
-VALUE_TO_STRING_FUNCTION( Short, s, "" )
+VALUE_TO_STRING_FUNCTION( Short, s, "%hi" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( SignedChar, s_c_p )
 
-VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "" )
+VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
 StumplessValueList *
 StumplessStringArrayValueAsValueList( StumplessValue * value )
@@ -311,7 +336,20 @@ StumplessStringArrayValueAsValueList( StumplessValue * value )
 char *
 StumplessStringValueToString( StumplessValue * value )
 {
-  return NULL;
+  if( value == NULL || value->data == NULL || value->data->c_p == NULL )
+    return NULL;
+  
+  size_t str_length = strlen( value->data->c_p );
+  
+  char * str = malloc( sizeof( char ) * ( str_length + 1 ) );
+  if( str == NULL )
+    return NULL;
+  
+  str[0] = '\0';
+  strncpy( str, value->data->c_p, str_length );
+  str[str_length] = '\0';
+  
+  return str;
 }
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedChar, u_c_p )

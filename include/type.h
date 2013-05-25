@@ -161,8 +161,8 @@ struct StumplessBoolean {
 };
 
 struct StumplessBooleanFormat {
-  char * true_description;
-  char * false_description;
+  const char * true_description;
+  const char * false_description;
 };
 
 struct StumplessByteList {
