@@ -250,14 +250,22 @@ StumplessValueListIntoString( char * str, StumplessValueList * list )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
   size_t buffer_size = configuration->string->buffer_size;
-  char * buffer = malloc( sizeof( char ) * buffer_size + 1 );
+  char * buffer = malloc( sizeof( char ) * ( buffer_size + 1 ) );
   if( buffer == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
   StumplessValueListNode * node = list->first;
   char * value_str;
   while( node != NULL ){
-    value_str = StumplessValueToString( node->value );
+    if( node->value == NULL || node->value->profile == NULL )
+      return STUMPLESS_MALFORMED_STRUCTURE;
+    
+    if( node->value->profile->to_string == NULL ){
+      node = node->next;
+      continue;
+    }
+    
+    value_str = node->value->profile->to_string( node->value );
     if( value_str != NULL )
       strncat( str, value_str, buffer_size );
     node = node->next;
@@ -282,6 +290,28 @@ StumplessValueListToString( StumplessValueList * list )
   NULL_ON_FAILURE( StumplessValueListIntoString( list_str, list ) )
   
   return list_str;
+}
+
+StumplessValueList *
+StumplessValueListToStrings( StumplessValueList * list )
+{
+  if( list == NULL )
+    return NULL;
+  
+  StumplessValueList * output = StumplessNewValueList();
+  if( output == NULL )
+    return NULL;
+  
+  char * str;
+  StumplessValueListNode * node = list->first;
+  while( node != NULL ){
+    str = node->value->profile->to_string( node->value );
+    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, str ) )
+    
+    node = node->next;
+  }
+  
+  return output;
 }
 
 StumplessStatusCode

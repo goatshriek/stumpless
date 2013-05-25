@@ -6,8 +6,14 @@
 StumplessBoolean *
 BuildBoolean( void );
 
+StumplessValue *
+BuildBooleanValue( void );
+
 StumplessFormattedOutput *
 BuildByteFormattedOutput( void );
+
+StumplessValue *
+BuildCharArrayValue( void );
 
 StumplessValue *
 BuildEmptyUnsignedIntArrayValue( void );

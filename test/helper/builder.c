@@ -22,6 +22,20 @@ BuildBoolean( void )
   return boolean;
 }
 
+StumplessValue *
+BuildBooleanValue( void )
+{
+  StumplessBoolean * boolean = BuildBoolean();
+  if( boolean == NULL )
+    return NULL;
+  
+  StumplessValue * value = StumplessValueFromBoolean( boolean );
+  if( value == NULL )
+    return NULL;
+  
+  return value;
+}
+
 StumplessFormattedOutput *
 BuildByteFormattedOutput( void )
 {
@@ -33,6 +47,42 @@ BuildByteFormattedOutput( void )
   output->format = STUMPLESS_BINARY;
   
   return output;
+}
+
+StumplessValue *
+BuildCharArrayValue( void )
+{
+  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  if( value == NULL )
+    return NULL;
+  
+  value->profile = StumplessFindProfileByName( "Char Array" );
+  if( value->profile == NULL )
+    return NULL;
+  
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  
+  char * array = malloc( sizeof( char ) * 10 );
+  if( array == NULL )
+    return NULL;
+  
+  array[0] = 'a';
+  array[1] = 'b';
+  array[2] = 'c';
+  array[3] = 'd';
+  array[4] = 'e';
+  array[5] = 'f';
+  array[6] = 'g';
+  array[7] = 'h';
+  array[8] = 'i';
+  array[9] = 'j';
+  
+  value->data->c_p = array;
+  value->length = 10;
+  
+  return value;
 }
 
 StumplessValue *
@@ -447,6 +497,13 @@ BuildValueList( void )
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
+  value = BuildCharArrayValue();
+  if( value == NULL )
+    return NULL;
+  status = StumplessAppendValueToValueList( list, value );
+  if( status != STUMPLESS_SUCCESS )
+    return NULL;
+  
   value = BuildVoidValue();
   if( value == NULL )
     return NULL;
@@ -481,29 +538,19 @@ BuildVoidValue( void )
     return NULL;
   
   value->type = STUMPLESS_VOID_POINTER; // todo remove
-  value->profile = NULL;
+  value->profile = StumplessFindProfileByName( "Boolean" );
+  if( value->profile == NULL )
+    return NULL;
   
   value->data = malloc( sizeof( StumplessValueData ) );
   if( value->data == NULL )
     return NULL;
-  
-  char * generic = malloc( sizeof( char ) * 10 );
-  if( generic == NULL )
+ 
+  StumplessBoolean * boolean = BuildBoolean();
+  if( boolean == NULL )
     return NULL;
-  
-  generic[0] = 'a';
-  generic[1] = 'b';
-  generic[2] = 'c';
-  generic[3] = 'd';
-  generic[4] = 'e';
-  generic[5] = 'f';
-  generic[6] = 'g';
-  generic[7] = 'h';
-  generic[8] = 'i';
-  generic[9] = 'j';
-  
-  value->data->v_p = (void *) generic;
-  value->length = sizeof( char ) * 10;
+   
+  value->data->v_p = (void *) boolean;
   
   return value;
 }

@@ -2,7 +2,7 @@
 #define STUMPLESS_STRING_HELPER_H
 
 char *
-copy_string( char * );
+copy_string( const char * );
 
 // returns 0 if the string contains anything other than whitespace
 // otherwise returns a non-zero value (the length of the string, or

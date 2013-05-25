@@ -16,6 +16,7 @@ const char * test_event_formatter( void );
 const char * test_event_summary_formatter( void );
 const char * test_level_formatter( void );
 const char * test_value_formatter( void );
+const char * test_value_list_all_strings( void );
 
 int
 main( void )
@@ -33,6 +34,7 @@ main( void )
   RUN_TEST( event_summary_formatter )
   RUN_TEST( level_formatter )
   RUN_TEST( value_formatter )
+  RUN_TEST( value_list_all_strings )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -428,6 +430,36 @@ test_value_formatter( void )
   str = StumplessFormattedOutputToString( output );
   ASSERT_STRINGS_EQUAL( "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int array)", str,
                         "an array value was not formatted correctly" )
+  
+  return NULL;
+}
+
+const char *
+test_value_list_all_strings( void )
+{
+  StumplessEntry * entry = BuildEntry();
+  if( entry == NULL )
+    return "could not build test entry";
+  
+  StumplessFormattedOutput * output = StumplessEntryToText( entry );
+  if( output == NULL || output->payload == NULL )
+    return "the output could not be built";
+  
+  if( output->format != STUMPLESS_TEXT )
+    return "the created output did not have a text format";
+  
+  StumplessValueList * list = output->payload->values;
+  if( list == NULL )
+    return "the output did not have a value list";
+  
+  StumplessValueListNode * node = list->first;
+  while( node != NULL ){
+    printf( "\n%s\n", node->value->profile->name );
+    if( strcmp( node->value->profile->name, "String" ) != 0 )
+      return "there was a non-string value in the list";
+    
+    node = node->next;
+  }
   
   return NULL;
 }

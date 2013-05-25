@@ -44,6 +44,9 @@ StumplessValueListIsEmpty( StumplessValueList * );
 char *
 StumplessValueListToString( StumplessValueList * );
 
+StumplessValueList *
+StumplessValueListToStrings( StumplessValueList * );
+
 StumplessStatusCode
 StumplessWriteValueListToStream( FILE *, StumplessValueList * );
 

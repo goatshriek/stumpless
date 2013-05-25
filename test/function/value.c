@@ -112,7 +112,7 @@ test_destructor( void )
 const char *
 test_into_string( void )
 {
-  StumplessValue * value = BuildVoidValue();
+  StumplessValue * value = BuildUnsignedIntValue();
   if( value == NULL )
     return "could not build the test value";
   
@@ -130,7 +130,7 @@ test_into_string( void )
   if( status != STUMPLESS_SUCCESS )
     return "a correct void pointer value and string generated an error";
  
-  if( strstr( str, "cdefghij" ) == NULL )
+  if( strstr( str, "4294967196" ) == NULL )
     return "the string did not have the correct contents in it";
   
   value = BuildUnsignedIntValue();
@@ -232,12 +232,13 @@ test_stream_write( void )
   if( status != STUMPLESS_SUCCESS )
     return "a value array without a format specifier generated an error";
   
-  value = BuildVoidValue();
-  if( value == NULL )
-    return "could not build the test value";
-  status = StumplessWriteValueToStream( stdout, value );
-  if( status != STUMPLESS_SUCCESS )
-    return "the void pointer was not handled properly";
+  // todo re-write this test  when it is applicable
+  //value = BuildVoidValue();
+  //if( value == NULL )
+  //  return "could not build the test value";
+  //status = StumplessWriteValueToStream( stdout, value );
+  //if( status != STUMPLESS_SUCCESS )
+  //  return "the void pointer was not handled properly";
   
   return NULL;
 }

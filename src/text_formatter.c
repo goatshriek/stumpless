@@ -438,7 +438,7 @@ TextFormattedOutputFromValueList( StumplessValueList * list )
     return NULL;
   
   output->format = STUMPLESS_TEXT;
-  output->payload->values = list;
+  output->payload->values = StumplessValueListToStrings( list );
   
   return output;
 }

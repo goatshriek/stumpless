@@ -4,7 +4,7 @@
 #include <string_helper.h>
 
 char *
-copy_string( char * str )
+copy_string( const char * str )
 {
   if( str == NULL )
     return NULL;
