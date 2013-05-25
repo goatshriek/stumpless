@@ -5,6 +5,7 @@
 #include <boolean.h>
 #include <configuration.h>
 #include <status_checker.h>
+#include <string.h>
 #include <type.h>
 #include <value.h>
 #include <value_constructor.h>
@@ -34,6 +35,42 @@ Stumpless##name##ArrayValueAsValueList( StumplessValue * value )               \
   return list;                                                                 \
 }
 
+// todo this function can be adapted to no longer rely on the buffer, if
+// snprintf is available. Create configuration check to handle this case
+#define VALUE_TO_STRING_FUNCTION( name, data_member, default_format )          \
+char *                                                                         \
+Stumpless##name##ValueToString( StumplessValue * value )                       \
+{                                                                              \
+  if( value == NULL || value->data == NULL                                     \
+   || value->data->data_member == NULL )                                       \
+    return NULL;                                                               \
+                                                                               \
+  const char * format = value->format == NULL ? default_format : value->format;\
+                                                                               \
+  StumplessConfiguration * configuration = StumplessGetConfiguration();        \
+  if( configuration == NULL )                                                  \
+    return NULL;                                                               \
+                                                                               \
+  size_t buffer_size = configuration->string->buffer_size;                     \
+  char * buffer = malloc( sizeof( char ) * buffer_size );                      \
+  if( buffer == NULL )                                                         \
+    return NULL;                                                               \
+                                                                               \
+  int result = sprintf( buffer, format, value->data->data_member );            \
+  if( result < 0 )                                                             \
+    return NULL;                                                               \
+                                                                               \
+  size_t required_size = strlen( buffer ) + 1;                                 \
+  free( buffer );                                                              \
+                                                                               \
+  char * str = malloc( sizeof( char ) * required_size );                       \
+  result = sprintf( str, format, value->data->data_member );                   \
+  if( result < 0 )                                                             \
+    return NULL;                                                               \
+                                                                               \
+  return str;                                                                  \
+}
+
 #define SINGLE_VALUE_INTO_STREAM( member )                                     \
 result = fprintf( stream, format, data->member );
 
@@ -60,7 +97,7 @@ for( i = 0; i < length; i++ ){                                                 \
   strncat( str, buffer, buffer_size - 1 );                                     \
 }
 
-StumplessValueList *
+StumplessValueList * // todo remove this function
 StumplessArrayValueToValueList( StumplessValue * value )
 {
   if( value == NULL )
@@ -193,7 +230,15 @@ StumplessBooleanArrayValueAsValueList( StumplessValue * value )
   return list;
 }
 
+char *
+StumplessBooleanValueToString( StumplessValue * value )
+{
+  return NULL;
+}
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Char, c_p )
+
+VALUE_TO_STRING_FUNCTION( Char, c, "%c" )
 
 void
 StumplessDestroyValue( StumplessValue * value )
@@ -210,19 +255,35 @@ StumplessDestroyValue( StumplessValue * value )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Double, d_p )
 
+VALUE_TO_STRING_FUNCTION( Double, d, "%g" )
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Float, f_p )
+
+VALUE_TO_STRING_FUNCTION( Float, f, "%g" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Int, i_p )
 
+VALUE_TO_STRING_FUNCTION( Int, i, "%i" )
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Long, l_p )
+
+VALUE_TO_STRING_FUNCTION( Long, l, "%li" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongDouble, l_d_p )
 
+VALUE_TO_STRING_FUNCTION( LongDouble, l_d, "" )
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( LongLong, l_l_p )
+
+VALUE_TO_STRING_FUNCTION( LongLong, l_l, "" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( Short, s_p )
 
+VALUE_TO_STRING_FUNCTION( Short, s, "" )
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( SignedChar, s_c_p )
+
+VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "" )
 
 StumplessValueList *
 StumplessStringArrayValueAsValueList( StumplessValue * value )
@@ -247,17 +308,33 @@ StumplessStringArrayValueAsValueList( StumplessValue * value )
   return list;
 }
 
+char *
+StumplessStringValueToString( StumplessValue * value )
+{
+  return NULL;
+}
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedChar, u_c_p )
+
+VALUE_TO_STRING_FUNCTION( UnsignedChar, u_c, "%c" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedInt, u_i_p )
 
+VALUE_TO_STRING_FUNCTION( UnsignedInt, u_i, "%u" )
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedLong, u_l_p )
+
+VALUE_TO_STRING_FUNCTION( UnsignedLong, u_l, "%lu" )
 
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedLongLong, u_l_l_p )
 
+VALUE_TO_STRING_FUNCTION( UnsignedLongLong, u_l_l, "%llu" )
+
 ARRAY_VALUE_AS_VALUE_LIST_FUNCTION( UnsignedShort, u_s_p )
 
-StumplessStatusCode
+VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
+
+StumplessStatusCode // todo remove this function
 StumplessValueIntoString( char * str, StumplessValue * value )
 { 
   if( str == NULL || value == NULL )
@@ -409,7 +486,7 @@ StumplessValueIsArray( StumplessValue * value )
   }
 }
 
-char *
+char * // todo remove this function
 StumplessValueToString( StumplessValue * value )
 {
   if( value == NULL )
@@ -426,7 +503,7 @@ StumplessValueToString( StumplessValue * value )
   return str;
 }
 
-const char *
+const char * // todo remove this function
 StumplessValueTypeDefaultFormat( StumplessValueType type )
 {
   switch( type ){
