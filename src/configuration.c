@@ -7,7 +7,7 @@
 #include <value.h>
 
 #define ADD_ARRAY_VALUE_PROFILE( profile_name, type_name )                     \
-profile = malloc( sizeof( StumplessValueProfile ) );                            \
+profile = malloc( sizeof( StumplessValueProfile ) );                           \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
@@ -21,7 +21,7 @@ profile->to_xml = NULL;                                                        \
 StumplessAddTypeProfile( profile );
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
-profile = malloc( sizeof( StumplessValueProfile ) );                            \
+profile = malloc( sizeof( StumplessValueProfile ) );                           \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
@@ -30,7 +30,7 @@ profile->to_csv = NULL;                                                        \
 profile->to_json = NULL;                                                       \
 profile->to_string = &Stumpless##type_name##ValueToString;                     \
 profile->to_text = &StumplessGenericValueToText;                               \
-profile->to_value_list = NULL;                                                 \
+profile->to_value_list = &StumplessGenericValueToValueList;                    \
 profile->to_xml = NULL;                                                        \
 StumplessAddTypeProfile( profile );
 

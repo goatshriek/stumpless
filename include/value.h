@@ -34,6 +34,9 @@ char *
 StumplessFloatValueToString( StumplessValue * );
 
 StumplessValueList *
+StumplessGenericValueToValueList( StumplessValue * );
+
+StumplessValueList *
 StumplessIntArrayValueToValueList( StumplessValue * );
 
 char *

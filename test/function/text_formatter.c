@@ -15,7 +15,6 @@ const char * test_event_attribute_list_formatter( void );
 const char * test_event_formatter( void );
 const char * test_event_summary_formatter( void );
 const char * test_level_formatter( void );
-const char * test_value_formatter( void );
 const char * test_value_list_all_strings( void );
 
 int
@@ -33,7 +32,6 @@ main( void )
   RUN_TEST( event_formatter )
   RUN_TEST( event_summary_formatter )
   RUN_TEST( level_formatter )
-  RUN_TEST( value_formatter )
   RUN_TEST( value_list_all_strings )
   
   if( failure_count > 0 )
@@ -55,7 +53,7 @@ test_entry_formatter( void )
   FAIL_IF_NULL( output, "a full entry could not be formatted" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for a full entry" )
-  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (String), attribute: not 37 (String), attribute: unnamed value (String), attribute: no event attribute (String)",
                         str,
                         "a full entry was not properly formatted" )
   
@@ -64,7 +62,7 @@ test_entry_formatter( void )
   FAIL_IF_NULL( output, "an entry without a description was not formatted" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without a description" )
-  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (String), attribute: not 37 (String), attribute: unnamed value (String), attribute: no event attribute (String)",
                         str,
                         "an entry without a description was not properly formatted" )
   
@@ -73,7 +71,7 @@ test_entry_formatter( void )
   FAIL_IF_NULL( output, "an entry with only attributes was not formatted" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only attributes" )
-  ASSERT_STRINGS_EQUAL( "entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  ASSERT_STRINGS_EQUAL( "entry: Test Attribute 0: default value (String), attribute: not 37 (String), attribute: unnamed value (String), attribute: no event attribute (String)",
                         str,
                         "an entry with only attributes was not properly formatted" )
   
@@ -82,7 +80,7 @@ test_entry_formatter( void )
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without an event" )
-  ASSERT_STRINGS_EQUAL( "Test Entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  ASSERT_STRINGS_EQUAL( "Test Entry: Test Attribute 0: default value (String), attribute: not 37 (String), attribute: unnamed value (String), attribute: no event attribute (String)",
                         str,
                         "an entry without an event was not properly formatted" )
   
@@ -132,14 +130,14 @@ test_entry_attribute_formatter( void )
   output = StumplessEntryAttributeToText( attribute );
   FAIL_IF_NULL( output, "a full entry attribute could not be formatted" )
   char * str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Value (string)", str,
+  ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Value (String)", str,
                         "a full entry attribute was not formatted correctly" )
   
   attribute->value = NULL;
   output = StumplessEntryAttributeToText( attribute );
   FAIL_IF_NULL( output, "an attribute without a set value could not be formatted" )
   str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Default Value (string)",
+  ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Default Value (String)",
                         str,
                         "an attribute without a set value was not formatted correctly" )
   
@@ -147,7 +145,7 @@ test_entry_attribute_formatter( void )
   output = StumplessEntryAttributeToText( attribute );
   FAIL_IF_NULL( output, "an attribute with a default value was not formatted" )
   str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "attribute: Test Default Value (string)", str,
+  ASSERT_STRINGS_EQUAL( "attribute: Test Default Value (String)", str,
                         "an attribute with a default value was not formatted correctly" )
   
   attribute->event_attribute->default_value = NULL;
@@ -168,7 +166,7 @@ test_entry_attribute_list_formatter( void )
   output = StumplessEntryAttributeListToText( entry );
   FAIL_IF_NULL( output, "the output could not be created" )
   str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  ASSERT_STRINGS_EQUAL( "Test Attribute 0: default value (String), attribute: not 37 (String), attribute: unnamed value (String), attribute: no event attribute (String)",
                         str,
                         "the list was not formatted correctly" )
   
@@ -245,13 +243,13 @@ test_event_attribute_formatter( void )
   attribute->default_value = StumplessValueFromString( "default value" );
   output = StumplessEventAttributeToText( attribute );
   str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "Test Attribute: default value (string)", str,
+  ASSERT_STRINGS_EQUAL( "Test Attribute: default value (String)", str,
                         "a full attribute was not formatted correctly" )
   
   attribute->name = NULL;
   output = StumplessEventAttributeToText( attribute );
   str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "attribute: default value (string)", str,
+  ASSERT_STRINGS_EQUAL( "attribute: default value (String)", str,
                         "an attribute with only a default value was not formatted correctly" )
   
   return NULL;
@@ -290,28 +288,28 @@ test_event_formatter( void )
   FAIL_IF_NULL( output, "a full event could not be formatted" )
   str = StumplessFormattedOutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string" )
-  ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+  ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42): Test Attribute 0: default value (String), attribute: 37 (Unsigned Int), Test Attribute 2, attribute",
                         str,
                         "a full event was not properly formatted" )
   
   event->name = NULL;
   str = StumplessFormattedOutputToString( StumplessEventToText( event ) );
   FAIL_IF_NULL( str, "an event without a name could not be formatted" )
-  ASSERT_STRINGS_EQUAL( "event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+  ASSERT_STRINGS_EQUAL( "event (Test Level: level 42): Test Attribute 0: default value (String), attribute: 37 (Unsigned Int), Test Attribute 2, attribute",
                         str,
                         "an event without a name was not formatted correctly" )
   
   event->level = NULL;
   str = StumplessFormattedOutputToString( StumplessEventToText( event ) );
   FAIL_IF_NULL( str, "an event with only an attribute list could not be formatted" )
-  ASSERT_STRINGS_EQUAL( "event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+  ASSERT_STRINGS_EQUAL( "event: Test Attribute 0: default value (String), attribute: 37 (Unsigned Int), Test Attribute 2, attribute",
                         str,
                         "an event with only an attribute list was not formatted correctly" )
   
   event->name = "Test Event";
   str = StumplessFormattedOutputToString( StumplessEventToText( event ) );
   FAIL_IF_NULL( str, "an event without a level could not be formatted" )
-  ASSERT_STRINGS_EQUAL( "Test Event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
+  ASSERT_STRINGS_EQUAL( "Test Event: Test Attribute 0: default value (String), attribute: 37 (Unsigned Int), Test Attribute 2, attribute",
                         str,
                         "an event without a level was not formatted correctly" )
   
@@ -403,33 +401,6 @@ test_level_formatter( void )
   str = StumplessFormattedOutputToString( output );
   ASSERT_STRINGS_EQUAL( "level 42", str,
                         "a level with no name was not formatted correctly" )
-  
-  return NULL;
-}
-
-const char *
-test_value_formatter( void )
-{
-  StumplessFormattedOutput * output = StumplessValueToText( NULL );
-  FAIL_IF_NOT_NULL( output, "the output was not null for a null pointer" )
-  
-  StumplessValue * value = BuildUnsignedShortValue();
-  FAIL_IF_NULL( value, "could not build test unsigned short value" )
-  output = StumplessValueToText( value );
-  FAIL_IF_NULL( output, "the output was null for a valid value" )
-  if( output->format != STUMPLESS_TEXT )
-    return "the output did not have the correct type";
-  char * str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "65000 (unsigned short)", str,
-                        "an unsigned short value was not formatted correctly" )
-  
-  value = BuildIntArrayValue();
-  FAIL_IF_NULL( value, "could not build test array value" )
-  output = StumplessValueToText( value );
-  FAIL_IF_NULL( output, "could not format an array value" )
-  str = StumplessFormattedOutputToString( output );
-  ASSERT_STRINGS_EQUAL( "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (int array)", str,
-                        "an array value was not formatted correctly" )
   
   return NULL;
 }

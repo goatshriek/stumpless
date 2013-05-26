@@ -286,6 +286,21 @@ ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Float, f_p )
 
 VALUE_TO_STRING_FUNCTION( Float, f, "%g" )
 
+StumplessValueList *
+StumplessGenericValueToValueList( StumplessValue * value )
+{
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value ) )
+  
+  return list;
+}
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Int, i_p )
 
 VALUE_TO_STRING_FUNCTION( Int, i, "%i" )

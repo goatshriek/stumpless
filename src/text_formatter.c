@@ -84,18 +84,6 @@ StumplessLevelToText( StumplessLevel * level )
   return TextFormattedOutputFromValueList( LevelToValueList( level ) );
 }
 
-StumplessFormattedOutput * // todo remove this function
-StumplessValueToText( StumplessValue * value )
-{
-  return TextFormattedOutputFromValueList( ValueToValueList( value ) );
-}
-
-StumplessFormattedOutput * // todo remove this function
-StumplessValueTypeToText( StumplessValueType type )
-{
-  return TextFormattedOutputFromValueList( ValueTypeToValueList( type ) );
-}
-
 static
 StumplessValueList *
 EntryToValueList( StumplessEntry * entry )
@@ -152,9 +140,15 @@ EntryAttributeToValueList( StumplessEntryAttribute * attribute )
   else
     return NULL;
   
-  StumplessValueList * values = ValueToValueList( attribute_value );
-  if( values == NULL )
+  if( attribute_value->profile == NULL )
     return NULL;
+  
+  StumplessFormattedOutput * value_as_text;
+  value_as_text  = attribute_value->profile->to_text( attribute_value );
+  if( value_as_text == NULL )
+    return NULL;
+  
+  StumplessValueList * values = value_as_text->payload->values;
   NULL_ON_FAILURE( StumplessAppendValueLists( output, values ) )
   
   return output;
@@ -267,13 +261,20 @@ EventAttributeToValueList( StumplessEventAttribute * attribute )
     name = attribute->name;
   NULL_ON_FAILURE( StumplessAppendStringToValueList( output, name ) )
   
-  if( attribute->default_value != NULL ){
+  StumplessValue * default_value = attribute->default_value;
+  if( default_value != NULL ){
     NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
     
-    StumplessValueList * default_value;
-    default_value = ValueToValueList( attribute->default_value );
+    if( default_value->profile == NULL )
+      return NULL;
     
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, default_value ) )
+    StumplessFormattedOutput * default_value_output;
+    default_value_output = default_value->profile->to_text( default_value );
+    
+    StumplessValueList * default_value_list;
+    default_value_list = default_value_output->payload->values;
+    
+    NULL_ON_FAILURE( StumplessAppendValueLists( output, default_value_list ) )
   }
   
   return output; 
@@ -439,153 +440,6 @@ TextFormattedOutputFromValueList( StumplessValueList * list )
   
   output->format = STUMPLESS_TEXT;
   output->payload->values = StumplessValueListToStrings( list );
-  
-  return output;
-}
-
-static
-StumplessValueList * // todo remove this function
-ValueToValueList( StumplessValue * value )
-{
-  if( value == NULL )
-    return NULL;
-  
-  StumplessValueList * output = StumplessNewValueList();
-  if( output == NULL )
-    return NULL;
-  
-  if( StumplessValueIsArray( value ) ){
-    StumplessValue * separator = StumplessValueFromString( ", " );
-    StumplessValueList * array = StumplessArrayValueToValueList( value );
-    NULL_ON_FAILURE( StumplessAddSeparatorToValueList( array, separator ) )
-    NULL_ON_FAILURE( StumplessPrependStringToValueList( array, "[" ) )
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( array, "]" ) )
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, array ) )
-  } else {
-    NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
-  }
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
-  
-  StumplessFormattedOutput * type = StumplessValueTypeToText( value->type );
-  if( type == NULL || type->payload == NULL )
-    return NULL;
-  StumplessValueList * type_values = type->payload->values;
-  free( type->payload );
-  free( type );
-  
-  NULL_ON_FAILURE( StumplessAppendValueLists( output, type_values ) )
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
-  
-  return output;
-}
-
-static
-StumplessValueList * // todo remove this function
-ValueTypeToValueList( StumplessValueType type )
-{
-  StumplessValueList * output = StumplessNewValueList();
-  if( output == NULL )
-    return NULL;
-  
-  const char * name;
-  
-  switch( type ){
-    case STUMPLESS_UNSIGNED_SHORT:
-      name = "unsigned short";
-      break;
-    case STUMPLESS_UNSIGNED_SHORT_POINTER:
-      name = "unsigned short array";
-      break;
-    case STUMPLESS_SHORT:
-      name = "short";
-      break;
-    case STUMPLESS_SHORT_POINTER:
-      name = "short array";
-      break;
-    case STUMPLESS_UNSIGNED_INT:
-      name = "unsigned int";
-      break;
-    case STUMPLESS_UNSIGNED_INT_POINTER:
-      name = "unsigned int array";
-      break;
-    case STUMPLESS_INT:
-      name = "int";
-      break;
-    case STUMPLESS_INT_POINTER:
-      name = "int array";
-      break;
-    case STUMPLESS_UNSIGNED_LONG:
-      name = "unsigned long";
-      break;
-    case STUMPLESS_UNSIGNED_LONG_POINTER:
-      name = "unsigned long";
-      break;
-    case STUMPLESS_LONG:
-      name = "long";
-      break;
-    case STUMPLESS_LONG_POINTER:
-      name = "long array";
-      break;
-    case STUMPLESS_UNSIGNED_LONG_LONG:
-      name = "unsigned long long";
-      break;
-    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
-      name = "unsigned long long array";
-      break;
-    case STUMPLESS_LONG_LONG:
-      name = "long long";
-      break;
-    case STUMPLESS_LONG_LONG_POINTER:
-      name = "long long break";
-      break;
-    case STUMPLESS_UNSIGNED_CHAR:
-      name = "unsigned char";
-      break;
-    case STUMPLESS_UNSIGNED_CHAR_POINTER:
-      name = "unsigned char array";
-      break;
-    case STUMPLESS_CHAR:
-      name = "char";
-      break;
-    case STUMPLESS_CHAR_POINTER:
-      name = "char array";
-      break;
-    case STUMPLESS_FLOAT:
-      name = "float";
-      break;
-    case STUMPLESS_FLOAT_POINTER:
-      name = "float array";
-      break;
-    case STUMPLESS_DOUBLE:
-      name = "double";
-      break;
-    case STUMPLESS_DOUBLE_POINTER: 
-      name = "double array";
-      break;
-    case STUMPLESS_LONG_DOUBLE:
-      name = "long double";
-      break;
-    case STUMPLESS_LONG_DOUBLE_POINTER:
-      name = "long double array";
-      break;
-    case STUMPLESS_BOOLEAN:
-      name = "boolean";
-      break;
-    case STUMPLESS_STRING:
-      name = "string";
-      break;
-    case STUMPLESS_STRING_POINTER:
-      name = "string array";
-      break;
-    case STUMPLESS_VOID_POINTER:
-      name = "void";
-      break;
-    default:
-      return NULL;
-  }
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, name ) )
   
   return output;
 }

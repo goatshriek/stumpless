@@ -36,10 +36,4 @@ StumplessGenericValueToText( StumplessValue * );
 StumplessFormattedOutput *
 StumplessLevelToText( StumplessLevel * );
 
-StumplessFormattedOutput * // todo remove this function
-StumplessValueToText( StumplessValue * );
-
-StumplessFormattedOutput * // todo remove this function
-StumplessValueTypeToText( StumplessValueType );
-
 #endif

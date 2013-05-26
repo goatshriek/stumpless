@@ -51,12 +51,4 @@ static
 StumplessFormattedOutput *
 TextFormattedOutputFromValueList( StumplessValueList * );
 
-static
-StumplessValueList * // todo remove this function
-ValueToValueList( StumplessValue * );
-
-static
-StumplessValueList * // todo remove this function
-ValueTypeToValueList( StumplessValueType );
-
 #endif
