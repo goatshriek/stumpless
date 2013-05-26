@@ -7,7 +7,6 @@
 #include "helper.h"
 
 const char * test_array_value_to_value_list( void );
-const char * test_default_format( void );
 const char * test_destructor( void );
 const char * test_into_string( void );
 const char * test_is_array( void );
@@ -22,7 +21,6 @@ main( void )
   const char * result;
   
   RUN_TEST( array_value_to_value_list )
-  RUN_TEST( default_format )
   RUN_TEST( destructor )
   RUN_TEST( into_string )
   RUN_TEST( is_array )
@@ -70,28 +68,6 @@ test_array_value_to_value_list( void )
   if( list->last->value->data->i != 9 )
     return "the values of the list did not reflect the original array";
  
-  return NULL;
-}
-
-const char *
-test_default_format( void )
-{
-  StumplessValue * value = BuildUnsignedShortValue();
-  if( value == NULL )
-    return "the first test value could not be built";
-  const char * format = StumplessValueTypeDefaultFormat( value->type );
-  if( format == NULL )
-    return "the default format could not be retrieved";
-  if( strcmp( format, "%hu" ) != 0 )
-    return "an unsigned short did not have the proper format";
-  
-  value = BuildIntArrayValue();
-  format = StumplessValueTypeDefaultFormat( value->type );
-  if( format == NULL )
-    return "the default format could not be retrieved";
-  if( strcmp( format, "%i" ) != 0 )
-    return "an int array did not have the proper format";
-  
   return NULL;
 }
 

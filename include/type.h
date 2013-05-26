@@ -243,6 +243,7 @@ struct StumplessStringConfiguration {
 };
 
 struct StumplessValueProfile {
+  StumplessStatusCode ( *into_string )( char *, StumplessValue * );
   const char * name;
   StumplessFormattedOutput * ( *to_binary )( StumplessValue * );
   StumplessFormattedOutput * ( *to_csv )( StumplessValue * );

@@ -47,7 +47,7 @@ StumplessValueListToString( StumplessValueList * );
 StumplessValueList *
 StumplessValueListToStrings( StumplessValueList * );
 
-StumplessStatusCode
+StumplessStatusCode // todo remove this function
 StumplessWriteValueListToStream( FILE *, StumplessValueList * );
 
 #endif

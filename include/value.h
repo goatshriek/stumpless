@@ -108,19 +108,16 @@ StumplessUnsignedShortArrayValueToValueList( StumplessValue * );
 char *
 StumplessUnsignedShortValueToString( StumplessValue * );
 
-StumplessStatusCode // todo remove this function
+StumplessStatusCode
 StumplessValueIntoString( char *, StumplessValue * );
 
-unsigned short
+unsigned short // todo remove this function
 StumplessValueIsArray( StumplessValue * );
 
-char * // todo remove this function
+char *
 StumplessValueToString( StumplessValue * );
 
-const char *  // todo remove this function
-StumplessValueTypeDefaultFormat( StumplessValueType );
-
-StumplessStatusCode
+StumplessStatusCode // todo remove this function
 StumplessWriteValueToStream( FILE *, StumplessValue * );
 
 #endif

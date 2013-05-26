@@ -314,7 +314,7 @@ StumplessValueListToStrings( StumplessValueList * list )
   return output;
 }
 
-StumplessStatusCode
+StumplessStatusCode // todo remove this function
 StumplessWriteValueListToStream( FILE * stream, StumplessValueList * list )
 {
   if( stream == NULL || list == NULL )

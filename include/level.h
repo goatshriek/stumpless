@@ -3,11 +3,22 @@
 
 #include <type.h>
 
-StumplessLevel * StumplessGetDebugLevel( void );
-StumplessLevel * StumplessGetErrorLevel( void );
-StumplessLevel * StumplessGetFatalLevel( void );
-StumplessLevel * StumplessGetInfoLevel( void );
-StumplessLevel * StumplessGetWarningLevel( void );
-char * StumplessLevelToString( StumplessLevel * );
+StumplessLevel *
+StumplessGetDebugLevel( void );
+
+StumplessLevel *
+StumplessGetErrorLevel( void );
+
+StumplessLevel *
+StumplessGetFatalLevel( void );
+
+StumplessLevel *
+StumplessGetInfoLevel( void );
+
+StumplessLevel *
+StumplessGetWarningLevel( void );
+
+char *
+StumplessLevelToString( StumplessLevel * );
 
 #endif

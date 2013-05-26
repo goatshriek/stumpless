@@ -10,6 +10,7 @@
 profile = malloc( sizeof( StumplessValueProfile ) );                           \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
+profile->into_string = NULL;                                                   \
 profile->name = profile_name;                                                  \
 profile->to_binary = NULL;                                                     \
 profile->to_csv = NULL;                                                        \
@@ -24,6 +25,7 @@ StumplessAddTypeProfile( profile );
 profile = malloc( sizeof( StumplessValueProfile ) );                           \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
+profile->into_string = NULL;                                                   \
 profile->name = profile_name;                                                  \
 profile->to_binary = NULL;                                                     \
 profile->to_csv = NULL;                                                        \
