@@ -344,7 +344,7 @@ GenericArrayValueToValueList( StumplessValue * value )
   if( value == NULL )
     return NULL;
   
-  StumplessTypeProfile * profile = value->profile;
+  StumplessValueProfile * profile = value->profile;
   if( profile == NULL )
     return NULL;
   
@@ -372,7 +372,7 @@ GenericValueToValueList( StumplessValue * value )
   if( value == NULL )
     return NULL;
   
-  StumplessTypeProfile * profile;
+  StumplessValueProfile * profile;
   profile = value->profile;
   if( profile == NULL )
     return NULL;

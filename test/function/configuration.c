@@ -30,7 +30,7 @@ main( void )
 const char *
 test_add_new_profile( void )
 {
-  StumplessTypeProfile * profile = BuildTypeProfile();
+  StumplessValueProfile * profile = BuildTypeProfile();
   FAIL_IF_NULL( profile, "could not build the test profile" )
   
   StumplessStatusCode status = StumplessAddTypeProfile( profile );
@@ -52,7 +52,7 @@ test_find_profile_by_name( void )
   StumplessConfiguration * configuration = StumplessGetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  StumplessTypeProfile * profile = StumplessFindProfileByName( "Short" );
+  StumplessValueProfile * profile = StumplessFindProfileByName( "Short" );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
   profile = StumplessFindProfileByName( "non-existent" );

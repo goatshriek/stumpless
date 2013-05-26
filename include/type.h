@@ -30,7 +30,7 @@ struct StumplessLevel;
 struct StumplessMultithreadingConfiguration;
 struct StumplessSortingConfiguration;
 struct StumplessStringConfiguration;
-struct StumplessTypeProfile;
+struct StumplessValueProfile;
 struct StumplessValue;
 union StumplessValueData;
 struct StumplessValueList;
@@ -61,7 +61,7 @@ typedef struct StumplessMultithreadingConfiguration
         StumplessMultithreadingConfiguration;
 typedef struct StumplessSortingConfiguration StumplessSortingConfiguration;
 typedef struct StumplessStringConfiguration StumplessStringConfiguration;
-typedef struct StumplessTypeProfile StumplessTypeProfile;
+typedef struct StumplessValueProfile StumplessValueProfile;
 typedef struct StumplessValue StumplessValue;
 typedef union StumplessValueData StumplessValueData;
 typedef struct StumplessValueList StumplessValueList;
@@ -177,7 +177,7 @@ struct StumplessConfiguration {
   StumplessMultithreadingConfiguration * multithreading;
   StumplessSortingConfiguration * sorting;
   StumplessStringConfiguration * string;
-  StumplessTypeProfile ** profiles;
+  StumplessValueProfile ** profiles;
   unsigned profile_count;
 };
 
@@ -242,7 +242,7 @@ struct StumplessStringConfiguration {
   size_t buffer_size;
 };
 
-struct StumplessTypeProfile {
+struct StumplessValueProfile {
   const char * name;
   StumplessFormattedOutput * ( *to_binary )( StumplessValue * );
   StumplessFormattedOutput * ( *to_csv )( StumplessValue * );
@@ -258,7 +258,7 @@ struct StumplessValue {
   StumplessValueType type; // todo remove
   StumplessValueData * data;
   unsigned length;
-  StumplessTypeProfile * profile;
+  StumplessValueProfile * profile;
 };
 
 union StumplessValueData {

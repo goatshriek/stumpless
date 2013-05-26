@@ -51,7 +51,7 @@ BuildStringValue( void );
 StumplessFormattedOutput *
 BuildTextFormattedOutput( void );
 
-StumplessTypeProfile *
+StumplessValueProfile *
 BuildTypeProfile( void );
 
 StumplessValue *

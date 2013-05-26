@@ -403,10 +403,10 @@ BuildTextFormattedOutput( void )
   return output;
 }
 
-StumplessTypeProfile *
+StumplessValueProfile *
 BuildTypeProfile( void )
 {
-  StumplessTypeProfile * profile = malloc( sizeof( StumplessTypeProfile ) );
+  StumplessValueProfile * profile = malloc( sizeof( StumplessValueProfile ) );
   if( profile == NULL )
     return NULL;
   

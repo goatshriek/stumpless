@@ -7,7 +7,7 @@
 #include <value.h>
 
 #define ADD_ARRAY_VALUE_PROFILE( profile_name, type_name )                     \
-profile = malloc( sizeof( StumplessTypeProfile ) );                            \
+profile = malloc( sizeof( StumplessValueProfile ) );                            \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
@@ -21,7 +21,7 @@ profile->to_xml = NULL;                                                        \
 StumplessAddTypeProfile( profile );
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
-profile = malloc( sizeof( StumplessTypeProfile ) );                            \
+profile = malloc( sizeof( StumplessValueProfile ) );                            \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->name = profile_name;                                                  \
@@ -38,7 +38,7 @@ static StumplessConfiguration * configuration = NULL;
 static unsigned profile_array_capacity = 0;
 
 StumplessStatusCode
-StumplessAddTypeProfile( StumplessTypeProfile * profile )
+StumplessAddTypeProfile( StumplessValueProfile * profile )
 {
   if( configuration == NULL )
     StumplessInitializeConfiguration();
@@ -51,7 +51,7 @@ StumplessAddTypeProfile( StumplessTypeProfile * profile )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessTypeProfile *
+StumplessValueProfile *
 StumplessFindProfileByName( const char * name )
 {
   if( configuration == NULL )
@@ -117,12 +117,12 @@ StumplessInitializeProfiles( void )
   
   profile_array_capacity = 100;
   size_t array_size;
-  array_size = profile_array_capacity * sizeof( StumplessTypeProfile );
+  array_size = profile_array_capacity * sizeof( StumplessValueProfile );
   configuration->profiles = malloc( array_size );
   if( configuration->profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  StumplessTypeProfile * profile;
+  StumplessValueProfile * profile;
   
   ADD_ARRAY_VALUE_PROFILE( "Boolean Array", BooleanArray )
   ADD_ARRAY_VALUE_PROFILE( "Char Array", CharArray )

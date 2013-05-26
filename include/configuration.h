@@ -4,9 +4,9 @@
 #include <type.h>
 
 StumplessStatusCode
-StumplessAddTypeProfile( StumplessTypeProfile * );
+StumplessAddTypeProfile( StumplessValueProfile * );
 
-StumplessTypeProfile *
+StumplessValueProfile *
 StumplessFindProfileByName( const char * );
 
 StumplessConfiguration *
