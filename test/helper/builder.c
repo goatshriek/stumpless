@@ -352,6 +352,22 @@ BuildLevel( void )
   return level;
 }
 
+StumplessOutputProfile *
+BuildOutputProfile( void )
+{
+  StumplessOutputProfile * profile = malloc( sizeof( StumplessOutputProfile ) );
+  if( profile == NULL )
+    return NULL;
+  
+  profile->to_mysql = NULL;
+  profile->name = "Test Profile";
+  profile->to_stream = NULL;
+  profile->to_string = NULL;
+  profile->to_tcp = NULL;
+  
+  return profile;
+}
+
 StumplessValue *
 BuildStringValue( void )
 {
@@ -408,25 +424,6 @@ BuildTextFormattedOutput( void )
   output->payload->values = values;
   
   return output;
-}
-
-StumplessValueProfile *
-BuildTypeProfile( void )
-{
-  StumplessValueProfile * profile = malloc( sizeof( StumplessValueProfile ) );
-  if( profile == NULL )
-    return NULL;
-  
-  profile->name = "Test Profile";
-  profile->to_binary = NULL;
-  profile->to_csv = NULL;
-  profile->to_json = NULL;
-  profile->to_string = NULL;
-  profile->to_text = NULL;
-  profile->to_value_list = NULL;
-  profile->to_xml = NULL;
-  
-  return profile;
 }
 
 StumplessValue *
@@ -535,6 +532,25 @@ BuildValueListOfStrings( void )
   StumplessAppendStringToValueList( list, "list" );
   
   return list;
+}
+
+StumplessValueProfile *
+BuildValueProfile( void )
+{
+  StumplessValueProfile * profile = malloc( sizeof( StumplessValueProfile ) );
+  if( profile == NULL )
+    return NULL;
+  
+  profile->name = "Test Profile";
+  profile->to_binary = NULL;
+  profile->to_csv = NULL;
+  profile->to_json = NULL;
+  profile->to_string = NULL;
+  profile->to_text = NULL;
+  profile->to_value_list = NULL;
+  profile->to_xml = NULL;
+  
+  return profile;
 }
 
 StumplessValue *

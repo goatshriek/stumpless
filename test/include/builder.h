@@ -45,14 +45,14 @@ BuildIntValue( void );
 StumplessLevel *
 BuildLevel( void );
 
+StumplessOutputProfile *
+BuildOutputProfile( void );
+
 StumplessValue *
 BuildStringValue( void );
 
 StumplessFormattedOutput *
 BuildTextFormattedOutput( void );
-
-StumplessValueProfile *
-BuildTypeProfile( void );
 
 StumplessValue *
 BuildUnsignedIntValue( void );
@@ -65,6 +65,9 @@ BuildValueList( void );
 
 StumplessValueList *
 BuildValueListOfStrings( void );
+
+StumplessValueProfile *
+BuildValueProfile( void );
 
 StumplessValue *
 BuildVoidValue( void );

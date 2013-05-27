@@ -8,8 +8,8 @@
 
 
 enum StumplessHTTPMethod;
-enum StumplessOutputFormat;
-enum StumplessOutputMode;
+enum StumplessOutputFormat; // todo remove
+enum StumplessOutputMode; // todo remove
 enum StumplessSortingMethod;
 enum StumplessStatusCode;
 enum StumplessValueType; // todo remove
@@ -39,8 +39,8 @@ struct StumplessValueProfile;
 
 
 typedef enum StumplessHTTPMethod StumplessHTTPMethod;
-typedef enum StumplessOutputFormat StumplessOutputFormat;
-typedef enum StumplessOutputMode StumplessOutputMode;
+typedef enum StumplessOutputFormat StumplessOutputFormat; // todo remove
+typedef enum StumplessOutputMode StumplessOutputMode; // todo remove
 typedef enum StumplessSortingMethod StumplessSortingMethod;
 typedef enum StumplessStatusCode StumplessStatusCode;
 typedef enum StumplessValueType StumplessValueType; // todo remove
@@ -79,7 +79,7 @@ enum StumplessHTTPMethod {
   STUMPLESS_PUT
 };
 
-enum StumplessOutputFormat {
+enum StumplessOutputFormat { // todo remove
   STUMPLESS_BINARY,
   STUMPLESS_CSV,
   STUMPLESS_JSON,
@@ -87,7 +87,7 @@ enum StumplessOutputFormat {
   STUMPLESS_XML
 };
 
-enum StumplessOutputMode {
+enum StumplessOutputMode { // todo remove
   STUMPLESS_HTTP_MODE,
   STUMPLESS_MYSQL_MODE,
   STUMPLESS_STREAM_MODE,
@@ -214,7 +214,7 @@ struct StumplessFileConfiguration {
 };
 
 struct StumplessFormattedOutput {
-  StumplessOutputFormat format;
+  StumplessOutputFormat format; // todo remove
   StumplessFormattedPayload * payload;
   StumplessOutputProfile * profile;
 };
@@ -242,7 +242,8 @@ struct StumplessOutputProfile {
   const char * name;
   StumplessStatusCode ( *to_mysql )( StumplessFormattedOutput * );
   StumplessStatusCode ( *to_stream )( StumplessFormattedOutput * );
-  StumplessStatusCode( * to_tcp )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *to_string )( StumplessFormattedOutput * );
+  StumplessStatusCode ( * to_tcp )( StumplessFormattedOutput * );
 };
 
 struct StumplessSortingConfiguration {
@@ -292,7 +293,6 @@ union StumplessValueData {
   const double * d_p;
   long double l_d;
   const long double * l_d_p;
-  const char ** str_p;
   const void * v_p;
   StumplessBoolean * boolean; // todo remove
 };

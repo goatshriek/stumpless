@@ -9,6 +9,9 @@ StumplessAddOutputProfile( StumplessOutputProfile * );
 StumplessStatusCode
 StumplessAddValueProfile( StumplessValueProfile * );
 
+StumplessOutputProfile *
+StumplessFindOutputProfileByName( const char * );
+
 StumplessValueProfile *
 StumplessFindValueProfileByName( const char * );
 
