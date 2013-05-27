@@ -222,7 +222,7 @@ test_stream_write( void )
 const char *
 test_to_string( void )
 {
-  StumplessValue * value = BuildIntArrayValue();
+  StumplessValue * value = BuildIntValue();
   if( value == NULL )
     return "the test value could not be created";
   char * str;
@@ -235,7 +235,7 @@ test_to_string( void )
   if( str == NULL )
     return "a valid value returned a null string";
   
-  if( strstr( str, "123456" ) == NULL )
+  if( strstr( str, "45678" ) == NULL )
     return "the string did not contain the value's contents";
   
   return NULL;
