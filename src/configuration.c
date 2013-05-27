@@ -19,7 +19,8 @@ profile->to_string = NULL;                                                     \
 profile->to_text = &StumplessGenericArrayValueToText;                          \
 profile->to_value_list = &Stumpless##type_name##ValueToValueList;              \
 profile->to_xml = NULL;                                                        \
-StumplessAddTypeProfile( profile );
+StumplessAddValueProfile( profile );
+
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
 profile = malloc( sizeof( StumplessValueProfile ) );                           \
@@ -34,35 +35,41 @@ profile->to_string = &Stumpless##type_name##ValueToString;                     \
 profile->to_text = &StumplessGenericValueToText;                               \
 profile->to_value_list = &StumplessGenericValueToValueList;                    \
 profile->to_xml = NULL;                                                        \
-StumplessAddTypeProfile( profile );
+StumplessAddValueProfile( profile );
 
 static StumplessConfiguration * configuration = NULL;
 static unsigned profile_array_capacity = 0;
 
 StumplessStatusCode
-StumplessAddTypeProfile( StumplessValueProfile * profile )
+StumplessAddOutputProfile( StumplessOutputProfile * profile )
+{
+  return STUMPLESS_FAILURE;
+}
+
+StumplessStatusCode
+StumplessAddValueProfile( StumplessValueProfile * profile )
 {
   if( configuration == NULL )
     StumplessInitializeConfiguration();
   
-  unsigned index = configuration->profile_count;
+  unsigned index = configuration->value_profile_count;
   
-  configuration->profiles[index] = profile;
-  configuration->profile_count++;
+  configuration->value_profiles[index] = profile;
+  configuration->value_profile_count++;
   
   return STUMPLESS_SUCCESS;
 }
 
 StumplessValueProfile *
-StumplessFindProfileByName( const char * name )
+StumplessFindValueProfileByName( const char * name )
 {
   if( configuration == NULL )
     StumplessInitializeConfiguration();
   
   unsigned i;
-  for( i = 0; i < configuration->profile_count; i++ )
-    if( strcmp( configuration->profiles[i]->name, name ) == 0 )
-      return configuration->profiles[i];
+  for( i = 0; i < configuration->value_profile_count; i++ )
+    if( strcmp( configuration->value_profiles[i]->name, name ) == 0 )
+      return configuration->value_profiles[i];
   
   return NULL;
 }
@@ -109,19 +116,28 @@ StumplessInitializeConfiguration( void )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   configuration->string->buffer_size = 100;
 
-  return StumplessInitializeProfiles();
+  STATUS_ON_FAILURE( StumplessInitializeValueProfiles() )
+
+  return StumplessInitializeOutputProfiles();
 }
 
 StumplessStatusCode
-StumplessInitializeProfiles( void )
+StumplessInitializeOutputProfiles( void )
 {
-  configuration->profile_count = 0;
+  // todo need to implement
+  return STUMPLESS_SUCCESS;
+}
+
+StumplessStatusCode
+StumplessInitializeValueProfiles( void )
+{
+  configuration->value_profile_count = 0;
   
   profile_array_capacity = 100;
   size_t array_size;
   array_size = profile_array_capacity * sizeof( StumplessValueProfile );
-  configuration->profiles = malloc( array_size );
-  if( configuration->profiles == NULL )
+  configuration->value_profiles = malloc( array_size );
+  if( configuration->value_profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
   StumplessValueProfile * profile;

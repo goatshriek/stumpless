@@ -4,10 +4,13 @@
 #include <type.h>
 
 StumplessStatusCode
-StumplessAddTypeProfile( StumplessValueProfile * );
+StumplessAddOutputProfile( StumplessOutputProfile * );
+
+StumplessStatusCode
+StumplessAddValueProfile( StumplessValueProfile * );
 
 StumplessValueProfile *
-StumplessFindProfileByName( const char * );
+StumplessFindValueProfileByName( const char * );
 
 StumplessConfiguration *
 StumplessGetConfiguration( void );
@@ -16,7 +19,10 @@ StumplessStatusCode
 StumplessInitializeConfiguration( void );
 
 StumplessStatusCode
-StumplessInitializeProfiles( void );
+StumplessInitializeOutputProfiles( void );
+
+StumplessStatusCode
+StumplessInitializeValueProfiles( void );
 
 StumplessStatusCode
 StumplessSetConfiguration( StumplessConfiguration * );

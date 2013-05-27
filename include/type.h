@@ -177,10 +177,12 @@ struct StumplessConfiguration {
   StumplessFileConfiguration * file;
   StumplessHTTPConfiguration * http;
   StumplessMultithreadingConfiguration * multithreading;
+  unsigned output_profile_count;
+  StumplessOutputProfile ** output_profiles;
   StumplessSortingConfiguration * sorting;
   StumplessStringConfiguration * string;
-  StumplessValueProfile ** profiles;
-  unsigned profile_count;
+  unsigned value_profile_count;
+  StumplessValueProfile ** value_profiles;
 };
 
 struct StumplessEntry {

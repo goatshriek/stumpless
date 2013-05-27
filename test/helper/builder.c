@@ -56,7 +56,7 @@ BuildCharArrayValue( void )
   if( value == NULL )
     return NULL;
   
-  value->profile = StumplessFindProfileByName( "Char Array" );
+  value->profile = StumplessFindValueProfileByName( "Char Array" );
   if( value->profile == NULL )
     return NULL;
   
@@ -94,7 +94,7 @@ BuildEmptyUnsignedIntArrayValue( void )
   
   value->type = STUMPLESS_UNSIGNED_INT_POINTER; // todo remove
   
-  value->profile = StumplessFindProfileByName( "Unsigned Int Array" );
+  value->profile = StumplessFindValueProfileByName( "Unsigned Int Array" );
   if( value->profile == NULL )
     return NULL;
   
@@ -288,7 +288,7 @@ BuildIntArrayValue( void )
   value->format = NULL;
   value->type = STUMPLESS_INT_POINTER; // todo remove
   
-  value->profile = StumplessFindProfileByName( "Int Array" );
+  value->profile = StumplessFindValueProfileByName( "Int Array" );
   if( value->profile == NULL )
     return NULL;
   
@@ -330,7 +330,7 @@ BuildIntValue( void )
   
   value->type = STUMPLESS_INT; // todo remove
   
-  value->profile = StumplessFindProfileByName( "Int" );
+  value->profile = StumplessFindValueProfileByName( "Int" );
   if( value->profile == NULL )
     return NULL;
   
@@ -365,7 +365,7 @@ BuildStringValue( void )
   
   value->type = STUMPLESS_STRING; // todo remove
   
-  value->profile = StumplessFindProfileByName( "String" );
+  value->profile = StumplessFindValueProfileByName( "String" );
   if( value->profile == NULL )
     return NULL;
   
@@ -439,7 +439,7 @@ BuildUnsignedIntValue( void )
   value->format = NULL;
   value->type = STUMPLESS_UNSIGNED_INT; // todo remove
   
-  value->profile = StumplessFindProfileByName( "Unsigned Int" );
+  value->profile = StumplessFindValueProfileByName( "Unsigned Int" );
   if( value->profile == NULL )
     return NULL;
   
@@ -461,7 +461,7 @@ BuildUnsignedShortValue( void )
   value->format = NULL;
   value->type = STUMPLESS_UNSIGNED_SHORT; // todo remove
   
-  value->profile = StumplessFindProfileByName( "Unsigned Short" );
+  value->profile = StumplessFindValueProfileByName( "Unsigned Short" );
   if( value->profile == NULL )
     return NULL;
   
@@ -545,7 +545,7 @@ BuildVoidValue( void )
     return NULL;
   
   value->type = STUMPLESS_VOID_POINTER; // todo remove
-  value->profile = StumplessFindProfileByName( "Boolean" );
+  value->profile = StumplessFindValueProfileByName( "Boolean" );
   if( value->profile == NULL )
     return NULL;
   
