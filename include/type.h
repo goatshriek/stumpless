@@ -28,13 +28,14 @@ union StumplessFormattedPayload;
 struct StumplessHTTConfiguration;
 struct StumplessLevel;
 struct StumplessMultithreadingConfiguration;
+struct StumplessOutputProfile;
 struct StumplessSortingConfiguration;
 struct StumplessStringConfiguration;
-struct StumplessValueProfile;
 struct StumplessValue;
 union StumplessValueData;
 struct StumplessValueList;
 struct StumplessValueListNode;
+struct StumplessValueProfile;
 
 
 typedef enum StumplessHTTPMethod StumplessHTTPMethod;
@@ -59,13 +60,14 @@ typedef struct StumplessHTTPConfiguration StumplessHTTPConfiguration;
 typedef struct StumplessLevel StumplessLevel;
 typedef struct StumplessMultithreadingConfiguration
         StumplessMultithreadingConfiguration;
+typedef struct StumplessOutputProfile StumplessOutputProfile;
 typedef struct StumplessSortingConfiguration StumplessSortingConfiguration;
 typedef struct StumplessStringConfiguration StumplessStringConfiguration;
-typedef struct StumplessValueProfile StumplessValueProfile;
 typedef struct StumplessValue StumplessValue;
 typedef union StumplessValueData StumplessValueData;
 typedef struct StumplessValueList StumplessValueList;
 typedef struct StumplessValueListNode StumplessValueListNode;
+typedef struct StumplessValueProfile StumplessValueProfile;
 
 
 typedef unsigned char StumplessByte;
@@ -86,9 +88,9 @@ enum StumplessOutputFormat {
 };
 
 enum StumplessOutputMode {
-  STUMPLESS_FILE_MODE,
   STUMPLESS_HTTP_MODE,
   STUMPLESS_MYSQL_MODE,
+  STUMPLESS_STREAM_MODE,
   STUMPLESS_STRING_MODE,
   STUMPLESS_TCP_MODE
 };
@@ -212,6 +214,7 @@ struct StumplessFileConfiguration {
 struct StumplessFormattedOutput {
   StumplessOutputFormat format;
   StumplessFormattedPayload * payload;
+  StumplessOutputProfile * profile;
 };
 
 union StumplessFormattedPayload {
@@ -232,6 +235,14 @@ struct StumplessMultithreadingConfiguration {
   unsigned short enabled;
 };
 
+struct StumplessOutputProfile {
+  StumplessStatusCode ( *to_http )( StumplessFormattedOutput * );
+  const char * name;
+  StumplessStatusCode ( *to_mysql )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *to_stream )( StumplessFormattedOutput * );
+  StumplessStatusCode( * to_tcp )( StumplessFormattedOutput * );
+};
+
 struct StumplessSortingConfiguration {
   StumplessSortingMethod entry_method;
   StumplessSortingMethod log_method;
@@ -240,18 +251,6 @@ struct StumplessSortingConfiguration {
 
 struct StumplessStringConfiguration {
   size_t buffer_size;
-};
-
-struct StumplessValueProfile {
-  StumplessStatusCode ( *into_string )( char *, StumplessValue * );
-  const char * name;
-  StumplessFormattedOutput * ( *to_binary )( StumplessValue * );
-  StumplessFormattedOutput * ( *to_csv )( StumplessValue * );
-  StumplessFormattedOutput * ( *to_json )( StumplessValue * );
-  char * ( *to_string )( StumplessValue * );
-  StumplessFormattedOutput * ( *to_text )( StumplessValue * );
-  StumplessValueList * ( *to_value_list )( StumplessValue * );
-  StumplessFormattedOutput * ( *to_xml )( StumplessValue * );
 };
 
 struct StumplessValue {
@@ -304,6 +303,18 @@ struct StumplessValueList {
 struct StumplessValueListNode {
   StumplessValue * value;
   StumplessValueListNode * next;
+};
+
+struct StumplessValueProfile {
+  StumplessStatusCode ( *into_string )( char *, StumplessValue * );
+  const char * name;
+  StumplessFormattedOutput * ( *to_binary )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_csv )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_json )( StumplessValue * );
+  char * ( *to_string )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_text )( StumplessValue * );
+  StumplessValueList * ( *to_value_list )( StumplessValue * );
+  StumplessFormattedOutput * ( *to_xml )( StumplessValue * );
 };
 
 #endif
