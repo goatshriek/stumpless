@@ -438,7 +438,12 @@ TextFormattedOutputFromValueList( StumplessValueList * list )
   if( output->payload == NULL )
     return NULL;
   
-  output->format = STUMPLESS_TEXT;
+  output->format = STUMPLESS_TEXT; // todo remove
+  
+  output->profile = StumplessFindOutputProfileByName( "Text" );
+  if( output->profile == NULL )
+    return NULL;
+  
   output->payload->values = StumplessValueListToStrings( list );
   
   return output;

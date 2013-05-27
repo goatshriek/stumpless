@@ -168,10 +168,11 @@ StumplessInitializeOutputProfiles( void )
   
   StumplessOutputProfile * profile;
   
-  ADD_OUTPUT_PROFILE( "HTTP", Stream )
-  ADD_OUTPUT_PROFILE( "Stream", Stream )
-  ADD_OUTPUT_PROFILE( "String", Stream )
-  ADD_OUTPUT_PROFILE( "TCP", Stream )
+  ADD_OUTPUT_PROFILE( "Binary", Binary )
+  ADD_OUTPUT_PROFILE( "CSV", CSV )
+  ADD_OUTPUT_PROFILE( "JSON", JSON )
+  ADD_OUTPUT_PROFILE( "Text", Text )
+  ADD_OUTPUT_PROFILE( "XML", XML )
   
   return STUMPLESS_SUCCESS;
 }

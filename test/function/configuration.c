@@ -78,7 +78,7 @@ test_find_output_profile_by_name( void )
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
   StumplessOutputProfile * profile;
-  profile = StumplessFindOutputProfileByName( "Stream" );
+  profile = StumplessFindOutputProfileByName( "Text" );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
   profile = StumplessFindOutputProfileByName( "non-existent" );
