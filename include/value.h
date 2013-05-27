@@ -3,9 +3,6 @@
 
 #include <type.h>
 
-StumplessValueList * // todo remove this function
-StumplessArrayValueToValueList( StumplessValue * );
-
 StumplessValueList *
 StumplessBooleanArrayValueToValueList( StumplessValue * );
 

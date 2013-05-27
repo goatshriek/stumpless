@@ -39,19 +39,19 @@ test_array_value_to_value_list( void )
 {
   StumplessValue * value = BuildUnsignedShortValue();
   FAIL_IF_NULL( value, "could not build the test short value" )
-  StumplessValueList * list = StumplessArrayValueToValueList( value );
-  FAIL_IF_NOT_NULL( list, "a non-array value was converted to a list" )
+  StumplessValueList * list = value->profile->to_value_list( value );
+  FAIL_IF_NULL( list, "a non-array value could not be converted to a list" )
   
   value = BuildEmptyUnsignedIntArrayValue();
   FAIL_IF_NULL( value, "could not build the test empty array value" )
-  list = StumplessArrayValueToValueList( value );
+  list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a list could not be built from an empty array value" )
   if( !StumplessValueListIsEmpty( list ) )
     return "an empty list was not empty for an empty array value"; 
   
   value = BuildIntArrayValue();
   FAIL_IF_NULL( value, "could not build the test int array value" )
-  list = StumplessArrayValueToValueList( value );
+  list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a list could not be built from an int array value" )
   
   FAIL_IF_NULL( list->first, "the generated list was empty" )

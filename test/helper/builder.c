@@ -94,11 +94,18 @@ BuildEmptyUnsignedIntArrayValue( void )
   
   value->type = STUMPLESS_UNSIGNED_INT_POINTER; // todo remove
   
-  value->profile = StumplessFindProfileByName( "Unsigned Int" );
+  value->profile = StumplessFindProfileByName( "Unsigned Int Array" );
   if( value->profile == NULL )
     return NULL;
   
-  value->data = NULL;
+  value->data = malloc( sizeof( StumplessValueData ) );
+  if( value->data == NULL )
+    return NULL;
+  
+  value->data->u_i_p = malloc( sizeof( unsigned ) * 10 );
+  if( value->data->u_i_p == NULL )
+    return NULL;
+  
   value->length = 0;
   
   return value;
