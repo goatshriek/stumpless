@@ -9,12 +9,15 @@ StumplessFormattedOutputIntoString( char * str,
   if( str == NULL || output == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  switch( output->format ){
-    case STUMPLESS_TEXT:
-      return StumplessValueListIntoString( str, output->payload->values );
-    default:
-      return STUMPLESS_FAILURE;
-  }
+  // todo need to implement this functionality
+  //switch( output->format ){
+  //  case STUMPLESS_TEXT:
+  //    return StumplessValueListIntoString( str, output->payload->values );
+  //  default:
+  //    return STUMPLESS_FAILURE;
+  //}
+  
+  return STUMPLESS_SUCCESS;
 }
 
 unsigned short
@@ -23,10 +26,11 @@ StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
   if( output == NULL || output->payload == NULL )
     return 1;
   
-  switch( output->format ){
-    case STUMPLESS_TEXT:
-      return StumplessValueListIsEmpty( output->payload->values );
-  }
+  // todo replace this functionality somehow
+  //switch( output->format ){
+  //  case STUMPLESS_TEXT:
+  //    return StumplessValueListIsEmpty( output->payload->values );
+  //}
   return 0;
 }
 

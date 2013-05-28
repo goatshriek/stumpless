@@ -8,8 +8,6 @@
 
 
 enum StumplessHTTPMethod;
-enum StumplessOutputFormat; // todo remove
-enum StumplessOutputMode; // todo remove
 enum StumplessSortingMethod;
 enum StumplessStatusCode;
 
@@ -38,8 +36,6 @@ struct StumplessValueProfile;
 
 
 typedef enum StumplessHTTPMethod StumplessHTTPMethod;
-typedef enum StumplessOutputFormat StumplessOutputFormat; // todo remove
-typedef enum StumplessOutputMode StumplessOutputMode; // todo remove
 typedef enum StumplessSortingMethod StumplessSortingMethod;
 typedef enum StumplessStatusCode StumplessStatusCode;
 
@@ -75,22 +71,6 @@ enum StumplessHTTPMethod {
   STUMPLESS_GET,
   STUMPLESS_POST,
   STUMPLESS_PUT
-};
-
-enum StumplessOutputFormat { // todo remove
-  STUMPLESS_BINARY,
-  STUMPLESS_CSV,
-  STUMPLESS_JSON,
-  STUMPLESS_TEXT,
-  STUMPLESS_XML
-};
-
-enum StumplessOutputMode { // todo remove
-  STUMPLESS_HTTP_MODE,
-  STUMPLESS_MYSQL_MODE,
-  STUMPLESS_STREAM_MODE,
-  STUMPLESS_STRING_MODE,
-  STUMPLESS_TCP_MODE
 };
 
 enum StumplessSortingMethod {
@@ -175,7 +155,6 @@ struct StumplessFileConfiguration {
 };
 
 struct StumplessFormattedOutput {
-  StumplessOutputFormat format; // todo remove
   StumplessFormattedPayload * payload;
   StumplessOutputProfile * profile;
 };

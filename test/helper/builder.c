@@ -44,8 +44,10 @@ BuildByteFormattedOutput( void )
   if( output == NULL )
     return NULL;
   
-  output->format = STUMPLESS_BINARY;
-  
+  output->profile = StumplessFindOutputProfileByName( "Binary" );
+  if( output->profile == NULL )
+    return NULL;
+   
   return output;
 }
 
@@ -391,7 +393,9 @@ BuildTextFormattedOutput( void )
   if( output == NULL )
     return NULL;
   
-  output->format = STUMPLESS_TEXT;
+  output->profile = StumplessFindOutputProfileByName( "Text" );
+  if( output->profile == NULL )
+    return NULL;
   
   output->payload = malloc( sizeof( StumplessFormattedPayload ) );
   if( output->payload == NULL )

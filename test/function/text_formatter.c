@@ -416,7 +416,7 @@ test_value_list_all_strings( void )
   if( output == NULL || output->payload == NULL )
     return "the output could not be built";
   
-  if( output->format != STUMPLESS_TEXT )
+  if( strcmp( output->profile->name, "Text" ) != 0 )
     return "the created output did not have a text format";
   
   StumplessValueList * list = output->payload->values;
