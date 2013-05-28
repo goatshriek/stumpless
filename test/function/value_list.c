@@ -14,7 +14,6 @@ const char * test_into_string( void );
 const char * test_is_empty( void );
 const char * test_prepender( void );
 const char * test_separator( void );
-const char * test_stream_write( void );
 const char * test_string_appender( void );
 const char * test_string_prepender( void );
 const char * test_to_string( void );
@@ -35,7 +34,6 @@ main( void )
   RUN_TEST( is_empty )
   RUN_TEST( prepender )
   RUN_TEST( separator )
-  RUN_TEST( stream_write )
   RUN_TEST( string_appender )
   RUN_TEST( string_prepender )
   RUN_TEST( to_string )
@@ -259,21 +257,6 @@ test_separator( void )
   FAIL_IF_NULL( test_str, "the list could not be converted to a string" )
   if( strcmp( test_str, "this, is, a, test, list" ) != 0 )
     return "the separator was not added between all elements of the list";
-  
-  return NULL;
-}
-
-const char *
-test_stream_write( void )
-{
-  StumplessValueList * list = BuildValueList();
-  if( list == NULL )
-    return "could not build the test list";
-  
-  // todo re-write this test when it is applicable
-  //StumplessStatusCode status = StumplessWriteValueListToStream( stdout, list );
-  //if( status != STUMPLESS_SUCCESS )
-  //  return "the list was not correctly written to the output";
   
   return NULL;
 }

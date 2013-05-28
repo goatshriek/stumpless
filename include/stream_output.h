@@ -6,6 +6,6 @@
 #include <type.h>
 
 StumplessStatusCode
-StumplessWriteToStream( FILE *, StumplessFormattedOutput * );
+StumplessTextOutputToStream( FILE *, StumplessFormattedOutput * );
 
 #endif
