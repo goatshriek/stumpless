@@ -95,17 +95,6 @@ Stumpless##name##ValueToString( StumplessValue * value )                       \
   return str;                                                                  \
 }
 
-#define SINGLE_VALUE_INTO_STREAM( member )                                     \
-result = fprintf( stream, format, data->member );
-
-#define ARRAY_INTO_STREAM( array )                                             \
-for( i = 0; i < length; i++ ){                                                 \
-  result = fprintf( stream, format, data->array[i] );                          \
-                                                                               \
-  if( result < 0)                                                              \
-    break;                                                                     \
-}
-
 StumplessValueList *
 StumplessBooleanArrayValueToValueList( StumplessValue * value )
 {
@@ -336,31 +325,6 @@ StumplessValueIntoString( char * str, StumplessValue * value )
   return value->profile->into_string( str, value );
 }
 
-unsigned short  // todo remove this function
-StumplessValueIsArray( StumplessValue * value )
-{
-  switch( value->type ){
-    case STUMPLESS_UNSIGNED_SHORT_POINTER:
-    case STUMPLESS_SHORT_POINTER:
-    case STUMPLESS_UNSIGNED_INT_POINTER:
-    case STUMPLESS_INT_POINTER:
-    case STUMPLESS_UNSIGNED_LONG_POINTER:
-    case STUMPLESS_LONG_POINTER:
-    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
-    case STUMPLESS_LONG_LONG_POINTER:
-    case STUMPLESS_UNSIGNED_CHAR_POINTER:
-    case STUMPLESS_SIGNED_CHAR_POINTER:
-    case STUMPLESS_CHAR_POINTER:
-    case STUMPLESS_FLOAT_POINTER:
-    case STUMPLESS_DOUBLE_POINTER:
-    case STUMPLESS_LONG_DOUBLE_POINTER:
-    case STUMPLESS_STRING_POINTER:
-      return 1;
-    default:
-      return 0;
-  }
-}
-
 char *
 StumplessValueToString( StumplessValue * value )
 {
@@ -369,122 +333,4 @@ StumplessValueToString( StumplessValue * value )
     return NULL;
   
   return value->profile->to_string( value );
-}
-
-StumplessStatusCode // todo remove this function
-StumplessWriteValueToStream( FILE * stream, StumplessValue * value )
-{
-  if( stream == NULL || value == NULL || value->data == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
-  
-  StumplessValueData * data = value->data;
-  char * temp_str;
-  //const char * default_format = StumplessValueTypeDefaultFormat( value->type );
-  const char * default_format = "%i";
-  const char * format = value->format == NULL ? default_format : value->format;
-  unsigned length = value->length;
-  unsigned i;
-  int result;
-  
-  switch( value->type ){
-    case STUMPLESS_UNSIGNED_SHORT:
-      SINGLE_VALUE_INTO_STREAM( u_s )
-      break;
-    case STUMPLESS_SHORT:
-      SINGLE_VALUE_INTO_STREAM( s )
-      break;
-    case STUMPLESS_UNSIGNED_INT:
-      SINGLE_VALUE_INTO_STREAM( u_i )
-      break;
-    case STUMPLESS_INT:
-      SINGLE_VALUE_INTO_STREAM( i )
-      break;
-    case STUMPLESS_UNSIGNED_LONG:
-      SINGLE_VALUE_INTO_STREAM( u_l )
-      break;
-    case STUMPLESS_LONG:
-      SINGLE_VALUE_INTO_STREAM( l )
-      break;
-    case STUMPLESS_UNSIGNED_LONG_LONG:
-      SINGLE_VALUE_INTO_STREAM( u_l_l )
-      break;
-    case STUMPLESS_LONG_LONG:
-      SINGLE_VALUE_INTO_STREAM( l_l )
-      break;
-    case STUMPLESS_UNSIGNED_CHAR:
-      SINGLE_VALUE_INTO_STREAM( u_c )
-      break;
-    case STUMPLESS_CHAR:
-      SINGLE_VALUE_INTO_STREAM( c )
-      break;
-    case STUMPLESS_FLOAT:
-      SINGLE_VALUE_INTO_STREAM( f )
-      break;
-    case STUMPLESS_DOUBLE:
-      SINGLE_VALUE_INTO_STREAM( d )
-      break;
-    case STUMPLESS_LONG_DOUBLE:
-      SINGLE_VALUE_INTO_STREAM( l_d )
-      break;
-    case STUMPLESS_UNSIGNED_SHORT_POINTER:
-      ARRAY_INTO_STREAM( u_s_p )
-      break;
-    case STUMPLESS_SHORT_POINTER:
-      ARRAY_INTO_STREAM( s_p )
-      break;
-    case STUMPLESS_UNSIGNED_INT_POINTER:
-      ARRAY_INTO_STREAM( u_i_p )
-      break;
-    case STUMPLESS_INT_POINTER:
-      ARRAY_INTO_STREAM( i_p )
-      break;
-    case STUMPLESS_UNSIGNED_LONG_POINTER:
-      ARRAY_INTO_STREAM( u_l_p )
-      break;
-    case STUMPLESS_LONG_POINTER:
-      ARRAY_INTO_STREAM( l_p )
-      break;
-    case STUMPLESS_UNSIGNED_LONG_LONG_POINTER:
-      ARRAY_INTO_STREAM( u_l_l_p )
-      break;
-    case STUMPLESS_LONG_LONG_POINTER:
-      ARRAY_INTO_STREAM( l_l_p )
-      break;
-    case STUMPLESS_UNSIGNED_CHAR_POINTER:
-      ARRAY_INTO_STREAM( u_c_p )
-      break;
-    case STUMPLESS_CHAR_POINTER:
-      ARRAY_INTO_STREAM( c_p )
-      break;
-    case STUMPLESS_FLOAT_POINTER:
-      ARRAY_INTO_STREAM( f_p )
-      break;
-    case STUMPLESS_DOUBLE_POINTER:
-      ARRAY_INTO_STREAM( d_p )
-      break;
-    case STUMPLESS_LONG_DOUBLE_POINTER:
-      ARRAY_INTO_STREAM( l_d_p )
-      break;
-    case STUMPLESS_BOOLEAN:
-      temp_str = StumplessBooleanToString( data->boolean );
-      result = fprintf( stream, "%s", temp_str );
-      break;
-    case STUMPLESS_STRING:
-      SINGLE_VALUE_INTO_STREAM( c_p )
-      break;
-    case STUMPLESS_VOID_POINTER:
-      result = fwrite( data->v_p, value->length, 1, stream );
-      if( result < 1 )
-        return STUMPLESS_FILE_WRITE_FAILURE;
-      else
-        return STUMPLESS_SUCCESS;
-      break;
-    default:
-      return STUMPLESS_FAILURE;
-  }
-  
-  if( result < 0 )
-    return STUMPLESS_FILE_WRITE_FAILURE;
-  else
-    return STUMPLESS_SUCCESS;
 }

@@ -9,9 +9,7 @@
 const char * test_array_value_to_value_list( void );
 const char * test_destructor( void );
 const char * test_into_string( void );
-const char * test_is_array( void );
 const char * test_outside_access ( void );
-const char * test_stream_write( void );
 const char * test_to_string( void );
 
 int
@@ -23,9 +21,7 @@ main( void )
   RUN_TEST( array_value_to_value_list )
   RUN_TEST( destructor )
   RUN_TEST( into_string )
-  RUN_TEST( is_array )
   RUN_TEST( outside_access )
-  RUN_TEST( stream_write )
   RUN_TEST( to_string )
   
   if( failure_count > 0 )
@@ -121,30 +117,6 @@ test_into_string( void )
 }
 
 const char *
-test_is_array( void )
-{
-  StumplessValue * value = BuildUnsignedShortValue();
-  if( value == NULL )
-    return "could not build the test value";
-  if( StumplessValueIsArray( value ) )
-    return "a non-array value was listed as an array";
-  
-  value = BuildIntArrayValue();
-  if( value == NULL )
-    return "could not build the test array value";
-  if( !StumplessValueIsArray( value ) )
-    return "an array value was listed as not an array";
-  
-  value = BuildVoidValue();
-  if( value == NULL )
-    return "could not build the test void value";
-  if( StumplessValueIsArray( value ) )
-    return "a void array was listed as an array";
-  
-  return NULL;
-}
-
-const char *
 test_outside_access( void )
 {
   StumplessValue * value = malloc( sizeof( StumplessValue ) );
@@ -173,48 +145,6 @@ test_outside_access( void )
   
   if( value->data->l_p[2] != 4 )
     return "the array held by the value could not be modified from the outside";
-  
-  return NULL;
-}
-
-const char *
-test_stream_write( void )
-{
-  StumplessValue * value = StumplessValueFromString( "sucka" );
-  
-  StumplessStatusCode status = StumplessWriteValueToStream( NULL, value );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty file pointer did not generate the correct error";
-  
-  status = StumplessWriteValueToStream( stdout, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty value did not generate the correct error";
-  
-  status = StumplessWriteValueToStream( stdout, value );
-  if( status != STUMPLESS_SUCCESS )
-    return "the value was not written to the stream successfully";
-  
-  value->format = NULL;
-  if( status != STUMPLESS_SUCCESS )
-    return "a value without a format specifier generated an error";
-  
-  value = BuildIntArrayValue();
-  status = StumplessWriteValueToStream( stdout, value );
-  if( status != STUMPLESS_SUCCESS )
-    return "a value with an array was not written to the stream successfully";
-  
-  value->format = NULL;
-  status = StumplessWriteValueToStream( stdout, value );
-  if( status != STUMPLESS_SUCCESS )
-    return "a value array without a format specifier generated an error";
-  
-  // todo re-write this test  when it is applicable
-  //value = BuildVoidValue();
-  //if( value == NULL )
-  //  return "could not build the test value";
-  //status = StumplessWriteValueToStream( stdout, value );
-  //if( status != STUMPLESS_SUCCESS )
-  //  return "the void pointer was not handled properly";
   
   return NULL;
 }

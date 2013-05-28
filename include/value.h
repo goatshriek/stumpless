@@ -156,16 +156,10 @@ StumplessUnsignedShortValueToString( StumplessValue * );
 StumplessStatusCode
 StumplessValueIntoString( char *, StumplessValue * );
 
-unsigned short // todo remove this function
-StumplessValueIsArray( StumplessValue * );
-
 StumplessStatusCode
 StumplessValueIntoString( char *, StumplessValue * );
 
 char *
 StumplessValueToString( StumplessValue * );
-
-StumplessStatusCode // todo remove this function
-StumplessWriteValueToStream( FILE *, StumplessValue * );
 
 #endif

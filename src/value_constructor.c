@@ -34,8 +34,6 @@ StumplessValueFromChar( char character )
 {
   CREATE_VALUE
   
-  value->type = STUMPLESS_CHAR; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Char" );
   if( value->profile == NULL )
     return NULL;
@@ -50,8 +48,6 @@ StumplessValueFromDouble( double num )
 {
   CREATE_VALUE
   
-  value->type = STUMPLESS_DOUBLE;  // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Double" );
   if( value->profile == NULL )
     return NULL;
@@ -64,8 +60,6 @@ StumplessValue *
 StumplessValueFromFloat( float num )
 {
   CREATE_VALUE
-  
-  value->type = STUMPLESS_FLOAT; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Float" );
   if( value->profile == NULL )
@@ -80,8 +74,6 @@ StumplessValueFromInt( int num )
 {
   CREATE_VALUE
   
-  value->type = STUMPLESS_INT; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Int" );
   if( value->profile == NULL )
     return NULL;
@@ -94,8 +86,6 @@ StumplessValue *
 StumplessValueFromLong( long num )
 {
   CREATE_VALUE
-  
-  value->type = STUMPLESS_LONG; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Long" );
   if( value->profile == NULL )
@@ -110,8 +100,6 @@ StumplessValueFromLongDouble( long double num )
 {
   CREATE_VALUE
   
-  value->type = STUMPLESS_LONG_DOUBLE; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Long Double" );
   if( value->profile == NULL )
     return NULL;
@@ -124,8 +112,6 @@ StumplessValue *
 StumplessValueFromLongLong( long long num )
 {
   CREATE_VALUE
-  
-  value->type = STUMPLESS_LONG_LONG; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Long Long" );
   if( value->profile == NULL )
@@ -140,8 +126,6 @@ StumplessValueFromShort( short num )
 {
   CREATE_VALUE
   
-  value->type = STUMPLESS_SHORT; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Short" );
   if( value->profile == NULL )
     return NULL;
@@ -154,8 +138,6 @@ StumplessValue *
 StumplessValueFromSignedChar( signed char character )
 {
   CREATE_VALUE
-  
-  value->type = STUMPLESS_SIGNED_CHAR; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Signed Char" );
   if( value->profile == NULL )
@@ -173,8 +155,6 @@ StumplessValueFromString( const char * str )
   
   CREATE_VALUE
   
-  value->type = STUMPLESS_STRING; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "String" );
   if( value->profile == NULL )
     return NULL;
@@ -187,8 +167,6 @@ StumplessValue *
 StumplessValueFromUnsignedChar( unsigned char character )
 {
   CREATE_VALUE
-  
-  value->type = STUMPLESS_UNSIGNED_CHAR; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Unsigned Char" );
   if( value->profile == NULL )
@@ -203,8 +181,6 @@ StumplessValueFromUnsignedInt( unsigned num )
 {
   CREATE_VALUE
   
-  value->type = STUMPLESS_UNSIGNED_INT; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Unsigned Int" );
   if( value->profile == NULL )
     return NULL;
@@ -217,8 +193,6 @@ StumplessValue *
 StumplessValueFromUnsignedLong( unsigned long num )
 {
   CREATE_VALUE
-  
-  value->type = STUMPLESS_UNSIGNED_LONG; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Unsigned Long" );
   if( value->profile == NULL )
@@ -233,8 +207,6 @@ StumplessValueFromUnsignedLongLong( unsigned long long num )
 {
   CREATE_VALUE
   
-  value->type = STUMPLESS_UNSIGNED_LONG_LONG; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Unsigned Long Long" );
   if( value->profile == NULL )
     return NULL;
@@ -247,8 +219,6 @@ StumplessValue *
 StumplessValueFromUnsignedShort( unsigned short num )
 {
   CREATE_VALUE
-  
-  value->type = STUMPLESS_UNSIGNED_SHORT; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Unsigned Short" );
   if( value->profile == NULL )

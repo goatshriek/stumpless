@@ -121,7 +121,7 @@ test_from_int( void )
 {
   StumplessValue * value = StumplessValueFromInt( INT_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_INT )
+  if( strcmp( value->profile->name, "Int" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->i != INT_MAX )
@@ -135,7 +135,7 @@ test_from_long( void )
 {
   StumplessValue * value = StumplessValueFromLong( LONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_LONG )
+  if( strcmp( value->profile->name, "Long" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->l != LONG_MAX )
@@ -151,7 +151,7 @@ test_from_long_double( void )
   
   StumplessValue * value = StumplessValueFromLongDouble( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_LONG_DOUBLE )
+  if( strcmp( value->profile->name, "Long Double" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->l_d != test_value )
@@ -165,7 +165,7 @@ test_from_long_long( void )
 {
   StumplessValue * value = StumplessValueFromLongLong( LLONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_LONG_LONG )
+  if( strcmp( value->profile->name, "Long Long" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->l_l != LLONG_MAX )
@@ -179,7 +179,7 @@ test_from_short( void )
 {
   StumplessValue * value = StumplessValueFromShort( SHRT_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_SHORT )
+  if( strcmp( value->profile->name, "Short" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->s != SHRT_MAX )
@@ -193,7 +193,7 @@ test_from_signed_char( void )
 {
   StumplessValue * value = StumplessValueFromSignedChar( SCHAR_MAX );
   FAIL_IF_NULL( value, "the value could not be built" );
-  if( value->type != STUMPLESS_SIGNED_CHAR )
+  if( strcmp( value->profile->name, "Signed Char" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" );
   if( value->data->s_c != SCHAR_MAX )
@@ -214,7 +214,7 @@ test_from_string( void )
   value = StumplessValueFromString( "test string 'n such" );
   if( value == NULL )
     return "a null value was returned for a non-null string";
-  if( value->type != STUMPLESS_STRING )
+  if( strcmp( value->profile->name, "String" ) != 0 )
     return "the value did not have a string type";
   if( value->data == NULL )
     return "the value did not have any data";
@@ -229,7 +229,7 @@ test_from_unsigned_char( void )
 {
   StumplessValue * value = StumplessValueFromUnsignedChar( UCHAR_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_UNSIGNED_CHAR )
+  if( strcmp( value->profile->name, "Unsigned Char" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_c != UCHAR_MAX )
@@ -246,7 +246,7 @@ test_from_unsigned_int( void )
   value = StumplessValueFromUnsignedInt( UINT_MAX );
   if( value == NULL )
     return "the value could not be created";
-  if( value->type != STUMPLESS_UNSIGNED_INT )
+  if( strcmp( value->profile->name, "Unsigned Int" ) != 0 )
     return "the created value did not have an unsigned int type";
   if( value->data == NULL || value->data->u_i != UINT_MAX )
     return "the value did not contain the correct number";
@@ -259,7 +259,7 @@ test_from_unsigned_long( void )
 {
   StumplessValue * value = StumplessValueFromUnsignedLong( ULONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_UNSIGNED_LONG )
+  if( strcmp( value->profile->name, "Unsigned Long" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_l != ULONG_MAX )
@@ -273,7 +273,7 @@ test_from_unsigned_long_long( void )
 {
   StumplessValue * value = StumplessValueFromUnsignedLongLong( ULLONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_UNSIGNED_LONG_LONG )
+  if( strcmp( value->profile->name, "Unsigned Long Long" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_l_l != ULLONG_MAX )
@@ -287,7 +287,7 @@ test_from_unsigned_short( void )
 {
   StumplessValue * value = StumplessValueFromUnsignedShort( USHRT_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
-  if( value->type != STUMPLESS_UNSIGNED_SHORT )
+  if( strcmp( value->profile->name, "Unsigned Short" ) != 0 )
     return "the value did not have the correct type";
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_s != USHRT_MAX )

@@ -92,8 +92,6 @@ BuildEmptyUnsignedIntArrayValue( void )
   if( value == NULL )
     return NULL;
   
-  value->type = STUMPLESS_UNSIGNED_INT_POINTER; // todo remove
-  
   value->profile = StumplessFindValueProfileByName( "Unsigned Int Array" );
   if( value->profile == NULL )
     return NULL;
@@ -286,7 +284,6 @@ BuildIntArrayValue( void )
     return NULL;
   
   value->format = NULL;
-  value->type = STUMPLESS_INT_POINTER; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Int Array" );
   if( value->profile == NULL )
@@ -327,8 +324,6 @@ BuildIntValue( void )
   value->data = malloc( sizeof( StumplessValueData ) );
   if( value->data == NULL )
     return NULL;
-  
-  value->type = STUMPLESS_INT; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Int" );
   if( value->profile == NULL )
@@ -378,8 +373,6 @@ BuildStringValue( void )
   value->data = malloc( sizeof( StumplessValueData ) );
   if( value->data == NULL )
     return NULL;
-  
-  value->type = STUMPLESS_STRING; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "String" );
   if( value->profile == NULL )
@@ -434,7 +427,6 @@ BuildUnsignedIntValue( void )
     return NULL;
   
   value->format = NULL;
-  value->type = STUMPLESS_UNSIGNED_INT; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Unsigned Int" );
   if( value->profile == NULL )
@@ -456,7 +448,6 @@ BuildUnsignedShortValue( void )
     return NULL;
   
   value->format = NULL;
-  value->type = STUMPLESS_UNSIGNED_SHORT; // todo remove
   
   value->profile = StumplessFindValueProfileByName( "Unsigned Short" );
   if( value->profile == NULL )
@@ -560,7 +551,6 @@ BuildVoidValue( void )
   if( value == NULL )
     return NULL;
   
-  value->type = STUMPLESS_VOID_POINTER; // todo remove
   value->profile = StumplessFindValueProfileByName( "Boolean" );
   if( value->profile == NULL )
     return NULL;

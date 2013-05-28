@@ -313,20 +313,3 @@ StumplessValueListToStrings( StumplessValueList * list )
   
   return output;
 }
-
-StumplessStatusCode // todo remove this function
-StumplessWriteValueListToStream( FILE * stream, StumplessValueList * list )
-{
-  if( stream == NULL || list == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
-  
-  StumplessValueListNode * current = list->first;
-  
-  while( current != NULL ){
-    STATUS_ON_FAILURE( StumplessWriteValueToStream( stream, current->value ) )
-    
-    current = current->next;
-  }
-  
-  return STUMPLESS_SUCCESS;
-}

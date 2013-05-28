@@ -12,7 +12,6 @@ enum StumplessOutputFormat; // todo remove
 enum StumplessOutputMode; // todo remove
 enum StumplessSortingMethod;
 enum StumplessStatusCode;
-enum StumplessValueType; // todo remove
 
 struct StumplessBoolean;
 struct StumplessBooleanFormat;
@@ -43,7 +42,6 @@ typedef enum StumplessOutputFormat StumplessOutputFormat; // todo remove
 typedef enum StumplessOutputMode StumplessOutputMode; // todo remove
 typedef enum StumplessSortingMethod StumplessSortingMethod;
 typedef enum StumplessStatusCode StumplessStatusCode;
-typedef enum StumplessValueType StumplessValueType; // todo remove
 
 typedef struct StumplessBoolean StumplessBoolean;
 typedef struct StumplessBooleanFormat StumplessBooleanFormat;
@@ -120,43 +118,6 @@ enum StumplessStatusCode {
   STUMPLESS_STRING_WRITE_FAILURE,
   STUMPLESS_MALFORMED_STRUCTURE
 };
-
-enum StumplessValueType {
-  STUMPLESS_UNSIGNED_SHORT,
-  STUMPLESS_UNSIGNED_SHORT_POINTER,
-  STUMPLESS_SHORT,
-  STUMPLESS_SHORT_POINTER,
-  STUMPLESS_UNSIGNED_INT,
-  STUMPLESS_UNSIGNED_INT_POINTER,
-  STUMPLESS_INT,
-  STUMPLESS_INT_POINTER,
-  STUMPLESS_UNSIGNED_LONG,
-  STUMPLESS_UNSIGNED_LONG_POINTER,
-  STUMPLESS_LONG,
-  STUMPLESS_LONG_POINTER,
-  STUMPLESS_UNSIGNED_LONG_LONG,
-  STUMPLESS_UNSIGNED_LONG_LONG_POINTER,
-  STUMPLESS_LONG_LONG,
-  STUMPLESS_LONG_LONG_POINTER,
-  STUMPLESS_CHAR,
-  STUMPLESS_CHAR_POINTER,
-  STUMPLESS_SIGNED_CHAR,
-  STUMPLESS_SIGNED_CHAR_POINTER,
-  STUMPLESS_UNSIGNED_CHAR,
-  STUMPLESS_UNSIGNED_CHAR_POINTER,
-  STUMPLESS_FLOAT,
-  STUMPLESS_FLOAT_POINTER,
-  STUMPLESS_DOUBLE,
-  STUMPLESS_DOUBLE_POINTER,
-  STUMPLESS_LONG_DOUBLE,
-  STUMPLESS_LONG_DOUBLE_POINTER,
-  STUMPLESS_STRING,
-  STUMPLESS_STRING_POINTER,
-  STUMPLESS_VOID_POINTER,
-  STUMPLESS_BOOLEAN,
-  STUMPLESS_CUSTOM_DATA
-}; // todo remove
-
 
 struct StumplessBoolean {
   short value;
@@ -258,7 +219,6 @@ struct StumplessStringConfiguration {
 
 struct StumplessValue {
   const char * format;
-  StumplessValueType type; // todo remove
   StumplessValueData * data;
   unsigned length;
   StumplessValueProfile * profile;
@@ -294,7 +254,6 @@ union StumplessValueData {
   long double l_d;
   const long double * l_d_p;
   const void * v_p;
-  StumplessBoolean * boolean; // todo remove
 };
 
 struct StumplessValueList {
