@@ -119,14 +119,14 @@ test_initialization( void )
   if( configuration->http == NULL )
     return "http configuration was not initialized";
   
-  if( configuration->multithreading == NULL )
-    return "multithreading configuration was not initialized";
-  
   if( configuration->sorting == NULL )
     return "sorting configuration was not initialized";
   
   if( configuration->string == NULL )
     return "string configuration was not initialized";
+  
+  if( configuration->threading == NULL )
+    return "multithreading configuration was not initialized";
   
   return NULL;
 }

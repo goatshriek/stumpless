@@ -37,23 +37,9 @@ StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 char *
 StumplessFormattedOutputToString( StumplessFormattedOutput * output )
 {
-  if( output == NULL )
+  if( output == NULL || output->profile == NULL
+   || output->profile->to_string == NULL )
     return NULL;
   
-  StumplessStatusCode status;
-  
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
-  if( configuration == NULL )
-    return NULL;
-  
-  size_t buffer_size = configuration->string->buffer_size;
-  char * str = malloc( sizeof( char ) * buffer_size );
-  if( str == NULL )
-    return NULL;
-  
-  status = StumplessFormattedOutputIntoString( str, output );
-  if( status != STUMPLESS_SUCCESS )
-    return NULL;
-  else
-    return str;
+  return output->profile->to_string( output );
 }

@@ -116,11 +116,11 @@ struct StumplessByteList {
 struct StumplessConfiguration {
   StumplessFileConfiguration * file;
   StumplessHTTPConfiguration * http;
-  StumplessThreadingConfiguration * multithreading;
   unsigned output_profile_count;
   StumplessOutputProfile ** output_profiles;
   StumplessSortingConfiguration * sorting;
   StumplessStringConfiguration * string;
+  StumplessThreadingConfiguration * threading;
   unsigned value_profile_count;
   StumplessValueProfile ** value_profiles;
 };
@@ -173,12 +173,14 @@ struct StumplessLevel {
 };
 
 struct StumplessOutputProfile {
-  StumplessStatusCode ( *to_http )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *into_buffer )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *into_http )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *into_mysql )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *into_stream )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *into_string )( StumplessFormattedOutput * );
+  StumplessStatusCode ( *into_tcp )( StumplessFormattedOutput * );
   const char * name;
-  StumplessStatusCode ( *to_mysql )( StumplessFormattedOutput * );
-  StumplessStatusCode ( *to_stream )( StumplessFormattedOutput * );
-  StumplessStatusCode ( *to_string )( StumplessFormattedOutput * );
-  StumplessStatusCode ( * to_tcp )( StumplessFormattedOutput * );
+  char * ( *to_string )( StumplessFormattedOutput * );
 };
 
 struct StumplessSortingConfiguration {

@@ -356,11 +356,12 @@ BuildOutputProfile( void )
   if( profile == NULL )
     return NULL;
   
-  profile->to_mysql = NULL;
+  profile->into_mysql = NULL;
+  profile->into_stream = NULL;
+  profile->into_string = NULL;
+  profile->into_tcp = NULL;
   profile->name = "Test Profile";
-  profile->to_stream = NULL;
   profile->to_string = NULL;
-  profile->to_tcp = NULL;
   
   return profile;
 }

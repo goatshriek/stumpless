@@ -25,11 +25,14 @@ StumplessAddValueProfile( profile );
 profile = malloc( sizeof( StumplessOutputProfile ) );                          \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
-profile->to_http = NULL;                                                       \
+profile->into_buffer = NULL;                                                   \
+profile->into_http = NULL;                                                     \
+profile->into_mysql = NULL;                                                    \
+profile->into_stream = NULL;                                                   \
+profile->into_string = NULL;                                                   \
+profile->into_tcp = NULL;                                                      \
 profile->name = profile_name;                                                  \
-profile->to_mysql = NULL;                                                      \
-profile->to_stream = NULL;                                                     \
-profile->to_tcp = NULL;                                                        \
+profile->to_string = NULL;                                                     \
 StumplessAddOutputProfile( profile );
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
@@ -133,9 +136,9 @@ StumplessInitializeConfiguration( void )
   if( configuration->http == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  required_size = sizeof( StumplessMultithreadingConfiguration );
-  configuration->multithreading = malloc( required_size );
-  if( configuration->multithreading == NULL )
+  required_size = sizeof( StumplessThreadingConfiguration );
+  configuration->threading = malloc( required_size );
+  if( configuration->threading == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
   required_size = sizeof( StumplessSortingConfiguration );
