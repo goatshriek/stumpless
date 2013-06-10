@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include <configuration.h>
+#include <formatted_output.h>
 #include <status_checker.h>
 #include <text_formatter.h>
 #include <type.h>
@@ -32,7 +33,7 @@ profile->into_stream = NULL;                                                   \
 profile->into_string = NULL;                                                   \
 profile->into_tcp = NULL;                                                      \
 profile->name = profile_name;                                                  \
-profile->to_string = NULL;                                                     \
+profile->to_string = &Stumpless##type_name##FormattedOutputToString;           \
 StumplessAddOutputProfile( profile );
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \

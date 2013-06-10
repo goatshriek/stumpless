@@ -2,6 +2,18 @@
 #include <formatted_output.h>
 #include <type.h>
 
+char *
+StumplessBinaryFormattedOutputToString( StumplessFormattedOutput * output )
+{
+  return NULL;
+}
+
+char *
+StumplessCSVFormattedOutputToString( StumplessFormattedOutput * output )
+{
+  return NULL;
+}
+
 unsigned short
 StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 {
@@ -24,4 +36,22 @@ StumplessFormattedOutputToString( StumplessFormattedOutput * output )
     return NULL;
   
   return output->profile->to_string( output );
+}
+
+char *
+StumplessJSONFormattedOutputToString( StumplessFormattedOutput * output )
+{
+  return NULL;
+}
+
+char *
+StumplessTextFormattedOutputToString( StumplessFormattedOutput * output )
+{
+  return NULL;
+}
+
+char *
+StumplessXMLFormattedOutputToString( StumplessFormattedOutput * output )
+{
+  return NULL;
 }
