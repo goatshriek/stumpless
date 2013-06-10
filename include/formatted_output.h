@@ -3,9 +3,6 @@
 
 #include <type.h>
 
-StumplessStatusCode
-StumplessFormattedOutputIntoString( char *, StumplessFormattedOutput * );
-
 unsigned short
 StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * );
 

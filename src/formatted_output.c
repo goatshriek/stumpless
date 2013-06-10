@@ -2,24 +2,6 @@
 #include <formatted_output.h>
 #include <type.h>
 
-StumplessStatusCode
-StumplessFormattedOutputIntoString( char * str,
-                                    StumplessFormattedOutput * output )
-{
-  if( str == NULL || output == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
-  
-  // todo need to implement this functionality
-  //switch( output->format ){
-  //  case STUMPLESS_TEXT:
-  //    return StumplessValueListIntoString( str, output->payload->values );
-  //  default:
-  //    return STUMPLESS_FAILURE;
-  //}
-  
-  return STUMPLESS_SUCCESS;
-}
-
 unsigned short
 StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 {
