@@ -47,7 +47,10 @@ StumplessJSONFormattedOutputToString( StumplessFormattedOutput * output )
 char *
 StumplessTextFormattedOutputToString( StumplessFormattedOutput * output )
 {
-  return NULL;
+  if( output == NULL || output->payload == NULL )
+    return NULL;
+  
+  return StumplessValueListToString( output->payload->values );
 }
 
 char *

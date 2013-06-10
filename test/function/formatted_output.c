@@ -15,7 +15,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( is_empty )
+  //RUN_TEST( is_empty )
   RUN_TEST( to_string )
   
   if( failure_count > 0 )
@@ -37,11 +37,11 @@ test_is_empty( void )
   if( !StumplessFormattedOutputIsEmpty( output ) )
     return "an output with a null list was not marked as empty";
   
-  //output->payload->values = StumplessNewValueList();
-  //if( output->payload->values == NULL )
-  //  return "could not create a new value list";
-  //if( !StumplessFormattedOutputIsEmpty( output ) )
-  //  return "an output with an empty list was not marked as empty";
+  output->payload->values = StumplessNewValueList();
+  if( output->payload->values == NULL )
+    return "could not create a new value list";
+  if( !StumplessFormattedOutputIsEmpty( output ) )
+    return "an output with an empty list was not marked as empty";
   
   return NULL;
 }
