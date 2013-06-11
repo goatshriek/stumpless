@@ -179,6 +179,7 @@ struct StumplessOutputProfile {
   StumplessStatusCode ( *into_stream )( StumplessFormattedOutput * );
   StumplessStatusCode ( *into_string )( StumplessFormattedOutput * );
   StumplessStatusCode ( *into_tcp )( StumplessFormattedOutput * );
+  unsigned short ( *is_empty )( StumplessFormattedOutput * );
   const char * name;
   char * ( *to_string )( StumplessFormattedOutput * );
 };

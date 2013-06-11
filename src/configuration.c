@@ -32,6 +32,7 @@ profile->into_mysql = NULL;                                                    \
 profile->into_stream = NULL;                                                   \
 profile->into_string = NULL;                                                   \
 profile->into_tcp = NULL;                                                      \
+profile->is_empty = &Stumpless##type_name##FormattedOutputIsEmpty;             \
 profile->name = profile_name;                                                  \
 profile->to_string = &Stumpless##type_name##FormattedOutputToString;           \
 StumplessAddOutputProfile( profile );

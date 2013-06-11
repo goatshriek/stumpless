@@ -3,8 +3,14 @@
 
 #include <type.h>
 
+unsigned short
+StumplessBinaryFormattedOutputIsEmpty( StumplessFormattedOutput * );
+
 char *
 StumplessBinaryFormattedOutputToString( StumplessFormattedOutput * );
+
+unsigned short
+StumplessCSVFormattedOutputIsEmpty( StumplessFormattedOutput * );
 
 char *
 StumplessCSVFormattedOutputToString( StumplessFormattedOutput * );
@@ -15,11 +21,20 @@ StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * );
 char *
 StumplessFormattedOutputToString( StumplessFormattedOutput * );
 
+unsigned short
+StumplessJSONFormattedOutputIsEmpty( StumplessFormattedOutput * );
+
 char *
 StumplessJSONFormattedOutputToString( StumplessFormattedOutput * );
 
+unsigned short
+StumplessTextFormattedOutputIsEmpty( StumplessFormattedOutput * );
+
 char *
 StumplessTextFormattedOutputToString( StumplessFormattedOutput * );
+
+unsigned short
+StumplessXMLFormattedOutputIsEmpty( StumplessFormattedOutput * );
 
 char *
 StumplessXMLFormattedOutputToString( StumplessFormattedOutput * );

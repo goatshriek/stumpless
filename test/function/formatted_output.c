@@ -15,7 +15,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  //RUN_TEST( is_empty )
+  RUN_TEST( is_empty )
   RUN_TEST( to_string )
   
   if( failure_count > 0 )
