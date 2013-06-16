@@ -8,75 +8,37 @@
 #include <type.h>
 #include <value_list.h>
 
-StumplessLevel *
-StumplessGetDebugLevel( void )
-{
-  StumplessLevel * debug = malloc( sizeof( StumplessLevel ) );
-  
-  if( debug == NULL )
-    return NULL;
-  
-  debug->value = 30;
-  debug->name = "debug";
-  
-  return debug;
+#define STUMPLESS_LEVEL_FUNCTION( function_name, level_name, level_value )     \
+StumplessLevel *                                                               \
+StumplessGet##function_name##Level( void )                                     \
+{                                                                              \
+  StumplessLevel * level_name = malloc( sizeof( StumplessLevel ) );            \
+  if( level_name == NULL )                                                     \
+    return NULL;                                                               \
+                                                                               \
+  level_name->value = level_value;                                             \
+  level_name->name = #level_name;                                              \
+                                                                               \
+  return level_name;                                                           \
 }
 
-StumplessLevel *
-StumplessGetErrorLevel( void )
-{
-  StumplessLevel * error = malloc( sizeof( StumplessLevel ) );
-  
-  if( error == NULL )
-    return NULL;
-  
-  error->value = 10;
-  error->name = "error";
-  
-  return error;
-}
+STUMPLESS_LEVEL_FUNCTION( Alert, alert, 0 )
 
-StumplessLevel *
-StumplessGetFatalLevel( void )
-{
-  StumplessLevel * fatal = malloc( sizeof( StumplessLevel ) );
-  
-  if( fatal == NULL )
-    return NULL;
-  
-  fatal->value = 0;
-  fatal->name = "fatal";
-  
-  return fatal;
-}
+STUMPLESS_LEVEL_FUNCTION( Critical, critical, 0 )
 
-StumplessLevel *
-StumplessGetInfoLevel( void )
-{
-  StumplessLevel * info = malloc( sizeof( StumplessLevel ) );
-  
-  if( info == NULL )
-    return NULL;
-  
-  info->value = 40;
-  info->name = "info";
-  
-  return info;
-}
+STUMPLESS_LEVEL_FUNCTION( Debug, debug, 30 )
 
-StumplessLevel *
-StumplessGetWarningLevel( void )
-{
-  StumplessLevel * warning = malloc( sizeof( StumplessLevel ) );
-  
-  if( warning == NULL )
-    return NULL;
-  
-  warning->value = 20;
-  warning->name = "warning";
-  
-  return warning;
-}
+STUMPLESS_LEVEL_FUNCTION( Emergencty, emergency, 0 )
+
+STUMPLESS_LEVEL_FUNCTION( Error, error, 10 )
+
+STUMPLESS_LEVEL_FUNCTION( Fatal, fatal, 0 )
+
+STUMPLESS_LEVEL_FUNCTION( Info, info, 40 )
+
+STUMPLESS_LEVEL_FUNCTION( Notice, notice, 0 )
+
+STUMPLESS_LEVEL_FUNCTION( Warning, warning, 20 )
 
 char *
 StumplessLevelToString( StumplessLevel * level )

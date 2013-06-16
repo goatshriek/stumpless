@@ -4,7 +4,16 @@
 #include <type.h>
 
 StumplessLevel *
+StumplessGetAlertLevel( void );
+
+StumplessLevel *
+StumplessGetCriticalLevel( void );
+
+StumplessLevel *
 StumplessGetDebugLevel( void );
+
+StumplessLevel *
+StumplessGetEmergencyLevel( void );
 
 StumplessLevel *
 StumplessGetErrorLevel( void );
@@ -14,6 +23,9 @@ StumplessGetFatalLevel( void );
 
 StumplessLevel *
 StumplessGetInfoLevel( void );
+
+StumplessLevel *
+StumplessGetNoticeLevel( void );
 
 StumplessLevel *
 StumplessGetWarningLevel( void );
