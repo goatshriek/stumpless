@@ -21,15 +21,14 @@ struct StumplessEvent;
 struct StumplessEventAttribute;
 struct StumplessFileConfiguration;
 struct StumplessFormattedOutput;
-union StumplessFormattedPayload;
 struct StumplessHTTConfiguration;
 struct StumplessLevel;
 struct StumplessOutputProfile;
 struct StumplessSortingConfiguration;
 struct StumplessStringConfiguration;
 struct StumplessThreadingConfiguration;
+union StumplessType;
 struct StumplessValue;
-union StumplessValueData;
 struct StumplessValueList;
 struct StumplessValueListNode;
 struct StumplessValueProfile;
@@ -49,15 +48,14 @@ typedef struct StumplessEvent StumplessEvent;
 typedef struct StumplessEventAttribute StumplessEventAttribute;
 typedef struct StumplessFileConfiguration StumplessFileConfiguration;
 typedef struct StumplessFormattedOutput StumplessFormattedOutput;
-typedef union StumplessFormattedPayload StumplessFormattedPayload;
 typedef struct StumplessHTTPConfiguration StumplessHTTPConfiguration;
 typedef struct StumplessLevel StumplessLevel;
 typedef struct StumplessOutputProfile StumplessOutputProfile;
 typedef struct StumplessSortingConfiguration StumplessSortingConfiguration;
 typedef struct StumplessStringConfiguration StumplessStringConfiguration;
 typedef struct StumplessThreadingConfiguration StumplessThreadingConfiguration;
+typedef union StumplessType StumplessType;
 typedef struct StumplessValue StumplessValue;
-typedef union StumplessValueData StumplessValueData;
 typedef struct StumplessValueList StumplessValueList;
 typedef struct StumplessValueListNode StumplessValueListNode;
 typedef struct StumplessValueProfile StumplessValueProfile;
@@ -154,13 +152,8 @@ struct StumplessFileConfiguration {
 };
 
 struct StumplessFormattedOutput {
-  StumplessFormattedPayload * payload;
+  StumplessType * data;
   StumplessOutputProfile * profile;
-};
-
-union StumplessFormattedPayload {
-  StumplessByteList * bytes;
-  StumplessValueList * values;
 };
 
 struct StumplessHTTPConfiguration {
@@ -198,14 +191,7 @@ struct StumplessThreadingConfiguration {
   unsigned short enabled;
 };
 
-struct StumplessValue {
-  const char * format;
-  StumplessValueData * data;
-  unsigned length;
-  StumplessValueProfile * profile;
-};
-
-union StumplessValueData {
+union StumplessType {
   unsigned short u_s;
   const unsigned short * u_s_p;
   signed short s;
@@ -235,6 +221,13 @@ union StumplessValueData {
   long double l_d;
   const long double * l_d_p;
   const void * v_p;
+};
+
+struct StumplessValue {
+  StumplessType * data;
+  const char * format;
+  unsigned length;
+  StumplessValueProfile * profile;
 };
 
 struct StumplessValueList {

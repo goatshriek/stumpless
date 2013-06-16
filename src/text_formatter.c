@@ -148,7 +148,7 @@ EntryAttributeToValueList( StumplessEntryAttribute * attribute )
   if( value_as_text == NULL )
     return NULL;
   
-  StumplessValueList * values = value_as_text->payload->values;
+  StumplessValueList * values = ( StumplessValueList * ) value_as_text->data;
   NULL_ON_FAILURE( StumplessAppendValueLists( output, values ) )
   
   return output;
@@ -272,7 +272,7 @@ EventAttributeToValueList( StumplessEventAttribute * attribute )
     default_value_output = default_value->profile->to_text( default_value );
     
     StumplessValueList * default_value_list;
-    default_value_list = default_value_output->payload->values;
+    default_value_list = ( StumplessValueList * ) default_value_output->data;
     
     NULL_ON_FAILURE( StumplessAppendValueLists( output, default_value_list ) )
   }
@@ -434,15 +434,15 @@ TextFormattedOutputFromValueList( StumplessValueList * list )
   if( output == NULL )
     return NULL;
   
-  output->payload = malloc( sizeof( StumplessFormattedPayload ) );
-  if( output->payload == NULL )
+  output->data = malloc( sizeof( StumplessType ) );
+  if( output->data == NULL )
     return NULL;
   
   output->profile = StumplessFindOutputProfileByName( "Text" );
   if( output->profile == NULL )
     return NULL;
   
-  output->payload->values = StumplessValueListToStrings( list );
+  output->data = ( void * ) StumplessValueListToStrings( list );
   
   return output;
 }

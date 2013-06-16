@@ -62,7 +62,7 @@ BuildCharArrayValue( void )
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
   
@@ -98,7 +98,7 @@ BuildEmptyUnsignedIntArrayValue( void )
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
   
@@ -291,7 +291,7 @@ BuildIntArrayValue( void )
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
   
@@ -323,7 +323,7 @@ BuildIntValue( void )
   if( value == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
   
@@ -373,7 +373,7 @@ BuildStringValue( void )
   if( value == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
   
@@ -398,10 +398,6 @@ BuildTextFormattedOutput( void )
   if( output->profile == NULL )
     return NULL;
   
-  output->payload = malloc( sizeof( StumplessFormattedPayload ) );
-  if( output->payload == NULL )
-    return NULL;
-  
   StumplessValueList * values = StumplessNewValueList();
   if( values == NULL )
     return NULL;
@@ -419,7 +415,7 @@ BuildTextFormattedOutput( void )
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  output->payload->values = values;
+  output->data = ( void * ) values;
   
   return output;
 }
@@ -437,7 +433,7 @@ BuildUnsignedIntValue( void )
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
   value->data->u_i = 4294967196u;
@@ -458,7 +454,7 @@ BuildUnsignedShortValue( void )
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
   value->data->u_s = 65000u;
@@ -560,7 +556,7 @@ BuildVoidValue( void )
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return NULL;
  

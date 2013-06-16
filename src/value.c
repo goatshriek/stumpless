@@ -23,7 +23,7 @@ Stumpless##name##ArrayValueToValueList( StumplessValue * value )               \
   if( list == NULL )                                                           \
     return NULL;                                                               \
                                                                                \
-  StumplessValueData * data = value->data;                                     \
+  StumplessType * data = value->data;                                          \
   StumplessValue * value_i;                                                    \
   unsigned i;                                                                  \
                                                                                \

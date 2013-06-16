@@ -123,7 +123,7 @@ test_outside_access( void )
   if( value == NULL )
     return "the test value could not be created";
   
-  value->data = malloc( sizeof( StumplessValueData ) );
+  value->data = malloc( sizeof( StumplessType ) );
   if( value->data == NULL )
     return "the test value's data could not be created";
   

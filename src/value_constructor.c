@@ -8,7 +8,7 @@
 StumplessValue * value = malloc( sizeof( StumplessValue ) );                   \
 if( value == NULL )                                                            \
   return NULL;                                                                 \
-value->data = malloc( sizeof( StumplessValueData ) );                          \
+value->data = malloc( sizeof( StumplessType ) );                               \
 if( value->data == NULL )                                                      \
   return NULL;
 

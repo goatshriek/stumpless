@@ -413,13 +413,13 @@ test_value_list_all_strings( void )
     return "could not build test entry";
   
   StumplessFormattedOutput * output = StumplessEntryToText( entry );
-  if( output == NULL || output->payload == NULL )
+  if( output == NULL || output->data == NULL )
     return "the output could not be built";
   
   if( strcmp( output->profile->name, "Text" ) != 0 )
     return "the created output did not have a text format";
   
-  StumplessValueList * list = output->payload->values;
+  StumplessValueList * list = ( StumplessValueList * ) output->data;
   if( list == NULL )
     return "the output did not have a value list";
   

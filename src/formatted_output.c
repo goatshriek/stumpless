@@ -62,17 +62,23 @@ StumplessJSONFormattedOutputToString( StumplessFormattedOutput * output )
 unsigned short
 StumplessTextFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 {
-  return ( output == NULL || output->payload == NULL
-        || StumplessValueListIsEmpty( output->payload->values ) );
+  if( output == NULL || output->data == NULL )
+    return 1;
+  
+  StumplessValueList * list = ( StumplessValueList * ) output->data;
+  
+  return StumplessValueListIsEmpty( list );
 }
 
 char *
 StumplessTextFormattedOutputToString( StumplessFormattedOutput * output )
 {
-  if( output == NULL || output->payload == NULL )
+  if( output == NULL || output->data == NULL )
     return NULL;
   
-  return StumplessValueListToString( output->payload->values );
+  StumplessValueList * list = ( StumplessValueList * ) output->data;
+  
+  return StumplessValueListToString( list );
 }
 
 unsigned short

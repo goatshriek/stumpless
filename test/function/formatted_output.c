@@ -33,12 +33,12 @@ test_is_empty( void )
   if( StumplessFormattedOutputIsEmpty( output ) )
     return "a full output was marked as empty";
   
-  output->payload->values = NULL;
+  output->data = NULL;
   if( !StumplessFormattedOutputIsEmpty( output ) )
     return "an output with a null list was not marked as empty";
   
-  output->payload->values = StumplessNewValueList();
-  if( output->payload->values == NULL )
+  output->data = ( void * ) StumplessNewValueList();
+  if( output->data == NULL )
     return "could not create a new value list";
   if( !StumplessFormattedOutputIsEmpty( output ) )
     return "an output with an empty list was not marked as empty";
