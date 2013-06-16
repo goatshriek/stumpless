@@ -20,7 +20,7 @@ StumplessValueFromBoolean( const StumplessBoolean * boolean )
   
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Boolean" );
+  value->profile = StumplessFindValueProfileByName( "boolean" );
   if( value->profile == NULL )
     return NULL;
   
@@ -34,7 +34,7 @@ StumplessValueFromChar( char character )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Char" );
+  value->profile = StumplessFindValueProfileByName( "char" );
   if( value->profile == NULL )
     return NULL;
   
@@ -48,7 +48,7 @@ StumplessValueFromDouble( double num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Double" );
+  value->profile = StumplessFindValueProfileByName( "double" );
   if( value->profile == NULL )
     return NULL;
   value->data->d = num;
@@ -61,7 +61,7 @@ StumplessValueFromFloat( float num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Float" );
+  value->profile = StumplessFindValueProfileByName( "float" );
   if( value->profile == NULL )
     return NULL;
   value->data->f = num;
@@ -74,7 +74,7 @@ StumplessValueFromInt( int num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Int" );
+  value->profile = StumplessFindValueProfileByName( "int" );
   if( value->profile == NULL )
     return NULL;
   value->data->i = num;
@@ -87,7 +87,7 @@ StumplessValueFromLong( long num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Long" );
+  value->profile = StumplessFindValueProfileByName( "long" );
   if( value->profile == NULL )
     return NULL;
   value->data->l = num;
@@ -100,7 +100,7 @@ StumplessValueFromLongDouble( long double num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Long Double" );
+  value->profile = StumplessFindValueProfileByName( "long double" );
   if( value->profile == NULL )
     return NULL;
   value->data->l_d = num;
@@ -113,7 +113,7 @@ StumplessValueFromLongLong( long long num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Long Long" );
+  value->profile = StumplessFindValueProfileByName( "long long" );
   if( value->profile == NULL )
     return NULL;
   value->data->l_l = num;
@@ -126,7 +126,7 @@ StumplessValueFromShort( short num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Short" );
+  value->profile = StumplessFindValueProfileByName( "short" );
   if( value->profile == NULL )
     return NULL;
   value->data->s = num;
@@ -139,7 +139,7 @@ StumplessValueFromSignedChar( signed char character )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Signed Char" );
+  value->profile = StumplessFindValueProfileByName( "signed char" );
   if( value->profile == NULL )
     return NULL;
   value->data->s_c = character;
@@ -155,7 +155,7 @@ StumplessValueFromString( const char * str )
   
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "String" );
+  value->profile = StumplessFindValueProfileByName( "string" );
   if( value->profile == NULL )
     return NULL;
   value->data->c_p = str;
@@ -168,7 +168,7 @@ StumplessValueFromUnsignedChar( unsigned char character )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Char" );
+  value->profile = StumplessFindValueProfileByName( "unsigned char" );
   if( value->profile == NULL )
     return NULL;
   value->data->u_c = character;
@@ -181,7 +181,7 @@ StumplessValueFromUnsignedInt( unsigned num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Int" );
+  value->profile = StumplessFindValueProfileByName( "unsigned int" );
   if( value->profile == NULL )
     return NULL;
   value->data->u_i = num;
@@ -194,7 +194,7 @@ StumplessValueFromUnsignedLong( unsigned long num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Long" );
+  value->profile = StumplessFindValueProfileByName( "unsigned long" );
   if( value->profile == NULL )
     return NULL;
   value->data->u_l = num;
@@ -207,7 +207,7 @@ StumplessValueFromUnsignedLongLong( unsigned long long num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Long Long" );
+  value->profile = StumplessFindValueProfileByName( "unsigned long long" );
   if( value->profile == NULL )
     return NULL;
   value->data->u_l_l = num;
@@ -220,7 +220,7 @@ StumplessValueFromUnsignedShort( unsigned short num )
 {
   CREATE_VALUE
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Short" );
+  value->profile = StumplessFindValueProfileByName( "unsigned short" );
   if( value->profile == NULL )
     return NULL;
   value->data->u_s = num;

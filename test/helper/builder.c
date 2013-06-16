@@ -44,7 +44,7 @@ BuildByteFormattedOutput( void )
   if( output == NULL )
     return NULL;
   
-  output->profile = StumplessFindOutputProfileByName( "Binary" );
+  output->profile = StumplessFindOutputProfileByName( "binary" );
   if( output->profile == NULL )
     return NULL;
    
@@ -58,7 +58,7 @@ BuildCharArrayValue( void )
   if( value == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "Char Array" );
+  value->profile = StumplessFindValueProfileByName( "char array" );
   if( value->profile == NULL )
     return NULL;
   
@@ -94,7 +94,7 @@ BuildEmptyUnsignedIntArrayValue( void )
   if( value == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Int Array" );
+  value->profile = StumplessFindValueProfileByName( "unsigned int array" );
   if( value->profile == NULL )
     return NULL;
   
@@ -287,7 +287,7 @@ BuildIntArrayValue( void )
   
   value->format = NULL;
   
-  value->profile = StumplessFindValueProfileByName( "Int Array" );
+  value->profile = StumplessFindValueProfileByName( "int array" );
   if( value->profile == NULL )
     return NULL;
   
@@ -327,7 +327,7 @@ BuildIntValue( void )
   if( value->data == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "Int" );
+  value->profile = StumplessFindValueProfileByName( "int" );
   if( value->profile == NULL )
     return NULL;
   
@@ -377,7 +377,7 @@ BuildStringValue( void )
   if( value->data == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "String" );
+  value->profile = StumplessFindValueProfileByName( "string" );
   if( value->profile == NULL )
     return NULL;
   
@@ -394,7 +394,7 @@ BuildTextFormattedOutput( void )
   if( output == NULL )
     return NULL;
   
-  output->profile = StumplessFindOutputProfileByName( "Text" );
+  output->profile = StumplessFindOutputProfileByName( "text" );
   if( output->profile == NULL )
     return NULL;
   
@@ -429,7 +429,7 @@ BuildUnsignedIntValue( void )
   
   value->format = NULL;
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Int" );
+  value->profile = StumplessFindValueProfileByName( "unsigned int" );
   if( value->profile == NULL )
     return NULL;
   
@@ -450,7 +450,7 @@ BuildUnsignedShortValue( void )
   
   value->format = NULL;
   
-  value->profile = StumplessFindValueProfileByName( "Unsigned Short" );
+  value->profile = StumplessFindValueProfileByName( "unsigned short" );
   if( value->profile == NULL )
     return NULL;
   
@@ -552,7 +552,7 @@ BuildVoidValue( void )
   if( value == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "Boolean" );
+  value->profile = StumplessFindValueProfileByName( "boolean" );
   if( value->profile == NULL )
     return NULL;
   

@@ -52,14 +52,14 @@ test_array_value_to_value_list( void )
   
   FAIL_IF_NULL( list->first, "the generated list was empty" )
   FAIL_IF_NULL( list->first->value, "the list nodes were invalid" )
-  if( strcmp( list->first->value->profile->name, "Int" ) != 0 )
+  if( strcmp( list->first->value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";
   if( list->first->value->data->i != 0 )
     return "the values of the list did not reflect the original array";
   
   FAIL_IF_NULL( list->last, "the generated list was not invalid" )
   FAIL_IF_NULL( list->last->value, "the list nodes were invalid" )
-  if( strcmp( list->last->value->profile->name, "Int" ) != 0 )
+  if( strcmp( list->last->value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";
   if( list->last->value->data->i != 9 )
     return "the values of the list did not reflect the original array";

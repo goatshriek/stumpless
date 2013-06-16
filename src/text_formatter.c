@@ -438,7 +438,7 @@ TextFormattedOutputFromValueList( StumplessValueList * list )
   if( output->data == NULL )
     return NULL;
   
-  output->profile = StumplessFindOutputProfileByName( "Text" );
+  output->profile = StumplessFindOutputProfileByName( "text" );
   if( output->profile == NULL )
     return NULL;
   

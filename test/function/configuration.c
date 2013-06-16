@@ -78,7 +78,7 @@ test_find_output_profile_by_name( void )
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
   StumplessOutputProfile * profile;
-  profile = StumplessFindOutputProfileByName( "Text" );
+  profile = StumplessFindOutputProfileByName( "text" );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
   profile = StumplessFindOutputProfileByName( "non-existent" );
@@ -93,7 +93,7 @@ test_find_value_profile_by_name( void )
   StumplessConfiguration * configuration = StumplessGetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  StumplessValueProfile * profile = StumplessFindValueProfileByName( "Short" );
+  StumplessValueProfile * profile = StumplessFindValueProfileByName( "short" );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
   profile = StumplessFindValueProfileByName( "non-existent" );
