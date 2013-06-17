@@ -23,6 +23,7 @@ struct StumplessFileConfiguration;
 struct StumplessFormattedOutput;
 struct StumplessHTTConfiguration;
 struct StumplessLevel;
+struct StumplessLoggingProfile;
 struct StumplessOutputProfile;
 struct StumplessSortingConfiguration;
 struct StumplessStringConfiguration;
@@ -50,6 +51,7 @@ typedef struct StumplessFileConfiguration StumplessFileConfiguration;
 typedef struct StumplessFormattedOutput StumplessFormattedOutput;
 typedef struct StumplessHTTPConfiguration StumplessHTTPConfiguration;
 typedef struct StumplessLevel StumplessLevel;
+typedef struct StumplessLoggingProfile StumplessLoggingProfile;
 typedef struct StumplessOutputProfile StumplessOutputProfile;
 typedef struct StumplessSortingConfiguration StumplessSortingConfiguration;
 typedef struct StumplessStringConfiguration StumplessStringConfiguration;
@@ -114,6 +116,8 @@ struct StumplessByteList {
 struct StumplessConfiguration {
   StumplessFileConfiguration * file;
   StumplessHTTPConfiguration * http;
+  unsigned logging_profile_count;
+  StumplessLoggingProfile ** logging_profiles;
   unsigned output_profile_count;
   StumplessOutputProfile ** output_profiles;
   StumplessSortingConfiguration * sorting;
@@ -164,6 +168,11 @@ struct StumplessLevel {
   unsigned value;
   const char * name;
 };
+
+struct StumplessLoggingProfile {
+  const char * name;
+  StumplessStatusCode ( *output_function )( StumplessFormattedOutput * );
+}
 
 struct StumplessOutputProfile {
   StumplessStatusCode ( *into_buffer )( StumplessFormattedOutput * );
