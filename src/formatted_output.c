@@ -63,7 +63,7 @@ StumplessJSONFormattedOutputToString( StumplessFormattedOutput * output )
 }
 
 unsigned short
-StumplessRawTextFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+StumplessRawStringFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 {
   if( output == NULL || output->data == NULL )
     return 1;
@@ -72,7 +72,7 @@ StumplessRawTextFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 }
 
 char *
-StumplessRawTextFormattedOutputToString( StumplessFormattedOutput * output )
+StumplessRawStringFormattedOutputToString( StumplessFormattedOutput * output )
 {
   if( output == NULL || output->data == NULL || output->data->c_p == NULL )
     return NULL;

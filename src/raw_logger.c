@@ -1,8 +1,10 @@
 #include <stdlib.h>
 
+#include <configuration.h>
 #include <raw_logger.h>
 #include <status_checker.h>
 #include <type.h>
+#include <value_constructor.h>
 
 #define RAW_LOGGER_FUNCTION( type_name, type_specifier )                       \
 StumplessStatusCode                                                            \
