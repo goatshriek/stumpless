@@ -349,6 +349,21 @@ BuildLevel( void )
   return level;
 }
 
+StumplessLoggingProfile *
+BuildLoggingProfile( void )
+{
+  StumplessLoggingProfile * profile;
+  
+  profile = malloc( sizeof( StumplessLoggingProfile ) );
+  if( profile == NULL )
+    return NULL;
+  
+  profile->name = "Test Logging Profile";
+  profile->output_function = NULL;
+  
+  return profile;
+}
+
 StumplessOutputProfile *
 BuildOutputProfile( void )
 {

@@ -45,6 +45,9 @@ BuildIntValue( void );
 StumplessLevel *
 BuildLevel( void );
 
+StumplessLoggingProfile *
+BuildLoggingProfile( void );
+
 StumplessOutputProfile *
 BuildOutputProfile( void );
 

@@ -53,8 +53,25 @@ profile->to_xml = NULL;                                                        \
 StumplessAddValueProfile( profile );
 
 static StumplessConfiguration * configuration = NULL;
+
+// todo an expanding array allocation method can get rid of these
+static unsigned logging_profile_array_capacity = 0;
 static unsigned output_profile_array_capacity = 0;
 static unsigned value_profile_array_capacity = 0;
+
+StumplessStatusCode
+StumplessAddLoggingProfile( StumplessLoggingProfile * profile )
+{
+  if( configuration == NULL )
+    StumplessInitializeConfiguration();
+  
+  unsigned index = configuration->logging_profile_count;
+  
+  configuration->logging_profiles[index] = profile;
+  configuration->logging_profile_count++;
+  
+  return STUMPLESS_SUCCESS;
+}
 
 StumplessStatusCode
 StumplessAddOutputProfile( StumplessOutputProfile * profile )
@@ -82,6 +99,20 @@ StumplessAddValueProfile( StumplessValueProfile * profile )
   configuration->value_profile_count++;
   
   return STUMPLESS_SUCCESS;
+}
+
+StumplessLoggingProfile *
+StumplessFindLoggingProfileByName( const char * name )
+{
+  if( configuration == NULL )
+    StumplessInitializeConfiguration();
+  
+  unsigned i;
+  for( i = 0; i < configuration->logging_profile_count; i++ )
+    if( strcmp( configuration->logging_profiles[i]->name, name ) == 0 )
+      return configuration->logging_profiles[i];
+  
+  return NULL;
 }
 
 StumplessOutputProfile *
@@ -153,20 +184,49 @@ StumplessInitializeConfiguration( void )
   if( configuration->string == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   configuration->string->buffer_size = 100;
+  
+  StumplessStatusCode status;
+  
+  status = StumplessInitializeLoggingProfiles();
+  STATUS_ON_FAILURE( status )
+  
+  status = StumplessInitializeOutputProfiles();
+  STATUS_ON_FAILURE( status )
+  
+  return StumplessInitializeValueProfiles();
+}
 
-  STATUS_ON_FAILURE( StumplessInitializeValueProfiles() )
-
-  return StumplessInitializeOutputProfiles();
+StumplessStatusCode
+StumplessInitializeLoggingProfiles( void )
+{
+  if( configuration == NULL )
+    return STUMPLESS_INCORRECT_INTERNAL_STATE;
+  
+  configuration->logging_profile_count = 0;
+  
+  logging_profile_array_capacity = 100;
+  size_t profile_size = sizeof( StumplessLoggingProfile );
+  size_t array_size = logging_profile_array_capacity * profile_size;
+  
+  configuration->logging_profiles = malloc( array_size );
+  if( configuration->logging_profiles == NULL )
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  
+  return STUMPLESS_SUCCESS;
 }
 
 StumplessStatusCode
 StumplessInitializeOutputProfiles( void )
 {
+  if( configuration == NULL )
+    return STUMPLESS_INCORRECT_INTERNAL_STATE;
+  
   configuration->output_profile_count = 0;
   
   output_profile_array_capacity = 100;
   size_t array_size;
   array_size = output_profile_array_capacity * sizeof( StumplessOutputProfile );
+  
   configuration->output_profiles = malloc( array_size );
   if( configuration->output_profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
@@ -185,11 +245,15 @@ StumplessInitializeOutputProfiles( void )
 StumplessStatusCode
 StumplessInitializeValueProfiles( void )
 {
+  if( configuration == NULL )
+    return STUMPLESS_INCORRECT_INTERNAL_STATE;
+  
   configuration->value_profile_count = 0;
   
   value_profile_array_capacity = 100;
   size_t array_size;
   array_size = value_profile_array_capacity * sizeof( StumplessValueProfile );
+  
   configuration->value_profiles = malloc( array_size );
   if( configuration->value_profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;

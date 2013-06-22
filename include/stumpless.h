@@ -3,7 +3,6 @@
 
 #include <boolean.h>
 #include <configuration.h>
-#include <custom_profile.h>
 #include <entry.h>
 #include <event.h>
 #include <formatted_output.h>

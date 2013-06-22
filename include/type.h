@@ -95,7 +95,8 @@ enum StumplessStatusCode {
   STUMPLESS_MEMORY_ALLOCATION_FAILURE,
   STUMPLESS_PARSE_FAILURE,
   STUMPLESS_STRING_WRITE_FAILURE,
-  STUMPLESS_MALFORMED_STRUCTURE
+  STUMPLESS_MALFORMED_STRUCTURE,
+  STUMPLESS_INCORRECT_INTERNAL_STATE
 };
 
 struct StumplessBoolean {
@@ -172,7 +173,7 @@ struct StumplessLevel {
 struct StumplessLoggingProfile {
   const char * name;
   StumplessStatusCode ( *output_function )( StumplessFormattedOutput * );
-}
+};
 
 struct StumplessOutputProfile {
   StumplessStatusCode ( *into_buffer )( StumplessFormattedOutput * );

@@ -1,7 +1,6 @@
 lib_LTLIBRARIES = libstumpless.la
 libstumpless_la_SOURCES = src/boolean.c \
                           src/configuration.c \
-                          src/custom_profile.c \
                           src/entry.c \
                           src/event.c \
                           src/formatted_output.c \
