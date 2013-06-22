@@ -28,6 +28,12 @@ char *
 StumplessJSONFormattedOutputToString( StumplessFormattedOutput * );
 
 unsigned short
+StumplessRawTextFormattedOutputIsEmpty( StumplessFormattedOutput * );
+
+char *
+StumplessRawTextFormattedOutputToString( StumplessFormattedOutput * );
+
+unsigned short
 StumplessTextFormattedOutputIsEmpty( StumplessFormattedOutput * );
 
 char *

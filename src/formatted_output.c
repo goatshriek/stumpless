@@ -1,5 +1,8 @@
+#include <stdlib.h>
+
 #include <configuration.h>
 #include <formatted_output.h>
+#include <string_helper.h>
 #include <type.h>
 #include <value_list.h>
 
@@ -57,6 +60,24 @@ char *
 StumplessJSONFormattedOutputToString( StumplessFormattedOutput * output )
 {
   return NULL;
+}
+
+unsigned short
+StumplessRawTextFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+{
+  if( output == NULL || output->data == NULL )
+    return 1;
+  
+  return ( output->data->c_p == NULL );
+}
+
+char *
+StumplessRawTextFormattedOutputToString( StumplessFormattedOutput * output )
+{
+  if( output == NULL || output->data == NULL || output->data->c_p == NULL )
+    return NULL;
+  
+  return copy_string( output->data->c_p );
 }
 
 unsigned short
