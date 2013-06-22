@@ -236,6 +236,7 @@ StumplessInitializeOutputProfiles( void )
   ADD_OUTPUT_PROFILE( "binary", Binary )
   ADD_OUTPUT_PROFILE( "csv", CSV )
   ADD_OUTPUT_PROFILE( "json", JSON )
+  ADD_OUTPUT_PROFILE( "raw string", RawString )
   ADD_OUTPUT_PROFILE( "text", Text )
   ADD_OUTPUT_PROFILE( "xml", XML )
   
