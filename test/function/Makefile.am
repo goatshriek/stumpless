@@ -29,6 +29,10 @@ test_function_quick_logger_SOURCES =  test/function/quick_logger.c
 test_function_quick_logger_CFLAGS = $(test_flags)
 test_function_quick_logger_LDADD = $(test_libraries)
 
+test_function_raw_logger_SOURCES = test/function/raw_logger.c
+test_function_raw_logger_CFLAGS = $(test_flags)
+test_function_raw_logger_LDADD = $(test_libraries)
+
 test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)

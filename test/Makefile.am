@@ -5,6 +5,7 @@ check_PROGRAMS = test/function/boolean \
                  test/function/formatted_output \
                  test/function/level \
                  test/function/quick_logger \
+                 test/function/raw_logger \
                  test/function/status \
                  test/function/stream_output \
                  test/function/string_helper \

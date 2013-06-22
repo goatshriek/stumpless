@@ -1,0 +1,4 @@
+#ifndef STUMPLESS_RAW_LOGGER_H
+#define STUMPLESS_RAW_LOGGER_H
+
+#endif
