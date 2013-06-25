@@ -26,4 +26,16 @@ AC_CHECK_HEADERS([stdlib.h stdio.h string.h time.h])
 
 # Checks for library functions.
 
+# enable arguments
+AC_ARG_ENABLE([namespace],
+  [AS_HELP_STRING([--enable-namespace],
+    [append a prefix to all functions])],
+  [namespace=$enableval],
+  [namespace=Stumpless]
+)
+
+AC_DEFINE_UNQUOTED([NMSPC],
+                   $namespace,
+                   [Namespace to append to public library members])
+
 AC_OUTPUT
