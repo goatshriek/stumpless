@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <configuration.h>
-#include <status_checker.h>
-#include <type.h>
-#include <value.h>
-#include <value_constructor.h>
-#include <value_list.h>
+#include "private/configuration.h"
+#include "private/status_checker.h"
+#include "private/type.h"
+#include "private/value.h"
+#include "private/value_constructor.h"
+#include "private/value_list.h"
 
 static
-StumplessStatusCode
-AppendValueListNodeToValueList( StumplessValueList * list,
-                                StumplessValueListNode * node )
+StatusCode
+AppendValueListNodeToValueList( ValueList * list, ValueListNode * node )
 {
   if( list == NULL || node == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -30,20 +29,19 @@ AppendValueListNodeToValueList( StumplessValueList * list,
 
 static
 void
-DestroyValueListNode( StumplessValueListNode * node )
+DestroyValueListNode( ValueListNode * node )
 {
   if( node == NULL )
     return;
   
-  StumplessDestroyValue( node->value );
+  DestroyValue( node->value );
   
   free( node );
 }
 
 static
-StumplessStatusCode
-PrependValueListNodeToValueList( StumplessValueList * list,
-                                 StumplessValueListNode * node )
+StatusCode
+PrependValueListNodeToValueList( ValueList * list, ValueListNode * node )
 {
   if( list == NULL || node == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -57,17 +55,16 @@ PrependValueListNodeToValueList( StumplessValueList * list,
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessAddSeparatorToValueList( StumplessValueList * list,
-                                  StumplessValue * separator )
+StatusCode
+AddSeparatorToValueList( ValueList * list, Value * separator )
 {
   if( list == NULL || separator == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessValueListNode * new_node;
-  StumplessValueListNode * current = list->first;
+  ValueListNode * new_node;
+  ValueListNode * current = list->first;
   while( current != list->last ){
-    new_node = malloc( sizeof( StumplessValueListNode ) );
+    new_node = malloc( sizeof( ValueListNode ) );
     if( new_node == NULL )
       return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
     new_node->value = separator;

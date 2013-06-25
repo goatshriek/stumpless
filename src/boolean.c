@@ -1,11 +1,11 @@
 #include <stdlib.h>
 
-#include <boolean.h>
-#include <string_helper.h>
-#include <type.h>
+#include "private/boolean.h"
+#include "private/string_helper.h"
+#include "private/type.h"
 
 char *
-StumplessBooleanToString( StumplessBoolean * boolean )
+BooleanToString( Boolean * boolean )
 {
   if( boolean == NULL )
     return NULL;

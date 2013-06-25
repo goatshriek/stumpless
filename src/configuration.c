@@ -1,14 +1,14 @@
 #include <stdlib.h>
 
-#include <configuration.h>
-#include <formatted_output.h>
-#include <status_checker.h>
-#include <text_formatter.h>
-#include <type.h>
-#include <value.h>
+#include <private/configuration.h>
+#include <private/formatted_output.h>
+#include <private/status_checker.h>
+#include <private/text_formatter.h>
+#include <private/type.h>
+#include <private/value.h>
 
 #define ADD_ARRAY_VALUE_PROFILE( profile_name, type_name )                     \
-profile = malloc( sizeof( StumplessValueProfile ) );                           \
+profile = malloc( sizeof( ValueProfile ) );                                    \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->into_string = NULL;                                                   \
@@ -17,13 +17,13 @@ profile->to_binary = NULL;                                                     \
 profile->to_csv = NULL;                                                        \
 profile->to_json = NULL;                                                       \
 profile->to_string = NULL;                                                     \
-profile->to_text = &StumplessGenericArrayValueToText;                          \
-profile->to_value_list = &Stumpless##type_name##ValueToValueList;              \
+profile->to_text = &GenericArrayValueToText;                                   \
+profile->to_value_list = &type_name##ValueToValueList;                         \
 profile->to_xml = NULL;                                                        \
-StumplessAddValueProfile( profile );
+AddValueProfile( profile );
 
 #define ADD_OUTPUT_PROFILE( profile_name, type_name )                          \
-profile = malloc( sizeof( StumplessOutputProfile ) );                          \
+profile = malloc( sizeof( OutputProfile ) );                                   \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
 profile->into_buffer = NULL;                                                   \
@@ -32,38 +32,38 @@ profile->into_mysql = NULL;                                                    \
 profile->into_stream = NULL;                                                   \
 profile->into_string = NULL;                                                   \
 profile->into_tcp = NULL;                                                      \
-profile->is_empty = &Stumpless##type_name##FormattedOutputIsEmpty;             \
+profile->is_empty = &type_name##FormattedOutputIsEmpty;                        \
 profile->name = profile_name;                                                  \
-profile->to_string = &Stumpless##type_name##FormattedOutputToString;           \
-StumplessAddOutputProfile( profile );
+profile->to_string = &type_name##FormattedOutputToString;                      \
+AddOutputProfile( profile );
 
 #define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
-profile = malloc( sizeof( StumplessValueProfile ) );                           \
+profile = malloc( sizeof( ValueProfile ) );                                    \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
-profile->into_string = &Stumpless##type_name##ValueIntoString;                 \
+profile->into_string = &type_name##ValueIntoString;                            \
 profile->name = profile_name;                                                  \
 profile->to_binary = NULL;                                                     \
 profile->to_csv = NULL;                                                        \
 profile->to_json = NULL;                                                       \
-profile->to_string = &Stumpless##type_name##ValueToString;                     \
-profile->to_text = &StumplessGenericValueToText;                               \
-profile->to_value_list = &StumplessGenericValueToValueList;                    \
+profile->to_string = &type_name##ValueToString;                                \
+profile->to_text = &GenericValueToText;                                        \
+profile->to_value_list = &GenericValueToValueList;                             \
 profile->to_xml = NULL;                                                        \
-StumplessAddValueProfile( profile );
+AddValueProfile( profile );
 
-static StumplessConfiguration * configuration = NULL;
+static Configuration * configuration = NULL;
 
 // todo an expanding array allocation method can get rid of these
 static unsigned logging_profile_array_capacity = 0;
 static unsigned output_profile_array_capacity = 0;
 static unsigned value_profile_array_capacity = 0;
 
-StumplessStatusCode
-StumplessAddLoggingProfile( StumplessLoggingProfile * profile )
+StatusCode
+AddLoggingProfile( LoggingProfile * profile )
 {
   if( configuration == NULL )
-    StumplessInitializeConfiguration();
+    InitializeConfiguration();
   
   unsigned index = configuration->logging_profile_count;
   
@@ -73,11 +73,11 @@ StumplessAddLoggingProfile( StumplessLoggingProfile * profile )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessAddOutputProfile( StumplessOutputProfile * profile )
+StatusCode
+AddOutputProfile( OutputProfile * profile )
 {
   if( configuration == NULL )
-    StumplessInitializeConfiguration();
+    InitializeConfiguration();
   
   unsigned index = configuration->output_profile_count;
   
@@ -87,11 +87,11 @@ StumplessAddOutputProfile( StumplessOutputProfile * profile )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessAddValueProfile( StumplessValueProfile * profile )
+StatusCode
+AddValueProfile( ValueProfile * profile )
 {
   if( configuration == NULL )
-    StumplessInitializeConfiguration();
+    InitializeConfiguration();
   
   unsigned index = configuration->value_profile_count;
   

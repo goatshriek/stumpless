@@ -1,9 +1,10 @@
 #ifndef STUMPLESS_BOOLEAN_H
 #define STUMPLESS_BOOLEAN_H
 
-#include <type.h>
+#include "public_name.h"
+#include "type.h"
 
 char *
-StumplessBooleanToString( StumplessBoolean * );
+NAME( BooleanToString )( NAME( Boolean ) * );
 
 #endif

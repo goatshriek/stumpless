@@ -36,6 +36,6 @@ AC_ARG_ENABLE([namespace],
 
 AC_DEFINE_UNQUOTED([NMSPC],
                    $namespace,
-                   [Namespace to append to public library members])
+                   [namespace to append to public library members])
 
 AC_OUTPUT
