@@ -3,43 +3,43 @@
 #include "private/entry.h"
 
 char *
-__NAME( EntryToString )( __NAME( Entry ) * entry )
+__STUMPLESS_NAME( EntryToString )( __STUMPLESS_NAME( Entry ) * entry )
 {
   return EntryToString( entry );
 }
 
-__NAME( Entry ) *
-__NAME( GetDebugEntry )( void )
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetDebugEntry )( void )
 {
   return GetDebugEntry();
 }
 
-__NAME( Entry ) *
-__NAME( EntryForEvent )( __NAME( Event ) * event )
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( EntryForEvent )( __STUMPLESS_NAME( Event ) * event )
 {
   return EntryForEvent( event );
 }
 
-__NAME( Entry ) *
-__NAME( GetErrorEntry )( void )
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetErrorEntry )( void )
 {
   return GetErrorEntry();
 }
 
-__NAME( Entry ) *
-__NAME( GetFatalEntry )( void )
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetFatalEntry )( void )
 {
   return GetFatalEntry();
 }
 
-__NAME( Entry ) *
-__NAME( GetInfoEntry )( void )
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetInfoEntry )( void )
 {
   return GetInfoEntry();
 }
 
-__NAME( Entry ) *
-__NAME( GetWarningEntry )( void )
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetWarningEntry )( void )
 {
   return GetWarningEntry();
 }

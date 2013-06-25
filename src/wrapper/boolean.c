@@ -3,7 +3,7 @@
 #include "private/boolean.h"
 
 char *
-__NAME( BooleanToString )( __NAME( Boolean ) * boolean )
+__STUMPLESS_NAME( BooleanToString )( __STUMPLESS_NAME( Boolean ) * boolean )
 {
   return BooleanToString( boolean );
 }

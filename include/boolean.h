@@ -5,6 +5,6 @@
 #include <type.h>
 
 char *
-NAME( BooleanToString )( NAME( Boolean ) * );
+__STUMPLESS_NAME( BooleanToString )( __STUMPLESS_NAME( Boolean ) * );
 
 #endif

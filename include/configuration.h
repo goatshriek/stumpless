@@ -3,40 +3,40 @@
 
 #include <type.h>
 
-__NAME( StatusCode )
-__NAME( AddLoggingProfile )( __NAME( LoggingProfile ) * );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( AddLoggingProfile )( __STUMPLESS_NAME( LoggingProfile ) * );
 
-__NAME( StatusCode )
-__NAME( AddOutputProfile )( __NAME( OutputProfile ) * );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( AddOutputProfile )( __STUMPLESS_NAME( OutputProfile ) * );
 
-__NAME( StatusCode )
-__NAME( AddValueProfile )( __NAME( ValueProfile ) * );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( AddValueProfile )( __STUMPLESS_NAME( ValueProfile ) * );
 
-__NAME( LoggingProfile ) *
-__NAME( FindLoggingProfileByName )( const char * );
+__STUMPLESS_NAME( LoggingProfile ) *
+__STUMPLESS_NAME( FindLoggingProfileByName )( const char * );
 
-__NAME( OutputProfile ) *
-__NAME( FindOutputProfileByName )( const char * );
+__STUMPLESS_NAME( OutputProfile ) *
+__STUMPLESS_NAME( FindOutputProfileByName )( const char * );
 
-__NAME( ValueProfile ) *
-__NAME( FindValueProfileByName )( const char * );
+__STUMPLESS_NAME( ValueProfile ) *
+__STUMPLESS_NAME( FindValueProfileByName )( const char * );
 
-__NAME( Configuration ) *
-__NAME( GetConfiguration )( void );
+__STUMPLESS_NAME( Configuration ) *
+__STUMPLESS_NAME( GetConfiguration )( void );
 
-__NAME( StatusCode )
-__NAME( InitializeConfiguration )( void );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( InitializeConfiguration )( void );
 
-__NAME( StatusCode )
-__NAME( InitializeLoggingProfiles )( void );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( InitializeLoggingProfiles )( void );
 
-__NAME( StatusCode )
-__NAME( InitializeOutputProfiles )( void );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( InitializeOutputProfiles )( void );
 
-__NAME( StatusCode )
-__NAME( InitializeValueProfiles )( void );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( InitializeValueProfiles )( void );
 
-__NAME( StatusCode )
-__NAME( SetConfiguration )( __NAME( Configuration ) * );
+__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( SetConfiguration )( __STUMPLESS_NAME( Configuration ) * );
 
 #endif

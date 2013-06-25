@@ -3,8 +3,8 @@
 
 #include <config.h>
 
-#define __NAME( name ) __EXPAND( NMSPC, name )
-#define __EXPAND( prefix, name ) __CONCATENATE( prefix, name )
-#define __CONCATENATE( prefix, name ) prefix ## name
+#define __STUMPLESS_NAME( name ) __STUMPLESS_EXPAND( NMSPC, name )
+#define __STUMPLESS_EXPAND( prefix, name ) __STUMPLESS_CONCAT( prefix, name )
+#define __STUMPLESS_CONCAT( prefix, name ) prefix ## name
 
 #endif

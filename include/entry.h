@@ -5,24 +5,24 @@
 #include <type.h>
 
 char *
-__NAME( EntryToString )( __NAME( Entry ) * );
+__STUMPLESS_NAME( EntryToString )( __STUMPLESS_NAME( Entry ) * );
 
-__NAME( Entry ) *
-__NAME( GetDebugEntry )( void );
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetDebugEntry )( void );
 
-__NAME( Entry ) *
-__NAME( EntryForEvent )( __NAME( Event ) * );
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( EntryForEvent )( __STUMPLESS_NAME( Event ) * );
 
-__NAME( Entry ) *
-__NAME( GetErrorEntry )( void );
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetErrorEntry )( void );
 
-__NAME( Entry ) *
-__NAME( GetFatalEntry )( void );
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetFatalEntry )( void );
 
-__NAME( Entry ) *
-__NAME( GetInfoEntry )( void );
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetInfoEntry )( void );
 
-__NAME( Entry ) *
-__NAME( GetWarningEntry )( void );
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( GetWarningEntry )( void );
 
 #endif
