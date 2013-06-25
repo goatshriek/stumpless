@@ -6,11 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <config.h>
-
-#define __NAME( name ) __EXPAND( NMSPC, name )
-#define __EXPAND( prefix, name ) __CONCATENATE( prefix, name )
-#define __CONCATENATE( prefix, name ) prefix ## name
+#include <public_name.h>
 
 enum __NAME( HTTPMethod );
 enum __NAME( SortingMethod );

@@ -20,7 +20,7 @@ AM_PROG_CC_C_O
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h stdio.h string.h time.h])
+AC_CHECK_HEADERS([limits.h stdlib.h stdio.h string.h time.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
