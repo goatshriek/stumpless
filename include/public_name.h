@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_PUBLIC_NAME_H
-#define STUMPLESS_PUBLIC_NAME_H
+#ifndef __STUMPLESS_PUBLIC_NAME_H
+#define __STUMPLESS_PUBLIC_NAME_H
 
 #include <config.h>
 

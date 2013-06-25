@@ -1,42 +1,42 @@
-#ifndef STUMPLESS_CONFIGURATION_H
-#define STUMPLESS_CONFIGURATION_H
+#ifndef STUMPLESS_PRIVATE_CONFIGURATION_H
+#define STUMPLESS_PRIVATE_CONFIGURATION_H
 
-#include <type.h>
+#include "private/type.h"
 
-StumplessStatusCode
-StumplessAddLoggingProfile( StumplessLoggingProfile * );
+StatusCode
+AddLoggingProfile( LoggingProfile * );
 
-StumplessStatusCode
-StumplessAddOutputProfile( StumplessOutputProfile * );
+StatusCode
+AddOutputProfile( OutputProfile * );
 
-StumplessStatusCode
-StumplessAddValueProfile( StumplessValueProfile * );
+StatusCode
+AddValueProfile( ValueProfile * );
 
-StumplessLoggingProfile *
-StumplessFindLoggingProfileByName( const char * );
+LoggingProfile *
+FindLoggingProfileByName( const char * );
 
-StumplessOutputProfile *
-StumplessFindOutputProfileByName( const char * );
+OutputProfile *
+FindOutputProfileByName( const char * );
 
-StumplessValueProfile *
-StumplessFindValueProfileByName( const char * );
+ValueProfile *
+FindValueProfileByName( const char * );
 
-StumplessConfiguration *
-StumplessGetConfiguration( void );
+Configuration *
+GetConfiguration( void );
 
-StumplessStatusCode
-StumplessInitializeConfiguration( void );
+StatusCode
+InitializeConfiguration( void );
 
-StumplessStatusCode
-StumplessInitializeLoggingProfiles( void );
+StatusCode
+InitializeLoggingProfiles( void );
 
-StumplessStatusCode
-StumplessInitializeOutputProfiles( void );
+StatusCode
+InitializeOutputProfiles( void );
 
-StumplessStatusCode
-StumplessInitializeValueProfiles( void );
+StatusCode
+InitializeValueProfiles( void );
 
-StumplessStatusCode
-StumplessSetConfiguration( StumplessConfiguration * );
+StatusCode
+SetConfiguration( Configuration * );
 
 #endif

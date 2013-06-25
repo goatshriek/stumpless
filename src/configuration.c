@@ -101,11 +101,11 @@ AddValueProfile( ValueProfile * profile )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessLoggingProfile *
-StumplessFindLoggingProfileByName( const char * name )
+LoggingProfile *
+FindLoggingProfileByName( const char * name )
 {
   if( configuration == NULL )
-    StumplessInitializeConfiguration();
+    InitializeConfiguration();
   
   unsigned i;
   for( i = 0; i < configuration->logging_profile_count; i++ )
@@ -115,11 +115,11 @@ StumplessFindLoggingProfileByName( const char * name )
   return NULL;
 }
 
-StumplessOutputProfile *
-StumplessFindOutputProfileByName( const char * name )
+OutputProfile *
+FindOutputProfileByName( const char * name )
 {
   if( configuration == NULL )
-    StumplessInitializeConfiguration();
+    InitializeConfiguration();
   
   unsigned i;
   for( i = 0; i < configuration->output_profile_count; i++ )
@@ -129,11 +129,11 @@ StumplessFindOutputProfileByName( const char * name )
   return NULL;
 }
 
-StumplessValueProfile *
-StumplessFindValueProfileByName( const char * name )
+ValueProfile *
+FindValueProfileByName( const char * name )
 {
   if( configuration == NULL )
-    StumplessInitializeConfiguration();
+    InitializeConfiguration();
   
   unsigned i;
   for( i = 0; i < configuration->value_profile_count; i++ )
@@ -143,57 +143,57 @@ StumplessFindValueProfileByName( const char * name )
   return NULL;
 }
 
-StumplessConfiguration *
-StumplessGetConfiguration( void )
+Configuration *
+GetConfiguration( void )
 {
   if( configuration == NULL )
-    NULL_ON_FAILURE( StumplessInitializeConfiguration() )
+    NULL_ON_FAILURE( InitializeConfiguration() )
   
   return configuration;
 }
 
-StumplessStatusCode
-StumplessInitializeConfiguration( void )
+StatusCode
+InitializeConfiguration( void )
 {
-  configuration = malloc( sizeof( StumplessConfiguration ) );
+  configuration = malloc( sizeof( Configuration ) );
   if( configuration == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
 
-  size_t required_size = sizeof( StumplessFileConfiguration );
+  size_t required_size = sizeof( FileConfiguration );
   configuration->file = malloc( required_size );
   if( configuration->file == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
 
-  required_size = sizeof( StumplessHTTPConfiguration );
+  required_size = sizeof( HTTPConfiguration );
   configuration->http = malloc( required_size );
   if( configuration->http == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  required_size = sizeof( StumplessThreadingConfiguration );
+  required_size = sizeof( ThreadingConfiguration );
   configuration->threading = malloc( required_size );
   if( configuration->threading == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  required_size = sizeof( StumplessSortingConfiguration );
+  required_size = sizeof( SortingConfiguration );
   configuration->sorting = malloc( required_size );
   if( configuration->sorting == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  required_size = sizeof( StumplessStringConfiguration );
+  required_size = sizeof( StringConfiguration );
   configuration->string = malloc( required_size );
   if( configuration->string == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   configuration->string->buffer_size = 100;
   
-  StumplessStatusCode status;
+  StatusCode status;
   
-  status = StumplessInitializeLoggingProfiles();
+  status = InitializeLoggingProfiles();
   STATUS_ON_FAILURE( status )
   
-  status = StumplessInitializeOutputProfiles();
+  status = InitializeOutputProfiles();
   STATUS_ON_FAILURE( status )
   
-  return StumplessInitializeValueProfiles();
+  return InitializeValueProfiles();
 }
 
 StumplessStatusCode
@@ -205,7 +205,7 @@ StumplessInitializeLoggingProfiles( void )
   configuration->logging_profile_count = 0;
   
   logging_profile_array_capacity = 100;
-  size_t profile_size = sizeof( StumplessLoggingProfile );
+  size_t profile_size = sizeof( LoggingProfile );
   size_t array_size = logging_profile_array_capacity * profile_size;
   
   configuration->logging_profiles = malloc( array_size );
@@ -215,8 +215,8 @@ StumplessInitializeLoggingProfiles( void )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessInitializeOutputProfiles( void )
+StatusCode
+InitializeOutputProfiles( void )
 {
   if( configuration == NULL )
     return STUMPLESS_INCORRECT_INTERNAL_STATE;
@@ -225,13 +225,13 @@ StumplessInitializeOutputProfiles( void )
   
   output_profile_array_capacity = 100;
   size_t array_size;
-  array_size = output_profile_array_capacity * sizeof( StumplessOutputProfile );
+  array_size = output_profile_array_capacity * sizeof( OutputProfile );
   
   configuration->output_profiles = malloc( array_size );
   if( configuration->output_profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  StumplessOutputProfile * profile;
+  OutputProfile * profile;
   
   ADD_OUTPUT_PROFILE( "binary", Binary )
   ADD_OUTPUT_PROFILE( "csv", CSV )
@@ -243,8 +243,8 @@ StumplessInitializeOutputProfiles( void )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessInitializeValueProfiles( void )
+StatusCode
+InitializeValueProfiles( void )
 {
   if( configuration == NULL )
     return STUMPLESS_INCORRECT_INTERNAL_STATE;
@@ -253,13 +253,13 @@ StumplessInitializeValueProfiles( void )
   
   value_profile_array_capacity = 100;
   size_t array_size;
-  array_size = value_profile_array_capacity * sizeof( StumplessValueProfile );
+  array_size = value_profile_array_capacity * sizeof( ValueProfile );
   
   configuration->value_profiles = malloc( array_size );
   if( configuration->value_profiles == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  StumplessValueProfile * profile;
+  ValueProfile * profile;
   
   ADD_ARRAY_VALUE_PROFILE( "boolean array", BooleanArray )
   ADD_ARRAY_VALUE_PROFILE( "char array", CharArray )
@@ -298,8 +298,8 @@ StumplessInitializeValueProfiles( void )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessSetConfiguration( StumplessConfiguration * new_configuration )
+StatusCode
+SetConfiguration( Configuration * new_configuration )
 {
   if( configuration == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;

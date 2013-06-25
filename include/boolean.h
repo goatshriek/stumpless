@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_BOOLEAN_H
-#define STUMPLESS_BOOLEAN_H
+#ifndef __STUMPLESS_BOOLEAN_H
+#define __STUMPLESS_BOOLEAN_H
 
 #include <public_name.h>
 #include <type.h>

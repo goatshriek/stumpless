@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_TYPE_H
-#define STUMPLESS_TYPE_H
+#ifndef __STUMPLESS_TYPE_H
+#define __STUMPLESS_TYPE_H
 
 #include <limits.h>
 #include <stdio.h>

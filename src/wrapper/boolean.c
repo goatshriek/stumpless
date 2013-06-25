@@ -5,5 +5,5 @@
 char *
 __NAME( BooleanToString )( __NAME( Boolean ) * boolean )
 {
-  BooleanToString( boolean );
+  return BooleanToString( boolean );
 }
