@@ -1,27 +1,27 @@
-#ifndef STUMPLESS_ENTRY_H
-#define STUMPLESS_ENTRY_H
+#ifndef STUMPLESS_PRIVATE_ENTRY_H
+#define STUMPLESS_PRIVATE_ENTRY_H
 
-#include <type.h>
+#include "private/type.h"
 
 char *
-StumplessEntryToString( StumplessEntry * );
+EntryToString( Entry * );
 
-StumplessEntry *
-StumplessGetDebugEntry( void );
+Entry *
+GetDebugEntry( void );
 
-StumplessEntry *
-StumplessEntryForEvent( StumplessEvent * );
+Entry *
+EntryForEvent( Event * );
 
-StumplessEntry *
-StumplessGetErrorEntry( void );
+Entry *
+GetErrorEntry( void );
 
-StumplessEntry *
-StumplessGetFatalEntry( void );
+Entry *
+GetFatalEntry( void );
 
-StumplessEntry *
-StumplessGetInfoEntry( void );
+Entry *
+GetInfoEntry( void );
 
-StumplessEntry *
-StumplessGetWarningEntry( void );
+Entry *
+GetWarningEntry( void );
 
 #endif

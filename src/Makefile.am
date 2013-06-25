@@ -15,4 +15,5 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/value_constructor.c \
                           src/value_list.c \
                           src/wrapper/boolean.c \
-                          src/wrapper/configuration.c
+                          src/wrapper/configuration.c \
+                          src/wrapper/entry.c

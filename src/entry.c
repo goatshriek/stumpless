@@ -1,32 +1,32 @@
 #include <stdlib.h>
 
-#include <entry.h>
-#include <event.h>
-#include <formatted_output.h>
-#include <text_formatter.h>
-#include <type.h>
-#include <value_list.h>
+#include "private/entry.h"
+#include "private/event.h"
+#include "private/formatted_output.h"
+#include "private/text_formatter.h"
+#include "private/type.h"
+#include "private/value_list.h"
 
 char *
-StumplessEntryToString( StumplessEntry * entry )
+EntryToString( Entry * entry )
 {
-  StumplessFormattedOutput * output =  StumplessEntryToText( entry );
-  return StumplessFormattedOutputToString( output ); 
+  FormattedOutput * output =  EntryToText( entry );
+  return FormattedOutputToString( output ); 
 }
 
-StumplessEntry *
-StumplessGetDebugEntry( void )
+Entry *
+GetDebugEntry( void )
 {
-  return StumplessEntryForEvent( StumplessGetDebugEvent() );
+  return EntryForEvent( GetDebugEvent() );
 }
 
-StumplessEntry *
-StumplessEntryForEvent( StumplessEvent * event )
+Entry *
+EntryForEvent( Event * event )
 {
   if( event == NULL )
     return NULL;
   
-  StumplessEntry * entry = malloc( sizeof( StumplessEntry ) );
+  Entry * entry = malloc( sizeof( Entry ) );
   
   if( entry == NULL )
     return NULL;
@@ -36,26 +36,26 @@ StumplessEntryForEvent( StumplessEvent * event )
   return entry;
 }
 
-StumplessEntry *
-StumplessGetErrorEntry( void )
+Entry *
+GetErrorEntry( void )
 {
-  return StumplessEntryForEvent( StumplessGetErrorEvent() );
+  return EntryForEvent( GetErrorEvent() );
 }
 
-StumplessEntry *
-StumplessGetFatalEntry( void )
+Entry *
+GetFatalEntry( void )
 {
-  return StumplessEntryForEvent( StumplessGetFatalEvent() );
+  return EntryForEvent( GetFatalEvent() );
 }
 
-StumplessEntry *
-StumplessGetInfoEntry( void )
+Entry *
+GetInfoEntry( void )
 {
-  return StumplessEntryForEvent( StumplessGetInfoEvent() );
+  return EntryForEvent( GetInfoEvent() );
 }
 
-StumplessEntry *
-StumplessGetWarningEntry( void )
+Entry *
+GetWarningEntry( void )
 {
-  return StumplessEntryForEvent( StumplessGetWarningEvent() );
+  return EntryForEvent( GetWarningEvent() );
 }
