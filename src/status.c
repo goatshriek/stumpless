@@ -3,6 +3,40 @@
 #include <status.h>
 #include <type.h>
 
+static StumplessStatus * last_error = NULL;
+static StumplessStatus * last_failure = NULL;
+
+StumplessStatus *
+StumplessAddStatus( StumplessStatus * )
+{
+  return NULL;
+}
+
+StumplessStatus *
+StumplessFindStatusByName( const char * name )
+{
+  return NULL;
+}
+
+StumplessStatus *
+StumplessInitializeStatus( void )
+{
+  return NULL;
+}
+
+StumplessStatus *
+StumplessGetLastError( void )
+{
+  return last_error;
+}
+
+StumplessStatus *
+StumplessGetLastFailure( void )
+{
+  return last_failure;
+}
+
+// todo remove
 const char *
 StumplessStatusToString( StumplessStatusCode code )
 {

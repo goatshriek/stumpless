@@ -3,6 +3,23 @@
 
 #include <type.h>
 
-const char * StumplessStatusToString( StumplessStatusCode );
+StumplessStatus *
+StumplessAddStatus( StumplessStatus * );
+
+StumplessStatus *
+StumplessFindStatusByName( const char * );
+
+StumplessStatus *
+StumplessInitializeStatus( void );
+
+StumplessStatus *
+StumplessGetLastError( void );
+
+StumplessStatus *
+StumplessGetLastFailure( void );
+
+// todo remove
+const char *
+StumplessStatusToString( StumplessStatusCode );
 
 #endif

@@ -25,6 +25,7 @@ struct StumplessHTTConfiguration;
 struct StumplessLevel;
 struct StumplessLoggingProfile;
 struct StumplessOutputProfile;
+struct StumplessStatus;
 struct StumplessSortingConfiguration;
 struct StumplessStringConfiguration;
 struct StumplessThreadingConfiguration;
@@ -53,6 +54,7 @@ typedef struct StumplessHTTPConfiguration StumplessHTTPConfiguration;
 typedef struct StumplessLevel StumplessLevel;
 typedef struct StumplessLoggingProfile StumplessLoggingProfile;
 typedef struct StumplessOutputProfile StumplessOutputProfile;
+typedef struct StumplessStatus StumplessStatus;
 typedef struct StumplessSortingConfiguration StumplessSortingConfiguration;
 typedef struct StumplessStringConfiguration StumplessStringConfiguration;
 typedef struct StumplessThreadingConfiguration StumplessThreadingConfiguration;
@@ -185,6 +187,13 @@ struct StumplessOutputProfile {
   unsigned short ( *is_empty )( StumplessFormattedOutput * );
   const char * name;
   char * ( *to_string )( StumplessFormattedOutput * );
+};
+
+struct StumplessStatus {
+  unsigned short error : 1;
+  unsigned short failure : 1;
+  const char * description;
+  const char * name;
 };
 
 struct StumplessSortingConfiguration {
