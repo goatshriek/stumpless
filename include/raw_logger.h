@@ -4,6 +4,9 @@
 #include <type.h>
 
 StumplessStatusCode
+StumplessLogRawBoolean( StumplessBoolean * );
+
+StumplessStatusCode
 StumplessLogRawChar( char );
 
 StumplessStatusCode
@@ -29,6 +32,9 @@ StumplessLogRawShort( short );
 
 StumplessStatusCode
 StumplessLogRawSignedChar( signed char );
+
+StumplessStatusCode
+StumplessLogRawString( const char * );
 
 StumplessStatusCode
 StumplessLogRawUnsignedChar( unsigned char );

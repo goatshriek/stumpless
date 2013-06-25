@@ -6,7 +6,33 @@
 #include <type.h>
 #include <value_constructor.h>
 
-#define RAW_LOGGER_FUNCTION( type_name, type_specifier )                       \
+#define POINTER_RAW_LOGGER_FUNCTION( type_name, type_specifier )               \
+StumplessStatusCode                                                            \
+StumplessLogRaw##type_name( type_specifier raw )                               \
+{                                                                              \
+  if( raw == NULL )                                                            \
+    return STUMPLESS_EMPTY_ARGUMENT;                                           \
+                                                                               \
+  StumplessValue * value = StumplessValueFrom##type_name( raw );               \
+  if( value == NULL )                                                          \
+    return STUMPLESS_FAILURE;                                                  \
+                                                                               \
+  StumplessFormattedOutput * output;                                           \
+  output = malloc( sizeof( StumplessFormattedOutput ) );                       \
+  if( output == NULL )                                                         \
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                \
+                                                                               \
+  output->data = malloc( sizeof( StumplessType ) );                            \
+  if( output->data == NULL )                                                   \
+    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                \
+                                                                               \
+  output->data->c_p = value->profile->to_string( value );                      \
+  output->profile = StumplessFindOutputProfileByName( "raw string" );          \
+                                                                               \
+  return STUMPLESS_SUCCESS;                                                    \
+}
+
+#define VALUE_RAW_LOGGER_FUNCTION( type_name, type_specifier )                 \
 StumplessStatusCode                                                            \
 StumplessLogRaw##type_name( type_specifier raw )                               \
 {                                                                              \
@@ -26,33 +52,37 @@ StumplessLogRaw##type_name( type_specifier raw )                               \
   output->data->c_p = value->profile->to_string( value );                      \
   output->profile = StumplessFindOutputProfileByName( "raw string" );          \
                                                                                \
-  return STUMPLESS_FAILURE;                                                    \
+  return STUMPLESS_SUCCESS;                                                    \
 }
 
-RAW_LOGGER_FUNCTION( Char, char )
+POINTER_RAW_LOGGER_FUNCTION( Boolean, StumplessBoolean * )
 
-RAW_LOGGER_FUNCTION( Double, double )
+VALUE_RAW_LOGGER_FUNCTION( Char, char )
 
-RAW_LOGGER_FUNCTION( Float, float )
+VALUE_RAW_LOGGER_FUNCTION( Double, double )
 
-RAW_LOGGER_FUNCTION( Int, int )
+VALUE_RAW_LOGGER_FUNCTION( Float, float )
 
-RAW_LOGGER_FUNCTION( Long, long )
+VALUE_RAW_LOGGER_FUNCTION( Int, int )
 
-RAW_LOGGER_FUNCTION( LongDouble, long double )
+VALUE_RAW_LOGGER_FUNCTION( Long, long )
 
-RAW_LOGGER_FUNCTION( LongLong, long long )
+VALUE_RAW_LOGGER_FUNCTION( LongDouble, long double )
 
-RAW_LOGGER_FUNCTION( Short, short )
+VALUE_RAW_LOGGER_FUNCTION( LongLong, long long )
 
-RAW_LOGGER_FUNCTION( SignedChar, signed char )
+VALUE_RAW_LOGGER_FUNCTION( Short, short )
 
-RAW_LOGGER_FUNCTION( UnsignedChar, unsigned char )
+VALUE_RAW_LOGGER_FUNCTION( SignedChar, signed char )
 
-RAW_LOGGER_FUNCTION( UnsignedInt, unsigned )
+POINTER_RAW_LOGGER_FUNCTION( String, const char * )
 
-RAW_LOGGER_FUNCTION( UnsignedLong, unsigned long )
+VALUE_RAW_LOGGER_FUNCTION( UnsignedChar, unsigned char )
 
-RAW_LOGGER_FUNCTION( UnsignedLongLong, unsigned long long )
+VALUE_RAW_LOGGER_FUNCTION( UnsignedInt, unsigned )
 
-RAW_LOGGER_FUNCTION( UnsignedShort, unsigned short )
+VALUE_RAW_LOGGER_FUNCTION( UnsignedLong, unsigned long )
+
+VALUE_RAW_LOGGER_FUNCTION( UnsignedLongLong, unsigned long long )
+
+VALUE_RAW_LOGGER_FUNCTION( UnsignedShort, unsigned short )
