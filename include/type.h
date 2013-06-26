@@ -8,75 +8,75 @@
 
 #include <public_name.h>
 
-enum __NAME( HTTPMethod );
-enum __NAME( SortingMethod );
-enum __NAME( StatusCode );
+enum __STUMPLESS_NAME( HTTPMethod );
+enum __STUMPLESS_NAME( SortingMethod );
+enum __STUMPLESS_NAME( StatusCode );
 
-struct __NAME( Boolean );
-struct __NAME( BooleanFormat );
-struct __NAME( ByteList );
-struct __NAME( Configuration );
-struct __NAME( Entry );
-struct __NAME( EntryAttribute );
-struct __NAME( Event );
-struct __NAME( EventAttribute );
-struct __NAME( FileConfiguration );
-struct __NAME( FormattedOutput );
-struct __NAME( HTTConfiguration );
-struct __NAME( Level );
-struct __NAME( LoggingProfile );
-struct __NAME( OutputProfile );
-struct __NAME( Status );
-struct __NAME( SortingConfiguration );
-struct __NAME( StringConfiguration );
-struct __NAME( ThreadingConfiguration );
-union __NAME( Type );
-struct __NAME( Value );
-struct __NAME( ValueList );
-struct __NAME( ValueListNode );
-struct __NAME( ValueProfile );
-
-
-typedef enum __NAME( HTTPMethod ) __NAME( HTTPMethod );
-typedef enum __NAME( SortingMethod ) __NAME( SortingMethod );
-typedef enum __NAME( StatusCode ) __NAME( StatusCode );
-
-typedef struct __NAME( Boolean ) __NAME( Boolean );
-typedef struct __NAME( BooleanFormat ) __NAME( BooleanFormat );
-typedef struct __NAME( ByteList ) __NAME( ByteList );
-typedef struct __NAME( Configuration ) __NAME( Configuration );
-typedef struct __NAME( Entry ) __NAME( Entry );
-typedef struct __NAME( EntryAttribute ) __NAME( EntryAttribute );
-typedef struct __NAME( Event ) __NAME( Event );
-typedef struct __NAME( EventAttribute ) __NAME( EventAttribute );
-typedef struct __NAME( FileConfiguration ) __NAME( FileConfiguration );
-typedef struct __NAME( FormattedOutput ) __NAME( FormattedOutput );
-typedef struct __NAME( HTTPConfiguration ) __NAME( HTTPConfiguration );
-typedef struct __NAME( Level ) __NAME( Level );
-typedef struct __NAME( LoggingProfile ) __NAME( LoggingProfile );
-typedef struct __NAME( OutputProfile ) __NAME( OutputProfile );
-typedef struct __NAME( Status ) __NAME( Status );
-typedef struct __NAME( SortingConfiguration ) __NAME( SortingConfiguration );
-typedef struct __NAME( StringConfiguration ) __NAME( StringConfiguration );
-typedef struct __NAME( ThreadingConfiguration )
-               __NAME( ThreadingConfiguration );
-typedef union __NAME( Type ) __NAME( Type );
-typedef struct __NAME( Value ) __NAME( Value );
-typedef struct __NAME( ValueList ) __NAME( ValueList );
-typedef struct __NAME( ValueListNode ) __NAME( ValueListNode );
-typedef struct __NAME( ValueProfile ) __NAME( ValueProfile );
+struct __STUMPLESS_NAME( Boolean );
+struct __STUMPLESS_NAME( BooleanFormat );
+struct __STUMPLESS_NAME( ByteList );
+struct __STUMPLESS_NAME( Configuration );
+struct __STUMPLESS_NAME( Entry );
+struct __STUMPLESS_NAME( EntryAttribute );
+struct __STUMPLESS_NAME( Event );
+struct __STUMPLESS_NAME( EventAttribute );
+struct __STUMPLESS_NAME( FileConfiguration );
+struct __STUMPLESS_NAME( FormattedOutput );
+struct __STUMPLESS_NAME( HTTConfiguration );
+struct __STUMPLESS_NAME( Level );
+struct __STUMPLESS_NAME( LoggingProfile );
+struct __STUMPLESS_NAME( OutputProfile );
+struct __STUMPLESS_NAME( Status );
+struct __STUMPLESS_NAME( SortingConfiguration );
+struct __STUMPLESS_NAME( StringConfiguration );
+struct __STUMPLESS_NAME( ThreadingConfiguration );
+union __STUMPLESS_NAME( Type );
+struct __STUMPLESS_NAME( Value );
+struct __STUMPLESS_NAME( ValueList );
+struct __STUMPLESS_NAME( ValueListNode );
+struct __STUMPLESS_NAME( ValueProfile );
 
 
-typedef unsigned char __NAME( Byte );
+typedef enum __STUMPLESS_NAME( HTTPMethod ) __STUMPLESS_NAME( HTTPMethod );
+typedef enum __STUMPLESS_NAME( SortingMethod ) __STUMPLESS_NAME( SortingMethod );
+typedef enum __STUMPLESS_NAME( StatusCode ) __STUMPLESS_NAME( StatusCode );
 
-enum __NAME( HTTPMethod ) {
+typedef struct __STUMPLESS_NAME( Boolean ) __STUMPLESS_NAME( Boolean );
+typedef struct __STUMPLESS_NAME( BooleanFormat ) __STUMPLESS_NAME( BooleanFormat );
+typedef struct __STUMPLESS_NAME( ByteList ) __STUMPLESS_NAME( ByteList );
+typedef struct __STUMPLESS_NAME( Configuration ) __STUMPLESS_NAME( Configuration );
+typedef struct __STUMPLESS_NAME( Entry ) __STUMPLESS_NAME( Entry );
+typedef struct __STUMPLESS_NAME( EntryAttribute ) __STUMPLESS_NAME( EntryAttribute );
+typedef struct __STUMPLESS_NAME( Event ) __STUMPLESS_NAME( Event );
+typedef struct __STUMPLESS_NAME( EventAttribute ) __STUMPLESS_NAME( EventAttribute );
+typedef struct __STUMPLESS_NAME( FileConfiguration ) __STUMPLESS_NAME( FileConfiguration );
+typedef struct __STUMPLESS_NAME( FormattedOutput ) __STUMPLESS_NAME( FormattedOutput );
+typedef struct __STUMPLESS_NAME( HTTPConfiguration ) __STUMPLESS_NAME( HTTPConfiguration );
+typedef struct __STUMPLESS_NAME( Level ) __STUMPLESS_NAME( Level );
+typedef struct __STUMPLESS_NAME( LoggingProfile ) __STUMPLESS_NAME( LoggingProfile );
+typedef struct __STUMPLESS_NAME( OutputProfile ) __STUMPLESS_NAME( OutputProfile );
+typedef struct __STUMPLESS_NAME( Status ) __STUMPLESS_NAME( Status );
+typedef struct __STUMPLESS_NAME( SortingConfiguration ) __STUMPLESS_NAME( SortingConfiguration );
+typedef struct __STUMPLESS_NAME( StringConfiguration ) __STUMPLESS_NAME( StringConfiguration );
+typedef struct __STUMPLESS_NAME( ThreadingConfiguration )
+               __STUMPLESS_NAME( ThreadingConfiguration );
+typedef union __STUMPLESS_NAME( Type ) __STUMPLESS_NAME( Type );
+typedef struct __STUMPLESS_NAME( Value ) __STUMPLESS_NAME( Value );
+typedef struct __STUMPLESS_NAME( ValueList ) __STUMPLESS_NAME( ValueList );
+typedef struct __STUMPLESS_NAME( ValueListNode ) __STUMPLESS_NAME( ValueListNode );
+typedef struct __STUMPLESS_NAME( ValueProfile ) __STUMPLESS_NAME( ValueProfile );
+
+
+typedef unsigned char __STUMPLESS_NAME( Byte );
+
+enum __STUMPLESS_NAME( HTTPMethod ) {
   STUMPLESS_DELETE,
   STUMPLESS_GET,
   STUMPLESS_POST,
   STUMPLESS_PUT
 };
 
-enum __NAME( SortingMethod ) {
+enum __STUMPLESS_NAME( SortingMethod ) {
   STUMPLESS_BUBBLE_SORT,
   STUMPLESS_CUSTOM_SORT,
   STUMPLESS_INSERTION_SORT,
@@ -85,7 +85,7 @@ enum __NAME( SortingMethod ) {
   STUMPLESS_SHELL_SORT
 };
 
-enum __NAME( StatusCode ) {
+enum __STUMPLESS_NAME( StatusCode ) {
   STUMPLESS_SUCCESS = EXIT_SUCCESS,
   STUMPLESS_FAILURE,
   STUMPLESS_EMPTY_ARGUMENT,
@@ -103,116 +103,116 @@ enum __NAME( StatusCode ) {
   STUMPLESS_INCORRECT_INTERNAL_STATE
 };
 
-struct __NAME( Boolean ) {
+struct __STUMPLESS_NAME( Boolean ) {
   short value;
-  __NAME( BooleanFormat ) * format;
+  __STUMPLESS_NAME( BooleanFormat ) * format;
 };
 
-struct __NAME( BooleanFormat ) {
+struct __STUMPLESS_NAME( BooleanFormat ) {
   const char * true_description;
   const char * false_description;
 };
 
-struct __NAME( ByteList ) {
-  __NAME( Byte ) * bytes;
+struct __STUMPLESS_NAME( ByteList ) {
+  __STUMPLESS_NAME( Byte ) * bytes;
   unsigned byte_count;
 };
 
-struct __NAME( Configuration ) {
-  __NAME( FileConfiguration ) * file;
-  __NAME( HTTPConfiguration ) * http;
+struct __STUMPLESS_NAME( Configuration ) {
+  __STUMPLESS_NAME( FileConfiguration ) * file;
+  __STUMPLESS_NAME( HTTPConfiguration ) * http;
   unsigned logging_profile_count;
-  __NAME( LoggingProfile ) ** logging_profiles;
+  __STUMPLESS_NAME( LoggingProfile ) ** logging_profiles;
   unsigned output_profile_count;
-  __NAME( OutputProfile ) ** output_profiles;
-  __NAME( SortingConfiguration ) * sorting;
-  __NAME( StringConfiguration ) * string;
-  __NAME( ThreadingConfiguration ) * threading;
+  __STUMPLESS_NAME( OutputProfile ) ** output_profiles;
+  __STUMPLESS_NAME( SortingConfiguration ) * sorting;
+  __STUMPLESS_NAME( StringConfiguration ) * string;
+  __STUMPLESS_NAME( ThreadingConfiguration ) * threading;
   unsigned value_profile_count;
-  __NAME( ValueProfile ) ** value_profiles;
+  __STUMPLESS_NAME( ValueProfile ) ** value_profiles;
 };
 
-struct __NAME( Entry ) {
+struct __STUMPLESS_NAME( Entry ) {
   const char * description;
-  __NAME( Event ) * event;
-  __NAME( EntryAttribute ) ** attributes;
+  __STUMPLESS_NAME( Event ) * event;
+  __STUMPLESS_NAME( EntryAttribute ) ** attributes;
   unsigned attribute_count;
 };
 
-struct __NAME( EntryAttribute ) {
-  __NAME( EventAttribute ) * event_attribute;
-  __NAME( Value ) * value;
+struct __STUMPLESS_NAME( EntryAttribute ) {
+  __STUMPLESS_NAME( EventAttribute ) * event_attribute;
+  __STUMPLESS_NAME( Value ) * value;
 };
 
-struct __NAME( Event ) {
+struct __STUMPLESS_NAME( Event ) {
   const char * name;
-  __NAME( Level ) * level;
-  __NAME( EventAttribute ) ** attributes;
+  __STUMPLESS_NAME( Level ) * level;
+  __STUMPLESS_NAME( EventAttribute ) ** attributes;
   unsigned attribute_count;
 };
 
-struct __NAME( EventAttribute ) {
+struct __STUMPLESS_NAME( EventAttribute ) {
   const char * name;
-  __NAME( Value ) * default_value;
+  __STUMPLESS_NAME( Value ) * default_value;
 };
 
-struct __NAME( FileConfiguration ) {
+struct __STUMPLESS_NAME( FileConfiguration ) {
   FILE * current_file;
 };
 
-struct __NAME( FormattedOutput ) {
-  __NAME( Type ) * data;
-  __NAME( OutputProfile ) * profile;
+struct __STUMPLESS_NAME( FormattedOutput ) {
+  __STUMPLESS_NAME( Type ) * data;
+  __STUMPLESS_NAME( OutputProfile ) * profile;
 };
 
-struct __NAME( HTTPConfiguration ) {
-  __NAME( HTTPMethod ) method;
+struct __STUMPLESS_NAME( HTTPConfiguration ) {
+  __STUMPLESS_NAME( HTTPMethod ) method;
 };
 
-struct __NAME( Level ) {
+struct __STUMPLESS_NAME( Level ) {
   unsigned value;
   const char * name;
 };
 
-struct __NAME( LoggingProfile ) {
+struct __STUMPLESS_NAME( LoggingProfile ) {
   const char * name;
-  __NAME( StatusCode ) ( *output_function )( __NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( StatusCode ) ( *output_function )( __STUMPLESS_NAME( FormattedOutput ) * );
 };
 
-struct __NAME( OutputProfile ) {
-  __NAME( StatusCode ) ( *into_buffer )( __NAME( FormattedOutput ) * );
-  __NAME( StatusCode ) ( *into_http )( __NAME( FormattedOutput ) * );
-  __NAME( StatusCode ) ( *into_mysql )( __NAME( FormattedOutput ) * );
-  __NAME( StatusCode ) ( *into_stream )( __NAME( FormattedOutput ) * );
-  __NAME( StatusCode ) ( *into_string )( __NAME( FormattedOutput ) * );
-  __NAME( StatusCode ) ( *into_tcp )( __NAME( FormattedOutput ) * );
-  unsigned short ( *is_empty )( __NAME( FormattedOutput ) * );
+struct __STUMPLESS_NAME( OutputProfile ) {
+  __STUMPLESS_NAME( StatusCode ) ( *into_buffer )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( StatusCode ) ( *into_http )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( StatusCode ) ( *into_mysql )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( StatusCode ) ( *into_stream )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( StatusCode ) ( *into_string )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( StatusCode ) ( *into_tcp )( __STUMPLESS_NAME( FormattedOutput ) * );
+  unsigned short ( *is_empty )( __STUMPLESS_NAME( FormattedOutput ) * );
   const char * name;
-  char * ( *to_string )( __NAME( FormattedOutput ) * );
+  char * ( *to_string )( __STUMPLESS_NAME( FormattedOutput ) * );
 };
 
-struct __NAME( Status ) {
+struct __STUMPLESS_NAME( Status ) {
   unsigned short error : 1;
   unsigned short failure : 1;
   const char * description;
   const char * name;
 };
 
-struct __NAME( SortingConfiguration ) {
-  __NAME( SortingMethod ) entry_method;
-  __NAME( SortingMethod ) log_method;
+struct __STUMPLESS_NAME( SortingConfiguration ) {
+  __STUMPLESS_NAME( SortingMethod ) entry_method;
+  __STUMPLESS_NAME( SortingMethod ) log_method;
   unsigned short ascending;
 };
 
-struct __NAME( StringConfiguration ) {
+struct __STUMPLESS_NAME( StringConfiguration ) {
   size_t buffer_size;
 };
 
-struct __NAME( ThreadingConfiguration ) {
+struct __STUMPLESS_NAME( ThreadingConfiguration ) {
   unsigned short enabled;
 };
 
-union __NAME( Type ) {
+union __STUMPLESS_NAME( Type ) {
   unsigned short u_s;
   const unsigned short * u_s_p;
   signed short s;
@@ -244,33 +244,33 @@ union __NAME( Type ) {
   const void * v_p;
 };
 
-struct __NAME( Value ) {
-  __NAME( Type ) * data;
+struct __STUMPLESS_NAME( Value ) {
+  __STUMPLESS_NAME( Type ) * data;
   const char * format;
   unsigned length;
-  __NAME( ValueProfile ) * profile;
+  __STUMPLESS_NAME( ValueProfile ) * profile;
 };
 
-struct __NAME( ValueList ) {
-  __NAME( ValueListNode ) * first;
-  __NAME( ValueListNode ) * last;
+struct __STUMPLESS_NAME( ValueList ) {
+  __STUMPLESS_NAME( ValueListNode ) * first;
+  __STUMPLESS_NAME( ValueListNode ) * last;
 };
 
-struct __NAME( ValueListNode ) {
-  __NAME( Value ) * value;
-  __NAME( ValueListNode ) * next;
+struct __STUMPLESS_NAME( ValueListNode ) {
+  __STUMPLESS_NAME( Value ) * value;
+  __STUMPLESS_NAME( ValueListNode ) * next;
 };
 
-struct __NAME( ValueProfile ) {
-  __NAME( StatusCode ) ( *into_string )( char *, __NAME( Value ) * );
+struct __STUMPLESS_NAME( ValueProfile ) {
+  __STUMPLESS_NAME( StatusCode ) ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
   const char * name;
-  __NAME( FormattedOutput ) * ( *to_binary )( __NAME( Value ) * );
-  __NAME( FormattedOutput ) * ( *to_csv )( __NAME( Value ) * );
-  __NAME( FormattedOutput ) * ( *to_json )( __NAME( Value ) * );
-  char * ( *to_string )( __NAME( Value ) * );
-  __NAME( FormattedOutput ) * ( *to_text )( __NAME( Value ) * );
-  __NAME( ValueList ) * ( *to_value_list )( __NAME( Value ) * );
-  __NAME( FormattedOutput ) * ( *to_xml )( __NAME( Value ) * );
+  __STUMPLESS_NAME( FormattedOutput ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( FormattedOutput ) * ( *to_csv )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( FormattedOutput ) * ( *to_json )( __STUMPLESS_NAME( Value ) * );
+  char * ( *to_string )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( FormattedOutput ) * ( *to_text )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( ValueList ) * ( *to_value_list )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( FormattedOutput ) * ( *to_xml )( __STUMPLESS_NAME( Value ) * );
 };
 
 #endif

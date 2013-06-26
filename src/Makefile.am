@@ -16,4 +16,16 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/value_list.c \
                           src/wrapper/boolean.c \
                           src/wrapper/configuration.c \
-                          src/wrapper/entry.c
+                          src/wrapper/entry.c \
+                          src/wrapper/event.c \
+                          src/wrapper/formatted_output.c \
+                          src/wrapper/level.c \
+                          src/wrapper/logger.c \
+                          src/wrapper/raw_logger.c \
+                          src/wrapper/status.c \
+                          src/wrapper/stream_output.c \
+                          src/wrapper/string_helper.c \
+                          src/wrapper/text_formatter.c \
+                          src/wrapper/value.c \
+                          src/wrapper/value_constructor.c \
+                          src/wrapper/value_list.c

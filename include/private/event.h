@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_EVENT_H
-#define STUMPLESS_EVENT_H
+#ifndef STUMPLESS_PRIVATE_EVENT_H
+#define STUMPLESS_PRIVATE_EVENT_H
 
 #include "private/type.h"
 

@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_EVENT_H
-#define STUMPLESS_EVENT_H
+#ifndef __STUMPLESS_EVENT_H
+#define __STUMPLESS_EVENT_H
 
 #include <public_name.h>
 #include <type.h>
