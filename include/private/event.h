@@ -1,27 +1,27 @@
 #ifndef STUMPLESS_EVENT_H
 #define STUMPLESS_EVENT_H
 
-#include <type.h>
+#include "private/type.h"
 
 char *
-StumplessEventToString( StumplessEvent * );
+EventToString( Event * );
 
-StumplessEvent *
-StumplessGetDebugEvent( void );
+Event *
+GetDebugEvent( void );
 
-StumplessEvent *
-StumplessGetErrorEvent( void );
+Event *
+GetErrorEvent( void );
 
-StumplessEvent *
-StumplessEventForLevel( StumplessLevel * );
+Event *
+EventForLevel( Level * );
 
-StumplessEvent *
-StumplessGetFatalEvent( void );
+Event *
+GetFatalEvent( void );
 
-StumplessEvent *
-StumplessGetInfoEvent( void );
+Event *
+GetInfoEvent( void );
 
-StumplessEvent *
-StumplessGetWarningEvent( void );
+Event *
+GetWarningEvent( void );
 
 #endif
