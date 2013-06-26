@@ -1,54 +1,54 @@
-#ifndef STUMPLESS_RAW_LOGGER_H
-#define STUMPLESS_RAW_LOGGER_H
+#ifndef STUMPLESS_PRIVATE_RAW_LOGGER_H
+#define STUMPLESS_PRIVATE_RAW_LOGGER_H
 
 #include <type.h>
 
-StumplessStatusCode
-StumplessLogRawBoolean( StumplessBoolean * );
+StatusCode
+LogRawBoolean( Boolean * );
 
-StumplessStatusCode
-StumplessLogRawChar( char );
+StatusCode
+LogRawChar( char );
 
-StumplessStatusCode
-StumplessLogRawDouble( double );
+StatusCode
+LogRawDouble( double );
 
-StumplessStatusCode
-StumplessLogRawFloat( float );
+StatusCode
+LogRawFloat( float );
 
-StumplessStatusCode
-StumplessLogRawInt( int );
+StatusCode
+LogRawInt( int );
 
-StumplessStatusCode
-StumplessLogRawLong( long );
+StatusCode
+LogRawLong( long );
 
-StumplessStatusCode
-StumplessLogRawLongDouble( long double );
+StatusCode
+LogRawLongDouble( long double );
 
-StumplessStatusCode
-StumplessLogRawLongLong( long long );
+StatusCode
+LogRawLongLong( long long );
 
-StumplessStatusCode
-StumplessLogRawShort( short );
+StatusCode
+LogRawShort( short );
 
-StumplessStatusCode
-StumplessLogRawSignedChar( signed char );
+StatusCode
+LogRawSignedChar( signed char );
 
-StumplessStatusCode
-StumplessLogRawString( const char * );
+StatusCode
+LogRawString( const char * );
 
-StumplessStatusCode
-StumplessLogRawUnsignedChar( unsigned char );
+StatusCode
+LogRawUnsignedChar( unsigned char );
 
-StumplessStatusCode
-StumplessLogRawUnsignedInt( unsigned );
+StatusCode
+LogRawUnsignedInt( unsigned );
 
-StumplessStatusCode
-StumplessLogRawUnsignedLong( unsigned long );
+StatusCode
+LogRawUnsignedLong( unsigned long );
 
-StumplessStatusCode
-StumplessLogRawUnsignedLongLong( unsigned long long );
+StatusCode
+LogRawUnsignedLongLong( unsigned long long );
 
-StumplessStatusCode
-StumplessLogRawUnsignedShort( unsigned short );
+StatusCode
+LogRawUnsignedShort( unsigned short );
 
 #endif

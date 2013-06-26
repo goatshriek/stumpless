@@ -1,11 +1,11 @@
-#ifndef STUMPLESS_STREAM_OUTPUT_H
-#define STUMPLESS_STREAM_OUTPUT_H
+#ifndef STUMPLESS_PRIVATE_STREAM_OUTPUT_H
+#define STUMPLESS_PRIVATE_STREAM_OUTPUT_H
 
 #include <stdio.h>
 
 #include <type.h>
 
-StumplessStatusCode
-StumplessTextOutputToStream( FILE *, StumplessFormattedOutput * );
+StatusCode
+TextOutputToStream( FILE *, FormattedOutput * );
 
 #endif

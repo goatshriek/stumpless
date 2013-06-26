@@ -1,54 +1,54 @@
-#ifndef STUMPLESS_VALUE_CONSTRUCTOR_H
-#define STUMPLESS_VALUE_CONSTRUCTOR_H
+#ifndef STUMPLESS_PRIVATE_VALUE_CONSTRUCTOR_H
+#define STUMPLESS_PRIVATE_VALUE_CONSTRUCTOR_H
 
 #include <type.h>
 
-StumplessValue *
-StumplessValueFromBoolean( const StumplessBoolean * );
+Value *
+ValueFromBoolean( const Boolean * );
 
-StumplessValue *
-StumplessValueFromChar( char );
+Value *
+ValueFromChar( char );
 
-StumplessValue *
-StumplessValueFromDouble( double );
+Value *
+ValueFromDouble( double );
 
-StumplessValue *
-StumplessValueFromFloat( float );
+Value *
+ValueFromFloat( float );
 
-StumplessValue *
-StumplessValueFromInt( int );
+Value *
+ValueFromInt( int );
 
-StumplessValue *
-StumplessValueFromLong( long );
+Value *
+ValueFromLong( long );
 
-StumplessValue *
-StumplessValueFromLongDouble( long double );
+Value *
+ValueFromLongDouble( long double );
 
-StumplessValue *
-StumplessValueFromLongLong( long long );
+Value *
+ValueFromLongLong( long long );
 
-StumplessValue *
-StumplessValueFromShort( short );
+Value *
+ValueFromShort( short );
 
-StumplessValue *
-StumplessValueFromSignedChar( signed char );
+Value *
+ValueFromSignedChar( signed char );
 
-StumplessValue *
-StumplessValueFromString( const char * );
+Value *
+ValueFromString( const char * );
 
-StumplessValue *
-StumplessValueFromUnsignedChar( unsigned char );
+Value *
+ValueFromUnsignedChar( unsigned char );
 
-StumplessValue *
-StumplessValueFromUnsignedInt( unsigned );
+Value *
+ValueFromUnsignedInt( unsigned );
 
-StumplessValue *
-StumplessValueFromUnsignedLong( unsigned long );
+Value *
+ValueFromUnsignedLong( unsigned long );
 
-StumplessValue *
-StumplessValueFromUnsignedLongLong( unsigned long long);
+Value *
+ValueFromUnsignedLongLong( unsigned long long);
 
-StumplessValue *
-StumplessValueFromUnsignedShort( unsigned short );
+Value *
+ValueFromUnsignedShort( unsigned short );
 
 #endif

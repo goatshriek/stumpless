@@ -1,12 +1,12 @@
-#ifndef STUMPLESS_LOGGER_H
-#define STUMPLESS_LOGGER_H
+#ifndef STUMPLESS_PRIVATE_LOGGER_H
+#define STUMPLESS_PRIVATE_LOGGER_H
 
 #include <type.h>
 
-StumplessStatusCode StumplessLogDebug( const char * );
-StumplessStatusCode StumplessLogError( const char * );
-StumplessStatusCode StumplessLogFatal( const char * );
-StumplessStatusCode StumplessLogInfo( const char * );
-StumplessStatusCode StumplessLogWarning( const char * );
+StatusCode LogDebug( const char * );
+StatusCode LogError( const char * );
+StatusCode LogFatal( const char * );
+StatusCode LogInfo( const char * );
+StatusCode LogWarning( const char * );
 
 #endif

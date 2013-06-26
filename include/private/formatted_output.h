@@ -1,48 +1,48 @@
-#ifndef STUMPLESS_FORMATTED_OUTPUT_H
-#define STUMPLESS_FORMATTED_OUTPUT_H
+#ifndef STUMPLESS_PRIVATE_FORMATTED_OUTPUT_H
+#define STUMPLESS_PRIVATE_FORMATTED_OUTPUT_H
 
 #include <type.h>
 
 unsigned short
-StumplessBinaryFormattedOutputIsEmpty( StumplessFormattedOutput * );
+BinaryFormattedOutputIsEmpty( FormattedOutput * );
 
 char *
-StumplessBinaryFormattedOutputToString( StumplessFormattedOutput * );
+BinaryFormattedOutputToString( FormattedOutput * );
 
 unsigned short
-StumplessCSVFormattedOutputIsEmpty( StumplessFormattedOutput * );
+CSVFormattedOutputIsEmpty( FormattedOutput * );
 
 char *
-StumplessCSVFormattedOutputToString( StumplessFormattedOutput * );
+CSVFormattedOutputToString( FormattedOutput * );
 
 unsigned short
-StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * );
+FormattedOutputIsEmpty( FormattedOutput * );
 
 char *
-StumplessFormattedOutputToString( StumplessFormattedOutput * );
+FormattedOutputToString( FormattedOutput * );
 
 unsigned short
-StumplessJSONFormattedOutputIsEmpty( StumplessFormattedOutput * );
+JSONFormattedOutputIsEmpty( FormattedOutput * );
 
 char *
-StumplessJSONFormattedOutputToString( StumplessFormattedOutput * );
+JSONFormattedOutputToString( FormattedOutput * );
 
 unsigned short
-StumplessRawStringFormattedOutputIsEmpty( StumplessFormattedOutput * );
+RawStringFormattedOutputIsEmpty( FormattedOutput * );
 
 char *
-StumplessRawStringFormattedOutputToString( StumplessFormattedOutput * );
+RawStringFormattedOutputToString( FormattedOutput * );
 
 unsigned short
-StumplessTextFormattedOutputIsEmpty( StumplessFormattedOutput * );
+TextFormattedOutputIsEmpty( FormattedOutput * );
 
 char *
-StumplessTextFormattedOutputToString( StumplessFormattedOutput * );
+TextFormattedOutputToString( FormattedOutput * );
 
 unsigned short
-StumplessXMLFormattedOutputIsEmpty( StumplessFormattedOutput * );
+XMLFormattedOutputIsEmpty( FormattedOutput * );
 
 char *
-StumplessXMLFormattedOutputToString( StumplessFormattedOutput * );
+XMLFormattedOutputToString( FormattedOutput * );
 
 #endif

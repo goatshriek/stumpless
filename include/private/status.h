@@ -1,25 +1,25 @@
-#ifndef STUMPLESS_STATUS_H
-#define STUMPLESS_STATUS_H
+#ifndef STUMPLESS_PRIVATE_STATUS_H
+#define STUMPLESS_PRIVATE_STATUS_H
 
 #include <type.h>
 
-StumplessStatus *
-StumplessAddStatus( StumplessStatus * );
+Status *
+AddStatus( Status * );
 
-StumplessStatus *
-StumplessFindStatusByName( const char * );
+Status *
+FindStatusByName( const char * );
 
-StumplessStatus *
-StumplessInitializeStatus( void );
+Status *
+InitializeStatus( void );
 
-StumplessStatus *
-StumplessGetLastError( void );
+Status *
+GetLastError( void );
 
-StumplessStatus *
-StumplessGetLastFailure( void );
+Status *
+GetLastFailure( void );
 
 // todo remove
 const char *
-StumplessStatusToString( StumplessStatusCode );
+StatusToString( StatusCode );
 
 #endif

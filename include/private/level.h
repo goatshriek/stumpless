@@ -1,36 +1,36 @@
-#ifndef STUMPLESS_LEVEL_H
-#define STUMPLESS_LEVEL_H
+#ifndef STUMPLESS_PRIVATE_LEVEL_H
+#define STUMPLESS_PRIVATE_LEVEL_H
 
 #include <type.h>
 
-StumplessLevel *
-StumplessGetAlertLevel( void );
+Level *
+GetAlertLevel( void );
 
-StumplessLevel *
-StumplessGetCriticalLevel( void );
+Level *
+GetCriticalLevel( void );
 
-StumplessLevel *
-StumplessGetDebugLevel( void );
+Level *
+GetDebugLevel( void );
 
-StumplessLevel *
-StumplessGetEmergencyLevel( void );
+Level *
+GetEmergencyLevel( void );
 
-StumplessLevel *
-StumplessGetErrorLevel( void );
+Level *
+GetErrorLevel( void );
 
-StumplessLevel *
-StumplessGetFatalLevel( void );
+Level *
+GetFatalLevel( void );
 
-StumplessLevel *
-StumplessGetInfoLevel( void );
+Level *
+GetInfoLevel( void );
 
-StumplessLevel *
-StumplessGetNoticeLevel( void );
+Level *
+GetNoticeLevel( void );
 
-StumplessLevel *
-StumplessGetWarningLevel( void );
+Level *
+GetWarningLevel( void );
 
 char *
-StumplessLevelToString( StumplessLevel * );
+LevelToString( Level * );
 
 #endif

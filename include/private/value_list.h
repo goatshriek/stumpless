@@ -1,50 +1,50 @@
-#ifndef STUMPLESS_VALUE_LIST_H
-#define STUMPLESS_VALUE_LIST_H
+#ifndef STUMPLESS_PRIVATE_VALUE_LIST_H
+#define STUMPLESS_PRIVATE_VALUE_LIST_H
 
 #include <stdio.h>
 
 #include <type.h>
 
-StumplessStatusCode
-StumplessAddSeparatorToValueList( StumplessValueList *, StumplessValue * );
+StatusCode
+AddSeparatorToValueList( ValueList *, Value * );
 
-StumplessStatusCode
-StumplessAppendStringToValueList( StumplessValueList *, const char * );
+StatusCode
+AppendStringToValueList( ValueList *, const char * );
 
-StumplessStatusCode
-StumplessAppendUnsignedIntToValueList( StumplessValueList *, unsigned );
+StatusCode
+AppendUnsignedIntToValueList( ValueList *, unsigned );
 
-StumplessStatusCode
-StumplessAppendValueLists( StumplessValueList *, StumplessValueList * );
+StatusCode
+AppendValueLists( ValueList *, ValueList * );
 
-StumplessStatusCode
-StumplessAppendValueToValueList( StumplessValueList *, StumplessValue * );
+StatusCode
+AppendValueToValueList( ValueList *, Value * );
 
-StumplessValueList *
-StumplessCopyValueList( StumplessValueList * );
+ValueList *
+CopyValueList( ValueList * );
 
 void
-StumplessDestroyValueList( StumplessValueList * );
+DestroyValueList( ValueList * );
 
-StumplessValueList *
-StumplessNewValueList( void );
+ValueList *
+NewValueList( void );
 
-StumplessStatusCode
-StumplessPrependStringToValueList( StumplessValueList *, const char * );
+StatusCode
+PrependStringToValueList( ValueList *, const char * );
 
-StumplessStatusCode
-StumplessPrependValueToValueList( StumplessValueList *, StumplessValue * );
+StatusCode
+PrependValueToValueList( ValueList *, Value * );
 
-StumplessStatusCode
-StumplessValueListIntoString( char *, StumplessValueList * );
+StatusCode
+ValueListIntoString( char *, ValueList * );
 
 unsigned short
-StumplessValueListIsEmpty( StumplessValueList * );
+ValueListIsEmpty( ValueList * );
 
 char *
-StumplessValueListToString( StumplessValueList * );
+ValueListToString( ValueList * );
 
-StumplessValueList *
-StumplessValueListToStrings( StumplessValueList * );
+ValueList *
+ValueListToStrings( ValueList * );
 
 #endif

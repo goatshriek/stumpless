@@ -1,39 +1,39 @@
-#ifndef STUMPLESS_TEXT_FORMATTER_H
-#define STUMPLESS_TEXT_FORMATTER_H
+#ifndef STUMPLESS_PRIVATE_TEXT_FORMATTER_H
+#define STUMPLESS_PRIVATE_TEXT_FORMATTER_H
 
 #include <type.h>
 
-StumplessFormattedOutput *
-StumplessEntryToText( StumplessEntry * );
+FormattedOutput *
+EntryToText( Entry * );
 
-StumplessFormattedOutput *
-StumplessEntryAttributeToText( StumplessEntryAttribute * );
+FormattedOutput *
+EntryAttributeToText( EntryAttribute * );
 
-StumplessFormattedOutput *
-StumplessEntryAttributeListToText( StumplessEntry * );
+FormattedOutput *
+EntryAttributeListToText( Entry * );
 
-StumplessFormattedOutput *
-StumplessEntrySummaryToText( StumplessEntry * );
+FormattedOutput *
+EntrySummaryToText( Entry * );
 
-StumplessFormattedOutput *
-StumplessEventToText( StumplessEvent * );
+FormattedOutput *
+EventToText( Event * );
 
-StumplessFormattedOutput * 
-StumplessEventAttributeToText( StumplessEventAttribute * );
+FormattedOutput * 
+EventAttributeToText( EventAttribute * );
 
-StumplessFormattedOutput *
-StumplessEventAttributeListToText( StumplessEvent * );
+FormattedOutput *
+EventAttributeListToText( Event * );
 
-StumplessFormattedOutput *
-StumplessEventSummaryToText( StumplessEvent * );
+FormattedOutput *
+EventSummaryToText( Event * );
 
-StumplessFormattedOutput *
-StumplessGenericArrayValueToText( StumplessValue * );
+FormattedOutput *
+GenericArrayValueToText( Value * );
 
-StumplessFormattedOutput *
-StumplessGenericValueToText( StumplessValue * );
+FormattedOutput *
+GenericValueToText( Value * );
 
-StumplessFormattedOutput *
-StumplessLevelToText( StumplessLevel * );
+FormattedOutput *
+LevelToText( Level * );
 
 #endif
