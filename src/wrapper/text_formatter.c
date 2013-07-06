@@ -59,17 +59,17 @@ __STUMPLESS_NAME( EventSummaryToText )
 }
 
 __STUMPLESS_NAME( FormattedOutput ) *
-__STUMPLESS_NAME( GenericArrayValueToText )
+__STUMPLESS_NAME( ArrayValueToText )
 ( __STUMPLESS_NAME( Value ) * value )
 {
-  return GenericArrayValueToText( value );
+  return ArrayValueToText( value );
 }
 
 __STUMPLESS_NAME( FormattedOutput ) *
-__STUMPLESS_NAME( GenericValueToText )
+__STUMPLESS_NAME( SingularValueToText )
 ( __STUMPLESS_NAME( Value ) * value )
 {
-  return GenericValueToText( value );
+  return SingularValueToText( value );
 }
 
 __STUMPLESS_NAME( FormattedOutput ) *
