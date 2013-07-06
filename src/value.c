@@ -185,7 +185,7 @@ VALUE_INTO_STRING_FUNCTION( Float, f, "%g" )
 VALUE_TO_STRING_FUNCTION( Float, f, "%g" )
 
 StumplessValueList *
-StumplessGenericValueToValueList( StumplessValue * value )
+StumplessValueToValueList( StumplessValue * value )
 {
   if( value == NULL )
     return NULL;

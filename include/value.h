@@ -46,7 +46,7 @@ char *
 __STUMPLESS_NAME( FloatValueToString )( __STUMPLESS_NAME( Value ) * );
 
 __STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( GenericValueToValueList )( __STUMPLESS_NAME( Value ) * );
+__STUMPLESS_NAME( ValueToValueList )( __STUMPLESS_NAME( Value ) * );
 
 __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( IntArrayValueToValueList )( __STUMPLESS_NAME( Value ) * );

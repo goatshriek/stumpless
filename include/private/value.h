@@ -43,7 +43,7 @@ char *
 FloatValueToString( Value * );
 
 ValueList *
-GenericValueToValueList( Value * );
+ValueToValueList( Value * );
 
 ValueList *
 IntArrayValueToValueList( Value * );

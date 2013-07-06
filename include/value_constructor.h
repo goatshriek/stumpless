@@ -47,7 +47,7 @@ __STUMPLESS_NAME( Value ) *
 __STUMPLESS_NAME( ValueFromUnsignedLong )( unsigned long );
 
 __STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromUnsignedLongLong )( unsigned long long);
+__STUMPLESS_NAME( ValueFromUnsignedLongLong )( unsigned long long );
 
 __STUMPLESS_NAME( Value ) *
 __STUMPLESS_NAME( ValueFromUnsignedShort )( unsigned short );
