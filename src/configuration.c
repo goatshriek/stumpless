@@ -17,7 +17,7 @@ profile->to_binary = NULL;                                                     \
 profile->to_csv = NULL;                                                        \
 profile->to_json = NULL;                                                       \
 profile->to_string = NULL;                                                     \
-profile->to_text = &GenericArrayValueToText;                                   \
+profile->to_text = &ArrayValueToText;                                          \
 profile->to_value_list = &type_name##ValueToValueList;                         \
 profile->to_xml = NULL;                                                        \
 AddValueProfile( profile );
@@ -37,7 +37,7 @@ profile->name = profile_name;                                                  \
 profile->to_string = &type_name##FormattedOutputToString;                      \
 AddOutputProfile( profile );
 
-#define ADD_SINGLE_VALUE_PROFILE( profile_name, type_name )                    \
+#define ADD_SINGULAR_VALUE_PROFILE( profile_name, type_name )                  \
 profile = malloc( sizeof( ValueProfile ) );                                    \
 if( profile == NULL )                                                          \
   return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                  \
@@ -47,8 +47,8 @@ profile->to_binary = NULL;                                                     \
 profile->to_csv = NULL;                                                        \
 profile->to_json = NULL;                                                       \
 profile->to_string = &type_name##ValueToString;                                \
-profile->to_text = &GenericValueToText;                                        \
-profile->to_value_list = &GenericValueToValueList;                             \
+profile->to_text = &SingularValueToText;                                       \
+profile->to_value_list = &ValueToValueList;                                    \
 profile->to_xml = NULL;                                                        \
 AddValueProfile( profile );
 

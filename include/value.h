@@ -46,9 +46,6 @@ char *
 __STUMPLESS_NAME( FloatValueToString )( __STUMPLESS_NAME( Value ) * );
 
 __STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( ValueToValueList )( __STUMPLESS_NAME( Value ) * );
-
-__STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( IntArrayValueToValueList )( __STUMPLESS_NAME( Value ) * );
 
 __STUMPLESS_NAME( StatusCode )
@@ -182,5 +179,8 @@ __STUMPLESS_NAME( ValueIntoString )( char *, __STUMPLESS_NAME( Value ) * );
 
 char *
 __STUMPLESS_NAME( ValueToString )( __STUMPLESS_NAME( Value ) * );
+
+__STUMPLESS_NAME( ValueList ) *
+__STUMPLESS_NAME( ValueToValueList )( __STUMPLESS_NAME( Value ) * );
 
 #endif

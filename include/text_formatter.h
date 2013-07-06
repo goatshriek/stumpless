@@ -5,6 +5,10 @@
 #include <type.h>
 
 __STUMPLESS_NAME( FormattedOutput ) *
+__STUMPLESS_NAME( ArrayValueToText )
+( __STUMPLESS_NAME( Value ) * );
+
+__STUMPLESS_NAME( FormattedOutput ) *
 __STUMPLESS_NAME( EntryToText )
 ( __STUMPLESS_NAME( Entry ) * );
 
@@ -37,15 +41,11 @@ __STUMPLESS_NAME( EventSummaryToText )
 ( __STUMPLESS_NAME( Event ) * );
 
 __STUMPLESS_NAME( FormattedOutput ) *
-__STUMPLESS_NAME( GenericArrayValueToText )
-( __STUMPLESS_NAME( Value ) * );
-
-__STUMPLESS_NAME( FormattedOutput ) *
-__STUMPLESS_NAME( GenericValueToText )
-( __STUMPLESS_NAME( Value ) * );
-
-__STUMPLESS_NAME( FormattedOutput ) *
 __STUMPLESS_NAME( LevelToText )
 ( __STUMPLESS_NAME( Level ) * );
+
+__STUMPLESS_NAME( FormattedOutput ) *
+__STUMPLESS_NAME( SingularValueToText )
+( __STUMPLESS_NAME( Value ) * );
 
 #endif

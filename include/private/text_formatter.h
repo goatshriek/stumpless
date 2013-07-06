@@ -4,6 +4,9 @@
 #include <type.h>
 
 FormattedOutput *
+ArrayValueToText( Value * );
+
+FormattedOutput *
 EntryToText( Entry * );
 
 FormattedOutput *
@@ -28,12 +31,9 @@ FormattedOutput *
 EventSummaryToText( Event * );
 
 FormattedOutput *
-GenericArrayValueToText( Value * );
-
-FormattedOutput *
-GenericValueToText( Value * );
-
-FormattedOutput *
 LevelToText( Level * );
+
+FormattedOutput *
+SingularValueToText( Value * );
 
 #endif

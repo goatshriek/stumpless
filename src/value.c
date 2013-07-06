@@ -184,21 +184,6 @@ VALUE_INTO_STRING_FUNCTION( Float, f, "%g" )
 
 VALUE_TO_STRING_FUNCTION( Float, f, "%g" )
 
-StumplessValueList *
-StumplessValueToValueList( StumplessValue * value )
-{
-  if( value == NULL )
-    return NULL;
-  
-  StumplessValueList * list = StumplessNewValueList();
-  if( list == NULL )
-    return NULL;
-  
-  NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value ) )
-  
-  return list;
-}
-
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Int, i_p )
 
 VALUE_INTO_STRING_FUNCTION( Int, i, "%i" )
@@ -333,4 +318,19 @@ StumplessValueToString( StumplessValue * value )
     return NULL;
   
   return value->profile->to_string( value );
+}
+
+StumplessValueList *
+StumplessValueToValueList( StumplessValue * value )
+{
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueList * list = StumplessNewValueList();
+  if( list == NULL )
+    return NULL;
+  
+  NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value ) )
+  
+  return list;
 }

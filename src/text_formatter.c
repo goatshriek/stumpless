@@ -13,6 +13,13 @@
 #include <value_list.h>
 
 StumplessFormattedOutput *
+StumplessArrayValueToText( StumplessValue * value )
+{
+  StumplessValueList * output = ArrayValueToValueList( value );
+  return TextFormattedOutputFromValueList( output );
+}
+
+StumplessFormattedOutput *
 StumplessEntryToText( StumplessEntry * entry )
 {
   return TextFormattedOutputFromValueList( EntryToValueList( entry ) );
@@ -65,23 +72,44 @@ StumplessEventSummaryToText( StumplessEvent * event )
 }
 
 StumplessFormattedOutput *
-StumplessGenericArrayValueToText( StumplessValue * value )
-{
-  StumplessValueList * output = GenericArrayValueToValueList( value );
-  return TextFormattedOutputFromValueList( output );
-}
-
-StumplessFormattedOutput *
-StumplessGenericValueToText( StumplessValue * value )
-{
-  StumplessValueList * output = GenericValueToValueList( value );
-  return TextFormattedOutputFromValueList( output );
-}
-
-StumplessFormattedOutput *
 StumplessLevelToText( StumplessLevel * level )
 {
   return TextFormattedOutputFromValueList( LevelToValueList( level ) );
+}
+
+StumplessFormattedOutput *
+StumplessSingularValueToText( StumplessValue * value )
+{
+  StumplessValueList * output = SingularValueToValueList( value );
+  return TextFormattedOutputFromValueList( output );
+}
+
+static
+StumplessValueList *
+ArrayValueToValueList( StumplessValue * value )
+{
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueProfile * profile = value->profile;
+  if( profile == NULL )
+    return NULL;
+  
+  StumplessValueList * output = profile->to_value_list( value );
+  if( output == NULL )
+    return NULL;
+  
+  StumplessValue * separator = StumplessValueFromString( ", " );
+  NULL_ON_FAILURE( StumplessAddSeparatorToValueList( output, separator ) )
+
+  NULL_ON_FAILURE( StumplessPrependStringToValueList( output, "[" ) )
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, "] (" ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
+  
+  return output;
 }
 
 static
@@ -340,61 +368,6 @@ EventSummaryToValueList( StumplessEvent * event )
 
 static
 StumplessValueList *
-GenericArrayValueToValueList( StumplessValue * value )
-{
-  if( value == NULL )
-    return NULL;
-  
-  StumplessValueProfile * profile = value->profile;
-  if( profile == NULL )
-    return NULL;
-  
-  StumplessValueList * output = profile->to_value_list( value );
-  if( output == NULL )
-    return NULL;
-  
-  StumplessValue * separator = StumplessValueFromString( ", " );
-  NULL_ON_FAILURE( StumplessAddSeparatorToValueList( output, separator ) )
-
-  NULL_ON_FAILURE( StumplessPrependStringToValueList( output, "[" ) )
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, "] (" ) )
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
-  
-  return output;
-}
-
-static
-StumplessValueList *
-GenericValueToValueList( StumplessValue * value )
-{
-  if( value == NULL )
-    return NULL;
-  
-  StumplessValueProfile * profile;
-  profile = value->profile;
-  if( profile == NULL )
-    return NULL;
-  
-  StumplessValueList * output = StumplessNewValueList();
-  if( output == NULL )
-    return NULL;
-  
-  NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
-
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
-  
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
-  
-  return output;
-}
-
-static
-StumplessValueList *
 LevelToValueList( StumplessLevel * level )
 {
   if( level == NULL )
@@ -418,6 +391,33 @@ LevelToValueList( StumplessLevel * level )
   NULL_ON_FAILURE( status )
   status = StumplessAppendUnsignedIntToValueList( output, level->value );
   NULL_ON_FAILURE( status )
+  
+  return output;
+}
+
+static
+StumplessValueList *
+SingularValueToValueList( StumplessValue * value )
+{
+  if( value == NULL )
+    return NULL;
+  
+  StumplessValueProfile * profile;
+  profile = value->profile;
+  if( profile == NULL )
+    return NULL;
+  
+  StumplessValueList * output = StumplessNewValueList();
+  if( output == NULL )
+    return NULL;
+  
+  NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
+
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
+  
+  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
   
   return output;
 }

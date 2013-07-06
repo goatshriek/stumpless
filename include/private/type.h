@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_PRIVATE_TYPE_H
 #define STUMPLESS_PRIVATE_TYPE_H
 
-#include <private_name.h>
+#include <public_name.h>
 #include <type.h>
 
 typedef enum __STUMPLESS_NAME( HTTPMethod ) HTTPMethod;

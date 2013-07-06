@@ -43,9 +43,6 @@ char *
 FloatValueToString( Value * );
 
 ValueList *
-ValueToValueList( Value * );
-
-ValueList *
 IntArrayValueToValueList( Value * );
 
 StatusCode
@@ -161,5 +158,8 @@ ValueIntoString( char *, Value * );
 
 char *
 ValueToString( Value * );
+
+ValueList *
+ValueToValueList( Value * );
 
 #endif
