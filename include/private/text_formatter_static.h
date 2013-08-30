@@ -1,54 +1,54 @@
 #ifndef STUMPLESS_TEXT_FORMATTER_STATIC_H
 #define STUMPLESS_TEXT_FORMATTER_STATIC_H
 
-#include <type.h>
+#include "private/type.h"
 
 static
-StumplessValueList *
-EntryToValueList( StumplessEntry * );
+ValueList *
+EntryToValueList( Entry * );
 
 static
-StumplessValueList *
-EntryAttributeToValueList( StumplessEntryAttribute * );
+ValueList *
+EntryAttributeToValueList( EntryAttribute * );
 
 static
-StumplessValueList *
-EntryAttributeListToValueList( StumplessEntry * );
+ValueList *
+EntryAttributeListToValueList( Entry * );
 
 static
-StumplessValueList *
-EntrySummaryToValueList( StumplessEntry * );
+ValueList *
+EntrySummaryToValueList( Entry * );
 
 static
-StumplessValueList *
-EventToValueList( StumplessEvent * );
+ValueList *
+EventToValueList( Event * );
 
 static
-StumplessValueList *
-EventAttributeToValueList( StumplessEventAttribute * );
+ValueList *
+EventAttributeToValueList( EventAttribute * );
 
 static
-StumplessValueList *
-EventAttributeListToValueList( StumplessEvent * );
+ValueList *
+EventAttributeListToValueList( Event * );
 
 static
-StumplessValueList *
-EventSummaryToValueList( StumplessEvent * );
+ValueList *
+EventSummaryToValueList( Event * );
 
 static
-StumplessValueList *
-GenericArrayValueToValueList( StumplessValue * );
+ValueList *
+GenericArrayValueToValueList( Value * );
 
 static
-StumplessValueList *
-GenericValueToValueList( StumplessValue * );
+ValueList *
+GenericValueToValueList( Value * );
 
 static
-StumplessValueList *
-LevelToValueList( StumplessLevel * );
+ValueList *
+LevelToValueList( Level * );
 
 static
-StumplessFormattedOutput *
-TextFormattedOutputFromValueList( StumplessValueList * );
+FormattedOutput *
+TextFormattedOutputFromValueList( ValueList * );
 
 #endif

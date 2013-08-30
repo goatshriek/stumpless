@@ -8,20 +8,23 @@
 #include "private/value_list.h"
 
 char *
-EntryToString( Entry * entry )
+EntryToString
+( Entry * entry )
 {
   FormattedOutput * output =  EntryToText( entry );
   return FormattedOutputToString( output ); 
 }
 
 Entry *
-GetDebugEntry( void )
+GetDebugEntry
+( void )
 {
   return EntryForEvent( GetDebugEvent() );
 }
 
 Entry *
-EntryForEvent( Event * event )
+EntryForEvent
+( Event * event )
 {
   if( event == NULL )
     return NULL;
@@ -37,25 +40,29 @@ EntryForEvent( Event * event )
 }
 
 Entry *
-GetErrorEntry( void )
+GetErrorEntry
+( void )
 {
   return EntryForEvent( GetErrorEvent() );
 }
 
 Entry *
-GetFatalEntry( void )
+GetFatalEntry
+( void )
 {
   return EntryForEvent( GetFatalEvent() );
 }
 
 Entry *
-GetInfoEntry( void )
+GetInfoEntry
+( void )
 {
   return EntryForEvent( GetInfoEvent() );
 }
 
 Entry *
-GetWarningEntry( void )
+GetWarningEntry
+( void )
 {
   return EntryForEvent( GetWarningEvent() );
 }

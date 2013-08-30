@@ -1,37 +1,42 @@
 #include <stdlib.h>
 
-#include <configuration.h>
-#include <formatted_output.h>
-#include <string_helper.h>
-#include <type.h>
-#include <value_list.h>
+#include "private/configuration.h"
+#include "private/formatted_output.h"
+#include "private/string_helper.h"
+#include "private/type.h"
+#include "private/value_list.h"
 
 unsigned short
-StumplessBinaryFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+BinaryFormattedOutputIsEmpty
+( FormattedOutput * output )
 {
   return 0;
 }
 
 char *
-StumplessBinaryFormattedOutputToString( StumplessFormattedOutput * output )
+BinaryFormattedOutputToString
+( FormattedOutput * output )
 {
   return NULL;
 }
 
 unsigned short
-StumplessCSVFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+CSVFormattedOutputIsEmpty
+( FormattedOutput * output )
 {
   return 0;
 }
 
 char *
-StumplessCSVFormattedOutputToString( StumplessFormattedOutput * output )
+CSVFormattedOutputToString
+( FormattedOutput * output )
 {
   return NULL;
 }
 
 unsigned short
-StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+FormattedOutputIsEmpty
+( FormattedOutput * output )
 {
   if( output == NULL || output->profile == NULL
    || output->profile->is_empty == NULL )
@@ -41,7 +46,8 @@ StumplessFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 }
 
 char *
-StumplessFormattedOutputToString( StumplessFormattedOutput * output )
+FormattedOutputToString
+( FormattedOutput * output )
 {
   if( output == NULL || output->profile == NULL
    || output->profile->to_string == NULL )
@@ -51,19 +57,22 @@ StumplessFormattedOutputToString( StumplessFormattedOutput * output )
 }
 
 unsigned short
-StumplessJSONFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+JSONFormattedOutputIsEmpty
+( FormattedOutput * output )
 {
   return 0;
 }
 
 char *
-StumplessJSONFormattedOutputToString( StumplessFormattedOutput * output )
+JSONFormattedOutputToString
+( FormattedOutput * output )
 {
   return NULL;
 }
 
 unsigned short
-StumplessRawStringFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+RawStringFormattedOutputIsEmpty
+( FormattedOutput * output )
 {
   if( output == NULL || output->data == NULL )
     return 1;
@@ -72,7 +81,8 @@ StumplessRawStringFormattedOutputIsEmpty( StumplessFormattedOutput * output )
 }
 
 char *
-StumplessRawStringFormattedOutputToString( StumplessFormattedOutput * output )
+RawStringFormattedOutputToString
+( FormattedOutput * output )
 {
   if( output == NULL || output->data == NULL || output->data->c_p == NULL )
     return NULL;
@@ -81,35 +91,39 @@ StumplessRawStringFormattedOutputToString( StumplessFormattedOutput * output )
 }
 
 unsigned short
-StumplessTextFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+TextFormattedOutputIsEmpty
+( FormattedOutput * output )
 {
   if( output == NULL || output->data == NULL )
     return 1;
   
-  StumplessValueList * list = ( StumplessValueList * ) output->data;
+  ValueList * list = ( ValueList * ) output->data;
   
-  return StumplessValueListIsEmpty( list );
+  return ValueListIsEmpty( list );
 }
 
 char *
-StumplessTextFormattedOutputToString( StumplessFormattedOutput * output )
+TextFormattedOutputToString
+( FormattedOutput * output )
 {
   if( output == NULL || output->data == NULL )
     return NULL;
   
-  StumplessValueList * list = ( StumplessValueList * ) output->data;
+  ValueList * list = ( ValueList * ) output->data;
   
-  return StumplessValueListToString( list );
+  return ValueListToString( list );
 }
 
 unsigned short
-StumplessXMLFormattedOutputIsEmpty( StumplessFormattedOutput * output )
+XMLFormattedOutputIsEmpty
+( FormattedOutput * output )
 {
   return 0;
 }
 
 char *
-StumplessXMLFormattedOutputToString( StumplessFormattedOutput * output )
+XMLFormattedOutputToString
+( FormattedOutput * output )
 {
   return NULL;
 }

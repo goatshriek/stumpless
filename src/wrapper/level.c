@@ -3,13 +3,15 @@
 #include "private/level.h"
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetAlertLevel )( void )
+__STUMPLESS_NAME( GetAlertLevel )
+( void )
 {
   return GetAlertLevel();
 }
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetCriticalLevel )( void )
+__STUMPLESS_NAME( GetCriticalLevel )
+( void )
 {
   return GetCriticalLevel();
 }
@@ -22,37 +24,43 @@ __STUMPLESS_NAME( GetDebugLevel )
 }
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetEmergencyLevel )( void )
+__STUMPLESS_NAME( GetEmergencyLevel )
+( void )
 {
   return GetEmergencyLevel();
 }
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetErrorLevel )( void )
+__STUMPLESS_NAME( GetErrorLevel )
+( void )
 {
   return GetErrorLevel();
 }
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetFatalLevel )( void )
+__STUMPLESS_NAME( GetFatalLevel )
+( void )
 {
   return GetFatalLevel();
 }
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetInfoLevel )( void )
+__STUMPLESS_NAME( GetInfoLevel )
+( void )
 {
   return GetInfoLevel();
 }
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetNoticeLevel )( void )
+__STUMPLESS_NAME( GetNoticeLevel )
+( void )
 {
   return GetNoticeLevel();
 }
 
 __STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetWarningLevel )( void )
+__STUMPLESS_NAME( GetWarningLevel )
+( void )
 {
   return GetWarningLevel();
 }

@@ -2,40 +2,41 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <event.h>
-#include <formatted_output.h>
-#include <level.h>
-#include <text_formatter.h>
-#include <type.h>
-#include <value_list.h>
+#include "private/event.h"
+#include "private/formatted_output.h"
+#include "private/level.h"
+#include "private/text_formatter.h"
+#include "private/type.h"
+#include "private/value_list.h"
 
 char *
-StumplessEventToString( StumplessEvent * event )
+EventToString
+( Event * event )
 {
-  StumplessFormattedOutput * output = StumplessEventToText( event );
-  return StumplessFormattedOutputToString( output );
+  FormattedOutput * output = EventToText( event );
+  return FormattedOutputToString( output );
 }
 
-StumplessEvent *
-StumplessGetDebugEvent( void )
+Event *
+GetDebugEvent( void )
 {
-  return StumplessEventForLevel( StumplessGetDebugLevel() );
+  return EventForLevel( GetDebugLevel() );
 }
 
-StumplessEvent *
-StumplessGetErrorEvent( void )
+Event *
+GetErrorEvent( void )
 {
-  return StumplessEventForLevel( StumplessGetErrorLevel() );
+  return EventForLevel( GetErrorLevel() );
 }
 
-StumplessEvent *
-StumplessEventForLevel( StumplessLevel * level )
+Event *
+EventForLevel( Level * level )
 {
   if( level == NULL )
     return NULL;
   
   
-  StumplessEvent * event = malloc( sizeof( StumplessEvent ) );
+  Event * event = malloc( sizeof( Event ) );
   
   if( event == NULL )
     return NULL;
@@ -47,20 +48,20 @@ StumplessEventForLevel( StumplessLevel * level )
   return event;
 }
 
-StumplessEvent *
-StumplessGetFatalEvent( void )
+Event *
+GetFatalEvent( void )
 {
-  return StumplessEventForLevel( StumplessGetFatalLevel() );
+  return EventForLevel( GetFatalLevel() );
 }
 
-StumplessEvent *
-StumplessGetInfoEvent( void )
+Event *
+GetInfoEvent( void )
 {
-  return StumplessEventForLevel( StumplessGetInfoLevel() );
+  return EventForLevel( GetInfoLevel() );
 }
 
-StumplessEvent *
-StumplessGetWarningEvent( void )
+Event *
+GetWarningEvent( void )
 {
-  return StumplessEventForLevel( StumplessGetWarningLevel() );
+  return EventForLevel( GetWarningLevel() );
 }

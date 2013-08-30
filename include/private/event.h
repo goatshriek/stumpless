@@ -4,24 +4,31 @@
 #include "private/type.h"
 
 char *
-EventToString( Event * );
+EventToString
+( Event * );
 
 Event *
-GetDebugEvent( void );
+GetDebugEvent
+( void );
 
 Event *
-GetErrorEvent( void );
+GetErrorEvent
+( void );
 
 Event *
-EventForLevel( Level * );
+EventForLevel
+( Level * );
 
 Event *
-GetFatalEvent( void );
+GetFatalEvent
+( void );
 
 Event *
-GetInfoEvent( void );
+GetInfoEvent
+( void );
 
 Event *
-GetWarningEvent( void );
+GetWarningEvent
+( void );
 
 #endif

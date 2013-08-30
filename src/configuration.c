@@ -1,11 +1,11 @@
 #include <stdlib.h>
 
-#include <private/configuration.h>
-#include <private/formatted_output.h>
-#include <private/status_checker.h>
-#include <private/text_formatter.h>
-#include <private/type.h>
-#include <private/value.h>
+#include "private/configuration.h"
+#include "private/formatted_output.h"
+#include "private/status_checker.h"
+#include "private/text_formatter.h"
+#include "private/type.h"
+#include "private/value.h"
 
 #define ADD_ARRAY_VALUE_PROFILE( profile_name, type_name )                     \
 profile = malloc( sizeof( ValueProfile ) );                                    \
@@ -278,22 +278,22 @@ InitializeValueProfiles( void )
   ADD_ARRAY_VALUE_PROFILE( "unsigned long long array", UnsignedLongLongArray )
   ADD_ARRAY_VALUE_PROFILE( "unsigned short array", UnsignedShortArray )
   
-  ADD_SINGLE_VALUE_PROFILE( "boolean", Boolean )
-  ADD_SINGLE_VALUE_PROFILE( "char", Char )
-  ADD_SINGLE_VALUE_PROFILE( "float", Float )
-  ADD_SINGLE_VALUE_PROFILE( "double", Double )
-  ADD_SINGLE_VALUE_PROFILE( "int", Int )
-  ADD_SINGLE_VALUE_PROFILE( "long", Long )
-  ADD_SINGLE_VALUE_PROFILE( "long double", LongDouble )
-  ADD_SINGLE_VALUE_PROFILE( "long long", LongLong )
-  ADD_SINGLE_VALUE_PROFILE( "short", Short )
-  ADD_SINGLE_VALUE_PROFILE( "signed char", SignedChar )
-  ADD_SINGLE_VALUE_PROFILE( "string", String )
-  ADD_SINGLE_VALUE_PROFILE( "unsigned char", UnsignedChar )
-  ADD_SINGLE_VALUE_PROFILE( "unsigned int", UnsignedInt )
-  ADD_SINGLE_VALUE_PROFILE( "unsigned long", UnsignedLong )
-  ADD_SINGLE_VALUE_PROFILE( "unsigned long long", UnsignedLongLong )
-  ADD_SINGLE_VALUE_PROFILE( "unsigned short", UnsignedShort )
+  ADD_SINGULAR_VALUE_PROFILE( "boolean", Boolean )
+  ADD_SINGULAR_VALUE_PROFILE( "char", Char )
+  ADD_SINGULAR_VALUE_PROFILE( "float", Float )
+  ADD_SINGULAR_VALUE_PROFILE( "double", Double )
+  ADD_SINGULAR_VALUE_PROFILE( "int", Int )
+  ADD_SINGULAR_VALUE_PROFILE( "long", Long )
+  ADD_SINGULAR_VALUE_PROFILE( "long double", LongDouble )
+  ADD_SINGULAR_VALUE_PROFILE( "long long", LongLong )
+  ADD_SINGULAR_VALUE_PROFILE( "short", Short )
+  ADD_SINGULAR_VALUE_PROFILE( "signed char", SignedChar )
+  ADD_SINGULAR_VALUE_PROFILE( "string", String )
+  ADD_SINGULAR_VALUE_PROFILE( "unsigned char", UnsignedChar )
+  ADD_SINGULAR_VALUE_PROFILE( "unsigned int", UnsignedInt )
+  ADD_SINGULAR_VALUE_PROFILE( "unsigned long", UnsignedLong )
+  ADD_SINGULAR_VALUE_PROFILE( "unsigned long long", UnsignedLongLong )
+  ADD_SINGULAR_VALUE_PROFILE( "unsigned short", UnsignedShort )
   
   return STUMPLESS_SUCCESS;
 }

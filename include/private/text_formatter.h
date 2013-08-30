@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_PRIVATE_TEXT_FORMATTER_H
 #define STUMPLESS_PRIVATE_TEXT_FORMATTER_H
 
-#include <type.h>
+#include "private/type.h"
 
 FormattedOutput *
 ArrayValueToText( Value * );

@@ -1,61 +1,61 @@
 #include <stdlib.h>
 
-#include <configuration.h>
-#include <raw_logger.h>
-#include <status_checker.h>
-#include <type.h>
-#include <value_constructor.h>
+#include "private/configuration.h"
+#include "private/raw_logger.h"
+#include "private/status_checker.h"
+#include "private/type.h"
+#include "private/value_constructor.h"
 
 #define POINTER_RAW_LOGGER_FUNCTION( type_name, type_specifier )               \
-StumplessStatusCode                                                            \
-StumplessLogRaw##type_name( type_specifier raw )                               \
+StatusCode                                                                     \
+LogRaw##type_name( type_specifier raw )                                        \
 {                                                                              \
   if( raw == NULL )                                                            \
     return STUMPLESS_EMPTY_ARGUMENT;                                           \
                                                                                \
-  StumplessValue * value = StumplessValueFrom##type_name( raw );               \
+  Value * value = ValueFrom##type_name( raw );                                 \
   if( value == NULL )                                                          \
     return STUMPLESS_FAILURE;                                                  \
                                                                                \
-  StumplessFormattedOutput * output;                                           \
-  output = malloc( sizeof( StumplessFormattedOutput ) );                       \
+  FormattedOutput * output;                                                    \
+  output = malloc( sizeof( FormattedOutput ) );                                \
   if( output == NULL )                                                         \
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                \
                                                                                \
-  output->data = malloc( sizeof( StumplessType ) );                            \
+  output->data = malloc( sizeof( Type ) );                                     \
   if( output->data == NULL )                                                   \
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                \
                                                                                \
   output->data->c_p = value->profile->to_string( value );                      \
-  output->profile = StumplessFindOutputProfileByName( "raw string" );          \
+  output->profile = FindOutputProfileByName( "raw string" );                   \
                                                                                \
   return STUMPLESS_SUCCESS;                                                    \
 }
 
 #define VALUE_RAW_LOGGER_FUNCTION( type_name, type_specifier )                 \
-StumplessStatusCode                                                            \
-StumplessLogRaw##type_name( type_specifier raw )                               \
+StatusCode                                                                     \
+LogRaw##type_name( type_specifier raw )                                        \
 {                                                                              \
-  StumplessValue * value = StumplessValueFrom##type_name( raw );               \
+  Value * value = ValueFrom##type_name( raw );                                 \
   if( value == NULL )                                                          \
     return STUMPLESS_FAILURE;                                                  \
                                                                                \
-  StumplessFormattedOutput * output;                                           \
-  output = malloc( sizeof( StumplessFormattedOutput ) );                       \
+  FormattedOutput * output;                                                    \
+  output = malloc( sizeof( FormattedOutput ) );                                \
   if( output == NULL )                                                         \
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                \
                                                                                \
-  output->data = malloc( sizeof( StumplessType ) );                            \
+  output->data = malloc( sizeof( Type ) );                                     \
   if( output->data == NULL )                                                   \
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;                                \
                                                                                \
   output->data->c_p = value->profile->to_string( value );                      \
-  output->profile = StumplessFindOutputProfileByName( "raw string" );          \
+  output->profile = FindOutputProfileByName( "raw string" );                   \
                                                                                \
   return STUMPLESS_SUCCESS;                                                    \
 }
 
-POINTER_RAW_LOGGER_FUNCTION( Boolean, StumplessBoolean * )
+POINTER_RAW_LOGGER_FUNCTION( Boolean, Boolean * )
 
 VALUE_RAW_LOGGER_FUNCTION( Char, char )
 

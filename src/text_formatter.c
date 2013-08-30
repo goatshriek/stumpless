@@ -2,152 +2,166 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <configuration.h>
-#include <formatted_output.h>
-#include <status_checker.h>
-#include <text_formatter.h>
-#include <text_formatter_static.h>
-#include <type.h>
-#include <value.h>
-#include <value_constructor.h>
-#include <value_list.h>
+#include "private/configuration.h"
+#include "private/formatted_output.h"
+#include "private/status_checker.h"
+#include "private/text_formatter.h"
+#include "private/text_formatter_static.h"
+#include "private/type.h"
+#include "private/value.h"
+#include "private/value_constructor.h"
+#include "private/value_list.h"
 
-StumplessFormattedOutput *
-StumplessArrayValueToText( StumplessValue * value )
+FormattedOutput *
+ArrayValueToText
+( Value * value )
 {
-  StumplessValueList * output = ArrayValueToValueList( value );
+  ValueList * output = ArrayValueToValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
-StumplessFormattedOutput *
-StumplessEntryToText( StumplessEntry * entry )
+FormattedOutput *
+EntryToText
+( Entry * entry )
 {
   return TextFormattedOutputFromValueList( EntryToValueList( entry ) );
 }
 
-StumplessFormattedOutput *
-StumplessEntryAttributeToText( StumplessEntryAttribute * attribute )
+FormattedOutput *
+EntryAttributeToText
+( EntryAttribute * attribute )
 {
-  StumplessValueList * output = EntryAttributeToValueList( attribute );
+  ValueList * output = EntryAttributeToValueList( attribute );
   return TextFormattedOutputFromValueList( output );
 }
 
-StumplessFormattedOutput *
-StumplessEntryAttributeListToText( StumplessEntry * entry )
+FormattedOutput *
+EntryAttributeListToText
+( Entry * entry )
 {
-  StumplessValueList * output = EntryAttributeListToValueList( entry );
+  ValueList * output = EntryAttributeListToValueList( entry );
   return TextFormattedOutputFromValueList( output );
 }
 
-StumplessFormattedOutput *
-StumplessEntrySummaryToText( StumplessEntry * entry )
+FormattedOutput *
+EntrySummaryToText
+( Entry * entry )
 {
   return TextFormattedOutputFromValueList( EntrySummaryToValueList( entry ) );
 }
 
-StumplessFormattedOutput *
-StumplessEventToText( StumplessEvent * event )
+FormattedOutput *
+EventToText
+( Event * event )
 {
   return TextFormattedOutputFromValueList( EventToValueList( event ) );
 }
 
-StumplessFormattedOutput *
-StumplessEventAttributeToText( StumplessEventAttribute * attribute )
+FormattedOutput *
+EventAttributeToText
+( EventAttribute * attribute )
 {
-  StumplessValueList * output = EventAttributeToValueList( attribute );
+  ValueList * output = EventAttributeToValueList( attribute );
   return TextFormattedOutputFromValueList( output );
 }
 
-StumplessFormattedOutput *
-StumplessEventAttributeListToText( StumplessEvent * event )
+FormattedOutput *
+EventAttributeListToText
+( Event * event )
 {
-  StumplessValueList * output = EventAttributeListToValueList( event );
+  ValueList * output = EventAttributeListToValueList( event );
   return TextFormattedOutputFromValueList( output );
 }
 
-StumplessFormattedOutput *
-StumplessEventSummaryToText( StumplessEvent * event )
+FormattedOutput *
+EventSummaryToText
+( Event * event )
 {
   return TextFormattedOutputFromValueList( EventSummaryToValueList( event ) );
 }
 
-StumplessFormattedOutput *
-StumplessLevelToText( StumplessLevel * level )
+FormattedOutput *
+LevelToText
+( Level * level )
 {
   return TextFormattedOutputFromValueList( LevelToValueList( level ) );
 }
 
-StumplessFormattedOutput *
-StumplessSingularValueToText( StumplessValue * value )
+FormattedOutput *
+SingularValueToText
+( Value * value )
 {
-  StumplessValueList * output = SingularValueToValueList( value );
+  ValueList * output = SingularValueToValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
 static
-StumplessValueList *
-ArrayValueToValueList( StumplessValue * value )
+ValueList *
+ArrayValueToValueList
+( Value * value )
 {
   if( value == NULL )
     return NULL;
   
-  StumplessValueProfile * profile = value->profile;
+  ValueProfile * profile = value->profile;
   if( profile == NULL )
     return NULL;
   
-  StumplessValueList * output = profile->to_value_list( value );
+  ValueList * output = profile->to_value_list( value );
   if( output == NULL )
     return NULL;
   
-  StumplessValue * separator = StumplessValueFromString( ", " );
-  NULL_ON_FAILURE( StumplessAddSeparatorToValueList( output, separator ) )
+  Value * separator = ValueFromString( ", " );
+  NULL_ON_FAILURE( AddSeparatorToValueList( output, separator ) )
 
-  NULL_ON_FAILURE( StumplessPrependStringToValueList( output, "[" ) )
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, "] (" ) )
+  NULL_ON_FAILURE( PrependStringToValueList( output, "[" ) )
+  NULL_ON_FAILURE( AppendStringToValueList( output, "] (" ) )
   
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
+  NULL_ON_FAILURE( AppendStringToValueList( output, profile->name ) )
   
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
+  NULL_ON_FAILURE( AppendStringToValueList( output, ")" ) )
   
   return output;
 }
 
 static
-StumplessValueList *
-EntryToValueList( StumplessEntry * entry )
+ValueList *
+EntryToValueList
+( Entry * entry )
 {
   if( entry == NULL )
     return NULL;
   
-  StumplessValueList * output = EntrySummaryToValueList( entry );
+  ValueList * output = EntrySummaryToValueList( entry );
   if( output == NULL )
     return NULL;
   
   if( entry->attributes != NULL && entry->attribute_count > 0 ){
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
     
-    StumplessValueList * attributes = EntryAttributeListToValueList( entry );
+    ValueList * attributes = EntryAttributeListToValueList( entry );
     if( attributes == NULL )
       return NULL;
     
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, attributes ) )
+    NULL_ON_FAILURE( AppendValueLists( output, attributes ) )
   }
   
   return output;
 }
 
 static
-StumplessValueList *
-EntryAttributeToValueList( StumplessEntryAttribute * attribute )
+ValueList *
+EntryAttributeToValueList
+( EntryAttribute * attribute )
 {
   if( attribute == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
-  StumplessEventAttribute * event_attribute = attribute->event_attribute;
+  EventAttribute * event_attribute = attribute->event_attribute;
   
   const char * attribute_name;
   if( event_attribute == NULL || event_attribute->name == NULL )
@@ -155,12 +169,12 @@ EntryAttributeToValueList( StumplessEntryAttribute * attribute )
   else
     attribute_name = event_attribute->name;
   
-  StumplessStatusCode status;
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, attribute_name ) )
+  StatusCode status;
+  NULL_ON_FAILURE( AppendStringToValueList( output, attribute_name ) )
   
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) );
+  NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) );
   
-  StumplessValue * attribute_value;
+  Value * attribute_value;
   if( attribute->value != NULL )
     attribute_value = attribute->value;
   else if( event_attribute != NULL && event_attribute->default_value != NULL )
@@ -171,52 +185,54 @@ EntryAttributeToValueList( StumplessEntryAttribute * attribute )
   if( attribute_value->profile == NULL )
     return NULL;
   
-  StumplessFormattedOutput * value_as_text;
+  FormattedOutput * value_as_text;
   value_as_text  = attribute_value->profile->to_text( attribute_value );
   if( value_as_text == NULL )
     return NULL;
   
-  StumplessValueList * values = ( StumplessValueList * ) value_as_text->data;
-  NULL_ON_FAILURE( StumplessAppendValueLists( output, values ) )
+  ValueList * values = ( ValueList * ) value_as_text->data;
+  NULL_ON_FAILURE( AppendValueLists( output, values ) )
   
   return output;
 }
 
 static
-StumplessValueList *
-EntryAttributeListToValueList( StumplessEntry * entry )
+ValueList *
+EntryAttributeListToValueList
+( Entry * entry )
 {
   if( entry == NULL || entry->attributes == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
-  StumplessValueList * attribute;
+  ValueList * attribute;
   unsigned i;
   for( i = 0; i < entry->attribute_count; i++ ){
     attribute = EntryAttributeToValueList( entry->attributes[i] );
     if( attribute == NULL )
       continue;
     
-    if( !StumplessValueListIsEmpty( output ) )
-      NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ", " ) )
+    if( !ValueListIsEmpty( output ) )
+      NULL_ON_FAILURE( AppendStringToValueList( output, ", " ) )
     
-    NULL_ON_FAILURE ( StumplessAppendValueLists( output, attribute ) )
+    NULL_ON_FAILURE ( AppendValueLists( output, attribute ) )
   }
   
   return output;
 }
 
 static
-StumplessValueList *
-EntrySummaryToValueList( StumplessEntry * entry )
+ValueList *
+EntrySummaryToValueList
+( Entry * entry )
 {
   if( entry == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
@@ -226,59 +242,61 @@ EntrySummaryToValueList( StumplessEntry * entry )
   else
     description = entry->description;
   
-  StumplessStatusCode status;
-  status = StumplessAppendStringToValueList( output, description );
+  StatusCode status;
+  status = AppendStringToValueList( output, description );
   NULL_ON_FAILURE( status )
   
-  StumplessValueList * event;
+  ValueList * event;
   if( entry->event != NULL ){
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " [" ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, " [" ) )
       
     event = EventSummaryToValueList( entry->event );
     if( event == NULL )
       return NULL;
     
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, event ) )
+    NULL_ON_FAILURE( AppendValueLists( output, event ) )
     
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, "]" ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, "]" ) )
   }
   
   return output;
 }
 
 static
-StumplessValueList *
-EventToValueList( StumplessEvent * event )
+ValueList *
+EventToValueList
+( Event * event )
 {
   if( event == NULL )
     return NULL;
   
-  StumplessStatusCode status;
-  StumplessValueList * output = EventSummaryToValueList( event );
+  StatusCode status;
+  ValueList * output = EventSummaryToValueList( event );
   if( output == NULL )
     return NULL;
   
   if( event->attributes != NULL && event->attribute_count > 0 ){
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
     
-    StumplessValueList * attributes = EventAttributeListToValueList( event );
+    ValueList * attributes = EventAttributeListToValueList( event );
     if( attributes == NULL )
       return NULL;
     
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, attributes ) )
+    NULL_ON_FAILURE( AppendValueLists( output, attributes ) )
   }
   
   return output;
 }
 
 static
-StumplessValueList *
-EventAttributeToValueList( StumplessEventAttribute * attribute )
+ValueList *
+EventAttributeToValueList
+( EventAttribute * attribute )
 {
   if( attribute == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
@@ -287,162 +305,167 @@ EventAttributeToValueList( StumplessEventAttribute * attribute )
     name = "attribute";
   else
     name = attribute->name;
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, name ) )
+  NULL_ON_FAILURE( AppendStringToValueList( output, name ) )
   
-  StumplessValue * default_value = attribute->default_value;
+  Value * default_value = attribute->default_value;
   if( default_value != NULL ){
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ": " ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
     
     if( default_value->profile == NULL )
       return NULL;
     
-    StumplessFormattedOutput * default_value_output;
+    FormattedOutput * default_value_output;
     default_value_output = default_value->profile->to_text( default_value );
     
-    StumplessValueList * default_value_list;
-    default_value_list = ( StumplessValueList * ) default_value_output->data;
+    ValueList * default_value_list;
+    default_value_list = ( ValueList * ) default_value_output->data;
     
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, default_value_list ) )
+    NULL_ON_FAILURE( AppendValueLists( output, default_value_list ) )
   }
   
   return output; 
 }
 
 static
-StumplessValueList *
-EventAttributeListToValueList( StumplessEvent * event )
+ValueList *
+EventAttributeListToValueList
+( Event * event )
 {
   if( event == NULL || event->attributes == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
   unsigned i;
-  StumplessValueList * attribute;
+  ValueList * attribute;
   for( i = 0; i < event->attribute_count; i++ ){
     attribute = EventAttributeToValueList( event->attributes[i] );
     if( attribute == NULL )
       continue;
     
-    if( !StumplessValueListIsEmpty( output ) )
-      NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ", " ) )
+    if( !ValueListIsEmpty( output ) )
+      NULL_ON_FAILURE( AppendStringToValueList( output, ", " ) )
     
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, attribute ) )
+    NULL_ON_FAILURE( AppendValueLists( output, attribute ) )
   }
   
   return output;
 }
 
 static
-StumplessValueList *
-EventSummaryToValueList( StumplessEvent * event )
+ValueList *
+EventSummaryToValueList
+( Event * event )
 {
   if( event == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
   const char * event_name = event->name == NULL ? "event" : event->name;
-  StumplessStatusCode status;
-  status = StumplessAppendStringToValueList( output, event_name );
+  StatusCode status;
+  status = AppendStringToValueList( output, event_name );
   NULL_ON_FAILURE( status );
   
   if( event->level != NULL ){
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, " (" ) )
     
-    StumplessValueList * level = LevelToValueList( event->level );
+    ValueList * level = LevelToValueList( event->level );
     if( level == NULL )
       return NULL;
     
-    NULL_ON_FAILURE( StumplessAppendValueLists( output, level ) )
+    NULL_ON_FAILURE( AppendValueLists( output, level ) )
     
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, ")" ) )
   }
   
   return output;
 }
 
 static
-StumplessValueList *
-LevelToValueList( StumplessLevel * level )
+ValueList *
+LevelToValueList
+( Level * level )
 {
   if( level == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
-  StumplessStatusCode status;
+  StatusCode status;
   
   if( level->name != NULL ){
-    status = StumplessAppendStringToValueList( output, level->name );
+    status = AppendStringToValueList( output, level->name );
     NULL_ON_FAILURE( status )
     
-    status = StumplessAppendStringToValueList( output, ": " );
+    status = AppendStringToValueList( output, ": " );
     NULL_ON_FAILURE( status )
   }
   
-  status = StumplessAppendStringToValueList( output, "level " );
+  status = AppendStringToValueList( output, "level " );
   NULL_ON_FAILURE( status )
-  status = StumplessAppendUnsignedIntToValueList( output, level->value );
+  status = AppendUnsignedIntToValueList( output, level->value );
   NULL_ON_FAILURE( status )
   
   return output;
 }
 
 static
-StumplessValueList *
-SingularValueToValueList( StumplessValue * value )
+ValueList *
+SingularValueToValueList
+( Value * value )
 {
   if( value == NULL )
     return NULL;
   
-  StumplessValueProfile * profile;
+  ValueProfile * profile;
   profile = value->profile;
   if( profile == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
-  NULL_ON_FAILURE( StumplessAppendValueToValueList( output, value ) )
+  NULL_ON_FAILURE( AppendValueToValueList( output, value ) )
   
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, " (" ) )
+  NULL_ON_FAILURE( AppendStringToValueList( output, " (" ) )
 
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, profile->name ) )
+  NULL_ON_FAILURE( AppendStringToValueList( output, profile->name ) )
   
-  NULL_ON_FAILURE( StumplessAppendStringToValueList( output, ")" ) )
+  NULL_ON_FAILURE( AppendStringToValueList( output, ")" ) )
   
   return output;
 }
 
 static
-StumplessFormattedOutput *
-TextFormattedOutputFromValueList( StumplessValueList * list )
+FormattedOutput *
+TextFormattedOutputFromValueList
+( ValueList * list )
 {
   if( list == NULL )
     return NULL;
   
-  StumplessFormattedOutput * output;
-  output = malloc( sizeof( StumplessFormattedOutput ) );
+  FormattedOutput * output;
+  output = malloc( sizeof( FormattedOutput ) );
   if( output == NULL )
     return NULL;
   
-  output->data = malloc( sizeof( StumplessType ) );
+  output->data = malloc( sizeof( Type ) );
   if( output->data == NULL )
     return NULL;
   
-  output->profile = StumplessFindOutputProfileByName( "text" );
+  output->profile = FindOutputProfileByName( "text" );
   if( output->profile == NULL )
     return NULL;
   
-  output->data = ( void * ) StumplessValueListToStrings( list );
+  output->data = ( void * ) ValueListToStrings( list );
   
   return output;
 }

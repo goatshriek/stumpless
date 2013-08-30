@@ -1,48 +1,62 @@
 #ifndef STUMPLESS_PRIVATE_FORMATTED_OUTPUT_H
 #define STUMPLESS_PRIVATE_FORMATTED_OUTPUT_H
 
-#include <type.h>
+#include "private/type.h"
 
 unsigned short
-BinaryFormattedOutputIsEmpty( FormattedOutput * );
+BinaryFormattedOutputIsEmpty
+( FormattedOutput * );
 
 char *
-BinaryFormattedOutputToString( FormattedOutput * );
+BinaryFormattedOutputToString
+( FormattedOutput * );
 
 unsigned short
-CSVFormattedOutputIsEmpty( FormattedOutput * );
+CSVFormattedOutputIsEmpty
+( FormattedOutput * );
 
 char *
-CSVFormattedOutputToString( FormattedOutput * );
+CSVFormattedOutputToString
+( FormattedOutput * );
 
 unsigned short
-FormattedOutputIsEmpty( FormattedOutput * );
+FormattedOutputIsEmpty
+( FormattedOutput * );
 
 char *
-FormattedOutputToString( FormattedOutput * );
+FormattedOutputToString
+( FormattedOutput * );
 
 unsigned short
-JSONFormattedOutputIsEmpty( FormattedOutput * );
+JSONFormattedOutputIsEmpty
+( FormattedOutput * );
 
 char *
-JSONFormattedOutputToString( FormattedOutput * );
+JSONFormattedOutputToString
+( FormattedOutput * );
 
 unsigned short
-RawStringFormattedOutputIsEmpty( FormattedOutput * );
+RawStringFormattedOutputIsEmpty
+( FormattedOutput * );
 
 char *
-RawStringFormattedOutputToString( FormattedOutput * );
+RawStringFormattedOutputToString
+( FormattedOutput * );
 
 unsigned short
-TextFormattedOutputIsEmpty( FormattedOutput * );
+TextFormattedOutputIsEmpty
+( FormattedOutput * );
 
 char *
-TextFormattedOutputToString( FormattedOutput * );
+TextFormattedOutputToString
+( FormattedOutput * );
 
 unsigned short
-XMLFormattedOutputIsEmpty( FormattedOutput * );
+XMLFormattedOutputIsEmpty
+( FormattedOutput * );
 
 char *
-XMLFormattedOutputToString( FormattedOutput * );
+XMLFormattedOutputToString
+( FormattedOutput * );
 
 #endif
