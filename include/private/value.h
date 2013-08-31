@@ -1,165 +1,218 @@
 #ifndef STUMPLESS_PRIVATE_VALUE_H
 #define STUMPLESS_PRIVATE_VALUE_H
 
-#include <type.h>
+#include "private/type.h"
 
 ValueList *
-BooleanArrayValueToValueList( Value * );
+BooleanArrayValueToValueList
+( Value * );
 
 StatusCode
-BooleanValueIntoString( char *, Value * );
+BooleanValueIntoString
+( char *, Value * );
 
 char *
-BooleanValueToString( Value * );
+BooleanValueToString
+( Value * );
 
 ValueList *
-CharArrayValueToValueList( Value * );
+CharArrayValueToValueList
+( Value * );
 
 StatusCode
-CharValueIntoString( char *, Value * );
+CharValueIntoString
+( char *, Value * );
 
 char *
-CharValueToString( Value * );
+CharValueToString
+( Value * );
 
 void
-DestroyValue( Value * );
+DestroyValue
+( Value * );
 
 ValueList *
-DoubleArrayValueToValueList( Value * );
+DoubleArrayValueToValueList
+( Value * );
 
 StatusCode
-DoubleValueIntoString( char *, Value * );
+DoubleValueIntoString
+( char *, Value * );
 
 char *
-DoubleValueToString( Value * );
+DoubleValueToString
+( Value * );
 
 ValueList *
-FloatArrayValueToValueList( Value * );
+FloatArrayValueToValueList
+( Value * );
 
 StatusCode
-FloatValueIntoString( char *, Value * );
+FloatValueIntoString
+( char *, Value * );
 
 char *
-FloatValueToString( Value * );
+FloatValueToString
+( Value * );
 
 ValueList *
-IntArrayValueToValueList( Value * );
+IntArrayValueToValueList
+( Value * );
 
 StatusCode
-IntValueIntoString( char *, Value * );
+IntValueIntoString
+( char *, Value * );
 
 char *
-IntValueToString( Value * );
+IntValueToString
+( Value * );
 
 ValueList *
-LongArrayValueToValueList( Value * );
+LongArrayValueToValueList
+( Value * );
 
 StatusCode
-LongValueIntoString( char *, Value * );
+LongValueIntoString
+( char *, Value * );
 
 char *
-LongValueToString( Value * );
+LongValueToString
+( Value * );
 
 ValueList *
-LongDoubleArrayValueToValueList( Value * );
+LongDoubleArrayValueToValueList
+( Value * );
 
 StatusCode
-LongDoubleValueIntoString( char *, Value * );
+LongDoubleValueIntoString
+( char *, Value * );
 
 char *
-LongDoubleValueToString( Value * );
+LongDoubleValueToString
+( Value * );
 
 ValueList *
-LongLongArrayValueToValueList( Value * );
+LongLongArrayValueToValueList
+( Value * );
 
 StatusCode
-LongLongValueIntoString( char *, Value * );
+LongLongValueIntoString
+( char *, Value * );
 
 char *
-LongLongValueToString( Value * );
+LongLongValueToString
+( Value * );
 
 ValueList *
-ShortArrayValueToValueList( Value * );
+ShortArrayValueToValueList
+( Value * );
 
 StatusCode
-ShortValueIntoString( char *, Value * );
+ShortValueIntoString
+( char *, Value * );
 
 char *
-ShortValueToString( Value * );
+ShortValueToString
+( Value * );
 
 ValueList *
-SignedCharArrayValueToValueList( Value * );
+SignedCharArrayValueToValueList
+( Value * );
 
 StatusCode
-SignedCharValueIntoString( char *, Value * );
+SignedCharValueIntoString
+( char *, Value * );
 
 char *
-SignedCharValueToString( Value * );
+SignedCharValueToString
+( Value * );
 
 ValueList *
-StringArrayValueToValueList( Value * );
+StringArrayValueToValueList
+( Value * );
 
 StatusCode
-StringValueIntoString( char *, Value * );
+StringValueIntoString
+( char *, Value * );
 
 char *
-StringValueToString( Value * );
+StringValueToString
+( Value * );
 
 ValueList *
-UnsignedCharArrayValueToValueList( Value * );
+UnsignedCharArrayValueToValueList
+( Value * );
 
 StatusCode
-UnsignedCharValueIntoString( char *, Value * );
+UnsignedCharValueIntoString
+( char *, Value * );
 
 char *
-UnsignedCharValueToString( Value * );
+UnsignedCharValueToString
+( Value * );
 
 ValueList *
-UnsignedIntArrayValueToValueList( Value * );
+UnsignedIntArrayValueToValueList
+( Value * );
 
 StatusCode
-UnsignedIntValueIntoString( char *, Value * );
+UnsignedIntValueIntoString
+( char *, Value * );
 
 char *
-UnsignedIntValueToString( Value * );
+UnsignedIntValueToString
+( Value * );
 
 ValueList *
-UnsignedLongArrayValueToValueList( Value * );
+UnsignedLongArrayValueToValueList
+( Value * );
 
 StatusCode
-UnsignedLongValueIntoString( char *, Value * );
+UnsignedLongValueIntoString
+( char *, Value * );
 
 char *
-UnsignedLongValueToString( Value * );
+UnsignedLongValueToString
+( Value * );
 
 ValueList *
-UnsignedLongLongArrayValueToValueList( Value * );
+UnsignedLongLongArrayValueToValueList
+( Value * );
 
 StatusCode
-UnsignedLongLongValueIntoString( char *, Value * );
+UnsignedLongLongValueIntoString
+( char *, Value * );
 
 char *
-UnsignedLongLongValueToString( Value * );
+UnsignedLongLongValueToString
+( Value * );
 
 ValueList *
-UnsignedShortArrayValueToValueList( Value * );
+UnsignedShortArrayValueToValueList
+( Value * );
 
 StatusCode
-UnsignedShortValueIntoString( char *, Value * );
+UnsignedShortValueIntoString
+( char *, Value * );
 
 char *
-UnsignedShortValueToString( Value * );
+UnsignedShortValueToString
+( Value * );
 
 StatusCode
-ValueIntoString( char *, Value * );
+ValueIntoString
+( char *, Value * );
 
 StatusCode
-ValueIntoString( char *, Value * );
+ValueIntoString
+( char *, Value * );
 
 char *
-ValueToString( Value * );
+ValueToString
+( Value * );
 
 ValueList *
-ValueToValueList( Value * );
+ValueToValueList
+( Value * );
 
 #endif

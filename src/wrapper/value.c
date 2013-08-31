@@ -83,7 +83,7 @@ __STUMPLESS_NAME( StatusCode )
 __STUMPLESS_NAME( FloatValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
-  return FloatValueIntoString( value );
+  return FloatValueIntoString( str, value );
 }
 
 char *
@@ -172,9 +172,9 @@ __STUMPLESS_NAME( LongLongArrayValueToValueList )
 
 __STUMPLESS_NAME( StatusCode )
 __STUMPLESS_NAME( LongLongValueIntoString )
-( char *, __STUMPLESS_NAME( Value ) * value )
+( char * str, __STUMPLESS_NAME( Value ) * value )
 {
-  return LongLongValueIntoString( value );
+  return LongLongValueIntoString( str, value );
 }
 
 char *
@@ -235,9 +235,9 @@ __STUMPLESS_NAME( StringArrayValueToValueList )
 
 __STUMPLESS_NAME( StatusCode )
 __STUMPLESS_NAME( StringValueIntoString )
-( char *, __STUMPLESS_NAME( Value ) * value )
+( char * str, __STUMPLESS_NAME( Value ) * value )
 {
-  return StringValueIntoString( value );
+  return StringValueIntoString( str, value );
 }
 
 char *
@@ -350,13 +350,6 @@ __STUMPLESS_NAME( UnsignedShortValueToString )
 ( __STUMPLESS_NAME( Value ) * value )
 {
   return UnsignedShortValueToString( value );
-}
-
-__STUMPLESS_NAME( StatusCode )
-__STUMPLESS_NAME( ValueIntoString )
-( char * str, __STUMPLESS_NAME( Value ) * value )
-{
-  return ValueIntoString( str, value );
 }
 
 __STUMPLESS_NAME( StatusCode )

@@ -3,48 +3,62 @@
 
 #include <stdio.h>
 
-#include <type.h>
+#include "private/type.h"
 
 StatusCode
-AddSeparatorToValueList( ValueList *, Value * );
+AddSeparatorToValueList
+( ValueList *, Value * );
 
 StatusCode
-AppendStringToValueList( ValueList *, const char * );
+AppendStringToValueList
+( ValueList *, const char * );
 
 StatusCode
-AppendUnsignedIntToValueList( ValueList *, unsigned );
+AppendUnsignedIntToValueList
+( ValueList *, unsigned );
 
 StatusCode
-AppendValueLists( ValueList *, ValueList * );
+AppendValueLists
+( ValueList *, ValueList * );
 
 StatusCode
-AppendValueToValueList( ValueList *, Value * );
+AppendValueToValueList
+( ValueList *, Value * );
 
 ValueList *
-CopyValueList( ValueList * );
+CopyValueList
+( ValueList * );
 
 void
-DestroyValueList( ValueList * );
+DestroyValueList
+( ValueList * );
 
 ValueList *
-NewValueList( void );
+NewValueList
+( void );
 
 StatusCode
-PrependStringToValueList( ValueList *, const char * );
+PrependStringToValueList
+( ValueList *, const char * );
 
 StatusCode
-PrependValueToValueList( ValueList *, Value * );
+PrependValueToValueList
+( ValueList *, Value * );
 
 StatusCode
-ValueListIntoString( char *, ValueList * );
+ValueListIntoString
+( char *, ValueList * );
 
 unsigned short
-ValueListIsEmpty( ValueList * );
+ValueListIsEmpty
+( ValueList * );
 
 char *
-ValueListToString( ValueList * );
+ValueListToString
+( ValueList * );
 
 ValueList *
-ValueListToStrings( ValueList * );
+ValueListToStrings
+( ValueList * );
 
 #endif

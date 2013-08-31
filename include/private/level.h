@@ -1,36 +1,46 @@
 #ifndef STUMPLESS_PRIVATE_LEVEL_H
 #define STUMPLESS_PRIVATE_LEVEL_H
 
-#include <type.h>
+#include "private/type.h"
 
 Level *
-GetAlertLevel( void );
+GetAlertLevel
+( void );
 
 Level *
-GetCriticalLevel( void );
+GetCriticalLevel
+( void );
 
 Level *
-GetDebugLevel( void );
+GetDebugLevel
+( void );
 
 Level *
-GetEmergencyLevel( void );
+GetEmergencyLevel
+( void );
 
 Level *
-GetErrorLevel( void );
+GetErrorLevel
+( void );
 
 Level *
-GetFatalLevel( void );
+GetFatalLevel
+( void );
 
 Level *
-GetInfoLevel( void );
+GetInfoLevel
+( void );
 
 Level *
-GetNoticeLevel( void );
+GetNoticeLevel
+( void );
 
 Level *
-GetWarningLevel( void );
+GetWarningLevel
+( void );
 
 char *
-LevelToString( Level * );
+LevelToString
+( Level * );
 
 #endif

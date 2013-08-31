@@ -1,44 +1,49 @@
 #include <stdlib.h>
 
-#include <status.h>
-#include <type.h>
+#include "private/status.h"
+#include "private/type.h"
 
-static StumplessStatus * last_error = NULL;
-static StumplessStatus * last_failure = NULL;
+static Status * last_error = NULL;
+static Status * last_failure = NULL;
 
-StumplessStatus *
-StumplessAddStatus( StumplessStatus * )
+Status *
+AddStatus
+( Status * status )
 {
   return NULL;
 }
 
-StumplessStatus *
-StumplessFindStatusByName( const char * name )
+Status *
+FindStatusByName
+( const char * name )
 {
   return NULL;
 }
 
-StumplessStatus *
-StumplessInitializeStatus( void )
+Status *
+InitializeStatus
+( void )
 {
   return NULL;
 }
 
-StumplessStatus *
-StumplessGetLastError( void )
+Status *
+GetLastError
+( void )
 {
   return last_error;
 }
 
-StumplessStatus *
-StumplessGetLastFailure( void )
+Status *
+GetLastFailure
+( void )
 {
   return last_failure;
 }
 
 // todo remove
 const char *
-StumplessStatusToString( StumplessStatusCode code )
+StatusToString( StatusCode code )
 {
   switch( code ){
     case STUMPLESS_SUCCESS:

@@ -196,8 +196,8 @@ InitializeConfiguration( void )
   return InitializeValueProfiles();
 }
 
-StumplessStatusCode
-StumplessInitializeLoggingProfiles( void )
+StatusCode
+InitializeLoggingProfiles( void )
 {
   if( configuration == NULL )
     return STUMPLESS_INCORRECT_INTERNAL_STATE;

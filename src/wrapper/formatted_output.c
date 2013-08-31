@@ -67,7 +67,7 @@ __STUMPLESS_NAME( RawStringFormattedOutputIsEmpty )
 
 char *
 __STUMPLESS_NAME( RawStringFormattedOutputToString )
-( __STUMPLESS_NAME( FormattedOutput ) * output );
+( __STUMPLESS_NAME( FormattedOutput ) * output )
 {
   return RawStringFormattedOutputToString( output );
 }

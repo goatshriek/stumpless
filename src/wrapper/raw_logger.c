@@ -32,7 +32,7 @@ __STUMPLESS_NAME( LogRawFloat )
 
 __STUMPLESS_NAME( StatusCode )
 __STUMPLESS_NAME( LogRawInt )
-( int raw_ing )
+( int raw_int )
 {
   return LogRawInt( raw_int );
 }

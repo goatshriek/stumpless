@@ -2,42 +2,41 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <boolean.h>
-#include <configuration.h>
-#include <status_checker.h>
-#include <string.h>
-#include <type.h>
-#include <value.h>
-#include <value_constructor.h>
-#include <value_list.h>
+#include "private/boolean.h"
+#include "private/configuration.h"
+#include "private/status_checker.h"
+#include "private/type.h"
+#include "private/value.h"
+#include "private/value_constructor.h"
+#include "private/value_list.h"
 
 #define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \
-StumplessValueList *                                                           \
-Stumpless##name##ArrayValueToValueList( StumplessValue * value )               \
+ValueList *                                                                    \
+name##ArrayValueToValueList( Value * value )                                   \
 {                                                                              \
   if( value == NULL || value->data == NULL                                     \
    || value->data->data_member == NULL )                                       \
     return NULL;                                                               \
                                                                                \
-  StumplessValueList * list = StumplessNewValueList();                         \
+  ValueList * list = NewValueList();                                           \
   if( list == NULL )                                                           \
     return NULL;                                                               \
                                                                                \
-  StumplessType * data = value->data;                                          \
-  StumplessValue * value_i;                                                    \
+  Type * data = value->data;                                                   \
+  Value * value_i;                                                             \
   unsigned i;                                                                  \
                                                                                \
   for( i = 0; i < value->length; i++ ){                                        \
-    value_i = StumplessValueFrom##name( data->data_member[i] );                \
-    NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value_i ) )        \
+    value_i = ValueFrom##name( data->data_member[i] );                         \
+    NULL_ON_FAILURE( AppendValueToValueList( list, value_i ) )                 \
   }                                                                            \
                                                                                \
   return list;                                                                 \
 }
 
 #define VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )        \
-StumplessStatusCode                                                            \
-Stumpless##name##ValueIntoString( char * str, StumplessValue * value )         \
+StatusCode                                                                     \
+name##ValueIntoString( char * str, Value * value )                             \
 {                                                                              \
   if( str == NULL || value == NULL || value->data == NULL )                    \
     return STUMPLESS_EMPTY_ARGUMENT;                                           \
@@ -56,14 +55,14 @@ Stumpless##name##ValueIntoString( char * str, StumplessValue * value )         \
 // snprintf is available. Create configuration check to handle this case
 #define VALUE_TO_STRING_FUNCTION( name, data_member, default_format )          \
 char *                                                                         \
-Stumpless##name##ValueToString( StumplessValue * value )                       \
+name##ValueToString( Value * value )                                           \
 {                                                                              \
   if( value == NULL || value->data == NULL )                                   \
     return NULL;                                                               \
                                                                                \
   const char * format = value->format == NULL ? default_format : value->format;\
                                                                                \
-  StumplessConfiguration * configuration = StumplessGetConfiguration();        \
+  Configuration * configuration = GetConfiguration();                          \
   if( configuration == NULL )                                                  \
     return NULL;                                                               \
                                                                                \
@@ -95,44 +94,47 @@ Stumpless##name##ValueToString( StumplessValue * value )                       \
   return str;                                                                  \
 }
 
-StumplessValueList *
-StumplessBooleanArrayValueToValueList( StumplessValue * value )
+ValueList *
+BooleanArrayValueToValueList
+( Value * value )
 {
   if( value == NULL || value->data == NULL || value->data->v_p == NULL )
     return NULL;
   
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   if( list == NULL )
     return NULL;
   
-  const StumplessBoolean ** boolean_list;
-  boolean_list = (const StumplessBoolean **) value->data->v_p;
-  StumplessValue * boolean_value;
+  const Boolean ** boolean_list;
+  boolean_list = (const Boolean **) value->data->v_p;
+  Value * boolean_value;
   
   unsigned i; 
   
   for( i = 0; i < value->length; i++ ){
-    boolean_value = StumplessValueFromBoolean( boolean_list[i] );
-    NULL_ON_FAILURE( StumplessAppendValueToValueList( list, boolean_value ) )
+    boolean_value = ValueFromBoolean( boolean_list[i] );
+    NULL_ON_FAILURE( AppendValueToValueList( list, boolean_value ) )
   }
   
   return list;
 }
 
-StumplessStatusCode
-StumplessBooleanValueIntoString( char * str, StumplessValue * value )
+StatusCode
+BooleanValueIntoString
+( char * str, Value * value )
 {
   // todo need to implement
   return STUMPLESS_FAILURE;
 }
 
 char *
-StumplessBooleanValueToString( StumplessValue * value )
+BooleanValueToString
+( Value * value )
 {
   if( value == NULL || value->data == NULL || value->data->v_p == NULL )
     return NULL;
   
-  StumplessBoolean * boolean = (StumplessBoolean * ) value->data->v_p;
+  Boolean * boolean = (Boolean * ) value->data->v_p;
   
   const char * description;
   if( boolean->value )
@@ -160,7 +162,8 @@ VALUE_INTO_STRING_FUNCTION( Char, c, "%c" )
 VALUE_TO_STRING_FUNCTION( Char, c, "%c" )
 
 void
-StumplessDestroyValue( StumplessValue * value )
+DestroyValue
+( Value * value )
 {
   if( value == NULL )
     return;
@@ -220,37 +223,40 @@ VALUE_INTO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
 VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
-StumplessValueList *
-StumplessStringArrayValueToValueList( StumplessValue * value )
+ValueList *
+StringArrayValueToValueList
+( Value * value )
 {
   if( value == NULL || value->data == NULL || value->data->v_p == NULL )
     return NULL;
   
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   if( list == NULL )
     return NULL;
   
   const char ** string_list = (const char **) value->data->v_p;
-  StumplessValue * string_value;
+  Value * string_value;
   
   unsigned i; 
   
   for( i = 0; i < value->length; i++ ){
-    string_value = StumplessValueFromString( string_list[i] );
-    NULL_ON_FAILURE( StumplessAppendValueToValueList( list, string_value ) )
+    string_value = ValueFromString( string_list[i] );
+    NULL_ON_FAILURE( AppendValueToValueList( list, string_value ) )
   }
   
   return list;
 }
 
-StumplessStatusCode
-StumplessStringValueIntoString( char * str, StumplessValue * value )
+StatusCode
+StringValueIntoString
+( char * str, Value * value )
 {
   return STUMPLESS_FAILURE;
 }
 
 char *
-StumplessStringValueToString( StumplessValue * value )
+StringValueToString
+( Value * value )
 {
   if( value == NULL || value->data == NULL || value->data->c_p == NULL )
     return NULL;
@@ -298,8 +304,9 @@ VALUE_INTO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
-StumplessStatusCode
-StumplessValueIntoString( char * str, StumplessValue * value )
+StatusCode
+ValueIntoString
+( char * str, Value * value )
 {
   if( value == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -311,7 +318,8 @@ StumplessValueIntoString( char * str, StumplessValue * value )
 }
 
 char *
-StumplessValueToString( StumplessValue * value )
+ValueToString
+( Value * value )
 {
   if( value == NULL || value->profile == NULL
    || value->profile->to_string == NULL )
@@ -320,17 +328,18 @@ StumplessValueToString( StumplessValue * value )
   return value->profile->to_string( value );
 }
 
-StumplessValueList *
-StumplessValueToValueList( StumplessValue * value )
+ValueList *
+ValueToValueList
+( Value * value )
 {
   if( value == NULL )
     return NULL;
   
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   if( list == NULL )
     return NULL;
   
-  NULL_ON_FAILURE( StumplessAppendValueToValueList( list, value ) )
+  NULL_ON_FAILURE( AppendValueToValueList( list, value ) )
   
   return list;
 }

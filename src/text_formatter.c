@@ -16,7 +16,7 @@ FormattedOutput *
 ArrayValueToText
 ( Value * value )
 {
-  ValueList * output = ArrayValueToValueList( value );
+  ValueList * output = value->profile->to_value_list( value );
   return TextFormattedOutputFromValueList( output );
 }
 
@@ -91,7 +91,7 @@ FormattedOutput *
 SingularValueToText
 ( Value * value )
 {
-  ValueList * output = SingularValueToValueList( value );
+  ValueList * output = value->profile->to_value_list( value );
   return TextFormattedOutputFromValueList( output );
 }
 

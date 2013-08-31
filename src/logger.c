@@ -1,49 +1,54 @@
 #include <stdlib.h>
 
-#include <configuration.h>
-#include <logger.h>
-#include <type.h>
+#include "private/configuration.h"
+#include "private/logger.h"
+#include "private/type.h"
 
-StumplessStatusCode
-StumplessLogDebug( const char * message )
+StatusCode
+LogDebug
+( const char * message )
 {
-  StumplessStatusCode result = STUMPLESS_SUCCESS;
+  StatusCode result = STUMPLESS_SUCCESS;
   
   
   return result;
 }
 
-StumplessStatusCode
-StumplessLogError( const char * message )
+StatusCode
+LogError
+( const char * message )
 {
-  StumplessStatusCode result = STUMPLESS_SUCCESS;
+  StatusCode result = STUMPLESS_SUCCESS;
   
   
   return result;
 }
 
-StumplessStatusCode
-StumplessLogFatal( const char * message )
+StatusCode
+LogFatal
+( const char * message )
 {
-  StumplessStatusCode result = STUMPLESS_SUCCESS;
+  StatusCode result = STUMPLESS_SUCCESS;
   
   
   return result;
 }
 
-StumplessStatusCode
-StumplessLogInfo( const char * message )
+StatusCode
+LogInfo
+( const char * message )
 {
-  StumplessStatusCode result = STUMPLESS_SUCCESS;
+  StatusCode result = STUMPLESS_SUCCESS;
   
   
   return result;
 }
 
-StumplessStatusCode
-StumplessLogWarning( const char * message )
+StatusCode
+LogWarning
+( const char * message )
 {
-  StumplessStatusCode result = STUMPLESS_SUCCESS;
+  StatusCode result = STUMPLESS_SUCCESS;
   
   
   return result;

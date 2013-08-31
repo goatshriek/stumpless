@@ -13,7 +13,7 @@ __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( FindStatusByName )
 ( const char * name )
 {
-  return FindStatusbyName( name );
+  return FindStatusByName( name );
 }
 
 __STUMPLESS_NAME( Status ) *

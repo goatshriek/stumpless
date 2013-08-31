@@ -3,9 +3,10 @@
 
 #include <stdio.h>
 
-#include <type.h>
+#include "private/type.h"
 
 StatusCode
-TextOutputToStream( FILE *, FormattedOutput * );
+TextOutputToStream
+( FILE *, FormattedOutput * );
 
 #endif

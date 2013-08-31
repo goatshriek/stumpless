@@ -24,7 +24,6 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/wrapper/raw_logger.c \
                           src/wrapper/status.c \
                           src/wrapper/stream_output.c \
-                          src/wrapper/string_helper.c \
                           src/wrapper/text_formatter.c \
                           src/wrapper/value.c \
                           src/wrapper/value_constructor.c \

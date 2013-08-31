@@ -1,22 +1,27 @@
 #ifndef STUMPLESS_PRIVATE_STATUS_H
 #define STUMPLESS_PRIVATE_STATUS_H
 
-#include <type.h>
+#include "private/type.h"
 
 Status *
-AddStatus( Status * );
+AddStatus
+( Status * );
 
 Status *
-FindStatusByName( const char * );
+FindStatusByName
+( const char * );
 
 Status *
-InitializeStatus( void );
+InitializeStatus
+( void );
 
 Status *
-GetLastError( void );
+GetLastError
+( void );
 
 Status *
-GetLastFailure( void );
+GetLastFailure
+( void );
 
 // todo remove
 const char *

@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_PRIVATE_VALUE_CONSTRUCTOR_H
 #define STUMPLESS_PRIVATE_VALUE_CONSTRUCTOR_H
 
-#include <type.h>
+#include "private/type.h"
 
 Value *
 ValueFromBoolean( const Boolean * );

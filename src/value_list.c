@@ -10,7 +10,8 @@
 
 static
 StatusCode
-AppendValueListNodeToValueList( ValueList * list, ValueListNode * node )
+AppendValueListNodeToValueList
+( ValueList * list, ValueListNode * node )
 {
   if( list == NULL || node == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -29,7 +30,8 @@ AppendValueListNodeToValueList( ValueList * list, ValueListNode * node )
 
 static
 void
-DestroyValueListNode( ValueListNode * node )
+DestroyValueListNode
+( ValueListNode * node )
 {
   if( node == NULL )
     return;
@@ -41,7 +43,8 @@ DestroyValueListNode( ValueListNode * node )
 
 static
 StatusCode
-PrependValueListNodeToValueList( ValueList * list, ValueListNode * node )
+PrependValueListNodeToValueList
+( ValueList * list, ValueListNode * node )
 {
   if( list == NULL || node == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -56,7 +59,8 @@ PrependValueListNodeToValueList( ValueList * list, ValueListNode * node )
 }
 
 StatusCode
-AddSeparatorToValueList( ValueList * list, Value * separator )
+AddSeparatorToValueList
+( ValueList * list, Value * separator )
 {
   if( list == NULL || separator == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
@@ -77,40 +81,42 @@ AddSeparatorToValueList( ValueList * list, Value * separator )
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessAppendStringToValueList( StumplessValueList * list, const char * str )
+StatusCode
+AppendStringToValueList
+( ValueList * list, const char * str )
 {
   if( list == NULL || str == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessValue * value = StumplessValueFromString( str );
+  Value * value = ValueFromString( str );
   if( value == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  return StumplessAppendValueToValueList( list, value );
+  return AppendValueToValueList( list, value );
 }
 
-StumplessStatusCode
-StumplessAppendUnsignedIntToValueList( StumplessValueList * list, unsigned num )
+StatusCode
+AppendUnsignedIntToValueList
+( ValueList * list, unsigned num )
 {
   if( list == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessValue * value = StumplessValueFromUnsignedInt( num );
+  Value * value = ValueFromUnsignedInt( num );
   if( value == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   else
-    return StumplessAppendValueToValueList( list, value );
+    return AppendValueToValueList( list, value );
 }
 
-StumplessStatusCode
-StumplessAppendValueLists( StumplessValueList * beginning,
-                           StumplessValueList * end )
+StatusCode
+AppendValueLists
+( ValueList * beginning, ValueList * end )
 {
   if( beginning == NULL || end == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessValueList * copy = StumplessCopyValueList( end );
+  ValueList * copy = CopyValueList( end );
   if( copy == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
@@ -125,14 +131,14 @@ StumplessAppendValueLists( StumplessValueList * beginning,
   return STUMPLESS_SUCCESS;
 }
 
-StumplessStatusCode
-StumplessAppendValueToValueList( StumplessValueList * list,
-                                 StumplessValue * value )
+StatusCode
+AppendValueToValueList
+( ValueList * list, Value * value )
 {
   if( list == NULL || value == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessValueListNode * node = malloc( sizeof( StumplessValueListNode ) );
+  ValueListNode * node = malloc( sizeof( ValueListNode ) );
   if( node == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
@@ -141,22 +147,23 @@ StumplessAppendValueToValueList( StumplessValueList * list,
   return AppendValueListNodeToValueList( list, node );
 }
 
-StumplessValueList *
-StumplessCopyValueList( StumplessValueList * list )
+ValueList *
+CopyValueList
+( ValueList * list )
 {
   if( list == NULL )
     return NULL;
   
-  StumplessValueList * copy = malloc( sizeof( StumplessValueList ) );
+  ValueList * copy = malloc( sizeof( ValueList ) );
   if( copy == NULL )
     return NULL;
   
   copy->first = copy->last =  NULL;
   
-  StumplessValueListNode * node = list->first;
-  StumplessValueListNode * copied_node;
+  ValueListNode * node = list->first;
+  ValueListNode * copied_node;
   while( node != NULL ){
-    copied_node = malloc( sizeof( StumplessValueListNode ) );
+    copied_node = malloc( sizeof( ValueListNode ) );
     if( copied_node == NULL )
       return NULL;
     
@@ -171,14 +178,15 @@ StumplessCopyValueList( StumplessValueList * list )
 }
 
 void
-StumplessDestroyValueList( StumplessValueList * list )
+DestroyValueList
+( ValueList * list )
 {
-  StumplessValueListNode * prev = NULL;
-  StumplessValueListNode * node = list->first;
+  ValueListNode * prev = NULL;
+  ValueListNode * node = list->first;
   
   while( node != NULL ){
     if( prev != NULL ){
-      StumplessDestroyValue( prev->value );
+      DestroyValue( prev->value );
       free( prev );
     }
     
@@ -191,10 +199,11 @@ StumplessDestroyValueList( StumplessValueList * list )
   return;
 }
 
-StumplessValueList *
-StumplessNewValueList( void )
+ValueList *
+NewValueList
+( void )
 {
-  StumplessValueList * list = malloc( sizeof( StumplessValueList ) );
+  ValueList * list = malloc( sizeof( ValueList ) );
   if( list == NULL )
     return NULL;
   
@@ -204,27 +213,28 @@ StumplessNewValueList( void )
   return list;
 }
 
-StumplessStatusCode
-StumplessPrependStringToValueList( StumplessValueList * list, const char * str )
+StatusCode
+PrependStringToValueList
+( ValueList * list, const char * str )
 {
   if( list == NULL || str == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessValue * value = StumplessValueFromString( str );
+  Value * value = ValueFromString( str );
   if( value == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  return StumplessPrependValueToValueList( list, value );
+  return PrependValueToValueList( list, value );
 }
 
-StumplessStatusCode
-StumplessPrependValueToValueList( StumplessValueList * list,
-                                  StumplessValue * value )
+StatusCode
+PrependValueToValueList
+( ValueList * list, Value * value )
 {
   if( list == NULL || value == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessValueListNode * node = malloc( sizeof( StumplessValueListNode ) );
+  ValueListNode * node = malloc( sizeof( ValueListNode ) );
   if( node == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
@@ -233,16 +243,17 @@ StumplessPrependValueToValueList( StumplessValueList * list,
   return PrependValueListNodeToValueList( list, node );
 }
 
-StumplessStatusCode
-StumplessValueListIntoString( char * str, StumplessValueList * list )
+StatusCode
+ValueListIntoString
+( char * str, ValueList * list )
 {
   if( str == NULL || list == NULL )
     return STUMPLESS_EMPTY_ARGUMENT;
   
-  StumplessStatusCode status;
+  StatusCode status;
   str[0] = '\0';
   
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   if( configuration == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
@@ -251,7 +262,7 @@ StumplessValueListIntoString( char * str, StumplessValueList * list )
   if( buffer == NULL )
     return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   
-  StumplessValueListNode * node = list->first;
+  ValueListNode * node = list->first;
   char * value_str;
   while( node != NULL ){
     if( node->value == NULL || node->value->profile == NULL )
@@ -272,38 +283,41 @@ StumplessValueListIntoString( char * str, StumplessValueList * list )
 }
 
 unsigned short
-StumplessValueListIsEmpty( StumplessValueList * list )
+ValueListIsEmpty
+( ValueList * list )
 {
   return list == NULL || list->first == NULL;
 }
 
 char *
-StumplessValueListToString( StumplessValueList * list )
+ValueListToString
+( ValueList * list )
 {
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   size_t buffer_size = configuration->string->buffer_size;
   char * list_str = malloc( sizeof( char ) * buffer_size + 1 );
   
-  NULL_ON_FAILURE( StumplessValueListIntoString( list_str, list ) )
+  NULL_ON_FAILURE( ValueListIntoString( list_str, list ) )
   
   return list_str;
 }
 
-StumplessValueList *
-StumplessValueListToStrings( StumplessValueList * list )
+ValueList *
+ValueListToStrings
+( ValueList * list )
 {
   if( list == NULL )
     return NULL;
   
-  StumplessValueList * output = StumplessNewValueList();
+  ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
   char * str;
-  StumplessValueListNode * node = list->first;
+  ValueListNode * node = list->first;
   while( node != NULL ){
     str = node->value->profile->to_string( node->value );
-    NULL_ON_FAILURE( StumplessAppendStringToValueList( output, str ) )
+    NULL_ON_FAILURE( AppendStringToValueList( output, str ) )
     
     node = node->next;
   }

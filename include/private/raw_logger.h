@@ -1,7 +1,7 @@
 #ifndef STUMPLESS_PRIVATE_RAW_LOGGER_H
 #define STUMPLESS_PRIVATE_RAW_LOGGER_H
 
-#include <type.h>
+#include "private/type.h"
 
 StatusCode
 LogRawBoolean( Boolean * );
