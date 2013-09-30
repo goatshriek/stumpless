@@ -5,6 +5,10 @@
 
 static
 ValueList *
+ArrayValueToValueList( Value * );
+
+static
+ValueList *
 EntryToValueList( Entry * );
 
 static
@@ -46,6 +50,10 @@ GenericValueToValueList( Value * );
 static
 ValueList *
 LevelToValueList( Level * );
+
+static
+ValueList *
+SingularValueToValueList( Value * );
 
 static
 FormattedOutput *

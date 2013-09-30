@@ -16,7 +16,7 @@ FormattedOutput *
 ArrayValueToText
 ( Value * value )
 {
-  ValueList * output = value->profile->to_value_list( value );
+  ValueList * output = ArrayValueToValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
@@ -91,7 +91,7 @@ FormattedOutput *
 SingularValueToText
 ( Value * value )
 {
-  ValueList * output = value->profile->to_value_list( value );
+  ValueList * output = SingularValueToValueList( value );
   return TextFormattedOutputFromValueList( output );
 }
 
@@ -186,7 +186,7 @@ EntryAttributeToValueList
     return NULL;
   
   FormattedOutput * value_as_text;
-  value_as_text  = attribute_value->profile->to_text( attribute_value );
+  value_as_text = attribute_value->profile->to_text( attribute_value );
   if( value_as_text == NULL )
     return NULL;
   
