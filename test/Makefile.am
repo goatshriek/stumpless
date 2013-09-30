@@ -1,5 +1,6 @@
 check_PROGRAMS = test/function/boolean \
                  test/function/configuration \
+                 test/function/dictionary \
                  test/function/entry \
                  test/function/event \
                  test/function/formatted_output \

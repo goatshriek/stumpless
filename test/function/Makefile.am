@@ -10,6 +10,10 @@ test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_CFLAGS = $(test_flags)
 test_function_configuration_LDADD = $(test_libraries)
 
+test_function_dictionary_SOURCES = test/function/dictionary.c
+test_function_dictionary_CFLAGS = $(test_flags)
+test_function_dictionary_LDADD = $(test_libraries)
+
 test_function_entry_SOURCES = test/function/entry.c
 test_function_entry_CFLAGS = $(test_flags)
 test_function_entry_LDADD = $(test_libraries)

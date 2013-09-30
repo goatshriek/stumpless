@@ -15,6 +15,10 @@ BuildByteFormattedOutput( void );
 Value *
 BuildCharArrayValue( void );
 
+Dictionary *
+BuildDictionaryOfStrings
+( void );
+
 Value *
 BuildEmptyUnsignedIntArrayValue( void );
 

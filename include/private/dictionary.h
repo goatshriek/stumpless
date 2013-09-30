@@ -1,9 +1,11 @@
 #ifndef STUMPLESS_PRIVATE_DICTIONARY_H
 #define STUMPLESS_PRIVATE_DICIONTARY_H
 
-Status *
+#include "private/type.h"
+
+Dictionary *
 AddValueToDictionary
-( Dictionary *, const char *, const void * );
+( Dictionary *, char *, void * );
 
 void
 DestroyDictionary
@@ -17,7 +19,7 @@ Dictionary *
 NewDictionary
 ();
 
-Status *
+Dictionary *
 RemoveValueFromDictionary
 ( Dictionary *, const char * );
 

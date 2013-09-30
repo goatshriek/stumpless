@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "private/configuration.h"
+#include "private/dictionary.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
 #include "private/value_list.h"
@@ -88,6 +89,21 @@ BuildCharArrayValue( void )
   value->length = 10;
   
   return value;
+}
+
+Dictionary *
+BuildDictionaryOfStrings
+( void )
+{
+  Dictionary * dictionary = NewDictionary();
+  if( dictionary == NULL )
+    return NULL;
+  
+  AddValueToDictionary( dictionary, "first", "1st" );
+  AddValueToDictionary( dictionary, "second", "2nd" );
+  AddValueToDictionary( dictionary, "third", "3rd" );
+  
+  return dictionary;
 }
 
 Value *
