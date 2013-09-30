@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/type.h"
+#include "private/value_constructor.h"
+#include "private/value_list.h"
 
 #include "helper.h"
 
@@ -49,32 +51,32 @@ main( void )
 const char *
 test_appender( void )
 {
-  StumplessStatusCode status;
+  StatusCode status;
   
-  StumplessValueList * list_1 = BuildValueList();
+  ValueList * list_1 = BuildValueList();
   if( list_1 == NULL )
     return "could not build the first list";
 
-  StumplessValueList * list_2 = BuildValueList();
+  ValueList * list_2 = BuildValueList();
   if( list_2 == NULL )
     return "could not build the second list";
-  status = StumplessAppendStringToValueList( list_2, "this should be last" );
+  status = AppendStringToValueList( list_2, "this should be last" );
   if( status != STUMPLESS_SUCCESS )
     return "an extra value could not be added to the second list";
   
-  status = StumplessAppendValueLists( NULL, NULL );
+  status = AppendValueLists( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "empty arguments did not generate the appropriate error";
   
-  status = StumplessAppendValueLists( list_1, NULL );
+  status = AppendValueLists( list_1, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty first argument did not generate the appropriate error";
   
-  status = StumplessAppendValueLists( NULL, list_2 );
+  status = AppendValueLists( NULL, list_2 );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty second argument did not generate the appropriate error";
   
-  status = StumplessAppendValueLists( list_1, list_2 );
+  status = AppendValueLists( list_1, list_2 );
   if( status != STUMPLESS_SUCCESS )
     return "the list was not successfully appended";
   if( strcmp( list_1->last->value->data->c_p, "this should be last" ) != 0 )
@@ -86,9 +88,9 @@ test_appender( void )
 const char *
 test_constructor( void )
 {
-  StumplessValueList * list = NULL;
+  ValueList * list = NULL;
   
-  list = StumplessNewValueList();
+  list = NewValueList();
   
   if( list == NULL )
     return "the list was not created";
@@ -105,17 +107,17 @@ test_constructor( void )
 const char *
 test_copy( void )
 {
-  StumplessValueList * list = BuildValueList();
+  ValueList * list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
   
-  StumplessValueList * copy;
+  ValueList * copy;
   
-  copy = StumplessCopyValueList( NULL );
+  copy = CopyValueList( NULL );
   if( copy != NULL )
     return "the copy was not null for a null pointer";
   
-  copy = StumplessCopyValueList( list );
+  copy = CopyValueList( list );
   if( copy == NULL )
     return "the copy was null for a non-null pointer";
   if( copy == list )
@@ -133,18 +135,18 @@ test_copy( void )
 const char *
 test_destructor( void )
 {
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   
   if( list == NULL )
     return "the list was not created";
   
-  StumplessDestroyValueList( list );
+  DestroyValueList( list );
   
   list = BuildValueList();
   if( list == NULL )
      return "could not build the test list";
   
-  StumplessDestroyValueList( list );
+  DestroyValueList( list );
   
   return NULL;
 }
@@ -152,20 +154,20 @@ test_destructor( void )
 const char *
 test_into_string( void )
 {
-  StumplessValueList * list = BuildValueList();
+  ValueList * list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
   char str[1000];
   
-  StumplessStatusCode status = StumplessValueListIntoString( NULL, list );
+  StatusCode status = ValueListIntoString( NULL, list );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty string did not generate the correct error";
   
-  status = StumplessValueListIntoString( str, NULL );
+  status = ValueListIntoString( str, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
      return "an empty list did not generate the correct error";
   
-  status = StumplessValueListIntoString( str, list );
+  status = ValueListIntoString( str, list );
   if( status != STUMPLESS_SUCCESS )
     return "a valid string was not properly written into";
   
@@ -178,18 +180,18 @@ test_into_string( void )
 const char *
 test_is_empty( void )
 {
-  StumplessValueList * list = NULL;
-  if( !StumplessValueListIsEmpty( list ) )
+  ValueList * list = NULL;
+  if( !ValueListIsEmpty( list ) )
     return "a null list pointer was deemed empty";
   
-  list = StumplessNewValueList();
-  if( !StumplessValueListIsEmpty( list ) )
+  list = NewValueList();
+  if( !ValueListIsEmpty( list ) )
     return "a newly created list pointer was not deemed empty";
   
   list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
-  if( StumplessValueListIsEmpty( list ) )
+  if( ValueListIsEmpty( list ) )
     return "a full list was deemed empty";
   
   return NULL;
@@ -198,25 +200,25 @@ test_is_empty( void )
 const char *
 test_prepender( void )
 {
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   FAIL_IF_NULL( list, "could not build a new test list" )
   
-  StumplessValue * value = BuildIntValue();
+  Value * value = BuildIntValue();
   FAIL_IF_NULL( list, "could not build the test value" );
   
-  StumplessStatusCode status = StumplessPrependValueToValueList( NULL, NULL );
+  StatusCode status = PrependValueToValueList( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "two empty arguments did not generate the appropriate status code";
   
-  status = StumplessPrependValueToValueList( list, NULL );
+  status = PrependValueToValueList( list, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty value did not generate the appropriate status code";
   
-  status = StumplessPrependValueToValueList( NULL, value );
+  status = PrependValueToValueList( NULL, value );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a NULL list did not generate the approprate status code";
  
-  status = StumplessPrependValueToValueList( list, value );
+  status = PrependValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return "a value could not be prepended to an empty list";
   FAIL_IF_NULL( list->first, "the list still did not have any members" )
@@ -228,7 +230,7 @@ test_prepender( void )
   FAIL_IF_NULL( list, "could not build a populated test list" ) 
   value = BuildIntArrayValue();
   FAIL_IF_NULL( list, "could not build a test array value" )
-  status = StumplessPrependValueToValueList( list, value );
+  status = PrependValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return "the value was not correctly prepended to a populated list";
   FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
@@ -242,18 +244,18 @@ test_prepender( void )
 const char *
 test_separator( void )
 {
-  StumplessValueList * list = BuildValueListOfStrings();
+  ValueList * list = BuildValueListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
   
-  StumplessValue * separator = StumplessValueFromString( ", " );
+  Value * separator = ValueFromString( ", " );
   FAIL_IF_NULL( separator, "could not build the test separator value" )
   
-  StumplessStatusCode status;
-  status = StumplessAddSeparatorToValueList( list, separator );
+  StatusCode status;
+  status = AddSeparatorToValueList( list, separator );
   if( status != STUMPLESS_SUCCESS )
     return "the separator was not properly added to the list";
   
-  char * test_str = StumplessValueListToString( list );
+  char * test_str = ValueListToString( list );
   FAIL_IF_NULL( test_str, "the list could not be converted to a string" )
   if( strcmp( test_str, "this, is, a, test, list" ) != 0 )
     return "the separator was not added between all elements of the list";
@@ -264,20 +266,20 @@ test_separator( void )
 const char *
 test_string_appender( void )
 {
-  StumplessStatusCode status;
-  status = StumplessAppendStringToValueList( NULL, "str" );
+  StatusCode status;
+  status = AppendStringToValueList( NULL, "str" );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty list did not generate the correct error";
   
-  StumplessValueList * list = BuildValueList();
+  ValueList * list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
   
-  status = StumplessAppendStringToValueList( list, NULL );
+  status = AppendStringToValueList( list, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty string did not generate the correct error";
   
-  status = StumplessAppendStringToValueList( list, "str" );
+  status = AppendStringToValueList( list, "str" );
   if( status != STUMPLESS_SUCCESS )
     return "the string was not successfully appended to the list";
   
@@ -299,22 +301,22 @@ test_string_appender( void )
 const char *
 test_string_prepender( void )
 {
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   FAIL_IF_NULL( list, "could not build a new test list" )
   
-  StumplessStatusCode status = StumplessPrependStringToValueList( NULL, NULL );
+  StatusCode status = PrependStringToValueList( NULL, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "two empty arguments did not generate the appropriate status code";
   
-  status = StumplessPrependStringToValueList( list, NULL );
+  status = PrependStringToValueList( list, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a null string did not generate the appropriate status code";
   
-  status = StumplessPrependStringToValueList( NULL, "shouldn't work" );
+  status = PrependStringToValueList( NULL, "shouldn't work" );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a NULL list did not generate the approprate status code";
   
-  status = StumplessPrependStringToValueList( list, "lonely little guy" );
+  status = PrependStringToValueList( list, "lonely little guy" );
   if( status != STUMPLESS_SUCCESS )
     return "a string could not be prepended to an empty list";
   FAIL_IF_NULL( list->first, "the list still did not have any members" )
@@ -327,7 +329,7 @@ test_string_prepender( void )
   
   list = BuildValueList();
   FAIL_IF_NULL( list, "could not build a populated test list" ) 
-  status = StumplessPrependStringToValueList( list, "new beginning" );
+  status = PrependStringToValueList( list, "new beginning" );
   if( status != STUMPLESS_SUCCESS )
     return "the string was not correctly prepended to a populated list";
   FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
@@ -344,16 +346,16 @@ test_string_prepender( void )
 const char *
 test_to_string( void )
 {
-  StumplessValueList * list = BuildValueList();
+  ValueList * list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
   char * str;
   
-  str = StumplessValueListToString( NULL );
+  str = ValueListToString( NULL );
   if( str != NULL )
     return "a null list did not return a null string";
   
-  str = StumplessValueListToString( list );
+  str = ValueListToString( list );
   if( str == NULL )
     return "a valid list returend a null string";
   
@@ -366,16 +368,16 @@ test_to_string( void )
 const char *
 test_unsigned_int_appender( void )
 {
-  StumplessValueList * list = BuildValueList();
+  ValueList * list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
   
-  StumplessStatusCode status;
-  status = StumplessAppendUnsignedIntToValueList( NULL, 3 );
+  StatusCode status;
+  status = AppendUnsignedIntToValueList( NULL, 3 );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a null list did not generate the proper error";
   
-  status = StumplessAppendUnsignedIntToValueList( list, 4 );
+  status = AppendUnsignedIntToValueList( list, 4 );
   if( status != STUMPLESS_SUCCESS )
     return "an unsigned number was not correctly appended to the list";
   
@@ -390,29 +392,29 @@ test_unsigned_int_appender( void )
 const char *
 test_value_appender( void )
 {
-  StumplessStatusCode status;
-  StumplessValueList * list = StumplessNewValueList();
+  StatusCode status;
+  ValueList * list = NewValueList();
   if( list == NULL )
     return "the list was not created";
   
-  StumplessValue * val_1 = StumplessValueFromString( "test" );
-  StumplessValue * val_2 = StumplessValueFromString( "string" );
-  StumplessValue * val_3 = StumplessValueFromString( "tor" );
-  StumplessValue * val_4 = StumplessValueFromString( "testing" );
+  Value * val_1 = ValueFromString( "test" );
+  Value * val_2 = ValueFromString( "string" );
+  Value * val_3 = ValueFromString( "tor" );
+  Value * val_4 = ValueFromString( "testing" );
   
-  status = StumplessAppendValueToValueList( list, val_1 );
+  status = AppendValueToValueList( list, val_1 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  status = StumplessAppendValueToValueList( list, val_2 );
+  status = AppendValueToValueList( list, val_2 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  status = StumplessAppendValueToValueList( list, val_3 );
+  status = AppendValueToValueList( list, val_3 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  status = StumplessAppendValueToValueList( list, val_4 );
+  status = AppendValueToValueList( list, val_4 );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   

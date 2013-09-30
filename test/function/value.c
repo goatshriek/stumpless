@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/type.h"
+#include "private/value.h"
+#include "private/value_constructor.h"
 
 #include "helper.h"
 
@@ -33,16 +35,16 @@ main( void )
 const char *
 test_array_value_to_value_list( void )
 {
-  StumplessValue * value = BuildUnsignedShortValue();
+  Value * value = BuildUnsignedShortValue();
   FAIL_IF_NULL( value, "could not build the test short value" )
-  StumplessValueList * list = value->profile->to_value_list( value );
+  ValueList * list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a non-array value could not be converted to a list" )
   
   value = BuildEmptyUnsignedIntArrayValue();
   FAIL_IF_NULL( value, "could not build the test empty array value" )
   list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a list could not be built from an empty array value" )
-  if( !StumplessValueListIsEmpty( list ) )
+  if( !ValueListIsEmpty( list ) )
     return "an empty list was not empty for an empty array value"; 
   
   value = BuildIntArrayValue();
@@ -70,13 +72,13 @@ test_array_value_to_value_list( void )
 const char *
 test_destructor( void )
 {
-  StumplessDestroyValue( NULL );
+  DestroyValue( NULL );
   
-  StumplessValue * value = StumplessValueFromString( "testing value" );
+  Value * value = ValueFromString( "testing value" );
   if( value == NULL )
     return "the value could not be created";
   
-  StumplessDestroyValue( value );
+  DestroyValue( value );
   
   return NULL;
 }
@@ -84,21 +86,21 @@ test_destructor( void )
 const char *
 test_into_string( void )
 {
-  StumplessValue * value = BuildUnsignedIntValue();
+  Value * value = BuildUnsignedIntValue();
   if( value == NULL )
     return "could not build the test value";
   
   char str[11];
   
-  StumplessStatusCode status = StumplessValueIntoString( NULL, value );
+  StatusCode status = ValueIntoString( NULL, value );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty string did not generate the correct error";
   
-  status = StumplessValueIntoString( str, NULL );
+  status = ValueIntoString( str, NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "an empty list did not generate the correct error";
   
-  status = StumplessValueIntoString( str, value );
+  status = ValueIntoString( str, value );
   if( status != STUMPLESS_SUCCESS )
     return "a correct void pointer value and string generated an error";
  
@@ -106,7 +108,7 @@ test_into_string( void )
     return "the string did not have the correct contents in it";
   
   value = BuildUnsignedIntValue();
-  status = StumplessValueIntoString( str, value );
+  status = ValueIntoString( str, value );
   if( status != STUMPLESS_SUCCESS )
     return "a singular unsigned int value and string generated an error";
   
@@ -119,11 +121,11 @@ test_into_string( void )
 const char *
 test_outside_access( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return "the test value could not be created";
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return "the test value's data could not be created";
   
@@ -152,16 +154,16 @@ test_outside_access( void )
 const char *
 test_to_string( void )
 {
-  StumplessValue * value = BuildIntValue();
+  Value * value = BuildIntValue();
   if( value == NULL )
     return "the test value could not be created";
   char * str;
   
-  str = StumplessValueToString( NULL );
+  str = ValueToString( NULL );
   if( str != NULL )
     return "a null value did not create a null string";
   
-  str = StumplessValueToString( value );
+  str = ValueToString( value );
   if( str == NULL )
     return "a valid value returned a null string";
   

@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <stumpless.h>
+#include "private/configuration.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -42,17 +43,17 @@ main( void )
 const char *
 test_add_new_logging_profile( void )
 {
-  StumplessLoggingProfile * profile = BuildLoggingProfile();
+  LoggingProfile * profile = BuildLoggingProfile();
   FAIL_IF_NULL( profile, "could not build the test profile" )
   
-  StumplessStatusCode status = StumplessAddLoggingProfile( profile );
+  StatusCode status = AddLoggingProfile( profile );
   if( status != STUMPLESS_SUCCESS )
     return "the profile was not successfully added";
   
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  if( StumplessFindLoggingProfileByName( profile->name ) != profile )
+  if( FindLoggingProfileByName( profile->name ) != profile )
     return "the profile was not actually added to the list";
   
   return NULL;
@@ -61,17 +62,17 @@ test_add_new_logging_profile( void )
 const char *
 test_add_new_output_profile( void )
 {
-  StumplessOutputProfile * profile = BuildOutputProfile();
+  OutputProfile * profile = BuildOutputProfile();
   FAIL_IF_NULL( profile, "could not build the test profile" )
   
-  StumplessStatusCode status = StumplessAddOutputProfile( profile );
+  StatusCode status = AddOutputProfile( profile );
   if( status != STUMPLESS_SUCCESS )
     return "the profile was not successfully added";
   
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  if( StumplessFindOutputProfileByName( profile->name ) != profile )
+  if( FindOutputProfileByName( profile->name ) != profile )
     return "the profile was not actually added to the list";
   
   return NULL;
@@ -80,17 +81,17 @@ test_add_new_output_profile( void )
 const char *
 test_add_new_value_profile( void )
 {
-  StumplessValueProfile * profile = BuildValueProfile();
+  ValueProfile * profile = BuildValueProfile();
   FAIL_IF_NULL( profile, "could not build the test profile" )
   
-  StumplessStatusCode status = StumplessAddValueProfile( profile );
+  StatusCode status = AddValueProfile( profile );
   if( status != STUMPLESS_SUCCESS )
     return "the node was not successfully added";
   
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  if( StumplessFindValueProfileByName( profile->name ) != profile )
+  if( FindValueProfileByName( profile->name ) != profile )
     return "the profile was not actually added to the list";
   
   return NULL;
@@ -99,12 +100,12 @@ test_add_new_value_profile( void )
 const char *
 test_find_logging_profile_by_name( void )
 {
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  StumplessLoggingProfile * profile;
+  LoggingProfile * profile;
   
-  profile = StumplessFindLoggingProfileByName( "non-existent" );
+  profile = FindLoggingProfileByName( "non-existent" );
   FAIL_IF_NOT_NULL( profile, "a non-existing profile was found" )
   
   return NULL;
@@ -113,14 +114,14 @@ test_find_logging_profile_by_name( void )
 const char *
 test_find_output_profile_by_name( void )
 {
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  StumplessOutputProfile * profile;
-  profile = StumplessFindOutputProfileByName( "text" );
+  OutputProfile * profile;
+  profile = FindOutputProfileByName( "text" );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
-  profile = StumplessFindOutputProfileByName( "non-existent" );
+  profile = FindOutputProfileByName( "non-existent" );
   FAIL_IF_NOT_NULL( profile, "a non-existing profile was found" )
   
   return NULL;
@@ -129,13 +130,13 @@ test_find_output_profile_by_name( void )
 const char *
 test_find_value_profile_by_name( void )
 {
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be retrieved" )
   
-  StumplessValueProfile * profile = StumplessFindValueProfileByName( "short" );
+  ValueProfile * profile = FindValueProfileByName( "short" );
   FAIL_IF_NULL( profile, "an existing profile could not be found" )
   
-  profile = StumplessFindValueProfileByName( "non-existent" );
+  profile = FindValueProfileByName( "non-existent" );
   FAIL_IF_NOT_NULL( profile, "a non-existing profile was found" )
   
   return NULL;
@@ -144,10 +145,10 @@ test_find_value_profile_by_name( void )
 const char *
 test_initialization( void )
 {
-  if( StumplessInitializeConfiguration() != STUMPLESS_SUCCESS )
+  if( InitializeConfiguration() != STUMPLESS_SUCCESS )
     return "initialization method returned error code";
 
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   
   if( configuration == NULL )
     return "configuration was not initialized after call";
@@ -173,10 +174,10 @@ test_initialization( void )
 const char *
 test_logging_profile_initialization( void )
 {
-  if( StumplessInitializeLoggingProfiles() != STUMPLESS_SUCCESS )
+  if( InitializeLoggingProfiles() != STUMPLESS_SUCCESS )
     return "initializing the profiles was not successful";
   
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be returned" )
   
   FAIL_IF_NULL( configuration->logging_profiles,
@@ -187,10 +188,10 @@ test_logging_profile_initialization( void )
 const char *
 test_output_profile_initialization( void )
 {
-  if( StumplessInitializeOutputProfiles() != STUMPLESS_SUCCESS )
+  if( InitializeOutputProfiles() != STUMPLESS_SUCCESS )
     return "initializing the profiles was not successful";
   
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be returned" )
   
   FAIL_IF_NULL( configuration->output_profiles,
@@ -202,10 +203,10 @@ test_output_profile_initialization( void )
 const char *
 test_value_profile_initialization( void )
 {
-  if( StumplessInitializeValueProfiles() != STUMPLESS_SUCCESS )
+  if( InitializeValueProfiles() != STUMPLESS_SUCCESS )
     return "intializing the profiles was not successful";
   
-  StumplessConfiguration * configuration = StumplessGetConfiguration();
+  Configuration * configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "the configuration could not be returned" )
   
   FAIL_IF_NULL( configuration->value_profiles,

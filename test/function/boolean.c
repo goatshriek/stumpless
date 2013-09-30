@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/boolean.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -25,15 +26,15 @@ main( void )
 const char *
 test_to_string( void )
 {
-  StumplessBoolean * boolean = BuildBoolean();
+  Boolean * boolean = BuildBoolean();
   if( boolean == NULL )
     return "could not build the test boolean";
   
-  char * str = StumplessBooleanToString( NULL );
+  char * str = BooleanToString( NULL );
   if( str != NULL )
     return "the string was not null for a null pointer";
   
-  str = StumplessBooleanToString( boolean );
+  str = BooleanToString( boolean );
   if( str == NULL )
     return "the string was null for a non-null boolean";
   if( strcmp( str, "true" ) != 0 )

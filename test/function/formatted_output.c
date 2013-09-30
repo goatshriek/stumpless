@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/formatted_output.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -27,20 +28,20 @@ main( void )
 const char *
 test_is_empty( void )
 {
-  StumplessFormattedOutput * output = BuildTextFormattedOutput();
+  FormattedOutput * output = BuildTextFormattedOutput();
   FAIL_IF_NULL( output, "could not build test text output" )
   
-  if( StumplessFormattedOutputIsEmpty( output ) )
+  if( FormattedOutputIsEmpty( output ) )
     return "a full output was marked as empty";
   
   output->data = NULL;
-  if( !StumplessFormattedOutputIsEmpty( output ) )
+  if( !FormattedOutputIsEmpty( output ) )
     return "an output with a null list was not marked as empty";
   
-  output->data = ( void * ) StumplessNewValueList();
+  output->data = ( void * ) NewValueList();
   if( output->data == NULL )
     return "could not create a new value list";
-  if( !StumplessFormattedOutputIsEmpty( output ) )
+  if( !FormattedOutputIsEmpty( output ) )
     return "an output with an empty list was not marked as empty";
   
   return NULL;
@@ -49,16 +50,16 @@ test_is_empty( void )
 const char *
 test_to_string( void )
 {
-  //StumplessFormattedOutput * output = BuildTextFormattedOutput();
+  //FormattedOutput * output = BuildTextFormattedOutput();
   //FAIL_IF_NULL( output, "could not build the test output" )
   
   //char * buffer;
-  //StumplessStatusCode status;
+  //StatusCode status;
   
-  //buffer = StumplessFormattedOutputToString( NULL );
+  //buffer = FormattedOutputToString( NULL );
   //FAIL_IF_NOT_NULL( buffer, "a NULL output did not generate the appropriate error" )
   
-  //buffer = StumplessFormattedOutputToString( output );
+  //buffer = FormattedOutputToString( output );
   //FAIL_IF_NULL( buffer, "a valid output did not generate a string" )
   
   //if( strcmp( buffer, "First\nSecond\nThird" ) != 0 )

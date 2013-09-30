@@ -1,17 +1,20 @@
 #include <stdlib.h>
 
-#include <stumpless.h>
+#include "private/configuration.h"
+#include "private/type.h"
+#include "private/value_constructor.h"
+#include "private/value_list.h"
 
 #include "builder.h"
 
-StumplessBoolean *
+Boolean *
 BuildBoolean( void )
 {
-  StumplessBoolean * boolean = malloc( sizeof( StumplessBoolean ) );
+  Boolean * boolean = malloc( sizeof( Boolean ) );
   if( boolean == NULL )
     return NULL;
   
-  boolean->format = malloc( sizeof( StumplessBooleanFormat ) );
+  boolean->format = malloc( sizeof( BooleanFormat ) );
   if( boolean->format == NULL )
     return NULL;
   
@@ -22,47 +25,47 @@ BuildBoolean( void )
   return boolean;
 }
 
-StumplessValue *
+Value *
 BuildBooleanValue( void )
 {
-  StumplessBoolean * boolean = BuildBoolean();
+  Boolean * boolean = BuildBoolean();
   if( boolean == NULL )
     return NULL;
   
-  StumplessValue * value = StumplessValueFromBoolean( boolean );
+  Value * value = ValueFromBoolean( boolean );
   if( value == NULL )
     return NULL;
   
   return value;
 }
 
-StumplessFormattedOutput *
+FormattedOutput *
 BuildByteFormattedOutput( void )
 {
-  StumplessFormattedOutput * output;
-  output = malloc( sizeof( StumplessFormattedOutput ) );
+  FormattedOutput * output;
+  output = malloc( sizeof( FormattedOutput ) );
   if( output == NULL )
     return NULL;
   
-  output->profile = StumplessFindOutputProfileByName( "binary" );
+  output->profile = FindOutputProfileByName( "binary" );
   if( output->profile == NULL )
     return NULL;
    
   return output;
 }
 
-StumplessValue *
+Value *
 BuildCharArrayValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "char array" );
+  value->profile = FindValueProfileByName( "char array" );
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
   
@@ -87,18 +90,18 @@ BuildCharArrayValue( void )
   return value;
 }
 
-StumplessValue *
+Value *
 BuildEmptyUnsignedIntArrayValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "unsigned int array" );
+  value->profile = FindValueProfileByName( "unsigned int array" );
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
   
@@ -111,10 +114,10 @@ BuildEmptyUnsignedIntArrayValue( void )
   return value;
 }
 
-StumplessEntry *
+Entry *
 BuildEntry( void )
 {
-  StumplessEntry * entry = malloc( sizeof( StumplessEntry ) );
+  Entry * entry = malloc( sizeof( Entry ) );
   if( entry == NULL )
     return NULL;
   
@@ -126,69 +129,69 @@ BuildEntry( void )
   return entry;
 }
 
-StumplessEntryAttribute *
+EntryAttribute *
 BuildEntryAttribute( void )
 {
-  StumplessEntryAttribute * attribute;
-  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  EntryAttribute * attribute;
+  attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   
   attribute->event_attribute = BuildEventAttribute();
-  attribute->value = StumplessValueFromString( "Test Value" );
+  attribute->value = ValueFromString( "Test Value" );
   
   return attribute;
 }
 
-StumplessEntryAttribute **
+EntryAttribute **
 BuildEntryAttributeList( void )
 {
-  StumplessEntryAttribute ** list;
-  list = malloc( sizeof( StumplessEntryAttribute * ) * 6 );
+  EntryAttribute ** list;
+  list = malloc( sizeof( EntryAttribute * ) * 6 );
   if( list == NULL )
     return NULL;
   
-  StumplessEventAttribute ** event_attribute_list = BuildEventAttributeList();
+  EventAttribute ** event_attribute_list = BuildEventAttributeList();
   if( event_attribute_list == NULL )
     return NULL;
   
-  StumplessEntryAttribute * attribute;
-  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  EntryAttribute * attribute;
+  attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = event_attribute_list[0];
   attribute->value = NULL;
   list[0] = attribute;
   
-  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = event_attribute_list[1];
-  attribute->value = StumplessValueFromString( "not 37" );
+  attribute->value = ValueFromString( "not 37" );
   list[1] = attribute;
   
-  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = event_attribute_list[2];
   attribute->value = NULL;
   list[2] = attribute;
   
-  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = event_attribute_list[3];
-  attribute->value = StumplessValueFromString( "unnamed value" );
+  attribute->value = ValueFromString( "unnamed value" );
   list[3] = attribute;
   
-  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NULL;
-  attribute->value = StumplessValueFromString( "no event attribute" );
+  attribute->value = ValueFromString( "no event attribute" );
   list[4] = attribute;
   
-  attribute = malloc( sizeof( StumplessEntryAttribute ) );
+  attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NULL;
@@ -198,10 +201,10 @@ BuildEntryAttributeList( void )
   return list;
 }
 
-StumplessEvent *
+Event *
 BuildEvent( void )
 {
-  StumplessEvent * event = malloc( sizeof( StumplessEvent ) );
+  Event * event = malloc( sizeof( Event ) );
   if( event == NULL )
     return NULL;
   
@@ -219,51 +222,51 @@ BuildEvent( void )
   return event;
 }
 
-StumplessEventAttribute *
+EventAttribute *
 BuildEventAttribute( void )
 {
-  StumplessEventAttribute * attribute;
-  attribute = malloc( sizeof( StumplessEventAttribute ) );
+  EventAttribute * attribute;
+  attribute = malloc( sizeof( EventAttribute ) );
   if( attribute == NULL )
     return NULL;
   
   attribute->name = "Test Event Attribute";
-  attribute->default_value = StumplessValueFromString( "Test Default Value" );
+  attribute->default_value = ValueFromString( "Test Default Value" );
   
   return attribute;
 }
 
-StumplessEventAttribute **
+EventAttribute **
 BuildEventAttributeList( void )
 {
-  StumplessEventAttribute ** list;
-  list = malloc( sizeof( StumplessEventAttribute * ) * 5 );
+  EventAttribute ** list;
+  list = malloc( sizeof( EventAttribute * ) * 5 );
   if( list == NULL )
     return NULL;
   
-  StumplessEventAttribute * attr_0;
-  attr_0 = malloc( sizeof( StumplessEventAttribute ) );
+  EventAttribute * attr_0;
+  attr_0 = malloc( sizeof( EventAttribute ) );
   if( attr_0 == NULL )
     return NULL;
   attr_0->name = "Test Attribute 0";
-  attr_0->default_value = StumplessValueFromString( "default value" );
+  attr_0->default_value = ValueFromString( "default value" );
   
-  StumplessEventAttribute * attr_1;
-  attr_1 = malloc( sizeof( StumplessEventAttribute ) );
+  EventAttribute * attr_1;
+  attr_1 = malloc( sizeof( EventAttribute ) );
   if( attr_1 == NULL )
     return NULL;
   attr_1->name = NULL;
-  attr_1->default_value = StumplessValueFromUnsignedInt( 37 );
+  attr_1->default_value = ValueFromUnsignedInt( 37 );
   
-  StumplessEventAttribute * attr_2;
-  attr_2 = malloc( sizeof( StumplessEventAttribute ) );
+  EventAttribute * attr_2;
+  attr_2 = malloc( sizeof( EventAttribute ) );
   if( attr_2 == NULL )
     return NULL;
   attr_2->name = "Test Attribute 2";
   attr_2->default_value = NULL;
   
-  StumplessEventAttribute * attr_3;
-  attr_3 = malloc( sizeof( StumplessEventAttribute ) );
+  EventAttribute * attr_3;
+  attr_3 = malloc( sizeof( EventAttribute ) );
   if( attr_3 == NULL )
     return NULL;
   attr_3->name = NULL;
@@ -278,20 +281,20 @@ BuildEventAttributeList( void )
   return list;
 }
 
-StumplessValue *
+Value *
 BuildIntArrayValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return NULL;
   
   value->format = NULL;
   
-  value->profile = StumplessFindValueProfileByName( "int array" );
+  value->profile = FindValueProfileByName( "int array" );
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
   
@@ -316,18 +319,18 @@ BuildIntArrayValue( void )
   return value;
 }
 
-StumplessValue *
+Value *
 BuildIntValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "int" );
+  value->profile = FindValueProfileByName( "int" );
   if( value->profile == NULL )
     return NULL;
   
@@ -336,10 +339,10 @@ BuildIntValue( void )
   return value;
 }
 
-StumplessLevel *
+Level *
 BuildLevel( void )
 {
-  StumplessLevel * level = malloc( sizeof( StumplessLevel ) ) ;
+  Level * level = malloc( sizeof( Level ) ) ;
   if( level == NULL )
     return NULL;
   
@@ -349,12 +352,12 @@ BuildLevel( void )
   return level;
 }
 
-StumplessLoggingProfile *
+LoggingProfile *
 BuildLoggingProfile( void )
 {
-  StumplessLoggingProfile * profile;
+  LoggingProfile * profile;
   
-  profile = malloc( sizeof( StumplessLoggingProfile ) );
+  profile = malloc( sizeof( LoggingProfile ) );
   if( profile == NULL )
     return NULL;
   
@@ -364,10 +367,10 @@ BuildLoggingProfile( void )
   return profile;
 }
 
-StumplessOutputProfile *
+OutputProfile *
 BuildOutputProfile( void )
 {
-  StumplessOutputProfile * profile = malloc( sizeof( StumplessOutputProfile ) );
+  OutputProfile * profile = malloc( sizeof( OutputProfile ) );
   if( profile == NULL )
     return NULL;
   
@@ -381,18 +384,18 @@ BuildOutputProfile( void )
   return profile;
 }
 
-StumplessValue *
+Value *
 BuildStringValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue * ) );
+  Value * value = malloc( sizeof( Value * ) );
   if( value == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "string" );
+  value->profile = FindValueProfileByName( "string" );
   if( value->profile == NULL )
     return NULL;
   
@@ -401,32 +404,32 @@ BuildStringValue( void )
   return value;
 }
 
-StumplessFormattedOutput *
+FormattedOutput *
 BuildTextFormattedOutput( void )
 {
-  StumplessFormattedOutput * output;
-  output = malloc( sizeof( StumplessFormattedOutput ) );
+  FormattedOutput * output;
+  output = malloc( sizeof( FormattedOutput ) );
   if( output == NULL )
     return NULL;
   
-  output->profile = StumplessFindOutputProfileByName( "text" );
+  output->profile = FindOutputProfileByName( "text" );
   if( output->profile == NULL )
     return NULL;
   
-  StumplessValueList * values = StumplessNewValueList();
+  ValueList * values = NewValueList();
   if( values == NULL )
     return NULL;
   
-  StumplessStatusCode status;
-  status = StumplessAppendStringToValueList( values, "First\n" );
+  StatusCode status;
+  status = AppendStringToValueList( values, "First\n" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendStringToValueList( values, "Second\n" );
+  status = AppendStringToValueList( values, "Second\n" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
-  status = StumplessAppendStringToValueList( values, "Third" );
+  status = AppendStringToValueList( values, "Third" );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
@@ -435,20 +438,20 @@ BuildTextFormattedOutput( void )
   return output;
 }
 
-StumplessValue *
+Value *
 BuildUnsignedIntValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return NULL;
   
   value->format = NULL;
   
-  value->profile = StumplessFindValueProfileByName( "unsigned int" );
+  value->profile = FindValueProfileByName( "unsigned int" );
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
   value->data->u_i = 4294967196u;
@@ -456,20 +459,20 @@ BuildUnsignedIntValue( void )
   return value;
 }
 
-StumplessValue *
+Value *
 BuildUnsignedShortValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return NULL;
   
   value->format = NULL;
   
-  value->profile = StumplessFindValueProfileByName( "unsigned short" );
+  value->profile = FindValueProfileByName( "unsigned short" );
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
   value->data->u_s = 65000u;
@@ -477,74 +480,74 @@ BuildUnsignedShortValue( void )
   return value;
 }
 
-StumplessValueList *
+ValueList *
 BuildValueList( void )
 {
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   if( list == NULL )
     return NULL;
   
-  StumplessStatusCode status;
-  StumplessValue * value;
+  StatusCode status;
+  Value * value;
   
   value = BuildIntArrayValue();
   if( value == NULL )
     return NULL;
-  status = StumplessAppendValueToValueList( list, value );
+  status = AppendValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
   value = BuildUnsignedIntValue();
   if( value == NULL )
     return NULL;
-  status = StumplessAppendValueToValueList( list, value );
+  status = AppendValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
   value = BuildUnsignedShortValue();
   if( value == NULL )
     return NULL;
-  status = StumplessAppendValueToValueList( list, value );
+  status = AppendValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
   value = BuildCharArrayValue();
   if( value == NULL )
     return NULL;
-  status = StumplessAppendValueToValueList( list, value );
+  status = AppendValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
   value = BuildVoidValue();
   if( value == NULL )
     return NULL;
-  status = StumplessAppendValueToValueList( list, value );
+  status = AppendValueToValueList( list, value );
   if( status != STUMPLESS_SUCCESS )
     return NULL;
   
   return list;
 }
 
-StumplessValueList *
+ValueList *
 BuildValueListOfStrings( void )
 {
-  StumplessValueList * list = StumplessNewValueList();
+  ValueList * list = NewValueList();
   if( list == NULL )
     return NULL;
   
-  StumplessAppendStringToValueList( list, "this" );
-  StumplessAppendStringToValueList( list, "is" );
-  StumplessAppendStringToValueList( list, "a" );
-  StumplessAppendStringToValueList( list, "test" );
-  StumplessAppendStringToValueList( list, "list" );
+  AppendStringToValueList( list, "this" );
+  AppendStringToValueList( list, "is" );
+  AppendStringToValueList( list, "a" );
+  AppendStringToValueList( list, "test" );
+  AppendStringToValueList( list, "list" );
   
   return list;
 }
 
-StumplessValueProfile *
+ValueProfile *
 BuildValueProfile( void )
 {
-  StumplessValueProfile * profile = malloc( sizeof( StumplessValueProfile ) );
+  ValueProfile * profile = malloc( sizeof( ValueProfile ) );
   if( profile == NULL )
     return NULL;
   
@@ -560,22 +563,22 @@ BuildValueProfile( void )
   return profile;
 }
 
-StumplessValue *
+Value *
 BuildVoidValue( void )
 {
-  StumplessValue * value = malloc( sizeof( StumplessValue ) );
+  Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
     return NULL;
   
-  value->profile = StumplessFindValueProfileByName( "boolean" );
+  value->profile = FindValueProfileByName( "boolean" );
   if( value->profile == NULL )
     return NULL;
   
-  value->data = malloc( sizeof( StumplessType ) );
+  value->data = malloc( sizeof( Type ) );
   if( value->data == NULL )
     return NULL;
  
-  StumplessBoolean * boolean = BuildBoolean();
+  Boolean * boolean = BuildBoolean();
   if( boolean == NULL )
     return NULL;
    

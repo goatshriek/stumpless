@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include "string_helper.h"
+#include "private/string_helper.h"
 
 #define RUN_TEST( test )                                                       \
 result = test_##test();                                                        \

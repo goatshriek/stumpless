@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <stumpless.h>
+#include "private/configuration.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -26,25 +27,25 @@ main( void )
 const char *
 test_configuration_initializations( void )
 {
-  StumplessLogDebug( "debug message\n" );
-  if( StumplessGetConfiguration() == NULL )
-    return "configuration was not initialized after StumplessLogDebug";
+  LogDebug( "debug message\n" );
+  if( GetConfiguration() == NULL )
+    return "configuration was not initialized after LogDebug";
   
-  StumplessLogError( "error message\n" );
-  if( StumplessGetConfiguration() == NULL )
-    return "configuration was not initialized after StumplessLogError";
+  LogError( "error message\n" );
+  if( GetConfiguration() == NULL )
+    return "configuration was not initialized after LogError";
   
-  StumplessLogFatal( "fatal message\n" );
-  if( StumplessGetConfiguration() == NULL )
-    return "configuration was not initialized after StumplessLogFatal";
+  LogFatal( "fatal message\n" );
+  if( GetConfiguration() == NULL )
+    return "configuration was not initialized after LogFatal";
   
-  StumplessLogInfo( "information message\n" );
-  if( StumplessGetConfiguration() == NULL )
-    return "configuration was not initialized after StumplessLogInfo";
+  LogInfo( "information message\n" );
+  if( GetConfiguration() == NULL )
+    return "configuration was not initialized after LogInfo";
   
-  StumplessLogWarning( "warning message\n" );
-  if( StumplessGetConfiguration() == NULL )
-    return "configuration was not initialized after StumplessLogWarning";
+  LogWarning( "warning message\n" );
+  if( GetConfiguration() == NULL )
+    return "configuration was not initialized after LogWarning";
 
   return NULL;
 }
@@ -52,20 +53,20 @@ test_configuration_initializations( void )
 const char *
 test_status_codes( void )
 {
-  if( StumplessLogDebug( "debug message\n" ) != STUMPLESS_SUCCESS )
-    return "StumplessLogDebug returned a failure code";
+  if( LogDebug( "debug message\n" ) != STUMPLESS_SUCCESS )
+    return "LogDebug returned a failure code";
   
-  if( StumplessLogError( "error message\n" ) != STUMPLESS_SUCCESS )
-    return "StumplessLogError returned a failure code";
+  if( LogError( "error message\n" ) != STUMPLESS_SUCCESS )
+    return "LogError returned a failure code";
   
-  if( StumplessLogFatal( "fatal message\n" ) != STUMPLESS_SUCCESS )
-    return "StumplessLogFatal returned a failure code";
+  if( LogFatal( "fatal message\n" ) != STUMPLESS_SUCCESS )
+    return "LogFatal returned a failure code";
   
-  if( StumplessLogInfo( "information message\n" ) != STUMPLESS_SUCCESS )
-    return "StumplessLogInfo returned a failure code";
+  if( LogInfo( "information message\n" ) != STUMPLESS_SUCCESS )
+    return "LogInfo returned a failure code";
   
-  if( StumplessLogWarning( "warning message\n" ) != STUMPLESS_SUCCESS )
-    return "StumplessLogWarning returned a failure code";
+  if( LogWarning( "warning message\n" ) != STUMPLESS_SUCCESS )
+    return "LogWarning returned a failure code";
   
   return NULL;
 }

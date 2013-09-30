@@ -1,5 +1,6 @@
 test_flags = $(AM_CFLAGS) -I $(top_srcdir)/test/include
-test_libraries = libhelper.la
+test_libraries = libhelper.la \
+                 libstumpless.la
 
 test_function_boolean_SOURCES = test/function/boolean.c
 test_function_boolean_CFLAGS = $(test_flags)

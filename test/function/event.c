@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/event.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -29,7 +30,7 @@ main( void )
 const char *
 test_default_events( void )
 {
-  StumplessEvent * event = StumplessGetDebugEvent();
+  Event * event = GetDebugEvent();
   if( event == NULL )
     return "debug event was null";
   if( event->level == NULL )
@@ -39,7 +40,7 @@ test_default_events( void )
   if( strcmp( event->level->name, "debug" ) != 0 )
     return "the event does not have a debug level";
   
-  event = StumplessGetErrorEvent();
+  event = GetErrorEvent();
   if( event == NULL )
     return "error event was null";
   if( event->level == NULL )
@@ -49,7 +50,7 @@ test_default_events( void )
   if( strcmp( event->level->name, "error" ) != 0 )
     return "the event does not have a error level";
   
-  event = StumplessGetFatalEvent();
+  event = GetFatalEvent();
   if( event == NULL )
     return "fatal event was null";
   if( event->level == NULL )
@@ -59,7 +60,7 @@ test_default_events( void )
   if( strcmp( event->level->name, "fatal" ) != 0 )
     return "the event does not have a fatal level";
   
-  event = StumplessGetInfoEvent();
+  event = GetInfoEvent();
   if( event == NULL )
     return "info event was null";
   if( event->level == NULL )
@@ -69,7 +70,7 @@ test_default_events( void )
   if( strcmp( event->level->name, "info" ) != 0 )
     return "the event does not have a info level";
   
-  event = StumplessGetWarningEvent();
+  event = GetWarningEvent();
   if( event == NULL )
     return "warning event was null";
   if( event->level == NULL )
@@ -85,13 +86,13 @@ test_default_events( void )
 const char *
 test_event_for_level( void )
 {
-  StumplessLevel * level = malloc( sizeof( StumplessLevel ) );
+  Level * level = malloc( sizeof( Level ) );
   if( level == NULL )
     return "memory allocation failure during testing";
   level->value = 512;
   level->name = "testing level";
   
-  StumplessEvent * event = StumplessEventForLevel( level );
+  Event * event = EventForLevel( level );
   if( event == NULL )
     return "event could not be created";
   if( event->level != level )
@@ -107,13 +108,13 @@ test_event_for_level( void )
 const char *
 test_to_string( void )
 {
-  StumplessEvent * event = NULL;
-  char * description = StumplessEventToString( event );
+  Event * event = NULL;
+  char * description = EventToString( event );
   if( description != NULL )
     return "the description was not null for a null pointer";
   
-  event = StumplessGetDebugEvent();
-  description = StumplessEventToString( event );
+  event = GetDebugEvent();
+  description = EventToString( event );
   if( description == NULL )
     return "the description was null for a valid event pointer";
   if( strstr( description, "debug" ) == NULL )

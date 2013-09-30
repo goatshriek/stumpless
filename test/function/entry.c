@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/entry.h"
+#include "private/level.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -29,7 +31,7 @@ main( void )
 const char *
 test_default_entries( void )
 {
-  StumplessEntry * debug = StumplessGetDebugEntry();
+  Entry * debug = GetDebugEntry();
   if( debug == NULL )
     return "the debug entry was not correctly created";
   if( debug->event == NULL )
@@ -41,7 +43,7 @@ test_default_entries( void )
   if( strcmp( debug->event->level->name, "debug" ) != 0 )
     return "the debug entry's event did not have the proper level";
   
-  StumplessEntry * error = StumplessGetErrorEntry();
+  Entry * error = GetErrorEntry();
   if( error == NULL )
     return "the error entry was not correctly created";
   if( error->event == NULL )
@@ -53,7 +55,7 @@ test_default_entries( void )
   if( strcmp( error->event->level->name, "error" ) != 0 )
     return "the error entry's event did not have the proper level";
   
-  StumplessEntry * fatal = StumplessGetFatalEntry();
+  Entry * fatal = GetFatalEntry();
   if( fatal == NULL )
     return "the fatal entry was not correctly created";
   if( fatal->event == NULL )
@@ -65,7 +67,7 @@ test_default_entries( void )
   if( strcmp( fatal->event->level->name, "fatal" ) != 0 )
     return "the fatal entry's event did not have the proper level";
   
-  StumplessEntry * info = StumplessGetInfoEntry();
+  Entry * info = GetInfoEntry();
   if( info == NULL )
     return "the info entry was not correctly created";
   if( info->event == NULL )
@@ -77,7 +79,7 @@ test_default_entries( void )
   if( strcmp( info->event->level->name, "info" ) != 0 )
     return "the info entry's event did not have the proper level";
   
-  StumplessEntry * warning = StumplessGetWarningEntry();
+  Entry * warning = GetWarningEntry();
   if( warning == NULL )
     return "the warning entry was not correctly created";
   if( warning->event == NULL )
@@ -95,14 +97,14 @@ test_default_entries( void )
 const char *
 test_entry_for_event( void )
 {
-  StumplessEvent * event = malloc( sizeof( StumplessEvent ) );
+  Event * event = malloc( sizeof( Event ) );
   if( event == NULL )
     return "memory allocation failure during testing";
   event->name = "testing event";
-  event->level = StumplessGetDebugLevel();
+  event->level = GetDebugLevel();
   event->attribute_count = 0;
   
-  StumplessEntry * entry = StumplessEntryForEvent( event );
+  Entry * entry = EntryForEvent( event );
   if( entry == NULL )
     return "the entry could not be created";
   if( entry->event != event )
@@ -114,13 +116,13 @@ test_entry_for_event( void )
 const char *
 test_to_string( void )
 {
-  StumplessEntry * entry = NULL;
-  char * description = StumplessEntryToString( entry );
+  Entry * entry = NULL;
+  char * description = EntryToString( entry );
   if( description != NULL )
     return "the description was not null for a null pointer";
   
-  entry = StumplessGetDebugEntry();
-  description = StumplessEntryToString( entry );
+  entry = GetDebugEntry();
+  description = EntryToString( entry );
   if( description == NULL )
     return "the description was null for a valid entry pointer";
   

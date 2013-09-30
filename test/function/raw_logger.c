@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/raw_logger.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -25,13 +26,13 @@ main( void )
 const char *
 test_raw_string_logger( void )
 {
-  StumplessStatusCode status;
+  StatusCode status;
   
-  status = StumplessLogRawString( NULL );
+  status = LogRawString( NULL );
   if( status != STUMPLESS_EMPTY_ARGUMENT )
     return "a NULL string did not generate the appropriate error";
   
-  status = StumplessLogRawString( "Test String #1" );
+  status = LogRawString( "Test String #1" );
   if( status != STUMPLESS_SUCCESS )
     return "a simple string could not be logged";
   

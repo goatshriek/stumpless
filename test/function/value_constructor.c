@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stumpless.h>
+#include "private/type.h"
+#include "private/value_constructor.h"
 
 #include "helper.h"
 
@@ -56,13 +57,13 @@ main( void )
 const char *
 test_from_boolean( void )
 {
-  StumplessBoolean * boolean = BuildBoolean();
+  Boolean * boolean = BuildBoolean();
   FAIL_IF_NULL( boolean, "could not build the test boolean" )
   
-  StumplessValue * value = StumplessValueFromBoolean( NULL );
+  Value * value = ValueFromBoolean( NULL );
   FAIL_IF_NOT_NULL( value, "a null boolean did not generate a null value" )
   
-  value = StumplessValueFromBoolean( boolean );
+  value = ValueFromBoolean( boolean );
   FAIL_IF_NULL( value, "a non-null boolean generated a null value" )
   if( strcmp( value->profile->name, "boolean" ) != 0 )
     return "the created value did not have the correct type";
@@ -73,7 +74,7 @@ test_from_boolean( void )
 const char *
 test_from_char( void )
 {
-  StumplessValue * value = StumplessValueFromChar( CHAR_MAX );
+  Value * value = ValueFromChar( CHAR_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "char" ) != 0 )
     return "the value did not have the correct type";
@@ -89,7 +90,7 @@ test_from_double( void )
 {
   double test_value = 3.456;
   
-  StumplessValue * value = StumplessValueFromDouble( test_value );
+  Value * value = ValueFromDouble( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "double" ) != 0 )
     return "the value did not have the correct type";
@@ -105,7 +106,7 @@ test_from_float( void )
 {
   float test_value = 789.64;
   
-  StumplessValue * value = StumplessValueFromFloat( test_value );
+  Value * value = ValueFromFloat( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "float" ) != 0 )
     return "the value did not have the correct type";
@@ -119,7 +120,7 @@ test_from_float( void )
 const char *
 test_from_int( void )
 {
-  StumplessValue * value = StumplessValueFromInt( INT_MAX );
+  Value * value = ValueFromInt( INT_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "int" ) != 0 )
     return "the value did not have the correct type";
@@ -133,7 +134,7 @@ test_from_int( void )
 const char *
 test_from_long( void )
 {
-  StumplessValue * value = StumplessValueFromLong( LONG_MAX );
+  Value * value = ValueFromLong( LONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "long" ) != 0 )
     return "the value did not have the correct type";
@@ -149,7 +150,7 @@ test_from_long_double( void )
 {
   long double test_value = 5.23e34;
   
-  StumplessValue * value = StumplessValueFromLongDouble( test_value );
+  Value * value = ValueFromLongDouble( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "long double" ) != 0 )
     return "the value did not have the correct type";
@@ -163,7 +164,7 @@ test_from_long_double( void )
 const char *
 test_from_long_long( void )
 {
-  StumplessValue * value = StumplessValueFromLongLong( LLONG_MAX );
+  Value * value = ValueFromLongLong( LLONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "long long" ) != 0 )
     return "the value did not have the correct type";
@@ -177,7 +178,7 @@ test_from_long_long( void )
 const char *
 test_from_short( void )
 {
-  StumplessValue * value = StumplessValueFromShort( SHRT_MAX );
+  Value * value = ValueFromShort( SHRT_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "short" ) != 0 )
     return "the value did not have the correct type";
@@ -191,7 +192,7 @@ test_from_short( void )
 const char *
 test_from_signed_char( void )
 {
-  StumplessValue * value = StumplessValueFromSignedChar( SCHAR_MAX );
+  Value * value = ValueFromSignedChar( SCHAR_MAX );
   FAIL_IF_NULL( value, "the value could not be built" );
   if( strcmp( value->profile->name, "signed char" ) != 0 )
     return "the value did not have the correct type";
@@ -205,13 +206,13 @@ test_from_signed_char( void )
 const char *
 test_from_string( void )
 {
-  StumplessValue * value = NULL;
+  Value * value = NULL;
   
-  value = StumplessValueFromString( NULL );
+  value = ValueFromString( NULL );
   if( value != NULL )
     return "a null value was not returned for a null string";
   
-  value = StumplessValueFromString( "test string 'n such" );
+  value = ValueFromString( "test string 'n such" );
   if( value == NULL )
     return "a null value was returned for a non-null string";
   if( strcmp( value->profile->name, "string" ) != 0 )
@@ -227,7 +228,7 @@ test_from_string( void )
 const char *
 test_from_unsigned_char( void )
 {
-  StumplessValue * value = StumplessValueFromUnsignedChar( UCHAR_MAX );
+  Value * value = ValueFromUnsignedChar( UCHAR_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned char" ) != 0 )
     return "the value did not have the correct type";
@@ -241,9 +242,9 @@ test_from_unsigned_char( void )
 const char *
 test_from_unsigned_int( void )
 {
-  StumplessValue * value = NULL;
+  Value * value = NULL;
   
-  value = StumplessValueFromUnsignedInt( UINT_MAX );
+  value = ValueFromUnsignedInt( UINT_MAX );
   if( value == NULL )
     return "the value could not be created";
   if( strcmp( value->profile->name, "unsigned int" ) != 0 )
@@ -257,7 +258,7 @@ test_from_unsigned_int( void )
 const char *
 test_from_unsigned_long( void )
 {
-  StumplessValue * value = StumplessValueFromUnsignedLong( ULONG_MAX );
+  Value * value = ValueFromUnsignedLong( ULONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned long" ) != 0 )
     return "the value did not have the correct type";
@@ -271,7 +272,7 @@ test_from_unsigned_long( void )
 const char *
 test_from_unsigned_long_long( void )
 {
-  StumplessValue * value = StumplessValueFromUnsignedLongLong( ULLONG_MAX );
+  Value * value = ValueFromUnsignedLongLong( ULLONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned long long" ) != 0 )
     return "the value did not have the correct type";
@@ -285,7 +286,7 @@ test_from_unsigned_long_long( void )
 const char *
 test_from_unsigned_short( void )
 {
-  StumplessValue * value = StumplessValueFromUnsignedShort( USHRT_MAX );
+  Value * value = ValueFromUnsignedShort( USHRT_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned short" ) != 0 )
     return "the value did not have the correct type";

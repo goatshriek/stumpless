@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <stumpless.h>
+#include "private/stream_output.h"
+#include "private/type.h"
 
 #include "helper.h"
 

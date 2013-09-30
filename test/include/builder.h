@@ -1,78 +1,78 @@
 #ifndef STUMPLESS_TEST_INCLUDE_BUILDER_H
 #define STUMPLESS_TEST_INCLUDE_BUILDER_H
 
-#include <stumpless.h>
+#include "private/type.h"
 
-StumplessBoolean *
+Boolean *
 BuildBoolean( void );
 
-StumplessValue *
+Value *
 BuildBooleanValue( void );
 
-StumplessFormattedOutput *
+FormattedOutput *
 BuildByteFormattedOutput( void );
 
-StumplessValue *
+Value *
 BuildCharArrayValue( void );
 
-StumplessValue *
+Value *
 BuildEmptyUnsignedIntArrayValue( void );
 
-StumplessEntry *
+Entry *
 BuildEntry( void );
 
-StumplessEntryAttribute *
+EntryAttribute *
 BuildEntryAttribute( void );
 
-StumplessEntryAttribute **
+EntryAttribute **
 BuildEntryAttributeList( void );
 
-StumplessEvent *
+Event *
 BuildEvent( void );
 
-StumplessEventAttribute *
+EventAttribute *
 BuildEventAttribute( void );
 
-StumplessEventAttribute **
+EventAttribute **
 BuildEventAttributeList( void );
 
-StumplessValue *
+Value *
 BuildIntArrayValue( void );
 
-StumplessValue *
+Value *
 BuildIntValue( void );
 
-StumplessLevel *
+Level *
 BuildLevel( void );
 
-StumplessLoggingProfile *
+LoggingProfile *
 BuildLoggingProfile( void );
 
-StumplessOutputProfile *
+OutputProfile *
 BuildOutputProfile( void );
 
-StumplessValue *
+Value *
 BuildStringValue( void );
 
-StumplessFormattedOutput *
+FormattedOutput *
 BuildTextFormattedOutput( void );
 
-StumplessValue *
+Value *
 BuildUnsignedIntValue( void );
 
-StumplessValue *
+Value *
 BuildUnsignedShortValue( void );
 
-StumplessValueList *
+ValueList *
 BuildValueList( void );
 
-StumplessValueList *
+ValueList *
 BuildValueListOfStrings( void );
 
-StumplessValueProfile *
+ValueProfile *
 BuildValueProfile( void );
 
-StumplessValue *
+Value *
 BuildVoidValue( void );
 
 #endif

@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <stumpless.h>
+#include "private/status.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -24,34 +25,34 @@ main( void )
 const char *
 test_to_string( void )
 {
-  if( StumplessStatusToString( STUMPLESS_SUCCESS ) == NULL )
+  if( StatusToString( STUMPLESS_SUCCESS ) == NULL )
     return "success code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_FAILURE ) == NULL )
     return "failure code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_FILE_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_FILE_FAILURE ) == NULL )
     return "file failure code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_FILE_READ_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_FILE_READ_FAILURE ) == NULL )
     return "file read failure code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_FILE_WRITE_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_FILE_WRITE_FAILURE ) == NULL )
     return "file write failure code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_FILE_OPEN_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_FILE_OPEN_FAILURE ) == NULL )
     return "file open failure code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_FILE_CLOSE_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_FILE_CLOSE_FAILURE ) == NULL )
     return "file close failure code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_INCORRECT_FILE_SIGNATURE ) == NULL )
+  if( StatusToString( STUMPLESS_INCORRECT_FILE_SIGNATURE ) == NULL )
     return "incorrect file signature code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_MEMORY_ALLOCATION_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_MEMORY_ALLOCATION_FAILURE ) == NULL )
     return "memory allocation failure code was not properly converted";
   
-  if( StumplessStatusToString( STUMPLESS_PARSE_FAILURE ) == NULL )
+  if( StatusToString( STUMPLESS_PARSE_FAILURE ) == NULL )
     return "parsing failure code was not properly converted";
   
   return NULL;
