@@ -4,6 +4,9 @@
 #include "private/logger.h"
 #include "private/type.h"
 
+// todo
+// move this functionality to a Logger structure
+
 StatusCode
 LogDebug
 ( const char * message )
