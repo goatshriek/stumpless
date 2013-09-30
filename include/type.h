@@ -37,37 +37,62 @@ struct __STUMPLESS_NAME( ValueListNode );
 struct __STUMPLESS_NAME( ValueProfile );
 
 
-typedef enum __STUMPLESS_NAME( HTTPMethod ) __STUMPLESS_NAME( HTTPMethod );
-typedef enum __STUMPLESS_NAME( SortingMethod ) __STUMPLESS_NAME( SortingMethod );
-typedef enum __STUMPLESS_NAME( StatusCode ) __STUMPLESS_NAME( StatusCode );
+typedef enum __STUMPLESS_NAME( HTTPMethod )
+        __STUMPLESS_NAME( HTTPMethod );
+typedef enum __STUMPLESS_NAME( SortingMethod )
+        __STUMPLESS_NAME( SortingMethod );
+typedef enum __STUMPLESS_NAME( StatusCode )
+        __STUMPLESS_NAME( StatusCode );
 
-typedef struct __STUMPLESS_NAME( Boolean ) __STUMPLESS_NAME( Boolean );
-typedef struct __STUMPLESS_NAME( BooleanFormat ) __STUMPLESS_NAME( BooleanFormat );
-typedef struct __STUMPLESS_NAME( ByteList ) __STUMPLESS_NAME( ByteList );
-typedef struct __STUMPLESS_NAME( Configuration ) __STUMPLESS_NAME( Configuration );
-typedef struct __STUMPLESS_NAME( Entry ) __STUMPLESS_NAME( Entry );
-typedef struct __STUMPLESS_NAME( EntryAttribute ) __STUMPLESS_NAME( EntryAttribute );
-typedef struct __STUMPLESS_NAME( Event ) __STUMPLESS_NAME( Event );
-typedef struct __STUMPLESS_NAME( EventAttribute ) __STUMPLESS_NAME( EventAttribute );
-typedef struct __STUMPLESS_NAME( FileConfiguration ) __STUMPLESS_NAME( FileConfiguration );
-typedef struct __STUMPLESS_NAME( FormattedOutput ) __STUMPLESS_NAME( FormattedOutput );
-typedef struct __STUMPLESS_NAME( HTTPConfiguration ) __STUMPLESS_NAME( HTTPConfiguration );
-typedef struct __STUMPLESS_NAME( Level ) __STUMPLESS_NAME( Level );
-typedef struct __STUMPLESS_NAME( LoggerProfile ) __STUMPLESS_NAME( LoggingProfile );
-typedef struct __STUMPLESS_NAME( OutputProfile ) __STUMPLESS_NAME( OutputProfile );
-typedef struct __STUMPLESS_NAME( Status ) __STUMPLESS_NAME( Status );
-typedef struct __STUMPLESS_NAME( SortingConfiguration ) __STUMPLESS_NAME( SortingConfiguration );
-typedef struct __STUMPLESS_NAME( StringConfiguration ) __STUMPLESS_NAME( StringConfiguration );
+typedef struct __STUMPLESS_NAME( Boolean )
+        __STUMPLESS_NAME( Boolean );
+typedef struct __STUMPLESS_NAME( BooleanFormat )
+        __STUMPLESS_NAME( BooleanFormat );
+typedef struct __STUMPLESS_NAME( ByteList )
+        __STUMPLESS_NAME( ByteList );
+typedef struct __STUMPLESS_NAME( Configuration )
+        __STUMPLESS_NAME( Configuration );
+typedef struct __STUMPLESS_NAME( Entry )
+        __STUMPLESS_NAME( Entry );
+typedef struct __STUMPLESS_NAME( EntryAttribute )
+        __STUMPLESS_NAME( EntryAttribute );
+typedef struct __STUMPLESS_NAME( Event )
+        __STUMPLESS_NAME( Event );
+typedef struct __STUMPLESS_NAME( EventAttribute )
+        __STUMPLESS_NAME( EventAttribute );
+typedef struct __STUMPLESS_NAME( FileConfiguration )
+        __STUMPLESS_NAME( FileConfiguration );
+typedef struct __STUMPLESS_NAME( FormattedOutput )
+        __STUMPLESS_NAME( FormattedOutput );
+typedef struct __STUMPLESS_NAME( HTTPConfiguration )
+        __STUMPLESS_NAME( HTTPConfiguration );
+typedef struct __STUMPLESS_NAME( Level )
+        __STUMPLESS_NAME( Level );
+typedef struct __STUMPLESS_NAME( LoggerProfile )
+        __STUMPLESS_NAME( LoggingProfile );
+typedef struct __STUMPLESS_NAME( OutputProfile )
+        __STUMPLESS_NAME( OutputProfile );
+typedef struct __STUMPLESS_NAME( Status )
+        __STUMPLESS_NAME( Status );
+typedef struct __STUMPLESS_NAME( SortingConfiguration )
+        __STUMPLESS_NAME( SortingConfiguration );
+typedef struct __STUMPLESS_NAME( StringConfiguration )
+        __STUMPLESS_NAME( StringConfiguration );
 typedef struct __STUMPLESS_NAME( ThreadingConfiguration )
-               __STUMPLESS_NAME( ThreadingConfiguration );
-typedef union __STUMPLESS_NAME( Type ) __STUMPLESS_NAME( Type );
-typedef struct __STUMPLESS_NAME( Value ) __STUMPLESS_NAME( Value );
-typedef struct __STUMPLESS_NAME( ValueList ) __STUMPLESS_NAME( ValueList );
-typedef struct __STUMPLESS_NAME( ValueListNode ) __STUMPLESS_NAME( ValueListNode );
-typedef struct __STUMPLESS_NAME( ValueProfile ) __STUMPLESS_NAME( ValueProfile );
+        __STUMPLESS_NAME( ThreadingConfiguration );
+typedef union __STUMPLESS_NAME( Type )
+        __STUMPLESS_NAME( Type );
+typedef struct __STUMPLESS_NAME( Value )
+        __STUMPLESS_NAME( Value );
+typedef struct __STUMPLESS_NAME( ValueList )
+        __STUMPLESS_NAME( ValueList );
+typedef struct __STUMPLESS_NAME( ValueListNode )
+        __STUMPLESS_NAME( ValueListNode );
+typedef struct __STUMPLESS_NAME( ValueProfile )
+        __STUMPLESS_NAME( ValueProfile );
 
-
-typedef unsigned char __STUMPLESS_NAME( Byte );
+typedef unsigned char
+        __STUMPLESS_NAME( Byte );
 
 enum __STUMPLESS_NAME( HTTPMethod ) {
   STUMPLESS_DELETE,
