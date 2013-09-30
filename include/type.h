@@ -24,7 +24,7 @@ struct __STUMPLESS_NAME( FileConfiguration );
 struct __STUMPLESS_NAME( FormattedOutput );
 struct __STUMPLESS_NAME( HTTConfiguration );
 struct __STUMPLESS_NAME( Level );
-struct __STUMPLESS_NAME( LoggingProfile );
+struct __STUMPLESS_NAME( LoggerProfile );
 struct __STUMPLESS_NAME( OutputProfile );
 struct __STUMPLESS_NAME( Status );
 struct __STUMPLESS_NAME( SortingConfiguration );
@@ -53,7 +53,7 @@ typedef struct __STUMPLESS_NAME( FileConfiguration ) __STUMPLESS_NAME( FileConfi
 typedef struct __STUMPLESS_NAME( FormattedOutput ) __STUMPLESS_NAME( FormattedOutput );
 typedef struct __STUMPLESS_NAME( HTTPConfiguration ) __STUMPLESS_NAME( HTTPConfiguration );
 typedef struct __STUMPLESS_NAME( Level ) __STUMPLESS_NAME( Level );
-typedef struct __STUMPLESS_NAME( LoggingProfile ) __STUMPLESS_NAME( LoggingProfile );
+typedef struct __STUMPLESS_NAME( LoggerProfile ) __STUMPLESS_NAME( LoggingProfile );
 typedef struct __STUMPLESS_NAME( OutputProfile ) __STUMPLESS_NAME( OutputProfile );
 typedef struct __STUMPLESS_NAME( Status ) __STUMPLESS_NAME( Status );
 typedef struct __STUMPLESS_NAME( SortingConfiguration ) __STUMPLESS_NAME( SortingConfiguration );
@@ -174,7 +174,7 @@ struct __STUMPLESS_NAME( Level ) {
   const char * name;
 };
 
-struct __STUMPLESS_NAME( LoggingProfile ) {
+struct __STUMPLESS_NAME( LoggerProfile ) {
   const char * name;
   __STUMPLESS_NAME( StatusCode ) ( *output_function )( __STUMPLESS_NAME( FormattedOutput ) * );
 };
