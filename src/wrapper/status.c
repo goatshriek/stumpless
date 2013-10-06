@@ -17,13 +17,6 @@ __STUMPLESS_NAME( FindStatusByName )
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( InitializeStatus )
-( void )
-{
-  return InitializeStatus();
-}
-
-__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( GetLastError )
 ( void )
 {
@@ -37,10 +30,23 @@ __STUMPLESS_NAME( GetLastFailure )
   return GetLastFailure();
 }
 
-// todo remove
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( GetLastWarning )
+( void )
+{
+  return GetLastWarning();
+}
+
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( RaiseAbnormalStatus )
+( const char * name )
+{
+  return RaiseAbnormalStatus( name );
+}
+
 const char *
 __STUMPLESS_NAME( StatusToString )
-( __STUMPLESS_NAME( StatusCode ) status_code )
+( __STUMPLESS_NAME( Status ) * status )
 {
-  return StatusToString( status_code );
+  return StatusToString( status );
 }

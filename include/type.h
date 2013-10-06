@@ -219,6 +219,7 @@ struct __STUMPLESS_NAME( OutputProfile ) {
 struct __STUMPLESS_NAME( Status ) {
   unsigned short error : 1;
   unsigned short failure : 1;
+  unsigned short warning : 1;
   const char * description;
   const char * name;
 };
@@ -287,7 +288,7 @@ struct __STUMPLESS_NAME( ValueListNode ) {
 };
 
 struct __STUMPLESS_NAME( ValueProfile ) {
-  __STUMPLESS_NAME( StatusCode ) ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
   const char * name;
   __STUMPLESS_NAME( FormattedOutput ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );
   __STUMPLESS_NAME( FormattedOutput ) * ( *to_csv )( __STUMPLESS_NAME( Value ) * );

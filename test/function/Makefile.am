@@ -42,6 +42,10 @@ test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)
 
+test_function_status_initializer_SOURCES = test/function/status_initializer.c
+test_function_status_initializer_CFLAGS = $(test_flags)
+test_function_status_initializer_LDADD = $(test_libraries)
+
 test_function_stream_output_SOURCES = test/function/stream_output.c
 test_function_stream_output_CFLAGS = $(test_flags)
 test_function_stream_output_LDADD = $(test_libraries)

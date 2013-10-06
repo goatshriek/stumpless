@@ -31,6 +31,10 @@ BuildEntryAttribute( void );
 EntryAttribute **
 BuildEntryAttributeList( void );
 
+Status *
+BuildErrorStatus
+( void );
+
 Event *
 BuildEvent( void );
 
@@ -39,6 +43,10 @@ BuildEventAttribute( void );
 
 EventAttribute **
 BuildEventAttributeList( void );
+
+Status *
+BuildFailureStatus
+( void );
 
 Value *
 BuildIntArrayValue( void );
@@ -78,5 +86,9 @@ BuildValueProfile( void );
 
 Value *
 BuildVoidValue( void );
+
+Status *
+BuildWarningStatus
+( void );
 
 #endif

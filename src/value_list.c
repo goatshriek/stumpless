@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "private/configuration.h"
+#include "private/status.h"
 #include "private/status_checker.h"
 #include "private/type.h"
 #include "private/value.h"
@@ -9,12 +10,12 @@
 #include "private/value_list.h"
 
 static
-StatusCode
+Status *
 AppendValueListNodeToValueList
 ( ValueList * list, ValueListNode * node )
 {
   if( list == NULL || node == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   node->next = NULL;
   
@@ -25,7 +26,7 @@ AppendValueListNodeToValueList
   
   list->last = node;
   
-  return STUMPLESS_SUCCESS;
+  return NULL;
 }
 
 static
@@ -42,12 +43,12 @@ DestroyValueListNode
 }
 
 static
-StatusCode
+Status *
 PrependValueListNodeToValueList
 ( ValueList * list, ValueListNode * node )
 {
   if( list == NULL || node == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   node->next = list->first;
   list->first = node;
@@ -55,22 +56,22 @@ PrependValueListNodeToValueList
   if( list->last == NULL )
     list->last = node;
   
-  return STUMPLESS_SUCCESS;
+  return NULL;
 }
 
-StatusCode
+Status *
 AddSeparatorToValueList
 ( ValueList * list, Value * separator )
 {
   if( list == NULL || separator == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   ValueListNode * new_node;
   ValueListNode * current = list->first;
   while( current != list->last ){
     new_node = malloc( sizeof( ValueListNode ) );
     if( new_node == NULL )
-      return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+      return RaiseAbnormalStatus( "memory allocation failure" );
     new_node->value = separator;
     new_node->next = current->next;
     current->next = new_node;
@@ -78,47 +79,47 @@ AddSeparatorToValueList
     current = new_node->next;
   }
   
-  return STUMPLESS_SUCCESS;
+  return NULL;
 }
 
-StatusCode
+Status *
 AppendStringToValueList
 ( ValueList * list, const char * str )
 {
   if( list == NULL || str == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   Value * value = ValueFromString( str );
   if( value == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   
   return AppendValueToValueList( list, value );
 }
 
-StatusCode
+Status *
 AppendUnsignedIntToValueList
 ( ValueList * list, unsigned num )
 {
   if( list == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   Value * value = ValueFromUnsignedInt( num );
   if( value == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   else
     return AppendValueToValueList( list, value );
 }
 
-StatusCode
+Status *
 AppendValueLists
 ( ValueList * beginning, ValueList * end )
 {
   if( beginning == NULL || end == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   ValueList * copy = CopyValueList( end );
   if( copy == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   
   if( beginning->first == NULL )
     beginning->first = copy->first;
@@ -128,19 +129,19 @@ AppendValueLists
   
   free( copy );
   
-  return STUMPLESS_SUCCESS;
+  return NULL;
 }
 
-StatusCode
+Status *
 AppendValueToValueList
 ( ValueList * list, Value * value )
 {
   if( list == NULL || value == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   ValueListNode * node = malloc( sizeof( ValueListNode ) );
   if( node == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   
   node->value = value;
   
@@ -213,60 +214,60 @@ NewValueList
   return list;
 }
 
-StatusCode
+Status *
 PrependStringToValueList
 ( ValueList * list, const char * str )
 {
   if( list == NULL || str == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   Value * value = ValueFromString( str );
   if( value == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   
   return PrependValueToValueList( list, value );
 }
 
-StatusCode
+Status *
 PrependValueToValueList
 ( ValueList * list, Value * value )
 {
   if( list == NULL || value == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   ValueListNode * node = malloc( sizeof( ValueListNode ) );
   if( node == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   
   node->value = value;
   
   return PrependValueListNodeToValueList( list, node );
 }
 
-StatusCode
+Status *
 ValueListIntoString
 ( char * str, ValueList * list )
 {
   if( str == NULL || list == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
-  StatusCode status;
+  Status * status;
   str[0] = '\0';
   
   Configuration * configuration = GetConfiguration();
   if( configuration == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   
   size_t buffer_size = configuration->string->buffer_size;
   char * buffer = malloc( sizeof( char ) * ( buffer_size + 1 ) );
   if( buffer == NULL )
-    return STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+    return RaiseAbnormalStatus( "memory allocation failure" );
   
   ValueListNode * node = list->first;
   char * value_str;
   while( node != NULL ){
     if( node->value == NULL || node->value->profile == NULL )
-      return STUMPLESS_MALFORMED_STRUCTURE;
+      return RaiseAbnormalStatus( "malformed structure" );
     
     if( node->value->profile->to_string == NULL ){
       node = node->next;
@@ -279,7 +280,7 @@ ValueListIntoString
     node = node->next;
   }
   
-  return STUMPLESS_SUCCESS;
+  return NULL;
 }
 
 unsigned short

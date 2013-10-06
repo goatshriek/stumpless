@@ -8,7 +8,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( BooleanArrayValueToValueList 
 )( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( BooleanValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -20,7 +20,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( CharArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( CharValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -36,7 +36,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( DoubleArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( DoubleValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -48,7 +48,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( FloatArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( FloatValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -60,7 +60,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( IntArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( IntValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -72,7 +72,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( LongArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( LongValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -84,7 +84,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( LongDoubleArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( LongDoubleValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -96,7 +96,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( LongLongArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( LongLongValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -108,7 +108,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( ShortArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( ShortValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -120,7 +120,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( SignedCharArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( SignedCharValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -132,7 +132,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( StringArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( StringValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -144,7 +144,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( UnsignedCharArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedCharValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -156,7 +156,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( UnsignedIntArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedIntValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -168,7 +168,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( UnsignedLongArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedLongValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -180,7 +180,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( UnsignedLongLongArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedLongLongValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -192,7 +192,7 @@ __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( UnsignedShortArrayValueToValueList )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedShortValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
@@ -200,11 +200,11 @@ char *
 __STUMPLESS_NAME( UnsignedShortValueToString )
 ( __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( ValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( ValueIntoString )
 ( char *, __STUMPLESS_NAME( Value ) * );
 

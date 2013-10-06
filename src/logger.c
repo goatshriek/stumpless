@@ -7,52 +7,37 @@
 // todo
 // move this functionality to a Logger structure
 
-StatusCode
+Status *
 LogDebug
 ( const char * message )
 {
-  StatusCode result = STUMPLESS_SUCCESS;
-  
-  
-  return result;
+  return NULL;
 }
 
-StatusCode
+Status *
 LogError
 ( const char * message )
 {
-  StatusCode result = STUMPLESS_SUCCESS;
-  
-  
-  return result;
+  return NULL;
 }
 
-StatusCode
+Status *
 LogFatal
 ( const char * message )
 {
-  StatusCode result = STUMPLESS_SUCCESS;
-  
-  
-  return result;
+  return NULL;
 }
 
-StatusCode
+Status *
 LogInfo
 ( const char * message )
 {
-  StatusCode result = STUMPLESS_SUCCESS;
-  
-  
-  return result;
+  return NULL;
 }
 
-StatusCode
+Status *
 LogWarning
 ( const char * message )
 {
-  StatusCode result = STUMPLESS_SUCCESS;
-  
-  
-  return result;
+  return NULL;
 }

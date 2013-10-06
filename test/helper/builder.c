@@ -217,6 +217,24 @@ BuildEntryAttributeList( void )
   return list;
 }
 
+Status *
+BuildErrorStatus
+( void )
+{
+  Status * status = malloc( sizeof( Status ) );
+  if( status == NULL )
+    return NULL;
+  
+  status->error = 1;
+  status->failure = 0;
+  status->warning = 0;
+  
+  status->name = "test error status";
+  status->description = "this status is meant to mimic a generic status that points at some error. Use it for testing purposes only.";
+  
+  return status;
+}
+
 Event *
 BuildEvent( void )
 {
@@ -295,6 +313,24 @@ BuildEventAttributeList( void )
   list[4] = NULL;
   
   return list;
+}
+
+Status *
+BuildFailureStatus
+( void )
+{
+  Status * status = malloc( sizeof( Status ) );
+  if( status == NULL )
+    return NULL;
+  
+  status->error = 0;
+  status->failure = 1;
+  status->warning = 0;
+  
+  status->name = "test failure status";
+  status->description = "this status is meant to mimic a generic status that points at a failure of a function to finish. Use it for testing purposes only.";
+  
+  return status;
 }
 
 Value *
@@ -436,17 +472,17 @@ BuildTextFormattedOutput( void )
   if( values == NULL )
     return NULL;
   
-  StatusCode status;
+  Status * status;
   status = AppendStringToValueList( values, "First\n" );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   status = AppendStringToValueList( values, "Second\n" );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   status = AppendStringToValueList( values, "Third" );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   output->data = ( void * ) values;
@@ -503,42 +539,42 @@ BuildValueList( void )
   if( list == NULL )
     return NULL;
   
-  StatusCode status;
+  Status * status;
   Value * value;
   
   value = BuildIntArrayValue();
   if( value == NULL )
     return NULL;
   status = AppendValueToValueList( list, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   value = BuildUnsignedIntValue();
   if( value == NULL )
     return NULL;
   status = AppendValueToValueList( list, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   value = BuildUnsignedShortValue();
   if( value == NULL )
     return NULL;
   status = AppendValueToValueList( list, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   value = BuildCharArrayValue();
   if( value == NULL )
     return NULL;
   status = AppendValueToValueList( list, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   value = BuildVoidValue();
   if( value == NULL )
     return NULL;
   status = AppendValueToValueList( list, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return NULL;
   
   return list;
@@ -601,4 +637,22 @@ BuildVoidValue( void )
   value->data->v_p = (void *) boolean;
   
   return value;
+}
+
+Status *
+BuildWarningStatus
+( void )
+{
+  Status * status = malloc( sizeof( Status ) );
+  if( status == NULL )
+    return NULL;
+  
+  status->error = 0;
+  status->failure = 0;
+  status->warning = 1;
+  
+  status->name = "test warning status";
+  status->description = "this status is meant to mimic a generic status that seeks to warn of something that may turn into an error. Use it for testing purposes only.";
+  
+  return status;
 }

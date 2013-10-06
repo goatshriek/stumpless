@@ -13,10 +13,6 @@ __STUMPLESS_NAME( FindStatusByName )
 ( const char * );
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( InitializeStatus )
-( void );
-
-__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( GetLastError )
 ( void );
 
@@ -24,8 +20,16 @@ __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( GetLastFailure )
 ( void );
 
-// todo remove
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( GetLastWarning )
+( void );
+
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( RaiseAbnormalStatus )
+( const char * );
+
 const char *
-__STUMPLESS_NAME( StatusToString )( __STUMPLESS_NAME( StatusCode ) );
+__STUMPLESS_NAME( StatusToString )
+( __STUMPLESS_NAME( Status ) * );
 
 #endif

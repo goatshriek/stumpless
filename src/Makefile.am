@@ -9,6 +9,7 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/logger.c \
                           src/raw_logger.c \
                           src/status.c \
+                          src/status_initializer.c \
                           src/stream_output.c \
                           src/string_helper.c \
                           src/text_formatter.c \

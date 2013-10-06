@@ -26,14 +26,15 @@ main( void )
 const char *
 test_raw_string_logger( void )
 {
-  StatusCode status;
+  Status * status;
   
   status = LogRawString( NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a NULL string did not generate the appropriate error";
+  FAIL_IF_NULL( status, "a NULL string did not generate an error" )
+  
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a NULL string did not generate the appropriate status" )
   
   status = LogRawString( "Test String #1" );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "a simple string could not be logged";
   
   return NULL;

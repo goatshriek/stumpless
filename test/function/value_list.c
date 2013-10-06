@@ -51,33 +51,31 @@ main( void )
 const char *
 test_appender( void )
 {
-  StatusCode status;
+  Status * status;
   
   ValueList * list_1 = BuildValueList();
-  if( list_1 == NULL )
-    return "could not build the first list";
+  FAIL_IF_NULL( list_1, "could not build the first list" )
 
   ValueList * list_2 = BuildValueList();
-  if( list_2 == NULL )
-    return "could not build the second list";
+  FAIL_IF_NULL( list_2, "could not build the second list" )
+  
   status = AppendStringToValueList( list_2, "this should be last" );
-  if( status != STUMPLESS_SUCCESS )
-    return "an extra value could not be added to the second list";
+  FAIL_IF_NOT_NULL( status, "an extra value could not be added to the second list" )
   
   status = AppendValueLists( NULL, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "empty arguments did not generate the appropriate error";
+  FAIL_IF_NULL( status, "empty arguments did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "empty arguments did not generate the appropriate error" )
   
   status = AppendValueLists( list_1, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty first argument did not generate the appropriate error";
+  FAIL_IF_NULL( status, "an empty first argument did not generate an abnormaa status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty first argument did not generate the appropriate error" )
   
   status = AppendValueLists( NULL, list_2 );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty second argument did not generate the appropriate error";
+  FAIL_IF_NULL( status, "an empty second argument did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty second argument did not generate the appropriate error" )
   
   status = AppendValueLists( list_1, list_2 );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the list was not successfully appended";
   if( strcmp( list_1->last->value->data->c_p, "this should be last" ) != 0 )
     return "the lists were not properly appended";
@@ -159,16 +157,16 @@ test_into_string( void )
     return "could not build the test list";
   char str[1000];
   
-  StatusCode status = ValueListIntoString( NULL, list );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty string did not generate the correct error";
+  Status * status = ValueListIntoString( NULL, list );
+  FAIL_IF_NULL( status, "an empty string did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
   
   status = ValueListIntoString( str, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-     return "an empty list did not generate the correct error";
+  FAIL_IF_NULL( status, "an empty list did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty list did not generate the correct error" )
   
   status = ValueListIntoString( str, list );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "a valid string was not properly written into";
   
   if( strstr( str, "4294967196" ) == NULL )
@@ -206,20 +204,20 @@ test_prepender( void )
   Value * value = BuildIntValue();
   FAIL_IF_NULL( list, "could not build the test value" );
   
-  StatusCode status = PrependValueToValueList( NULL, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "two empty arguments did not generate the appropriate status code";
+  Status * status = PrependValueToValueList( NULL, NULL );
+  FAIL_IF_NULL( status, "two empty arguments did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "two empty arguments did not generate the appropriate status code" )
   
   status = PrependValueToValueList( list, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty value did not generate the appropriate status code";
+  FAIL_IF_NULL( status, "an empty value did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty value did not generate the appropriate status code" )
   
   status = PrependValueToValueList( NULL, value );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a NULL list did not generate the approprate status code";
+  FAIL_IF_NULL( status, "a NULL list did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a NULL list did not generate the appropriate status code" )
  
   status = PrependValueToValueList( list, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "a value could not be prepended to an empty list";
   FAIL_IF_NULL( list->first, "the list still did not have any members" )
   FAIL_IF_NULL( list->first->value, "the list's nodes were invalid" )
@@ -231,7 +229,7 @@ test_prepender( void )
   value = BuildIntArrayValue();
   FAIL_IF_NULL( list, "could not build a test array value" )
   status = PrependValueToValueList( list, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the value was not correctly prepended to a populated list";
   FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
   FAIL_IF_NULL( list->first->value, "the new element did not have a value" )
@@ -250,9 +248,9 @@ test_separator( void )
   Value * separator = ValueFromString( ", " );
   FAIL_IF_NULL( separator, "could not build the test separator value" )
   
-  StatusCode status;
+  Status * status;
   status = AddSeparatorToValueList( list, separator );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the separator was not properly added to the list";
   
   char * test_str = ValueListToString( list );
@@ -266,21 +264,21 @@ test_separator( void )
 const char *
 test_string_appender( void )
 {
-  StatusCode status;
+  Status * status;
   status = AppendStringToValueList( NULL, "str" );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty list did not generate the correct error";
+  FAIL_IF_NULL( status, "an empty list did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty list did not generate the correct error" )
   
   ValueList * list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
   
   status = AppendStringToValueList( list, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty string did not generate the correct error";
+  FAIL_IF_NULL( status, "an empty string did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
   
   status = AppendStringToValueList( list, "str" );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the string was not successfully appended to the list";
   
   if( list->last == NULL )
@@ -304,20 +302,20 @@ test_string_prepender( void )
   ValueList * list = NewValueList();
   FAIL_IF_NULL( list, "could not build a new test list" )
   
-  StatusCode status = PrependStringToValueList( NULL, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "two empty arguments did not generate the appropriate status code";
+  Status * status = PrependStringToValueList( NULL, NULL );
+  FAIL_IF_NULL( status, "two empty arguments did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "two empty arguments did not generate the appropriate status code" )
   
   status = PrependStringToValueList( list, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a null string did not generate the appropriate status code";
+  FAIL_IF_NULL( status, "a NULL string did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a NULL string did not generate the appropriate status code" )
   
   status = PrependStringToValueList( NULL, "shouldn't work" );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a NULL list did not generate the approprate status code";
+  FAIL_IF_NULL( status, "a NULL list did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a NULL list did not generate the appropriate status code" )
   
   status = PrependStringToValueList( list, "lonely little guy" );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "a string could not be prepended to an empty list";
   FAIL_IF_NULL( list->first, "the list still did not have any members" )
   FAIL_IF_NULL( list->first->value, "the list's nodes were invalid" )
@@ -330,7 +328,7 @@ test_string_prepender( void )
   list = BuildValueList();
   FAIL_IF_NULL( list, "could not build a populated test list" ) 
   status = PrependStringToValueList( list, "new beginning" );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the string was not correctly prepended to a populated list";
   FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
   FAIL_IF_NULL( list->first->value, "the new element did not have a value" )
@@ -372,13 +370,13 @@ test_unsigned_int_appender( void )
   if( list == NULL )
     return "could not build the test list";
   
-  StatusCode status;
+  Status * status;
   status = AppendUnsignedIntToValueList( NULL, 3 );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "a null list did not generate the proper error";
+  FAIL_IF_NULL( status, "a NULL list did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a null list did not generate the proper error" )
   
   status = AppendUnsignedIntToValueList( list, 4 );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "an unsigned number was not correctly appended to the list";
   
   if( strcmp( list->last->value->profile->name, "unsigned int" ) != 0 )
@@ -392,7 +390,7 @@ test_unsigned_int_appender( void )
 const char *
 test_value_appender( void )
 {
-  StatusCode status;
+  Status * status;
   ValueList * list = NewValueList();
   if( list == NULL )
     return "the list was not created";
@@ -403,19 +401,19 @@ test_value_appender( void )
   Value * val_4 = ValueFromString( "testing" );
   
   status = AppendValueToValueList( list, val_1 );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the node was not successfully added";
   
   status = AppendValueToValueList( list, val_2 );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the node was not successfully added";
   
   status = AppendValueToValueList( list, val_3 );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the node was not successfully added";
   
   status = AppendValueToValueList( list, val_4 );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "the node was not successfully added";
   
   if( list->first == NULL )

@@ -9,7 +9,7 @@ __STUMPLESS_NAME( BooleanArrayValueToValueList )
   return BooleanArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( BooleanValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -30,7 +30,7 @@ __STUMPLESS_NAME( CharArrayValueToValueList )
   return CharArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( CharValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -58,7 +58,7 @@ __STUMPLESS_NAME( DoubleArrayValueToValueList )
   return DoubleArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( DoubleValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -79,7 +79,7 @@ __STUMPLESS_NAME( FloatArrayValueToValueList )
   return FloatArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( FloatValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -107,7 +107,7 @@ __STUMPLESS_NAME( IntArrayValueToValueList )
   return IntArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( IntValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -128,7 +128,7 @@ __STUMPLESS_NAME( LongArrayValueToValueList )
   return LongArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( LongValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -149,7 +149,7 @@ __STUMPLESS_NAME( LongDoubleArrayValueToValueList )
   return LongDoubleArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( LongDoubleValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -170,7 +170,7 @@ __STUMPLESS_NAME( LongLongArrayValueToValueList )
   return LongLongArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( LongLongValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -191,7 +191,7 @@ __STUMPLESS_NAME( ShortArrayValueToValueList )
   return ShortArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( ShortValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -212,7 +212,7 @@ __STUMPLESS_NAME( SignedCharArrayValueToValueList )
   return SignedCharArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( SignedCharValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -233,7 +233,7 @@ __STUMPLESS_NAME( StringArrayValueToValueList )
   return StringArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( StringValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -254,7 +254,7 @@ __STUMPLESS_NAME( UnsignedCharArrayValueToValueList )
   return UnsignedCharArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedCharValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -275,7 +275,7 @@ __STUMPLESS_NAME( UnsignedIntArrayValueToValueList )
   return UnsignedIntArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedIntValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -296,7 +296,7 @@ __STUMPLESS_NAME( UnsignedLongArrayValueToValueList )
   return UnsignedLongArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedLongValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -317,7 +317,7 @@ __STUMPLESS_NAME( UnsignedLongLongArrayValueToValueList )
   return UnsignedLongLongArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedLongLongValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -338,7 +338,7 @@ __STUMPLESS_NAME( UnsignedShortArrayValueToValueList )
   return UnsignedShortArrayValueToValueList( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( UnsignedShortValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {
@@ -352,7 +352,7 @@ __STUMPLESS_NAME( UnsignedShortValueToString )
   return UnsignedShortValueToString( value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( ValueIntoString )
 ( char * str, __STUMPLESS_NAME( Value ) * value )
 {

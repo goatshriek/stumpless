@@ -8,6 +8,7 @@ check_PROGRAMS = test/function/boolean \
                  test/function/quick_logger \
                  test/function/raw_logger \
                  test/function/status \
+                 test/function/status_initializer \
                  test/function/stream_output \
                  test/function/string_helper \
                  test/function/text_formatter \

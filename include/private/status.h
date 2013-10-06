@@ -12,10 +12,6 @@ FindStatusByName
 ( const char * );
 
 Status *
-InitializeStatus
-( void );
-
-Status *
 GetLastError
 ( void );
 
@@ -23,8 +19,15 @@ Status *
 GetLastFailure
 ( void );
 
-// todo remove
+Status *
+GetLastWarning
+( void );
+
+Status *
+RaiseAbnormalStatus
+( const char * );
+
 const char *
-StatusToString( StatusCode );
+StatusToString( Status * );
 
 #endif

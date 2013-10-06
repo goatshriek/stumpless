@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "private/configuration.h"
+#include "private/logger.h"
 #include "private/type.h"
 
 #include "helper.h"
@@ -53,19 +54,19 @@ test_configuration_initializations( void )
 const char *
 test_status_codes( void )
 {
-  if( LogDebug( "debug message\n" ) != STUMPLESS_SUCCESS )
+  if( LogDebug( "debug message\n" ) != NULL )
     return "LogDebug returned a failure code";
   
-  if( LogError( "error message\n" ) != STUMPLESS_SUCCESS )
+  if( LogError( "error message\n" ) != NULL )
     return "LogError returned a failure code";
   
-  if( LogFatal( "fatal message\n" ) != STUMPLESS_SUCCESS )
+  if( LogFatal( "fatal message\n" ) != NULL )
     return "LogFatal returned a failure code";
   
-  if( LogInfo( "information message\n" ) != STUMPLESS_SUCCESS )
+  if( LogInfo( "information message\n" ) != NULL )
     return "LogInfo returned a failure code";
   
-  if( LogWarning( "warning message\n" ) != STUMPLESS_SUCCESS )
+  if( LogWarning( "warning message\n" ) != NULL )
     return "LogWarning returned a failure code";
   
   return NULL;

@@ -2,35 +2,35 @@
 
 #include "private/value_list.h"
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AddSeparatorToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, __STUMPLESS_NAME( Value ) * value )
 {
   return AddSeparatorToValueList( list, value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AppendStringToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, const char * str )
 {
   return AppendStringToValueList( list, str );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AppendUnsignedIntToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, unsigned num )
 {
   return AppendUnsignedIntToValueList( list, num );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AppendValueLists )
 ( __STUMPLESS_NAME( ValueList ) * list, __STUMPLESS_NAME( ValueList ) * next )
 {
   return AppendValueLists( list, next );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AppendValueToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, __STUMPLESS_NAME( Value ) * value )
 {
@@ -58,21 +58,21 @@ __STUMPLESS_NAME( NewValueList )
   return NewValueList();
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( PrependStringToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, const char * str )
 {
   return PrependStringToValueList( list, str );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( PrependValueToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, __STUMPLESS_NAME( Value ) * value )
 {
   return PrependValueToValueList( list, value );
 }
 
-__STUMPLESS_NAME( StatusCode )
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( ValueListIntoString )
 ( char * str, __STUMPLESS_NAME( ValueList ) * list )
 {

@@ -7,7 +7,7 @@ ValueList *
 BooleanArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 BooleanValueIntoString
 ( char *, Value * );
 
@@ -19,7 +19,7 @@ ValueList *
 CharArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 CharValueIntoString
 ( char *, Value * );
 
@@ -35,7 +35,7 @@ ValueList *
 DoubleArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 DoubleValueIntoString
 ( char *, Value * );
 
@@ -47,7 +47,7 @@ ValueList *
 FloatArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 FloatValueIntoString
 ( char *, Value * );
 
@@ -59,7 +59,7 @@ ValueList *
 IntArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 IntValueIntoString
 ( char *, Value * );
 
@@ -71,7 +71,7 @@ ValueList *
 LongArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 LongValueIntoString
 ( char *, Value * );
 
@@ -83,7 +83,7 @@ ValueList *
 LongDoubleArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 LongDoubleValueIntoString
 ( char *, Value * );
 
@@ -95,7 +95,7 @@ ValueList *
 LongLongArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 LongLongValueIntoString
 ( char *, Value * );
 
@@ -107,7 +107,7 @@ ValueList *
 ShortArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 ShortValueIntoString
 ( char *, Value * );
 
@@ -119,7 +119,7 @@ ValueList *
 SignedCharArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 SignedCharValueIntoString
 ( char *, Value * );
 
@@ -131,7 +131,7 @@ ValueList *
 StringArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 StringValueIntoString
 ( char *, Value * );
 
@@ -143,7 +143,7 @@ ValueList *
 UnsignedCharArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 UnsignedCharValueIntoString
 ( char *, Value * );
 
@@ -155,7 +155,7 @@ ValueList *
 UnsignedIntArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 UnsignedIntValueIntoString
 ( char *, Value * );
 
@@ -167,7 +167,7 @@ ValueList *
 UnsignedLongArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 UnsignedLongValueIntoString
 ( char *, Value * );
 
@@ -179,7 +179,7 @@ ValueList *
 UnsignedLongLongArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 UnsignedLongLongValueIntoString
 ( char *, Value * );
 
@@ -191,7 +191,7 @@ ValueList *
 UnsignedShortArrayValueToValueList
 ( Value * );
 
-StatusCode
+Status *
 UnsignedShortValueIntoString
 ( char *, Value * );
 
@@ -199,11 +199,11 @@ char *
 UnsignedShortValueToString
 ( Value * );
 
-StatusCode
+Status *
 ValueIntoString
 ( char *, Value * );
 
-StatusCode
+Status *
 ValueIntoString
 ( char *, Value * );
 

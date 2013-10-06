@@ -6,7 +6,7 @@
 
 Dictionary *
 AddValueToDictionary
-( Dictionary * dictionary, char * key, void * value )
+( Dictionary * dictionary, const char * key, void * value )
 {
   unsigned int index = dictionary->count++;
   

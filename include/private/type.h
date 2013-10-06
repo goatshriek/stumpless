@@ -67,7 +67,7 @@ typedef struct __STUMPLESS_NAME( ValueProfile )
 
 struct Dictionary {
   unsigned int count;
-  char ** keys;
+  const char ** keys;
   void ** values;
 };
 

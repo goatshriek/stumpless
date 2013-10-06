@@ -3,52 +3,52 @@
 
 #include "private/type.h"
 
-StatusCode
+Status *
 LogRawBoolean( Boolean * );
 
-StatusCode
+Status *
 LogRawChar( char );
 
-StatusCode
+Status *
 LogRawDouble( double );
 
-StatusCode
+Status *
 LogRawFloat( float );
 
-StatusCode
+Status *
 LogRawInt( int );
 
-StatusCode
+Status *
 LogRawLong( long );
 
-StatusCode
+Status *
 LogRawLongDouble( long double );
 
-StatusCode
+Status *
 LogRawLongLong( long long );
 
-StatusCode
+Status *
 LogRawShort( short );
 
-StatusCode
+Status *
 LogRawSignedChar( signed char );
 
-StatusCode
+Status *
 LogRawString( const char * );
 
-StatusCode
+Status *
 LogRawUnsignedChar( unsigned char );
 
-StatusCode
+Status *
 LogRawUnsignedInt( unsigned );
 
-StatusCode
+Status *
 LogRawUnsignedLong( unsigned long );
 
-StatusCode
+Status *
 LogRawUnsignedLongLong( unsigned long long );
 
-StatusCode
+Status *
 LogRawUnsignedShort( unsigned short );
 
 #endif

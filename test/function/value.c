@@ -92,16 +92,18 @@ test_into_string( void )
   
   char str[11];
   
-  StatusCode status = ValueIntoString( NULL, value );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty string did not generate the correct error";
+  Status * status = ValueIntoString( NULL, value );
+  FAIL_IF_NULL( status, "an empty string did not genereate an abnormal status" )
+
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
   
   status = ValueIntoString( str, NULL );
-  if( status != STUMPLESS_EMPTY_ARGUMENT )
-    return "an empty list did not generate the correct error";
+  FAIL_IF_NULL( status, "an empty value did not genereate an abnormal status" )
+
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty value did not generate the correct error" )
   
   status = ValueIntoString( str, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "a correct void pointer value and string generated an error";
  
   if( strstr( str, "4294967196" ) == NULL )
@@ -109,7 +111,7 @@ test_into_string( void )
   
   value = BuildUnsignedIntValue();
   status = ValueIntoString( str, value );
-  if( status != STUMPLESS_SUCCESS )
+  if( status != NULL )
     return "a singular unsigned int value and string generated an error";
   
   if( strcmp( str, "4294967196") != 0 )

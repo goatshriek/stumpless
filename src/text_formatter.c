@@ -169,7 +169,7 @@ EntryAttributeToValueList
   else
     attribute_name = event_attribute->name;
   
-  StatusCode status;
+  Status * status;
   NULL_ON_FAILURE( AppendStringToValueList( output, attribute_name ) )
   
   NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) );
@@ -242,7 +242,7 @@ EntrySummaryToValueList
   else
     description = entry->description;
   
-  StatusCode status;
+  Status * status;
   status = AppendStringToValueList( output, description );
   NULL_ON_FAILURE( status )
   
@@ -270,7 +270,7 @@ EventToValueList
   if( event == NULL )
     return NULL;
   
-  StatusCode status;
+  Status * status;
   ValueList * output = EventSummaryToValueList( event );
   if( output == NULL )
     return NULL;
@@ -367,7 +367,7 @@ EventSummaryToValueList
     return NULL;
   
   const char * event_name = event->name == NULL ? "event" : event->name;
-  StatusCode status;
+  Status * status;
   status = AppendStringToValueList( output, event_name );
   NULL_ON_FAILURE( status );
   
@@ -398,7 +398,7 @@ LevelToValueList
   if( output == NULL )
     return NULL;
   
-  StatusCode status;
+  Status * status;
   
   if( level->name != NULL ){
     status = AppendStringToValueList( output, level->name );

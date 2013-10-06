@@ -5,23 +5,23 @@
 
 #include "private/type.h"
 
-StatusCode
+Status *
 AddSeparatorToValueList
 ( ValueList *, Value * );
 
-StatusCode
+Status *
 AppendStringToValueList
 ( ValueList *, const char * );
 
-StatusCode
+Status *
 AppendUnsignedIntToValueList
 ( ValueList *, unsigned );
 
-StatusCode
+Status *
 AppendValueLists
 ( ValueList *, ValueList * );
 
-StatusCode
+Status *
 AppendValueToValueList
 ( ValueList *, Value * );
 
@@ -37,15 +37,15 @@ ValueList *
 NewValueList
 ( void );
 
-StatusCode
+Status *
 PrependStringToValueList
 ( ValueList *, const char * );
 
-StatusCode
+Status *
 PrependValueToValueList
 ( ValueList *, Value * );
 
-StatusCode
+Status *
 ValueListIntoString
 ( char *, ValueList * );
 

@@ -3,23 +3,23 @@
 
 #include "private/type.h"
 
-StatusCode
+Status *
 LogDebug
 ( const char * );
 
-StatusCode
+Status *
 LogError
 ( const char * );
 
-StatusCode
+Status *
 LogFatal
 ( const char * );
 
-StatusCode
+Status *
 LogInfo
 ( const char * );
 
-StatusCode
+Status *
 LogWarning
 ( const char * );
 

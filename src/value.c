@@ -4,6 +4,7 @@
 
 #include "private/boolean.h"
 #include "private/configuration.h"
+#include "private/status.h"
 #include "private/status_checker.h"
 #include "private/type.h"
 #include "private/value.h"
@@ -35,20 +36,20 @@ name##ArrayValueToValueList( Value * value )                                   \
 }
 
 #define VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )        \
-StatusCode                                                                     \
+Status *                                                                       \
 name##ValueIntoString( char * str, Value * value )                             \
 {                                                                              \
   if( str == NULL || value == NULL || value->data == NULL )                    \
-    return STUMPLESS_EMPTY_ARGUMENT;                                           \
+    return RaiseAbnormalStatus( "empty argument" );                            \
                                                                                \
   const char * format = value->format == NULL ? default_format : value->format;\
                                                                                \
   str[0] = '\0';                                                               \
   int result = sprintf( str, format, value->data->data_member );               \
   if( result < 0 )                                                             \
-    return STUMPLESS_STRING_WRITE_FAILURE;                                     \
+    return RaiseAbnormalStatus( "string write failure" );                      \
                                                                                \
-  return STUMPLESS_SUCCESS;                                                    \
+  return NULL;                                                                 \
 }
 
 // todo this function can be adapted to no longer rely on the buffer, if
@@ -119,12 +120,12 @@ BooleanArrayValueToValueList
   return list;
 }
 
-StatusCode
+Status *
 BooleanValueIntoString
 ( char * str, Value * value )
 {
   // todo need to implement
-  return STUMPLESS_FAILURE;
+  return NULL;
 }
 
 char *
@@ -247,11 +248,12 @@ StringArrayValueToValueList
   return list;
 }
 
-StatusCode
+Status *
 StringValueIntoString
 ( char * str, Value * value )
 {
-  return STUMPLESS_FAILURE;
+  // todo need to implement
+  return NULL;
 }
 
 char *
@@ -304,15 +306,15 @@ VALUE_INTO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
-StatusCode
+Status *
 ValueIntoString
 ( char * str, Value * value )
 {
   if( value == NULL )
-    return STUMPLESS_EMPTY_ARGUMENT;
+    return RaiseAbnormalStatus( "empty argument" );
   
   if( value->profile == NULL || value->profile->into_string == NULL )
-    return STUMPLESS_MALFORMED_STRUCTURE;
+    return RaiseAbnormalStatus( "malformed structure" );
   
   return value->profile->into_string( str, value );
 }

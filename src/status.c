@@ -1,30 +1,48 @@
 #include <stdlib.h>
 
+#include "private/dictionary.h"
 #include "private/status.h"
+#include "private/status_initializer.h"
 #include "private/type.h"
+
+static Dictionary * status_dictionary = NULL;
 
 static Status * last_error = NULL;
 static Status * last_failure = NULL;
+static Status * last_warning = NULL;
 
 Status *
 AddStatus
 ( Status * status )
 {
-  return NULL;
+  if( status == NULL || status->name == NULL )
+    return NULL;
+  
+  if( status_dictionary == NULL )
+    status_dictionary = NewDictionary();
+  
+  void * value = ( void * ) status;
+  if( AddValueToDictionary( status_dictionary, status->name, value ) == NULL )
+    return NULL;
+  
+  return status;
 }
 
 Status *
 FindStatusByName
 ( const char * name )
 {
-  return NULL;
-}
-
-Status *
-InitializeStatus
-( void )
-{
-  return NULL;
+  if( status_dictionary == NULL )
+    status_dictionary = NewDictionary();
+  
+  Status * status = GetValueFromDictionary( status_dictionary, name );
+  
+  if( status == NULL ){
+    status = InitializeStatusByName( name );
+  
+    if( status == NULL )
+      return NULL;
+  }
 }
 
 Status *
@@ -41,33 +59,40 @@ GetLastFailure
   return last_failure;
 }
 
-// todo remove
-const char *
-StatusToString( StatusCode code )
+Status *
+GetLastWarning
+( void )
 {
-  switch( code ){
-    case STUMPLESS_SUCCESS:
-      return "no failures reported";
-    case STUMPLESS_FAILURE:
-      return "failure";
-    case STUMPLESS_FILE_FAILURE:
-      return "file operation failure";
-    case STUMPLESS_FILE_READ_FAILURE:
-      return "file read failure";
-    case STUMPLESS_FILE_WRITE_FAILURE:
-      return "file write failure";
-    case STUMPLESS_FILE_OPEN_FAILURE:
-      return "file open failure";
-    case STUMPLESS_FILE_CLOSE_FAILURE:
-      return "file close failure";
-    case STUMPLESS_INCORRECT_FILE_SIGNATURE:
-      return "file has incorrect signature";
-    case STUMPLESS_MEMORY_ALLOCATION_FAILURE:
-      return "memory allocation failure";
-    case STUMPLESS_PARSE_FAILURE:
-      return "parse failure";
-    default:
+  return last_warning;
+}
+
+Status *
+RaiseAbnormalStatus
+( const char * name )
+{
+  Status * status = FindStatusByName( name );
+  
+  if( status == NULL )
       return NULL;
-  }
+  
+  if( status->error )
+    last_error = status;
+  
+  if( status->failure )
+    last_failure = status;
+  
+  if( status->warning )
+    last_warning = status;
+  
+  return status;
+}
+
+const char *
+StatusToString( Status * status )
+{
+  if( status == NULL )
+    return NULL;
+  else
+    return status->name;
 }
 

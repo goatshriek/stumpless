@@ -6,6 +6,9 @@
 
 #include "helper.h"
 
+const char * test_add_status( void );
+const char * test_find_status_by_name( void );
+const char * test_raise_abnormal_status( void );
 const char * test_to_string( void );
 
 int
@@ -14,6 +17,9 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
+  RUN_TEST( add_status )
+  RUN_TEST( find_status_by_name )
+  RUN_TEST( raise_abnormal_status )
   RUN_TEST( to_string )
   
   if( failure_count > 0 )
@@ -23,37 +29,63 @@ main( void )
 }
 
 const char *
-test_to_string( void )
+test_add_status
+( void )
 {
-  if( StatusToString( STUMPLESS_SUCCESS ) == NULL )
-    return "success code was not properly converted";
+  Status * status = BuildErrorStatus();
   
-  if( StatusToString( STUMPLESS_FAILURE ) == NULL )
-    return "failure code was not properly converted";
+  if( AddStatus( status ) != status )
+    return "the status was not added to the list";
   
-  if( StatusToString( STUMPLESS_FILE_FAILURE ) == NULL )
-    return "file failure code was not properly converted";
+  return NULL;
+}
+
+const char *
+test_find_status_by_name
+( void )
+{
+  Status * status = BuildFailureStatus();
+  FAIL_IF_NULL( status, "could not build the test status" )
   
-  if( StatusToString( STUMPLESS_FILE_READ_FAILURE ) == NULL )
-    return "file read failure code was not properly converted";
+  if( AddStatus( status ) != status )
+    return "the status was not added to the list";
   
-  if( StatusToString( STUMPLESS_FILE_WRITE_FAILURE ) == NULL )
-    return "file write failure code was not properly converted";
+  if( FindStatusByName( status->name ) != status )
+    return "the status returned was not the correct one";
   
-  if( StatusToString( STUMPLESS_FILE_OPEN_FAILURE ) == NULL )
-    return "file open failure code was not properly converted";
+  return NULL;
+}
+
+const char *
+test_raise_abnormal_status
+( void )
+{
+  Status * status = BuildWarningStatus();
+  FAIL_IF_NULL( status, "could not build the test status" )
   
-  if( StatusToString( STUMPLESS_FILE_CLOSE_FAILURE ) == NULL )
-    return "file close failure code was not properly converted";
+  if( AddStatus( status ) != status )
+    return "the test status could not be added";
   
-  if( StatusToString( STUMPLESS_INCORRECT_FILE_SIGNATURE ) == NULL )
-    return "incorrect file signature code was not properly converted";
+  if( RaiseAbnormalStatus( status->name ) != status )
+    return "raising a status did not return the proper status";
   
-  if( StatusToString( STUMPLESS_MEMORY_ALLOCATION_FAILURE ) == NULL )
-    return "memory allocation failure code was not properly converted";
+  if( GetLastWarning() != status )
+    return "the status was not properly registered before being raised";
   
-  if( StatusToString( STUMPLESS_PARSE_FAILURE ) == NULL )
-    return "parsing failure code was not properly converted";
+  return NULL;
+}
+
+const char *
+test_to_string
+( void )
+{
+  Status * status = NULL;
+  
+  FAIL_IF_NOT_NULL( StatusToString( NULL ), "a NULL status did not return a NULL string" )
+  
+  status = BuildErrorStatus();
+  FAIL_IF_NULL( status, "the test status could not be built" )
+  
   
   return NULL;
 }

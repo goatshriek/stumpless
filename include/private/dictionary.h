@@ -5,7 +5,7 @@
 
 Dictionary *
 AddValueToDictionary
-( Dictionary *, char *, void * );
+( Dictionary *, const char *, void * );
 
 void
 DestroyDictionary

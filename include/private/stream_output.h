@@ -5,7 +5,7 @@
 
 #include "private/type.h"
 
-StatusCode
+Status *
 TextOutputToStream
 ( FILE *, FormattedOutput * );
 
