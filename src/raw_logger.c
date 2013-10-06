@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "private/configuration.h"
+#include "private/output_profile.h"
 #include "private/raw_logger.h"
 #include "private/status.h"
 #include "private/type.h"

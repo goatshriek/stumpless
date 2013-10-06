@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/configuration.h"
 #include "private/formatted_output.h"
+#include "private/output_profile.h"
 #include "private/status_checker.h"
 #include "private/text_formatter.h"
 #include "private/text_formatter_static.h"

@@ -2,6 +2,7 @@
 
 #include "private/configuration.h"
 #include "private/dictionary.h"
+#include "private/output_profile.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
 #include "private/value_list.h"

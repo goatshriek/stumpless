@@ -205,12 +205,12 @@ struct __STUMPLESS_NAME( LoggerProfile ) {
 };
 
 struct __STUMPLESS_NAME( OutputProfile ) {
-  __STUMPLESS_NAME( StatusCode ) ( *into_buffer )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( StatusCode ) ( *into_http )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( StatusCode ) ( *into_mysql )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( StatusCode ) ( *into_stream )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( StatusCode ) ( *into_string )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( StatusCode ) ( *into_tcp )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_buffer )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_http )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_mysql )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_stream )( __STUMPLESS_NAME( FormattedOutput ) *, FILE * );
+  __STUMPLESS_NAME( Status ) * ( *into_string )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_tcp )( __STUMPLESS_NAME( FormattedOutput ) * );
   unsigned short ( *is_empty )( __STUMPLESS_NAME( FormattedOutput ) * );
   const char * name;
   char * ( *to_string )( __STUMPLESS_NAME( FormattedOutput ) * );

@@ -30,6 +30,14 @@ test_function_level_SOURCES = test/function/level.c
 test_function_level_CFLAGS = $(test_flags)
 test_function_level_LDADD = $(test_libraries)
 
+test_function_output_profile_SOURCES = test/function/output_profile.c
+test_function_output_profile_CFLAGS = $(test_flags)
+test_function_output_profile_LDADD = $(test_libraries)
+
+test_function_output_profile_initializer_SOURCES = test/function/output_profile_initializer.c
+test_function_output_profile_initializer_CFLAGS = $(test_flags)
+test_function_output_profile_initializer_LDADD = $(test_libraries)
+
 test_function_quick_logger_SOURCES =  test/function/quick_logger.c
 test_function_quick_logger_CFLAGS = $(test_flags)
 test_function_quick_logger_LDADD = $(test_libraries)
@@ -69,6 +77,10 @@ test_function_value_constructor_LDADD = $(test_libraries)
 test_function_value_list_SOURCES = test/function/value_list.c
 test_function_value_list_CFLAGS = $(test_flags)
 test_function_value_list_LDADD = $(test_libraries)
+
+test_function_value_profile_SOURCES = test/function/value_profile.c
+test_function_value_profile_CFLAGS = $(test_flags)
+test_function_value_profile_LDADD = $(test_libraries)
 
 test_function_value_profile_initializer_SOURCES = test/function/value_profile_initializer.c
 test_function_value_profile_initializer_CFLAGS = $(test_flags)
