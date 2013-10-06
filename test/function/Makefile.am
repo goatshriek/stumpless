@@ -69,3 +69,7 @@ test_function_value_constructor_LDADD = $(test_libraries)
 test_function_value_list_SOURCES = test/function/value_list.c
 test_function_value_list_CFLAGS = $(test_flags)
 test_function_value_list_LDADD = $(test_libraries)
+
+test_function_value_profile_initializer_SOURCES = test/function/value_profile_initializer.c
+test_function_value_profile_initializer_CFLAGS = $(test_flags)
+test_function_value_profile_initializer_LDADD = $(test_libraries)

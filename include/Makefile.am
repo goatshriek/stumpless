@@ -13,4 +13,5 @@ stumpless_include_HEADERS = include/boolean.h \
                             include/type.h \
                             include/value.h \
                             include/value_constructor.h \
-                            include/value_list.h
+                            include/value_list.h \
+                            include/value_profile.h

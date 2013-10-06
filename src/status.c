@@ -18,8 +18,12 @@ AddStatus
   if( status == NULL || status->name == NULL )
     return NULL;
   
-  if( status_dictionary == NULL )
+  if( status_dictionary == NULL ){
     status_dictionary = NewDictionary();
+    
+    if( status_dictionary == NULL )
+      return NULL;
+  }
   
   void * value = ( void * ) status;
   if( AddValueToDictionary( status_dictionary, status->name, value ) == NULL )

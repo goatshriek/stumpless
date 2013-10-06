@@ -14,7 +14,8 @@ check_PROGRAMS = test/function/boolean \
                  test/function/text_formatter \
                  test/function/value \
                  test/function/value_constructor \
-                 test/function/value_list
+                 test/function/value_list \
+                 test/function/value_profile_initializer
 TESTS = $(check_PROGRAMS)
 
 include test/helper/Makefile.am

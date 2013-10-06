@@ -13,6 +13,7 @@ const char * test_initialize_empty_argument( void );
 const char * test_initialize_malformed_structure( void );
 const char * test_initialize_memory_allocation_failure( void );
 const char * test_initialize_string_write_failure( void );
+const char * test_initialize_value_profile_not_found( void );
 
 int
 main( void )
@@ -26,6 +27,7 @@ main( void )
   RUN_TEST( initialize_malformed_structure )
   RUN_TEST( initialize_memory_allocation_failure )
   RUN_TEST( initialize_string_write_failure )
+  RUN_TEST( initialize_value_profile_not_found )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -102,6 +104,18 @@ test_initialize_string_write_failure
   FAIL_IF_NULL( status, "the status was not created" )
   
   ASSERT_STRINGS_EQUAL( "string write failure", status->name, "the correct status was not returned from initialization" )
+  
+  return NULL;
+}
+
+const char *
+test_initialize_value_profile_not_found
+( void )
+{
+  Status * status = InitializeValueProfileNotFoundStatus();
+  FAIL_IF_NULL( status, "the status was not created" )
+  
+  ASSERT_STRINGS_EQUAL( "value profile not found", status->name, "the correct status was not returned from initialization" )
   
   return NULL;
 }

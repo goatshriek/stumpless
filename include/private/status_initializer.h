@@ -27,4 +27,8 @@ Status *
 InitializeStringWriteFailureStatus
 ( void );
 
+Status *
+InitializeValueProfileNotFoundStatus
+( void );
+
 #endif

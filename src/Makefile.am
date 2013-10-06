@@ -16,6 +16,8 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/value.c \
                           src/value_constructor.c \
                           src/value_list.c \
+                          src/value_profile.c \
+                          src/value_profile_initializer.c \
                           src/wrapper/boolean.c \
                           src/wrapper/configuration.c \
                           src/wrapper/entry.c \
@@ -29,4 +31,5 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/wrapper/text_formatter.c \
                           src/wrapper/value.c \
                           src/wrapper/value_constructor.c \
-                          src/wrapper/value_list.c
+                          src/wrapper/value_list.c \
+                          src/wrapper/value_profile.c

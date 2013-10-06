@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
-#include "private/configuration.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
+#include "private/value_profile.h"
 
 #define CREATE_VALUE                                                           \
 Value * value = malloc( sizeof( Value ) );                                     \

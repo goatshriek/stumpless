@@ -9,20 +9,15 @@ AddLoggingProfile( LoggingProfile * );
 StatusCode
 AddOutputProfile( OutputProfile * );
 
-StatusCode
-AddValueProfile( ValueProfile * );
-
 LoggingProfile *
 FindLoggingProfileByName( const char * );
 
 OutputProfile *
 FindOutputProfileByName( const char * );
 
-ValueProfile *
-FindValueProfileByName( const char * );
-
 Configuration *
-GetConfiguration( void );
+GetConfiguration
+( void );
 
 StatusCode
 InitializeConfiguration( void );
@@ -33,10 +28,8 @@ InitializeLoggingProfiles( void );
 StatusCode
 InitializeOutputProfiles( void );
 
-StatusCode
-InitializeValueProfiles( void );
-
-StatusCode
-SetConfiguration( Configuration * );
+Status *
+SetConfiguration
+( Configuration * );
 
 #endif

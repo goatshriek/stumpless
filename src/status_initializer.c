@@ -90,6 +90,7 @@ InitializeStatusByName
     ADD_STATUS( "malformed structure", MalformedStructure )
     ADD_STATUS( "memory allocation failure", MemoryAllocationFailure )
     ADD_STATUS( "string write failure", StringWriteFailure )
+    ADD_STATUS( "value profile not found", ValueProfileNotFound )
   }
   
   Status * ( *initializer )() = GetValueFromDictionary( initializers, name );
@@ -109,6 +110,21 @@ InitializeStringWriteFailureStatus
   status->description = "an attempt to write to a string failed, perhaps because the string was not large enough";
   status->error = 0;
   status->failure = 1;
+  status->warning = 0;
+  
+  return status;
+}
+
+Status *
+InitializeValueProfileNotFoundStatus
+( void )
+{
+  CREATE_STATUS
+  
+  status->name = "value profile not found";
+  status->description = "the value profile specified could not be found in the running list or in the default list, perhaps due to a misspelling";
+  status->error = 1;
+  status->failure = 0;
   status->warning = 0;
   
   return status;
