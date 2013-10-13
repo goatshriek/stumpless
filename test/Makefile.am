@@ -3,8 +3,8 @@ check_PROGRAMS = test/function/boolean \
                  test/function/dictionary \
                  test/function/entry \
                  test/function/event \
-                 test/function/formatted_output \
                  test/function/level \
+                 test/function/output \
                  test/function/output_profile \
                  test/function/output_profile_initializer \
                  test/function/quick_logger \

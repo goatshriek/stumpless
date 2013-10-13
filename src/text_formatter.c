@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/formatted_output.h"
+#include "private/output.h"
 #include "private/output_profile.h"
 #include "private/status_checker.h"
 #include "private/text_formatter.h"
@@ -12,87 +12,87 @@
 #include "private/value_constructor.h"
 #include "private/value_list.h"
 
-FormattedOutput *
+Output *
 ArrayValueToText
 ( Value * value )
 {
   ValueList * output = ArrayValueToValueList( value );
-  return TextFormattedOutputFromValueList( output );
+  return TextOutputFromValueList( output );
 }
 
-FormattedOutput *
+Output *
 EntryToText
 ( Entry * entry )
 {
-  return TextFormattedOutputFromValueList( EntryToValueList( entry ) );
+  return TextOutputFromValueList( EntryToValueList( entry ) );
 }
 
-FormattedOutput *
+Output *
 EntryAttributeToText
 ( EntryAttribute * attribute )
 {
   ValueList * output = EntryAttributeToValueList( attribute );
-  return TextFormattedOutputFromValueList( output );
+  return TextOutputFromValueList( output );
 }
 
-FormattedOutput *
+Output *
 EntryAttributeListToText
 ( Entry * entry )
 {
   ValueList * output = EntryAttributeListToValueList( entry );
-  return TextFormattedOutputFromValueList( output );
+  return TextOutputFromValueList( output );
 }
 
-FormattedOutput *
+Output *
 EntrySummaryToText
 ( Entry * entry )
 {
-  return TextFormattedOutputFromValueList( EntrySummaryToValueList( entry ) );
+  return TextOutputFromValueList( EntrySummaryToValueList( entry ) );
 }
 
-FormattedOutput *
+Output *
 EventToText
 ( Event * event )
 {
-  return TextFormattedOutputFromValueList( EventToValueList( event ) );
+  return TextOutputFromValueList( EventToValueList( event ) );
 }
 
-FormattedOutput *
+Output *
 EventAttributeToText
 ( EventAttribute * attribute )
 {
   ValueList * output = EventAttributeToValueList( attribute );
-  return TextFormattedOutputFromValueList( output );
+  return TextOutputFromValueList( output );
 }
 
-FormattedOutput *
+Output *
 EventAttributeListToText
 ( Event * event )
 {
   ValueList * output = EventAttributeListToValueList( event );
-  return TextFormattedOutputFromValueList( output );
+  return TextOutputFromValueList( output );
 }
 
-FormattedOutput *
+Output *
 EventSummaryToText
 ( Event * event )
 {
-  return TextFormattedOutputFromValueList( EventSummaryToValueList( event ) );
+  return TextOutputFromValueList( EventSummaryToValueList( event ) );
 }
 
-FormattedOutput *
+Output *
 LevelToText
 ( Level * level )
 {
-  return TextFormattedOutputFromValueList( LevelToValueList( level ) );
+  return TextOutputFromValueList( LevelToValueList( level ) );
 }
 
-FormattedOutput *
+Output *
 SingularValueToText
 ( Value * value )
 {
   ValueList * output = SingularValueToValueList( value );
-  return TextFormattedOutputFromValueList( output );
+  return TextOutputFromValueList( output );
 }
 
 static
@@ -185,7 +185,7 @@ EntryAttributeToValueList
   if( attribute_value->profile == NULL )
     return NULL;
   
-  FormattedOutput * value_as_text;
+  Output * value_as_text;
   value_as_text = attribute_value->profile->to_text( attribute_value );
   if( value_as_text == NULL )
     return NULL;
@@ -314,7 +314,7 @@ EventAttributeToValueList
     if( default_value->profile == NULL )
       return NULL;
     
-    FormattedOutput * default_value_output;
+    Output * default_value_output;
     default_value_output = default_value->profile->to_text( default_value );
     
     ValueList * default_value_list;
@@ -445,15 +445,15 @@ SingularValueToValueList
 }
 
 static
-FormattedOutput *
-TextFormattedOutputFromValueList
+Output *
+TextOutputFromValueList
 ( ValueList * list )
 {
   if( list == NULL )
     return NULL;
   
-  FormattedOutput * output;
-  output = malloc( sizeof( FormattedOutput ) );
+  Output * output;
+  output = malloc( sizeof( Output ) );
   if( output == NULL )
     return NULL;
   

@@ -6,8 +6,8 @@
 #include "private/type.h"
 
 Status *
-BinaryFormattedOutputIntoStream
-( FormattedOutput * output, FILE * file )
+BinaryOutputIntoStream
+( Output * output, FILE * file )
 {
   // todo need to implement
   
@@ -15,8 +15,8 @@ BinaryFormattedOutputIntoStream
 }
 
 Status *
-CSVFormattedOutputIntoStream
-( FormattedOutput * output, FILE * file )
+CSVOutputIntoStream
+( Output * output, FILE * file )
 {
   // todo need to implement
   
@@ -24,8 +24,8 @@ CSVFormattedOutputIntoStream
 }
 
 Status *
-JSONFormattedOutputIntoStream
-( FormattedOutput * output, FILE * file )
+JSONOutputIntoStream
+( Output * output, FILE * file )
 {
   // todo need to implement
   
@@ -33,8 +33,8 @@ JSONFormattedOutputIntoStream
 }
 
 Status *
-RawStringFormattedOutputIntoStream
-( FormattedOutput * output, FILE * file )
+RawStringOutputIntoStream
+( Output * output, FILE * file )
 {
   // todo need to implement
   
@@ -42,8 +42,8 @@ RawStringFormattedOutputIntoStream
 }
 
 Status *
-TextFormattedOutputIntoStream
-( FormattedOutput * output, FILE * file )
+TextOutputIntoStream
+( Output * output, FILE * file )
 {
   if( output == NULL || file == NULL )
     return RaiseAbnormalStatus( "empty argument" );
@@ -54,8 +54,8 @@ TextFormattedOutputIntoStream
 }
 
 Status *
-XMLFormattedOutputIntoStream
-( FormattedOutput * output, FILE * file )
+XMLOutputIntoStream
+( Output * output, FILE * file )
 {
   // todo need to implement
   

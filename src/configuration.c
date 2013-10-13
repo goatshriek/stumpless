@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "private/configuration.h"
-#include "private/formatted_output.h"
+#include "private/output.h"
 #include "private/status.h"
 #include "private/status_checker.h"
 #include "private/text_formatter.h"
@@ -18,17 +18,10 @@ profile->into_mysql = NULL;                                                    \
 profile->into_stream = NULL;                                                   \
 profile->into_string = NULL;                                                   \
 profile->into_tcp = NULL;                                                      \
-profile->is_empty = &type_name##FormattedOutputIsEmpty;                        \
+profile->is_empty = &type_name##OutputIsEmpty;                                 \
 profile->name = profile_name;                                                  \
-profile->to_string = &type_name##FormattedOutputToString;                      \
+profile->to_string = &type_name##OutputToString;                               \
 AddOutputProfile( profile );
-
-//  ADD_OUTPUT_PROFILE( "binary", Binary )
-//  ADD_OUTPUT_PROFILE( "csv", CSV )
-//  ADD_OUTPUT_PROFILE( "json", JSON )
-//  ADD_OUTPUT_PROFILE( "raw string", RawString )
-//  ADD_OUTPUT_PROFILE( "text", Text )
-//  ADD_OUTPUT_PROFILE( "xml", XML )
 
 static Configuration * configuration = NULL;
 

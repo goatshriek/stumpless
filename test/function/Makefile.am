@@ -22,13 +22,13 @@ test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
 
-test_function_formatted_output_SOURCES = test/function/formatted_output.c
-test_function_formatted_output_CFLAGS = $(test_flags)
-test_function_formatted_output_LDADD = $(test_libraries)
-
 test_function_level_SOURCES = test/function/level.c
 test_function_level_CFLAGS = $(test_flags)
 test_function_level_LDADD = $(test_libraries)
+
+test_function_output_SOURCES = test/function/output.c
+test_function_output_CFLAGS = $(test_flags)
+test_function_output_LDADD = $(test_libraries)
 
 test_function_output_profile_SOURCES = test/function/output_profile.c
 test_function_output_profile_CFLAGS = $(test_flags)

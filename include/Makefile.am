@@ -2,9 +2,9 @@ stumpless_include_HEADERS = include/boolean.h \
                             include/configuration.h \
                             include/entry.h \
                             include/event.h \
-                            include/formatted_output.h \
                             include/level.h \
                             include/logger.h \
+                            include/output.h \
                             include/output_profile.h \
                             include/raw_logger.h \
                             include/status.h \

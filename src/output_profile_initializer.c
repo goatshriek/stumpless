@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "private/dictionary.h"
-#include "private/formatted_output.h"
+#include "private/output.h"
 #include "private/output_profile.h"
 #include "private/output_profile_initializer.h"
 #include "private/status.h"
@@ -23,12 +23,12 @@ Initialize##type_name##OutputProfile                                           \
   profile->into_buffer = NULL;                                                 \
   profile->into_http = NULL;                                                   \
   profile->into_mysql = NULL;                                                  \
-  profile->into_stream = type_name##FormattedOutputIntoStream;                 \
+  profile->into_stream = type_name##OutputIntoStream;                          \
   profile->into_string = NULL;                                                 \
   profile->into_tcp = NULL;                                                    \
-  profile->is_empty = type_name##FormattedOutputIsEmpty;                       \
+  profile->is_empty = type_name##OutputIsEmpty;                                \
   profile->name = profile_name;                                                \
-  profile->to_string = type_name##FormattedOutputToString;                     \
+  profile->to_string = type_name##OutputToString;                              \
                                                                                \
   return profile;                                                              \
 }

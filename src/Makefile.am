@@ -4,9 +4,9 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/dictionary.c \
                           src/entry.c \
                           src/event.c \
-                          src/formatted_output.c \
                           src/level.c \
                           src/logger.c \
+                          src/output.c \
                           src/output_profile.c \
                           src/output_profile_initializer.c \
                           src/raw_logger.c \
@@ -24,9 +24,9 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/wrapper/configuration.c \
                           src/wrapper/entry.c \
                           src/wrapper/event.c \
-                          src/wrapper/formatted_output.c \
                           src/wrapper/level.c \
                           src/wrapper/logger.c \
+                          src/wrapper/output.c \
                           src/wrapper/output_profile.c \
                           src/wrapper/raw_logger.c \
                           src/wrapper/status.c \

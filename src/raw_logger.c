@@ -17,8 +17,8 @@ LogRaw##type_name( type_specifier raw )                                        \
   if( value == NULL )                                                          \
     return RaiseAbnormalStatus( "constructor failure" );                       \
                                                                                \
-  FormattedOutput * output;                                                    \
-  output = malloc( sizeof( FormattedOutput ) );                                \
+  Output * output;                                                             \
+  output = malloc( sizeof( Output ) );                                         \
   if( output == NULL )                                                         \
     return RaiseAbnormalStatus( "memory allocation failure" );                 \
                                                                                \
@@ -40,8 +40,8 @@ LogRaw##type_name( type_specifier raw )                                        \
   if( value == NULL )                                                          \
     return RaiseAbnormalStatus( "constructor failure" );                       \
                                                                                \
-  FormattedOutput * output;                                                    \
-  output = malloc( sizeof( FormattedOutput ) );                                \
+  Output * output;                                                             \
+  output = malloc( sizeof( Output ) );                                         \
   if( output == NULL )                                                         \
     return RaiseAbnormalStatus( "memory allocation failure" );                 \
                                                                                \

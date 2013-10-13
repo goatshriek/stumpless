@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/formatted_output.h"
+#include "private/output.h"
 #include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
@@ -49,12 +49,12 @@ test_entry_formatter( void )
   Entry * entry = BuildEntry();
   FAIL_IF_NULL( entry, "could not build the test entry" )
   
-  FormattedOutput * output;
+  Output * output;
   char * str;
   
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "a full entry could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for a full entry" )
   ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
@@ -63,7 +63,7 @@ test_entry_formatter( void )
   entry->description = NULL;
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "an entry without a description was not formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without a description" )
   ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
@@ -72,7 +72,7 @@ test_entry_formatter( void )
   entry->event = NULL;
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "an entry with only attributes was not formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only attributes" )
   ASSERT_STRINGS_EQUAL( "entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
@@ -81,7 +81,7 @@ test_entry_formatter( void )
   entry->description = "Test Entry";
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without an event" )
   ASSERT_STRINGS_EQUAL( "Test Entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
@@ -90,7 +90,7 @@ test_entry_formatter( void )
   entry->attributes = NULL;
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "an entry with only a description could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only a description" )
   ASSERT_STRINGS_EQUAL( "Test Entry", str,
                         "an entry with only a description was not properly formatted" )
@@ -99,7 +99,7 @@ test_entry_formatter( void )
   FAIL_IF_NULL( entry->event, "could not build the test event" )
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "an entry without attributes could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without attributes" )
   ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]", str,
                         "an entry without attributes was not properly formatted" )
@@ -107,7 +107,7 @@ test_entry_formatter( void )
   entry->description = NULL;
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "an entry with only an event could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only an event" )
   ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]", str,
                         "an entry with only an event was not properly formatted" )
@@ -115,7 +115,7 @@ test_entry_formatter( void )
   entry->event = NULL;
   output = EntryToText( entry );
   FAIL_IF_NULL( output, "an empty entry could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an empty entry" )
   ASSERT_STRINGS_EQUAL( "entry", str,
                         "an empty entry did not return the proper output" )
@@ -129,17 +129,17 @@ test_entry_attribute_formatter( void )
   EntryAttribute * attribute = BuildEntryAttribute();
   FAIL_IF_NULL( attribute, "could not build the test entry attribute" )
   
-  FormattedOutput * output;
+  Output * output;
   output = EntryAttributeToText( attribute );
   FAIL_IF_NULL( output, "a full entry attribute could not be formatted" )
-  char * str = FormattedOutputToString( output );
+  char * str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Value (string)", str,
                         "a full entry attribute was not formatted correctly" )
   
   attribute->value = NULL;
   output = EntryAttributeToText( attribute );
   FAIL_IF_NULL( output, "an attribute without a set value could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Default Value (string)",
                         str,
                         "an attribute without a set value was not formatted correctly" )
@@ -147,7 +147,7 @@ test_entry_attribute_formatter( void )
   attribute->event_attribute->name = NULL;
   output = EntryAttributeToText( attribute );
   FAIL_IF_NULL( output, "an attribute with a default value was not formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "attribute: Test Default Value (string)", str,
                         "an attribute with a default value was not formatted correctly" )
   
@@ -165,10 +165,10 @@ test_entry_attribute_list_formatter( void )
   FAIL_IF_NULL( entry, "could not build the test entry" )
   
   char * str;
-  FormattedOutput * output;
+  Output * output;
   output = EntryAttributeListToText( entry );
   FAIL_IF_NULL( output, "the output could not be created" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
                         "the list was not formatted correctly" )
@@ -182,33 +182,33 @@ test_entry_summary_formatter( void )
   Entry * entry = BuildEntry();
   FAIL_IF_NULL( entry, "could not build test entry" )
   
-  FormattedOutput * output;
+  Output * output;
   char * str;
   
   output = EntrySummaryToText( entry );
   FAIL_IF_NULL( output, "a full entry could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]", str,
                         "a full entry was not properly formatted" )
   
   entry->description = NULL;
   output = EntrySummaryToText( entry );
   FAIL_IF_NULL( output, "an entry without a description could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]", str,
                         "an entry without a description was not properly formatted" )
   
   entry->event = NULL;
   output = EntrySummaryToText( entry );
   FAIL_IF_NULL( output, "an empty entry could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "entry", str,
                         "an empty entry was not properly formatted" )
   
   entry->description = "Test Entry";
   output = EntrySummaryToText( entry );
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Entry", str,
                         "an entry without an event was not properly formatted" )
   
@@ -218,7 +218,7 @@ test_entry_summary_formatter( void )
 const char *
 test_event_attribute_formatter( void )
 {
-  FormattedOutput * output;
+  Output * output;
   EventAttribute * attribute;
   char * str;
   
@@ -233,25 +233,25 @@ test_event_attribute_formatter( void )
   attribute->default_value = NULL;
   
   output = EventAttributeToText( attribute );
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "attribute", str,
                         "an empty attribute did not generate correct string" )
   
   attribute->name = "Test Attribute";
   output = EventAttributeToText( attribute );
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( attribute->name, str,
                         "an attribute with only a name was not formatted correctly" )
   
   attribute->default_value = ValueFromString( "default value" );
   output = EventAttributeToText( attribute );
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Attribute: default value (string)", str,
                         "a full attribute was not formatted correctly" )
   
   attribute->name = NULL;
   output = EventAttributeToText( attribute );
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "attribute: default value (string)", str,
                         "an attribute with only a default value was not formatted correctly" )
   
@@ -264,7 +264,7 @@ test_event_attribute_list_formatter( void )
   Event * event = BuildEvent();
   FAIL_IF_NULL( event, "could not build the test event" )
   
-  FormattedOutput * output;
+  Output * output;
   output = EventAttributeListToText( NULL );
   FAIL_IF_NOT_NULL( output, "the output was not null for a null event" )
   
@@ -278,7 +278,7 @@ const char *
 test_event_formatter( void )
 {
   Event * event = NULL;
-  FormattedOutput * output;
+  Output * output;
   char * str;
 
   output = EventToText( event );
@@ -289,54 +289,54 @@ test_event_formatter( void )
   
   output = EventToText( event );
   FAIL_IF_NULL( output, "a full event could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string" )
   ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
                         str,
                         "a full event was not properly formatted" )
   
   event->name = NULL;
-  str = FormattedOutputToString( EventToText( event ) );
+  str = OutputToString( EventToText( event ) );
   FAIL_IF_NULL( str, "an event without a name could not be formatted" )
   ASSERT_STRINGS_EQUAL( "event (Test Level: level 42): Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
                         str,
                         "an event without a name was not formatted correctly" )
   
   event->level = NULL;
-  str = FormattedOutputToString( EventToText( event ) );
+  str = OutputToString( EventToText( event ) );
   FAIL_IF_NULL( str, "an event with only an attribute list could not be formatted" )
   ASSERT_STRINGS_EQUAL( "event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
                         str,
                         "an event with only an attribute list was not formatted correctly" )
   
   event->name = "Test Event";
-  str = FormattedOutputToString( EventToText( event ) );
+  str = OutputToString( EventToText( event ) );
   FAIL_IF_NULL( str, "an event without a level could not be formatted" )
   ASSERT_STRINGS_EQUAL( "Test Event: Test Attribute 0: default value (string), attribute: 37 (unsigned int), Test Attribute 2, attribute",
                         str,
                         "an event without a level was not formatted correctly" )
   
   event->attributes = NULL;
-  str = FormattedOutputToString( EventToText( event ) );
+  str = OutputToString( EventToText( event ) );
   FAIL_IF_NULL( str, "an event with only a name could not be formatted" )
   ASSERT_STRINGS_EQUAL( "Test Event", str,
                         "an event with only a name was not formatted correctly" )
   
   event->level = BuildLevel();
   FAIL_IF_NULL( event->level, "could not build the test level" )
-  str = FormattedOutputToString( EventToText( event ) );
+  str = OutputToString( EventToText( event ) );
   FAIL_IF_NULL( str, "an event without an attribute list could not be formatted" )
   ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42)", str,
                         "an event without an attribute list was not formatted correctly" )
   
   event->name = NULL;
-  str = FormattedOutputToString( EventToText( event ) );
+  str = OutputToString( EventToText( event ) );
   FAIL_IF_NULL( str, "an event with only a level could not be formatted" )
   ASSERT_STRINGS_EQUAL( "event (Test Level: level 42)", str,
                         "an event without a level was not formatted correctly" )
   
   event->level = NULL;
-  str = FormattedOutputToString( EventToText( event ) );
+  str = OutputToString( EventToText( event ) );
   FAIL_IF_NULL( str, "an empty event could not be formatted" )
   ASSERT_STRINGS_EQUAL( "event", str,
                         "an empty event was not formatted correctly" )
@@ -347,7 +347,7 @@ test_event_formatter( void )
 const char *
 test_event_summary_formatter( void )
 {
-  FormattedOutput * output;
+  Output * output;
   char * str;
   
   output = EventSummaryToText( NULL );
@@ -357,26 +357,26 @@ test_event_summary_formatter( void )
   FAIL_IF_NULL( event, "could not build the test event" )
   
   output = EventSummaryToText( event );
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Event (Test Level: level 42)", str,
                         "a full event did not generate the correct summary" )
   
   event->name = NULL;
   output = EventSummaryToText( event );
   FAIL_IF_NULL( output, "an event without a name could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "event (Test Level: level 42)", str,
                         "an event without a name was not formatted correctly" )
   
   event->level = NULL;
   output = EventSummaryToText( event );
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "event", str,
                         "an empty event did not generate the correct summary" )
   
   event->name = "Test Event";
   output = EventSummaryToText( event );
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Event", str,
                         "an event without a level did not generate the correct summary" )
   
@@ -386,7 +386,7 @@ test_event_summary_formatter( void )
 const char *
 test_level_formatter( void )
 {
-  FormattedOutput * output = LevelToText( NULL );
+  Output * output = LevelToText( NULL );
   FAIL_IF_NOT_NULL( output, "the output was not null for a null pointer" )
   
   Level * level = BuildLevel();
@@ -394,14 +394,14 @@ test_level_formatter( void )
   
   output = LevelToText( level );
   FAIL_IF_NULL( output, "a full level could not be formatted" )
-  char * str = FormattedOutputToString( output );
+  char * str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Level: level 42", str,
                         "a full level was not formatted correctly" )
   
   level->name = NULL;
   output = LevelToText( level );
   FAIL_IF_NULL( output, "a level with no name could not be formatted" )
-  str = FormattedOutputToString( output );
+  str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "level 42", str,
                         "a level with no name was not formatted correctly" )
   
@@ -415,7 +415,7 @@ test_value_list_all_strings( void )
   if( entry == NULL )
     return "could not build test entry";
   
-  FormattedOutput * output = EntryToText( entry );
+  Output * output = EntryToText( entry );
   if( output == NULL || output->data == NULL )
     return "the output could not be built";
   

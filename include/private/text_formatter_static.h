@@ -56,7 +56,7 @@ ValueList *
 SingularValueToValueList( Value * );
 
 static
-FormattedOutput *
-TextFormattedOutputFromValueList( ValueList * );
+Output *
+TextOutputFromValueList( ValueList * );
 
 #endif

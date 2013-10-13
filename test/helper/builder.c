@@ -42,11 +42,11 @@ BuildBooleanValue( void )
   return value;
 }
 
-FormattedOutput *
-BuildByteFormattedOutput( void )
+Output *
+BuildByteOutput( void )
 {
-  FormattedOutput * output;
-  output = malloc( sizeof( FormattedOutput ) );
+  Output * output;
+  output = malloc( sizeof( Output ) );
   if( output == NULL )
     return NULL;
   
@@ -458,11 +458,11 @@ BuildStringValue( void )
   return value;
 }
 
-FormattedOutput *
-BuildTextFormattedOutput( void )
+Output *
+BuildTextOutput( void )
 {
-  FormattedOutput * output;
-  output = malloc( sizeof( FormattedOutput ) );
+  Output * output;
+  output = malloc( sizeof( Output ) );
   if( output == NULL )
     return NULL;
   

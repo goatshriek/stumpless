@@ -3,37 +3,37 @@
 
 #include "private/type.h"
 
-FormattedOutput *
+Output *
 ArrayValueToText( Value * );
 
-FormattedOutput *
+Output *
 EntryToText( Entry * );
 
-FormattedOutput *
+Output *
 EntryAttributeToText( EntryAttribute * );
 
-FormattedOutput *
+Output *
 EntryAttributeListToText( Entry * );
 
-FormattedOutput *
+Output *
 EntrySummaryToText( Entry * );
 
-FormattedOutput *
+Output *
 EventToText( Event * );
 
-FormattedOutput * 
+Output * 
 EventAttributeToText( EventAttribute * );
 
-FormattedOutput *
+Output *
 EventAttributeListToText( Event * );
 
-FormattedOutput *
+Output *
 EventSummaryToText( Event * );
 
-FormattedOutput *
+Output *
 LevelToText( Level * );
 
-FormattedOutput *
+Output *
 SingularValueToText( Value * );
 
 #endif

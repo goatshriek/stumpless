@@ -21,10 +21,10 @@ struct __STUMPLESS_NAME( EntryAttribute );
 struct __STUMPLESS_NAME( Event );
 struct __STUMPLESS_NAME( EventAttribute );
 struct __STUMPLESS_NAME( FileConfiguration );
-struct __STUMPLESS_NAME( FormattedOutput );
 struct __STUMPLESS_NAME( HTTConfiguration );
 struct __STUMPLESS_NAME( Level );
 struct __STUMPLESS_NAME( LoggerProfile );
+struct __STUMPLESS_NAME( Output );
 struct __STUMPLESS_NAME( OutputProfile );
 struct __STUMPLESS_NAME( Status );
 struct __STUMPLESS_NAME( SortingConfiguration );
@@ -62,14 +62,14 @@ typedef struct __STUMPLESS_NAME( EventAttribute )
         __STUMPLESS_NAME( EventAttribute );
 typedef struct __STUMPLESS_NAME( FileConfiguration )
         __STUMPLESS_NAME( FileConfiguration );
-typedef struct __STUMPLESS_NAME( FormattedOutput )
-        __STUMPLESS_NAME( FormattedOutput );
 typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         __STUMPLESS_NAME( HTTPConfiguration );
 typedef struct __STUMPLESS_NAME( Level )
         __STUMPLESS_NAME( Level );
 typedef struct __STUMPLESS_NAME( LoggerProfile )
         __STUMPLESS_NAME( LoggingProfile );
+typedef struct __STUMPLESS_NAME( Output )
+        __STUMPLESS_NAME( Output );
 typedef struct __STUMPLESS_NAME( OutputProfile )
         __STUMPLESS_NAME( OutputProfile );
 typedef struct __STUMPLESS_NAME( Status )
@@ -185,11 +185,6 @@ struct __STUMPLESS_NAME( FileConfiguration ) {
   FILE * current_file;
 };
 
-struct __STUMPLESS_NAME( FormattedOutput ) {
-  __STUMPLESS_NAME( Type ) * data;
-  __STUMPLESS_NAME( OutputProfile ) * profile;
-};
-
 struct __STUMPLESS_NAME( HTTPConfiguration ) {
   __STUMPLESS_NAME( HTTPMethod ) method;
 };
@@ -201,19 +196,24 @@ struct __STUMPLESS_NAME( Level ) {
 
 struct __STUMPLESS_NAME( LoggerProfile ) {
   const char * name;
-  __STUMPLESS_NAME( StatusCode ) ( *output_function )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( StatusCode ) ( *output_function )( __STUMPLESS_NAME( Output ) * );
+};
+
+struct __STUMPLESS_NAME( Output ) {
+  __STUMPLESS_NAME( Type ) * data;
+  __STUMPLESS_NAME( OutputProfile ) * profile;
 };
 
 struct __STUMPLESS_NAME( OutputProfile ) {
-  __STUMPLESS_NAME( Status ) * ( *into_buffer )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_http )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_mysql )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_stream )( __STUMPLESS_NAME( FormattedOutput ) *, FILE * );
-  __STUMPLESS_NAME( Status ) * ( *into_string )( __STUMPLESS_NAME( FormattedOutput ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_tcp )( __STUMPLESS_NAME( FormattedOutput ) * );
-  unsigned short ( *is_empty )( __STUMPLESS_NAME( FormattedOutput ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_buffer )( __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_http )( __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_mysql )( __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_stream )( __STUMPLESS_NAME( Output ) *, FILE * );
+  __STUMPLESS_NAME( Status ) * ( *into_string )( __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_tcp )( __STUMPLESS_NAME( Output ) * );
+  unsigned short ( *is_empty )( __STUMPLESS_NAME( Output ) * );
   const char * name;
-  char * ( *to_string )( __STUMPLESS_NAME( FormattedOutput ) * );
+  char * ( *to_string )( __STUMPLESS_NAME( Output ) * );
 };
 
 struct __STUMPLESS_NAME( Status ) {
@@ -290,13 +290,13 @@ struct __STUMPLESS_NAME( ValueListNode ) {
 struct __STUMPLESS_NAME( ValueProfile ) {
   __STUMPLESS_NAME( Status ) * ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
   const char * name;
-  __STUMPLESS_NAME( FormattedOutput ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( FormattedOutput ) * ( *to_csv )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( FormattedOutput ) * ( *to_json )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_csv )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_json )( __STUMPLESS_NAME( Value ) * );
   char * ( *to_string )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( FormattedOutput ) * ( *to_text )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_text )( __STUMPLESS_NAME( Value ) * );
   __STUMPLESS_NAME( ValueList ) * ( *to_value_list )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( FormattedOutput ) * ( *to_xml )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_xml )( __STUMPLESS_NAME( Value ) * );
 };
 
 #endif

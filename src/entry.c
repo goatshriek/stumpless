@@ -2,7 +2,7 @@
 
 #include "private/entry.h"
 #include "private/event.h"
-#include "private/formatted_output.h"
+#include "private/output.h"
 #include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value_list.h"
@@ -11,8 +11,8 @@ char *
 EntryToString
 ( Entry * entry )
 {
-  FormattedOutput * output =  EntryToText( entry );
-  return FormattedOutputToString( output ); 
+  Output * output =  EntryToText( entry );
+  return OutputToString( output ); 
 }
 
 Entry *

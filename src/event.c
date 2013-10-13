@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "private/event.h"
-#include "private/formatted_output.h"
 #include "private/level.h"
+#include "private/output.h"
 #include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value_list.h"
@@ -13,8 +13,8 @@ char *
 EventToString
 ( Event * event )
 {
-  FormattedOutput * output = EventToText( event );
-  return FormattedOutputToString( output );
+  Output * output = EventToText( event );
+  return OutputToString( output );
 }
 
 Event *

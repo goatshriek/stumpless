@@ -6,27 +6,27 @@
 #include "private/type.h"
 
 Status *
-BinaryFormattedOutputIntoStream
-( FormattedOutput *, FILE * );
+BinaryOutputIntoStream
+( Output *, FILE * );
 
 Status *
-CSVFormattedOutputIntoStream
-( FormattedOutput *, FILE * );
+CSVOutputIntoStream
+( Output *, FILE * );
 
 Status *
-JSONFormattedOutputIntoStream
-( FormattedOutput *, FILE * );
+JSONOutputIntoStream
+( Output *, FILE * );
 
 Status *
-RawStringFormattedOutputIntoStream
-( FormattedOutput *, FILE * );
+RawStringOutputIntoStream
+( Output *, FILE * );
 
 Status *
-TextFormattedOutputIntoStream
-( FormattedOutput *, FILE * );
+TextOutputIntoStream
+( Output *, FILE * );
 
 Status *
-XMLFormattedOutputIntoStream
-( FormattedOutput *, FILE * );
+XMLOutputIntoStream
+( Output *, FILE * );
 
 #endif

@@ -36,14 +36,14 @@ typedef struct __STUMPLESS_NAME( EventAttribute )
         EventAttribute;
 typedef struct __STUMPLESS_NAME( FileConfiguration )
         FileConfiguration;
-typedef struct __STUMPLESS_NAME( FormattedOutput )
-        FormattedOutput;
 typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         HTTPConfiguration;
 typedef struct __STUMPLESS_NAME( Level )
         Level;
 typedef struct __STUMPLESS_NAME( LoggerProfile )
         LoggingProfile;
+typedef struct __STUMPLESS_NAME( Output )
+        Output;
 typedef struct __STUMPLESS_NAME( OutputProfile )
         OutputProfile;
 typedef struct __STUMPLESS_NAME( Status )

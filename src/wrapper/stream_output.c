@@ -3,43 +3,43 @@
 #include "private/stream_output.h"
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( BinaryFormattedOutputIntoStream )
-( __STUMPLESS_NAME( FormattedOutput ) * output, FILE * stream )
+__STUMPLESS_NAME( BinaryOutputIntoStream )
+( __STUMPLESS_NAME( Output ) * output, FILE * stream )
 {
-  return BinaryFormattedOutputIntoStream( output, stream );
+  return BinaryOutputIntoStream( output, stream );
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( CSVFormattedOutputIntoStream )
-( __STUMPLESS_NAME( FormattedOutput ) * output, FILE * stream )
+__STUMPLESS_NAME( CSVOutputIntoStream )
+( __STUMPLESS_NAME( Output ) * output, FILE * stream )
 {
-  return CSVFormattedOutputIntoStream( output, stream );
+  return CSVOutputIntoStream( output, stream );
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( JSONFormattedOutputIntoStream )
-( __STUMPLESS_NAME( FormattedOutput ) * output, FILE * stream )
+__STUMPLESS_NAME( JSONOutputIntoStream )
+( __STUMPLESS_NAME( Output ) * output, FILE * stream )
 {
-  return JSONFormattedOutputIntoStream( output, stream );
+  return JSONOutputIntoStream( output, stream );
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( RawStringFormattedOutputIntoStream )
-( __STUMPLESS_NAME( FormattedOutput ) * output, FILE * stream )
+__STUMPLESS_NAME( RawStringOutputIntoStream )
+( __STUMPLESS_NAME( Output ) * output, FILE * stream )
 {
-  return RawStringFormattedOutputIntoStream( output, stream );
+  return RawStringOutputIntoStream( output, stream );
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( TextFormattedOutputIntoStream )
-( __STUMPLESS_NAME( FormattedOutput ) * output, FILE * stream )
+__STUMPLESS_NAME( TextOutputIntoStream )
+( __STUMPLESS_NAME( Output ) * output, FILE * stream )
 {
-  return TextFormattedOutputIntoStream( output, stream );
+  return TextOutputIntoStream( output, stream );
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( XMLFormattedOutputIntoStream )
-( __STUMPLESS_NAME( FormattedOutput ) * output, FILE * stream )
+__STUMPLESS_NAME( XMLOutputIntoStream )
+( __STUMPLESS_NAME( Output ) * output, FILE * stream )
 {
-  return XMLFormattedOutputIntoStream( output, stream );
+  return XMLOutputIntoStream( output, stream );
 }

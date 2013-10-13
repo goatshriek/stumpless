@@ -1,42 +1,42 @@
 #include <stdlib.h>
 
 #include "private/configuration.h"
-#include "private/formatted_output.h"
+#include "private/output.h"
 #include "private/string_helper.h"
 #include "private/type.h"
 #include "private/value_list.h"
 
 unsigned short
-BinaryFormattedOutputIsEmpty
-( FormattedOutput * output )
+BinaryOutputIsEmpty
+( Output * output )
 {
   return 0;
 }
 
 char *
-BinaryFormattedOutputToString
-( FormattedOutput * output )
+BinaryOutputToString
+( Output * output )
 {
   return NULL;
 }
 
 unsigned short
-CSVFormattedOutputIsEmpty
-( FormattedOutput * output )
+CSVOutputIsEmpty
+( Output * output )
 {
   return 0;
 }
 
 char *
-CSVFormattedOutputToString
-( FormattedOutput * output )
+CSVOutputToString
+( Output * output )
 {
   return NULL;
 }
 
 unsigned short
-FormattedOutputIsEmpty
-( FormattedOutput * output )
+OutputIsEmpty
+( Output * output )
 {
   if( output == NULL || output->profile == NULL
    || output->profile->is_empty == NULL )
@@ -46,8 +46,8 @@ FormattedOutputIsEmpty
 }
 
 char *
-FormattedOutputToString
-( FormattedOutput * output )
+OutputToString
+( Output * output )
 {
   if( output == NULL || output->profile == NULL
    || output->profile->to_string == NULL )
@@ -57,22 +57,22 @@ FormattedOutputToString
 }
 
 unsigned short
-JSONFormattedOutputIsEmpty
-( FormattedOutput * output )
+JSONOutputIsEmpty
+( Output * output )
 {
   return 0;
 }
 
 char *
-JSONFormattedOutputToString
-( FormattedOutput * output )
+JSONOutputToString
+( Output * output )
 {
   return NULL;
 }
 
 unsigned short
-RawStringFormattedOutputIsEmpty
-( FormattedOutput * output )
+RawStringOutputIsEmpty
+( Output * output )
 {
   if( output == NULL || output->data == NULL )
     return 1;
@@ -81,8 +81,8 @@ RawStringFormattedOutputIsEmpty
 }
 
 char *
-RawStringFormattedOutputToString
-( FormattedOutput * output )
+RawStringOutputToString
+( Output * output )
 {
   if( output == NULL || output->data == NULL || output->data->c_p == NULL )
     return NULL;
@@ -91,8 +91,8 @@ RawStringFormattedOutputToString
 }
 
 unsigned short
-TextFormattedOutputIsEmpty
-( FormattedOutput * output )
+TextOutputIsEmpty
+( Output * output )
 {
   if( output == NULL || output->data == NULL )
     return 1;
@@ -103,8 +103,8 @@ TextFormattedOutputIsEmpty
 }
 
 char *
-TextFormattedOutputToString
-( FormattedOutput * output )
+TextOutputToString
+( Output * output )
 {
   if( output == NULL || output->data == NULL )
     return NULL;
@@ -115,15 +115,15 @@ TextFormattedOutputToString
 }
 
 unsigned short
-XMLFormattedOutputIsEmpty
-( FormattedOutput * output )
+XMLOutputIsEmpty
+( Output * output )
 {
   return 0;
 }
 
 char *
-XMLFormattedOutputToString
-( FormattedOutput * output )
+XMLOutputToString
+( Output * output )
 {
   return NULL;
 }

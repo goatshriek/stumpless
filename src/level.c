@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/formatted_output.h"
 #include "private/level.h"
+#include "private/output.h"
 #include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value_list.h"
@@ -43,6 +43,6 @@ LEVEL_FUNCTION( Warning, warning, 20 )
 char *
 LevelToString( Level * level )
 {
-  FormattedOutput * output = LevelToText( level );
-  return FormattedOutputToString( output );
+  Output * output = LevelToText( level );
+  return OutputToString( output );
 }

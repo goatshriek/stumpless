@@ -9,8 +9,8 @@ BuildBoolean( void );
 Value *
 BuildBooleanValue( void );
 
-FormattedOutput *
-BuildByteFormattedOutput( void );
+Output *
+BuildByteOutput( void );
 
 Value *
 BuildCharArrayValue( void );
@@ -66,8 +66,8 @@ BuildOutputProfile( void );
 Value *
 BuildStringValue( void );
 
-FormattedOutput *
-BuildTextFormattedOutput( void );
+Output *
+BuildTextOutput( void );
 
 Value *
 BuildUnsignedIntValue( void );
