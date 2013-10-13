@@ -1,20 +1,23 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
-#include <boolean.h>
-#include <configuration.h>
-#include <entry.h>
-#include <event.h>
-#include <formatted_output.h>
-#include <level.h>
-#include <logger.h>
-#include <raw_logger.h>
-#include <status.h>
-#include <stream_output.h>
-#include <text_formatter.h>
-#include <type.h>
-#include <value.h>
-#include <value_constructor.h>
-#include <value_list.h>
+#include <stumpless/boolean.h>
+#include <stumpless/configuration.h>
+#include <stumpless/entry.h>
+#include <stumpless/event.h>
+#include <stumpless/level.h>
+#include <stumpless/logger.h>
+#include <stumpless/logger_profile.h>
+#include <stumpless/output.h>
+#include <stumpless/output_profile.h>
+#include <stumpless/raw_logger.h>
+#include <stumpless/status.h>
+#include <stumpless/stream_output.h>
+#include <stumpless/text_formatter.h>
+#include <stumpless/type.h>
+#include <stumpless/value.h>
+#include <stumpless/value_constructor.h>
+#include <stumpless/value_list.h>
+#include <stumpless/value_profile.h>
 
 #endif

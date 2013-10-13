@@ -8,6 +8,8 @@ AC_CONFIG_HEADERS([include/config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_FILES([Makefile])
 
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
+
 LT_INIT
 
 AM_INIT_AUTOMAKE

@@ -23,5 +23,4 @@ check_PROGRAMS = test/function/boolean \
 TESTS = $(check_PROGRAMS)
 
 include test/helper/Makefile.am
-
 include test/function/Makefile.am

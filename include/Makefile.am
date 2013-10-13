@@ -1,3 +1,7 @@
+include_HEADERS = include/stumpless.h
+
+stumpless_includedir = $(includedir)/stumpless
+
 stumpless_include_HEADERS = include/boolean.h \
                             include/configuration.h \
                             include/entry.h \
@@ -10,10 +14,11 @@ stumpless_include_HEADERS = include/boolean.h \
                             include/raw_logger.h \
                             include/status.h \
                             include/stream_output.h \
-                            include/stumpless.h \
                             include/text_formatter.h \
                             include/type.h \
                             include/value.h \
                             include/value_constructor.h \
                             include/value_list.h \
                             include/value_profile.h
+
+include include/private/Makefile.am
