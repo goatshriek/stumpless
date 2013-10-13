@@ -3,21 +3,13 @@
 
 #include "private/type.h"
 
-StatusCode
-AddLoggingProfile( LoggingProfile * );
-
-LoggingProfile *
-FindLoggingProfileByName( const char * );
-
 Configuration *
 GetConfiguration
 ( void );
 
-StatusCode
-InitializeConfiguration( void );
-
-StatusCode
-InitializeLoggingProfiles( void );
+Status *
+InitializeConfiguration
+( void );
 
 Status *
 SetConfiguration

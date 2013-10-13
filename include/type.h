@@ -10,7 +10,6 @@
 
 enum __STUMPLESS_NAME( HTTPMethod );
 enum __STUMPLESS_NAME( SortingMethod );
-enum __STUMPLESS_NAME( StatusCode );
 
 struct __STUMPLESS_NAME( Boolean );
 struct __STUMPLESS_NAME( BooleanFormat );
@@ -41,8 +40,6 @@ typedef enum __STUMPLESS_NAME( HTTPMethod )
         __STUMPLESS_NAME( HTTPMethod );
 typedef enum __STUMPLESS_NAME( SortingMethod )
         __STUMPLESS_NAME( SortingMethod );
-typedef enum __STUMPLESS_NAME( StatusCode )
-        __STUMPLESS_NAME( StatusCode );
 
 typedef struct __STUMPLESS_NAME( Boolean )
         __STUMPLESS_NAME( Boolean );
@@ -67,7 +64,7 @@ typedef struct __STUMPLESS_NAME( HTTPConfiguration )
 typedef struct __STUMPLESS_NAME( Level )
         __STUMPLESS_NAME( Level );
 typedef struct __STUMPLESS_NAME( LoggerProfile )
-        __STUMPLESS_NAME( LoggingProfile );
+        __STUMPLESS_NAME( LoggerProfile );
 typedef struct __STUMPLESS_NAME( Output )
         __STUMPLESS_NAME( Output );
 typedef struct __STUMPLESS_NAME( OutputProfile )
@@ -110,24 +107,6 @@ enum __STUMPLESS_NAME( SortingMethod ) {
   STUMPLESS_SHELL_SORT
 };
 
-enum __STUMPLESS_NAME( StatusCode ) {
-  STUMPLESS_SUCCESS = EXIT_SUCCESS,
-  STUMPLESS_FAILURE,
-  STUMPLESS_EMPTY_ARGUMENT,
-  STUMPLESS_INCOMPATIBLE_ARGUMENTS,
-  STUMPLESS_FILE_FAILURE,
-  STUMPLESS_FILE_CLOSE_FAILURE,
-  STUMPLESS_FILE_OPEN_FAILURE,
-  STUMPLESS_FILE_READ_FAILURE,
-  STUMPLESS_FILE_WRITE_FAILURE,
-  STUMPLESS_INCORRECT_FILE_SIGNATURE,
-  STUMPLESS_MEMORY_ALLOCATION_FAILURE,
-  STUMPLESS_PARSE_FAILURE,
-  STUMPLESS_STRING_WRITE_FAILURE,
-  STUMPLESS_MALFORMED_STRUCTURE,
-  STUMPLESS_INCORRECT_INTERNAL_STATE
-};
-
 struct __STUMPLESS_NAME( Boolean ) {
   short value;
   __STUMPLESS_NAME( BooleanFormat ) * format;
@@ -146,14 +125,10 @@ struct __STUMPLESS_NAME( ByteList ) {
 struct __STUMPLESS_NAME( Configuration ) {
   __STUMPLESS_NAME( FileConfiguration ) * file;
   __STUMPLESS_NAME( HTTPConfiguration ) * http;
-  unsigned logging_profile_count;
-  __STUMPLESS_NAME( LoggingProfile ) ** logging_profiles;
-  unsigned output_profile_count;
   __STUMPLESS_NAME( OutputProfile ) ** output_profiles;
   __STUMPLESS_NAME( SortingConfiguration ) * sorting;
   __STUMPLESS_NAME( StringConfiguration ) * string;
   __STUMPLESS_NAME( ThreadingConfiguration ) * threading;
-  unsigned value_profile_count;
   __STUMPLESS_NAME( ValueProfile ) ** value_profiles;
 };
 
@@ -194,9 +169,12 @@ struct __STUMPLESS_NAME( Level ) {
   const char * name;
 };
 
+struct __STUMPLESS_NAME( Logger ) {
+  __STUMPLESS_NAME ( LoggerProfile ) * profile;
+};
+
 struct __STUMPLESS_NAME( LoggerProfile ) {
   const char * name;
-  __STUMPLESS_NAME( StatusCode ) ( *output_function )( __STUMPLESS_NAME( Output ) * );
 };
 
 struct __STUMPLESS_NAME( Output ) {

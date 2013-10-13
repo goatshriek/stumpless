@@ -406,17 +406,16 @@ BuildLevel( void )
   return level;
 }
 
-LoggingProfile *
-BuildLoggingProfile( void )
+LoggerProfile *
+BuildLoggerProfile( void )
 {
-  LoggingProfile * profile;
+  LoggerProfile * profile;
   
-  profile = malloc( sizeof( LoggingProfile ) );
+  profile = malloc( sizeof( LoggerProfile ) );
   if( profile == NULL )
     return NULL;
   
   profile->name = "Test Logging Profile";
-  profile->output_function = NULL;
   
   return profile;
 }

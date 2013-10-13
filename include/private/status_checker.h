@@ -6,12 +6,12 @@
 #include <type.h>
 
 #define NULL_ON_FAILURE( status )                                              \
-if( (status) != STUMPLESS_SUCCESS ){                                           \
+if( (status) != NULL ){                                                        \
   return NULL;                                                                 \
 }
 
 #define STATUS_ON_FAILURE( status )                                            \
-if( (status) != STUMPLESS_SUCCESS ){                                           \
+if( (status) != NULL ){                                                        \
   return status;                                                               \
 }
 

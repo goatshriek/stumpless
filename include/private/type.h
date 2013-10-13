@@ -13,8 +13,6 @@ typedef enum __STUMPLESS_NAME( HTTPMethod )
         HTTPMethod;
 typedef enum __STUMPLESS_NAME( SortingMethod )
         SortingMethod;
-typedef enum __STUMPLESS_NAME( StatusCode )
-        StatusCode;
 
 typedef __STUMPLESS_NAME( Byte )
         Byte;
@@ -41,7 +39,7 @@ typedef struct __STUMPLESS_NAME( HTTPConfiguration )
 typedef struct __STUMPLESS_NAME( Level )
         Level;
 typedef struct __STUMPLESS_NAME( LoggerProfile )
-        LoggingProfile;
+        LoggerProfile;
 typedef struct __STUMPLESS_NAME( Output )
         Output;
 typedef struct __STUMPLESS_NAME( OutputProfile )

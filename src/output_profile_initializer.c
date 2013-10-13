@@ -33,7 +33,7 @@ Initialize##type_name##OutputProfile                                           \
   return profile;                                                              \
 }
 
-Dictionary * initializers = NULL;
+static Dictionary * initializers = NULL;
 
 Status *
 InitializeOutputProfileByName
