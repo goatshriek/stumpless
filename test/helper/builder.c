@@ -437,6 +437,27 @@ BuildOutputProfile( void )
   return profile;
 }
 
+Output *
+BuildRawStringOutput
+( void )
+{
+  Output * output = malloc( sizeof( Output ) );
+  if( output == NULL )
+    return NULL;
+  
+  output->profile = FindOutputProfileByName( "raw string" );
+  if( output->profile == NULL )
+    return NULL;
+  
+  output->data = malloc( sizeof( Type ) );
+  if( output->data == NULL )
+    return NULL;
+  
+  output->data->c_p = "Test String with\nstuff in it.";
+  
+  return output;
+}
+
 Value *
 BuildStringValue( void )
 {
@@ -460,8 +481,7 @@ BuildStringValue( void )
 Output *
 BuildTextOutput( void )
 {
-  Output * output;
-  output = malloc( sizeof( Output ) );
+  Output * output = malloc( sizeof( Output ) );
   if( output == NULL )
     return NULL;
   
@@ -473,8 +493,7 @@ BuildTextOutput( void )
   if( values == NULL )
     return NULL;
   
-  Status * status;
-  status = AppendStringToValueList( values, "First\n" );
+  Status * status = AppendStringToValueList( values, "First\n" );
   if( status != NULL )
     return NULL;
   
@@ -486,7 +505,11 @@ BuildTextOutput( void )
   if( status != NULL )
     return NULL;
   
-  output->data = ( void * ) values;
+  output->data = malloc( sizeof( Type ) );
+  if( output->data == NULL )
+    return NULL;
+  
+  output->data->v_p = ( void * ) values;
   
   return output;
 }

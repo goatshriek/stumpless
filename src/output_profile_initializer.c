@@ -45,6 +45,7 @@ InitializeOutputProfileByName
     if( initializers == NULL )
       return RaiseAbnormalStatus( "constructor failure" );
     
+    ADD_PROFILE( "raw string", RawString )
     ADD_PROFILE( "text", Text )
   }
   

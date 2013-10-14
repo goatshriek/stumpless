@@ -63,6 +63,9 @@ BuildLoggerProfile( void );
 OutputProfile *
 BuildOutputProfile( void );
 
+Output *
+BuildRawStringOutput( void );
+
 Value *
 BuildStringValue( void );
 

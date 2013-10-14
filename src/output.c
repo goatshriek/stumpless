@@ -97,7 +97,7 @@ TextOutputIsEmpty
   if( output == NULL || output->data == NULL )
     return 1;
   
-  ValueList * list = ( ValueList * ) output->data;
+  ValueList * list = ( ValueList * ) output->data->v_p;
   
   return ValueListIsEmpty( list );
 }
@@ -109,7 +109,7 @@ TextOutputToString
   if( output == NULL || output->data == NULL )
     return NULL;
   
-  ValueList * list = ( ValueList * ) output->data;
+  ValueList * list = ( ValueList * ) output->data->v_p;
   
   return ValueListToString( list );
 }

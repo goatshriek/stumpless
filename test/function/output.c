@@ -38,9 +38,10 @@ test_is_empty( void )
   if( !OutputIsEmpty( output ) )
     return "an output with a null list was not marked as empty";
   
-  output->data = ( void * ) NewValueList();
-  if( output->data == NULL )
-    return "could not create a new value list";
+  output->data = malloc( sizeof( Type ) );
+  FAIL_IF_NULL( output->data, "the output could not be created" )
+  
+  output->data->v_p = ( void * ) NewValueList();
   if( !OutputIsEmpty( output ) )
     return "an output with an empty list was not marked as empty";
   

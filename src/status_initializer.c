@@ -89,6 +89,7 @@ InitializeStatusByName
     ADD_STATUS( "empty argument", EmptyArgument )
     ADD_STATUS( "malformed structure", MalformedStructure )
     ADD_STATUS( "memory allocation failure", MemoryAllocationFailure )
+    ADD_STATUS( "stream write failure", StreamWriteFailure )
     ADD_STATUS( "string write failure", StringWriteFailure )
     ADD_STATUS( "value profile not found", ValueProfileNotFound )
   }
@@ -98,6 +99,21 @@ InitializeStatusByName
     return NULL;
   else 
     return AddStatus( initializer() );
+}
+
+Status *
+InitializeStreamWriteFailureStatus
+( void )
+{
+  CREATE_STATUS
+  
+  status->name = "stream write failure";
+  status->description = "an attempt to write to a stream failed, error indicators may give more information";
+  status->error = 0;
+  status->failure = 1;
+  status->warning = 0;
+  
+  return status;
 }
 
 Status *

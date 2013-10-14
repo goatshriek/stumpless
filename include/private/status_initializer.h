@@ -24,6 +24,10 @@ InitializeStatusByName
 ( const char * );
 
 Status *
+InitializeStreamWriteFailureStatus
+( void );
+
+Status *
 InitializeStringWriteFailureStatus
 ( void );
 

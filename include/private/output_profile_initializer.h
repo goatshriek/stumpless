@@ -8,6 +8,10 @@ InitializeOutputProfileByName
 ( const char * );
 
 OutputProfile *
+InitializeRawStringOutputProfile
+( void );
+
+OutputProfile *
 InitializeTextOutputProfile
 ( void );
 

@@ -422,7 +422,7 @@ test_value_list_all_strings( void )
   if( strcmp( output->profile->name, "text" ) != 0 )
     return "the created output did not have a text format";
   
-  ValueList * list = ( ValueList * ) output->data;
+  ValueList * list = ( ValueList * ) output->data->v_p;
   if( list == NULL )
     return "the output did not have a value list";
   

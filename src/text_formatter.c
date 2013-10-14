@@ -190,7 +190,7 @@ EntryAttributeToValueList
   if( value_as_text == NULL )
     return NULL;
   
-  ValueList * values = ( ValueList * ) value_as_text->data;
+  ValueList * values = ( ValueList * ) value_as_text->data->v_p;
   NULL_ON_FAILURE( AppendValueLists( output, values ) )
   
   return output;
@@ -270,7 +270,6 @@ EventToValueList
   if( event == NULL )
     return NULL;
   
-  Status * status;
   ValueList * output = EventSummaryToValueList( event );
   if( output == NULL )
     return NULL;
@@ -318,7 +317,7 @@ EventAttributeToValueList
     default_value_output = default_value->profile->to_text( default_value );
     
     ValueList * default_value_list;
-    default_value_list = ( ValueList * ) default_value_output->data;
+    default_value_list = ( ValueList * ) default_value_output->data->v_p;
     
     NULL_ON_FAILURE( AppendValueLists( output, default_value_list ) )
   }
@@ -452,8 +451,7 @@ TextOutputFromValueList
   if( list == NULL )
     return NULL;
   
-  Output * output;
-  output = malloc( sizeof( Output ) );
+  Output * output = malloc( sizeof( Output ) );
   if( output == NULL )
     return NULL;
   
@@ -465,7 +463,7 @@ TextOutputFromValueList
   if( output->profile == NULL )
     return NULL;
   
-  output->data = ( void * ) ValueListToStrings( list );
+  output->data->v_p = ( void * ) ValueListToStrings( list );
   
   return output;
 }

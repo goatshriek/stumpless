@@ -244,6 +244,7 @@ PrependValueToValueList
   return PrependValueListNodeToValueList( list, node );
 }
 
+// todo rewrite to longer depend on a buffer
 Status *
 ValueListIntoString
 ( char * str, ValueList * list )
@@ -251,7 +252,6 @@ ValueListIntoString
   if( str == NULL || list == NULL )
     return RaiseAbnormalStatus( "empty argument" );
   
-  Status * status;
   str[0] = '\0';
   
   Configuration * configuration = GetConfiguration();
