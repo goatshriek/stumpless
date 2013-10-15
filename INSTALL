@@ -1,3 +1,16 @@
+# Installation
+
+## Features
+All features of the library are listed below. Each can be activated by using the following syntax in the call to configure:
+`--enable-<feature>[=argument]`
+
+- namespace
+  When supplied, uses the argument supplied as a prefix for all public library members, e.g. function and struct names. The default setting, used when this feature is either left out, explicitly disabled, or enabled with no arguments is `Stumpless`. If the feature is enabled and an argument is supplied, then the argument is used as the prefix.  
+  As an example, the following command would result in function names such as `JigsawStartValueList`:  
+  `--enable-namespace=Jigsaw`  
+  If you intend for your code to make use of pre-packaged libraries, then this feature is not recommended, as problems will arise if an installation of Stumpless uses a differing prefix.
+
+# Development
 The following packages need to be installed for development:
 autoconf
 automake

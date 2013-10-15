@@ -31,13 +31,19 @@ AC_CHECK_HEADERS([limits.h stdlib.h stdio.h string.h time.h])
 # enable arguments
 AC_ARG_ENABLE([namespace],
   [AS_HELP_STRING([--enable-namespace],
-    [append a prefix to all functions])],
+    [append a prefix to all public members])],
   [namespace=$enableval],
   [namespace=Stumpless]
 )
 
+case "${namespace}" in
+ yes) namespace_prefix=Stumpless ;;
+ no) namespace_prefix=Stumpless ;;
+ *) namespace_prefix=$namespace ;;
+esac
+
 AC_DEFINE_UNQUOTED([NMSPC],
-                   $namespace,
-                   [namespace to append to public library members])
+                   $namespace_prefix,
+                   [namespace to prepend to public library members])
 
 AC_OUTPUT
