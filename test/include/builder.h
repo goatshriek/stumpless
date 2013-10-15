@@ -57,9 +57,6 @@ BuildIntValue( void );
 Level *
 BuildLevel( void );
 
-LoggerProfile *
-BuildLoggerProfile( void );
-
 OutputProfile *
 BuildOutputProfile( void );
 

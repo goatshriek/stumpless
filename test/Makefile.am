@@ -4,7 +4,6 @@ check_PROGRAMS = test/function/boolean \
                  test/function/entry \
                  test/function/event \
                  test/function/level \
-                 test/function/logger_profile \
                  test/function/output \
                  test/function/output_profile \
                  test/function/output_profile_initializer \

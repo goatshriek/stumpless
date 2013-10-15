@@ -40,10 +40,6 @@ typedef struct __STUMPLESS_NAME( Level )
         Level;
 typedef struct __STUMPLESS_NAME( Logger )
         Logger;
-typedef struct __STUMPLESS_NAME( LoggerConfiguration )
-        LoggerConfiguration;
-typedef struct __STUMPLESS_NAME( LoggerProfile )
-        LoggerProfile;
 typedef struct __STUMPLESS_NAME( Output )
         Output;
 typedef struct __STUMPLESS_NAME( OutputProfile )

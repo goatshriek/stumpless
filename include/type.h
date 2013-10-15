@@ -23,8 +23,6 @@ struct __STUMPLESS_NAME( FileConfiguration );
 struct __STUMPLESS_NAME( HTTConfiguration );
 struct __STUMPLESS_NAME( Level );
 struct __STUMPLESS_NAME( Logger );
-struct __STUMPLESS_NAME( LoggerConfiguration );
-struct __STUMPLESS_NAME( LoggerProfile );
 struct __STUMPLESS_NAME( Output );
 struct __STUMPLESS_NAME( OutputProfile );
 struct __STUMPLESS_NAME( Status );
@@ -66,10 +64,6 @@ typedef struct __STUMPLESS_NAME( Level )
         __STUMPLESS_NAME( Level );
 typedef struct __STUMPLESS_NAME( Logger )
         __STUMPLESS_NAME( Logger );
-typedef struct __STUMPLESS_NAME( LoggerConfiguration )
-        __STUMPLESS_NAME( LoggerConfiguration );
-typedef struct __STUMPLESS_NAME( LoggerProfile )
-        __STUMPLESS_NAME( LoggerProfile );
 typedef struct __STUMPLESS_NAME( Output )
         __STUMPLESS_NAME( Output );
 typedef struct __STUMPLESS_NAME( OutputProfile )
@@ -171,23 +165,7 @@ struct __STUMPLESS_NAME( Level ) {
 };
 
 struct __STUMPLESS_NAME( Logger ) {
-  __STUMPLESS_NAME( LoggerConfiguration ) * configuration;
   const char * name;
-  __STUMPLESS_NAME( LoggerProfile ) * profile;
-};
-
-struct __STUMPLESS_NAME( LoggerConfiguration ) {
-  __STUMPLESS_NAME( FileConfiguration ) * file;
-  __STUMPLESS_NAME( HTTPConfiguration ) * http;
-  __STUMPLESS_NAME( Level ) * level;
-};
-
-struct __STUMPLESS_NAME( LoggerProfile ) {
-  const char * name;
-  __STUMPLESS_NAME( Status ) * ( *log )( const void * );
-  __STUMPLESS_NAME( Status ) * ( *log_string )( const char * );
-  unsigned output_function_count;
-  __STUMPLESS_NAME( Status ) * ( **output_functions )( __STUMPLESS_NAME( Output ) * );
 };
 
 struct __STUMPLESS_NAME( Output ) {

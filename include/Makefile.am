@@ -8,7 +8,6 @@ stumpless_include_HEADERS = include/boolean.h \
                             include/event.h \
                             include/level.h \
                             include/logger.h \
-                            include/logger_profile.h \
                             include/output.h \
                             include/output_profile.h \
                             include/status.h \
