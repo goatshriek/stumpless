@@ -4,6 +4,7 @@
 #include "private/status.h"
 #include "private/stream_output.h"
 #include "private/type.h"
+#include "private/value_list.h"
 
 Status *
 BinaryOutputIntoStream
@@ -59,15 +60,15 @@ TextOutputIntoStream
     return RaiseAbnormalStatus( "malformed structure" );
   
   ValueList * list = ( ValueList * ) output->data->v_p;
-  ValueListNode * node = list->first;
-  while( node != NULL ){
-    if( node->value == NULL || node->value->data == NULL )
+  Value * value = StartValueList( list );
+  while( value != NULL ){
+    if( value->data == NULL )
       return RaiseAbnormalStatus( "malformed structure" );
   
-    if( fputs( node->value->data->c_p, stream ) < 0 )
+    if( fputs( value->data->c_p, stream ) < 0 )
       return RaiseAbnormalStatus( "stream write failure" );
     
-    node = node->next;
+    value = NextInValueList( list );
   }
   
   return NULL;

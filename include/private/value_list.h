@@ -37,6 +37,10 @@ ValueList *
 NewValueList
 ( void );
 
+Value *
+NextInValueList
+( ValueList * );
+
 Status *
 PrependStringToValueList
 ( ValueList *, const char * );
@@ -44,6 +48,10 @@ PrependStringToValueList
 Status *
 PrependValueToValueList
 ( ValueList *, Value * );
+
+Value *
+StartValueList
+( ValueList * );
 
 Status *
 ValueListIntoString

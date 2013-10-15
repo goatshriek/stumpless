@@ -256,6 +256,7 @@ struct __STUMPLESS_NAME( Value ) {
 };
 
 struct __STUMPLESS_NAME( ValueList ) {
+  __STUMPLESS_NAME( ValueListNode ) * current;
   __STUMPLESS_NAME( ValueListNode ) * first;
   __STUMPLESS_NAME( ValueListNode ) * last;
 };

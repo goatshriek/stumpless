@@ -37,8 +37,6 @@ DestroyValueListNode
   if( node == NULL )
     return;
   
-  DestroyValue( node->value );
-  
   free( node );
 }
 
@@ -214,6 +212,20 @@ NewValueList
   return list;
 }
 
+Value *
+NextInValueList
+( ValueList * list )
+{
+  if( list == NULL || list->current == NULL )
+    return NULL;
+  
+  list->current = list->current->next;
+  if( list->current == NULL )
+    return NULL;
+  
+  return list->current->value;
+}
+
 Status *
 PrependStringToValueList
 ( ValueList * list, const char * str )
@@ -242,6 +254,17 @@ PrependValueToValueList
   node->value = value;
   
   return PrependValueListNodeToValueList( list, node );
+}
+
+Value *
+StartValueList
+( ValueList * list )
+{
+  if( list == NULL || list->first == NULL )
+    return NULL;
+  
+  list->current = list->first;
+  return list->current->value;
 }
 
 // todo rewrite to longer depend on a buffer

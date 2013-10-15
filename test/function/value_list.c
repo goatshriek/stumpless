@@ -14,8 +14,10 @@ const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_into_string( void );
 const char * test_is_empty( void );
+const char * test_next( void );
 const char * test_prepender( void );
 const char * test_separator( void );
+const char * test_start( void );
 const char * test_string_appender( void );
 const char * test_string_prepender( void );
 const char * test_to_string( void );
@@ -34,8 +36,10 @@ main( void )
   RUN_TEST( destructor )
   RUN_TEST( into_string )
   RUN_TEST( is_empty )
+  RUN_TEST( next )
   RUN_TEST( prepender )
   RUN_TEST( separator )
+  RUN_TEST( start )
   RUN_TEST( string_appender )
   RUN_TEST( string_prepender )
   RUN_TEST( to_string )
@@ -150,7 +154,8 @@ test_destructor( void )
 }
 
 const char *
-test_into_string( void )
+test_into_string
+( void )
 {
   ValueList * list = BuildValueList();
   if( list == NULL )
@@ -191,6 +196,24 @@ test_is_empty( void )
     return "could not build the test list";
   if( ValueListIsEmpty( list ) )
     return "a full list was deemed empty";
+  
+  return NULL;
+}
+
+const char *
+test_next
+( void )
+{
+  ValueList * list = BuildValueList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  Value * value = StartValueList( list );
+  FAIL_IF_NULL( value, "a value was not returned from the start call" )
+  
+  value = NextInValueList( list );
+  FAIL_IF_NULL( value, "a value was not returned from the next call" )
+  if( value != list->first->next->value )
+    return "the node returned was not the next in the list";
   
   return NULL;
 }
@@ -257,6 +280,21 @@ test_separator( void )
   FAIL_IF_NULL( test_str, "the list could not be converted to a string" )
   if( strcmp( test_str, "this, is, a, test, list" ) != 0 )
     return "the separator was not added between all elements of the list";
+  
+  return NULL;
+}
+
+const char *
+test_start
+( void )
+{
+  ValueList * list = BuildValueList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  Value * value = StartValueList( list );
+  FAIL_IF_NULL( value, "a value was not returned from the list" )
+  if( value != list->first->value )
+    return "the first element of the list was not returned";
   
   return NULL;
 }

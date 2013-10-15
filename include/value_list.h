@@ -27,13 +27,19 @@ __STUMPLESS_NAME( AppendValueToValueList )
 ( __STUMPLESS_NAME( ValueList ) *, __STUMPLESS_NAME( Value ) * );
 
 __STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( CopyValueList )( __STUMPLESS_NAME( ValueList ) * );
+__STUMPLESS_NAME( CopyValueList )
+( __STUMPLESS_NAME( ValueList ) * );
 
 void
-__STUMPLESS_NAME( DestroyValueList )( __STUMPLESS_NAME( ValueList ) * );
+__STUMPLESS_NAME( DestroyValueList )
+( __STUMPLESS_NAME( ValueList ) * );
 
 __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( NewValueList )( void );
+
+__STUMPLESS_NAME( Value ) *
+__STUMPLESS_NAME( NextInValueList )
+( __STUMPLESS_NAME( ValueList ) * );
 
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( PrependStringToValueList )
@@ -42,6 +48,10 @@ __STUMPLESS_NAME( PrependStringToValueList )
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( PrependValueToValueList )
 ( __STUMPLESS_NAME( ValueList ) *, __STUMPLESS_NAME( Value ) * );
+
+__STUMPLESS_NAME( Value ) *
+__STUMPLESS_NAME( StartValueList )
+( __STUMPLESS_NAME( ValueList ) * );
 
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( ValueListIntoString )

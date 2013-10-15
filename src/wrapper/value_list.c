@@ -58,6 +58,13 @@ __STUMPLESS_NAME( NewValueList )
   return NewValueList();
 }
 
+__STUMPLESS_NAME( Value ) *
+__STUMPLESS_NAME( NextInValueList )
+( __STUMPLESS_NAME( ValueList ) * list )
+{
+  return NextInValueList( list );
+}
+
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( PrependStringToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, const char * str )
@@ -70,6 +77,13 @@ __STUMPLESS_NAME( PrependValueToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, __STUMPLESS_NAME( Value ) * value )
 {
   return PrependValueToValueList( list, value );
+}
+
+__STUMPLESS_NAME( Value ) *
+__STUMPLESS_NAME( StartValueList )
+( __STUMPLESS_NAME( ValueList ) * list )
+{
+  return StartValueList( list );
 }
 
 __STUMPLESS_NAME( Status ) *
