@@ -1,6 +1,7 @@
 noinst_HEADERS = include/private/boolean.h \
                  include/private/configuration.h \
                  include/private/dictionary.h \
+                 include/private/dictionary_static.h \
                  include/private/entry.h \
                  include/private/event.h \
                  include/private/level.h \

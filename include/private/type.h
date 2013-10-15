@@ -63,10 +63,4 @@ typedef struct __STUMPLESS_NAME( ValueListNode )
 typedef struct __STUMPLESS_NAME( ValueProfile )
         ValueProfile;
 
-struct Dictionary {
-  unsigned int count;
-  const char ** keys;
-  void ** values;
-};
-
 #endif

@@ -19,7 +19,7 @@ Dictionary *
 NewDictionary
 ();
 
-Dictionary *
+void *
 RemoveValueFromDictionary
 ( Dictionary *, const char * );
 
