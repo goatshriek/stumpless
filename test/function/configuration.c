@@ -29,24 +29,12 @@ test_initialization( void )
     return "initialization method returnedi an error";
 
   Configuration * configuration = GetConfiguration();
-  
-  if( configuration == NULL )
-    return "configuration was not initialized after call";
-  
-  if( configuration->file == NULL )
-    return "file configuration was not initialized";
-  
-  if( configuration->http == NULL )
-    return "http configuration was not initialized";
-  
-  if( configuration->sorting == NULL )
-    return "sorting configuration was not initialized";
-  
-  if( configuration->string == NULL )
-    return "string configuration was not initialized";
-  
-  if( configuration->threading == NULL )
-    return "multithreading configuration was not initialized";
+  FAIL_IF_NULL( configuration, "configuration was not initialized after call" )
+  FAIL_IF_NULL( configuration->default_file, "file configuration was not initialized" )
+  FAIL_IF_NULL( configuration->default_http, "http configuration was not initialized" )
+  FAIL_IF_NULL( configuration->sorting, "sorting configuration was not initialized" )
+  FAIL_IF_NULL( configuration->string, "string configuration was not initialized" )
+  FAIL_IF_NULL( configuration->threading, "multithreading configuration was not initialized" )
   
   return NULL;
 }

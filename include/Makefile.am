@@ -11,9 +11,8 @@ stumpless_include_HEADERS = include/boolean.h \
                             include/logger_profile.h \
                             include/output.h \
                             include/output_profile.h \
-                            include/raw_logger.h \
                             include/status.h \
-                            include/stream_output.h \
+                            include/stream_handler.h \
                             include/text_formatter.h \
                             include/type.h \
                             include/value.h \

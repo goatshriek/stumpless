@@ -11,11 +11,10 @@ noinst_HEADERS = include/private/boolean.h \
                  include/private/output.h \
                  include/private/output_profile.h \
                  include/private/output_profile_initializer.h \
-                 include/private/raw_logger.h \
                  include/private/status_checker.h \
                  include/private/status.h \
                  include/private/status_initializer.h \
-                 include/private/stream_output.h \
+                 include/private/stream_handler.h \
                  include/private/string_helper.h \
                  include/private/text_formatter.h \
                  include/private/text_formatter_static.h \

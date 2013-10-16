@@ -1,5 +1,5 @@
-#ifndef __STUMPLESS_STREAM_OUTPUT_H
-#define __STUMPLESS_STREAM_OUTPUT_H
+#ifndef __STUMPLESS_STREAM_HANDLER_H
+#define __STUMPLESS_STREAM_HANDLER_H
 
 #include <stdio.h>
 

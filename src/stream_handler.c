@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "private/status.h"
-#include "private/stream_output.h"
+#include "private/stream_handler.h"
 #include "private/type.h"
 #include "private/value_list.h"
 

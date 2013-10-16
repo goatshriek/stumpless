@@ -1,6 +1,6 @@
-#include <stream_output.h>
+#include <stream_handler.h>
 
-#include "private/stream_output.h"
+#include "private/stream_handler.h"
 
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( BinaryOutputIntoStream )

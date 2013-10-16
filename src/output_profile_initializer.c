@@ -5,7 +5,7 @@
 #include "private/output_profile.h"
 #include "private/output_profile_initializer.h"
 #include "private/status.h"
-#include "private/stream_output.h"
+#include "private/stream_handler.h"
 #include "private/type.h"
 
 #define ADD_PROFILE( name, function )                                          \

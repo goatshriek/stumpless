@@ -2,6 +2,7 @@
 #define __STUMPLESS_H
 
 #include <stumpless/boolean.h>
+#include <stumpless/config.h>
 #include <stumpless/configuration.h>
 #include <stumpless/entry.h>
 #include <stumpless/event.h>
@@ -10,9 +11,8 @@
 #include <stumpless/logger_profile.h>
 #include <stumpless/output.h>
 #include <stumpless/output_profile.h>
-#include <stumpless/raw_logger.h>
 #include <stumpless/status.h>
-#include <stumpless/stream_output.h>
+#include <stumpless/stream_handler.h>
 #include <stumpless/text_formatter.h>
 #include <stumpless/type.h>
 #include <stumpless/value.h>

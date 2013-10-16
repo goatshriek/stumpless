@@ -26,13 +26,13 @@ InitializeConfiguration( void )
     return RaiseAbnormalStatus( "memory allocation failure" );
 
   size_t required_size = sizeof( FileConfiguration );
-  configuration->file = malloc( required_size );
-  if( configuration->file == NULL )
+  configuration->default_file = malloc( required_size );
+  if( configuration->default_file == NULL )
     return RaiseAbnormalStatus( "memory allocation failure" );
 
   required_size = sizeof( HTTPConfiguration );
-  configuration->http = malloc( required_size );
-  if( configuration->http == NULL )
+  configuration->default_http = malloc( required_size );
+  if( configuration->default_http == NULL )
     return RaiseAbnormalStatus( "memory allocation failure" );
   
   required_size = sizeof( ThreadingConfiguration );

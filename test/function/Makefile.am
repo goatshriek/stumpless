@@ -42,14 +42,6 @@ test_function_output_profile_initializer_SOURCES = test/function/output_profile_
 test_function_output_profile_initializer_CFLAGS = $(test_flags)
 test_function_output_profile_initializer_LDADD = $(test_libraries)
 
-test_function_quick_logger_SOURCES =  test/function/quick_logger.c
-test_function_quick_logger_CFLAGS = $(test_flags)
-test_function_quick_logger_LDADD = $(test_libraries)
-
-test_function_raw_logger_SOURCES = test/function/raw_logger.c
-test_function_raw_logger_CFLAGS = $(test_flags)
-test_function_raw_logger_LDADD = $(test_libraries)
-
 test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)
@@ -58,9 +50,9 @@ test_function_status_initializer_SOURCES = test/function/status_initializer.c
 test_function_status_initializer_CFLAGS = $(test_flags)
 test_function_status_initializer_LDADD = $(test_libraries)
 
-test_function_stream_output_SOURCES = test/function/stream_output.c
-test_function_stream_output_CFLAGS = $(test_flags)
-test_function_stream_output_LDADD = $(test_libraries)
+test_function_stream_handler_SOURCES = test/function/stream_handler.c
+test_function_stream_handler_CFLAGS = $(test_flags)
+test_function_stream_handler_LDADD = $(test_libraries)
 
 test_function_string_helper_SOURCES = test/function/string_helper.c
 test_function_string_helper_CFLAGS = $(test_flags)
