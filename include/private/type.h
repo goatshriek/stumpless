@@ -62,8 +62,6 @@ typedef struct __STUMPLESS_NAME( Value )
         Value;
 typedef struct __STUMPLESS_NAME( ValueList )
         ValueList;
-typedef struct __STUMPLESS_NAME( ValueListNode )
-        ValueListNode;
 typedef struct __STUMPLESS_NAME( ValueProfile )
         ValueProfile;
 

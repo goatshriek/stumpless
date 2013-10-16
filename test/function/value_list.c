@@ -5,6 +5,7 @@
 #include "private/type.h"
 #include "private/value_constructor.h"
 #include "private/value_list.h"
+#include "private/value_list_static.h"
 
 #include "helper.h"
 

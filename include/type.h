@@ -34,7 +34,6 @@ struct __STUMPLESS_NAME( ThreadingConfiguration );
 union __STUMPLESS_NAME( Type );
 struct __STUMPLESS_NAME( Value );
 struct __STUMPLESS_NAME( ValueList );
-struct __STUMPLESS_NAME( ValueListNode );
 struct __STUMPLESS_NAME( ValueProfile );
 
 
@@ -89,8 +88,6 @@ typedef struct __STUMPLESS_NAME( Value )
         __STUMPLESS_NAME( Value );
 typedef struct __STUMPLESS_NAME( ValueList )
         __STUMPLESS_NAME( ValueList );
-typedef struct __STUMPLESS_NAME( ValueListNode )
-        __STUMPLESS_NAME( ValueListNode );
 typedef struct __STUMPLESS_NAME( ValueProfile )
         __STUMPLESS_NAME( ValueProfile );
 
@@ -269,17 +266,6 @@ struct __STUMPLESS_NAME( Value ) {
   const char * format;
   unsigned length;
   __STUMPLESS_NAME( ValueProfile ) * profile;
-};
-
-struct __STUMPLESS_NAME( ValueList ) {
-  __STUMPLESS_NAME( ValueListNode ) * current;
-  __STUMPLESS_NAME( ValueListNode ) * first;
-  __STUMPLESS_NAME( ValueListNode ) * last;
-};
-
-struct __STUMPLESS_NAME( ValueListNode ) {
-  __STUMPLESS_NAME( Value ) * value;
-  __STUMPLESS_NAME( ValueListNode ) * next;
 };
 
 struct __STUMPLESS_NAME( ValueProfile ) {

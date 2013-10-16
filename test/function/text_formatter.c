@@ -6,6 +6,7 @@
 #include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
+#include "private/value_list.h"
 
 #include "helper.h"
 
@@ -426,13 +427,13 @@ test_value_list_all_strings( void )
   if( list == NULL )
     return "the output did not have a value list";
   
-  ValueListNode * node = list->first;
-  while( node != NULL ){
-    printf( "\n%s\n", node->value->profile->name );
-    if( strcmp( node->value->profile->name, "string" ) != 0 )
+  Value * value = StartValueList( list );
+  while( value != NULL ){
+    printf( "\n%s\n", value->profile->name );
+    if( strcmp( value->profile->name, "string" ) != 0 )
       return "there was a non-string value in the list";
     
-    node = node->next;
+    value = NextInValueList( list );
   }
   
   return NULL;

@@ -22,5 +22,6 @@ noinst_HEADERS = include/private/boolean.h \
                  include/private/value_constructor.h \
                  include/private/value.h \
                  include/private/value_list.h \
+                 include/private/value_list_static.h \
                  include/private/value_profile.h \
                  include/private/value_profile_initializer.h

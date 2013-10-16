@@ -5,6 +5,7 @@
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value_constructor.h"
+#include "private/value_list.h"
 
 #include "helper.h"
 
@@ -52,18 +53,19 @@ test_array_value_to_value_list( void )
   list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a list could not be built from an int array value" )
   
-  FAIL_IF_NULL( list->first, "the generated list was empty" )
-  FAIL_IF_NULL( list->first->value, "the list nodes were invalid" )
-  if( strcmp( list->first->value->profile->name, "int" ) != 0 )
+  value = StartValueList( list );
+  FAIL_IF_NULL( value, "the generated list was empty" )
+  if( strcmp( value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";
-  if( list->first->value->data->i != 0 )
+  if( value->data->i != 0 )
     return "the values of the list did not reflect the original array";
   
-  FAIL_IF_NULL( list->last, "the generated list was not invalid" )
-  FAIL_IF_NULL( list->last->value, "the list nodes were invalid" )
-  if( strcmp( list->last->value->profile->name, "int" ) != 0 )
+  value = NextInValueList( list );
+  
+  FAIL_IF_NULL( value, "the list did not contain all nodes" )
+  if( strcmp( value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";
-  if( list->last->value->data->i != 9 )
+  if( value->data->i != 1 )
     return "the values of the list did not reflect the original array";
  
   return NULL;
