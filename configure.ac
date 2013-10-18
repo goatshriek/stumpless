@@ -36,8 +36,10 @@ AC_ARG_ENABLE([namespace],
   [namespace=Stumpless]
 )
 
+AM_CONDITIONAL([PRIVATE_NAMESPACE], [test x$namespace = xyes])
+
 case "${namespace}" in
- yes) namespace_prefix=Stumpless ;;
+ yes) namespace_prefix="" ;;
  no) namespace_prefix=Stumpless ;;
  *) namespace_prefix=$namespace ;;
 esac
