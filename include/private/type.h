@@ -9,13 +9,16 @@ struct Dictionary;
 typedef struct Dictionary
         Dictionary;
 
+typedef __STUMPLESS_NAME( Byte )
+        Byte;
+
 typedef enum __STUMPLESS_NAME( HTTPMethod )
         HTTPMethod;
 typedef enum __STUMPLESS_NAME( SortingMethod )
         SortingMethod;
 
-typedef __STUMPLESS_NAME( Byte )
-        Byte;
+typedef struct __STUMPLESS_NAME( Adapter )
+        Adapter;
 typedef struct __STUMPLESS_NAME( Boolean )
         Boolean;
 typedef struct __STUMPLESS_NAME( BooleanFormat )
@@ -34,6 +37,12 @@ typedef struct __STUMPLESS_NAME( EventAttribute )
         EventAttribute;
 typedef struct __STUMPLESS_NAME( FileConfiguration )
         FileConfiguration;
+typedef struct __STUMPLESS_NAME( Filter )
+        Filter;
+typedef struct __STUMPLESS_NAME( Formatter )
+        Formatter;
+typedef struct __STUMPLESS_NAME( Handler )
+        Handler;
 typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         HTTPConfiguration;
 typedef struct __STUMPLESS_NAME( Level )

@@ -11,6 +11,7 @@
 enum __STUMPLESS_NAME( HTTPMethod );
 enum __STUMPLESS_NAME( SortingMethod );
 
+struct __STUMPLESS_NAME( Adapter );
 struct __STUMPLESS_NAME( Boolean );
 struct __STUMPLESS_NAME( BooleanFormat );
 struct __STUMPLESS_NAME( ByteList );
@@ -20,6 +21,9 @@ struct __STUMPLESS_NAME( EntryAttribute );
 struct __STUMPLESS_NAME( Event );
 struct __STUMPLESS_NAME( EventAttribute );
 struct __STUMPLESS_NAME( FileConfiguration );
+struct __STUMPLESS_NAME( Filter );
+struct __STUMPLESS_NAME( Formatter );
+struct __STUMPLESS_NAME( Handler );
 struct __STUMPLESS_NAME( HTTConfiguration );
 struct __STUMPLESS_NAME( Level );
 struct __STUMPLESS_NAME( Logger );
@@ -40,6 +44,8 @@ typedef enum __STUMPLESS_NAME( HTTPMethod )
 typedef enum __STUMPLESS_NAME( SortingMethod )
         __STUMPLESS_NAME( SortingMethod );
 
+typedef struct __STUMPLESS_NAME( Adapter )
+        __STUMPLESS_NAME( Adapter );
 typedef struct __STUMPLESS_NAME( Boolean )
         __STUMPLESS_NAME( Boolean );
 typedef struct __STUMPLESS_NAME( BooleanFormat )
@@ -58,6 +64,12 @@ typedef struct __STUMPLESS_NAME( EventAttribute )
         __STUMPLESS_NAME( EventAttribute );
 typedef struct __STUMPLESS_NAME( FileConfiguration )
         __STUMPLESS_NAME( FileConfiguration );
+typedef struct __STUMPLESS_NAME( Filter )
+        __STUMPLESS_NAME( Filter );
+typedef struct __STUMPLESS_NAME( Formatter )
+        __STUMPLESS_NAME( Formatter );
+typedef struct __STUMPLESS_NAME( Handler )
+        __STUMPLESS_NAME( Handler );
 typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         __STUMPLESS_NAME( HTTPConfiguration );
 typedef struct __STUMPLESS_NAME( Level )
@@ -102,6 +114,13 @@ enum __STUMPLESS_NAME( SortingMethod ) {
   STUMPLESS_MERGE_SORT,
   STUMPLESS_QUICK_SORT,
   STUMPLESS_SHELL_SORT
+};
+
+struct __STUMPLESS_NAME( Adapter ) {
+  __STUMPLESS_NAME( Entry ) * ( *adapt )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Filter ) ** filters;
+  unsigned filter_count;
+  const char * name;
 };
 
 struct __STUMPLESS_NAME( Boolean ) {
@@ -155,6 +174,27 @@ struct __STUMPLESS_NAME( FileConfiguration ) {
   FILE * current_file;
 };
 
+struct __STUMPLESS_NAME( Filter ) {
+  unsigned short ( *accept_entry )( __STUMPLESS_NAME( Entry ) * );
+  unsigned short ( *accept_output )( __STUMPLESS_NAME( Output ) * );
+  unsigned short ( *accept_value )( __STUMPLESS_NAME( Value ) * );
+  const char * name;
+};
+
+struct __STUMPLESS_NAME( Formatter ) {
+  __STUMPLESS_NAME( Filter ) ** filters;
+  unsigned filter_count;
+  __STUMPLESS_NAME( Output ) * ( *format )( __STUMPLESS_NAME( Entry ) * );
+  const char * name;
+};
+
+struct __STUMPLESS_NAME( Handler ) {
+  __STUMPLESS_NAME( Filter ) ** filters;
+  unsigned filter_count;
+  __STUMPLESS_NAME( Status ) * ( *handle )( __STUMPLESS_NAME( Output ) * );
+  const char * name;
+};
+
 struct __STUMPLESS_NAME( HTTPConfiguration ) {
   __STUMPLESS_NAME( HTTPMethod ) method;
 };
@@ -165,7 +205,11 @@ struct __STUMPLESS_NAME( Level ) {
 };
 
 struct __STUMPLESS_NAME( Logger ) {
+  __STUMPLESS_NAME( Adapter ) * adapter;
   const char * name;
+  __STUMPLESS_NAME( Handler ) ** handlers;
+  unsigned handler_count;
+  __STUMPLESS_NAME( Formatter ) * formatter;
 };
 
 struct __STUMPLESS_NAME( Output ) {
