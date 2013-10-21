@@ -2,6 +2,7 @@
 
 #include "private/configuration.h"
 #include "private/dictionary.h"
+#include "private/list.h"
 #include "private/output_profile.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
@@ -394,7 +395,8 @@ BuildIntValue( void )
 }
 
 Level *
-BuildLevel( void )
+BuildLevel
+( void )
 {
   Level * level = malloc( sizeof( Level ) ) ;
   if( level == NULL )
@@ -406,8 +408,28 @@ BuildLevel( void )
   return level;
 }
 
+List *
+BuildListOfStrings
+( void )
+{
+  List * list = NewList();
+  if( list == NULL )
+    return NULL;
+  
+  AppendToList( list, "This" );
+  AppendToList( list, "is" );
+  AppendToList( list, "a" );
+  AppendToList( list, "test" );
+  AppendToList( list, "list" );
+  AppendToList( list, "o'" );
+  AppendToList( list, "Strings!" );
+  
+  return list;
+}
+
 OutputProfile *
-BuildOutputProfile( void )
+BuildOutputProfile
+( void )
 {
   OutputProfile * profile = malloc( sizeof( OutputProfile ) );
   if( profile == NULL )

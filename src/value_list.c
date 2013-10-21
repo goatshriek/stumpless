@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "private/configuration.h"
+#include "private/list.h"
 #include "private/status.h"
 #include "private/status_checker.h"
 #include "private/type.h"
@@ -17,20 +18,11 @@ AddSeparatorToValueList
   if( list == NULL || separator == NULL )
     return RaiseAbnormalStatus( "empty argument" );
   
-  Node * new_node;
-  Node * current = list->first;
-  while( current != list->last ){
-    new_node = malloc( sizeof( Node ) );
-    if( new_node == NULL )
-      return RaiseAbnormalStatus( "memory allocation failure" );
-    new_node->value = separator;
-    new_node->next = current->next;
-    current->next = new_node;
-    
-    current = new_node->next;
-  }
-  
-  return NULL;
+  List * result = AddSeparatorToList( list->list, ( void * ) separator );
+  if( result != list->list )
+    return RaiseAbnormalStatus( "list failure" );
+  else
+    return NULL;
 }
 
 Status *
@@ -68,19 +60,11 @@ AppendValueLists
   if( beginning == NULL || end == NULL )
     return RaiseAbnormalStatus( "empty argument" );
   
-  ValueList * copy = CopyValueList( end );
-  if( copy == NULL )
-    return RaiseAbnormalStatus( "memory allocation failure" );
-  
-  if( beginning->first == NULL )
-    beginning->first = copy->first;
+  List * result = AppendLists( beginning->list, end->list );
+  if( result != beginning->list )
+    return RaiseAbnormalStatus( "list failure" );
   else
-    beginning->last->next = copy->first;
-  beginning->last = copy->last;
-  
-  free( copy );
-  
-  return NULL;
+    return NULL;
 }
 
 Status *
@@ -90,13 +74,14 @@ AppendValueToValueList
   if( list == NULL || value == NULL )
     return RaiseAbnormalStatus( "empty argument" );
   
-  Node * node = malloc( sizeof( Node ) );
-  if( node == NULL )
-    return RaiseAbnormalStatus( "memory allocation failure" );
+  if( list->list == NULL )
+    return RaiseAbnormalStatus( "malformed structure" );
   
-  node->value = value;
+  List * result = AppendToList( list->list, value );
+  if( result != list->list )
+    return RaiseAbnormalStatus( "list failure" );
   
-  return AppendNodeToValueList( list, node );
+  return NULL;
 }
 
 ValueList *
@@ -110,21 +95,7 @@ CopyValueList
   if( copy == NULL )
     return NULL;
   
-  copy->first = copy->last =  NULL;
-  
-  Node * node = list->first;
-  Node * copied_node;
-  while( node != NULL ){
-    copied_node = malloc( sizeof( Node ) );
-    if( copied_node == NULL )
-      return NULL;
-    
-    NULL_ON_FAILURE( AppendNodeToValueList( copy, copied_node ) )
-    
-    copied_node->value = node->value; 
-    
-    node = node->next;
-  }
+  copy->list = CopyList( list->list );
   
   return copy;
 }
@@ -133,18 +104,7 @@ void
 DestroyValueList
 ( ValueList * list )
 {
-  Node * prev = NULL;
-  Node * node = list->first;
-  
-  while( node != NULL ){
-    if( prev != NULL ){
-      DestroyValue( prev->value );
-      free( prev );
-    }
-    
-    prev = node;
-    node = node->next;
-  }
+  DestroyList( list->list );
   
   free( list );
   
@@ -159,8 +119,9 @@ NewValueList
   if( list == NULL )
     return NULL;
   
-  list->first = NULL;
-  list->last = NULL;
+  list->list = NewList();
+  if( list->list == NULL )
+    return NULL;
   
   return list;
 }
@@ -169,14 +130,10 @@ Value *
 NextInValueList
 ( ValueList * list )
 {
-  if( list == NULL || list->current == NULL )
+  if( list == NULL || list->list == NULL )
     return NULL;
   
-  list->current = list->current->next;
-  if( list->current == NULL )
-    return NULL;
-  
-  return list->current->value;
+  return NextInList( list->list );
 }
 
 Status *
@@ -200,24 +157,24 @@ PrependValueToValueList
   if( list == NULL || value == NULL )
     return RaiseAbnormalStatus( "empty argument" );
   
-  Node * node = malloc( sizeof( Node ) );
-  if( node == NULL )
-    return RaiseAbnormalStatus( "memory allocation failure" );
+  if( list->list == NULL )
+    return RaiseAbnormalStatus( "malformed structure" );
   
-  node->value = value;
+  List * result = PrependToList( list->list, value );
+  if( result != list->list )
+    return RaiseAbnormalStatus( "list failure" );
   
-  return PrependNodeToValueList( list, node );
+  return NULL;
 }
 
 Value *
 StartValueList
 ( ValueList * list )
 {
-  if( list == NULL || list->first == NULL )
+  if( list == NULL || list->list == NULL )
     return NULL;
   
-  list->current = list->first;
-  return list->current->value;
+  return StartList( list->list );
 }
 
 // todo rewrite to longer depend on a buffer
@@ -239,21 +196,21 @@ ValueListIntoString
   if( buffer == NULL )
     return RaiseAbnormalStatus( "memory allocation failure" );
   
-  Node * node = list->first;
+  Value * value = StartList( list->list );
   char * value_str;
-  while( node != NULL ){
-    if( node->value == NULL || node->value->profile == NULL )
+  while( value != NULL ){
+    if( value == NULL || value->profile == NULL )
       return RaiseAbnormalStatus( "malformed structure" );
     
-    if( node->value->profile->to_string == NULL ){
-      node = node->next;
+    if( value->profile->to_string == NULL ){
+      value = NextInList( list->list );
       continue;
     }
     
-    value_str = node->value->profile->to_string( node->value );
+    value_str = value->profile->to_string( value );
     if( value_str != NULL )
       strncat( str, value_str, buffer_size );
-    node = node->next;
+    value = NextInList( list->list );
   }
   
   return NULL;
@@ -263,7 +220,7 @@ unsigned short
 ValueListIsEmpty
 ( ValueList * list )
 {
-  return list == NULL || list->first == NULL;
+  return list == NULL || ListIsEmpty( list->list );
 }
 
 char *
@@ -291,61 +248,13 @@ ValueListToStrings
     return NULL;
   
   char * str;
-  Node * node = list->first;
-  while( node != NULL ){
-    str = node->value->profile->to_string( node->value );
+  Value * value = StartList( list->list );
+  while( value != NULL ){
+    str = value->profile->to_string( value );
     NULL_ON_FAILURE( AppendStringToValueList( output, str ) )
     
-    node = node->next;
+    value = NextInList( list->list );
   }
   
   return output;
-}
-
-static
-Status *
-AppendNodeToValueList
-( ValueList * list, Node * node )
-{
-  if( list == NULL || node == NULL )
-    return RaiseAbnormalStatus( "empty argument" );
-  
-  node->next = NULL;
-  
-  if( list->first == NULL )
-    list->first = node;
-  else
-    list->last->next = node;
-  
-  list->last = node;
-  
-  return NULL;
-}
-
-static
-void
-DestroyNode
-( Node * node )
-{
-  if( node == NULL )
-    return;
-  
-  free( node );
-}
-
-static
-Status *
-PrependNodeToValueList
-( ValueList * list, Node * node )
-{
-  if( list == NULL || node == NULL )
-    return RaiseAbnormalStatus( "empty argument" );
-  
-  node->next = list->first;
-  list->first = node;
-  
-  if( list->last == NULL )
-    list->last = node;
-  
-  return NULL;
 }

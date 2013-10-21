@@ -3,35 +3,10 @@
 
 #include <public_name.h>
 
-struct Node;
-
-typedef struct Node
-        Node;
+#include "private/list.h"
 
 struct __STUMPLESS_NAME( ValueList ) {
-  Node * current;
-  Node * first;
-  Node * last;
+  List * list;
 };
-
-struct Node {
-  Value * value;
-  Node * next;
-};
-
-static
-Status *
-AppendNodeToValueList
-( ValueList *, Node * );
-
-static
-void
-DestroyNode
-( Node * );
-
-static
-Status *
-PrependNodeToValueList
-( ValueList *, Node * );
 
 #endif

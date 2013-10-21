@@ -26,6 +26,10 @@ test_function_level_SOURCES = test/function/level.c
 test_function_level_CFLAGS = $(test_flags)
 test_function_level_LDADD = $(test_libraries)
 
+test_function_list_SOURCES = test/function/list.c
+test_function_list_CFLAGS = $(test_flags)
+test_function_list_LDADD = $(test_libraries)
+
 test_function_output_SOURCES = test/function/output.c
 test_function_output_CFLAGS = $(test_flags)
 test_function_output_LDADD = $(test_libraries)

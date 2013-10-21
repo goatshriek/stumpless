@@ -57,6 +57,10 @@ BuildIntValue( void );
 Level *
 BuildLevel( void );
 
+List *
+BuildListOfStrings
+( void );
+
 OutputProfile *
 BuildOutputProfile( void );
 

@@ -46,6 +46,21 @@ InitializeEmptyArgumentStatus
 }
 
 Status *
+InitializeListFailureStatus
+( void )
+{
+  CREATE_STATUS
+  
+  status->name = "list failure";
+  status->description = "an operation on an underlying list structure has failedfrom either a memory allocation failure or a malformed list structure";
+  status->error = 0;
+  status->failure = 1;
+  status->warning = 0;
+  
+  return status;
+}
+
+Status *
 InitializeMalformedStructureStatus
 ( void )
 {
@@ -87,6 +102,7 @@ InitializeStatusByName
     
     ADD_STATUS( "constructor failure", ConstructorFailure )
     ADD_STATUS( "empty argument", EmptyArgument )
+    ADD_STATUS( "list failure", ListFailure )
     ADD_STATUS( "malformed structure", MalformedStructure )
     ADD_STATUS( "memory allocation failure", MemoryAllocationFailure )
     ADD_STATUS( "stream write failure", StreamWriteFailure )

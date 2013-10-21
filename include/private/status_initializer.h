@@ -12,6 +12,10 @@ InitializeEmptyArgumentStatus
 ( void );
 
 Status *
+InitializeListFailureStatus
+( void );
+
+Status *
 InitializeMalformedStructureStatus
 ( void );
 

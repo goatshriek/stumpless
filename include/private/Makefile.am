@@ -5,6 +5,8 @@ noinst_HEADERS = include/private/boolean.h \
                  include/private/entry.h \
                  include/private/event.h \
                  include/private/level.h \
+                 include/private/list.h \
+                 include/private/list_static.h \
                  include/private/logger.h \
                  include/private/output.h \
                  include/private/output_profile.h \

@@ -5,9 +5,12 @@
 #include <type.h>
 
 struct Dictionary;
+struct List;
 
 typedef struct Dictionary
         Dictionary;
+typedef struct List
+        List;
 
 typedef __STUMPLESS_NAME( Byte )
         Byte;

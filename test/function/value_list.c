@@ -80,10 +80,7 @@ test_appender( void )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty second argument did not generate the appropriate error" )
   
   status = AppendValueLists( list_1, list_2 );
-  if( status != NULL )
-    return "the list was not successfully appended";
-  if( strcmp( list_1->last->value->data->c_p, "this should be last" ) != 0 )
-    return "the lists were not properly appended";
+  FAIL_IF_NOT_NULL( status, "the list was not successfully appended" )
   
   return NULL;
 }
@@ -98,11 +95,8 @@ test_constructor( void )
   if( list == NULL )
     return "the list was not created";
   
-  if( list->first != NULL )
-    return "the list had a node already in it";
-  
-  if( list->last != NULL )
-    return "the list was not properly formed";
+  Value * value = StartValueList( list );
+  FAIL_IF_NOT_NULL( value, "a newly-constructed list already had members" )
   
   return NULL;
 }
@@ -121,16 +115,18 @@ test_copy( void )
     return "the copy was not null for a null pointer";
   
   copy = CopyValueList( list );
-  if( copy == NULL )
-    return "the copy was null for a non-null pointer";
+  FAIL_IF_NULL( copy, "the copy was null for a non-null pointer" )
   if( copy == list )
     return "the copy was equal to the original list";
-  if( copy->first == NULL )
-    return "the copy did not actually contain any information";
-  if( copy->first == list->first )
-    return "the copy's nodes were the same instead of a copy";
-  if( copy->first->value != list->first->value )
-    return "the copy did not have the same values";
+  
+  Value * original_value = StartValueList( list );
+  Value * copy_value = StartValueList( copy );
+  while( original_value != NULL ){
+    if( original_value != copy_value )
+      return "the copy was not an accurate copy of the original";
+    original_value = NextInValueList( list );
+    copy_value = NextInValueList( copy );
+  }
   
   return NULL;
 }
@@ -213,8 +209,6 @@ test_next
   
   value = NextInValueList( list );
   FAIL_IF_NULL( value, "a value was not returned from the next call" )
-  if( value != list->first->next->value )
-    return "the node returned was not the next in the list";
   
   return NULL;
 }
@@ -241,11 +235,10 @@ test_prepender( void )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a NULL list did not generate the appropriate status code" )
  
   status = PrependValueToValueList( list, value );
-  if( status != NULL )
-    return "a value could not be prepended to an empty list";
-  FAIL_IF_NULL( list->first, "the list still did not have any members" )
-  FAIL_IF_NULL( list->first->value, "the list's nodes were invalid" )
-  if( list->first->value != value )
+  FAIL_IF_NOT_NULL( status, "a value could not be prepended to an empty list" )
+  Value * retrieved_value = StartValueList( list );
+  FAIL_IF_NULL( retrieved_value, "the list's nodes were invalid" )
+  if( retrieved_value != value )
     return "the value was not actually prepended to the list";
   
   list = BuildValueList();
@@ -253,11 +246,10 @@ test_prepender( void )
   value = BuildIntArrayValue();
   FAIL_IF_NULL( list, "could not build a test array value" )
   status = PrependValueToValueList( list, value );
-  if( status != NULL )
-    return "the value was not correctly prepended to a populated list";
-  FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
-  FAIL_IF_NULL( list->first->value, "the new element did not have a value" )
-  if( list->first->value != value )
+  FAIL_IF_NOT_NULL( status, "the value was not correctly prepended to a populated list" )
+  retrieved_value = StartValueList( list );
+  FAIL_IF_NULL( retrieved_value, "a populated list had it's members removed" )
+  if( retrieved_value != value )
     return "the value was not actually prepended to a full list";
   
   return NULL;
@@ -279,8 +271,7 @@ test_separator( void )
   
   char * test_str = ValueListToString( list );
   FAIL_IF_NULL( test_str, "the list could not be converted to a string" )
-  if( strcmp( test_str, "this, is, a, test, list" ) != 0 )
-    return "the separator was not added between all elements of the list";
+  ASSERT_STRINGS_EQUAL( "this, is, a, test, list", test_str, "the separator was not added between all elements of the list" )
   
   return NULL;
 }
@@ -294,8 +285,6 @@ test_start
   
   Value * value = StartValueList( list );
   FAIL_IF_NULL( value, "a value was not returned from the list" )
-  if( value != list->first->value )
-    return "the first element of the list was not returned";
   
   return NULL;
 }
@@ -303,34 +292,19 @@ test_start
 const char *
 test_string_appender( void )
 {
-  Status * status;
-  status = AppendStringToValueList( NULL, "str" );
+  Status * status = AppendStringToValueList( NULL, "str" );
   FAIL_IF_NULL( status, "an empty list did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty list did not generate the correct error" )
   
   ValueList * list = BuildValueList();
-  if( list == NULL )
-    return "could not build the test list";
+  FAIL_IF_NULL( list, "could not build the test list" )
   
   status = AppendStringToValueList( list, NULL );
   FAIL_IF_NULL( status, "an empty string did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
   
   status = AppendStringToValueList( list, "str" );
-  if( status != NULL )
-    return "the string was not successfully appended to the list";
-  
-  if( list->last == NULL )
-    return "the list was empty";
-  
-  if( list->last->value == NULL )
-    return "the list was improperly formed";
-  
-  if( list->last->value->data == NULL )
-    return "the last value was not properly formed";
-  
-  if( strcmp( list->last->value->data->c_p, "str" ) != 0 )
-    return "the list's last member was not the appended string";
+  FAIL_IF_NOT_NULL( status, "the string was not successfully appended to the list" )
   
   return NULL;
 }
@@ -354,28 +328,22 @@ test_string_prepender( void )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a NULL list did not generate the appropriate status code" )
   
   status = PrependStringToValueList( list, "lonely little guy" );
-  if( status != NULL )
-    return "a string could not be prepended to an empty list";
-  FAIL_IF_NULL( list->first, "the list still did not have any members" )
-  FAIL_IF_NULL( list->first->value, "the list's nodes were invalid" )
-  FAIL_IF_NULL( list->first->value->data, "the new value did not have any data" )
-  if( strcmp( list->first->value->profile->name, "string" ) != 0 )
-    return "the new value was not a string";
-  if( strcmp( list->first->value->data->c_p, "lonely little guy" ) != 0 )
-    return "the new string was not equivalent to the added one";
+  FAIL_IF_NOT_NULL( status, "a string could not be prepended to an empty list" )
+  Value * value = StartValueList( list );
+  FAIL_IF_NULL( value, "the list still did not have any members" )
+  FAIL_IF_NULL( value->data, "the new value did not have any data" )
+  ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
+  ASSERT_STRINGS_EQUAL( "lonely little guy", value->data->c_p, "the new string was not equivalent to the added one" )
   
   list = BuildValueList();
   FAIL_IF_NULL( list, "could not build a populated test list" ) 
   status = PrependStringToValueList( list, "new beginning" );
-  if( status != NULL )
-    return "the string was not correctly prepended to a populated list";
-  FAIL_IF_NULL( list->first, "a populated list had it's members removed" );
-  FAIL_IF_NULL( list->first->value, "the new element did not have a value" )
-  FAIL_IF_NULL( list->first->value->data, "the new value did not have any data" )
-  if( strcmp( list->first->value->profile->name, "string" ) != 0 )
-    return "the new value was not a string";
-  if( strcmp( list->first->value->data->c_p, "new beginning" ) != 0 )
-    return "the new string was not equivalent to the added one";
+  FAIL_IF_NOT_NULL( status, "the string was not correctly prepended to a populated list" )
+  value = StartValueList( list );
+  FAIL_IF_NULL( value, "a populated list had it's members removed" );
+  FAIL_IF_NULL( value->data, "the new value did not have any data" )
+  ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
+  ASSERT_STRINGS_EQUAL( "new beginning", value->data->c_p, "the new string was not equivalent to the added one" )
   
   return NULL;
 }
@@ -386,9 +354,8 @@ test_to_string( void )
   ValueList * list = BuildValueList();
   if( list == NULL )
     return "could not build the test list";
-  char * str;
-  
-  str = ValueListToString( NULL );
+
+  char * str = ValueListToString( NULL );
   if( str != NULL )
     return "a null list did not return a null string";
   
@@ -409,19 +376,12 @@ test_unsigned_int_appender( void )
   if( list == NULL )
     return "could not build the test list";
   
-  Status * status;
-  status = AppendUnsignedIntToValueList( NULL, 3 );
+  Status * status = AppendUnsignedIntToValueList( NULL, 3 );
   FAIL_IF_NULL( status, "a NULL list did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a null list did not generate the proper error" )
   
   status = AppendUnsignedIntToValueList( list, 4 );
-  if( status != NULL )
-    return "an unsigned number was not correctly appended to the list";
-  
-  if( strcmp( list->last->value->profile->name, "unsigned int" ) != 0 )
-    return "the new value was not an unsigned int";
-  if( list->last->value->data->u_i != 4 )
-    return "the new value did not have the intended value";
+  FAIL_IF_NOT_NULL( status, "an unsigned number was not correctly appended to the list" )
   
   return NULL;
 }
@@ -455,17 +415,10 @@ test_value_appender( void )
   if( status != NULL )
     return "the node was not successfully added";
   
-  if( list->first == NULL )
-    return "the list did not have a first node";
-  
-  if( list->first->value != val_1 )
+  Value * value = StartValueList( list );
+  FAIL_IF_NULL( value, "the list did not have a first node" )
+  if( value != val_1 )
     return "the first value was not correct";
-  
-  if( list->last == NULL )
-    return "the list did not have a last node";
-  
-  if( list->last->value != val_4 )
-    return "the last value was not correct";
   
   return NULL;
 }
