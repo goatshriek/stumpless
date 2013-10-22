@@ -24,4 +24,9 @@ void
 DestroyNode
 ( Node * );
 
+static
+void *
+SeparateNodes
+( Node *, void * );
+
 #endif

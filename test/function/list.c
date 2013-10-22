@@ -227,12 +227,18 @@ test_prepend_value( void )
 const char *
 test_separator( void )
 {
-  List * list = BuildListOfStrings();
-  FAIL_IF_NULL( list, "could not build the test list" )
   
   void * separator = ( void * ) ", ";
   
+  List * list = NewList();
   List * result = AddSeparatorToList( list, separator );
+  if( list != result )
+    return "an empty list was not handled properly";
+  
+  list = BuildListOfStrings();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  result = AddSeparatorToList( list, separator );
+  
   if( list != result )
     return "the separator was not properly added to the list";
   

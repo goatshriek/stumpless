@@ -11,19 +11,11 @@ AddSeparatorToList
   if( list == NULL || value == NULL )
     return NULL;
   
-  Node * current = list->first;
-  Node * separator;
-  while( current->next != NULL ){
-    separator = malloc( sizeof( Node ) );
-    if( separator == NULL )
-      return NULL;
-    
-    separator->next = current->next;
-    separator->value = value;
-    current->next = separator;
-    
-    current = separator->next;
-  }
+  if( list->first == NULL )
+    return list;
+  
+  if( SeparateNodes( list->first, value ) == NULL )
+    return NULL;
   
   return list;
 }
@@ -177,4 +169,23 @@ DestroyNode
   free( node );
   
   DestroyNode( next );
+}
+
+static
+void *
+SeparateNodes
+( Node * node, void * value )
+{
+  if( node->next == NULL )
+    return value;
+  
+  Node * separator = malloc( sizeof( Node ) );
+  if( separator == NULL )
+    return NULL;
+  
+  separator->value = value;
+  separator->next = node->next;
+  node->next = separator;
+  
+  return SeparateNodes( separator->next, value );
 }
