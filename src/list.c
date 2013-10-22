@@ -27,7 +27,7 @@ AppendLists
   if( first == NULL )
     return NULL;
   
-  void * value = StartList( second );
+  void * value = BeginList( second );
   while( value != NULL ){
     AppendToList( first, value );
     value = NextInList( second );
@@ -60,6 +60,18 @@ AppendToList
   return list;
 }
 
+void *
+BeginList
+( List * list )
+{
+  if( list == NULL || list->first == NULL )
+    return NULL;
+  
+  list->current = list->first;
+  
+  return list->current->value;
+}
+
 List *
 CopyList
 ( List * list )
@@ -68,7 +80,7 @@ CopyList
     return NULL;
   
   List * copy = NewList();
-  void * value = StartList( list );
+  void * value = BeginList( list );
   while( value != NULL ){
     AppendToList( copy, value );
     value = NextInList( list );
@@ -143,18 +155,6 @@ PrependToList
     list->last = node;
   
   return list;
-}
-
-void *
-StartList
-( List * list )
-{
-  if( list == NULL || list->first == NULL )
-    return NULL;
-  
-  list->current = list->first;
-  
-  return list->current->value;
 }
 
 static

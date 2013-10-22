@@ -10,6 +10,7 @@
 
 const char * test_append_value( void );
 const char * test_appender( void );
+const char * test_begin( void );
 const char * test_constructor( void );
 const char * test_copy( void );
 const char * test_destructor( void );
@@ -17,7 +18,6 @@ const char * test_is_empty( void );
 const char * test_next( void );
 const char * test_prepend_value( void );
 const char * test_separator( void );
-const char * test_start( void );
 
 int
 main( void )
@@ -27,6 +27,7 @@ main( void )
   
   RUN_TEST( append_value )
   RUN_TEST( appender )
+  RUN_TEST( begin )
   RUN_TEST( constructor )
   RUN_TEST( copy )
   RUN_TEST( destructor )
@@ -34,7 +35,6 @@ main( void )
   RUN_TEST( next )
   RUN_TEST( prepend_value )
   RUN_TEST( separator )
-  RUN_TEST( start )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -79,6 +79,27 @@ test_appender
   result = AppendLists( list_1, list_2 );
   FAIL_IF_NULL( result, "the list was not successfully appended" )
   ASSERT_STRINGS_EQUAL( "this should be last", list_1->last->value, "the lists were not properly appended" )
+  
+  return NULL;
+}
+
+const char *
+test_begin
+( void )
+{
+  List * list = NewList();
+  FAIL_IF_NULL( list, "a new list could not be built" );
+  
+  const char * value = BeginList( list );
+  FAIL_IF_NOT_NULL( value, "an empty list returned a value first" )
+  
+  list = BuildListOfStrings();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  value = BeginList( list );
+  FAIL_IF_NULL( value, "a value was not returned from the list" )
+  if( value != list->first->value )
+    return "the first element of the list was not returned";
   
   return NULL;
 }
@@ -176,7 +197,7 @@ test_next
   List * list = BuildListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
   
-  const char * value = StartList( list );
+  const char * value = BeginList( list );
   FAIL_IF_NULL( value, "a value was not returned from the start call" )
   
   value = NextInList( list );
@@ -242,7 +263,7 @@ test_separator( void )
   if( list != result )
     return "the separator was not properly added to the list";
   
-  const char * str = StartList( list );
+  const char * str = BeginList( list );
   ASSERT_STRINGS_EQUAL( "This", str, "the first part of the list was not what was expected" )
   str = NextInList( list );
   ASSERT_STRINGS_EQUAL( ", ", str, "the second part of the list was not what was expected" )
@@ -254,27 +275,6 @@ test_separator( void )
   
   if( strcmp( ", ", str ) == 0 )
     return "the separator was present at the end of the list";
-  
-  return NULL;
-}
-
-const char *
-test_start
-( void )
-{
-  List * list = NewList();
-  FAIL_IF_NULL( list, "a new list could not be built" );
-  
-  const char * value = StartList( list );
-  FAIL_IF_NOT_NULL( value, "an empty list returned a value first" )
-  
-  list = BuildListOfStrings();
-  FAIL_IF_NULL( list, "could not build the test list" )
-  
-  value = StartList( list );
-  FAIL_IF_NULL( value, "a value was not returned from the list" )
-  if( value != list->first->value )
-    return "the first element of the list was not returned";
   
   return NULL;
 }

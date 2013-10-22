@@ -427,7 +427,7 @@ test_value_list_all_strings( void )
   if( list == NULL )
     return "the output did not have a value list";
   
-  Value * value = StartValueList( list );
+  Value * value = BeginValueList( list );
   while( value != NULL ){
     printf( "\n%s\n", value->profile->name );
     if( strcmp( value->profile->name, "string" ) != 0 )

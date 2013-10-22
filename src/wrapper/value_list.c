@@ -37,6 +37,13 @@ __STUMPLESS_NAME( AppendValueToValueList )
   return AppendValueToValueList( list, value );
 }
 
+__STUMPLESS_NAME( Value ) *
+__STUMPLESS_NAME( BeginValueList )
+( __STUMPLESS_NAME( ValueList ) * list )
+{
+  return BeginValueList( list );
+}
+
 __STUMPLESS_NAME( ValueList ) *
 __STUMPLESS_NAME( CopyValueList )
 ( __STUMPLESS_NAME( ValueList ) * list )
@@ -77,13 +84,6 @@ __STUMPLESS_NAME( PrependValueToValueList )
 ( __STUMPLESS_NAME( ValueList ) * list, __STUMPLESS_NAME( Value ) * value )
 {
   return PrependValueToValueList( list, value );
-}
-
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( StartValueList )
-( __STUMPLESS_NAME( ValueList ) * list )
-{
-  return StartValueList( list );
 }
 
 __STUMPLESS_NAME( Status ) *

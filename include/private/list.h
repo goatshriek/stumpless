@@ -15,6 +15,10 @@ List *
 AppendToList
 ( List *, void * );
 
+void *
+BeginList
+( List * );
+
 List *
 CopyList
 ( List * );
@@ -38,9 +42,5 @@ NewList
 List *
 PrependToList
 ( List *, void * );
-
-void *
-StartList
-( List * );
 
 #endif

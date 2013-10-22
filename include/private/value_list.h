@@ -25,6 +25,10 @@ Status *
 AppendValueToValueList
 ( ValueList *, Value * );
 
+Value *
+BeginValueList
+( ValueList * );
+
 ValueList *
 CopyValueList
 ( ValueList * );
@@ -48,10 +52,6 @@ PrependStringToValueList
 Status *
 PrependValueToValueList
 ( ValueList *, Value * );
-
-Value *
-StartValueList
-( ValueList * );
 
 Status *
 ValueListIntoString

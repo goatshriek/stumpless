@@ -84,6 +84,16 @@ AppendValueToValueList
   return NULL;
 }
 
+Value *
+BeginValueList
+( ValueList * list )
+{
+  if( list == NULL || list->list == NULL )
+    return NULL;
+  
+  return BeginList( list->list );
+}
+
 ValueList *
 CopyValueList
 ( ValueList * list )
@@ -167,16 +177,6 @@ PrependValueToValueList
   return NULL;
 }
 
-Value *
-StartValueList
-( ValueList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return StartList( list->list );
-}
-
 // todo rewrite to longer depend on a buffer
 Status *
 ValueListIntoString
@@ -196,7 +196,7 @@ ValueListIntoString
   if( buffer == NULL )
     return RaiseAbnormalStatus( "memory allocation failure" );
   
-  Value * value = StartList( list->list );
+  Value * value = BeginList( list->list );
   char * value_str;
   while( value != NULL ){
     if( value == NULL || value->profile == NULL )
@@ -248,7 +248,7 @@ ValueListToStrings
     return NULL;
   
   char * str;
-  Value * value = StartList( list->list );
+  Value * value = BeginList( list->list );
   while( value != NULL ){
     str = value->profile->to_string( value );
     NULL_ON_FAILURE( AppendStringToValueList( output, str ) )

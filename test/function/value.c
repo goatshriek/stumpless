@@ -53,7 +53,7 @@ test_array_value_to_value_list( void )
   list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a list could not be built from an int array value" )
   
-  value = StartValueList( list );
+  value = BeginValueList( list );
   FAIL_IF_NULL( value, "the generated list was empty" )
   if( strcmp( value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";

@@ -60,7 +60,7 @@ TextOutputIntoStream
     return RaiseAbnormalStatus( "malformed structure" );
   
   ValueList * list = ( ValueList * ) output->data->v_p;
-  Value * value = StartValueList( list );
+  Value * value = BeginValueList( list );
   while( value != NULL ){
     if( value->data == NULL )
       return RaiseAbnormalStatus( "malformed structure" );

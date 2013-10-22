@@ -10,6 +10,7 @@
 #include "helper.h"
 
 const char * test_appender( void );
+const char * test_begin( void );
 const char * test_constructor( void );
 const char * test_copy( void );
 const char * test_destructor( void );
@@ -18,7 +19,6 @@ const char * test_is_empty( void );
 const char * test_next( void );
 const char * test_prepender( void );
 const char * test_separator( void );
-const char * test_start( void );
 const char * test_string_appender( void );
 const char * test_string_prepender( void );
 const char * test_to_string( void );
@@ -32,6 +32,7 @@ main( void )
   const char * result;
   
   RUN_TEST( appender )
+  RUN_TEST( begin )
   RUN_TEST( constructor )
   RUN_TEST( copy )
   RUN_TEST( destructor )
@@ -40,7 +41,6 @@ main( void )
   RUN_TEST( next )
   RUN_TEST( prepender )
   RUN_TEST( separator )
-  RUN_TEST( start )
   RUN_TEST( string_appender )
   RUN_TEST( string_prepender )
   RUN_TEST( to_string )
@@ -86,6 +86,19 @@ test_appender( void )
 }
 
 const char *
+test_begin
+( void )
+{
+  ValueList * list = BuildValueList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  Value * value = BeginValueList( list );
+  FAIL_IF_NULL( value, "a value was not returned from the list" )
+  
+  return NULL;
+}
+
+const char *
 test_constructor( void )
 {
   ValueList * list = NULL;
@@ -95,7 +108,7 @@ test_constructor( void )
   if( list == NULL )
     return "the list was not created";
   
-  Value * value = StartValueList( list );
+  Value * value = BeginValueList( list );
   FAIL_IF_NOT_NULL( value, "a newly-constructed list already had members" )
   
   return NULL;
@@ -119,8 +132,8 @@ test_copy( void )
   if( copy == list )
     return "the copy was equal to the original list";
   
-  Value * original_value = StartValueList( list );
-  Value * copy_value = StartValueList( copy );
+  Value * original_value = BeginValueList( list );
+  Value * copy_value = BeginValueList( copy );
   while( original_value != NULL ){
     if( original_value != copy_value )
       return "the copy was not an accurate copy of the original";
@@ -204,7 +217,7 @@ test_next
   ValueList * list = BuildValueList();
   FAIL_IF_NULL( list, "could not build the test list" )
   
-  Value * value = StartValueList( list );
+  Value * value = BeginValueList( list );
   FAIL_IF_NULL( value, "a value was not returned from the start call" )
   
   value = NextInValueList( list );
@@ -236,7 +249,7 @@ test_prepender( void )
  
   status = PrependValueToValueList( list, value );
   FAIL_IF_NOT_NULL( status, "a value could not be prepended to an empty list" )
-  Value * retrieved_value = StartValueList( list );
+  Value * retrieved_value = BeginValueList( list );
   FAIL_IF_NULL( retrieved_value, "the list's nodes were invalid" )
   if( retrieved_value != value )
     return "the value was not actually prepended to the list";
@@ -247,7 +260,7 @@ test_prepender( void )
   FAIL_IF_NULL( list, "could not build a test array value" )
   status = PrependValueToValueList( list, value );
   FAIL_IF_NOT_NULL( status, "the value was not correctly prepended to a populated list" )
-  retrieved_value = StartValueList( list );
+  retrieved_value = BeginValueList( list );
   FAIL_IF_NULL( retrieved_value, "a populated list had it's members removed" )
   if( retrieved_value != value )
     return "the value was not actually prepended to a full list";
@@ -272,19 +285,6 @@ test_separator( void )
   char * test_str = ValueListToString( list );
   FAIL_IF_NULL( test_str, "the list could not be converted to a string" )
   ASSERT_STRINGS_EQUAL( "this, is, a, test, list", test_str, "the separator was not added between all elements of the list" )
-  
-  return NULL;
-}
-
-const char *
-test_start
-( void )
-{
-  ValueList * list = BuildValueList();
-  FAIL_IF_NULL( list, "could not build the test list" )
-  
-  Value * value = StartValueList( list );
-  FAIL_IF_NULL( value, "a value was not returned from the list" )
   
   return NULL;
 }
@@ -329,7 +329,7 @@ test_string_prepender( void )
   
   status = PrependStringToValueList( list, "lonely little guy" );
   FAIL_IF_NOT_NULL( status, "a string could not be prepended to an empty list" )
-  Value * value = StartValueList( list );
+  Value * value = BeginValueList( list );
   FAIL_IF_NULL( value, "the list still did not have any members" )
   FAIL_IF_NULL( value->data, "the new value did not have any data" )
   ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
@@ -339,7 +339,7 @@ test_string_prepender( void )
   FAIL_IF_NULL( list, "could not build a populated test list" ) 
   status = PrependStringToValueList( list, "new beginning" );
   FAIL_IF_NOT_NULL( status, "the string was not correctly prepended to a populated list" )
-  value = StartValueList( list );
+  value = BeginValueList( list );
   FAIL_IF_NULL( value, "a populated list had it's members removed" );
   FAIL_IF_NULL( value->data, "the new value did not have any data" )
   ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
@@ -415,7 +415,7 @@ test_value_appender( void )
   if( status != NULL )
     return "the node was not successfully added";
   
-  Value * value = StartValueList( list );
+  Value * value = BeginValueList( list );
   FAIL_IF_NULL( value, "the list did not have a first node" )
   if( value != val_1 )
     return "the first value was not correct";
