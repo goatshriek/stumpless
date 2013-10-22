@@ -4,6 +4,5 @@
 - add custom options to filters
 - add custom options to handlers
 - add logger functions
-- recursive list separator function
 - multithreading
 - multiprocessing
