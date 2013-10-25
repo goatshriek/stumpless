@@ -22,6 +22,7 @@ struct __STUMPLESS_NAME( Event );
 struct __STUMPLESS_NAME( EventAttribute );
 struct __STUMPLESS_NAME( FileConfiguration );
 struct __STUMPLESS_NAME( Filter );
+struct __STUMPLESS_NAME( FilterList );
 struct __STUMPLESS_NAME( Formatter );
 struct __STUMPLESS_NAME( Handler );
 struct __STUMPLESS_NAME( HTTConfiguration );
@@ -66,6 +67,8 @@ typedef struct __STUMPLESS_NAME( FileConfiguration )
         __STUMPLESS_NAME( FileConfiguration );
 typedef struct __STUMPLESS_NAME( Filter )
         __STUMPLESS_NAME( Filter );
+typedef struct __STUMPLESS_NAME( FilterList )
+        __STUMPLESS_NAME( FilterList );
 typedef struct __STUMPLESS_NAME( Formatter )
         __STUMPLESS_NAME( Formatter );
 typedef struct __STUMPLESS_NAME( Handler )
@@ -118,7 +121,7 @@ enum __STUMPLESS_NAME( SortingMethod ) {
 
 struct __STUMPLESS_NAME( Adapter ) {
   __STUMPLESS_NAME( Entry ) * ( *adapt )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( Filter ) ** filters;
+  __STUMPLESS_NAME( FilterList ) * filters;
   unsigned filter_count;
   const char * name;
 };
@@ -182,14 +185,14 @@ struct __STUMPLESS_NAME( Filter ) {
 };
 
 struct __STUMPLESS_NAME( Formatter ) {
-  __STUMPLESS_NAME( Filter ) ** filters;
+  __STUMPLESS_NAME( FilterList ) * filters;
   unsigned filter_count;
   __STUMPLESS_NAME( Output ) * ( *format )( __STUMPLESS_NAME( Entry ) * );
   const char * name;
 };
 
 struct __STUMPLESS_NAME( Handler ) {
-  __STUMPLESS_NAME( Filter ) ** filters;
+  __STUMPLESS_NAME( FilterList ) * filters;
   unsigned filter_count;
   __STUMPLESS_NAME( Status ) * ( *handle )( __STUMPLESS_NAME( Output ) * );
   const char * name;

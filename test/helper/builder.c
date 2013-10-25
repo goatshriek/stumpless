@@ -2,6 +2,7 @@
 
 #include "private/configuration.h"
 #include "private/dictionary.h"
+#include "private/filter_list.h"
 #include "private/list.h"
 #include "private/output_profile.h"
 #include "private/type.h"
@@ -334,6 +335,48 @@ BuildFailureStatus
   status->description = "this status is meant to mimic a generic status that points at a failure of a function to finish. Use it for testing purposes only.";
   
   return status;
+}
+
+Filter *
+BuildFilter
+( void )
+{
+  Filter * filter = malloc( sizeof( Filter ) );
+  if( filter == NULL )
+    return NULL;
+  
+  filter->name = "test filter";
+  
+  return filter;
+}
+
+FilterList *
+BuildFilterList
+( void )
+{
+  FilterList * list = NewFilterList();
+  if( list == NULL )
+    return NULL;
+  
+  Filter * filter = malloc( sizeof( Filter ) );
+  if( filter == NULL )
+    return NULL;
+  filter->name = "first filter";
+  AppendToFilterList( list, filter );
+  
+  filter = malloc( sizeof( Filter ) );
+  if( filter == NULL )
+    return NULL;
+  filter->name = "second filter";
+  AppendToFilterList( list, filter );
+  
+  filter = malloc( sizeof( Filter ) );
+  if( filter == NULL )
+    return NULL;
+  filter->name = "third filter";
+  AppendToFilterList( list, filter );
+  
+  return list;
 }
 
 Value *

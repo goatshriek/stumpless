@@ -4,6 +4,8 @@ noinst_HEADERS = include/private/boolean.h \
                  include/private/dictionary_static.h \
                  include/private/entry.h \
                  include/private/event.h \
+                 include/private/filter_list.h \
+                 include/private/filter_list_static.h \
                  include/private/level.h \
                  include/private/list.h \
                  include/private/list_static.h \

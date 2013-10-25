@@ -44,7 +44,7 @@ case "${namespace}" in
  *) namespace_prefix=$namespace ;;
 esac
 
-AC_DEFINE_UNQUOTED([NMSPC],
+AC_DEFINE_UNQUOTED([NAMESPACE],
                    $namespace_prefix,
                    [namespace to prepend to public library members])
 

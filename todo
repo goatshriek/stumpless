@@ -6,3 +6,4 @@
 - add logger functions
 - multithreading
 - multiprocessing
+- performance testing

@@ -6,6 +6,7 @@ stumpless_include_HEADERS = include/boolean.h \
                             include/configuration.h \
                             include/entry.h \
                             include/event.h \
+                            include/filter_list.h \
                             include/level.h \
                             include/logger.h \
                             include/output.h \

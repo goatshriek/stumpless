@@ -48,6 +48,14 @@ Status *
 BuildFailureStatus
 ( void );
 
+Filter *
+BuildFilter
+( void );
+
+FilterList *
+BuildFilterList
+( void );
+
 Value *
 BuildIntArrayValue( void );
 

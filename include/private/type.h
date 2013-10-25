@@ -20,6 +20,7 @@ typedef enum __STUMPLESS_NAME( HTTPMethod )
 typedef enum __STUMPLESS_NAME( SortingMethod )
         SortingMethod;
 
+
 typedef struct __STUMPLESS_NAME( Adapter )
         Adapter;
 typedef struct __STUMPLESS_NAME( Boolean )
@@ -42,6 +43,8 @@ typedef struct __STUMPLESS_NAME( FileConfiguration )
         FileConfiguration;
 typedef struct __STUMPLESS_NAME( Filter )
         Filter;
+typedef struct __STUMPLESS_NAME( FilterList )
+        FilterList;
 typedef struct __STUMPLESS_NAME( Formatter )
         Formatter;
 typedef struct __STUMPLESS_NAME( Handler )
