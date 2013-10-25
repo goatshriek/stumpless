@@ -56,6 +56,14 @@ FilterList *
 BuildFilterList
 ( void );
 
+Handler *
+BuildHandler
+( void );
+
+HandlerList *
+BuildHandlerList
+( void );
+
 Value *
 BuildIntArrayValue( void );
 

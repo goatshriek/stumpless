@@ -49,6 +49,8 @@ typedef struct __STUMPLESS_NAME( Formatter )
         Formatter;
 typedef struct __STUMPLESS_NAME( Handler )
         Handler;
+typedef struct __STUMPLESS_NAME( HandlerList )
+        HandlerList;
 typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         HTTPConfiguration;
 typedef struct __STUMPLESS_NAME( Level )

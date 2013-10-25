@@ -26,6 +26,10 @@ test_function_filter_list_SOURCES = test/function/filter_list.c
 test_function_filter_list_CFLAGS = $(test_flags)
 test_function_filter_list_LDADD = $(test_libraries)
 
+test_function_handler_list_SOURCES = test/function/handler_list.c
+test_function_handler_list_CFLAGS = $(test_flags)
+test_function_handler_list_LDADD = $(test_libraries)
+
 test_function_level_SOURCES = test/function/level.c
 test_function_level_CFLAGS = $(test_flags)
 test_function_level_LDADD = $(test_libraries)

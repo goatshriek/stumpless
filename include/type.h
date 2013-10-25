@@ -25,6 +25,7 @@ struct __STUMPLESS_NAME( Filter );
 struct __STUMPLESS_NAME( FilterList );
 struct __STUMPLESS_NAME( Formatter );
 struct __STUMPLESS_NAME( Handler );
+struct __STUMPLESS_NAME( HandlerList );
 struct __STUMPLESS_NAME( HTTConfiguration );
 struct __STUMPLESS_NAME( Level );
 struct __STUMPLESS_NAME( Logger );
@@ -73,6 +74,8 @@ typedef struct __STUMPLESS_NAME( Formatter )
         __STUMPLESS_NAME( Formatter );
 typedef struct __STUMPLESS_NAME( Handler )
         __STUMPLESS_NAME( Handler );
+typedef struct __STUMPLESS_NAME( HandlerList )
+        __STUMPLESS_NAME( HandlerList );
 typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         __STUMPLESS_NAME( HTTPConfiguration );
 typedef struct __STUMPLESS_NAME( Level )

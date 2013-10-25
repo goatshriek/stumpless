@@ -3,6 +3,7 @@
 #include "private/configuration.h"
 #include "private/dictionary.h"
 #include "private/filter_list.h"
+#include "private/handler_list.h"
 #include "private/list.h"
 #include "private/output_profile.h"
 #include "private/type.h"
@@ -375,6 +376,48 @@ BuildFilterList
     return NULL;
   filter->name = "third filter";
   AppendToFilterList( list, filter );
+  
+  return list;
+}
+
+Handler *
+BuildHandler
+( void )
+{
+  Handler * handler = malloc( sizeof( Handler ) );
+  if( handler == NULL )
+    return NULL;
+  
+  handler->name = "test filter";
+  
+  return handler;
+}
+
+HandlerList *
+BuildHandlerList
+( void )
+{
+  HandlerList * list = NewHandlerList();
+  if( list == NULL )
+    return NULL;
+  
+  Handler * handler = malloc( sizeof( Handler ) );
+  if( handler == NULL )
+    return NULL;
+  handler->name = "first handler";
+  AppendToHandlerList( list, handler );
+  
+  handler = malloc( sizeof( Handler ) );
+  if( handler == NULL )
+    return NULL;
+  handler->name = "second handler";
+  AppendToHandlerList( list, handler );
+  
+  handler = malloc( sizeof( Handler ) );
+  if( handler == NULL )
+    return NULL;
+  handler->name = "third handler";
+  AppendToHandlerList( list, handler );
   
   return list;
 }
