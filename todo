@@ -1,5 +1,3 @@
-- create filter list
-- create handler list
 - cache value list to string value upon traversal/creation
 - add custom options to filters
 - add custom options to handlers

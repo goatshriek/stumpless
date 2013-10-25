@@ -213,8 +213,7 @@ struct __STUMPLESS_NAME( Level ) {
 struct __STUMPLESS_NAME( Logger ) {
   __STUMPLESS_NAME( Adapter ) * adapter;
   const char * name;
-  __STUMPLESS_NAME( Handler ) ** handlers;
-  unsigned handler_count;
+  __STUMPLESS_NAME( HandlerList ) * handlers;
   __STUMPLESS_NAME( Formatter ) * formatter;
 };
 
