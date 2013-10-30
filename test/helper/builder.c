@@ -388,7 +388,7 @@ BuildHandler
   if( handler == NULL )
     return NULL;
   
-  handler->name = "test filter";
+  handler->name = "test handler";
   
   return handler;
 }

@@ -5,3 +5,6 @@
 - multithreading
 - multiprocessing
 - performance testing
+- automated log collection (scraping-like)
+- optimize non-status profile initializations
+- add status recording capability (when a status is not raised)

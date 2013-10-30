@@ -7,7 +7,11 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/dictionary.c \
                           src/entry.c \
                           src/event.c \
+                          src/filter.c \
+                          src/filter_initializer.c \
                           src/filter_list.c \
+                          src/handler.c \
+                          src/handler_initializer.c \
                           src/handler_list.c \
                           src/level.c \
                           src/list.c \

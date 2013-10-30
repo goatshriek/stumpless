@@ -22,9 +22,17 @@ test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
 
+test_function_filter_SOURCES = test/function/filter.c
+test_function_filter_CFLAGS = $(test_flags)
+test_function_filter_LDADD = $(test_libraries)
+
 test_function_filter_list_SOURCES = test/function/filter_list.c
 test_function_filter_list_CFLAGS = $(test_flags)
 test_function_filter_list_LDADD = $(test_libraries)
+
+test_function_handler_SOURCES = test/function/handler.c
+test_function_handler_CFLAGS = $(test_flags)
+test_function_handler_LDADD = $(test_libraries)
 
 test_function_handler_list_SOURCES = test/function/handler_list.c
 test_function_handler_list_CFLAGS = $(test_flags)

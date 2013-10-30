@@ -3,7 +3,9 @@ check_PROGRAMS = test/function/boolean \
                  test/function/dictionary \
                  test/function/entry \
                  test/function/event \
+                 test/function/filter \
                  test/function/filter_list \
+                 test/function/handler \
                  test/function/handler_list \
                  test/function/level \
                  test/function/list \
