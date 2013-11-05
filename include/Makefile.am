@@ -4,6 +4,7 @@ stumpless_includedir = $(includedir)/stumpless
 
 stumpless_include_HEADERS = include/boolean.h \
                             include/configuration.h \
+                            include/dictionary.h \
                             include/entry.h \
                             include/event.h \
                             include/filter.h \

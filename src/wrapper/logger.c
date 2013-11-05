@@ -2,6 +2,13 @@
 
 #include "private/logger.h"
 
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( CheckLoggerStatus )
+( __STUMPLESS_NAME( Logger ) * logger )
+{
+  return CheckLoggerStatus( logger );
+}
+
 void
 __STUMPLESS_NAME( ListenForValues )
 ( __STUMPLESS_NAME( Logger ) * logger )
@@ -28,11 +35,4 @@ __STUMPLESS_NAME( SendValue )
 ( __STUMPLESS_NAME( Logger ) * logger, __STUMPLESS_NAME( Value ) * value )
 {
   return SendValue( logger, value );
-}
-
-void
-__STUMPLESS_NAME( UpdateStatus )
-( __STUMPLESS_NAME( Logger ) * logger, __STUMPLESS_NAME( Status ) *status )
-{
-  return UpdateStatus( logger, status );
 }

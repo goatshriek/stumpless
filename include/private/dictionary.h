@@ -3,16 +3,12 @@
 
 #include "private/type.h"
 
-Dictionary *
-AddValueToDictionary
-( Dictionary *, const char *, void * );
-
 void
 DestroyDictionary
 ( Dictionary * );
 
 void *
-GetValueFromDictionary
+GetDictionaryValue
 ( Dictionary *, const char * );
 
 Dictionary *
@@ -20,7 +16,11 @@ NewDictionary
 ();
 
 void *
-RemoveValueFromDictionary
+RemoveDictionaryValue
 ( Dictionary *, const char * );
+
+Dictionary *
+SetDictionaryValue
+( Dictionary *, const char *, void * );
 
 #endif

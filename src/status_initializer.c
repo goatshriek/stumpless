@@ -6,7 +6,7 @@
 #include "private/type.h"
 
 #define ADD_STATUS( name, function )                                           \
-AddValueToDictionary( initializers, name, Initialize##function##Status );
+SetDictionaryValue( initializers, name, Initialize##function##Status );
 
 #define CREATE_STATUS                                                          \
 Status * status = malloc( sizeof( Status ) );                                  \
@@ -23,6 +23,21 @@ InitializeConstructorFailureStatus
   
   status->name = "constructor failure";
   status->description = "a call to a constructor has failed, perhaps resulting from a memory allocation failure or invalid argument";
+  status->error = 0;
+  status->failure = 1;
+  status->warning = 0;
+  
+  return status;
+}
+
+Status *
+InitializeDictionaryFailureStatus
+( void )
+{
+  CREATE_STATUS
+  
+  status->name = "dictionary failure";
+  status->description = "an operation on an underlying dictionary structure has failedfrom either a memory allocation failure or a malformed dictionary state";
   status->error = 0;
   status->failure = 1;
   status->warning = 0;
@@ -101,6 +116,7 @@ InitializeStatusByName
       return NULL;
     
     ADD_STATUS( "constructor failure", ConstructorFailure )
+    ADD_STATUS( "dictionary failure", DictionaryFailure )
     ADD_STATUS( "empty argument", EmptyArgument )
     ADD_STATUS( "list failure", ListFailure )
     ADD_STATUS( "malformed structure", MalformedStructure )
@@ -110,7 +126,7 @@ InitializeStatusByName
     ADD_STATUS( "value profile not found", ValueProfileNotFound )
   }
   
-  Status * ( *initializer )() = GetValueFromDictionary( initializers, name );
+  Status * ( *initializer )() = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;
   else 

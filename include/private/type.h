@@ -4,11 +4,8 @@
 #include <public_name.h>
 #include <type.h>
 
-struct Dictionary;
 struct List;
 
-typedef struct Dictionary
-        Dictionary;
 typedef struct List
         List;
 
@@ -31,6 +28,8 @@ typedef struct __STUMPLESS_NAME( ByteList )
         ByteList;
 typedef struct __STUMPLESS_NAME( Configuration )
         Configuration;
+typedef struct __STUMPLESS_NAME( Dictionary )
+        Dictionary;
 typedef struct __STUMPLESS_NAME( Entry )
         Entry;
 typedef struct __STUMPLESS_NAME( EntryAttribute )

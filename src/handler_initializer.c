@@ -6,7 +6,7 @@
 #include "private/status.h"
 
 #define ADD_HANDLER( name, function )                                          \
-AddValueToDictionary( initializers, name, Initialize##function##Handler );
+SetDictionaryValue( initializers, name, Initialize##function##Handler );
 
 static Dictionary * initializers = NULL;
 
@@ -22,7 +22,7 @@ InitializeHandlerByName
   }
   
   Handler * ( *initializer )();
-  initializer = GetValueFromDictionary( initializers, name );
+  initializer = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;
   else 

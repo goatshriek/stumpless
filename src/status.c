@@ -26,7 +26,7 @@ AddStatus
   }
   
   void * value = ( void * ) status;
-  if( AddValueToDictionary( status_dictionary, status->name, value ) == NULL )
+  if( SetDictionaryValue( status_dictionary, status->name, value ) == NULL )
     return NULL;
   
   return status;
@@ -39,7 +39,7 @@ FindStatusByName
   if( status_dictionary == NULL )
     status_dictionary = NewDictionary();
   
-  Status * status = GetValueFromDictionary( status_dictionary, name );
+  Status * status = GetDictionaryValue( status_dictionary, name );
   
   if( status == NULL ){
     status = InitializeStatusByName( name );

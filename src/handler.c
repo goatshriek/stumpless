@@ -23,7 +23,7 @@ AddHandler
   }
   
   void * value = ( void * ) handler;
-  if( AddValueToDictionary( handlers, handler->name, value ) == NULL )
+  if( SetDictionaryValue( handlers, handler->name, value ) == NULL )
     return NULL;
   
   return NULL;
@@ -40,13 +40,46 @@ FindHandlerByName
       return NULL;
   }
   
-  Handler * handler = GetValueFromDictionary( handlers, name );
+  Handler * handler = GetDictionaryValue( handlers, name );
   
   if( handler == NULL ){
     if( InitializeHandlerByName( name ) != NULL )
       return NULL;
-    handler = GetValueFromDictionary( handlers, name );
+    handler = GetDictionaryValue( handlers, name );
   }
   
   return handler;
+}
+
+void *
+GetHandlerOption
+( const Handler * handler, const char * option )
+{
+  if( handler == NULL || option == NULL || handler->options == NULL )
+    return NULL;
+  
+  return GetDictionaryValue( handler->options, option );
+}
+
+Status *
+SetHandlerOption
+( Handler * handler, const char * option, void * value )
+{
+  if( handler == NULL || option == NULL )
+    return RaiseAbnormalStatus( "empty argument" );
+  
+  if( handler->options == NULL ){
+    handler->options = NewDictionary();
+    
+    if( handler->options == NULL )
+      return RaiseAbnormalStatus( "dictionary failure" );
+  }
+  
+  Dictionary * result;
+  result =  SetDictionaryValue( handler->options, option, value );
+  
+  if( result == NULL )
+    return RaiseAbnormalStatus( "dictionary failure" );
+  else
+    return NULL;
 }

@@ -12,4 +12,12 @@ __STUMPLESS_NAME( Filter ) *
 __STUMPLESS_NAME( FindFilterByName )
 ( const char * );
 
+void *
+__STUMPLESS_NAME( GetFilterOption )
+( const __STUMPLESS_NAME( Filter ) *, const char * );
+
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( SetFilterOption )
+( __STUMPLESS_NAME( Filter ) *, const char *, void * );
+
 #endif

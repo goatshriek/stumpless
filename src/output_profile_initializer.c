@@ -9,7 +9,7 @@
 #include "private/type.h"
 
 #define ADD_PROFILE( name, function )                                          \
-AddValueToDictionary( initializers, name, Initialize##function##OutputProfile );
+SetDictionaryValue( initializers, name, Initialize##function##OutputProfile );
 
 #define PROFILE_INITIALIZER( profile_name, type_name )                         \
 OutputProfile *                                                                \
@@ -50,7 +50,7 @@ InitializeOutputProfileByName
   }
   
   OutputProfile * ( *initializer )();
-  initializer = GetValueFromDictionary( initializers, name );
+  initializer = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;
   else 

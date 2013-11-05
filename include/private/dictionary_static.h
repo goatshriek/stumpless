@@ -1,6 +1,8 @@
 #ifndef STUMPLESS_PRIVATE_DICTIONARY_STATIC_H
 #define STUMPLESS_PRIVATE_DICIONTARY_STATIC_H
 
+#include <public_name.h>
+
 #include "private/type.h"
 
 struct Node;
@@ -8,7 +10,7 @@ struct Node;
 typedef struct Node
         Node;
 
-struct Dictionary {
+struct __STUMPLESS_NAME( Dictionary ) {
   Node * root;
 };
 

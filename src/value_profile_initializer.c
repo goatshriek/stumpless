@@ -9,7 +9,7 @@
 #include "private/value_profile_initializer.h"
 
 #define ADD_PROFILE( name, function )                                          \
-AddValueToDictionary( initializers, name, Initialize##function##ValueProfile );
+SetDictionaryValue( initializers, name, Initialize##function##ValueProfile );
 
 #define ARRAY_PROFILE_INITIALIZER( profile_name, type_name )                   \
 ValueProfile *                                                                 \
@@ -150,7 +150,7 @@ InitializeValueProfileByName
   }
   
   ValueProfile * ( *initializer )();
-  initializer = GetValueFromDictionary( initializers, name );
+  initializer = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;
   else 

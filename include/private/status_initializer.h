@@ -8,6 +8,10 @@ InitializeConstructorFailureStatus
 ( void );
 
 Status *
+InitializeDictionaryFailureStatus
+( void );
+
+Status *
 InitializeEmptyArgumentStatus
 ( void );
 

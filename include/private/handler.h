@@ -1,5 +1,5 @@
-#ifndef __STUMPLESS_PRIVATE_HANDLER_H
-#define __STUMPLESS_PRIVATE_HANDLER_H
+#ifndef STUMPLESS_PRIVATE_HANDLER_H
+#define STUMPLESS_PRIVATE_HANDLER_H
 
 #include "private/type.h"
 
@@ -10,5 +10,13 @@ AddHandler
 Handler *
 FindHandlerByName
 ( const char * );
+
+void *
+GetHandlerOption
+( const Handler *, const char * );
+
+Status *
+SetHandlerOption
+( Handler *, const char *, void * );
 
 #endif

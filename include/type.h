@@ -16,6 +16,7 @@ struct __STUMPLESS_NAME( Boolean );
 struct __STUMPLESS_NAME( BooleanFormat );
 struct __STUMPLESS_NAME( ByteList );
 struct __STUMPLESS_NAME( Configuration );
+struct __STUMPLESS_NAME( Dictionary );
 struct __STUMPLESS_NAME( Entry );
 struct __STUMPLESS_NAME( EntryAttribute );
 struct __STUMPLESS_NAME( Event );
@@ -56,6 +57,8 @@ typedef struct __STUMPLESS_NAME( ByteList )
         __STUMPLESS_NAME( ByteList );
 typedef struct __STUMPLESS_NAME( Configuration )
         __STUMPLESS_NAME( Configuration );
+typedef struct __STUMPLESS_NAME( Dictionary )
+        __STUMPLESS_NAME( Dictionary );
 typedef struct __STUMPLESS_NAME( Entry )
         __STUMPLESS_NAME( Entry );
 typedef struct __STUMPLESS_NAME( EntryAttribute )
@@ -127,6 +130,7 @@ struct __STUMPLESS_NAME( Adapter ) {
   __STUMPLESS_NAME( FilterList ) * filters;
   unsigned filter_count;
   const char * name;
+  __STUMPLESS_NAME( Dictionary ) * options;
 };
 
 struct __STUMPLESS_NAME( Boolean ) {
@@ -185,6 +189,7 @@ struct __STUMPLESS_NAME( Filter ) {
   unsigned short ( *accept_output )( __STUMPLESS_NAME( Output ) * );
   unsigned short ( *accept_value )( __STUMPLESS_NAME( Value ) * );
   const char * name;
+  __STUMPLESS_NAME( Dictionary ) * options;
 };
 
 struct __STUMPLESS_NAME( Formatter ) {
@@ -192,6 +197,7 @@ struct __STUMPLESS_NAME( Formatter ) {
   unsigned filter_count;
   __STUMPLESS_NAME( Output ) * ( *format )( __STUMPLESS_NAME( Entry ) * );
   const char * name;
+  __STUMPLESS_NAME( Dictionary ) * options;
 };
 
 struct __STUMPLESS_NAME( Handler ) {
@@ -199,6 +205,7 @@ struct __STUMPLESS_NAME( Handler ) {
   unsigned filter_count;
   __STUMPLESS_NAME( Status ) * ( *handle )( __STUMPLESS_NAME( Output ) * );
   const char * name;
+  __STUMPLESS_NAME( Dictionary ) * options;
 };
 
 struct __STUMPLESS_NAME( HTTPConfiguration ) {

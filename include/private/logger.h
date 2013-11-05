@@ -3,6 +3,10 @@
 
 #include "private/type.h"
 
+Status *
+CheckLoggerStatus
+( Logger * );
+
 void
 ListenForValues
 ( Logger * );
@@ -18,9 +22,5 @@ ReceiveNextValue
 Status *
 SendValue
 ( Logger *, Value * );
-
-void
-UpdateStatus
-( Logger *, Status * );
 
 #endif

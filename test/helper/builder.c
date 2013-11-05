@@ -104,9 +104,9 @@ BuildDictionaryOfStrings
   if( dictionary == NULL )
     return NULL;
   
-  AddValueToDictionary( dictionary, "first", "1st" );
-  AddValueToDictionary( dictionary, "second", "2nd" );
-  AddValueToDictionary( dictionary, "third", "3rd" );
+  SetDictionaryValue( dictionary, "first", "1st" );
+  SetDictionaryValue( dictionary, "second", "2nd" );
+  SetDictionaryValue( dictionary, "third", "3rd" );
   
   return dictionary;
 }
@@ -347,6 +347,9 @@ BuildFilter
     return NULL;
   
   filter->name = "test filter";
+  filter->options = BuildDictionaryOfStrings();
+  if( filter->options == NULL )
+    return NULL;
   
   return filter;
 }
@@ -389,6 +392,9 @@ BuildHandler
     return NULL;
   
   handler->name = "test handler";
+  handler->options = BuildDictionaryOfStrings();
+  if( handler->options == NULL )
+    return NULL;
   
   return handler;
 }

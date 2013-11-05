@@ -6,7 +6,7 @@
 #include "private/status.h"
 
 #define ADD_FILTER( name, function )                                           \
-AddValueToDictionary( initializers, name, Initialize##function##Filter );
+SetDictionaryValue( initializers, name, Initialize##function##Filter );
 
 static Dictionary * initializers = NULL;
 
@@ -41,7 +41,7 @@ InitializeFilterByName
   }
   
   Filter * ( *initializer )();
-  initializer = GetValueFromDictionary( initializers, name );
+  initializer = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;
   else 

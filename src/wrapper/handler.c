@@ -15,3 +15,17 @@ __STUMPLESS_NAME( FindHandlerByName )
 {
   return FindHandlerByName( name );
 }
+
+void *
+__STUMPLESS_NAME( GetHandlerOption )
+( const __STUMPLESS_NAME( Handler ) * handler, const char * option )
+{
+  return GetHandlerOption( handler, option );
+}
+
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( SetHandlerOption )
+( __STUMPLESS_NAME( Handler ) * handler, const char * option, void * value )
+{
+  return SetHandlerOption( handler, option, value );
+}

@@ -1,10 +1,8 @@
 - cache value list to string value upon traversal/creation
-- add custom options to filters
-- add custom options to handlers
-- add logger functions
 - multithreading
 - multiprocessing
 - performance testing
 - automated log collection (scraping-like)
 - optimize non-status profile initializations
 - add status recording capability (when a status is not raised)
+- add unsafe (non null-checking) versions of appropriate methods

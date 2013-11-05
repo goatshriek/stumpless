@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_PRIVATE_LIST_H
-#define STUMPLESS_PRIVATE_lIST_H
+#ifndef __STUMPLESS_PRIVATE_LIST_H
+#define __STUMPLESS_PRIVATE_lIST_H
 
 #include "private/type.h"
 

@@ -4,31 +4,6 @@
 #include "private/dictionary.h"
 #include "private/dictionary_static.h"
 
-Dictionary *
-AddValueToDictionary
-( Dictionary * dictionary, const char * key, void * value )
-{
-  Node * node = malloc( sizeof( Node ) );
-  if( node == NULL )
-    return NULL;
-  
-  node->key = key;
-  node->value = value;
-  node->parent = NULL;
-  node->left_child = NULL;
-  node->right_child = NULL;
-  
-  if( dictionary->root == NULL ){
-    dictionary->root = node;
-    return dictionary;
-  }
-  
-  AddNode( dictionary->root, node );
-  Splay( dictionary, node );
-  
-  return dictionary;
-}
-
 void
 DestroyDictionary
 ( Dictionary * dictionary )
@@ -42,10 +17,10 @@ DestroyDictionary
 }
 
 void *
-GetValueFromDictionary
+GetDictionaryValue
 ( Dictionary * dictionary, const char * key )
 {
-  if( key == NULL )
+  if( dictionary == NULL || key == NULL )
     return NULL;
   
   Node * result = GetNode( key, dictionary->root );
@@ -71,7 +46,7 @@ NewDictionary
 }
 
 void *
-RemoveValueFromDictionary
+RemoveDictionaryValue
 ( Dictionary * dictionary, const char * key )
 {
   Node * node = GetNode( key, dictionary->root );
@@ -265,4 +240,32 @@ SubtreeMinimum
     return node;
   
   return SubtreeMinimum( node->left_child );
+}
+
+Dictionary *
+SetDictionaryValue
+( Dictionary * dictionary, const char * key, void * value )
+{
+  if( dictionary == NULL )
+    return NULL;
+  
+  Node * node = malloc( sizeof( Node ) );
+  if( node == NULL )
+    return NULL;
+  
+  node->key = key;
+  node->value = value;
+  node->parent = NULL;
+  node->left_child = NULL;
+  node->right_child = NULL;
+  
+  if( dictionary->root == NULL ){
+    dictionary->root = node;
+    return dictionary;
+  }
+  
+  AddNode( dictionary->root, node );
+  Splay( dictionary, node );
+  
+  return dictionary;
 }

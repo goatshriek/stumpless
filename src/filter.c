@@ -23,7 +23,7 @@ AddFilter
   }
   
   void * value = ( void * ) filter;
-  if( AddValueToDictionary( filters, filter->name, value ) == NULL )
+  if( SetDictionaryValue( filters, filter->name, value ) == NULL )
     return NULL;
   
   return NULL;
@@ -40,13 +40,46 @@ FindFilterByName
       return NULL;
   }
   
-  Filter * filter = GetValueFromDictionary( filters, name );
+  Filter * filter = GetDictionaryValue( filters, name );
   
   if( filter == NULL ){
     if( InitializeFilterByName( name ) != NULL )
       return NULL;
-    filter = GetValueFromDictionary( filters, name );
+    filter = GetDictionaryValue( filters, name );
   }
   
   return filter;
+}
+
+void *
+GetFilterOption
+( const Filter * filter, const char * option )
+{
+  if( filter == NULL || option == NULL || filter->options == NULL )
+    return NULL;
+  
+  return GetDictionaryValue( filter->options, option );
+}
+
+Status *
+SetFilterOption
+( Filter * filter, const char * option, void * value )
+{
+  if( filter == NULL || option == NULL )
+    return RaiseAbnormalStatus( "empty argument" );
+  
+  if( filter->options == NULL ){
+    filter->options = NewDictionary();
+    
+    if( filter->options == NULL )
+      return RaiseAbnormalStatus( "dictionary failure" );
+  }
+  
+  Dictionary * result;
+  result =  SetDictionaryValue( filter->options, option, value );
+  
+  if( result == NULL )
+    return RaiseAbnormalStatus( "dictionary failure" );
+  else
+    return NULL;
 }

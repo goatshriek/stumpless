@@ -23,7 +23,7 @@ AddOutputProfile
   }
   
   void * value = ( void * ) profile;
-  if( AddValueToDictionary( profiles, profile->name, value ) == NULL )
+  if( SetDictionaryValue( profiles, profile->name, value ) == NULL )
     return NULL;
   
   return NULL;
@@ -40,12 +40,12 @@ FindOutputProfileByName
       return NULL;
   }
   
-  OutputProfile * profile = GetValueFromDictionary( profiles, name );
+  OutputProfile * profile = GetDictionaryValue( profiles, name );
   
   if( profile == NULL ){
     if( InitializeOutputProfileByName( name ) != NULL )
       return NULL;
-    profile = GetValueFromDictionary( profiles, name );
+    profile = GetDictionaryValue( profiles, name );
   }
   
   return profile;
