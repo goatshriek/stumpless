@@ -21,6 +21,14 @@ void
 DestroyFilterList
 ( FilterList * );
 
+unsigned short
+EntryThroughFilterList
+( FilterList *, Entry * );
+
+unsigned short
+FilterListIsEmpty
+( FilterList * );
+
 FilterList *
 NewFilterList
 ( void );
@@ -29,12 +37,16 @@ Filter *
 NextInFilterList
 ( FilterList * );
 
+unsigned short
+OutputThroughFilterList
+( FilterList *, Entry * );
+
 Status *
 PrependToFilterList
 ( FilterList *, Filter * );
 
 unsigned short
-FilterListIsEmpty
-( FilterList * );
+ValueThroughFilterList
+( FilterList *, Value * );
 
 #endif

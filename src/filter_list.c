@@ -62,6 +62,20 @@ DestroyFilterList
   return;
 }
 
+unsigned short
+EntryThroughFilterList
+( FilterList * list, Entry * entry )
+{
+  return 0;
+}
+
+unsigned short
+FilterListIsEmpty
+( FilterList * list )
+{
+  return list == NULL || ListIsEmpty( list->list );
+}
+
 FilterList *
 NewFilterList
 ( void )
@@ -87,6 +101,13 @@ NextInFilterList
   return NextInList( list->list );
 }
 
+unsigned short
+OutputThroughFilterList
+( FilterList * list, Entry * entry )
+{
+  return 0;
+}
+
 Status *
 PrependToFilterList
 ( FilterList * list, Filter * filter )
@@ -105,8 +126,8 @@ PrependToFilterList
 }
 
 unsigned short
-FilterListIsEmpty
-( FilterList * list )
+ValueThroughFilterList
+( FilterList * list, Value * value )
 {
-  return list == NULL || ListIsEmpty( list->list );
+  return 0;
 }

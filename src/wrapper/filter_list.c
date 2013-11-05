@@ -30,6 +30,20 @@ __STUMPLESS_NAME( DestroyFilterList )
   DestroyFilterList( list );
 }
 
+unsigned short
+__STUMPLESS_NAME( EntryThroughFilterList )
+( __STUMPLESS_NAME( FilterList ) * list, __STUMPLESS_NAME( Entry ) * entry )
+{
+  return EntryThroughFilterList( list, entry );
+}
+
+unsigned short
+__STUMPLESS_NAME( FilterListIsEmpty )
+( __STUMPLESS_NAME( FilterList ) * list )
+{
+  return FilterListIsEmpty( list );
+}
+
 __STUMPLESS_NAME( FilterList ) *
 __STUMPLESS_NAME( NewFilterList )
 ( void )
@@ -44,6 +58,13 @@ __STUMPLESS_NAME( NextInFilterList )
   return NextInFilterList( list );
 }
 
+unsigned short
+__STUMPLESS_NAME( OutputThroughFilterList )
+( __STUMPLESS_NAME( FilterList ) * list, __STUMPLESS_NAME( Output ) * output )
+{
+  return OutputThroughFilterList( list, output );
+}
+
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( PrependToFilterList )
 ( __STUMPLESS_NAME( FilterList ) * list, __STUMPLESS_NAME( Filter ) * filter )
@@ -52,8 +73,8 @@ __STUMPLESS_NAME( PrependToFilterList )
 }
 
 unsigned short
-__STUMPLESS_NAME( FilterListIsEmpty )
-( __STUMPLESS_NAME( FilterList ) * list )
+__STUMPLESS_NAME( ValueThroughFilterList )
+( __STUMPLESS_NAME( FilterList ) * list, __STUMPLESS_NAME( Value ) * value )
 {
-  return FilterListIsEmpty( list );
+  return ValueThroughFilterList( list, value );
 }
