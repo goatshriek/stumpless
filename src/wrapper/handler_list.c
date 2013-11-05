@@ -30,6 +30,13 @@ __STUMPLESS_NAME( DestroyHandlerList )
   DestroyHandlerList( list );
 }
 
+unsigned short
+__STUMPLESS_NAME( HandlerListIsEmpty )
+( __STUMPLESS_NAME( HandlerList ) * list )
+{
+  return HandlerListIsEmpty( list );
+}
+
 __STUMPLESS_NAME( HandlerList ) *
 __STUMPLESS_NAME( NewHandlerList )
 ( void )
@@ -45,15 +52,15 @@ __STUMPLESS_NAME( NextInHandlerList )
 }
 
 __STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( OutputThroughHandlerList )
+( __STUMPLESS_NAME( HandlerList ) * list, __STUMPLESS_NAME( Output ) * output )
+{
+  return OutputThroughHandlerList( list, output );
+}
+
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( PrependToHandlerList )
 ( __STUMPLESS_NAME( HandlerList ) * list, __STUMPLESS_NAME( Handler ) * handler )
 {
   return PrependToHandlerList( list, handler );
-}
-
-unsigned short
-__STUMPLESS_NAME( HandlerListIsEmpty )
-( __STUMPLESS_NAME( HandlerList ) * list )
-{
-  return HandlerListIsEmpty( list );
 }

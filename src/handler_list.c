@@ -62,6 +62,13 @@ DestroyHandlerList
   return;
 }
 
+unsigned short
+HandlerListIsEmpty
+( HandlerList * list )
+{
+  return list == NULL || ListIsEmpty( list->list );
+}
+
 HandlerList *
 NewHandlerList
 ( void )
@@ -88,6 +95,13 @@ NextInHandlerList
 }
 
 Status *
+OutputThroughHandlerList
+( HandlerList * list, Output * output )
+{
+  return NULL;
+}
+
+Status *
 PrependToHandlerList
 ( HandlerList * list, Handler * handler )
 {
@@ -102,11 +116,4 @@ PrependToHandlerList
     return RaiseAbnormalStatus( "list failure" );
   
   return NULL;
-}
-
-unsigned short
-HandlerListIsEmpty
-( HandlerList * list )
-{
-  return list == NULL || ListIsEmpty( list->list );
 }

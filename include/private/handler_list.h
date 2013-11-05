@@ -21,6 +21,10 @@ void
 DestroyHandlerList
 ( HandlerList * );
 
+unsigned short
+HandlerListIsEmpty
+( HandlerList * );
+
 HandlerList *
 NewHandlerList
 ( void );
@@ -30,11 +34,11 @@ NextInHandlerList
 ( HandlerList * );
 
 Status *
+OutputThroughHandlerList
+( HandlerList *, Output * );
+
+Status *
 PrependToHandlerList
 ( HandlerList *, Handler * );
-
-unsigned short
-HandlerListIsEmpty
-( HandlerList * );
 
 #endif
