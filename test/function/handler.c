@@ -92,7 +92,7 @@ test_set_option
   FAIL_IF_NULL( handler, "the test handler could not be built" )
   
   const char * option = "test option";
-  const char * value = "target value";
+  void * value = ( void * ) "target value";
   
   Status * status = SetHandlerOption( NULL, NULL, NULL );
   FAIL_IF_NULL( status, "three NULL arguments did not raise an error" )

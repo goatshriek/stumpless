@@ -8,7 +8,6 @@
 #include <stumpless/event.h>
 #include <stumpless/level.h>
 #include <stumpless/logger.h>
-#include <stumpless/logger_profile.h>
 #include <stumpless/output.h>
 #include <stumpless/output_profile.h>
 #include <stumpless/status.h>
