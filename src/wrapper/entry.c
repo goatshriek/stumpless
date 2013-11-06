@@ -1,4 +1,4 @@
-#include <entry.h>
+#include "stumpless/entry.h"
 
 #include "private/entry.h"
 

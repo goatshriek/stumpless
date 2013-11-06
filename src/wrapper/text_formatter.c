@@ -1,4 +1,4 @@
-#include <text_formatter.h>
+#include "stumpless/text_formatter.h"
 
 #include "private/text_formatter.h"
 

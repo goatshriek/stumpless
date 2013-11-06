@@ -1,4 +1,4 @@
-#include <configuration.h>
+#include "stumpless/configuration.h"
 
 #include "private/configuration.h"
 

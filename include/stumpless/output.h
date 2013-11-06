@@ -1,8 +1,8 @@
 #ifndef __STUMPLESS_OUTPUT_H
 #define __STUMPLESS_OUTPUT_H
 
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 unsigned short
 __STUMPLESS_NAME( BinaryOutputIsEmpty )

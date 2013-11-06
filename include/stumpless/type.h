@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <public_name.h>
+#include <stumpless/public_name.h>
 
 enum __STUMPLESS_NAME( HTTPMethod );
 enum __STUMPLESS_NAME( SortingMethod );

@@ -1,4 +1,4 @@
-#include <output_profile.h>
+#include "stumpless/output_profile.h"
 
 #include "private/output_profile.h"
 

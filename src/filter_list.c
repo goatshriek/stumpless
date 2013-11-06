@@ -103,7 +103,7 @@ NextInFilterList
 
 unsigned short
 OutputThroughFilterList
-( FilterList * list, Entry * entry )
+( FilterList * list, Output * output )
 {
   return 0;
 }

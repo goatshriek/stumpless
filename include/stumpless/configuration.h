@@ -1,7 +1,7 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIGURATION_H
 #define __STUMPLESS_PRIVATE_CONFIGURATION_H
 
-#include <type.h>
+#include <stumpless/type.h>
 
 __STUMPLESS_NAME( Configuration ) *
 __STUMPLESS_NAME( GetConfiguration )

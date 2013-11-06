@@ -1,4 +1,4 @@
-#include <status.h>
+#include "stumpless/status.h"
 
 #include "private/status.h"
 

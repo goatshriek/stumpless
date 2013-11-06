@@ -1,10 +1,8 @@
 #ifndef __STUMPLESS_VALUE_LIST_H
 #define __STUMPLESS_VALUE_LIST_H
 
-#include <stdio.h>
-
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AddSeparatorToValueList )

@@ -1,8 +1,8 @@
 #ifndef __STUMPLESS_EVENT_H
 #define __STUMPLESS_EVENT_H
 
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 char *
 __STUMPLESS_NAME( EventToString)( __STUMPLESS_NAME( Event ) * );

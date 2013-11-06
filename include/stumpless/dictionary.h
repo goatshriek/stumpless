@@ -1,8 +1,8 @@
 #ifndef __STUMPLESS_DICTIONARY_H
 #define __STUMPLESS_DICIONTARY_H
 
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 void
 __STUMPLESS_NAME( DestroyDictionary )

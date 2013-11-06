@@ -1,4 +1,4 @@
-#include <event.h>
+#include "stumpless/event.h"
 
 #include "private/event.h"
 

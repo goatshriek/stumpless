@@ -1,8 +1,8 @@
 #ifndef STUMPLESS_PRIVATE_TYPE_H
 #define STUMPLESS_PRIVATE_TYPE_H
 
-#include <public_name.h>
-#include <type.h>
+#include "stumpless/public_name.h"
+#include "stumpless/type.h"
 
 struct List;
 

@@ -1,4 +1,4 @@
-#include <dictionary.h>
+#include "stumpless/dictionary.h"
 
 #include "private/dictionary.h"
 

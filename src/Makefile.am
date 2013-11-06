@@ -1,4 +1,4 @@
-AM_CFLAGS = -g -I $(top_srcdir)/include
+AM_CFLAGS = -g -I $(top_srcdir)/include -I ./include
 
 lib_LTLIBRARIES = libstumpless.la
 

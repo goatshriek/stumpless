@@ -1,8 +1,8 @@
 #ifndef __STUMPLESS_FILTER_H
 #define __STUMPLESS_FILTER_H
 
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AddFilter )

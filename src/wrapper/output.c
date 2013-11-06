@@ -1,4 +1,4 @@
-#include <output.h>
+#include "stumpless/output.h"
 
 #include "private/output.h"
 

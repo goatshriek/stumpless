@@ -39,7 +39,7 @@ NextInFilterList
 
 unsigned short
 OutputThroughFilterList
-( FilterList *, Entry * );
+( FilterList *, Output * );
 
 Status *
 PrependToFilterList

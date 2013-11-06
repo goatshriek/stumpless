@@ -1,8 +1,8 @@
 #ifndef __STUMPLESS_ENTRY_H
 #define __STUMPLESS_ENTRY_H
 
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 char *
 __STUMPLESS_NAME( EntryToString )( __STUMPLESS_NAME( Entry ) * );

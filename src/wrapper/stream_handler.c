@@ -1,4 +1,4 @@
-#include <stream_handler.h>
+#include "stumpless/stream_handler.h"
 
 #include "private/stream_handler.h"
 

@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( BinaryOutputIntoStream )

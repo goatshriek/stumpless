@@ -1,8 +1,8 @@
 #ifndef __STUMPLESS_LOGGER_H
 #define __STUMPLESS_LOGGER_H
 
-#include <public_name.h>
-#include <type.h>
+#include <stumpless/public_name.h>
+#include <stumpless/type.h>
 
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( CheckLoggerStatus )
