@@ -61,6 +61,21 @@ InitializeEmptyArgumentStatus
 }
 
 Status *
+InitializeIncompatibleProfileStatus
+( void )
+{
+  CREATE_STATUS
+  
+  status->name = "incompatible profile";
+  status->description = "the profile of an object used for the request operation did not support the operation in question";
+  status->error = 1;
+  status->failure = 0;
+  status->warning = 0;
+  
+  return status;
+}
+
+Status *
 InitializeListFailureStatus
 ( void )
 {
@@ -118,6 +133,7 @@ InitializeStatusByName
     ADD_STATUS( "constructor failure", ConstructorFailure )
     ADD_STATUS( "dictionary failure", DictionaryFailure )
     ADD_STATUS( "empty argument", EmptyArgument )
+    ADD_STATUS( "incompatible profile", IncompatibleProfile )
     ADD_STATUS( "list failure", ListFailure )
     ADD_STATUS( "malformed structure", MalformedStructure )
     ADD_STATUS( "memory allocation failure", MemoryAllocationFailure )

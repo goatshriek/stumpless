@@ -180,7 +180,11 @@ test_entry_through
   Entry * entry = BuildEmptyEntry();
   FAIL_IF_NULL( entry, "the test entry could not be built" )
   
-  unsigned accepted = EntryThroughFilterList( list, NULL );
+  unsigned accepted = EntryThroughFilterList( NULL, NULL );
+  if( !accepted )
+    return "a null list did not accept its input";
+  
+  accepted = EntryThroughFilterList( list, NULL );
   if( accepted )
     return "a null entry made it through the filter list";
   

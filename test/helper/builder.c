@@ -4,6 +4,7 @@
 #include "private/dictionary.h"
 #include "private/filter.h"
 #include "private/filter_list.h"
+#include "private/handler.h"
 #include "private/handler_list.h"
 #include "private/list.h"
 #include "private/output_profile.h"
@@ -451,23 +452,12 @@ BuildHandlerList
   if( list == NULL )
     return NULL;
   
-  Handler * handler = malloc( sizeof( Handler ) );
+  Handler * handler = FindHandlerByName( "stream" );
   if( handler == NULL )
     return NULL;
-  handler->name = "first handler";
-  AppendToHandlerList( list, handler );
   
-  handler = malloc( sizeof( Handler ) );
-  if( handler == NULL )
+  if( AppendToHandlerList( list, handler ) != NULL )
     return NULL;
-  handler->name = "second handler";
-  AppendToHandlerList( list, handler );
-  
-  handler = malloc( sizeof( Handler ) );
-  if( handler == NULL )
-    return NULL;
-  handler->name = "third handler";
-  AppendToHandlerList( list, handler );
   
   return list;
 }

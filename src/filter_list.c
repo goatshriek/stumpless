@@ -66,6 +66,9 @@ unsigned short
 EntryThroughFilterList
 ( FilterList * list, Entry * entry )
 {
+  if( list == NULL )
+    return 1;
+  
   Filter * filter = BeginList( list->list );
   while( filter != NULL ){
     if( !filter->accept_entry( entry, filter->options ) )

@@ -98,6 +98,22 @@ Status *
 OutputThroughHandlerList
 ( HandlerList * list, Output * output )
 {
+  if( list == NULL || output == NULL )
+    return RaiseAbnormalStatus( "empty argument" );
+  
+  Status * status;
+  Handler * handler = BeginList( list->list );
+  while( handler != NULL ){
+    if( handler->handle == NULL )
+      continue;
+    
+    status = handler->handle( output, handler->options );
+    if( status != NULL && status->failure )
+      return status;
+    
+    handler = NextInList( list->list );
+  }
+  
   return NULL;
 }
 

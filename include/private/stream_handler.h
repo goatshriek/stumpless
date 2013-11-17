@@ -14,6 +14,10 @@ CSVOutputIntoStream
 ( Output *, FILE * );
 
 Status *
+HandleStreamOutput
+( Output *, Dictionary * );
+
+Status *
 JSONOutputIntoStream
 ( Output *, FILE * );
 

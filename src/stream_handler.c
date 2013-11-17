@@ -25,6 +25,21 @@ CSVOutputIntoStream
 }
 
 Status *
+HandleStreamOutput
+( Output * output, Dictionary * options )
+{
+  if( output == NULL )
+    return RaiseAbnormalStatus( "empty argument" );
+  
+  if( output->profile == NULL || output->profile->into_stream == NULL )
+    return RaiseAbnormalStatus( "incompatible profile" );
+  
+  FILE * destination = stdout;
+  
+  return output->profile->into_stream( output, destination );
+}
+
+Status *
 JSONOutputIntoStream
 ( Output * output, FILE * stream )
 {

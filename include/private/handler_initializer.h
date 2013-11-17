@@ -7,4 +7,8 @@ Status *
 InitializeHandlerByName
 ( const char * );
 
+Handler *
+InitializeStreamHandler
+( void );
+
 #endif

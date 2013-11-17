@@ -16,6 +16,10 @@ InitializeEmptyArgumentStatus
 ( void );
 
 Status *
+InitializeIncompatibleProfileStatus
+( void );
+
+Status *
 InitializeListFailureStatus
 ( void );
 

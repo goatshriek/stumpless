@@ -4,9 +4,27 @@
 #include "private/handler.h"
 #include "private/handler_initializer.h"
 #include "private/status.h"
+#include "private/stream_handler.h"
 
 #define ADD_HANDLER( name, function )                                          \
 SetDictionaryValue( initializers, name, Initialize##function##Handler );
+
+#define HANDLER_INITIALIZER_FUNCTION( handler_name, function_name )            \
+Handler *                                                                      \
+Initialize##function_name##Handler                                             \
+( void )                                                                       \
+{                                                                              \
+  Handler * handler = malloc( sizeof( Handler ) );                             \
+  if( handler == NULL )                                                        \
+    return NULL;                                                               \
+                                                                               \
+  handler->name = handler_name;                                                \
+  handler->handle = Handle##function_name##Output;                             \
+  handler->filters = NULL;                                                     \
+  handler->options = NULL;                                                     \
+                                                                               \
+  return handler;                                                              \
+}
 
 static Dictionary * initializers = NULL;
 
@@ -31,9 +49,4 @@ InitializeHandlerByName
     return AddHandler( initializer() );
 }
 
-Handler *
-InitializeStreamHandler
-( void )
-{
-  return NULL;
-}
+HANDLER_INITIALIZER_FUNCTION( "stream", Stream )
