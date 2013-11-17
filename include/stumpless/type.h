@@ -126,9 +126,8 @@ enum __STUMPLESS_NAME( SortingMethod ) {
 };
 
 struct __STUMPLESS_NAME( Adapter ) {
-  __STUMPLESS_NAME( Entry ) * ( *adapt )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Entry ) * ( *adapt )( __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
   __STUMPLESS_NAME( FilterList ) * filters;
-  unsigned filter_count;
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
 };
@@ -185,25 +184,23 @@ struct __STUMPLESS_NAME( FileConfiguration ) {
 };
 
 struct __STUMPLESS_NAME( Filter ) {
-  unsigned short ( *accept_entry )( __STUMPLESS_NAME( Entry ) * );
-  unsigned short ( *accept_output )( __STUMPLESS_NAME( Output ) * );
-  unsigned short ( *accept_value )( __STUMPLESS_NAME( Value ) * );
+  unsigned short ( *accept_entry )( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
+  unsigned short ( *accept_output )( __STUMPLESS_NAME( Output ) *, __STUMPLESS_NAME( Dictionary ) *);
+  unsigned short ( *accept_value )( __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
 };
 
 struct __STUMPLESS_NAME( Formatter ) {
   __STUMPLESS_NAME( FilterList ) * filters;
-  unsigned filter_count;
-  __STUMPLESS_NAME( Output ) * ( *format )( __STUMPLESS_NAME( Entry ) * );
+  __STUMPLESS_NAME( Output ) * ( *format )( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
 };
 
 struct __STUMPLESS_NAME( Handler ) {
   __STUMPLESS_NAME( FilterList ) * filters;
-  unsigned filter_count;
-  __STUMPLESS_NAME( Status ) * ( *handle )( __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *handle )( __STUMPLESS_NAME( Output ) *, __STUMPLESS_NAME( Dictionary ) * );
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
 };

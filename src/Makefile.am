@@ -8,6 +8,7 @@ libstumpless_la_SOURCES = src/boolean.c \
                           src/entry.c \
                           src/event.c \
                           src/filter.c \
+                          src/filter_base.c \
                           src/filter_initializer.c \
                           src/filter_list.c \
                           src/handler.c \

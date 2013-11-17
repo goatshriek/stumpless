@@ -19,6 +19,8 @@ InitializeHandlerByName
     initializers = NewDictionary();
     if( initializers == NULL )
       return RaiseAbnormalStatus( "constructor failure" );
+    
+    ADD_HANDLER( "stream", Stream )
   }
   
   Handler * ( *initializer )();
@@ -27,4 +29,11 @@ InitializeHandlerByName
     return NULL;
   else 
     return AddHandler( initializer() );
+}
+
+Handler *
+InitializeStreamHandler
+( void )
+{
+  return NULL;
 }

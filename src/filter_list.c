@@ -66,7 +66,15 @@ unsigned short
 EntryThroughFilterList
 ( FilterList * list, Entry * entry )
 {
-  return 0;
+  Filter * filter = BeginList( list->list );
+  while( filter != NULL ){
+    if( !filter->accept_entry( entry, filter->options ) )
+      return 0;
+     
+    filter = NextInList( list->list );
+  }
+  
+  return 1;
 }
 
 unsigned short

@@ -11,4 +11,8 @@ Status *
 InitializeFilterByName
 ( const char * );
 
+Filter *
+InitializeLevelFilter
+( void );
+
 #endif

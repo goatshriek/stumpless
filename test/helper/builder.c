@@ -2,6 +2,7 @@
 
 #include "private/configuration.h"
 #include "private/dictionary.h"
+#include "private/filter.h"
 #include "private/filter_list.h"
 #include "private/handler_list.h"
 #include "private/list.h"
@@ -111,8 +112,41 @@ BuildDictionaryOfStrings
   return dictionary;
 }
 
+Entry *
+BuildEmptyEntry
+( void )
+{
+  Entry * entry = malloc( sizeof( Entry ) );
+  if( entry == NULL )
+    return NULL;
+  
+  entry->description = NULL;
+  entry->event = NULL;
+  entry->attributes = NULL;
+  entry->attribute_count = 0;
+  
+  return entry;
+}
+
+Output *
+BuildEmptyOutput
+( void )
+{
+  Output * output = malloc( sizeof( Output ) );
+  if( output == NULL )
+    return NULL;
+  
+  output->data = NULL;
+  output->profile = BuildOutputProfile();
+  if( output->profile == NULL )
+    return NULL;
+  
+  return output;
+}
+
 Value *
-BuildEmptyUnsignedIntArrayValue( void )
+BuildEmptyUnsignedIntArrayValue
+( void )
 {
   Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
@@ -131,6 +165,24 @@ BuildEmptyUnsignedIntArrayValue( void )
     return NULL;
   
   value->length = 0;
+  
+  return value;
+}
+
+Value *
+BuildEmptyValue
+( void )
+{
+  Value * value = malloc( sizeof( Value ) );
+  if( value == NULL )
+    return NULL;
+    
+  value->data = NULL;
+  value->format = NULL;
+  value->length = 0;
+  value->profile = BuildValueProfile();
+  if( value->profile == NULL )
+    return NULL;
   
   return value;
 }
@@ -362,22 +414,14 @@ BuildFilterList
   if( list == NULL )
     return NULL;
   
-  Filter * filter = malloc( sizeof( Filter ) );
+  Filter * filter = FindFilterByName( "empty" );
   if( filter == NULL )
     return NULL;
-  filter->name = "first filter";
   AppendToFilterList( list, filter );
   
-  filter = malloc( sizeof( Filter ) );
+  filter = FindFilterByName( "level" );
   if( filter == NULL )
     return NULL;
-  filter->name = "second filter";
-  AppendToFilterList( list, filter );
-  
-  filter = malloc( sizeof( Filter ) );
-  if( filter == NULL )
-    return NULL;
-  filter->name = "third filter";
   AppendToFilterList( list, filter );
   
   return list;

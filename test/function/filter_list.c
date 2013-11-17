@@ -13,9 +13,12 @@ const char * test_begin( void );
 const char * test_constructor( void );
 const char * test_copy( void );
 const char * test_destructor( void );
+const char * test_entry_through( void );
 const char * test_is_empty( void );
 const char * test_next( void );
+const char * test_output_through( void );
 const char * test_prepender( void );
+const char * test_value_through( void );
 
 int
 main( void )
@@ -28,9 +31,12 @@ main( void )
   RUN_TEST( constructor )
   RUN_TEST( copy )
   RUN_TEST( destructor )
+  RUN_TEST( entry_through )
   RUN_TEST( is_empty )
   RUN_TEST( next )
+  RUN_TEST( output_through )
   RUN_TEST( prepender )
+  RUN_TEST( value_through )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -165,7 +171,39 @@ test_destructor
 }
 
 const char *
-test_is_empty( void )
+test_entry_through
+( void )
+{
+  FilterList * list = BuildFilterList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  Entry * entry = BuildEmptyEntry();
+  FAIL_IF_NULL( entry, "the test entry could not be built" )
+  
+  unsigned accepted = EntryThroughFilterList( list, NULL );
+  if( accepted )
+    return "a null entry made it through the filter list";
+  
+  accepted = EntryThroughFilterList( list, entry );
+  if( accepted )
+    return "an empty entry made it through the filter list";
+  
+  entry = BuildEntry();
+  accepted = EntryThroughFilterList( list, entry );
+  if( !accepted )
+    return "a full entry was not accepted by the list";
+  
+  entry->event->level = NULL;
+  accepted = EntryThroughFilterList( list, entry );
+  if( accepted )
+    return "an entry without a level made it through the list";
+  
+  return NULL;
+}
+
+const char *
+test_is_empty
+( void )
 {
   FilterList * list = NULL;
   if( !FilterListIsEmpty( list ) )
@@ -197,6 +235,13 @@ test_next
   filter = NextInFilterList( list );
   FAIL_IF_NULL( filter, "a filter was not returned from the next call" )
   
+  return NULL;
+}
+
+const char *
+test_output_through
+( void )
+{
   return NULL;
 }
 
@@ -239,5 +284,12 @@ test_prepender( void )
   if( retrieved_filter != filter )
     return "the filter was not actually prepended to a full list";
   
+  return NULL;
+}
+
+const char *
+test_value_through
+( void )
+{
   return NULL;
 }

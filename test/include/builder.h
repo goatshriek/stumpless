@@ -19,8 +19,21 @@ Dictionary *
 BuildDictionaryOfStrings
 ( void );
 
+Entry *
+BuildEmptyEntry
+( void );
+
+Output *
+BuildEmptyOutput
+( void );
+
 Value *
-BuildEmptyUnsignedIntArrayValue( void );
+BuildEmptyUnsignedIntArrayValue
+( void );
+
+Value *
+BuildEmptyValue
+( void );
 
 Entry *
 BuildEntry( void );

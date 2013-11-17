@@ -15,6 +15,7 @@ const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_is_empty( void );
 const char * test_next( void );
+const char * test_output_through( void );
 const char * test_prepender( void );
 
 int
@@ -30,6 +31,7 @@ main( void )
   RUN_TEST( destructor )
   RUN_TEST( is_empty )
   RUN_TEST( next )
+  RUN_TEST( output_through )
   RUN_TEST( prepender )
   
   if( failure_count > 0 )
@@ -201,7 +203,15 @@ test_next
 }
 
 const char *
-test_prepender( void )
+test_output_through
+( void )
+{
+  return NULL;
+}
+
+const char *
+test_prepender
+( void )
 {
   HandlerList * list = NewHandlerList();
   FAIL_IF_NULL( list, "could not build a new test list" )

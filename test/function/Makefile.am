@@ -22,6 +22,10 @@ test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
 
+test_function_filter_base_SOURCES = test/function/filter_base.c
+test_function_filter_base_CFLAGS = $(test_flags)
+test_function_filter_base_LDADD = $(test_libraries)
+
 test_function_filter_SOURCES = test/function/filter.c
 test_function_filter_CFLAGS = $(test_flags)
 test_function_filter_LDADD = $(test_libraries)
