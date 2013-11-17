@@ -215,10 +215,10 @@ struct __STUMPLESS_NAME( Level ) {
 };
 
 struct __STUMPLESS_NAME( Logger ) {
-  __STUMPLESS_NAME( Adapter ) * adapter;
+  __STUMPLESS_NAME( Adapter ) * adapter; // todo change to AdapterList
   const char * name;
-  __STUMPLESS_NAME( HandlerList ) * handlers;
-  __STUMPLESS_NAME( Formatter ) * formatter;
+  __STUMPLESS_NAME( HandlerList ) * handlers;  // todo remove: move to Formatter object
+  __STUMPLESS_NAME( Formatter ) * formatter; // todo change to FormatterList
 };
 
 struct __STUMPLESS_NAME( Output ) {
