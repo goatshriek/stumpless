@@ -15,8 +15,25 @@
 
 #include "builder.h"
 
+Adapter *
+BuildAdapter
+( void )
+{
+  Adapter * adapter = malloc( sizeof( Adapter ) );
+  if( adapter == NULL )
+    return NULL;
+  
+  adapter->adapt = NULL;
+  adapter->filters = NULL;
+  adapter->name = "test adapter";
+  adapter->options = NULL;
+  
+  return adapter;
+}
+
 Boolean *
-BuildBoolean( void )
+BuildBoolean
+( void )
 {
   Boolean * boolean = malloc( sizeof( Boolean ) );
   if( boolean == NULL )

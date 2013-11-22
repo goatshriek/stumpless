@@ -3,17 +3,25 @@
 
 #include "private/type.h"
 
+Adapter *
+BuildAdapter
+( void );
+
 Boolean *
-BuildBoolean( void );
+BuildBoolean
+( void );
 
 Value *
-BuildBooleanValue( void );
+BuildBooleanValue
+( void );
 
 Output *
-BuildByteOutput( void );
+BuildByteOutput
+( void );
 
 Value *
-BuildCharArrayValue( void );
+BuildCharArrayValue
+( void );
 
 Dictionary *
 BuildDictionaryOfStrings

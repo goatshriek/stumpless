@@ -1,4 +1,6 @@
-noinst_HEADERS = include/private/boolean.h \
+noinst_HEADERS = include/private/adapter.h \
+                 include/private/adapter_initializer.h \
+                 include/private/boolean.h \
                  include/private/configuration.h \
                  include/private/dictionary.h \
                  include/private/dictionary_static.h \

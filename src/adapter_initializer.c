@@ -4,7 +4,7 @@
 #include "private/adapter_initializer.h"
 #include "private/dictionary.h"
 #include "private/status.h"
-#include "private/stream_adapter.h"
+#include "private/stream_handler.h"
 
 #define ADAPTER_INITIALIZER_FUNCTION( adapter_name, function_name )            \
 Adapter *                                                                      \

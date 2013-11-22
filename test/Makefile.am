@@ -1,4 +1,5 @@
-check_PROGRAMS = test/function/boolean \
+check_PROGRAMS = test/function/adapter \
+                 test/function/boolean \
                  test/function/configuration \
                  test/function/dictionary \
                  test/function/entry \

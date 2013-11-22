@@ -1,6 +1,7 @@
 stumpless_includedir = $(includedir)/stumpless
 
-stumpless_include_HEADERS = include/stumpless/boolean.h \
+stumpless_include_HEADERS = include/stumpless/adapter.h \
+                            include/stumpless/boolean.h \
                             include/stumpless/config.h \
                             include/stumpless/configuration.h \
                             include/stumpless/dictionary.h \

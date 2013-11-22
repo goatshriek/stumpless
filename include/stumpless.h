@@ -1,6 +1,7 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
+#include <stumpless/adapter.h>
 #include <stumpless/boolean.h>
 #include <stumpless/config.h>
 #include <stumpless/configuration.h>

@@ -2,8 +2,11 @@ AM_CFLAGS = -g -I $(top_srcdir)/include -I ./include
 
 lib_LTLIBRARIES = libstumpless.la
 
-libstumpless_la_SOURCES = src/boolean.c \
+libstumpless_la_SOURCES = src/adapter.c \
+                          src/adapter_initializer.c \
+                          src/boolean.c \
                           src/configuration.c \
+                          src/context_adapter.c \
                           src/dictionary.c \
                           src/entry.c \
                           src/event.c \
