@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "private/adapter.h"
+#include "private/adapter_base.h"
 #include "private/adapter_initializer.h"
 #include "private/dictionary.h"
 #include "private/status.h"
@@ -16,7 +17,7 @@ Initialize##function_name##Adapter                                             \
     return NULL;                                                               \
                                                                                \
   adapter->name = adapter_name;                                                \
-  adapter->adapt = ValueInto##function_name##Adapter;                          \
+  adapter->adapt = ValueThrough##function_name##Adapter;                       \
   adapter->filters = NULL;                                                     \
   adapter->options = NULL;                                                     \
                                                                                \

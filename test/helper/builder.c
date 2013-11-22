@@ -26,7 +26,7 @@ BuildAdapter
   adapter->adapt = NULL;
   adapter->filters = NULL;
   adapter->name = "test adapter";
-  adapter->options = NULL;
+  adapter->options = BuildDictionaryOfStrings();
   
   return adapter;
 }

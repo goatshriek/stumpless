@@ -7,6 +7,8 @@
 #include "private/type.h"
 #include "private/value_list.h"
 
+// todo add entry merging function
+
 char *
 EntryToString
 ( Entry * entry )

@@ -3,6 +3,7 @@ AM_CFLAGS = -g -I $(top_srcdir)/include -I ./include
 lib_LTLIBRARIES = libstumpless.la
 
 libstumpless_la_SOURCES = src/adapter.c \
+                          src/adapter_base.c \
                           src/adapter_initializer.c \
                           src/boolean.c \
                           src/configuration.c \
