@@ -11,7 +11,9 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/csv_formatter.c \
                           src/dictionary.c \
                           src/entry.c \
+                          src/entry_attribute_list.c \
                           src/event.c \
+                          src/event_attribute_list.c \
                           src/filter.c \
                           src/filter_base.c \
                           src/filter_initializer.c \

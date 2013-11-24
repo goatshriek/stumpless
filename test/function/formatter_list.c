@@ -13,10 +13,10 @@ const char * test_begin( void );
 const char * test_constructor( void );
 const char * test_copy( void );
 const char * test_destructor( void );
+const char * test_entry_through( void );
 const char * test_is_empty( void );
 const char * test_next( void );
 const char * test_prepender( void );
-const char * test_value_through( void );
 
 int
 main( void )
@@ -29,10 +29,10 @@ main( void )
   RUN_TEST( constructor )
   RUN_TEST( copy )
   RUN_TEST( destructor )
+  RUN_TEST( entry_through )
   RUN_TEST( is_empty )
   RUN_TEST( next )
   RUN_TEST( prepender )
-  RUN_TEST( value_through )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -167,6 +167,13 @@ test_destructor
 }
 
 const char *
+test_entry_through
+( void )
+{
+  return NULL;
+}
+
+const char *
 test_is_empty
 ( void )
 {
@@ -242,12 +249,5 @@ test_prepender( void )
   if( retrieved_formatter != formatter )
     return "the formatter was not actually prepended to a full list";
   
-  return NULL;
-}
-
-const char *
-test_value_through
-( void )
-{
   return NULL;
 }

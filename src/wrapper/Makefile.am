@@ -5,7 +5,9 @@ libstumpless_la_SOURCES += src/wrapper/adapter.c \
                            src/wrapper/configuration.c \
                            src/wrapper/dictionary.c \
                            src/wrapper/entry.c \
+                           src/wrapper/entry_attribute_list.c \
                            src/wrapper/event.c \
+                           src/wrapper/event_attribute_list.c \
                            src/wrapper/filter.c \
                            src/wrapper/filter_list.c \
                            src/wrapper/formatter.c \

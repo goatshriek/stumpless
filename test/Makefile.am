@@ -4,7 +4,9 @@ check_PROGRAMS = test/function/adapter \
                  test/function/configuration \
                  test/function/dictionary \
                  test/function/entry \
+                 test/function/entry_attribute_list \
                  test/function/event \
+                 test/function/event_attribute_list \
                  test/function/filter \
                  test/function/filter_base \
                  test/function/filter_list \

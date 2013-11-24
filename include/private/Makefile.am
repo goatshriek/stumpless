@@ -9,7 +9,10 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/dictionary.h \
                  include/private/dictionary_static.h \
                  include/private/entry.h \
+                 include/private/entry_attribute_list_static.h \
                  include/private/event.h \
+                 include/private/event_attribute_list.h \
+                 include/private/event_attribute_list_static.h \
                  include/private/filter.h \
                  include/private/filter_initializer.h \
                  include/private/filter_list.h \

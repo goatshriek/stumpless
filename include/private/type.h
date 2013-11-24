@@ -36,10 +36,14 @@ typedef struct __STUMPLESS_NAME( Entry )
         Entry;
 typedef struct __STUMPLESS_NAME( EntryAttribute )
         EntryAttribute;
+typedef struct __STUMPLESS_NAME( EntryAttributeList )
+        EntryAttributeList;
 typedef struct __STUMPLESS_NAME( Event )
         Event;
 typedef struct __STUMPLESS_NAME( EventAttribute )
         EventAttribute;
+typedef struct __STUMPLESS_NAME( EventAttributeList )
+        EventAttributeList;
 typedef struct __STUMPLESS_NAME( FileConfiguration )
         FileConfiguration;
 typedef struct __STUMPLESS_NAME( Filter )

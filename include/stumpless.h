@@ -8,7 +8,9 @@
 #include <stumpless/configuration.h>
 #include <stumpless/csv_formatter.h>
 #include <stumpless/entry.h>
+#include <stumpless/entry_attribute_list.h>
 #include <stumpless/event.h>
+#include <stumpless/event_attribute_list.h>
 #include <stumpless/filter.h>
 #include <stumpless/filter_list.h>
 #include <stumpless/formatter.h>

@@ -20,8 +20,10 @@ struct __STUMPLESS_NAME( Configuration );
 struct __STUMPLESS_NAME( Dictionary );
 struct __STUMPLESS_NAME( Entry );
 struct __STUMPLESS_NAME( EntryAttribute );
+struct __STUMPLESS_NAME( EntryAttributeList );
 struct __STUMPLESS_NAME( Event );
 struct __STUMPLESS_NAME( EventAttribute );
+struct __STUMPLESS_NAME( EventAttributeList );
 struct __STUMPLESS_NAME( FileConfiguration );
 struct __STUMPLESS_NAME( Filter );
 struct __STUMPLESS_NAME( FilterList );
@@ -67,10 +69,14 @@ typedef struct __STUMPLESS_NAME( Entry )
         __STUMPLESS_NAME( Entry );
 typedef struct __STUMPLESS_NAME( EntryAttribute )
         __STUMPLESS_NAME( EntryAttribute );
+typedef struct __STUMPLESS_NAME( EntryAttributeList )
+        __STUMPLESS_NAME( EntryAttributeList );
 typedef struct __STUMPLESS_NAME( Event )
         __STUMPLESS_NAME( Event );
 typedef struct __STUMPLESS_NAME( EventAttribute )
         __STUMPLESS_NAME( EventAttribute );
+typedef struct __STUMPLESS_NAME( EventAttributeList )
+        __STUMPLESS_NAME( EventAttributeList );
 typedef struct __STUMPLESS_NAME( FileConfiguration )
         __STUMPLESS_NAME( FileConfiguration );
 typedef struct __STUMPLESS_NAME( Filter )

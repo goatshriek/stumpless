@@ -8,7 +8,9 @@ stumpless_include_HEADERS = include/stumpless/adapter.h \
                             include/stumpless/csv_formatter.h \
                             include/stumpless/dictionary.h \
                             include/stumpless/entry.h \
+                            include/stumpless/entry_attribute_list.h \
                             include/stumpless/event.h \
+                            include/stumpless/event_attribute_list.h \
                             include/stumpless/filter.h \
                             include/stumpless/filter_list.h \
                             include/stumpless/formatter.h \

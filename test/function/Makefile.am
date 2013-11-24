@@ -26,9 +26,17 @@ test_function_entry_SOURCES = test/function/entry.c
 test_function_entry_CFLAGS = $(test_flags)
 test_function_entry_LDADD = $(test_libraries)
 
+test_function_entry_attribute_list_SOURCES = test/function/entry_attribute_list.c
+test_function_entry_attribute_list_CFLAGS = $(test_flags)
+test_function_entry_attribute_list_LDADD = $(test_libraries)
+
 test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
+
+test_function_event_attribute_list_SOURCES = test/function/event_attribute_list.c
+test_function_event_attribute_list_CFLAGS = $(test_flags)
+test_function_event_attribute_list_LDADD = $(test_libraries)
 
 test_function_filter_base_SOURCES = test/function/filter_base.c
 test_function_filter_base_CFLAGS = $(test_flags)

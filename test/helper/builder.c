@@ -4,6 +4,7 @@
 #include "private/adapter_list.h"
 #include "private/configuration.h"
 #include "private/dictionary.h"
+#include "private/event_attribute_list.h"
 #include "private/filter.h"
 #include "private/filter_list.h"
 #include "private/formatter.h"
