@@ -7,6 +7,10 @@ Adapter *
 BuildAdapter
 ( void );
 
+AdapterList *
+BuildAdapterList
+( void );
+
 Boolean *
 BuildBoolean
 ( void );

@@ -1,8 +1,6 @@
 #ifndef __STUMPLESS_FILTER_LIST_H
 #define __STUMPLESS_FILTER_LIST_H
 
-#include <stdio.h>
-
 #include <stumpless/public_name.h>
 #include <stumpless/type.h>
 

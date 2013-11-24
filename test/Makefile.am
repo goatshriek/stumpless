@@ -1,4 +1,5 @@
 check_PROGRAMS = test/function/adapter \
+                 test/function/adapter_list \
                  test/function/boolean \
                  test/function/configuration \
                  test/function/dictionary \

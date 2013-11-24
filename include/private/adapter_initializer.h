@@ -3,12 +3,16 @@
 
 #include "private/type.h"
 
+Status *
+InitializeAdapterByName
+( const char * );
+
 Adapter *
 InitializeContextAdapter
 ( void );
 
-Status *
-InitializeAdapterByName
-( const char * );
+Adapter *
+InitializeLevelAdapter
+( void );
 
 #endif

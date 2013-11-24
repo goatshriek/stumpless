@@ -1,5 +1,7 @@
 #include <stdlib.h>
 
+#include "private/adapter.h"
+#include "private/adapter_list.h"
 #include "private/configuration.h"
 #include "private/dictionary.h"
 #include "private/filter.h"
@@ -29,6 +31,29 @@ BuildAdapter
   adapter->options = BuildDictionaryOfStrings();
   
   return adapter;
+}
+
+AdapterList *
+BuildAdapterList
+( void )
+{
+  AdapterList * list = NewAdapterList();
+  if( list == NULL )
+    return NULL;
+  
+  Adapter * adapter = FindAdapterByName( "context" );
+  if( adapter == NULL )
+    return NULL;
+  if( AppendToAdapterList( list, adapter ) != NULL )
+    return NULL;
+  
+  adapter = FindAdapterByName( "level" );
+  if( adapter == NULL )
+    return NULL;
+  if( AppendToAdapterList( list, adapter ) != NULL )
+    return NULL;
+  
+  return list;
 }
 
 Boolean *

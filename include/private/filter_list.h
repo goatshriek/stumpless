@@ -1,8 +1,6 @@
 #ifndef STUMPLESS_PRIVATE_FILTER_LIST_H
 #define STUMPLESS_PRIVATE_FILTER_LIST_H
 
-#include <stdio.h>
-
 #include "private/type.h"
 
 Status *

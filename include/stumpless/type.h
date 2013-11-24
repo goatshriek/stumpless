@@ -12,6 +12,7 @@ enum __STUMPLESS_NAME( HTTPMethod );
 enum __STUMPLESS_NAME( SortingMethod );
 
 struct __STUMPLESS_NAME( Adapter );
+struct __STUMPLESS_NAME( AdapterList );
 struct __STUMPLESS_NAME( Boolean );
 struct __STUMPLESS_NAME( BooleanFormat );
 struct __STUMPLESS_NAME( ByteList );
@@ -49,6 +50,8 @@ typedef enum __STUMPLESS_NAME( SortingMethod )
 
 typedef struct __STUMPLESS_NAME( Adapter )
         __STUMPLESS_NAME( Adapter );
+typedef struct __STUMPLESS_NAME( AdapterList )
+        __STUMPLESS_NAME( AdapterList );
 typedef struct __STUMPLESS_NAME( Boolean )
         __STUMPLESS_NAME( Boolean );
 typedef struct __STUMPLESS_NAME( BooleanFormat )

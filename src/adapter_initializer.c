@@ -29,8 +29,6 @@ SetDictionaryValue( initializers, name, Initialize##function##Adapter );
 
 static Dictionary * initializers = NULL;
 
-ADAPTER_INITIALIZER_FUNCTION( "context", Context )
-
 Status *
 InitializeAdapterByName
 ( const char * name )
@@ -42,6 +40,7 @@ InitializeAdapterByName
       return RaiseAbnormalStatus( "constructor failure" );
     
     ADD_ADAPTER( "context", Context )
+    ADD_ADAPTER( "level", Level )
   }
   
   Adapter * ( *initializer )();
@@ -51,3 +50,7 @@ InitializeAdapterByName
   else 
     return AddAdapter( initializer() );
 }
+
+ADAPTER_INITIALIZER_FUNCTION( "context", Context )
+
+ADAPTER_INITIALIZER_FUNCTION( "level", Level )

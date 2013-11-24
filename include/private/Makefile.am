@@ -1,6 +1,8 @@
 noinst_HEADERS = include/private/adapter.h \
                  include/private/adapter_base.h \
                  include/private/adapter_initializer.h \
+                 include/private/adapter_list.h \
+                 include/private/adapter_list_static.h \
                  include/private/boolean.h \
                  include/private/configuration.h \
                  include/private/dictionary.h \

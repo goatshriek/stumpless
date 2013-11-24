@@ -7,4 +7,8 @@ Entry *
 ValueThroughContextAdapter
 ( Value *, Dictionary * );
 
+Entry *
+ValueThroughLevelAdapter
+( Value *, Dictionary * );
+
 #endif

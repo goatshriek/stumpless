@@ -20,6 +20,8 @@ typedef enum __STUMPLESS_NAME( SortingMethod )
 
 typedef struct __STUMPLESS_NAME( Adapter )
         Adapter;
+typedef struct __STUMPLESS_NAME( AdapterList )
+        AdapterList;
 typedef struct __STUMPLESS_NAME( Boolean )
         Boolean;
 typedef struct __STUMPLESS_NAME( BooleanFormat )

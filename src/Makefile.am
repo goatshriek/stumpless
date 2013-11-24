@@ -5,9 +5,9 @@ lib_LTLIBRARIES = libstumpless.la
 libstumpless_la_SOURCES = src/adapter.c \
                           src/adapter_base.c \
                           src/adapter_initializer.c \
+                          src/adapter_list.c \
                           src/boolean.c \
                           src/configuration.c \
-                          src/context_adapter.c \
                           src/dictionary.c \
                           src/entry.c \
                           src/event.c \

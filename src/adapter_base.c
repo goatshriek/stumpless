@@ -7,3 +7,10 @@ ValueThroughContextAdapter
 {
   return NULL;
 }
+
+Entry *
+ValueThroughLevelAdapter
+( Value * value, Dictionary * options )
+{
+  return NULL;
+}
