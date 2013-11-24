@@ -197,6 +197,7 @@ struct __STUMPLESS_NAME( Filter ) {
 struct __STUMPLESS_NAME( Formatter ) {
   __STUMPLESS_NAME( FilterList ) * filters;
   __STUMPLESS_NAME( Output ) * ( *format )( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
+  __STUMPLESS_NAME( HandlerList ) * handlers;
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
 };
@@ -218,9 +219,8 @@ struct __STUMPLESS_NAME( Level ) {
 };
 
 struct __STUMPLESS_NAME( Logger ) {
-  __STUMPLESS_NAME( Adapter ) * adapter; // todo change to AdapterList
+  __STUMPLESS_NAME( AdapterList ) * adapters;
   const char * name;
-  __STUMPLESS_NAME( HandlerList ) * handlers;  // todo remove: move to Formatter object
   __STUMPLESS_NAME( Formatter ) * formatter; // todo change to FormatterList
 };
 

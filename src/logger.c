@@ -36,9 +36,9 @@ ProcessValue
 {
   // this function actually logs the value
   
-  // send to adapter
-  // send to formatter
-  // send to handler list
+  // send to adapters
+  // send to formatters
+  // send to handlers
   
   return NULL;
 }
