@@ -48,26 +48,32 @@ BuildEmptyValue
 ( void );
 
 Entry *
-BuildEntry( void );
+BuildEntry
+( void );
 
 EntryAttribute *
-BuildEntryAttribute( void );
+BuildEntryAttribute
+( void );
 
 EntryAttribute **
-BuildEntryAttributeList( void );
+BuildEntryAttributeList
+( void );
 
 Status *
 BuildErrorStatus
 ( void );
 
 Event *
-BuildEvent( void );
+BuildEvent
+( void );
 
 EventAttribute *
-BuildEventAttribute( void );
+BuildEventAttribute
+( void );
 
 EventAttribute **
-BuildEventAttributeList( void );
+BuildEventAttributeList
+( void );
 
 Status *
 BuildFailureStatus
@@ -79,6 +85,14 @@ BuildFilter
 
 FilterList *
 BuildFilterList
+( void );
+
+Formatter *
+BuildFormatter
+( void );
+
+FormatterList *
+BuildFormatterList
 ( void );
 
 Handler *

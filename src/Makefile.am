@@ -8,6 +8,7 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/adapter_list.c \
                           src/boolean.c \
                           src/configuration.c \
+                          src/csv_formatter.c \
                           src/dictionary.c \
                           src/entry.c \
                           src/event.c \
@@ -15,6 +16,9 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/filter_base.c \
                           src/filter_initializer.c \
                           src/filter_list.c \
+                          src/formatter.c \
+                          src/formatter_initializer.c \
+                          src/formatter_list.c \
                           src/handler.c \
                           src/handler_initializer.c \
                           src/handler_list.c \

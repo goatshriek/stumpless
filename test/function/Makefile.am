@@ -42,6 +42,14 @@ test_function_filter_list_SOURCES = test/function/filter_list.c
 test_function_filter_list_CFLAGS = $(test_flags)
 test_function_filter_list_LDADD = $(test_libraries)
 
+test_function_formatter_SOURCES = test/function/formatter.c
+test_function_formatter_CFLAGS = $(test_flags)
+test_function_formatter_LDADD = $(test_libraries)
+
+test_function_formatter_list_SOURCES = test/function/formatter_list.c
+test_function_formatter_list_CFLAGS = $(test_flags)
+test_function_formatter_list_LDADD = $(test_libraries)
+
 test_function_handler_SOURCES = test/function/handler.c
 test_function_handler_CFLAGS = $(test_flags)
 test_function_handler_LDADD = $(test_libraries)

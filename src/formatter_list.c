@@ -1,30 +1,30 @@
-#include "private/adapter_list.h"
-#include "private/adapter_list_static.h"
 #include "private/configuration.h"
+#include "private/formatter_list.h"
+#include "private/formatter_list_static.h"
 #include "private/list.h"
 #include "private/status.h"
 #include "private/type.h"
 
 Status *
-AppendToAdapterList
-( AdapterList * list, Adapter * adapter )
+AppendToFormatterList
+( FormatterList * list, Formatter * formatter )
 {
-  if( list == NULL || adapter == NULL )
+  if( list == NULL || formatter == NULL )
     return RaiseAbnormalStatus( "empty argument" );
   
   if( list->list == NULL )
     return RaiseAbnormalStatus( "malformed structure" );
   
-  List * result = AppendToList( list->list, adapter );
+  List * result = AppendToList( list->list, formatter );
   if( result != list->list )
     return RaiseAbnormalStatus( "list failure" );
   
   return NULL;
 }
 
-Adapter *
-BeginAdapterList
-( AdapterList * list )
+Formatter *
+BeginFormatterList
+( FormatterList * list )
 {
   if( list == NULL || list->list == NULL )
     return NULL;
@@ -32,14 +32,14 @@ BeginAdapterList
   return BeginList( list->list );
 }
 
-AdapterList *
-CopyAdapterList
-( AdapterList * list )
+FormatterList *
+CopyFormatterList
+( FormatterList * list )
 {
   if( list == NULL )
     return NULL;
   
-  AdapterList * copy = malloc( sizeof( AdapterList ) );
+  FormatterList * copy = malloc( sizeof( FormatterList ) );
   if( copy == NULL )
     return NULL;
   
@@ -49,8 +49,8 @@ CopyAdapterList
 }
 
 void
-DestroyAdapterList
-( AdapterList * list )
+DestroyFormatterList
+( FormatterList * list )
 {
   DestroyList( list->list );
   
@@ -59,18 +59,25 @@ DestroyAdapterList
   return;
 }
 
+Status *
+EntryThroughFormatterList
+( FormatterList * list, Entry * entry )
+{
+  return NULL;
+}
+
 unsigned short
-AdapterListIsEmpty
-( AdapterList * list )
+FormatterListIsEmpty
+( FormatterList * list )
 {
   return list == NULL || ListIsEmpty( list->list );
 }
 
-AdapterList *
-NewAdapterList
+FormatterList *
+NewFormatterList
 ( void )
 {
-  AdapterList * list = malloc( sizeof( AdapterList ) );
+  FormatterList * list = malloc( sizeof( FormatterList ) );
   if( list == NULL )
     return NULL;
   
@@ -81,9 +88,9 @@ NewAdapterList
   return list;
 }
 
-Adapter *
-NextInAdapterList
-( AdapterList * list )
+Formatter *
+NextInFormatterList
+( FormatterList * list )
 {
   if( list == NULL || list->list == NULL )
     return NULL;
@@ -92,25 +99,18 @@ NextInAdapterList
 }
 
 Status *
-PrependToAdapterList
-( AdapterList * list, Adapter * adapter )
+PrependToFormatterList
+( FormatterList * list, Formatter * formatter )
 {
-  if( list == NULL || adapter == NULL )
+  if( list == NULL || formatter == NULL )
     return RaiseAbnormalStatus( "empty argument" );
   
   if( list->list == NULL )
     return RaiseAbnormalStatus( "malformed structure" );
   
-  List * result = PrependToList( list->list, adapter );
+  List * result = PrependToList( list->list, formatter );
   if( result != list->list )
     return RaiseAbnormalStatus( "list failure" );
   
-  return NULL;
-}
-
-Entry *
-ValueThroughAdapterList
-( AdapterList * list, Value * value )
-{
   return NULL;
 }

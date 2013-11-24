@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
-#include "private/dictionary.h"
 #include "private/adapter.h"
 #include "private/adapter_initializer.h"
+#include "private/dictionary.h"
 #include "private/status.h"
 #include "private/type.h"
 

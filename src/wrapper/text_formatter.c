@@ -4,9 +4,9 @@
 
 __STUMPLESS_NAME( Output ) *
 __STUMPLESS_NAME( EntryToText )
-( __STUMPLESS_NAME( Entry ) * entry )
+( __STUMPLESS_NAME( Entry ) * entry, __STUMPLESS_NAME( Dictionary ) * options )
 {
-  return EntryToText( entry );
+  return EntryToText( entry, options );
 }
 
 __STUMPLESS_NAME( Output ) *

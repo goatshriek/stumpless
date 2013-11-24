@@ -6,6 +6,8 @@
 #include "private/dictionary.h"
 #include "private/filter.h"
 #include "private/filter_list.h"
+#include "private/formatter.h"
+#include "private/formatter_list.h"
 #include "private/handler.h"
 #include "private/handler_list.h"
 #include "private/list.h"
@@ -466,6 +468,45 @@ BuildFilterList
   if( filter == NULL )
     return NULL;
   AppendToFilterList( list, filter );
+  
+  return list;
+}
+
+Formatter *
+BuildFormatter
+( void )
+{
+  Formatter * formatter = malloc( sizeof( Formatter ) );
+  if( formatter == NULL )
+    return NULL;
+  
+  formatter->name = "test formatter";
+  formatter->options = BuildDictionaryOfStrings();
+  if( formatter->options == NULL )
+    return NULL;
+  
+  return formatter;
+}
+
+FormatterList *
+BuildFormatterList
+( void )
+{
+  FormatterList * list = NewFormatterList();
+  if( list == NULL )
+    return NULL;
+  
+  Formatter * formatter = FindFormatterByName( "csv" );
+  if( formatter == NULL )
+    return NULL;
+  if( AppendToFormatterList( list, formatter ) != NULL )
+    return NULL;
+  
+  formatter = FindFormatterByName( "text" );
+  if( formatter == NULL )
+    return NULL;
+  if( AppendToFormatterList( list, formatter ) != NULL )
+    return NULL;
   
   return list;
 }

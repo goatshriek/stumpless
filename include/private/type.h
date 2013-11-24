@@ -48,6 +48,8 @@ typedef struct __STUMPLESS_NAME( FilterList )
         FilterList;
 typedef struct __STUMPLESS_NAME( Formatter )
         Formatter;
+typedef struct __STUMPLESS_NAME( FormatterList )
+        FormatterList;
 typedef struct __STUMPLESS_NAME( Handler )
         Handler;
 typedef struct __STUMPLESS_NAME( HandlerList )

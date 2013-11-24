@@ -22,7 +22,7 @@ ArrayValueToText
 
 Output *
 EntryToText
-( Entry * entry )
+( Entry * entry, Dictionary * options )
 {
   return TextOutputFromValueList( EntryToValueList( entry ) );
 }

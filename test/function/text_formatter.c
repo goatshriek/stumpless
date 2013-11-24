@@ -53,7 +53,7 @@ test_entry_formatter( void )
   Output * output;
   char * str;
   
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "a full entry could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for a full entry" )
@@ -62,7 +62,7 @@ test_entry_formatter( void )
                         "a full entry was not properly formatted" )
   
   entry->description = NULL;
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "an entry without a description was not formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without a description" )
@@ -71,7 +71,7 @@ test_entry_formatter( void )
                         "an entry without a description was not properly formatted" )
   
   entry->event = NULL;
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "an entry with only attributes was not formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only attributes" )
@@ -80,7 +80,7 @@ test_entry_formatter( void )
                         "an entry with only attributes was not properly formatted" )
   
   entry->description = "Test Entry";
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without an event" )
@@ -89,7 +89,7 @@ test_entry_formatter( void )
                         "an entry without an event was not properly formatted" )
   
   entry->attributes = NULL;
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "an entry with only a description could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only a description" )
@@ -98,7 +98,7 @@ test_entry_formatter( void )
   
   entry->event = BuildEvent();
   FAIL_IF_NULL( entry->event, "could not build the test event" )
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "an entry without attributes could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without attributes" )
@@ -106,7 +106,7 @@ test_entry_formatter( void )
                         "an entry without attributes was not properly formatted" )
   
   entry->description = NULL;
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "an entry with only an event could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only an event" )
@@ -114,7 +114,7 @@ test_entry_formatter( void )
                         "an entry with only an event was not properly formatted" )
   
   entry->event = NULL;
-  output = EntryToText( entry );
+  output = EntryToText( entry, NULL );
   FAIL_IF_NULL( output, "an empty entry could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an empty entry" )
@@ -416,7 +416,7 @@ test_value_list_all_strings( void )
   if( entry == NULL )
     return "could not build test entry";
   
-  Output * output = EntryToText( entry );
+  Output * output = EntryToText( entry, NULL );
   if( output == NULL || output->data == NULL )
     return "the output could not be built";
   

@@ -7,7 +7,7 @@ Output *
 ArrayValueToText( Value * );
 
 Output *
-EntryToText( Entry * );
+EntryToText( Entry *, Dictionary * );
 
 Output *
 EntryAttributeToText( EntryAttribute * );

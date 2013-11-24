@@ -6,10 +6,13 @@
 #include <stumpless/boolean.h>
 #include <stumpless/config.h>
 #include <stumpless/configuration.h>
+#include <stumpless/csv_formatter.h>
 #include <stumpless/entry.h>
 #include <stumpless/event.h>
 #include <stumpless/filter.h>
 #include <stumpless/filter_list.h>
+#include <stumpless/formatter.h>
+#include <stumpless/formatter_list.h>
 #include <stumpless/handler.h>
 #include <stumpless/handler_list.h>
 #include <stumpless/level.h>

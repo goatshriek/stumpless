@@ -10,7 +10,7 @@ __STUMPLESS_NAME( ArrayValueToText )
 
 __STUMPLESS_NAME( Output ) *
 __STUMPLESS_NAME( EntryToText )
-( __STUMPLESS_NAME( Entry ) * );
+( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
 
 __STUMPLESS_NAME( Output ) *
 __STUMPLESS_NAME( EntryAttributeToText )

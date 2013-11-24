@@ -5,6 +5,7 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/adapter_list_static.h \
                  include/private/boolean.h \
                  include/private/configuration.h \
+                 include/private/csv_formatter.h \
                  include/private/dictionary.h \
                  include/private/dictionary_static.h \
                  include/private/entry.h \
@@ -13,6 +14,10 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/filter_initializer.h \
                  include/private/filter_list.h \
                  include/private/filter_list_static.h \
+                 include/private/formatter.h \
+                 include/private/formatter_initializer.h \
+                 include/private/formatter_list.h \
+                 include/private/formatter_list_static.h \
                  include/private/handler.h \
                  include/private/handler_initializer.h \
                  include/private/handler_list.h \

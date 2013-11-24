@@ -26,6 +26,7 @@ struct __STUMPLESS_NAME( FileConfiguration );
 struct __STUMPLESS_NAME( Filter );
 struct __STUMPLESS_NAME( FilterList );
 struct __STUMPLESS_NAME( Formatter );
+struct __STUMPLESS_NAME( FormatterList );
 struct __STUMPLESS_NAME( Handler );
 struct __STUMPLESS_NAME( HandlerList );
 struct __STUMPLESS_NAME( HTTConfiguration );
@@ -78,6 +79,8 @@ typedef struct __STUMPLESS_NAME( FilterList )
         __STUMPLESS_NAME( FilterList );
 typedef struct __STUMPLESS_NAME( Formatter )
         __STUMPLESS_NAME( Formatter );
+typedef struct __STUMPLESS_NAME( FormatterList )
+        __STUMPLESS_NAME( FormatterList );
 typedef struct __STUMPLESS_NAME( Handler )
         __STUMPLESS_NAME( Handler );
 typedef struct __STUMPLESS_NAME( HandlerList )
@@ -221,7 +224,7 @@ struct __STUMPLESS_NAME( Level ) {
 struct __STUMPLESS_NAME( Logger ) {
   __STUMPLESS_NAME( AdapterList ) * adapters;
   const char * name;
-  __STUMPLESS_NAME( Formatter ) * formatter; // todo change to FormatterList
+  __STUMPLESS_NAME( FormatterList ) * formatters;
 };
 
 struct __STUMPLESS_NAME( Output ) {

@@ -13,7 +13,7 @@ char *
 EntryToString
 ( Entry * entry )
 {
-  Output * output =  EntryToText( entry );
+  Output * output =  EntryToText( entry, NULL );
   return OutputToString( output ); 
 }
 

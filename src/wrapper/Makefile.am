@@ -8,6 +8,8 @@ libstumpless_la_SOURCES += src/wrapper/adapter.c \
                            src/wrapper/event.c \
                            src/wrapper/filter.c \
                            src/wrapper/filter_list.c \
+                           src/wrapper/formatter.c \
+                           src/wrapper/formatter_list.c \
                            src/wrapper/handler.c \
                            src/wrapper/handler_list.c \
                            src/wrapper/level.c \
