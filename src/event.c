@@ -35,15 +35,13 @@ EventForLevel( Level * level )
   if( level == NULL )
     return NULL;
   
-  
   Event * event = malloc( sizeof( Event ) );
-  
   if( event == NULL )
     return NULL;
   
   event->name = NULL;
   event->level = level;
-  event->attribute_count = 0;
+  event->attributes = NULL;
   
   return event;
 }

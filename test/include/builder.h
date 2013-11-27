@@ -55,7 +55,7 @@ EntryAttribute *
 BuildEntryAttribute
 ( void );
 
-EntryAttribute **
+EntryAttributeList *
 BuildEntryAttributeList
 ( void );
 
@@ -71,7 +71,7 @@ EventAttribute *
 BuildEventAttribute
 ( void );
 
-EventAttribute **
+EventAttributeList *
 BuildEventAttributeList
 ( void );
 

@@ -102,7 +102,7 @@ test_entry_for_event( void )
     return "memory allocation failure during testing";
   event->name = "testing event";
   event->level = GetDebugLevel();
-  event->attribute_count = 0;
+  event->attributes = NULL;
   
   Entry * entry = EntryForEvent( event );
   if( entry == NULL )

@@ -27,16 +27,16 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( entry_formatter )
-  RUN_TEST( entry_attribute_formatter )
+  //RUN_TEST( entry_formatter )
+  //RUN_TEST( entry_attribute_formatter )
   RUN_TEST( entry_attribute_list_formatter )
-  RUN_TEST( entry_summary_formatter )
-  RUN_TEST( event_attribute_formatter )
-  RUN_TEST( event_attribute_list_formatter )
-  RUN_TEST( event_formatter )
-  RUN_TEST( event_summary_formatter )
-  RUN_TEST( level_formatter )
-  RUN_TEST( value_list_all_strings )
+  //RUN_TEST( entry_summary_formatter )
+  //RUN_TEST( event_attribute_formatter )
+  //RUN_TEST( event_attribute_list_formatter )
+  //RUN_TEST( event_formatter )
+  //RUN_TEST( event_summary_formatter )
+  //RUN_TEST( level_formatter )
+  //RUN_TEST( value_list_all_strings )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "private/entry_attribute_list.h"
+#include "private/event_attribute_list.h"
 #include "private/output.h"
 #include "private/output_profile.h"
 #include "private/status_checker.h"
@@ -136,7 +138,7 @@ EntryToValueList
   if( output == NULL )
     return NULL;
   
-  if( entry->attributes != NULL && entry->attribute_count > 0 ){
+  if( !EntryAttributeListIsEmpty( entry->attributes ) ){
     NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
     
     ValueList * attributes = EntryAttributeListToValueList( entry );
@@ -172,7 +174,7 @@ EntryAttributeToValueList
   Status * status;
   NULL_ON_FAILURE( AppendStringToValueList( output, attribute_name ) )
   
-  NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) );
+  NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
   
   Value * attribute_value;
   if( attribute->value != NULL )
@@ -201,24 +203,28 @@ ValueList *
 EntryAttributeListToValueList
 ( Entry * entry )
 {
-  if( entry == NULL || entry->attributes == NULL )
+  if( entry == NULL || EntryAttributeListIsEmpty( entry->attributes ) )
     return NULL;
   
   ValueList * output = NewValueList();
   if( output == NULL )
     return NULL;
   
-  ValueList * attribute;
-  unsigned i;
-  for( i = 0; i < entry->attribute_count; i++ ){
-    attribute = EntryAttributeToValueList( entry->attributes[i] );
-    if( attribute == NULL )
+  ValueList * attribute_list;
+  EntryAttribute * attribute = BeginEntryAttributeList( entry->attributes );
+  while( attribute != NULL ){
+    attribute_list = EntryAttributeToValueList( attribute );
+    if( attribute_list == NULL ){
+      attribute = NextInEntryAttributeList( entry->attributes );
       continue;
+    }
     
     if( !ValueListIsEmpty( output ) )
       NULL_ON_FAILURE( AppendStringToValueList( output, ", " ) )
     
-    NULL_ON_FAILURE ( AppendValueLists( output, attribute ) )
+    NULL_ON_FAILURE( AppendValueLists( output, attribute_list ) )
+    
+    attribute = NextInEntryAttributeList( entry->attributes );
   }
   
   return output;
@@ -274,7 +280,7 @@ EventToValueList
   if( output == NULL )
     return NULL;
   
-  if( event->attributes != NULL && event->attribute_count > 0 ){
+  if( !EventAttributeListIsEmpty( event->attributes ) ){
     NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
     
     ValueList * attributes = EventAttributeListToValueList( event );
@@ -337,17 +343,21 @@ EventAttributeListToValueList
   if( output == NULL )
     return NULL;
   
-  unsigned i;
-  ValueList * attribute;
-  for( i = 0; i < event->attribute_count; i++ ){
-    attribute = EventAttributeToValueList( event->attributes[i] );
-    if( attribute == NULL )
+  ValueList * attribute_list;
+  EventAttribute * attribute = BeginEventAttributeList( event->attributes );
+  while( attribute != NULL ){
+    attribute_list = EventAttributeToValueList( attribute );
+    if( attribute_list == NULL ){
+      attribute = NextInEventAttributeList( event->attributes );
       continue;
+    }
     
     if( !ValueListIsEmpty( output ) )
       NULL_ON_FAILURE( AppendStringToValueList( output, ", " ) )
     
-    NULL_ON_FAILURE( AppendValueLists( output, attribute ) )
+    NULL_ON_FAILURE( AppendValueLists( output, attribute_list ) )
+    
+    attribute = NextInEventAttributeList( event->attributes );
   }
   
   return output;

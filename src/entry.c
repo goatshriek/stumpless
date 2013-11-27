@@ -32,11 +32,11 @@ EntryForEvent
     return NULL;
   
   Entry * entry = malloc( sizeof( Entry ) );
-  
   if( entry == NULL )
     return NULL;
   
   entry->event = event;
+  // todo set attributes to defaults if present
   
   return entry;
 }

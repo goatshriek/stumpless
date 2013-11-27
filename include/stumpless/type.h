@@ -170,8 +170,7 @@ struct __STUMPLESS_NAME( Configuration ) {
 struct __STUMPLESS_NAME( Entry ) {
   const char * description;
   __STUMPLESS_NAME( Event ) * event;
-  __STUMPLESS_NAME( EntryAttribute ) ** attributes;
-  unsigned attribute_count;
+  __STUMPLESS_NAME( EntryAttributeList ) * attributes;
 };
 
 struct __STUMPLESS_NAME( EntryAttribute ) {
@@ -182,8 +181,7 @@ struct __STUMPLESS_NAME( EntryAttribute ) {
 struct __STUMPLESS_NAME( Event ) {
   const char * name;
   __STUMPLESS_NAME( Level ) * level;
-  __STUMPLESS_NAME( EventAttribute ) ** attributes;
-  unsigned attribute_count;
+  __STUMPLESS_NAME( EventAttributeList ) * attributes;
 };
 
 struct __STUMPLESS_NAME( EventAttribute ) {

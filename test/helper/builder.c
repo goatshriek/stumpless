@@ -4,6 +4,7 @@
 #include "private/adapter_list.h"
 #include "private/configuration.h"
 #include "private/dictionary.h"
+#include "private/entry_attribute_list.h"
 #include "private/event_attribute_list.h"
 #include "private/filter.h"
 #include "private/filter_list.h"
@@ -169,7 +170,6 @@ BuildEmptyEntry
   entry->description = NULL;
   entry->event = NULL;
   entry->attributes = NULL;
-  entry->attribute_count = 0;
   
   return entry;
 }
@@ -243,7 +243,6 @@ BuildEntry( void )
   entry->description = "Test Entry";
   entry->event = BuildEvent();
   entry->attributes = BuildEntryAttributeList();
-  entry->attribute_count = 6;
   
   return entry;
 }
@@ -262,15 +261,14 @@ BuildEntryAttribute( void )
   return attribute;
 }
 
-EntryAttribute **
+EntryAttributeList *
 BuildEntryAttributeList( void )
 {
-  EntryAttribute ** list;
-  list = malloc( sizeof( EntryAttribute * ) * 6 );
+  EntryAttributeList * list = NewEntryAttributeList();
   if( list == NULL )
     return NULL;
   
-  EventAttribute ** event_attribute_list = BuildEventAttributeList();
+  EventAttributeList * event_attribute_list = BuildEventAttributeList();
   if( event_attribute_list == NULL )
     return NULL;
   
@@ -278,44 +276,44 @@ BuildEntryAttributeList( void )
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = event_attribute_list[0];
+  attribute->event_attribute = BeginEventAttributeList( event_attribute_list );
   attribute->value = NULL;
-  list[0] = attribute;
+  AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = event_attribute_list[1];
+  attribute->event_attribute = NextInEventAttributeList( event_attribute_list );
   attribute->value = ValueFromString( "not 37" );
-  list[1] = attribute;
+  AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = event_attribute_list[2];
+  attribute->event_attribute = NextInEventAttributeList( event_attribute_list );
   attribute->value = NULL;
-  list[2] = attribute;
+  AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = event_attribute_list[3];
+  attribute->event_attribute = NextInEventAttributeList( event_attribute_list );
   attribute->value = ValueFromString( "unnamed value" );
-  list[3] = attribute;
+  AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NULL;
   attribute->value = ValueFromString( "no event attribute" );
-  list[4] = attribute;
+  AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NULL;
   attribute->value = NULL;
-  list[5] = attribute;
+  AppendToEntryAttributeList( list, attribute );
   
   return list;
 }
@@ -354,7 +352,6 @@ BuildEvent( void )
   event->attributes = BuildEventAttributeList();
   if( event->attributes == NULL )
     return NULL;
-  event->attribute_count = 5;
   
   return event;
 }
@@ -373,47 +370,43 @@ BuildEventAttribute( void )
   return attribute;
 }
 
-EventAttribute **
+EventAttributeList *
 BuildEventAttributeList( void )
 {
-  EventAttribute ** list;
-  list = malloc( sizeof( EventAttribute * ) * 5 );
+  EventAttributeList * list = NewEventAttributeList();
   if( list == NULL )
     return NULL;
   
-  EventAttribute * attr_0;
-  attr_0 = malloc( sizeof( EventAttribute ) );
-  if( attr_0 == NULL )
+  EventAttribute * attribute;
+  attribute = malloc( sizeof( EventAttribute ) );
+  if( attribute == NULL )
     return NULL;
-  attr_0->name = "Test Attribute 0";
-  attr_0->default_value = ValueFromString( "default value" );
+  attribute->name = "Test Attribute 0";
+  attribute->default_value = ValueFromString( "default value" );
+  AppendToEventAttributeList( list, attribute );
   
-  EventAttribute * attr_1;
-  attr_1 = malloc( sizeof( EventAttribute ) );
-  if( attr_1 == NULL )
+  attribute = malloc( sizeof( EventAttribute ) );
+  if( attribute == NULL )
     return NULL;
-  attr_1->name = NULL;
-  attr_1->default_value = ValueFromUnsignedInt( 37 );
+  attribute->name = NULL;
+  attribute->default_value = ValueFromUnsignedInt( 37 );
+  AppendToEventAttributeList( list, attribute );
   
-  EventAttribute * attr_2;
-  attr_2 = malloc( sizeof( EventAttribute ) );
-  if( attr_2 == NULL )
+  attribute = malloc( sizeof( EventAttribute ) );
+  if( attribute == NULL )
     return NULL;
-  attr_2->name = "Test Attribute 2";
-  attr_2->default_value = NULL;
+  attribute->name = "Test Attribute 2";
+  attribute->default_value = NULL;
+  AppendToEventAttributeList( list, attribute );
   
-  EventAttribute * attr_3;
-  attr_3 = malloc( sizeof( EventAttribute ) );
-  if( attr_3 == NULL )
+  attribute = malloc( sizeof( EventAttribute ) );
+  if( attribute == NULL )
     return NULL;
-  attr_3->name = NULL;
-  attr_3->default_value = NULL;
+  attribute->name = NULL;
+  attribute->default_value = NULL;
+  AppendToEventAttributeList( list, attribute );
   
-  list[0] = attr_0;
-  list[1] = attr_1;
-  list[2] = attr_2;
-  list[3] = attr_3;
-  list[4] = NULL;
+  //AppendToEventAttributeList( list, NULL );
   
   return list;
 }

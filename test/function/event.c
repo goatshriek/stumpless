@@ -99,8 +99,8 @@ test_event_for_level( void )
     return "event did not have the requested level";
   if( event->name != NULL )
     return "the event was not given a blank name";
-  if( event->attribute_count != 0 )
-    return "the event had a non-zero attribute count";
+  if( event->attributes != NULL )
+    return "the event had attributes";
   
   return NULL;
 }
