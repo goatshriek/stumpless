@@ -127,7 +127,7 @@ test_merge_entries
   FAIL_IF_NOT_NULL( merged, "an entry was created out of two null entries" )
   
   primary = BuildEmptyEntry();
-  FAIL_IF_NULL( primary, "a test entry could not be built" )
+  FAIL_IF_NULL( primary, "an empty entry could not be built" )
   primary->description = "primary description";
   primary->event = NULL;
   primary->attributes = BuildEntryAttributeList();
@@ -146,7 +146,6 @@ test_merge_entries
   secondary->event = BuildEvent();
   FAIL_IF_NULL( secondary->event, "the test event could not be created" )
   secondary->attributes = NULL;
-  FAIL_IF_NULL( secondary->attributes, "the secondary attribute list could not built" )
   
   merged = MergeEntries( primary, secondary );
   FAIL_IF_NULL( merged, "the two entries could not be merged" )
