@@ -25,6 +25,10 @@ __STUMPLESS_NAME( EntryAttributeListIsEmpty )
 ( __STUMPLESS_NAME( EntryAttributeList ) * );
 
 __STUMPLESS_NAME( EntryAttributeList ) *
+__STUMPLESS_NAME( MergeEntryAttributeLists )
+( __STUMPLESS_NAME( EntryAttributeList ) *, __STUMPLESS_NAME( EntryAttributeList ) * );
+
+__STUMPLESS_NAME( EntryAttributeList ) *
 __STUMPLESS_NAME( NewEntryAttributeList )
 ( void );
 

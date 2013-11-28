@@ -24,6 +24,10 @@ EntryAttributeListIsEmpty
 ( EntryAttributeList * );
 
 EntryAttributeList *
+MergeEntryAttributeLists
+( EntryAttributeList *, EntryAttributeList * );
+
+EntryAttributeList *
 NewEntryAttributeList
 ( void );
 

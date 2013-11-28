@@ -25,4 +25,8 @@ __STUMPLESS_NAME( GetInfoEntry )( void );
 __STUMPLESS_NAME( Entry ) *
 __STUMPLESS_NAME( GetWarningEntry )( void );
 
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( MergeEntries )
+( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Entry ) * );
+
 #endif

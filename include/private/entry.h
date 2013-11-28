@@ -24,4 +24,8 @@ GetInfoEntry( void );
 Entry *
 GetWarningEntry( void );
 
+Entry *
+MergeEntries
+( Entry *, Entry * );
+
 #endif

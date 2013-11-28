@@ -14,6 +14,7 @@ const char * test_constructor( void );
 const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_is_empty( void );
+const char * test_merge_lists( void );
 const char * test_next( void );
 const char * test_prepender( void );
 
@@ -29,6 +30,7 @@ main( void )
   RUN_TEST( copy )
   RUN_TEST( destructor )
   RUN_TEST( is_empty )
+  RUN_TEST( merge_lists )
   RUN_TEST( next )
   RUN_TEST( prepender )
   
@@ -178,6 +180,13 @@ test_is_empty
   if( EntryAttributeListIsEmpty( list ) )
     return "a full list was deemed empty";
   
+  return NULL;
+}
+
+const char *
+test_merge_lists
+( void )
+{
   return NULL;
 }
 

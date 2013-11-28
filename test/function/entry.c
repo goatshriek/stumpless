@@ -10,6 +10,7 @@
 
 const char * test_default_entries( void );
 const char * test_entry_for_event( void );
+const char * test_merge_entries( void );
 const char * test_to_string( void );
 
 int
@@ -20,6 +21,7 @@ main( void )
   
   RUN_TEST( default_entries )
   RUN_TEST( entry_for_event )
+  RUN_TEST( merge_entries )
   RUN_TEST( to_string )
   
   if( failure_count > 0 )
@@ -110,6 +112,13 @@ test_entry_for_event( void )
   if( entry->event != event )
     return "the entry did not have the requested event";
   
+  return NULL;
+}
+
+const char *
+test_merge_entries
+( void )
+{
   return NULL;
 }
 

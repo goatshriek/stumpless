@@ -68,3 +68,10 @@ GetWarningEntry
 {
   return EntryForEvent( GetWarningEvent() );
 }
+
+Entry *
+MergeEntries
+( Entry * primary, Entry * secondary )
+{
+  return NULL;
+}

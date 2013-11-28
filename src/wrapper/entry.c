@@ -43,3 +43,10 @@ __STUMPLESS_NAME( GetWarningEntry )( void )
 {
   return GetWarningEntry();
 }
+
+__STUMPLESS_NAME( Entry ) *
+__STUMPLESS_NAME( MergeEntries )
+( __STUMPLESS_NAME( Entry ) * primary, __STUMPLESS_NAME( Entry ) * secondary )
+{
+  return MergeEntries( primary, secondary );
+}

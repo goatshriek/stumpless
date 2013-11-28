@@ -67,6 +67,13 @@ EntryAttributeListIsEmpty
 }
 
 EntryAttributeList *
+MergeEntryAttributeLists
+( EntryAttributeList * primary, EntryAttributeList * secondary )
+{
+  return NULL;
+}
+
+EntryAttributeList *
 NewEntryAttributeList
 ( void )
 {
