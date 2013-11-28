@@ -119,6 +119,46 @@ const char *
 test_merge_entries
 ( void )
 {
+  Entry * primary = NULL;
+  Entry * secondary = NULL;
+  Entry * merged;
+  
+  merged = MergeEntries( primary, secondary );
+  FAIL_IF_NOT_NULL( merged, "an entry was created out of two null entries" )
+  
+  primary = BuildEmptyEntry();
+  FAIL_IF_NULL( primary, "a test entry could not be built" )
+  primary->description = "primary description";
+  primary->event = NULL;
+  primary->attributes = BuildEntryAttributeList();
+  FAIL_IF_NULL( primary->attributes, "the primary attribute list could not be built" )
+  
+  merged = MergeEntries( primary, secondary );
+  if( merged != primary )
+    return "a null secondary did not return the primary as the merged entry";
+  merged = MergeEntries( secondary, primary );
+  if( merged != primary )
+    return "a null primary did not return the secondary as the merged entry";
+  
+  secondary = BuildEmptyEntry();
+  FAIL_IF_NULL( secondary, "an empty entry could not be built" )
+  secondary->description = "secondary description";
+  secondary->event = BuildEvent();
+  FAIL_IF_NULL( secondary->event, "the test event could not be created" )
+  secondary->attributes = NULL;
+  FAIL_IF_NULL( secondary->attributes, "the secondary attribute list could not built" )
+  
+  merged = MergeEntries( primary, secondary );
+  FAIL_IF_NULL( merged, "the two entries could not be merged" )
+  if( merged != primary )
+    return "changes were not made to the primary";
+  
+  ASSERT_STRINGS_EQUAL( primary->description, merged->description, "the description was not inherited from the primary entry" )
+  if( merged->event != secondary->event )
+    return "the secondary event did not replace the NULL event of the primary";
+  if( merged->attributes != primary->attributes )
+    return "the primary attribute list did not replace the NULL list of the secondary";
+  
   return NULL;
 }
 
