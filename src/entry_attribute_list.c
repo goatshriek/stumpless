@@ -70,7 +70,33 @@ EntryAttributeList *
 MergeEntryAttributeLists
 ( EntryAttributeList * primary, EntryAttributeList * secondary )
 {
-  return NULL;
+  if( primary == NULL )
+    return secondary;
+  
+  if( secondary == NULL )
+    return primary;
+  
+  EntryAttribute * primary_attribute = BeginEntryAttributeList( primary );
+  EntryAttribute * secondary_attribute = BeginEntryAttributeList( secondary );
+  while( secondary_attribute != NULL ){
+    EventAttribute * secondary_event = secondary_attribute->event_attribute;
+    unsigned short matched = 0;
+    while( primary_attribute != NULL ){
+      EventAttribute * primary_event = primary_attribute->event_attribute;
+      if( primary_event == secondary_event ){
+        matched = 1;
+        break;
+      }
+      
+      primary_attribute = NextInEntryAttributeList( primary );
+    }
+    if( !matched )
+      AppendToEntryAttributeList( primary, secondary_attribute );
+    
+    secondary_attribute = NextInEntryAttributeList( secondary );
+  }
+  
+  return primary;
 }
 
 EntryAttributeList *

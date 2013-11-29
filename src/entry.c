@@ -74,7 +74,8 @@ MergeEntries
 {
   if( primary == NULL )
     return secondary;
-  else if( secondary == NULL )
+  
+  if( secondary == NULL )
     return primary;
   
   if( primary->description == NULL )
