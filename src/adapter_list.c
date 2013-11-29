@@ -1,6 +1,7 @@
 #include "private/adapter_list.h"
 #include "private/adapter_list_static.h"
 #include "private/configuration.h"
+#include "private/entry.h"
 #include "private/list.h"
 #include "private/status.h"
 #include "private/type.h"
@@ -112,5 +113,16 @@ Entry *
 ValueThroughAdapterList
 ( AdapterList * list, Value * value )
 {
-  return NULL;
+  if( list == NULL || value == NULL )
+    return NULL;
+  
+  Adapter * adapter = BeginAdapterList( list );
+  Entry * entry = NULL;
+  while( adapter != NULL ){
+    entry = MergeEntries( entry, adapter->adapt( value, adapter->options ) );
+    
+    adapter = NextInAdapterList( list );
+  }
+  
+  return entry;
 }

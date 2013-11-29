@@ -1,6 +1,7 @@
 #include "private/configuration.h"
 #include "private/formatter_list.h"
 #include "private/formatter_list_static.h"
+#include "private/handler_list.h"
 #include "private/list.h"
 #include "private/status.h"
 #include "private/type.h"
@@ -63,7 +64,23 @@ Status *
 EntryThroughFormatterList
 ( FormatterList * list, Entry * entry )
 {
-  return NULL;
+  if( list == NULL || entry == NULL )
+    return RaiseAbnormalStatus( "empty argument" );
+  
+  Status * final_status = NULL;
+  Status * handler_status;
+  Output * output;
+  Formatter * formatter = BeginFormatterList( list );
+  while( formatter != NULL ){
+    output = formatter->format( entry, formatter->options );
+    handler_status = OutputThroughHandlerList( formatter->handlers, output );
+    if( handler_status != NULL )
+      final_status = handler_status;
+    
+    formatter = NextInFormatterList( list );
+  }
+  
+  return final_status;
 }
 
 unsigned short

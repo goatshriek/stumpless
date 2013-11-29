@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "private/logger.h"
+#include "private/status.h"
 #include "private/type.h"
 
 Status *
@@ -34,7 +35,13 @@ Status *
 ProcessValue
 ( Logger * logger, Value * value )
 {
+  if( logger == NULL || value == NULL )
+    return RaiseAbnormalStatus( "empty argument" );
+  
   Entry * entry = ValueThroughAdapterList( logger->adapters, value );
+  if( entry == NULL )
+    return RaiseAbnormalStatus( "list failure" );
+  
   return EntryThroughFormatterList( logger->formatters, entry );
 }
 
