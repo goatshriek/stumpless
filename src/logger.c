@@ -5,6 +5,27 @@
 #include "private/type.h"
 
 Status *
+AddAdapterToLogger
+( Logger * logger, Adapter * adapter )
+{
+  return NULL;
+}
+
+Status *
+AddFormatterToLogger
+( Logger * logger, Formatter * formatter )
+{
+  return NULL;
+}
+
+Status *
+AddHandlerToLogger
+( Logger * logger, Handler * handler )
+{
+  return NULL;
+}
+
+Status *
 CheckLoggerStatus
 ( Logger * logger )
 {

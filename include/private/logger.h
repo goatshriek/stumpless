@@ -4,6 +4,18 @@
 #include "private/type.h"
 
 Status *
+AddAdapterToLogger
+( Logger *, Adapter * );
+
+Status *
+AddFormatterToLogger
+( Logger *, Formatter * );
+
+Status *
+AddHandlerToLogger
+( Logger *, Handler * );
+
+Status *
 CheckLoggerStatus
 ( Logger * );
 

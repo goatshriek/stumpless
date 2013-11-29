@@ -5,6 +5,18 @@
 #include <stumpless/type.h>
 
 __STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( AddAdapterToLogger )
+( __STUMPLESS_NAME( Logger ) *, __STUMPLESS_NAME( Adapter ) * );
+
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( AddFormatterToLogger )
+( __STUMPLESS_NAME( Logger ) *, __STUMPLESS_NAME( Formatter ) * );
+
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( AddHandlerToLogger )
+( __STUMPLESS_NAME( Logger ) *, __STUMPLESS_NAME( Handler ) * );
+
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( CheckLoggerStatus )
 ( __STUMPLESS_NAME( Logger ) * );
 
