@@ -187,6 +187,35 @@ const char *
 test_merge_lists
 ( void )
 {
+  EntryAttributeList * primary = NULL;
+  EntryAttributeList * secondary = NULL;
+  EntryAttributeList * merged;
+  
+  merged = MergeEntryAttributeLists( primary, secondary );
+  FAIL_IF_NOT_NULL( merged, "two null lists were merged into a non-null list" )
+  
+  primary = BuildEntryAttributeList();
+  FAIL_IF_NULL( primary, "could not build the primary list" )
+  
+  merged = MergeEntryAttributeLists( primary, secondary );
+  if( merged != primary )
+    return "a null secondary did not return the primary";
+  
+  merged = MergeEntryAttributeLists( secondary, primary );
+  if( merged != primary )
+    return "a null primary did not return the secondary";
+  
+  secondary = NewEntryAttributeList();
+  FAIL_IF_NULL( secondary, "could not build the secondary list" )
+  EntryAttribute * attribute = malloc( sizeof( EntryAttribute ) );
+  FAIL_IF_NULL( attribute, "could not build the attribute" )
+  AppendToEntryAttributeList( secondary, attribute );
+  
+  merged = MergeEntryAttributeLists( primary, secondary );
+  if( merged != primary )
+    return "the primary list was not the modified list";
+  FAIL_IF_NULL( merged, "two lists did not merge properly" )
+  
   return NULL;
 }
 
