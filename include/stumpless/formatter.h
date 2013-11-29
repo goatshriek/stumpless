@@ -8,6 +8,10 @@ __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AddFormatter )
 ( __STUMPLESS_NAME( Formatter ) * );
 
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( AppendHandlerToFormatter )
+( __STUMPLESS_NAME( Formatter ) *, __STUMPLESS_NAME( Handler ) * );
+
 __STUMPLESS_NAME( Formatter ) *
 __STUMPLESS_NAME( FindFormatterByName )
 ( const char * );

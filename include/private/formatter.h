@@ -7,6 +7,10 @@ Status *
 AddFormatter
 ( Formatter * );
 
+Status *
+AppendHandlerToFormatter
+( Formatter *, Handler * );
+
 Formatter *
 FindFormatterByName
 ( const char * );

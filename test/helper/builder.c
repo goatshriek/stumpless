@@ -630,6 +630,25 @@ BuildListOfStrings
   return list;
 }
 
+Logger *
+BuildLogger
+( void )
+{
+  Logger * logger = malloc( sizeof( Logger ) );
+  if( logger == NULL )
+    return NULL;
+  
+  logger->name = "test logger";
+  logger->adapters = BuildAdapterList();
+  if( logger->adapters == NULL )
+    return NULL;
+  logger->formatters = BuildFormatterList();
+  if( logger->formatters == NULL )
+    return NULL;
+  
+  return logger;
+}
+
 OutputProfile *
 BuildOutputProfile
 ( void )

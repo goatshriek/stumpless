@@ -116,6 +116,10 @@ List *
 BuildListOfStrings
 ( void );
 
+Logger *
+BuildLogger
+( void );
+
 OutputProfile *
 BuildOutputProfile( void );
 

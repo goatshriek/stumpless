@@ -101,6 +101,24 @@ DestroyList
 }
 
 unsigned short
+ListContains
+( List * list, void * value )
+{
+  if( list == NULL )
+    return 0;
+  
+  Node * node = list->first;
+  while( node != NULL ){
+    if( node->value == value )
+      return 1;
+    
+    node = node->next;
+  } 
+  
+  return 0;
+}
+
+unsigned short
 ListIsEmpty
 ( List * list )
 {

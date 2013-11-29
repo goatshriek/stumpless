@@ -3,6 +3,14 @@
 
 #include "private/type.h"
 
+unsigned short
+AdapterListContains
+( AdapterList *, Adapter * );
+
+unsigned short
+AdapterListIsEmpty
+( AdapterList * );
+
 Status *
 AppendToAdapterList
 ( AdapterList *, Adapter * );
@@ -17,10 +25,6 @@ CopyAdapterList
 
 void
 DestroyAdapterList
-( AdapterList * );
-
-unsigned short
-AdapterListIsEmpty
 ( AdapterList * );
 
 AdapterList *

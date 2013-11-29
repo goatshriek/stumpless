@@ -9,6 +9,13 @@ __STUMPLESS_NAME( AddFormatter )
   return AddFormatter( formatter );
 }
 
+__STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( AddHandlerToFormatter )
+( __STUMPLESS_NAME( Formatter ) * formatter, __STUMPLESS_NAME( Handler ) * handler )
+{
+  return AppendHandlerToFormatter( formatter, handler );
+}
+
 __STUMPLESS_NAME( Formatter ) *
 __STUMPLESS_NAME( FindFormatterByName )
 ( const char * name )

@@ -6,6 +6,20 @@
 #include "private/status.h"
 #include "private/type.h"
 
+unsigned short
+AdapterListContains
+( AdapterList * list, Adapter * adapter )
+{
+  return list != NULL && ListContains( list->list, adapter );
+}
+
+unsigned short
+AdapterListIsEmpty
+( AdapterList * list )
+{
+  return list == NULL || ListIsEmpty( list->list );
+}
+
 Status *
 AppendToAdapterList
 ( AdapterList * list, Adapter * adapter )
@@ -58,13 +72,6 @@ DestroyAdapterList
   free( list );
   
   return;
-}
-
-unsigned short
-AdapterListIsEmpty
-( AdapterList * list )
-{
-  return list == NULL || ListIsEmpty( list->list );
 }
 
 AdapterList *

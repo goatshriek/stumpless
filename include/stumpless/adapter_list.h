@@ -4,6 +4,14 @@
 #include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
+unsigned short
+__STUMPLESS_NAME( AdapterListContains )
+( __STUMPLESS_NAME( AdapterList ) *, __STUMPLESS_NAME( Adapter ) * );
+
+unsigned short
+__STUMPLESS_NAME( AdapterListIsEmpty )
+( __STUMPLESS_NAME( AdapterList ) * );
+
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AppendToAdapterList )
 ( __STUMPLESS_NAME( AdapterList ) *, __STUMPLESS_NAME( Adapter ) * );
@@ -18,10 +26,6 @@ __STUMPLESS_NAME( CopyAdapterList )
 
 void
 __STUMPLESS_NAME( DestroyAdapterList )
-( __STUMPLESS_NAME( AdapterList ) * );
-
-unsigned short
-__STUMPLESS_NAME( AdapterListIsEmpty )
 ( __STUMPLESS_NAME( AdapterList ) * );
 
 __STUMPLESS_NAME( AdapterList ) *

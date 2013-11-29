@@ -3,6 +3,7 @@
 #include "private/dictionary.h"
 #include "private/formatter.h"
 #include "private/formatter_initializer.h"
+#include "private/handler_list.h"
 #include "private/status.h"
 #include "private/type.h"
 
@@ -27,6 +28,22 @@ AddFormatter
     return NULL;
   
   return NULL;
+}
+
+Status *
+AppendHandlerToFormatter
+( Formatter * formatter, Handler * handler )
+{
+  if( formatter == NULL || handler == NULL )
+    return RaiseAbnormalStatus( "empty argument" );
+  
+  if( formatter->handlers == NULL ){
+    formatter->handlers = NewHandlerList();
+    if( formatter->handlers == NULL )
+      return RaiseAbnormalStatus( "constructor failure" );
+  }
+  
+  return AppendToHandlerList( formatter->handlers, handler );
 }
 
 Formatter *

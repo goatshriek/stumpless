@@ -76,6 +76,35 @@ RemoveDictionaryValue
   return removed_value;
 }
 
+Dictionary *
+SetDictionaryValue
+( Dictionary * dictionary, const char * key, void * value )
+{
+  // todo add a search for existing keys
+  if( dictionary == NULL )
+    return NULL;
+  
+  Node * node = malloc( sizeof( Node ) );
+  if( node == NULL )
+    return NULL;
+  
+  node->key = key;
+  node->value = value;
+  node->parent = NULL;
+  node->left_child = NULL;
+  node->right_child = NULL;
+  
+  if( dictionary->root == NULL ){
+    dictionary->root = node;
+    return dictionary;
+  }
+  
+  AddNode( dictionary->root, node );
+  Splay( dictionary, node );
+  
+  return dictionary;
+}
+
 static
 void
 AddNode
@@ -240,32 +269,4 @@ SubtreeMinimum
     return node;
   
   return SubtreeMinimum( node->left_child );
-}
-
-Dictionary *
-SetDictionaryValue
-( Dictionary * dictionary, const char * key, void * value )
-{
-  if( dictionary == NULL )
-    return NULL;
-  
-  Node * node = malloc( sizeof( Node ) );
-  if( node == NULL )
-    return NULL;
-  
-  node->key = key;
-  node->value = value;
-  node->parent = NULL;
-  node->left_child = NULL;
-  node->right_child = NULL;
-  
-  if( dictionary->root == NULL ){
-    dictionary->root = node;
-    return dictionary;
-  }
-  
-  AddNode( dictionary->root, node );
-  Splay( dictionary, node );
-  
-  return dictionary;
 }

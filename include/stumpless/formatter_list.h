@@ -25,6 +25,10 @@ __STUMPLESS_NAME( EntryThroughFormatterList )
 ( __STUMPLESS_NAME( FormatterList ) *, __STUMPLESS_NAME( Entry ) * );
 
 unsigned short
+__STUMPLESS_NAME( FormatterListContains )
+( __STUMPLESS_NAME( FormatterList ) *, __STUMPLESS_NAME( Formatter ) * );
+
+unsigned short
 __STUMPLESS_NAME( FormatterListIsEmpty )
 ( __STUMPLESS_NAME( FormatterList ) * );
 

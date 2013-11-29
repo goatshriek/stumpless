@@ -7,6 +7,7 @@
 #include "helper.h"
 
 const char * test_add_formatter( void );
+const char * test_append_handler( void );
 const char * test_find_formatter_by_name( void );
 const char * test_get_option( void );
 const char * test_set_option( void );
@@ -18,6 +19,7 @@ main( void )
   const char * result = NULL;
   
   RUN_TEST( add_formatter )
+  RUN_TEST( append_handler )
   RUN_TEST( find_formatter_by_name )
   RUN_TEST( get_option )
   RUN_TEST( set_option )
@@ -41,6 +43,26 @@ test_add_formatter
   Formatter * found = FindFormatterByName( formatter->name );
   if( found != formatter )
     return "the value was not added in such a way that it could be retrieved";
+  
+  return NULL;
+}
+
+const char *
+test_append_handler
+( void )
+{
+  Formatter * formatter = BuildFormatter();
+  FAIL_IF_NULL( formatter, "the test formatter could not be built" )
+  
+  Handler * handler = NULL;
+  Status * status = AppendHandlerToFormatter( formatter, handler );
+  FAIL_IF_NULL( status, "an empty handler did not return an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a null handler did not generate the correct error" )
+  
+  handler = malloc( sizeof( Handler ) );
+  FAIL_IF_NULL( handler, "the test handler could not be built" )
+  status = AppendHandlerToFormatter( formatter, handler );
+  FAIL_IF_NOT_NULL( status, "the handler could not be added to the formatter" )
   
   return NULL;
 }

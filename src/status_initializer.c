@@ -46,6 +46,21 @@ InitializeDictionaryFailureStatus
 }
 
 Status *
+InitializeDuplicateStatus
+( void )
+{
+  CREATE_STATUS
+  
+  status->name = "duplicate";
+  status->description = "an attempt to add to a collection detected the same member already existing in the collection";
+  status->error = 1;
+  status->failure = 0;
+  status->warning = 0;
+  
+  return status;
+}
+
+Status *
 InitializeEmptyArgumentStatus
 ( void )
 {
@@ -132,6 +147,7 @@ InitializeStatusByName
     
     ADD_STATUS( "constructor failure", ConstructorFailure )
     ADD_STATUS( "dictionary failure", DictionaryFailure )
+    ADD_STATUS( "duplicate", Duplicate )
     ADD_STATUS( "empty argument", EmptyArgument )
     ADD_STATUS( "incompatible profile", IncompatibleProfile )
     ADD_STATUS( "list failure", ListFailure )

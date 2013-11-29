@@ -11,6 +11,7 @@
 const char * test_appender( void );
 const char * test_begin( void );
 const char * test_constructor( void );
+const char * test_contains( void );
 const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_is_empty( void );
@@ -27,6 +28,7 @@ main( void )
   RUN_TEST( appender )
   RUN_TEST( begin )
   RUN_TEST( constructor )
+  RUN_TEST( contains )
   RUN_TEST( copy )
   RUN_TEST( destructor )
   RUN_TEST( is_empty )
@@ -111,6 +113,36 @@ test_constructor
   
   Adapter * adapter = BeginAdapterList( list );
   FAIL_IF_NOT_NULL( adapter, "a newly-constructed list already had members" )
+  
+  return NULL;
+}
+
+const char *
+test_contains
+( void )
+{
+  AdapterList * list = BuildAdapterList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  Adapter * adapter = BeginAdapterList( list );
+
+  FAIL_IF_NULL( adapter, "could not get the first list member" )
+  
+  if( !AdapterListContains( list, adapter ) )
+    return "the list did not contain a value pulled from the beginning";
+  
+  adapter = NextInAdapterList( list );
+  if( !AdapterListContains( list, adapter ) )
+    return "the list did not contain a value pulled from the middle";
+  
+  adapter = malloc( sizeof( Adapter ) );
+  FAIL_IF_NULL( adapter, "could not build the test adapter" )
+  if( AdapterListContains( list, adapter ) )
+    return "the list contained a value not held in it";
+  
+  AppendToAdapterList( list, adapter );
+  if( !AdapterListContains( list, adapter ) )
+    return "the list did not contain a value added to it";
   
   return NULL;
 }

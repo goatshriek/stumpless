@@ -38,6 +38,13 @@ __STUMPLESS_NAME( EntryThroughFormatterList )
 }
 
 unsigned short
+__STUMPLESS_NAME( FormatterListContains )
+( __STUMPLESS_NAME( FormatterList ) * list, __STUMPLESS_NAME( Formatter ) * formatter )
+{
+  return FormatterListContains( list, formatter );
+}
+
+unsigned short
 __STUMPLESS_NAME( FormatterListIsEmpty )
 ( __STUMPLESS_NAME( FormatterList ) * list )
 {

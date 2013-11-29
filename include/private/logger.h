@@ -4,15 +4,15 @@
 #include "private/type.h"
 
 Status *
-AddAdapterToLogger
+AppendAdapterToLogger
 ( Logger *, Adapter * );
 
 Status *
-AddFormatterToLogger
+AppendFormatterToLogger
 ( Logger *, Formatter * );
 
 Status *
-AddHandlerToLogger
+AppendHandlerToLogger
 ( Logger *, Handler * );
 
 Status *

@@ -28,6 +28,10 @@ DestroyList
 ( List * );
 
 unsigned short
+ListContains
+( List *, void * );
+
+unsigned short
 ListIsEmpty
 ( List * );
 

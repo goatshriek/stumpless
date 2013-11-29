@@ -2,6 +2,20 @@
 
 #include "private/adapter_list.h"
 
+unsigned short
+__STUMPLESS_NAME( AdapterListContains )
+( __STUMPLESS_NAME( AdapterList ) * list, __STUMPLESS_NAME( Adapter ) * adapter )
+{
+  return AdapterListContains( list, adapter );
+}
+
+unsigned short
+__STUMPLESS_NAME( AdapterListIsEmpty )
+( __STUMPLESS_NAME( AdapterList ) * list )
+{
+  return AdapterListIsEmpty( list );
+}
+
 __STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( AppendToAdapterList )
 ( __STUMPLESS_NAME( AdapterList ) * list, __STUMPLESS_NAME( Adapter ) * adapter )
@@ -28,13 +42,6 @@ __STUMPLESS_NAME( DestroyAdapterList )
 ( __STUMPLESS_NAME( AdapterList ) * list )
 {
   DestroyAdapterList( list );
-}
-
-unsigned short
-__STUMPLESS_NAME( AdapterListIsEmpty )
-( __STUMPLESS_NAME( AdapterList ) * list )
-{
-  return AdapterListIsEmpty( list );
 }
 
 __STUMPLESS_NAME( AdapterList ) *

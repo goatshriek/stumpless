@@ -84,6 +84,13 @@ EntryThroughFormatterList
 }
 
 unsigned short
+FormatterListContains
+( FormatterList * list, Formatter * formatter )
+{
+  return list != NULL && ListContains( list->list, formatter );
+}
+
+unsigned short
 FormatterListIsEmpty
 ( FormatterList * list )
 {

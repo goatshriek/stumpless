@@ -10,6 +10,7 @@
 const char * test_initialize_by_name( void );
 const char * test_initialize_constructor_failure( void );
 const char * test_initialize_dictionary_failure( void );
+const char * test_initialize_duplicate( void );
 const char * test_initialize_empty_argument( void );
 const char * test_initialize_incompatible_profile( void );
 const char * test_initialize_malformed_structure( void );
@@ -26,6 +27,7 @@ main( void )
   RUN_TEST( initialize_by_name )
   RUN_TEST( initialize_constructor_failure )
   RUN_TEST( initialize_dictionary_failure )
+  RUN_TEST( initialize_duplicate )
   RUN_TEST( initialize_empty_argument )
   RUN_TEST( initialize_incompatible_profile )
   RUN_TEST( initialize_malformed_structure )
@@ -72,6 +74,18 @@ test_initialize_dictionary_failure
   FAIL_IF_NULL( status, "the status was not created" )
   
   ASSERT_STRINGS_EQUAL( "dictionary failure", status->name, "the correct status was not returned from initialization" )
+  
+  return NULL;
+}
+
+const char *
+test_initialize_duplicate
+( void )
+{
+  Status * status = InitializeDuplicateStatus();
+  FAIL_IF_NULL( status, "the status was not created" )
+  
+  ASSERT_STRINGS_EQUAL( "duplicate", status->name, "the correct status was not returned from initialization" )
   
   return NULL;
 }

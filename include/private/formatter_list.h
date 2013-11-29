@@ -25,6 +25,10 @@ EntryThroughFormatterList
 ( FormatterList *, Entry * );
 
 unsigned short
+FormatterListContains
+( FormatterList *, Formatter * );
+
+unsigned short
 FormatterListIsEmpty
 ( FormatterList * );
 

@@ -3,24 +3,24 @@
 #include "private/logger.h"
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( AddAdapterToLogger )
+__STUMPLESS_NAME( AppendAdapterToLogger )
 ( __STUMPLESS_NAME( Logger ) * logger, __STUMPLESS_NAME( Adapter ) * adapter )
 {
-  return AddAdapterToLogger( logger, adapter );
+  return AppendAdapterToLogger( logger, adapter );
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( AddFormatterToLogger )
+__STUMPLESS_NAME( AppendFormatterToLogger )
 ( __STUMPLESS_NAME( Logger ) * logger, __STUMPLESS_NAME( Formatter ) * formatter )
 {
-  return AddFormatterToLogger( logger, formatter );
+  return AppendFormatterToLogger( logger, formatter );
 }
 
 __STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( AddHandlerToLogger )
+__STUMPLESS_NAME( AppendHandlerToLogger )
 ( __STUMPLESS_NAME( Logger ) * logger, __STUMPLESS_NAME( Handler ) * handler )
 {
-  return AddHandlerToLogger( logger, handler );
+  return AppendHandlerToLogger( logger, handler );
 }
 
 __STUMPLESS_NAME( Status ) *

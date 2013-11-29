@@ -12,6 +12,10 @@ InitializeDictionaryFailureStatus
 ( void );
 
 Status *
+InitializeDuplicateStatus
+( void );
+
+Status *
 InitializeEmptyArgumentStatus
 ( void );
 

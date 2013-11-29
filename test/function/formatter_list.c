@@ -11,6 +11,7 @@
 const char * test_appender( void );
 const char * test_begin( void );
 const char * test_constructor( void );
+const char * test_contains( void );
 const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_entry_through( void );
@@ -27,6 +28,7 @@ main( void )
   RUN_TEST( appender )
   RUN_TEST( begin )
   RUN_TEST( constructor )
+  RUN_TEST( contains )
   RUN_TEST( copy )
   RUN_TEST( destructor )
   RUN_TEST( entry_through )
@@ -111,6 +113,36 @@ test_constructor
   
   Formatter * formatter = BeginFormatterList( list );
   FAIL_IF_NOT_NULL( formatter, "a newly-constructed list already had members" )
+  
+  return NULL;
+}
+
+const char *
+test_contains
+( void )
+{
+  FormatterList * list = BuildFormatterList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  Formatter * formatter = BeginFormatterList( list );
+
+  FAIL_IF_NULL( formatter, "could not get the first list member" )
+  
+  if( !FormatterListContains( list, formatter ) )
+    return "the list did not contain a value pulled from the beginning";
+  
+  formatter = NextInFormatterList( list );
+  if( !FormatterListContains( list, formatter ) )
+    return "the list did not contain a value pulled from the middle";
+  
+  formatter = malloc( sizeof( Formatter ) );
+  FAIL_IF_NULL( formatter, "could not build the test formatter" )
+  if( FormatterListContains( list, formatter ) )
+    return "the list contained a value not held in it";
+  
+  AppendToFormatterList( list, formatter );
+  if( !FormatterListContains( list, formatter ) )
+    return "the list did not contain a value added to it";
   
   return NULL;
 }

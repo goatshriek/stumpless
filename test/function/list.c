@@ -12,6 +12,7 @@ const char * test_append_value( void );
 const char * test_appender( void );
 const char * test_begin( void );
 const char * test_constructor( void );
+const char * test_contains( void );
 const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_is_empty( void );
@@ -29,6 +30,7 @@ main( void )
   RUN_TEST( appender )
   RUN_TEST( begin )
   RUN_TEST( constructor )
+  RUN_TEST( contains )
   RUN_TEST( copy )
   RUN_TEST( destructor )
   RUN_TEST( is_empty )
@@ -105,7 +107,8 @@ test_begin
 }
 
 const char *
-test_constructor( void )
+test_constructor
+( void )
 {
   List * list = NULL;
   
@@ -124,7 +127,36 @@ test_constructor( void )
 }
 
 const char *
-test_copy( void )
+test_contains
+( void )
+{
+  List * list = BuildListOfStrings();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  const char * value = BeginList( list );
+  FAIL_IF_NULL( value, "could not get the first list member" )
+  
+  if( !ListContains( list, value ) )
+    return "the list did not contain a value pulled from the beginning";
+  
+  value = NextInList( list );
+  if( !ListContains( list, value ) )
+    return "the list did not contain a value pulled from the middle";
+  
+  value = "not in the list";
+  if( ListContains( list, value ) )
+    return "the list contained a value not held in it";
+  
+  AppendToList( list, value );
+  if( !ListContains( list, value ) )
+    return "the list did not contain a value added to it";
+  
+  return NULL;
+}
+
+const char *
+test_copy
+( void )
 {
   List * list = BuildListOfStrings();
   if( list == NULL )

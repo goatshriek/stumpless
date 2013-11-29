@@ -74,6 +74,10 @@ test_function_list_SOURCES = test/function/list.c
 test_function_list_CFLAGS = $(test_flags)
 test_function_list_LDADD = $(test_libraries)
 
+test_function_logger_SOURCES = test/function/logger.c
+test_function_logger_CFLAGS = $(test_flags)
+test_function_logger_LDADD = $(test_libraries)
+
 test_function_output_SOURCES = test/function/output.c
 test_function_output_CFLAGS = $(test_flags)
 test_function_output_LDADD = $(test_libraries)
