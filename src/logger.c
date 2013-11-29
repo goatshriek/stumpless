@@ -49,6 +49,15 @@ ReceiveNextValue
 }
 
 Status *
+SendStatus
+( Logger * logger )
+{
+  // sends the status to the check status function
+  
+  return NULL;
+}
+
+Status *
 SendValue
 ( Logger * logger, Value * value )
 {

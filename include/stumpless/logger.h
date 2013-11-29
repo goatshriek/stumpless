@@ -21,6 +21,10 @@ __STUMPLESS_NAME( ReceiveNextValue )
 ( __STUMPLESS_NAME( Logger ) * );
 
 __STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( SendStatus )
+( __STUMPLESS_NAME( Logger ) * );
+
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( SendValue )
 ( __STUMPLESS_NAME( Logger ) *, __STUMPLESS_NAME( Value ) * );
 

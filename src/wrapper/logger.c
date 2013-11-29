@@ -31,6 +31,13 @@ __STUMPLESS_NAME( ReceiveNextValue )
 }
 
 __STUMPLESS_NAME( Status ) *
+__STUMPLESS_NAME( SendStatus )
+( __STUMPLESS_NAME( Logger ) * logger )
+{
+  return SendStatus( logger );
+}
+
+__STUMPLESS_NAME( Status ) *
 __STUMPLESS_NAME( SendValue )
 ( __STUMPLESS_NAME( Logger ) * logger, __STUMPLESS_NAME( Value ) * value )
 {

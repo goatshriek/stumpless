@@ -20,6 +20,10 @@ ReceiveNextValue
 ( Logger * );
 
 Status *
+SendStatus
+( Logger * );
+
+Status *
 SendValue
 ( Logger *, Value * );
 
