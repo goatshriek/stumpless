@@ -27,10 +27,11 @@ AppendLists
   if( first == NULL )
     return NULL;
   
-  void * value = BeginList( second );
-  while( value != NULL ){
-    AppendToList( first, value );
-    value = NextInList( second );
+  Node * node = second->first;
+  while( node != NULL ){
+    AppendToList( first, node->value );
+    
+    node = node->next;
   }
   
   return first;
@@ -80,10 +81,10 @@ CopyList
     return NULL;
   
   List * copy = NewList();
-  void * value = BeginList( list );
-  while( value != NULL ){
-    AppendToList( copy, value );
-    value = NextInList( list );
+  Node * node = list->first;
+  while( node != NULL ){
+    AppendToList( copy, node->value );
+    node = node->next;
   }
   
   return copy;
