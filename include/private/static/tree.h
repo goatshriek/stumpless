@@ -6,21 +6,29 @@
 #include "private/type.h"
 
 struct Dimension;
+struct Iterator;
 struct Node;
 
 typedef struct Dimension
         Dimension;
+typedef struct Iterator
+        Iterator;
 typedef struct Node
         Node;
 
 struct Dimension {
   List * comparisons;
-  Node * current_node;
   unsigned index;
+  Iterator * iterator;
   const char * name;
   Dictionary * options;
   Node * root;
   Tree * tree;
+};
+
+struct Iterator {
+  unsigned index;
+  Stack * path;
 };
 
 struct Node {
@@ -43,14 +51,14 @@ AddToDimension
 ( Dimension *, Node * );
 
 static
-Node *
-BeginDimensionNodes
-( Dimension * );
-
-static
 void
 DestroyNode
 ( Node * );
+
+static
+unsigned short
+IteratorIsDone
+( Iterator * );
 
 static
 unsigned
@@ -58,14 +66,19 @@ MaxNodeHeight
 ( Node *, Node *, unsigned );
 
 static
+Iterator *
+NewIterator
+( Dimension * );
+
+static
 Node *
 NewNode
 ( unsigned );
 
 static
-Node *
-NextNodeInDimension
-( Dimension * );
+void *
+NextInIterator
+( Iterator * );
 
 static
 Dimension *

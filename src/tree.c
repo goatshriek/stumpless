@@ -98,18 +98,23 @@ void *
 BeginDimension
 ( Dimension * dimension )
 {
-  // todo finish
+  Iterator * iterator = NewIterator( dimension );
+  if( dimension->iterator == NULL )
+    return NULL;
   
-  return NULL;
+  dimension->iterator = iterator;
+  
+  return NextInIterator( iterator );
 }
 
 void *
 BeginTree
 ( Tree * tree )
 {
-  // todo finish
-  
-  return NULL;
+  if( tree == NULL )
+    return NULL;
+  else
+    return BeginDimension( tree->current_dimension );
 }
 
 Tree *
@@ -172,18 +177,20 @@ void *
 NextInDimension
 ( Dimension * dimension )
 {
-  // todo finish
-  
-  return NULL;
+  if( dimension == NULL )
+    return NULL;
+  else
+    return NextInIterator( dimension->iterator );
 }
 
 void *
 NextInTree
 ( Tree * tree )
 {
-  // todo finish
-  
-  return NULL;
+  if( tree == NULL )
+    return NULL;
+  else
+    return NextInDimension( tree->current_dimension );
 }
 
 Tree *
@@ -280,7 +287,8 @@ TreeIsEmpty
 ( Tree * tree )
 {
   return tree == NULL
-      || BeginDimension( BeginList( tree->dimensions ) ) == NULL;
+      || tree->current_dimension == NULL
+      || tree->current_dimension->root == NULL;
 }
 
 // todo refactor this beast of a function
@@ -350,16 +358,6 @@ AddToDimension
 }
 
 static
-Node *
-BeginDimensionNodes
-( Dimension * dimension )
-{
-  // todo finish
-  
-  return NULL;
-}
-
-static
 void
 DestroyNode
 ( Node * node )
@@ -379,6 +377,14 @@ DestroyNode
   DestroyNode( right );
   
   return;
+}
+
+static
+unsigned short
+IteratorIsDone
+( Iterator * iterator)
+{
+  return iterator == NULL || StackIsEmpty( iterator->path );
 }
 
 static
@@ -402,6 +408,37 @@ MaxNodeHeight
     return first_height;
   else
     return second_height;
+}
+
+static
+Iterator *
+NewIterator
+( Dimension * dimension )
+{
+  if( dimension == NULL )
+    return NULL;
+  
+  Iterator * iterator = malloc( sizeof( Iterator ) );
+  if( iterator == NULL )
+    return NULL;
+  
+  iterator->path = NewStack();
+  if( iterator->path == NULL )
+    return NULL;
+  
+  iterator->index = dimension->index;
+  
+  Stack * result;
+  Node * current = dimension->root;
+  while( current != NULL ){
+    result = PushToStack( iterator->path, current );
+    if( result == NULL )
+      return NULL;
+    
+    current = current->left_children[iterator->index];
+  }
+  
+  return iterator;
 }
 
 static
@@ -437,14 +474,59 @@ NewNode
   return node;
 }
 
+
+// todo refactor
 static
-Node *
-NextNodeInDimension
-( Dimension * dimension )
+void *
+NextInIterator
+( Iterator * iterator )
 {
-  // todo finish
+  if( iterator == NULL )
+    return NULL;
   
-  return NULL;
+  unsigned index = iterator->index;
+  Node * current = PopFromStack( iterator->path );
+  void * value = current->value;
+  Stack * result;
+  
+  if( current->right_children[index] == NULL ){
+    current = PopFromStack( iterator->path );
+    
+    while( current != NULL && current->right_children[index] == NULL ){
+      current = PopFromStack( iterator->path );
+    }
+    
+    if( current == NULL )
+      return NULL;
+    
+    current = current->right_children[index];
+    result = PushToStack( iterator->path, current );
+    if( result == NULL )
+      return NULL;
+    
+    while( current->left_children[index] != NULL ){
+      result = PushToStack( iterator->path, current->left_children[index] );
+      if( result == NULL )
+        return NULL;
+      
+      current = current->left_children[index];
+    }
+  } else {
+    result = PushToStack( iterator->path, current->right_children[index] );
+    if( result == NULL )
+      return NULL;
+    
+    current = current->right_children[index];
+    while( current->left_children[index] != NULL ){
+      result = PushToStack( iterator->path, current->left_children[index] );
+      if( result != NULL )
+        return NULL;
+      
+      current = current->left_children[index];
+    }
+  }
+  
+  return value;
 }
 
 // todo refactor this monstrous function
