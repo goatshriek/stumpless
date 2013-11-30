@@ -60,20 +60,8 @@ Tree *
 AddToTree
 ( Tree * tree, void * value )
 {
-  Node * node = malloc( sizeof( Node ) );
+  Node * node = NewNode( 10 );
   if( node == NULL )
-    return NULL;
-  
-  node->left_children = malloc( sizeof( Node * ) * 10 );
-  if( node->left_children == NULL )
-    return NULL;
-  
-  node->right_children = malloc( sizeof( Node * ) * 10 );
-  if( node->right_children == NULL )
-    return NULL;
-  
-  node->heights = malloc( sizeof( unsigned ) * 10 );
-  if( node->heights == NULL )
     return NULL;
   
   node->value = value;
@@ -307,16 +295,11 @@ AddToDimension
   
   short result;
   unsigned index = dimension->index;
-  node->heights[index] = 0;
   Dictionary * options = dimension->options;
   Node * current = dimension->root;
   
   if( current == NULL ){
     dimension->root = node;
-    node->left_children[index] = NULL;
-    node->right_children[index] = NULL;
-    node->heights[index] = 1;
-    
     return dimension;
   }
   
@@ -419,6 +402,39 @@ MaxNodeHeight
     return first_height;
   else
     return second_height;
+}
+
+static
+Node *
+NewNode
+( unsigned dimension_capacity )
+{
+  Node * node = malloc( sizeof( Node ) );
+  if( node == NULL )
+    return NULL;
+  
+  node->left_children = malloc( sizeof( Node * ) * dimension_capacity );
+  if( node->left_children == NULL )
+    return NULL;
+  
+  node->right_children = malloc( sizeof( Node * ) * dimension_capacity );
+  if( node->right_children == NULL )
+    return NULL;
+  
+  node->heights = malloc( sizeof( unsigned ) * dimension_capacity );
+  if( node->heights == NULL )
+    return NULL;
+  
+  unsigned i;
+  for( i = 0; i < dimension_capacity; i++ ){
+    node->left_children[i] = NULL;
+    node->right_children[i] = NULL;
+    node->heights[i] = 0;
+  }
+  
+  node->value = NULL;
+   
+  return node;
 }
 
 static

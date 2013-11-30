@@ -59,6 +59,11 @@ MaxNodeHeight
 
 static
 Node *
+NewNode
+( unsigned );
+
+static
+Node *
 NextNodeInDimension
 ( Dimension * );
 
