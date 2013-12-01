@@ -6,12 +6,15 @@
 
 struct Dimension;
 struct List;
+struct Stack;
 struct Tree;
 
 typedef struct Dimension
         Dimension;
 typedef struct List
         List;
+typedef struct Stack
+        Stack;
 typedef struct Tree
         Tree;
 

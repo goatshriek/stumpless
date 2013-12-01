@@ -131,6 +131,10 @@ Output *
 BuildRawStringOutput
 ( void );
 
+Stack *
+BuildStackOfStrings
+( void );
+
 Value *
 BuildStringValue
 ( void );

@@ -94,6 +94,10 @@ test_function_output_profile_initializer_SOURCES = test/function/output_profile_
 test_function_output_profile_initializer_CFLAGS = $(test_flags)
 test_function_output_profile_initializer_LDADD = $(test_libraries)
 
+test_function_stack_SOURCES = test/function/stack.c
+test_function_stack_CFLAGS = $(test_flags)
+test_function_stack_LDADD = $(test_libraries)
+
 test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)

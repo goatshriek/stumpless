@@ -15,6 +15,7 @@
 #include "private/handler_list.h"
 #include "private/list.h"
 #include "private/output_profile.h"
+#include "private/stack.h"
 #include "private/tree.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
@@ -688,6 +689,26 @@ BuildRawStringOutput
   output->data->c_p = "Test String with\nstuff in it.";
   
   return output;
+}
+
+Stack *
+BuildStackOfStrings
+( void )
+{
+  Stack * stack = NewStack();
+  if( stack == NULL )
+    return NULL;
+  
+  if( PushToStack( stack, "bottom" ) == NULL )
+    return NULL;
+  
+  if( PushToStack( stack, "middle" ) == NULL )
+    return NULL;
+  
+  if( PushToStack( stack, "top" ) == NULL )
+    return NULL;
+  
+  return stack;
 }
 
 Value *

@@ -25,6 +25,7 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/output.h \
                  include/private/output_profile.h \
                  include/private/output_profile_initializer.h \
+                 include/private/stack.h \
                  include/private/status_checker.h \
                  include/private/status.h \
                  include/private/status_initializer.h \

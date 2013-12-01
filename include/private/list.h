@@ -45,7 +45,7 @@ NextInList
 
 List *
 NewList
-();
+( void );
 
 List *
 PrependToList
