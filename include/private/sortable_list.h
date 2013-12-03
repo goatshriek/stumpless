@@ -23,14 +23,6 @@ void
 DestroySortableList
 ( SortableList * );
 
-unsigned short
-SortableListContains
-( SortableList *, void * );
-
-unsigned short
-SortableListIsEmpty
-( SortableList * );
-
 void *
 NextInSortableList
 ( SortableList * );
@@ -40,11 +32,23 @@ NewSortableList
 ();
 
 SortableList *
+NewSortableListFromList
+( List *, unsigned short ( *compare )( void *, void *, Dictionary * ) );
+
+SortableList *
 PrependToSortableList
 ( SortableList *, void * );
 
 SortableList *
 SetSortableListComparison
 ( SortableList *, unsigned short ( *compare )( void *, void *, Dictionary * ) );
+
+unsigned short
+SortableListContains
+( SortableList *, void * );
+
+unsigned short
+SortableListIsEmpty
+( SortableList * );
 
 #endif

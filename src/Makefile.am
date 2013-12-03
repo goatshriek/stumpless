@@ -30,6 +30,7 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/output.c \
                           src/output_profile.c \
                           src/output_profile_initializer.c \
+                          src/sortable_list.c \
                           src/status.c \
                           src/status_initializer.c \
                           src/stream_handler.c \

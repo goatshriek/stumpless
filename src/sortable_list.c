@@ -4,16 +4,16 @@
 #include "private/sortable_list_static.h"
 #include "private/type.h"
 
-List *
-AppendLists
-( List * first, List * second )
+SortableList *
+AppendSortableLists
+( SortableList * first, SortableList * second )
 {
   if( first == NULL )
     return NULL;
   
   Node * node = second->first;
   while( node != NULL ){
-    AppendToList( first, node->value );
+    AppendToSortableList( first, node->value );
     
     node = node->next;
   }
@@ -21,9 +21,9 @@ AppendLists
   return first;
 }
 
-List *
-AppendToList
-( List * list, void * value )
+SortableList *
+AppendToSortableList
+( SortableList * list, void * value )
 {
   if( list == NULL )
     return NULL;
@@ -46,8 +46,8 @@ AppendToList
 }
 
 void *
-BeginList
-( List * list )
+BeginSortableList
+( SortableList * list )
 {
   if( list == NULL || list->first == NULL )
     return NULL;
@@ -57,17 +57,17 @@ BeginList
   return list->current->value;
 }
 
-List *
-CopyList
-( List * list )
+SortableList *
+CopySortableList
+( SortableList * list )
 {
   if( list == NULL )
     return NULL;
   
-  List * copy = NewList();
+  SortableList * copy = NewSortableList();
   Node * node = list->first;
   while( node != NULL ){
-    AppendToList( copy, node->value );
+    AppendToSortableList( copy, node->value );
     node = node->next;
   }
   
@@ -75,8 +75,8 @@ CopyList
 }
 
 void
-DestroyList
-( List * list )
+DestroySortableList
+( SortableList * list )
 {
   DestroyNode( list->first );
   
@@ -85,34 +85,9 @@ DestroyList
   return;
 }
 
-unsigned short
-ListContains
-( List * list, void * value )
-{
-  if( list == NULL )
-    return 0;
-  
-  Node * node = list->first;
-  while( node != NULL ){
-    if( node->value == value )
-      return 1;
-    
-    node = node->next;
-  } 
-  
-  return 0;
-}
-
-unsigned short
-ListIsEmpty
-( List * list )
-{
-  return list == NULL || list->first == NULL;
-}
-
 void *
-NextInList
-( List * list )
+NextInSortableList
+( SortableList * list )
 {
   if( list == NULL || list->current == NULL )
     return NULL;
@@ -125,11 +100,11 @@ NextInList
     return list->current->value;
 }
 
-List *
-NewList
+SortableList *
+NewSortableList
 ()
 {
-  List * list = malloc( sizeof( List ) );
+  SortableList * list = malloc( sizeof( SortableList ) );
   if( list == NULL )
     return NULL;
   
@@ -138,9 +113,16 @@ NewList
   return list;
 }
 
-List *
-PrependToList
-( List * list, void * value )
+SortableSortableList *
+NewSortableListFromList
+( SortableList * list, unsigned short ( *compare )( void *, void *, Dictionary * ) )
+{
+  return NULL;
+}
+
+SortableList *
+PrependToSortableList
+( SortableList * list, void * value )
 {
   if( list == NULL || value == NULL )
     return NULL;
@@ -158,6 +140,38 @@ PrependToList
     list->last = node;
   
   return list;
+}
+
+SortableList *
+SetSortableListComparison
+( SortableList *, unsigned short ( *compare )( void *, void *, Dictionary * ) )
+{
+  return NULL;
+}
+
+unsigned short
+SortableListContains
+( SortableList * list, void * value )
+{
+  if( list == NULL )
+    return 0;
+  
+  Node * node = list->first;
+  while( node != NULL ){
+    if( node->value == value )
+      return 1;
+    
+    node = node->next;
+  } 
+  
+  return 0;
+}
+
+unsigned short
+SortableListIsEmpty
+( SortableList * list )
+{
+  return list == NULL || list->first == NULL;
 }
 
 static
