@@ -33,9 +33,12 @@ struct __STUMPLESS_NAME( Handler );
 struct __STUMPLESS_NAME( HandlerList );
 struct __STUMPLESS_NAME( HTTConfiguration );
 struct __STUMPLESS_NAME( Level );
+struct __STUMPLESS_NAME( Log );
 struct __STUMPLESS_NAME( Logger );
 struct __STUMPLESS_NAME( Output );
 struct __STUMPLESS_NAME( OutputProfile );
+struct __STUMPLESS_NAME( Record );
+struct __STUMPLESS_NAME( RecordList );
 struct __STUMPLESS_NAME( Status );
 struct __STUMPLESS_NAME( SortingConfiguration );
 struct __STUMPLESS_NAME( StringConfiguration );
@@ -95,12 +98,18 @@ typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         __STUMPLESS_NAME( HTTPConfiguration );
 typedef struct __STUMPLESS_NAME( Level )
         __STUMPLESS_NAME( Level );
+typedef struct __STUMPLESS_NAME( Log )
+        __STUMPLESS_NAME( Log );
 typedef struct __STUMPLESS_NAME( Logger )
         __STUMPLESS_NAME( Logger );
 typedef struct __STUMPLESS_NAME( Output )
         __STUMPLESS_NAME( Output );
 typedef struct __STUMPLESS_NAME( OutputProfile )
         __STUMPLESS_NAME( OutputProfile );
+typedef struct __STUMPLESS_NAME( Record )
+        __STUMPLESS_NAME( Record );
+typedef struct __STUMPLESS_NAME( RecordList )
+        __STUMPLESS_NAME( RecordList );
 typedef struct __STUMPLESS_NAME( Status )
         __STUMPLESS_NAME( Status );
 typedef struct __STUMPLESS_NAME( SortingConfiguration )
@@ -225,6 +234,10 @@ struct __STUMPLESS_NAME( Level ) {
   const char * name;
 };
 
+struct __STUMPLESS_NAME( Log ) {
+  // todo list of records
+}
+
 struct __STUMPLESS_NAME( Logger ) {
   __STUMPLESS_NAME( AdapterList ) * adapters;
   const char * name;
@@ -247,6 +260,11 @@ struct __STUMPLESS_NAME( OutputProfile ) {
   const char * name;
   char * ( *to_string )( __STUMPLESS_NAME( Output ) * );
 };
+
+struct __STUMPLESS_NAME( Record ) {
+  time_t time;
+  __STUMPLESS_NAME( Dictionary ) * attributes;
+}
 
 struct __STUMPLESS_NAME( Status ) {
   unsigned short error : 1;
@@ -310,6 +328,7 @@ struct __STUMPLESS_NAME( Value ) {
 };
 
 struct __STUMPLESS_NAME( ValueProfile ) {
+  unsigned short ( *compare )( __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
   __STUMPLESS_NAME( Status ) * ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
   const char * name;
   __STUMPLESS_NAME( Output ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );

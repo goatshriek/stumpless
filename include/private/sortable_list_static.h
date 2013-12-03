@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_PRIVATE_LIST_STATIC_H
-#define STUMPLESS_PRIVATE_LIST_STATIC_H
+#ifndef STUMPLESS_PRIVATE_SORTABLE_LIST_STATIC_H
+#define STUMPLESS_PRIVATE_SORTABLE_LIST_STATIC_H
 
 #include "private/type.h"
 
@@ -15,7 +15,7 @@ struct List {
 };
 
 struct Node {
-  Node * next;
+  Node * neighbors;
   void * value;
 };
 
@@ -23,10 +23,5 @@ static
 void
 DestroyNode
 ( Node * );
-
-static
-void *
-SeparateNodes
-( Node *, void * );
 
 #endif
