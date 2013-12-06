@@ -9,7 +9,7 @@ AddSeparatorToList
 
 List *
 AppendLists
-( List *, List * );
+( List *, const List * );
 
 List *
 AppendToList
@@ -21,7 +21,7 @@ BeginList
 
 List *
 CopyList
-( List * );
+( const List * );
 
 void
 DestroyList
@@ -29,11 +29,11 @@ DestroyList
 
 unsigned short
 ListContains
-( List *, void * );
+( const List *, const void * );
 
 unsigned short
 ListIsEmpty
-( List * );
+( const List * );
 
 void *
 NextInList

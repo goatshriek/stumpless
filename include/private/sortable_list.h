@@ -4,11 +4,7 @@
 #include "private/type.h"
 
 SortableList *
-AppendSortableLists
-( SortableList *, SortableList * );
-
-SortableList *
-AppendToSortableList
+AddToSortableList
 ( SortableList *, void * );
 
 void *
@@ -23,6 +19,10 @@ void
 DestroySortableList
 ( SortableList * );
 
+SortableList *
+MergeSortableLists
+( SortableList *, SortableList * );
+
 void *
 NextInSortableList
 ( SortableList * );
@@ -33,15 +33,11 @@ NewSortableList
 
 SortableList *
 NewSortableListFromList
-( List *, unsigned short ( *compare )( void *, void *, Dictionary * ) );
-
-SortableList *
-PrependToSortableList
-( SortableList *, void * );
+( List *, unsigned short ( *compare )( const void *, const void *, Dictionary * ) );
 
 SortableList *
 SetSortableListComparison
-( SortableList *, unsigned short ( *compare )( void *, void *, Dictionary * ) );
+( SortableList *, unsigned short ( *compare )( const void *, const void *, Dictionary * ) );
 
 unsigned short
 SortableListContains

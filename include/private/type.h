@@ -5,9 +5,12 @@
 #include "stumpless/type.h"
 
 struct List;
+struct SortableList;
 
 typedef struct List
         List;
+typedef struct SortableList
+        SortableList;
 
 typedef __STUMPLESS_NAME( Byte )
         Byte;

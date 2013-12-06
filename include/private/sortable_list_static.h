@@ -9,6 +9,7 @@ typedef struct Node
         Node;
 
 struct List {
+  unsigned short ( *compare )( const void *, const void *, Dictionary * );
   Node * current;
   Node * first;
   Node * last;

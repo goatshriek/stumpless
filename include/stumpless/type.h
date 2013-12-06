@@ -236,7 +236,8 @@ struct __STUMPLESS_NAME( Level ) {
 
 struct __STUMPLESS_NAME( Log ) {
   // todo list of records
-}
+  unsigned short placeholder;
+};
 
 struct __STUMPLESS_NAME( Logger ) {
   __STUMPLESS_NAME( AdapterList ) * adapters;
@@ -264,7 +265,7 @@ struct __STUMPLESS_NAME( OutputProfile ) {
 struct __STUMPLESS_NAME( Record ) {
   time_t time;
   __STUMPLESS_NAME( Dictionary ) * attributes;
-}
+};
 
 struct __STUMPLESS_NAME( Status ) {
   unsigned short error : 1;
@@ -328,7 +329,7 @@ struct __STUMPLESS_NAME( Value ) {
 };
 
 struct __STUMPLESS_NAME( ValueProfile ) {
-  unsigned short ( *compare )( __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
+  unsigned short ( *compare )( const __STUMPLESS_NAME( Value ) *, const __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
   __STUMPLESS_NAME( Status ) * ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
   const char * name;
   __STUMPLESS_NAME( Output ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );

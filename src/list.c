@@ -22,7 +22,7 @@ AddSeparatorToList
 
 List *
 AppendLists
-( List * first, List * second )
+( List * first, const List * second )
 {
   if( first == NULL )
     return NULL;
@@ -75,7 +75,7 @@ BeginList
 
 List *
 CopyList
-( List * list )
+( const List * list )
 {
   if( list == NULL )
     return NULL;
@@ -103,7 +103,7 @@ DestroyList
 
 unsigned short
 ListContains
-( List * list, void * value )
+( const List * list, const void * value )
 {
   if( list == NULL )
     return 0;
@@ -121,7 +121,7 @@ ListContains
 
 unsigned short
 ListIsEmpty
-( List * list )
+( const List * list )
 {
   return list == NULL || list->first == NULL;
 }
