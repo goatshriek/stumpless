@@ -90,6 +90,10 @@ test_function_output_profile_initializer_SOURCES = test/function/output_profile_
 test_function_output_profile_initializer_CFLAGS = $(test_flags)
 test_function_output_profile_initializer_LDADD = $(test_libraries)
 
+test_function_sortable_list_SOURCES = test/function/sortable_list.c
+test_function_sortable_list_CFLAGS = $(test_flags)
+test_function_sortable_list_LDADD = $(test_libraries)
+
 test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)

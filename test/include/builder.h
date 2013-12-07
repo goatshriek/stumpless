@@ -104,13 +104,16 @@ BuildHandlerList
 ( void );
 
 Value *
-BuildIntArrayValue( void );
+BuildIntArrayValue
+( void );
 
 Value *
-BuildIntValue( void );
+BuildIntValue
+( void );
 
 Level *
-BuildLevel( void );
+BuildLevel
+( void );
 
 List *
 BuildListOfStrings
@@ -121,34 +124,48 @@ BuildLogger
 ( void );
 
 OutputProfile *
-BuildOutputProfile( void );
+BuildOutputProfile
+( void );
 
 Output *
-BuildRawStringOutput( void );
+BuildRawStringOutput
+( void );
+
+SortableList *
+BuildSortableListOfStrings
+( void );
 
 Value *
-BuildStringValue( void );
+BuildStringValue
+( void );
 
 Output *
-BuildTextOutput( void );
+BuildTextOutput
+( void );
 
 Value *
-BuildUnsignedIntValue( void );
+BuildUnsignedIntValue
+( void );
 
 Value *
-BuildUnsignedShortValue( void );
+BuildUnsignedShortValue
+( void );
 
 ValueList *
-BuildValueList( void );
+BuildValueList
+( void );
 
 ValueList *
-BuildValueListOfStrings( void );
+BuildValueListOfStrings
+( void );
 
 ValueProfile *
-BuildValueProfile( void );
+BuildValueProfile
+( void );
 
 Value *
-BuildVoidValue( void );
+BuildVoidValue
+( void );
 
 Status *
 BuildWarningStatus

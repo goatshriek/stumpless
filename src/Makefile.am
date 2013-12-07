@@ -7,6 +7,7 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/adapter_initializer.c \
                           src/adapter_list.c \
                           src/boolean.c \
+                          src/compare_base.c \
                           src/configuration.c \
                           src/csv_formatter.c \
                           src/dictionary.c \

@@ -20,6 +20,7 @@ check_PROGRAMS = test/function/adapter \
                  test/function/output \
                  test/function/output_profile \
                  test/function/output_profile_initializer \
+                 test/function/sortable_list \
                  test/function/status \
                  test/function/status_initializer \
                  test/function/stream_handler \

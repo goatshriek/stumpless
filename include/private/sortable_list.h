@@ -39,6 +39,10 @@ SortableList *
 SetSortableListComparison
 ( SortableList *, unsigned short ( *compare )( const void *, const void *, Dictionary * ) );
 
+SortableList *
+SetSortableListOptions
+( SortableList *, Dictionary * );
+
 unsigned short
 SortableListContains
 ( SortableList *, void * );

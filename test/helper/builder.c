@@ -2,6 +2,7 @@
 
 #include "private/adapter.h"
 #include "private/adapter_list.h"
+#include "private/compare_base.h"
 #include "private/configuration.h"
 #include "private/dictionary.h"
 #include "private/entry_attribute_list.h"
@@ -14,6 +15,7 @@
 #include "private/handler_list.h"
 #include "private/list.h"
 #include "private/output_profile.h"
+#include "private/sortable_list.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
 #include "private/value_list.h"
@@ -688,8 +690,29 @@ BuildRawStringOutput
   return output;
 }
 
+SortableList *
+BuildSortableListOfStrings
+( void )
+{
+  SortableList * list = malloc( sizeof( SortableList ) );
+  if( list == NULL )
+    return NULL;
+  
+  if( AddToSortableList( list, "first" ) == NULL )
+    return NULL;
+  
+  if( AddToSortableList( list, "second" ) == NULL )
+    return NULL;
+  
+  if( AddToSortableList( list, "third" ) == NULL )
+    return NULL;
+  
+  return SetSortableListComparison( list, CompareStrings );
+}
+
 Value *
-BuildStringValue( void )
+BuildStringValue
+( void )
 {
   Value * value = malloc( sizeof( Value * ) );
   if( value == NULL )

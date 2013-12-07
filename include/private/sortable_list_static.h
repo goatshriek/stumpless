@@ -13,6 +13,7 @@ struct List {
   Node * current;
   Node * first;
   Node * last;
+  Dictionary * options;
 };
 
 struct Node {

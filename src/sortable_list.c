@@ -67,6 +67,13 @@ SetSortableListComparison
   return NULL;
 }
 
+SortableList *
+SetSortableListOptions
+( SortableList * list, Dictionary * options )
+{
+  return NULL;
+}
+
 unsigned short
 SortableListContains
 ( SortableList * list, void * value )

@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/type.h"
 #include "private/list.h"
 #include "private/list_static.h"
+#include "private/type.h"
 
 #include "helper.h"
 
@@ -114,14 +114,9 @@ test_constructor
   
   list = NewList();
   
-  if( list == NULL )
-    return "the list was not created";
-  
-  if( list->first != NULL )
-    return "the list had a node already in it";
-  
-  if( list->last != NULL )
-    return "the list was not properly formed";
+  FAIL_IF_NULL( list, "the list was not created" )
+  FAIL_IF_NOT_NULL( list->first, "the list had a node already in it" )
+  FAIL_IF_NOT_NULL( list->last, "the list was not properly formed" )
   
   return NULL;
 }

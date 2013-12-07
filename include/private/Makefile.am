@@ -4,6 +4,7 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/adapter_list.h \
                  include/private/adapter_list_static.h \
                  include/private/boolean.h \
+                 include/private/compare_base.h \
                  include/private/configuration.h \
                  include/private/csv_formatter.h \
                  include/private/dictionary.h \
