@@ -122,7 +122,7 @@ test_contains
   SortableList * list = BuildSortableListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
   
-  const char * value = BeginSortableList( list );
+  void * value = BeginSortableList( list );
   FAIL_IF_NULL( value, "could not get the first list member" )
   
   if( !SortableListContains( list, value ) )
@@ -170,7 +170,7 @@ test_copy
     return "the copy's nodes were the same instead of a copy";
   if( copy->first->value != list->first->value )
     return "the copy did not have the same values";
-  // todo add tests for option coyping
+  // todo add tests for option copying
   
   return NULL;
 }
@@ -225,9 +225,13 @@ test_merge
   SortableList * list_2 = BuildSortableListOfStrings();
   FAIL_IF_NULL( list_2, "could not build the second list" )
   
-  const char * last = "ZZZ: this should be last";
-  SortableList * result = AddToSortableList( list_2, ( void * ) last );
+  const char * first = "AAA: this should be first";
+  SortableList * result = AddToSortableList( list_2, ( void * ) first );
   FAIL_IF_NULL( result, "an extra value could not be added to the second list" )
+  
+  const char * last = "ZZZ: this should be last";
+  result = AddToSortableList( list_1, ( void * ) last );
+  FAIL_IF_NULL( result, "an extra value could not be added to the first list" )
   
   result = MergeSortableLists( NULL, NULL );
   FAIL_IF_NOT_NULL( result, "empty arguments did not cause an error" )
@@ -235,8 +239,13 @@ test_merge
   result = MergeSortableLists( NULL, list_2 );
   FAIL_IF_NOT_NULL( result, "an empty first argument did not cause an error" )
   
+  result = MergeSortableLists( list_1, NULL );
+  FAIL_IF_NULL( result, "the list was not successfully merged with nothing" )
+  ASSERT_STRINGS_EQUAL( last, list_1->last->value, "the last value disappeared" )
+  
   result = MergeSortableLists( list_1, list_2 );
   FAIL_IF_NULL( result, "the list was not successfully appended" )
+  ASSERT_STRINGS_EQUAL( first, list_1->first->value, "the lists were not properly merged" )
   ASSERT_STRINGS_EQUAL( last, list_1->last->value, "the lists were not properly merged" )
   
   return NULL;
@@ -253,9 +262,15 @@ test_next
   FAIL_IF_NULL( value, "a value was not returned from the start call" )
   
   value = NextInSortableList( list );
-  FAIL_IF_NULL( value, "a value was not returned from the next call" )
-  if( value != list->first->next->value )
-    return "the node returned was not the next in the list";
+  FAIL_IF_NULL( value, "the next value was not returned" )
+  ASSERT_STRINGS_EQUAL( "second", value, "the next value in the list was not returned" )
+  
+  value = NextInSortableList( list );
+  FAIL_IF_NULL( value, "the next value was not returned" )
+  ASSERT_STRINGS_EQUAL( "third", value, "the next value in the list was not returned" )
+  
+  value = NextInSortableList( list );
+  FAIL_IF_NOT_NULL( value, "a value beyond the last was returned" )
   
   return NULL;
 }
@@ -264,12 +279,35 @@ const char *
 test_set_comparison
 ( void )
 {
-
+  SortableList * list = NewSortableList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  FAIL_IF_NOT_NULL( list->compare, "a new list had a comparison function" )
+  
+  FAIL_IF_NULL( SetSortableListComparison( list, CompareStrings ), "the list comparison could not be set" )
+  if( list->compare != CompareStrings )
+    return "the list comparison was not actually set";
+  
+  // todo add test to make sure that a re-sort is done
+  
+  return NULL;
 }
 
 const char *
 test_set_options
 ( void )
 {
-
+  SortableList * list = NewSortableList();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  
+  FAIL_IF_NOT_NULL( list->options, "a new list had options" )
+  
+  Dictionary * options = BuildDictionaryOfStrings();
+  FAIL_IF_NULL( options, "could not build the test dictionary" )
+  
+  FAIL_IF_NULL( SetSortableListOptions( list, options ), "could not set the options of a list" )
+  if( list->options != options )
+    return "the options of the list were not actually set";
+  
+  return NULL;
 }

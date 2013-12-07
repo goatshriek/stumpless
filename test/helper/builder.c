@@ -694,7 +694,7 @@ SortableList *
 BuildSortableListOfStrings
 ( void )
 {
-  SortableList * list = malloc( sizeof( SortableList ) );
+  SortableList * list = NewSortableList();
   if( list == NULL )
     return NULL;
   

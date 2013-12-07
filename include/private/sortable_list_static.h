@@ -8,7 +8,7 @@ struct Node;
 typedef struct Node
         Node;
 
-struct List {
+struct SortableList {
   unsigned short ( *compare )( const void *, const void *, Dictionary * );
   Node * current;
   Node * first;
