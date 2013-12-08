@@ -14,6 +14,10 @@ test_function_boolean_SOURCES = test/function/boolean.c
 test_function_boolean_CFLAGS = $(test_flags)
 test_function_boolean_LDADD = $(test_libraries)
 
+test_function_compare_base_SOURCES = test/function/compare_base.c
+test_function_compare_base_CFLAGS = $(test_flags)
+test_function_compare_base_LDADD = $(test_libraries)
+
 test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_CFLAGS = $(test_flags)
 test_function_configuration_LDADD = $(test_libraries)

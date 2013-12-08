@@ -128,7 +128,7 @@ test_contains
   List * list = BuildListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
   
-  const char * value = BeginList( list );
+  char * value = BeginList( list );
   FAIL_IF_NULL( value, "could not get the first list member" )
   
   if( !ListContains( list, value ) )
