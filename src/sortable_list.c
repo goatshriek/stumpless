@@ -55,14 +55,14 @@ NewSortableList
 
 SortableList *
 NewSortableListFromList
-( List * list, unsigned short ( *compare )( const void *, const void *, Dictionary * ) )
+( List * list, short ( *compare )( const void *, const void *, Dictionary * ) )
 {
   return NULL;
 }
 
 SortableList *
 SetSortableListComparison
-( SortableList * list, unsigned short ( *compare )( const void *, const void *, Dictionary * ) )
+( SortableList * list, short ( *compare )( const void *, const void *, Dictionary * ) )
 {
   return NULL;
 }

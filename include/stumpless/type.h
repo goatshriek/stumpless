@@ -329,7 +329,7 @@ struct __STUMPLESS_NAME( Value ) {
 };
 
 struct __STUMPLESS_NAME( ValueProfile ) {
-  unsigned short ( *compare )( const __STUMPLESS_NAME( Value ) *, const __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
+  short ( *compare )( const __STUMPLESS_NAME( Value ) *, const __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
   __STUMPLESS_NAME( Status ) * ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
   const char * name;
   __STUMPLESS_NAME( Output ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );

@@ -9,7 +9,7 @@ typedef struct Node
         Node;
 
 struct SortableList {
-  unsigned short ( *compare )( const void *, const void *, Dictionary * );
+  short ( *compare )( const void *, const void *, Dictionary * );
   Node * current;
   Node * first;
   Node * last;

@@ -75,6 +75,9 @@ test_add_value
   
   FAIL_IF_NOT_NULL( NextInSortableList( list ), "there were extra elements added" )
   
+  FAIL_IF_NULL( SetSortableListComparison( list, NULL ), "could not change the comparison function" )
+  FAIL_IF_NOT_NULL( AddToSortableList( list, ( void * ) str ), "addition without a comparison function was allowed" )
+  
   return NULL;
 }
 

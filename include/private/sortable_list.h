@@ -33,11 +33,11 @@ NewSortableList
 
 SortableList *
 NewSortableListFromList
-( List *, unsigned short ( *compare )( const void *, const void *, Dictionary * ) );
+( List *, short ( *compare )( const void *, const void *, Dictionary * ) );
 
 SortableList *
 SetSortableListComparison
-( SortableList *, unsigned short ( *compare )( const void *, const void *, Dictionary * ) );
+( SortableList *, short ( *compare )( const void *, const void *, Dictionary * ) );
 
 SortableList *
 SetSortableListOptions

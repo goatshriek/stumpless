@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "private/adapter_list.h"
+#include "private/formatter_list.h"
 #include "private/logger.h"
 #include "private/type.h"
 

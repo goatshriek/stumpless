@@ -3,11 +3,11 @@
 
 #include "private/type.h"
 
-unsigned short
+short
 CompareStrings
 ( const void *, const void *, Dictionary * );
 
-unsigned short
+short
 CompareStringValues
 ( const void *, const void *, Dictionary * );
 
