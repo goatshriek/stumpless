@@ -1,6 +1,8 @@
 #ifndef STUMPLESS_PRIVATE_SORTABLE_LIST_STATIC_H
 #define STUMPLESS_PRIVATE_SORTABLE_LIST_STATIC_H
 
+#include <stdint.h>
+
 #include "private/type.h"
 
 struct Node;
@@ -13,17 +15,23 @@ struct SortableList {
   Node * current;
   Node * first;
   Node * last;
+  Node * previous;
   Dictionary * options;
 };
 
 struct Node {
-  Node * neighbors;
+  intptr_t neighbors;
   void * value;
 };
 
 static
 void
 DestroyNode
-( Node * );
+( Node *, intptr_t );
+
+static
+SortableList *
+SortList
+( SortableList * );
 
 #endif
