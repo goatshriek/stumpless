@@ -14,8 +14,7 @@ typedef struct Node
         Node;
 
 struct Dimension {
-  comparison_t * comparisons;
-  unsigned short comparison_count;
+  List * comparisons;
   unsigned short index;
   const char * name;
   Dictionary * options;
@@ -30,8 +29,7 @@ struct Node {
 
 struct Tree {
   unsigned short current_dimension;
-  Dimension ** dimensions;
-  unsigned short dimension_count;
+  List * dimensions;
   Dictionary * options;
 };
 
