@@ -3,7 +3,7 @@
 #include "private/dictionary.h"
 #include "private/list.h"
 #include "private/tree.h"
-#include "private/tree_static.h"
+#include "private/static/tree.h"
 #include "private/type.h"
 
 Tree *

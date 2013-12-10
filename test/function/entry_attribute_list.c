@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/entry_attribute_list.h"
-#include "private/entry_attribute_list_static.h"
+#include "private/static/entry_attribute_list.h"
 #include "private/type.h"
 
 #include "helper.h"

@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "private/compare_base.h"
+#include "private/static/tree.h"
 #include "private/tree.h"
-#include "private/tree_static.h"
 #include "private/type.h"
 
 #include "helper.h"

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/adapter_list.h"
-#include "private/adapter_list_static.h"
+#include "private/static/adapter_list.h"
 #include "private/type.h"
 
 #include "helper.h"

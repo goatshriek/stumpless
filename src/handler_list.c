@@ -3,8 +3,8 @@
 
 #include "private/configuration.h"
 #include "private/handler_list.h"
-#include "private/handler_list_static.h"
 #include "private/list.h"
+#include "private/static/handler_list.h"
 #include "private/status.h"
 #include "private/type.h"
 

@@ -1,8 +1,8 @@
 #include "private/configuration.h"
 #include "private/formatter_list.h"
-#include "private/formatter_list_static.h"
 #include "private/handler_list.h"
 #include "private/list.h"
+#include "private/static/formatter_list.h"
 #include "private/status.h"
 #include "private/type.h"
 

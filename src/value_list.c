@@ -3,13 +3,13 @@
 
 #include "private/configuration.h"
 #include "private/list.h"
+#include "private/static/value_list.h"
 #include "private/status.h"
 #include "private/status_checker.h"
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value_constructor.h"
 #include "private/value_list.h"
-#include "private/value_list_static.h"
 
 Status *
 AddSeparatorToValueList

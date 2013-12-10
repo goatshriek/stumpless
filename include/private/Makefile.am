@@ -2,33 +2,25 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/adapter_base.h \
                  include/private/adapter_initializer.h \
                  include/private/adapter_list.h \
-                 include/private/adapter_list_static.h \
                  include/private/boolean.h \
                  include/private/compare_base.h \
                  include/private/configuration.h \
                  include/private/csv_formatter.h \
                  include/private/dictionary.h \
-                 include/private/dictionary_static.h \
                  include/private/entry.h \
-                 include/private/entry_attribute_list_static.h \
                  include/private/event.h \
                  include/private/event_attribute_list.h \
-                 include/private/event_attribute_list_static.h \
                  include/private/filter.h \
                  include/private/filter_initializer.h \
                  include/private/filter_list.h \
-                 include/private/filter_list_static.h \
                  include/private/formatter.h \
                  include/private/formatter_initializer.h \
                  include/private/formatter_list.h \
-                 include/private/formatter_list_static.h \
                  include/private/handler.h \
                  include/private/handler_initializer.h \
                  include/private/handler_list.h \
-                 include/private/handler_list_static.h \
                  include/private/level.h \
                  include/private/list.h \
-                 include/private/list_static.h \
                  include/private/logger.h \
                  include/private/output.h \
                  include/private/output_profile.h \
@@ -39,13 +31,12 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/stream_handler.h \
                  include/private/string_helper.h \
                  include/private/text_formatter.h \
-                 include/private/text_formatter_static.h \
                  include/private/tree.h \
-                 include/private/tree_static.h \
                  include/private/type.h \
                  include/private/value_constructor.h \
                  include/private/value.h \
                  include/private/value_list.h \
-                 include/private/value_list_static.h \
                  include/private/value_profile.h \
                  include/private/value_profile_initializer.h
+
+include include/private/static/Makefile.am

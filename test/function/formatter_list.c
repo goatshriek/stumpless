@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/formatter_list.h"
-#include "private/formatter_list_static.h"
+#include "private/static/formatter_list.h"
 #include "private/type.h"
 
 #include "helper.h"

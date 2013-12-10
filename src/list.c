@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "private/list.h"
-#include "private/list_static.h"
+#include "private/static/list.h"
 #include "private/type.h"
 
 List *

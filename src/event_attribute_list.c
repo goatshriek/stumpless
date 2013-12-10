@@ -1,7 +1,7 @@
 #include "private/configuration.h"
 #include "private/event_attribute_list.h"
-#include "private/event_attribute_list_static.h"
 #include "private/list.h"
+#include "private/static/event_attribute_list.h"
 #include "private/status.h"
 #include "private/type.h"
 

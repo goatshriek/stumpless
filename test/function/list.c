@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/list.h"
-#include "private/list_static.h"
+#include "private/static/list.h"
 #include "private/type.h"
 
 #include "helper.h"

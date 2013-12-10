@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/event_attribute_list.h"
-#include "private/event_attribute_list_static.h"
+#include "private/static/event_attribute_list.h"
 #include "private/type.h"
 
 #include "helper.h"

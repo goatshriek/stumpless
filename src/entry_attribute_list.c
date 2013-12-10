@@ -1,7 +1,7 @@
 #include "private/configuration.h"
 #include "private/entry_attribute_list.h"
-#include "private/entry_attribute_list_static.h"
 #include "private/list.h"
+#include "private/static/entry_attribute_list.h"
 #include "private/status.h"
 #include "private/type.h"
 

@@ -3,8 +3,8 @@
 
 #include "private/configuration.h"
 #include "private/filter_list.h"
-#include "private/filter_list_static.h"
 #include "private/list.h"
+#include "private/static/filter_list.h"
 #include "private/status.h"
 #include "private/type.h"
 

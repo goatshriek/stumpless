@@ -1,8 +1,8 @@
 #include "private/adapter_list.h"
-#include "private/adapter_list_static.h"
 #include "private/configuration.h"
 #include "private/entry.h"
 #include "private/list.h"
+#include "private/static/adapter_list.h"
 #include "private/status.h"
 #include "private/type.h"
 

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/handler_list.h"
-#include "private/handler_list_static.h"
+#include "private/static/handler_list.h"
 #include "private/type.h"
 
 #include "helper.h"
