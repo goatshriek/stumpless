@@ -139,7 +139,7 @@ Output *
 BuildTextOutput
 ( void );
 
-SortableList *
+Tree *
 BuildTreeOfStrings
 ( void );
 

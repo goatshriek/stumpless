@@ -20,7 +20,7 @@ struct Dimension {
   const char * name;
   Dictionary * options;
   Node * root;
-}
+};
 
 struct Node {
   intptr_t * children;

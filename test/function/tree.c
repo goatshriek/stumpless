@@ -9,6 +9,7 @@
 
 #include "helper.h"
 
+const char * test_add_comparison( void );
 const char * test_add_value( void );
 const char * test_begin( void );
 const char * test_constructor( void );
@@ -18,7 +19,6 @@ const char * test_destructor( void );
 const char * test_is_empty( void );
 const char * test_merge( void );
 const char * test_next( void );
-const char * test_set_comparison( void );
 const char * test_set_options( void );
 
 int
@@ -27,6 +27,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
+  RUN_TEST( add_comparison )
   RUN_TEST( add_value )
   RUN_TEST( begin )
   RUN_TEST( constructor )
@@ -36,13 +37,26 @@ main( void )
   RUN_TEST( is_empty )
   RUN_TEST( merge )
   RUN_TEST( next )
-  RUN_TEST( set_comparison )
   RUN_TEST( set_options )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_add_comparison
+( void )
+{
+  Tree * tree = NewTree();
+  FAIL_IF_NULL( tree, "could not build the test tree" )
+  
+  FAIL_IF_NULL( AddComparisonToTree( tree, CompareStrings ), "the tree comparison could not be set" )
+  
+  // todo add test to make sure comparison is actually set
+  
+  return NULL;
 }
 
 const char *
@@ -92,8 +106,7 @@ test_begin
   
   value = BeginTree( tree );
   FAIL_IF_NULL( value, "a value was not returned from the tree" )
-  if( value != tree->first->value )
-    return "the first element of the tree was not returned";
+  ASSERT_STRINGS_EQUAL( "first", value, "the first element of the tree was not returned" )
   
   return NULL;
 }
@@ -156,15 +169,7 @@ test_copy
     return "the copy was null for a non-null pointer";
   if( copy == tree )
     return "the copy was equal to the original tree";
-  if( copy->compare != tree->compare )
-    return "the same comparison function was not used";
-  if( copy->first == NULL )
-    return "the copy did not actually contain any information";
-  if( copy->first == tree->first )
-    return "the copy's nodes were the same instead of a copy";
-  if( copy->first->value != tree->first->value )
-    return "the copy did not have the same values";
-  // todo add tests for option copying
+  // todo add tests for member copying
   
   return NULL;
 }
@@ -235,12 +240,11 @@ test_merge
   
   result = MergeTrees( tree_1, NULL );
   FAIL_IF_NULL( result, "the tree was not successfully merged with nothing" )
-  ASSERT_STRINGS_EQUAL( last, tree_1->last->value, "the last value disappeared" )
   
   result = MergeTrees( tree_1, tree_2 );
   FAIL_IF_NULL( result, "the tree was not successfully appended" )
-  ASSERT_STRINGS_EQUAL( first, tree_1->first->value, "the trees were not properly merged" )
-  ASSERT_STRINGS_EQUAL( last, tree_1->last->value, "the trees were not properly merged" )
+  if( BeginTree( tree_1 ) != first )
+    return "the trees were not properly merged";
   
   return NULL;
 }
@@ -265,24 +269,6 @@ test_next
   
   value = NextInTree( tree );
   FAIL_IF_NOT_NULL( value, "a value beyond the last was returned" )
-  
-  return NULL;
-}
-
-const char *
-test_set_comparison
-( void )
-{
-  Tree * tree = NewTree();
-  FAIL_IF_NULL( tree, "could not build the test tree" )
-  
-  FAIL_IF_NOT_NULL( tree->compare, "a new tree had a comparison function" )
-  
-  FAIL_IF_NULL( SetTreeComparison( tree, CompareStrings ), "the tree comparison could not be set" )
-  if( tree->compare != CompareStrings )
-    return "the tree comparison was not actually set";
-  
-  // todo add test to make sure that a re-sort is done
   
   return NULL;
 }

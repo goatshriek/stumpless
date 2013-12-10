@@ -71,7 +71,7 @@ DestroyTree
 
 Tree *
 MergeTrees
-( Tree * tree, Tree * tree )
+( Tree * tree_1, Tree * tree_2 )
 {
  return NULL;
 }

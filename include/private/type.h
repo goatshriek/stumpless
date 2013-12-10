@@ -88,8 +88,7 @@ typedef struct __STUMPLESS_NAME( ValueList )
 typedef struct __STUMPLESS_NAME( ValueProfile )
         ValueProfile;
 
-typedef short ( *comparison )( const void *, const void *, Dictionary * )
-        comparison_t;
+typedef short ( *comparison_t )( const void *, const void *, Dictionary * );
 typedef unsigned short
         dimension_t;
 

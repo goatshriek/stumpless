@@ -747,15 +747,15 @@ BuildTextOutput( void )
   return output;
 }
 
-SortableList *
+Tree *
 BuildTreeOfStrings
 ( void )
 {
   Tree * tree = NewTree();
-  if( list == NULL )
+  if( tree == NULL )
     return NULL;
   
-  if( AddTreeComparison( tree, CompareStrings ) == NULL )
+  if( AddComparisonToTree( tree, CompareStrings ) == NULL )
     return NULL;
   
   if( AddToTree( tree, "first" ) == NULL )
