@@ -4,14 +4,14 @@
 #include "private/type.h"
 
 Tree *
+AddComparisonToDimension
+( Dimension *, comparison_t );
+
+Tree *
 AddComparisonToTree
 ( Tree *, comparison_t );
 
-Tree *
-AddComparisonToTreeDimension
-( Tree *, comparison_t, dimension_t );
-
-dimension_t
+Dimension *
 AddDimensionToTree
 ( Tree *, const char * );
 
@@ -24,16 +24,20 @@ AddListToTree
 ( Tree *, List * );
 
 void *
-BeginTree
-( Tree * );
+BeginDimension
+( Dimension * );
 
 void *
-BeginTreeDimension
-( Tree *, dimension_t );
+BeginTree
+( Tree * );
 
 Tree *
 CopyTree
 ( Tree * );
+
+void
+DestroyDimension
+( Dimension * );
 
 void
 DestroyTree
@@ -52,12 +56,12 @@ NewTree
 ();
 
 Tree *
-SetTreeDimension
-( Tree *, dimension_t );
+SetDimensionOptions
+( Dimension *, Dictionary * );
 
 Tree *
-SetTreeDimensionOptions
-( Tree *, dimension_t, Dictionary * );
+SetTreeDimension
+( Tree *, Dimension * );
 
 Tree *
 SetTreeOptions

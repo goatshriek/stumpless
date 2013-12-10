@@ -7,20 +7,20 @@
 #include "private/type.h"
 
 Tree *
+AddComparisonToDimension
+( Dimension * dimension, comparison_t comparison )
+{
+  return NULL;
+}
+
+Tree *
 AddComparisonToTree
 ( Tree * tree, comparison_t comparison )
 {
   return NULL;
 }
 
-Tree *
-AddComparisonToTreeDimension
-( Tree * tree, comparison_t comparison, dimension_t dimension )
-{
-  return NULL;
-}
-
-dimension_t
+Dimension *
 AddDimensionToTree
 ( Tree * tree, const char * name )
 {
@@ -42,15 +42,15 @@ AddListToTree
 }
 
 void *
-BeginTree
-( Tree * tree )
+BeginDimension
+( Dimension * dimension )
 {
   return NULL;
 }
 
 void *
-BeginTreeDimension
-( Tree * tree, dimension_t dimension )
+BeginTree
+( Tree * tree )
 {
   return NULL;
 }
@@ -60,6 +60,13 @@ CopyTree
 ( Tree * tree )
 {
   return NULL;
+}
+
+void
+DestroyDimension
+( Dimension * dimension )
+{
+  return;
 }
 
 void
@@ -91,15 +98,15 @@ NewTree
 }
 
 Tree *
-SetTreeDimension
-( Tree * tree, dimension_t dimension )
+SetDimensionOptions
+( Dimension * dimension, Dictionary * options )
 {
   return NULL;
 }
 
 Tree *
-SetTreeDimensionOptions
-( Tree * tree, dimension_t dimension, Dictionary * options )
+SetTreeDimension
+( Tree * tree, Dimension * dimension )
 {
   return NULL;
 }
@@ -123,14 +130,6 @@ TreeIsEmpty
 ( Tree * tree )
 {
   return 0;
-}
-
-static
-void
-DestroyDimension
-( Dimension * dimension )
-{
-  return;
 }
 
 static

@@ -4,9 +4,12 @@
 #include "stumpless/public_name.h"
 #include "stumpless/type.h"
 
+struct Dimension;
 struct List;
 struct Tree;
 
+typedef struct Dimension
+        Dimension;
 typedef struct List
         List;
 typedef struct Tree
@@ -89,7 +92,5 @@ typedef struct __STUMPLESS_NAME( ValueProfile )
         ValueProfile;
 
 typedef short ( *comparison_t )( const void *, const void *, Dictionary * );
-typedef unsigned short
-        dimension_t;
 
 #endif

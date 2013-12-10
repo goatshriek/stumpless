@@ -16,10 +16,11 @@ typedef struct Node
 struct Dimension {
   comparison_t * comparisons;
   unsigned short comparison_count;
-  dimension_t index;
+  unsigned short index;
   const char * name;
   Dictionary * options;
   Node * root;
+  Tree * tree;
 };
 
 struct Node {
@@ -28,16 +29,11 @@ struct Node {
 };
 
 struct Tree {
-  dimension_t current_dimension;
+  unsigned short current_dimension;
   Dimension ** dimensions;
   unsigned short dimension_count;
   Dictionary * options;
 };
-
-static
-void
-DestroyDimension
-( Dimension * );
 
 static
 void
