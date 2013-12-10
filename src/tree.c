@@ -24,7 +24,7 @@ Dimension *
 AddDimensionToTree
 ( Tree * tree, const char * name )
 {
-  return 0;
+  return NULL;
 }
 
 Tree *
@@ -93,6 +93,40 @@ NextInTree
 Tree *
 NewTree
 ()
+{
+  Tree * tree = malloc( sizeof( Tree ) );
+  if( tree == NULL )
+    return NULL;
+  
+  Dimension * dimension = malloc( sizeof( Dimension ) );
+  if( dimension == NULL )
+    return NULL;
+  
+  tree->dimensions = malloc( sizeof( Dimension ) * 10 );
+  if( tree->dimensions == NULL )
+    return NULL;
+  
+  dimension->comparisons = malloc( sizeof( comparison_t ) * 10 );
+  if( dimension->comparisons == NULL )
+    return NULL;
+  
+  tree->current_dimension = 0;
+  tree->dimension_count = 10;
+  tree->options = NULL;
+  
+  dimension->comparison_count = 0;
+  dimension->index = 0;
+  dimension->name = NULL;
+  dimension->options = NULL;
+  dimension->root = NULL;
+  dimension->tree = tree;
+  
+  return tree;
+}
+
+Dimension *
+SetDimensionName
+( Dimension * dimension, const char * name )
 {
   return NULL;
 }

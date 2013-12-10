@@ -55,6 +55,10 @@ Tree *
 NewTree
 ();
 
+Dimension *
+SetDimensionName
+( Dimension *, const char * );
+
 Tree *
 SetDimensionOptions
 ( Dimension *, Dictionary * );
