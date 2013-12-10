@@ -131,16 +131,16 @@ Output *
 BuildRawStringOutput
 ( void );
 
-SortableList *
-BuildSortableListOfStrings
-( void );
-
 Value *
 BuildStringValue
 ( void );
 
 Output *
 BuildTextOutput
+( void );
+
+SortableList *
+BuildTreeOfStrings
 ( void );
 
 Value *

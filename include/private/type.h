@@ -5,12 +5,12 @@
 #include "stumpless/type.h"
 
 struct List;
-struct SortableList;
+struct Tree;
 
 typedef struct List
         List;
-typedef struct SortableList
-        SortableList;
+typedef struct Tree
+        Tree;
 
 typedef __STUMPLESS_NAME( Byte )
         Byte;
@@ -87,5 +87,10 @@ typedef struct __STUMPLESS_NAME( ValueList )
         ValueList;
 typedef struct __STUMPLESS_NAME( ValueProfile )
         ValueProfile;
+
+typedef short ( *comparison )( const void *, const void *, Dictionary * )
+        comparison_t;
+typedef unsigned short
+        dimension_t;
 
 #endif

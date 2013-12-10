@@ -15,7 +15,7 @@
 #include "private/handler_list.h"
 #include "private/list.h"
 #include "private/output_profile.h"
-#include "private/sortable_list.h"
+#include "private/tree.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
 #include "private/value_list.h"
@@ -690,26 +690,6 @@ BuildRawStringOutput
   return output;
 }
 
-SortableList *
-BuildSortableListOfStrings
-( void )
-{
-  SortableList * list = NewSortableList();
-  if( list == NULL )
-    return NULL;
-  
-  if( AddToSortableList( list, "first" ) == NULL )
-    return NULL;
-  
-  if( AddToSortableList( list, "second" ) == NULL )
-    return NULL;
-  
-  if( AddToSortableList( list, "third" ) == NULL )
-    return NULL;
-  
-  return SetSortableListComparison( list, CompareStrings );
-}
-
 Value *
 BuildStringValue
 ( void )
@@ -765,6 +745,26 @@ BuildTextOutput( void )
   output->data->v_p = ( void * ) values;
   
   return output;
+}
+
+SortableList *
+BuildTreeOfStrings
+( void )
+{
+  Tree * tree = NewTree();
+  if( list == NULL )
+    return NULL;
+  
+  if( AddTreeComparison( tree, CompareStrings ) == NULL )
+    return NULL;
+  
+  if( AddToTree( tree, "first" ) == NULL )
+    return NULL;
+  
+  if( AddToTree( tree, "second" ) == NULL )
+    return NULL;
+  
+  return AddToTree( tree, "third" );
 }
 
 Value *

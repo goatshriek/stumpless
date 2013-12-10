@@ -94,10 +94,6 @@ test_function_output_profile_initializer_SOURCES = test/function/output_profile_
 test_function_output_profile_initializer_CFLAGS = $(test_flags)
 test_function_output_profile_initializer_LDADD = $(test_libraries)
 
-test_function_sortable_list_SOURCES = test/function/sortable_list.c
-test_function_sortable_list_CFLAGS = $(test_flags)
-test_function_sortable_list_LDADD = $(test_libraries)
-
 test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)
@@ -117,6 +113,10 @@ test_function_string_helper_LDADD = $(test_libraries)
 test_function_text_formatter_SOURCES = test/function/text_formatter.c
 test_function_text_formatter_CFLAGS = $(test_flags)
 test_function_text_formatter_LDADD = $(test_libraries)
+
+test_function_tree_SOURCES = test/function/tree.c
+test_function_tree_CFLAGS = $(test_flags)
+test_function_tree_LDADD = $(test_libraries)
 
 test_function_value_SOURCES = test/function/value.c
 test_function_value_CFLAGS = $(test_flags)
