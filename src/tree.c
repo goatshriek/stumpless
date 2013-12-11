@@ -50,7 +50,7 @@ AddDimensionToTree
   dimension->name = name;
   dimension->tree = tree;
   
-  // todo finish function
+  Node * 
   
   return dimension;
 }
@@ -59,9 +59,29 @@ Tree *
 AddToTree
 ( Tree * tree, void * value )
 {
-  // todo finish
+  Node * node = malloc( sizeof( Node ) );
+  if( node == NULL )
+    return NULL;
   
-  return NULL;
+  node->left_children = malloc( sizeof( Node ) );
+  if( node->left_children == NULL )
+    return NULL;
+  
+  node->right_children = malloc( sizeof( Node ) );
+  if( node->right_children == NULL )
+    return NULL;
+  
+  node->value = value;
+  
+  Dimension * dimension = BeginList( tree->dimensions );
+  while( dimension != NULL ){
+    if( AddToDimension( dimension, node ) == NULL )
+      return NULL;
+    
+    dimension = NextInList( tree->dimensions );
+  }
+  
+  return tree;
 }
 
 Tree *
@@ -108,6 +128,8 @@ DestroyDimension
     return;
   
   DestroyList( dimension->comparisons );
+  
+  // todo remove dimension from tree's list
   
   free( dimension );
   
@@ -183,6 +205,7 @@ NewTree
     return NULL;
   
   tree->current_dimension = dimension;
+  tree->dimension_capacity = 20;
   tree->options = NULL;
   
   dimension->comparisons = NULL;
@@ -260,6 +283,26 @@ TreeIsEmpty
 }
 
 static
+Dimension *
+AddToDimension
+( Dimension * dimension, Node * node )
+{
+  // todo finish
+  
+  return NULL;
+}
+
+static
+Node *
+BeginDimensionNodes
+( Dimension * dimension )
+{
+  // todo finish
+  
+  return NULL;
+}
+
+static
 void
 DestroyNode
 ( Node * node )
@@ -278,4 +321,14 @@ DestroyNode
   DestroyNode( right );
   
   return;
+}
+
+static
+Node *
+NextNodeInDimension
+( Dimension * dimension )
+{
+  // todo finish
+  
+  return NULL;
 }

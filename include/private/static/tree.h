@@ -15,7 +15,8 @@ typedef struct Node
 
 struct Dimension {
   List * comparisons;
-  unsigned short index;
+  Node * current_node;
+  unsigned index;
   const char * name;
   Dictionary * options;
   Node * root;
@@ -30,13 +31,29 @@ struct Node {
 
 struct Tree {
   Dimension * current_dimension;
+  unsigned dimension_capacity;
   List * dimensions;
   Dictionary * options;
 };
 
 static
+Dimension *
+AddToDimension
+( Dimension *, Node * );
+
+static
+Node *
+BeginDimensionNodes
+( Dimension * );
+
+static
 void
 DestroyNode
 ( Node * );
+
+static
+Node *
+NextNodeInDimension
+( Dimension * );
 
 #endif
