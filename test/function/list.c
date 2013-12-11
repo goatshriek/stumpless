@@ -19,6 +19,7 @@ const char * test_is_empty( void );
 const char * test_next( void );
 const char * test_prepend_value( void );
 const char * test_separator( void );
+const char * test_size( void );
 
 int
 main( void )
@@ -37,6 +38,7 @@ main( void )
   RUN_TEST( next )
   RUN_TEST( prepend_value )
   RUN_TEST( separator )
+  RUN_TEST( size )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -302,6 +304,25 @@ test_separator( void )
   
   if( strcmp( ", ", str ) == 0 )
     return "the separator was present at the end of the list";
+  
+  return NULL;
+}
+
+const char *
+test_size
+( void )
+{
+  List * list = NewList();
+  FAIL_IF_NULL( list, "could not build empty test list" )
+  
+  if( ListSize( list ) != 0 )
+    return "an empty list did not have a size of 0";
+  
+  list = BuildListOfStrings();
+  FAIL_IF_NULL( list, "could not build the full test list" )
+  
+  if( ListSize( list ) != 7 )
+    return "a full list did not have the proper size";
   
   return NULL;
 }

@@ -3,7 +3,7 @@
 
 #include "private/type.h"
 
-Tree *
+Dimension *
 AddComparisonToDimension
 ( Dimension *, comparison_t );
 
@@ -48,6 +48,10 @@ MergeTrees
 ( Tree *, Tree * );
 
 void *
+NextInDimension
+( Dimension * );
+
+void *
 NextInTree
 ( Tree * );
 
@@ -59,7 +63,7 @@ Dimension *
 SetDimensionName
 ( Dimension *, const char * );
 
-Tree *
+Dimension *
 SetDimensionOptions
 ( Dimension *, Dictionary * );
 

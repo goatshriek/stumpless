@@ -126,6 +126,24 @@ ListIsEmpty
   return list == NULL || list->first == NULL;
 }
 
+unsigned
+ListSize
+( const List * list )
+{
+  if( list == NULL )
+    return 0;
+  
+  unsigned size = 0;
+  
+  Node * node = list->first;
+  while( node != NULL ){
+    size++;
+    node = node->next;
+  }
+  
+  return size;
+}
+
 void *
 NextInList
 ( List * list )

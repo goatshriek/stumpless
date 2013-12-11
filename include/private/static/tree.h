@@ -23,12 +23,13 @@ struct Dimension {
 };
 
 struct Node {
-  intptr_t * children;
+  Node ** left_children;
+  Node ** right_children;
   void * value;
 };
 
 struct Tree {
-  unsigned short current_dimension;
+  Dimension * current_dimension;
   List * dimensions;
   Dictionary * options;
 };
@@ -36,6 +37,6 @@ struct Tree {
 static
 void
 DestroyNode
-( Node *, intptr_t );
+( Node * );
 
 #endif

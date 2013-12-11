@@ -35,6 +35,10 @@ unsigned short
 ListIsEmpty
 ( const List * );
 
+unsigned
+ListSize
+( const List * );
+
 void *
 NextInList
 ( List * );

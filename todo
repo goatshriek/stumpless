@@ -8,3 +8,4 @@
 - add status recording capability (when a status is not raised)
 - add unsafe (non null-checking) versions of appropriate methods
 - address todos in individual files
+- change comparison to structure
