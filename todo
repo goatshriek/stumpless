@@ -9,3 +9,5 @@
 - add unsafe (non null-checking) versions of appropriate methods
 - address todos in individual files
 - change comparison to structure
+- add stack data structure
+- change iterators to structues (to support future wrapping)

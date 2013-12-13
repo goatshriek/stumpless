@@ -50,7 +50,7 @@ AddDimensionToTree
   dimension->name = name;
   dimension->tree = tree;
   
-  Node * 
+  // todo finish
   
   return dimension;
 }
@@ -88,9 +88,17 @@ Tree *
 AddListToTree
 ( Tree * tree, List * list )
 {
-  // todo finish
+  if( tree == NULL || list == NULL )
+    return NULL;
   
-  return NULL;
+  void * value = BeginList( value );
+  while( value != NULL ){
+    AddToTree( tree, value );
+    
+    value = NextInList( value );
+  }
+  
+  return tree;
 }
 
 void *
