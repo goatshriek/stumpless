@@ -56,4 +56,9 @@ Node *
 NextNodeInDimension
 ( Dimension * );
 
+static
+Dimension *
+RestructureDimension
+( Dimension *, Stack * );
+
 #endif

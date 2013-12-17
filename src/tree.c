@@ -3,6 +3,7 @@
 #include "private/dictionary.h"
 #include "private/list.h"
 #include "private/tree.h"
+#include "private/stack.h"
 #include "private/static/tree.h"
 #include "private/type.h"
 
@@ -339,4 +340,14 @@ NextNodeInDimension
   // todo finish
   
   return NULL;
+}
+
+static
+Dimension *
+RestructureDimension
+( Dimension * dimension, Stack * stack )
+{
+  // todo finish
+  
+  return dimension;
 }
