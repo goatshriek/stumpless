@@ -24,7 +24,7 @@ struct Dimension {
 };
 
 struct Node {
-  unsigned height;
+  unsigned * heights;
   Node ** left_children;
   Node ** right_children;
   void * value;

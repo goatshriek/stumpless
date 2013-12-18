@@ -72,7 +72,10 @@ AddToTree
   if( node->right_children == NULL )
     return NULL;
   
-  node->height = 0;
+  node->heights = malloc( sizeof( unsigned ) );
+  if( node->heights == NULL )
+    return NULL;
+  
   node->value = value;
   
   Dimension * dimension = BeginList( tree->dimensions );
@@ -303,6 +306,7 @@ AddToDimension
   
   short result;
   unsigned index = dimension->index;
+  node->heights[index] = 0;
   Dictionary * options = dimension->options;
   Node * current = dimension->root;
   while( current != NULL ){
@@ -389,7 +393,59 @@ Dimension *
 RestructureDimension
 ( Dimension * dimension, Stack * stack )
 {
-  // todo finish
+  unsigned index = dimension->index;
+  
+  unsigned left_height, right_height, difference;
+  Stack * changed = NewStack();
+  if( changed == NULL )
+    return NULL;
+  
+  Node * current = PopFromStack( stack );
+  while( current != NULL ){
+    PushToStack( changed, current );
+    current->heights[index]++;
+    
+    left_height = current->left_children[index]->heights[index];
+    right_height = current->right_children[index]->heights[index];
+    difference = left_height - right_height;
+    
+    if( difference > 1 || difference < 1 )
+      break;
+    
+    current = PopFromStack( stack );
+  }
+  
+  Node * grandparent = PopFromStack( changed );
+  Node * parent = PopFromStack( changed );
+  Node * bottom = PopFromStack( changed );
+  
+  Node * first, * middle, * last;
+  Node * tree_1, * tree_2, * tree_3, * tree_4;
+  
+  if( grandparent->left_children[index] != parent ){
+    first = grandparent;
+    tree_1 = grandparent->left_children[index];
+    if( parent->left_children[index] != bottom ){
+      // todo restart here
+      middle = parent;
+      last = bottom;
+    } else {
+      last = parent;
+      middle = bottom;
+    }
+  } else {
+    last = grandparent;
+    tree_4 = grandparent->right_children[index];
+    if( parent->left_children[index] != bottom ){
+      first = parent;
+      middle = bottom;
+    } else {
+      middle = parent;
+      first = bottom;
+    }
+  }
+  
+  
   
   return dimension;
 }
