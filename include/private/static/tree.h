@@ -24,6 +24,7 @@ struct Dimension {
 };
 
 struct Node {
+  unsigned height;
   Node ** left_children;
   Node ** right_children;
   void * value;
@@ -60,5 +61,10 @@ static
 Dimension *
 RestructureDimension
 ( Dimension *, Stack * );
+
+static
+short
+RunComparisonList
+( List *, void *, void *, Dictionary * );
 
 #endif

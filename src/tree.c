@@ -72,6 +72,7 @@ AddToTree
   if( node->right_children == NULL )
     return NULL;
   
+  node->height = 0;
   node->value = value;
   
   Dimension * dimension = BeginList( tree->dimensions );
@@ -296,7 +297,48 @@ Dimension *
 AddToDimension
 ( Dimension * dimension, Node * node )
 {
-  // todo finish
+  Stack * path = NewStack();
+  if( path == NULL )
+    return NULL;
+  
+  short result;
+  unsigned index = dimension->index;
+  Dictionary * options = dimension->options;
+  Node * current = dimension->root;
+  while( current != NULL ){
+    PushToStack( stack, current );
+    result = RunComparisonList( node->value, current->value, options );
+    if( result == 0 ){
+      DestroyStack( stack );
+      return dimension;
+    }
+    
+    if( result < 0 ){
+      if( current->left_children[index] == NULL ){
+        current->left_children[index] = node;
+        
+        if( current->right_children[index] == NULL ){
+          PushToStack( node );
+          RestructureDimension( dimension, stack );
+        }
+        
+        DestroyStack( stack );
+        return dimension;
+      }
+    } else {
+      current = current->right_children[index];
+      if( current->right_children[index] == NULL ){
+        current->right_children[index] = node;
+      
+      if( current->left_children[index] == NULL ){
+        PushToStack( node );
+        RestructureDimension( dimension, stack );
+      }
+      
+      DestroyStack( stack );
+      return dimension;
+    }
+  }
   
   return NULL;
 }
@@ -350,4 +392,25 @@ RestructureDimension
   // todo finish
   
   return dimension;
+}
+
+static
+short
+RunComparisonList
+( List * list, void * value_1, void * value_2, Dictionary * options )
+{
+  if( list == NULL )
+    return 0;
+  
+  short result;
+  compare_t comparison = BeginList( list );
+  while( comparison != NULL ){
+    result = comparison( value_1, value_2, options );
+    if( result != 0 )
+      return result;
+    
+    comparison = NextInList( list );
+  }
+  
+  return 0;
 }
