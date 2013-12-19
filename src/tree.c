@@ -388,6 +388,7 @@ NextNodeInDimension
   return NULL;
 }
 
+// todo refactor this monstrous function
 static
 Dimension *
 RestructureDimension
@@ -426,12 +427,19 @@ RestructureDimension
     first = grandparent;
     tree_1 = grandparent->left_children[index];
     if( parent->left_children[index] != bottom ){
-      // todo restart here
       middle = parent;
       last = bottom;
+      
+      tree_2 = parent->left_children[index];
+      tree_3 = bottom->left_children[index];
+      tree_4 = bottom->right_children[index];
     } else {
       last = parent;
       middle = bottom;
+      
+      tree_2 = bottom->left_children[index];
+      tree_3 = bottom->right_children[index];
+      tree_4 = parent->right_children[index];
     }
   } else {
     last = grandparent;
@@ -439,9 +447,17 @@ RestructureDimension
     if( parent->left_children[index] != bottom ){
       first = parent;
       middle = bottom;
+      
+      tree_1 = parent->left_children[index];
+      tree_2 = bottom->left_children[index];
+      tree_3 = bottom->righ_children[index];
     } else {
       middle = parent;
       first = bottom;
+      
+      tree_1 = bottom->left_children[index];
+      tree_2 = bottom->right_children[index];
+      tree_3 = parent->right_children[index];
     }
   }
   
