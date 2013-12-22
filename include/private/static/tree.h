@@ -53,6 +53,11 @@ DestroyNode
 ( Node * );
 
 static
+unsigned
+MaxNodeHeight
+( Node *, Node *, unsigned );
+
+static
 Node *
 NextNodeInDimension
 ( Dimension * );

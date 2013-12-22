@@ -64,15 +64,15 @@ AddToTree
   if( node == NULL )
     return NULL;
   
-  node->left_children = malloc( sizeof( Node ) );
+  node->left_children = malloc( sizeof( Node * ) * 10 );
   if( node->left_children == NULL )
     return NULL;
   
-  node->right_children = malloc( sizeof( Node ) );
+  node->right_children = malloc( sizeof( Node * ) * 10 );
   if( node->right_children == NULL )
     return NULL;
   
-  node->heights = malloc( sizeof( unsigned ) );
+  node->heights = malloc( sizeof( unsigned ) * 10 );
   if( node->heights == NULL )
     return NULL;
   
@@ -214,7 +214,7 @@ NewTree
   if( dimension == NULL )
     return NULL;
   
-  if( AppendToList( tree->dimensions, dimension ) != NULL )
+  if( AppendToList( tree->dimensions, dimension ) == NULL )
     return NULL;
   
   tree->current_dimension = dimension;
@@ -295,6 +295,7 @@ TreeIsEmpty
       || BeginDimension( BeginList( tree->dimensions ) ) == NULL;
 }
 
+// todo refactor this beast of a function
 static
 Dimension *
 AddToDimension
@@ -309,11 +310,21 @@ AddToDimension
   node->heights[index] = 0;
   Dictionary * options = dimension->options;
   Node * current = dimension->root;
+  
+  if( current == NULL ){
+    dimension->root = node;
+    node->left_children[index] = NULL;
+    node->right_children[index] = NULL;
+    node->heights[index] = 1;
+    
+    return dimension;
+  }
+  
   while( current != NULL ){
-    PushToStack( stack, current );
-    result = RunComparisonList( node->value, current->value, options );
+    PushToStack( path, current );
+    result = RunComparisonList( dimension->comparisons, node->value, current->value, options );
     if( result == 0 ){
-      DestroyStack( stack );
+      DestroyStack( path );
       return dimension;
     }
     
@@ -322,25 +333,33 @@ AddToDimension
         current->left_children[index] = node;
         
         if( current->right_children[index] == NULL ){
-          PushToStack( node );
-          RestructureDimension( dimension, stack );
+          PushToStack( path, node );
+          RestructureDimension( dimension, path );
+        } else {
+          node->heights[index] = 1;
         }
         
-        DestroyStack( stack );
+        DestroyStack( path );
         return dimension;
+      } else {
+        current = current->left_children[index];
       }
     } else {
-      current = current->right_children[index];
       if( current->right_children[index] == NULL ){
         current->right_children[index] = node;
       
-      if( current->left_children[index] == NULL ){
-        PushToStack( node );
-        RestructureDimension( dimension, stack );
-      }
+        if( current->left_children[index] == NULL ){
+          PushToStack( path, node );
+          RestructureDimension( dimension, path );
+        } else {
+          node->heights[index] = 1;
+        }
       
-      DestroyStack( stack );
-      return dimension;
+        DestroyStack( path );
+        return dimension;
+      } else {
+        current = current->right_children[index];
+      }
     }
   }
   
@@ -368,6 +387,7 @@ DestroyNode
   Node * left = node->left_children[0];
   Node * right = node->right_children[0];
   
+  free( node->heights );
   free( node->left_children );
   free( node->right_children );
   free( node );
@@ -376,6 +396,29 @@ DestroyNode
   DestroyNode( right );
   
   return;
+}
+
+static
+unsigned
+MaxNodeHeight
+( Node * first, Node * second, unsigned index )
+{
+  unsigned first_height, second_height;
+  
+  if( first == NULL )
+    first_height = 0;
+  else
+    first_height = first->heights[index];
+  
+  if( second == NULL )
+    second_height = 0;
+  else
+    second_height = second->heights[index];
+  
+  if( first_height > second_height )
+    return first_height;
+  else
+    return second_height;
 }
 
 static
@@ -396,7 +439,8 @@ RestructureDimension
 {
   unsigned index = dimension->index;
   
-  unsigned left_height, right_height, difference;
+  unsigned left_height, right_height;
+  int difference;
   Stack * changed = NewStack();
   if( changed == NULL )
     return NULL;
@@ -406,19 +450,31 @@ RestructureDimension
     PushToStack( changed, current );
     current->heights[index]++;
     
-    left_height = current->left_children[index]->heights[index];
-    right_height = current->right_children[index]->heights[index];
+    if( current->left_children[index] == NULL )
+      left_height = 0;
+    else
+      left_height = current->left_children[index]->heights[index];
+    
+    if( current->right_children[index] == NULL )
+      right_height = 0;
+    else
+      right_height = current->right_children[index]->heights[index];
+    
     difference = left_height - right_height;
     
-    if( difference > 1 || difference < 1 )
+    if( difference > 1 || difference < -1 )
       break;
-    
-    current = PopFromStack( stack );
+    else
+      current = PopFromStack( stack );
   }
+  
+  if( current == NULL )
+    return dimension;
   
   Node * grandparent = PopFromStack( changed );
   Node * parent = PopFromStack( changed );
   Node * bottom = PopFromStack( changed );
+  DestroyStack( changed );
   
   Node * first, * middle, * last;
   Node * tree_1, * tree_2, * tree_3, * tree_4;
@@ -450,7 +506,7 @@ RestructureDimension
       
       tree_1 = parent->left_children[index];
       tree_2 = bottom->left_children[index];
-      tree_3 = bottom->righ_children[index];
+      tree_3 = bottom->right_children[index];
     } else {
       middle = parent;
       first = bottom;
@@ -461,7 +517,32 @@ RestructureDimension
     }
   }
   
+  Node * great_grandparent = PeekAtStack( stack );
+  if( great_grandparent == NULL )
+    dimension->root = middle;
+  else if( great_grandparent->left_children[index] == grandparent )
+    great_grandparent->left_children[index] = middle;
+  else
+    great_grandparent->right_children[index] = middle;
   
+  middle->left_children[index] = first;
+  middle->right_children[index] = last;
+  
+  first->left_children[index] = tree_1;
+  first->right_children[index] = tree_2;
+  
+  last->left_children[index] = tree_3;
+  last->right_children[index] = tree_4;
+  
+  first->heights[index] = MaxNodeHeight( tree_1, tree_2, index ) + 1;
+  last->heights[index] = MaxNodeHeight( tree_3, tree_4, index ) + 1;
+  middle->heights[index] = MaxNodeHeight( first, last, index ) + 1;
+  
+  current = PopFromStack( stack );
+  while( current != NULL ){
+    current->heights[index] = MaxNodeHeight( current->left_children[index], current->right_children[index], index ) + 1;
+    current = PopFromStack( stack );
+  }
   
   return dimension;
 }
@@ -475,7 +556,7 @@ RunComparisonList
     return 0;
   
   short result;
-  compare_t comparison = BeginList( list );
+  comparison_t comparison = BeginList( list );
   while( comparison != NULL ){
     result = comparison( value_1, value_2, options );
     if( result != 0 )

@@ -11,3 +11,4 @@
 - change comparison to structure
 - add stack data structure
 - change iterators to structues (to support future wrapping)
+- change way iterators work

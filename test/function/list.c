@@ -183,6 +183,8 @@ test_copy
 const char *
 test_destructor( void )
 {
+  DestroyList( NULL );
+  
   List * list = NewList();
   
   if( list == NULL )

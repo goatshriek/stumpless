@@ -94,6 +94,9 @@ void
 DestroyList
 ( List * list )
 {
+  if( list == NULL )
+    return;
+  
   DestroyNode( list->first );
   
   free( list );
