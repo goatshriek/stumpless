@@ -76,7 +76,7 @@ test_add_value
   
   FAIL_IF_NOT_NULL( NextInTree( tree ), "there were extra elements added" )
   
-  str = "second";
+  str = "third";
   result = AddToTree( tree, ( void * ) str );
   FAIL_IF_NULL( result, "a second addition was not successfull" )
   
@@ -86,6 +86,25 @@ test_add_value
   
   next = NextInTree( tree );
   FAIL_IF_NULL( next, "could not get the second tree member" );
+  ASSERT_STRINGS_EQUAL( "third", next, "the second element retrieved was not correct" )
+  
+  FAIL_IF_NOT_NULL( NextInTree( tree ), "there were extra elements added" )
+  
+  str = "second";
+  result = AddToTree( tree, ( void * ) str );
+  FAIL_IF_NULL( result, "a third addition was not successfull" )
+  
+  next = BeginTree( tree );
+  FAIL_IF_NULL( next, "could not get the first tree member" )
+  ASSERT_STRINGS_EQUAL( "first", next, "the first element retrieved was not correct" )
+  
+  next = BeginTree( tree );
+  FAIL_IF_NULL( next, "could not get the second tree member" )
+  ASSERT_STRINGS_EQUAL( "second", next, "the second element retrieved was not correct" )
+  
+  next = NextInTree( tree );
+  FAIL_IF_NULL( next, "could not get the third tree member" );
+  ASSERT_STRINGS_EQUAL( "third", next, "the third element retrieved was not correct" )
   
   FAIL_IF_NOT_NULL( NextInTree( tree ), "there were extra elements added" )
   
@@ -260,15 +279,16 @@ test_next
   FAIL_IF_NULL( tree, "could not build the test tree" )
   
   const char * value = BeginTree( tree );
-  FAIL_IF_NULL( value, "a value was not returned from the start call" )
+  FAIL_IF_NULL( value, "a value was not returned from the begin call" )
+  ASSERT_STRINGS_EQUAL( "first", value, "the first value in the tree was not returned by the begin call" )
   
   value = NextInTree( tree );
-  FAIL_IF_NULL( value, "the next value was not returned" )
-  ASSERT_STRINGS_EQUAL( "second", value, "the next value in the tree was not returned" )
+  FAIL_IF_NULL( value, "a second value was not returned" )
+  ASSERT_STRINGS_EQUAL( "second", value, "the second value in the tree was not returned" )
   
   value = NextInTree( tree );
-  FAIL_IF_NULL( value, "the next value was not returned" )
-  ASSERT_STRINGS_EQUAL( "third", value, "the next value in the tree was not returned" )
+  FAIL_IF_NULL( value, "a third value was not returned" )
+  ASSERT_STRINGS_EQUAL( "third", value, "the third value in the tree was not returned" )
   
   value = NextInTree( tree );
   FAIL_IF_NOT_NULL( value, "a value beyond the last was returned" )

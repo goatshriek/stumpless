@@ -99,7 +99,7 @@ BeginDimension
 ( Dimension * dimension )
 {
   Iterator * iterator = NewIterator( dimension );
-  if( dimension->iterator == NULL )
+  if( iterator == NULL )
     return NULL;
   
   dimension->iterator = iterator;
@@ -291,7 +291,7 @@ TreeIsEmpty
       || tree->current_dimension->root == NULL;
 }
 
-// todo refactor this beast of a function
+// todo refactor
 static
 Dimension *
 AddToDimension
@@ -428,11 +428,9 @@ NewIterator
   
   iterator->index = dimension->index;
   
-  Stack * result;
   Node * current = dimension->root;
   while( current != NULL ){
-    result = PushToStack( iterator->path, current );
-    if( result == NULL )
+    if( !PushToStack( iterator->path, current ) )
       return NULL;
     
     current = current->left_children[iterator->index];
@@ -481,45 +479,30 @@ void *
 NextInIterator
 ( Iterator * iterator )
 {
-  if( iterator == NULL )
+  if( iterator == NULL || IteratorIsDone( iterator ) )
     return NULL;
   
-  unsigned index = iterator->index;
-  Node * current = PopFromStack( iterator->path );
+  Node * current = PeekAtStack( iterator->path );
+  Node * next;
   void * value = current->value;
-  Stack * result;
+
+  unsigned index = iterator->index;
+  Stack * path = iterator->path;
   
   if( current->right_children[index] == NULL ){
-    current = PopFromStack( iterator->path );
-    
-    while( current != NULL && current->right_children[index] == NULL ){
-      current = PopFromStack( iterator->path );
-    }
-    
-    if( current == NULL )
-      return NULL;
-    
-    current = current->right_children[index];
-    result = PushToStack( iterator->path, current );
-    if( result == NULL )
-      return NULL;
-    
-    while( current->left_children[index] != NULL ){
-      result = PushToStack( iterator->path, current->left_children[index] );
-      if( result == NULL )
-        return NULL;
+    do{
+      current = PopFromStack( path );
+      next = PeekAtStack( path );
       
-      current = current->left_children[index];
-    }
+      if( StackIsEmpty( path ) )
+        return value;
+      
+    } while( next->right_children[index] == current );
   } else {
-    result = PushToStack( iterator->path, current->right_children[index] );
-    if( result == NULL )
-      return NULL;
-    
     current = current->right_children[index];
-    while( current->left_children[index] != NULL ){
-      result = PushToStack( iterator->path, current->left_children[index] );
-      if( result != NULL )
+    
+    while( current != NULL ){
+      if( !PushToStack( path, current ) )
         return NULL;
       
       current = current->left_children[index];
@@ -529,7 +512,7 @@ NextInIterator
   return value;
 }
 
-// todo refactor this monstrous function
+// todo refactor
 static
 Dimension *
 RestructureDimension
