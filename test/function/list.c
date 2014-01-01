@@ -4,6 +4,7 @@
 
 #include "private/list.h"
 #include "private/static/list.h"
+#include "private/static/list_iterator.h"
 #include "private/type.h"
 
 #include "helper.h"
@@ -228,6 +229,20 @@ const char *
 test_iterator
 ( void )
 {
+  List * list = NULL;
+  ListIterator * iterator = GetListIterator( list );
+  FAIL_IF_NOT_NULL( iterator, "a null list returned a non-null iterator" )
+  
+  list = BuildListOfStrings();
+  FAIL_IF_NULL( list, "could not build the test list" )
+  iterator = GetListIterator( list );
+  FAIL_IF_NULL( iterator, "a non-null list returned a null iterator" )
+  
+  if( iterator->list != list )
+    return "the iterator did not have the appropriate list";
+  if( iterator->current != list->first )
+    return "the iterator did not start at the beginning of the list";
+  
   return NULL;
 }
 
