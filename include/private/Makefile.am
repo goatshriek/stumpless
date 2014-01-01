@@ -22,6 +22,7 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/handler_list.h \
                  include/private/level.h \
                  include/private/list.h \
+                 include/private/list_iterator.h \
                  include/private/logger.h \
                  include/private/output.h \
                  include/private/output_profile.h \

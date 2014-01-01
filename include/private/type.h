@@ -6,6 +6,7 @@
 
 struct Dimension;
 struct List;
+struct ListIterator;
 struct Stack;
 struct Tree;
 
@@ -13,6 +14,8 @@ typedef struct Dimension
         Dimension;
 typedef struct List
         List;
+typedef struct ListIterator
+        ListIterator;
 typedef struct Stack
         Stack;
 typedef struct Tree

@@ -18,6 +18,7 @@ check_PROGRAMS = test/function/adapter \
                  test/function/handler_list \
                  test/function/level \
                  test/function/list \
+                 test/function/list_iterator \
                  test/function/logger \
                  test/function/output \
                  test/function/output_profile \

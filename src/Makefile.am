@@ -28,6 +28,7 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/handler_list.c \
                           src/level.c \
                           src/list.c \
+                          src/list_iterator.c \
                           src/logger.c \
                           src/output.c \
                           src/output_profile.c \
