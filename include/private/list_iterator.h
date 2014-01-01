@@ -3,5 +3,20 @@
 
 #include "private/type.h"
 
+ListIterator *
+CopyListIterator
+( ListIterator * );
+
+void
+DestroyListIterator
+( ListIterator * );
+
+unsigned short
+ListIteratorHasNext
+( ListIterator * );
+
+void *
+NextInListIterator
+( ListIterator * );
 
 #endif
