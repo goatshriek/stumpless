@@ -66,6 +66,8 @@ test_add_value
   Tree * tree = NewTree();
   FAIL_IF_NULL( tree, "a new tree could not be built" );
   
+  FAIL_IF_NULL( AddComparisonToTree( tree, CompareStrings ), "the tree comparison could not be set" )
+  
   char * str = "first";
   Tree * result = AddToTree( tree, ( void * ) str );
   FAIL_IF_NULL( result, "an addition to an empty tree was not successfull" )
@@ -98,7 +100,7 @@ test_add_value
   FAIL_IF_NULL( next, "could not get the first tree member" )
   ASSERT_STRINGS_EQUAL( "first", next, "the first element retrieved was not correct" )
   
-  next = BeginTree( tree );
+  next = NextInTree( tree );
   FAIL_IF_NULL( next, "could not get the second tree member" )
   ASSERT_STRINGS_EQUAL( "second", next, "the second element retrieved was not correct" )
   

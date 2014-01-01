@@ -68,6 +68,11 @@ AddToTree
   
   Dimension * dimension = BeginList( tree->dimensions );
   while( dimension != NULL ){
+    if( ListIsEmpty( dimension->comparisons ) ){
+      dimension = NextInList( tree->dimensions );
+      continue;
+    }
+    
     if( AddToDimension( dimension, node ) == NULL )
       return NULL;
     
@@ -291,7 +296,44 @@ TreeIsEmpty
       || tree->current_dimension->root == NULL;
 }
 
-// todo refactor
+static
+Dimension *
+AddAsLeftChild
+( Dimension * dimension, Node * parent, Node * node, Stack * path )
+{
+  unsigned index = dimension->index;
+  parent->left_children[index] = node;
+  
+  if( parent->right_children[index] == NULL ){
+    PushToStack( path, node );
+    RestructureDimension( dimension, path );
+  } else {
+    node->heights[index] = 1;
+  }
+  
+  DestroyStack( path );
+  return dimension;
+}
+
+static
+Dimension *
+AddAsRightChild
+( Dimension * dimension, Node * parent, Node * node, Stack * path )
+{
+  unsigned index = dimension->index;
+  parent->right_children[index] = node;
+
+  if( parent->left_children[index] == NULL ){
+    PushToStack( path, node );
+    RestructureDimension( dimension, path );
+  } else {
+    node->heights[index] = 1;
+  }
+      
+  DestroyStack( path );
+  return dimension;
+}
+
 static
 Dimension *
 AddToDimension
@@ -314,6 +356,7 @@ AddToDimension
   while( current != NULL ){
     PushToStack( path, current );
     result = RunComparisonList( dimension->comparisons, node->value, current->value, options );
+    
     if( result == 0 ){
       DestroyStack( path );
       return dimension;
@@ -321,33 +364,13 @@ AddToDimension
     
     if( result < 0 ){
       if( current->left_children[index] == NULL ){
-        current->left_children[index] = node;
-        
-        if( current->right_children[index] == NULL ){
-          PushToStack( path, node );
-          RestructureDimension( dimension, path );
-        } else {
-          node->heights[index] = 1;
-        }
-        
-        DestroyStack( path );
-        return dimension;
+        return AddAsLeftChild( dimension, current, node, path );
       } else {
         current = current->left_children[index];
       }
     } else {
       if( current->right_children[index] == NULL ){
-        current->right_children[index] = node;
-      
-        if( current->left_children[index] == NULL ){
-          PushToStack( path, node );
-          RestructureDimension( dimension, path );
-        } else {
-          node->heights[index] = 1;
-        }
-      
-        DestroyStack( path );
-        return dimension;
+        return AddAsRightChild( dimension, current, node, path );
       } else {
         current = current->right_children[index];
       }

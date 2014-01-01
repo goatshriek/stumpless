@@ -47,6 +47,16 @@ struct Tree {
 
 static
 Dimension *
+AddAsLeftChild
+( Dimension *, Node *, Node *, Stack * );
+
+static
+Dimension *
+AddAsRightChild
+( Dimension *, Node *, Node *, Stack * );
+
+static
+Dimension *
 AddToDimension
 ( Dimension *, Node * );
 
