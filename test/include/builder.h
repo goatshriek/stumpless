@@ -27,6 +27,14 @@ Value *
 BuildCharArrayValue
 ( void );
 
+Comparator *
+BuildComparator
+( void );
+
+ComparatorList *
+BuildComparatorList
+( void );
+
 Dictionary *
 BuildDictionaryOfStrings
 ( void );

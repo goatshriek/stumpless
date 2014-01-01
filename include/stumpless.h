@@ -4,6 +4,7 @@
 #include <stumpless/adapter.h>
 #include <stumpless/adapter_list.h>
 #include <stumpless/boolean.h>
+#include <stumpless/comparator.h>
 #include <stumpless/config.h>
 #include <stumpless/configuration.h>
 #include <stumpless/csv_formatter.h>

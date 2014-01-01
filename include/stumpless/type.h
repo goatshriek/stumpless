@@ -16,6 +16,8 @@ struct __STUMPLESS_NAME( AdapterList );
 struct __STUMPLESS_NAME( Boolean );
 struct __STUMPLESS_NAME( BooleanFormat );
 struct __STUMPLESS_NAME( ByteList );
+struct __STUMPLESS_NAME( Comparator );
+struct __STUMPLESS_NAME( ComparatorList );
 struct __STUMPLESS_NAME( Configuration );
 struct __STUMPLESS_NAME( Dictionary );
 struct __STUMPLESS_NAME( Entry );
@@ -64,6 +66,10 @@ typedef struct __STUMPLESS_NAME( BooleanFormat )
         __STUMPLESS_NAME( BooleanFormat );
 typedef struct __STUMPLESS_NAME( ByteList )
         __STUMPLESS_NAME( ByteList );
+typedef struct __STUMPLESS_NAME( Comparator )
+        __STUMPLESS_NAME( Comparator );
+typedef struct __STUMPLESS_NAME( ComparatorList )
+        __STUMPLESS_NAME( ComparatorList );
 typedef struct __STUMPLESS_NAME( Configuration )
         __STUMPLESS_NAME( Configuration );
 typedef struct __STUMPLESS_NAME( Dictionary )
@@ -168,6 +174,12 @@ struct __STUMPLESS_NAME( ByteList ) {
   unsigned byte_count;
 };
 
+struct __STUMPLESS_NAME( Comparator ) {
+  short ( *compare )( const void *, const void *, __STUMPLESS_NAME( Dictionary ) * );
+  const char * name;
+  __STUMPLESS_NAME( Dictionary ) * options;
+};
+
 struct __STUMPLESS_NAME( Configuration ) {
   __STUMPLESS_NAME( FileConfiguration ) * default_file;
   __STUMPLESS_NAME( HTTPConfiguration ) * default_http;
@@ -235,7 +247,8 @@ struct __STUMPLESS_NAME( Level ) {
 };
 
 struct __STUMPLESS_NAME( Log ) {
-  Tree * records;
+  //Tree * records;
+  unsigned placeholder; //delete when tree is fixed up
 };
 
 struct __STUMPLESS_NAME( Logger ) {

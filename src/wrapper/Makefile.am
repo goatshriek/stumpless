@@ -2,6 +2,7 @@ if !PRIVATE_NAMESPACE
 libstumpless_la_SOURCES += src/wrapper/adapter.c \
                            src/wrapper/adapter_list.c \
                            src/wrapper/boolean.c \
+                           src/wrapper/comparator_list.c \
                            src/wrapper/configuration.c \
                            src/wrapper/dictionary.c \
                            src/wrapper/entry.c \

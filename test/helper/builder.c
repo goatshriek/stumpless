@@ -2,6 +2,7 @@
 
 #include "private/adapter.h"
 #include "private/adapter_list.h"
+#include "private/comparator_list.h"
 #include "private/compare_base.h"
 #include "private/configuration.h"
 #include "private/dictionary.h"
@@ -112,7 +113,8 @@ BuildByteOutput( void )
 }
 
 Value *
-BuildCharArrayValue( void )
+BuildCharArrayValue
+( void )
 {
   Value * value = malloc( sizeof( Value ) );
   if( value == NULL )
@@ -145,6 +147,36 @@ BuildCharArrayValue( void )
   value->length = 10;
   
   return value;
+}
+
+Comparator *
+BuildComparator
+( void )
+{
+  Comparator * comparator = malloc( sizeof( Comparator ) );
+  if( comparator == NULL )
+    return NULL;
+  
+  comparator->compare = CompareStrings;
+  comparator->options = BuildDictionaryOfStrings();
+  if( comparator->options == NULL )
+    return NULL;
+  
+  return comparator;
+}
+
+ComparatorList *
+BuildComparatorList
+( void )
+{
+  ComparatorList * list = NewComparatorList();
+  if( list == NULL )
+    return NULL;
+  
+  AppendToComparatorList( list, BuildComparator() );
+  AppendToComparatorList( list, BuildComparator() );
+  
+  return list;
 }
 
 Dictionary *

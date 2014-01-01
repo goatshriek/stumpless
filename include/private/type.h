@@ -37,6 +37,10 @@ typedef struct __STUMPLESS_NAME( BooleanFormat )
         BooleanFormat;
 typedef struct __STUMPLESS_NAME( ByteList )
         ByteList;
+typedef struct __STUMPLESS_NAME( Comparator )
+        Comparator;
+typedef struct __STUMPLESS_NAME( ComparatorList )
+        ComparatorList;
 typedef struct __STUMPLESS_NAME( Configuration )
         Configuration;
 typedef struct __STUMPLESS_NAME( Dictionary )

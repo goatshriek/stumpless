@@ -3,6 +3,7 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/adapter_initializer.h \
                  include/private/adapter_list.h \
                  include/private/boolean.h \
+                 include/private/comparator_list.h \
                  include/private/compare_base.h \
                  include/private/configuration.h \
                  include/private/csv_formatter.h \
