@@ -235,8 +235,7 @@ struct __STUMPLESS_NAME( Level ) {
 };
 
 struct __STUMPLESS_NAME( Log ) {
-  // todo list of records
-  unsigned short placeholder;
+  Tree * records;
 };
 
 struct __STUMPLESS_NAME( Logger ) {
