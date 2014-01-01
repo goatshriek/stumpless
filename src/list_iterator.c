@@ -8,13 +8,25 @@ ListIterator *
 CopyListIterator
 ( ListIterator * iterator )
 {
-  return NULL;
+  if( iterator == NULL )
+    return NULL;
+  
+  ListIterator * copy = malloc( sizeof( ListIterator ) );
+  if( copy == NULL )
+    return NULL;
+  
+  copy->list = iterator->list;
+  copy->current = iterator->current;
+  
+  return copy;
 }
 
 void
 DestroyListIterator
 ( ListIterator * iterator )
 {
+  free( iterator );
+  
   return;
 }
 

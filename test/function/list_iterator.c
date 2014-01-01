@@ -58,12 +58,46 @@ const char *
 test_copy
 ( void )
 {
+  ListIterator * iterator = NULL;
+  ListIterator * copy = CopyListIterator( iterator );
+  FAIL_IF_NOT_NULL( copy, "coyping a null iterator returned a non-null iterator" )
+  
+  iterator = BuildListIterator();
+  FAIL_IF_NULL( iterator, "could not build the test iterator" )
+  List * list = iterator->list;
+  FAIL_IF_NULL( list, "the iterator did not have a list" )
+  Node * current = iterator->current;
+  FAIL_IF_NULL( current, "the iterator did not start at the beginning of the list" )
+  
+  copy = CopyListIterator( iterator );
+  FAIL_IF_NULL( copy, "copying a non-null iterator returned a null pointer" )
+  if( copy->list != list )
+    return "the copy did not point to the same list as the original";
+  if( copy->current != current )
+    return "the copy did not start in the same place as the original";
+  
   return NULL;
 }
 
 const char *
 test_destructor( void )
 {
+  ListIterator * iterator = NULL;
+  DestroyListIterator( iterator );
+  
+  iterator = BuildListIterator();
+  FAIL_IF_NULL( iterator, "could not build the test iterator" )
+  
+  List * list = iterator->list;
+  FAIL_IF_NULL( list, "the iterator did not have a list" )
+  if( ListIsEmpty( list ) )
+    return "the iterator's list was empty";
+  
+  DestroyListIterator( iterator );
+  
+  if( ListIsEmpty( list ) )
+    return "the destruction of the iterator destroyed the list as well";
+  
   return NULL;
 }
 
