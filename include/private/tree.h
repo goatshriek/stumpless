@@ -31,6 +31,10 @@ void *
 BeginTree
 ( Tree * );
 
+Dimension *
+CopyDimension
+( Dimension * );
+
 Tree *
 CopyTree
 ( Tree * );

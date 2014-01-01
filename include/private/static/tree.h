@@ -61,9 +61,19 @@ AddToDimension
 ( Dimension *, Node * );
 
 static
+Node *
+CopyNode
+( Node * );
+
+static
 void
 DestroyNode
 ( Node * );
+
+static
+unsigned short
+DimensionContains
+( Dimension *, void * );
 
 static
 unsigned short

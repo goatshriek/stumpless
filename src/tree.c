@@ -122,13 +122,68 @@ BeginTree
     return BeginDimension( tree->current_dimension );
 }
 
+Dimension *
+CopyDimension
+( Dimension * dimension )
+{
+  if( dimension == NULL )
+    return NULL;
+  
+  Dimension * copy = malloc( sizeof( Dimension ) );
+  if( copy == NULL )
+    return NULL;
+  
+  copy->comparisons = CopyList( dimension->comparisons );
+  if( copy->comparisons == NULL )
+    return NULL;
+  
+  copy->root = CopyNode( dimension->root );
+  if( copy->root == NULL )
+    return NULL;
+  
+  copy->index = dimension->index;
+  copy->iterator == NULL;
+  copy->name = dimension->name;
+  copy->options = dimension->options;
+  copy->tree = dimension->tree;
+  
+  return copy;
+}
+
 Tree *
 CopyTree
 ( Tree * tree )
 {
-  // todo finish
+  if( tree == NULL )
+    return NULL;
   
-  return NULL;
+  Tree * copy = malloc( sizeof( Tree ) );
+  if( copy == NULL )
+    return NULL;
+  
+  List * dimension_list = NewList();
+  if( dimension_list == NULL )
+    return NULL;
+  
+  Dimension * dimension = BeginList( tree->dimensions );
+  Dimension * dimension_copy;
+  while( dimension != NULL ){
+    dimension_copy = CopyDimension( dimension );
+    if( dimension_copy == NULL )
+      return NULL;
+    
+    if( AppendToList( dimension_list, dimension_copy ) == NULL )
+      return NULL;
+    
+    if( dimension == tree->current_dimension )
+      copy->current_dimension = dimension_copy;
+    
+    dimension = NextInList( tree->dimensions );
+  }
+  
+  copy->options = tree->options;
+  
+  return copy;
 }
 
 void
@@ -173,9 +228,21 @@ Tree *
 MergeTrees
 ( Tree * tree_1, Tree * tree_2 )
 {
-  // todo finish
+  if( tree_1 == NULL )
+    return NULL;
   
-  return NULL;
+  if( TreeIsEmpty( tree_2 ) )
+    return tree_1;
+  
+  void * value = BeginTree( tree_2 );
+  while( value != NULL ){
+    if( AddToTree( tree_1, value ) == NULL )
+      return NULL;
+    
+    value = NextInTree( tree_2 );
+  }
+  
+  return tree_1;
 }
 
 void *
@@ -283,8 +350,10 @@ unsigned short
 TreeContains
 ( Tree * tree, void * value )
 {
-  // todo finish
-  return 0;
+  if( tree == NULL || tree->current_dimension == NULL )
+    return 0;
+  else
+    return DimensionContains( tree->current_dimension, value );
 }
 
 unsigned short
@@ -381,6 +450,23 @@ AddToDimension
 }
 
 static
+Node *
+CopyNode
+( Node * node )
+{
+  if( node == NULL )
+    return NULL;
+  
+  Node * copy = malloc( sizeof( Node ) );
+  if( copy == NULL )
+    return NULL;
+  
+  // todo finish
+  
+  return copy;
+}
+
+static
 void
 DestroyNode
 ( Node * node )
@@ -400,6 +486,32 @@ DestroyNode
   DestroyNode( right );
   
   return;
+}
+
+static
+unsigned short
+DimensionContains
+( Dimension * dimension, void * value )
+{
+  unsigned index = dimension->index;
+  List * comparisons = dimension->comparisons;
+  Dictionary * options = dimension->options;
+  Node * current = dimension->root;
+  
+  short result;
+  while( current != NULL ){
+    result = RunComparisonList( comparisons, value, current->value, options );
+    
+    if( result == 0 )
+      return 1;
+    
+    if( result < 0 )
+      current = current->left_children[index];
+    else
+      current = current->right_children[index];
+  }
+  
+  return 0;
 }
 
 static
@@ -656,7 +768,7 @@ short
 RunComparisonList
 ( List * list, void * value_1, void * value_2, Dictionary * options )
 {
-  if( list == NULL )
+  if( ListIsEmpty( list ) )
     return 0;
   
   short result;
