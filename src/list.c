@@ -104,6 +104,13 @@ DestroyList
   return;
 }
 
+ListIterator *
+GetListIterator
+( List * list )
+{
+  return NULL;
+}
+
 unsigned short
 ListContains
 ( const List * list, const void * value )

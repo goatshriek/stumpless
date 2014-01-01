@@ -27,6 +27,10 @@ void
 DestroyList
 ( List * );
 
+ListIterator *
+GetListIterator
+( List * );
+
 unsigned short
 ListContains
 ( const List *, const void * );

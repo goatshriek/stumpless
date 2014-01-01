@@ -16,6 +16,7 @@ const char * test_contains( void );
 const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_is_empty( void );
+const char * test_iterator( void );
 const char * test_next( void );
 const char * test_prepend_value( void );
 const char * test_separator( void );
@@ -35,6 +36,7 @@ main( void )
   RUN_TEST( copy )
   RUN_TEST( destructor )
   RUN_TEST( is_empty )
+  RUN_TEST( iterator )
   RUN_TEST( next )
   RUN_TEST( prepend_value )
   RUN_TEST( separator )
@@ -202,7 +204,8 @@ test_destructor( void )
 }
 
 const char *
-test_is_empty( void )
+test_is_empty
+( void )
 {
   List * list = NULL;
   if( !ListIsEmpty( list ) )
@@ -218,6 +221,13 @@ test_is_empty( void )
   if( ListIsEmpty( list ) )
     return "a full list was deemed empty";
   
+  return NULL;
+}
+
+const char *
+test_iterator
+( void )
+{
   return NULL;
 }
 
