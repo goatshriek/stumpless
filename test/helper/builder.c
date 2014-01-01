@@ -15,6 +15,7 @@
 #include "private/handler.h"
 #include "private/handler_list.h"
 #include "private/list.h"
+#include "private/list_iterator.h"
 #include "private/output_profile.h"
 #include "private/stack.h"
 #include "private/tree.h"
@@ -644,6 +645,17 @@ BuildLevel
   level->value = 42;
   
   return level;
+}
+
+ListIterator *
+BuildListIterator
+( void )
+{
+  ListIterator * iterator = NewListIterator( BuildListOfStrings() );
+  if( iterator == NULL )
+    return NULL;
+  
+  return iterator;
 }
 
 List *

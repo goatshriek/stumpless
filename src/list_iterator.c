@@ -22,7 +22,10 @@ unsigned short
 ListIteratorHasNext
 ( ListIterator * iterator )
 {
-  return 0;
+  if( iterator == NULL )
+    return 0;
+  
+  return iterator->current != NULL;
 }
 
 ListIterator *
@@ -46,5 +49,12 @@ void *
 NextInListIterator
 ( ListIterator * iterator )
 {
-  return NULL;
+  if( iterator == NULL || iterator->current == NULL )
+    return NULL;
+  
+  void * value = iterator->current->value;
+  
+  iterator->current = iterator->current->next;
+  
+  return value;
 }

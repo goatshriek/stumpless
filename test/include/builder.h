@@ -123,6 +123,10 @@ Level *
 BuildLevel
 ( void );
 
+ListIterator *
+BuildListIterator
+( void );
+
 List *
 BuildListOfStrings
 ( void );
