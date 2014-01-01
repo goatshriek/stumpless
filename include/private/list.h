@@ -27,10 +27,6 @@ void
 DestroyList
 ( List * );
 
-ListIterator *
-GetListIterator
-( List * );
-
 unsigned short
 ListContains
 ( const List *, const void * );
@@ -43,13 +39,13 @@ unsigned
 ListSize
 ( const List * );
 
-void *
-NextInList
-( List * );
-
 List *
 NewList
 ( void );
+
+void *
+NextInList
+( List * );
 
 List *
 PrependToList

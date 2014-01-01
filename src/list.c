@@ -104,13 +104,6 @@ DestroyList
   return;
 }
 
-ListIterator *
-GetListIterator
-( List * list )
-{
-  return NULL;
-}
-
 unsigned short
 ListContains
 ( const List * list, const void * value )
@@ -154,6 +147,19 @@ ListSize
   return size;
 }
 
+List *
+NewList
+()
+{
+  List * list = malloc( sizeof( List ) );
+  if( list == NULL )
+    return NULL;
+  
+  list->first = list->current = list->last = NULL;
+  
+  return list;
+}
+
 void *
 NextInList
 ( List * list )
@@ -167,19 +173,6 @@ NextInList
     return NULL;
   else
     return list->current->value;
-}
-
-List *
-NewList
-()
-{
-  List * list = malloc( sizeof( List ) );
-  if( list == NULL )
-    return NULL;
-  
-  list->first = list->current = list->last = NULL;
-  
-  return list;
 }
 
 List *

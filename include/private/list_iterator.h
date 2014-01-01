@@ -15,6 +15,10 @@ unsigned short
 ListIteratorHasNext
 ( ListIterator * );
 
+ListIterator *
+NewListIterator
+( List * );
+
 void *
 NextInListIterator
 ( ListIterator * );
