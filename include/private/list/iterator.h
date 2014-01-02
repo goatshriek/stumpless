@@ -5,7 +5,7 @@
 
 ListIterator *
 CopyListIterator
-( ListIterator * );
+( const ListIterator * );
 
 void
 DestroyListIterator
@@ -13,7 +13,7 @@ DestroyListIterator
 
 unsigned short
 ListIteratorHasNext
-( ListIterator * );
+( const ListIterator * );
 
 ListIterator *
 NewListIterator

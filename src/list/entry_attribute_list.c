@@ -22,16 +22,6 @@ AppendToEntryAttributeList
   return NULL;
 }
 
-EntryAttribute *
-BeginEntryAttributeList
-( EntryAttributeList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return BeginList( list->list );
-}
-
 EntryAttributeList *
 CopyEntryAttributeList
 ( EntryAttributeList * list )
@@ -112,16 +102,6 @@ NewEntryAttributeList
     return NULL;
   
   return list;
-}
-
-EntryAttribute *
-NextInEntryAttributeList
-( EntryAttributeList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return NextInList( list->list );
 }
 
 Status *

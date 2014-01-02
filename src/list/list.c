@@ -61,18 +61,6 @@ AppendToList
   return list;
 }
 
-void *
-BeginList
-( List * list )
-{
-  if( list == NULL || list->first == NULL )
-    return NULL;
-  
-  list->current = list->first;
-  
-  return list->current->value;
-}
-
 List *
 CopyList
 ( const List * list )
@@ -158,21 +146,6 @@ NewList
   list->first = list->current = list->last = NULL;
   
   return list;
-}
-
-void *
-NextInList
-( List * list )
-{
-  if( list == NULL || list->current == NULL )
-    return NULL;
-  
-  list->current = list->current->next;
-  
-  if( list->current == NULL )
-    return NULL;
-  else
-    return list->current->value;
 }
 
 List *

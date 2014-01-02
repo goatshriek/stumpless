@@ -23,16 +23,6 @@ AppendToFormatterList
   return NULL;
 }
 
-Formatter *
-BeginFormatterList
-( FormatterList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return BeginList( list->list );
-}
-
 FormatterList *
 CopyFormatterList
 ( FormatterList * list )
@@ -110,16 +100,6 @@ NewFormatterList
     return NULL;
   
   return list;
-}
-
-Formatter *
-NextInFormatterList
-( FormatterList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return NextInList( list->list );
 }
 
 Status *

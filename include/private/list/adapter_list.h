@@ -15,10 +15,6 @@ Status *
 AppendToAdapterList
 ( AdapterList *, Adapter * );
 
-Adapter *
-BeginAdapterList
-( AdapterList * );
-
 AdapterList *
 CopyAdapterList
 ( AdapterList * );
@@ -30,10 +26,6 @@ DestroyAdapterList
 AdapterList *
 NewAdapterList
 ( void );
-
-Adapter *
-NextInAdapterList
-( AdapterList * );
 
 Status *
 PrependToAdapterList

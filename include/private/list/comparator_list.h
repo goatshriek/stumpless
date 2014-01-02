@@ -7,10 +7,6 @@ Status *
 AppendToComparatorList
 ( ComparatorList *, Comparator * );
 
-Comparator *
-BeginComparatorList
-( ComparatorList * );
-
 unsigned short
 ComparatorListIsEmpty
 ( ComparatorList * );
@@ -26,10 +22,6 @@ DestroyComparatorList
 ComparatorList *
 NewComparatorList
 ( void );
-
-Comparator *
-NextInComparatorList
-( ComparatorList * );
 
 Status *
 PrependToComparatorList

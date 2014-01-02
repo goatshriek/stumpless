@@ -9,7 +9,6 @@ typedef struct Node
         Node;
 
 struct List {
-  Node * current;
   Node * first;
   Node * last;
 };

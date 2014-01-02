@@ -37,16 +37,6 @@ AppendToAdapterList
   return NULL;
 }
 
-Adapter *
-BeginAdapterList
-( AdapterList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return BeginList( list->list );
-}
-
 AdapterList *
 CopyAdapterList
 ( AdapterList * list )
@@ -87,16 +77,6 @@ NewAdapterList
     return NULL;
   
   return list;
-}
-
-Adapter *
-NextInAdapterList
-( AdapterList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return NextInList( list->list );
 }
 
 Status *

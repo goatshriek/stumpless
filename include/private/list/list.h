@@ -15,10 +15,6 @@ List *
 AppendToList
 ( List *, void * );
 
-void *
-BeginList
-( List * );
-
 List *
 CopyList
 ( const List * );
@@ -42,10 +38,6 @@ ListSize
 List *
 NewList
 ( void );
-
-void *
-NextInList
-( List * );
 
 List *
 PrependToList

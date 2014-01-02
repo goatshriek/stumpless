@@ -10,13 +10,11 @@
 
 const char * test_append_value( void );
 const char * test_appender( void );
-const char * test_begin( void );
 const char * test_constructor( void );
 const char * test_contains( void );
 const char * test_copy( void );
 const char * test_destructor( void );
 const char * test_is_empty( void );
-const char * test_next( void );
 const char * test_prepend_value( void );
 const char * test_separator( void );
 const char * test_size( void );
@@ -29,13 +27,11 @@ main( void )
   
   RUN_TEST( append_value )
   RUN_TEST( appender )
-  RUN_TEST( begin )
   RUN_TEST( constructor )
   RUN_TEST( contains )
   RUN_TEST( copy )
   RUN_TEST( destructor )
   RUN_TEST( is_empty )
-  RUN_TEST( next )
   RUN_TEST( prepend_value )
   RUN_TEST( separator )
   RUN_TEST( size )
@@ -83,27 +79,6 @@ test_appender
   result = AppendLists( list_1, list_2 );
   FAIL_IF_NULL( result, "the list was not successfully appended" )
   ASSERT_STRINGS_EQUAL( "this should be last", list_1->last->value, "the lists were not properly appended" )
-  
-  return NULL;
-}
-
-const char *
-test_begin
-( void )
-{
-  List * list = NewList();
-  FAIL_IF_NULL( list, "a new list could not be built" );
-  
-  const char * value = BeginList( list );
-  FAIL_IF_NOT_NULL( value, "an empty list returned a value first" )
-  
-  list = BuildListOfStrings();
-  FAIL_IF_NULL( list, "could not build the test list" )
-  
-  value = BeginList( list );
-  FAIL_IF_NULL( value, "a value was not returned from the list" )
-  if( value != list->first->value )
-    return "the first element of the list was not returned";
   
   return NULL;
 }
@@ -218,24 +193,6 @@ test_is_empty
     return "could not build the test list";
   if( ListIsEmpty( list ) )
     return "a full list was deemed empty";
-  
-  return NULL;
-}
-
-const char *
-test_next
-( void )
-{
-  List * list = BuildListOfStrings();
-  FAIL_IF_NULL( list, "could not build the test list" )
-  
-  const char * value = BeginList( list );
-  FAIL_IF_NULL( value, "a value was not returned from the start call" )
-  
-  value = NextInList( list );
-  FAIL_IF_NULL( value, "a value was not returned from the next call" )
-  if( value != list->first->next->value )
-    return "the node returned was not the next in the list";
   
   return NULL;
 }

@@ -7,10 +7,6 @@ Status *
 AppendToFormatterList
 ( FormatterList *, Formatter * );
 
-Formatter *
-BeginFormatterList
-( FormatterList * );
-
 FormatterList *
 CopyFormatterList
 ( FormatterList * );
@@ -18,7 +14,6 @@ CopyFormatterList
 void
 DestroyFormatterList
 ( FormatterList * );
-
 
 Status *
 EntryThroughFormatterList
@@ -35,10 +30,6 @@ FormatterListIsEmpty
 FormatterList *
 NewFormatterList
 ( void );
-
-Formatter *
-NextInFormatterList
-( FormatterList * );
 
 Status *
 PrependToFormatterList

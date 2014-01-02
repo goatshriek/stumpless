@@ -7,10 +7,6 @@ Status *
 AppendToEntryAttributeList
 ( EntryAttributeList *, EntryAttribute * );
 
-EntryAttribute *
-BeginEntryAttributeList
-( EntryAttributeList * );
-
 EntryAttributeList *
 CopyEntryAttributeList
 ( EntryAttributeList * );
@@ -30,10 +26,6 @@ MergeEntryAttributeLists
 EntryAttributeList *
 NewEntryAttributeList
 ( void );
-
-EntryAttribute *
-NextInEntryAttributeList
-( EntryAttributeList * );
 
 Status *
 PrependToEntryAttributeList

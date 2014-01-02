@@ -6,7 +6,7 @@
 
 ListIterator *
 CopyListIterator
-( ListIterator * iterator )
+( const ListIterator * iterator )
 {
   if( iterator == NULL )
     return NULL;
@@ -32,7 +32,7 @@ DestroyListIterator
 
 unsigned short
 ListIteratorHasNext
-( ListIterator * iterator )
+( const ListIterator * iterator )
 {
   if( iterator == NULL )
     return 0;

@@ -25,16 +25,6 @@ AppendToComparatorList
   return NULL;
 }
 
-Comparator *
-BeginComparatorList
-( ComparatorList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return BeginList( list->list );
-}
-
 unsigned short
 ComparatorListIsEmpty
 ( ComparatorList * list )
@@ -82,16 +72,6 @@ NewComparatorList
     return NULL;
   
   return list;
-}
-
-Comparator *
-NextInComparatorList
-( ComparatorList * list )
-{
-  if( list == NULL || list->list == NULL )
-    return NULL;
-  
-  return NextInList( list->list );
 }
 
 Status *

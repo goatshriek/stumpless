@@ -1,28 +1,20 @@
 noinst_HEADERS = include/private/adapter.h \
                  include/private/adapter_base.h \
                  include/private/adapter_initializer.h \
-                 include/private/adapter_list.h \
                  include/private/boolean.h \
-                 include/private/comparator_list.h \
                  include/private/compare_base.h \
                  include/private/configuration.h \
                  include/private/csv_formatter.h \
                  include/private/dictionary.h \
                  include/private/entry.h \
                  include/private/event.h \
-                 include/private/event_attribute_list.h \
                  include/private/filter.h \
                  include/private/filter_initializer.h \
-                 include/private/filter_list.h \
                  include/private/formatter.h \
                  include/private/formatter_initializer.h \
-                 include/private/formatter_list.h \
                  include/private/handler.h \
                  include/private/handler_initializer.h \
-                 include/private/handler_list.h \
                  include/private/level.h \
-                 include/private/list.h \
-                 include/private/list_iterator.h \
                  include/private/logger.h \
                  include/private/output.h \
                  include/private/output_profile.h \
@@ -38,8 +30,8 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/type.h \
                  include/private/value_constructor.h \
                  include/private/value.h \
-                 include/private/value_list.h \
                  include/private/value_profile.h \
                  include/private/value_profile_initializer.h
 
+include include/private/list/Makefile.am
 include include/private/static/Makefile.am
