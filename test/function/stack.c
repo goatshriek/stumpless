@@ -3,8 +3,9 @@
 #include <string.h>
 
 #include "private/stack.h"
-#include "private/static/stack.h"
 #include "private/type.h"
+
+#include "static/stack.h"
 
 #include "helper.h"
 

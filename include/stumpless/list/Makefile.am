@@ -1,7 +1,9 @@
-stumpless_include_HEADERS += include/stumpless/list/adapter_list.h \
-                             include/stumpless/list/entry_attribute_list.h \
-                             include/stumpless/list/event_attribute_list.h \
-                             include/stumpless/list/filter_list.h \
-                             include/stumpless/list/formatter_list.h \
-                             include/stumpless/list/handler_list.h \
-                             include/stumpless/list/value_list.h
+stumpless_include_HEADERS += include/stumpless/list/adapter.h \
+                             include/stumpless/list/entry_attribute.h \
+                             include/stumpless/list/event_attribute.h \
+                             include/stumpless/list/filter.h \
+                             include/stumpless/list/formatter.h \
+                             include/stumpless/list/handler.h \
+                             include/stumpless/list/value.h
+
+include include/stumpless/list/iterator/Makefile.am

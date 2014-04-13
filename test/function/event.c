@@ -110,14 +110,14 @@ test_to_string( void )
 {
   Event * event = NULL;
   char * description = EventToString( event );
-  if( description != NULL )
+  if( description )
     return "the description was not null for a null pointer";
   
   event = GetDebugEvent();
   description = EventToString( event );
-  if( description == NULL )
+  if( !description )
     return "the description was null for a valid event pointer";
-  if( strstr( description, "debug" ) == NULL )
+  if( !strstr( description, "debug" ) )
     return "the description did not contain the name of the event";
   
   return NULL;

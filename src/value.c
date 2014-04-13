@@ -9,27 +9,29 @@
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value_constructor.h"
-#include "private/value_list.h"
+
+#include "private/list/value.h"
 
 #define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \
 ValueList *                                                                    \
-name##ArrayValueToValueList( Value * value )                                   \
+name##ArrayValueToValueList                                                    \
+( const Value *value )                                                         \
 {                                                                              \
-  if( value == NULL || value->data == NULL                                     \
-   || value->data->data_member == NULL )                                       \
+  if( !value || !value->data || !value->data->data_member )                    \
     return NULL;                                                               \
                                                                                \
-  ValueList * list = NewValueList();                                           \
-  if( list == NULL )                                                           \
+  ValueList *list = NewValueList();                                            \
+  if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  Type * data = value->data;                                                   \
-  Value * value_i;                                                             \
+  Type *data = value->data;                                                    \
+  Value *value_i;                                                              \
   unsigned i;                                                                  \
                                                                                \
   for( i = 0; i < value->length; i++ ){                                        \
     value_i = ValueFrom##name( data->data_member[i] );                         \
-    NULL_ON_FAILURE( AppendValueToValueList( list, value_i ) )                 \
+    if( !AppendToValueList( list, value_i ) )                                  \
+      return NULL;                                                             \
   }                                                                            \
                                                                                \
   return list;                                                                 \
@@ -37,12 +39,13 @@ name##ArrayValueToValueList( Value * value )                                   \
 
 #define VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )        \
 Status *                                                                       \
-name##ValueIntoString( char * str, Value * value )                             \
+name##ValueIntoString                                                          \
+( char * str, const Value * value )                                            \
 {                                                                              \
-  if( str == NULL || value == NULL || value->data == NULL )                    \
+  if( !str || !value || !value->data )                                         \
     return RaiseAbnormalStatus( "empty argument" );                            \
                                                                                \
-  const char * format = value->format == NULL ? default_format : value->format;\
+  const char * format = value->format ? value->format : default_format;        \
                                                                                \
   str[0] = '\0';                                                               \
   int result = sprintf( str, format, value->data->data_member );               \
@@ -56,21 +59,21 @@ name##ValueIntoString( char * str, Value * value )                             \
 // snprintf is available. Create configuration check to handle this case
 #define VALUE_TO_STRING_FUNCTION( name, data_member, default_format )          \
 char *                                                                         \
-name##ValueToString( Value * value )                                           \
+name##ValueToString( const Value * value )                                     \
 {                                                                              \
-  if( value == NULL || value->data == NULL )                                   \
+  if( !value || !value->data )                                                 \
     return NULL;                                                               \
                                                                                \
-  const char * format = value->format == NULL ? default_format : value->format;\
+  const char * format = value->format ? value->format : default_format;        \
                                                                                \
   Configuration * configuration = GetConfiguration();                          \
-  if( configuration == NULL )                                                  \
+  if( !configuration )                                                         \
     return NULL;                                                               \
                                                                                \
   size_t buffer_size = configuration->string->buffer_size;                     \
   size_t buffer_length = buffer_size - 1;                                      \
   char * buffer = malloc( sizeof( char ) * buffer_size );                      \
-  if( buffer == NULL )                                                         \
+  if( !buffer )                                                                \
     return NULL;                                                               \
                                                                                \
   buffer[0] = '\0';                                                            \
@@ -83,7 +86,7 @@ name##ValueToString( Value * value )                                           \
   free( buffer );                                                              \
                                                                                \
   char * str = malloc( sizeof( char ) * ( required_length + 1 ) );             \
-  if( str == NULL )                                                            \
+  if( !str )                                                                   \
     return NULL;                                                               \
                                                                                \
   str[0] = '\0';                                                               \
@@ -97,24 +100,23 @@ name##ValueToString( Value * value )                                           \
 
 ValueList *
 BooleanArrayValueToValueList
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL || value->data == NULL || value->data->v_p == NULL )
+  if( !value || !value->data || !value->data->v_p )
     return NULL;
   
-  ValueList * list = NewValueList();
-  if( list == NULL )
+  ValueList *list = NewValueList();
+  if( !list )
     return NULL;
   
-  const Boolean ** boolean_list;
-  boolean_list = (const Boolean **) value->data->v_p;
-  Value * boolean_value;
+  const Boolean **boolean_list = ( const Boolean ** ) value->data->v_p;
+  Value *boolean_value;
   
   unsigned i; 
-  
   for( i = 0; i < value->length; i++ ){
     boolean_value = ValueFromBoolean( boolean_list[i] );
-    NULL_ON_FAILURE( AppendValueToValueList( list, boolean_value ) )
+    if( !AppendToValueList( list, boolean_value ) )
+      return NULL;
   }
   
   return list;
@@ -122,7 +124,7 @@ BooleanArrayValueToValueList
 
 Status *
 BooleanValueIntoString
-( char * str, Value * value )
+( char *str, const Value *value )
 {
   // todo need to implement
   return NULL;
@@ -130,14 +132,14 @@ BooleanValueIntoString
 
 char *
 BooleanValueToString
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL || value->data == NULL || value->data->v_p == NULL )
+  if( !value || !value->data || !value->data->v_p )
     return NULL;
   
-  Boolean * boolean = (Boolean * ) value->data->v_p;
+  Boolean *boolean = ( Boolean * ) value->data->v_p;
   
-  const char * description;
+  const char *description;
   if( boolean->value )
     description = boolean->format->true_description;
   else
@@ -145,8 +147,8 @@ BooleanValueToString
   
   size_t str_length = strlen( description );
   
-  char * str = malloc( sizeof( char ) * ( str_length + 1 ) );
-  if( str == NULL )
+  char *str = malloc( sizeof( char ) * ( str_length + 1 ) );
+  if( !str )
     return NULL;
   
   str[0] = '\0';
@@ -162,11 +164,30 @@ VALUE_INTO_STRING_FUNCTION( Char, c, "%c" )
 
 VALUE_TO_STRING_FUNCTION( Char, c, "%c" )
 
+Value *
+CopyValue
+( const Value *value )
+{
+  if( !value )
+    return NULL;
+  
+  Value *copy = malloc( sizeof( Value ) );
+  if( !copy )
+    return NULL;
+
+  copy->data = value->data;
+  copy->format = value->format;
+  copy->length = value->length;
+  copy->profile = value->profile;
+  
+  return copy;
+}
+
 void
 DestroyValue
-( Value * value )
+( Value *value )
 {
-  if( value == NULL )
+  if( !value )
     return;
   
   free( value->data );
@@ -226,23 +247,23 @@ VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
 ValueList *
 StringArrayValueToValueList
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL || value->data == NULL || value->data->v_p == NULL )
+  if( !value || !value->data || !value->data->v_p )
     return NULL;
   
-  ValueList * list = NewValueList();
-  if( list == NULL )
+  ValueList *list = NewValueList();
+  if( !list )
     return NULL;
   
-  const char ** string_list = (const char **) value->data->v_p;
-  Value * string_value;
+  const char **string_list = ( const char ** ) value->data->v_p;
+  Value *string_value;
   
   unsigned i; 
-  
   for( i = 0; i < value->length; i++ ){
     string_value = ValueFromString( string_list[i] );
-    NULL_ON_FAILURE( AppendValueToValueList( list, string_value ) )
+    if( !AppendToValueList( list, string_value ) )
+      return NULL;
   }
   
   return list;
@@ -250,7 +271,7 @@ StringArrayValueToValueList
 
 Status *
 StringValueIntoString
-( char * str, Value * value )
+( char *str, const Value *value )
 {
   // todo need to implement
   return NULL;
@@ -258,15 +279,15 @@ StringValueIntoString
 
 char *
 StringValueToString
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL || value->data == NULL || value->data->c_p == NULL )
+  if( !value || !value->data || !value->data->c_p )
     return NULL;
   
   size_t str_length = strlen( value->data->c_p );
   
-  char * str = malloc( sizeof( char ) * ( str_length + 1 ) );
-  if( str == NULL )
+  char *str = malloc( sizeof( char ) * ( str_length + 1 ) );
+  if( !str )
     return NULL;
   
   str[0] = '\0';
@@ -308,12 +329,12 @@ VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
 Status *
 ValueIntoString
-( char * str, Value * value )
+( char *str, const Value *value )
 {
-  if( value == NULL )
+  if( !value )
     return RaiseAbnormalStatus( "empty argument" );
   
-  if( value->profile == NULL || value->profile->into_string == NULL )
+  if( !value->profile || !value->profile->into_string )
     return RaiseAbnormalStatus( "malformed structure" );
   
   return value->profile->into_string( str, value );
@@ -321,10 +342,9 @@ ValueIntoString
 
 char *
 ValueToString
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL || value->profile == NULL
-   || value->profile->to_string == NULL )
+  if( !value || !value->profile || !value->profile->to_string )
     return NULL;
   
   return value->profile->to_string( value );
@@ -332,16 +352,17 @@ ValueToString
 
 ValueList *
 ValueToValueList
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL )
+  if( !value )
     return NULL;
   
-  ValueList * list = NewValueList();
-  if( list == NULL )
+  ValueList *list = NewValueList();
+  if( !list )
     return NULL;
   
-  NULL_ON_FAILURE( AppendValueToValueList( list, value ) )
+  if( !AppendToValueList( list, CopyValue( value ) ) )
+    return NULL;
   
   return list;
 }

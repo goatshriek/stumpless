@@ -4,42 +4,42 @@
 #include "private/output.h"
 #include "private/string_helper.h"
 #include "private/type.h"
-#include "private/value_list.h"
+
+#include "private/list/value.h"
 
 unsigned short
 BinaryOutputIsEmpty
-( Output * output )
+( const Output * output )
 {
   return 0;
 }
 
 char *
 BinaryOutputToString
-( Output * output )
+( const Output * output )
 {
   return NULL;
 }
 
 unsigned short
 CSVOutputIsEmpty
-( Output * output )
+( const Output * output )
 {
   return 0;
 }
 
 char *
 CSVOutputToString
-( Output * output )
+( const Output * output )
 {
   return NULL;
 }
 
 unsigned short
 OutputIsEmpty
-( Output * output )
+( const Output * output )
 {
-  if( output == NULL || output->profile == NULL
-   || output->profile->is_empty == NULL )
+  if( !output || !output->profile || !output->profile->is_empty )
     return 1;
   
   return output->profile->is_empty( output );
@@ -47,10 +47,9 @@ OutputIsEmpty
 
 char *
 OutputToString
-( Output * output )
+( const Output * output )
 {
-  if( output == NULL || output->profile == NULL
-   || output->profile->to_string == NULL )
+  if( !output || !output->profile || !output->profile->to_string )
     return NULL;
   
   return output->profile->to_string( output );
@@ -58,23 +57,23 @@ OutputToString
 
 unsigned short
 JSONOutputIsEmpty
-( Output * output )
+( const Output * output )
 {
   return 0;
 }
 
 char *
 JSONOutputToString
-( Output * output )
+( const Output * output )
 {
   return NULL;
 }
 
 unsigned short
 RawStringOutputIsEmpty
-( Output * output )
+( const Output * output )
 {
-  if( output == NULL || output->data == NULL )
+  if( !output || !output->data )
     return 1;
   
   return ( output->data->c_p == NULL );
@@ -82,9 +81,9 @@ RawStringOutputIsEmpty
 
 char *
 RawStringOutputToString
-( Output * output )
+( const Output * output )
 {
-  if( output == NULL || output->data == NULL || output->data->c_p == NULL )
+  if( !output || !output->data || !output->data->c_p )
     return NULL;
   
   return copy_string( output->data->c_p );
@@ -92,9 +91,9 @@ RawStringOutputToString
 
 unsigned short
 TextOutputIsEmpty
-( Output * output )
+( const Output * output )
 {
-  if( output == NULL || output->data == NULL )
+  if( !output || !output->data )
     return 1;
   
   ValueList * list = ( ValueList * ) output->data->v_p;
@@ -104,9 +103,9 @@ TextOutputIsEmpty
 
 char *
 TextOutputToString
-( Output * output )
+( const Output * output )
 {
-  if( output == NULL || output->data == NULL )
+  if( !output || !output->data )
     return NULL;
   
   ValueList * list = ( ValueList * ) output->data->v_p;
@@ -116,14 +115,14 @@ TextOutputToString
 
 unsigned short
 XMLOutputIsEmpty
-( Output * output )
+( const Output * output )
 {
   return 0;
 }
 
 char *
 XMLOutputToString
-( Output * output )
+( const Output * output )
 {
   return NULL;
 }

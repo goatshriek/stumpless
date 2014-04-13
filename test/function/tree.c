@@ -2,14 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/compare_base.h"
-#include "private/static/tree.h"
+#include "private/comparator_base.h"
 #include "private/tree.h"
 #include "private/type.h"
 
+#include "static/tree.h"
+
 #include "helper.h"
 
-const char * test_add_comparison( void );
+const char * test_add_comparator( void );
 const char * test_add_value( void );
 const char * test_begin( void );
 const char * test_constructor( void );
@@ -27,7 +28,7 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  RUN_TEST( add_comparison )
+  RUN_TEST( add_comparator )
   RUN_TEST( add_value )
   RUN_TEST( begin )
   RUN_TEST( constructor )
@@ -46,13 +47,13 @@ main( void )
 }
 
 const char *
-test_add_comparison
+test_add_comparator
 ( void )
 {
   Tree * tree = NewTree();
   FAIL_IF_NULL( tree, "could not build the test tree" )
   
-  FAIL_IF_NULL( AddComparisonToTree( tree, CompareStrings ), "the tree comparison could not be set" )
+  FAIL_IF_NULL( AddComparatorToTree( tree, BuildComparator() ), "the tree comparison could not be set" )
   
   // todo add test to make sure comparison is actually set
   
@@ -66,7 +67,7 @@ test_add_value
   Tree * tree = NewTree();
   FAIL_IF_NULL( tree, "a new tree could not be built" );
   
-  FAIL_IF_NULL( AddComparisonToTree( tree, CompareStrings ), "the tree comparison could not be set" )
+  FAIL_IF_NULL( AddComparatorToTree( tree, BuildComparator() ), "the tree comparison could not be set" )
   
   char * str = "first";
   Tree * result = AddToTree( tree, ( void * ) str );

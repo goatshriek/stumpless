@@ -97,7 +97,7 @@ InitializeListFailureStatus
   CREATE_STATUS
   
   status->name = "list failure";
-  status->description = "an operation on an underlying list structure has failedfrom either a memory allocation failure or a malformed list structure";
+  status->description = "an operation on an underlying list structure has failed due to either a memory allocation failure or a malformed list structure";
   status->error = 0;
   status->failure = 1;
   status->warning = 0;

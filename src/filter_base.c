@@ -4,47 +4,46 @@
 
 unsigned short
 EmptyFilterAcceptEntry
-( Entry * entry, Dictionary * options )
+( const Entry * entry, Dictionary * options )
 {
-  return ( entry != NULL && entry->event != NULL )
+  return ( entry  && entry->event )
        ^ ( GetDictionaryValue( options, "invert" ) != NULL );
 }
 
 unsigned short
 EmptyFilterAcceptOutput
-( Output * output, Dictionary * options )
+( const Output * output, Dictionary * options )
 {
-  return ( output != NULL && output->data != NULL )
+  return ( output && output->data )
        ^ ( GetDictionaryValue( options, "invert" ) != NULL );
 }
 
 unsigned short
 EmptyFilterAcceptValue
-( Value * value, Dictionary * options )
+( const Value * value, Dictionary * options )
 {
-  return ( value != NULL && value->data != NULL )
+  return ( value && value->data )
        ^ ( GetDictionaryValue( options, "invert" ) != NULL );
 }
 
 unsigned short
 LevelFilterAcceptEntry
-( Entry * entry, Dictionary * options )
+( const Entry * entry, Dictionary * options )
 {
-  return ( entry != NULL && entry->event != NULL
-           && entry->event->level != NULL )
+  return ( entry && entry->event && entry->event->level )
        ^ ( GetDictionaryValue( options, "invert" ) != NULL );
 }
 
 unsigned short
 LevelFilterAcceptOutput
-( Output * output, Dictionary * options )
+( const Output * output, Dictionary * options )
 {
   return 1;
 }
 
 unsigned short
 LevelFilterAcceptValue
-( Value * value, Dictionary * options )
+( const Value * value, Dictionary * options )
 {
   return 1;
 }

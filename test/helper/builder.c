@@ -1,37 +1,40 @@
 #include <stdlib.h>
 
+#include "builder.h"
+
 #include "private/adapter.h"
-#include "private/adapter_list.h"
-#include "private/comparator_list.h"
-#include "private/compare_base.h"
+#include "private/comparator_base.h"
 #include "private/configuration.h"
 #include "private/dictionary.h"
-#include "private/entry_attribute_list.h"
-#include "private/event_attribute_list.h"
 #include "private/filter.h"
-#include "private/filter_list.h"
 #include "private/formatter.h"
-#include "private/formatter_list.h"
 #include "private/handler.h"
-#include "private/handler_list.h"
-#include "private/list.h"
-#include "private/list_iterator.h"
 #include "private/output_profile.h"
 #include "private/stack.h"
 #include "private/tree.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
-#include "private/value_list.h"
 #include "private/value_profile.h"
 
-#include "builder.h"
+#include "private/list.h"
+#include "private/list/adapter.h"
+#include "private/list/comparator.h"
+#include "private/list/entry_attribute.h"
+#include "private/list/event_attribute.h"
+#include "private/list/filter.h"
+#include "private/list/formatter.h"
+#include "private/list/handler.h"
+#include "private/list/iterator.h"
+#include "private/list/value.h"
+
+#include "private/list/iterator/event_attribute.h"
 
 Adapter *
 BuildAdapter
 ( void )
 {
   Adapter * adapter = malloc( sizeof( Adapter ) );
-  if( adapter == NULL )
+  if( !adapter )
     return NULL;
   
   adapter->adapt = NULL;
@@ -46,20 +49,20 @@ AdapterList *
 BuildAdapterList
 ( void )
 {
-  AdapterList * list = NewAdapterList();
-  if( list == NULL )
+  AdapterList *list = NewAdapterList();
+  if( !list )
     return NULL;
   
-  Adapter * adapter = FindAdapterByName( "context" );
-  if( adapter == NULL )
+  Adapter *adapter = FindAdapterByName( "context" );
+  if( !adapter )
     return NULL;
-  if( AppendToAdapterList( list, adapter ) != NULL )
+  if( !AppendToAdapterList( list, adapter ) )
     return NULL;
   
   adapter = FindAdapterByName( "level" );
-  if( adapter == NULL )
+  if( !adapter )
     return NULL;
-  if( AppendToAdapterList( list, adapter ) != NULL )
+  if( !AppendToAdapterList( list, adapter ) )
     return NULL;
   
   return list;
@@ -155,12 +158,12 @@ BuildComparator
 ( void )
 {
   Comparator * comparator = malloc( sizeof( Comparator ) );
-  if( comparator == NULL )
+  if( !comparator )
     return NULL;
   
-  comparator->compare = CompareStrings;
+  comparator->compare = StringComparatorCompare;
   comparator->options = BuildDictionaryOfStrings();
-  if( comparator->options == NULL )
+  if( !comparator->options )
     return NULL;
   
   return comparator;
@@ -170,12 +173,21 @@ ComparatorList *
 BuildComparatorList
 ( void )
 {
-  ComparatorList * list = NewComparatorList();
-  if( list == NULL )
+  ComparatorList *list = NewComparatorList();
+  if( !list )
     return NULL;
   
-  AppendToComparatorList( list, BuildComparator() );
-  AppendToComparatorList( list, BuildComparator() );
+  Comparator *comparator = BuildComparator();
+  if( !comparator )
+    return NULL;
+  if( !AppendToComparatorList( list, comparator ) )
+    return NULL;
+  
+  comparator = BuildComparator();
+  if( !comparator )
+    return NULL;
+  if( !AppendToComparatorList( list, comparator ) )
+    return NULL;
   
   return list;
 }
@@ -307,35 +319,39 @@ BuildEntryAttributeList( void )
   EventAttributeList * event_attribute_list = BuildEventAttributeList();
   if( event_attribute_list == NULL )
     return NULL;
-  
+ 
+  EventAttributeListIterator * event_attributes = BeginEventAttributeList( event_attribute_list );
+ 
   EntryAttribute * attribute;
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = BeginEventAttributeList( event_attribute_list );
+  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = NULL;
   AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = NextInEventAttributeList( event_attribute_list );
+  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = ValueFromString( "not 37" );
   AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = NextInEventAttributeList( event_attribute_list );
+  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = NULL;
   AppendToEntryAttributeList( list, attribute );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
     return NULL;
-  attribute->event_attribute = NextInEventAttributeList( event_attribute_list );
+  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = ValueFromString( "unnamed value" );
   AppendToEntryAttributeList( list, attribute );
+  
+  DestroyEventAttributeListIterator( event_attributes );
   
   attribute = malloc( sizeof( EntryAttribute ) );
   if( attribute == NULL )
@@ -522,20 +538,20 @@ FormatterList *
 BuildFormatterList
 ( void )
 {
-  FormatterList * list = NewFormatterList();
-  if( list == NULL )
+  FormatterList *list = NewFormatterList();
+  if( !list )
     return NULL;
   
   Formatter * formatter = FindFormatterByName( "csv" );
-  if( formatter == NULL )
+  if( !formatter )
     return NULL;
-  if( AppendToFormatterList( list, formatter ) != NULL )
+  if( !AppendToFormatterList( list, formatter ) )
     return NULL;
   
   formatter = FindFormatterByName( "text" );
-  if( formatter == NULL )
+  if( !formatter )
     return NULL;
-  if( AppendToFormatterList( list, formatter ) != NULL )
+  if( !AppendToFormatterList( list, formatter ) )
     return NULL;
   
   return list;
@@ -545,13 +561,13 @@ Handler *
 BuildHandler
 ( void )
 {
-  Handler * handler = malloc( sizeof( Handler ) );
+  Handler *handler = malloc( sizeof( Handler ) );
   if( handler == NULL )
     return NULL;
   
   handler->name = "test handler";
   handler->options = BuildDictionaryOfStrings();
-  if( handler->options == NULL )
+  if( !handler->options )
     return NULL;
   
   return handler;
@@ -561,15 +577,20 @@ HandlerList *
 BuildHandlerList
 ( void )
 {
-  HandlerList * list = NewHandlerList();
-  if( list == NULL )
+  HandlerList *list = NewHandlerList();
+  if( !list )
     return NULL;
   
-  Handler * handler = FindHandlerByName( "stream" );
-  if( handler == NULL )
+  Handler *handler = BuildHandler();
+  if( !handler )
+    return NULL;
+  if( !AppendToHandlerList( list, handler ) )
     return NULL;
   
-  if( AppendToHandlerList( list, handler ) != NULL )
+  handler = BuildHandler();
+  if( !handler )
+    return NULL;
+  if( !AppendToHandlerList( list, handler ) )
     return NULL;
   
   return list;
@@ -651,8 +672,8 @@ ListIterator *
 BuildListIterator
 ( void )
 {
-  ListIterator * iterator = NewListIterator( BuildListOfStrings() );
-  if( iterator == NULL )
+  ListIterator * iterator = NewListIterator( BuildListOfStrings(), 0 );
+  if( !iterator )
     return NULL;
   
   return iterator;
@@ -791,16 +812,16 @@ BuildTextOutput( void )
   if( values == NULL )
     return NULL;
   
-  Status * status = AppendStringToValueList( values, "First\n" );
-  if( status != NULL )
+  ValueList * result = AppendStringToValueList( values, "First\n" );
+  if( !result )
     return NULL;
   
-  status = AppendStringToValueList( values, "Second\n" );
-  if( status != NULL )
+  result = AppendStringToValueList( values, "Second\n" );
+  if( !result )
     return NULL;
   
-  status = AppendStringToValueList( values, "Third" );
-  if( status != NULL )
+  result = AppendStringToValueList( values, "Third" );
+  if( !result )
     return NULL;
   
   output->data = malloc( sizeof( Type ) );
@@ -817,16 +838,16 @@ BuildTreeOfStrings
 ( void )
 {
   Tree * tree = NewTree();
-  if( tree == NULL )
+  if( !tree )
     return NULL;
   
-  if( AddComparisonToTree( tree, CompareStrings ) == NULL )
+  if( !AddComparatorToTree( tree, BuildComparator() ) )
     return NULL;
   
-  if( AddToTree( tree, "first" ) == NULL )
+  if( !AddToTree( tree, "first" ) )
     return NULL;
   
-  if( AddToTree( tree, "second" ) == NULL )
+  if( !AddToTree( tree, "second" ) )
     return NULL;
   
   return AddToTree( tree, "third" );
@@ -874,49 +895,71 @@ BuildUnsignedShortValue( void )
   return value;
 }
 
+Value *
+BuildValue
+( void )
+{
+  Value *value = malloc( sizeof( Value ) );
+  if( !value )
+    return NULL;
+  
+  value->format = NULL;
+  value->profile = FindValueProfileByName( "unsigned short" );
+  if( !value->profile )
+    return NULL;
+  
+  value->data = malloc( sizeof( Type ) );
+  if( !value->data )
+    return NULL;
+  value->data->u_s = 6500u;
+  
+  return value;
+}
+
 ValueList *
-BuildValueList( void )
+BuildValueList
+( void )
 {
   ValueList * list = NewValueList();
   if( list == NULL )
     return NULL;
   
-  Status * status;
   Value * value;
+  ValueList * result;
   
   value = BuildIntArrayValue();
-  if( value == NULL )
+  if( !value )
     return NULL;
-  status = AppendValueToValueList( list, value );
-  if( status != NULL )
+  result = AppendToValueList( list, value );
+  if( !result )
     return NULL;
   
   value = BuildUnsignedIntValue();
-  if( value == NULL )
+  if( !value )
     return NULL;
-  status = AppendValueToValueList( list, value );
-  if( status != NULL )
+  result = AppendToValueList( list, value );
+  if( !result )
     return NULL;
   
   value = BuildUnsignedShortValue();
-  if( value == NULL )
+  if( !value )
     return NULL;
-  status = AppendValueToValueList( list, value );
-  if( status != NULL )
+  result = AppendToValueList( list, value );
+  if( !result )
     return NULL;
   
   value = BuildCharArrayValue();
   if( value == NULL )
     return NULL;
-  status = AppendValueToValueList( list, value );
-  if( status != NULL )
+  result = AppendToValueList( list, value );
+  if( !result )
     return NULL;
   
   value = BuildVoidValue();
-  if( value == NULL )
+  if( !value )
     return NULL;
-  status = AppendValueToValueList( list, value );
-  if( status != NULL )
+  result = AppendToValueList( list, value );
+  if( !result )
     return NULL;
   
   return list;

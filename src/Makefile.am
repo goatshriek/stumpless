@@ -6,23 +6,25 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/adapter_base.c \
                           src/adapter_initializer.c \
                           src/boolean.c \
-                          src/compare_base.c \
+                          src/comparator.c \
+                          src/comparator_base.c \
+                          src/comparator_initializer.c \
                           src/configuration.c \
                           src/csv_formatter.c \
                           src/dictionary.c \
                           src/entry.c \
+                          src/entry_attribute.c \
                           src/event.c \
+                          src/event_attribute.c \
                           src/filter.c \
                           src/filter_base.c \
                           src/filter_initializer.c \
                           src/formatter.c \
                           src/formatter_initializer.c \
-                          src/formatter_list.c \
                           src/handler.c \
                           src/handler_initializer.c \
                           src/level.c \
                           src/list.c \
-                          src/list_iterator.c \
                           src/logger.c \
                           src/output.c \
                           src/output_profile.c \

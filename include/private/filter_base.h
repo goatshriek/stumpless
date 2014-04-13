@@ -1,30 +1,30 @@
-#ifndef STUMPLESS_PRIVATE_FILTER_BASE_H
-#define STUMPLESS_PRIVATE_FILTER_BASE_H
+#ifndef __STUMPLESS_PRIVATE_FILTER_BASE_H
+#define __STUMPLESS_PRIVATE_FILTER_BASE_H
 
 #include "private/type.h"
 
 unsigned short
 EmptyFilterAcceptEntry
-( Entry *, Dictionary * );
+( const Entry *, Dictionary * );
 
 unsigned short
 EmptyFilterAcceptOutput
-( Output *, Dictionary *);
+( const Output *, Dictionary *);
 
 unsigned short
 EmptyFilterAcceptValue
-( Value *, Dictionary * );
+( const Value *, Dictionary * );
 
 unsigned short
 LevelFilterAcceptEntry
-( Entry *, Dictionary * );
+( const Entry *, Dictionary * );
 
 unsigned short
 LevelFilterAcceptOutput
-( Output *, Dictionary * );
+( const Output *, Dictionary * );
 
 unsigned short
 LevelFilterAcceptValue
-( Value *, Dictionary * );
+( const Value *, Dictionary * );
 
 #endif

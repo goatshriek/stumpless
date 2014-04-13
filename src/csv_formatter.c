@@ -4,7 +4,7 @@
 
 Output *
 EntryToCSV
-( Entry * entry, Dictionary * options )
+( const Entry * entry, Dictionary * options )
 {
   return NULL;
 }

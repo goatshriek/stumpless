@@ -2,7 +2,8 @@
 #include <string.h>
 
 #include "private/dictionary.h"
-#include "private/static/dictionary.h"
+
+#include "static/dictionary.h"
 
 void
 DestroyDictionary

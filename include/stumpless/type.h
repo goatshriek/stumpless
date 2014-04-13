@@ -13,26 +13,33 @@ enum __STUMPLESS_NAME( SortingMethod );
 
 struct __STUMPLESS_NAME( Adapter );
 struct __STUMPLESS_NAME( AdapterList );
+struct __STUMPLESS_NAME( AdapterListIterator );
 struct __STUMPLESS_NAME( Boolean );
 struct __STUMPLESS_NAME( BooleanFormat );
 struct __STUMPLESS_NAME( ByteList );
 struct __STUMPLESS_NAME( Comparator );
 struct __STUMPLESS_NAME( ComparatorList );
+struct __STUMPLESS_NAME( ComparatorListIterator );
 struct __STUMPLESS_NAME( Configuration );
 struct __STUMPLESS_NAME( Dictionary );
 struct __STUMPLESS_NAME( Entry );
 struct __STUMPLESS_NAME( EntryAttribute );
 struct __STUMPLESS_NAME( EntryAttributeList );
+struct __STUMPLESS_NAME( EntryAttributeListIterator );
 struct __STUMPLESS_NAME( Event );
 struct __STUMPLESS_NAME( EventAttribute );
 struct __STUMPLESS_NAME( EventAttributeList );
+struct __STUMPLESS_NAME( EventAttributeListIterator );
 struct __STUMPLESS_NAME( FileConfiguration );
 struct __STUMPLESS_NAME( Filter );
 struct __STUMPLESS_NAME( FilterList );
+struct __STUMPLESS_NAME( FilterListIterator );
 struct __STUMPLESS_NAME( Formatter );
 struct __STUMPLESS_NAME( FormatterList );
+struct __STUMPLESS_NAME( FormatterListIterator );
 struct __STUMPLESS_NAME( Handler );
 struct __STUMPLESS_NAME( HandlerList );
+struct __STUMPLESS_NAME( HandlerListIterator );
 struct __STUMPLESS_NAME( HTTConfiguration );
 struct __STUMPLESS_NAME( Level );
 struct __STUMPLESS_NAME( Log );
@@ -48,6 +55,7 @@ struct __STUMPLESS_NAME( ThreadingConfiguration );
 union __STUMPLESS_NAME( Type );
 struct __STUMPLESS_NAME( Value );
 struct __STUMPLESS_NAME( ValueList );
+struct __STUMPLESS_NAME( ValueListIterator );
 struct __STUMPLESS_NAME( ValueProfile );
 
 
@@ -60,6 +68,8 @@ typedef struct __STUMPLESS_NAME( Adapter )
         __STUMPLESS_NAME( Adapter );
 typedef struct __STUMPLESS_NAME( AdapterList )
         __STUMPLESS_NAME( AdapterList );
+typedef struct __STUMPLESS_NAME( AdapterListIterator )
+        __STUMPLESS_NAME( AdapterListIterator );
 typedef struct __STUMPLESS_NAME( Boolean )
         __STUMPLESS_NAME( Boolean );
 typedef struct __STUMPLESS_NAME( BooleanFormat )
@@ -70,6 +80,8 @@ typedef struct __STUMPLESS_NAME( Comparator )
         __STUMPLESS_NAME( Comparator );
 typedef struct __STUMPLESS_NAME( ComparatorList )
         __STUMPLESS_NAME( ComparatorList );
+typedef struct __STUMPLESS_NAME( ComparatorListIterator )
+        __STUMPLESS_NAME( ComparatorListIterator );
 typedef struct __STUMPLESS_NAME( Configuration )
         __STUMPLESS_NAME( Configuration );
 typedef struct __STUMPLESS_NAME( Dictionary )
@@ -80,26 +92,36 @@ typedef struct __STUMPLESS_NAME( EntryAttribute )
         __STUMPLESS_NAME( EntryAttribute );
 typedef struct __STUMPLESS_NAME( EntryAttributeList )
         __STUMPLESS_NAME( EntryAttributeList );
+typedef struct __STUMPLESS_NAME( EntryAttributeListIterator )
+        __STUMPLESS_NAME( EntryAttributeListIterator );
 typedef struct __STUMPLESS_NAME( Event )
         __STUMPLESS_NAME( Event );
 typedef struct __STUMPLESS_NAME( EventAttribute )
         __STUMPLESS_NAME( EventAttribute );
 typedef struct __STUMPLESS_NAME( EventAttributeList )
         __STUMPLESS_NAME( EventAttributeList );
+typedef struct __STUMPLESS_NAME( EventAttributeListIterator )
+        __STUMPLESS_NAME( EventAttributeListIterator );
 typedef struct __STUMPLESS_NAME( FileConfiguration )
         __STUMPLESS_NAME( FileConfiguration );
 typedef struct __STUMPLESS_NAME( Filter )
         __STUMPLESS_NAME( Filter );
 typedef struct __STUMPLESS_NAME( FilterList )
         __STUMPLESS_NAME( FilterList );
+typedef struct __STUMPLESS_NAME( FilterListIterator )
+        __STUMPLESS_NAME( FilterListIterator );
 typedef struct __STUMPLESS_NAME( Formatter )
         __STUMPLESS_NAME( Formatter );
 typedef struct __STUMPLESS_NAME( FormatterList )
         __STUMPLESS_NAME( FormatterList );
+typedef struct __STUMPLESS_NAME( FormatterListIterator )
+        __STUMPLESS_NAME( FormatterListIterator );
 typedef struct __STUMPLESS_NAME( Handler )
         __STUMPLESS_NAME( Handler );
 typedef struct __STUMPLESS_NAME( HandlerList )
         __STUMPLESS_NAME( HandlerList );
+typedef struct __STUMPLESS_NAME( HandlerListIterator )
+        __STUMPLESS_NAME( HandlerListIterator );
 typedef struct __STUMPLESS_NAME( HTTPConfiguration )
         __STUMPLESS_NAME( HTTPConfiguration );
 typedef struct __STUMPLESS_NAME( Level )
@@ -130,6 +152,8 @@ typedef struct __STUMPLESS_NAME( Value )
         __STUMPLESS_NAME( Value );
 typedef struct __STUMPLESS_NAME( ValueList )
         __STUMPLESS_NAME( ValueList );
+typedef struct __STUMPLESS_NAME( ValueListIterator )
+        __STUMPLESS_NAME( ValueListIterator );
 typedef struct __STUMPLESS_NAME( ValueProfile )
         __STUMPLESS_NAME( ValueProfile );
 
@@ -215,16 +239,16 @@ struct __STUMPLESS_NAME( FileConfiguration ) {
 };
 
 struct __STUMPLESS_NAME( Filter ) {
-  unsigned short ( *accept_entry )( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
-  unsigned short ( *accept_output )( __STUMPLESS_NAME( Output ) *, __STUMPLESS_NAME( Dictionary ) *);
-  unsigned short ( *accept_value )( __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
+  unsigned short ( *accept_entry )( const __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
+  unsigned short ( *accept_output )( const __STUMPLESS_NAME( Output ) *, __STUMPLESS_NAME( Dictionary ) *);
+  unsigned short ( *accept_value )( const __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
 };
 
 struct __STUMPLESS_NAME( Formatter ) {
   __STUMPLESS_NAME( FilterList ) * filters;
-  __STUMPLESS_NAME( Output ) * ( *format )( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
+  __STUMPLESS_NAME( Output ) * ( *format )( const __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
   __STUMPLESS_NAME( HandlerList ) * handlers;
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
@@ -232,7 +256,7 @@ struct __STUMPLESS_NAME( Formatter ) {
 
 struct __STUMPLESS_NAME( Handler ) {
   __STUMPLESS_NAME( FilterList ) * filters;
-  __STUMPLESS_NAME( Status ) * ( *handle )( __STUMPLESS_NAME( Output ) *, __STUMPLESS_NAME( Dictionary ) * );
+  __STUMPLESS_NAME( Status ) * ( *handle )( const __STUMPLESS_NAME( Output ) *, __STUMPLESS_NAME( Dictionary ) * );
   const char * name;
   __STUMPLESS_NAME( Dictionary ) * options;
 };
@@ -263,15 +287,15 @@ struct __STUMPLESS_NAME( Output ) {
 };
 
 struct __STUMPLESS_NAME( OutputProfile ) {
-  __STUMPLESS_NAME( Status ) * ( *into_buffer )( __STUMPLESS_NAME( Output ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_http )( __STUMPLESS_NAME( Output ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_mysql )( __STUMPLESS_NAME( Output ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_stream )( __STUMPLESS_NAME( Output ) *, FILE * );
-  __STUMPLESS_NAME( Status ) * ( *into_string )( __STUMPLESS_NAME( Output ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_tcp )( __STUMPLESS_NAME( Output ) * );
-  unsigned short ( *is_empty )( __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_buffer )( const __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_http )( const __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_mysql )( const __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_stream )( const __STUMPLESS_NAME( Output ) *, FILE * );
+  __STUMPLESS_NAME( Status ) * ( *into_string )( const __STUMPLESS_NAME( Output ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_tcp )( const __STUMPLESS_NAME( Output ) * );
+  unsigned short ( *is_empty )( const __STUMPLESS_NAME( Output ) * );
   const char * name;
-  char * ( *to_string )( __STUMPLESS_NAME( Output ) * );
+  char * ( *to_string )( const __STUMPLESS_NAME( Output ) * );
 };
 
 struct __STUMPLESS_NAME( Record ) {
@@ -342,15 +366,15 @@ struct __STUMPLESS_NAME( Value ) {
 
 struct __STUMPLESS_NAME( ValueProfile ) {
   short ( *compare )( const __STUMPLESS_NAME( Value ) *, const __STUMPLESS_NAME( Value ) *, __STUMPLESS_NAME( Dictionary ) * );
-  __STUMPLESS_NAME( Status ) * ( *into_string )( char *, __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Status ) * ( *into_string )( char *, const __STUMPLESS_NAME( Value ) * );
   const char * name;
-  __STUMPLESS_NAME( Output ) * ( *to_binary )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( Output ) * ( *to_csv )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( Output ) * ( *to_json )( __STUMPLESS_NAME( Value ) * );
-  char * ( *to_string )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( Output ) * ( *to_text )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( ValueList ) * ( *to_value_list )( __STUMPLESS_NAME( Value ) * );
-  __STUMPLESS_NAME( Output ) * ( *to_xml )( __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_binary )( const __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_csv )( const __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_json )( const __STUMPLESS_NAME( Value ) * );
+  char * ( *to_string )( const __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_text )( const __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( ValueList ) * ( *to_value_list )( const __STUMPLESS_NAME( Value ) * );
+  __STUMPLESS_NAME( Output ) * ( *to_xml )( const __STUMPLESS_NAME( Value ) * );
 };
 
 #endif

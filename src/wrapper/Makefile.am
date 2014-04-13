@@ -1,20 +1,13 @@
 if !PRIVATE_NAMESPACE
 libstumpless_la_SOURCES += src/wrapper/adapter.c \
-                           src/wrapper/adapter_list.c \
                            src/wrapper/boolean.c \
-                           src/wrapper/comparator_list.c \
                            src/wrapper/configuration.c \
                            src/wrapper/dictionary.c \
                            src/wrapper/entry.c \
-                           src/wrapper/entry_attribute_list.c \
                            src/wrapper/event.c \
-                           src/wrapper/event_attribute_list.c \
                            src/wrapper/filter.c \
-                           src/wrapper/filter_list.c \
                            src/wrapper/formatter.c \
-                           src/wrapper/formatter_list.c \
                            src/wrapper/handler.c \
-                           src/wrapper/handler_list.c \
                            src/wrapper/level.c \
                            src/wrapper/logger.c \
                            src/wrapper/output.c \
@@ -24,6 +17,7 @@ libstumpless_la_SOURCES += src/wrapper/adapter.c \
                            src/wrapper/text_formatter.c \
                            src/wrapper/value.c \
                            src/wrapper/value_constructor.c \
-                           src/wrapper/value_list.c \
                            src/wrapper/value_profile.c
 endif
+
+#include src/wrapper/list/Makefile.am

@@ -29,6 +29,14 @@ AddFilter
   return NULL;
 }
 
+// todo implement
+void
+DestroyFilter
+( Filter *filter )
+{
+  return;
+}
+
 Filter *
 FindFilterByName
 ( const char * name )

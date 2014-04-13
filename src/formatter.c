@@ -3,9 +3,10 @@
 #include "private/dictionary.h"
 #include "private/formatter.h"
 #include "private/formatter_initializer.h"
-#include "private/handler_list.h"
 #include "private/status.h"
 #include "private/type.h"
+
+#include "private/list/handler.h"
 
 static Dictionary * formatters = NULL;
 
@@ -34,16 +35,27 @@ Status *
 AppendHandlerToFormatter
 ( Formatter * formatter, Handler * handler )
 {
-  if( formatter == NULL || handler == NULL )
+  if( !formatter || !handler )
     return RaiseAbnormalStatus( "empty argument" );
   
-  if( formatter->handlers == NULL ){
+  if( !formatter->handlers ){
     formatter->handlers = NewHandlerList();
-    if( formatter->handlers == NULL )
+    if( !formatter->handlers )
       return RaiseAbnormalStatus( "constructor failure" );
   }
   
-  return AppendToHandlerList( formatter->handlers, handler );
+  if( !AppendToHandlerList( formatter->handlers, handler ) )
+    return RaiseAbnormalStatus( "list failure" );
+  
+  return NULL;
+}
+
+// todo implement
+void
+DestroyFormatter
+( Formatter *formatter )
+{
+  return;
 }
 
 Formatter *

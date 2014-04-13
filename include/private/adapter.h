@@ -1,10 +1,14 @@
-#ifndef STUMPLESS_PRIVATE_ADAPTER_H
-#define STUMPLESS_PRIVATE_ADAPTER_H
+#ifndef __STUMPLESS_PRIVATE_ADAPTER_H
+#define __STUMPLESS_PRIVATE_ADAPTER_H
 
 #include "private/type.h"
 
 Status *
 AddAdapter
+( Adapter * );
+
+void
+DestroyAdapter
 ( Adapter * );
 
 Adapter *

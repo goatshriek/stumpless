@@ -5,58 +5,58 @@
 
 unsigned short
 BinaryOutputIsEmpty
-( Output * );
+( const Output * );
 
 char *
 BinaryOutputToString
-( Output * );
+( const Output * );
 
 unsigned short
 CSVOutputIsEmpty
-( Output * );
+( const Output * );
 
 char *
 CSVOutputToString
-( Output * );
+( const Output * );
 
 unsigned short
 OutputIsEmpty
-( Output * );
+( const Output * );
 
 char *
 OutputToString
-( Output * );
+( const Output * );
 
 unsigned short
 JSONOutputIsEmpty
-( Output * );
+( const Output * );
 
 char *
 JSONOutputToString
-( Output * );
+( const Output * );
 
 unsigned short
 RawStringOutputIsEmpty
-( Output * );
+( const Output * );
 
 char *
 RawStringOutputToString
-( Output * );
+( const Output * );
 
 unsigned short
 TextOutputIsEmpty
-( Output * );
+( const Output * );
 
 char *
 TextOutputToString
-( Output * );
+( const Output * );
 
 unsigned short
 XMLOutputIsEmpty
-( Output * );
+( const Output * );
 
 char *
 XMLOutputToString
-( Output * );
+( const Output * );
 
 #endif

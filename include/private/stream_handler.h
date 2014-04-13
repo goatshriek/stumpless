@@ -7,30 +7,30 @@
 
 Status *
 BinaryOutputIntoStream
-( Output *, FILE * );
+( const Output *, FILE * );
 
 Status *
 CSVOutputIntoStream
-( Output *, FILE * );
+( const Output *, FILE * );
 
 Status *
 HandleStreamOutput
-( Output *, Dictionary * );
+( const Output *, Dictionary * );
 
 Status *
 JSONOutputIntoStream
-( Output *, FILE * );
+( const Output *, FILE * );
 
 Status *
 RawStringOutputIntoStream
-( Output *, FILE * );
+( const Output *, FILE * );
 
 Status *
 TextOutputIntoStream
-( Output *, FILE * );
+( const Output *, FILE * );
 
 Status *
 XMLOutputIntoStream
-( Output *, FILE * );
+( const Output *, FILE * );
 
 #endif

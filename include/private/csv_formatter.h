@@ -1,10 +1,10 @@
-#ifndef STUMPLESS_PRIVATE_CSV_FORMATTER_H
-#define STUMPLESS_PRIVATE_CSV_FORMATTER_H
+#ifndef __STUMPLESS_PRIVATE_CSV_FORMATTER_H
+#define __STUMPLESS_PRIVATE_CSV_FORMATTER_H
 
 #include "private/type.h"
 
 Output *
 EntryToCSV
-( Entry *, Dictionary * );
+( const Entry *, Dictionary * );
 
 #endif

@@ -4,12 +4,12 @@
 #include "private/type.h"
 
 Dimension *
-AddComparisonToDimension
-( Dimension *, comparison_t );
+AddComparatorToDimension
+( Dimension *, Comparator * );
 
 Tree *
-AddComparisonToTree
-( Tree *, comparison_t );
+AddComparatorToTree
+( Tree *, Comparator * );
 
 Dimension *
 AddDimensionToTree

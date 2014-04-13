@@ -17,7 +17,7 @@ Initialize##type_name##OutputProfile                                           \
 ( void )                                                                       \
 {                                                                              \
   OutputProfile * profile = malloc( sizeof( OutputProfile ) );                 \
-  if( profile == NULL )                                                        \
+  if( !profile )                                                               \
     return NULL;                                                               \
                                                                                \
   profile->into_buffer = NULL;                                                 \
@@ -39,10 +39,10 @@ Status *
 InitializeOutputProfileByName
 ( const char * name )
 {
-  if( initializers == NULL ){
+  if( !initializers ){
     
     initializers = NewDictionary();
-    if( initializers == NULL )
+    if( !initializers )
       return RaiseAbnormalStatus( "constructor failure" );
     
     ADD_PROFILE( "raw string", RawString )
@@ -51,7 +51,7 @@ InitializeOutputProfileByName
   
   OutputProfile * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
-  if( initializer == NULL )
+  if( !initializer )
     return NULL;
   else 
     return AddOutputProfile( initializer() );

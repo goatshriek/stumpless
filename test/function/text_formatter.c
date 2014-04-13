@@ -6,7 +6,10 @@
 #include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value_constructor.h"
-#include "private/value_list.h"
+
+#include "private/list/value.h"
+
+#include "private/list/iterator/value.h"
 
 #include "helper.h"
 
@@ -27,16 +30,16 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
   
-  //RUN_TEST( entry_formatter )
-  //RUN_TEST( entry_attribute_formatter )
+  RUN_TEST( entry_formatter )
+  RUN_TEST( entry_attribute_formatter )
   RUN_TEST( entry_attribute_list_formatter )
-  //RUN_TEST( entry_summary_formatter )
-  //RUN_TEST( event_attribute_formatter )
-  //RUN_TEST( event_attribute_list_formatter )
-  //RUN_TEST( event_formatter )
-  //RUN_TEST( event_summary_formatter )
-  //RUN_TEST( level_formatter )
-  //RUN_TEST( value_list_all_strings )
+  RUN_TEST( entry_summary_formatter )
+  RUN_TEST( event_attribute_formatter )
+  RUN_TEST( event_attribute_list_formatter )
+  RUN_TEST( event_formatter )
+  RUN_TEST( event_summary_formatter )
+  RUN_TEST( level_formatter )
+  RUN_TEST( value_list_all_strings )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -413,28 +416,28 @@ const char *
 test_value_list_all_strings( void )
 {
   Entry * entry = BuildEntry();
-  if( entry == NULL )
+  if( !entry )
     return "could not build test entry";
   
   Output * output = EntryToText( entry, NULL );
-  if( output == NULL || output->data == NULL )
+  if( !output || !output->data )
     return "the output could not be built";
   
   if( strcmp( output->profile->name, "text" ) != 0 )
     return "the created output did not have a text format";
   
   ValueList * list = ( ValueList * ) output->data->v_p;
-  if( list == NULL )
+  if( !list )
     return "the output did not have a value list";
   
-  Value * value = BeginValueList( list );
-  while( value != NULL ){
+  ValueListIterator * values = BeginValueList( list );
+  Value * value;
+  while( value = NextInValueListIterator( values ) ){
     printf( "\n%s\n", value->profile->name );
     if( strcmp( value->profile->name, "string" ) != 0 )
       return "there was a non-string value in the list";
-    
-    value = NextInValueList( list );
   }
+  DestroyValueListIterator( values );
   
   return NULL;
 }

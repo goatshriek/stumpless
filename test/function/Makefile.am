@@ -1,26 +1,14 @@
-test_flags = $(AM_CFLAGS) -I $(top_srcdir)/test/include
-test_libraries = libhelper.la \
-                 libstumpless.la
-
 test_function_adapter_SOURCES = test/function/adapter.c
 test_function_adapter_CFLAGS = $(test_flags)
 test_function_adapter_LDADD = $(test_libraries)
-
-test_function_adapter_list_SOURCES = test/function/adapter_list.c
-test_function_adapter_list_CFLAGS = $(test_flags)
-test_function_adapter_list_LDADD = $(test_libraries)
 
 test_function_boolean_SOURCES = test/function/boolean.c
 test_function_boolean_CFLAGS = $(test_flags)
 test_function_boolean_LDADD = $(test_libraries)
 
-test_function_comparator_list_SOURCES = test/function/comparator_list.c
-test_function_comparator_list_CFLAGS = $(test_flags)
-test_function_comparator_list_LDADD = $(test_libraries)
-
-test_function_compare_base_SOURCES = test/function/compare_base.c
-test_function_compare_base_CFLAGS = $(test_flags)
-test_function_compare_base_LDADD = $(test_libraries)
+test_function_comparator_base_SOURCES = test/function/comparator_base.c
+test_function_comparator_base_CFLAGS = $(test_flags)
+test_function_comparator_base_LDADD = $(test_libraries)
 
 test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_CFLAGS = $(test_flags)
@@ -34,17 +22,9 @@ test_function_entry_SOURCES = test/function/entry.c
 test_function_entry_CFLAGS = $(test_flags)
 test_function_entry_LDADD = $(test_libraries)
 
-test_function_entry_attribute_list_SOURCES = test/function/entry_attribute_list.c
-test_function_entry_attribute_list_CFLAGS = $(test_flags)
-test_function_entry_attribute_list_LDADD = $(test_libraries)
-
 test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
-
-test_function_event_attribute_list_SOURCES = test/function/event_attribute_list.c
-test_function_event_attribute_list_CFLAGS = $(test_flags)
-test_function_event_attribute_list_LDADD = $(test_libraries)
 
 test_function_filter_base_SOURCES = test/function/filter_base.c
 test_function_filter_base_CFLAGS = $(test_flags)
@@ -54,37 +34,17 @@ test_function_filter_SOURCES = test/function/filter.c
 test_function_filter_CFLAGS = $(test_flags)
 test_function_filter_LDADD = $(test_libraries)
 
-test_function_filter_list_SOURCES = test/function/filter_list.c
-test_function_filter_list_CFLAGS = $(test_flags)
-test_function_filter_list_LDADD = $(test_libraries)
-
 test_function_formatter_SOURCES = test/function/formatter.c
 test_function_formatter_CFLAGS = $(test_flags)
 test_function_formatter_LDADD = $(test_libraries)
-
-test_function_formatter_list_SOURCES = test/function/formatter_list.c
-test_function_formatter_list_CFLAGS = $(test_flags)
-test_function_formatter_list_LDADD = $(test_libraries)
 
 test_function_handler_SOURCES = test/function/handler.c
 test_function_handler_CFLAGS = $(test_flags)
 test_function_handler_LDADD = $(test_libraries)
 
-test_function_handler_list_SOURCES = test/function/handler_list.c
-test_function_handler_list_CFLAGS = $(test_flags)
-test_function_handler_list_LDADD = $(test_libraries)
-
 test_function_level_SOURCES = test/function/level.c
 test_function_level_CFLAGS = $(test_flags)
 test_function_level_LDADD = $(test_libraries)
-
-test_function_list_SOURCES = test/function/list.c
-test_function_list_CFLAGS = $(test_flags)
-test_function_list_LDADD = $(test_libraries)
-
-test_function_list_iterator_SOURCES = test/function/list_iterator.c
-test_function_list_iterator_CFLAGS = $(test_flags)
-test_function_list_iterator_LDADD = $(test_libraries)
 
 test_function_logger_SOURCES = test/function/logger.c
 test_function_logger_CFLAGS = $(test_flags)
@@ -138,10 +98,6 @@ test_function_value_constructor_SOURCES = test/function/value_constructor.c
 test_function_value_constructor_CFLAGS = $(test_flags)
 test_function_value_constructor_LDADD = $(test_libraries)
 
-test_function_value_list_SOURCES = test/function/value_list.c
-test_function_value_list_CFLAGS = $(test_flags)
-test_function_value_list_LDADD = $(test_libraries)
-
 test_function_value_profile_SOURCES = test/function/value_profile.c
 test_function_value_profile_CFLAGS = $(test_flags)
 test_function_value_profile_LDADD = $(test_libraries)
@@ -149,3 +105,5 @@ test_function_value_profile_LDADD = $(test_libraries)
 test_function_value_profile_initializer_SOURCES = test/function/value_profile_initializer.c
 test_function_value_profile_initializer_CFLAGS = $(test_flags)
 test_function_value_profile_initializer_LDADD = $(test_libraries)
+
+include test/function/list/Makefile.am

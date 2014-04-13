@@ -17,7 +17,7 @@ ListIteratorHasNext
 
 ListIterator *
 NewListIterator
-( List * );
+( List *, int );
 
 void *
 NextInListIterator

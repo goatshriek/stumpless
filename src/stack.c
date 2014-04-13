@@ -1,8 +1,9 @@
 #include <stdlib.h>
 
 #include "private/stack.h"
-#include "private/static/stack.h"
 #include "private/type.h"
+
+#include "static/stack.h"
 
 Stack *
 CopyStack

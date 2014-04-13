@@ -6,7 +6,8 @@
 #include "private/output.h"
 #include "private/text_formatter.h"
 #include "private/type.h"
-#include "private/value_list.h"
+
+#include "private/list/value.h"
 
 #define LEVEL_FUNCTION( function_name, level_name, level_value )               \
 Level *                                                                        \

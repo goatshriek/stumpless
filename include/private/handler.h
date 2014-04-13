@@ -1,10 +1,14 @@
-#ifndef STUMPLESS_PRIVATE_HANDLER_H
-#define STUMPLESS_PRIVATE_HANDLER_H
+#ifndef __STUMPLESS_PRIVATE_HANDLER_H
+#define __STUMPLESS_PRIVATE_HANDLER_H
 
 #include "private/type.h"
 
 Status *
 AddHandler
+( Handler * );
+
+void
+DestroyHandler
 ( Handler * );
 
 Handler *

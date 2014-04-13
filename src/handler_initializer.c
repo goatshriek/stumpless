@@ -15,7 +15,7 @@ Initialize##function_name##Handler                                             \
 ( void )                                                                       \
 {                                                                              \
   Handler * handler = malloc( sizeof( Handler ) );                             \
-  if( handler == NULL )                                                        \
+  if( !handler )                                                               \
     return NULL;                                                               \
                                                                                \
   handler->name = handler_name;                                                \

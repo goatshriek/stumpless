@@ -29,6 +29,14 @@ AddHandler
   return NULL;
 }
 
+// todo implement
+void
+DestroyHandler
+( Handler *handler )
+{
+  return;
+}
+
 Handler *
 FindHandlerByName
 ( const char * name )

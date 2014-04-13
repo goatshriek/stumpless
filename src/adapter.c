@@ -29,11 +29,19 @@ AddAdapter
   return NULL;
 }
 
+// todo implement
+void
+DestroyAdapter
+( Adapter *adapter )
+{
+  return;
+}
+
 Adapter *
 FindAdapterByName
 ( const char * name )
 {
-  if( adapters == NULL ){
+  if( !adapters ){
     adapters = NewDictionary();
     
     if( adapters == NULL )

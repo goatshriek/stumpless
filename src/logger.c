@@ -1,65 +1,71 @@
 #include <stdlib.h>
 
-#include "private/adapter_list.h"
 #include "private/formatter.h"
-#include "private/formatter_list.h"
 #include "private/logger.h"
 #include "private/status.h"
 #include "private/type.h"
+
+#include "private/list/adapter.h"
+#include "private/list/formatter.h"
+
+#include "private/list/iterator/formatter.h"
 
 Status *
 AppendAdapterToLogger
 ( Logger * logger, Adapter * adapter )
 {
-  if( logger == NULL || adapter == NULL )
+  if( !logger || !adapter )
     return RaiseAbnormalStatus( "empty argument" );
   
-  if( logger->adapters == NULL ){
+  if( !logger->adapters ){
     logger->adapters = NewAdapterList();
-    if( logger->adapters == NULL )
+    if( !logger->adapters )
       return RaiseAbnormalStatus( "constructor failure" );
   }
   
   if( AdapterListContains( logger->adapters, adapter ) )
     return RaiseAbnormalStatus( "duplicate" );
   
-  return AppendToAdapterList( logger->adapters, adapter );
+  if( !AppendToAdapterList( logger->adapters, adapter ) )
+    return RaiseAbnormalStatus( "list failure " );
+  
+  return NULL;
 }
 
 Status *
 AppendFormatterToLogger
 ( Logger * logger, Formatter * formatter )
 {
-  if( logger == NULL || formatter == NULL )
+  if( !logger || !formatter )
     return RaiseAbnormalStatus( "empty argument" );
   
-  if( logger->formatters == NULL ){
+  if( !logger->formatters ){
     logger->formatters = NewFormatterList();
-    if( logger->formatters == NULL )
+    if( !logger->formatters )
       return RaiseAbnormalStatus( "constructor failure" );
   }
   
   if( FormatterListContains( logger->formatters, formatter ) )
     return RaiseAbnormalStatus( "duplicate" );
   
-  return AppendToFormatterList( logger->formatters, formatter );
+  if( !AppendToFormatterList( logger->formatters, formatter ) )
+    return RaiseAbnormalStatus( "list failure" );
+  
+  return NULL;
 }
 
 Status *
 AppendHandlerToLogger
 ( Logger * logger, Handler * handler )
 {
-  if( logger == NULL || handler == NULL )
+  if( !logger || !handler )
     return RaiseAbnormalStatus( "empty argument" );
   
-  Status * status;
-  Formatter * formatter = BeginFormatterList( logger->formatters );
-  while( formatter == NULL ){
-    status = AppendHandlerToFormatter( formatter, handler );
-    if( status->failure )
-      return status;
-    
-    formatter = NextInFormatterList( logger->formatters );
+  Formatter * formatter;
+  FormatterListIterator * formatters = BeginFormatterList( logger->formatters );
+  while( formatter = NextInFormatterListIterator( formatters ) ){
+    if( !AppendHandlerToFormatter( formatter, handler ) )
+      return RaiseAbnormalStatus( "list failure ");
   }
   
   return NULL;
@@ -96,11 +102,11 @@ Status *
 ProcessValue
 ( Logger * logger, Value * value )
 {
-  if( logger == NULL || value == NULL )
+  if( !logger || !value )
     return RaiseAbnormalStatus( "empty argument" );
   
   Entry * entry = ValueThroughAdapterList( logger->adapters, value );
-  if( entry == NULL )
+  if( !entry )
     return RaiseAbnormalStatus( "list failure" );
   
   return EntryThroughFormatterList( logger->formatters, entry );
@@ -117,7 +123,7 @@ ReceiveNextValue
 }
 
 Status *
-SendStatus
+SendLoggerStatus
 ( Logger * logger )
 {
   // sends the status to the check status function

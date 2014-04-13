@@ -2,21 +2,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/entry_attribute_list.h"
-#include "private/event_attribute_list.h"
 #include "private/output.h"
 #include "private/output_profile.h"
-#include "private/static/text_formatter.h"
 #include "private/status_checker.h"
 #include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value_constructor.h"
-#include "private/value_list.h"
+
+#include "private/list/entry_attribute.h"
+#include "private/list/event_attribute.h"
+#include "private/list/value.h"
+
+#include "private/list/iterator/entry_attribute.h"
+#include "private/list/iterator/event_attribute.h"
+
+#include "static/text_formatter.h"
 
 Output *
 ArrayValueToText
-( Value * value )
+( const Value * value )
 {
   ValueList * output = ArrayValueToValueList( value );
   return TextOutputFromValueList( output );
@@ -24,14 +29,14 @@ ArrayValueToText
 
 Output *
 EntryToText
-( Entry * entry, Dictionary * options )
+( const Entry * entry, Dictionary * options )
 {
   return TextOutputFromValueList( EntryToValueList( entry ) );
 }
 
 Output *
 EntryAttributeToText
-( EntryAttribute * attribute )
+( const EntryAttribute * attribute )
 {
   ValueList * output = EntryAttributeToValueList( attribute );
   return TextOutputFromValueList( output );
@@ -39,7 +44,7 @@ EntryAttributeToText
 
 Output *
 EntryAttributeListToText
-( Entry * entry )
+( const Entry * entry )
 {
   ValueList * output = EntryAttributeListToValueList( entry );
   return TextOutputFromValueList( output );
@@ -47,21 +52,21 @@ EntryAttributeListToText
 
 Output *
 EntrySummaryToText
-( Entry * entry )
+( const Entry * entry )
 {
   return TextOutputFromValueList( EntrySummaryToValueList( entry ) );
 }
 
 Output *
 EventToText
-( Event * event )
+( const Event * event )
 {
   return TextOutputFromValueList( EventToValueList( event ) );
 }
 
 Output *
 EventAttributeToText
-( EventAttribute * attribute )
+( const EventAttribute * attribute )
 {
   ValueList * output = EventAttributeToValueList( attribute );
   return TextOutputFromValueList( output );
@@ -69,7 +74,7 @@ EventAttributeToText
 
 Output *
 EventAttributeListToText
-( Event * event )
+( const Event * event )
 {
   ValueList * output = EventAttributeListToValueList( event );
   return TextOutputFromValueList( output );
@@ -77,21 +82,21 @@ EventAttributeListToText
 
 Output *
 EventSummaryToText
-( Event * event )
+( const Event * event )
 {
   return TextOutputFromValueList( EventSummaryToValueList( event ) );
 }
 
 Output *
 LevelToText
-( Level * level )
+( const Level * level )
 {
   return TextOutputFromValueList( LevelToValueList( level ) );
 }
 
 Output *
 SingularValueToText
-( Value * value )
+( const Value * value )
 {
   ValueList * output = SingularValueToValueList( value );
   return TextOutputFromValueList( output );
@@ -100,28 +105,34 @@ SingularValueToText
 static
 ValueList *
 ArrayValueToValueList
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL )
+  if( !value )
     return NULL;
   
-  ValueProfile * profile = value->profile;
-  if( profile == NULL )
+  ValueProfile *profile = value->profile;
+  if( !profile )
     return NULL;
   
-  ValueList * output = profile->to_value_list( value );
-  if( output == NULL )
+  ValueList *output = profile->to_value_list( value );
+  if( !output )
     return NULL;
   
-  Value * separator = ValueFromString( ", " );
-  NULL_ON_FAILURE( AddSeparatorToValueList( output, separator ) )
+  Value *separator = ValueFromString( ", " );
+  if( !AddSeparatorToValueList( output, separator ) )
+    return NULL;
 
-  NULL_ON_FAILURE( PrependStringToValueList( output, "[" ) )
-  NULL_ON_FAILURE( AppendStringToValueList( output, "] (" ) )
+  if( !PrependStringToValueList( output, "[" ) )
+    return NULL;
+
+  if( !AppendStringToValueList( output, "] (" ) )
+    return NULL;
   
-  NULL_ON_FAILURE( AppendStringToValueList( output, profile->name ) )
+  if( !AppendStringToValueList( output, profile->name ) )
+    return NULL;
   
-  NULL_ON_FAILURE( AppendStringToValueList( output, ")" ) )
+  if( AppendStringToValueList( output, ")" ) )
+    return NULL;
   
   return output;
 }
@@ -129,23 +140,25 @@ ArrayValueToValueList
 static
 ValueList *
 EntryToValueList
-( Entry * entry )
+( const Entry *entry )
 {
-  if( entry == NULL )
+  if( !entry )
     return NULL;
   
-  ValueList * output = EntrySummaryToValueList( entry );
-  if( output == NULL )
+  ValueList *output = EntrySummaryToValueList( entry );
+  if( !output )
     return NULL;
   
   if( !EntryAttributeListIsEmpty( entry->attributes ) ){
-    NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
-    
-    ValueList * attributes = EntryAttributeListToValueList( entry );
-    if( attributes == NULL )
+    if( !AppendStringToValueList( output, ": " ) )
       return NULL;
     
-    NULL_ON_FAILURE( AppendValueLists( output, attributes ) )
+    ValueList *attributes = EntryAttributeListToValueList( entry );
+    if( !attributes )
+      return NULL;
+    
+    if( !AppendValueLists( output, attributes ) )
+      return NULL;
   }
   
   return output;
@@ -154,46 +167,48 @@ EntryToValueList
 static
 ValueList *
 EntryAttributeToValueList
-( EntryAttribute * attribute )
+( const EntryAttribute *attribute )
 {
-  if( attribute == NULL )
+  if( !attribute )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  EventAttribute * event_attribute = attribute->event_attribute;
+  EventAttribute *event_attribute = attribute->event_attribute;
   
-  const char * attribute_name;
-  if( event_attribute == NULL || event_attribute->name == NULL )
+  const char *attribute_name;
+  if( !event_attribute || !event_attribute->name )
     attribute_name = "attribute";
   else
     attribute_name = event_attribute->name;
   
-  Status * status;
-  NULL_ON_FAILURE( AppendStringToValueList( output, attribute_name ) )
+  if( !AppendStringToValueList( output, attribute_name ) )
+    return NULL;
   
-  NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
+  if( !AppendStringToValueList( output, ": " ) )
+    return NULL;
   
   Value * attribute_value;
-  if( attribute->value != NULL )
+  if( attribute->value )
     attribute_value = attribute->value;
-  else if( event_attribute != NULL && event_attribute->default_value != NULL )
+  else if( event_attribute && event_attribute->default_value )
     attribute_value = event_attribute->default_value;
   else
     return NULL;
   
-  if( attribute_value->profile == NULL )
+  if( !attribute_value->profile )
     return NULL;
   
   Output * value_as_text;
   value_as_text = attribute_value->profile->to_text( attribute_value );
-  if( value_as_text == NULL )
+  if( !value_as_text )
     return NULL;
   
   ValueList * values = ( ValueList * ) value_as_text->data->v_p;
-  NULL_ON_FAILURE( AppendValueLists( output, values ) )
+  if( !AppendValueLists( output, values ) )
+    return NULL;
   
   return output;
 }
@@ -201,68 +216,70 @@ EntryAttributeToValueList
 static
 ValueList *
 EntryAttributeListToValueList
-( Entry * entry )
+( const Entry *entry )
 {
-  if( entry == NULL || EntryAttributeListIsEmpty( entry->attributes ) )
+  if( !entry || EntryAttributeListIsEmpty( entry->attributes ) )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  ValueList * attribute_list;
-  EntryAttribute * attribute = BeginEntryAttributeList( entry->attributes );
-  while( attribute != NULL ){
+  ValueList *attribute_list;
+  EntryAttribute *attribute;
+  EntryAttributeListIterator *iterator = BeginEntryAttributeList( entry->attributes );
+  while( attribute = NextInEntryAttributeListIterator( iterator ) ){
     attribute_list = EntryAttributeToValueList( attribute );
-    if( attribute_list == NULL ){
-      attribute = NextInEntryAttributeList( entry->attributes );
+    if( !attribute_list )
       continue;
-    }
     
     if( !ValueListIsEmpty( output ) )
-      NULL_ON_FAILURE( AppendStringToValueList( output, ", " ) )
+      if( !AppendStringToValueList( output, ", " ) )
+        return NULL;
     
-    NULL_ON_FAILURE( AppendValueLists( output, attribute_list ) )
-    
-    attribute = NextInEntryAttributeList( entry->attributes );
+    if( !AppendValueLists( output, attribute_list ) )
+      return NULL;
   }
   
+  DestroyEntryAttributeListIterator( iterator );
   return output;
 }
 
 static
 ValueList *
 EntrySummaryToValueList
-( Entry * entry )
+( const Entry *entry )
 {
-  if( entry == NULL )
+  if( !entry )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  const char * description;
-  if( entry->description == NULL )
+  const char *description;
+  if( !entry->description )
     description = "entry";
   else
     description = entry->description;
   
-  Status * status;
-  status = AppendStringToValueList( output, description );
-  NULL_ON_FAILURE( status )
+  if( !AppendStringToValueList( output, description ) )
+    return NULL;
   
-  ValueList * event;
-  if( entry->event != NULL ){
-    NULL_ON_FAILURE( AppendStringToValueList( output, " [" ) )
+  ValueList *event;
+  if( entry->event ){
+    if( !AppendStringToValueList( output, " [" ) )
+      return NULL;
       
     event = EventSummaryToValueList( entry->event );
-    if( event == NULL )
+    if( !event )
       return NULL;
     
-    NULL_ON_FAILURE( AppendValueLists( output, event ) )
+    if( !AppendValueLists( output, event ) )
+      return NULL;
     
-    NULL_ON_FAILURE( AppendStringToValueList( output, "]" ) )
+    if( !AppendStringToValueList( output, "]" ) )
+      return NULL;
   }
   
   return output;
@@ -271,23 +288,25 @@ EntrySummaryToValueList
 static
 ValueList *
 EventToValueList
-( Event * event )
+( const Event *event )
 {
-  if( event == NULL )
+  if( !event )
     return NULL;
   
-  ValueList * output = EventSummaryToValueList( event );
-  if( output == NULL )
+  ValueList *output = EventSummaryToValueList( event );
+  if( !output )
     return NULL;
   
   if( !EventAttributeListIsEmpty( event->attributes ) ){
-    NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
-    
-    ValueList * attributes = EventAttributeListToValueList( event );
-    if( attributes == NULL )
+    if( !AppendStringToValueList( output, ": " ) )
       return NULL;
     
-    NULL_ON_FAILURE( AppendValueLists( output, attributes ) )
+    ValueList *attributes = EventAttributeListToValueList( event );
+    if( !attributes )
+      return NULL;
+    
+    if( !AppendValueLists( output, attributes ) )
+      return NULL;
   }
   
   return output;
@@ -296,36 +315,39 @@ EventToValueList
 static
 ValueList *
 EventAttributeToValueList
-( EventAttribute * attribute )
+( const EventAttribute *attribute )
 {
-  if( attribute == NULL )
+  if( !attribute )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  const char * name;
-  if( attribute->name == NULL )
-    name = "attribute";
-  else
+  const char *name;
+  if( attribute->name )
     name = attribute->name;
-  NULL_ON_FAILURE( AppendStringToValueList( output, name ) )
+  else
+    name = "attribute";
+  if( !AppendStringToValueList( output, name ) )
+    return NULL;
   
-  Value * default_value = attribute->default_value;
-  if( default_value != NULL ){
-    NULL_ON_FAILURE( AppendStringToValueList( output, ": " ) )
-    
-    if( default_value->profile == NULL )
+  Value *default_value = attribute->default_value;
+  if( default_value ){
+    if( !AppendStringToValueList( output, ": " ) )
       return NULL;
     
-    Output * default_value_output;
+    if( !default_value->profile )
+      return NULL;
+    
+    Output *default_value_output;
     default_value_output = default_value->profile->to_text( default_value );
     
-    ValueList * default_value_list;
+    ValueList *default_value_list;
     default_value_list = ( ValueList * ) default_value_output->data->v_p;
     
-    NULL_ON_FAILURE( AppendValueLists( output, default_value_list ) )
+    if( !AppendValueLists( output, default_value_list ) )
+      return NULL;
   }
   
   return output; 
@@ -334,62 +356,66 @@ EventAttributeToValueList
 static
 ValueList *
 EventAttributeListToValueList
-( Event * event )
+( const Event *event )
 {
-  if( event == NULL || event->attributes == NULL )
+  if( !event || !event->attributes )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  ValueList * attribute_list;
-  EventAttribute * attribute = BeginEventAttributeList( event->attributes );
-  while( attribute != NULL ){
+  ValueList *attribute_list;
+  EventAttribute *attribute;
+  EventAttributeListIterator *attributes = BeginEventAttributeList( event->attributes );
+  while( attribute = NextInEventAttributeListIterator( attributes ) ){
     attribute_list = EventAttributeToValueList( attribute );
-    if( attribute_list == NULL ){
-      attribute = NextInEventAttributeList( event->attributes );
+    if( !attribute_list )
       continue;
+    
+    if( !ValueListIsEmpty( output ) ){
+      if( !AppendStringToValueList( output, ", " ) ){
+        return NULL;
+      }
     }
     
-    if( !ValueListIsEmpty( output ) )
-      NULL_ON_FAILURE( AppendStringToValueList( output, ", " ) )
-    
-    NULL_ON_FAILURE( AppendValueLists( output, attribute_list ) )
-    
-    attribute = NextInEventAttributeList( event->attributes );
+    if( !AppendValueLists( output, attribute_list ) )
+      return NULL;
   }
   
+  DestroyEventAttributeListIterator( attributes );
   return output;
 }
 
 static
 ValueList *
 EventSummaryToValueList
-( Event * event )
+( const Event *event )
 {
-  if( event == NULL )
+  if( !event )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  const char * event_name = event->name == NULL ? "event" : event->name;
-  Status * status;
-  status = AppendStringToValueList( output, event_name );
-  NULL_ON_FAILURE( status );
+  const char *event_name = event->name ? event->name : "event";
+  if( !AppendStringToValueList( output, event_name ) )
+    return NULL;
   
-  if( event->level != NULL ){
-    NULL_ON_FAILURE( AppendStringToValueList( output, " (" ) )
-    
-    ValueList * level = LevelToValueList( event->level );
-    if( level == NULL )
+  if( event->level ){
+    if( !AppendStringToValueList( output, " (" ) )
       return NULL;
     
-    NULL_ON_FAILURE( AppendValueLists( output, level ) )
+    ValueList * level = LevelToValueList( event->level );
+    if( !level )
+      return NULL;
     
-    NULL_ON_FAILURE( AppendStringToValueList( output, ")" ) )
+    if( !AppendValueLists( output, level ) )
+      return NULL;
+    
+    if( !AppendStringToValueList( output, ")" ) )
+      return NULL;
   }
   
   return output;
@@ -398,57 +424,57 @@ EventSummaryToValueList
 static
 ValueList *
 LevelToValueList
-( Level * level )
+( const Level *level )
 {
-  if( level == NULL )
+  if( !level )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  Status * status;
-  
-  if( level->name != NULL ){
-    status = AppendStringToValueList( output, level->name );
-    NULL_ON_FAILURE( status )
+  if( level->name ){
+    if( !AppendStringToValueList( output, level->name ) )
+      return NULL;
     
-    status = AppendStringToValueList( output, ": " );
-    NULL_ON_FAILURE( status )
+    if( !AppendStringToValueList( output, ": " ) )
+      return NULL;
   }
   
-  status = AppendStringToValueList( output, "level " );
-  NULL_ON_FAILURE( status )
-  status = AppendUnsignedIntToValueList( output, level->value );
-  NULL_ON_FAILURE( status )
+  if( !AppendStringToValueList( output, "level " ) )
+    return NULL;
   
-  return output;
+  return AppendUnsignedIntToValueList( output, level->value );
 }
 
 static
 ValueList *
 SingularValueToValueList
-( Value * value )
+( const Value *value )
 {
-  if( value == NULL )
+  if( !value )
     return NULL;
   
-  ValueProfile * profile;
+  ValueProfile *profile;
   profile = value->profile;
-  if( profile == NULL )
+  if( !profile )
     return NULL;
   
-  ValueList * output = NewValueList();
-  if( output == NULL )
+  ValueList *output = NewValueList();
+  if( !output )
     return NULL;
   
-  NULL_ON_FAILURE( AppendValueToValueList( output, value ) )
+  if( !AppendToValueList( output, CopyValue( value ) ) )
+    return NULL;
   
-  NULL_ON_FAILURE( AppendStringToValueList( output, " (" ) )
+  if( !AppendStringToValueList( output, " (" ) )
+    return NULL;
 
-  NULL_ON_FAILURE( AppendStringToValueList( output, profile->name ) )
+  if( !AppendStringToValueList( output, profile->name ) )
+    return NULL;
   
-  NULL_ON_FAILURE( AppendStringToValueList( output, ")" ) )
+  if( !AppendStringToValueList( output, ")" ) )
+    return NULL;
   
   return output;
 }
@@ -456,21 +482,21 @@ SingularValueToValueList
 static
 Output *
 TextOutputFromValueList
-( ValueList * list )
+( const ValueList *list )
 {
-  if( list == NULL )
+  if( !list )
     return NULL;
   
-  Output * output = malloc( sizeof( Output ) );
-  if( output == NULL )
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
     return NULL;
   
   output->data = malloc( sizeof( Type ) );
-  if( output->data == NULL )
+  if( !output->data )
     return NULL;
   
   output->profile = FindOutputProfileByName( "text" );
-  if( output->profile == NULL )
+  if( !output->profile )
     return NULL;
   
   output->data->v_p = ( void * ) ValueListToStrings( list );

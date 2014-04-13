@@ -1,12 +1,13 @@
 #include <stdlib.h>
 
 #include "private/entry.h"
-#include "private/entry_attribute_list.h"
 #include "private/event.h"
 #include "private/output.h"
 #include "private/text_formatter.h"
 #include "private/type.h"
-#include "private/value_list.h"
+
+#include "private/list/entry_attribute.h"
+#include "private/list/value.h"
 
 char *
 EntryToString

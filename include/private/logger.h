@@ -32,7 +32,7 @@ ReceiveNextValue
 ( Logger * );
 
 Status *
-SendStatus
+SendLoggerStatus
 ( Logger * );
 
 Status *

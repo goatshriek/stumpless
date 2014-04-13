@@ -1,39 +1,50 @@
-#ifndef STUMPLESS_PRIVATE_TEXT_FORMATTER_H
-#define STUMPLESS_PRIVATE_TEXT_FORMATTER_H
+#ifndef __STUMPLESS_PRIVATE_TEXT_FORMATTER_H
+#define __STUMPLESS_PRIVATE_TEXT_FORMATTER_H
 
 #include "private/type.h"
 
 Output *
-ArrayValueToText( Value * );
+ArrayValueToText
+( const Value * );
 
 Output *
-EntryToText( Entry *, Dictionary * );
+EntryToText
+( const Entry *, Dictionary * );
 
 Output *
-EntryAttributeToText( EntryAttribute * );
+EntryAttributeToText
+( const EntryAttribute * );
 
 Output *
-EntryAttributeListToText( Entry * );
+EntryAttributeListToText
+( const Entry * );
 
 Output *
-EntrySummaryToText( Entry * );
+EntrySummaryToText
+( const Entry * );
 
 Output *
-EventToText( Event * );
+EventToText
+( const Event * );
 
 Output * 
-EventAttributeToText( EventAttribute * );
+EventAttributeToText
+( const EventAttribute * );
 
 Output *
-EventAttributeListToText( Event * );
+EventAttributeListToText
+( const Event * );
 
 Output *
-EventSummaryToText( Event * );
+EventSummaryToText
+( const Event * );
 
 Output *
-LevelToText( Level * );
+LevelToText
+( const Level * );
 
 Output *
-SingularValueToText( Value * );
+SingularValueToText
+( const Value * );
 
 #endif

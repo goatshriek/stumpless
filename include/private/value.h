@@ -1,31 +1,35 @@
-#ifndef STUMPLESS_PRIVATE_VALUE_H
-#define STUMPLESS_PRIVATE_VALUE_H
+#ifndef __STUMPLESS_PRIVATE_VALUE_H
+#define __STUMPLESS_PRIVATE_VALUE_H
 
 #include "private/type.h"
 
 ValueList *
 BooleanArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 BooleanValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 BooleanValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 CharArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 CharValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 CharValueToString
-( Value * );
+( const Value * );
+
+Value *
+CopyValue
+( const Value * );
 
 void
 DestroyValue
@@ -33,186 +37,186 @@ DestroyValue
 
 ValueList *
 DoubleArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 DoubleValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 DoubleValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 FloatArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 FloatValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 FloatValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 IntArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 IntValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 IntValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 LongArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 LongValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 LongValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 LongDoubleArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 LongDoubleValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 LongDoubleValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 LongLongArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 LongLongValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 LongLongValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 ShortArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 ShortValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 ShortValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 SignedCharArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 SignedCharValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 SignedCharValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 StringArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 StringValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 StringValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 UnsignedCharArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 UnsignedCharValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 UnsignedCharValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 UnsignedIntArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 UnsignedIntValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 UnsignedIntValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 UnsignedLongArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 UnsignedLongValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 UnsignedLongValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 UnsignedLongLongArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 UnsignedLongLongValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 UnsignedLongLongValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 UnsignedShortArrayValueToValueList
-( Value * );
+( const Value * );
 
 Status *
 UnsignedShortValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 UnsignedShortValueToString
-( Value * );
+( const Value * );
 
 Status *
 ValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 Status *
 ValueIntoString
-( char *, Value * );
+( char *, const Value * );
 
 char *
 ValueToString
-( Value * );
+( const Value * );
 
 ValueList *
 ValueToValueList
-( Value * );
+( const Value * );
 
 #endif

@@ -4,11 +4,14 @@
 #include "private/status.h"
 #include "private/stream_handler.h"
 #include "private/type.h"
-#include "private/value_list.h"
+
+#include "private/list/value.h"
+
+#include "private/list/const_iterator/value.h"
 
 Status *
 BinaryOutputIntoStream
-( Output * output, FILE * stream )
+( const Output * output, FILE * stream )
 {
   // todo need to implement
   
@@ -17,7 +20,7 @@ BinaryOutputIntoStream
 
 Status *
 CSVOutputIntoStream
-( Output * output, FILE * stream )
+( const Output * output, FILE * stream )
 {
   // todo need to implement
   
@@ -26,12 +29,12 @@ CSVOutputIntoStream
 
 Status *
 HandleStreamOutput
-( Output * output, Dictionary * options )
+( const Output * output, Dictionary * options )
 {
-  if( output == NULL )
+  if( !output )
     return RaiseAbnormalStatus( "empty argument" );
   
-  if( output->profile == NULL || output->profile->into_stream == NULL )
+  if( !output->profile || !output->profile->into_stream )
     return RaiseAbnormalStatus( "incompatible profile" );
   
   FILE * destination = stdout;
@@ -41,7 +44,7 @@ HandleStreamOutput
 
 Status *
 JSONOutputIntoStream
-( Output * output, FILE * stream )
+( const Output * output, FILE * stream )
 {
   // todo need to implement
   
@@ -50,12 +53,12 @@ JSONOutputIntoStream
 
 Status *
 RawStringOutputIntoStream
-( Output * output, FILE * stream )
+( const Output * output, FILE * stream )
 {
-  if( output == NULL || stream == NULL )
+  if( !output || !stream )
     return RaiseAbnormalStatus( "empty argument" );
   
-  if( output->data == NULL || output->data->c_p == NULL )
+  if( !output->data || !output->data->c_p )
     return RaiseAbnormalStatus( "malformed structure" );
   
   if( fputs( output->data->c_p, stream ) < 0 )
@@ -66,32 +69,36 @@ RawStringOutputIntoStream
 
 Status *
 TextOutputIntoStream
-( Output * output, FILE * stream )
+( const Output * output, FILE * stream )
 {
-  if( output == NULL || stream == NULL )
+  if( !output || !stream )
     return RaiseAbnormalStatus( "empty argument" );
   
-  if( output->data == NULL || output->data->v_p == NULL )
+  if( !output->data || !output->data->v_p )
     return RaiseAbnormalStatus( "malformed structure" );
   
-  ValueList * list = ( ValueList * ) output->data->v_p;
-  Value * value = BeginValueList( list );
-  while( value != NULL ){
-    if( value->data == NULL )
+  const Value * value;
+  ValueListConstIterator * values = CBeginValueList( output->data->v_p );
+  while( value = NextInValueListConstIterator( values ) ){
+    if( !value->data ){
+      DestroyValueListConstIterator( values );
       return RaiseAbnormalStatus( "malformed structure" );
+    }
   
-    if( fputs( value->data->c_p, stream ) < 0 )
+    if( fputs( value->data->c_p, stream ) < 0 ){
+      DestroyValueListConstIterator( values );
       return RaiseAbnormalStatus( "stream write failure" );
-    
-    value = NextInValueList( list );
+    }
   }
+  
+  DestroyValueListConstIterator( values );
   
   return NULL;
 }
 
 Status *
 XMLOutputIntoStream
-( Output * output, FILE * stream )
+( const Output * output, FILE * stream )
 {
   // todo need to implement
   

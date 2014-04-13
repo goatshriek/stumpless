@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_TEST_INCLUDE_BUILDER_H
-#define STUMPLESS_TEST_INCLUDE_BUILDER_H
+#ifndef __STUMPLESS_TEST_INCLUDE_BUILDER_H
+#define __STUMPLESS_TEST_INCLUDE_BUILDER_H
 
 #include "private/type.h"
 
@@ -165,6 +165,10 @@ BuildUnsignedIntValue
 
 Value *
 BuildUnsignedShortValue
+( void );
+
+Value *
+BuildValue
 ( void );
 
 ValueList *

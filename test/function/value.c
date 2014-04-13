@@ -5,7 +5,10 @@
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value_constructor.h"
-#include "private/value_list.h"
+
+#include "private/list/value.h"
+
+#include "private/list/iterator/value.h"
 
 #include "helper.h"
 
@@ -34,7 +37,8 @@ main( void )
 }
 
 const char *
-test_array_value_to_value_list( void )
+test_array_value_to_value_list
+( void )
 {
   Value * value = BuildUnsignedShortValue();
   FAIL_IF_NULL( value, "could not build the test short value" )
@@ -53,14 +57,15 @@ test_array_value_to_value_list( void )
   list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a list could not be built from an int array value" )
   
-  value = BeginValueList( list );
+  ValueListIterator * values = BeginValueList( list );
+  value = NextInValueListIterator( values );
   FAIL_IF_NULL( value, "the generated list was empty" )
   if( strcmp( value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";
   if( value->data->i != 0 )
     return "the values of the list did not reflect the original array";
   
-  value = NextInValueList( list );
+  value = NextInValueListIterator( values );
   
   FAIL_IF_NULL( value, "the list did not contain all nodes" )
   if( strcmp( value->profile->name, "int" ) != 0 )
@@ -68,6 +73,7 @@ test_array_value_to_value_list( void )
   if( value->data->i != 1 )
     return "the values of the list did not reflect the original array";
  
+  DestroyValueListIterator( values );
   return NULL;
 }
 
