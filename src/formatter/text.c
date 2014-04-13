@@ -5,10 +5,11 @@
 #include "private/output.h"
 #include "private/output_profile.h"
 #include "private/status_checker.h"
-#include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value_constructor.h"
+
+#include "private/formatter/text.h"
 
 #include "private/list/entry_attribute.h"
 #include "private/list/event_attribute.h"
@@ -17,7 +18,7 @@
 #include "private/list/iterator/entry_attribute.h"
 #include "private/list/iterator/event_attribute.h"
 
-#include "static/text_formatter.h"
+#include "static/formatter/text.h"
 
 Output *
 ArrayValueToText

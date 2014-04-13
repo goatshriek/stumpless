@@ -2,9 +2,10 @@
 
 #include "private/dictionary.h"
 #include "private/formatter.h"
-#include "private/formatter_initializer.h"
 #include "private/status.h"
 #include "private/type.h"
+
+#include "private/formatter/initializer.h"
 
 #include "private/list/handler.h"
 

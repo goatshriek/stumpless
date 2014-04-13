@@ -1,6 +1,6 @@
 #include "stumpless/text_formatter.h"
 
-#include "private/text_formatter.h"
+#include "private/formatter/text.h"
 
 __STUMPLESS_NAME( Output ) *
 __STUMPLESS_NAME( EntryToText )

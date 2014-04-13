@@ -10,7 +10,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/comparator_base.c \
                           src/comparator_initializer.c \
                           src/configuration.c \
-                          src/csv_formatter.c \
                           src/dictionary.c \
                           src/entry.c \
                           src/entry_attribute.c \
@@ -20,7 +19,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/filter_base.c \
                           src/filter_initializer.c \
                           src/formatter.c \
-                          src/formatter_initializer.c \
                           src/handler.c \
                           src/handler_initializer.c \
                           src/level.c \
@@ -34,12 +32,12 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/status_initializer.c \
                           src/stream_handler.c \
                           src/string_helper.c \
-                          src/text_formatter.c \
                           src/tree.c \
                           src/value.c \
                           src/value_constructor.c \
                           src/value_profile.c \
                           src/value_profile_initializer.c
 
+include src/formatter/Makefile.am
 include src/list/Makefile.am
 include src/wrapper/Makefile.am

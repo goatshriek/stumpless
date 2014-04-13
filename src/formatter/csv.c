@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "private/csv_formatter.h"
+#include "private/formatter/csv.h"
 
 Output *
 EntryToCSV

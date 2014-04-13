@@ -5,8 +5,9 @@
 #include "private/event.h"
 #include "private/level.h"
 #include "private/output.h"
-#include "private/text_formatter.h"
 #include "private/type.h"
+
+#include "private/formatter/text.h"
 
 #include "private/list/value.h"
 

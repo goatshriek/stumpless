@@ -7,7 +7,6 @@ check_PROGRAMS = test/function/adapter \
                  test/function/event \
                  test/function/filter \
                  test/function/filter_base \
-                 test/function/formatter \
                  test/function/handler \
                  test/function/level \
                  test/function/logger \
@@ -19,12 +18,13 @@ check_PROGRAMS = test/function/adapter \
                  test/function/status_initializer \
                  test/function/stream_handler \
                  test/function/string_helper \
-                 test/function/text_formatter \
                  test/function/tree \
                  test/function/value \
                  test/function/value_constructor \
                  test/function/value_profile \
                  test/function/value_profile_initializer \
+                 test/function/formatter/formatter \
+                 test/function/formatter/text \
                  test/function/list/adapter \
                  test/function/list/comparator \
                  test/function/list/entry_attribute \

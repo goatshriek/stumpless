@@ -2,11 +2,12 @@
 
 #include "private/dictionary.h"
 #include "private/status.h"
-#include "private/text_formatter.h"
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value_profile.h"
 #include "private/value_profile_initializer.h"
+
+#include "private/formatter/text.h"
 
 #define ADD_PROFILE( name, function )                                          \
 SetDictionaryValue( initializers, name, Initialize##function##ValueProfile );
