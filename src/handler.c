@@ -2,9 +2,10 @@
 
 #include "private/dictionary.h"
 #include "private/handler.h"
-#include "private/handler_initializer.h"
 #include "private/status.h"
 #include "private/type.h"
+
+#include "private/handler/initializer.h"
 
 static Dictionary * handlers = NULL;
 

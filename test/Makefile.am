@@ -7,7 +7,6 @@ check_PROGRAMS = test/function/adapter \
                  test/function/event \
                  test/function/filter \
                  test/function/filter_base \
-                 test/function/handler \
                  test/function/level \
                  test/function/logger \
                  test/function/output \
@@ -16,7 +15,6 @@ check_PROGRAMS = test/function/adapter \
                  test/function/stack \
                  test/function/status \
                  test/function/status_initializer \
-                 test/function/stream_handler \
                  test/function/string_helper \
                  test/function/tree \
                  test/function/value \
@@ -25,6 +23,8 @@ check_PROGRAMS = test/function/adapter \
                  test/function/value_profile_initializer \
                  test/function/formatter/formatter \
                  test/function/formatter/text \
+                 test/function/handler/handler \
+                 test/function/handler/stream \
                  test/function/list/adapter \
                  test/function/list/comparator \
                  test/function/list/entry_attribute \

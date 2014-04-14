@@ -34,10 +34,6 @@ test_function_filter_SOURCES = test/function/filter.c
 test_function_filter_CFLAGS = $(test_flags)
 test_function_filter_LDADD = $(test_libraries)
 
-test_function_handler_SOURCES = test/function/handler.c
-test_function_handler_CFLAGS = $(test_flags)
-test_function_handler_LDADD = $(test_libraries)
-
 test_function_level_SOURCES = test/function/level.c
 test_function_level_CFLAGS = $(test_flags)
 test_function_level_LDADD = $(test_libraries)
@@ -70,10 +66,6 @@ test_function_status_initializer_SOURCES = test/function/status_initializer.c
 test_function_status_initializer_CFLAGS = $(test_flags)
 test_function_status_initializer_LDADD = $(test_libraries)
 
-test_function_stream_handler_SOURCES = test/function/stream_handler.c
-test_function_stream_handler_CFLAGS = $(test_flags)
-test_function_stream_handler_LDADD = $(test_libraries)
-
 test_function_string_helper_SOURCES = test/function/string_helper.c
 test_function_string_helper_CFLAGS = $(test_flags)
 test_function_string_helper_LDADD = $(test_libraries)
@@ -99,4 +91,5 @@ test_function_value_profile_initializer_CFLAGS = $(test_flags)
 test_function_value_profile_initializer_LDADD = $(test_libraries)
 
 include test/function/formatter/Makefile.am
+include test/function/handler/Makefile.am
 include test/function/list/Makefile.am
