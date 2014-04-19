@@ -2,8 +2,9 @@
 #include <stdlib.h>
 
 #include "private/status.h"
-#include "private/stream_handler.h"
 #include "private/type.h"
+
+#include "private/handler/stream.h"
 
 #include "private/list/value.h"
 

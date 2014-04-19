@@ -15,7 +15,6 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/filter_initializer.h \
                  include/private/formatter.h \
                  include/private/handler.h \
-                 include/private/handler_initializer.h \
                  include/private/level.h \
                  include/private/list.h \
                  include/private/logger.h \
@@ -26,7 +25,6 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/status_checker.h \
                  include/private/status.h \
                  include/private/status_initializer.h \
-                 include/private/stream_handler.h \
                  include/private/string_helper.h \
                  include/private/tree.h \
                  include/private/type.h \
@@ -36,4 +34,5 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/value_profile_initializer.h
 
 include include/private/formatter/Makefile.am
+include include/private/handler/Makefile.am
 include include/private/list/Makefile.am

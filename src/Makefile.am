@@ -20,7 +20,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/filter_initializer.c \
                           src/formatter.c \
                           src/handler.c \
-                          src/handler_initializer.c \
                           src/level.c \
                           src/list.c \
                           src/logger.c \
@@ -30,7 +29,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/stack.c \
                           src/status.c \
                           src/status_initializer.c \
-                          src/stream_handler.c \
                           src/string_helper.c \
                           src/tree.c \
                           src/value.c \
@@ -39,5 +37,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/value_profile_initializer.c
 
 include src/formatter/Makefile.am
+include src/handler/Makefile.am
 include src/list/Makefile.am
 include src/wrapper/Makefile.am
