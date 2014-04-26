@@ -25,3 +25,4 @@ stumpless_include_HEADERS = include/stumpless/adapter.h \
                             include/stumpless/value_profile.h
 
 include include/stumpless/list/Makefile.am
+include include/stumpless/type/Makefile.am
