@@ -33,14 +33,16 @@ int
 ReadTypes
 ( void )
 {
-  // todo read in full filename from config file if possible
-  const char *type_filename = "include/stumpless/type.h";
+  // todo read in full filename (with directory) from config file if possible
+  const char *definition_filename = "include/stumpless/type/definition.h.in";
   
-  FILE *type_file = fopen( type_filename, "r" );
-  if( !type_file )
+  FILE *definition_file = fopen( definition_filename, "r" );
+  if( !definition_file )
     return NULL;
   
-  
+  char * line = malloc( sizeof( char ) * 81 );
+  if( !line )
+    return NULL;
   
   return 0;
 }
