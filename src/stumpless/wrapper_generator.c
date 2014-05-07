@@ -3,7 +3,7 @@
 #include <string.h>
 
 #ifndef TOP_DIRECTORY
-#define TOP_DIRECTORY "./";
+#define TOP_DIRECTORY "./"
 #endif
 
 const char *prefix;
@@ -26,10 +26,6 @@ main
   if( !ReadTypes() )
     return EXIT_FAILURE;
   
-  unsigned i = 0;
-  for( i = 0; i < type_count; i++ )
-    printf( types[i] );
-  
   if( !GenerateTypedefs() )
     return EXIT_FAILURE;
   
@@ -51,36 +47,23 @@ ReadTypes
   if( !definition_file )
     return 0;
   
-  char *type = malloc( sizeof( char ) * 82 );
-  if( !type )
-    return 0;
+  char type[82];
+  type[0] = '\0';
   
-  while( fscanf( definition_file, "struct %s {\n", type ) ){
-    types[type_count] = malloc( sizeof( char ) * strlen( type ) );
-    if( !types[type_count] )
-      return 0;
+  unsigned short next;
+  while( fscanf( definition_file, "%s", type ) == 1 ){
+    if( next ){
+      types[type_count] = malloc( sizeof( char ) * strlen( type ) );
+      if( !types[type_count] )
+        return 0;
+      
+      strcpy( types[type_count++], type );
+      
+      next = 0;
+    }
     
-    strcpy( types[type_count++], type );
-  }
-  
-  rewind( definition_file );
-  
-  while( fscanf( definition_filename, "struct %s {\n", type ) ){
-    types[type_count] = malloc( sizeof( char ) * strlen( type ) );
-    if( !types[type_count] )
-      return 0;
-    
-    strcpy( types[type_count++], type );
-  }
-  
-  rewind( definition_file );
-  
-  while( fscanf( definition_filename, "struct %s {\n", type ) ){
-    types[type_count] = malloc( sizeof( char ) * strlen( type ) );
-    if( !types[type_count] )
-      return 0;
-    
-    strcpy( types[type_count++], type );
+    if( strcmp( type, "struct" ) == 0 || strcmp( type, "enum" ) == 0 || strcmp( type, "union" ) == 0 )
+      next = 1;
   }
   
   fclose( definition_file );
