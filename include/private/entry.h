@@ -1,28 +1,35 @@
-#ifndef STUMPLESS_PRIVATE_ENTRY_H
-#define STUMPLESS_PRIVATE_ENTRY_H
+#ifndef __STUMPLESS_PRIVATE_ENTRY_H
+#define __STUMPLESS_PRIVATE_ENTRY_H
 
 #include "private/type.h"
 
 char *
-EntryToString( Entry * );
+EntryToString
+( Entry * );
 
 Entry *
-GetDebugEntry( void );
+GetDebugEntry
+( void );
 
 Entry *
-EntryForEvent( Event * );
+EntryForEvent
+( Event * );
 
 Entry *
-GetErrorEntry( void );
+GetErrorEntry
+( void );
 
 Entry *
-GetFatalEntry( void );
+GetFatalEntry
+( void );
 
 Entry *
-GetInfoEntry( void );
+GetInfoEntry
+( void );
 
 Entry *
-GetWarningEntry( void );
+GetWarningEntry
+( void );
 
 Entry *
 MergeEntries

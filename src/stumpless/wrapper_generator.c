@@ -13,9 +13,11 @@ static int type_count = 0;
 // todo read in full filename (with directory) from config file if possible
 static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
 
-int ReadTypes( void );
+int GatherTypes( void );
 int GenerateTypedefs( void );
-int GenerateStumplessHeader( void );
+int GatherStumplessFunctions( void );
+int GenerateStumplessHeaders( void );
+int GenerateStumplessSources( void );
 
 int
 main
@@ -26,13 +28,22 @@ main
   else
     prefix = argv[1];
   
-  if( !ReadTypes() )
+  if( !GatherTypes() )
     return EXIT_FAILURE;
   
   if( !GenerateTypedefs() )
     return EXIT_FAILURE;
   
-  if( !GenerateStumplessHeader() )
+  if( !GenerateStumplessFunctions() )
+    return EXIT_FAILURE;
+  
+  if( !GenerateStumplessHeaders() )
+    return EXIT_FAILURE;
+  
+  if( !GenerateStumplessHeaders() )
+    return EXIT_FAILURE;
+  
+  if( !GenerateStumplessSources() )
     return EXIT_FAILURE;
   
   return EXIT_SUCCESS;
@@ -40,7 +51,7 @@ main
 
 // todo refactor to remove buffer overflow vulnerability
 int
-ReadTypes
+GatherTypes
 ( void )
 {
   FILE *definition_file = fopen( definition_filename, "r" );
@@ -87,14 +98,14 @@ GenerateTypedefs
   
   char word[82];
   unsigned i;
-  int character = fgetc( definition_file );
+  int character;
   while( ( character = fgetc( definition_file ) ) != EOF ){
     if( isspace( character ) ){
       fputc( character, definition_output_file );
       continue;
     }
     
-    for( i = 0; !isspace( character ) || i > 81; i++ ){
+    for( i = 0; !isspace( character ) && i < 82; i++ ){
       word[i] = character;
       character = fgetc( definition_file );
     }
@@ -116,12 +127,22 @@ GenerateTypedefs
   return 1;
 }
 
-// iterate through non-stumpless src files
-// generate stumpless src files
-// generate stumpless include files
+int
+GatherStumplessFunctions
+( void )
+{
+  return 0;
+}
 
 int
-GenerateStumplessHeader
+GenerateStumplessHeaders
+( void )
+{
+  return 0;
+}
+
+int
+GenerateStumplessSources
 ( void )
 {
   return 0;
