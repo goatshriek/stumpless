@@ -7,11 +7,16 @@
 #endif
 
 static const char *prefix;
+
 static char *types[100];
 static int type_count = 0;
 
-// todo read in full filename (with directory) from config file if possible
+static char *functions[300];
+static int function_count = 0;
+
+// todo read in full filenames (with directory) from config file if possible
 static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
+static const char *private_includes = TOP_DIRECTORY "include/private/";
 
 int GatherTypes( void );
 int GenerateTypedefs( void );
@@ -31,10 +36,10 @@ main
   if( !GatherTypes() )
     return EXIT_FAILURE;
   
-  if( !GenerateTypedefs() )
-    return EXIT_FAILURE;
+  //if( !GenerateTypedefs() )
+  //  return EXIT_FAILURE;
   
-  if( !GenerateStumplessFunctions() )
+  if( !GatherStumplessFunctions() )
     return EXIT_FAILURE;
   
   if( !GenerateStumplessHeaders() )
@@ -131,7 +136,54 @@ int
 GatherStumplessFunctions
 ( void )
 {
-  return 0;
+  // todo make file retrieval dynamic
+  // be sure to exclude the type directory
+  const char *files[2];
+  unsigned file_count = 2;
+  files[0] = "adapter.h";
+  files[1] = "handler/stream.h";
+  
+  // read through each file
+  unsigned i, line_length;
+  char filename[100];
+  char function[100];
+  char line[100];
+  FILE *file;
+  for( i = 0; i < file_count; i++ ){
+    filename[0] = '\0';
+    strncat( filename, private_includes, 50 );
+    strncat( filename, files[i], 49 );
+    filename[99] = '\0';
+    file = fopen( filename, "r" );
+    if( !file ){
+      printf( "couldn't open header file: %s\n", filename  );
+      return 0;
+    }
+    
+    while( fgets( line, 100, file ) ){
+      if( line[0] == '\n' ){
+        fgets( line, 100, file );
+        fgets( line, 100, file );
+        
+        if( line[0] == '\n' || line[0] == '#' )
+          continue;
+        
+        line_length = strlen( line );
+        functions[function_count] = malloc( sizeof( char ) * line_length );
+        if( !functions[function_count] ){
+          printf( "couldn't allocate memory for the %d function name\n", function_count+1 );
+          return 0;
+        }
+        
+        strncpy( functions[function_count], line, line_length );
+        functions[function_count][line_length-1] = '\0';
+        printf( "%s\n", functions[function_count] );
+        function_count++;
+      }
+    }
+  }
+  
+  return 1;
 }
 
 int
