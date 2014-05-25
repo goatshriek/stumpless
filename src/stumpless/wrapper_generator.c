@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,11 +13,13 @@ static char *types[100];
 static int type_count = 0;
 
 static char *functions[300];
+static char *function_files[300];
 static int function_count = 0;
 
 // todo read in full filenames (with directory) from config file if possible
 static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
 static const char *private_includes = TOP_DIRECTORY "include/private/";
+static const char *public_includes = TOP_DIRECTORY "include/stumpless/";
 
 int GatherTypes( void );
 int GenerateTypedefs( void );
@@ -144,12 +147,13 @@ GatherStumplessFunctions
   files[1] = "handler/stream.h";
   
   // read through each file
-  unsigned i, line_length;
+  unsigned i, filename_length, line_length;
   char filename[100];
   char function[100];
   char line[100];
   FILE *file;
   for( i = 0; i < file_count; i++ ){
+    filename_length = strlen( files[i] );
     filename[0] = '\0';
     strncat( filename, private_includes, 50 );
     strncat( filename, files[i], 49 );
@@ -174,10 +178,17 @@ GatherStumplessFunctions
           printf( "couldn't allocate memory for the %d function name\n", function_count+1 );
           return 0;
         }
-        
         strncpy( functions[function_count], line, line_length );
         functions[function_count][line_length-1] = '\0';
-        printf( "%s\n", functions[function_count] );
+        
+        function_files[function_count] = malloc( sizeof( char ) * filename_length );
+        if( !function_files[function_count] ){
+          printf( "couldn't allocate memory for the %d function filename\n", function_count+1 );
+          return 0;
+        }
+        strncpy( function_files[function_count], files[i], filename_length );
+        function_files[filename_length-1] = '\0';
+        
         function_count++;
       }
     }
@@ -190,7 +201,55 @@ int
 GenerateStumplessHeaders
 ( void )
 {
-  return 0;
+  unsigned i, j, function_file_length;
+  char function_char;
+  char filename[100];
+  char previous_filename[100];
+  char header_guard[100];
+  FILE *header;
+  for( i = 0; i < function_count; i++ ){
+    function_file_length = strlen( function_files[i] );
+    
+    filename[0] = '\0';
+    strncat( filename, public_includes, 50 );
+    strncat( filename, function_files[i], 49 );
+    filename[99] = '\0';
+    
+    if( strcmp( filename, previous_filename ) != 0 ){
+      if( header ){
+        fputs( "#endif", header );
+        fclose( header );
+      }
+      
+      header = fopen( filename, "w" );
+      if( !header )
+        return 0;
+      
+      header_guard[0] = '\0';
+      strncat( header_guard, "__STUMPLESS_", 12 );
+      for( j = 0; j < function_file_length; j++ ){
+        function_char = function_files[i][j];
+        
+        if( function_char == '.' )
+          break;
+        
+        if( function_char == '/' )
+          header_guard[12+j] = '_';
+        else
+          header_guard[12+j] = toupper( function_char );
+      }
+      
+      fputs( "#ifndef ", header );
+      fputs( header_guard, header );
+      fputs( "\n#define ", header );
+      fputs( header_guard, header );
+      fputs( "\n#include <stumpless/type.h>\n\n", header );
+    }
+    
+    
+  }
+  
+  return 1;
 }
 
 int
