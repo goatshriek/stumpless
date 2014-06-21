@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_STATIC_STACK_H
-#define STUMPLESS_STATIC_STACK_H
+#ifndef __STUMPLESS_STATIC_STACK_H
+#define __STUMPLESS_STATIC_STACK_H
 
 #include <stdint.h>
 
