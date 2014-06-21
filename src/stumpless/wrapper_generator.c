@@ -18,12 +18,15 @@ static int function_count = 0;
 
 // todo read in full filenames (with directory) from config file if possible
 static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h";
-static const char *new_definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
+static const char *input_definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
+static const char *declaration_filename = TOP_DIRECTORY "include/stumpless/type/declaration.h";
+static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/declaration.h.in";
 static const char *private_includes = TOP_DIRECTORY "include/private/";
 static const char *public_includes = TOP_DIRECTORY "include/stumpless/";
 
 int GatherTypes( void );
-int GenerateTypedefs( void );
+int GenerateDeclarations( void );
+int GenerateDefinitions( void );
 int GatherStumplessFunctions( void );
 int GenerateStumplessHeaders( void );
 int GenerateStumplessSources( void );
@@ -40,8 +43,11 @@ main
   if( !GatherTypes() )
     return EXIT_FAILURE;
   
-  //if( !GenerateTypedefs() )
-  //  return EXIT_FAILURE;
+  if( !GenerateDeclarations() )
+    return EXIT_FAILURE;
+  
+  if( !GenerateDefinitions() )
+    return EXIT_FAILURE;
   
   if( !GatherStumplessFunctions() )
     return EXIT_FAILURE;
@@ -94,12 +100,12 @@ GatherTypes
 }
 
 int
-GenerateTypedefs
+GenerateDefinitions
 ( void )
 {
-  rename( definition_filename, new_definition_filename );
+  rename( definition_filename, input_definition_filename );
   
-  FILE *definition_file = fopen( new_definition_filename, "r" );
+  FILE *definition_file = fopen( input_definition_filename, "r" );
   if( !definition_file )
     return 0;
   
@@ -134,6 +140,51 @@ GenerateTypedefs
   
   fclose( definition_file );
   fclose( definition_output_file );
+  
+  return 1;
+}
+
+int
+GenerateDeclarations
+( void )
+{
+  rename( declaration_filename, input_declaration_filename );
+  
+  FILE *declaration_file = fopen( input_declaration_filename, "r" );
+  if( !declaration_file )
+    return 0;
+  
+  FILE *declaration_output_file = fopen( declaration_filename, "w" );
+  if( !declaration_output_file )
+    return 0;
+  
+  char word[82];
+  unsigned i;
+  int character;
+  while( ( character = fgetc( declaration_file ) ) != EOF ){
+    if( isspace( character ) ){
+      fputc( character, declaration_output_file );
+      continue;
+    }
+    
+    for( i = 0; !isspace( character ) && i < 82; i++ ){
+      word[i] = character;
+      character = fgetc( declaration_file );
+    }
+    word[i] = '\0';
+    
+    for( i = 0; i < type_count; i++ ){
+      if( strcmp( types[i], word ) == 0 ){
+        fputs( prefix, declaration_output_file );
+        break;
+      }
+    }
+    fputs( word, declaration_output_file );
+    fputc( character, declaration_output_file );
+  }
+  
+  fclose( declaration_file );
+  fclose( declaration_output_file );
   
   return 1;
 }
