@@ -1,63 +1,62 @@
 #ifndef __STUMPLESS_OUTPUT_H
 #define __STUMPLESS_OUTPUT_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
 unsigned short
-__STUMPLESS_NAME( BinaryOutputIsEmpty )
-( __STUMPLESS_NAME( Output ) * );
+BinaryOutputIsEmpty
+( Output * );
 
 char *
-__STUMPLESS_NAME( BinaryOutputToString )
-( __STUMPLESS_NAME( Output ) * );
+BinaryOutputToString
+( Output * );
 
 unsigned short
-__STUMPLESS_NAME( CSVOutputIsEmpty )
-( __STUMPLESS_NAME( Output ) * );
+CSVOutputIsEmpty
+( Output * );
 
 char *
-__STUMPLESS_NAME( CSVOutputToString )
-( __STUMPLESS_NAME( Output ) * );
+CSVOutputToString
+( Output * );
 
 unsigned short
-__STUMPLESS_NAME( OutputIsEmpty )
-( __STUMPLESS_NAME( Output ) * );
+OutputIsEmpty
+( Output * );
 
 char *
-__STUMPLESS_NAME( OutputToString )
-( __STUMPLESS_NAME( Output ) * );
+OutputToString
+( Output * );
 
 unsigned short
-__STUMPLESS_NAME( JSONOutputIsEmpty )
-( __STUMPLESS_NAME( Output ) * );
+JSONOutputIsEmpty
+( Output * );
 
 char *
-__STUMPLESS_NAME( JSONOutputToString )
-( __STUMPLESS_NAME( Output ) * );
+JSONOutputToString
+( Output * );
 
 unsigned short
-__STUMPLESS_NAME( RawStringOutputIsEmpty )
-( __STUMPLESS_NAME( Output ) * );
+RawStringOutputIsEmpty
+( Output * );
 
 char *
-__STUMPLESS_NAME( RawStringOutputToString )
-( __STUMPLESS_NAME( Output ) * );
+RawStringOutputToString
+( Output * );
 
 unsigned short
-__STUMPLESS_NAME( TextOutputIsEmpty )
-( __STUMPLESS_NAME( Output ) * );
+TextOutputIsEmpty
+( Output * );
 
 char *
-__STUMPLESS_NAME( TextOutputToString )
-( __STUMPLESS_NAME( Output ) * );
+TextOutputToString
+( Output * );
 
 unsigned short
-__STUMPLESS_NAME( XMLOutputIsEmpty )
-( __STUMPLESS_NAME( Output ) * );
+XMLOutputIsEmpty
+( Output * );
 
 char *
-__STUMPLESS_NAME( XMLOutputToString )
-( __STUMPLESS_NAME( Output ) * );
+XMLOutputToString
+( Output * );
 
 #endif

@@ -1,47 +1,46 @@
 #ifndef __STUMPLESS_LEVEL_H
 #define __STUMPLESS_LEVEL_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetAlertLevel )
+Level *
+GetAlertLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetCriticalLevel )
+Level *
+GetCriticalLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetDebugLevel )
+Level *
+GetDebugLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetEmergencyLevel )
+Level *
+GetEmergencyLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetErrorLevel )
+Level *
+GetErrorLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetFatalLevel )
+Level *
+GetFatalLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetInfoLevel )
+Level *
+GetInfoLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetNoticeLevel )
+Level *
+GetNoticeLevel
 ( void );
 
-__STUMPLESS_NAME( Level ) *
-__STUMPLESS_NAME( GetWarningLevel )
+Level *
+GetWarningLevel
 ( void );
 
 char *
-__STUMPLESS_NAME( LevelToString )
-( __STUMPLESS_NAME( Level ) * );
+LevelToString
+( Level * );
 
 #endif

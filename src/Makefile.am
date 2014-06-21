@@ -39,4 +39,4 @@ libstumpless_la_SOURCES = src/adapter.c \
 include src/formatter/Makefile.am
 include src/handler/Makefile.am
 include src/list/Makefile.am
-include src/wrapper/Makefile.am
+include src/stumpless/Makefile.am

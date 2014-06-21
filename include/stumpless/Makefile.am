@@ -15,7 +15,6 @@ stumpless_include_HEADERS = include/stumpless/adapter.h \
                             include/stumpless/logger.h \
                             include/stumpless/output.h \
                             include/stumpless/output_profile.h \
-                            include/stumpless/public_name.h \
                             include/stumpless/status.h \
                             include/stumpless/stream_handler.h \
                             include/stumpless/text_formatter.h \
@@ -25,3 +24,4 @@ stumpless_include_HEADERS = include/stumpless/adapter.h \
                             include/stumpless/value_profile.h
 
 include include/stumpless/list/Makefile.am
+include include/stumpless/type/Makefile.am

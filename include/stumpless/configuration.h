@@ -3,16 +3,16 @@
 
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( Configuration ) *
-__STUMPLESS_NAME( GetConfiguration )
+Configuration *
+GetConfiguration
 ( void );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( InitializeConfiguration )
+Status *
+InitializeConfiguration
 ( void );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( SetConfiguration )
-( __STUMPLESS_NAME( Configuration ) * );
+Status *
+SetConfiguration
+( Configuration * );
 
 #endif

@@ -1,71 +1,70 @@
 #ifndef __STUMPLESS_LIST_VALUE_H
 #define __STUMPLESS_LIST_VALUE_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( AddSeparatorToValueList )
-( __STUMPLESS_NAME( ValueList ) *, __STUMPLESS_NAME( Value ) * );
+ValueList *
+AddSeparatorToValueList
+( ValueList *, Value * );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( AppendStringToValueList )
-( __STUMPLESS_NAME( ValueList ) *, const char * );
+ValueList *
+AppendStringToValueList
+( ValueList *, const char * );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( AppendToValueList )
-( __STUMPLESS_NAME( ValueList ) *, __STUMPLESS_NAME( Value ) * );
+ValueList *
+AppendToValueList
+( ValueList *, Value * );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( AppendUnsignedIntToValueList )
-( __STUMPLESS_NAME( ValueList ) *, unsigned );
+ValueList *
+AppendUnsignedIntToValueList
+( ValueList *, unsigned );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( AppendValueLists )
-( __STUMPLESS_NAME( ValueList ) *, __STUMPLESS_NAME( ValueList ) * );
+ValueList *
+AppendValueLists
+( ValueList *, ValueList * );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( CopyValueList )
-( __STUMPLESS_NAME( ValueList ) * );
+ValueList *
+CopyValueList
+( ValueList * );
 
 void
-__STUMPLESS_NAME( DestroyValueList )
-( __STUMPLESS_NAME( ValueList ) * );
+DestroyValueList
+( ValueList * );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( NewValueList )
+ValueList *
+NewValueList
 ( void );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( PrependStringToValueList )
-( __STUMPLESS_NAME( ValueList ) *, const char * );
+ValueList *
+PrependStringToValueList
+( ValueList *, const char * );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( PrependToValueList )
-( __STUMPLESS_NAME( ValueList ) *, __STUMPLESS_NAME( Value ) * );
-
-unsigned short
-__STUMPLESS_NAME( ValueListContains )
-( const __STUMPLESS_NAME( ValueList ) *, const __STUMPLESS_NAME( Value ) * );
-
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( ValueListIntoString )
-( char *, __STUMPLESS_NAME( ValueList ) * );
+ValueList *
+PrependToValueList
+( ValueList *, Value * );
 
 unsigned short
-__STUMPLESS_NAME( ValueListIsEmpty )
-( __STUMPLESS_NAME( ValueList ) * );
+ValueListContains
+( const ValueList *, const Value * );
+
+Status *
+ValueListIntoString
+( char *, ValueList * );
+
+unsigned short
+ValueListIsEmpty
+( ValueList * );
 
 unsigned
-__STUMPLESS_NAME( ValueListSize )
-( const __STUMPLESS_NAME( ValueList ) * );
+ValueListSize
+( const ValueList * );
 
 char *
-__STUMPLESS_NAME( ValueListToString )
-( __STUMPLESS_NAME( ValueList ) * );
+ValueListToString
+( ValueList * );
 
-__STUMPLESS_NAME( ValueList ) *
-__STUMPLESS_NAME( ValueListToStrings )
-( __STUMPLESS_NAME( ValueList ) * );
+ValueList *
+ValueListToStrings
+( ValueList * );
 
 #endif

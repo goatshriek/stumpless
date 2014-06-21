@@ -1,32 +1,38 @@
 #ifndef __STUMPLESS_ENTRY_H
 #define __STUMPLESS_ENTRY_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
 char *
-__STUMPLESS_NAME( EntryToString )( __STUMPLESS_NAME( Entry ) * );
+EntryToString
+( Entry * );
 
-__STUMPLESS_NAME( Entry ) *
-__STUMPLESS_NAME( GetDebugEntry )( void );
+Entry *
+GetDebugEntry
+( void );
 
-__STUMPLESS_NAME( Entry ) *
-__STUMPLESS_NAME( EntryForEvent )( __STUMPLESS_NAME( Event ) * );
+Entry *
+EntryForEvent
+( Event * );
 
-__STUMPLESS_NAME( Entry ) *
-__STUMPLESS_NAME( GetErrorEntry )( void );
+Entry *
+GetErrorEntry
+( void );
 
-__STUMPLESS_NAME( Entry ) *
-__STUMPLESS_NAME( GetFatalEntry )( void );
+Entry *
+GetFatalEntry
+( void );
 
-__STUMPLESS_NAME( Entry ) *
-__STUMPLESS_NAME( GetInfoEntry )( void );
+Entry *
+GetInfoEntry
+( void );
 
-__STUMPLESS_NAME( Entry ) *
-__STUMPLESS_NAME( GetWarningEntry )( void );
+Entry *
+GetWarningEntry
+( void );
 
-__STUMPLESS_NAME( Entry ) *
-__STUMPLESS_NAME( MergeEntries )
-( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Entry ) * );
+Entry *
+MergeEntries
+( Entry *, Entry * );
 
 #endif
