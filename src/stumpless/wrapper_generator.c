@@ -18,23 +18,15 @@ static int function_count = 0;
 
 // todo read in full filenames (with directory) from config file if possible
 static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h";
-<<<<<<< HEAD
 static const char *input_definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
 static const char *declaration_filename = TOP_DIRECTORY "include/stumpless/type/declaration.h";
-static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/declaration.h.in";
-=======
-static const char *new_definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
->>>>>>> master
+static const char *input_declaration_filename = TOP_DIRECTORY "include/stumpless/type/declaration.h.in";
 static const char *private_includes = TOP_DIRECTORY "include/private/";
 static const char *public_includes = TOP_DIRECTORY "include/stumpless/";
 
 int GatherTypes( void );
-<<<<<<< HEAD
 int GenerateDeclarations( void );
 int GenerateDefinitions( void );
-=======
-int GenerateTypedefs( void );
->>>>>>> master
 int GatherStumplessFunctions( void );
 int GenerateStumplessHeaders( void );
 int GenerateStumplessSources( void );
@@ -51,16 +43,11 @@ main
   if( !GatherTypes() )
     return EXIT_FAILURE;
   
-<<<<<<< HEAD
   if( !GenerateDeclarations() )
     return EXIT_FAILURE;
   
   if( !GenerateDefinitions() )
     return EXIT_FAILURE;
-=======
-  //if( !GenerateTypedefs() )
-  //  return EXIT_FAILURE;
->>>>>>> master
   
   if( !GatherStumplessFunctions() )
     return EXIT_FAILURE;
@@ -113,21 +100,12 @@ GatherTypes
 }
 
 int
-<<<<<<< HEAD
 GenerateDefinitions
 ( void )
 {
   rename( definition_filename, input_definition_filename );
   
   FILE *definition_file = fopen( input_definition_filename, "r" );
-=======
-GenerateTypedefs
-( void )
-{
-  rename( definition_filename, new_definition_filename );
-  
-  FILE *definition_file = fopen( new_definition_filename, "r" );
->>>>>>> master
   if( !definition_file )
     return 0;
   
@@ -167,7 +145,6 @@ GenerateTypedefs
 }
 
 int
-<<<<<<< HEAD
 GenerateDeclarations
 ( void )
 {
@@ -213,8 +190,6 @@ GenerateDeclarations
 }
 
 int
-=======
->>>>>>> master
 GatherStumplessFunctions
 ( void )
 {
