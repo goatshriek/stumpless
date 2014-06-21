@@ -3,8 +3,8 @@
 
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( Output ) *
-__STUMPLESS_NAME( EntryToCSV )
-( __STUMPLESS_NAME( Entry ) *, __STUMPLESS_NAME( Dictionary ) * );
+Output *
+EntryToCSV
+( Entry *, Dictionary * );
 
 #endif

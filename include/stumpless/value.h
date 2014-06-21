@@ -4,8 +4,8 @@
 #include <stumpless/type.h>
 
 ValueList *
-__STUMPLESS_NAME( BooleanArrayValueToValueList 
-)( Value * );
+BooleanArrayValueToValueList 
+( Value * );
 
 Status *
 BooleanValueIntoString

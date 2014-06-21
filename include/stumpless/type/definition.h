@@ -98,7 +98,7 @@ struct Filter {
 
 struct Formatter {
   FilterList *filters;
-  Output * ( *format )( const Entry *, Dictionary * );
+  Output *( *format )( const Entry *, Dictionary * );
   HandlerList *handlers;
   const char *name;
   Dictionary *options;
@@ -108,7 +108,7 @@ struct Handler {
   FilterList *filters;
   Status *( *handle )( const Output *, Dictionary * );
   const char *name;
-  __STUMPLESS_NAME( Dictionary ) *options;
+  Dictionary *options;
 };
 
 struct HTTPConfiguration {
@@ -211,7 +211,7 @@ struct Value {
   Type *data;
   const char *format;
   unsigned length;
-  ValueProfile *rofile;
+  ValueProfile *profile;
 };
 
 struct ValueProfile {
