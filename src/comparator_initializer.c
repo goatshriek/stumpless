@@ -3,7 +3,7 @@
 #include "private/comparator.h"
 #include "private/comparator_base.h"
 #include "private/comparator_initializer.h"
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/status.h"
 #include "private/type.h"
 

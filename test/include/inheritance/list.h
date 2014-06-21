@@ -89,16 +89,49 @@ test_append_to                                                                 \
   return NULL;                                                                 \
 }
 
+#define TEST_BACK( type )                                                      \
+const char *                                                                   \
+test_back                                                                      \
+( void )                                                                       \
+{                                                                              \
+  type *element = type##ListBack( NULL );                                      \
+  if( element )                                                                \
+    return "a null list returned a back element";                              \
+                                                                               \
+  type##List *list = Build##type##List();                                      \
+  if( !list )                                                                  \
+    return "could not build a test list";                                      \
+                                                                               \
+  element = type##ListBack( list );                                            \
+  if( !element )                                                               \
+    return "a populated list did not have a back element";                     \
+                                                                               \
+  type##ListIterator *iterator = Begin##type##List( list );                    \
+  type *last;                                                                  \
+  while( type##ListIteratorHasNext( iterator ) ){                              \
+    last = NextIn##type##ListIterator( iterator );                             \
+  }                                                                            \
+                                                                               \
+  if( element != last )                                                        \
+    return "the last element of the list was not returned by back";            \
+                                                                               \
+  return NULL;                                                                 \
+}
+
 #define TEST_BEGIN( type )                                                     \
 const char *                                                                   \
 test_begin                                                                     \
 ( void )                                                                       \
 {                                                                              \
+  type##ListIterator *iterator = Begin##type##List( NULL );                    \
+  if( iterator )                                                               \
+    return "an iterator was created from a null list";                         \
+                                                                               \
   type##List *list = New##type##List();                                        \
   if( !list )                                                                  \
     return "could not create a new list";                                      \
                                                                                \
-  type##ListIterator *iterator = Begin##type##List( list );                    \
+  iterator = Begin##type##List( list );                                        \
   if( !iterator )                                                              \
     return "an iterator could not be built from a new list";                   \
   if( type##ListIteratorHasNext( iterator ) )                                  \
@@ -307,6 +340,32 @@ test_is_empty                                                                  \
     return "a full list was deemed empty";                                     \
                                                                                \
   Destroy##type##List( list );                                                 \
+                                                                               \
+  return NULL;                                                                 \
+}
+
+#define TEST_FRONT( type )                                                     \
+const char *                                                                   \
+test_front                                                                     \
+( void )                                                                       \
+{                                                                              \
+  type *element = type##ListFront( NULL );                                     \
+  if( element )                                                                \
+    return "a null list returned a front element";                             \
+                                                                               \
+  type##List *list = Build##type##List();                                      \
+  if( !list )                                                                  \
+    return "could not build a test list";                                      \
+                                                                               \
+  element = type##ListFront( list );                                           \
+  if( !element )                                                               \
+    return "a populated list did not have a front element";                    \
+                                                                               \
+  type##ListIterator *iterator = Begin##type##List( list );                    \
+  type *last = NextIn##type##ListIterator( iterator );                         \
+                                                                               \
+  if( element != last )                                                        \
+    return "the last element of the list was not returned by back";            \
                                                                                \
   return NULL;                                                                 \
 }

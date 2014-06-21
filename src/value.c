@@ -10,7 +10,7 @@
 #include "private/value.h"
 #include "private/value_constructor.h"
 
-#include "private/list/value.h"
+#include "private/container/list/value.h"
 
 #define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \
 ValueList *                                                                    \

@@ -5,7 +5,7 @@
 #include "private/string_helper.h"
 #include "private/type.h"
 
-#include "private/list/value.h"
+#include "private/container/list/value.h"
 
 unsigned short
 BinaryOutputIsEmpty

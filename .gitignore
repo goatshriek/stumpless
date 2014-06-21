@@ -1,4 +1,7 @@
 *.log
+.cproject
+.project
+.settings/*
 m4/*
 autom4te.cache*
 aclocal.m4

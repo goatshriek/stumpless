@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "private/comparator_base.h"
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/type.h"
 
 #include "helper.h"

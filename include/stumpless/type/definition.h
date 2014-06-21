@@ -69,7 +69,7 @@ struct Entry {
 };
 
 struct EntryAttribute {
-  EventAttribute *event_attribute;
+  const EventAttribute *event_attribute;
   Value *value;
 };
 

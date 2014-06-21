@@ -1,9 +1,0 @@
-noinst_HEADERS += include/private/list/const_reverse_iterator/adapter.h \
-                  include/private/list/const_reverse_iterator/comparator.h \
-                  include/private/list/const_reverse_iterator/entry_attribute.h \
-                  include/private/list/const_reverse_iterator/event_attribute.h \
-                  include/private/list/const_reverse_iterator/filter.h \
-                  include/private/list/const_reverse_iterator/formatter.h \
-                  include/private/list/const_reverse_iterator/handler.h \
-                  include/private/list/const_reverse_iterator/inheritance.h \
-                  include/private/list/const_reverse_iterator/value.h

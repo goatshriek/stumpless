@@ -11,12 +11,12 @@
 
 #include "private/formatter/text.h"
 
-#include "private/list/entry_attribute.h"
-#include "private/list/event_attribute.h"
-#include "private/list/value.h"
+#include "private/container/list/entry_attribute.h"
+#include "private/container/list/event_attribute.h"
+#include "private/container/list/value.h"
 
-#include "private/list/iterator/entry_attribute.h"
-#include "private/list/iterator/event_attribute.h"
+#include "private/container/list/iterator/entry_attribute.h"
+#include "private/container/list/iterator/event_attribute.h"
 
 #include "static/formatter/text.h"
 
@@ -110,15 +110,15 @@ ArrayValueToValueList
 {
   if( !value )
     return NULL;
-  
+
   ValueProfile *profile = value->profile;
   if( !profile )
     return NULL;
-  
+
   ValueList *output = profile->to_value_list( value );
   if( !output )
     return NULL;
-  
+
   Value *separator = ValueFromString( ", " );
   if( !AddSeparatorToValueList( output, separator ) )
     return NULL;
@@ -128,13 +128,13 @@ ArrayValueToValueList
 
   if( !AppendStringToValueList( output, "] (" ) )
     return NULL;
-  
+
   if( !AppendStringToValueList( output, profile->name ) )
     return NULL;
-  
+
   if( AppendStringToValueList( output, ")" ) )
     return NULL;
-  
+
   return output;
 }
 
@@ -145,23 +145,23 @@ EntryToValueList
 {
   if( !entry )
     return NULL;
-  
+
   ValueList *output = EntrySummaryToValueList( entry );
   if( !output )
     return NULL;
-  
+
   if( !EntryAttributeListIsEmpty( entry->attributes ) ){
     if( !AppendStringToValueList( output, ": " ) )
       return NULL;
-    
+
     ValueList *attributes = EntryAttributeListToValueList( entry );
     if( !attributes )
       return NULL;
-    
+
     if( !AppendValueLists( output, attributes ) )
       return NULL;
   }
-  
+
   return output;
 }
 
@@ -172,25 +172,25 @@ EntryAttributeToValueList
 {
   if( !attribute )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
-  EventAttribute *event_attribute = attribute->event_attribute;
-  
+
+  const EventAttribute *event_attribute = attribute->event_attribute;
+
   const char *attribute_name;
   if( !event_attribute || !event_attribute->name )
     attribute_name = "attribute";
   else
     attribute_name = event_attribute->name;
-  
+
   if( !AppendStringToValueList( output, attribute_name ) )
     return NULL;
-  
+
   if( !AppendStringToValueList( output, ": " ) )
     return NULL;
-  
+
   Value * attribute_value;
   if( attribute->value )
     attribute_value = attribute->value;
@@ -198,19 +198,19 @@ EntryAttributeToValueList
     attribute_value = event_attribute->default_value;
   else
     return NULL;
-  
+
   if( !attribute_value->profile )
     return NULL;
-  
+
   Output * value_as_text;
   value_as_text = attribute_value->profile->to_text( attribute_value );
   if( !value_as_text )
     return NULL;
-  
+
   ValueList * values = ( ValueList * ) value_as_text->data->v_p;
   if( !AppendValueLists( output, values ) )
     return NULL;
-  
+
   return output;
 }
 
@@ -221,11 +221,11 @@ EntryAttributeListToValueList
 {
   if( !entry || EntryAttributeListIsEmpty( entry->attributes ) )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
+
   ValueList *attribute_list;
   EntryAttribute *attribute;
   EntryAttributeListIterator *iterator = BeginEntryAttributeList( entry->attributes );
@@ -233,15 +233,15 @@ EntryAttributeListToValueList
     attribute_list = EntryAttributeToValueList( attribute );
     if( !attribute_list )
       continue;
-    
+
     if( !ValueListIsEmpty( output ) )
       if( !AppendStringToValueList( output, ", " ) )
         return NULL;
-    
+
     if( !AppendValueLists( output, attribute_list ) )
       return NULL;
   }
-  
+
   DestroyEntryAttributeListIterator( iterator );
   return output;
 }
@@ -253,36 +253,36 @@ EntrySummaryToValueList
 {
   if( !entry )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
+
   const char *description;
   if( !entry->description )
     description = "entry";
   else
     description = entry->description;
-  
+
   if( !AppendStringToValueList( output, description ) )
     return NULL;
-  
+
   ValueList *event;
   if( entry->event ){
     if( !AppendStringToValueList( output, " [" ) )
       return NULL;
-      
+
     event = EventSummaryToValueList( entry->event );
     if( !event )
       return NULL;
-    
+
     if( !AppendValueLists( output, event ) )
       return NULL;
-    
+
     if( !AppendStringToValueList( output, "]" ) )
       return NULL;
   }
-  
+
   return output;
 }
 
@@ -293,23 +293,23 @@ EventToValueList
 {
   if( !event )
     return NULL;
-  
+
   ValueList *output = EventSummaryToValueList( event );
   if( !output )
     return NULL;
-  
+
   if( !EventAttributeListIsEmpty( event->attributes ) ){
     if( !AppendStringToValueList( output, ": " ) )
       return NULL;
-    
+
     ValueList *attributes = EventAttributeListToValueList( event );
     if( !attributes )
       return NULL;
-    
+
     if( !AppendValueLists( output, attributes ) )
       return NULL;
   }
-  
+
   return output;
 }
 
@@ -320,11 +320,11 @@ EventAttributeToValueList
 {
   if( !attribute )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
+
   const char *name;
   if( attribute->name )
     name = attribute->name;
@@ -332,26 +332,26 @@ EventAttributeToValueList
     name = "attribute";
   if( !AppendStringToValueList( output, name ) )
     return NULL;
-  
+
   Value *default_value = attribute->default_value;
   if( default_value ){
     if( !AppendStringToValueList( output, ": " ) )
       return NULL;
-    
+
     if( !default_value->profile )
       return NULL;
-    
+
     Output *default_value_output;
     default_value_output = default_value->profile->to_text( default_value );
-    
+
     ValueList *default_value_list;
     default_value_list = ( ValueList * ) default_value_output->data->v_p;
-    
+
     if( !AppendValueLists( output, default_value_list ) )
       return NULL;
   }
-  
-  return output; 
+
+  return output;
 }
 
 static
@@ -361,11 +361,11 @@ EventAttributeListToValueList
 {
   if( !event || !event->attributes )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
+
   ValueList *attribute_list;
   EventAttribute *attribute;
   EventAttributeListIterator *attributes = BeginEventAttributeList( event->attributes );
@@ -373,17 +373,17 @@ EventAttributeListToValueList
     attribute_list = EventAttributeToValueList( attribute );
     if( !attribute_list )
       continue;
-    
+
     if( !ValueListIsEmpty( output ) ){
       if( !AppendStringToValueList( output, ", " ) ){
         return NULL;
       }
     }
-    
+
     if( !AppendValueLists( output, attribute_list ) )
       return NULL;
   }
-  
+
   DestroyEventAttributeListIterator( attributes );
   return output;
 }
@@ -395,30 +395,30 @@ EventSummaryToValueList
 {
   if( !event )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
+
   const char *event_name = event->name ? event->name : "event";
   if( !AppendStringToValueList( output, event_name ) )
     return NULL;
-  
+
   if( event->level ){
     if( !AppendStringToValueList( output, " (" ) )
       return NULL;
-    
+
     ValueList * level = LevelToValueList( event->level );
     if( !level )
       return NULL;
-    
+
     if( !AppendValueLists( output, level ) )
       return NULL;
-    
+
     if( !AppendStringToValueList( output, ")" ) )
       return NULL;
   }
-  
+
   return output;
 }
 
@@ -429,22 +429,22 @@ LevelToValueList
 {
   if( !level )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
+
   if( level->name ){
     if( !AppendStringToValueList( output, level->name ) )
       return NULL;
-    
+
     if( !AppendStringToValueList( output, ": " ) )
       return NULL;
   }
-  
+
   if( !AppendStringToValueList( output, "level " ) )
     return NULL;
-  
+
   return AppendUnsignedIntToValueList( output, level->value );
 }
 
@@ -455,28 +455,28 @@ SingularValueToValueList
 {
   if( !value )
     return NULL;
-  
+
   ValueProfile *profile;
   profile = value->profile;
   if( !profile )
     return NULL;
-  
+
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
-  
+
   if( !AppendToValueList( output, CopyValue( value ) ) )
     return NULL;
-  
+
   if( !AppendStringToValueList( output, " (" ) )
     return NULL;
 
   if( !AppendStringToValueList( output, profile->name ) )
     return NULL;
-  
+
   if( !AppendStringToValueList( output, ")" ) )
     return NULL;
-  
+
   return output;
 }
 
@@ -487,20 +487,20 @@ TextOutputFromValueList
 {
   if( !list )
     return NULL;
-  
+
   Output *output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
-  
+
   output->data = malloc( sizeof( Type ) );
   if( !output->data )
     return NULL;
-  
+
   output->profile = FindOutputProfileByName( "text" );
   if( !output->profile )
     return NULL;
-  
+
   output->data->v_p = ( void * ) ValueListToStrings( list );
-  
+
   return output;
 }

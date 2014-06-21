@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "private/container/list/value.h"
+#include "private/container/list/const_iterator/value.h"
+#include "private/handler/stream.h"
 #include "private/status.h"
 #include "private/type.h"
-
-#include "private/handler/stream.h"
-
-#include "private/list/value.h"
-
-#include "private/list/const_iterator/value.h"
 
 Status *
 BinaryOutputIntoStream

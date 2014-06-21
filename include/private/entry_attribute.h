@@ -7,4 +7,8 @@ void
 DestroyEntryAttribute
 ( EntryAttribute * );
 
+EntryAttribute *
+EntryAttributeForEventAttribute
+( const EventAttribute * );
+
 #endif

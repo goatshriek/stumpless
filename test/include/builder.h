@@ -131,6 +131,10 @@ List *
 BuildListOfStrings
 ( void );
 
+ListReverseIterator *
+BuildListReverseIterator
+( void );
+
 Logger *
 BuildLogger
 ( void );

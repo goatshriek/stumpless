@@ -9,7 +9,7 @@
 #include "helper.h"
 
 const char * test_default_entries( void );
-const char * test_entry_for_event( void );
+const char * test_for_event( void );
 const char * test_merge_entries( void );
 const char * test_to_string( void );
 
@@ -20,7 +20,7 @@ main( void )
   const char * result;
   
   RUN_TEST( default_entries )
-  RUN_TEST( entry_for_event )
+  RUN_TEST( for_event )
   RUN_TEST( merge_entries )
   RUN_TEST( to_string )
   
@@ -97,21 +97,34 @@ test_default_entries( void )
 }
 
 const char *
-test_entry_for_event( void )
+test_for_event
+( void )
 {
   Event * event = malloc( sizeof( Event ) );
-  if( event == NULL )
+  if( !event )
     return "memory allocation failure during testing";
   event->name = "testing event";
   event->level = GetDebugLevel();
   event->attributes = NULL;
   
   Entry * entry = EntryForEvent( event );
-  if( entry == NULL )
+  if( !entry )
     return "the entry could not be created";
   if( entry->event != event )
     return "the entry did not have the requested event";
   
+  event = BuildEvent();
+  if( !event )
+    return "could not build a test event";
+
+  entry = EntryForEvent( event );
+  if( !entry )
+    return "an entry could not be created for an event with attributes";
+  if( entry->event != event )
+    return "the entry did not have the requested event with attributes";
+  if( !entry->attributes )
+    return "the entry did not have an attribute list although the event did";
+
   return NULL;
 }
 

@@ -8,7 +8,7 @@
 
 #include "private/formatter/text.h"
 
-#include "private/list/value.h"
+#include "private/container/list/value.h"
 
 #define LEVEL_FUNCTION( function_name, level_name, level_value )               \
 Level *                                                                        \

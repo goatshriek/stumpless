@@ -1,11 +1,10 @@
 #include <stdlib.h>
 
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/handler.h"
-#include "private/status.h"
-
 #include "private/handler/initializer.h"
 #include "private/handler/stream.h"
+#include "private/status.h"
 
 #define ADD_HANDLER( name, function )                                          \
 SetDictionaryValue( initializers, name, Initialize##function##Handler );

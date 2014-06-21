@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/output.h"
 #include "private/output_profile.h"
 #include "private/output_profile_initializer.h"

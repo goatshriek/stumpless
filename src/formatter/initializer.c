@@ -1,12 +1,11 @@
 #include <stdlib.h>
 
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/formatter.h"
-#include "private/status.h"
-
 #include "private/formatter/csv.h"
 #include "private/formatter/initializer.h"
 #include "private/formatter/text.h"
+#include "private/status.h"
 
 #define FORMATTER_INITIALIZER_FUNCTION( formatter_name, function_name )        \
 Formatter *                                                                    \

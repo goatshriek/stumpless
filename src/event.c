@@ -9,7 +9,7 @@
 
 #include "private/formatter/text.h"
 
-#include "private/list/value.h"
+#include "private/container/list/value.h"
 
 char *
 EventToString
