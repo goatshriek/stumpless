@@ -1,23 +1,22 @@
 #ifndef __STUMPLESS_HANDLER_H
 #define __STUMPLESS_HANDLER_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( AddHandler )
-( __STUMPLESS_NAME( Handler ) * );
+Status *
+AddHandler
+( Handler * );
 
-__STUMPLESS_NAME( Handler ) *
-__STUMPLESS_NAME( FindHandlerByName )
+Handler *
+FindHandlerByName
 ( const char * );
 
 void *
-__STUMPLESS_NAME( GetHandlerOption )
-( const __STUMPLESS_NAME( Handler ) *, const char * );
+GetHandlerOption
+( const Handler *, const char * );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( SetHandlerOption )
-( __STUMPLESS_NAME( Handler ) *, const char *, void * );
+Status *
+SetHandlerOption
+( Handler *, const char *, void * );
 
 #endif

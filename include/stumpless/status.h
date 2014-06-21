@@ -1,35 +1,34 @@
 #ifndef __STUMPLESS_STATUS_H
 #define __STUMPLESS_STATUS_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( AddStatus )
-( __STUMPLESS_NAME( Status ) * );
+Status *
+AddStatus
+( Status * );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( FindStatusByName )
+Status *
+FindStatusByName
 ( const char * );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( GetLastError )
+Status *
+GetLastError
 ( void );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( GetLastFailure )
+Status *
+GetLastFailure
 ( void );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( GetLastWarning )
+Status *
+GetLastWarning
 ( void );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( RaiseAbnormalStatus )
+Status *
+RaiseAbnormalStatus
 ( const char * );
 
 const char *
-__STUMPLESS_NAME( StatusToString )
-( __STUMPLESS_NAME( Status ) * );
+StatusToString
+( Status * );
 
 #endif

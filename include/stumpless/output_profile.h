@@ -1,15 +1,14 @@
 #ifndef __STUMPLESS_OUTPUT_PROFILE_H
 #define __STUMPLESS_OUTPUT_PROFILE_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( AddOutputProfile )
-( __STUMPLESS_NAME( OutputProfile ) * );
+Status *
+AddOutputProfile
+( OutputProfile * );
 
-__STUMPLESS_NAME( OutputProfile ) *
-__STUMPLESS_NAME( FindOutputProfileByName )
+OutputProfile *
+FindOutputProfileByName
 ( const char * );
 
 #endif

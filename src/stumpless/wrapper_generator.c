@@ -17,7 +17,8 @@ static char *function_files[300];
 static int function_count = 0;
 
 // todo read in full filenames (with directory) from config file if possible
-static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
+static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h";
+static const char *new_definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
 static const char *private_includes = TOP_DIRECTORY "include/private/";
 static const char *public_includes = TOP_DIRECTORY "include/stumpless/";
 
@@ -96,11 +97,13 @@ int
 GenerateTypedefs
 ( void )
 {
-  FILE *definition_file = fopen( definition_filename, "r" );
+  rename( definition_filename, new_definition_filename );
+  
+  FILE *definition_file = fopen( new_definition_filename, "r" );
   if( !definition_file )
     return 0;
   
-  FILE *definition_output_file = fopen( TOP_DIRECTORY "include/stumpless/type/definition.h", "w" );
+  FILE *definition_output_file = fopen( definition_filename, "w" );
   if( !definition_output_file )
     return 0;
   

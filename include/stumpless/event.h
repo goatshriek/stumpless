@@ -1,28 +1,34 @@
 #ifndef __STUMPLESS_EVENT_H
 #define __STUMPLESS_EVENT_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
 char *
-__STUMPLESS_NAME( EventToString)( __STUMPLESS_NAME( Event ) * );
+EventToString
+( Event * );
 
-__STUMPLESS_NAME( Event ) *
-__STUMPLESS_NAME( GetDebugEvent )( void );
+Event *
+GetDebugEvent
+( void );
 
-__STUMPLESS_NAME( Event ) *
-__STUMPLESS_NAME( GetErrorEvent )( void );
+Event *
+GetErrorEvent
+( void );
 
-__STUMPLESS_NAME( Event ) *
-__STUMPLESS_NAME( EventForLevel )( __STUMPLESS_NAME( Level ) * );
+Event *
+EventForLevel
+( Level * );
 
-__STUMPLESS_NAME( Event ) *
-__STUMPLESS_NAME( GetFatalEvent )( void );
+Event *
+GetFatalEvent
+( void );
 
-__STUMPLESS_NAME( Event ) *
-__STUMPLESS_NAME( GetInfoEvent )( void );
+Event *
+GetInfoEvent
+( void );
 
-__STUMPLESS_NAME( Event ) *
-__STUMPLESS_NAME( GetWarningEvent )( void );
+Event *
+GetWarningEvent
+( void );
 
 #endif

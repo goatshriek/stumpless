@@ -1,55 +1,70 @@
 #ifndef __STUMPLESS_VALUE_CONSTRUCTOR_H
 #define __STUMPLESS_VALUE_CONSTRUCTOR_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromBoolean )( const __STUMPLESS_NAME( Boolean ) * );
+Value *
+ValueFromBoolean
+( const Boolean * );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromChar )( char );
+Value *
+ValueFromChar
+( char );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromDouble )( double );
+Value *
+ValueFromDouble
+( double );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromFloat )( float );
+Value *
+ValueFromFloat
+( float );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromInt )( int );
+Value *
+ValueFromInt
+( int );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromLong )( long );
+Value *
+ValueFromLong
+( long );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromLongDouble )( long double );
+Value *
+ValueFromLongDouble
+( long double );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromLongLong )( long long );
+Value *
+ValueFromLongLong
+( long long );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromShort )( short );
+Value *
+ValueFromShort
+( short );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromSignedChar )( signed char );
+Value *
+ValueFromSignedChar
+( signed char );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromString )( const char * );
+Value *
+ValueFromString
+( const char * );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromUnsignedChar )( unsigned char );
+Value *
+ValueFromUnsignedChar
+( unsigned char );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromUnsignedInt )( unsigned );
+Value *
+ValueFromUnsignedInt
+( unsigned );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromUnsignedLong )( unsigned long );
+Value *
+ValueFromUnsignedLong
+( unsigned long );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromUnsignedLongLong )( unsigned long long );
+Value *
+ValueFromUnsignedLongLong
+( unsigned long long );
 
-__STUMPLESS_NAME( Value ) *
-__STUMPLESS_NAME( ValueFromUnsignedShort )( unsigned short );
+Value *
+ValueFromUnsignedShort
+( unsigned short );
 
 #endif
