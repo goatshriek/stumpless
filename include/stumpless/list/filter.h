@@ -1,59 +1,58 @@
 #ifndef __STUMPLESS_LIST_FILTER_LIST_H
 #define __STUMPLESS_LIST_FILTER_LIST_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( FilterList ) *
-__STUMPLESS_NAME( AddSeparatorToFilterList )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( Filter ) * );
+FilterList *
+AddSeparatorToFilterList
+( FilterList *, Filter * );
 
-__STUMPLESS_NAME( FilterList ) *
-__STUMPLESS_NAME( AppendFilterLists )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( FilterList ) * );
+FilterList *
+AppendFilterLists
+( FilterList *, FilterList * );
 
-__STUMPLESS_NAME( FilterList ) *
-__STUMPLESS_NAME( AppendToFilterList )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( Filter ) * );
+FilterList *
+AppendToFilterList
+( FilterList *, Filter * );
 
-__STUMPLESS_NAME( FilterList ) *
-__STUMPLESS_NAME( CopyFilterList )
-( __STUMPLESS_NAME( FilterList ) * );
+FilterList *
+CopyFilterList
+( FilterList * );
 
 void
-__STUMPLESS_NAME( DestroyFilterList )
-( __STUMPLESS_NAME( FilterList ) * );
+DestroyFilterList
+( FilterList * );
 
 unsigned short
-__STUMPLESS_NAME( EntryThroughFilterList )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( Entry ) * );
+EntryThroughFilterList
+( FilterList *, Entry * );
 
 unsigned short
-__STUMPLESS_NAME( FilterListContains )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( Filter ) * );
+FilterListContains
+( FilterList *, Filter * );
 
 unsigned short
-__STUMPLESS_NAME( FilterListIsEmpty )
-( __STUMPLESS_NAME( FilterList ) * );
+FilterListIsEmpty
+( FilterList * );
 
 unsigned
-__STUMPLESS_NAME( FilterListSize )
-( const __STUMPLESS_NAME( FilterList ) * );
+FilterListSize
+( const FilterList * );
 
-__STUMPLESS_NAME( FilterList ) *
-__STUMPLESS_NAME( NewFilterList )
+FilterList *
+NewFilterList
 ( void );
 
 unsigned short
-__STUMPLESS_NAME( OutputThroughFilterList )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( Output ) * );
+OutputThroughFilterList
+( FilterList *, Output * );
 
-__STUMPLESS_NAME( FilterList ) *
-__STUMPLESS_NAME( PrependToFilterList )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( Filter ) * );
+FilterList *
+PrependToFilterList
+( FilterList *, Filter * );
 
 unsigned short
-__STUMPLESS_NAME( ValueThroughFilterList )
-( __STUMPLESS_NAME( FilterList ) *, __STUMPLESS_NAME( Value ) * );
+ValueThroughFilterList
+( FilterList *, Value * );
 
 #endif

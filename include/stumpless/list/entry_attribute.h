@@ -1,51 +1,50 @@
 #ifndef __STUMPLESS_LIST_ENTRY_ATTRIBUTE_LIST_H
 #define __STUMPLESS_LIST_ENTRY_ATTRIBUTE_LIST_H
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( EntryAttributeList ) *
-__STUMPLESS_NAME( AddSeparatorToEntryAttributeList )
-( __STUMPLESS_NAME( EntryAttributeList ) *, __STUMPLESS_NAME( EntryAttribute ) * );
+EntryAttributeList *
+AddSeparatorToEntryAttributeList
+( EntryAttributeList *, EntryAttribute * );
 
-__STUMPLESS_NAME( EntryAttributeList ) *
-__STUMPLESS_NAME( AppendEntryAttributeLists )
-( __STUMPLESS_NAME( EntryAttributeList ) *, __STUMPLESS_NAME( EntryAttributeList ) * );
+EntryAttributeList *
+AppendEntryAttributeLists
+( EntryAttributeList *, EntryAttributeList * );
 
-__STUMPLESS_NAME( EntryAttributeList ) *
-__STUMPLESS_NAME( AppendToEntryAttributeList )
-( __STUMPLESS_NAME( EntryAttributeList ) *, __STUMPLESS_NAME( EntryAttribute ) * );
+EntryAttributeList *
+AppendToEntryAttributeList
+( EntryAttributeList *, EntryAttribute * );
 
-__STUMPLESS_NAME( EntryAttributeList ) *
-__STUMPLESS_NAME( CopyEntryAttributeList )
-( __STUMPLESS_NAME( EntryAttributeList ) * );
+EntryAttributeList *
+CopyEntryAttributeList
+( EntryAttributeList * );
 
 void
-__STUMPLESS_NAME( DestroyEntryAttributeList )
-( __STUMPLESS_NAME( EntryAttributeList ) * );
+DestroyEntryAttributeList
+( EntryAttributeList * );
 
 unsigned short
-__STUMPLESS_NAME( EntryAttributeListContains )
-( __STUMPLESS_NAME( EntryAttributeList ) *, __STUMPLESS_NAME( EntryAttribute ) * );
+EntryAttributeListContains
+( EntryAttributeList *, EntryAttribute * );
 
 unsigned short
-__STUMPLESS_NAME( EntryAttributeListIsEmpty )
-( __STUMPLESS_NAME( EntryAttributeList ) * );
+EntryAttributeListIsEmpty
+( EntryAttributeList * );
 
 unsigned
-__STUMPLESS_NAME( EntryAttributeListSize )
-( const __STUMPLESS_NAME( EntryAttributeList ) * );
+EntryAttributeListSize
+( const EntryAttributeList * );
 
-__STUMPLESS_NAME( EntryAttributeList ) *
-__STUMPLESS_NAME( MergeEntryAttributeLists )
-( __STUMPLESS_NAME( EntryAttributeList ) *, __STUMPLESS_NAME( EntryAttributeList ) * );
+EntryAttributeList *
+MergeEntryAttributeLists
+( EntryAttributeList *, EntryAttributeList * );
 
-__STUMPLESS_NAME( EntryAttributeList ) *
-__STUMPLESS_NAME( NewEntryAttributeList )
+EntryAttributeList *
+NewEntryAttributeList
 ( void );
 
-__STUMPLESS_NAME( EntryAttributeList ) *
-__STUMPLESS_NAME( PrependToEntryAttributeList )
-( __STUMPLESS_NAME( EntryAttributeList ) *, __STUMPLESS_NAME( EntryAttribute ) * );
+EntryAttributeList *
+PrependToEntryAttributeList
+( EntryAttributeList *, EntryAttribute * );
 
 #endif

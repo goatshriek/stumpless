@@ -3,51 +3,50 @@
 
 #include <stdio.h>
 
-#include <stumpless/public_name.h>
 #include <stumpless/type.h>
 
-__STUMPLESS_NAME( HandlerList ) *
-__STUMPLESS_NAME( AddSeparatorToHandlerList )
-( __STUMPLESS_NAME( HandlerList ) *, __STUMPLESS_NAME( Handler ) * );
+HandlerList *
+AddSeparatorToHandlerList
+( HandlerList *, Handler * );
 
-__STUMPLESS_NAME( HandlerList ) *
-__STUMPLESS_NAME( AppendHandlerLists )
-( __STUMPLESS_NAME( HandlerList ) *, __STUMPLESS_NAME( HandlerList ) * );
+HandlerList *
+AppendHandlerLists
+( HandlerList *, HandlerList * );
 
-__STUMPLESS_NAME( HandlerList ) *
-__STUMPLESS_NAME( AppendToHandlerList )
-( __STUMPLESS_NAME( HandlerList ) *, __STUMPLESS_NAME( Handler ) * );
+HandlerList *
+AppendToHandlerList
+( HandlerList *, Handler * );
 
-__STUMPLESS_NAME( HandlerList ) *
-__STUMPLESS_NAME( CopyHandlerList )
-( __STUMPLESS_NAME( HandlerList ) * );
+HandlerList *
+CopyHandlerList
+( HandlerList * );
 
 void
-__STUMPLESS_NAME( DestroyHandlerList )
-( __STUMPLESS_NAME( HandlerList ) * );
+DestroyHandlerList
+( HandlerList * );
 
 unsigned short
-__STUMPLESS_NAME( HandlerListContains )
-( __STUMPLESS_NAME( HandlerList ) *, __STUMPLESS_NAME( Handler ) * );
+HandlerListContains
+( HandlerList *, Handler * );
 
 unsigned short
-__STUMPLESS_NAME( HandlerListIsEmpty )
-( __STUMPLESS_NAME( HandlerList ) * );
+HandlerListIsEmpty
+( HandlerList * );
 
 unsigned
-__STUMPLESS_NAME( HandlerListSize )
-( const __STUMPLESS_NAME( HandlerList ) * );
+HandlerListSize
+( const HandlerList * );
 
-__STUMPLESS_NAME( HandlerList ) *
-__STUMPLESS_NAME( NewHandlerList )
+HandlerList *
+NewHandlerList
 ( void );
 
-__STUMPLESS_NAME( Status ) *
-__STUMPLESS_NAME( OutputThroughHandlerList )
-( __STUMPLESS_NAME( HandlerList ) *, __STUMPLESS_NAME( Output ) * );
+Status *
+OutputThroughHandlerList
+( HandlerList *, Output * );
 
-__STUMPLESS_NAME( HandlerList ) *
-__STUMPLESS_NAME( PrependToHandlerList )
-( __STUMPLESS_NAME( HandlerList ) *, __STUMPLESS_NAME( Handler ) * );
+HandlerList *
+PrependToHandlerList
+( HandlerList *, Handler * );
 
 #endif
