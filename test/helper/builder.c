@@ -562,7 +562,7 @@ BuildHandler
 ( void )
 {
   Handler *handler = malloc( sizeof( Handler ) );
-  if( handler == NULL )
+  if( !handler )
     return NULL;
   
   handler->name = "test handler";
@@ -570,6 +570,8 @@ BuildHandler
   if( !handler->options )
     return NULL;
   
+  handler->handle = NULL;
+
   return handler;
 }
 

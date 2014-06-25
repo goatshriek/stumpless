@@ -97,19 +97,21 @@ const char *
 test_output_through
 ( void )
 {
-  Output * output = NULL;
   HandlerList *list = BuildHandlerList();
-  FAIL_IF_NULL( list, "could not build the test list" )
-  Status * status;
+  if( !list )
+    return "could not build the test list";
   
-  status = OutputThroughHandlerList( list, output );
-  FAIL_IF_NULL( status, "a null output did not generate an abnormal status" )
+  Status *status = OutputThroughHandlerList( list, NULL );
+  if( !status )
+    return "a null output did not generate an abnormal status";
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a null output did not generate an empty argument error" )
   
-  output = BuildTextOutput();
-  FAIL_IF_NULL( output, "could not build the test output" )
+  Output *output = BuildTextOutput();
+  if( !output )
+    return "could not build the test output";
   status = OutputThroughHandlerList( list, output );
-  FAIL_IF_NOT_NULL( status, "a full output could not pass through the handler list" )
+  if( status )
+    return "a full output could not pass through the handler list";
   
   return NULL;
 }
