@@ -29,16 +29,17 @@ Entry *
 EntryForEvent
 ( Event * event )
 {
-  if( event == NULL )
+  if( !event )
     return NULL;
   
   Entry * entry = malloc( sizeof( Entry ) );
-  if( entry == NULL )
+  if( !entry )
     return NULL;
   
   entry->event = event;
   // todo set attributes to defaults if present
-  
+  entry->attributes = EntryAttributeListForEventAttributeList(event->attributes );
+
   return entry;
 }
 

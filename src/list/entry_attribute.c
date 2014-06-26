@@ -1,13 +1,16 @@
 #include <stdlib.h>
 
+#include "private/entry_attribute.h"
 #include "private/list.h"
 #include "private/type.h"
 
 #include "private/list/entry_attribute.h"
+#include "private/list/event_attribute.h"
 #include "private/list/iterator.h"
 #include "private/list/inheritance.h"
 
 #include "private/list/const_iterator/entry_attribute.h"
+#include "private/list/const_iterator/event_attribute.h"
 
 #include "private/list/const_reverse_iterator/entry_attribute.h"
 
@@ -40,6 +43,28 @@ DESTROY_LIST( EntryAttribute )
 END_LIST( EntryAttribute )
 
 LIST_CONTAINS( EntryAttribute )
+
+EntryAttributeList *
+EntryAttributeListForEventAttributeList
+( const EventAttributeList *event_attribute_list )
+{
+  if( !event_attribute_list )
+    return NULL;
+
+  EntryAttributeList *entry_attribute_list = NewEntryAttributeList();
+  if( !entry_attribute_list )
+    return NULL;
+
+  EntryAttribute *entry_attribute;
+  const EventAttribute *event_attribute;
+  EventAttributeListConstIterator *event_attributes = CBeginEventAttributeList( event_attribute_list );
+  while( event_attribute = NextInEventAttributeListConstIterator( event_attributes ) ){
+    entry_attribute = EntryAttributeForEventAttribute( event_attribute );
+    AppendToEntryAttributeList( entry_attribute_list, entry_attribute );
+  }
+
+  return entry_attribute_list;
+}
 
 LIST_IS_EMPTY( EntryAttribute )
 

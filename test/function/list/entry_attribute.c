@@ -9,6 +9,10 @@
 #include "private/entry_attribute.h"
 
 #include "private/list/entry_attribute.h"
+#include "private/list/event_attribute.h"
+
+#include "private/list/const_iterator/entry_attribute.h"
+#include "private/list/const_iterator/event_attribute.h"
 
 #include "private/list/iterator/entry_attribute.h"
 
@@ -25,6 +29,7 @@ const char * test_crbegin( void );
 const char * test_crend( void );
 const char * test_destructor( void );
 const char * test_end( void );
+const char * test_for_event_attribute_list( void );
 const char * test_is_empty( void );
 const char * test_merge( void );
 const char * test_prepend_to( void );
@@ -52,6 +57,7 @@ main
   RUN_TEST( crend )
   RUN_TEST( destructor )
   RUN_TEST( end )
+  RUN_TEST( for_event_attribute_list )
   RUN_TEST( is_empty )
   RUN_TEST( merge )
   RUN_TEST( prepend_to )
@@ -90,6 +96,36 @@ TEST_CREND( EntryAttribute )
 TEST_DESTRUCTOR( EntryAttribute )
 
 TEST_END( EntryAttribute )
+
+const char *
+test_for_event_attribute_list
+( void )
+{
+  EntryAttributeList *list = EntryAttributeListForEventAttributeList( NULL );
+  if( list )
+    return "a null event attribute list returned a non-null entry attribute list";
+
+  EventAttributeList *event_attribute_list = BuildEventAttributeList();
+  if( !event_attribute_list )
+    return "could not build the event attribute list";
+
+  list = EntryAttributeListForEventAttributeList( event_attribute_list );
+  if( !list )
+    return "a list could not be created from an event attribute list";
+
+  const EntryAttribute *entry_attribute;
+  const EventAttribute *event_attribute;
+  EntryAttributeListConstIterator *entry_attributes = CBeginEntryAttributeList( list );
+  EventAttributeListConstIterator *event_attributes = CBeginEventAttributeList( event_attribute_list );
+  while( EntryAttributeListConstIteratorHasNext( entry_attributes ) ){
+    entry_attribute = NextInEntryAttributeListConstIterator( entry_attributes );
+    event_attribute = NextInEventAttributeListConstIterator( event_attributes );
+    if( entry_attribute->event_attribute != event_attribute )
+      return "an entry attribute did not have the correct event attribute";
+  }
+
+  return NULL;
+}
 
 TEST_IS_EMPTY( EntryAttribute )
 

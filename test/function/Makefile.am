@@ -22,6 +22,10 @@ test_function_entry_SOURCES = test/function/entry.c
 test_function_entry_CFLAGS = $(test_flags)
 test_function_entry_LDADD = $(test_libraries)
 
+test_function_entry_attribute_SOURCES = test/function/entry_attribute.c
+test_function_entry_attribute_CFLAGS = $(test_flags)
+test_function_entry_attribute_LDADD = $(test_libraries)
+
 test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
