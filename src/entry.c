@@ -37,7 +37,6 @@ EntryForEvent
     return NULL;
   
   entry->event = event;
-  // todo set attributes to defaults if present
   entry->attributes = EntryAttributeListForEventAttributeList(event->attributes );
 
   return entry;
