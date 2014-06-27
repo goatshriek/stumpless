@@ -15,12 +15,20 @@ unsigned short
 ListIteratorHasNext
 ( const ListIterator * );
 
+unsigned short
+ListIteratorHasPrevious
+( const ListIterator * );
+
 ListIterator *
 NewListIterator
 ( List *, int );
 
 void *
 NextInListIterator
+( ListIterator * );
+
+void *
+PreviousInListIterator
 ( ListIterator * );
 
 #endif
