@@ -6,6 +6,10 @@ test_function_boolean_SOURCES = test/function/boolean.c
 test_function_boolean_CFLAGS = $(test_flags)
 test_function_boolean_LDADD = $(test_libraries)
 
+test_function_comparator_SOURCES = test/function/comparator.c
+test_function_comparator_CFLAGS = $(test_flags)
+test_function_comparator_LDADD = $(test_libraries)
+
 test_function_comparator_base_SOURCES = test/function/comparator_base.c
 test_function_comparator_base_CFLAGS = $(test_flags)
 test_function_comparator_base_LDADD = $(test_libraries)

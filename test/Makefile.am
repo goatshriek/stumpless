@@ -1,5 +1,6 @@
 check_PROGRAMS = test/function/adapter \
                  test/function/boolean \
+                 test/function/comparator \
                  test/function/comparator_base \
                  test/function/configuration \
                  test/function/dictionary \

@@ -14,26 +14,31 @@ AddComparator
 {
   if( !comparator || !comparator->name )
     return NULL;
-  
+
   if( !comparators ){
     comparators = NewDictionary();
-    
+
     if( !comparators )
       return RaiseAbnormalStatus( "constructor failure" );
   }
-  
+
   void * value = ( void * ) comparator;
   if( !SetDictionaryValue( comparators, comparator->name, value ) )
     return NULL;
-  
+
   return NULL;
 }
 
-// todo implement
 void
 DestroyComparator
 ( Comparator *comparator )
 {
+  if( !comparator )
+    return;
+
+  DestroyDictionary( comparator->options );
+  free( comparator );
+
   return;
 }
 
@@ -43,19 +48,19 @@ FindComparatorByName
 {
   if( !comparators ){
     comparators = NewDictionary();
-    
+
     if( !comparators )
       return NULL;
   }
-  
+
   Comparator * comparator = GetDictionaryValue( comparators, name );
-  
+
   if( !comparator ){
     if( InitializeComparatorByName( name ) )
       return NULL;
     comparator = GetDictionaryValue( comparators, name );
   }
-  
+
   return comparator;
 }
 
@@ -65,7 +70,7 @@ GetComparatorOption
 {
   if( !comparator || !option || !comparator->options )
     return NULL;
-  
+
   return GetDictionaryValue( comparator->options, option );
 }
 
@@ -75,17 +80,17 @@ SetComparatorOption
 {
   if( !comparator || !option )
     return RaiseAbnormalStatus( "empty argument" );
-  
+
   if( !comparator->options ){
     comparator->options = NewDictionary();
-    
+
     if( !comparator->options )
       return RaiseAbnormalStatus( "dictionary failure" );
   }
-  
+
   Dictionary * result;
   result =  SetDictionaryValue( comparator->options, option, value );
-  
+
   if( !result )
     return RaiseAbnormalStatus( "dictionary failure" );
   else
