@@ -33,6 +33,7 @@ check_PROGRAMS = test/function/adapter \
                  test/function/container/list/list \
                  test/function/container/list/value \
                  test/function/container/list/iterator/iterator \
+                 test/function/container/list/reverse_iterator/reverse_iterator \
                  test/function/formatter/formatter \
                  test/function/formatter/text \
                  test/function/handler/handler \

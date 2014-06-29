@@ -35,3 +35,4 @@ test_function_container_list_value_CFLAGS = $(test_flags)
 test_function_container_list_value_LDADD = $(test_libraries)
 
 include test/function/container/list/iterator/Makefile.am
+include test/function/container/list/reverse_iterator/Makefile.am

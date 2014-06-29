@@ -23,4 +23,8 @@ void *
 NextInListReverseIterator
 ( ListReverseIterator * );
 
+void *
+PreviousInListReverseIterator
+( ListReverseIterator *);
+
 #endif

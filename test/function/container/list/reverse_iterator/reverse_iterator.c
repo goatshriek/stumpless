@@ -4,10 +4,10 @@
 
 #include "helper.h"
 #include "private/container/list.h"
-#include "private/container/list/iterator.h"
+#include "private/container/list/reverse_iterator.h"
 #include "private/type.h"
 #include "static/container/list.h"
-#include "static/container/list/iterator.h"
+#include "static/container/list/reverse_iterator.h"
 
 const char * test_constructor( void );
 const char * test_copy( void );
@@ -41,18 +41,18 @@ const char *
 test_constructor
 ( void )
 {
-  ListIterator *iterator = BeginList( NULL );
+  ListReverseIterator *iterator = RBeginList( NULL );
   FAIL_IF_NOT_NULL( iterator, "a null list returned a non-null iterator" )
 
   List *list = BuildListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
-  iterator = BeginList( list );
+  iterator = RBeginList( list );
   FAIL_IF_NULL( iterator, "a non-null list returned a null iterator" )
 
   if( iterator->list != list )
     return "the iterator did not have the appropriate list";
-  if( iterator->current != list->first )
-    return "the iterator did not start at the beginning of the list";
+  if( iterator->current != list->last )
+    return "the iterator did not start at the end of the list";
 
   return NULL;
 }
@@ -61,17 +61,17 @@ const char *
 test_copy
 ( void )
 {
-  ListIterator *copy = CopyListIterator( NULL );
+  ListReverseIterator *copy = CopyListReverseIterator( NULL );
   FAIL_IF_NOT_NULL( copy, "copying a null iterator returned a non-null iterator" )
 
-  ListIterator *iterator = BuildListIterator();
+  ListReverseIterator *iterator = BuildListReverseIterator();
   FAIL_IF_NULL( iterator, "could not build the test iterator" )
   List *list = iterator->list;
   FAIL_IF_NULL( list, "the iterator did not have a list" )
   Node *current = iterator->current;
-  FAIL_IF_NULL( current, "the iterator did not start at the beginning of the list" )
+  FAIL_IF_NULL( current, "the iterator did not start at the end of the list" )
 
-  copy = CopyListIterator( iterator );
+  copy = CopyListReverseIterator( iterator );
   FAIL_IF_NULL( copy, "copying a non-null iterator returned a null pointer" )
   if( copy->list != list )
     return "the copy did not point to the same list as the original";
@@ -86,7 +86,7 @@ test_destructor( void )
 {
   DestroyListIterator( NULL );
 
-  ListIterator *iterator = BuildListIterator();
+  ListReverseIterator *iterator = BuildListReverseIterator();
   FAIL_IF_NULL( iterator, "could not build the test iterator" )
 
   List *list = iterator->list;
@@ -97,7 +97,7 @@ test_destructor( void )
   DestroyListIterator( iterator );
 
   if( ListIsEmpty( list ) )
-    return "the list was destroyed as well";
+    return "the iterator's list was destroyed as well";
 
   return NULL;
 }
@@ -105,20 +105,20 @@ test_destructor( void )
 const char *
 test_has_next( void )
 {
-  if( ListIteratorHasNext( NULL ) )
+  if( ListReverseIteratorHasNext( NULL ) )
     return "a null iterator had a next value";
 
-  ListIterator *iterator = BuildListIterator();
+  ListReverseIterator *iterator = BuildListReverseIterator();
   FAIL_IF_NULL( iterator, "could not build the test iterator" )
 
   while( iterator->current ){
-    if( !ListIteratorHasNext( iterator ) )
+    if( !ListReverseIteratorHasNext( iterator ) )
       return "an iterator with a remaining value returned false";
 
-    NextInListIterator( iterator );
+    NextInListReverseIterator( iterator );
   }
 
-  if( ListIteratorHasNext( iterator ) )
+  if( ListReverseIteratorHasNext( iterator ) )
     return "a finished iterator returned true";
 
   return NULL;
@@ -131,19 +131,19 @@ test_has_previous
   if( ListIteratorHasPrevious( NULL ) )
     return "a null iterator had a previous value";
 
-  ListIterator *iterator = BuildListIterator();
+  ListReverseIterator *iterator = BuildListReverseIterator();
   if( !iterator )
     return "could not build the test iterator";
   if( ListIteratorHasPrevious( iterator ) )
     return "a new iterator had a previous value";
-  if( !NextInListIterator( iterator ) )
+  if( !NextInListReverseIterator( iterator ) )
     return "the iterator did not have any values";
 
   while( iterator->current ){
     if( !ListIteratorHasPrevious( iterator ) )
       return "an iterator that returned a value did not have a previous value";
 
-    NextInListIterator( iterator );
+    NextInListReverseIterator( iterator );
   }
 
   if( !ListIteratorHasPrevious( iterator ) )
@@ -156,25 +156,25 @@ const char *
 test_next
 ( void )
 {
-  if( ListIteratorHasNext( NULL ) )
+  if( ListReverseIteratorHasNext( NULL ) )
     return "a null iterator had a next value";
 
-  ListIterator *iterator = BuildListIterator();
+  ListReverseIterator *iterator = BuildListReverseIterator();
   if( !iterator )
     return "could not build the test iterator";
 
   Node *current;
-  while( ListIteratorHasNext( iterator ) ){
+  while( ListReverseIteratorHasNext( iterator ) ){
     current = iterator->current;
 
-    if( iterator->current->value != NextInListIterator( iterator ) )
+    if( iterator->current->value != NextInListReverseIterator( iterator ) )
       return "next did not return the placeholder value";
 
     if( iterator->current == current )
       return "the iterator placeholder was not advanced";
   }
 
-  if( NextInListIterator( iterator ) )
+  if( NextInListReverseIterator( iterator ) )
     return "a finished iterator returned a non-null value";
 
   return NULL;
@@ -187,17 +187,17 @@ test_previous
   if( ListIteratorHasPrevious( NULL ) )
     return "a null iterator had a previous value";
 
-  ListIterator *iterator = BuildListIterator();
+  ListReverseIterator *iterator = BuildListReverseIterator();
   if( !iterator )
     return "could not build the test iterator";
 
-  void *previous = NextInListIterator( iterator );
-  while( ListIteratorHasNext( iterator ) ){
-    if( PreviousInListIterator( iterator ) != previous )
+  void *previous = NextInListReverseIterator( iterator );
+  while( ListReverseIteratorHasNext( iterator ) ){
+    if( PreviousInListReverseIterator( iterator ) != previous )
       return "calling previous did not return the previous value";
 
-    NextInListIterator( iterator );
-    previous = NextInListIterator( iterator );
+    NextInListReverseIterator( iterator );
+    previous = NextInListReverseIterator( iterator );
   }
 
   return NULL;

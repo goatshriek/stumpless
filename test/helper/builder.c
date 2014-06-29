@@ -6,16 +6,6 @@
 #include "private/comparator_base.h"
 #include "private/configuration.h"
 #include "private/container/dictionary.h"
-#include "private/filter.h"
-#include "private/formatter.h"
-#include "private/handler.h"
-#include "private/output_profile.h"
-#include "private/container/stack.h"
-#include "private/container/tree.h"
-#include "private/type.h"
-#include "private/value_constructor.h"
-#include "private/value_profile.h"
-
 #include "private/container/list.h"
 #include "private/container/list/adapter.h"
 #include "private/container/list/comparator.h"
@@ -25,9 +15,18 @@
 #include "private/container/list/formatter.h"
 #include "private/container/list/handler.h"
 #include "private/container/list/iterator.h"
-#include "private/container/list/value.h"
-
 #include "private/container/list/iterator/event_attribute.h"
+#include "private/container/list/reverse_iterator.h"
+#include "private/container/list/value.h"
+#include "private/filter.h"
+#include "private/formatter.h"
+#include "private/handler.h"
+#include "private/output_profile.h"
+#include "private/container/stack.h"
+#include "private/container/tree.h"
+#include "private/type.h"
+#include "private/value_constructor.h"
+#include "private/value_profile.h"
 
 Adapter *
 BuildAdapter
@@ -706,6 +705,17 @@ BuildListOfStrings
   AppendToList( list, "Strings!" );
 
   return list;
+}
+
+ListReverseIterator *
+BuildListReverseIterator
+( void )
+{
+  ListReverseIterator * iterator = NewListReverseIterator( BuildListOfStrings(), 0 );
+  if( !iterator )
+    return NULL;
+
+  return iterator;
 }
 
 Logger *
