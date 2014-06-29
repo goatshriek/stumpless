@@ -11,12 +11,12 @@
 
 #include "private/formatter/text.h"
 
-#include "private/list/entry_attribute.h"
-#include "private/list/event_attribute.h"
-#include "private/list/value.h"
+#include "private/container/list/entry_attribute.h"
+#include "private/container/list/event_attribute.h"
+#include "private/container/list/value.h"
 
-#include "private/list/iterator/entry_attribute.h"
-#include "private/list/iterator/event_attribute.h"
+#include "private/container/list/iterator/entry_attribute.h"
+#include "private/container/list/iterator/event_attribute.h"
 
 #include "static/formatter/text.h"
 

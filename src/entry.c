@@ -7,8 +7,8 @@
 
 #include "private/formatter/text.h"
 
-#include "private/list/entry_attribute.h"
-#include "private/list/value.h"
+#include "private/container/list/entry_attribute.h"
+#include "private/container/list/value.h"
 
 char *
 EntryToString

@@ -3,7 +3,7 @@
 #include "private/adapter.h"
 #include "private/adapter_base.h"
 #include "private/adapter_initializer.h"
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/status.h"
 
 #define ADAPTER_INITIALIZER_FUNCTION( adapter_name, function_name )            \

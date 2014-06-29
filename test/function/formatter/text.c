@@ -8,9 +8,9 @@
 
 #include "private/formatter/text.h"
 
-#include "private/list/value.h"
+#include "private/container/list/value.h"
 
-#include "private/list/iterator/value.h"
+#include "private/container/list/iterator/value.h"
 
 #include "helper.h"
 

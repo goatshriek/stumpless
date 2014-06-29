@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/filter_base.h"
 #include "private/type.h"
 

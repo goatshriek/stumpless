@@ -18,10 +18,6 @@ test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_CFLAGS = $(test_flags)
 test_function_configuration_LDADD = $(test_libraries)
 
-test_function_dictionary_SOURCES = test/function/dictionary.c
-test_function_dictionary_CFLAGS = $(test_flags)
-test_function_dictionary_LDADD = $(test_libraries)
-
 test_function_entry_SOURCES = test/function/entry.c
 test_function_entry_CFLAGS = $(test_flags)
 test_function_entry_LDADD = $(test_libraries)
@@ -62,10 +58,6 @@ test_function_output_profile_initializer_SOURCES = test/function/output_profile_
 test_function_output_profile_initializer_CFLAGS = $(test_flags)
 test_function_output_profile_initializer_LDADD = $(test_libraries)
 
-test_function_stack_SOURCES = test/function/stack.c
-test_function_stack_CFLAGS = $(test_flags)
-test_function_stack_LDADD = $(test_libraries)
-
 test_function_status_SOURCES = test/function/status.c
 test_function_status_CFLAGS = $(test_flags)
 test_function_status_LDADD = $(test_libraries)
@@ -77,10 +69,6 @@ test_function_status_initializer_LDADD = $(test_libraries)
 test_function_string_helper_SOURCES = test/function/string_helper.c
 test_function_string_helper_CFLAGS = $(test_flags)
 test_function_string_helper_LDADD = $(test_libraries)
-
-test_function_tree_SOURCES = test/function/tree.c
-test_function_tree_CFLAGS = $(test_flags)
-test_function_tree_LDADD = $(test_libraries)
 
 test_function_value_SOURCES = test/function/value.c
 test_function_value_CFLAGS = $(test_flags)
@@ -98,6 +86,6 @@ test_function_value_profile_initializer_SOURCES = test/function/value_profile_in
 test_function_value_profile_initializer_CFLAGS = $(test_flags)
 test_function_value_profile_initializer_LDADD = $(test_libraries)
 
+include test/function/container/Makefile.am
 include test/function/formatter/Makefile.am
 include test/function/handler/Makefile.am
-include test/function/list/Makefile.am

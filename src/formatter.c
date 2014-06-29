@@ -1,13 +1,13 @@
 #include <stdlib.h>
 
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/formatter.h"
 #include "private/status.h"
 #include "private/type.h"
 
 #include "private/formatter/initializer.h"
 
-#include "private/list/handler.h"
+#include "private/container/list/handler.h"
 
 static Dictionary * formatters = NULL;
 

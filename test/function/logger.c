@@ -5,11 +5,11 @@
 #include "private/logger.h"
 #include "private/type.h"
 
-#include "private/list/adapter.h"
-#include "private/list/formatter.h"
+#include "private/container/list/adapter.h"
+#include "private/container/list/formatter.h"
 
-#include "private/list/iterator/adapter.h"
-#include "private/list/iterator/formatter.h"
+#include "private/container/list/iterator/adapter.h"
+#include "private/container/list/iterator/formatter.h"
 
 #include "helper.h"
 

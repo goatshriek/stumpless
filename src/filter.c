@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "private/dictionary.h"
+#include "private/container/dictionary.h"
 #include "private/filter.h"
 #include "private/filter_initializer.h"
 #include "private/status.h"
