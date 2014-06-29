@@ -51,12 +51,15 @@ type##ListIteratorHasNext                                                      \
                                                                                \
   return ListIteratorHasNext( iterator->iterator );                            \
 }
-  
+
 #define NEW_LIST_ITERATOR( type )                                              \
 type##ListIterator *                                                           \
 New##type##ListIterator                                                        \
-( type##List * list, int position )                                            \
+( type##List *list, int position )                                             \
 {                                                                              \
+  if( !list )                                                                  \
+    return NULL;                                                               \
+                                                                               \
   type##ListIterator * iterator = malloc( sizeof( type##ListIterator ) );      \
   if( !iterator )                                                              \
     return NULL;                                                               \
@@ -73,6 +76,9 @@ type *                                                                         \
 NextIn##type##ListIterator                                                     \
 ( type##ListIterator *iterator )                                               \
 {                                                                              \
+  if( !iterator )                                                              \
+    return NULL;                                                               \
+                                                                               \
   return NextInListIterator( iterator->iterator );                             \
 }
 

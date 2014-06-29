@@ -51,12 +51,15 @@ type##ListReverseIteratorHasNext                                               \
                                                                                \
   return ListReverseIteratorHasNext( iterator->iterator );                     \
 }
-  
+
 #define NEW_LIST_REVERSE_ITERATOR( type )                                      \
 type##ListReverseIterator *                                                    \
 New##type##ListReverseIterator                                                 \
 ( type##List * list, int position )                                            \
 {                                                                              \
+  if( !list )                                                                  \
+    return NULL;                                                               \
+                                                                               \
   type##ListReverseIterator * iterator = malloc( sizeof( type##ListReverseIterator ) );\
   if( !iterator )                                                              \
     return NULL;                                                               \
@@ -71,8 +74,11 @@ New##type##ListReverseIterator                                                 \
 #define NEXT_IN_LIST_REVERSE_ITERATOR( type )                                  \
 type *                                                                         \
 NextIn##type##ListReverseIterator                                              \
-( type##ListReverseIterator * iterator )                                       \
+( type##ListReverseIterator *iterator )                                        \
 {                                                                              \
+  if( !iterator )                                                              \
+    return NULL;                                                               \
+                                                                               \
   return NextInListReverseIterator( iterator->iterator );                      \
 }
 

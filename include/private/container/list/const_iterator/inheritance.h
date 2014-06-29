@@ -51,12 +51,15 @@ type##ListConstIteratorHasNext                                                 \
                                                                                \
   return ListConstIteratorHasNext( iterator->iterator );                       \
 }
-  
+
 #define NEW_LIST_CONST_ITERATOR( type )                                        \
 type##ListConstIterator *                                                      \
 New##type##ListConstIterator                                                   \
-( const type##List * list, int position )                                      \
+( const type##List *list, int position )                                       \
 {                                                                              \
+  if( !list )                                                                  \
+    return NULL;                                                               \
+                                                                               \
   type##ListConstIterator * iterator = malloc( sizeof( type##ListConstIterator ) );\
   if( !iterator )                                                              \
     return NULL;                                                               \
@@ -71,8 +74,11 @@ New##type##ListConstIterator                                                   \
 #define NEXT_IN_LIST_CONST_ITERATOR( type )                                    \
 const type *                                                                   \
 NextIn##type##ListConstIterator                                                \
-( type##ListConstIterator * iterator )                                         \
+( type##ListConstIterator *iterator )                                          \
 {                                                                              \
+  if( !iterator )                                                              \
+    return NULL;                                                               \
+                                                                               \
   return NextInListConstIterator( iterator->iterator );                        \
 }
 

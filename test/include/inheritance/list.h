@@ -94,11 +94,15 @@ const char *                                                                   \
 test_begin                                                                     \
 ( void )                                                                       \
 {                                                                              \
+  type##ListIterator *iterator = Begin##type##List( NULL );                    \
+  if( iterator )                                                               \
+    return "an iterator was created from a null list";                         \
+                                                                               \
   type##List *list = New##type##List();                                        \
   if( !list )                                                                  \
     return "could not create a new list";                                      \
                                                                                \
-  type##ListIterator *iterator = Begin##type##List( list );                    \
+  iterator = Begin##type##List( list );                                        \
   if( !iterator )                                                              \
     return "an iterator could not be built from a new list";                   \
   if( type##ListIteratorHasNext( iterator ) )                                  \

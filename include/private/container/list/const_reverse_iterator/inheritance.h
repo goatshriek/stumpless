@@ -51,12 +51,15 @@ type##ListConstReverseIteratorHasNext                                          \
                                                                                \
   return ListConstReverseIteratorHasNext( iterator->iterator );                \
 }
-  
+
 #define NEW_LIST_CONST_REVERSE_ITERATOR( type )                                \
 type##ListConstReverseIterator *                                               \
 New##type##ListConstReverseIterator                                            \
-( const type##List * list, int position )                                      \
+( const type##List *list, int position )                                       \
 {                                                                              \
+  if( !list )                                                                  \
+    return NULL;                                                               \
+                                                                               \
   type##ListConstReverseIterator * iterator = malloc( sizeof( type##ListConstReverseIterator ) );\
   if( !iterator )                                                              \
     return NULL;                                                               \
@@ -71,8 +74,11 @@ New##type##ListConstReverseIterator                                            \
 #define NEXT_IN_LIST_CONST_REVERSE_ITERATOR( type )                            \
 const type *                                                                   \
 NextIn##type##ListConstReverseIterator                                         \
-( type##ListConstReverseIterator * iterator )                                  \
+( type##ListConstReverseIterator *iterator )                                   \
 {                                                                              \
+  if( !iterator )                                                              \
+    return NULL;                                                               \
+                                                                               \
   return NextInListConstReverseIterator( iterator->iterator );                 \
 }
 
