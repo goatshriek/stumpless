@@ -47,9 +47,17 @@ ListIterator *
 EndList
 ( List * );
 
+void *
+ListBack
+( const List * );
+
 unsigned short
 ListContains
 ( const List *, const void * );
+
+void *
+ListFront
+( const List * );
 
 unsigned short
 ListIsEmpty

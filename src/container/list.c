@@ -14,13 +14,13 @@ AddSeparatorToList
 {
   if( !list || !value )
     return NULL;
-  
+
   if( !list->first )
     return list;
-  
+
   if( !SeparateNodes( NULL, list->first, value ) )
     return NULL;
-  
+
   return list;
 }
 
@@ -30,18 +30,18 @@ AppendLists
 {
   if( !first )
     return NULL;
-  
+
   Node * temp;
   Node * previous = NULL;
   Node * node = second->first;
   while( node ){
     AppendToList( first, node->value );
-    
+
     temp = node;
     node = XORNODES( previous, node->neighbors );
     previous = temp;
   }
-  
+
   return first;
 }
 
@@ -51,21 +51,21 @@ AppendToList
 {
   if( !list )
     return NULL;
-  
+
   Node * node = malloc( sizeof( Node ) );
   if( !node )
     return NULL;
-  
+
   node->neighbors = list->last;
   node->value = value;
-  
+
   if( !list->last ){
     list->first = list->last = node;
   } else {
     list->last->neighbors = XORNODES( list->last->neighbors, node );
     list->last = node;
   }
-  
+
   return list;
 }
 
@@ -96,19 +96,19 @@ CopyList
 {
   if( !list )
     return NULL;
-  
+
   List * copy = NewList();
   Node * temp;
   Node * previous = NULL;
   Node * node = list->first;
   while( node ){
     AppendToList( copy, node->value );
-    
+
     temp = node;
     node = XORNODES( previous, node->neighbors );
     previous = temp;
   }
-  
+
   return copy;
 }
 
@@ -132,11 +132,11 @@ DestroyList
 {
   if( !list )
     return;
-  
+
   DestroyNodes( NULL, list->first );
-  
+
   free( list );
-  
+
   return;
 }
 
@@ -147,26 +147,46 @@ EndList
   return NewListIterator( list, -1 );
 }
 
+void *
+ListBack
+( const List *list )
+{
+  if( !list || !list->last )
+    return NULL;
+
+  return list->last->value;
+}
+
 unsigned short
 ListContains
 ( const List * list, const void * value )
 {
   if( !list )
     return 0;
-  
+
   Node * temp;
   Node * previous = NULL;
   Node * node = list->first;
   while( node ){
     if( node->value == value )
       return 1;
-    
+
     temp = node;
     node = XORNODES( previous, node->neighbors );
     previous = temp;
-  } 
-  
+  }
+
   return 0;
+}
+
+void *
+ListFront
+( const List *list )
+{
+  if( !list || !list->first )
+    return NULL;
+
+  return list->first->value;
 }
 
 unsigned short
@@ -182,20 +202,20 @@ ListSize
 {
   if( !list )
     return 0;
-  
+
   unsigned size = 0;
-  
+
   Node * temp;
   Node * previous = NULL;
   Node * node = list->first;
   while( node ){
     size++;
-    
+
     temp = node;
     node = XORNODES( previous, node->neighbors );
     previous = temp;
   }
-  
+
   return size;
 }
 
@@ -206,9 +226,9 @@ NewList
   List * list = malloc( sizeof( List ) );
   if( !list )
     return NULL;
-  
+
   list->first = list->last = NULL;
-  
+
   return list;
 }
 
@@ -218,21 +238,21 @@ PrependToList
 {
   if( !list )
     return NULL;
-  
+
   Node * node = malloc( sizeof( Node ) );
   if( !node )
     return NULL;
-  
+
   node->neighbors = list->first;
   node->value = value;
-  
+
   if( !list->first ){
     list->first = list->last = node;
   } else {
     list->first->neighbors = XORNODES( list->first->neighbors, node );
     list->first = node;
   }
-  
+
   return list;
 }
 
@@ -257,10 +277,10 @@ DestroyNodes
 {
   if( !node )
     return;
-  
+
   Node * next = XORNODES( previous, node->neighbors );
   free( node );
-  
+
   DestroyNodes( node, next );
 }
 
@@ -271,19 +291,19 @@ SeparateNodes
 {
   if( node->neighbors == previous )
     return value;
-  
+
   Node * separator = malloc( sizeof( Node ) );
   if( !separator )
     return NULL;
-  
+
   Node * next = XORNODES( previous, node->neighbors );
-  
+
   separator->value = value;
   separator->neighbors = XORNODES( node, next );
-  
+
   Node * next_next = XORNODES( node, next->neighbors );
   node->neighbors = XORNODES( previous, separator );
   next->neighbors = XORNODES( separator, next_next );
-  
+
   return SeparateNodes( separator, next, value );
 }

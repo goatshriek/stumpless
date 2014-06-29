@@ -14,15 +14,15 @@ CopyListReverseIterator
 {
   if( !iterator )
     return NULL;
-  
+
   ListReverseIterator * copy = malloc( sizeof( ListReverseIterator ) );
   if( !copy )
     return NULL;
-  
+
   copy->list = iterator->list;
   copy->current = iterator->current;
   copy->previous = iterator->previous;
-  
+
   return copy;
 }
 
@@ -31,7 +31,7 @@ DestroyListReverseIterator
 ( ListReverseIterator * iterator )
 {
   free( iterator );
-  
+
   return;
 }
 
@@ -41,7 +41,7 @@ ListReverseIteratorHasNext
 {
   if( !iterator )
     return 0;
-  
+
   return iterator->current != NULL;
 }
 
@@ -51,13 +51,13 @@ NextInListReverseIterator
 {
   if( !iterator || !iterator->current )
     return NULL;
-  
+
   void * value = iterator->current->value;
-  
+
   Node * temp = iterator->current;
   iterator->current = XORNODES( iterator->previous, iterator->current->neighbors );
   iterator->previous = temp;
-  
+
   return value;
 }
 
@@ -67,25 +67,25 @@ NewListReverseIterator
 {
   if( !list )
     return NULL;
-  
+
   ListReverseIterator * iterator = malloc( sizeof( ListReverseIterator ) );
   if( !iterator )
     return NULL;
-  
+
   iterator->list = list;
-  
+
   int i, steps;
   Node * temp;
   Node * previous = NULL;
-  Node * current = list->first;
+  Node * current;
   if( position >= 0 ){
-    current = list->first;
+    current = list->last;
     steps = position;
   } else {
-    current = list->last;
+    current = list->first;
     steps = -position;
   }
-  
+
   for( i = 0; i < steps; i++ ){
     temp = current;
     current = XORNODES( previous, current->neighbors );
@@ -95,7 +95,7 @@ NewListReverseIterator
     }
     previous = temp;
   }
-  
+
   iterator->current = current;
   return iterator;
 }
