@@ -51,6 +51,10 @@ unsigned short
 EntryAttributeListContains
 ( const EntryAttributeList *, const EntryAttribute * );
 
+unsigned short
+EntryAttributeListContainsEventAttribute
+( const EntryAttributeList *, const EventAttribute * );
+
 EntryAttributeList *
 EntryAttributeListForEventAttributeList
 ( const EventAttributeList * );

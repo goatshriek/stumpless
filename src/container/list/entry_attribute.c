@@ -2,22 +2,17 @@
 
 #include "private/entry_attribute.h"
 #include "private/container/list.h"
-#include "private/type.h"
-
 #include "private/container/list/entry_attribute.h"
 #include "private/container/list/event_attribute.h"
 #include "private/container/list/iterator.h"
 #include "private/container/list/inheritance.h"
-
+#include "private/container/list/const_iterator.h"
 #include "private/container/list/const_iterator/entry_attribute.h"
 #include "private/container/list/const_iterator/event_attribute.h"
-
 #include "private/container/list/const_reverse_iterator/entry_attribute.h"
-
 #include "private/container/list/iterator/entry_attribute.h"
-
 #include "private/container/list/reverse_iterator/entry_attribute.h"
-
+#include "private/type.h"
 #include "static/container/list/entry_attribute.h"
 
 ADD_SEPARATOR_TO_LIST( EntryAttribute )
@@ -43,6 +38,25 @@ DESTROY_LIST( EntryAttribute )
 END_LIST( EntryAttribute )
 
 LIST_CONTAINS( EntryAttribute )
+
+unsigned short
+EntryAttributeListContainsEventAttribute
+( const EntryAttributeList *list, const EventAttribute *event_attribute )
+{
+  if( !list || !event_attribute )
+    return 0;
+
+  ListConstIterator *entry_attributes = CBeginList( list->list );
+  const EntryAttribute *entry_attribute;
+  while( entry_attribute = NextInListConstIterator( entry_attributes ) ){
+    if( entry_attribute->event_attribute == event_attribute )
+      return 1;
+  }
+
+  DestroyListConstIterator( entry_attributes );
+
+  return 0;
+}
 
 EntryAttributeList *
 EntryAttributeListForEventAttributeList
@@ -76,32 +90,20 @@ MergeEntryAttributeLists
 {
   if( !primary )
     return secondary;
-  
+
   if( !secondary )
     return primary;
-  
-  ListIterator * primary_attributes = BeginList( primary->list );
-  ListIterator * secondary_attributes = BeginList( secondary->list );
-  
-  EntryAttribute * primary_attribute;
-  EntryAttribute * secondary_attribute;
 
-  unsigned short matched;
-  
-  while( secondary_attribute = NextInListIterator( secondary_attributes ) ){
-    matched = 0;
-    // todo put this search into it's own function to remove the matched variable
-    while( primary_attribute = NextInListIterator( primary_attributes ) ){
-      if( primary_attribute->event_attribute == secondary_attribute->event_attribute ){
-        matched = 1;
-        break;
-      }
-    }
-    
-    if( !matched )
-      AppendToEntryAttributeList( primary, secondary_attribute );
+  ListIterator * attributes = BeginList( secondary->list );
+  EntryAttribute * attribute;
+
+  while( attribute = NextInListIterator( attributes ) ){
+    if( EntryAttributeListContainsEventAttribute( primary, attribute->event_attribute ) )
+      AppendToEntryAttributeList( primary, attribute );
   }
-  
+
+  DestroyListIterator( attributes );
+
   return primary;
 }
 

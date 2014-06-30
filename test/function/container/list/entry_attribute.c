@@ -3,18 +3,15 @@
 #include <string.h>
 
 #include "helper.h"
-
 #include "inheritance/list.h"
-
-#include "private/entry_attribute.h"
-
 #include "private/container/list/entry_attribute.h"
 #include "private/container/list/event_attribute.h"
-
 #include "private/container/list/const_iterator/entry_attribute.h"
 #include "private/container/list/const_iterator/event_attribute.h"
-
 #include "private/container/list/iterator/entry_attribute.h"
+#include "private/entry_attribute.h"
+#include "static/container/list.h"
+#include "static/container/list/entry_attribute.h"
 
 const char * test_add_separator( void );
 const char * test_append( void );
@@ -24,6 +21,7 @@ const char * test_cbegin( void );
 const char * test_cend( void );
 const char * test_constructor( void );
 const char * test_contains( void );
+const char * test_contains_event_attribute( void );
 const char * test_copy( void );
 const char * test_crbegin( void );
 const char * test_crend( void );
@@ -52,6 +50,7 @@ main
   RUN_TEST( cend )
   RUN_TEST( constructor )
   RUN_TEST( contains )
+  RUN_TEST( contains_event_attribute )
   RUN_TEST( copy )
   RUN_TEST( crbegin )
   RUN_TEST( crend )
@@ -64,7 +63,7 @@ main
   RUN_TEST( rbegin )
   RUN_TEST( rend )
   RUN_TEST( size )
-  
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -86,6 +85,39 @@ TEST_CEND( EntryAttribute )
 TEST_CONSTRUCTOR( EntryAttribute )
 
 TEST_CONTAINS( EntryAttribute )
+
+const char *
+test_contains_event_attribute
+( void )
+{
+  if( EntryAttributeListContainsEventAttribute( NULL, NULL ) )
+    return "a null list contained a null attribute";
+
+  const EventAttribute *attribute = BuildEventAttribute();
+  if( !attribute )
+    return "could not build test event attribute";
+
+  if( EntryAttributeListContainsEventAttribute( NULL, attribute ) )
+    return "a null list contained a null attribute";
+
+  EntryAttributeList *list = BuildEntryAttributeList();
+  if( !list )
+    return "could not build test entry attribute list";
+
+  if( EntryAttributeListContainsEventAttribute( list, NULL ) )
+    return "an entry attribute list contained a null event attribute";
+
+  if( EntryAttributeListContainsEventAttribute( list, attribute ) )
+    return "an entry attribute list contained an event attribute not in it";
+
+  EntryAttribute * entry_attribute = list->list->first->value;
+  attribute = entry_attribute->event_attribute;
+
+  if( !EntryAttributeListContainsEventAttribute( list, attribute ) )
+    return "the list did not contain an attribute pulled from it";
+
+  return NULL;
+}
 
 TEST_COPY( EntryAttribute )
 
@@ -136,32 +168,32 @@ test_merge
   EntryAttributeList *primary = NULL;
   EntryAttributeList *secondary = NULL;
   EntryAttributeList *merged;
-  
+
   merged = MergeEntryAttributeLists( primary, secondary );
   FAIL_IF_NOT_NULL( merged, "two null lists were merged into a non-null list" )
-  
+
   primary = BuildEntryAttributeList();
   FAIL_IF_NULL( primary, "could not build the primary list" )
-  
+
   merged = MergeEntryAttributeLists( primary, secondary );
   if( merged != primary )
     return "a null secondary did not return the primary";
-  
+
   merged = MergeEntryAttributeLists( secondary, primary );
   if( merged != primary )
     return "a null primary did not return the secondary";
-  
+
   secondary = NewEntryAttributeList();
   FAIL_IF_NULL( secondary, "could not build the secondary list" )
   EntryAttribute *attribute = malloc( sizeof( EntryAttribute ) );
   FAIL_IF_NULL( attribute, "could not build the attribute" )
   AppendToEntryAttributeList( secondary, attribute );
-  
+
   merged = MergeEntryAttributeLists( primary, secondary );
   if( merged != primary )
     return "the primary list was not the modified list";
   FAIL_IF_NULL( merged, "two lists did not merge properly" )
-  
+
   return NULL;
 }
 
