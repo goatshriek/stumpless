@@ -36,7 +36,7 @@ CRBEGIN_LIST( Filter )
 
 CREND_LIST( Filter )
 
-DESTROY_LIST( Filter ) 
+DESTROY_LIST( Filter )
 
 END_LIST( Filter )
 
@@ -46,7 +46,7 @@ EntryThroughFilterList
 {
   if( !list )
     return 1;
-  
+
   Filter * filter;
   ListIterator * filters = BeginList( list->list );
   while( filter = NextInListIterator( filters ) ){
@@ -55,13 +55,17 @@ EntryThroughFilterList
       return 0;
     }
   }
-  
+
   DestroyListIterator( filters );
-  
+
   return 1;
 }
 
+LIST_BACK( Filter )
+
 LIST_CONTAINS( Filter )
+
+LIST_FRONT( Filter )
 
 LIST_IS_EMPTY( Filter )
 

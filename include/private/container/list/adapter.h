@@ -3,9 +3,17 @@
 
 #include "private/type.h"
 
+Adapter *
+AdapterListBack
+( const AdapterList * );
+
 unsigned short
 AdapterListContains
 ( const AdapterList *, const Adapter * );
+
+Adapter *
+AdapterListFront
+( const AdapterList * );
 
 unsigned short
 AdapterListIsEmpty

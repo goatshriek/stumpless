@@ -15,6 +15,7 @@
 const char * test_add_separator( void );
 const char * test_append( void );
 const char * test_append_to( void );
+const char * test_back( void );
 const char * test_begin( void );
 const char * test_cbegin( void );
 const char * test_cend( void );
@@ -26,6 +27,7 @@ const char * test_crend( void );
 const char * test_destructor( void );
 const char * test_end( void );
 const char * test_entry_through( void );
+const char * test_front( void );
 const char * test_is_empty( void );
 const char * test_output_through( void );
 const char * test_prepend_to( void );
@@ -44,6 +46,7 @@ main
   RUN_TEST( add_separator )
   RUN_TEST( append )
   RUN_TEST( append_to )
+  RUN_TEST( back )
   RUN_TEST( begin )
   RUN_TEST( cbegin )
   RUN_TEST( cend )
@@ -55,6 +58,7 @@ main
   RUN_TEST( destructor )
   RUN_TEST( end )
   RUN_TEST( entry_through )
+  RUN_TEST( front )
   RUN_TEST( is_empty )
   RUN_TEST( output_through )
   RUN_TEST( prepend_to )
@@ -62,7 +66,7 @@ main
   RUN_TEST( rend )
   RUN_TEST( size )
   RUN_TEST( value_through )
-  
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -74,6 +78,8 @@ TEST_ADD_SEPARATOR( Filter )
 TEST_APPEND( Filter )
 
 TEST_APPEND_TO( Filter )
+
+TEST_BACK( Filter )
 
 TEST_BEGIN( Filter )
 
@@ -101,34 +107,36 @@ test_entry_through
 {
   FilterList *list = BuildFilterList();
   FAIL_IF_NULL( list, "could not build the test list" )
-  
+
   Entry * entry = BuildEmptyEntry();
   FAIL_IF_NULL( entry, "the test entry could not be built" )
-  
+
   unsigned accepted = EntryThroughFilterList( NULL, NULL );
   if( !accepted )
     return "a null list did not accept its input";
-  
+
   accepted = EntryThroughFilterList( list, NULL );
   if( accepted )
     return "a null entry made it through the filter list";
-  
+
   accepted = EntryThroughFilterList( list, entry );
   if( accepted )
     return "an empty entry made it through the filter list";
-  
+
   entry = BuildEntry();
   accepted = EntryThroughFilterList( list, entry );
   if( !accepted )
     return "a full entry was not accepted by the list";
-  
+
   entry->event->level = NULL;
   accepted = EntryThroughFilterList( list, entry );
   if( accepted )
     return "an entry without a level made it through the list";
-  
+
   return NULL;
 }
+
+TEST_FRONT( Filter )
 
 TEST_IS_EMPTY( Filter )
 

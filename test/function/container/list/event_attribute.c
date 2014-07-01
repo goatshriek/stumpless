@@ -15,6 +15,7 @@
 const char * test_add_separator( void );
 const char * test_append( void );
 const char * test_append_to( void );
+const char * test_back( void );
 const char * test_begin( void );
 const char * test_cbegin( void );
 const char * test_cend( void );
@@ -25,6 +26,7 @@ const char * test_crbegin( void );
 const char * test_crend( void );
 const char * test_destructor( void );
 const char * test_end( void );
+const char * test_front( void );
 const char * test_is_empty( void );
 const char * test_prepend_to( void );
 const char * test_rbegin( void );
@@ -41,6 +43,7 @@ main
   RUN_TEST( add_separator )
   RUN_TEST( append )
   RUN_TEST( append_to )
+  RUN_TEST( back )
   RUN_TEST( begin )
   RUN_TEST( cbegin )
   RUN_TEST( cend )
@@ -51,12 +54,13 @@ main
   RUN_TEST( crend )
   RUN_TEST( destructor )
   RUN_TEST( end )
+  RUN_TEST( front )
   RUN_TEST( is_empty )
   RUN_TEST( prepend_to )
   RUN_TEST( rbegin )
   RUN_TEST( rend )
   RUN_TEST( size )
-  
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -68,6 +72,8 @@ TEST_ADD_SEPARATOR( EventAttribute )
 TEST_APPEND( EventAttribute )
 
 TEST_APPEND_TO( EventAttribute )
+
+TEST_BACK( EventAttribute )
 
 TEST_BEGIN( EventAttribute )
 
@@ -88,6 +94,8 @@ TEST_CREND( EventAttribute )
 TEST_DESTRUCTOR( EventAttribute )
 
 TEST_END( EventAttribute )
+
+TEST_FRONT( EventAttribute )
 
 TEST_IS_EMPTY( EventAttribute )
 

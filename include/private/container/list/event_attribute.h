@@ -47,9 +47,17 @@ EventAttributeListIterator *
 EndEventAttributeList
 ( EventAttributeList * );
 
+EventAttribute *
+EventAttributeListBack
+( const EventAttributeList * );
+
 unsigned short
 EventAttributeListContains
 ( const EventAttributeList *, const EventAttribute * );
+
+EventAttribute *
+EventAttributeListFront
+( const EventAttributeList * );
 
 unsigned short
 EventAttributeListIsEmpty

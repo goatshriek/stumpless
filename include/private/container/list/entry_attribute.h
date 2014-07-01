@@ -47,6 +47,10 @@ EntryAttributeListIterator *
 EndEntryAttributeListIterator
 ( EntryAttributeList * );
 
+EntryAttribute *
+EntryAttributeListBack
+( const EntryAttributeList * );
+
 unsigned short
 EntryAttributeListContains
 ( const EntryAttributeList *, const EntryAttribute * );
@@ -58,6 +62,10 @@ EntryAttributeListContainsEventAttribute
 EntryAttributeList *
 EntryAttributeListForEventAttributeList
 ( const EventAttributeList * );
+
+EntryAttribute *
+EntryAttributeListFront
+( const EntryAttributeList * );
 
 unsigned short
 EntryAttributeListIsEmpty

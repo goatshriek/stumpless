@@ -17,7 +17,11 @@
 
 #include "static/container/list/adapter.h"
 
+LIST_BACK( Adapter )
+
 LIST_CONTAINS( Adapter )
+
+LIST_FRONT( Adapter )
 
 LIST_IS_EMPTY( Adapter )
 
@@ -59,15 +63,15 @@ ValueThroughAdapterList
 {
   if( !list || !value )
     return NULL;
-  
+
   Entry * entry;
   Adapter * adapter;
   ListIterator * iterator = BeginList( list->list );
   while( adapter = NextInListIterator( iterator ) ) {
     entry = MergeEntries( entry, adapter->adapt( value, adapter->options ) );
   }
-  
+
   DestroyListIterator( iterator );
-  
+
   return entry;
 }

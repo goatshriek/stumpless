@@ -29,7 +29,11 @@ CBEGIN_LIST( Comparator )
 
 CEND_LIST( Comparator )
 
+LIST_BACK( Comparator )
+
 LIST_CONTAINS( Comparator )
+
+LIST_FRONT( Comparator )
 
 LIST_IS_EMPTY( Comparator )
 
@@ -59,19 +63,19 @@ RunComparatorList
 {
   if( ComparatorListIsEmpty( list ) )
     return 0;
-  
+
   short result;
   Comparator * comparator;
   ListIterator * iterator = BeginList( list->list );
   while( comparator = NextInListIterator( iterator ) ){
     result = comparator->compare( value_1, value_2, comparator->options );
-    
+
     if( result != 0 ){
       DestroyListIterator( iterator );
       return result;
     }
   }
-  
+
   DestroyListIterator( iterator );
   return 0;
 }

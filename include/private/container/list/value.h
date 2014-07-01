@@ -77,9 +77,17 @@ ValueListReverseIterator *
 REndValueList
 ( ValueList * );
 
+Value *
+ValueListBack
+( const ValueList * );
+
 unsigned short
 ValueListContains
 ( const ValueList *, const Value * );
+
+Value *
+ValueListFront
+( const ValueList * );
 
 Status *
 ValueListIntoString

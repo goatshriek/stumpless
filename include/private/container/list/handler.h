@@ -49,9 +49,17 @@ HandlerListIterator *
 EndHandlerList
 ( HandlerList * );
 
+Handler *
+HandlerListBack
+( const HandlerList * );
+
 unsigned short
 HandlerListContains
 ( const HandlerList *, const Handler * );
+
+Handler *
+HandlerListFront
+( const HandlerList * );
 
 unsigned short
 HandlerListIsEmpty

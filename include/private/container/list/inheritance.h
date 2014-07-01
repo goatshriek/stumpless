@@ -130,6 +130,17 @@ End##type##List                                                                \
   return New##type##ListIterator( list, -1 );                                  \
 }
 
+#define LIST_BACK( type )                                                      \
+type *                                                                         \
+type##ListBack                                                                 \
+( const type##List *list )                                                     \
+{                                                                              \
+  if( !list )                                                                  \
+    return NULL;                                                               \
+                                                                               \
+  return ListBack( list->list );                                               \
+}
+
 #define LIST_CONTAINS( type )                                                  \
 unsigned short                                                                 \
 type##ListContains                                                             \
@@ -139,6 +150,17 @@ type##ListContains                                                             \
     return 0;                                                                  \
                                                                                \
   return ListContains( list->list, value );                                    \
+}
+
+#define LIST_FRONT( type )                                                     \
+type *                                                                         \
+type##ListFront                                                                \
+( const type##List *list )                                                     \
+{                                                                              \
+  if( !list )                                                                  \
+    return NULL;                                                               \
+                                                                               \
+  return ListFront( list->list );                                              \
 }
 
 #define LIST_IS_EMPTY( type )                                                  \

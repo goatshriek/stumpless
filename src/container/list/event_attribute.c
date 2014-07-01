@@ -35,7 +35,11 @@ CREND_LIST( EventAttribute )
 
 DESTROY_LIST( EventAttribute )
 
+LIST_BACK( EventAttribute )
+
 LIST_CONTAINS( EventAttribute )
+
+LIST_FRONT( EventAttribute )
 
 LIST_IS_EMPTY( EventAttribute )
 

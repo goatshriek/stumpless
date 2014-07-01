@@ -16,6 +16,7 @@
 const char * test_add_separator( void );
 const char * test_append( void );
 const char * test_append_to( void );
+const char * test_back( void );
 const char * test_begin( void );
 const char * test_cbegin( void );
 const char * test_cend( void );
@@ -28,6 +29,7 @@ const char * test_crend( void );
 const char * test_destructor( void );
 const char * test_end( void );
 const char * test_for_event_attribute_list( void );
+const char * test_front( void );
 const char * test_is_empty( void );
 const char * test_merge( void );
 const char * test_prepend_to( void );
@@ -45,6 +47,7 @@ main
   RUN_TEST( add_separator )
   RUN_TEST( append )
   RUN_TEST( append_to )
+  RUN_TEST( back )
   RUN_TEST( begin )
   RUN_TEST( cbegin )
   RUN_TEST( cend )
@@ -57,6 +60,7 @@ main
   RUN_TEST( destructor )
   RUN_TEST( end )
   RUN_TEST( for_event_attribute_list )
+  RUN_TEST( front )
   RUN_TEST( is_empty )
   RUN_TEST( merge )
   RUN_TEST( prepend_to )
@@ -75,6 +79,8 @@ TEST_ADD_SEPARATOR( EntryAttribute )
 TEST_APPEND( EntryAttribute )
 
 TEST_APPEND_TO( EntryAttribute )
+
+TEST_BACK( EntryAttribute )
 
 TEST_BEGIN( EntryAttribute )
 
@@ -158,6 +164,8 @@ test_for_event_attribute_list
 
   return NULL;
 }
+
+TEST_FRONT( EntryAttribute )
 
 TEST_IS_EMPTY( EntryAttribute )
 

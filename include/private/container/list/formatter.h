@@ -51,9 +51,17 @@ Status *
 EntryThroughFormatterList
 ( const FormatterList *, const Entry * );
 
+Formatter *
+FormatterListBack
+( const FormatterList * );
+
 unsigned short
 FormatterListContains
 ( const FormatterList *, const Formatter * );
+
+Formatter *
+FormatterListFront
+( const FormatterList * );
 
 unsigned short
 FormatterListIsEmpty

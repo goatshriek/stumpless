@@ -37,6 +37,8 @@ DESTROY_LIST( EntryAttribute )
 
 END_LIST( EntryAttribute )
 
+LIST_BACK( EntryAttribute )
+
 LIST_CONTAINS( EntryAttribute )
 
 unsigned short
@@ -79,6 +81,8 @@ EntryAttributeListForEventAttributeList
 
   return entry_attribute_list;
 }
+
+LIST_FRONT( EntryAttribute )
 
 LIST_IS_EMPTY( EntryAttribute )
 

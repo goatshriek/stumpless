@@ -27,9 +27,17 @@ ComparatorListConstIterator *
 CEndComparatorList
 ( const ComparatorList * );
 
+Comparator *
+ComparatorListBack
+( const ComparatorList * );
+
 unsigned short
 ComparatorListContains
 ( const ComparatorList *, const Comparator * );
+
+Comparator *
+ComparatorListFront
+( const ComparatorList * );
 
 unsigned short
 ComparatorListIsEmpty

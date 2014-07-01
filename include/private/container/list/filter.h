@@ -51,9 +51,17 @@ unsigned short
 EntryThroughFilterList
 ( const FilterList *, const Entry * );
 
+Filter *
+FilterListBack
+( const FilterList * );
+
 unsigned short
 FilterListContains
 ( const FilterList *, const Filter * );
+
+Filter *
+FilterListBack
+( const FilterList * );
 
 unsigned short
 FilterListIsEmpty

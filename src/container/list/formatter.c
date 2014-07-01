@@ -47,7 +47,7 @@ EntryThroughFormatterList
 {
   if( !list || !entry )
     return RaiseAbnormalStatus( "empty argument" );
-  
+
   Status * final_status = NULL;
   Status * handler_status;
   Output * output;
@@ -59,11 +59,15 @@ EntryThroughFormatterList
     if( handler_status )
       final_status = handler_status;
   }
-  
+
   return final_status;
 }
 
+LIST_BACK( Formatter )
+
 LIST_CONTAINS( Formatter )
+
+LIST_FRONT( Formatter )
 
 LIST_IS_EMPTY( Formatter )
 

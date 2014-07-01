@@ -31,7 +31,7 @@ AppendStringToValueList
 {
   if( !list || !str )
     return NULL;
-  
+
   return AppendToValueList( list, ValueFromString( str ) );
 }
 
@@ -43,7 +43,7 @@ AppendUnsignedIntToValueList
 {
   if( !list )
     return NULL;
-  
+
   return AppendToValueList( list, ValueFromUnsignedInt( num ) );
 }
 
@@ -73,7 +73,7 @@ PrependStringToValueList
 {
   if( !list || !str )
     return NULL;
-  
+
   return PrependToValueList( list, ValueFromString( str ) );
 }
 
@@ -83,7 +83,11 @@ RBEGIN_LIST( Value )
 
 REND_LIST( Value )
 
+LIST_BACK( Value )
+
 LIST_CONTAINS( Value )
+
+LIST_FRONT( Value )
 
 // todo rewrite to no longer depend on a buffer
 Status *
@@ -92,18 +96,18 @@ ValueListIntoString
 {
   if( !str || !list )
     return RaiseAbnormalStatus( "empty argument" );
-  
+
   str[0] = '\0';
-  
+
   Configuration * configuration = GetConfiguration();
   if( !configuration )
     return RaiseAbnormalStatus( "memory allocation failure" );
-  
+
   size_t buffer_size = configuration->string->buffer_size;
   char * buffer = malloc( sizeof( char ) * ( buffer_size + 1 ) );
   if( !buffer )
     return RaiseAbnormalStatus( "memory allocation failure" );
-  
+
   Value * value;
   char * value_str;
   ListIterator * values = BeginList( list->list );
@@ -112,16 +116,16 @@ ValueListIntoString
       DestroyListIterator( values );
       return RaiseAbnormalStatus( "malformed structure" );
     }
-    
+
     if( !value->profile->to_string ){
       continue;
     }
-    
+
     value_str = value->profile->to_string( value );
     if( value_str )
       strncat( str, value_str, buffer_size );
   }
-  
+
   DestroyListIterator( values );
   return NULL;
 }
@@ -137,9 +141,9 @@ ValueListToString
   Configuration * configuration = GetConfiguration();
   size_t buffer_size = configuration->string->buffer_size;
   char * list_str = malloc( sizeof( char ) * buffer_size + 1 );
-  
+
   NULL_ON_FAILURE( ValueListIntoString( list_str, list ) )
-  
+
   return list_str;
 }
 
@@ -149,11 +153,11 @@ ValueListToStrings
 {
   if( !list )
     return NULL;
-  
+
   ValueList * output = NewValueList();
   if( !output )
     return NULL;
-  
+
   char * str;
   Value * value;
   ListIterator * values = BeginList( list->list );
@@ -164,7 +168,7 @@ ValueListToStrings
       return NULL;
     }
   }
-  
+
   DestroyListIterator( values );
   return output;
 }

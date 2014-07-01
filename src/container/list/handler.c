@@ -41,7 +41,11 @@ DESTROY_LIST( Handler )
 
 END_LIST( Handler )
 
+LIST_BACK( Handler )
+
 LIST_CONTAINS( Handler )
+
+LIST_FRONT( Handler )
 
 LIST_IS_EMPTY( Handler )
 
@@ -55,21 +59,21 @@ OutputThroughHandlerList
 {
   if( !list || !output )
     return RaiseAbnormalStatus( "empty argument" );
-  
+
   Status * status;
   Handler * handler;
   ListIterator * handlers = BeginList( list->list );
   while( handler = NextInListIterator( handlers ) ){
     if( !handler->handle )
       continue;
-    
+
     status = handler->handle( output, handler->options );
     if( status && status->failure ){
       DestroyListIterator( handlers );
       return status;
     }
   }
-  
+
   DestroyListIterator( handlers );
   return NULL;
 }

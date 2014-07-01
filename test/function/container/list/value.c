@@ -15,6 +15,7 @@
 const char * test_add_separator( void );
 const char * test_append( void );
 const char * test_append_to( void );
+const char * test_back( void );
 const char * test_begin( void );
 const char * test_cbegin( void );
 const char * test_cend( void );
@@ -25,6 +26,7 @@ const char * test_crbegin( void );
 const char * test_crend( void );
 const char * test_destructor( void );
 const char * test_end( void );
+const char * test_front( void );
 const char * test_into_string( void );
 const char * test_is_empty( void );
 const char * test_prepend_to( void );
@@ -46,6 +48,7 @@ main
   RUN_TEST( add_separator )
   RUN_TEST( append )
   RUN_TEST( append_to )
+  RUN_TEST( back )
   RUN_TEST( begin )
   RUN_TEST( cbegin )
   RUN_TEST( cend )
@@ -56,6 +59,7 @@ main
   RUN_TEST( crend )
   RUN_TEST( destructor )
   RUN_TEST( end )
+  RUN_TEST( front )
   RUN_TEST( into_string )
   RUN_TEST( is_empty )
   RUN_TEST( prepend_to )
@@ -66,7 +70,7 @@ main
   RUN_TEST( string_prepender )
   RUN_TEST( to_string )
   RUN_TEST( unsigned_int_appender )
-  
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -78,6 +82,8 @@ TEST_ADD_SEPARATOR( Value )
 TEST_APPEND( Value )
 
 TEST_APPEND_TO( Value )
+
+TEST_BACK( Value )
 
 TEST_BEGIN( Value )
 
@@ -99,6 +105,8 @@ TEST_DESTRUCTOR( Value )
 
 TEST_END( Value )
 
+TEST_FRONT( Value )
+
 const char *
 test_into_string
 ( void )
@@ -107,22 +115,22 @@ test_into_string
   if( !list )
     return "could not build the test list";
   char str[1000];
-  
+
   Status * status = ValueListIntoString( NULL, list );
   FAIL_IF_NULL( status, "an empty string did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
-  
+
   status = ValueListIntoString( str, NULL );
   FAIL_IF_NULL( status, "an empty list did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty list did not generate the correct error" )
-  
+
   status = ValueListIntoString( str, list );
   if( status )
     return "a valid string was not properly written into";
-  
+
   if( !strstr( str, "4294967196" ) )
     return "the new string did not contain parts of the list";
-  
+
   return NULL;
 }
 
@@ -142,17 +150,17 @@ test_string_appender( void )
 {
   ValueList * result = AppendStringToValueList( NULL, "str" );
   FAIL_IF_NOT_NULL( result, "an empty list did not generate an abnormal status" )
-  
+
   ValueList * list = BuildValueList();
   FAIL_IF_NULL( list, "could not build the test list" )
-  
+
   result = AppendStringToValueList( list, NULL );
   FAIL_IF_NOT_NULL( result, "an empty string did not generate an abnormal status" )
-  
+
   result = AppendStringToValueList( list, "str" );
   if( result != list )
     return "the string was not successfully appended to the list";
-  
+
   return NULL;
 }
 
@@ -162,23 +170,23 @@ test_string_prepender( void )
   ValueList *list = NewValueList();
   if( !list )
     return "could not build a new test list";
-  
+
   ValueList *result = PrependStringToValueList( NULL, NULL );
   if( result )
     return "two null arguments did not return null";
-  
+
   result = PrependStringToValueList( list, NULL );
   if( result )
     return "a null string did not return null";
-  
+
   result = PrependStringToValueList( NULL, "shouldn't work" );
   if( result )
     return "a null list did not return null";
-  
+
   result = PrependStringToValueList( list, "lonely little guy" );
   if( result != list )
     return "a string could not be prepended to an empty list";
-  
+
   ValueListIterator *iterator = BeginValueList( list );
   Value * value = NextInValueListIterator( iterator );
   FAIL_IF_NULL( value, "the list still did not have any members" )
@@ -186,20 +194,20 @@ test_string_prepender( void )
   ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
   ASSERT_STRINGS_EQUAL( "lonely little guy", value->data->c_p, "the new string was not equivalent to the added one" )
   DestroyValueListIterator( iterator );
-  
+
   list = BuildValueList();
-  FAIL_IF_NULL( list, "could not build a populated test list" ) 
+  FAIL_IF_NULL( list, "could not build a populated test list" )
   result = PrependStringToValueList( list, "new beginning" );
   if( result != list )
     return "the string was not correctly prepended to a populated list";
-  
+
   iterator = BeginValueList( list );
   value = NextInValueListIterator( iterator );
   FAIL_IF_NULL( value, "a populated list had it's members removed" );
   FAIL_IF_NULL( value->data, "the new value did not have any data" )
   ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
   ASSERT_STRINGS_EQUAL( "new beginning", value->data->c_p, "the new string was not equivalent to the added one" )
-  
+
   DestroyValueListIterator( iterator );
   return NULL;
 }
@@ -214,14 +222,14 @@ test_to_string( void )
   char * str = ValueListToString( NULL );
   if( str != NULL )
     return "a null list did not return a null string";
-  
+
   str = ValueListToString( list );
   if( str == NULL )
     return "a valid list returend a null string";
-  
+
   if( strstr( str, "4294967196" ) == NULL )
     return "the new string did not contain parts of the list";
-  
+
   return NULL;
 }
 
@@ -231,14 +239,14 @@ test_unsigned_int_appender( void )
   ValueList *list = BuildValueList();
   if( !list )
     return "could not build the test list";
-  
+
   ValueList *result  = AppendUnsignedIntToValueList( NULL, 3 );
   if( result )
     return "a null list did not generate an abnormal status";
-  
+
   result = AppendUnsignedIntToValueList( list, 4 );
   if( result != list )
     return "an unsigned number was not correctly appended to the list";
-  
+
   return NULL;
 }
