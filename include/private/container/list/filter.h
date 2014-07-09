@@ -60,7 +60,7 @@ FilterListContains
 ( const FilterList *, const Filter * );
 
 Filter *
-FilterListBack
+FilterListFront
 ( const FilterList * );
 
 unsigned short

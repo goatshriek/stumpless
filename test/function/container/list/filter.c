@@ -3,14 +3,10 @@
 #include <string.h>
 
 #include "helper.h"
-
 #include "inheritance/list.h"
-
-#include "private/filter.h"
-
 #include "private/container/list/filter.h"
-
 #include "private/container/list/iterator/filter.h"
+#include "private/filter.h"
 
 const char * test_add_separator( void );
 const char * test_append( void );
