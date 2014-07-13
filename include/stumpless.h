@@ -2,5 +2,6 @@
 #define __STUMPLESS_H
 
 #include <stumpless/type.h>
+#include <stumpless/value.h>
 
 #endif

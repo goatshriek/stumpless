@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_PRIVATE_LOGGER_H
-#define STUMPLESS_PRIVATE_LOGGER_H
+#ifndef __STUMPLESS_PRIVATE_LOGGER_H
+#define __STUMPLESS_PRIVATE_LOGGER_H
 
 #include "private/type.h"
 

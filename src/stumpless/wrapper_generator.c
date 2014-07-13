@@ -3,33 +3,35 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "private/string_helper.h"
+
 #ifndef TOP_DIRECTORY
 #define TOP_DIRECTORY "./"
 #endif
 
 static const char *prefix;
 
-static char *types[100];
+static char *types[200];
 static int type_count = 0;
-
-static char *functions[300];
-static char *function_files[300];
-static int function_count = 0;
 
 // todo read in full filenames (with directory) from config file if possible
 static const char *definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h";
 static const char *input_definition_filename = TOP_DIRECTORY "include/stumpless/type/definition.h.in";
 static const char *declaration_filename = TOP_DIRECTORY "include/stumpless/type/declaration.h";
 static const char *input_declaration_filename = TOP_DIRECTORY "include/stumpless/type/declaration.h.in";
-static const char *private_includes = TOP_DIRECTORY "include/private/";
-static const char *public_includes = TOP_DIRECTORY "include/stumpless/";
+
+static const char *input_private_type_declarations = TOP_DIRECTORY "include/private/type/declaration.h.in";
+static const char *private_type_declarations = TOP_DIRECTORY "include/private/type/declaration.h";
+
+static const char *public_include_dir = TOP_DIRECTORY "include/stumpless/";
+static const char *stumpless_src_dir = TOP_DIRECTORY "src/stumpless/";
 
 int GatherTypes( void );
 int GenerateDeclarations( void );
 int GenerateDefinitions( void );
-int GatherStumplessFunctions( void );
-int GenerateStumplessHeaders( void );
-int GenerateStumplessSources( void );
+int GenerateTypedefs( void );
+int GenerateHeadersAndSources( void );
+char * ReplaceTypes( char * );
 
 int
 main
@@ -49,16 +51,10 @@ main
   if( !GenerateDefinitions() )
     return EXIT_FAILURE;
   
-  if( !GatherStumplessFunctions() )
+  if( !GenerateTypedefs() )
     return EXIT_FAILURE;
-  
-  if( !GenerateStumplessHeaders() )
-    return EXIT_FAILURE;
-  
-  if( !GenerateStumplessHeaders() )
-    return EXIT_FAILURE;
-  
-  if( !GenerateStumplessSources() )
+
+  if( !GenerateHeadersAndSources() )
     return EXIT_FAILURE;
   
   return EXIT_SUCCESS;
@@ -69,32 +65,34 @@ int
 GatherTypes
 ( void )
 {
-  FILE *definition_file = fopen( definition_filename, "r" );
-  if( !definition_file )
+  FILE *declaration_file = fopen( declaration_filename, "r" );
+  if( !declaration_file )
     return 0;
   
+  char type[82];
+  type[0] = type[81] = '\0';
   char word[82];
-  word[0] = '\0';
+  word[0] = word[81] = '\0';
   
-  unsigned short next;
-  while( fscanf( definition_file, "%s", word ) == 1 ){
-    if( next ){
+  unsigned short next = 0;
+  while( fscanf( declaration_file, "%81s %81[^;];", type, word ) == 2 ){
+    if( strcmp( type, "struct" ) == 0
+        || strcmp( type, "enum" ) == 0
+        || strcmp( type, "union" ) == 0 ){
       types[type_count] = malloc( sizeof( char ) * strlen( word ) );
       if( !types[type_count] )
         return 0;
+
+      if( type_count > 200 ){
+        fputs( "more than 200 types were detected", stderr );
+        return 0;
+      }
       
       strcpy( types[type_count++], word );
-      
-      next = 0;
     }
-    
-    if( strcmp( word, "struct" ) == 0
-        || strcmp( word, "enum" ) == 0
-        || strcmp( word, "union" ) == 0 )
-      next = 1;
   }
   
-  fclose( definition_file );
+  fclose( declaration_file );
   
   return 1;
 }
@@ -190,125 +188,170 @@ GenerateDeclarations
 }
 
 int
-GatherStumplessFunctions
+GenerateTypedefs
 ( void )
 {
-  // todo make file retrieval dynamic
-  // be sure to exclude the type directory
-  const char *files[2];
-  unsigned file_count = 2;
-  files[0] = "adapter.h";
-  files[1] = "handler/stream.h";
+  rename( private_type_declarations, input_private_type_declarations );
   
-  // read through each file
-  unsigned i, filename_length, line_length;
-  char filename[100];
-  char function[100];
-  char line[100];
-  FILE *file;
+  FILE *previous_declarations = fopen( input_private_type_declarations, "r" );
+  if( !previous_declarations )
+    return 0;
+
+  FILE *new_declarations = fopen( private_type_declarations, "w" );
+  if( !new_declarations )
+    return 0;
+
+  char line[200];
+  const char *endif = "#endif";
+  while( !feof( previous_declarations ) ){
+    fgets( line, 200, previous_declarations );
+    if( strstr( line, endif ) == line ){
+      break;
+    } else {
+      fputs( line, new_declarations );
+    }
+  }
+  
+  fputc( '\n', new_declarations );
+
+  unsigned i;
+  for( i = 0; i < type_count; i++ ){
+    fprintf( new_declarations, "typedef Stumpless%s %s\n", types[i], types[i] );
+  }
+  
+  fputc( '\n', new_declarations );
+  fputs( endif, new_declarations );
+
+  fclose( previous_declarations );
+  fclose( new_declarations );
+  
+  return 1;
+}
+
+int
+GenerateHeadersAndSources
+( void )
+{
+  const char *files[1];
+  unsigned file_count = 1;
+
+  files[0] = "value";
+  
+  char input_header[200];
+  strncpy( input_header, public_include_dir, 99 );
+  input_header[99] = '\0';
+  char *input_header_start = input_header + strlen( input_header );
+
+  char new_header[200];
+  strncpy( new_header, public_include_dir, 99 );
+  new_header[99] = '\0';
+  char *new_header_start = new_header + strlen( new_header );
+
+  char source[200];
+  strncpy( source, stumpless_src_dir, 99 );
+  source[99] = '\0';
+  char *source_start = source + strlen( source );
+  
+  char line[500];
+  char one_ago[200];
+  char two_ago[200];
+  char temp_filename[200];
+  unsigned parameter_count;
+  char parameter_name[100];
+  FILE *input_header_file, *new_header_file, *source_file;
+  unsigned i, j;
   for( i = 0; i < file_count; i++ ){
-    filename_length = strlen( files[i] );
-    filename[0] = '\0';
-    strncat( filename, private_includes, 50 );
-    strncat( filename, files[i], 49 );
-    filename[99] = '\0';
-    file = fopen( filename, "r" );
-    if( !file ){
-      printf( "couldn't open header file: %s\n", filename  );
+    strcpy( temp_filename, files[i] );
+    strncpy( input_header_start, strncat( temp_filename, ".h.in", 6 ), 99 );
+    input_header_start[99] = '\0';
+
+    strcpy( temp_filename, files[i] );
+    strncpy( new_header_start, strncat( temp_filename, ".h", 3 ), 99 );
+    new_header_start[99] = '\0';
+
+    strcpy( temp_filename, files[i] );
+    strncpy( source_start, strncat( temp_filename, ".c", 3 ), 99 );
+    source_start[99] = '\0';
+
+    rename( new_header, input_header );
+
+    input_header_file = fopen( input_header, "r" );
+    if( !input_header_file )
       return 0;
-    }
     
-    while( fgets( line, 100, file ) ){
-      if( line[0] == '\n' ){
-        fgets( line, 100, file );
-        fgets( line, 100, file );
-        
-        if( line[0] == '\n' || line[0] == '#' )
-          continue;
-        
-        line_length = strlen( line );
-        functions[function_count] = malloc( sizeof( char ) * line_length );
-        if( !functions[function_count] ){
-          printf( "couldn't allocate memory for the %d function name\n", function_count+1 );
-          return 0;
+    new_header_file = fopen( new_header, "w" );
+    if( !new_header_file )
+      return 0;
+  
+    source_file = fopen( source, "w" );
+    if( !source_file )
+      return 0;
+    
+    fputs( "#include <stumpless/", source_file );
+    fputs( files[i], source_file );
+    fputs( ".h>\n#include \"private", source_file );
+    fputs( files[i], source_file );
+    fputs( ".h\n\n", source_file );
+
+    while( !feof( input_header_file ) ){
+      fgets( line, 80, input_header_file );
+      ReplaceTypes( line );
+      fputs( line, new_header_file );
+      
+      if( line[0] == '(' ){
+        parameter_count = 0;
+        while( strstr( line, "," ) ){
+          sprintf( parameter_name, " param%i$", parameter_count++ );
+          replace_first_string( line, ",", parameter_name );
         }
-        strncpy( functions[function_count], line, line_length );
-        functions[function_count][line_length-1] = '\0';
+        replace_char( line, '$', ',' );
         
-        function_files[function_count] = malloc( sizeof( char ) * filename_length );
-        if( !function_files[function_count] ){
-          printf( "couldn't allocate memory for the %d function filename\n", function_count+1 );
-          return 0;
+        if( strcmp( line, "( void )" ) == 0 ){
+          replace_first_string( line, ");", ")" );
+        } else {
+          sprintf( parameter_name, " param%i )", parameter_count++ );
+          replace_first_string( line, ")", parameter_name );
         }
-        strncpy( function_files[function_count], files[i], filename_length );
-        function_files[filename_length-1] = '\0';
-        
-        function_count++;
+
+        fputs( two_ago, source_file );
+        fputs( one_ago, source_file );
+        fputs( line, source_file );
+        fputs( "{\n  return ", source_file );
+        fputs( one_ago, source_file );
+        fputs( "(", source_file );
+        for( j = 0; j < parameter_count; j++ ){
+          fprintf( source_file, "param%i ", j );
+          if( j < parameter_count - 1 )
+            fputs( ", ", source_file );
+        }
+        fputs( ");\n}", source_file );
       }
+    
+      strncpy( two_ago, one_ago, 199 );
+      strncpy( one_ago, line, 199 );
     }
+  
+    fclose( input_header_file );
+    fclose( new_header_file );
+    fclose( source_file );
   }
   
   return 1;
 }
 
-int
-GenerateStumplessHeaders
-( void )
+char *
+ReplaceTypes
+( char *str )
 {
-  unsigned i, j, function_file_length;
-  char function_char;
-  char filename[100];
-  char previous_filename[100];
-  char header_guard[100];
-  FILE *header;
-  for( i = 0; i < function_count; i++ ){
-    function_file_length = strlen( function_files[i] );
-    
-    filename[0] = '\0';
-    strncat( filename, public_includes, 50 );
-    strncat( filename, function_files[i], 49 );
-    filename[99] = '\0';
-    
-    if( strcmp( filename, previous_filename ) != 0 ){
-      if( header ){
-        fputs( "#endif", header );
-        fclose( header );
-      }
-      
-      header = fopen( filename, "w" );
-      if( !header )
-        return 0;
-      
-      header_guard[0] = '\0';
-      strncat( header_guard, "__STUMPLESS_", 12 );
-      for( j = 0; j < function_file_length; j++ ){
-        function_char = function_files[i][j];
-        
-        if( function_char == '.' )
-          break;
-        
-        if( function_char == '/' )
-          header_guard[12+j] = '_';
-        else
-          header_guard[12+j] = toupper( function_char );
-      }
-      
-      fputs( "#ifndef ", header );
-      fputs( header_guard, header );
-      fputs( "\n#define ", header );
-      fputs( header_guard, header );
-      fputs( "\n#include <stumpless/type.h>\n\n", header );
-    }
-    
-    
-  }
-  
-  return 1;
-}
+  char new_type[100];
+  strncpy( new_type, prefix, 50 );
+  new_type[50] = '\0';
+  new_type[99] = '\0';
+  char *new_type_placeholder = new_type + strlen( new_type );
 
-int
-GenerateStumplessSources
-( void )
-{
-  return 0;
+  unsigned i;
+  for( i = 0; i < type_count; i++ ){
+    strncpy( new_type_placeholder, types[i], 49 );
+    replace_string( str, types[i], new_type ); 
+  }
 }

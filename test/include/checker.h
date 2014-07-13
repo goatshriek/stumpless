@@ -14,7 +14,7 @@ if( (value) == NULL ){                                                         \
 }
 
 
-#define ASSERT_STRINGS_EQUAL( expected, actual, message )                      \
+#define ASSERT_STRINGS_EQUAL( actual, expected, message )                      \
 if( actual == NULL ){                                                          \
   printf( "Expected: %s\nInstead was NULL\n", (expected) );                    \
   return (message);                                                            \

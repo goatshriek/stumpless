@@ -8,7 +8,7 @@
 #define RUN_TEST( test )                                                       \
 result = test_##test();                                                        \
 if( result != NULL ){                                                          \
-  char * test_name = title_case( replace_char( #test, '_', ' ' ) );            \
+  char * test_name = get_title_case( replace_char( #test, '_', ' ' ) );        \
   printf( "%s Test Failed: %s\n", test_name, result );                         \
   failure_count++;                                                             \
 }
