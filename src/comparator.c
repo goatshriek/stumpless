@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "private/comparator.h"
-#include "private/comparator_initializer.h"
+#include "private/comparator/initializer.h"
 #include "private/container/dictionary.h"
 #include "private/status.h"
 #include "private/type.h"
@@ -19,7 +19,7 @@ AddComparator
     comparators = NewDictionary();
 
     if( !comparators )
-      return RaiseAbnormalStatus( "constructor failure" );
+      return RaiseStatus( "constructor failure" );
   }
 
   void * value = ( void * ) comparator;
@@ -79,20 +79,20 @@ SetComparatorOption
 ( Comparator * comparator, const char * option, void * value )
 {
   if( !comparator || !option )
-    return RaiseAbnormalStatus( "empty argument" );
+    return RaiseStatus( "empty argument" );
 
   if( !comparator->options ){
     comparator->options = NewDictionary();
 
     if( !comparator->options )
-      return RaiseAbnormalStatus( "dictionary failure" );
+      return RaiseStatus( "dictionary failure" );
   }
 
   Dictionary * result;
   result =  SetDictionaryValue( comparator->options, option, value );
 
   if( !result )
-    return RaiseAbnormalStatus( "dictionary failure" );
+    return RaiseStatus( "dictionary failure" );
   else
     return NULL;
 }

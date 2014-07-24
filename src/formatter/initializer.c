@@ -36,20 +36,20 @@ InitializeFormatterByName
 ( const char * name )
 {
   if( initializers == NULL ){
-    
+
     initializers = NewDictionary();
     if( initializers == NULL )
-      return RaiseAbnormalStatus( "constructor failure" );
-    
+      return RaiseStatus( "constructor failure" );
+
     ADD_FORMATTER( "csv", CSV )
     ADD_FORMATTER( "text", Text )
   }
-  
+
   Formatter * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;
-  else 
+  else
     return AddFormatter( initializer() );
 }
 

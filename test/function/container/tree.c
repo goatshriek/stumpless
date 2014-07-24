@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "helper.h"
-#include "private/comparator_base.h"
+#include "private/comparator/base.h"
 #include "private/container/tree.h"
 #include "private/type.h"
 #include "static/container/tree.h"

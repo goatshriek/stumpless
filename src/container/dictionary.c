@@ -11,24 +11,24 @@ DestroyDictionary
 {
   if( dictionary == NULL )
     return;
-  
+
   DestroyNode( dictionary->root );
-  
+
   free( dictionary );
 }
 
 void *
 GetDictionaryValue
-( Dictionary * dictionary, const char * key )
+( Dictionary *dictionary, const char *key )
 {
-  if( dictionary == NULL || key == NULL )
+  if( !dictionary || !key )
     return NULL;
-  
-  Node * result = GetNode( key, dictionary->root );
-  
-  if( result == NULL )
+
+  Node *result = GetNode( key, dictionary->root );
+
+  if( !result )
     return NULL;
-  
+
   Splay( dictionary, result );
   return result->value;
 }
@@ -40,9 +40,9 @@ NewDictionary
   Dictionary * dictionary = malloc( sizeof( Dictionary ) );
   if( dictionary == NULL )
     return NULL;
-  
+
   dictionary->root = NULL;
-  
+
   return dictionary;
 }
 
@@ -53,9 +53,9 @@ RemoveDictionaryValue
   Node * node = GetNode( key, dictionary->root );
   if( node == NULL )
     return NULL;
-  
+
   Splay( dictionary, node );
-  
+
   if( node->left_child == NULL ){
     ReplaceNode( dictionary, node, node->right_child );
   } else if( node->right_child == NULL ){
@@ -69,9 +69,9 @@ RemoveDictionaryValue
     }
     ReplaceNode( dictionary, node, minimum );
     minimum->left_child = node->left_child;
-    minimum->left_child->parent = minimum; 
+    minimum->left_child->parent = minimum;
   }
-  
+
   void * removed_value = node->value;
   DestroyNode( node );
   return removed_value;
@@ -84,25 +84,25 @@ SetDictionaryValue
   // todo add a search for existing keys
   if( dictionary == NULL )
     return NULL;
-  
+
   Node * node = malloc( sizeof( Node ) );
   if( node == NULL )
     return NULL;
-  
+
   node->key = key;
   node->value = value;
   node->parent = NULL;
   node->left_child = NULL;
   node->right_child = NULL;
-  
+
   if( dictionary->root == NULL ){
     dictionary->root = node;
     return dictionary;
   }
-  
+
   AddNode( dictionary->root, node );
   Splay( dictionary, node );
-  
+
   return dictionary;
 }
 
@@ -117,7 +117,7 @@ AddNode
     DestroyNode( addition );
     return;
   }
-  
+
   Node * next;
   if( comparison < 0 ){
     next = node->left_child;
@@ -134,7 +134,7 @@ AddNode
       return;
     }
   }
-  
+
   return AddNode( next, addition );
 }
 
@@ -145,10 +145,10 @@ DestroyNode
 {
   if( node == NULL )
     return;
-  
+
   DestroyNode( node->left_child );
   DestroyNode( node->right_child );
-  
+
   free( node );
 }
 
@@ -159,17 +159,17 @@ GetNode
 {
   if( node == NULL )
     return NULL;
-  
+
   int comparison =  strcmp( key, node->key );
   if( comparison == 0 )
     return node;
-  
+
   Node * next;
   if( comparison < 0 )
     next = node->left_child;
   else
     next = node->right_child;
-  
+
   return GetNode( key, next );
 }
 
@@ -204,9 +204,9 @@ ReplaceNode
     previous->parent->left_child = replacement;
   else
     previous->parent->right_child = replacement;
-  
+
   if( replacement != NULL )
-    replacement->parent == previous->parent;
+    replacement->parent = previous->parent;
 }
 static
 void
@@ -235,7 +235,7 @@ Splay
 {
   if( node->parent == NULL )
     return;
-  
+
   if( node->parent->parent == NULL ){
     if( node->parent->left_child == node )
       RightRotate( dictionary, node->parent );
@@ -257,7 +257,7 @@ Splay
     LeftRotate( dictionary, node->parent );
     RightRotate( dictionary, node->parent );
   }
-  
+
   Splay( dictionary, node );
 }
 
@@ -268,6 +268,6 @@ SubtreeMinimum
 {
   if( node->left_child == NULL )
     return node;
-  
+
   return SubtreeMinimum( node->left_child );
 }

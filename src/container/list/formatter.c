@@ -46,7 +46,7 @@ EntryThroughFormatterList
 ( const FormatterList * list, const Entry * entry )
 {
   if( !list || !entry )
-    return RaiseAbnormalStatus( "empty argument" );
+    return RaiseStatus( "empty argument" );
 
   Status * final_status = NULL;
   Status * handler_status;

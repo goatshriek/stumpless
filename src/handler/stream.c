@@ -12,7 +12,7 @@ BinaryOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
-  
+
   return NULL;
 }
 
@@ -21,7 +21,7 @@ CSVOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
-  
+
   return NULL;
 }
 
@@ -30,13 +30,13 @@ HandleStreamOutput
 ( const Output * output, Dictionary * options )
 {
   if( !output )
-    return RaiseAbnormalStatus( "empty argument" );
-  
+    return RaiseStatus( "empty argument" );
+
   if( !output->profile || !output->profile->into_stream )
-    return RaiseAbnormalStatus( "incompatible profile" );
-  
+    return RaiseStatus( "incompatible profile" );
+
   FILE * destination = stdout;
-  
+
   return output->profile->into_stream( output, destination );
 }
 
@@ -45,7 +45,7 @@ JSONOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
-  
+
   return NULL;
 }
 
@@ -54,14 +54,14 @@ RawStringOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   if( !output || !stream )
-    return RaiseAbnormalStatus( "empty argument" );
-  
+    return RaiseStatus( "empty argument" );
+
   if( !output->data || !output->data->c_p )
-    return RaiseAbnormalStatus( "malformed structure" );
-  
+    return RaiseStatus( "malformed structure" );
+
   if( fputs( output->data->c_p, stream ) < 0 )
-    return RaiseAbnormalStatus( "stream write failure" );
-  
+    return RaiseStatus( "stream write failure" );
+
   return NULL;
 }
 
@@ -70,27 +70,27 @@ TextOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   if( !output || !stream )
-    return RaiseAbnormalStatus( "empty argument" );
-  
+    return RaiseStatus( "empty argument" );
+
   if( !output->data || !output->data->v_p )
-    return RaiseAbnormalStatus( "malformed structure" );
-  
+    return RaiseStatus( "malformed structure" );
+
   const Value * value;
   ValueListConstIterator * values = CBeginValueList( output->data->v_p );
   while( value = NextInValueListConstIterator( values ) ){
     if( !value->data ){
       DestroyValueListConstIterator( values );
-      return RaiseAbnormalStatus( "malformed structure" );
+      return RaiseStatus( "malformed structure" );
     }
-  
+
     if( fputs( value->data->c_p, stream ) < 0 ){
       DestroyValueListConstIterator( values );
-      return RaiseAbnormalStatus( "stream write failure" );
+      return RaiseStatus( "stream write failure" );
     }
   }
-  
+
   DestroyValueListConstIterator( values );
-  
+
   return NULL;
 }
 
@@ -99,6 +99,6 @@ XMLOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
-  
+
   return NULL;
 }

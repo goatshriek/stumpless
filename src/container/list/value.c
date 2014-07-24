@@ -3,24 +3,18 @@
 
 #include "private/configuration.h"
 #include "private/container/list.h"
-#include "private/status.h"
-#include "private/status_checker.h"
-#include "private/type.h"
-#include "private/value.h"
-#include "private/value_constructor.h"
-
 #include "private/container/list/inheritance.h"
 #include "private/container/list/iterator.h"
 #include "private/container/list/value.h"
-
 #include "private/container/list/const_iterator/value.h"
-
 #include "private/container/list/const_reverse_iterator/value.h"
-
 #include "private/container/list/iterator/value.h"
-
 #include "private/container/list/reverse_iterator/value.h"
-
+#include "private/status.h"
+#include "private/status/checker.h"
+#include "private/type.h"
+#include "private/value.h"
+#include "private/value/constructor.h"
 #include "static/container/list/value.h"
 
 ADD_SEPARATOR_TO_LIST( Value )
@@ -95,18 +89,18 @@ ValueListIntoString
 ( char * str, const ValueList * list )
 {
   if( !str || !list )
-    return RaiseAbnormalStatus( "empty argument" );
+    return RaiseStatus( "empty argument" );
 
   str[0] = '\0';
 
   Configuration * configuration = GetConfiguration();
   if( !configuration )
-    return RaiseAbnormalStatus( "memory allocation failure" );
+    return RaiseStatus( "memory allocation failure" );
 
   size_t buffer_size = configuration->string->buffer_size;
   char * buffer = malloc( sizeof( char ) * ( buffer_size + 1 ) );
   if( !buffer )
-    return RaiseAbnormalStatus( "memory allocation failure" );
+    return RaiseStatus( "memory allocation failure" );
 
   Value * value;
   char * value_str;
@@ -114,7 +108,7 @@ ValueListIntoString
   while( value = NextInListIterator( values ) ){
     if( !value || !value->profile ){
       DestroyListIterator( values );
-      return RaiseAbnormalStatus( "malformed structure" );
+      return RaiseStatus( "malformed structure" );
     }
 
     if( !value->profile->to_string ){

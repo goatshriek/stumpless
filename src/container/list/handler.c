@@ -58,7 +58,7 @@ OutputThroughHandlerList
 ( const HandlerList * list, const Output * output )
 {
   if( !list || !output )
-    return RaiseAbnormalStatus( "empty argument" );
+    return RaiseStatus( "empty argument" );
 
   Status * status;
   Handler * handler;

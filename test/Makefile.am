@@ -1,25 +1,25 @@
 check_PROGRAMS = test/function/adapter \
                  test/function/boolean \
-                 test/function/comparator \
-                 test/function/comparator_base \
+                 test/function/comparator/base \
+                 test/function/comparator/main \
                  test/function/configuration \
                  test/function/entry \
                  test/function/entry_attribute \
                  test/function/event \
-                 test/function/filter \
-                 test/function/filter_base \
+                 test/function/filter/base \
+                 test/function/filter/main \
                  test/function/level \
                  test/function/logger \
-                 test/function/output \
-                 test/function/output_profile \
-                 test/function/output_profile_initializer \
-                 test/function/status \
-                 test/function/status_initializer \
+                 test/function/output/main \
+                 test/function/output/profile \
+                 test/function/output/profile_initializer \
+                 test/function/status/initializer \
+                 test/function/status/main \
                  test/function/string_helper \
-                 test/function/value \
-                 test/function/value_constructor \
-                 test/function/value_profile \
-                 test/function/value_profile_initializer \
+                 test/function/value/constructor \
+                 test/function/value/main \
+                 test/function/value/profile \
+                 test/function/value/profile_initializer \
                  test/function/container/dictionary \
                  test/function/container/stack \
                  test/function/container/tree \
@@ -34,9 +34,9 @@ check_PROGRAMS = test/function/adapter \
                  test/function/container/list/value \
                  test/function/container/list/iterator/iterator \
                  test/function/container/list/reverse_iterator/reverse_iterator \
-                 test/function/formatter/formatter \
+                 test/function/formatter/main \
                  test/function/formatter/text \
-                 test/function/handler/handler \
+                 test/function/handler/main \
                  test/function/handler/stream
 
 TESTS = $(check_PROGRAMS)

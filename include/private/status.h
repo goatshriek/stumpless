@@ -24,7 +24,7 @@ GetLastWarning
 ( void );
 
 Status *
-RaiseAbnormalStatus
+RaiseStatus
 ( const char * );
 
 const char *

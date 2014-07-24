@@ -41,22 +41,22 @@ main
     prefix = "Stumpless";
   else
     prefix = argv[1];
-  
+
   if( !GatherTypes() )
     return EXIT_FAILURE;
-  
+
   if( !GenerateDeclarations() )
     return EXIT_FAILURE;
-  
+
   if( !GenerateDefinitions() )
     return EXIT_FAILURE;
-  
+
   if( !GenerateTypedefs() )
     return EXIT_FAILURE;
 
   if( !GenerateHeadersAndSources() )
     return EXIT_FAILURE;
-  
+
   return EXIT_SUCCESS;
 }
 
@@ -68,12 +68,12 @@ GatherTypes
   FILE *declaration_file = fopen( declaration_filename, "r" );
   if( !declaration_file )
     return 0;
-  
+
   char type[82];
   type[0] = type[81] = '\0';
   char word[82];
   word[0] = word[81] = '\0';
-  
+
   unsigned short next = 0;
   while( fscanf( declaration_file, "%81s %81[^;];", type, word ) == 2 ){
     if( strcmp( type, "struct" ) == 0
@@ -87,13 +87,13 @@ GatherTypes
         fputs( "more than 200 types were detected", stderr );
         return 0;
       }
-      
+
       strcpy( types[type_count++], word );
     }
   }
-  
+
   fclose( declaration_file );
-  
+
   return 1;
 }
 
@@ -102,15 +102,15 @@ GenerateDefinitions
 ( void )
 {
   rename( definition_filename, input_definition_filename );
-  
+
   FILE *definition_file = fopen( input_definition_filename, "r" );
   if( !definition_file )
     return 0;
-  
+
   FILE *definition_output_file = fopen( definition_filename, "w" );
   if( !definition_output_file )
     return 0;
-  
+
   char word[82];
   unsigned i;
   int character;
@@ -119,13 +119,13 @@ GenerateDefinitions
       fputc( character, definition_output_file );
       continue;
     }
-    
+
     for( i = 0; !isspace( character ) && i < 82; i++ ){
       word[i] = character;
       character = fgetc( definition_file );
     }
     word[i] = '\0';
-    
+
     for( i = 0; i < type_count; i++ ){
       if( strcmp( types[i], word ) == 0 ){
         fputs( prefix, definition_output_file );
@@ -135,10 +135,10 @@ GenerateDefinitions
     fputs( word, definition_output_file );
     fputc( character, definition_output_file );
   }
-  
+
   fclose( definition_file );
   fclose( definition_output_file );
-  
+
   return 1;
 }
 
@@ -147,15 +147,15 @@ GenerateDeclarations
 ( void )
 {
   rename( declaration_filename, input_declaration_filename );
-  
+
   FILE *declaration_file = fopen( input_declaration_filename, "r" );
   if( !declaration_file )
     return 0;
-  
+
   FILE *declaration_output_file = fopen( declaration_filename, "w" );
   if( !declaration_output_file )
     return 0;
-  
+
   char word[82];
   unsigned i;
   int character;
@@ -164,13 +164,13 @@ GenerateDeclarations
       fputc( character, declaration_output_file );
       continue;
     }
-    
+
     for( i = 0; !isspace( character ) && i < 82; i++ ){
       word[i] = character;
       character = fgetc( declaration_file );
     }
     word[i] = '\0';
-    
+
     for( i = 0; i < type_count; i++ ){
       if( strcmp( types[i], word ) == 0 ){
         fputs( prefix, declaration_output_file );
@@ -180,10 +180,10 @@ GenerateDeclarations
     fputs( word, declaration_output_file );
     fputc( character, declaration_output_file );
   }
-  
+
   fclose( declaration_file );
   fclose( declaration_output_file );
-  
+
   return 1;
 }
 
@@ -192,7 +192,7 @@ GenerateTypedefs
 ( void )
 {
   rename( private_type_declarations, input_private_type_declarations );
-  
+
   FILE *previous_declarations = fopen( input_private_type_declarations, "r" );
   if( !previous_declarations )
     return 0;
@@ -211,20 +211,20 @@ GenerateTypedefs
       fputs( line, new_declarations );
     }
   }
-  
+
   fputc( '\n', new_declarations );
 
   unsigned i;
   for( i = 0; i < type_count; i++ ){
     fprintf( new_declarations, "typedef Stumpless%s %s\n", types[i], types[i] );
   }
-  
+
   fputc( '\n', new_declarations );
   fputs( endif, new_declarations );
 
   fclose( previous_declarations );
   fclose( new_declarations );
-  
+
   return 1;
 }
 
@@ -236,7 +236,7 @@ GenerateHeadersAndSources
   unsigned file_count = 1;
 
   files[0] = "value";
-  
+
   char input_header[200];
   strncpy( input_header, public_include_dir, 99 );
   input_header[99] = '\0';
@@ -251,7 +251,7 @@ GenerateHeadersAndSources
   strncpy( source, stumpless_src_dir, 99 );
   source[99] = '\0';
   char *source_start = source + strlen( source );
-  
+
   char line[500];
   char one_ago[200];
   char two_ago[200];
@@ -278,15 +278,15 @@ GenerateHeadersAndSources
     input_header_file = fopen( input_header, "r" );
     if( !input_header_file )
       return 0;
-    
+
     new_header_file = fopen( new_header, "w" );
     if( !new_header_file )
       return 0;
-  
+
     source_file = fopen( source, "w" );
     if( !source_file )
       return 0;
-    
+
     fputs( "#include <stumpless/", source_file );
     fputs( files[i], source_file );
     fputs( ".h>\n#include \"private", source_file );
@@ -297,7 +297,7 @@ GenerateHeadersAndSources
       fgets( line, 80, input_header_file );
       ReplaceTypes( line );
       fputs( line, new_header_file );
-      
+
       if( line[0] == '(' ){
         parameter_count = 0;
         while( strstr( line, "," ) ){
@@ -305,7 +305,7 @@ GenerateHeadersAndSources
           replace_first_string( line, ",", parameter_name );
         }
         replace_char( line, '$', ',' );
-        
+
         if( strcmp( line, "( void )" ) == 0 ){
           replace_first_string( line, ");", ")" );
         } else {
@@ -326,16 +326,16 @@ GenerateHeadersAndSources
         }
         fputs( ");\n}", source_file );
       }
-    
+
       strncpy( two_ago, one_ago, 199 );
       strncpy( one_ago, line, 199 );
     }
-  
+
     fclose( input_header_file );
     fclose( new_header_file );
     fclose( source_file );
   }
-  
+
   return 1;
 }
 
@@ -352,6 +352,8 @@ ReplaceTypes
   unsigned i;
   for( i = 0; i < type_count; i++ ){
     strncpy( new_type_placeholder, types[i], 49 );
-    replace_string( str, types[i], new_type ); 
+    replace_string( str, types[i], new_type );
   }
+
+  return str;
 }

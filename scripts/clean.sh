@@ -8,5 +8,5 @@ rm -rf autom4te.cache
 
 rm -f configure
 rm -f Makefile.in
-rm -f include/stumpless/config.h.in
-rm -f include/stumpless/config.h.in~
+rm -f include/stumpless/config/check.h.in
+rm -f include/stumpless/config/check.h.in~

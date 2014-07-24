@@ -1,31 +1,30 @@
 #include <stdlib.h>
 
 #include "private/adapter.h"
-#include "private/adapter_initializer.h"
+#include "private/adapter/initializer.h"
 #include "private/container/dictionary.h"
 #include "private/status.h"
 #include "private/type.h"
 
-static Dictionary * adapters = NULL;
+static Dictionary *adapters = NULL;
 
 Status *
 AddAdapter
-( Adapter * adapter )
+( Adapter *adapter )
 {
-  if( adapter == NULL || adapter->name == NULL )
+  if( !adapter || !adapter->name )
     return NULL;
-  
-  if( adapters == NULL ){
+
+  if( !adapters ){
     adapters = NewDictionary();
-    
-    if( adapters == NULL )
-      return RaiseAbnormalStatus( "constructor failure" );
+
+    if( !adapters )
+      return RaiseStatus( "constructor failure" );
   }
-  
-  void * value = ( void * ) adapter;
-  if( SetDictionaryValue( adapters, adapter->name, value ) == NULL )
+
+  if( !SetDictionaryValue( adapters, adapter->name, adapter ) )
     return NULL;
-  
+
   return NULL;
 }
 
@@ -43,19 +42,19 @@ FindAdapterByName
 {
   if( !adapters ){
     adapters = NewDictionary();
-    
+
     if( adapters == NULL )
       return NULL;
   }
-  
+
   Adapter * adapter = GetDictionaryValue( adapters, name );
-  
+
   if( adapter == NULL ){
     if( InitializeAdapterByName( name ) != NULL )
       return NULL;
     adapter = GetDictionaryValue( adapters, name );
   }
-  
+
   return adapter;
 }
 
@@ -65,29 +64,29 @@ GetAdapterOption
 {
   if( adapter == NULL || option == NULL || adapter->options == NULL )
     return NULL;
-  
+
   return GetDictionaryValue( adapter->options, option );
 }
 
 Status *
 SetAdapterOption
-( Adapter * adapter, const char * option, void * value )
+( Adapter *adapter, const char *option, void *value )
 {
-  if( adapter == NULL || option == NULL )
-    return RaiseAbnormalStatus( "empty argument" );
-  
-  if( adapter->options == NULL ){
+  if( !adapter || !option )
+    return RaiseStatus( "empty argument" );
+
+  if( !adapter->options ){
     adapter->options = NewDictionary();
-    
-    if( adapter->options == NULL )
-      return RaiseAbnormalStatus( "dictionary failure" );
+
+    if( !adapter->options )
+      return RaiseStatus( "dictionary failure" );
   }
-  
-  Dictionary * result;
+
+  Dictionary *result;
   result =  SetDictionaryValue( adapter->options, option, value );
-  
-  if( result == NULL )
-    return RaiseAbnormalStatus( "dictionary failure" );
+
+  if( !result )
+    return RaiseStatus( "dictionary failure" );
   else
     return NULL;
 }

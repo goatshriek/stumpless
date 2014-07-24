@@ -7,7 +7,7 @@
 #include "private/status.h"
 #include "private/type.h"
 
-static Dictionary * formatters = NULL;
+static Dictionary *formatters = NULL;
 
 Status *
 AddFormatter
@@ -20,7 +20,7 @@ AddFormatter
     formatters = NewDictionary();
 
     if( formatters == NULL )
-      return RaiseAbnormalStatus( "constructor failure" );
+      return RaiseStatus( "constructor failure" );
   }
 
   void * value = ( void * ) formatter;
@@ -35,16 +35,16 @@ AppendHandlerToFormatter
 ( Formatter * formatter, Handler * handler )
 {
   if( !formatter || !handler )
-    return RaiseAbnormalStatus( "empty argument" );
+    return RaiseStatus( "empty argument" );
 
   if( !formatter->handlers ){
     formatter->handlers = NewHandlerList();
     if( !formatter->handlers )
-      return RaiseAbnormalStatus( "constructor failure" );
+      return RaiseStatus( "constructor failure" );
   }
 
   if( !AppendToHandlerList( formatter->handlers, handler ) )
-    return RaiseAbnormalStatus( "list failure" );
+    return RaiseStatus( "list failure" );
 
   return NULL;
 }
@@ -102,20 +102,20 @@ SetFormatterOption
 ( Formatter * formatter, const char * option, void * value )
 {
   if( formatter == NULL || option == NULL )
-    return RaiseAbnormalStatus( "empty argument" );
+    return RaiseStatus( "empty argument" );
 
   if( formatter->options == NULL ){
     formatter->options = NewDictionary();
 
     if( formatter->options == NULL )
-      return RaiseAbnormalStatus( "dictionary failure" );
+      return RaiseStatus( "dictionary failure" );
   }
 
   Dictionary * result;
   result =  SetDictionaryValue( formatter->options, option, value );
 
   if( result == NULL )
-    return RaiseAbnormalStatus( "dictionary failure" );
+    return RaiseStatus( "dictionary failure" );
   else
     return NULL;
 }

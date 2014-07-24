@@ -4,8 +4,10 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
+#include <stumpless/config.h>
 #include <stumpless/type/declaration.h>
 
 typedef unsigned char Byte;
@@ -45,7 +47,7 @@ struct BooleanFormat {
 
 struct ByteList {
   Byte *bytes;
-  unsigned byte_count;
+  size_t byte_count;
 };
 
 struct Comparator {
@@ -122,13 +124,17 @@ struct Level {
 
 struct Log {
   //Tree *records;
-  unsigned placeholder; //delete when tree is fixed up
+  unsigned placeholder; //todo delete when tree is fixed up
 };
 
 struct Logger {
   AdapterList *adapters;
   const char *name;
   FormatterList *formatters;
+#ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
+  int receive_pipe;
+  int send_pipe;
+#endif
 };
 
 struct Output {
@@ -177,40 +183,40 @@ struct ThreadingConfiguration {
 
 union Type {
   unsigned short u_s;
-  const unsigned short * u_s_p;
+  unsigned short *u_s_p;
   signed short s;
-  const signed short * s_p;
+  signed short *s_p;
   unsigned int u_i;
-  const unsigned int * u_i_p;
+  unsigned int *u_i_p;
   signed int i;
-  const signed int * i_p;
+  signed int *i_p;
   unsigned long u_l;
-  const unsigned long * u_l_p;
+  unsigned long *u_l_p;
   signed long l;
-  const signed long * l_p;
+  signed long *l_p;
   unsigned long long u_l_l;
-  const unsigned long long * u_l_l_p;
+  unsigned long long *u_l_l_p;
   signed long long l_l;
-  const signed long long * l_l_p;
+  signed long long *l_l_p;
   char c;
-  const char * c_p;
+  char *c_p;
   signed char s_c;
-  const signed char * s_c_p;
+  signed char *s_c_p;
   unsigned char u_c;
-  const unsigned char * u_c_p;
+  unsigned char *u_c_p;
   float f;
-  const float * f_p;
+  float *f_p;
   double d;
-  const double * d_p;
+  double *d_p;
   long double l_d;
-  const long double * l_d_p;
-  const void * v_p;
+  long double *l_d_p;
+  void *v_p;
 };
 
 struct Value {
   Type *data;
   const char *format;
-  unsigned length;
+  size_t length;
   ValueProfile *profile;
 };
 

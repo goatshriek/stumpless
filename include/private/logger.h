@@ -20,8 +20,16 @@ CheckLoggerStatus
 ( Logger * );
 
 void
-ListenForValues
+DestroyLogger
 ( Logger * );
+
+void
+Listen
+( Logger * );
+
+Logger *
+NewLogger
+( const char * );
 
 Status *
 ProcessValue
@@ -34,9 +42,5 @@ ReceiveNextValue
 Status *
 SendLoggerStatus
 ( Logger * );
-
-Status *
-SendValue
-( Logger *, Value * );
 
 #endif

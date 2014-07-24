@@ -2,22 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/output.h"
-#include "private/output_profile.h"
-#include "private/status_checker.h"
-#include "private/type.h"
-#include "private/value.h"
-#include "private/value_constructor.h"
-
-#include "private/formatter/text.h"
-
 #include "private/container/list/entry_attribute.h"
 #include "private/container/list/event_attribute.h"
 #include "private/container/list/value.h"
-
 #include "private/container/list/iterator/entry_attribute.h"
 #include "private/container/list/iterator/event_attribute.h"
-
+#include "private/formatter/text.h"
+#include "private/output.h"
+#include "private/output/profile.h"
+#include "private/status/checker.h"
+#include "private/type.h"
+#include "private/value.h"
+#include "private/value/constructor.h"
 #include "static/formatter/text.h"
 
 Output *

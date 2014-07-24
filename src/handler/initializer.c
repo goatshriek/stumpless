@@ -33,19 +33,19 @@ InitializeHandlerByName
 ( const char * name )
 {
   if( initializers == NULL ){
-    
+
     initializers = NewDictionary();
     if( initializers == NULL )
-      return RaiseAbnormalStatus( "constructor failure" );
-    
+      return RaiseStatus( "constructor failure" );
+
     ADD_HANDLER( "stream", Stream )
   }
-  
+
   Handler * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;
-  else 
+  else
     return AddHandler( initializer() );
 }
 

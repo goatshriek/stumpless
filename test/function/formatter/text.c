@@ -4,12 +4,9 @@
 
 #include "private/output.h"
 #include "private/type.h"
-#include "private/value_constructor.h"
-
+#include "private/value/constructor.h"
 #include "private/formatter/text.h"
-
 #include "private/container/list/value.h"
-
 #include "private/container/list/iterator/value.h"
 
 #include "helper.h"

@@ -4,13 +4,13 @@
 
 #include "private/boolean.h"
 #include "private/configuration.h"
+#include "private/container/list/value.h"
 #include "private/status.h"
-#include "private/status_checker.h"
+#include "private/status/checker.h"
 #include "private/type.h"
 #include "private/value.h"
-#include "private/value_constructor.h"
+#include "private/value/constructor.h"
 
-#include "private/container/list/value.h"
 
 #define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \
 ValueList *                                                                    \
@@ -43,14 +43,14 @@ name##ValueIntoString                                                          \
 ( char * str, const Value * value )                                            \
 {                                                                              \
   if( !str || !value || !value->data )                                         \
-    return RaiseAbnormalStatus( "empty argument" );                            \
+    return RaiseStatus( "empty argument" );                            \
                                                                                \
   const char * format = value->format ? value->format : default_format;        \
                                                                                \
   str[0] = '\0';                                                               \
   int result = sprintf( str, format, value->data->data_member );               \
   if( result < 0 )                                                             \
-    return RaiseAbnormalStatus( "string write failure" );                      \
+    return RaiseStatus( "string write failure" );                      \
                                                                                \
   return NULL;                                                                 \
 }
@@ -104,21 +104,21 @@ BooleanArrayValueToValueList
 {
   if( !value || !value->data || !value->data->v_p )
     return NULL;
-  
+
   ValueList *list = NewValueList();
   if( !list )
     return NULL;
-  
+
   const Boolean **boolean_list = ( const Boolean ** ) value->data->v_p;
   Value *boolean_value;
-  
-  unsigned i; 
+
+  unsigned i;
   for( i = 0; i < value->length; i++ ){
     boolean_value = ValueFromBoolean( boolean_list[i] );
     if( !AppendToValueList( list, boolean_value ) )
       return NULL;
   }
-  
+
   return list;
 }
 
@@ -136,25 +136,25 @@ BooleanValueToString
 {
   if( !value || !value->data || !value->data->v_p )
     return NULL;
-  
+
   Boolean *boolean = ( Boolean * ) value->data->v_p;
-  
+
   const char *description;
   if( boolean->value )
     description = boolean->format->true_description;
   else
     description = boolean->format->false_description;
-  
+
   size_t str_length = strlen( description );
-  
+
   char *str = malloc( sizeof( char ) * ( str_length + 1 ) );
   if( !str )
     return NULL;
-  
+
   str[0] = '\0';
   strncpy( str, description, str_length );
   str[str_length] = '\0';
-  
+
   return str;
 }
 
@@ -170,7 +170,7 @@ CopyValue
 {
   if( !value )
     return NULL;
-  
+
   Value *copy = malloc( sizeof( Value ) );
   if( !copy )
     return NULL;
@@ -179,7 +179,7 @@ CopyValue
   copy->format = value->format;
   copy->length = value->length;
   copy->profile = value->profile;
-  
+
   return copy;
 }
 
@@ -189,11 +189,11 @@ DestroyValue
 {
   if( !value )
     return;
-  
+
   free( value->data );
-  
+
   free( value );
-  
+
   return;
 }
 
@@ -251,21 +251,21 @@ StringArrayValueToValueList
 {
   if( !value || !value->data || !value->data->v_p )
     return NULL;
-  
+
   ValueList *list = NewValueList();
   if( !list )
     return NULL;
-  
+
   const char **string_list = ( const char ** ) value->data->v_p;
   Value *string_value;
-  
-  unsigned i; 
+
+  unsigned i;
   for( i = 0; i < value->length; i++ ){
     string_value = ValueFromString( string_list[i] );
     if( !AppendToValueList( list, string_value ) )
       return NULL;
   }
-  
+
   return list;
 }
 
@@ -283,17 +283,17 @@ StringValueToString
 {
   if( !value || !value->data || !value->data->c_p )
     return NULL;
-  
+
   size_t str_length = strlen( value->data->c_p );
-  
+
   char *str = malloc( sizeof( char ) * ( str_length + 1 ) );
   if( !str )
     return NULL;
-  
+
   str[0] = '\0';
   strncpy( str, value->data->c_p, str_length );
   str[str_length] = '\0';
-  
+
   return str;
 }
 
@@ -332,11 +332,11 @@ ValueIntoString
 ( char *str, const Value *value )
 {
   if( !value )
-    return RaiseAbnormalStatus( "empty argument" );
-  
+    return RaiseStatus( "empty argument" );
+
   if( !value->profile || !value->profile->into_string )
-    return RaiseAbnormalStatus( "malformed structure" );
-  
+    return RaiseStatus( "malformed structure" );
+
   return value->profile->into_string( str, value );
 }
 
@@ -346,7 +346,7 @@ ValueToString
 {
   if( !value || !value->profile || !value->profile->to_string )
     return NULL;
-  
+
   return value->profile->to_string( value );
 }
 
@@ -356,13 +356,13 @@ ValueToValueList
 {
   if( !value )
     return NULL;
-  
+
   ValueList *list = NewValueList();
   if( !list )
     return NULL;
-  
+
   if( !AppendToValueList( list, CopyValue( value ) ) )
     return NULL;
-  
+
   return list;
 }

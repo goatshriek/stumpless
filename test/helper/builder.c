@@ -3,7 +3,7 @@
 #include "builder.h"
 
 #include "private/adapter.h"
-#include "private/comparator_base.h"
+#include "private/comparator/base.h"
 #include "private/configuration.h"
 #include "private/container/dictionary.h"
 #include "private/container/list.h"
@@ -21,12 +21,12 @@
 #include "private/filter.h"
 #include "private/formatter.h"
 #include "private/handler.h"
-#include "private/output_profile.h"
+#include "private/output/profile.h"
 #include "private/container/stack.h"
 #include "private/container/tree.h"
 #include "private/type.h"
-#include "private/value_constructor.h"
-#include "private/value_profile.h"
+#include "private/value/constructor.h"
+#include "private/value/profile.h"
 
 Adapter *
 BuildAdapter

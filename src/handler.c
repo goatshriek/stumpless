@@ -15,18 +15,18 @@ AddHandler
 {
   if( handler == NULL || handler->name == NULL )
     return NULL;
-  
+
   if( handlers == NULL ){
     handlers = NewDictionary();
-    
+
     if( handlers == NULL )
-      return RaiseAbnormalStatus( "constructor failure" );
+      return RaiseStatus( "constructor failure" );
   }
-  
+
   void * value = ( void * ) handler;
   if( SetDictionaryValue( handlers, handler->name, value ) == NULL )
     return NULL;
-  
+
   return NULL;
 }
 
@@ -44,19 +44,19 @@ FindHandlerByName
 {
   if( handlers == NULL ){
     handlers = NewDictionary();
-    
+
     if( handlers == NULL )
       return NULL;
   }
-  
+
   Handler * handler = GetDictionaryValue( handlers, name );
-  
+
   if( handler == NULL ){
     if( InitializeHandlerByName( name ) != NULL )
       return NULL;
     handler = GetDictionaryValue( handlers, name );
   }
-  
+
   return handler;
 }
 
@@ -66,7 +66,7 @@ GetHandlerOption
 {
   if( handler == NULL || option == NULL || handler->options == NULL )
     return NULL;
-  
+
   return GetDictionaryValue( handler->options, option );
 }
 
@@ -75,20 +75,20 @@ SetHandlerOption
 ( Handler * handler, const char * option, void * value )
 {
   if( handler == NULL || option == NULL )
-    return RaiseAbnormalStatus( "empty argument" );
-  
+    return RaiseStatus( "empty argument" );
+
   if( handler->options == NULL ){
     handler->options = NewDictionary();
-    
+
     if( handler->options == NULL )
-      return RaiseAbnormalStatus( "dictionary failure" );
+      return RaiseStatus( "dictionary failure" );
   }
-  
+
   Dictionary * result;
   result =  SetDictionaryValue( handler->options, option, value );
-  
+
   if( result == NULL )
-    return RaiseAbnormalStatus( "dictionary failure" );
+    return RaiseStatus( "dictionary failure" );
   else
     return NULL;
 }
