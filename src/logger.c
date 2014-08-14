@@ -61,6 +61,7 @@ AppendFormatterToLogger
   return NULL;
 }
 
+// todo refactor with new path data structure
 Status *
 AppendHandlerToLogger
 ( Logger *logger, Handler *handler )
@@ -71,7 +72,7 @@ AppendHandlerToLogger
   Formatter *formatter;
   FormatterListIterator *formatters = BeginFormatterList( logger->formatters );
   while( formatter = NextInFormatterListIterator( formatters ) ){
-    if( !AppendHandlerToFormatter( formatter, handler ) )
+    //if( !AppendHandlerToFormatter( formatter, handler ) )
       return RaiseStatus( "list failure ");
   }
 
@@ -185,6 +186,8 @@ NewLogger
   return logger;
 }
 
+
+// todo refactor to use new path structure in logger
 Status *
 ProcessValue
 ( Logger *logger, Value *value )
@@ -196,7 +199,7 @@ ProcessValue
   if( !entry )
     return RaiseStatus( "list failure" );
 
-  return EntryThroughFormatterList( logger->formatters, entry );
+  return NULL;
 }
 
 Value *

@@ -30,25 +30,6 @@ AddFormatter
   return NULL;
 }
 
-Status *
-AppendHandlerToFormatter
-( Formatter * formatter, Handler * handler )
-{
-  if( !formatter || !handler )
-    return RaiseStatus( "empty argument" );
-
-  if( !formatter->handlers ){
-    formatter->handlers = NewHandlerList();
-    if( !formatter->handlers )
-      return RaiseStatus( "constructor failure" );
-  }
-
-  if( !AppendToHandlerList( formatter->handlers, handler ) )
-    return RaiseStatus( "list failure" );
-
-  return NULL;
-}
-
 void
 DestroyFormatter
 ( Formatter *formatter )
@@ -57,7 +38,6 @@ DestroyFormatter
     return;
 
   DestroyFilterList( formatter->filters );
-  DestroyHandlerList( formatter->handlers );
   DestroyDictionary( formatter->options );
 
   free( formatter );

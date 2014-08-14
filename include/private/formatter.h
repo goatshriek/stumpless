@@ -7,10 +7,6 @@ Status *
 AddFormatter
 ( Formatter * );
 
-Status *
-AppendHandlerToFormatter
-( Formatter *, Handler * );
-
 void
 DestroyFormatter
 ( Formatter * );

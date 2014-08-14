@@ -530,10 +530,6 @@ BuildFormatter
   if( !formatter->options )
     return NULL;
 
-  formatter->handlers = BuildHandlerList();
-  if( !formatter->handlers )
-    return NULL;
-
   formatter->filters = BuildFilterList();
   if( !formatter->filters )
     return NULL;

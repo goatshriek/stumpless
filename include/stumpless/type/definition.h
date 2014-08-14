@@ -101,7 +101,6 @@ struct Filter {
 struct Formatter {
   FilterList *filters;
   Output *( *format )( const Entry *, Dictionary * );
-  HandlerList *handlers;
   const char *name;
   Dictionary *options;
 };

@@ -47,10 +47,6 @@ FormatterListIterator *
 EndFormatterList
 ( FormatterList * );
 
-Status *
-EntryThroughFormatterList
-( const FormatterList *, const Entry * );
-
 Formatter *
 FormatterListBack
 ( const FormatterList * );
