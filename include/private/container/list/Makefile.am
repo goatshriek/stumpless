@@ -10,6 +10,7 @@ noinst_HEADERS += include/private/container/list/adapter.h \
                   include/private/container/list/inheritance.h \
                   include/private/container/list/iterator.h \
                   include/private/container/list/reverse_iterator.h \
+                  include/private/container/list/target.h \
                   include/private/container/list/value.h
 
 include include/private/container/list/const_iterator/Makefile.am

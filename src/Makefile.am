@@ -18,6 +18,7 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/output.c \
                           src/status.c \
                           src/string_helper.c \
+                          src/target.c \
                           src/value.c
 
 include src/adapter/Makefile.am

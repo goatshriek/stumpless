@@ -140,6 +140,7 @@ typedef struct SortingConfiguration SortingConfiguration;
 typedef enum SortingMethod SortingMethod;
 typedef struct StringConfiguration StringConfiguration;
 typedef struct Target Target;
+typedef struct TargetList TargetList;
 typedef struct ThreadingConfiguration ThreadingConfiguration;
 typedef union Type Type;
 typedef struct Value Value;

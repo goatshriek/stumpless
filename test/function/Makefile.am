@@ -34,6 +34,10 @@ test_function_string_helper_SOURCES = test/function/string_helper.c
 test_function_string_helper_CFLAGS = $(test_flags)
 test_function_string_helper_LDADD = $(test_libraries)
 
+test_function_target_SOURCES = test/function/target.c
+test_function_target_CFLAGS = $(test_flags)
+test_function_target_LDADD = $(test_libraries)
+
 include test/function/comparator/Makefile.am
 include test/function/container/Makefile.am
 include test/function/filter/Makefile.am

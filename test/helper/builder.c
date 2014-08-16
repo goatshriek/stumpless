@@ -813,6 +813,13 @@ BuildStringValue
   return value;
 }
 
+Target *
+BuildTarget
+( void )
+{
+  return NULL;
+}
+
 Output *
 BuildTextOutput( void )
 {

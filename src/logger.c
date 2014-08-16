@@ -17,65 +17,27 @@
 
 static Dictionary *loggers = NULL;
 
+// todo refactor with append adapter to target list function
 Status *
 AppendAdapterToLogger
 ( Logger *logger, Adapter *adapter )
 {
-  if( !logger || !adapter )
-    return RaiseStatus( "empty argument" );
-
-  if( !logger->adapters ){
-    logger->adapters = NewAdapterList();
-    if( !logger->adapters )
-      return RaiseStatus( "constructor failure" );
-  }
-
-  if( AdapterListContains( logger->adapters, adapter ) )
-    return RaiseStatus( "duplicate" );
-
-  if( !AppendToAdapterList( logger->adapters, adapter ) )
-    return RaiseStatus( "list failure " );
-
   return NULL;
 }
 
+// todo refactor with append formatter to target list function
 Status *
 AppendFormatterToLogger
 ( Logger *logger, Formatter *formatter )
 {
-  if( !logger || !formatter )
-    return RaiseStatus( "empty argument" );
-
-  if( !logger->formatters ){
-    logger->formatters = NewFormatterList();
-    if( !logger->formatters )
-      return RaiseStatus( "constructor failure" );
-  }
-
-  if( FormatterListContains( logger->formatters, formatter ) )
-    return RaiseStatus( "duplicate" );
-
-  if( !AppendToFormatterList( logger->formatters, formatter ) )
-    return RaiseStatus( "list failure" );
-
   return NULL;
 }
 
-// todo refactor with new path data structure
+// todo refactor with new target data structure
 Status *
 AppendHandlerToLogger
 ( Logger *logger, Handler *handler )
 {
-  if( !logger || !handler )
-    return RaiseStatus( "empty argument" );
-
-  Formatter *formatter;
-  FormatterListIterator *formatters = BeginFormatterList( logger->formatters );
-  while( formatter = NextInFormatterListIterator( formatters ) ){
-    //if( !AppendHandlerToFormatter( formatter, handler ) )
-      return RaiseStatus( "list failure ");
-  }
-
   return NULL;
 }
 
@@ -97,8 +59,7 @@ DestroyLogger
   if( !logger )
     return;
 
-  DestroyAdapterList( logger->adapters );
-  DestroyFormatterList( logger->formatters );
+  DestroyTargetList( logger->targets );
 
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
 // todo send destroy command through pipe
@@ -187,18 +148,11 @@ NewLogger
 }
 
 
-// todo refactor to use new path structure in logger
+// todo refactor to use new target structure in logger
 Status *
 ProcessValue
 ( Logger *logger, Value *value )
 {
-  if( !logger || !value )
-    return RaiseStatus( "empty argument" );
-
-  Entry *entry = ValueThroughAdapterList( logger->adapters, value );
-  if( !entry )
-    return RaiseStatus( "list failure" );
-
   return NULL;
 }
 

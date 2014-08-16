@@ -9,6 +9,7 @@ noinst_HEADERS += include/static/container/list/adapter.h \
                   include/static/container/list/handler.h \
                   include/static/container/list/iterator.h \
                   include/static/container/list/reverse_iterator.h \
+                  include/static/container/list/target.h \
                   include/static/container/list/value.h
 
 include include/static/container/list/const_iterator/Makefile.am

@@ -26,9 +26,9 @@ test_function_container_list_handler_SOURCES = test/function/container/list/hand
 test_function_container_list_handler_CFLAGS = $(test_flags)
 test_function_container_list_handler_LDADD = $(test_libraries)
 
-test_function_container_list_list_SOURCES = test/function/container/list/list.c
-test_function_container_list_list_CFLAGS = $(test_flags)
-test_function_container_list_list_LDADD = $(test_libraries)
+test_function_container_list_main_SOURCES = test/function/container/list/main.c
+test_function_container_list_main_CFLAGS = $(test_flags)
+test_function_container_list_main_LDADD = $(test_libraries)
 
 test_function_container_list_value_SOURCES = test/function/container/list/value.c
 test_function_container_list_value_CFLAGS = $(test_flags)

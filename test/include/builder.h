@@ -155,6 +155,10 @@ Value *
 BuildStringValue
 ( void );
 
+Target *
+BuildTarget
+( void );
+
 Output *
 BuildTextOutput
 ( void );
