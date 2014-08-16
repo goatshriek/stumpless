@@ -127,9 +127,8 @@ struct Log {
 };
 
 struct Logger {
-  AdapterList *adapters;
   const char *name;
-  FormatterList *formatters;
+  TargetList *targets;
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
   int receive_pipe;
   int send_pipe;
@@ -174,6 +173,12 @@ struct SortingConfiguration {
 
 struct StringConfiguration {
   size_t buffer_size;
+};
+
+struct Target {
+  AdapterList *adapters;
+  Formatter *formatter;
+  Handler *handler;
 };
 
 struct ThreadingConfiguration {
