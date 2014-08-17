@@ -719,15 +719,12 @@ BuildLogger
 ( void )
 {
   Logger * logger = malloc( sizeof( Logger ) );
-  if( logger == NULL )
+  if( !logger )
     return NULL;
 
   logger->name = "test logger";
-  logger->adapters = BuildAdapterList();
-  if( logger->adapters == NULL )
-    return NULL;
-  logger->formatters = BuildFormatterList();
-  if( logger->formatters == NULL )
+  logger->targets = BuildTargetList();
+  if( !logger->targets )
     return NULL;
 
   return logger;
@@ -815,6 +812,13 @@ BuildStringValue
 
 Target *
 BuildTarget
+( void )
+{
+  return NULL;
+}
+
+TargetList *
+BuildTargetList
 ( void )
 {
   return NULL;

@@ -159,6 +159,10 @@ Target *
 BuildTarget
 ( void );
 
+TargetList *
+BuildTargetList
+( void );
+
 Output *
 BuildTextOutput
 ( void );
