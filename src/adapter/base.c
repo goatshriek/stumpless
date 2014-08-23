@@ -3,16 +3,27 @@
 
 // todo implement
 Entry *
-ValueThroughContextAdapter
-( Value *value, Dictionary *options )
+EntryThroughContextAdapter
+( Entry *entry, Dictionary *options )
 {
   return NULL;
 }
 
 // todo implement
 Entry *
-ValueThroughLevelAdapter
-( Value *value, Dictionary *options )
+EntryThroughLevelAdapter
+( Entry *entry, Dictionary *options )
 {
+  return NULL;
+}
+
+// todo implement
+Entry *
+ValueThroughTimeAdapter
+( Entry *entry, Dictionary *options )
+{
+  if( !entry )
+    return NULL;
+  
   return NULL;
 }

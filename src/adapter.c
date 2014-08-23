@@ -8,6 +8,14 @@
 
 static Dictionary *adapters = NULL;
 
+Entry *
+AdaptEntry
+( Adapter *adapter, Entry *entry )
+{
+  // todo implement
+  return NULL;
+}
+
 Status *
 AddAdapter
 ( Adapter *adapter )

@@ -4,11 +4,11 @@
 #include "private/type.h"
 
 Entry *
-ValueThroughContextAdapter
-( Value *, Dictionary * );
+EntryThroughContextAdapter
+( Entry *, Dictionary * );
 
 Entry *
-ValueThroughLevelAdapter
-( Value *, Dictionary * );
+EntryThroughLevelAdapter
+( Entry *, Dictionary * );
 
 #endif

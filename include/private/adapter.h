@@ -3,6 +3,10 @@
 
 #include "private/type.h"
 
+Entry *
+AdaptEntry
+( Adapter *, Entry * );
+
 Status *
 AddAdapter
 ( Adapter * );

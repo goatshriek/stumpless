@@ -6,6 +6,7 @@
 
 #include "helper.h"
 
+const char * test_adapt( void );
 const char * test_add_adapter( void );
 const char * test_find_adapter_by_name( void );
 const char * test_get_option( void );
@@ -15,8 +16,9 @@ int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result = NULL;
+  const char *result = NULL;
   
+  RUN_TEST( adapt )
   RUN_TEST( add_adapter )
   RUN_TEST( find_adapter_by_name )
   RUN_TEST( get_option )
@@ -26,6 +28,15 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+test_adapt
+( void )
+{
+  
+
+  return NULL;
 }
 
 const char *

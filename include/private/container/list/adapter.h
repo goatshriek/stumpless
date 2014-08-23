@@ -67,6 +67,10 @@ AdapterListIterator *
 EndAdapterList
 ( AdapterList * );
 
+Entry *
+EntryThroughAdapterList
+( AdapterList *, Entry * );
+
 AdapterList *
 NewAdapterList
 ();
@@ -82,9 +86,5 @@ RBeginAdapterList
 AdapterListReverseIterator *
 REndAdapterList
 ( AdapterList * );
-
-Entry *
-ValueThroughAdapterList
-( AdapterList *, Value * );
 
 #endif

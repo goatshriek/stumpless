@@ -29,7 +29,7 @@ enum SortingMethod {
 };
 
 struct Adapter {
-  Entry *( *adapt )( Value *, Dictionary * );
+  Entry *( *adapt )( Entry *, Dictionary * );
   FilterList *filters;
   const char *name;
   Dictionary *options;
