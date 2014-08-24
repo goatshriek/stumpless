@@ -77,12 +77,12 @@ Listen
   // logging process calls this function
   // a return will signify a fatal error which caused the logging to halt
 
-  Value *value;
+  Entry *entry;
   Status *status;
 
   while( 1 ){
-    value = ReceiveNextValue( logger );
-    status = ProcessValue( logger, value );
+    entry = ReceiveNextEntry( logger );
+    status = ProcessEntry( logger, entry );
   }
 }
 
@@ -150,27 +150,18 @@ NewLogger
 
 // todo refactor to use new target structure in logger
 Status *
-ProcessValue
-( Logger *logger, Value *value )
+ProcessEntry
+( Logger *logger, Entry *entry )
 {
   return NULL;
 }
 
-Value *
-ReceiveNextValue
+Entry *
+ReceiveNextEntry
 ( Logger *logger )
 {
   // this function listens for values sent to the logging process
   // from the invocating process
-
-  return NULL;
-}
-
-Status *
-SendLoggerStatus
-( Logger *logger )
-{
-  // sends the status to the check status function
 
   return NULL;
 }

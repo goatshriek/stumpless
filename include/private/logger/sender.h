@@ -20,6 +20,10 @@ SendDoubleArray
 ( Logger *, const double *, unsigned );
 
 Status *
+SendEntry
+( Logger *, Entry * );
+
+Status *
 SendFloat
 ( Logger *, float );
 
@@ -34,6 +38,10 @@ SendInt
 Status *
 SendIntArray
 ( Logger *, const int *, unsigned );
+
+Status *
+SendLoggerStatus
+( Logger * );
 
 Status *
 SendLong
@@ -118,10 +126,6 @@ SendUnsignedShort
 Status *
 SendUnsignedShortArray
 ( Logger *, const unsigned short *, unsigned );
-
-Status *
-SendValue
-( Logger *, Value * );
 
 Status *
 SendVoid

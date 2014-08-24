@@ -32,15 +32,11 @@ NewLogger
 ( const char * );
 
 Status *
-ProcessValue
-( Logger *, Value * );
+ProcessEntry
+( Logger *, Entry * );
 
-Value *
-ReceiveNextValue
-( Logger * );
-
-Status *
-SendLoggerStatus
+Entry *
+ReceiveNextEntry
 ( Logger * );
 
 #endif

@@ -22,9 +22,28 @@ SEND_FUNCTIONS( Char, char )
 
 SEND_FUNCTIONS( Double, double )
 
+Status *
+SendEntry
+( Logger *logger, Entry *entry )
+{
+  // multiprocessing will call send to other process
+  // logging process will be listening with Listen function
+
+  return ProcessEntry( logger, entry );
+}
+
 SEND_FUNCTIONS( Float, float )
 
 SEND_FUNCTIONS( Int, int )
+
+Status *
+SendLoggerStatus
+( Logger *logger )
+{
+  // sends the status to the check status function
+
+  return NULL;
+}
 
 SEND_FUNCTIONS( Long, long )
 
@@ -52,16 +71,6 @@ SEND_FUNCTIONS( UnsignedLong, unsigned long )
 SEND_FUNCTIONS( UnsignedLongLong, unsigned long long )
 
 SEND_FUNCTIONS( UnsignedShort, unsigned short )
-
-Status *
-SendValue
-( Logger *logger, Value *value )
-{
-  // multiprocessing will call send to other process
-  // logging process will be listening with Listen function
-
-  return ProcessValue( logger, value );
-}
 
 Status *
 SendVoid
