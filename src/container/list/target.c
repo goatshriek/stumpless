@@ -46,7 +46,7 @@ LIST_SIZE( Target )
 
 Status *
 LogToTargetList
-( const TargetList *list, const Value *value )
+( const TargetList *list, const Entry *entry )
 {
   return NULL;
 }

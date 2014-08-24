@@ -69,7 +69,7 @@ TargetListSize
 
 Status *
 LogToTargetList
-( const TargetList *, const Value * );
+( const TargetList *, const Entry * );
 
 TargetList *
 NewTargetList

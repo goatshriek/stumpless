@@ -15,6 +15,10 @@ Formatter *
 FindFormatterByName
 ( const char * );
 
+Output *
+FormatEntry
+( const Formatter *, const Entry * );
+
 void *
 GetFormatterOption
 ( const Formatter *, const char * );

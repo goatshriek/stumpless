@@ -67,6 +67,16 @@ FindFormatterByName
   return formatter;
 }
 
+Output *
+FormatEntry
+( const Formatter *formatter, const Entry *entry )
+{
+  if( !formatter || !formatter->format )
+    return NULL;
+  
+  return formatter->format( entry, formatter->options );
+}
+
 void *
 GetFormatterOption
 ( const Formatter * formatter, const char * option )

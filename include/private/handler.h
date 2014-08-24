@@ -20,6 +20,10 @@ GetHandlerOption
 ( const Handler *, const char * );
 
 Status *
+HandleOutput
+( const Handler *, const Output * );
+
+Status *
 SetHandlerOption
 ( Handler *, const char *, void * );
 

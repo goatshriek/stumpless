@@ -3,7 +3,7 @@
 
 Status *
 LogToTarget
-( const Target *target, const Value *value )
+( const Target *target, const Entry *entry )
 {
   return NULL;
 }
