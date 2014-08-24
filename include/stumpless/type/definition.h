@@ -215,6 +215,9 @@ union Type {
   long double l_d;
   long double *l_d_p;
   void *v_p;
+#ifdef __STUMPLESS_HAVE_TIME_H
+  time_t time;
+#endif
 };
 
 struct Value {
