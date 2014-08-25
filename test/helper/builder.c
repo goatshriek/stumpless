@@ -814,7 +814,23 @@ Target *
 BuildTarget
 ( void )
 {
-  return NULL;
+  Target *target = malloc( sizeof( Target ) );
+  if( !target )
+    return NULL;
+  
+  target->adapters = BuildAdapterList();
+  if( !target->adapters )
+    return NULL;
+  
+  target->formatter = BuildFormatter();
+  if( !target->formatter )
+    return NULL;
+  
+  target->handler = BuildHandler();
+  if( !target->handler )
+    return NULL;
+  
+  return target;
 }
 
 TargetList *

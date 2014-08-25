@@ -3,7 +3,14 @@
 
 Status *
 LogToTarget
-( const Target *target, const Entry *entry )
+( const Target *target, Entry *entry )
 {
+  if( !target || !target->formatter || !target->handler || !entry )
+    return RaiseStatus( "empty argument" );
+  
+  EntryThroughAdapterList( target->adapters, entry );
+ 
+  HandleOutput( target->handler, FormatEntry( target->formatter, entry ) );
+  
   return NULL;
 }

@@ -9,6 +9,7 @@
 #include "private/container/list/const_reverse_iterator/target.h"
 #include "private/container/list/iterator/target.h"
 #include "private/container/list/reverse_iterator/target.h"
+#include "private/status.h"
 #include "private/type.h"
 #include "static/container/list/target.h"
 
@@ -48,6 +49,15 @@ Status *
 LogToTargetList
 ( const TargetList *list, const Entry *entry )
 {
+  if( !list || !entry )
+    return RaiseStatus( "empty argument" );
+  
+  ListIterator *targets = BeginList( list->list );
+  Target *target;
+  while( target = NextInListIterator( targets ) ){
+    LogToTarget( target, entry );
+  }
+  
   return NULL;
 }
 

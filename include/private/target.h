@@ -5,6 +5,6 @@
 
 Status *
 LogToTarget
-( const Target *, const Entry * );
+( const Target *, Entry * );
 
 #endif
