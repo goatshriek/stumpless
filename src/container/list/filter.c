@@ -41,8 +41,8 @@ DESTROY_LIST( Filter )
 END_LIST( Filter )
 
 unsigned short
-EntryThroughFilterList
-( const FilterList * list, const Entry * entry )
+RecordThroughFilterList
+( const FilterList * list, const Record * record )
 {
   if( !list )
     return 1;
@@ -50,7 +50,7 @@ EntryThroughFilterList
   Filter * filter;
   ListIterator * filters = BeginList( list->list );
   while( filter = NextInListIterator( filters ) ){
-    if( !filter->accept_entry( entry, filter->options ) ){
+    if( !filter->accept_record( record, filter->options ) ){
       DestroyListIterator( filters );
       return 0;
     }

@@ -29,7 +29,7 @@ enum SortingMethod {
 };
 
 struct Adapter {
-  Entry *( *adapt )( Entry *, Dictionary * );
+  Record *( *adapt )( Record *, Dictionary * );
   FilterList *filters;
   const char *name;
   Dictionary *options;
@@ -64,13 +64,13 @@ struct Configuration {
   ThreadingConfiguration *threading;
 };
 
-struct Entry {
+struct Record {
   const char *description;
   Event *event;
-  EntryAttributeList *attributes;
+  RecordAttributeList *attributes;
 };
 
-struct EntryAttribute {
+struct RecordAttribute {
   const EventAttribute *event_attribute;
   Value *value;
 };
@@ -91,7 +91,7 @@ struct FileConfiguration {
 };
 
 struct Filter {
-  unsigned short ( *accept_entry )( const Entry *, Dictionary * );
+  unsigned short ( *accept_record )( const Record *, Dictionary * );
   unsigned short ( *accept_output )( const Output *, Dictionary * );
   unsigned short ( *accept_value )( const Value *, Dictionary * );
   const char *name;
@@ -100,7 +100,7 @@ struct Filter {
 
 struct Formatter {
   FilterList *filters;
-  Output *( *format )( const Entry *, Dictionary * );
+  Output *( *format )( const Record *, Dictionary * );
   const char *name;
   Dictionary *options;
 };
@@ -152,11 +152,6 @@ struct OutputProfile {
   char *( *to_string )( const Output * );
 };
 
-struct Record {
-  time_t time;
-  Dictionary *attributes;
-};
-
 struct Status {
   unsigned short error : 1;
   unsigned short failure : 1;
@@ -166,7 +161,7 @@ struct Status {
 };
 
 struct SortingConfiguration {
-  SortingMethod entry_method;
+  SortingMethod record_method;
   SortingMethod log_method;
   unsigned short ascending;
 };

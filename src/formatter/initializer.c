@@ -17,7 +17,7 @@ Initialize##function_name##Formatter                                           \
     return NULL;                                                               \
                                                                                \
   formatter->name = formatter_name;                                            \
-  formatter->format = EntryTo##function_name;                                  \
+  formatter->format = RecordTo##function_name;                                  \
   formatter->filters = NULL;                                                   \
   formatter->options = NULL;                                                   \
                                                                                \

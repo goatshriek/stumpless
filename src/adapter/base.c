@@ -8,17 +8,17 @@
 #include "private/type.h"
 
 // todo implement
-Entry *
-EntryThroughContextAdapter
-( Entry *entry, Dictionary *options )
+Record *
+RecordThroughContextAdapter
+( Record *record, Dictionary *options )
 {
   return NULL;
 }
 
 // todo implement
-Entry *
-EntryThroughLevelAdapter
-( Entry *entry, Dictionary *options )
+Record *
+RecordThroughLevelAdapter
+( Record *record, Dictionary *options )
 {
   return NULL;
 }
@@ -26,11 +26,11 @@ EntryThroughLevelAdapter
 
 #ifdef __STUMPLESS_HAVE_TIME_H
 // todo implement
-Entry *
-EntryThroughTimeAdapter
-( Entry *entry, Dictionary *options )
+Record *
+RecordThroughTimeAdapter
+( Record *record, Dictionary *options )
 {
-  if( !entry )
+  if( !record )
     return NULL;
   
   

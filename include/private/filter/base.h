@@ -4,8 +4,8 @@
 #include "private/type.h"
 
 unsigned short
-EmptyFilterAcceptEntry
-( const Entry *, Dictionary * );
+EmptyFilterAcceptRecord
+( const Record *, Dictionary * );
 
 unsigned short
 EmptyFilterAcceptOutput
@@ -16,8 +16,8 @@ EmptyFilterAcceptValue
 ( const Value *, Dictionary * );
 
 unsigned short
-LevelFilterAcceptEntry
-( const Entry *, Dictionary * );
+LevelFilterAcceptRecord
+( const Record *, Dictionary * );
 
 unsigned short
 LevelFilterAcceptOutput

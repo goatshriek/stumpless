@@ -16,8 +16,8 @@ FindFormatterByName
 ( const char * );
 
 Output *
-FormatEntry
-( const Formatter *, const Entry * );
+FormatRecord
+( const Formatter *, const Record * );
 
 void *
 GetFormatterOption

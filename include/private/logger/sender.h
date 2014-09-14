@@ -20,8 +20,8 @@ SendDoubleArray
 ( Logger *, const double *, unsigned );
 
 Status *
-SendEntry
-( Logger *, Entry * );
+SendRecord
+( Logger *, Record * );
 
 Status *
 SendFloat

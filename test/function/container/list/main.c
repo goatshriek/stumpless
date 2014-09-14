@@ -103,7 +103,7 @@ test_back
   value = ListBack( list );
   ListReverseIterator *iterator = RBeginList( list );
   if( value != NextInListReverseIterator( iterator ) )
-    return "the last entry in the list was not returned";
+    return "the last record in the list was not returned";
 
   return NULL;
 }
@@ -219,7 +219,7 @@ test_front
   value = ListFront( list );
   ListIterator *iterator = BeginList( list );
   if( value != NextInListIterator( iterator ) )
-    return "the first entry in the list was not returned";
+    return "the first record in the list was not returned";
 
   return NULL;
 }

@@ -8,9 +8,9 @@
 
 static Dictionary *adapters = NULL;
 
-Entry *
-AdaptEntry
-( Adapter *adapter, Entry *entry )
+Record *
+AdaptRecord
+( Adapter *adapter, Record *record )
 {
   // todo implement
   return NULL;

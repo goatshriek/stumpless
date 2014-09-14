@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/entry.h"
+#include "private/record.h"
 #include "private/level.h"
 #include "private/type.h"
 
@@ -33,65 +33,65 @@ main( void )
 const char *
 test_default_entries( void )
 {
-  Entry * debug = GetDebugEntry();
+  Record * debug = GetDebugRecord();
   if( debug == NULL )
-    return "the debug entry was not correctly created";
+    return "the debug record was not correctly created";
   if( debug->event == NULL )
-    return "the debug entry did not have an event";
+    return "the debug record did not have an event";
   if( debug->event->level == NULL )
-    return "the debug entry's event did not have a level";
+    return "the debug record's event did not have a level";
   if( debug->event->level->name == NULL )
-    return "the debug entry's level did not have a name";
+    return "the debug record's level did not have a name";
   if( strcmp( debug->event->level->name, "debug" ) != 0 )
-    return "the debug entry's event did not have the proper level";
+    return "the debug record's event did not have the proper level";
   
-  Entry * error = GetErrorEntry();
+  Record * error = GetErrorRecord();
   if( error == NULL )
-    return "the error entry was not correctly created";
+    return "the error record was not correctly created";
   if( error->event == NULL )
-    return "the error entry did not have an event";
+    return "the error record did not have an event";
   if( error->event->level == NULL )
-    return "the error entry's event did not have a level";
+    return "the error record's event did not have a level";
   if( error->event->level->name == NULL )
-    return "the error entry's level did not have a name";
+    return "the error record's level did not have a name";
   if( strcmp( error->event->level->name, "error" ) != 0 )
-    return "the error entry's event did not have the proper level";
+    return "the error record's event did not have the proper level";
   
-  Entry * fatal = GetFatalEntry();
+  Record * fatal = GetFatalRecord();
   if( fatal == NULL )
-    return "the fatal entry was not correctly created";
+    return "the fatal record was not correctly created";
   if( fatal->event == NULL )
-    return "the fatal entry did not have an event";
+    return "the fatal record did not have an event";
   if( fatal->event->level == NULL )
-    return "the fatal entry's event did not have a level";
+    return "the fatal record's event did not have a level";
   if( fatal->event->level->name == NULL )
-    return "the fatal entry's level did not have a name";
+    return "the fatal record's level did not have a name";
   if( strcmp( fatal->event->level->name, "fatal" ) != 0 )
-    return "the fatal entry's event did not have the proper level";
+    return "the fatal record's event did not have the proper level";
   
-  Entry * info = GetInfoEntry();
+  Record * info = GetInfoRecord();
   if( info == NULL )
-    return "the info entry was not correctly created";
+    return "the info record was not correctly created";
   if( info->event == NULL )
-    return "the info entry did not have an event";
+    return "the info record did not have an event";
   if( info->event->level == NULL )
-    return "the info entry's event did not have a level";
+    return "the info record's event did not have a level";
   if( info->event->level->name == NULL )
-    return "the info entry's level did not have a name";
+    return "the info record's level did not have a name";
   if( strcmp( info->event->level->name, "info" ) != 0 )
-    return "the info entry's event did not have the proper level";
+    return "the info record's event did not have the proper level";
   
-  Entry * warning = GetWarningEntry();
+  Record * warning = GetWarningRecord();
   if( warning == NULL )
-    return "the warning entry was not correctly created";
+    return "the warning record was not correctly created";
   if( warning->event == NULL )
-    return "the warning entry did not have an event";
+    return "the warning record did not have an event";
   if( warning->event->level == NULL )
-    return "the warning entry's event did not have a level";
+    return "the warning record's event did not have a level";
   if( warning->event->level->name == NULL )
-    return "the warning entry's level did not have a name";
+    return "the warning record's level did not have a name";
   if( strcmp( warning->event->level->name, "warning" ) != 0 )
-    return "the warning entry's event did not have the proper level";
+    return "the warning record's event did not have the proper level";
   
   return NULL;
 }
@@ -107,23 +107,23 @@ test_for_event
   event->level = GetDebugLevel();
   event->attributes = NULL;
   
-  Entry * entry = EntryForEvent( event );
-  if( !entry )
-    return "the entry could not be created";
-  if( entry->event != event )
-    return "the entry did not have the requested event";
+  Record * record = RecordForEvent( event );
+  if( !record )
+    return "the record could not be created";
+  if( record->event != event )
+    return "the record did not have the requested event";
   
   event = BuildEvent();
   if( !event )
     return "could not build a test event";
 
-  entry = EntryForEvent( event );
-  if( !entry )
-    return "an entry could not be created for an event with attributes";
-  if( entry->event != event )
-    return "the entry did not have the requested event with attributes";
-  if( !entry->attributes )
-    return "the entry did not have an attribute list although the event did";
+  record = RecordForEvent( event );
+  if( !record )
+    return "an record could not be created for an event with attributes";
+  if( record->event != event )
+    return "the record did not have the requested event with attributes";
+  if( !record->attributes )
+    return "the record did not have an attribute list although the event did";
 
   return NULL;
 }
@@ -132,29 +132,29 @@ const char *
 test_merge_entries
 ( void )
 {
-  Entry * primary = NULL;
-  Entry * secondary = NULL;
-  Entry * merged;
+  Record * primary = NULL;
+  Record * secondary = NULL;
+  Record * merged;
   
   merged = MergeEntries( primary, secondary );
-  FAIL_IF_NOT_NULL( merged, "an entry was created out of two null entries" )
+  FAIL_IF_NOT_NULL( merged, "an record was created out of two null entries" )
   
-  primary = BuildEmptyEntry();
-  FAIL_IF_NULL( primary, "an empty entry could not be built" )
+  primary = BuildEmptyRecord();
+  FAIL_IF_NULL( primary, "an empty record could not be built" )
   primary->description = "primary description";
   primary->event = NULL;
-  primary->attributes = BuildEntryAttributeList();
+  primary->attributes = BuildRecordAttributeList();
   FAIL_IF_NULL( primary->attributes, "the primary attribute list could not be built" )
   
   merged = MergeEntries( primary, secondary );
   if( merged != primary )
-    return "a null secondary did not return the primary as the merged entry";
+    return "a null secondary did not return the primary as the merged record";
   merged = MergeEntries( secondary, primary );
   if( merged != primary )
-    return "a null primary did not return the secondary as the merged entry";
+    return "a null primary did not return the secondary as the merged record";
   
-  secondary = BuildEmptyEntry();
-  FAIL_IF_NULL( secondary, "an empty entry could not be built" )
+  secondary = BuildEmptyRecord();
+  FAIL_IF_NULL( secondary, "an empty record could not be built" )
   secondary->description = "secondary description";
   secondary->event = BuildEvent();
   FAIL_IF_NULL( secondary->event, "the test event could not be created" )
@@ -165,7 +165,7 @@ test_merge_entries
   if( merged != primary )
     return "changes were not made to the primary";
   
-  ASSERT_STRINGS_EQUAL( primary->description, merged->description, "the description was not inherited from the primary entry" )
+  ASSERT_STRINGS_EQUAL( primary->description, merged->description, "the description was not inherited from the primary record" )
   if( merged->event != secondary->event )
     return "the secondary event did not replace the NULL event of the primary";
   if( merged->attributes != primary->attributes )
@@ -177,15 +177,15 @@ test_merge_entries
 const char *
 test_to_string( void )
 {
-  Entry * entry = NULL;
-  char * description = EntryToString( entry );
+  Record * record = NULL;
+  char * description = RecordToString( record );
   if( description != NULL )
     return "the description was not null for a null pointer";
   
-  entry = GetDebugEntry();
-  description = EntryToString( entry );
+  record = GetDebugRecord();
+  description = RecordToString( record );
   if( description == NULL )
-    return "the description was null for a valid entry pointer";
+    return "the description was null for a valid record pointer";
   
   return NULL;
 }

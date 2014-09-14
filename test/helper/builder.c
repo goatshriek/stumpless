@@ -9,7 +9,7 @@
 #include "private/container/list.h"
 #include "private/container/list/adapter.h"
 #include "private/container/list/comparator.h"
-#include "private/container/list/entry_attribute.h"
+#include "private/container/list/record_attribute.h"
 #include "private/container/list/event_attribute.h"
 #include "private/container/list/filter.h"
 #include "private/container/list/formatter.h"
@@ -206,19 +206,19 @@ BuildDictionaryOfStrings
   return dictionary;
 }
 
-Entry *
-BuildEmptyEntry
+Record *
+BuildEmptyRecord
 ( void )
 {
-  Entry * entry = malloc( sizeof( Entry ) );
-  if( entry == NULL )
+  Record * record = malloc( sizeof( Record ) );
+  if( record == NULL )
     return NULL;
 
-  entry->description = NULL;
-  entry->event = NULL;
-  entry->attributes = NULL;
+  record->description = NULL;
+  record->event = NULL;
+  record->attributes = NULL;
 
-  return entry;
+  return record;
 }
 
 Output *
@@ -280,25 +280,25 @@ BuildEmptyValue
   return value;
 }
 
-Entry *
-BuildEntry( void )
+Record *
+BuildRecord( void )
 {
-  Entry * entry = malloc( sizeof( Entry ) );
-  if( entry == NULL )
+  Record * record = malloc( sizeof( Record ) );
+  if( record == NULL )
     return NULL;
 
-  entry->description = "Test Entry";
-  entry->event = BuildEvent();
-  entry->attributes = BuildEntryAttributeList();
+  record->description = "Test Record";
+  record->event = BuildEvent();
+  record->attributes = BuildRecordAttributeList();
 
-  return entry;
+  return record;
 }
 
-EntryAttribute *
-BuildEntryAttribute( void )
+RecordAttribute *
+BuildRecordAttribute( void )
 {
-  EntryAttribute * attribute;
-  attribute = malloc( sizeof( EntryAttribute ) );
+  RecordAttribute * attribute;
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( attribute == NULL )
     return NULL;
 
@@ -308,10 +308,10 @@ BuildEntryAttribute( void )
   return attribute;
 }
 
-EntryAttributeList *
-BuildEntryAttributeList( void )
+RecordAttributeList *
+BuildRecordAttributeList( void )
 {
-  EntryAttributeList * list = NewEntryAttributeList();
+  RecordAttributeList * list = NewRecordAttributeList();
   if( list == NULL )
     return NULL;
 
@@ -321,50 +321,50 @@ BuildEntryAttributeList( void )
 
   EventAttributeListIterator * event_attributes = BeginEventAttributeList( event_attribute_list );
 
-  EntryAttribute * attribute;
-  attribute = malloc( sizeof( EntryAttribute ) );
+  RecordAttribute * attribute;
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = NULL;
-  AppendToEntryAttributeList( list, attribute );
+  AppendToRecordAttributeList( list, attribute );
 
-  attribute = malloc( sizeof( EntryAttribute ) );
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = ValueFromString( "not 37" );
-  AppendToEntryAttributeList( list, attribute );
+  AppendToRecordAttributeList( list, attribute );
 
-  attribute = malloc( sizeof( EntryAttribute ) );
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = NULL;
-  AppendToEntryAttributeList( list, attribute );
+  AppendToRecordAttributeList( list, attribute );
 
-  attribute = malloc( sizeof( EntryAttribute ) );
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
   attribute->value = ValueFromString( "unnamed value" );
-  AppendToEntryAttributeList( list, attribute );
+  AppendToRecordAttributeList( list, attribute );
 
   DestroyEventAttributeListIterator( event_attributes );
 
-  attribute = malloc( sizeof( EntryAttribute ) );
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NULL;
   attribute->value = ValueFromString( "no event attribute" );
-  AppendToEntryAttributeList( list, attribute );
+  AppendToRecordAttributeList( list, attribute );
 
-  attribute = malloc( sizeof( EntryAttribute ) );
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( attribute == NULL )
     return NULL;
   attribute->event_attribute = NULL;
   attribute->value = NULL;
-  AppendToEntryAttributeList( list, attribute );
+  AppendToRecordAttributeList( list, attribute );
 
   return list;
 }

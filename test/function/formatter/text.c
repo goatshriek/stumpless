@@ -11,10 +11,10 @@
 
 #include "helper.h"
 
-const char * test_entry_formatter( void );
-const char * test_entry_attribute_formatter( void );
-const char * test_entry_attribute_list_formatter( void );
-const char * test_entry_summary_formatter( void );
+const char * test_record_formatter( void );
+const char * test_record_attribute_formatter( void );
+const char * test_record_attribute_list_formatter( void );
+const char * test_record_summary_formatter( void );
 const char * test_event_attribute_formatter( void );
 const char * test_event_attribute_list_formatter( void );
 const char * test_event_formatter( void );
@@ -28,10 +28,10 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
 
-  RUN_TEST( entry_formatter )
-  RUN_TEST( entry_attribute_formatter )
-  RUN_TEST( entry_attribute_list_formatter )
-  RUN_TEST( entry_summary_formatter )
+  RUN_TEST( record_formatter )
+  RUN_TEST( record_attribute_formatter )
+  RUN_TEST( record_attribute_list_formatter )
+  RUN_TEST( record_summary_formatter )
   RUN_TEST( event_attribute_formatter )
   RUN_TEST( event_attribute_list_formatter )
   RUN_TEST( event_formatter )
@@ -46,100 +46,100 @@ main( void )
 }
 
 const char *
-test_entry_formatter( void )
+test_record_formatter( void )
 {
-  Entry * entry = BuildEntry();
-  FAIL_IF_NULL( entry, "could not build the test entry" )
+  Record * record = BuildRecord();
+  FAIL_IF_NULL( record, "could not build the test record" )
 
   Output * output;
   char * str;
 
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "a full entry could not be formatted" )
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "a full record could not be formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for a full entry" )
-  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  FAIL_IF_NULL( str, "the output could not be converted to a string for a full record" )
+  ASSERT_STRINGS_EQUAL( "Test Record [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
-                        "a full entry was not properly formatted" )
+                        "a full record was not properly formatted" )
 
-  entry->description = NULL;
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "an entry without a description was not formatted" )
+  record->description = NULL;
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "an record without a description was not formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without a description" )
-  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record without a description" )
+  ASSERT_STRINGS_EQUAL( "record [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
-                        "an entry without a description was not properly formatted" )
+                        "an record without a description was not properly formatted" )
 
-  entry->event = NULL;
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "an entry with only attributes was not formatted" )
+  record->event = NULL;
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "an record with only attributes was not formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only attributes" )
-  ASSERT_STRINGS_EQUAL( "entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record with only attributes" )
+  ASSERT_STRINGS_EQUAL( "record: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
-                        "an entry with only attributes was not properly formatted" )
+                        "an record with only attributes was not properly formatted" )
 
-  entry->description = "Test Entry";
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
+  record->description = "Test Record";
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "an record without an event could not be formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without an event" )
-  ASSERT_STRINGS_EQUAL( "Test Entry: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record without an event" )
+  ASSERT_STRINGS_EQUAL( "Test Record: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
-                        "an entry without an event was not properly formatted" )
+                        "an record without an event was not properly formatted" )
 
-  entry->attributes = NULL;
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "an entry with only a description could not be formatted" )
+  record->attributes = NULL;
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "an record with only a description could not be formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only a description" )
-  ASSERT_STRINGS_EQUAL( "Test Entry", str,
-                        "an entry with only a description was not properly formatted" )
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record with only a description" )
+  ASSERT_STRINGS_EQUAL( "Test Record", str,
+                        "an record with only a description was not properly formatted" )
 
-  entry->event = BuildEvent();
-  FAIL_IF_NULL( entry->event, "could not build the test event" )
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "an entry without attributes could not be formatted" )
+  record->event = BuildEvent();
+  FAIL_IF_NULL( record->event, "could not build the test event" )
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "an record without attributes could not be formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry without attributes" )
-  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]", str,
-                        "an entry without attributes was not properly formatted" )
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record without attributes" )
+  ASSERT_STRINGS_EQUAL( "Test Record [Test Event (Test Level: level 42)]", str,
+                        "an record without attributes was not properly formatted" )
 
-  entry->description = NULL;
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "an entry with only an event could not be formatted" )
+  record->description = NULL;
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "an record with only an event could not be formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an entry with only an event" )
-  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]", str,
-                        "an entry with only an event was not properly formatted" )
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record with only an event" )
+  ASSERT_STRINGS_EQUAL( "record [Test Event (Test Level: level 42)]", str,
+                        "an record with only an event was not properly formatted" )
 
-  entry->event = NULL;
-  output = EntryToText( entry, NULL );
-  FAIL_IF_NULL( output, "an empty entry could not be formatted" )
+  record->event = NULL;
+  output = RecordToText( record, NULL );
+  FAIL_IF_NULL( output, "an empty record could not be formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an empty entry" )
-  ASSERT_STRINGS_EQUAL( "entry", str,
-                        "an empty entry did not return the proper output" )
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an empty record" )
+  ASSERT_STRINGS_EQUAL( "record", str,
+                        "an empty record did not return the proper output" )
 
   return NULL;
 }
 
 const char *
-test_entry_attribute_formatter( void )
+test_record_attribute_formatter( void )
 {
-  EntryAttribute * attribute = BuildEntryAttribute();
-  FAIL_IF_NULL( attribute, "could not build the test entry attribute" )
+  RecordAttribute * attribute = BuildRecordAttribute();
+  FAIL_IF_NULL( attribute, "could not build the test record attribute" )
 
   Output * output;
-  output = EntryAttributeToText( attribute );
-  FAIL_IF_NULL( output, "a full entry attribute could not be formatted" )
+  output = RecordAttributeToText( attribute );
+  FAIL_IF_NULL( output, "a full record attribute could not be formatted" )
   char * str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Value (string)", str,
-                        "a full entry attribute was not formatted correctly" )
+                        "a full record attribute was not formatted correctly" )
 
   attribute->value = NULL;
-  output = EntryAttributeToText( attribute );
+  output = RecordAttributeToText( attribute );
   FAIL_IF_NULL( output, "an attribute without a set value could not be formatted" )
   str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Event Attribute: Test Default Value (string)",
@@ -152,28 +152,28 @@ test_entry_attribute_formatter( void )
   attribute->event_attribute = new_attribute;
 
   new_attribute->name = NULL;
-  output = EntryAttributeToText( attribute );
+  output = RecordAttributeToText( attribute );
   FAIL_IF_NULL( output, "an attribute with a default value was not formatted" )
   str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "attribute: Test Default Value (string)", str,
                         "an attribute with a default value was not formatted correctly" )
 
   new_attribute->default_value = NULL;
-  output = EntryAttributeToText( attribute );
+  output = RecordAttributeToText( attribute );
   FAIL_IF_NOT_NULL( output, "an attribute with no value was not empty" )
 
   return NULL;
 }
 
 const char *
-test_entry_attribute_list_formatter( void )
+test_record_attribute_list_formatter( void )
 {
-  Entry * entry = BuildEntry();
-  FAIL_IF_NULL( entry, "could not build the test entry" )
+  Record * record = BuildRecord();
+  FAIL_IF_NULL( record, "could not build the test record" )
 
   char * str;
   Output * output;
-  output = EntryAttributeListToText( entry );
+  output = RecordAttributeListToText( record );
   FAIL_IF_NULL( output, "the output could not be created" )
   str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
@@ -184,40 +184,40 @@ test_entry_attribute_list_formatter( void )
 }
 
 const char *
-test_entry_summary_formatter( void )
+test_record_summary_formatter( void )
 {
-  Entry * entry = BuildEntry();
-  FAIL_IF_NULL( entry, "could not build test entry" )
+  Record * record = BuildRecord();
+  FAIL_IF_NULL( record, "could not build test record" )
 
   Output * output;
   char * str;
 
-  output = EntrySummaryToText( entry );
-  FAIL_IF_NULL( output, "a full entry could not be formatted" )
+  output = RecordSummaryToText( record );
+  FAIL_IF_NULL( output, "a full record could not be formatted" )
   str = OutputToString( output );
-  ASSERT_STRINGS_EQUAL( "Test Entry [Test Event (Test Level: level 42)]", str,
-                        "a full entry was not properly formatted" )
+  ASSERT_STRINGS_EQUAL( "Test Record [Test Event (Test Level: level 42)]", str,
+                        "a full record was not properly formatted" )
 
-  entry->description = NULL;
-  output = EntrySummaryToText( entry );
-  FAIL_IF_NULL( output, "an entry without a description could not be formatted" )
+  record->description = NULL;
+  output = RecordSummaryToText( record );
+  FAIL_IF_NULL( output, "an record without a description could not be formatted" )
   str = OutputToString( output );
-  ASSERT_STRINGS_EQUAL( "entry [Test Event (Test Level: level 42)]", str,
-                        "an entry without a description was not properly formatted" )
+  ASSERT_STRINGS_EQUAL( "record [Test Event (Test Level: level 42)]", str,
+                        "an record without a description was not properly formatted" )
 
-  entry->event = NULL;
-  output = EntrySummaryToText( entry );
-  FAIL_IF_NULL( output, "an empty entry could not be formatted" )
+  record->event = NULL;
+  output = RecordSummaryToText( record );
+  FAIL_IF_NULL( output, "an empty record could not be formatted" )
   str = OutputToString( output );
-  ASSERT_STRINGS_EQUAL( "entry", str,
-                        "an empty entry was not properly formatted" )
+  ASSERT_STRINGS_EQUAL( "record", str,
+                        "an empty record was not properly formatted" )
 
-  entry->description = "Test Entry";
-  output = EntrySummaryToText( entry );
-  FAIL_IF_NULL( output, "an entry without an event could not be formatted" )
+  record->description = "Test Record";
+  output = RecordSummaryToText( record );
+  FAIL_IF_NULL( output, "an record without an event could not be formatted" )
   str = OutputToString( output );
-  ASSERT_STRINGS_EQUAL( "Test Entry", str,
-                        "an entry without an event was not properly formatted" )
+  ASSERT_STRINGS_EQUAL( "Test Record", str,
+                        "an record without an event was not properly formatted" )
 
   return NULL;
 }
@@ -418,11 +418,11 @@ test_level_formatter( void )
 const char *
 test_value_list_all_strings( void )
 {
-  Entry * entry = BuildEntry();
-  if( !entry )
-    return "could not build test entry";
+  Record * record = BuildRecord();
+  if( !record )
+    return "could not build test record";
 
-  Output * output = EntryToText( entry, NULL );
+  Output * output = RecordToText( record, NULL );
   if( !output || !output->data )
     return "the output could not be built";
 

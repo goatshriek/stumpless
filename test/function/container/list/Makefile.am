@@ -6,10 +6,6 @@ test_function_container_list_comparator_SOURCES = test/function/container/list/c
 test_function_container_list_comparator_CFLAGS = $(test_flags)
 test_function_container_list_comparator_LDADD = $(test_libraries)
 
-test_function_container_list_entry_attribute_SOURCES = test/function/container/list/entry_attribute.c
-test_function_container_list_entry_attribute_CFLAGS = $(test_flags)
-test_function_container_list_entry_attribute_LDADD = $(test_libraries)
-
 test_function_container_list_event_attribute_SOURCES = test/function/container/list/event_attribute.c
 test_function_container_list_event_attribute_CFLAGS = $(test_flags)
 test_function_container_list_event_attribute_LDADD = $(test_libraries)
@@ -29,6 +25,10 @@ test_function_container_list_handler_LDADD = $(test_libraries)
 test_function_container_list_main_SOURCES = test/function/container/list/main.c
 test_function_container_list_main_CFLAGS = $(test_flags)
 test_function_container_list_main_LDADD = $(test_libraries)
+
+test_function_container_list_record_attribute_SOURCES = test/function/container/list/record_attribute.c
+test_function_container_list_record_attribute_CFLAGS = $(test_flags)
+test_function_container_list_record_attribute_LDADD = $(test_libraries)
 
 test_function_container_list_value_SOURCES = test/function/container/list/value.c
 test_function_container_list_value_CFLAGS = $(test_flags)

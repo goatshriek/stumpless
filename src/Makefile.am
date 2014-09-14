@@ -6,8 +6,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/boolean.c \
                           src/comparator.c \
                           src/configuration.c \
-                          src/entry.c \
-                          src/entry_attribute.c \
                           src/event.c \
                           src/event_attribute.c \
                           src/filter.c \
@@ -16,6 +14,8 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/level.c \
                           src/logger.c \
                           src/output.c \
+                          src/record.c \
+                          src/record_attribute.c \
                           src/status.c \
                           src/string_helper.c \
                           src/target.c \

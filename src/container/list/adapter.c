@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "private/entry.h"
+#include "private/record.h"
 #include "private/type.h"
 
 #include "private/container/list/adapter.h"
@@ -49,22 +49,22 @@ DESTROY_LIST( Adapter )
 
 END_LIST( Adapter )
 
-Entry *
-EntryThroughAdapterList
-( AdapterList *list, Entry *entry )
+Record *
+RecordThroughAdapterList
+( AdapterList *list, Record *record )
 {
-  if( !list || !entry )
+  if( !list || !record )
     return NULL;
 
   Adapter *adapter;
   ListIterator * iterator = BeginList( list->list );
   while( adapter = NextInListIterator( iterator ) ) {
-    adapter->adapt( entry, adapter->options );
+    adapter->adapt( record, adapter->options );
   }
 
   DestroyListIterator( iterator );
 
-  return entry;
+  return record;
 }
 
 NEW_LIST( Adapter )

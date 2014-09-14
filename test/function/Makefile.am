@@ -10,14 +10,6 @@ test_function_configuration_SOURCES = test/function/configuration.c
 test_function_configuration_CFLAGS = $(test_flags)
 test_function_configuration_LDADD = $(test_libraries)
 
-test_function_entry_SOURCES = test/function/entry.c
-test_function_entry_CFLAGS = $(test_flags)
-test_function_entry_LDADD = $(test_libraries)
-
-test_function_entry_attribute_SOURCES = test/function/entry_attribute.c
-test_function_entry_attribute_CFLAGS = $(test_flags)
-test_function_entry_attribute_LDADD = $(test_libraries)
-
 test_function_event_SOURCES = test/function/event.c
 test_function_event_CFLAGS = $(test_flags)
 test_function_event_LDADD = $(test_libraries)
@@ -29,6 +21,14 @@ test_function_level_LDADD = $(test_libraries)
 test_function_logger_SOURCES = test/function/logger.c
 test_function_logger_CFLAGS = $(test_flags)
 test_function_logger_LDADD = $(test_libraries)
+
+test_function_record_SOURCES = test/function/record.c
+test_function_record_CFLAGS = $(test_flags)
+test_function_record_LDADD = $(test_libraries)
+
+test_function_record_attribute_SOURCES = test/function/record_attribute.c
+test_function_record_attribute_CFLAGS = $(test_flags)
+test_function_record_attribute_LDADD = $(test_libraries)
 
 test_function_string_helper_SOURCES = test/function/string_helper.c
 test_function_string_helper_CFLAGS = $(test_flags)

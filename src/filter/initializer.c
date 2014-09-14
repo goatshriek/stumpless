@@ -21,7 +21,7 @@ Initialize##function_name##Filter                                              \
                                                                                \
   filter->name = filter_name;                                                  \
                                                                                \
-  filter->accept_entry = function_name##FilterAcceptEntry;                     \
+  filter->accept_record = function_name##FilterAcceptRecord;                     \
   filter->accept_output = function_name##FilterAcceptOutput;                   \
   filter->accept_value = function_name##FilterAcceptValue;                     \
                                                                                \

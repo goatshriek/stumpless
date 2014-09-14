@@ -7,16 +7,16 @@
 
 #include "helper.h"
 
-const char * test_empty_entry( void );
+const char * test_empty_record( void );
 const char * test_empty_output( void );
 const char * test_empty_value( void );
-const char * test_level_entry( void );
+const char * test_level_record( void );
 const char * test_level_output( void );
 const char * test_level_value( void );
-const char * test_invert_empty_entry( void );
+const char * test_invert_empty_record( void );
 const char * test_invert_empty_output( void );
 const char * test_invert_empty_value( void );
-const char * test_invert_level_entry( void );
+const char * test_invert_level_record( void );
 
 int
 main( void )
@@ -24,16 +24,16 @@ main( void )
   unsigned failure_count = 0;
   const char * result = NULL;
   
-  RUN_TEST( empty_entry )
+  RUN_TEST( empty_record )
   RUN_TEST( empty_output )
   RUN_TEST( empty_value )
-  RUN_TEST( level_entry )
+  RUN_TEST( level_record )
   RUN_TEST( level_output )
   RUN_TEST( level_value )
-  RUN_TEST( invert_empty_entry )
+  RUN_TEST( invert_empty_record )
   RUN_TEST( invert_empty_output )
   RUN_TEST( invert_empty_value )
-  RUN_TEST( invert_level_entry )
+  RUN_TEST( invert_level_record )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -42,28 +42,28 @@ main( void )
 }
 
 const char *
-test_empty_entry
+test_empty_record
 ( void )
 {
-  Entry * entry = NULL;
+  Record * record = NULL;
   Dictionary * options = NULL;
   unsigned short accepted;
   
-  accepted = EmptyFilterAcceptEntry( entry, options );
+  accepted = EmptyFilterAcceptRecord( record, options );
   if( accepted )
-    return "a null entry was accepted by the default empty filter";
+    return "a null record was accepted by the default empty filter";
   
-  entry = BuildEntry();
-  FAIL_IF_NULL( entry, "the test entry could not be built" )
-  accepted = EmptyFilterAcceptEntry( entry, options );
+  record = BuildRecord();
+  FAIL_IF_NULL( record, "the test record could not be built" )
+  accepted = EmptyFilterAcceptRecord( record, options );
   if( !accepted )
-    return "a full entry was not accepted by the default empty filter";
+    return "a full record was not accepted by the default empty filter";
   
-  entry = BuildEmptyEntry();
-  FAIL_IF_NULL( entry, "the test empty entry could not be built" )
-  accepted = EmptyFilterAcceptEntry( entry, options );
+  record = BuildEmptyRecord();
+  FAIL_IF_NULL( record, "the test empty record could not be built" )
+  accepted = EmptyFilterAcceptRecord( record, options );
   if( accepted )
-    return "a non-null empty entry was accepted by the default empty filter";
+    return "a non-null empty record was accepted by the default empty filter";
   
   return NULL;
 }
@@ -96,24 +96,24 @@ test_empty_output
 }
 
 const char *
-test_level_entry
+test_level_record
 ( void )
 {
-  Entry * entry = NULL;
+  Record * record = NULL;
   Dictionary * options = NULL;
   unsigned short accepted;
   
-  accepted = LevelFilterAcceptEntry( entry, options );
+  accepted = LevelFilterAcceptRecord( record, options );
   if( accepted )
-    return "a null entry was accepted by the default level filter";
+    return "a null record was accepted by the default level filter";
   
-  entry = BuildEntry();
-  FAIL_IF_NULL( entry, "the test entry could not be built" )
-  FAIL_IF_NULL( entry->event, "the test entry did not have an event" )
-  FAIL_IF_NULL( entry->event->level, "the test entry did not have a level" )
-  accepted = LevelFilterAcceptEntry( entry, options );
+  record = BuildRecord();
+  FAIL_IF_NULL( record, "the test record could not be built" )
+  FAIL_IF_NULL( record->event, "the test record did not have an event" )
+  FAIL_IF_NULL( record->event->level, "the test record did not have a level" )
+  accepted = LevelFilterAcceptRecord( record, options );
   if( !accepted )
-    return "an entry with a level was not accepted by the default level filter";
+    return "an record with a level was not accepted by the default level filter";
   
   return NULL;
 }
@@ -188,10 +188,10 @@ test_empty_value
 }
 
 const char *
-test_invert_empty_entry
+test_invert_empty_record
 ( void )
 {
-  Entry * entry = NULL;
+  Record * record = NULL;
   unsigned short accepted;
 
   Dictionary * options = NewDictionary();
@@ -200,21 +200,21 @@ test_invert_empty_entry
   if( result != options )
     return "the invert option could not be set";
   
-  accepted = EmptyFilterAcceptEntry( entry, options );
+  accepted = EmptyFilterAcceptRecord( record, options );
   if( !accepted )
-    return "a null entry was not accepted by an inverted empty filter";
+    return "a null record was not accepted by an inverted empty filter";
   
-  entry = BuildEntry();
-  FAIL_IF_NULL( entry, "the test entry could not be built" )
-  accepted = EmptyFilterAcceptEntry( entry, options );
+  record = BuildRecord();
+  FAIL_IF_NULL( record, "the test record could not be built" )
+  accepted = EmptyFilterAcceptRecord( record, options );
   if( accepted )
-    return "a full entry was accepted by an inverted empty filter";
+    return "a full record was accepted by an inverted empty filter";
   
-  entry = BuildEmptyEntry();
-  FAIL_IF_NULL( entry, "the test empty entry could not be built" )
-  accepted = EmptyFilterAcceptEntry( entry, options );
+  record = BuildEmptyRecord();
+  FAIL_IF_NULL( record, "the test empty record could not be built" )
+  accepted = EmptyFilterAcceptRecord( record, options );
   if( !accepted )
-    return "a non-null empty entry was not accepted by an inverted empty filter";
+    return "a non-null empty record was not accepted by an inverted empty filter";
   
   return NULL;
 }
@@ -284,10 +284,10 @@ test_invert_empty_value
 }
 
 const char *
-test_invert_level_entry
+test_invert_level_record
 ( void )
 {
-  Entry * entry = NULL;
+  Record * record = NULL;
   unsigned short accepted;
 
   Dictionary * options = NewDictionary();
@@ -296,17 +296,17 @@ test_invert_level_entry
   if( result != options )
     return "the invert option could not be set";
   
-  accepted = LevelFilterAcceptEntry( entry, options );
+  accepted = LevelFilterAcceptRecord( record, options );
   if( !accepted )
-    return "a null entry was not accepted by the an inverted level filter";
+    return "a null record was not accepted by the an inverted level filter";
   
-  entry = BuildEntry();
-  FAIL_IF_NULL( entry, "the test entry could not be built" )
-  FAIL_IF_NULL( entry->event, "the test entry did not have an event" )
-  FAIL_IF_NULL( entry->event->level, "the test entry did not have a level" )
-  accepted = LevelFilterAcceptEntry( entry, options );
+  record = BuildRecord();
+  FAIL_IF_NULL( record, "the test record could not be built" )
+  FAIL_IF_NULL( record->event, "the test record did not have an event" )
+  FAIL_IF_NULL( record->event->level, "the test record did not have a level" )
+  accepted = LevelFilterAcceptRecord( record, options );
   if( accepted )
-    return "an entry with a level was accepted by the an inverted level filter";
+    return "an record with a level was accepted by the an inverted level filter";
   
   return NULL;
 }

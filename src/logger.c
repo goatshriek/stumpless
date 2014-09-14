@@ -77,12 +77,12 @@ Listen
   // logging process calls this function
   // a return will signify a fatal error which caused the logging to halt
 
-  Entry *entry;
+  Record *record;
   Status *status;
 
   while( 1 ){
-    entry = ReceiveNextEntry( logger );
-    status = ProcessEntry( logger, entry );
+    record = ReceiveNextRecord( logger );
+    status = ProcessRecord( logger, record );
   }
 }
 
@@ -150,14 +150,14 @@ NewLogger
 
 // todo refactor to use new target structure in logger
 Status *
-ProcessEntry
-( Logger *logger, Entry *entry )
+ProcessRecord
+( Logger *logger, Record *record )
 {
   return NULL;
 }
 
-Entry *
-ReceiveNextEntry
+Record *
+ReceiveNextRecord
 ( Logger *logger )
 {
   // this function listens for values sent to the logging process

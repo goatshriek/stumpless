@@ -23,13 +23,13 @@ SEND_FUNCTIONS( Char, char )
 SEND_FUNCTIONS( Double, double )
 
 Status *
-SendEntry
-( Logger *logger, Entry *entry )
+SendRecord
+( Logger *logger, Record *record )
 {
   // multiprocessing will call send to other process
   // logging process will be listening with Listen function
 
-  return ProcessEntry( logger, entry );
+  return ProcessRecord( logger, record );
 }
 
 SEND_FUNCTIONS( Float, float )

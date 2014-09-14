@@ -67,9 +67,9 @@ AdapterListIterator *
 EndAdapterList
 ( AdapterList * );
 
-Entry *
-EntryThroughAdapterList
-( AdapterList *, Entry * );
+Record *
+RecordThroughAdapterList
+( AdapterList *, Record * );
 
 AdapterList *
 NewAdapterList

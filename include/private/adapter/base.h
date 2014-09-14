@@ -3,12 +3,12 @@
 
 #include "private/type.h"
 
-Entry *
-EntryThroughContextAdapter
-( Entry *, Dictionary * );
+Record *
+RecordThroughContextAdapter
+( Record *, Dictionary * );
 
-Entry *
-EntryThroughLevelAdapter
-( Entry *, Dictionary * );
+Record *
+RecordThroughLevelAdapter
+( Record *, Dictionary * );
 
 #endif

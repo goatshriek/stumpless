@@ -3,10 +3,10 @@
 #include "private/type.h"
 
 unsigned short
-EmptyFilterAcceptEntry
-( const Entry *entry, Dictionary *options )
+EmptyFilterAcceptRecord
+( const Record *record, Dictionary *options )
 {
-  return ( entry  && entry->event )
+  return ( record  && record->event )
          ^ ( GetDictionaryValue( options, "invert" ) != NULL );
 }
 
@@ -27,10 +27,10 @@ EmptyFilterAcceptValue
 }
 
 unsigned short
-LevelFilterAcceptEntry
-( const Entry *entry, Dictionary *options )
+LevelFilterAcceptRecord
+( const Record *record, Dictionary *options )
 {
-  return ( entry && entry->event && entry->event->level )
+  return ( record && record->event && record->event->level )
        ^ ( GetDictionaryValue( options, "invert" ) != NULL );
 }
 

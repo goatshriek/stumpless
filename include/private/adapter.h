@@ -3,9 +3,9 @@
 
 #include "private/type.h"
 
-Entry *
-AdaptEntry
-( Adapter *, Entry * );
+Record *
+AdaptRecord
+( Adapter *, Record * );
 
 Status *
 AddAdapter

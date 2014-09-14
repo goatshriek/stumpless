@@ -26,7 +26,7 @@ const char * test_crbegin( void );
 const char * test_crend( void );
 const char * test_destructor( void );
 const char * test_end( void );
-const char * test_entry_through( void );
+const char * test_record_through( void );
 const char * test_front( void );
 const char * test_is_empty( void );
 const char * test_prepend_to( void );
@@ -55,7 +55,7 @@ main
   RUN_TEST( crend )
   RUN_TEST( destructor )
   RUN_TEST( end )
-  RUN_TEST( entry_through )
+  RUN_TEST( record_through )
   RUN_TEST( front )
   RUN_TEST( is_empty )
   RUN_TEST( prepend_to )
@@ -99,7 +99,7 @@ TEST_END( Formatter )
 
 // todo implement
 const char *
-test_entry_through
+test_record_through
 ( void )
 {
   return NULL;

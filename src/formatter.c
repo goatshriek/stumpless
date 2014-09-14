@@ -68,13 +68,13 @@ FindFormatterByName
 }
 
 Output *
-FormatEntry
-( const Formatter *formatter, const Entry *entry )
+FormatRecord
+( const Formatter *formatter, const Record *record )
 {
   if( !formatter || !formatter->format )
     return NULL;
   
-  return formatter->format( entry, formatter->options );
+  return formatter->format( record, formatter->options );
 }
 
 void *

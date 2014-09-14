@@ -47,15 +47,15 @@ LIST_SIZE( Target )
 
 Status *
 LogToTargetList
-( const TargetList *list, const Entry *entry )
+( const TargetList *list, const Record *record )
 {
-  if( !list || !entry )
+  if( !list || !record )
     return RaiseStatus( "empty argument" );
   
   ListIterator *targets = BeginList( list->list );
   Target *target;
   while( target = NextInListIterator( targets ) ){
-    LogToTarget( target, entry );
+    LogToTarget( target, record );
   }
   
   return NULL;

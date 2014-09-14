@@ -38,19 +38,19 @@ test_log
   
   status = LogToTarget( target, NULL );
   if( !status )
-    return "a null entry did not raise an abnormal status";
-  ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for an empty entry" )
+    return "a null record did not raise an abnormal status";
+  ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for an empty record" )
   
-  Entry *entry = BuildEntry();
-  if( !entry )
-    return "could not build a test entry";
+  Record *record = BuildRecord();
+  if( !record )
+    return "could not build a test record";
 
-  status = LogToTarget( NULL, entry );
+  status = LogToTarget( NULL, record );
   if( !status )
     return "a null target did not raise an abnormal status";
   ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for an empty target" )
   
-  status = LogToTarget( target, entry );
+  status = LogToTarget( target, record );
   if( status )
     return "an abnormal status was returned";
   

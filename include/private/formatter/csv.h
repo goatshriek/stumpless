@@ -4,7 +4,7 @@
 #include "private/type.h"
 
 Output *
-EntryToCSV
-( const Entry *, Dictionary * );
+RecordToCSV
+( const Record *, Dictionary * );
 
 #endif

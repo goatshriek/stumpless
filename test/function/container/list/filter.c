@@ -22,7 +22,7 @@ const char * test_crbegin( void );
 const char * test_crend( void );
 const char * test_destructor( void );
 const char * test_end( void );
-const char * test_entry_through( void );
+const char * test_record_through( void );
 const char * test_front( void );
 const char * test_is_empty( void );
 const char * test_output_through( void );
@@ -53,7 +53,7 @@ main
   RUN_TEST( crend )
   RUN_TEST( destructor )
   RUN_TEST( end )
-  RUN_TEST( entry_through )
+  RUN_TEST( record_through )
   RUN_TEST( front )
   RUN_TEST( is_empty )
   RUN_TEST( output_through )
@@ -98,36 +98,36 @@ TEST_DESTRUCTOR( Filter )
 TEST_END( Filter )
 
 const char *
-test_entry_through
+test_record_through
 ( void )
 {
   FilterList *list = BuildFilterList();
   FAIL_IF_NULL( list, "could not build the test list" )
 
-  Entry * entry = BuildEmptyEntry();
-  FAIL_IF_NULL( entry, "the test entry could not be built" )
+  Record * record = BuildEmptyRecord();
+  FAIL_IF_NULL( record, "the test record could not be built" )
 
-  unsigned accepted = EntryThroughFilterList( NULL, NULL );
+  unsigned accepted = RecordThroughFilterList( NULL, NULL );
   if( !accepted )
     return "a null list did not accept its input";
 
-  accepted = EntryThroughFilterList( list, NULL );
+  accepted = RecordThroughFilterList( list, NULL );
   if( accepted )
-    return "a null entry made it through the filter list";
+    return "a null record made it through the filter list";
 
-  accepted = EntryThroughFilterList( list, entry );
+  accepted = RecordThroughFilterList( list, record );
   if( accepted )
-    return "an empty entry made it through the filter list";
+    return "an empty record made it through the filter list";
 
-  entry = BuildEntry();
-  accepted = EntryThroughFilterList( list, entry );
+  record = BuildRecord();
+  accepted = RecordThroughFilterList( list, record );
   if( !accepted )
-    return "a full entry was not accepted by the list";
+    return "a full record was not accepted by the list";
 
-  entry->event->level = NULL;
-  accepted = EntryThroughFilterList( list, entry );
+  record->event->level = NULL;
+  accepted = RecordThroughFilterList( list, record );
   if( accepted )
-    return "an entry without a level made it through the list";
+    return "an record without a level made it through the list";
 
   return NULL;
 }
