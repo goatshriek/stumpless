@@ -4,7 +4,7 @@
 
 short
 StringComparatorCompare
-( const void *str_1, const void *str_2, Dictionary *options )
+( const Comparator *comparator, const void *str_1, const void *str_2 )
 {
   return strcmp( str_1, str_2 );
 }

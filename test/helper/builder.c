@@ -156,7 +156,7 @@ Comparator *
 BuildComparator
 ( void )
 {
-  Comparator * comparator = malloc( sizeof( Comparator ) );
+  Comparator *comparator = malloc( sizeof( Comparator ) );
   if( !comparator )
     return NULL;
 
@@ -214,7 +214,7 @@ BuildEmptyRecord
   if( record == NULL )
     return NULL;
 
-  record->description = NULL;
+  record->message = NULL;
   record->event = NULL;
   record->attributes = NULL;
 
@@ -287,7 +287,7 @@ BuildRecord( void )
   if( record == NULL )
     return NULL;
 
-  record->description = "Test Record";
+  record->message = "Test Record";
   record->event = BuildEvent();
   record->attributes = BuildRecordAttributeList();
 

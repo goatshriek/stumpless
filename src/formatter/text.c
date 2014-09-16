@@ -26,7 +26,7 @@ ArrayValueToText
 
 Output *
 RecordToText
-( const Record * record, Dictionary * options )
+( const Formatter *formatter, const Record * record )
 {
   return TextOutputFromValueList( RecordToValueList( record ) );
 }
@@ -254,13 +254,13 @@ RecordSummaryToValueList
   if( !output )
     return NULL;
 
-  const char *description;
-  if( !record->description )
-    description = "record";
+  const char *message;
+  if( !record->message )
+    message = "record";
   else
-    description = record->description;
+    message = record->message;
 
-  if( !AppendStringToValueList( output, description ) )
+  if( !AppendStringToValueList( output, message ) )
     return NULL;
 
   ValueList *event;

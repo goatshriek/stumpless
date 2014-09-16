@@ -5,6 +5,6 @@
 
 Output *
 RecordToCSV
-( const Record *, Dictionary * );
+( const Formatter *, const Record * );
 
 #endif

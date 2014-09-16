@@ -15,7 +15,7 @@ CSVOutputIntoStream
 
 Status *
 HandleStreamOutput
-( const Output *, Dictionary * );
+( const Handler *handler, const Output * );
 
 Status *
 JSONOutputIntoStream

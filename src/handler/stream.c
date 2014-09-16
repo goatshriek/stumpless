@@ -27,7 +27,7 @@ CSVOutputIntoStream
 
 Status *
 HandleStreamOutput
-( const Output * output, Dictionary * options )
+( const Handler *handler, const Output * output )
 {
   if( !output )
     return RaiseStatus( "empty argument" );

@@ -4,46 +4,58 @@
 
 unsigned short
 EmptyFilterAcceptRecord
-( const Record *record, Dictionary *options )
+( const Filter *filter, const Record *record )
 {
+  if( !filter )
+    return 1;
+ 
   return ( record  && record->event )
-         ^ ( GetDictionaryValue( options, "invert" ) != NULL );
+       ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }
 
 unsigned short
 EmptyFilterAcceptOutput
-( const Output *output, Dictionary *options )
+(const Filter *filter, const Output *output )
 {
+  if( !filter )
+    return 1;
+ 
   return ( output && output->data )
-         ^ ( GetDictionaryValue( options, "invert" ) != NULL );
+       ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }
 
 unsigned short
 EmptyFilterAcceptValue
-( const Value *value, Dictionary *options )
+( const Filter *filter, const Value *value )
 {
+  if( !filter )
+    return 1;
+ 
   return ( value && value->data )
-       ^ ( GetDictionaryValue( options, "invert" ) != NULL );
+       ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }
 
 unsigned short
 LevelFilterAcceptRecord
-( const Record *record, Dictionary *options )
+( const Filter *filter, const Record *record )
 {
+  if( !filter )
+    return 1;
+ 
   return ( record && record->event && record->event->level )
-       ^ ( GetDictionaryValue( options, "invert" ) != NULL );
+       ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }
 
 unsigned short
 LevelFilterAcceptOutput
-( const Output *output, Dictionary *options )
+( const Filter *filter, const Output *output )
 {
   return 1;
 }
 
 unsigned short
 LevelFilterAcceptValue
-( const Value *value, Dictionary *options )
+( const Filter *filter, const Value *value )
 {
   return 1;
 }

@@ -50,7 +50,7 @@ RecordThroughFilterList
   Filter * filter;
   ListIterator * filters = BeginList( list->list );
   while( filter = NextInListIterator( filters ) ){
-    if( !filter->accept_record( record, filter->options ) ){
+    if( !filter->accept_record( filter, record ) ){
       DestroyListIterator( filters );
       return 0;
     }

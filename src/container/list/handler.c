@@ -67,7 +67,7 @@ OutputThroughHandlerList
     if( !handler->handle )
       continue;
 
-    status = handler->handle( output, handler->options );
+    status = handler->handle( handler, output );
     if( status && status->failure ){
       DestroyListIterator( handlers );
       return status;

@@ -14,7 +14,7 @@ char *
 RecordToString
 ( Record * record )
 {
-  Output * output =  RecordToText( record, NULL );
+  Output * output =  RecordToText( NULL, record );
   return OutputToString( output ); 
 }
 

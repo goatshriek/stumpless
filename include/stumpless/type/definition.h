@@ -52,7 +52,7 @@ struct ByteList {
 };
 
 struct Comparator {
-  short ( *compare )( Comparator *, const void *, const void * );
+  short ( *compare )( const Comparator *, const void *, const void * );
   const char *name;
   Dictionary *options;
 };

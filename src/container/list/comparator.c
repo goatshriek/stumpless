@@ -68,7 +68,7 @@ RunComparatorList
   Comparator * comparator;
   ListIterator * iterator = BeginList( list->list );
   while( comparator = NextInListIterator( iterator ) ){
-    result = comparator->compare( value_1, value_2, comparator->options );
+    result = comparator->compare( comparator, value_1, value_2 );
 
     if( result != 0 ){
       DestroyListIterator( iterator );

@@ -59,7 +59,7 @@ RecordThroughAdapterList
   Adapter *adapter;
   ListIterator * iterator = BeginList( list->list );
   while( adapter = NextInListIterator( iterator ) ) {
-    adapter->adapt( record, adapter->options );
+    adapter->adapt( adapter, record );
   }
 
   DestroyListIterator( iterator );

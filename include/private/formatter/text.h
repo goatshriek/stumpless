@@ -9,7 +9,7 @@ ArrayValueToText
 
 Output *
 RecordToText
-( const Record *, Dictionary * );
+( const Formatter *, const Record * );
 
 Output *
 RecordAttributeToText

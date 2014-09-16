@@ -4,7 +4,7 @@
 
 Output *
 RecordToCSV
-( const Record * record, Dictionary * options )
+( const Formatter *formatter, const Record *record )
 {
   return NULL;
 }
