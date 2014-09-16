@@ -29,10 +29,11 @@ enum SortingMethod {
 };
 
 struct Adapter {
-  Record *( *adapt )( Record *, Dictionary * );
+  Record *( *adapt )( const Adapter *, Record * );
   FilterList *filters;
   const char *name;
   Dictionary *options;
+  Dictionary *attributes;
 };
 
 struct Boolean {
@@ -51,7 +52,7 @@ struct ByteList {
 };
 
 struct Comparator {
-  short ( *compare )( const void *, const void *, Dictionary * );
+  short ( *compare )( Comparator *, const void *, const void * );
   const char *name;
   Dictionary *options;
 };
@@ -62,17 +63,6 @@ struct Configuration {
   SortingConfiguration *sorting;
   StringConfiguration *string;
   ThreadingConfiguration *threading;
-};
-
-struct Record {
-  const char *description;
-  Event *event;
-  RecordAttributeList *attributes;
-};
-
-struct RecordAttribute {
-  const EventAttribute *event_attribute;
-  Value *value;
 };
 
 struct Event {
@@ -91,23 +81,23 @@ struct FileConfiguration {
 };
 
 struct Filter {
-  unsigned short ( *accept_record )( const Record *, Dictionary * );
-  unsigned short ( *accept_output )( const Output *, Dictionary * );
-  unsigned short ( *accept_value )( const Value *, Dictionary * );
+  unsigned short ( *accept_record )( const Filter *, const Record * );
+  unsigned short ( *accept_output )( const Filter *, const Output * );
+  unsigned short ( *accept_value )( const Filter *, const Value * );
   const char *name;
   Dictionary *options;
 };
 
 struct Formatter {
   FilterList *filters;
-  Output *( *format )( const Record *, Dictionary * );
+  Output *( *format )( const Formatter *, const Record * );
   const char *name;
   Dictionary *options;
 };
 
 struct Handler {
   FilterList *filters;
-  Status *( *handle )( const Output *, Dictionary * );
+  Status *( *handle )( const Handler *, const Output * );
   const char *name;
   Dictionary *options;
 };
@@ -150,6 +140,20 @@ struct OutputProfile {
   unsigned short ( *is_empty )( const Output * );
   const char *name;
   char *( *to_string )( const Output * );
+};
+
+struct Record {
+  const char *message;
+  Event *event;
+  RecordAttributeList *attributes;
+#ifdef __STUMPLESS_HAVE_TIME_H
+  time_t time;
+#endif
+};
+
+struct RecordAttribute {
+  const EventAttribute *event_attribute;
+  Value *value;
 };
 
 struct Status {
@@ -223,7 +227,7 @@ struct Value {
 };
 
 struct ValueProfile {
-  short ( *compare )( const Value *, const Value *, Dictionary * );
+  short ( *compare )( const Value *, const Value *, Dictionary * ); // todo move to comparator?
   Status *( *into_string )( char *, const Value * );
   const char * name;
   Output *( *to_binary )( const Value * );

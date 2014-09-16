@@ -71,22 +71,22 @@ GetWarningRecord
 }
 
 Record *
-MergeEntries
-( Record * primary, Record * secondary )
+MergeRecords
+( Record *primary, Record *secondary )
 {
-  if( primary == NULL )
+  if( !primary )
     return secondary;
   
-  if( secondary == NULL )
+  if( !secondary )
     return primary;
   
-  if( primary->description == NULL )
-    primary->description = secondary->description;
+  if( !primary->message )
+    primary->message = secondary->message;
   
-  if( primary->event == NULL )
+  if( !primary->event )
     primary->event = secondary->event;
   
-  if( MergeRecordAttributeLists( primary->attributes, secondary->attributes ) == NULL )
+  if( !MergeRecordAttributeLists( primary->attributes, secondary->attributes ) )
     return NULL;
   
   return primary;

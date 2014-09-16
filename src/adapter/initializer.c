@@ -16,7 +16,7 @@ Initialize##function_name##Adapter                                             \
     return NULL;                                                               \
                                                                                \
   adapter->name = adapter_name;                                                \
-  adapter->adapt = RecordThrough##function_name##Adapter;                       \
+  adapter->adapt = RecordThrough##function_name##Adapter;                      \
   adapter->filters = NULL;                                                     \
   adapter->options = NULL;                                                     \
                                                                                \

@@ -49,17 +49,17 @@ Formatter *
 FindFormatterByName
 ( const char * name )
 {
-  if( formatters == NULL ){
+  if( !formatters ){
     formatters = NewDictionary();
 
-    if( formatters == NULL )
+    if( !formatters )
       return NULL;
   }
 
-  Formatter * formatter = GetDictionaryValue( formatters, name );
+  Formatter *formatter = GetDictionaryValue( formatters, name );
 
-  if( formatter == NULL ){
-    if( InitializeFormatterByName( name ) != NULL )
+  if( !formatter ){
+    if( InitializeFormatterByName( name ) )
       return NULL;
     formatter = GetDictionaryValue( formatters, name );
   }
@@ -74,14 +74,14 @@ FormatRecord
   if( !formatter || !formatter->format )
     return NULL;
   
-  return formatter->format( record, formatter->options );
+  return formatter->format( formatter, record );
 }
 
 void *
 GetFormatterOption
-( const Formatter * formatter, const char * option )
+( const Formatter *formatter, const char *option )
 {
-  if( formatter == NULL || option == NULL || formatter->options == NULL )
+  if( !formatter || !option || !formatter->options )
     return NULL;
 
   return GetDictionaryValue( formatter->options, option );

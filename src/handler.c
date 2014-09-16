@@ -77,7 +77,7 @@ HandleOutput
   if( !handler || !handler->handle )
     return NULL;
 
-  return handler->handle( output, handler->options );
+  return handler->handle( handler, output );
 }
 
 Status *

@@ -10,7 +10,7 @@
 // todo implement
 Record *
 RecordThroughContextAdapter
-( Record *record, Dictionary *options )
+( const Adapter *adapter, Record *record )
 {
   return NULL;
 }
@@ -18,7 +18,7 @@ RecordThroughContextAdapter
 // todo implement
 Record *
 RecordThroughLevelAdapter
-( Record *record, Dictionary *options )
+( const Adapter *adapter, Record *record )
 {
   return NULL;
 }
@@ -28,7 +28,7 @@ RecordThroughLevelAdapter
 // todo implement
 Record *
 RecordThroughTimeAdapter
-( Record *record, Dictionary *options )
+( const Adapter *adapter, Record *record )
 {
   if( !record )
     return NULL;

@@ -32,7 +32,7 @@ GetWarningRecord
 ( void );
 
 Record *
-MergeEntries
+MergeRecords
 ( Record *, Record * );
 
 #endif
