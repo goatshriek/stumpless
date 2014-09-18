@@ -35,21 +35,20 @@ const char *
 test_stream_handler
 ( void )
 {
-  Output * output = NULL;
-  Dictionary * options = NULL;
-  Status * status;
+  Output *output = NULL;
+  Status *status;
   
-  status = HandleStreamOutput( output, options );
+  status = HandleStreamOutput( NULL, output );
   FAIL_IF_NULL( status, "a null output did not generate an error" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a null output did not raise an empty argument error" )
   
   output = BuildTextOutput();
   FAIL_IF_NULL( output, "the test output could not be built" )
-  status = HandleStreamOutput( output, options );
+  status = HandleStreamOutput( NULL, output );
   FAIL_IF_NOT_NULL( status, "a normal output could not be handled by a stream with no options" )
   
   output->profile->into_stream = NULL;
-  status = HandleStreamOutput( output, options );
+  status = HandleStreamOutput( NULL, output );
   FAIL_IF_NULL( status, "an output with no to stream function was properly handled" )
   ASSERT_STRINGS_EQUAL( "incompatible profile", status->name, "an output with a profile incompatible with stream output did not return the appropriate error" )
   

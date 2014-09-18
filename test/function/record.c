@@ -136,36 +136,36 @@ test_merge_entries
   Record * secondary = NULL;
   Record * merged;
   
-  merged = MergeEntries( primary, secondary );
+  merged = MergeRecords( primary, secondary );
   FAIL_IF_NOT_NULL( merged, "an record was created out of two null entries" )
   
   primary = BuildEmptyRecord();
   FAIL_IF_NULL( primary, "an empty record could not be built" )
-  primary->description = "primary description";
+  primary->message = "primary message";
   primary->event = NULL;
   primary->attributes = BuildRecordAttributeList();
   FAIL_IF_NULL( primary->attributes, "the primary attribute list could not be built" )
   
-  merged = MergeEntries( primary, secondary );
+  merged = MergeRecords( primary, secondary );
   if( merged != primary )
     return "a null secondary did not return the primary as the merged record";
-  merged = MergeEntries( secondary, primary );
+  merged = MergeRecords( secondary, primary );
   if( merged != primary )
     return "a null primary did not return the secondary as the merged record";
   
   secondary = BuildEmptyRecord();
   FAIL_IF_NULL( secondary, "an empty record could not be built" )
-  secondary->description = "secondary description";
+  secondary->message = "secondary message";
   secondary->event = BuildEvent();
   FAIL_IF_NULL( secondary->event, "the test event could not be created" )
   secondary->attributes = NULL;
   
-  merged = MergeEntries( primary, secondary );
+  merged = MergeRecords( primary, secondary );
   FAIL_IF_NULL( merged, "the two entries could not be merged" )
   if( merged != primary )
     return "changes were not made to the primary";
   
-  ASSERT_STRINGS_EQUAL( primary->description, merged->description, "the description was not inherited from the primary record" )
+  ASSERT_STRINGS_EQUAL( primary->message, merged->message, "the message was not inherited from the primary record" )
   if( merged->event != secondary->event )
     return "the secondary event did not replace the NULL event of the primary";
   if( merged->attributes != primary->attributes )
@@ -178,14 +178,14 @@ const char *
 test_to_string( void )
 {
   Record * record = NULL;
-  char * description = RecordToString( record );
-  if( description != NULL )
-    return "the description was not null for a null pointer";
+  char * message = RecordToString( record );
+  if( message != NULL )
+    return "the message was not null for a null pointer";
   
   record = GetDebugRecord();
-  description = RecordToString( record );
-  if( description == NULL )
-    return "the description was null for a valid record pointer";
+  message = RecordToString( record );
+  if( message == NULL )
+    return "the message was null for a valid record pointer";
   
   return NULL;
 }

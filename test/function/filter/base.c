@@ -45,23 +45,25 @@ const char *
 test_empty_record
 ( void )
 {
-  Record * record = NULL;
-  Dictionary * options = NULL;
+  Record *record = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
   
-  accepted = EmptyFilterAcceptRecord( record, options );
+  accepted = EmptyFilterAcceptRecord( filter, record );
   if( accepted )
     return "a null record was accepted by the default empty filter";
   
   record = BuildRecord();
   FAIL_IF_NULL( record, "the test record could not be built" )
-  accepted = EmptyFilterAcceptRecord( record, options );
+  accepted = EmptyFilterAcceptRecord( filter, record );
   if( !accepted )
     return "a full record was not accepted by the default empty filter";
   
   record = BuildEmptyRecord();
   FAIL_IF_NULL( record, "the test empty record could not be built" )
-  accepted = EmptyFilterAcceptRecord( record, options );
+  accepted = EmptyFilterAcceptRecord( filter, record );
   if( accepted )
     return "a non-null empty record was accepted by the default empty filter";
   
@@ -72,23 +74,25 @@ const char *
 test_empty_output
 ( void )
 {
-  Output * output = NULL;
-  Dictionary * options = NULL;
+  Output *output = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
   
-  accepted = EmptyFilterAcceptOutput( output, options );
+  accepted = EmptyFilterAcceptOutput( filter, output );
   if( accepted )
     return "a null output was accepted by the default empty filter";
   
   output = BuildTextOutput();
   FAIL_IF_NULL( output, "the test output could not be built" )
-  accepted = EmptyFilterAcceptOutput( output, options );
+  accepted = EmptyFilterAcceptOutput( filter, output );
   if( !accepted )
     return "a full output was not accepted by the default empty filter";
   
   output = BuildEmptyOutput();
   FAIL_IF_NULL( output, "the test empty output could not be built" )
-  accepted = EmptyFilterAcceptOutput( output, options );
+  accepted = EmptyFilterAcceptOutput( filter, output );
   if( accepted )
     return "a non-null empty output was accepted by the default empty filter";
   
@@ -100,10 +104,12 @@ test_level_record
 ( void )
 {
   Record * record = NULL;
-  Dictionary * options = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
   
-  accepted = LevelFilterAcceptRecord( record, options );
+  accepted = LevelFilterAcceptRecord( filter, record );
   if( accepted )
     return "a null record was accepted by the default level filter";
   
@@ -111,7 +117,7 @@ test_level_record
   FAIL_IF_NULL( record, "the test record could not be built" )
   FAIL_IF_NULL( record->event, "the test record did not have an event" )
   FAIL_IF_NULL( record->event->level, "the test record did not have a level" )
-  accepted = LevelFilterAcceptRecord( record, options );
+  accepted = LevelFilterAcceptRecord( filter, record );
   if( !accepted )
     return "an record with a level was not accepted by the default level filter";
   
@@ -122,17 +128,19 @@ const char *
 test_level_output
 ( void )
 {
-  Output * output = NULL;
-  Dictionary * options = NULL;
+  Output *output = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
   
-  accepted = LevelFilterAcceptOutput( output, options );
+  accepted = LevelFilterAcceptOutput( filter, output );
   if( !accepted )
     return "the level filter did not accept a NULL output";
   
   output = BuildTextOutput();
   FAIL_IF_NULL( output, "could not build the test output" )
-  accepted = LevelFilterAcceptOutput( output, options );
+  accepted = LevelFilterAcceptOutput( filter, output );
   if( !accepted )
     return "the level filter did not accept a normal output";
   
@@ -143,17 +151,19 @@ const char *
 test_level_value
 ( void )
 {
-  Value * value = NULL;
-  Dictionary * options = NULL;
+  Value *value = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
   
-  accepted = LevelFilterAcceptValue( value, options );
+  accepted = LevelFilterAcceptValue( filter, value );
   if( !accepted )
     return "the level filter did not accept a NULL value";
   
   value = BuildUnsignedIntValue();
   FAIL_IF_NULL( value, "could not build the test value" )
-  accepted = LevelFilterAcceptValue( value, options );
+  accepted = LevelFilterAcceptValue( filter, value );
   if( !accepted )
     return "the level filter did not accept a normal value";
   
@@ -164,23 +174,25 @@ const char *
 test_empty_value
 ( void )
 {
-  Value * value = NULL;
-  Dictionary * options = NULL;
+  Value *value = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
   
-  accepted = EmptyFilterAcceptValue( value, options );
+  accepted = EmptyFilterAcceptValue( filter, value );
   if( accepted )
     return "a null value was accepted by the default empty filter";
   
   value = BuildUnsignedIntValue();
   FAIL_IF_NULL( value, "the test value could not be built" )
-  accepted = EmptyFilterAcceptValue( value, options );
+  accepted = EmptyFilterAcceptValue( filter, value );
   if( !accepted )
     return "a full value was not accepted by the default empty filter";
   
   value = BuildEmptyValue();
   FAIL_IF_NULL( value, "the test empty value could not be built" )
-  accepted = EmptyFilterAcceptValue( value, options );
+  accepted = EmptyFilterAcceptValue( filter, value );
   if( accepted )
     return "a non-null empty value was accepted by the default empty filter";
   
@@ -191,28 +203,31 @@ const char *
 test_invert_empty_record
 ( void )
 {
-  Record * record = NULL;
+  Record *record = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
 
-  Dictionary * options = NewDictionary();
-  FAIL_IF_NULL( options, "the option dictionary could not be created" )
-  Dictionary * result = SetDictionaryValue( options, "invert", "non-null value" );
-  if( result != options )
+  filter->options = NewDictionary();
+  FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
+  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  if( result != filter->options )
     return "the invert option could not be set";
   
-  accepted = EmptyFilterAcceptRecord( record, options );
+  accepted = EmptyFilterAcceptRecord( filter, record );
   if( !accepted )
     return "a null record was not accepted by an inverted empty filter";
   
   record = BuildRecord();
   FAIL_IF_NULL( record, "the test record could not be built" )
-  accepted = EmptyFilterAcceptRecord( record, options );
+  accepted = EmptyFilterAcceptRecord( filter, record );
   if( accepted )
     return "a full record was accepted by an inverted empty filter";
   
   record = BuildEmptyRecord();
   FAIL_IF_NULL( record, "the test empty record could not be built" )
-  accepted = EmptyFilterAcceptRecord( record, options );
+  accepted = EmptyFilterAcceptRecord( filter, record );
   if( !accepted )
     return "a non-null empty record was not accepted by an inverted empty filter";
   
@@ -223,28 +238,31 @@ const char *
 test_invert_empty_output
 ( void )
 {
-  Output * output = NULL;
+  Output *output = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
 
-  Dictionary * options = NewDictionary();
-  FAIL_IF_NULL( options, "the option dictionary could not be created" )
-  Dictionary * result = SetDictionaryValue( options, "invert", "non-null value" );
-  if( result != options )
+  filter->options = NewDictionary();
+  FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
+  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  if( result != filter->options )
     return "the invert option could not be set";
   
-  accepted = EmptyFilterAcceptOutput( output, options );
+  accepted = EmptyFilterAcceptOutput( filter, output );
   if( !accepted )
     return "a null output was not accepted by an inverted empty filter";
   
   output = BuildTextOutput();
   FAIL_IF_NULL( output, "the test output could not be built" )
-  accepted = EmptyFilterAcceptOutput( output, options );
+  accepted = EmptyFilterAcceptOutput( filter, output );
   if( accepted )
     return "a full output was accepted by an inverted empty filter";
   
   output = BuildEmptyOutput();
   FAIL_IF_NULL( output, "the test empty output could not be built" )
-  accepted = EmptyFilterAcceptOutput( output, options );
+  accepted = EmptyFilterAcceptOutput( filter, output );
   if( !accepted )
     return "a non-null empty output was not accepted by an inverted empty filter";
   
@@ -255,28 +273,31 @@ const char *
 test_invert_empty_value
 ( void )
 {
-  Value * value = NULL;
+  Value *value = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
 
-  Dictionary * options = NewDictionary();
-  FAIL_IF_NULL( options, "the option dictionary could not be created" )
-  Dictionary * result = SetDictionaryValue( options, "invert", "non-null value" );
-  if( result != options )
+  filter->options = NewDictionary();
+  FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
+  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  if( result != filter->options )
     return "the invert option could not be set";
   
-  accepted = EmptyFilterAcceptValue( value, options );
+  accepted = EmptyFilterAcceptValue( filter, value );
   if( !accepted )
     return "a null value was not accepted by an inverted empty filter";
   
   value = BuildUnsignedIntValue();
   FAIL_IF_NULL( value, "the test value could not be built" )
-  accepted = EmptyFilterAcceptValue( value, options );
+  accepted = EmptyFilterAcceptValue( filter, value );
   if( accepted )
     return "a full value was accepted by an inverted empty filter";
   
   value = BuildEmptyValue();
   FAIL_IF_NULL( value, "the test empty value could not be built" )
-  accepted = EmptyFilterAcceptValue( value, options );
+  accepted = EmptyFilterAcceptValue( filter, value );
   if( !accepted )
     return "a non-null empty value was not accepted by an inverted empty filter";
   
@@ -287,16 +308,19 @@ const char *
 test_invert_level_record
 ( void )
 {
-  Record * record = NULL;
+  Record *record = NULL;
+  Filter *filter = BuildFilter();
+  if( !filter )
+    return "could not build test filter";
   unsigned short accepted;
 
-  Dictionary * options = NewDictionary();
-  FAIL_IF_NULL( options, "the option dictionary could not be created" )
-  Dictionary * result = SetDictionaryValue( options, "invert", "non-null value" );
-  if( result != options )
+  filter->options = NewDictionary();
+  FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
+  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  if( result != filter->options )
     return "the invert option could not be set";
   
-  accepted = LevelFilterAcceptRecord( record, options );
+  accepted = LevelFilterAcceptRecord( filter, record );
   if( !accepted )
     return "a null record was not accepted by the an inverted level filter";
   
@@ -304,7 +328,7 @@ test_invert_level_record
   FAIL_IF_NULL( record, "the test record could not be built" )
   FAIL_IF_NULL( record->event, "the test record did not have an event" )
   FAIL_IF_NULL( record->event->level, "the test record did not have a level" )
-  accepted = LevelFilterAcceptRecord( record, options );
+  accepted = LevelFilterAcceptRecord( filter, record );
   if( accepted )
     return "an record with a level was accepted by the an inverted level filter";
   

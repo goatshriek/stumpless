@@ -54,7 +54,7 @@ test_record_formatter( void )
   Output * output;
   char * str;
 
-  output = RecordToText( record, NULL );
+  output = RecordToText( NULL, record );
   FAIL_IF_NULL( output, "a full record could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for a full record" )
@@ -62,17 +62,17 @@ test_record_formatter( void )
                         str,
                         "a full record was not properly formatted" )
 
-  record->description = NULL;
-  output = RecordToText( record, NULL );
-  FAIL_IF_NULL( output, "an record without a description was not formatted" )
+  record->message = NULL;
+  output = RecordToText( NULL, record );
+  FAIL_IF_NULL( output, "an record without a message was not formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an record without a description" )
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record without a message" )
   ASSERT_STRINGS_EQUAL( "record [Test Event (Test Level: level 42)]: Test Attribute 0: default value (string), attribute: not 37 (string), attribute: unnamed value (string), attribute: no event attribute (string)",
                         str,
-                        "an record without a description was not properly formatted" )
+                        "an record without a message was not properly formatted" )
 
   record->event = NULL;
-  output = RecordToText( record, NULL );
+  output = RecordToText( NULL, record );
   FAIL_IF_NULL( output, "an record with only attributes was not formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an record with only attributes" )
@@ -80,8 +80,8 @@ test_record_formatter( void )
                         str,
                         "an record with only attributes was not properly formatted" )
 
-  record->description = "Test Record";
-  output = RecordToText( record, NULL );
+  record->message = "Test Record";
+  output = RecordToText( NULL, record );
   FAIL_IF_NULL( output, "an record without an event could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an record without an event" )
@@ -90,24 +90,24 @@ test_record_formatter( void )
                         "an record without an event was not properly formatted" )
 
   record->attributes = NULL;
-  output = RecordToText( record, NULL );
-  FAIL_IF_NULL( output, "an record with only a description could not be formatted" )
+  output = RecordToText( NULL, record );
+  FAIL_IF_NULL( output, "an record with only a message could not be formatted" )
   str = OutputToString( output );
-  FAIL_IF_NULL( str, "the output could not be converted to a string for an record with only a description" )
+  FAIL_IF_NULL( str, "the output could not be converted to a string for an record with only a message" )
   ASSERT_STRINGS_EQUAL( "Test Record", str,
-                        "an record with only a description was not properly formatted" )
+                        "an record with only a message was not properly formatted" )
 
   record->event = BuildEvent();
   FAIL_IF_NULL( record->event, "could not build the test event" )
-  output = RecordToText( record, NULL );
+  output = RecordToText( NULL, record );
   FAIL_IF_NULL( output, "an record without attributes could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an record without attributes" )
   ASSERT_STRINGS_EQUAL( "Test Record [Test Event (Test Level: level 42)]", str,
                         "an record without attributes was not properly formatted" )
 
-  record->description = NULL;
-  output = RecordToText( record, NULL );
+  record->message = NULL;
+  output = RecordToText( NULL, record );
   FAIL_IF_NULL( output, "an record with only an event could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an record with only an event" )
@@ -115,7 +115,7 @@ test_record_formatter( void )
                         "an record with only an event was not properly formatted" )
 
   record->event = NULL;
-  output = RecordToText( record, NULL );
+  output = RecordToText( NULL, record );
   FAIL_IF_NULL( output, "an empty record could not be formatted" )
   str = OutputToString( output );
   FAIL_IF_NULL( str, "the output could not be converted to a string for an empty record" )
@@ -198,12 +198,12 @@ test_record_summary_formatter( void )
   ASSERT_STRINGS_EQUAL( "Test Record [Test Event (Test Level: level 42)]", str,
                         "a full record was not properly formatted" )
 
-  record->description = NULL;
+  record->message = NULL;
   output = RecordSummaryToText( record );
-  FAIL_IF_NULL( output, "an record without a description could not be formatted" )
+  FAIL_IF_NULL( output, "an record without a message could not be formatted" )
   str = OutputToString( output );
   ASSERT_STRINGS_EQUAL( "record [Test Event (Test Level: level 42)]", str,
-                        "an record without a description was not properly formatted" )
+                        "an record without a message was not properly formatted" )
 
   record->event = NULL;
   output = RecordSummaryToText( record );
@@ -212,7 +212,7 @@ test_record_summary_formatter( void )
   ASSERT_STRINGS_EQUAL( "record", str,
                         "an empty record was not properly formatted" )
 
-  record->description = "Test Record";
+  record->message = "Test Record";
   output = RecordSummaryToText( record );
   FAIL_IF_NULL( output, "an record without an event could not be formatted" )
   str = OutputToString( output );
@@ -422,7 +422,7 @@ test_value_list_all_strings( void )
   if( !record )
     return "could not build test record";
 
-  Output * output = RecordToText( record, NULL );
+  Output * output = RecordToText( NULL, record );
   if( !output || !output->data )
     return "the output could not be built";
 
