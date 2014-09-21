@@ -175,7 +175,6 @@ struct StringConfiguration {
 };
 
 struct Target {
-  AdapterList *adapters;
   Formatter *formatter;
   Handler *handler;
 };

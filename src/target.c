@@ -9,9 +9,5 @@ LogToTarget
   if( !target || !target->formatter || !target->handler || !record )
     return RaiseStatus( "empty argument" );
   
-  RecordThroughAdapterList( target->adapters, record );
- 
-  HandleOutput( target->handler, FormatRecord( target->formatter, record ) );
-  
-  return NULL;
+  return HandleOutput( target->handler, FormatRecord( target->formatter, record ) );
 }

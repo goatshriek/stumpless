@@ -17,7 +17,6 @@
 
 static Dictionary *loggers = NULL;
 
-// todo refactor with append adapter to target list function
 Status *
 AppendAdapterToLogger
 ( Logger *logger, Adapter *adapter )
