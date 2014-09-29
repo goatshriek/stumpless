@@ -4,6 +4,10 @@
 #include "private/type.h"
 
 Status *
+SendLoggerStatus
+( Logger *logger );
+
+Status *
 SendRecord
 ( Logger *, Record * );
 
