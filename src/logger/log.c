@@ -16,13 +16,6 @@ Send##name##Array                                                              \
   return NULL;                                                                 \
 }
 
-Status *
-Log
-( void *entry )
-{
-  return NULL;
-}
-
 LOG_FUNCTIONS( Char, char )
 
 LOG_FUNCTIONS( Double, double )
@@ -60,6 +53,6 @@ LOG_FUNCTIONS( UnsignedShort, unsigned short )
 
 Status *
 LogVoid
-( Logger *logger, const void *value, unsigned length, const char *format ){
+( Logger *logger, const void *value, unsigned length ){
   return NULL;
 }

@@ -4,10 +4,6 @@
 #include "private/type.h"
 
 Status *
-Log
-( void * );
-
-Status *
 LogChar
 ( Logger *, char );
 
@@ -129,6 +125,6 @@ LogUnsignedShortArray
 
 Status *
 LogVoid
-( Logger *, const void *, unsigned, const char * );
+( Logger *, const void *, unsigned );
 
 #endif

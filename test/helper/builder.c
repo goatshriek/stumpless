@@ -723,6 +723,11 @@ BuildLogger
     return NULL;
 
   logger->name = "test logger";
+
+  logger->adapters = BuildAdapterList();
+  if( !logger->adapters )
+    return NULL;
+
   logger->targets = BuildTargetList();
   if( !logger->targets )
     return NULL;
@@ -816,10 +821,6 @@ BuildTarget
 {
   Target *target = malloc( sizeof( Target ) );
   if( !target )
-    return NULL;
-  
-  target->adapters = BuildAdapterList();
-  if( !target->adapters )
     return NULL;
   
   target->formatter = BuildFormatter();

@@ -118,6 +118,7 @@ struct Log {
 
 struct Logger {
   const char *name;
+  AdapterList *adapters;
   TargetList *targets;
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
   int receive_pipe;
