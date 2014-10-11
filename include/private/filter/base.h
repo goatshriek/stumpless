@@ -4,27 +4,27 @@
 #include "private/type.h"
 
 unsigned short
-EmptyFilterAcceptEntry
-( const Entry *, Dictionary * );
+EmptyFilterAcceptRecord
+( const Filter *, const Record * );
 
 unsigned short
 EmptyFilterAcceptOutput
-( const Output *, Dictionary *);
+( const Filter *, const Output * );
 
 unsigned short
 EmptyFilterAcceptValue
-( const Value *, Dictionary * );
+( const Filter *, const Value * );
 
 unsigned short
-LevelFilterAcceptEntry
-( const Entry *, Dictionary * );
+LevelFilterAcceptRecord
+( const Filter *, const Record * );
 
 unsigned short
 LevelFilterAcceptOutput
-( const Output *, Dictionary * );
+( const Filter *, const Output * );
 
 unsigned short
 LevelFilterAcceptValue
-( const Value *, Dictionary * );
+( const Filter *, const Value * );
 
 #endif

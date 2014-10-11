@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "private/entry_attribute.h"
+#include "private/record_attribute.h"
 #include "private/event_attribute.h"
 #include "private/type.h"
 
@@ -27,22 +27,22 @@ const char *
 test_for_event_attribute
 ( void )
 {
-  EntryAttribute *entry_attribute = EntryAttributeForEventAttribute( NULL );
-  if( entry_attribute )
+  RecordAttribute *record_attribute = RecordAttributeForEventAttribute( NULL );
+  if( record_attribute )
     return "an attribute was created for a null event attribute";
   
   EventAttribute *event_attribute = BuildEventAttribute();
   if( !event_attribute )
     return "could not build a test event attribute";
   
-  entry_attribute = EntryAttributeForEventAttribute( event_attribute );
-  if( !entry_attribute )
+  record_attribute = RecordAttributeForEventAttribute( event_attribute );
+  if( !record_attribute )
     return "an attribute could not be built from an event attribute";
   
-  if( entry_attribute->event_attribute != event_attribute )
+  if( record_attribute->event_attribute != event_attribute )
     return "the attribute did not have the correct event attribute";
   
-  if( entry_attribute->value != event_attribute->default_value )
+  if( record_attribute->value != event_attribute->default_value )
     return "the attribute did not have the correct value";
   
   return NULL;

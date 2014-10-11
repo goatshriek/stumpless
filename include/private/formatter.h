@@ -7,10 +7,6 @@ Status *
 AddFormatter
 ( Formatter * );
 
-Status *
-AppendHandlerToFormatter
-( Formatter *, Handler * );
-
 void
 DestroyFormatter
 ( Formatter * );
@@ -18,6 +14,10 @@ DestroyFormatter
 Formatter *
 FindFormatterByName
 ( const char * );
+
+Output *
+FormatRecord
+( const Formatter *, const Record * );
 
 void *
 GetFormatterOption

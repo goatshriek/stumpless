@@ -3,8 +3,8 @@
 #include "private/formatter/csv.h"
 
 Output *
-EntryToCSV
-( const Entry * entry, Dictionary * options )
+RecordToCSV
+( const Formatter *formatter, const Record *record )
 {
   return NULL;
 }

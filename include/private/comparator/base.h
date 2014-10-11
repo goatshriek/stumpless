@@ -5,6 +5,6 @@
 
 short
 StringComparatorCompare
-( const void *, const void *, Dictionary * );
+( const Comparator *, const void *, const void * );
 
 #endif

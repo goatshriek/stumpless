@@ -71,6 +71,16 @@ GetHandlerOption
 }
 
 Status *
+HandleOutput
+( const Handler *handler, const Output *output )
+{
+  if( !handler || !handler->handle )
+    return NULL;
+
+  return handler->handle( handler, output );
+}
+
+Status *
 SetHandlerOption
 ( Handler * handler, const char * option, void * value )
 {

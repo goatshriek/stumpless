@@ -10,23 +10,23 @@ ArrayValueToValueList
 
 static
 ValueList *
-EntryToValueList
-( const Entry * );
+RecordToValueList
+( const Record * );
 
 static
 ValueList *
-EntryAttributeToValueList
-( const EntryAttribute * );
+RecordAttributeToValueList
+( const RecordAttribute * );
 
 static
 ValueList *
-EntryAttributeListToValueList
-( const Entry * );
+RecordAttributeListToValueList
+( const Record * );
 
 static
 ValueList *
-EntrySummaryToValueList
-( const Entry * );
+RecordSummaryToValueList
+( const Record * );
 
 static
 ValueList *

@@ -3,6 +3,10 @@
 
 #include "private/type.h"
 
+Record *
+AdaptRecord
+( Adapter *, Record * );
+
 Status *
 AddAdapter
 ( Adapter * );

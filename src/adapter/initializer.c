@@ -11,12 +11,12 @@ Adapter *                                                                      \
 Initialize##function_name##Adapter                                             \
 ( void )                                                                       \
 {                                                                              \
-  Adapter * adapter = malloc( sizeof( Adapter ) );                             \
-  if( adapter == NULL )                                                        \
+  Adapter *adapter = malloc( sizeof( Adapter ) );                              \
+  if( !adapter )                                                               \
     return NULL;                                                               \
                                                                                \
   adapter->name = adapter_name;                                                \
-  adapter->adapt = ValueThrough##function_name##Adapter;                       \
+  adapter->adapt = RecordThrough##function_name##Adapter;                      \
   adapter->filters = NULL;                                                     \
   adapter->options = NULL;                                                     \
                                                                                \
@@ -26,7 +26,7 @@ Initialize##function_name##Adapter                                             \
 #define ADD_ADAPTER( name, function )                                          \
 SetDictionaryValue( initializers, name, Initialize##function##Adapter );
 
-static Dictionary * initializers = NULL;
+static Dictionary *initializers = NULL;
 
 Status *
 InitializeAdapterByName

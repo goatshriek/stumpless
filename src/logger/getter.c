@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "private/getter.h"
+#include "private/logger/getter.h"
 
 Logger *
 GetConsoleLogger

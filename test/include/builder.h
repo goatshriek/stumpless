@@ -39,8 +39,8 @@ Dictionary *
 BuildDictionaryOfStrings
 ( void );
 
-Entry *
-BuildEmptyEntry
+Record *
+BuildEmptyRecord
 ( void );
 
 Output *
@@ -55,16 +55,16 @@ Value *
 BuildEmptyValue
 ( void );
 
-Entry *
-BuildEntry
+Record *
+BuildRecord
 ( void );
 
-EntryAttribute *
-BuildEntryAttribute
+RecordAttribute *
+BuildRecordAttribute
 ( void );
 
-EntryAttributeList *
-BuildEntryAttributeList
+RecordAttributeList *
+BuildRecordAttributeList
 ( void );
 
 Status *
@@ -153,6 +153,14 @@ BuildStackOfStrings
 
 Value *
 BuildStringValue
+( void );
+
+Target *
+BuildTarget
+( void );
+
+TargetList *
+BuildTargetList
 ( void );
 
 Output *

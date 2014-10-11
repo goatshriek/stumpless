@@ -29,10 +29,11 @@ enum SortingMethod {
 };
 
 struct Adapter {
-  Entry *( *adapt )( Value *, Dictionary * );
+  Record *( *adapt )( const Adapter *, Record * );
   FilterList *filters;
   const char *name;
   Dictionary *options;
+  Dictionary *attributes;
 };
 
 struct Boolean {
@@ -51,7 +52,7 @@ struct ByteList {
 };
 
 struct Comparator {
-  short ( *compare )( const void *, const void *, Dictionary * );
+  short ( *compare )( const Comparator *, const void *, const void * );
   const char *name;
   Dictionary *options;
 };
@@ -62,17 +63,6 @@ struct Configuration {
   SortingConfiguration *sorting;
   StringConfiguration *string;
   ThreadingConfiguration *threading;
-};
-
-struct Entry {
-  const char *description;
-  Event *event;
-  EntryAttributeList *attributes;
-};
-
-struct EntryAttribute {
-  const EventAttribute *event_attribute;
-  Value *value;
 };
 
 struct Event {
@@ -91,24 +81,23 @@ struct FileConfiguration {
 };
 
 struct Filter {
-  unsigned short ( *accept_entry )( const Entry *, Dictionary * );
-  unsigned short ( *accept_output )( const Output *, Dictionary * );
-  unsigned short ( *accept_value )( const Value *, Dictionary * );
+  unsigned short ( *accept_record )( const Filter *, const Record * );
+  unsigned short ( *accept_output )( const Filter *, const Output * );
+  unsigned short ( *accept_value )( const Filter *, const Value * );
   const char *name;
   Dictionary *options;
 };
 
 struct Formatter {
   FilterList *filters;
-  Output *( *format )( const Entry *, Dictionary * );
-  HandlerList *handlers;
+  Output *( *format )( const Formatter *, const Record * );
   const char *name;
   Dictionary *options;
 };
 
 struct Handler {
   FilterList *filters;
-  Status *( *handle )( const Output *, Dictionary * );
+  Status *( *handle )( const Handler *, const Output * );
   const char *name;
   Dictionary *options;
 };
@@ -128,9 +117,9 @@ struct Log {
 };
 
 struct Logger {
-  AdapterList *adapters;
   const char *name;
-  FormatterList *formatters;
+  AdapterList *adapters;
+  TargetList *targets;
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
   int receive_pipe;
   int send_pipe;
@@ -155,8 +144,17 @@ struct OutputProfile {
 };
 
 struct Record {
+  const char *message;
+  Event *event;
+  RecordAttributeList *attributes;
+#ifdef __STUMPLESS_HAVE_TIME_H
   time_t time;
-  Dictionary *attributes;
+#endif
+};
+
+struct RecordAttribute {
+  const EventAttribute *event_attribute;
+  Value *value;
 };
 
 struct Status {
@@ -168,13 +166,18 @@ struct Status {
 };
 
 struct SortingConfiguration {
-  SortingMethod entry_method;
+  SortingMethod record_method;
   SortingMethod log_method;
   unsigned short ascending;
 };
 
 struct StringConfiguration {
   size_t buffer_size;
+};
+
+struct Target {
+  Formatter *formatter;
+  Handler *handler;
 };
 
 struct ThreadingConfiguration {
@@ -211,6 +214,9 @@ union Type {
   long double l_d;
   long double *l_d_p;
   void *v_p;
+#ifdef __STUMPLESS_HAVE_TIME_H
+  time_t time;
+#endif
 };
 
 struct Value {
@@ -221,7 +227,7 @@ struct Value {
 };
 
 struct ValueProfile {
-  short ( *compare )( const Value *, const Value *, Dictionary * );
+  short ( *compare )( const Value *, const Value *, Dictionary * ); // todo move to comparator?
   Status *( *into_string )( char *, const Value * );
   const char * name;
   Output *( *to_binary )( const Value * );

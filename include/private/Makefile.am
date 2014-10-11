@@ -2,8 +2,6 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/boolean.h \
                  include/private/comparator.h \
                  include/private/configuration.h \
-                 include/private/entry.h \
-                 include/private/entry_attribute.h \
                  include/private/event.h \
                  include/private/event_attribute.h \
                  include/private/filter.h \
@@ -12,8 +10,11 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/level.h \
                  include/private/logger.h \
                  include/private/output.h \
+                 include/private/record.h \
+                 include/private/record_attribute.h \
                  include/private/status.h \
                  include/private/string_helper.h \
+                 include/private/target.h \
                  include/private/type.h \
                  include/private/value.h
 

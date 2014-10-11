@@ -41,28 +41,6 @@ DESTROY_LIST( Formatter )
 
 END_LIST( Formatter )
 
-Status *
-EntryThroughFormatterList
-( const FormatterList * list, const Entry * entry )
-{
-  if( !list || !entry )
-    return RaiseStatus( "empty argument" );
-
-  Status * final_status = NULL;
-  Status * handler_status;
-  Output * output;
-  Formatter * formatter;
-  ListIterator * formatters = BeginList( list->list );
-  while( formatter = NextInListIterator( formatters ) ){
-    output = formatter->format( entry, formatter->options );
-    handler_status = OutputThroughHandlerList( formatter->handlers, output );
-    if( handler_status )
-      final_status = handler_status;
-  }
-
-  return final_status;
-}
-
 LIST_BACK( Formatter )
 
 LIST_CONTAINS( Formatter )

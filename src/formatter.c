@@ -30,25 +30,6 @@ AddFormatter
   return NULL;
 }
 
-Status *
-AppendHandlerToFormatter
-( Formatter * formatter, Handler * handler )
-{
-  if( !formatter || !handler )
-    return RaiseStatus( "empty argument" );
-
-  if( !formatter->handlers ){
-    formatter->handlers = NewHandlerList();
-    if( !formatter->handlers )
-      return RaiseStatus( "constructor failure" );
-  }
-
-  if( !AppendToHandlerList( formatter->handlers, handler ) )
-    return RaiseStatus( "list failure" );
-
-  return NULL;
-}
-
 void
 DestroyFormatter
 ( Formatter *formatter )
@@ -57,7 +38,6 @@ DestroyFormatter
     return;
 
   DestroyFilterList( formatter->filters );
-  DestroyHandlerList( formatter->handlers );
   DestroyDictionary( formatter->options );
 
   free( formatter );
@@ -69,17 +49,17 @@ Formatter *
 FindFormatterByName
 ( const char * name )
 {
-  if( formatters == NULL ){
+  if( !formatters ){
     formatters = NewDictionary();
 
-    if( formatters == NULL )
+    if( !formatters )
       return NULL;
   }
 
-  Formatter * formatter = GetDictionaryValue( formatters, name );
+  Formatter *formatter = GetDictionaryValue( formatters, name );
 
-  if( formatter == NULL ){
-    if( InitializeFormatterByName( name ) != NULL )
+  if( !formatter ){
+    if( InitializeFormatterByName( name ) )
       return NULL;
     formatter = GetDictionaryValue( formatters, name );
   }
@@ -87,11 +67,21 @@ FindFormatterByName
   return formatter;
 }
 
+Output *
+FormatRecord
+( const Formatter *formatter, const Record *record )
+{
+  if( !formatter || !formatter->format )
+    return NULL;
+  
+  return formatter->format( formatter, record );
+}
+
 void *
 GetFormatterOption
-( const Formatter * formatter, const char * option )
+( const Formatter *formatter, const char *option )
 {
-  if( formatter == NULL || option == NULL || formatter->options == NULL )
+  if( !formatter || !option || !formatter->options )
     return NULL;
 
   return GetDictionaryValue( formatter->options, option );

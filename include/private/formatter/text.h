@@ -8,20 +8,20 @@ ArrayValueToText
 ( const Value * );
 
 Output *
-EntryToText
-( const Entry *, Dictionary * );
+RecordToText
+( const Formatter *, const Record * );
 
 Output *
-EntryAttributeToText
-( const EntryAttribute * );
+RecordAttributeToText
+( const RecordAttribute * );
 
 Output *
-EntryAttributeListToText
-( const Entry * );
+RecordAttributeListToText
+( const Record * );
 
 Output *
-EntrySummaryToText
-( const Entry * );
+RecordSummaryToText
+( const Record * );
 
 Output *
 EventToText

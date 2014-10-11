@@ -4,14 +4,14 @@
 
 #include "helper.h"
 #include "inheritance/list.h"
-#include "private/container/list/entry_attribute.h"
+#include "private/container/list/record_attribute.h"
 #include "private/container/list/event_attribute.h"
-#include "private/container/list/const_iterator/entry_attribute.h"
+#include "private/container/list/const_iterator/record_attribute.h"
 #include "private/container/list/const_iterator/event_attribute.h"
-#include "private/container/list/iterator/entry_attribute.h"
-#include "private/entry_attribute.h"
+#include "private/container/list/iterator/record_attribute.h"
+#include "private/record_attribute.h"
 #include "static/container/list.h"
-#include "static/container/list/entry_attribute.h"
+#include "static/container/list/record_attribute.h"
 
 const char * test_add_separator( void );
 const char * test_append( void );
@@ -74,130 +74,130 @@ main
     return EXIT_SUCCESS;
 }
 
-TEST_ADD_SEPARATOR( EntryAttribute )
+TEST_ADD_SEPARATOR( RecordAttribute )
 
-TEST_APPEND( EntryAttribute )
+TEST_APPEND( RecordAttribute )
 
-TEST_APPEND_TO( EntryAttribute )
+TEST_APPEND_TO( RecordAttribute )
 
-TEST_BACK( EntryAttribute )
+TEST_BACK( RecordAttribute )
 
-TEST_BEGIN( EntryAttribute )
+TEST_BEGIN( RecordAttribute )
 
-TEST_CBEGIN( EntryAttribute )
+TEST_CBEGIN( RecordAttribute )
 
-TEST_CEND( EntryAttribute )
+TEST_CEND( RecordAttribute )
 
-TEST_CONSTRUCTOR( EntryAttribute )
+TEST_CONSTRUCTOR( RecordAttribute )
 
-TEST_CONTAINS( EntryAttribute )
+TEST_CONTAINS( RecordAttribute )
 
 const char *
 test_contains_event_attribute
 ( void )
 {
-  if( EntryAttributeListContainsEventAttribute( NULL, NULL ) )
+  if( RecordAttributeListContainsEventAttribute( NULL, NULL ) )
     return "a null list contained a null attribute";
 
   const EventAttribute *attribute = BuildEventAttribute();
   if( !attribute )
     return "could not build test event attribute";
 
-  if( EntryAttributeListContainsEventAttribute( NULL, attribute ) )
+  if( RecordAttributeListContainsEventAttribute( NULL, attribute ) )
     return "a null list contained a null attribute";
 
-  EntryAttributeList *list = BuildEntryAttributeList();
+  RecordAttributeList *list = BuildRecordAttributeList();
   if( !list )
-    return "could not build test entry attribute list";
+    return "could not build test record attribute list";
 
-  if( EntryAttributeListContainsEventAttribute( list, NULL ) )
-    return "an entry attribute list contained a null event attribute";
+  if( RecordAttributeListContainsEventAttribute( list, NULL ) )
+    return "an record attribute list contained a null event attribute";
 
-  if( EntryAttributeListContainsEventAttribute( list, attribute ) )
-    return "an entry attribute list contained an event attribute not in it";
+  if( RecordAttributeListContainsEventAttribute( list, attribute ) )
+    return "an record attribute list contained an event attribute not in it";
 
-  EntryAttribute * entry_attribute = list->list->first->value;
-  attribute = entry_attribute->event_attribute;
+  RecordAttribute * record_attribute = list->list->first->value;
+  attribute = record_attribute->event_attribute;
 
-  if( !EntryAttributeListContainsEventAttribute( list, attribute ) )
+  if( !RecordAttributeListContainsEventAttribute( list, attribute ) )
     return "the list did not contain an attribute pulled from it";
 
   return NULL;
 }
 
-TEST_COPY( EntryAttribute )
+TEST_COPY( RecordAttribute )
 
-TEST_CRBEGIN( EntryAttribute )
+TEST_CRBEGIN( RecordAttribute )
 
-TEST_CREND( EntryAttribute )
+TEST_CREND( RecordAttribute )
 
-TEST_DESTRUCTOR( EntryAttribute )
+TEST_DESTRUCTOR( RecordAttribute )
 
-TEST_END( EntryAttribute )
+TEST_END( RecordAttribute )
 
 const char *
 test_for_event_attribute_list
 ( void )
 {
-  EntryAttributeList *list = EntryAttributeListForEventAttributeList( NULL );
+  RecordAttributeList *list = RecordAttributeListForEventAttributeList( NULL );
   if( list )
-    return "a null event attribute list returned a non-null entry attribute list";
+    return "a null event attribute list returned a non-null record attribute list";
 
   EventAttributeList *event_attribute_list = BuildEventAttributeList();
   if( !event_attribute_list )
     return "could not build the event attribute list";
 
-  list = EntryAttributeListForEventAttributeList( event_attribute_list );
+  list = RecordAttributeListForEventAttributeList( event_attribute_list );
   if( !list )
     return "a list could not be created from an event attribute list";
 
-  const EntryAttribute *entry_attribute;
+  const RecordAttribute *record_attribute;
   const EventAttribute *event_attribute;
-  EntryAttributeListConstIterator *entry_attributes = CBeginEntryAttributeList( list );
+  RecordAttributeListConstIterator *record_attributes = CBeginRecordAttributeList( list );
   EventAttributeListConstIterator *event_attributes = CBeginEventAttributeList( event_attribute_list );
-  while( EntryAttributeListConstIteratorHasNext( entry_attributes ) ){
-    entry_attribute = NextInEntryAttributeListConstIterator( entry_attributes );
+  while( RecordAttributeListConstIteratorHasNext( record_attributes ) ){
+    record_attribute = NextInRecordAttributeListConstIterator( record_attributes );
     event_attribute = NextInEventAttributeListConstIterator( event_attributes );
-    if( entry_attribute->event_attribute != event_attribute )
-      return "an entry attribute did not have the correct event attribute";
+    if( record_attribute->event_attribute != event_attribute )
+      return "an record attribute did not have the correct event attribute";
   }
 
   return NULL;
 }
 
-TEST_FRONT( EntryAttribute )
+TEST_FRONT( RecordAttribute )
 
-TEST_IS_EMPTY( EntryAttribute )
+TEST_IS_EMPTY( RecordAttribute )
 
 const char *
 test_merge
 ( void )
 {
-  EntryAttributeList *primary = NULL;
-  EntryAttributeList *secondary = NULL;
-  EntryAttributeList *merged;
+  RecordAttributeList *primary = NULL;
+  RecordAttributeList *secondary = NULL;
+  RecordAttributeList *merged;
 
-  merged = MergeEntryAttributeLists( primary, secondary );
+  merged = MergeRecordAttributeLists( primary, secondary );
   FAIL_IF_NOT_NULL( merged, "two null lists were merged into a non-null list" )
 
-  primary = BuildEntryAttributeList();
+  primary = BuildRecordAttributeList();
   FAIL_IF_NULL( primary, "could not build the primary list" )
 
-  merged = MergeEntryAttributeLists( primary, secondary );
+  merged = MergeRecordAttributeLists( primary, secondary );
   if( merged != primary )
     return "a null secondary did not return the primary";
 
-  merged = MergeEntryAttributeLists( secondary, primary );
+  merged = MergeRecordAttributeLists( secondary, primary );
   if( merged != primary )
     return "a null primary did not return the secondary";
 
-  secondary = NewEntryAttributeList();
+  secondary = NewRecordAttributeList();
   FAIL_IF_NULL( secondary, "could not build the secondary list" )
-  EntryAttribute *attribute = malloc( sizeof( EntryAttribute ) );
+  RecordAttribute *attribute = malloc( sizeof( RecordAttribute ) );
   FAIL_IF_NULL( attribute, "could not build the attribute" )
-  AppendToEntryAttributeList( secondary, attribute );
+  AppendToRecordAttributeList( secondary, attribute );
 
-  merged = MergeEntryAttributeLists( primary, secondary );
+  merged = MergeRecordAttributeLists( primary, secondary );
   if( merged != primary )
     return "the primary list was not the modified list";
   FAIL_IF_NULL( merged, "two lists did not merge properly" )
@@ -205,10 +205,10 @@ test_merge
   return NULL;
 }
 
-TEST_PREPEND_TO( EntryAttribute )
+TEST_PREPEND_TO( RecordAttribute )
 
-TEST_RBEGIN( EntryAttribute )
+TEST_RBEGIN( RecordAttribute )
 
-TEST_REND( EntryAttribute )
+TEST_REND( RecordAttribute )
 
-TEST_SIZE( EntryAttribute )
+TEST_SIZE( RecordAttribute )

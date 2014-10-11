@@ -32,6 +32,11 @@ AC_CHECK_HEADER([pthread.h],
                            [1],
                            [define if <pthread.h> is available])])
                            
+AC_CHECK_HEADER([stdarg.h],
+                [AC_DEFINE([__STUMPLESS_HAVE_STDARG_H],
+                           [1],
+                           [define if <stdarg.h> is available])])
+                           
 AC_CHECK_HEADER([time.h],
                 [AC_DEFINE([__STUMPLESS_HAVE_TIME_H],
                            [1],

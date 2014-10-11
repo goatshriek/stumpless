@@ -21,60 +21,22 @@ Status *
 AppendAdapterToLogger
 ( Logger *logger, Adapter *adapter )
 {
-  if( !logger || !adapter )
-    return RaiseStatus( "empty argument" );
-
-  if( !logger->adapters ){
-    logger->adapters = NewAdapterList();
-    if( !logger->adapters )
-      return RaiseStatus( "constructor failure" );
-  }
-
-  if( AdapterListContains( logger->adapters, adapter ) )
-    return RaiseStatus( "duplicate" );
-
-  if( !AppendToAdapterList( logger->adapters, adapter ) )
-    return RaiseStatus( "list failure " );
-
   return NULL;
 }
 
+// todo refactor with append formatter to target list function
 Status *
 AppendFormatterToLogger
 ( Logger *logger, Formatter *formatter )
 {
-  if( !logger || !formatter )
-    return RaiseStatus( "empty argument" );
-
-  if( !logger->formatters ){
-    logger->formatters = NewFormatterList();
-    if( !logger->formatters )
-      return RaiseStatus( "constructor failure" );
-  }
-
-  if( FormatterListContains( logger->formatters, formatter ) )
-    return RaiseStatus( "duplicate" );
-
-  if( !AppendToFormatterList( logger->formatters, formatter ) )
-    return RaiseStatus( "list failure" );
-
   return NULL;
 }
 
+// todo refactor with new target data structure
 Status *
 AppendHandlerToLogger
 ( Logger *logger, Handler *handler )
 {
-  if( !logger || !handler )
-    return RaiseStatus( "empty argument" );
-
-  Formatter *formatter;
-  FormatterListIterator *formatters = BeginFormatterList( logger->formatters );
-  while( formatter = NextInFormatterListIterator( formatters ) ){
-    if( !AppendHandlerToFormatter( formatter, handler ) )
-      return RaiseStatus( "list failure ");
-  }
-
   return NULL;
 }
 
@@ -96,8 +58,7 @@ DestroyLogger
   if( !logger )
     return;
 
-  DestroyAdapterList( logger->adapters );
-  DestroyFormatterList( logger->formatters );
+  DestroyTargetList( logger->targets );
 
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
 // todo send destroy command through pipe
@@ -115,12 +76,12 @@ Listen
   // logging process calls this function
   // a return will signify a fatal error which caused the logging to halt
 
-  Value *value;
+  Record *record;
   Status *status;
 
   while( 1 ){
-    value = ReceiveNextValue( logger );
-    status = ProcessValue( logger, value );
+    record = ReceiveNextRecord( logger );
+    status = ProcessRecord( logger, record );
   }
 }
 
@@ -185,35 +146,21 @@ NewLogger
   return logger;
 }
 
+
+// todo refactor to use new target structure in logger
 Status *
-ProcessValue
-( Logger *logger, Value *value )
+ProcessRecord
+( Logger *logger, Record *record )
 {
-  if( !logger || !value )
-    return RaiseStatus( "empty argument" );
-
-  Entry *entry = ValueThroughAdapterList( logger->adapters, value );
-  if( !entry )
-    return RaiseStatus( "list failure" );
-
-  return EntryThroughFormatterList( logger->formatters, entry );
+  return NULL;
 }
 
-Value *
-ReceiveNextValue
+Record *
+ReceiveNextRecord
 ( Logger *logger )
 {
   // this function listens for values sent to the logging process
   // from the invocating process
-
-  return NULL;
-}
-
-Status *
-SendLoggerStatus
-( Logger *logger )
-{
-  // sends the status to the check status function
 
   return NULL;
 }

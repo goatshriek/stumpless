@@ -48,8 +48,8 @@ EndFilterList
 ( FilterList * );
 
 unsigned short
-EntryThroughFilterList
-( const FilterList *, const Entry * );
+RecordThroughFilterList
+( const FilterList *, const Record * );
 
 Filter *
 FilterListBack

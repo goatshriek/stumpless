@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/container/list/entry_attribute.h"
+#include "private/container/list/record_attribute.h"
 #include "private/container/list/event_attribute.h"
 #include "private/container/list/value.h"
-#include "private/container/list/iterator/entry_attribute.h"
+#include "private/container/list/iterator/record_attribute.h"
 #include "private/container/list/iterator/event_attribute.h"
 #include "private/formatter/text.h"
 #include "private/output.h"
@@ -25,33 +25,33 @@ ArrayValueToText
 }
 
 Output *
-EntryToText
-( const Entry * entry, Dictionary * options )
+RecordToText
+( const Formatter *formatter, const Record * record )
 {
-  return TextOutputFromValueList( EntryToValueList( entry ) );
+  return TextOutputFromValueList( RecordToValueList( record ) );
 }
 
 Output *
-EntryAttributeToText
-( const EntryAttribute * attribute )
+RecordAttributeToText
+( const RecordAttribute * attribute )
 {
-  ValueList * output = EntryAttributeToValueList( attribute );
+  ValueList * output = RecordAttributeToValueList( attribute );
   return TextOutputFromValueList( output );
 }
 
 Output *
-EntryAttributeListToText
-( const Entry * entry )
+RecordAttributeListToText
+( const Record * record )
 {
-  ValueList * output = EntryAttributeListToValueList( entry );
+  ValueList * output = RecordAttributeListToValueList( record );
   return TextOutputFromValueList( output );
 }
 
 Output *
-EntrySummaryToText
-( const Entry * entry )
+RecordSummaryToText
+( const Record * record )
 {
-  return TextOutputFromValueList( EntrySummaryToValueList( entry ) );
+  return TextOutputFromValueList( RecordSummaryToValueList( record ) );
 }
 
 Output *
@@ -136,21 +136,21 @@ ArrayValueToValueList
 
 static
 ValueList *
-EntryToValueList
-( const Entry *entry )
+RecordToValueList
+( const Record *record )
 {
-  if( !entry )
+  if( !record )
     return NULL;
 
-  ValueList *output = EntrySummaryToValueList( entry );
+  ValueList *output = RecordSummaryToValueList( record );
   if( !output )
     return NULL;
 
-  if( !EntryAttributeListIsEmpty( entry->attributes ) ){
+  if( !RecordAttributeListIsEmpty( record->attributes ) ){
     if( !AppendStringToValueList( output, ": " ) )
       return NULL;
 
-    ValueList *attributes = EntryAttributeListToValueList( entry );
+    ValueList *attributes = RecordAttributeListToValueList( record );
     if( !attributes )
       return NULL;
 
@@ -163,8 +163,8 @@ EntryToValueList
 
 static
 ValueList *
-EntryAttributeToValueList
-( const EntryAttribute *attribute )
+RecordAttributeToValueList
+( const RecordAttribute *attribute )
 {
   if( !attribute )
     return NULL;
@@ -212,10 +212,10 @@ EntryAttributeToValueList
 
 static
 ValueList *
-EntryAttributeListToValueList
-( const Entry *entry )
+RecordAttributeListToValueList
+( const Record *record )
 {
-  if( !entry || EntryAttributeListIsEmpty( entry->attributes ) )
+  if( !record || RecordAttributeListIsEmpty( record->attributes ) )
     return NULL;
 
   ValueList *output = NewValueList();
@@ -223,10 +223,10 @@ EntryAttributeListToValueList
     return NULL;
 
   ValueList *attribute_list;
-  EntryAttribute *attribute;
-  EntryAttributeListIterator *iterator = BeginEntryAttributeList( entry->attributes );
-  while( attribute = NextInEntryAttributeListIterator( iterator ) ){
-    attribute_list = EntryAttributeToValueList( attribute );
+  RecordAttribute *attribute;
+  RecordAttributeListIterator *iterator = BeginRecordAttributeList( record->attributes );
+  while( attribute = NextInRecordAttributeListIterator( iterator ) ){
+    attribute_list = RecordAttributeToValueList( attribute );
     if( !attribute_list )
       continue;
 
@@ -238,37 +238,37 @@ EntryAttributeListToValueList
       return NULL;
   }
 
-  DestroyEntryAttributeListIterator( iterator );
+  DestroyRecordAttributeListIterator( iterator );
   return output;
 }
 
 static
 ValueList *
-EntrySummaryToValueList
-( const Entry *entry )
+RecordSummaryToValueList
+( const Record *record )
 {
-  if( !entry )
+  if( !record )
     return NULL;
 
   ValueList *output = NewValueList();
   if( !output )
     return NULL;
 
-  const char *description;
-  if( !entry->description )
-    description = "entry";
+  const char *message;
+  if( !record->message )
+    message = "record";
   else
-    description = entry->description;
+    message = record->message;
 
-  if( !AppendStringToValueList( output, description ) )
+  if( !AppendStringToValueList( output, message ) )
     return NULL;
 
   ValueList *event;
-  if( entry->event ){
+  if( record->event ){
     if( !AppendStringToValueList( output, " [" ) )
       return NULL;
 
-    event = EventSummaryToValueList( entry->event );
+    event = EventSummaryToValueList( record->event );
     if( !event )
       return NULL;
 

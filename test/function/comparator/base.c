@@ -13,7 +13,7 @@ int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result = NULL;
+  const char *result = NULL;
   
   RUN_TEST( string )
   
@@ -32,21 +32,20 @@ test_string
   void * str_2 = ( void * ) "second";
   void * str_3 = ( void * ) "third";
   void * str_4 = ( void * ) "thirdly";
-  Dictionary * options = NewDictionary();
   
-  if( StringComparatorCompare( str_0, str_0, options ) != 0 )
+  if( StringComparatorCompare( NULL, str_0, str_0 ) != 0 )
     return "the same value was not equal";
   
-  if( StringComparatorCompare( str_0, str_1, options ) != 0 )
+  if( StringComparatorCompare( NULL, str_0, str_1 ) != 0 )
     return "two equal strings were not equal";
   
-  if( StringComparatorCompare( str_1, str_2, options ) >= 0 )
+  if( StringComparatorCompare( NULL, str_1, str_2 ) >= 0 )
     return "first did not come before second";
   
-  if( StringComparatorCompare( str_2, str_1, options ) <= 0 )
+  if( StringComparatorCompare( NULL, str_2, str_1 ) <= 0 )
     return "second did not come after first";
   
-  if( StringComparatorCompare( str_3, str_4, options ) >= 0 )
+  if( StringComparatorCompare( NULL, str_3, str_4 ) >= 0 )
     return "a shorter string did not come before a longer one";
   
   return NULL;

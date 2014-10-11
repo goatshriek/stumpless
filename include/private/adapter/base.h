@@ -1,14 +1,22 @@
 #ifndef STUMPLESS_PRIVATE_ADAPTER_BASE_H
 #define STUMPLESS_PRIVATE_ADAPTER_BASE_H
 
+#include <stumpless/config.h>
+
 #include "private/type.h"
 
-Entry *
-ValueThroughContextAdapter
-( Value *, Dictionary * );
+Record *
+RecordThroughContextAdapter
+( const Adapter *, Record * );
 
-Entry *
-ValueThroughLevelAdapter
-( Value *, Dictionary * );
+Record *
+RecordThroughLevelAdapter
+( const Adapter *, Record * );
+
+#ifdef __STUMPLESS_HAVE_TIME_H
+Record *
+RecordThroughTimeAdapter
+( const Adapter *, Record *record );
+#endif
 
 #endif
