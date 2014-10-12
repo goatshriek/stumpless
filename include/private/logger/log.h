@@ -1,11 +1,22 @@
 #ifndef __STUMPLESS_PRIVATE_LOGGER_LOG_H
 #define __STUMPLESS_PRIVATE_LOGGER_LOG_H
 
+/** @file
+ *  Functions used to log various elements directly to a Logger. 
+ */
+
 #include "private/type.h"
 
+/** Logs a single character to a Logger. Uses the default settings of the Logger
+ *  provided.
+ *  
+ *  @param logger the Logger to use
+ *  @param character the char to log
+ *  @return a Status of the logging operation
+ */
 Status *
 LogChar
-( Logger *, char );
+( Logger *logger, char character );
 
 Status *
 LogCharArray
@@ -62,6 +73,16 @@ LogLongLong
 Status *
 LogLongLongArray
 ( Logger *, const long long *, unsigned );
+
+/** Logs a Record to a Logger. Uses the default settings of the Logger provided.
+ *  
+ *  @param logger the Logger to use
+ *  @param character the char to log
+ *  @return a Status of the logging
+ */
+Status *
+LogRecord
+( Logger *logger, Record *record );
 
 Status *
 LogShort

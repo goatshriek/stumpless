@@ -30,6 +30,13 @@ LOG_FUNCTIONS( LongDouble, long double )
 
 LOG_FUNCTIONS( LongLong, long long )
 
+Status *
+LogRecord
+( Logger *logger, Record *record )
+{
+  return NULL;
+}
+
 LOG_FUNCTIONS( Short, short )
 
 LOG_FUNCTIONS( SignedChar, signed char )
