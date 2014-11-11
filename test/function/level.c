@@ -3,21 +3,25 @@
 #include <string.h>
 
 #include "private/level.h"
-#include "private/type.h"
-
-#include "helper.h"
-
-const char * test_default_levels( void );
-const char * test_to_string( void );
+#include "test/function/level.h"
+#include "test/helper.h"
+#include "test/type.h"
 
 int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result;
+  const char *result;
  
-  RUN_TEST( default_levels )
-  RUN_TEST( to_string )
+  TEST( AlertLevel)
+  //TEST( CriticalLevel)
+  //TEST( DebugLevel)
+  //TEST( EmergencyLevel)
+  //TEST( ErrorLevel)
+  //TEST( InformationalLevel)
+  TEST( LevelToString)
+  //TEST( NoticeLevel)
+  //TEST( WarningLevel)
    
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -26,56 +30,32 @@ main( void )
 }
 
 const char *
-test_default_levels( void )
+TestAlertLevel
+( void )
 {
-  Level * debug = GetDebugLevel();
+  Level *level = FindLevelByName( "alert" );
+  if( !level )
+    return "the alert Level could not be found";
+  
+  ASSERT_STRINGS_EQUAL( "alert", level->name, "the alert Level did not have the appropriate name" )
 
-  if( debug == NULL )
-    return "debug level was not properly created";
-  if( strcmp( debug->name, "debug" ) != 0 )
-    return "debug level was not properly named";
-  
-  Level * error = GetErrorLevel();
-  if( error == NULL )
-    return "error level was not properly created";
-  if( strcmp( error->name, "error" ) != 0 )
-    return "error level was not properly named";
-  
-  Level * fatal = GetFatalLevel();
-  if( fatal == NULL )
-    return "fatal level was not properly created";
-  if( strcmp( fatal->name, "fatal" ) != 0 )
-    return "fatal level was not properly named";
-  
-  Level * info = GetInfoLevel();
-  if( info == NULL )
-    return "info level was not properly created";
-  if( strcmp( info->name, "info" ) != 0 )
-    return "info level was not properly named";
-  
-  Level * warning = GetWarningLevel();
-  if( warning == NULL )
-    return "warning level was not properly created";
-  if( strcmp( warning->name, "warning" ) != 0 )
-    return "warning level was not properly named";
-  
   return NULL;
 }
 
 const char *
-test_to_string( void )
+TestLevelToString
+( void )
 {
-  Level * level = NULL;
-  char * description = LevelToString( level );
-  if( description != NULL )
+  char *description = LevelToString( NULL );
+  if( description )
     return "the description was not null for a null pointer";
   
-  level = GetInfoLevel();
+  Level *level = BuildLevel();
   description = LevelToString( level );
-  if( description == NULL )
+  if( !description )
     return "the description string was null for a non-null level pointer";
-  if( strstr( description, "info" ) == NULL )
-    return "the description did not contain the level's description";
+  if( !strstr( description, "Test Level" ) )
+    return "the description did not contain the level's name";
   
   return NULL;
 }

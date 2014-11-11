@@ -1,11 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "private/type.h"
-
 #include "private/handler/stream.h"
-
-#include "helper.h"
+#include "private/type.h"
+#include "test/helper.h"
 
 const char * test_stream_handler( void );
 const char * test_raw_string_readability( void );

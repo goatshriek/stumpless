@@ -29,7 +29,7 @@ name##ArrayValueToValueList                                                    \
   unsigned i;                                                                  \
                                                                                \
   for( i = 0; i < value->length; i++ ){                                        \
-    value_i = ValueFrom##name( data->data_member[i] );                         \
+    value_i = NewValueFor##name( data->data_member[i] );                       \
     if( !AppendToValueList( list, value_i ) )                                  \
       return NULL;                                                             \
   }                                                                            \
@@ -114,7 +114,7 @@ BooleanArrayValueToValueList
 
   unsigned i;
   for( i = 0; i < value->length; i++ ){
-    boolean_value = ValueFromBoolean( boolean_list[i] );
+    boolean_value = NewValueForBoolean( boolean_list[i] );
     if( !AppendToValueList( list, boolean_value ) )
       return NULL;
   }
@@ -261,7 +261,7 @@ StringArrayValueToValueList
 
   unsigned i;
   for( i = 0; i < value->length; i++ ){
-    string_value = ValueFromString( string_list[i] );
+    string_value = NewValueForString( string_list[i] );
     if( !AppendToValueList( list, string_value ) )
       return NULL;
   }

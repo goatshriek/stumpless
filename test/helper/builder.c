@@ -1,42 +1,40 @@
 #include <stdlib.h>
 
-#include "builder.h"
-
 #include "private/adapter.h"
 #include "private/comparator/base.h"
 #include "private/configuration.h"
 #include "private/container/dictionary.h"
+#include "private/container/dictionary/const_iterator.h"
 #include "private/container/list.h"
 #include "private/container/list/adapter.h"
 #include "private/container/list/comparator.h"
-#include "private/container/list/record_attribute.h"
-#include "private/container/list/event_attribute.h"
 #include "private/container/list/filter.h"
 #include "private/container/list/formatter.h"
 #include "private/container/list/handler.h"
 #include "private/container/list/iterator.h"
-#include "private/container/list/iterator/event_attribute.h"
 #include "private/container/list/reverse_iterator.h"
+#include "private/container/list/target.h"
 #include "private/container/list/value.h"
+#include "private/container/stack.h"
+#include "private/container/tree.h"
 #include "private/filter.h"
 #include "private/formatter.h"
 #include "private/handler.h"
 #include "private/output/profile.h"
-#include "private/container/stack.h"
-#include "private/container/tree.h"
 #include "private/type.h"
 #include "private/value/constructor.h"
 #include "private/value/profile.h"
+#include "test/helper.h"
 
 Adapter *
 BuildAdapter
 ( void )
 {
-  Adapter * adapter = malloc( sizeof( Adapter ) );
+  Adapter *adapter = malloc( sizeof( Adapter ) );
   if( !adapter )
     return NULL;
 
-  adapter->adapt = NULL;
+  adapter->adapt = TestAdaptFunction;
   adapter->filters = NULL;
   adapter->name = "test adapter";
   adapter->options = BuildDictionaryOfStrings();
@@ -52,13 +50,13 @@ BuildAdapterList
   if( !list )
     return NULL;
 
-  Adapter *adapter = FindAdapterByName( "context" );
+  Adapter *adapter = BuildAdapter();
   if( !adapter )
     return NULL;
   if( !AppendToAdapterList( list, adapter ) )
     return NULL;
 
-  adapter = FindAdapterByName( "level" );
+  adapter = BuildBadAdapter();
   if( !adapter )
     return NULL;
   if( !AppendToAdapterList( list, adapter ) )
@@ -67,16 +65,96 @@ BuildAdapterList
   return list;
 }
 
+Adapter *
+BuildBadAdapter
+( void )
+{
+  Adapter *adapter = malloc( sizeof( Adapter ) );
+  if( !adapter )
+    return NULL;
+
+  adapter->adapt = BadAdaptFunction;
+  adapter->filters = NULL;
+  adapter->name = "bad adapter";
+  adapter->options = BuildDictionaryOfStrings();
+
+  return adapter;
+}
+
+Formatter *
+BuildBadFormatter
+( void )
+{
+  Formatter *formatter = malloc( sizeof( Formatter ) );
+  if( !formatter )
+    return NULL;
+
+  formatter->name = "test formatter";
+  formatter->options = BuildDictionaryOfStrings();
+  if( !formatter->options )
+    return NULL;
+
+  formatter->filters = BuildFilterList();
+  if( !formatter->filters )
+    return NULL;
+
+  formatter->format = BadFormatFunction;
+
+  return formatter;
+}
+
+Handler *
+BuildBadHandler
+( void )
+{
+  Handler *handler = malloc( sizeof( Handler ) );
+  if( !handler )
+    return NULL;
+  
+  handler->name = "bad handler";
+
+  handler->filters = BuildFilterList();
+  if( !handler->filters )
+    return NULL;
+
+  handler->options = BuildDictionaryOfStrings();
+  if( !handler->options )
+    return NULL;
+
+  handler->handle = BadHandleFunction;
+
+  return handler;
+}
+
+Target *
+BuildBadTarget
+( void )
+{
+  Target *target = malloc( sizeof( Target ) );
+  if( !target )
+    return NULL;
+  
+  target->formatter = BuildBadFormatter();
+  if( !target->formatter )
+    return NULL;
+  
+  target->handler = BuildBadHandler();
+  if( !target->handler )
+    return NULL;
+
+  return target;
+}
+
 Boolean *
 BuildBoolean
 ( void )
 {
   Boolean * boolean = malloc( sizeof( Boolean ) );
-  if( boolean == NULL )
+  if( !boolean )
     return NULL;
 
   boolean->format = malloc( sizeof( BooleanFormat ) );
-  if( boolean->format == NULL )
+  if( !boolean->format )
     return NULL;
 
   boolean->value = 1;
@@ -87,14 +165,15 @@ BuildBoolean
 }
 
 Value *
-BuildBooleanValue( void )
+BuildBooleanValue
+( void )
 {
   Boolean * boolean = BuildBoolean();
-  if( boolean == NULL )
+  if( !boolean )
     return NULL;
 
-  Value * value = ValueFromBoolean( boolean );
-  if( value == NULL )
+  Value *value = NewValueForBoolean( boolean );
+  if( !value )
     return NULL;
 
   return value;
@@ -192,11 +271,78 @@ BuildComparatorList
 }
 
 Dictionary *
+BuildDictionaryOfEventAttributes
+( void )
+{
+  Dictionary *attributes = NewDictionary();
+  if( !attributes )
+    return NULL;
+
+  EventAttribute *attribute;
+  attribute = malloc( sizeof( EventAttribute ) );
+  if( !attribute )
+    return NULL;
+  attribute->name = "Test Attribute 1";
+  attribute->default_value = NewValueForString( "default value" );
+  SetDictionaryValue( attributes, attribute->name, attribute );
+
+  attribute = malloc( sizeof( EventAttribute ) );
+  if( !attribute )
+    return NULL;
+  attribute->name = "Test Attribute 2";
+  attribute->default_value = NULL;
+  SetDictionaryValue( attributes, attribute->name, attribute );
+
+  return attributes;
+}
+
+Dictionary *
+BuildDictionaryOfRecordAttributes
+( void )
+{
+  Dictionary *record_attributes = NewDictionary();
+  if( !record_attributes )
+    return NULL;
+
+  Dictionary *event_attributes = BuildDictionaryOfEventAttributes();
+  if( !event_attributes )
+    return NULL;
+
+  RecordAttribute *record_attribute;
+  const EventAttribute *event_attribute;
+  DictionaryConstIterator *iterator = CBeginDictionary( event_attributes );
+  while( event_attribute = NextInDictionaryConstIterator( iterator ) ){
+    record_attribute = malloc( sizeof( RecordAttribute ) );
+    if( !record_attribute )
+      return NULL;
+    
+    record_attribute->event_attribute = event_attribute;
+    record_attribute->value = event_attribute->default_value;
+    if( !record_attribute->value )
+      record_attribute->value = NewValueForString( "record value" );
+    
+    SetDictionaryValue( record_attributes, event_attribute->name, record_attribute );
+  }
+
+  record_attribute = malloc( sizeof( RecordAttribute ) );
+  if( !record_attribute )
+    return NULL;
+  
+  record_attribute->name = "anonymous attribute";
+  record_attribute->event_attribute = NULL;
+  record_attribute->value = NewValueForString( "anonymous attribute value" );
+
+  SetDictionaryValue( record_attributes, record_attribute->name, record_attribute );
+
+  return record_attributes;
+}
+
+Dictionary *
 BuildDictionaryOfStrings
 ( void )
 {
-  Dictionary * dictionary = NewDictionary();
-  if( dictionary == NULL )
+  Dictionary *dictionary = NewDictionary();
+  if( !dictionary )
     return NULL;
 
   SetDictionaryValue( dictionary, "first", "1st" );
@@ -210,11 +356,10 @@ Record *
 BuildEmptyRecord
 ( void )
 {
-  Record * record = malloc( sizeof( Record ) );
-  if( record == NULL )
+  Record *record = malloc( sizeof( Record ) );
+  if( !record )
     return NULL;
 
-  record->message = NULL;
   record->event = NULL;
   record->attributes = NULL;
 
@@ -280,95 +425,6 @@ BuildEmptyValue
   return value;
 }
 
-Record *
-BuildRecord( void )
-{
-  Record * record = malloc( sizeof( Record ) );
-  if( record == NULL )
-    return NULL;
-
-  record->message = "Test Record";
-  record->event = BuildEvent();
-  record->attributes = BuildRecordAttributeList();
-
-  return record;
-}
-
-RecordAttribute *
-BuildRecordAttribute( void )
-{
-  RecordAttribute * attribute;
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-
-  attribute->event_attribute = BuildEventAttribute();
-  attribute->value = ValueFromString( "Test Value" );
-
-  return attribute;
-}
-
-RecordAttributeList *
-BuildRecordAttributeList( void )
-{
-  RecordAttributeList * list = NewRecordAttributeList();
-  if( list == NULL )
-    return NULL;
-
-  EventAttributeList * event_attribute_list = BuildEventAttributeList();
-  if( event_attribute_list == NULL )
-    return NULL;
-
-  EventAttributeListIterator * event_attributes = BeginEventAttributeList( event_attribute_list );
-
-  RecordAttribute * attribute;
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
-  attribute->value = NULL;
-  AppendToRecordAttributeList( list, attribute );
-
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
-  attribute->value = ValueFromString( "not 37" );
-  AppendToRecordAttributeList( list, attribute );
-
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
-  attribute->value = NULL;
-  AppendToRecordAttributeList( list, attribute );
-
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->event_attribute = NextInEventAttributeListIterator( event_attributes );
-  attribute->value = ValueFromString( "unnamed value" );
-  AppendToRecordAttributeList( list, attribute );
-
-  DestroyEventAttributeListIterator( event_attributes );
-
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->event_attribute = NULL;
-  attribute->value = ValueFromString( "no event attribute" );
-  AppendToRecordAttributeList( list, attribute );
-
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->event_attribute = NULL;
-  attribute->value = NULL;
-  AppendToRecordAttributeList( list, attribute );
-
-  return list;
-}
-
 Status *
 BuildErrorStatus
 ( void )
@@ -388,78 +444,39 @@ BuildErrorStatus
 }
 
 Event *
-BuildEvent( void )
+BuildEvent
+( void )
 {
-  Event * event = malloc( sizeof( Event ) );
-  if( event == NULL )
+  Event *event = malloc( sizeof( Event ) );
+  if( !event )
     return NULL;
 
   event->name = "Test Event";
 
   event->level = BuildLevel();
-  if( event->level == NULL )
+  if( !event->level )
     return NULL;
 
-  event->attributes = BuildEventAttributeList();
-  if( event->attributes == NULL )
+  event->attributes = BuildDictionaryOfEventAttributes();
+  if( !event->attributes )
     return NULL;
 
   return event;
 }
 
 EventAttribute *
-BuildEventAttribute( void )
+BuildEventAttribute
+( void )
 {
   EventAttribute * attribute;
   attribute = malloc( sizeof( EventAttribute ) );
-  if( attribute == NULL )
+  if( !attribute )
     return NULL;
 
   attribute->name = "Test Event Attribute";
-  attribute->default_value = ValueFromString( "Test Default Value" );
+  attribute->default_value = NewValueForString( "Test Default Value" );
 
   return attribute;
-}
-
-EventAttributeList *
-BuildEventAttributeList( void )
-{
-  EventAttributeList * list = NewEventAttributeList();
-  if( list == NULL )
-    return NULL;
-
-  EventAttribute * attribute;
-  attribute = malloc( sizeof( EventAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->name = "Test Attribute 0";
-  attribute->default_value = ValueFromString( "default value" );
-  AppendToEventAttributeList( list, attribute );
-
-  attribute = malloc( sizeof( EventAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->name = NULL;
-  attribute->default_value = ValueFromUnsignedInt( 37 );
-  AppendToEventAttributeList( list, attribute );
-
-  attribute = malloc( sizeof( EventAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->name = "Test Attribute 2";
-  attribute->default_value = NULL;
-  AppendToEventAttributeList( list, attribute );
-
-  attribute = malloc( sizeof( EventAttribute ) );
-  if( attribute == NULL )
-    return NULL;
-  attribute->name = NULL;
-  attribute->default_value = NULL;
-  AppendToEventAttributeList( list, attribute );
-
-  //AppendToEventAttributeList( list, NULL );
-
-  return list;
 }
 
 Status *
@@ -534,6 +551,8 @@ BuildFormatter
   if( !formatter->filters )
     return NULL;
 
+  formatter->format = TestFormatFunction;
+
   return formatter;
 }
 
@@ -573,7 +592,7 @@ BuildHandler
   if( !handler->options )
     return NULL;
 
-  handler->handle = NULL;
+  handler->handle = TestHandleFunction;
 
   return handler;
 }
@@ -663,12 +682,14 @@ Level *
 BuildLevel
 ( void )
 {
-  Level * level = malloc( sizeof( Level ) ) ;
-  if( level == NULL )
+  Level *level = malloc( sizeof( Level ) ) ;
+  if( !level )
     return NULL;
 
   level->name = "Test Level";
-  level->value = 42;
+  level->primary = 42;
+  level->secondary = 31;
+  level->tertiary = 24;
 
   return level;
 }
@@ -718,7 +739,7 @@ Logger *
 BuildLogger
 ( void )
 {
-  Logger * logger = malloc( sizeof( Logger ) );
+  Logger *logger = malloc( sizeof( Logger ) );
   if( !logger )
     return NULL;
 
@@ -772,6 +793,34 @@ BuildRawStringOutput
   output->data->c_p = "Test String with\nstuff in it.";
 
   return output;
+}
+
+Record *
+BuildRecord( void )
+{
+  Record *record = malloc( sizeof( Record ) );
+  if( !record )
+    return NULL;
+
+  record->event = BuildEvent();
+  record->attributes = BuildDictionaryOfRecordAttributes();
+
+  return record;
+}
+
+RecordAttribute *
+BuildRecordAttribute
+( void )
+{
+  RecordAttribute * attribute;
+  attribute = malloc( sizeof( RecordAttribute ) );
+  if( attribute == NULL )
+    return NULL;
+
+  attribute->event_attribute = BuildEventAttribute();
+  attribute->value = NewValueForString( "Test Value" );
+
+  return attribute;
 }
 
 Stack *
@@ -838,7 +887,14 @@ TargetList *
 BuildTargetList
 ( void )
 {
-  return NULL;
+  TargetList *list = NewTargetList();
+  if( !list )
+    return NULL;
+  
+  AppendToTargetList( list, BuildTarget() );
+  AppendToTargetList( list, BuildBadTarget() );
+
+  return list;
 }
 
 Output *

@@ -7,7 +7,7 @@
 
 #define VALUE_FROM_FUNCTIONS( name, type, member )                             \
 Value *                                                                        \
-ValueFrom##name                                                                \
+NewValueFor##name                                                              \
 ( type element )                                                               \
 {                                                                              \
   Value *value = malloc( sizeof( Value ) );                                    \
@@ -28,7 +28,7 @@ ValueFrom##name                                                                \
 }                                                                              \
                                                                                \
 Value *                                                                        \
-ValueFrom##name##Array                                                         \
+NewValueFor##name##Array                                                       \
 ( const type *array, size_t length )                                           \
 {                                                                              \
   if( !array || !length )                                                      \
@@ -60,7 +60,7 @@ ValueFrom##name##Array                                                         \
 
 
 Value *
-ValueFromBoolean( const Boolean * boolean )
+NewValueForBoolean( const Boolean * boolean )
 {
   if( !boolean )
     return NULL;
@@ -105,7 +105,7 @@ VALUE_FROM_FUNCTIONS( Short, short, s )
 VALUE_FROM_FUNCTIONS( SignedChar, signed char, s_c )
 
 Value *
-ValueFromString( const char *str )
+NewValueForString( const char *str )
 {
   if( !str )
     return NULL;

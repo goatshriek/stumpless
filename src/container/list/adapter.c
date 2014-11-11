@@ -1,20 +1,15 @@
 #include <stdlib.h>
 
-#include "private/record.h"
-#include "private/type.h"
+#include <stumpless/record.h>
 
 #include "private/container/list/adapter.h"
+#include "private/container/list/const_iterator/adapter.h"
+#include "private/container/list/const_reverse_iterator/adapter.h"
 #include "private/container/list/inheritance.h"
 #include "private/container/list/iterator.h"
-
-#include "private/container/list/const_iterator/adapter.h"
-
-#include "private/container/list/const_reverse_iterator/adapter.h"
-
 #include "private/container/list/iterator/adapter.h"
-
 #include "private/container/list/reverse_iterator/adapter.h"
-
+#include "private/type.h"
 #include "static/container/list/adapter.h"
 
 LIST_BACK( Adapter )
@@ -51,7 +46,7 @@ END_LIST( Adapter )
 
 Record *
 RecordThroughAdapterList
-( AdapterList *list, Record *record )
+( const AdapterList *list, Record *record )
 {
   if( !list || !record )
     return NULL;

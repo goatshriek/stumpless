@@ -2,11 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/container/list/record_attribute.h"
-#include "private/container/list/event_attribute.h"
+#include "private/container/dictionary.h"
+#include "private/container/dictionary/const_iterator.h"
 #include "private/container/list/value.h"
-#include "private/container/list/iterator/record_attribute.h"
-#include "private/container/list/iterator/event_attribute.h"
 #include "private/formatter/text.h"
 #include "private/output.h"
 #include "private/output/profile.h"
@@ -71,9 +69,9 @@ EventAttributeToText
 
 Output *
 EventAttributeListToText
-( const Event * event )
+( const Event *event )
 {
-  ValueList * output = EventAttributeListToValueList( event );
+  ValueList *output = EventAttributeListToValueList( event );
   return TextOutputFromValueList( output );
 }
 
@@ -115,7 +113,7 @@ ArrayValueToValueList
   if( !output )
     return NULL;
 
-  Value *separator = ValueFromString( ", " );
+  Value *separator = NewValueForString( ", " );
   if( !AddSeparatorToValueList( output, separator ) )
     return NULL;
 
@@ -146,7 +144,7 @@ RecordToValueList
   if( !output )
     return NULL;
 
-  if( !RecordAttributeListIsEmpty( record->attributes ) ){
+  if( !DictionaryIsEmpty( record->attributes ) ){
     if( !AppendStringToValueList( output, ": " ) )
       return NULL;
 
@@ -187,7 +185,7 @@ RecordAttributeToValueList
   if( !AppendStringToValueList( output, ": " ) )
     return NULL;
 
-  Value * attribute_value;
+  Value *attribute_value;
   if( attribute->value )
     attribute_value = attribute->value;
   else if( event_attribute && event_attribute->default_value )
@@ -198,7 +196,7 @@ RecordAttributeToValueList
   if( !attribute_value->profile )
     return NULL;
 
-  Output * value_as_text;
+  Output *value_as_text;
   value_as_text = attribute_value->profile->to_text( attribute_value );
   if( !value_as_text )
     return NULL;
@@ -215,7 +213,7 @@ ValueList *
 RecordAttributeListToValueList
 ( const Record *record )
 {
-  if( !record || RecordAttributeListIsEmpty( record->attributes ) )
+  if( !record || DictionaryIsEmpty( record->attributes ) )
     return NULL;
 
   ValueList *output = NewValueList();
@@ -223,9 +221,9 @@ RecordAttributeListToValueList
     return NULL;
 
   ValueList *attribute_list;
-  RecordAttribute *attribute;
-  RecordAttributeListIterator *iterator = BeginRecordAttributeList( record->attributes );
-  while( attribute = NextInRecordAttributeListIterator( iterator ) ){
+  const RecordAttribute *attribute;
+  DictionaryConstIterator *iterator = CBeginDictionary( record->attributes );
+  while( attribute = NextInDictionaryConstIterator( iterator ) ){
     attribute_list = RecordAttributeToValueList( attribute );
     if( !attribute_list )
       continue;
@@ -238,7 +236,7 @@ RecordAttributeListToValueList
       return NULL;
   }
 
-  DestroyRecordAttributeListIterator( iterator );
+  DestroyDictionaryConstIterator( iterator );
   return output;
 }
 
@@ -252,15 +250,6 @@ RecordSummaryToValueList
 
   ValueList *output = NewValueList();
   if( !output )
-    return NULL;
-
-  const char *message;
-  if( !record->message )
-    message = "record";
-  else
-    message = record->message;
-
-  if( !AppendStringToValueList( output, message ) )
     return NULL;
 
   ValueList *event;
@@ -294,7 +283,7 @@ EventToValueList
   if( !output )
     return NULL;
 
-  if( !EventAttributeListIsEmpty( event->attributes ) ){
+  if( !DictionaryIsEmpty( event->attributes ) ){
     if( !AppendStringToValueList( output, ": " ) )
       return NULL;
 
@@ -363,9 +352,9 @@ EventAttributeListToValueList
     return NULL;
 
   ValueList *attribute_list;
-  EventAttribute *attribute;
-  EventAttributeListIterator *attributes = BeginEventAttributeList( event->attributes );
-  while( attribute = NextInEventAttributeListIterator( attributes ) ){
+  const EventAttribute *attribute;
+  DictionaryConstIterator *attributes = CBeginDictionary( event->attributes );
+  while( attribute = NextInDictionaryConstIterator( attributes ) ){
     attribute_list = EventAttributeToValueList( attribute );
     if( !attribute_list )
       continue;
@@ -380,7 +369,7 @@ EventAttributeListToValueList
       return NULL;
   }
 
-  DestroyEventAttributeListIterator( attributes );
+  DestroyDictionaryConstIterator( attributes );
   return output;
 }
 
@@ -441,7 +430,7 @@ LevelToValueList
   if( !AppendStringToValueList( output, "level " ) )
     return NULL;
 
-  return AppendUnsignedIntToValueList( output, level->value );
+  return AppendUnsignedIntToValueList( output, level->primary );
 }
 
 static

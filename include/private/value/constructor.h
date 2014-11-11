@@ -4,123 +4,123 @@
 #include "private/type.h"
 
 Value *
-ValueFromBoolean
+NewValueForBoolean
 ( const Boolean * );
 
 Value *
-ValueFromChar
+NewValueForChar
 ( char );
 
 Value *
-ValueFromCharArray
+NewValueForCharArray
 ( const char *, unsigned );
 
 Value *
-ValueFromDouble
+NewValueForDouble
 ( double );
 
 Value *
-ValueFromDoubleArray
+NewValueForDoubleArray
 ( const double *, unsigned );
 
 Value *
-ValueFromFloat
+NewValueForFloat
 ( float );
 
 Value *
-ValueFromFloatArray
+NewValueForFloatArray
 ( const float *, unsigned );
 
 Value *
-ValueFromInt
+NewValueForInt
 ( int );
 
 Value *
-ValueFromIntArray
+NewValueForIntArray
 ( const int *, unsigned );
 
 Value *
-ValueFromLong
+NewValueForLong
 ( long );
 
 Value *
-ValueFromLongArray
+NewValueForLongArray
 ( const long *, unsigned );
 
 Value *
-ValueFromLongDouble
+NewValueForLongDouble
 ( long double );
 
 Value *
-ValueFromLongDoubleArray
+NewValueForLongDoubleArray
 ( const long double *, unsigned );
 
 Value *
-ValueFromLongLong
+NewValueForLongLong
 ( long long );
 
 Value *
-ValueFromLongLongArray
+NewValueForLongLongArray
 ( const long long *, unsigned );
 
 Value *
-ValueFromShort
+NewValueForShort
 ( short );
 
 Value *
-ValueFromShortArray
+NewValueForShortArray
 ( const short *, unsigned );
 
 Value *
-ValueFromSignedChar
+NewValueForSignedChar
 ( signed char );
 
 Value *
-ValueFromSignedCharArray
+NewValueForSignedCharArray
 ( const signed char *, unsigned );
 
 Value *
-ValueFromString
+NewValueForString
 ( const char * );
 
 Value *
-ValueFromUnsignedChar
+NewValueForUnsignedChar
 ( unsigned char );
 
 Value *
-ValueFromUnsignedCharArray
+NewValueForUnsignedCharArray
 ( const unsigned char *, unsigned );
 
 Value *
-ValueFromUnsignedInt
+NewValueForUnsignedInt
 ( unsigned );
 
 Value *
-ValueFromUnsignedIntArray
+NewValueForUnsignedIntArray
 ( const unsigned *, unsigned );
 
 Value *
-ValueFromUnsignedLong
+NewValueForUnsignedLong
 ( unsigned long );
 
 Value *
-ValueFromUnsignedLongArray
+NewValueForUnsignedLongArray
 ( const unsigned long *, unsigned );
 
 Value *
-ValueFromUnsignedLongLong
+NewValueForUnsignedLongLong
 ( unsigned long long );
 
 Value *
-ValueFromUnsignedLongLongArray
+NewValueForUnsignedLongLongArray
 ( const unsigned long long *, unsigned );
 
 Value *
-ValueFromUnsignedShort
+NewValueForUnsignedShort
 ( unsigned short );
 
 Value *
-ValueFromUnsignedShortArray
+NewValueForUnsignedShortArray
 ( const unsigned short *, unsigned );
 
 #endif

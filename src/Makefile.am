@@ -27,8 +27,9 @@ include src/container/Makefile.am
 include src/filter/Makefile.am
 include src/formatter/Makefile.am
 include src/handler/Makefile.am
+include src/level/Makefile.am
 include src/logger/Makefile.am
 include src/output/Makefile.am
+include src/private/Makefile.am
 include src/status/Makefile.am
-include src/stumpless/Makefile.am
 include src/value/Makefile.am

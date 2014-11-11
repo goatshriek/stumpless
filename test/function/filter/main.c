@@ -3,8 +3,7 @@
 
 #include "private/filter.h"
 #include "private/type.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_add_filter( void );
 const char * test_find_filter_by_name( void );

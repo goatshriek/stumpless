@@ -4,8 +4,7 @@
 #include "private/type.h"
 #include "private/value/profile.h"
 #include "private/value/profile_initializer.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_initialize_boolean( void );
 const char * test_initialize_boolean_array( void );

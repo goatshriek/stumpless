@@ -2,49 +2,62 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "private/container/dictionary.h"
+#include "private/container/list/value.h"
+#include "private/formatter/text.h"
 #include "private/level.h"
+#include "private/level/initializer.h"
 #include "private/output.h"
+#include "private/status.h"
 #include "private/type.h"
 
-#include "private/formatter/text.h"
+static Dictionary *levels = NULL; /**< currently initialized levels (by name) */
 
-#include "private/container/list/value.h"
+Status *
+AddLevel
+( Level *level )
+{
+  if( !level || !level->name )
+    return RaiseStatus( "empty argument" );
+  
+  if( !levels ){
+    levels = NewDictionary();
+    
+    if( !levels )
+      return RaiseStatus( "constructor failure" );
+  }
 
-#define LEVEL_FUNCTION( function_name, level_name, level_value )               \
-Level *                                                                        \
-Get##function_name##Level( void )                                              \
-{                                                                              \
-  Level * level_name = malloc( sizeof( Level ) );                              \
-  if( level_name == NULL )                                                     \
-    return NULL;                                                               \
-                                                                               \
-  level_name->value = level_value;                                             \
-  level_name->name = #level_name;                                              \
-                                                                               \
-  return level_name;                                                           \
+  if( !SetDictionaryValue( levels, level->name, level ) )
+    return RaiseStatus( "dictionary failure" );
+
+  return NULL;
 }
 
-LEVEL_FUNCTION( Alert, alert, 0 )
+Level *
+FindLevelByName
+( const char *name )
+{
+  if( !levels ){
+    levels = NewDictionary();
+    
+    if( !levels )
+      return NULL;
+  }
+  
+  Level *level = GetDictionaryValue( levels, name );
 
-LEVEL_FUNCTION( Critical, critical, 0 )
+  if( !level ){
+    if( InitializeLevelByName( name ) )
+      return NULL;
+    level = GetDictionaryValue( levels, name );
+  }
 
-LEVEL_FUNCTION( Debug, debug, 30 )
-
-LEVEL_FUNCTION( Emergency, emergency, 0 )
-
-LEVEL_FUNCTION( Error, error, 10 )
-
-LEVEL_FUNCTION( Fatal, fatal, 0 )
-
-LEVEL_FUNCTION( Info, info, 40 )
-
-LEVEL_FUNCTION( Notice, notice, 0 )
-
-LEVEL_FUNCTION( Warning, warning, 20 )
+  return level;
+}
 
 char *
-LevelToString( Level * level )
+LevelToString
+( const Level *level )
 {
-  Output * output = LevelToText( level );
-  return OutputToString( output );
+  return OutputToString( LevelToText( level ) );
 }

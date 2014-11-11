@@ -2,15 +2,9 @@
 #include <stdlib.h>
 
 #include "private/adapter.h"
-#include "private/type.h"
-
-#include "helper.h"
-
-const char * test_adapt( void );
-const char * test_add_adapter( void );
-const char * test_find_adapter_by_name( void );
-const char * test_get_option( void );
-const char * test_set_option( void );
+#include "test/function/adapter.h"
+#include "test/helper.h"
+#include "test/type.h"
 
 int
 main( void )
@@ -18,11 +12,11 @@ main( void )
   unsigned failure_count = 0;
   const char *result = NULL;
   
-  RUN_TEST( adapt )
-  RUN_TEST( add_adapter )
-  RUN_TEST( find_adapter_by_name )
-  RUN_TEST( get_option )
-  RUN_TEST( set_option )
+  TEST( Adapt )
+  TEST( AddAdapter )
+  TEST( FindAdapterByName )
+  TEST( GetOption )
+  TEST( SetOption )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -31,25 +25,51 @@ main( void )
 }
 
 const char *
-test_adapt
+TestAdapt
 ( void )
 {
+  Record *result = AdaptRecord( NULL, NULL );
+  if( result )
+    return "two NULL arguments did not return a NULL";
+
+  Adapter *adapter = BuildAdapter();
+  if( !adapter )
+    return "could not build test Adapter";
+
+  result = AdaptRecord( adapter, NULL );
+  if( result )
+    return "a NULL Record did not return a NULL";
   
+  Record *record = BuildRecord();
+  if( !record )
+    return "could not build test Record";
+  
+  result = AdaptRecord( adapter, record );
+  if( result != record )
+    return "the Record could not be adapted";
+
+  if( TestLogGetLastAdapter() != adapter )
+    return "the Adapter was not actually run";
+  
+  if( TestLogGetLastAdaptedRecord() != record )
+    return "the Record was not adapted";
 
   return NULL;
 }
 
 const char *
-test_add_adapter
+TestAddAdapter
 ( void )
 {
-  Adapter * adapter = BuildAdapter();
-  FAIL_IF_NULL( adapter, "the test adapter could not be built" )
+  Adapter *adapter = BuildAdapter();
+  if( !adapter )
+    return "the test adapter could not be built";
   
-  Status * status = AddAdapter( adapter );
-  FAIL_IF_NOT_NULL( status, "the new adapter could not be added" )
+  Status *status = AddAdapter( adapter );
+  if( status )
+    return "the new adapter could not be added";
   
-  Adapter * found = FindAdapterByName( adapter->name );
+  Adapter *found = FindAdapterByName( adapter->name );
   if( found != adapter )
     return "the value was not added in such a way that it could be retrieved";
   
@@ -57,78 +77,93 @@ test_add_adapter
 }
 
 const char *
-test_find_adapter_by_name
+TestFindAdapterByName
 ( void )
 {
-  Adapter * adapter = FindAdapterByName( "context" );
-  FAIL_IF_NULL( adapter, "the intended adapter could not be retrieved" )
+  Adapter *adapter = FindAdapterByName( "context" );
+  if( !adapter )
+    return "the intended adapter could not be retrieved";
+  
   ASSERT_STRINGS_EQUAL( "context", adapter->name, "the correct adapter was not returned" )
   
   return NULL;
 }
 
 const char *
-test_get_option
+TestGetOption
 ( void )
 {
-  Adapter * adapter = BuildAdapter();
-  FAIL_IF_NULL( adapter, "the test adapter could not be built" )
-  
-  const char * value = GetAdapterOption( NULL, NULL );
-  FAIL_IF_NOT_NULL( value, "two NULL arguments returned a value" )
+  const char *value = GetAdapterOption( NULL, NULL );
+  if( value )
+    return "two NULL arguments returned a value";
   
   value = GetAdapterOption( NULL, "whatever" );
-  FAIL_IF_NOT_NULL( value, "a NULL adapter returned a value" )
+  if( value )
+    return "a NULL adapter returned a value";
+
+  Adapter *adapter = BuildAdapter();
+  if( !adapter )
+    return "the test adapter could not be built";
   
   value = GetAdapterOption( adapter, NULL );
-  FAIL_IF_NOT_NULL( value, "a NULL option name returned a value" )
+  if( value )
+    return "a NULL option name returned a value";
   
   value = GetAdapterOption( adapter, "non-existent option" );
-  FAIL_IF_NOT_NULL( value, "a non-existent option returned a value" )
+  if( value )
+    return "a non-existent option returned a value";
   
   value = GetAdapterOption( adapter, "first" );
-  FAIL_IF_NULL( value, "the returned value was NULL for an existent option" )
+  if( !value )
+    return "the returned value was NULL for an existent option";
+  
   ASSERT_STRINGS_EQUAL( "1st", value, "the value returned for the option was not correct" )
   
   return NULL;
 }
 
 const char *
-test_set_option
+TestSetOption
 ( void )
 {
-  Adapter * adapter = BuildAdapter();
-  FAIL_IF_NULL( adapter, "the test adapter could not be built" )
-  
-  const char * option = "test option";
-  void * value = "target value";
-  
-  Status * status = SetAdapterOption( NULL, NULL, NULL );
-  FAIL_IF_NULL( status, "three NULL arguments did not raise an error" )
+  Status *status = SetAdapterOption( NULL, NULL, NULL );
+  if( !status )
+    return "three NULL arguments did not raise an error";
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
   
+  void *value = "target value";
   status = SetAdapterOption( NULL, NULL, value );
-  FAIL_IF_NULL( status, "only a value did not raise an error" )
+  if( !status )
+    return "only a value did not raise an error";
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
   
+  const char *option = "test option";
   status = SetAdapterOption( NULL, option, value );
-  FAIL_IF_NULL( status, "a NULL adapter did not raise an error" )
+  if( !status )
+    return "a NULL adapter did not raise an error";
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
   
   status = SetAdapterOption( NULL, option, NULL );
-  FAIL_IF_NULL( status, "only an option did not raise an error" )
+  if( !status )
+    return "only an option did not raise an error";
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
-  
+ 
+  Adapter *adapter = BuildAdapter();
+  if( !adapter )
+    return "the test adapter could not be built"; 
   status = SetAdapterOption( adapter, NULL, value );
-  FAIL_IF_NULL( status, "an empty option did not raise an error" )
+  if( !status )
+    return "an empty option did not raise an error";
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
   
   status = SetAdapterOption( adapter, NULL, NULL );
-  FAIL_IF_NULL( status, "only a adapter did not raise an error" )
+  if( !status )
+    return "only a adapter did not raise an error";
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
   
   status = SetAdapterOption( adapter, option, value );
-  FAIL_IF_NOT_NULL( status, "could not set an option" )
+  if( status )
+    return "could not set an option";
   
   return NULL;
 }

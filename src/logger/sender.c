@@ -1,5 +1,6 @@
-#include "private/logger.h"
-#include "private/logger/sender.h"
+#include <stumpless/logger.h>
+#include <stumpless/logger/sender.h>
+
 #include "private/type.h"
 #include "private/value/constructor.h"
 

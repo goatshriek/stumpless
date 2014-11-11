@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "helper.h"
 #include "private/comparator/base.h"
 #include "private/container/tree.h"
 #include "private/type.h"
 #include "static/container/tree.h"
+#include "test/helper.h"
 
 
 const char * test_add_comparator( void );

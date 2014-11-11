@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "helper.h"
-#include "inheritance/list.h"
 #include "private/container/list/filter.h"
 #include "private/container/list/iterator/filter.h"
 #include "private/filter.h"
+#include "test/helper.h"
+#include "test/inheritance/list.h"
 
 const char * test_add_separator( void );
 const char * test_append( void );
@@ -104,7 +104,7 @@ test_record_through
   FilterList *list = BuildFilterList();
   FAIL_IF_NULL( list, "could not build the test list" )
 
-  Record * record = BuildEmptyRecord();
+  Record *record = BuildEmptyRecord();
   FAIL_IF_NULL( record, "the test record could not be built" )
 
   unsigned accepted = RecordThroughFilterList( NULL, NULL );
@@ -124,7 +124,12 @@ test_record_through
   if( !accepted )
     return "a full record was not accepted by the list";
 
-  record->event->level = NULL;
+  Event *event = BuildEvent();
+  if( !event )
+    return "could not build test Event";
+  event->level = NULL;
+  
+  record->event = event;
   accepted = RecordThroughFilterList( list, record );
   if( accepted )
     return "an record without a level made it through the list";

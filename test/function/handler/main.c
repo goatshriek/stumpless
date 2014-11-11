@@ -3,8 +3,7 @@
 
 #include "private/handler.h"
 #include "private/type.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_add_handler( void );
 const char * test_find_handler_by_name( void );

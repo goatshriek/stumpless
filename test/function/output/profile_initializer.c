@@ -4,8 +4,7 @@
 #include "private/output/profile.h"
 #include "private/output/profile_initializer.h"
 #include "private/type.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_initialize_by_name( void );
 const char * test_initialize_text( void );

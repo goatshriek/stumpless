@@ -4,7 +4,7 @@
 #include "private/configuration.h"
 #include "private/type.h"
 
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_initialization( void );
 

@@ -26,7 +26,7 @@ AppendStringToValueList
   if( !list || !str )
     return NULL;
 
-  return AppendToValueList( list, ValueFromString( str ) );
+  return AppendToValueList( list, NewValueForString( str ) );
 }
 
 APPEND_TO_LIST( Value )
@@ -38,7 +38,7 @@ AppendUnsignedIntToValueList
   if( !list )
     return NULL;
 
-  return AppendToValueList( list, ValueFromUnsignedInt( num ) );
+  return AppendToValueList( list, NewValueForUnsignedInt( num ) );
 }
 
 APPEND_LISTS( Value )
@@ -68,7 +68,7 @@ PrependStringToValueList
   if( !list || !str )
     return NULL;
 
-  return PrependToValueList( list, ValueFromString( str ) );
+  return PrependToValueList( list, NewValueForString( str ) );
 }
 
 PREPEND_TO_LIST( Value )

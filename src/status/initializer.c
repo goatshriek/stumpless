@@ -76,6 +76,21 @@ InitializeEmptyArgumentStatus
 }
 
 Status *
+InitializeEventFailureStatus
+( void )
+{
+  CREATE_STATUS
+ 
+  status->name = "event failure";
+  status->description = "an Event could not be found";
+  status->error = 1;
+  status->failure = 1;
+  status->warning = 0;
+
+  return status;
+}
+
+Status *
 InitializeForkFailureStatus
 ( void )
 {

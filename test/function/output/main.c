@@ -4,8 +4,7 @@
 
 #include "private/output.h"
 #include "private/type.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_is_empty( void );
 const char * test_to_string( void );

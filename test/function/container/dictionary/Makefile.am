@@ -1,0 +1,5 @@
+test_function_container_dictionary_const_iterator_SOURCES = test/function/container/dictionary/const_iterator.c
+test_function_container_dictionary_const_iterator_LDADD = $(test_libraries)
+
+test_function_container_dictionary_main_SOURCES = test/function/container/dictionary/main.c
+test_function_container_dictionary_main_LDADD = $(test_libraries)

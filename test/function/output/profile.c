@@ -3,8 +3,7 @@
 
 #include "private/output/profile.h"
 #include "private/type.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_add_profile( void );
 const char * test_find_profile_by_name( void );

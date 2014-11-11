@@ -4,8 +4,7 @@
 #include "private/container/dictionary.h"
 #include "private/filter/base.h"
 #include "private/type.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_empty_record( void );
 const char * test_empty_output( void );

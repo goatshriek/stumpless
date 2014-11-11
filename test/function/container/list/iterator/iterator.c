@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "helper.h"
 #include "private/container/list.h"
 #include "private/container/list/iterator.h"
 #include "private/type.h"
 #include "static/container/list.h"
 #include "static/container/list/iterator.h"
+#include "test/helper.h"
 
 const char * test_constructor( void );
 const char * test_copy( void );

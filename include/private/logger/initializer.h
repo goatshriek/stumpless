@@ -4,6 +4,10 @@
 #include "private/type.h"
 
 Logger *
+InitializeConsoleLogger
+( void );
+
+Logger *
 InitializeErrorLogger
 ( void );
 

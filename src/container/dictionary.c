@@ -2,19 +2,33 @@
 #include <string.h>
 
 #include "private/container/dictionary.h"
-
+#include "private/container/dictionary/const_iterator.h"
 #include "static/container/dictionary.h"
+
+DictionaryConstIterator *
+CBeginDictionary
+( const Dictionary *dictionary )
+{
+  return NULL;
+}
 
 void
 DestroyDictionary
 ( Dictionary * dictionary )
 {
-  if( dictionary == NULL )
+  if( !dictionary )
     return;
 
   DestroyNode( dictionary->root );
 
   free( dictionary );
+}
+
+unsigned short
+DictionaryIsEmpty
+( const Dictionary *dictionary )
+{
+  return dictionary == NULL || dictionary->root == NULL;
 }
 
 void *
@@ -31,6 +45,13 @@ GetDictionaryValue
 
   Splay( dictionary, result );
   return result->value;
+}
+
+Dictionary *
+MergeDictionaries
+( Dictionary *primary, Dictionary *secondary )
+{
+  return NULL;
 }
 
 Dictionary *

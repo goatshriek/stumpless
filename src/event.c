@@ -2,66 +2,64 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/event.h"
+#include <stumpless/event.h>
+
+#include "private/container/dictionary.h"
+#include "private/container/list/value.h"
+#include "private/event/initializer.h"
+#include "private/formatter/text.h"
 #include "private/level.h"
 #include "private/output.h"
+#include "private/status.h"
 #include "private/type.h"
 
-#include "private/formatter/text.h"
+static Dictionary *events = NULL; /**< currently initialized events (by name) */
 
-#include "private/container/list/value.h"
+Status *
+AddEvent
+( Event *event )
+{
+  if( !event || !event->name )
+    return RaiseStatus( "empty argument" );
+  
+  if( !events ){
+    events = NewDictionary();
+    
+    if( !events )
+      return RaiseStatus( "constructor failure");
+  }
+  
+  if( !SetDictionaryValue( events, event->name, event ) )
+    return RaiseStatus( "dictionary failure" );
+  
+  return NULL;
+}
 
 char *
 EventToString
 ( Event * event )
 {
-  Output * output = EventToText( event );
-  return OutputToString( output );
+  return OutputToString( EventToText( event ) );
 }
 
 Event *
-GetDebugEvent( void )
+FindEventByName
+( const char *name )
 {
-  return EventForLevel( GetDebugLevel() );
-}
+  if( !events ){
+    events = NewDictionary();
 
-Event *
-GetErrorEvent( void )
-{
-  return EventForLevel( GetErrorLevel() );
-}
+    if( !events )
+      return NULL;
+  }
+  
+  Event *event = GetDictionaryValue( events, name );
 
-Event *
-EventForLevel( Level * level )
-{
-  if( level == NULL )
-    return NULL;
-  
-  Event * event = malloc( sizeof( Event ) );
-  if( event == NULL )
-    return NULL;
-  
-  event->name = NULL;
-  event->level = level;
-  event->attributes = NULL;
-  
+  if( !event ){
+    if( InitializeEventByName( name ) )
+      return NULL;
+    event = GetDictionaryValue( events, name );
+  }
+
   return event;
-}
-
-Event *
-GetFatalEvent( void )
-{
-  return EventForLevel( GetFatalLevel() );
-}
-
-Event *
-GetInfoEvent( void )
-{
-  return EventForLevel( GetInfoLevel() );
-}
-
-Event *
-GetWarningEvent( void )
-{
-  return EventForLevel( GetWarningLevel() );
 }

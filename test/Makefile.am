@@ -7,7 +7,8 @@ check_PROGRAMS = test/function/adapter \
                  test/function/filter/base \
                  test/function/filter/main \
                  test/function/level \
-                 test/function/logger \
+                 test/function/logger/log \
+                 test/function/logger/main \
                  test/function/output/main \
                  test/function/output/profile \
                  test/function/output/profile_initializer \
@@ -21,20 +22,19 @@ check_PROGRAMS = test/function/adapter \
                  test/function/value/main \
                  test/function/value/profile \
                  test/function/value/profile_initializer \
-                 test/function/container/dictionary \
-                 test/function/container/stack \
-                 test/function/container/tree \
+                 test/function/container/dictionary/const_iterator \
+                 test/function/container/dictionary/main \
                  test/function/container/list/adapter \
                  test/function/container/list/comparator \
-                 test/function/container/list/event_attribute \
                  test/function/container/list/filter \
                  test/function/container/list/formatter \
                  test/function/container/list/handler \
                  test/function/container/list/main \
-                 test/function/container/list/record_attribute \
                  test/function/container/list/value \
                  test/function/container/list/iterator/iterator \
                  test/function/container/list/reverse_iterator/reverse_iterator \
+                 test/function/container/stack \
+                 test/function/container/tree \
                  test/function/formatter/main \
                  test/function/formatter/text \
                  test/function/handler/main \
@@ -42,7 +42,6 @@ check_PROGRAMS = test/function/adapter \
 
 TESTS = $(check_PROGRAMS)
 
-test_flags = $(AM_CFLAGS) -I $(top_srcdir)/test/include
 test_libraries = libhelper.la \
                  libstumpless.la
 

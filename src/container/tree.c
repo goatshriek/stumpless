@@ -1,16 +1,12 @@
 #include <stdlib.h>
 
 #include "private/container/dictionary.h"
-#include "private/container/tree.h"
-#include "private/container/stack.h"
-#include "private/type.h"
-
 #include "private/container/list.h"
-
 #include "private/container/list/comparator.h"
-
 #include "private/container/list/iterator.h"
-
+#include "private/container/stack.h"
+#include "private/container/tree.h"
+#include "private/type.h"
 #include "static/container/tree.h"
 
 Dimension *

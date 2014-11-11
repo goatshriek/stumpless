@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "private/record_attribute.h"
+#include <stumpless/record_attribute.h>
+
 #include "private/event_attribute.h"
 #include "private/type.h"
 
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_for_event_attribute( void );
 
@@ -27,7 +28,7 @@ const char *
 test_for_event_attribute
 ( void )
 {
-  RecordAttribute *record_attribute = RecordAttributeForEventAttribute( NULL );
+  RecordAttribute *record_attribute = NewRecordAttributeForEventAttribute( NULL );
   if( record_attribute )
     return "an attribute was created for a null event attribute";
   
@@ -35,7 +36,7 @@ test_for_event_attribute
   if( !event_attribute )
     return "could not build a test event attribute";
   
-  record_attribute = RecordAttributeForEventAttribute( event_attribute );
+  record_attribute = NewRecordAttributeForEventAttribute( event_attribute );
   if( !record_attribute )
     return "an attribute could not be built from an event attribute";
   

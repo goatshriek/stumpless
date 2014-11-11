@@ -1,5 +1,11 @@
-#include "private/logger/log.h"
+#include <stumpless/event.h>
+#include <stumpless/logger/log.h>
+#include <stumpless/record.h>
+
+#include "private/container/list/target.h"
+#include "private/status.h"
 #include "private/type.h"
+#include "private/value/constructor.h"
 
 #define LOG_FUNCTIONS( name, type )                                            \
 Status *                                                                       \
@@ -34,7 +40,11 @@ Status *
 LogRecord
 ( Logger *logger, Record *record )
 {
-  return NULL;
+  if( !logger || !record )
+    return RaiseStatus( "empty argument" );
+  
+  RecordThroughAdapterList( logger->adapters, record );
+  return LogToTargetList( logger->targets, record );
 }
 
 LOG_FUNCTIONS( Short, short )
@@ -44,6 +54,33 @@ LOG_FUNCTIONS( SignedChar, signed char )
 Status *
 LogString
 ( Logger *logger, const char *value )
+{
+  if( !logger || !value )
+    return RaiseStatus( "empty argument" );
+  
+  Event *event = logger->default_event;
+  if( !event ){
+    event = FindEventByName( "informational" ); 
+    if( !event )
+      return RaiseStatus( "event failure" );
+  }
+ 
+  Record *record = RecordForEvent( event );
+  if( !record )
+    return RaiseStatus( "record failure" );
+ 
+  RecordAttribute *attribute = malloc( sizeof( RecordAttribute ) );
+  if( !attribute )
+    return RaiseStatus( "record failure" );
+
+  SetRecordAttribute( record, "message", NewValueForString( value ) );
+ 
+  return LogRecord( logger, record );
+}
+
+Status *
+LogStringArray
+( Logger *logger, const char *value, unsigned length )
 {
   return NULL;
 }
@@ -60,6 +97,7 @@ LOG_FUNCTIONS( UnsignedShort, unsigned short )
 
 Status *
 LogVoid
-( Logger *logger, const void *value, unsigned length ){
+( Logger *logger, const void *value, unsigned length )
+{
   return NULL;
 }

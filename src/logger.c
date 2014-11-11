@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stumpless/config.h>
+#include <stumpless/logger.h>
 
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
 # include <unistd.h>
@@ -11,7 +12,6 @@
 #include "private/container/list/formatter.h"
 #include "private/container/list/iterator/formatter.h"
 #include "private/formatter.h"
-#include "private/logger.h"
 #include "private/status.h"
 #include "private/type.h"
 

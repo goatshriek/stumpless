@@ -3,8 +3,7 @@
 
 #include "private/status.h"
 #include "private/type.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_add_status( void );
 const char * test_find_status_by_name( void );

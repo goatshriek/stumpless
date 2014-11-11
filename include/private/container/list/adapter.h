@@ -67,10 +67,6 @@ AdapterListIterator *
 EndAdapterList
 ( AdapterList * );
 
-Record *
-RecordThroughAdapterList
-( AdapterList *, Record * );
-
 AdapterList *
 NewAdapterList
 ();
@@ -82,6 +78,10 @@ PrependToAdapterList
 AdapterListReverseIterator *
 RBeginAdapterList
 ( AdapterList * );
+
+Record *
+RecordThroughAdapterList
+( const AdapterList *, Record * );
 
 AdapterListReverseIterator *
 REndAdapterList

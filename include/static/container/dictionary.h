@@ -1,5 +1,5 @@
-#ifndef __STUMPLESS_STATIC_DICTIONARY_H
-#define __STUMPLESS_STATIC_DICIONTARY_H
+#ifndef __STUMPLESS_STATIC_CONTAINER_DICTIONARY_H
+#define __STUMPLESS_STATIC_CONTAINER_DICTIONARY_H
 
 #include "private/type.h"
 
@@ -9,15 +9,15 @@ typedef struct Node
         Node;
 
 struct Dictionary {
-  Node * root;
+  Node *root;
 };
 
 struct Node {
-  const char * key;
-  Node * left_child;
-  Node * parent;
-  Node * right_child;
-  void * value;
+  const char *key;
+  Node *left_child;
+  Node *parent;
+  Node *right_child;
+  void *value;
 };
 
 static

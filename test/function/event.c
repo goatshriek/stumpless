@@ -2,24 +2,29 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/event.h"
-#include "private/type.h"
+#include <stumpless/event.h>
 
-#include "helper.h"
-
-const char * test_default_events( void );
-const char * test_event_for_level( void );
-const char * test_to_string( void );
+#include "private/level.h"
+#include "test/helper.h"
+#include "test/function/event.h"
+#include "test/type.h"
 
 int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result;
+  const char *result;
   
-  RUN_TEST( default_events )
-  RUN_TEST( event_for_level )
-  RUN_TEST( to_string )
+  TEST( AlertEvent )
+  //TEST( CriticalEvent )
+  //TEST( DebugEvent )
+  //TEST( EmergencyEvent )
+  //TEST( ErrorEvent )
+  //TEST( ErrorEvent )
+  TEST( EventToString )
+  //TEST( InformationalEvent )
+  //TEST( NoticeEvent )
+  //TEST( WarningEvent )
   
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -28,96 +33,41 @@ main( void )
 }
 
 const char *
-test_default_events( void )
+TestAlertEvent
+( void )
 {
-  Event * event = GetDebugEvent();
-  if( event == NULL )
-    return "debug event was null";
-  if( event->level == NULL )
-    return "debug event's level was null";
-  if( event->level->name == NULL )
-    return "debug event's level did not have a name";
-  if( strcmp( event->level->name, "debug" ) != 0 )
-    return "the event does not have a debug level";
+  Event *event = FindEventByName( "alert" );
+  if( !event )
+    return "could not find the alert event";
   
-  event = GetErrorEvent();
-  if( event == NULL )
-    return "error event was null";
-  if( event->level == NULL )
-    return "error event's level was null";
-  if( event->level->name == NULL )
-    return "error event's level did not have a name";
-  if( strcmp( event->level->name, "error" ) != 0 )
-    return "the event does not have a error level";
+  if( event->attributes )
+    return "the alert Event had attributes";
   
-  event = GetFatalEvent();
-  if( event == NULL )
-    return "fatal event was null";
-  if( event->level == NULL )
-    return "fatal event's level was null";
-  if( event->level->name == NULL )
-    return "fatal event's level did not have a name";
-  if( strcmp( event->level->name, "fatal" ) != 0 )
-    return "the event does not have a fatal level";
+  ASSERT_STRINGS_EQUAL( "alert", event->name, "the Event's name was not alert" )
   
-  event = GetInfoEvent();
-  if( event == NULL )
-    return "info event was null";
-  if( event->level == NULL )
-    return "info event's level was null";
-  if( event->level->name == NULL )
-    return "info event's level did not have a name";
-  if( strcmp( event->level->name, "info" ) != 0 )
-    return "the event does not have a info level";
+  Level *level = FindLevelByName( "alert" );
+  if( !level )
+    return "the alert level could not be found";
   
-  event = GetWarningEvent();
-  if( event == NULL )
-    return "warning event was null";
-  if( event->level == NULL )
-    return "warning event's level was null";
-  if( event->level->name == NULL )
-    return "warning event's level did not have a name";
-  if( strcmp( event->level->name, "warning" ) != 0 )
-    return "the event does not have a warning level";
+  if( level != event->level )
+    return "the Event did not have the appropriate Level";
   
   return NULL;
 }
 
 const char *
-test_event_for_level( void )
+TestEventToString
+( void )
 {
-  Level * level = malloc( sizeof( Level ) );
-  if( level == NULL )
-    return "memory allocation failure during testing";
-  level->value = 512;
-  level->name = "testing level";
-  
-  Event * event = EventForLevel( level );
-  if( event == NULL )
-    return "event could not be created";
-  if( event->level != level )
-    return "event did not have the requested level";
-  if( event->name != NULL )
-    return "the event was not given a blank name";
-  if( event->attributes != NULL )
-    return "the event had attributes";
-  
-  return NULL;
-}
-
-const char *
-test_to_string( void )
-{
-  Event * event = NULL;
-  char * description = EventToString( event );
+  char *description = EventToString( NULL );
   if( description )
-    return "the description was not null for a null pointer";
+    return "the description was not NULL for a NULL pointer";
   
-  event = GetDebugEvent();
+  Event *event = BuildEvent();
   description = EventToString( event );
   if( !description )
-    return "the description was null for a valid event pointer";
-  if( !strstr( description, "debug" ) )
+    return "the description was NULL for a valid event pointer";
+  if( !strstr( description, "Test Event" ) )
     return "the description did not contain the name of the event";
   
   return NULL;

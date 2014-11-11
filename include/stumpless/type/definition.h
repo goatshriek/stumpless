@@ -5,10 +5,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #include <stumpless/config.h>
 #include <stumpless/type/declaration.h>
+
+#ifdef __STUMPLESS_HAVE_TIME_H
+#include <time.h>
+#endif
 
 typedef unsigned char Byte;
 
@@ -28,12 +31,17 @@ enum SortingMethod {
   STUMPLESS_SHELL_SORT
 };
 
+/**
+ * Allows for the addition of information to a Reocrd before it is logged. This
+ * information may be anything from contextual information to the results of a
+ * function call on the Record.
+ */
 struct Adapter {
-  Record *( *adapt )( const Adapter *, Record * );
-  FilterList *filters;
-  const char *name;
-  Dictionary *options;
-  Dictionary *attributes;
+  Record *( *adapt )( const Adapter *, Record * ); /**< the adapter function */
+  FilterList *filters; /**< a list of filters to run each Record through
+                           before the adapter is applied */
+  const char *name; /**< the unique name of the Adapter */
+  Dictionary *options; /**< a set of options that may customize the Adapter */
 };
 
 struct Boolean {
@@ -65,15 +73,22 @@ struct Configuration {
   ThreadingConfiguration *threading;
 };
 
+/**
+ * An event that can be logged.
+ * @todo add format string for messages
+ */
 struct Event {
-  const char *name;
-  Level *level;
-  EventAttributeList *attributes;
+  const char *name; /**< the unique name of the Event */
+  Level *level; /**< the Level of the Event */
+  Dictionary *attributes; /**< the attributes describing the Event */
 };
 
+/**
+ * An attribute that provides information about an Event.
+ */
 struct EventAttribute {
-  const char *name;
-  Value *default_value;
+  const char *name; /**< the unique name of the EventAttribute */
+  Value *default_value; /**< the default Value the attribute will assume */
 };
 
 struct FileConfiguration {
@@ -88,11 +103,14 @@ struct Filter {
   Dictionary *options;
 };
 
+/**
+ * Creates an Output for a Record in a specific format.
+ */
 struct Formatter {
-  FilterList *filters;
-  Output *( *format )( const Formatter *, const Record * );
-  const char *name;
-  Dictionary *options;
+  FilterList *filters; /**< filters to apply before formatting a Record */
+  Output *( *format )( const Formatter *, const Record * ); 
+  const char *name; /**< the unique name of the Formatter */
+  Dictionary *options; /**< options to customize behavior */
 };
 
 struct Handler {
@@ -106,9 +124,14 @@ struct HTTPConfiguration {
   HTTPMethod method;
 };
 
+/**
+ * The severity level of an Event.
+ */
 struct Level {
-  unsigned value;
-  const char *name;
+  const char *name; /**< the unique name of the level */
+  unsigned primary; /**< the primary numerical level */
+  unsigned secondary; /**<the secondary numerical level */
+  unsigned tertiary; /**< the tertiary numerical level */
 };
 
 struct Log {
@@ -116,13 +139,19 @@ struct Log {
   unsigned placeholder; //todo delete when tree is fixed up
 };
 
+/**
+ * A collection of logging targets and configuration parameters through which
+ * logging can be accomplished.
+ */
 struct Logger {
-  const char *name;
-  AdapterList *adapters;
-  TargetList *targets;
+  AdapterList *adapters; /**< the Adapters to use on logged elements */
+  Event *default_event; /**< the Event to assign Records by default */
+  const char *name; /**< the unique name of the Logger */
+  TargetList *targets; /**< the Targets to send logs to */
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
-  int receive_pipe;
-  int send_pipe;
+  // todo consider changing this mechanism to unix sockets
+  int receive_pipe; /**< the pipe used to receive messages */
+  int send_pipe; /**< the pipe used to send messages */
 #endif
 };
 
@@ -143,17 +172,20 @@ struct OutputProfile {
   char *( *to_string )( const Output * );
 };
 
+/**
+ * A specific instance of an Event.
+ */
 struct Record {
-  const char *message;
-  Event *event;
-  RecordAttributeList *attributes;
+  const Event *event; /**< the event describing the record */
+  Dictionary *attributes; /**< the values defining the instance */
 #ifdef __STUMPLESS_HAVE_TIME_H
-  time_t time;
+  time_t time; /**< the time that the event happened */
 #endif
 };
 
 struct RecordAttribute {
   const EventAttribute *event_attribute;
+  const char *name;
   Value *value;
 };
 

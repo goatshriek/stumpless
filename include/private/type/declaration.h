@@ -1,6 +1,7 @@
 #ifndef __STUMPLESS_PRIVATE_TYPE_DECLARATION_H
 #define __STUMPLESS_PRIVATE_TYPE_DECLARATION_H
 
+struct DictionaryConstIterator;
 struct Dimension;
 struct List;
 struct ListConstIterator;
@@ -10,6 +11,7 @@ struct ListReverseIterator;
 struct Stack;
 struct Tree;
 
+typedef struct DictionaryConstIterator DictionaryConstIterator;
 typedef struct Dimension Dimension;
 typedef struct List List;
 typedef struct ListConstIterator ListConstIterator;

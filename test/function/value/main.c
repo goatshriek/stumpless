@@ -7,8 +7,7 @@
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value/constructor.h"
-
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_array_value_to_value_list( void );
 const char * test_destructor( void );
@@ -80,8 +79,8 @@ test_destructor( void )
 {
   DestroyValue( NULL );
   
-  Value * value = ValueFromString( "testing value" );
-  if( value == NULL )
+  Value *value = NewValueForString( "testing value" );
+  if( !value )
     return "the value could not be created";
   
   DestroyValue( value );

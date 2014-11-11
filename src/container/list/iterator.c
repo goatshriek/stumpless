@@ -1,11 +1,8 @@
 #include <stdlib.h>
 
-#include "private/type.h"
-
 #include "private/container/list/iterator.h"
-
+#include "private/type.h"
 #include "static/container/list.h"
-
 #include "static/container/list/iterator.h"
 
 ListIterator *

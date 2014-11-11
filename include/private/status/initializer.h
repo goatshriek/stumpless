@@ -20,6 +20,10 @@ InitializeEmptyArgumentStatus
 ( void );
 
 Status *
+InitializeEventFailureStatus
+( void );
+
+Status *
 InitializeForkFailureStatus
 ( void );
 

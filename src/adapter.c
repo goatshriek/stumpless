@@ -12,8 +12,13 @@ Record *
 AdaptRecord
 ( Adapter *adapter, Record *record )
 {
-  // todo implement
-  return NULL;
+  if( !adapter || !adapter->adapt )
+    return record;
+
+  if( !record )
+    return NULL;
+  
+  return adapter->adapt( adapter, record );
 }
 
 Status *
@@ -51,14 +56,14 @@ FindAdapterByName
   if( !adapters ){
     adapters = NewDictionary();
 
-    if( adapters == NULL )
+    if( !adapters )
       return NULL;
   }
 
-  Adapter * adapter = GetDictionaryValue( adapters, name );
+  Adapter *adapter = GetDictionaryValue( adapters, name );
 
-  if( adapter == NULL ){
-    if( InitializeAdapterByName( name ) != NULL )
+  if( !adapter ){
+    if( InitializeAdapterByName( name ) )
       return NULL;
     adapter = GetDictionaryValue( adapters, name );
   }

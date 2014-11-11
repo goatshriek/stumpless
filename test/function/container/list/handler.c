@@ -2,15 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "helper.h"
-
-#include "inheritance/list.h"
-
-#include "private/handler.h"
-
 #include "private/container/list/handler.h"
-
 #include "private/container/list/iterator/handler.h"
+#include "private/handler.h"
+#include "test/helper.h"
+#include "test/inheritance/list.h"
 
 const char * test_add_separator( void );
 const char * test_append( void );

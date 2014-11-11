@@ -4,7 +4,7 @@
 
 #include "private/string_helper.h"
 
-#include "helper.h"
+#include "test/helper.h"
 
 const char * test_copy_string( void );
 const char * test_is_empty( void );
