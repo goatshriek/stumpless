@@ -73,6 +73,9 @@ const char *
 TestHasNext
 ( void )
 {
+  if( DictionaryConstIteratorHasNext( NULL ) )
+    return "a NULL iterator had a next value";
+
   Dictionary *dictionary = BuildDictionaryOfStrings();
   if( !dictionary )
     return "could not build test Dictionary";
@@ -130,6 +133,10 @@ const char *
 TestNext
 ( void )
 {
+  const char *value = NextInDictionaryConstIterator( NULL );
+  if( value )
+    return "a NULL iterator returned a next value";
+
   Dictionary *dictionary = BuildDictionaryOfStrings();
   if( !dictionary )
     return "could not build a test Dictionary";
@@ -138,7 +145,7 @@ TestNext
   if( !iterator )
     return "could not build a test iterator";
 
-  const char *value = NextInDictionaryConstIterator( iterator );
+  value = NextInDictionaryConstIterator( iterator );
   if( !value )
     return "could not get the first value";
   ASSERT_STRINGS_EQUAL( "1st", value, "the first value returned was not correct" );

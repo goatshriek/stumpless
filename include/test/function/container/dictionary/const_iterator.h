@@ -33,9 +33,9 @@ TestDestroy
 /**
  * Tests the DictionaryConstIteratorHasNext function.
  *
- * @test An iterator at the beginning, the middle, or the end of its iteration
- * returns a logically true value. A finished iterator returns a logically false
- * value.
+ * @test If a NULL argument is passed, then a logically false value is returned.
+ * An iterator at the beginning, the middle, or the end of its iteration returns
+ * a logically true value. A finished iterator returns a logically false value.
  *
  * @return NULL on completion, or a string describing the failure
  */
