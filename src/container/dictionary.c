@@ -9,7 +9,7 @@ DictionaryConstIterator *
 CBeginDictionary
 ( const Dictionary *dictionary )
 {
-  return NULL;
+  return NewDictionaryConstIterator( dictionary, 0 );
 }
 
 void

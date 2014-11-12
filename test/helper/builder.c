@@ -110,7 +110,7 @@ BuildBadHandler
   Handler *handler = malloc( sizeof( Handler ) );
   if( !handler )
     return NULL;
-  
+
   handler->name = "bad handler";
 
   handler->filters = BuildFilterList();
@@ -133,11 +133,11 @@ BuildBadTarget
   Target *target = malloc( sizeof( Target ) );
   if( !target )
     return NULL;
-  
+
   target->formatter = BuildBadFormatter();
   if( !target->formatter )
     return NULL;
-  
+
   target->handler = BuildBadHandler();
   if( !target->handler )
     return NULL;
@@ -270,6 +270,13 @@ BuildComparatorList
   return list;
 }
 
+DictionaryConstIterator *
+BuildDictionaryConstIterator
+( void )
+{
+  return CBeginDictionary( BuildDictionaryOfStrings() );
+}
+
 Dictionary *
 BuildDictionaryOfEventAttributes
 ( void )
@@ -315,19 +322,19 @@ BuildDictionaryOfRecordAttributes
     record_attribute = malloc( sizeof( RecordAttribute ) );
     if( !record_attribute )
       return NULL;
-    
+
     record_attribute->event_attribute = event_attribute;
     record_attribute->value = event_attribute->default_value;
     if( !record_attribute->value )
       record_attribute->value = NewValueForString( "record value" );
-    
+
     SetDictionaryValue( record_attributes, event_attribute->name, record_attribute );
   }
 
   record_attribute = malloc( sizeof( RecordAttribute ) );
   if( !record_attribute )
     return NULL;
-  
+
   record_attribute->name = "anonymous attribute";
   record_attribute->event_attribute = NULL;
   record_attribute->value = NewValueForString( "anonymous attribute value" );
@@ -871,15 +878,15 @@ BuildTarget
   Target *target = malloc( sizeof( Target ) );
   if( !target )
     return NULL;
-  
+
   target->formatter = BuildFormatter();
   if( !target->formatter )
     return NULL;
-  
+
   target->handler = BuildHandler();
   if( !target->handler )
     return NULL;
-  
+
   return target;
 }
 
@@ -890,7 +897,7 @@ BuildTargetList
   TargetList *list = NewTargetList();
   if( !list )
     return NULL;
-  
+
   AppendToTargetList( list, BuildTarget() );
   AppendToTargetList( list, BuildBadTarget() );
 

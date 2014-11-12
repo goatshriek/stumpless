@@ -9,7 +9,8 @@
 /**
  * Tests the CopyDictionaryConstIterator function.
  *
- * @todo implement
+ * @test A NULL argument returns NULL. The Copy of a normal iterator has a
+ * different address, but the same values for the Dictionary and current node.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -20,7 +21,8 @@ TestCopy
 /**
  * Tests the DestroyDictionaryConstIterator function.
  *
- * @todo implement
+ * @test A NULL argument simply returns. Destroying an iterator does not cause
+ * any errors or faults.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -31,7 +33,9 @@ TestDestroy
 /**
  * Tests the DictionaryConstIteratorHasNext function.
  *
- * @todo implement
+ * @test An iterator at the beginning, the middle, or the end of its iteration
+ * returns a logically true value. A finished iterator returns a logically false
+ * value.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -59,6 +63,8 @@ TestNew
  * @test If a NULL iterator is passed, then a NULl must be returned. The
  * Dictionary must be walked in order by each successive call to
  * NextInDictionaryConstIterator, and NULL is returned when no values are left.
+ *
+ * @todo test a larger Dictionary than three entries
  *
  * @return NULL on completion, or a string describing the failure
  */

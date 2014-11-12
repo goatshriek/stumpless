@@ -84,6 +84,16 @@ ComparatorList *
 BuildComparatorList
 ( void );
 
+/**
+ * Builds a const iterator for a Dictionary. The Dictionary of strings is used
+ * to create the iterator.
+ *
+ * @return a new DictionaryConstIterator
+ */
+DictionaryConstIterator *
+BuildDictionaryConstIterator
+( void );
+
 Dictionary *
 BuildDictionaryOfEventAttributes
 ( void );
