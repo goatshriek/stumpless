@@ -8,6 +8,7 @@ struct ListConstIterator;
 struct ListConstReverseIterator;
 struct ListIterator;
 struct ListReverseIterator;
+struct Queue;
 struct Stack;
 struct Tree;
 
@@ -18,6 +19,7 @@ typedef struct ListConstIterator ListConstIterator;
 typedef struct ListConstReverseIterator ListConstReverseIterator;
 typedef struct ListIterator ListIterator;
 typedef struct ListReverseIterator ListReverseIterator;
+typedef struct Queue Queue;
 typedef struct Stack Stack;
 typedef struct Tree Tree;
 
