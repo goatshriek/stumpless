@@ -73,6 +73,7 @@ TestPeek
  *
  * @test Popping from a NULL Queue must return NULL. Popping from an empty Queue
  * must return NULL. Popping from a filled Queue must return the correct value.
+ * Successive calls to the function must return successive elements.
  *
  * @return NULL on completion, or a string describing the failure
  */

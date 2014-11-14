@@ -15,6 +15,7 @@
 #include "private/container/list/reverse_iterator.h"
 #include "private/container/list/target.h"
 #include "private/container/list/value.h"
+#include "private/container/queue.h"
 #include "private/container/stack.h"
 #include "private/container/tree.h"
 #include "private/filter.h"
@@ -779,6 +780,21 @@ BuildOutputProfile
   profile->to_string = NULL;
 
   return profile;
+}
+
+Queue *
+BuildQueue
+( void )
+{
+  Queue *queue = malloc( sizeof( Queue ) );
+  if( !queue )
+    return NULL;
+
+  PushToQueue( queue, "first element" );
+  PushToQueue( queue, "second element");
+  PushToQueue( queue, "third element" );
+
+  return queue;
 }
 
 Output *

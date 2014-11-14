@@ -1,3 +1,6 @@
+test_function_container_queue_SOURCES = test/function/container/queue.c
+test_function_container_queue_LDADD = $(test_libraries)
+
 test_function_container_stack_SOURCES = test/function/container/stack.c
 test_function_container_stack_LDADD = $(test_libraries)
 

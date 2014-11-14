@@ -212,6 +212,15 @@ OutputProfile *
 BuildOutputProfile
 ( void );
 
+/**
+ * Creates a Queue containing several strings.
+ *
+ * @return a Queue, or NULL on failure
+ */
+Queue *
+BuildQueue
+( void );
+
 Output *
 BuildRawStringOutput
 ( void );
