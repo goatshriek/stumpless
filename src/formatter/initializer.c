@@ -17,7 +17,7 @@ Initialize##function_name##Formatter                                           \
     return NULL;                                                               \
                                                                                \
   formatter->name = formatter_name;                                            \
-  formatter->format = RecordTo##function_name;                                  \
+  formatter->format = RecordTo##function_name;                                 \
   formatter->filters = NULL;                                                   \
   formatter->options = NULL;                                                   \
                                                                                \
@@ -27,7 +27,7 @@ Initialize##function_name##Formatter                                           \
 #define ADD_FORMATTER( name, function )                                        \
 SetDictionaryValue( initializers, name, Initialize##function##Formatter );
 
-static Dictionary * initializers = NULL;
+static Dictionary *initializers = NULL;
 
 FORMATTER_INITIALIZER_FUNCTION( "csv", CSV )
 
@@ -35,10 +35,10 @@ Status *
 InitializeFormatterByName
 ( const char * name )
 {
-  if( initializers == NULL ){
+  if( !initializers ){
 
     initializers = NewDictionary();
-    if( initializers == NULL )
+    if( !initializers )
       return RaiseStatus( "constructor failure" );
 
     ADD_FORMATTER( "csv", CSV )
@@ -47,7 +47,7 @@ InitializeFormatterByName
 
   Formatter * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
-  if( initializer == NULL )
+  if( !initializer )
     return NULL;
   else
     return AddFormatter( initializer() );

@@ -3,40 +3,28 @@
 #include <string.h>
 
 #include "private/output.h"
-#include "private/type.h"
 #include "private/value/constructor.h"
 #include "private/formatter/text.h"
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
+#include "test/function/formatter/text.h"
 #include "test/helper.h"
-
-const char * test_record_formatter( void );
-const char * test_record_attribute_formatter( void );
-const char * test_record_attribute_list_formatter( void );
-const char * test_record_summary_formatter( void );
-const char * test_event_attribute_formatter( void );
-const char * test_event_attribute_list_formatter( void );
-const char * test_event_formatter( void );
-const char * test_event_summary_formatter( void );
-const char * test_level_formatter( void );
-const char * test_value_list_all_strings( void );
+#include "test/type.h"
 
 int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result;
+  const char *result;
 
-  //RUN_TEST( record_formatter )
-  RUN_TEST( record_attribute_formatter )
-  //RUN_TEST( record_attribute_list_formatter )
-  //RUN_TEST( record_summary_formatter )
-  RUN_TEST( event_attribute_formatter )
-  RUN_TEST( event_attribute_list_formatter )
-  //RUN_TEST( event_formatter )
-  RUN_TEST( event_summary_formatter )
-  RUN_TEST( level_formatter )
-  RUN_TEST( value_list_all_strings )
+  TEST( Event )
+  TEST( EventAttribute )
+  TEST( EventAttributes)
+  TEST( Initializer )
+  TEST( Level )
+  TEST( Record )
+  TEST( RecordAttribute )
+  TEST( RecordAttributes )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -45,6 +33,75 @@ main( void )
 }
 
 const char *
+TestEvent
+( void )
+{
+  return NULL;
+}
+
+const char *
+TestEventAttribute
+( void )
+{
+  return NULL;
+}
+
+const char *
+TestEventAttributes
+( void )
+{
+  return NULL;
+}
+
+const char *
+TestInitializer
+( void )
+{
+  Formatter *text_formatter = FindFormatterByName( "text" );
+  if( !text_formatter )
+    return "the text Formatter could not be found";
+
+  ASSERT_STRINGS_EQUAL( "text", text_formatter->name, "the text Formatter did not have the correct name" )
+  if( text_formatter->format != RecordToText )
+    return "the text Formatter did not have the correct format function";
+
+  return NULL;
+}
+
+const char *
+TestLevel
+( void )
+{
+  return NULL;
+}
+
+const char *
+TestRecord
+( void )
+{
+  if( RecordToText(  NULL ) )
+    return "a NULL Record returned an Output";
+
+
+
+  return NULL;
+}
+
+const char *
+TestRecordAttribute
+( void )
+{
+  return NULL;
+}
+
+const char *
+TestRecordAttributes
+( void )
+{
+  return NULL;
+}
+
+/*const char *
 test_record_formatter( void )
 {
   Record * record = BuildRecord();
@@ -438,3 +495,4 @@ test_value_list_all_strings( void )
 
   return NULL;
 }
+*/
