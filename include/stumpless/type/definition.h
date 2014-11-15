@@ -6,15 +6,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <stumpless/config.h>
-#include <stumpless/type/declaration.h>
-
 #ifdef __STUMPLESS_HAVE_TIME_H
 #include <time.h>
 #endif
 
+#include <stumpless/config.h>
+#include <stumpless/type/declaration.h>
+
+/**
+ * An 8-bit word.
+ */
 typedef unsigned char Byte;
 
+/**
+ * The method of a particular HTTP request.
+ */
 enum HTTPMethod {
   STUMPLESS_DELETE,
   STUMPLESS_GET,
@@ -22,6 +28,9 @@ enum HTTPMethod {
   STUMPLESS_PUT
 };
 
+/**
+ * The methodology to use when sorting through a list.
+ */
 enum SortingMethod {
   STUMPLESS_BUBBLE_SORT,
   STUMPLESS_CUSTOM_SORT,
@@ -44,33 +53,50 @@ struct Adapter {
   Dictionary *options; /**< a set of options that may customize the Adapter */
 };
 
+/**
+ * An either true or false value.
+ */
 struct Boolean {
-  short value;
-  BooleanFormat *format;
+  unsigned short value; /**< the logical value */
+  BooleanFormat *format; /**< the format to use for both values */
 };
 
+/**
+ * The presentation for a Boolean value.
+ */
 struct BooleanFormat {
-  const char *true_description;
-  const char *false_description;
+  const char *true_description; /**< the string to use for true values */
+  const char *false_description; /**< the string to use for false values */
 };
 
+/**
+ * An arbitrary sequence of Bytes.
+ */
 struct ByteList {
-  Byte *bytes;
-  size_t byte_count;
+  Byte *bytes; /**< the array holding the Bytes */
+  size_t capacity; /**< the size of the array */
+  size_t count; /**< the number of Bytes in the list */
 };
 
+/**
+ * A specific sorting definition for two objects.
+ */
 struct Comparator {
+  /** the function to use to compare the objects */
   short ( *compare )( const Comparator *, const void *, const void * );
-  const char *name;
-  Dictionary *options;
+  const char *name; /**< the name of the comparator */
+  Dictionary *options; /**< options to use in the comparisons */
 };
 
+/**
+ * The configuration of a particular Logger.
+ */
 struct Configuration {
-  FileConfiguration *default_file;
-  HTTPConfiguration *default_http;
-  SortingConfiguration *sorting;
-  StringConfiguration *string;
-  ThreadingConfiguration *threading;
+  FileConfiguration *file; /**< file configuration */
+  HTTPConfiguration *http; /**< http configuration */
+  SortingConfiguration *sorting; /**< sorting configuration */
+  StringConfiguration *string; /**< string configuration */
+  ThreadingConfiguration *threading; /**< threading configuration */
 };
 
 /**
@@ -91,16 +117,25 @@ struct EventAttribute {
   Value *default_value; /**< the default Value the attribute will assume */
 };
 
+/**
+ * File configuration options for a Logger.
+ */
 struct FileConfiguration {
-  FILE *current_file;
+  FILE *current_file; /**< the file currently begin logged to */
 };
 
+/**
+ * Accept and reject various types of Records, Outputs, and Values.
+ */
 struct Filter {
+  /** function to accept/reject Records */
   unsigned short ( *accept_record )( const Filter *, const Record * );
+  /** function to accept/reject Output */
   unsigned short ( *accept_output )( const Filter *, const Output * );
+  /** function to accept/reject Value */
   unsigned short ( *accept_value )( const Filter *, const Value * );
-  const char *name;
-  Dictionary *options;
+  const char *name; /**< the name of the Filter*/
+  Dictionary *options; /**< options to use during filtering */
 };
 
 /**
@@ -108,20 +143,27 @@ struct Filter {
  */
 struct Formatter {
   FilterList *filters; /**< filters to apply before formatting a Record */
-  Output *( *format )( const Formatter *, const Record * ); 
+  /** the function to format a Record */
+  Output *( *format )( const Formatter *, const Record * );
   const char *name; /**< the unique name of the Formatter */
   Dictionary *options; /**< options to customize behavior */
 };
 
+/**
+ * Takes an Output and send it via a receiver.
+ */
 struct Handler {
-  FilterList *filters;
+  FilterList *filters; /**< filters to apply before handling Output */
   Status *( *handle )( const Handler *, const Output * );
-  const char *name;
-  Dictionary *options;
+  const char *name; /**< the name of the Handler */
+  Dictionary *options; /**< options to customize behavior */
 };
 
+/**
+ * HTTP configuration options for a Logger.
+ */
 struct HTTPConfiguration {
-  HTTPMethod method;
+  HTTPMethod method; /**< the method to use for an HTTP request */
 };
 
 /**
@@ -134,9 +176,14 @@ struct Level {
   unsigned tertiary; /**< the tertiary numerical level */
 };
 
+/**
+ * A collection of Records.
+ *
+ * @todo define records once the Tree structure is complete
+ */
 struct Log {
   //Tree *records;
-  unsigned placeholder; //todo delete when tree is fixed up
+  unsigned placeholder;
 };
 
 /**
@@ -155,20 +202,34 @@ struct Logger {
 #endif
 };
 
+/**
+ * A container for a formatted Record.
+ */
 struct Output {
-  Type *data;
-  OutputProfile *profile;
+  Type *data; /**< the formatted data */
+  OutputProfile *profile; /**< the profile to use to handle the data */
 };
 
+/**
+ * Contains functions for working with formatted Records.
+ */
 struct OutputProfile {
+  /** function to put an Output into a buffer */
   Status *( *into_buffer )( const Output * );
+  /** function to send an Output using HTTP */
   Status *( *into_http )( const Output * );
+  /** function to put an Output into a database */
   Status *( *into_mysql )( const Output * );
+  /** function to put an Output into a stream */
   Status *( *into_stream )( const Output *, FILE * );
+  /** function to put an Output into a string */
   Status *( *into_string )( const Output * );
+  /** funciton to send an Output through a TCP socket */
   Status *( *into_tcp )( const Output * );
+  /** checks to see if an Output is empty */
   unsigned short ( *is_empty )( const Output * );
-  const char *name;
+  const char *name; /**< the name of the profile */
+  /** creates a new string with the Output inside */
   char *( *to_string )( const Output * );
 };
 
@@ -183,39 +244,63 @@ struct Record {
 #endif
 };
 
+/**
+ * A particular parameter of a Record.
+ */
 struct RecordAttribute {
+  /**< the EventAttribute this attribute is derived from */
   const EventAttribute *event_attribute;
-  const char *name;
-  Value *value;
+  const char *name; /**< the name of the attribute */
+  Value *value; /**< the value held in the attribute */
 };
 
+/**
+ * The result of an operation without a perfect completion.
+ */
 struct Status {
-  unsigned short error : 1;
-  unsigned short failure : 1;
-  unsigned short warning : 1;
-  const char *description;
-  const char *name;
+  unsigned short error : 1; /**< there was a problem with the data */
+  unsigned short failure : 1; /**< there was a system-caused problem */
+  unsigned short warning : 1; /**< a non-fatal problem occurred */
+  const char *description; /**< a description of the problem described */
+  const char *name; /**< the name of the Status */
 };
 
+/**
+ * A sorting configuration for a Logger.
+ */
 struct SortingConfiguration {
-  SortingMethod record_method;
-  SortingMethod log_method;
-  unsigned short ascending;
+  SortingMethod record_method; /**< how to sort Records */
+  SortingMethod log_method; /**< how to sort Logs */
+  unsigned short ascending; /**< whether to sort ascending or descending */
 };
 
+/**
+ * A string configuration for a Logger.
+ */
 struct StringConfiguration {
-  size_t buffer_size;
+  size_t buffer_size; /**< the size to make string buffers by default */
 };
 
+/**
+ * A specific Formatter/Handler pair to log to.
+ */
 struct Target {
-  Formatter *formatter;
-  Handler *handler;
+  Formatter *formatter; /**< the Formatter to use on the Record */
+  Handler *handler; /**< the destination of the Record */
 };
 
+/**
+ * A threading configuration for a Logger.
+ */
 struct ThreadingConfiguration {
-  unsigned short enabled : 1;
+  unsigned short enabled : 1; /**< whether or not threading is enabled */
 };
 
+/**
+ * A specific type of data.
+ *
+ * @todo rename to Data
+ */
 union Type {
   unsigned short u_s;
   unsigned short *u_s_p;
@@ -251,23 +336,38 @@ union Type {
 #endif
 };
 
+/**
+ * A value in a Record.
+ */
 struct Value {
-  Type *data;
-  const char *format;
-  size_t length;
-  ValueProfile *profile;
+  Type *data; /**< the data in the Value */
+  const char *format; /**< the format to use for the data */
+  size_t length; /**< the length of the Value if, applicable */
+  ValueProfile *profile; /**< the profile to use handling the data */
 };
 
+/**
+ * A profile to use when working with Values.
+ */
 struct ValueProfile {
+  /** function to use when comparing two values */
   short ( *compare )( const Value *, const Value *, Dictionary * ); // todo move to comparator?
+  /** puts the Value into a provided string */
   Status *( *into_string )( char *, const Value * );
-  const char * name;
+  const char * name; /**< the name of the profile */
+  /** creates a binary Output using the Value*/
   Output *( *to_binary )( const Value * );
+  /** creates a CSV Output using the Value */
   Output *( *to_csv )( const Value * );
+  /** creates a JSON Output using the Value */
   Output *( *to_json )( const Value * );
+  /** creates a string using the Value */
   char * ( *to_string )( const Value * );
+  /** creates a text Output using the Value */
   Output *( *to_text )( const Value * );
+  /** creates a ValueLust using the Value */
   ValueList *( *to_value_list )( const Value * );
+  /** creates an XML Output using the Value */
   Output *( *to_xml )( const Value * );
 };
 
