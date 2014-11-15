@@ -18,7 +18,7 @@
  */
 Queue *
 CopyQueue
-( Queue *queue );
+( const Queue *queue );
 
 /**
  * Destroys a Queue

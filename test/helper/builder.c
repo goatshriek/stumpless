@@ -786,7 +786,7 @@ Queue *
 BuildQueue
 ( void )
 {
-  Queue *queue = malloc( sizeof( Queue ) );
+  Queue *queue = NewQueue();
   if( !queue )
     return NULL;
 

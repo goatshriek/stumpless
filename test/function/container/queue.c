@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "private/container/queue.h"
 #include "test/function/container/queue.h"
 #include "test/helper.h"
 
@@ -12,7 +13,7 @@ main( void )
   const char *result;
 
   TEST( Copy )
-  TEST( Destructor )
+  TEST( Destroy )
   TEST( IsEmpty )
   TEST( New )
   TEST( Peek )
@@ -55,7 +56,7 @@ TestCopy
 }
 
 const char *
-TestDestructor
+TestDestroy
 ( void )
 {
   DestroyQueue( NULL );
@@ -165,6 +166,9 @@ TestPush
   if( PushToQueue( NULL, NULL ) )
     return "a NULL Queue could be pushed to with a NULL element";
 
+  if( PushToQueue( NULL, "first new element" ) )
+    return "an element could be pushed to a new Queue";
+
   Queue *queue = NewQueue();
   if( !queue )
     return "could not build a new Queue";
@@ -172,20 +176,19 @@ TestPush
   if( PushToQueue( queue, NULL ) )
     return "a Queue accepted a NULL element push";
 
-  const char *element = "first new element";
-  if( PushToQueue( NULL, element ) )
-    return "an element could be pushed to a new Queue";
-
-  if( PushToQueue( queue, element ) != queue )
+  if( PushToQueue( queue, "first new element" ) != queue )
     return "a first element could not be properly pushed";
-  if( PeekAtQueue( queue ) != element )
-    return "an empty Queue did not have the correct element after a push";
+  const char *value = PeekAtQueue( queue );
+  if( !value )
+    return "could not get a value from the queue after the first push";
+  ASSERT_STRINGS_EQUAL( "first new element", value, "an empty Queue did not have the correct element after a push" )
 
-  element = "second element";
-  if( PushToQueue( queue, element ) != queue )
+  if( PushToQueue( queue, "second element" ) != queue )
     return "a second element could not be properly pushed";
-  if( PeekAtQueue( queue ) == element )
-    return "a second element was pushed to the front instead of the back";
+  value = PeekAtQueue( queue );
+  if( !value )
+    return "could not get a value from the queue after the second push";
+  ASSERT_STRINGS_EQUAL( "first new element", value, "a second element was pushed to the front instead of the back" )
 
   return NULL;
 }
