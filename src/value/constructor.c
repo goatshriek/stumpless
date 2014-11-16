@@ -14,7 +14,7 @@ NewValueFor##name                                                              \
   if( !value )                                                                 \
     return NULL;                                                               \
                                                                                \
-  value->data = malloc( sizeof( Type ) );                                      \
+  value->data = malloc( sizeof( Data ) );                                      \
   if( !value->data )                                                           \
     return NULL;                                                               \
                                                                                \
@@ -69,7 +69,7 @@ NewValueForBoolean( const Boolean * boolean )
   if( !value )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( !value->data )
     return NULL;
 
@@ -114,7 +114,7 @@ NewValueForString( const char *str )
   if( !value )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( !value->data )
     return NULL;
 

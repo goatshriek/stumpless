@@ -463,7 +463,7 @@ TextOutputFromValueList
   if( !output )
     return NULL;
 
-  output->data = malloc( sizeof( Type ) );
+  output->data = malloc( sizeof( Data ) );
   if( !output->data )
     return NULL;
 

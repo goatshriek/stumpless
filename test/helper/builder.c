@@ -207,7 +207,7 @@ BuildCharArrayValue
   if( value->profile == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
 
@@ -409,7 +409,7 @@ BuildEmptyUnsignedIntArrayValue
   if( value->profile == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
 
@@ -648,7 +648,7 @@ BuildIntArrayValue( void )
   if( value->profile == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
 
@@ -680,7 +680,7 @@ BuildIntValue( void )
   if( value == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
 
@@ -816,7 +816,7 @@ BuildRawStringOutput
   if( output->profile == NULL )
     return NULL;
 
-  output->data = malloc( sizeof( Type ) );
+  output->data = malloc( sizeof( Data ) );
   if( output->data == NULL )
     return NULL;
 
@@ -881,7 +881,7 @@ BuildStringValue
   if( value == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
 
@@ -954,7 +954,7 @@ BuildTextOutput( void )
   if( !result )
     return NULL;
 
-  output->data = malloc( sizeof( Type ) );
+  output->data = malloc( sizeof( Data ) );
   if( output->data == NULL )
     return NULL;
 
@@ -996,7 +996,7 @@ BuildUnsignedIntValue( void )
   if( value->profile == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
   value->data->u_i = 4294967196u;
@@ -1017,7 +1017,7 @@ BuildUnsignedShortValue( void )
   if( value->profile == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
   value->data->u_s = 65000u;
@@ -1038,7 +1038,7 @@ BuildValue
   if( !value->profile )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( !value->data )
     return NULL;
   value->data->u_s = 6500u;
@@ -1141,7 +1141,7 @@ BuildVoidValue( void )
   if( value->profile == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Type ) );
+  value->data = malloc( sizeof( Data ) );
   if( value->data == NULL )
     return NULL;
 

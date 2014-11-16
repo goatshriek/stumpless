@@ -24,7 +24,7 @@ name##ArrayValueToValueList                                                    \
   if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  Type *data = value->data;                                                    \
+  Data *data = value->data;                                                    \
   Value *value_i;                                                              \
   unsigned i;                                                                  \
                                                                                \

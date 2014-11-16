@@ -100,6 +100,44 @@ struct Configuration {
 };
 
 /**
+ * A piece of data.
+ */
+union Data {
+  unsigned short u_s;
+  unsigned short *u_s_p;
+  signed short s;
+  signed short *s_p;
+  unsigned int u_i;
+  unsigned int *u_i_p;
+  signed int i;
+  signed int *i_p;
+  unsigned long u_l;
+  unsigned long *u_l_p;
+  signed long l;
+  signed long *l_p;
+  unsigned long long u_l_l;
+  unsigned long long *u_l_l_p;
+  signed long long l_l;
+  signed long long *l_l_p;
+  char c;
+  char *c_p;
+  signed char s_c;
+  signed char *s_c_p;
+  unsigned char u_c;
+  unsigned char *u_c_p;
+  float f;
+  float *f_p;
+  double d;
+  double *d_p;
+  long double l_d;
+  long double *l_d_p;
+  void *v_p;
+#ifdef __STUMPLESS_HAVE_TIME_H
+  time_t time;
+#endif
+};
+
+/**
  * An event that can be logged.
  * @todo add format string for messages
  */
@@ -207,7 +245,7 @@ struct Logger {
  * A container for a formatted Record.
  */
 struct Output {
-  Type *data; /**< the formatted data */
+  Data *data; /**< the formatted data */
   OutputProfile *profile; /**< the profile to use to handle the data */
 };
 
@@ -298,50 +336,10 @@ struct ThreadingConfiguration {
 };
 
 /**
- * A specific type of data.
- *
- * @todo rename to Data
- */
-union Type {
-  unsigned short u_s;
-  unsigned short *u_s_p;
-  signed short s;
-  signed short *s_p;
-  unsigned int u_i;
-  unsigned int *u_i_p;
-  signed int i;
-  signed int *i_p;
-  unsigned long u_l;
-  unsigned long *u_l_p;
-  signed long l;
-  signed long *l_p;
-  unsigned long long u_l_l;
-  unsigned long long *u_l_l_p;
-  signed long long l_l;
-  signed long long *l_l_p;
-  char c;
-  char *c_p;
-  signed char s_c;
-  signed char *s_c_p;
-  unsigned char u_c;
-  unsigned char *u_c_p;
-  float f;
-  float *f_p;
-  double d;
-  double *d_p;
-  long double l_d;
-  long double *l_d_p;
-  void *v_p;
-#ifdef __STUMPLESS_HAVE_TIME_H
-  time_t time;
-#endif
-};
-
-/**
  * A value in a Record.
  */
 struct Value {
-  Type *data; /**< the data in the Value */
+  Data *data; /**< the data in the Value */
   const char *format; /**< the format to use for the data */
   size_t length; /**< the length of the Value if, applicable */
   ValueProfile *profile; /**< the profile to use handling the data */
@@ -351,17 +349,17 @@ struct Value {
  * A profile to use when working with Values.
  */
 struct ValueProfile {
-  /** function to use when comparing two values */
-  short ( *compare )( const Value *, const Value *, Dictionary * ); // todo move to comparator?
+  /** Comparators to use when comparing Values */
+  ComparatorList *comparators;
   /** puts the Value into a provided string */
   Status *( *into_string )( char *, const Value * );
-  const char * name; /**< the name of the profile */
+  const char *name; /**< the name of the profile */
   /** creates a binary Output using the Value*/
-  Output *( *to_binary )( const Value * );
+  Output *( *to_binary )( const Formatter *, const Value * );
   /** creates a CSV Output using the Value */
-  Output *( *to_csv )( const Value * );
+  Output *( *to_csv )( const Formatter *, const Value * );
   /** creates a JSON Output using the Value */
-  Output *( *to_json )( const Value * );
+  Output *( *to_json )( const Formatter *, const Value * );
   /** creates a string using the Value */
   char * ( *to_string )( const Value * );
   /** creates a text Output using the Value */
