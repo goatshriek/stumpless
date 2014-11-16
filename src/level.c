@@ -4,6 +4,7 @@
 
 #include "private/container/dictionary.h"
 #include "private/container/list/value.h"
+#include "private/formatter.h"
 #include "private/formatter/text.h"
 #include "private/level.h"
 #include "private/level/initializer.h"
@@ -19,10 +20,10 @@ AddLevel
 {
   if( !level || !level->name )
     return RaiseStatus( "empty argument" );
-  
+
   if( !levels ){
     levels = NewDictionary();
-    
+
     if( !levels )
       return RaiseStatus( "constructor failure" );
   }
@@ -39,11 +40,11 @@ FindLevelByName
 {
   if( !levels ){
     levels = NewDictionary();
-    
+
     if( !levels )
       return NULL;
   }
-  
+
   Level *level = GetDictionaryValue( levels, name );
 
   if( !level ){
@@ -59,5 +60,5 @@ char *
 LevelToString
 ( const Level *level )
 {
-  return OutputToString( LevelToText( level ) );
+  return OutputToString( LevelToText( FindFormatterByName( "text" ), level ) );
 }

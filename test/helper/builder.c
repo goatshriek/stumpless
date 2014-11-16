@@ -301,6 +301,13 @@ BuildDictionaryOfEventAttributes
   attribute->default_value = NULL;
   SetDictionaryValue( attributes, attribute->name, attribute );
 
+  attribute = malloc( sizeof( EventAttribute ) );
+  if( !attribute )
+    return NULL;
+  attribute->name = "Unused Attribute";
+  attribute->default_value = NULL;
+  SetDictionaryValue( attributes, attribute->name, attribute );
+
   return attributes;
 }
 
@@ -327,7 +334,7 @@ BuildDictionaryOfRecordAttributes
     record_attribute->event_attribute = event_attribute;
     record_attribute->value = event_attribute->default_value;
     if( !record_attribute->value )
-      record_attribute->value = NewValueForString( "record value" );
+      record_attribute->value = NewValueForString( "attribute value" );
 
     SetDictionaryValue( record_attributes, event_attribute->name, record_attribute );
   }
@@ -336,7 +343,7 @@ BuildDictionaryOfRecordAttributes
   if( !record_attribute )
     return NULL;
 
-  record_attribute->name = "anonymous attribute";
+  record_attribute->name = "Anonymous Attribute";
   record_attribute->event_attribute = NULL;
   record_attribute->value = NewValueForString( "anonymous attribute value" );
 
@@ -697,7 +704,7 @@ BuildLevel
   level->name = "Test Level";
   level->primary = 42;
   level->secondary = 31;
-  level->tertiary = 24;
+  level->tertiary = 7;
 
   return level;
 }

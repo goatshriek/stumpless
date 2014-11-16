@@ -189,6 +189,8 @@ struct Log {
 /**
  * A collection of logging targets and configuration parameters through which
  * logging can be accomplished.
+ *
+ * @todo change pipes to unix sockets
  */
 struct Logger {
   AdapterList *adapters; /**< the Adapters to use on logged elements */
@@ -196,7 +198,6 @@ struct Logger {
   const char *name; /**< the unique name of the Logger */
   TargetList *targets; /**< the Targets to send logs to */
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
-  // todo consider changing this mechanism to unix sockets
   int receive_pipe; /**< the pipe used to receive messages */
   int send_pipe; /**< the pipe used to send messages */
 #endif
@@ -248,7 +249,7 @@ struct Record {
  * A particular parameter of a Record.
  */
 struct RecordAttribute {
-  /**< the EventAttribute this attribute is derived from */
+  /** the EventAttribute this attribute is derived from */
   const EventAttribute *event_attribute;
   const char *name; /**< the name of the attribute */
   Value *value; /**< the value held in the attribute */
@@ -364,7 +365,7 @@ struct ValueProfile {
   /** creates a string using the Value */
   char * ( *to_string )( const Value * );
   /** creates a text Output using the Value */
-  Output *( *to_text )( const Value * );
+  Output *( *to_text )( const Formatter *, const Value * );
   /** creates a ValueLust using the Value */
   ValueList *( *to_value_list )( const Value * );
   /** creates an XML Output using the Value */

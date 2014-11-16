@@ -16,7 +16,7 @@
 
 Output *
 ArrayValueToText
-( const Value * value )
+( const Formatter *formatter, const Value * value )
 {
   ValueList * output = ArrayValueToValueList( value );
   return TextOutputFromValueList( output );
@@ -31,67 +31,53 @@ RecordToText
 
 Output *
 RecordAttributeToText
-( const RecordAttribute * attribute )
+( const Formatter *formatter, const RecordAttribute * attribute )
 {
   ValueList * output = RecordAttributeToValueList( attribute );
   return TextOutputFromValueList( output );
 }
 
 Output *
-RecordAttributeListToText
-( const Record * record )
+RecordAttributesToText
+( const Formatter *formatter, const Dictionary *attributes )
 {
-  ValueList * output = RecordAttributeListToValueList( record );
+  ValueList * output = RecordAttributeListToValueList( NULL );
   return TextOutputFromValueList( output );
 }
 
 Output *
-RecordSummaryToText
-( const Record * record )
-{
-  return TextOutputFromValueList( RecordSummaryToValueList( record ) );
-}
-
-Output *
 EventToText
-( const Event * event )
+( const Formatter *formatter, const Event * event )
 {
   return TextOutputFromValueList( EventToValueList( event ) );
 }
 
 Output *
 EventAttributeToText
-( const EventAttribute * attribute )
+( const Formatter *formatter, const EventAttribute * attribute )
 {
   ValueList * output = EventAttributeToValueList( attribute );
   return TextOutputFromValueList( output );
 }
 
 Output *
-EventAttributeListToText
-( const Event *event )
+EventAttributesToText
+( const Formatter *formatter, const Dictionary *attributes )
 {
-  ValueList *output = EventAttributeListToValueList( event );
+  ValueList *output = EventAttributeListToValueList( NULL );
   return TextOutputFromValueList( output );
 }
 
 Output *
-EventSummaryToText
-( const Event * event )
-{
-  return TextOutputFromValueList( EventSummaryToValueList( event ) );
-}
-
-Output *
 LevelToText
-( const Level * level )
+( const Formatter *formatter, const Level * level )
 {
   return TextOutputFromValueList( LevelToValueList( level ) );
 }
 
 Output *
 SingularValueToText
-( const Value * value )
+( const Formatter *formatter, const Value * value )
 {
   ValueList * output = SingularValueToValueList( value );
   return TextOutputFromValueList( output );
@@ -197,7 +183,7 @@ RecordAttributeToValueList
     return NULL;
 
   Output *value_as_text;
-  value_as_text = attribute_value->profile->to_text( attribute_value );
+  value_as_text = attribute_value->profile->to_text( NULL, attribute_value );
   if( !value_as_text )
     return NULL;
 
@@ -327,7 +313,7 @@ EventAttributeToValueList
       return NULL;
 
     Output *default_value_output;
-    default_value_output = default_value->profile->to_text( default_value );
+    default_value_output = default_value->profile->to_text( NULL, default_value );
 
     ValueList *default_value_list;
     default_value_list = ( ValueList * ) default_value_output->data->v_p;

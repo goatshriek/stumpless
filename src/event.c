@@ -7,6 +7,7 @@
 #include "private/container/dictionary.h"
 #include "private/container/list/value.h"
 #include "private/event/initializer.h"
+#include "private/formatter.h"
 #include "private/formatter/text.h"
 #include "private/level.h"
 #include "private/output.h"
@@ -21,17 +22,17 @@ AddEvent
 {
   if( !event || !event->name )
     return RaiseStatus( "empty argument" );
-  
+
   if( !events ){
     events = NewDictionary();
-    
+
     if( !events )
       return RaiseStatus( "constructor failure");
   }
-  
+
   if( !SetDictionaryValue( events, event->name, event ) )
     return RaiseStatus( "dictionary failure" );
-  
+
   return NULL;
 }
 
@@ -39,7 +40,7 @@ char *
 EventToString
 ( Event * event )
 {
-  return OutputToString( EventToText( event ) );
+  return OutputToString( EventToText( FindFormatterByName( "text" ), event ) );
 }
 
 Event *
@@ -52,7 +53,7 @@ FindEventByName
     if( !events )
       return NULL;
   }
-  
+
   Event *event = GetDictionaryValue( events, name );
 
   if( !event ){

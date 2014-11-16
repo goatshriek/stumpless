@@ -5,46 +5,38 @@
 
 Output *
 ArrayValueToText
-( const Value * );
+( const Formatter *formatter, const Value *value );
 
 Output *
 RecordToText
-( const Formatter *, const Record * );
+( const Formatter *formatter, const Record *record );
 
 Output *
 RecordAttributeToText
-( const RecordAttribute * );
+( const Formatter *formatter, const RecordAttribute *attribute );
 
 Output *
-RecordAttributeListToText
-( const Record * );
-
-Output *
-RecordSummaryToText
-( const Record * );
+RecordAttributesToText
+( const Formatter *formatter, const Dictionary *attributes );
 
 Output *
 EventToText
-( const Event * );
+( const Formatter *formatter, const Event *event );
 
-Output * 
+Output *
 EventAttributeToText
-( const EventAttribute * );
+( const Formatter *formatter, const EventAttribute *attribute );
 
 Output *
-EventAttributeListToText
-( const Event * );
-
-Output *
-EventSummaryToText
-( const Event * );
+EventAttributesToText
+( const Formatter *formatter, const Dictionary *attributes );
 
 Output *
 LevelToText
-( const Level * );
+( const Formatter *formatter, const Level *level );
 
 Output *
 SingularValueToText
-( const Value * );
+( const Formatter *formatter, const Value *value );
 
 #endif

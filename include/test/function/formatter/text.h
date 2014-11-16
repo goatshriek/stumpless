@@ -4,16 +4,16 @@
 /**
  * @file
  * Tests for the TextFormatter data structure.
+ *
+ * @todo break NULL checks into separate test functions
+ * @todo add ValuetoText function tests
  */
 
 /**
  * Tests the EventToText function.
  *
- * @test A NULL Event must return a NULL Output. Each piece of the Event must
- * be present in the resulting Output string. Events missing various elements
- * must still be formatted.
- *
- * @todo implement
+ * @test A NULL Event or Formatter must return a NULL Output. An Event with a
+ * name, level, and attributes must be properly formatted.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -24,9 +24,8 @@ TestEvent
 /**
  * Tests the EventAttributeToText function.
  *
- * @test A NULL EventAttribute must return a NULL Output.
- *
- * @todo implement
+ * @test A NULL EventAttribute or Formatter must return a NULL Output. An
+ * EventAttribute with a default value must be properly formatted.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -37,9 +36,9 @@ TestEventAttribute
 /**
  * Tests the EventAttributesToText function.
  *
- * @test A NULL Dictionary must return a NULL Output.
- *
- * @todo implement
+ * @test A NULL Dictionary or Formatter must return a NULL Output. A Dictionary
+ * containing at least one EventAttribute without a default value and one with a
+ * default value must be properly formatted.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -63,9 +62,8 @@ TestInitializer
 /**
  * Tests the LevelToText function.
  *
- * @test A NULL Level must return a NULL Output.
- *
- * @todo implement
+ * @test A NULL Level or Formatter must return a NULL Output. A Level with three
+ * levels and a name must be properly formatted.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -76,11 +74,10 @@ TestLevel
 /**
  * Tests the RecordToText function.
  *
- * @test A NULL Record must return a NULL Output. Records with various parts
- * must include the present pieces and be in the correct format. Records missing
- * certain pieces must still be formatted.
- *
- * @todo implement
+ * @test A NULL Record or Formatter must return a NULL Output. A Record with at
+ * least one RecordAttribute that has no EventAttribute, one using the default
+ * Value, one using a custom Value, and an Event with at least one Attribute not
+ * used in the Record must be properly formatted.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -91,9 +88,9 @@ TestRecord
 /**
  * Test the RecordAttributeToText function.
  *
- * @test A NULL RecordAttribute must return a NULL Output.
- *
- * @todo implement
+ * @test A NULL RecordAttribute or Formatter must return a NULL Output. A
+ * RecordAttribute with a value must be properly formatted. A RecordAttribute
+ * using the default value must be properly formatted.
  *
  * @return NULL on completion, or a string describing the failure
  */
@@ -104,9 +101,9 @@ TestRecordAttribute
 /**
  * Tests the RecordAttributesToText function.
  *
- * @test A NULL Dictionary must return a NULL Output.
- *
- * @todo implement
+ * @test A NULL Dictionary or Formatter must return a NULL Output. A Dictionary
+ * containing at least one RecordAttribute with no EventAttribute, one without a
+ * Value assigned, and one with a Value assigned must be properly formatted.
  *
  * @return NULL on completion, or a string describing the failure
  */
