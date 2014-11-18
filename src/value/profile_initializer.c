@@ -28,7 +28,7 @@ Initialize##type_name##ArrayValueProfile                                       \
   profile->to_csv = NULL;                                                      \
   profile->to_json = NULL;                                                     \
   profile->to_string = NULL;                                                   \
-  profile->to_text = ArrayValueToText;                                         \
+  profile->to_text = ValueToText;                                              \
   profile->to_value_list = type_name##ArrayValueToValueList;                   \
   profile->to_xml = NULL;                                                      \
                                                                                \
@@ -50,7 +50,7 @@ Initialize##type_name##ValueProfile                                            \
   profile->to_csv = NULL;                                                      \
   profile->to_json = NULL;                                                     \
   profile->to_string = type_name##ValueToString;                               \
-  profile->to_text = SingularValueToText;                                      \
+  profile->to_text = ValueToText;                                              \
   profile->to_value_list = ValueToValueList;                                   \
   profile->to_xml = NULL;                                                      \
                                                                                \

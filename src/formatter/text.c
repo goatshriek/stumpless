@@ -16,14 +16,6 @@
 #include "static/formatter/text.h"
 
 Output *
-ArrayValueToText
-( const Formatter *formatter, const Value * value )
-{
-  ValueList * output = ArrayValueToValueList( value );
-  return TextOutputFromValueList( output );
-}
-
-Output *
 RecordToText
 ( const Formatter *formatter, const Record * record )
 {
@@ -77,7 +69,7 @@ LevelToText
 }
 
 Output *
-SingularValueToText
+ValueToText
 ( const Formatter *formatter, const Value * value )
 {
   ValueList * output = SingularValueToValueList( value );

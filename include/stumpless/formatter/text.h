@@ -1,20 +1,12 @@
 #ifndef __STUMPLESS_FORMATTER_TEXT_H
 #define __STUMPLESS_FORMATTER_TEXT_H
 
-#include <stumpless/type.h>
-
 /**
- * Creates a text Output based on an array Value.
- * @todo combine with SingularValueToText
- *
- * @param formatter the Formatter generating the Output
- * @param value the array Value to create an Output for
- *
- * @return a text Output for the Value, or NULL on failure
+ * @file
+ * Functions text Formatters.
  */
-Output *
-ArrayValueToText
-( const Formatter *formatter, const Value *value );
+
+#include <stumpless/type.h>
 
 /**
  * Creates a text Output based on an Event.
@@ -101,7 +93,7 @@ RecordAttributesToText
 ( const Formatter *formatter, const Dictionary *attributes );
 
 /**
- * Creates a text Output based on a singular Value.
+ * Creates a text Output based on a Value.
  *
  * @param formatter the Formatter generating the Output
  * @param value the Value to create an Output for
@@ -109,7 +101,7 @@ RecordAttributesToText
  * @return a text Output for the Value
  */
 Output *
-SingularValueToText
+ValueToText
 ( const Formatter *formatter, const Value *value );
 
 #endif
