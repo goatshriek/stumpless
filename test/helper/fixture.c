@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
-#include "private/formatter/text.h"
+#include <stumpless/formatter/text.h>
+
 #include "private/output.h"
 #include "private/status.h"
 #include "private/value/constructor.h"
@@ -13,7 +14,7 @@ BadAdaptFunction
 {
   TestLogSetLastAdapter( adapter );
   TestLogSetLastAdaptedRecord( record );
-  
+
   return NULL;
 }
 
@@ -61,7 +62,7 @@ TestFormatFunction
 
   Output * output = RecordToText( formatter, record );
   TestLogSetLastGeneratedOutput( output );
-  
+
   return output;
 }
 

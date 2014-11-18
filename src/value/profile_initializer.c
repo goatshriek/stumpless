@@ -1,7 +1,8 @@
 #include <stdlib.h>
 
+#include <stumpless/formatter/text.h>
+
 #include "private/container/dictionary.h"
-#include "private/formatter/text.h"
 #include "private/status.h"
 #include "private/type.h"
 #include "private/value.h"

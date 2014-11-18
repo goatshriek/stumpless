@@ -3,12 +3,12 @@
 #include <string.h>
 
 #include <stumpless/event.h>
+#include <stumpless/formatter/text.h>
 
 #include "private/container/dictionary.h"
 #include "private/container/list/value.h"
 #include "private/event/initializer.h"
 #include "private/formatter.h"
-#include "private/formatter/text.h"
 #include "private/level.h"
 #include "private/output.h"
 #include "private/status.h"

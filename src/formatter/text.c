@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stumpless/formatter/text.h>
+
 #include "private/container/dictionary.h"
 #include "private/container/dictionary/const_iterator.h"
 #include "private/container/list/value.h"
-#include "private/formatter/text.h"
 #include "private/output.h"
 #include "private/output/profile.h"
 #include "private/status/checker.h"

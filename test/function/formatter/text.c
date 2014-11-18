@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stumpless/formatter/text.h>
+
 #include "private/output.h"
 #include "private/value/constructor.h"
 #include "private/formatter.h"
-#include "private/formatter/text.h"
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
 #include "test/function/formatter/text.h"

@@ -1,23 +1,11 @@
-#ifndef __STUMPLESS_PRIVATE_FORMATTER_TEXT_H
-#define __STUMPLESS_PRIVATE_FORMATTER_TEXT_H
+#ifndef __STUMPLESS_FORMATTER_TEXT_H
+#define __STUMPLESS_FORMATTER_TEXT_H
 
-#include "private/type.h"
+#include <stumpless/type.h>
 
 Output *
 ArrayValueToText
 ( const Formatter *formatter, const Value *value );
-
-Output *
-RecordToText
-( const Formatter *formatter, const Record *record );
-
-Output *
-RecordAttributeToText
-( const Formatter *formatter, const RecordAttribute *attribute );
-
-Output *
-RecordAttributesToText
-( const Formatter *formatter, const Dictionary *attributes );
 
 Output *
 EventToText
@@ -34,6 +22,18 @@ EventAttributesToText
 Output *
 LevelToText
 ( const Formatter *formatter, const Level *level );
+
+Output *
+RecordToText
+( const Formatter *formatter, const Record *record );
+
+Output *
+RecordAttributeToText
+( const Formatter *formatter, const RecordAttribute *attribute );
+
+Output *
+RecordAttributesToText
+( const Formatter *formatter, const Dictionary *attributes );
 
 Output *
 SingularValueToText

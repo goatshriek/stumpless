@@ -2,6 +2,7 @@
 
 #include <stumpless/config.h>
 #include <stumpless/event.h>
+#include <stumpless/formatter/text.h>
 #include <stumpless/record.h>
 #include <stumpless/record_attribute.h>
 
@@ -10,7 +11,6 @@
 #endif
 
 #include "private/container/dictionary.h"
-#include "private/formatter/text.h"
 #include "private/output.h"
 #include "private/type.h"
 #include "private/value/constructor.h"
@@ -21,16 +21,16 @@ MergeRecords
 {
   if( !primary )
     return secondary;
-  
+
   if( !secondary )
     return primary;
-  
+
   if( !primary->event )
     primary->event = secondary->event;
-  
+
   if( !MergeDictionaries( primary->attributes, secondary->attributes ) )
     return NULL;
-  
+
   return primary;
 }
 
@@ -41,7 +41,7 @@ NewAlertRecord
   Record *record = RecordForEvent( FindEventByName( "alert" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -52,7 +52,7 @@ NewCriticalRecord
   Record *record = RecordForEvent( FindEventByName( "critical" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -63,7 +63,7 @@ NewDebugRecord
   Record *record = RecordForEvent( FindEventByName( "debug" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -74,7 +74,7 @@ NewEmergencyRecord
   Record *record = RecordForEvent( FindEventByName( "emergency" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -85,7 +85,7 @@ NewErrorRecord
   Record *record = RecordForEvent( FindEventByName( "error" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -96,7 +96,7 @@ NewInformationalRecord
   Record *record = RecordForEvent( FindEventByName( "informational" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -107,7 +107,7 @@ NewNoticeRecord
   Record *record = RecordForEvent( FindEventByName( "notice" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -118,7 +118,7 @@ NewWarningRecord
   Record *record = RecordForEvent( FindEventByName( "warning" ) );
   if( !record )
     return NULL;
-  
+
   return SetRecordAttribute( record, "message", NewValueForString( message ) );
 }
 
@@ -128,11 +128,11 @@ RecordForEvent
 {
   if( !event )
     return NULL;
-  
+
   Record *record = malloc( sizeof( Record ) );
   if( !record )
     return NULL;
-  
+
   record->event = event;
   record->attributes = NewRecordAttributeDictionaryForEventAttributeDictionary( event->attributes );
 
