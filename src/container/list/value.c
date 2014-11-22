@@ -20,6 +20,16 @@
 ADD_SEPARATOR_TO_LIST( Value )
 
 ValueList *
+AppendCharToValueList
+( ValueList *list, char character )
+{
+  if( !list )
+    return NULL;
+
+  return AppendToValueList( list, NewValueForChar( character ) );
+}
+
+ValueList *
 AppendStringToValueList
 ( ValueList * list, const char * str )
 {

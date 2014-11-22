@@ -45,6 +45,7 @@ AppendLists
   return first;
 }
 
+// todo disallow NULL values
 List *
 AppendToList
 ( List * list, void * value )
