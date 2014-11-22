@@ -13,443 +13,101 @@
 #include "private/type.h"
 #include "private/value.h"
 #include "private/value/constructor.h"
-#include "static/formatter/text.h"
-
-Output *
-RecordToText
-( const Formatter *formatter, const Record * record )
-{
-  return TextOutputFromValueList( RecordToValueList( record ) );
-}
-
-Output *
-RecordAttributeToText
-( const Formatter *formatter, const RecordAttribute * attribute )
-{
-  ValueList * output = RecordAttributeToValueList( attribute );
-  return TextOutputFromValueList( output );
-}
-
-Output *
-RecordAttributesToText
-( const Formatter *formatter, const Dictionary *attributes )
-{
-  ValueList * output = RecordAttributeListToValueList( NULL );
-  return TextOutputFromValueList( output );
-}
 
 Output *
 EventToText
-( const Formatter *formatter, const Event * event )
+( const Formatter *formatter, const Event *event )
 {
-  return TextOutputFromValueList( EventToValueList( event ) );
-}
+  if( !formatter || !event || !event->name )
+    return NULL;
 
-Output *
-EventAttributeToText
-( const Formatter *formatter, const EventAttribute * attribute )
-{
-  ValueList * output = EventAttributeToValueList( attribute );
-  return TextOutputFromValueList( output );
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
+    return NULL;
+
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data ){
+    DestroyOutput( output );
+  }
+
+  ValueList *list = NewValueList();
+  if( !list ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  AppendStringToValueList( list, event->name );
+  AppendStringToValueList( list, " [" );
+
+  Output *level_output = LevelToText( formatter, event->level );
+  if( !level_output || !level_output->data ){
+    DestroyOutput( output );
+    DestroyValueList( list);
+  }
+  AppendValueLists( list, level_output->data->v_p );
+
+  AppendStringToValueList( list, "] - " );
+
+  Output *attributes_output = EventAttributesToText( formatter, event->attributes );
+  if( !attributes_output || !attributes_output->data ){
+    DestroyOutput( output );
+    DestroyValueList( list);
+  }
+  AppendValueLists( list, level_output->data->v_p );
+
+  return output;
 }
 
 Output *
 EventAttributesToText
 ( const Formatter *formatter, const Dictionary *attributes )
 {
-  ValueList *output = EventAttributeListToValueList( NULL );
-  return TextOutputFromValueList( output );
-}
-
-Output *
-LevelToText
-( const Formatter *formatter, const Level * level )
-{
-  return TextOutputFromValueList( LevelToValueList( level ) );
-}
-
-Output *
-ValueToText
-( const Formatter *formatter, const Value * value )
-{
-  ValueList * output = SingularValueToValueList( value );
-  return TextOutputFromValueList( output );
-}
-
-static
-ValueList *
-ArrayValueToValueList
-( const Value *value )
-{
-  if( !value )
+  if( !formatter )
     return NULL;
 
-  ValueProfile *profile = value->profile;
-  if( !profile )
+  DictionaryConstIterator *iterator = CBeginDictionary( attributes );
+  if( !iterator )
     return NULL;
 
-  ValueList *output = profile->to_value_list( value );
-  if( !output )
+  Output *output = malloc( sizeof( Output ) );
+  if( !output ){
+    DestroyDictionaryConstIterator( iterator );
     return NULL;
-
-  Value *separator = NewValueForString( ", " );
-  if( !AddSeparatorToValueList( output, separator ) )
-    return NULL;
-
-  if( !PrependStringToValueList( output, "[" ) )
-    return NULL;
-
-  if( !AppendStringToValueList( output, "] (" ) )
-    return NULL;
-
-  if( !AppendStringToValueList( output, profile->name ) )
-    return NULL;
-
-  if( AppendStringToValueList( output, ")" ) )
-    return NULL;
-
-  return output;
-}
-
-static
-ValueList *
-RecordToValueList
-( const Record *record )
-{
-  if( !record )
-    return NULL;
-
-  ValueList *output = RecordSummaryToValueList( record );
-  if( !output )
-    return NULL;
-
-  if( !DictionaryIsEmpty( record->attributes ) ){
-    if( !AppendStringToValueList( output, ": " ) )
-      return NULL;
-
-    ValueList *attributes = RecordAttributeListToValueList( record );
-    if( !attributes )
-      return NULL;
-
-    if( !AppendValueLists( output, attributes ) )
-      return NULL;
   }
 
-  return output;
-}
-
-static
-ValueList *
-RecordAttributeToValueList
-( const RecordAttribute *attribute )
-{
-  if( !attribute )
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data ){
+    DestroyOutput( output );
+    DestroyDictionaryConstIterator( iterator );
     return NULL;
+  }
 
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
+  ValueList *list = NewValueList();
+  if( !list ){
+    DestroyOutput( output );
+    DestroyDictionaryConstIterator( iterator );
+  }
 
-  const EventAttribute *event_attribute = attribute->event_attribute;
-
-  const char *attribute_name;
-  if( !event_attribute || !event_attribute->name )
-    attribute_name = "attribute";
-  else
-    attribute_name = event_attribute->name;
-
-  if( !AppendStringToValueList( output, attribute_name ) )
-    return NULL;
-
-  if( !AppendStringToValueList( output, ": " ) )
-    return NULL;
-
-  Value *attribute_value;
-  if( attribute->value )
-    attribute_value = attribute->value;
-  else if( event_attribute && event_attribute->default_value )
-    attribute_value = event_attribute->default_value;
-  else
-    return NULL;
-
-  if( !attribute_value->profile )
-    return NULL;
-
-  Output *value_as_text;
-  value_as_text = attribute_value->profile->to_text( NULL, attribute_value );
-  if( !value_as_text )
-    return NULL;
-
-  ValueList * values = ( ValueList * ) value_as_text->data->v_p;
-  if( !AppendValueLists( output, values ) )
-    return NULL;
-
-  return output;
-}
-
-static
-ValueList *
-RecordAttributeListToValueList
-( const Record *record )
-{
-  if( !record || DictionaryIsEmpty( record->attributes ) )
-    return NULL;
-
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
-
-  ValueList *attribute_list;
-  const RecordAttribute *attribute;
-  DictionaryConstIterator *iterator = CBeginDictionary( record->attributes );
+  const EventAttribute *attribute;
+  Output *attribute_output;
   while( attribute = NextInDictionaryConstIterator( iterator ) ){
-    attribute_list = RecordAttributeToValueList( attribute );
-    if( !attribute_list )
-      continue;
+    if( !ValueListIsEmpty( list ) )
+      AppendStringToValueList( list, ", " );
 
-    if( !ValueListIsEmpty( output ) )
-      if( !AppendStringToValueList( output, ", " ) )
-        return NULL;
-
-    if( !AppendValueLists( output, attribute_list ) )
-      return NULL;
+    attribute_output = EventAttributeToText( formatter, attribute );
+    if( attribute_output && attribute_output->data )
+      AppendValueLists( list, attribute_output->data->v_p );
   }
 
   DestroyDictionaryConstIterator( iterator );
   return output;
 }
 
-static
-ValueList *
-RecordSummaryToValueList
-( const Record *record )
-{
-  if( !record )
-    return NULL;
-
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
-
-  ValueList *event;
-  if( record->event ){
-    if( !AppendStringToValueList( output, " [" ) )
-      return NULL;
-
-    event = EventSummaryToValueList( record->event );
-    if( !event )
-      return NULL;
-
-    if( !AppendValueLists( output, event ) )
-      return NULL;
-
-    if( !AppendStringToValueList( output, "]" ) )
-      return NULL;
-  }
-
-  return output;
-}
-
-static
-ValueList *
-EventToValueList
-( const Event *event )
-{
-  if( !event )
-    return NULL;
-
-  ValueList *output = EventSummaryToValueList( event );
-  if( !output )
-    return NULL;
-
-  if( !DictionaryIsEmpty( event->attributes ) ){
-    if( !AppendStringToValueList( output, ": " ) )
-      return NULL;
-
-    ValueList *attributes = EventAttributeListToValueList( event );
-    if( !attributes )
-      return NULL;
-
-    if( !AppendValueLists( output, attributes ) )
-      return NULL;
-  }
-
-  return output;
-}
-
-static
-ValueList *
-EventAttributeToValueList
-( const EventAttribute *attribute )
-{
-  if( !attribute )
-    return NULL;
-
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
-
-  const char *name;
-  if( attribute->name )
-    name = attribute->name;
-  else
-    name = "attribute";
-  if( !AppendStringToValueList( output, name ) )
-    return NULL;
-
-  Value *default_value = attribute->default_value;
-  if( default_value ){
-    if( !AppendStringToValueList( output, ": " ) )
-      return NULL;
-
-    if( !default_value->profile )
-      return NULL;
-
-    Output *default_value_output;
-    default_value_output = default_value->profile->to_text( NULL, default_value );
-
-    ValueList *default_value_list;
-    default_value_list = ( ValueList * ) default_value_output->data->v_p;
-
-    if( !AppendValueLists( output, default_value_list ) )
-      return NULL;
-  }
-
-  return output;
-}
-
-static
-ValueList *
-EventAttributeListToValueList
-( const Event *event )
-{
-  if( !event || !event->attributes )
-    return NULL;
-
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
-
-  ValueList *attribute_list;
-  const EventAttribute *attribute;
-  DictionaryConstIterator *attributes = CBeginDictionary( event->attributes );
-  while( attribute = NextInDictionaryConstIterator( attributes ) ){
-    attribute_list = EventAttributeToValueList( attribute );
-    if( !attribute_list )
-      continue;
-
-    if( !ValueListIsEmpty( output ) ){
-      if( !AppendStringToValueList( output, ", " ) ){
-        return NULL;
-      }
-    }
-
-    if( !AppendValueLists( output, attribute_list ) )
-      return NULL;
-  }
-
-  DestroyDictionaryConstIterator( attributes );
-  return output;
-}
-
-static
-ValueList *
-EventSummaryToValueList
-( const Event *event )
-{
-  if( !event )
-    return NULL;
-
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
-
-  const char *event_name = event->name ? event->name : "event";
-  if( !AppendStringToValueList( output, event_name ) )
-    return NULL;
-
-  if( event->level ){
-    if( !AppendStringToValueList( output, " (" ) )
-      return NULL;
-
-    ValueList * level = LevelToValueList( event->level );
-    if( !level )
-      return NULL;
-
-    if( !AppendValueLists( output, level ) )
-      return NULL;
-
-    if( !AppendStringToValueList( output, ")" ) )
-      return NULL;
-  }
-
-  return output;
-}
-
-static
-ValueList *
-LevelToValueList
-( const Level *level )
-{
-  if( !level )
-    return NULL;
-
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
-
-  if( level->name ){
-    if( !AppendStringToValueList( output, level->name ) )
-      return NULL;
-
-    if( !AppendStringToValueList( output, ": " ) )
-      return NULL;
-  }
-
-  if( !AppendStringToValueList( output, "level " ) )
-    return NULL;
-
-  return AppendUnsignedIntToValueList( output, level->primary );
-}
-
-static
-ValueList *
-SingularValueToValueList
-( const Value *value )
-{
-  if( !value )
-    return NULL;
-
-  ValueProfile *profile;
-  profile = value->profile;
-  if( !profile )
-    return NULL;
-
-  ValueList *output = NewValueList();
-  if( !output )
-    return NULL;
-
-  if( !AppendToValueList( output, CopyValue( value ) ) )
-    return NULL;
-
-  if( !AppendStringToValueList( output, " (" ) )
-    return NULL;
-
-  if( !AppendStringToValueList( output, profile->name ) )
-    return NULL;
-
-  if( !AppendStringToValueList( output, ")" ) )
-    return NULL;
-
-  return output;
-}
-
-static
 Output *
-TextOutputFromValueList
-( const ValueList *list )
+EventAttributeToText
+( const Formatter *formatter, const EventAttribute *attribute )
 {
-  if( !list )
+  if( !formatter || !attribute || !attribute->name )
     return NULL;
 
   Output *output = malloc( sizeof( Output ) );
@@ -464,7 +122,219 @@ TextOutputFromValueList
   if( !output->profile )
     return NULL;
 
-  output->data->v_p = ( void * ) ValueListToStrings( list );
+  ValueList *list = NewValueList();
+  if( !list )
+    return NULL;
+
+  AppendStringToValueList( list, attribute->name );
+
+  Output *value_output;
+  if( attribute->default_value ){
+    AppendStringToAttributeList( list, " [" );
+    value_output = ValueToText( formatter, attribute->default_value );
+    if( value_output && value_output->data ){
+      AppendValueLists( list, output->data->v_p );
+    }
+    AppendCharToAttributeList( list, ']' );
+  }
+
+  return output;
+}
+
+Output *
+LevelToText
+( const Formatter *formatter, const Level *level )
+{
+  if( !formatter || !level || !level->name )
+    return NULL;
+
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
+    return NULL;
+
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  output->profile = FindOutputProfileByName( "text" );
+  if( !output->profile ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  ValueList *list = NewValueList();
+  if( !list ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  AppendStringToValueList( list, level->name );
+  AppendStringToValueList( list, " (" );
+  AppendUnsignedIntToValueList( list, level->primary );
+  AppendCharToValueList( list, '.' );
+  AppendUnsignedIntToValueList( list, level->secondary );
+  AppendCharToValueList( list, '.' );
+  AppendUnsignedIntToValueList( list, level->tertiary );
+  AppendCharToValueList( list, ')' );
+
+  output->data->v_p = ( void * ) list;
+
+  return output;
+}
+
+Output *
+RecordAttributesToText
+( const Formatter *formatter, const Dictionary *attributes )
+{
+  if( !formatter )
+    return NULL;
+
+  DictionaryConstIterator *iterator = CBeginDictionary( attributes );
+  if( !iterator )
+    return NULL;
+
+  Output *output = malloc( sizeof( Output ) );
+  if( !output ){
+    DestroyDictionaryConstIterator( iterator );
+    return NULL;
+  }
+
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data ){
+    DestroyOutput( output );
+    DestroyDictionaryConstIterator( iterator );
+    return NULL;
+  }
+
+  ValueList *list = NewValueList();
+  if( !list ){
+    DestroyOutput( output );
+    DestroyDictionaryConstIterator( iterator );
+  }
+
+  const RecordAttribute *attribute;
+  Output *attribute_output;
+  while( attribute = NextInDictionaryConstIterator( iterator ) ){
+    if( !ValueListIsEmpty( list ) )
+      AppendStringToValueList( list, ", " );
+
+    attribute_output =RecordAttributeToText( formatter, attribute );
+    if( attribute_output && attribute_output->data )
+      AppendValueLists( list, attribute_output->data->v_p );
+  }
+
+  DestroyDictionaryConstIterator( iterator );
+  return output;
+}
+
+Output *
+RecordAttributeToText
+( const Formatter *formatter, const RecordAttribute *attribute )
+{
+  if( !formatter || !attribute || !attribute->name || !attribute->value )
+    return NULL;
+
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
+    return NULL;
+
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  output->profile = FindOutputProfileByName( "text" );
+  if( !output->profile ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  ValueList *list = NewValueList();
+  if( !list ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  AppendStringToValueList( list, attribute->name );
+
+  AppendStringToAttributeList( list, ": " );
+
+  Output *value_output;
+  value_output = ValueToText( formatter, attribute->value );
+  if( value_output && value_output->data ){
+    AppendValueLists( list, output->data->v_p );
+  }
+
+  return output;
+}
+
+Output *
+RecordToText
+( const Formatter *formatter, const Record *record )
+{
+  if( !formatter || !record || !record->event )
+    return NULL;
+
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
+    return NULL;
+
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data ){
+    DestroyOutput( output );
+  }
+
+  ValueList *list = NewValueList();
+  if( !list ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
+  AppendStringToValueList( list, record->event->name );
+  AppendStringToValueList( list, " [" );
+
+  Output *level_output = LevelToText( formatter, record->event->level );
+  if( !level_output || !level_output->data ){
+    DestroyOutput( output );
+    DestroyValueList( list);
+  }
+  AppendValueLists( list, level_output->data->v_p );
+
+  AppendStringToValueList( list, "] - " );
+
+  Output *attributes_output = RecordAttributesToText( formatter, record->attributes );
+  if( !attributes_output || !attributes_output->data ){
+    DestroyOutput( output );
+    DestroyValueList( list);
+  }
+  AppendValueLists( list, level_output->data->v_p );
+
+  return output;
+}
+
+Output *
+ValueToText
+( const Formatter *formatter, const Value *value )
+{
+  if( !formatter || !value || !value->profile || !value->profile->to_value_list )
+    return NULL;
+
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
+    return NULL;
+
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data )
+    return NULL;
+
+  output->profile = FindOutputProfileByName( "text" );
+  if( !output->profile )
+    return NULL;
+
+  output->data->v_p = ( void * ) value->profile->to_value_list( value );
 
   return output;
 }
