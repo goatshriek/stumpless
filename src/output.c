@@ -35,13 +35,26 @@ CSVOutputToString
   return NULL;
 }
 
+void
+DestroyOutput
+( Output *output )
+{
+  if( !output )
+    return;
+
+  free( output->data );
+  free( output );
+
+  return;
+}
+
 unsigned short
 OutputIsEmpty
 ( const Output * output )
 {
   if( !output || !output->profile || !output->profile->is_empty )
     return 1;
-  
+
   return output->profile->is_empty( output );
 }
 
@@ -51,7 +64,7 @@ OutputToString
 {
   if( !output || !output->profile || !output->profile->to_string )
     return NULL;
-  
+
   return output->profile->to_string( output );
 }
 
@@ -75,7 +88,7 @@ RawStringOutputIsEmpty
 {
   if( !output || !output->data )
     return 1;
-  
+
   return ( output->data->c_p == NULL );
 }
 
@@ -85,7 +98,7 @@ RawStringOutputToString
 {
   if( !output || !output->data || !output->data->c_p )
     return NULL;
-  
+
   return copy_string( output->data->c_p );
 }
 
@@ -95,9 +108,9 @@ TextOutputIsEmpty
 {
   if( !output || !output->data )
     return 1;
-  
+
   ValueList * list = ( ValueList * ) output->data->v_p;
-  
+
   return ValueListIsEmpty( list );
 }
 
@@ -107,9 +120,9 @@ TextOutputToString
 {
   if( !output || !output->data )
     return NULL;
-  
+
   ValueList * list = ( ValueList * ) output->data->v_p;
-  
+
   return ValueListToString( list );
 }
 

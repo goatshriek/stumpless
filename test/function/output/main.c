@@ -4,6 +4,7 @@
 
 #include "private/output.h"
 #include "private/type.h"
+#include "test/function/output.h"
 #include "test/helper.h"
 
 const char * test_is_empty( void );
@@ -15,6 +16,8 @@ main( void )
   unsigned failure_count = 0;
   const char * result;
 
+  TEST( Destroy )
+
   RUN_TEST( is_empty )
   RUN_TEST( to_string )
 
@@ -22,6 +25,21 @@ main( void )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+TestDestroy
+( void )
+{
+  DestroyOutput( NULL );
+
+  Output *output = BuildOutput();
+  if( !output )
+    return "could not build a test Output";
+
+  DestroyOutput( output );
+
+  return NULL;
 }
 
 const char *

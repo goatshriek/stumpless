@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_PRIVATE_OUTPUT_H
-#define STUMPLESS_PRIVATE_OUTPUT_H
+#ifndef __STUMPLESS_PRIVATE_OUTPUT_H
+#define __STUMPLESS_PRIVATE_OUTPUT_H
 
 #include "private/type.h"
 
@@ -18,6 +18,15 @@ CSVOutputIsEmpty
 char *
 CSVOutputToString
 ( const Output * );
+
+/**
+ * Destroys the provided Output. A NULL Output is ignored.
+ *
+ * @param output the Output to be destroyed
+ */
+void
+DestroyOutput
+( Output *output );
 
 unsigned short
 OutputIsEmpty
