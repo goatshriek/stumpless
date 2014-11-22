@@ -27,6 +27,7 @@ main( void )
   TEST( Record )
   TEST( RecordAttribute )
   TEST( RecordAttributes )
+  TEST( Value )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -293,6 +294,40 @@ TestRecordAttributes
     return "the Output could not be converted to a string";
 
   ASSERT_STRINGS_EQUAL( "Anonymous Attribute: anonymous value, Test Attribute 1: default value, Test Attribute 2: attribute value", str, "the attributes were not properly formatted" )
+
+  return NULL;
+}
+
+const char *
+TestValue
+( void )
+{
+  if( ValueToText( NULL, NULL ) )
+    return "a NULL Formatter and Value returned an Output";
+
+  Formatter *formatter = FindFormatterByName( "text" );
+  if( !formatter )
+    return "the text Formatter could not be found";
+
+  if( ValueToText( formatter, NULL ) )
+    return "a NULL Value returned an Output";
+
+  Value *value = BuildValue();
+  if( !value )
+    return "could not build a test Value";
+
+  if( ValueToText( NULL, value ) )
+    return "a NULL Formatter returned an output";
+
+  Output *output = ValueToText( formatter, value );
+  if( !output )
+    return "a Value could not be formatted";
+
+  char *str = OutputToString( output );
+  if( !str )
+    return "the Output could not be converted to a string";
+
+  ASSERT_STRINGS_EQUAL( "6500", str, "the attributes were not properly formatted" )
 
   return NULL;
 }

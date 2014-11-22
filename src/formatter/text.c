@@ -55,6 +55,7 @@ EventToText
   }
   AppendValueLists( list, level_output->data->v_p );
 
+  output->data->v_p = ( void * ) list;
   return output;
 }
 
@@ -100,6 +101,7 @@ EventAttributesToText
   }
 
   DestroyDictionaryConstIterator( iterator );
+  output->data->v_p = ( void * ) list;
   return output;
 }
 
@@ -138,6 +140,7 @@ EventAttributeToText
     AppendCharToValueList( list, ']' );
   }
 
+  output->data->v_p = ( void * ) list;
   return output;
 }
 
@@ -180,7 +183,6 @@ LevelToText
   AppendCharToValueList( list, ')' );
 
   output->data->v_p = ( void * ) list;
-
   return output;
 }
 
@@ -226,6 +228,7 @@ RecordAttributesToText
   }
 
   DestroyDictionaryConstIterator( iterator );
+  output->data->v_p = ( void * ) list;
   return output;
 }
 
@@ -312,6 +315,7 @@ RecordToText
   }
   AppendValueLists( list, level_output->data->v_p );
 
+  output->data->v_p = ( void * ) list;
   return output;
 }
 

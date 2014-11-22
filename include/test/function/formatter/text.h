@@ -111,4 +111,16 @@ const char *
 TestRecordAttributes
 ( void );
 
+/**
+ * Tests the ValueToText function.
+ *
+ * @test A NULL Value or Formatter must return a NULL Output. A Value with no
+ * profile must return a NULL Output. A full Value must be properly formatted.
+ *
+ * @return NULL on completion, or a string describing the failure
+ */
+const char *
+TestValue
+( void );
+
 #endif

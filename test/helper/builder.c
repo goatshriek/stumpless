@@ -862,13 +862,17 @@ RecordAttribute *
 BuildRecordAttribute
 ( void )
 {
-  RecordAttribute * attribute;
-  attribute = malloc( sizeof( RecordAttribute ) );
-  if( attribute == NULL )
+  RecordAttribute *attribute = malloc( sizeof( RecordAttribute ) );
+  if( !attribute )
     return NULL;
 
   attribute->event_attribute = BuildEventAttribute();
+  if( !attribute->event_attribute )
+    return NULL;
+
   attribute->value = NewValueForString( "Test Value" );
+  if( !attribute->value )
+    return NULL;
 
   return attribute;
 }
