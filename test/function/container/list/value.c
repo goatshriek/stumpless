@@ -5,6 +5,7 @@
 #include "private/value.h"
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
+#include "test/function/container/list/value.h"
 #include "test/helper.h"
 #include "test/inheritance/list.h"
 
@@ -41,6 +42,8 @@ main
   unsigned failure_count = 0;
   const char *result;
 
+  TEST( AppendChar )
+
   RUN_TEST( add_separator )
   RUN_TEST( append )
   RUN_TEST( append_to )
@@ -71,6 +74,45 @@ main
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+TestAppendChar
+( void )
+{
+  char test_char = 'c';
+
+  if( AppendCharToValueList( NULL, test_char ) )
+    return "a NULL ValueList returned a non-NULL result";
+
+  ValueList *list = BuildValueList();
+  if( !list )
+    return "could not build a test ValueList";
+
+  Value *last = ValueListBack( list );
+  if( !last )
+    return "the test list did not have a last element";
+
+  if( AppendCharToValueList( list, 'c' ) != list )
+    return "the char was not added to the list successfully";
+
+  if( !ValueListBack( list ) )
+    return "the list did not have a last element after the addition";
+
+  if( last == ValueListBack( list ) )
+    return "the last element of the list did not change";
+
+  last = ValueListBack( list );
+
+  if( !last->profile )
+    return "the newly added Value did not have a profile";
+
+  ASSERT_STRINGS_EQUAL( "char", last->profile->name, "the last value did not have the correct profile" )
+
+  if( last->data->c != test_char )
+    return "the last element did not have the correct data";
+
+  return NULL;
 }
 
 TEST_ADD_SEPARATOR( Value )

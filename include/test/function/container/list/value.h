@@ -12,7 +12,8 @@
  * @test Providing a NULL list must return NULL. A valid char returns the list
  * provided, and the last Value in the list does not equal the Value that was
  * last before the function call. After the function call the last Value must be
- * a char Value holding data equal to the supplied char.
+ * a char Value holding data equal to the supplied char. The new last Value must
+ * also have the char ValueProfile assigned to it.
  *
  * @return NULL on completion, or a string describing the failure
  */
