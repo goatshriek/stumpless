@@ -74,6 +74,7 @@ NextInDictionaryConstIterator
     while( iterator->current->left_child ){
       iterator->current = iterator->current->left_child;
     }
+    return value;
   }
 
   Node *previous = iterator->current;

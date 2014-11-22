@@ -327,16 +327,20 @@ BuildDictionaryOfRecordAttributes
   const EventAttribute *event_attribute;
   DictionaryConstIterator *iterator = CBeginDictionary( event_attributes );
   while( event_attribute = NextInDictionaryConstIterator( iterator ) ){
+    if( strcmp( event_attribute->name, "Unused Attribute" ) == 0)
+      continue;
+
     record_attribute = malloc( sizeof( RecordAttribute ) );
     if( !record_attribute )
       return NULL;
 
+    record_attribute->name = event_attribute->name;
     record_attribute->event_attribute = event_attribute;
     record_attribute->value = event_attribute->default_value;
     if( !record_attribute->value )
       record_attribute->value = NewValueForString( "attribute value" );
 
-    SetDictionaryValue( record_attributes, event_attribute->name, record_attribute );
+    SetDictionaryValue( record_attributes, record_attribute->name, record_attribute );
   }
 
   record_attribute = malloc( sizeof( RecordAttribute ) );
@@ -869,6 +873,8 @@ BuildRecordAttribute
   attribute->event_attribute = BuildEventAttribute();
   if( !attribute->event_attribute )
     return NULL;
+
+  attribute->name = attribute->event_attribute->name;
 
   attribute->value = NewValueForString( "Test Value" );
   if( !attribute->value )

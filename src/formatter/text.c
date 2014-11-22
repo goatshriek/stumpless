@@ -30,6 +30,12 @@ EventToText
     DestroyOutput( output );
   }
 
+  output->profile = FindOutputProfileByName( "text" );
+  if( !output->profile ){
+    DestroyOutput( output );
+    return NULL;
+  }
+
   ValueList *list = NewValueList();
   if( !list ){
     DestroyOutput( output );
@@ -53,7 +59,7 @@ EventToText
     DestroyOutput( output );
     DestroyValueList( list);
   }
-  AppendValueLists( list, level_output->data->v_p );
+  AppendValueLists( list, attributes_output->data->v_p );
 
   output->data->v_p = ( void * ) list;
   return output;
@@ -72,6 +78,12 @@ EventAttributesToText
 
   Output *output = malloc( sizeof( Output ) );
   if( !output ){
+    DestroyDictionaryConstIterator( iterator );
+    return NULL;
+  }
+
+  output->profile = FindOutputProfileByName( "text" );
+  if( !output->profile ){
     DestroyDictionaryConstIterator( iterator );
     return NULL;
   }
@@ -135,7 +147,7 @@ EventAttributeToText
     AppendStringToValueList( list, " [" );
     value_output = ValueToText( formatter, attribute->default_value );
     if( value_output && value_output->data ){
-      AppendValueLists( list, output->data->v_p );
+      AppendValueLists( list, value_output->data->v_p );
     }
     AppendCharToValueList( list, ']' );
   }
@@ -203,6 +215,12 @@ RecordAttributesToText
     return NULL;
   }
 
+  output->profile = FindOutputProfileByName( "text" );
+  if( !output->profile ){
+    DestroyDictionaryConstIterator( iterator );
+    return NULL;
+  }
+
   output->data = malloc( sizeof( Data ) );
   if( !output->data ){
     DestroyOutput( output );
@@ -222,7 +240,7 @@ RecordAttributesToText
     if( !ValueListIsEmpty( list ) )
       AppendStringToValueList( list, ", " );
 
-    attribute_output =RecordAttributeToText( formatter, attribute );
+    attribute_output = RecordAttributeToText( formatter, attribute );
     if( attribute_output && attribute_output->data )
       AppendValueLists( list, attribute_output->data->v_p );
   }
@@ -236,7 +254,9 @@ Output *
 RecordAttributeToText
 ( const Formatter *formatter, const RecordAttribute *attribute )
 {
-  if( !formatter || !attribute || !attribute->name || !attribute->value )
+  if( !formatter || !attribute ||
+      ( !attribute->name && !attribute->event_attribute->name ) ||
+      ( !attribute->value && !attribute->event_attribute->default_value ) )
     return NULL;
 
   Output *output = malloc( sizeof( Output ) );
@@ -265,12 +285,15 @@ RecordAttributeToText
 
   AppendStringToValueList( list, ": " );
 
-  Output *value_output;
-  value_output = ValueToText( formatter, attribute->value );
+  Output *value_output = ValueToText( formatter, attribute->value );
+  if( !value_output )
+    value_output = ValueToText( formatter, attribute->event_attribute->default_value );
+
   if( value_output && value_output->data ){
-    AppendValueLists( list, output->data->v_p );
+    AppendValueLists( list, value_output->data->v_p );
   }
 
+  output->data->v_p = ( void  * ) list;
   return output;
 }
 
@@ -288,6 +311,12 @@ RecordToText
   output->data = malloc( sizeof( Data ) );
   if( !output->data ){
     DestroyOutput( output );
+  }
+
+  output->profile = FindOutputProfileByName( "text" );
+  if( !output->profile ){
+    DestroyOutput( output );
+    return NULL;
   }
 
   ValueList *list = NewValueList();
@@ -313,7 +342,7 @@ RecordToText
     DestroyOutput( output );
     DestroyValueList( list);
   }
-  AppendValueLists( list, level_output->data->v_p );
+  AppendValueLists( list, attributes_output->data->v_p );
 
   output->data->v_p = ( void * ) list;
   return output;

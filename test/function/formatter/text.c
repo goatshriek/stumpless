@@ -132,7 +132,7 @@ TestEventAttributes
   if( !str )
     return "the Output could not be converted to a string";
 
-  ASSERT_STRINGS_EQUAL( "Test Attribute 1 [default value], Test Attribute 2", str, "the attributes were not properly formatted" )
+  ASSERT_STRINGS_EQUAL( "Test Attribute 1 [default value], Test Attribute 2, Unused Attribute", str, "the attributes were not properly formatted" )
 
   return NULL;
 }
@@ -293,7 +293,7 @@ TestRecordAttributes
   if( !str )
     return "the Output could not be converted to a string";
 
-  ASSERT_STRINGS_EQUAL( "Anonymous Attribute: anonymous value, Test Attribute 1: default value, Test Attribute 2: attribute value", str, "the attributes were not properly formatted" )
+  ASSERT_STRINGS_EQUAL( "Anonymous Attribute: anonymous attribute value, Test Attribute 1: default value, Test Attribute 2: attribute value", str, "the attributes were not properly formatted" )
 
   return NULL;
 }
