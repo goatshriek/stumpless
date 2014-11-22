@@ -208,6 +208,15 @@ Logger *
 BuildLogger
 ( void );
 
+/**
+ * Creates an Output.
+ *
+ * @return an Output, or NULL on failure
+ */
+Output *
+BuildOutput
+( void );
+
 OutputProfile *
 BuildOutputProfile
 ( void );

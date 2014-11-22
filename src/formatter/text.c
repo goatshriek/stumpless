@@ -130,12 +130,12 @@ EventAttributeToText
 
   Output *value_output;
   if( attribute->default_value ){
-    AppendStringToAttributeList( list, " [" );
+    AppendStringToValueList( list, " [" );
     value_output = ValueToText( formatter, attribute->default_value );
     if( value_output && value_output->data ){
       AppendValueLists( list, output->data->v_p );
     }
-    AppendCharToAttributeList( list, ']' );
+    AppendCharToValueList( list, ']' );
   }
 
   return output;
@@ -260,7 +260,7 @@ RecordAttributeToText
 
   AppendStringToValueList( list, attribute->name );
 
-  AppendStringToAttributeList( list, ": " );
+  AppendStringToValueList( list, ": " );
 
   Output *value_output;
   value_output = ValueToText( formatter, attribute->value );

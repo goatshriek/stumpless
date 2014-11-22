@@ -771,6 +771,26 @@ BuildLogger
   return logger;
 }
 
+Output *
+BuildOutput
+( void )
+{
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
+    return NULL;
+
+  output->data = malloc( sizeof( Data ) );
+  if( !output->data )
+    return NULL;
+
+  output->data->c = 'a';
+  output->profile = BuildOutputProfile();
+  if( !output->profile )
+    return NULL;
+
+  return output;
+}
+
 OutputProfile *
 BuildOutputProfile
 ( void )
