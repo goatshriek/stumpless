@@ -1,5 +1,5 @@
-#ifndef __STUMPLESS_PRIVATE_LIST_VALUE_H
-#define __STUMPLESS_PRIVATE_LIST_VALUE_H
+#ifndef __STUMPLESS_PRIVATE_CONTAINER_LIST_VALUE_H
+#define __STUMPLESS_PRIVATE_CONTAINER_LIST_VALUE_H
 
 #include <stdio.h>
 
@@ -8,6 +8,19 @@
 ValueList *
 AddSeparatorToValueList
 ( ValueList *, Value * );
+
+/**
+ * Creates a new Value for the character and adds it to the end
+ * of the ValueList.
+ *
+ * @param list the ValueList to add the new Value to
+ * @param character the char to create the Value from
+ *
+ * @return the ValueList appended to, or NULL on failure
+ */
+ValueList *
+AppendCharToValueList
+( ValueList *list, char character );
 
 ValueList *
 AppendStringToValueList
