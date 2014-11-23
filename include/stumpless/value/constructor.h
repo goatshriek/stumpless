@@ -126,12 +126,12 @@ NewValueForUnsignedShortArray
 /**
  * Creates a new Value with the provided void pointer.
  *
- * @param value the void pointer to create the Value for
+ * @param pointer the void pointer to create the Value for
  *
  * @return a new Value with the void pointer provided
  */
 Value *
 NewValueForVoid
-( void *value );
+( void *pointer );
 
 #endif

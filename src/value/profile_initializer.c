@@ -149,6 +149,7 @@ InitializeValueProfileByName
     ADD_PROFILE( "unsigned long long", UnsignedLongLong )
     ADD_PROFILE( "unsigned short array", UnsignedShortArray )
     ADD_PROFILE( "unsigned short", UnsignedShort )
+    ADD_PROFILE( "void", Void )
   }
 
   ValueProfile * ( *initializer )();
@@ -158,3 +159,6 @@ InitializeValueProfileByName
   else
     return AddValueProfile( initializer() );
 }
+
+//ARRAY_PROFILE_INITIALIZER( "void array", Void )
+SINGULAR_PROFILE_INITIALIZER( "void", Void )

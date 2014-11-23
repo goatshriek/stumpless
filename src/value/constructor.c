@@ -129,7 +129,22 @@ VALUE_FROM_FUNCTIONS( UnsignedShort, unsigned short, u_s )
 
 Value *
 NewValueForVoid
-( void *value )
+( void *pointer )
 {
-  return NULL;
+  if( !pointer )
+    return NULL;
+
+  Value *value = malloc( sizeof( Value ) );
+  if( !value )
+    return NULL;
+
+  value->profile = FindValueProfileByName( "void" );
+  if( !value->profile )
+    return NULL;
+
+  value->v_p = pointer;
+  if( !value->v_p )
+    return NULL;
+
+  return value;
 }
