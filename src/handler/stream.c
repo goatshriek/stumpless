@@ -51,15 +51,15 @@ JSONOutputIntoStream
 
 Status *
 RawStringOutputIntoStream
-( const Output * output, FILE * stream )
+( const Output *output, FILE *stream )
 {
   if( !output || !stream )
     return RaiseStatus( "empty argument" );
 
-  if( !output->data || !output->data->c_p )
+  if( !output->data )
     return RaiseStatus( "malformed structure" );
 
-  if( fputs( output->data->c_p, stream ) < 0 )
+  if( fputs( ValueListToString( output->data ), stream ) < 0 )
     return RaiseStatus( "stream write failure" );
 
   return NULL;
@@ -67,16 +67,19 @@ RawStringOutputIntoStream
 
 Status *
 TextOutputIntoStream
-( const Output * output, FILE * stream )
+( const Output *output, FILE *stream )
 {
   if( !output || !stream )
     return RaiseStatus( "empty argument" );
 
-  if( !output->data || !output->data->v_p )
+  if( !output->data )
     return RaiseStatus( "malformed structure" );
 
-  const Value * value;
-  ValueListConstIterator * values = CBeginValueList( output->data->v_p );
+  fputs( ValueListToString( output->data ), stream );
+  return NULL;
+
+  /*const Value *value;
+  ValueListConstIterator * values = CBeginValueList( output->data );
   while( value = NextInValueListConstIterator( values ) ){
     if( !value->data ){
       DestroyValueListConstIterator( values );
@@ -89,7 +92,7 @@ TextOutputIntoStream
     }
   }
 
-  DestroyValueListConstIterator( values );
+  DestroyValueListConstIterator( values );*/
 
   return NULL;
 }

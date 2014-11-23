@@ -1,12 +1,12 @@
 #include <stdlib.h>
 
 #include <stumpless/formatter/text.h>
+#include <stumpless/value.h>
+#include <stumpless/value/profile.h>
 
 #include "private/container/dictionary.h"
 #include "private/status.h"
 #include "private/type.h"
-#include "private/value.h"
-#include "private/value/profile.h"
 #include "private/value/profile_initializer.h"
 
 

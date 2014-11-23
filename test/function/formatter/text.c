@@ -3,9 +3,9 @@
 #include <string.h>
 
 #include <stumpless/formatter/text.h>
+#include <stumpless/value/constructor.h>
 
 #include "private/output.h"
-#include "private/value/constructor.h"
 #include "private/formatter.h"
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"

@@ -2,7 +2,6 @@
 #include <stumpless/logger/sender.h>
 
 #include "private/type.h"
-#include "private/value/constructor.h"
 
 Status *
 SendLoggerStatus

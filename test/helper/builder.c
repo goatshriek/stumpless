@@ -1,5 +1,9 @@
 #include <stdlib.h>
 
+#include <stumpless/value.h>
+#include <stumpless/value/constructor.h>
+#include <stumpless/value/profile.h>
+
 #include "private/adapter.h"
 #include "private/comparator/base.h"
 #include "private/configuration.h"
@@ -23,8 +27,6 @@
 #include "private/handler.h"
 #include "private/output/profile.h"
 #include "private/type.h"
-#include "private/value/constructor.h"
-#include "private/value/profile.h"
 #include "test/helper.h"
 
 Adapter *
@@ -200,19 +202,15 @@ BuildCharArrayValue
 ( void )
 {
   Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  if( !value )
     return NULL;
 
   value->profile = FindValueProfileByName( "char array" );
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
-    return NULL;
-
-  char * array = malloc( sizeof( char ) * 10 );
-  if( array == NULL )
+  char *array = malloc( sizeof( char ) * 10 );
+  if( !array )
     return NULL;
 
   array[0] = 'a';
@@ -226,7 +224,7 @@ BuildCharArrayValue
   array[8] = 'i';
   array[9] = 'j';
 
-  value->data->c_p = array;
+  value->c_p = array;
   value->length = 10;
 
   return value;
@@ -406,19 +404,15 @@ BuildEmptyUnsignedIntArrayValue
 ( void )
 {
   Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  if( !value )
     return NULL;
 
   value->profile = FindValueProfileByName( "unsigned int array" );
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
-    return NULL;
-
-  value->data->u_i_p = malloc( sizeof( unsigned ) * 10 );
-  if( value->data->u_i_p == NULL )
+  value->u_i_p = malloc( sizeof( unsigned ) * 10 );
+  if( !value->u_i_p )
     return NULL;
 
   value->length = 0;
@@ -431,14 +425,13 @@ BuildEmptyValue
 ( void )
 {
   Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  if( !value )
     return NULL;
 
-  value->data = NULL;
   value->format = NULL;
   value->length = 0;
   value->profile = BuildValueProfile();
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
   return value;
@@ -642,8 +635,8 @@ BuildHandlerList
 Value *
 BuildIntArrayValue( void )
 {
-  Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  Value *value = malloc( sizeof( Value ) );
+  if( !value )
     return NULL;
 
   value->format = NULL;
@@ -652,12 +645,8 @@ BuildIntArrayValue( void )
   if( value->profile == NULL )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
-    return NULL;
-
-  int * array = malloc( sizeof( int ) * 10 );
-  if( array == NULL )
+  int *array = malloc( sizeof( int ) * 10 );
+  if( !array )
     return NULL;
 
   array[0] = 0;
@@ -671,7 +660,7 @@ BuildIntArrayValue( void )
   array[8] = 8;
   array[9] = 9;
 
-  value->data->i_p = array;
+  value->i_p = array;
   value->length = 10;
 
   return value;
@@ -681,18 +670,14 @@ Value *
 BuildIntValue( void )
 {
   Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
-    return NULL;
-
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
+  if( !value )
     return NULL;
 
   value->profile = FindValueProfileByName( "int" );
   if( value->profile == NULL )
     return NULL;
 
-  value->data->i = 45678;
+  value->i = 45678;
 
   return value;
 }
@@ -783,11 +768,10 @@ BuildOutput
   if( !output )
     return NULL;
 
-  output->data = malloc( sizeof( Data ) );
+  output->data = BuildValueList();
   if( !output->data )
     return NULL;
 
-  output->data->c = 'a';
   output->profile = BuildOutputProfile();
   if( !output->profile )
     return NULL;
@@ -833,18 +817,18 @@ BuildRawStringOutput
 ( void )
 {
   Output * output = malloc( sizeof( Output ) );
-  if( output == NULL )
+  if( !output )
     return NULL;
 
   output->profile = FindOutputProfileByName( "raw string" );
-  if( output->profile == NULL )
+  if( !output->profile )
     return NULL;
 
-  output->data = malloc( sizeof( Data ) );
-  if( output->data == NULL )
+  output->data = NewValueList();
+  if( !output->data )
     return NULL;
 
-  output->data->c_p = "Test String with\nstuff in it.";
+  AppendStringToValueList( output->data, "Test String with\nstuff in it." );
 
   return output;
 }
@@ -908,18 +892,14 @@ BuildStringValue
 ( void )
 {
   Value * value = malloc( sizeof( Value * ) );
-  if( value == NULL )
-    return NULL;
-
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
+  if( !value )
     return NULL;
 
   value->profile = FindValueProfileByName( "string" );
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
-  value->data->c_p = "Test String Value";
+  value->c_p = "Test String Value";
 
   return value;
 }
@@ -958,18 +938,19 @@ BuildTargetList
 }
 
 Output *
-BuildTextOutput( void )
+BuildTextOutput
+( void )
 {
-  Output * output = malloc( sizeof( Output ) );
-  if( output == NULL )
+  Output *output = malloc( sizeof( Output ) );
+  if( !output )
     return NULL;
 
   output->profile = FindOutputProfileByName( "text" );
-  if( output->profile == NULL )
+  if( !output->profile )
     return NULL;
 
   ValueList * values = NewValueList();
-  if( values == NULL )
+  if( !values )
     return NULL;
 
   ValueList * result = AppendStringToValueList( values, "First\n" );
@@ -984,11 +965,7 @@ BuildTextOutput( void )
   if( !result )
     return NULL;
 
-  output->data = malloc( sizeof( Data ) );
-  if( output->data == NULL )
-    return NULL;
-
-  output->data->v_p = ( void * ) values;
+  output->data = values;
 
   return output;
 }
@@ -1016,20 +993,17 @@ BuildTreeOfStrings
 Value *
 BuildUnsignedIntValue( void )
 {
-  Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  Value *value = malloc( sizeof( Value ) );
+  if( !value )
     return NULL;
 
   value->format = NULL;
 
   value->profile = FindValueProfileByName( "unsigned int" );
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
-    return NULL;
-  value->data->u_i = 4294967196u;
+  value->u_i = 4294967196u;
 
   return value;
 }
@@ -1037,20 +1011,17 @@ BuildUnsignedIntValue( void )
 Value *
 BuildUnsignedShortValue( void )
 {
-  Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  Value *value = malloc( sizeof( Value ) );
+  if( !value )
     return NULL;
 
   value->format = NULL;
 
   value->profile = FindValueProfileByName( "unsigned short" );
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
-    return NULL;
-  value->data->u_s = 65000u;
+  value->u_s = 65000u;
 
   return value;
 }
@@ -1068,10 +1039,7 @@ BuildValue
   if( !value->profile )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( !value->data )
-    return NULL;
-  value->data->u_s = 6500u;
+  value->u_s = 6500u;
 
   return value;
 }
@@ -1080,8 +1048,8 @@ ValueList *
 BuildValueList
 ( void )
 {
-  ValueList * list = NewValueList();
-  if( list == NULL )
+  ValueList *list = NewValueList();
+  if( !list )
     return NULL;
 
   Value * value;
@@ -1164,22 +1132,18 @@ Value *
 BuildVoidValue( void )
 {
   Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  if( !value )
     return NULL;
 
   value->profile = FindValueProfileByName( "boolean" );
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
+  Boolean *boolean = BuildBoolean();
+  if( !boolean )
     return NULL;
 
-  Boolean * boolean = BuildBoolean();
-  if( boolean == NULL )
-    return NULL;
-
-  value->data->v_p = (void *) boolean;
+  value->v_p = (void *) boolean;
 
   return value;
 }

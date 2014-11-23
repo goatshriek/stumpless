@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "private/container/list/value.h"
 #include "private/output.h"
 #include "private/type.h"
 #include "test/function/output.h"
@@ -43,9 +44,10 @@ TestDestroy
 }
 
 const char *
-test_is_empty( void )
+test_is_empty
+( void )
 {
-  Output * output = BuildTextOutput();
+  Output *output = BuildTextOutput();
   FAIL_IF_NULL( output, "could not build test text output" )
 
   if( OutputIsEmpty( output ) )
@@ -55,10 +57,7 @@ test_is_empty( void )
   if( !OutputIsEmpty( output ) )
     return "an output with a null list was not marked as empty";
 
-  output->data = malloc( sizeof( Data ) );
-  FAIL_IF_NULL( output->data, "the output could not be created" )
-
-  output->data->v_p = ( void * ) NewValueList();
+  output->data = NewValueList();
   if( !OutputIsEmpty( output ) )
     return "an output with an empty list was not marked as empty";
 

@@ -1,10 +1,10 @@
 #include <stdlib.h>
 
 #include <stumpless/formatter/text.h>
+#include <stumpless/value/constructor.h>
 
 #include "private/output.h"
 #include "private/status.h"
-#include "private/value/constructor.h"
 #include "test/helper.h"
 #include "test/type.h"
 

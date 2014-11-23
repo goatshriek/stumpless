@@ -207,7 +207,7 @@ struct Logger {
  * A container for a formatted Record.
  */
 struct Output {
-  Value *data; /**< the formatted data */
+  ValueList *data; /**< the formatted data */
   OutputProfile *profile; /**< the profile to use to handle the data */
 };
 

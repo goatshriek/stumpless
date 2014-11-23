@@ -5,6 +5,7 @@
 
 #include <stumpless/value/constructor.h>
 
+#include "test/function/value/constructor.h"
 #include "test/helper.h"
 #include "test/type.h"
 
@@ -60,14 +61,14 @@ const char *
 TestVoid
 ( void )
 {
-  if( ValueForVoid( NULL ) )
+  if( NewValueForVoid( NULL ) )
     return "a Value was created for a NULL pointer";
 
   void *test = ( void * ) BuildValueList();
   if( !test )
     return "could not build a test ValueList";
 
-  Value *value = ValueForVoid( test );
+  Value *value = NewValueForVoid( test );
   if( !value )
     return "a Value could not be created for a pointer";
   if( value->v_p != test )
@@ -100,8 +101,7 @@ test_from_char( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "char" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->c != CHAR_MAX )
+  if( value->c != CHAR_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -116,8 +116,7 @@ test_from_double( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "double" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->d != test_value )
+  if( value->d != test_value )
     return "the value did not have the correct data";
 
   return NULL;
@@ -132,8 +131,7 @@ test_from_float( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "float" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->f != test_value )
+  if( value->f != test_value )
     return "the value did not have the correct data";
 
   return NULL;
@@ -146,8 +144,7 @@ test_from_int( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "int" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->i != INT_MAX )
+  if( value->i != INT_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -160,8 +157,7 @@ test_from_long( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "long" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->l != LONG_MAX )
+  if( value->l != LONG_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -176,8 +172,7 @@ test_from_long_double( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "long double" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->l_d != test_value )
+  if( value->l_d != test_value )
     return "the value did not have the correct data";
 
   return NULL;
@@ -190,8 +185,7 @@ test_from_long_long( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "long long" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->l_l != LLONG_MAX )
+  if( value->l_l != LLONG_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -204,8 +198,7 @@ test_from_short( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "short" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->s != SHRT_MAX )
+  if( value->s != SHRT_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -218,8 +211,7 @@ test_from_signed_char( void )
   FAIL_IF_NULL( value, "the value could not be built" );
   if( strcmp( value->profile->name, "signed char" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" );
-  if( value->data->s_c != SCHAR_MAX )
+  if( value->s_c != SCHAR_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -239,9 +231,7 @@ test_from_string( void )
     return "a null value was returned for a non-null string";
   if( strcmp( value->profile->name, "string" ) != 0 )
     return "the value did not have a string type";
-  if( value->data == NULL )
-    return "the value did not have any data";
-  if( strcmp( value->data->c_p, "test string 'n such" ) != 0 )
+  if( strcmp( value->c_p, "test string 'n such" ) != 0 )
     return "the value string did not match the initial string";
 
   return NULL;
@@ -254,8 +244,7 @@ test_from_unsigned_char( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned char" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->u_c != UCHAR_MAX )
+  if( value->u_c != UCHAR_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -271,7 +260,7 @@ test_from_unsigned_int( void )
     return "the value could not be created";
   if( strcmp( value->profile->name, "unsigned int" ) != 0 )
     return "the created value did not have an unsigned int type";
-  if( value->data == NULL || value->data->u_i != UINT_MAX )
+  if( value->u_i != UINT_MAX )
     return "the value did not contain the correct number";
 
   return NULL;
@@ -284,8 +273,7 @@ test_from_unsigned_long( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned long" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->u_l != ULONG_MAX )
+  if( value->u_l != ULONG_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -298,8 +286,7 @@ test_from_unsigned_long_long( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned long long" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->u_l_l != ULLONG_MAX )
+  if( value->u_l_l != ULLONG_MAX )
     return "the value did not have the correct data";
 
   return NULL;
@@ -312,8 +299,7 @@ test_from_unsigned_short( void )
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned short" ) != 0 )
     return "the value did not have the correct type";
-  FAIL_IF_NULL( value->data, "the value did not have any data" )
-  if( value->data->u_s != USHRT_MAX )
+  if( value->u_s != USHRT_MAX )
     return "the value did not have the correct data";
 
   return NULL;

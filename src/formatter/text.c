@@ -25,11 +25,6 @@ EventToText
   if( !output )
     return NULL;
 
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data ){
-    DestroyOutput( output );
-  }
-
   output->profile = FindOutputProfileByName( "text" );
   if( !output->profile ){
     DestroyOutput( output );
@@ -50,7 +45,7 @@ EventToText
     DestroyOutput( output );
     DestroyValueList( list);
   }
-  AppendValueLists( list, level_output->data->v_p );
+  AppendValueLists( list, level_output->data );
 
   AppendStringToValueList( list, "] - " );
 
@@ -59,9 +54,9 @@ EventToText
     DestroyOutput( output );
     DestroyValueList( list);
   }
-  AppendValueLists( list, attributes_output->data->v_p );
+  AppendValueLists( list, attributes_output->data );
 
-  output->data->v_p = ( void * ) list;
+  output->data = list;
   return output;
 }
 
@@ -88,13 +83,6 @@ EventAttributesToText
     return NULL;
   }
 
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data ){
-    DestroyOutput( output );
-    DestroyDictionaryConstIterator( iterator );
-    return NULL;
-  }
-
   ValueList *list = NewValueList();
   if( !list ){
     DestroyOutput( output );
@@ -109,11 +97,11 @@ EventAttributesToText
 
     attribute_output = EventAttributeToText( formatter, attribute );
     if( attribute_output && attribute_output->data )
-      AppendValueLists( list, attribute_output->data->v_p );
+      AppendValueLists( list, attribute_output->data );
   }
 
   DestroyDictionaryConstIterator( iterator );
-  output->data->v_p = ( void * ) list;
+  output->data = list;
   return output;
 }
 
@@ -126,10 +114,6 @@ EventAttributeToText
 
   Output *output = malloc( sizeof( Output ) );
   if( !output )
-    return NULL;
-
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data )
     return NULL;
 
   output->profile = FindOutputProfileByName( "text" );
@@ -147,12 +131,12 @@ EventAttributeToText
     AppendStringToValueList( list, " [" );
     value_output = ValueToText( formatter, attribute->default_value );
     if( value_output && value_output->data ){
-      AppendValueLists( list, value_output->data->v_p );
+      AppendValueLists( list, value_output->data );
     }
     AppendCharToValueList( list, ']' );
   }
 
-  output->data->v_p = ( void * ) list;
+  output->data = list;
   return output;
 }
 
@@ -166,12 +150,6 @@ LevelToText
   Output *output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
-
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data ){
-    DestroyOutput( output );
-    return NULL;
-  }
 
   output->profile = FindOutputProfileByName( "text" );
   if( !output->profile ){
@@ -194,7 +172,7 @@ LevelToText
   AppendUnsignedIntToValueList( list, level->tertiary );
   AppendCharToValueList( list, ')' );
 
-  output->data->v_p = ( void * ) list;
+  output->data = list;
   return output;
 }
 
@@ -235,11 +213,11 @@ RecordAttributesToText
 
     attribute_output = RecordAttributeToText( formatter, attribute );
     if( attribute_output && attribute_output->data )
-      AppendValueLists( list, attribute_output->data->v_p );
+      AppendValueLists( list, attribute_output->data );
   }
 
   DestroyDictionaryConstIterator( iterator );
-  output->data = ( void * ) list;
+  output->data = list;
   return output;
 }
 
@@ -255,12 +233,6 @@ RecordAttributeToText
   Output *output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
-
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data ){
-    DestroyOutput( output );
-    return NULL;
-  }
 
   output->profile = FindOutputProfileByName( "text" );
   if( !output->profile ){
@@ -283,10 +255,10 @@ RecordAttributeToText
     value_output = ValueToText( formatter, attribute->event_attribute->default_value );
 
   if( value_output && value_output->data ){
-    AppendValueLists( list, value_output->data->v_p );
+    AppendValueLists( list, value_output->data );
   }
 
-  output->data->v_p = ( void  * ) list;
+  output->data = list;
   return output;
 }
 
@@ -300,11 +272,6 @@ RecordToText
   Output *output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
-
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data ){
-    DestroyOutput( output );
-  }
 
   output->profile = FindOutputProfileByName( "text" );
   if( !output->profile ){
@@ -326,7 +293,7 @@ RecordToText
     DestroyOutput( output );
     DestroyValueList( list);
   }
-  AppendValueLists( list, level_output->data->v_p );
+  AppendValueLists( list, level_output->data );
 
   AppendStringToValueList( list, "] - " );
 
@@ -335,9 +302,9 @@ RecordToText
     DestroyOutput( output );
     DestroyValueList( list);
   }
-  AppendValueLists( list, attributes_output->data->v_p );
+  AppendValueLists( list, attributes_output->data );
 
-  output->data->v_p = ( void * ) list;
+  output->data = list;
   return output;
 }
 
@@ -352,15 +319,11 @@ ValueToText
   if( !output )
     return NULL;
 
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data )
-    return NULL;
-
   output->profile = FindOutputProfileByName( "text" );
   if( !output->profile )
     return NULL;
 
-  output->data->v_p = ( void * ) value->profile->to_value_list( value );
+  output->data = value->profile->to_value_list( value );
 
   return output;
 }

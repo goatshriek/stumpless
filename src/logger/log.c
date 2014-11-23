@@ -1,11 +1,13 @@
+#include <stdlib.h>
+
 #include <stumpless/event.h>
 #include <stumpless/logger/log.h>
 #include <stumpless/record.h>
+#include <stumpless/value/constructor.h>
 
 #include "private/container/list/target.h"
 #include "private/status.h"
 #include "private/type.h"
-#include "private/value/constructor.h"
 
 #define LOG_FUNCTIONS( name, type )                                            \
 Status *                                                                       \
@@ -42,7 +44,7 @@ LogRecord
 {
   if( !logger || !record )
     return RaiseStatus( "empty argument" );
-  
+
   RecordThroughAdapterList( logger->adapters, record );
   return LogToTargetList( logger->targets, record );
 }
@@ -57,24 +59,24 @@ LogString
 {
   if( !logger || !value )
     return RaiseStatus( "empty argument" );
-  
+
   Event *event = logger->default_event;
   if( !event ){
-    event = FindEventByName( "informational" ); 
+    event = FindEventByName( "informational" );
     if( !event )
       return RaiseStatus( "event failure" );
   }
- 
+
   Record *record = RecordForEvent( event );
   if( !record )
     return RaiseStatus( "record failure" );
- 
+
   RecordAttribute *attribute = malloc( sizeof( RecordAttribute ) );
   if( !attribute )
     return RaiseStatus( "record failure" );
 
   SetRecordAttribute( record, "message", NewValueForString( value ) );
- 
+
   return LogRecord( logger, record );
 }
 

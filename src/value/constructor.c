@@ -15,15 +15,11 @@ NewValueFor##name                                                              \
   if( !value )                                                                 \
     return NULL;                                                               \
                                                                                \
-  value->data = malloc( sizeof( Data ) );                                      \
-  if( !value->data )                                                           \
-    return NULL;                                                               \
-                                                                               \
   value->profile = FindValueProfileByName( #type );                            \
   if( !value->profile )                                                        \
     return NULL;                                                               \
                                                                                \
-  value->data->member = element;                                               \
+  value->member = element;                                                     \
                                                                                \
   return value;                                                                \
 }                                                                              \
@@ -39,19 +35,15 @@ NewValueFor##name##Array                                                       \
   if( !value )                                                                 \
     return NULL;                                                               \
                                                                                \
-  value->data = malloc( sizeof( Value ) );                                     \
-  if( !value->data )                                                           \
-    return NULL;                                                               \
-                                                                               \
   value->profile = FindValueProfileByName( #type " array" );                   \
   if( !value->profile )                                                        \
     return NULL;                                                               \
                                                                                \
-  value->data->member##_p = malloc( sizeof( type ) * length );                 \
-  if( !value->data->member##_p )                                               \
+  value->member##_p = malloc( sizeof( type ) * length );                       \
+  if( !value->member##_p )                                                     \
     return NULL;                                                               \
                                                                                \
-  memcpy( value->data->member##_p, array, length );                            \
+  memcpy( value->member##_p, array, length );                                  \
                                                                                \
   value->length = length;                                                      \
                                                                                \
@@ -70,19 +62,15 @@ NewValueForBoolean( const Boolean * boolean )
   if( !value )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( !value->data )
-    return NULL;
-
   value->profile = FindValueProfileByName( "boolean" );
   if( !value->profile )
     return NULL;
 
-  value->data->v_p = malloc( sizeof( Boolean ) );
-  if( !value->data->v_p )
+  value->v_p = malloc( sizeof( Boolean ) );
+  if( !value->v_p )
     return NULL;
 
-  memcpy( value->data->v_p, boolean, sizeof( Boolean ) );
+  memcpy( value->v_p, boolean, sizeof( Boolean ) );
 
   return value;
 }
@@ -115,20 +103,16 @@ NewValueForString( const char *str )
   if( !value )
     return NULL;
 
-  value->data = malloc( sizeof( Data ) );
-  if( !value->data )
-    return NULL;
-
   value->profile = FindValueProfileByName( "string" );
   if( !value->profile )
     return NULL;
 
   value->length = strlen( str ) + 1;
-  value->data->c_p = malloc( sizeof( char ) * value->length );
-  if( !value->data->c_p )
+  value->c_p = malloc( sizeof( char ) * value->length );
+  if( !value->c_p )
     return NULL;
 
-  memcpy( value->data->c_p, str, value->length );
+  memcpy( value->c_p, str, value->length );
 
   return value;
 }

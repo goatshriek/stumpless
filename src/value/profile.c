@@ -1,9 +1,10 @@
 #include <stdlib.h>
 
+#include <stumpless/value/profile.h>
+
 #include "private/container/dictionary.h"
 #include "private/status.h"
 #include "private/type.h"
-#include "private/value/profile.h"
 #include "private/value/profile_initializer.h"
 
 static Dictionary *profiles = NULL;

@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/value.h"
+#include <stumpless/value.h>
+
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
 #include "test/function/container/list/value.h"
@@ -109,7 +110,7 @@ TestAppendChar
 
   ASSERT_STRINGS_EQUAL( "char", last->profile->name, "the last value did not have the correct profile" )
 
-  if( last->data->c != test_char )
+  if( last->c != test_char )
     return "the last element did not have the correct data";
 
   return NULL;
@@ -228,9 +229,8 @@ test_string_prepender( void )
   ValueListIterator *iterator = BeginValueList( list );
   Value * value = NextInValueListIterator( iterator );
   FAIL_IF_NULL( value, "the list still did not have any members" )
-  FAIL_IF_NULL( value->data, "the new value did not have any data" )
   ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
-  ASSERT_STRINGS_EQUAL( "lonely little guy", value->data->c_p, "the new string was not equivalent to the added one" )
+  ASSERT_STRINGS_EQUAL( "lonely little guy", value->c_p, "the new string was not equivalent to the added one" )
   DestroyValueListIterator( iterator );
 
   list = BuildValueList();
@@ -242,9 +242,8 @@ test_string_prepender( void )
   iterator = BeginValueList( list );
   value = NextInValueListIterator( iterator );
   FAIL_IF_NULL( value, "a populated list had it's members removed" );
-  FAIL_IF_NULL( value->data, "the new value did not have any data" )
   ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
-  ASSERT_STRINGS_EQUAL( "new beginning", value->data->c_p, "the new string was not equivalent to the added one" )
+  ASSERT_STRINGS_EQUAL( "new beginning", value->c_p, "the new string was not equivalent to the added one" )
 
   DestroyValueListIterator( iterator );
   return NULL;

@@ -89,41 +89,37 @@ RawStringOutputIsEmpty
   if( !output || !output->data )
     return 1;
 
-  return ( output->data->c_p == NULL );
+  return ( output->data == NULL );
 }
 
 char *
 RawStringOutputToString
-( const Output * output )
+( const Output *output )
 {
-  if( !output || !output->data || !output->data->c_p )
+  if( !output || !output->data )
     return NULL;
 
-  return copy_string( output->data->c_p );
+  return ValueToString( output->data );
 }
 
 unsigned short
 TextOutputIsEmpty
 ( const Output * output )
 {
-  if( !output || !output->data )
+  if( !output )
     return 1;
 
-  ValueList * list = ( ValueList * ) output->data->v_p;
-
-  return ValueListIsEmpty( list );
+  return ValueListIsEmpty( output->data );
 }
 
 char *
 TextOutputToString
 ( const Output * output )
 {
-  if( !output || !output->data )
+  if( !output )
     return NULL;
 
-  ValueList * list = ( ValueList * ) output->data->v_p;
-
-  return ValueListToString( list );
+  return ValueListToString( output->data );
 }
 
 unsigned short

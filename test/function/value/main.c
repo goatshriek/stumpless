@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stumpless/value.h>
+#include <stumpless/value/constructor.h>
+
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
 #include "private/type.h"
-#include "private/value.h"
-#include "private/value/constructor.h"
 #include "test/helper.h"
 
 const char * test_array_value_to_value_list( void );
@@ -59,7 +60,7 @@ test_array_value_to_value_list
   FAIL_IF_NULL( value, "the generated list was empty" )
   if( strcmp( value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";
-  if( value->data->i != 0 )
+  if( value->i != 0 )
     return "the values of the list did not reflect the original array";
 
   value = NextInValueListIterator( values );
@@ -67,7 +68,7 @@ test_array_value_to_value_list
   FAIL_IF_NULL( value, "the list did not contain all nodes" )
   if( strcmp( value->profile->name, "int" ) != 0 )
     return "the values of the list did not have the proper type";
-  if( value->data->i != 1 )
+  if( value->i != 1 )
     return "the values of the list did not reflect the original array";
 
   DestroyValueListIterator( values );
@@ -126,18 +127,15 @@ test_into_string( void )
 }
 
 const char *
-test_outside_access( void )
+test_outside_access
+( void )
 {
-  Value * value = malloc( sizeof( Value ) );
-  if( value == NULL )
+  Value *value = malloc( sizeof( Value ) );
+  if( !value )
     return "the test value could not be created";
 
-  value->data = malloc( sizeof( Data ) );
-  if( value->data == NULL )
-    return "the test value's data could not be created";
-
-  long * num_list = malloc( sizeof( float ) * 7 );
-  if( num_list == NULL )
+  long *num_list = malloc( sizeof( float ) * 7 );
+  if( !num_list )
     return "the test array could not be created";
 
   num_list[0] = 4;
@@ -148,11 +146,11 @@ test_outside_access( void )
   num_list[5] = 5;
   num_list[6] = 45;
 
-  value->data->l_p = num_list;
+  value->l_p = num_list;
 
   num_list[2] = 4;
 
-  if( value->data->l_p[2] != 4 )
+  if( value->l_p[2] != 4 )
     return "the array held by the value could not be modified from the outside";
 
   return NULL;
