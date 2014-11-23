@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "private/type.h"
-#include "private/value/constructor.h"
+#include <stumpless/value/constructor.h>
+
 #include "test/helper.h"
+#include "test/type.h"
 
 const char * test_from_boolean( void );
 const char * test_from_char( void );
@@ -28,8 +29,10 @@ int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result;
-  
+  const char *result;
+
+  TEST( Void )
+
   RUN_TEST( from_boolean )
   RUN_TEST( from_char )
   RUN_TEST( from_double )
@@ -46,7 +49,7 @@ main( void )
   RUN_TEST( from_unsigned_long )
   RUN_TEST( from_unsigned_long_long )
   RUN_TEST( from_unsigned_short )
-  
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -54,19 +57,39 @@ main( void )
 }
 
 const char *
+TestVoid
+( void )
+{
+  if( ValueForVoid( NULL, 0 ) )
+    return "a Value was created for a NULL pointer";
+
+  void *test = ( void * ) BuildValueList();
+  if( !test )
+    return "could not build a test ValueList";
+
+  Value *value = ValueForVoid( test, sizeof( ValueList ) );
+  if( !value )
+    return "a Value could not be created for a pointer";
+  if( value->v_p != test )
+    return "the Value did not point at the correct pointer";
+
+  return NULL;
+}
+
+const char *
 test_from_boolean( void )
 {
   Boolean * boolean = BuildBoolean();
   FAIL_IF_NULL( boolean, "could not build the test boolean" )
-  
+
   Value * value = NewValueForBoolean( NULL );
   FAIL_IF_NOT_NULL( value, "a null boolean did not generate a null value" )
-  
+
   value = NewValueForBoolean( boolean );
   FAIL_IF_NULL( value, "a non-null boolean generated a null value" )
   if( strcmp( value->profile->name, "boolean" ) != 0 )
     return "the created value did not have the correct type";
-  
+
   return NULL;
 }
 
@@ -80,7 +103,7 @@ test_from_char( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->c != CHAR_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -88,7 +111,7 @@ const char *
 test_from_double( void )
 {
   double test_value = 3.456;
-  
+
   Value * value = NewValueForDouble( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "double" ) != 0 )
@@ -96,7 +119,7 @@ test_from_double( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->d != test_value )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -104,7 +127,7 @@ const char *
 test_from_float( void )
 {
   float test_value = 789.64;
-  
+
   Value * value = NewValueForFloat( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "float" ) != 0 )
@@ -112,7 +135,7 @@ test_from_float( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->f != test_value )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -126,7 +149,7 @@ test_from_int( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->i != INT_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -140,7 +163,7 @@ test_from_long( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->l != LONG_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -148,7 +171,7 @@ const char *
 test_from_long_double( void )
 {
   long double test_value = 5.23e34;
-  
+
   Value * value = NewValueForLongDouble( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "long double" ) != 0 )
@@ -156,7 +179,7 @@ test_from_long_double( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->l_d != test_value )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -170,7 +193,7 @@ test_from_long_long( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->l_l != LLONG_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -184,7 +207,7 @@ test_from_short( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->s != SHRT_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -198,7 +221,7 @@ test_from_signed_char( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" );
   if( value->data->s_c != SCHAR_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -206,11 +229,11 @@ const char *
 test_from_string( void )
 {
   Value * value = NULL;
-  
+
   value = NewValueForString( NULL );
   if( value != NULL )
     return "a null value was not returned for a null string";
-  
+
   value = NewValueForString( "test string 'n such" );
   if( value == NULL )
     return "a null value was returned for a non-null string";
@@ -220,7 +243,7 @@ test_from_string( void )
     return "the value did not have any data";
   if( strcmp( value->data->c_p, "test string 'n such" ) != 0 )
     return "the value string did not match the initial string";
-  
+
   return NULL;
 }
 
@@ -234,7 +257,7 @@ test_from_unsigned_char( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_c != UCHAR_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -242,7 +265,7 @@ const char *
 test_from_unsigned_int( void )
 {
   Value * value = NULL;
-  
+
   value = NewValueForUnsignedInt( UINT_MAX );
   if( value == NULL )
     return "the value could not be created";
@@ -250,7 +273,7 @@ test_from_unsigned_int( void )
     return "the created value did not have an unsigned int type";
   if( value->data == NULL || value->data->u_i != UINT_MAX )
     return "the value did not contain the correct number";
-  
+
   return NULL;
 }
 
@@ -264,7 +287,7 @@ test_from_unsigned_long( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_l != ULONG_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -278,7 +301,7 @@ test_from_unsigned_long_long( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_l_l != ULLONG_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }
 
@@ -292,6 +315,6 @@ test_from_unsigned_short( void )
   FAIL_IF_NULL( value->data, "the value did not have any data" )
   if( value->data->u_s != USHRT_MAX )
     return "the value did not have the correct data";
-  
+
   return NULL;
 }

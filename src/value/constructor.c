@@ -145,7 +145,7 @@ VALUE_FROM_FUNCTIONS( UnsignedShort, unsigned short, u_s )
 
 Value *
 NewValueForVoid
-( const void *value )
+( void *value, unsigned length )
 {
   return NULL;
 }
