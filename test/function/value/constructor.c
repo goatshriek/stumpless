@@ -60,14 +60,14 @@ const char *
 TestVoid
 ( void )
 {
-  if( ValueForVoid( NULL, 0 ) )
+  if( ValueForVoid( NULL ) )
     return "a Value was created for a NULL pointer";
 
   void *test = ( void * ) BuildValueList();
   if( !test )
     return "could not build a test ValueList";
 
-  Value *value = ValueForVoid( test, sizeof( ValueList ) );
+  Value *value = ValueForVoid( test );
   if( !value )
     return "a Value could not be created for a pointer";
   if( value->v_p != test )

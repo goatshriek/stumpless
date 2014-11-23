@@ -127,12 +127,11 @@ NewValueForUnsignedShortArray
  * Creates a new Value with the provided void pointer.
  *
  * @param value the void pointer to create the Value for
- * @param length the length of the data pointed to by value
  *
  * @return a new Value with the void pointer provided
  */
 Value *
 NewValueForVoid
-( void *value, size_t length );
+( void *value );
 
 #endif
