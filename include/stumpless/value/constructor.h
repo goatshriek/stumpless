@@ -123,4 +123,15 @@ Value *
 NewValueForUnsignedShortArray
 ( const unsigned short *, unsigned );
 
+/**
+ * Creates a new Value with the provided void pointer.
+ *
+ * @param value the void pointer to create the Value for
+ *
+ * @return a new Value with the void pointer provided
+ */
+Value *
+NewValueForVoid
+( const void *value );
+
 #endif

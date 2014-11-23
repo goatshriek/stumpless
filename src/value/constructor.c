@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stumpless/value/constructor.h>
+#include <stumpless/value/profile.h>
+
 #include "private/type.h"
-#include "private/value/constructor.h"
-#include "private/value/profile.h"
 
 #define VALUE_FROM_FUNCTIONS( name, type, member )                             \
 Value *                                                                        \
@@ -141,3 +142,10 @@ VALUE_FROM_FUNCTIONS( UnsignedLong, unsigned long, u_l )
 VALUE_FROM_FUNCTIONS( UnsignedLongLong, unsigned long long, u_l_l )
 
 VALUE_FROM_FUNCTIONS( UnsignedShort, unsigned short, u_s )
+
+Value *
+NewValueForVoid
+( const void *value )
+{
+  return NULL;
+}
