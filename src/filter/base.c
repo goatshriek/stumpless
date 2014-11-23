@@ -8,7 +8,7 @@ EmptyFilterAcceptRecord
 {
   if( !filter )
     return 1;
- 
+
   return ( record  && record->event )
        ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }
@@ -19,7 +19,7 @@ EmptyFilterAcceptOutput
 {
   if( !filter )
     return 1;
- 
+
   return ( output && output->data )
        ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }
@@ -30,8 +30,8 @@ EmptyFilterAcceptValue
 {
   if( !filter )
     return 1;
- 
-  return ( value && value->data )
+
+  return ( value != NULL )
        ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }
 
@@ -41,7 +41,7 @@ LevelFilterAcceptRecord
 {
   if( !filter )
     return 1;
- 
+
   return ( record && record->event && record->event->level )
        ^ ( GetDictionaryValue( filter->options, "invert" ) != NULL );
 }

@@ -17,19 +17,18 @@ ValueList *                                                                    \
 name##ArrayValueToValueList                                                    \
 ( const Value *value )                                                         \
 {                                                                              \
-  if( !value || !value->data || !value->data->data_member )                    \
+  if( !value )                                                                 \
     return NULL;                                                               \
                                                                                \
   ValueList *list = NewValueList();                                            \
   if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  Data *data = value->data;                                                    \
   Value *value_i;                                                              \
   unsigned i;                                                                  \
                                                                                \
   for( i = 0; i < value->length; i++ ){                                        \
-    value_i = NewValueFor##name( data->data_member[i] );                       \
+    value_i = NewValueFor##name( value->data_member[i] );                      \
     if( !AppendToValueList( list, value_i ) )                                  \
       return NULL;                                                             \
   }                                                                            \
@@ -42,15 +41,15 @@ Status *                                                                       \
 name##ValueIntoString                                                          \
 ( char * str, const Value * value )                                            \
 {                                                                              \
-  if( !str || !value || !value->data )                                         \
-    return RaiseStatus( "empty argument" );                            \
+  if( !str || !value  )                                                        \
+    return RaiseStatus( "empty argument" );                                    \
                                                                                \
   const char * format = value->format ? value->format : default_format;        \
                                                                                \
   str[0] = '\0';                                                               \
-  int result = sprintf( str, format, value->data->data_member );               \
+  int result = sprintf( str, format, value->data_member );                     \
   if( result < 0 )                                                             \
-    return RaiseStatus( "string write failure" );                      \
+    return RaiseStatus( "string write failure" );                              \
                                                                                \
   return NULL;                                                                 \
 }
@@ -59,9 +58,10 @@ name##ValueIntoString                                                          \
 // snprintf is available. Create configuration check to handle this case
 #define VALUE_TO_STRING_FUNCTION( name, data_member, default_format )          \
 char *                                                                         \
-name##ValueToString( const Value * value )                                     \
+name##ValueToString                                                            \
+( const Value *value )                                                         \
 {                                                                              \
-  if( !value || !value->data )                                                 \
+  if( !value )                                                                 \
     return NULL;                                                               \
                                                                                \
   const char * format = value->format ? value->format : default_format;        \
@@ -77,7 +77,7 @@ name##ValueToString( const Value * value )                                     \
     return NULL;                                                               \
                                                                                \
   buffer[0] = '\0';                                                            \
-  int result = sprintf( buffer, format, value->data->data_member );            \
+  int result = sprintf( buffer, format, value->data_member );                  \
   if( result < 0 )                                                             \
     return NULL;                                                               \
   buffer[buffer_length] = '\0';                                                \
@@ -90,7 +90,7 @@ name##ValueToString( const Value * value )                                     \
     return NULL;                                                               \
                                                                                \
   str[0] = '\0';                                                               \
-  result = sprintf( str, format, value->data->data_member );                   \
+  result = sprintf( str, format, value->data_member );                         \
   if( result < 0 )                                                             \
     return NULL;                                                               \
   str[required_length] = '\0';                                                 \
@@ -102,14 +102,14 @@ ValueList *
 BooleanArrayValueToValueList
 ( const Value *value )
 {
-  if( !value || !value->data || !value->data->v_p )
+  if( !value || !value->v_p )
     return NULL;
 
   ValueList *list = NewValueList();
   if( !list )
     return NULL;
 
-  const Boolean **boolean_list = ( const Boolean ** ) value->data->v_p;
+  const Boolean **boolean_list = ( const Boolean ** ) value->v_p;
   Value *boolean_value;
 
   unsigned i;
@@ -134,10 +134,10 @@ char *
 BooleanValueToString
 ( const Value *value )
 {
-  if( !value || !value->data || !value->data->v_p )
+  if( !value || !value->v_p )
     return NULL;
 
-  Boolean *boolean = ( Boolean * ) value->data->v_p;
+  Boolean *boolean = ( Boolean * ) value->v_p;
 
   const char *description;
   if( boolean->value )
@@ -175,10 +175,7 @@ CopyValue
   if( !copy )
     return NULL;
 
-  copy->data = value->data;
-  copy->format = value->format;
-  copy->length = value->length;
-  copy->profile = value->profile;
+  memcpy( copy, value, sizeof( Value ) );
 
   return copy;
 }
@@ -189,8 +186,6 @@ DestroyValue
 {
   if( !value )
     return;
-
-  free( value->data );
 
   free( value );
 
@@ -249,14 +244,14 @@ ValueList *
 StringArrayValueToValueList
 ( const Value *value )
 {
-  if( !value || !value->data || !value->data->v_p )
+  if( !value || !value->v_p )
     return NULL;
 
   ValueList *list = NewValueList();
   if( !list )
     return NULL;
 
-  const char **string_list = ( const char ** ) value->data->v_p;
+  const char **string_list = ( const char ** ) value->v_p;
   Value *string_value;
 
   unsigned i;
@@ -281,17 +276,17 @@ char *
 StringValueToString
 ( const Value *value )
 {
-  if( !value || !value->data || !value->data->c_p )
+  if( !value || !value->c_p )
     return NULL;
 
-  size_t str_length = strlen( value->data->c_p );
+  size_t str_length = strlen( value->c_p );
 
   char *str = malloc( sizeof( char ) * ( str_length + 1 ) );
   if( !str )
     return NULL;
 
   str[0] = '\0';
-  strncpy( str, value->data->c_p, str_length );
+  strncpy( str, value->c_p, str_length );
   str[str_length] = '\0';
 
   return str;

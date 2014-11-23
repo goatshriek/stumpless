@@ -221,13 +221,6 @@ RecordAttributesToText
     return NULL;
   }
 
-  output->data = malloc( sizeof( Data ) );
-  if( !output->data ){
-    DestroyOutput( output );
-    DestroyDictionaryConstIterator( iterator );
-    return NULL;
-  }
-
   ValueList *list = NewValueList();
   if( !list ){
     DestroyOutput( output );
@@ -246,7 +239,7 @@ RecordAttributesToText
   }
 
   DestroyDictionaryConstIterator( iterator );
-  output->data->v_p = ( void * ) list;
+  output->data = ( void * ) list;
   return output;
 }
 

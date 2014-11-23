@@ -100,44 +100,6 @@ struct Configuration {
 };
 
 /**
- * A piece of data.
- */
-union Data {
-  unsigned short u_s;
-  unsigned short *u_s_p;
-  signed short s;
-  signed short *s_p;
-  unsigned int u_i;
-  unsigned int *u_i_p;
-  signed int i;
-  signed int *i_p;
-  unsigned long u_l;
-  unsigned long *u_l_p;
-  signed long l;
-  signed long *l_p;
-  unsigned long long u_l_l;
-  unsigned long long *u_l_l_p;
-  signed long long l_l;
-  signed long long *l_l_p;
-  char c;
-  char *c_p;
-  signed char s_c;
-  signed char *s_c_p;
-  unsigned char u_c;
-  unsigned char *u_c_p;
-  float f;
-  float *f_p;
-  double d;
-  double *d_p;
-  long double l_d;
-  long double *l_d_p;
-  void *v_p;
-#ifdef __STUMPLESS_HAVE_TIME_H
-  time_t time;
-#endif
-};
-
-/**
  * An event that can be logged.
  * @todo add format string for messages
  */
@@ -245,7 +207,7 @@ struct Logger {
  * A container for a formatted Record.
  */
 struct Output {
-  Data *data; /**< the formatted data */
+  Value *data; /**< the formatted data */
   OutputProfile *profile; /**< the profile to use to handle the data */
 };
 
@@ -339,7 +301,41 @@ struct ThreadingConfiguration {
  * A value in a Record.
  */
 struct Value {
-  Data *data; /**< the data in the Value */
+  /** the data represented */
+  union {
+    unsigned short u_s;
+    unsigned short *u_s_p;
+    signed short s;
+    signed short *s_p;
+    unsigned int u_i;
+    unsigned int *u_i_p;
+    signed int i;
+    signed int *i_p;
+    unsigned long u_l;
+    unsigned long *u_l_p;
+    signed long l;
+    signed long *l_p;
+    unsigned long long u_l_l;
+    unsigned long long *u_l_l_p;
+    signed long long l_l;
+    signed long long *l_l_p;
+    char c;
+    char *c_p;
+    signed char s_c;
+    signed char *s_c_p;
+    unsigned char u_c;
+    unsigned char *u_c_p;
+    float f;
+    float *f_p;
+    double d;
+    double *d_p;
+    long double l_d;
+    long double *l_d_p;
+    void *v_p;
+  #ifdef __STUMPLESS_HAVE_TIME_H
+    time_t time;
+  #endif
+  };
   const char *format; /**< the format to use for the data */
   size_t length; /**< the length of the Value if, applicable */
   ValueProfile *profile; /**< the profile to use handling the data */
