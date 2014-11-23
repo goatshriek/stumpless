@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stumpless/value.h>
+#include <stumpless/value/constructor.h>
+
 #include "private/boolean.h"
 #include "private/configuration.h"
 #include "private/container/list/value.h"
 #include "private/status.h"
 #include "private/status/checker.h"
 #include "private/type.h"
-#include "private/value.h"
-#include "private/value/constructor.h"
 
 
 #define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \

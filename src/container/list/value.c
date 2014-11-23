@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stumpless/value.h>
+#include <stumpless/value/constructor.h>
+
 #include "private/configuration.h"
 #include "private/container/list.h"
 #include "private/container/list/inheritance.h"
@@ -13,8 +16,6 @@
 #include "private/status.h"
 #include "private/status/checker.h"
 #include "private/type.h"
-#include "private/value.h"
-#include "private/value/constructor.h"
 #include "static/container/list/value.h"
 
 ADD_SEPARATOR_TO_LIST( Value )

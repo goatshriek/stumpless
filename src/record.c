@@ -1,19 +1,19 @@
 #include <stdlib.h>
 
+#ifdef __STUMPLESS_HAVE_TIME_H
+#include <time.h>
+#endif
+
 #include <stumpless/config.h>
 #include <stumpless/event.h>
 #include <stumpless/formatter/text.h>
 #include <stumpless/record.h>
 #include <stumpless/record_attribute.h>
-
-#ifdef __STUMPLESS_HAVE_TIME_H
-#include <time.h>
-#endif
+#include <stumpless/value/constructor.h>
 
 #include "private/container/dictionary.h"
 #include "private/output.h"
 #include "private/type.h"
-#include "private/value/constructor.h"
 
 Record *
 MergeRecords

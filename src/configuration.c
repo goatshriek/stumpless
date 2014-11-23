@@ -1,12 +1,12 @@
 #include <stdlib.h>
 
 #include <stumpless/formatter/text.h>
+#include <stumpless/value.h>
 
 #include "private/configuration.h"
 #include "private/output.h"
 #include "private/status.h"
 #include "private/type.h"
-#include "private/value.h"
 
 static Configuration * configuration = NULL;
 

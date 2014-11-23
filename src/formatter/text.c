@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include <stumpless/formatter/text.h>
+#include <stumpless/value.h>
+#include <stumpless/value/constructor.h>
 
 #include "private/container/dictionary.h"
 #include "private/container/dictionary/const_iterator.h"
@@ -11,8 +13,6 @@
 #include "private/output/profile.h"
 #include "private/status/checker.h"
 #include "private/type.h"
-#include "private/value.h"
-#include "private/value/constructor.h"
 
 Output *
 EventToText

@@ -1,7 +1,7 @@
-#ifndef __STUMPLESS_PRIVATE_VALUE_H
-#define __STUMPLESS_PRIVATE_VALUE_H
+#ifndef __STUMPLESS_VALUE_H
+#define __STUMPLESS_VALUE_H
 
-#include "private/type.h"
+#include <stumpless/type.h>
 
 ValueList *
 BooleanArrayValueToValueList

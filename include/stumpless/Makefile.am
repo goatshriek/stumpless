@@ -10,3 +10,4 @@ stumpless_include_HEADERS = include/stumpless/event.h \
 include include/stumpless/formatter/Makefile.am
 include include/stumpless/logger/Makefile.am
 include include/stumpless/type/Makefile.am
+include include/stumpless/value/Makefile.am
