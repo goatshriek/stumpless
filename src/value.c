@@ -362,3 +362,24 @@ ValueToValueList
 
   return list;
 }
+
+ValueList *
+VoidArrayValueToValueList
+( const Value *value )
+{
+  return NULL;
+}
+
+Status *
+VoidValueIntoString
+( char *str, const Value *value )
+{
+  return NULL;
+}
+
+char *
+VoidValueToString
+( const Value *value )
+{
+  return NULL;
+}

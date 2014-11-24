@@ -12,6 +12,7 @@
 #include <stumpless/value/constructor.h>
 
 #include "private/container/dictionary.h"
+#include "private/formatter.h"
 #include "private/output.h"
 #include "private/type.h"
 
@@ -147,7 +148,7 @@ char *
 RecordToString
 ( const Record *record )
 {
-  return OutputToString( RecordToText( NULL, record ) );
+  return OutputToString( RecordToText( FindFormatterByName( "text" ), record ) );
 }
 
 Record *

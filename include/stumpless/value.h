@@ -1,6 +1,11 @@
 #ifndef __STUMPLESS_VALUE_H
 #define __STUMPLESS_VALUE_H
 
+/**
+ * @file
+ * Functions for dealing with Values.
+ */
+
 #include <stumpless/type.h>
 
 ValueList *
@@ -218,5 +223,44 @@ ValueToString
 ValueList *
 ValueToValueList
 ( const Value * );
+
+/**
+ * Breaks a single Value representing an array of void pointers into a ValueList
+ * of Values representing single void pointers.
+ * @todo implement
+ *
+ * @param value the Value to break into a ValueList
+ *
+ * @return a new ValueList holding each void pointer
+ */
+ValueList *
+VoidArrayValueToValueList
+( const Value *value );
+
+/**
+ * Puts a string representation of a Value representing a void pointer into a
+ * provided string.
+ * @todo implement
+ *
+ * @param str a char buffer to put the string into
+ * @param value the Value to get a string representation of
+ *
+ * @return a Status for the operation
+ */
+Status *
+VoidValueIntoString
+( char *str, const Value *value );
+
+/**
+ * Creates a string representation of a Value representing a void pointer.
+ * @todo implement
+ *
+ * @param value the Value to get a string representation of
+ *
+ * @return a new string representing the Value
+ */
+char *
+VoidValueToString
+( const Value *value );
 
 #endif

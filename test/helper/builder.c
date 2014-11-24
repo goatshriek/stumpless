@@ -841,7 +841,12 @@ BuildRecord( void )
     return NULL;
 
   record->event = BuildEvent();
+  if( !record->event )
+    return NULL;
+
   record->attributes = BuildDictionaryOfRecordAttributes();
+  if( !record->attributes )
+    return NULL;
 
   return record;
 }

@@ -52,7 +52,6 @@ EventToText
   Output *attributes_output = EventAttributesToText( formatter, event->attributes );
   if( !attributes_output || !attributes_output->data ){
     DestroyOutput( output );
-    DestroyValueList( list);
   }
   AppendValueLists( list, attributes_output->data );
 
@@ -291,18 +290,15 @@ RecordToText
   Output *level_output = LevelToText( formatter, record->event->level );
   if( !level_output || !level_output->data ){
     DestroyOutput( output );
-    DestroyValueList( list);
   }
   AppendValueLists( list, level_output->data );
 
   AppendStringToValueList( list, "] - " );
 
   Output *attributes_output = RecordAttributesToText( formatter, record->attributes );
-  if( !attributes_output || !attributes_output->data ){
-    DestroyOutput( output );
-    DestroyValueList( list);
+  if( attributes_output && attributes_output->data ){
+    AppendValueLists( list, attributes_output->data );
   }
-  AppendValueLists( list, attributes_output->data );
 
   output->data = list;
   return output;

@@ -135,4 +135,26 @@ Status *
 InitializeValueProfileByName
 ( const char * );
 
+/**
+ * @private
+ * Creates the ValueProfile for void pointer arrays. The name of the profile is
+ * "void array".
+ *
+ * @return the ValueProfile for void pointer arrays.
+ */
+ValueProfile *
+InitializeVoidArrayValueProfile
+( void );
+
+/**
+ * @private
+ * Creates the ValueProfile for void pointers. The name of the profile is
+ * "void".
+ *
+ * @return the ValueProfile for void pointers.
+ */
+ValueProfile *
+InitializeVoidValueProfile
+( void );
+
 #endif

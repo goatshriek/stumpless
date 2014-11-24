@@ -160,5 +160,5 @@ InitializeValueProfileByName
     return AddValueProfile( initializer() );
 }
 
-//ARRAY_PROFILE_INITIALIZER( "void array", Void )
+ARRAY_PROFILE_INITIALIZER( "void array", Void )
 SINGULAR_PROFILE_INITIALIZER( "void", Void )

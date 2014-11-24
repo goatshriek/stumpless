@@ -42,7 +42,7 @@ DestroyOutput
   if( !output )
     return;
 
-  free( output->data );
+  DestroyValueList( output->data );
   free( output );
 
   return;
