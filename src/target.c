@@ -9,13 +9,27 @@ Target *
 CopyTarget
 ( const Target *target )
 {
-  return NULL;
+  if( !target )
+    return NULL;
+
+  Target *copy = malloc( sizeof( Target ) );
+  if( !copy )
+    return NULL;
+
+  memcpy( copy, target, sizeof( Target ) );
+
+  return copy;
 }
 
 void
 DestroyTarget
 ( Target *target )
 {
+  if( !target )
+    return;
+
+  free( target );
+
   return;
 }
 
