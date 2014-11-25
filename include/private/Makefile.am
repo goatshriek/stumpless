@@ -10,7 +10,6 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/output.h \
                  include/private/status.h \
                  include/private/string_helper.h \
-                 include/private/target.h \
                  include/private/type.h
 
 include include/private/adapter/Makefile.am

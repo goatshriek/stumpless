@@ -99,7 +99,7 @@ RawStringOutputToString
   if( !output || !output->data )
     return NULL;
 
-  return ValueToString( output->data );
+  return ValueListToString( output->data );
 }
 
 unsigned short
