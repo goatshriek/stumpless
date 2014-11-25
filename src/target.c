@@ -5,6 +5,20 @@
 #include "private/type.h"
 #include "private/status.h"
 
+Target *
+CopyTarget
+( const Target *target )
+{
+  return NULL;
+}
+
+void
+DestroyTarget
+( Target *target )
+{
+  return;
+}
+
 Status *
 LogToTarget
 ( const Target *target, Record *record )

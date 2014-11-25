@@ -4,11 +4,9 @@
 
 #include <stumpless/target.h>
 
-#include "private/type.h"
-
+#include "test/function/target.h"
 #include "test/helper.h"
-
-const char * test_log( void );
+#include "test/type.h"
 
 int
 main( void )
@@ -16,7 +14,9 @@ main( void )
   unsigned failure_count = 0;
   const char *result;
 
-  RUN_TEST( log )
+  TEST( Copy )
+  TEST( Destroy )
+  TEST( LogRecord )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -25,7 +25,48 @@ main( void )
 }
 
 const char *
-test_log
+TestCopy
+( void )
+{
+  if( CopyTarget( NULL ) )
+    return "a NULL Target returned a non-NULL Target";
+
+  Target *target = BuildTarget();
+  if( !target )
+    return "could not build a test Target";
+
+  Target *copy = CopyTarget( target );
+  if( !copy )
+    return "a valid Target did not return a copy";
+
+  if( copy == target )
+    return "the copy was not a genuine copy";
+
+  if( copy->formatter != target->formatter )
+    return "the copy did not have the same Formatter as the original";
+  if( copy->handler != target->handler )
+    return "the copy did not have the same Handler as the original";
+
+  return NULL;
+}
+
+const char *
+TestDestroy
+( void )
+{
+  DestroyTarget( NULL );
+
+  Target *target = BuildTarget();
+  if( !target )
+    return "could not build a test Target";
+
+  DestroyTarget( target );
+
+  return NULL;
+}
+
+const char *
+TestLogRecord
 ( void )
 {
   Status *status = LogToTarget( NULL, NULL );
