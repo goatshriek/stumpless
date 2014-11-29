@@ -10,4 +10,4 @@ stumpless-c/*
 configure
 Makefile
 Makefile.in
-/stumpless-c
+/build
