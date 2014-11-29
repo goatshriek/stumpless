@@ -27,15 +27,17 @@ CSVOutputIntoStream
 
 Status *
 HandleStreamOutput
-( const Handler *handler, const Output * output )
+( const Handler *handler, const Output *output )
 {
+  FILE *destination;
+
   if( !output )
     return RaiseStatus( "empty argument" );
 
   if( !output->profile || !output->profile->into_stream )
     return RaiseStatus( "incompatible profile" );
 
-  FILE * destination = stdout;
+  destination = stdout;
 
   return output->profile->into_stream( output, destination );
 }

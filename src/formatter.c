@@ -13,18 +13,20 @@ Status *
 AddFormatter
 ( Formatter * formatter )
 {
-  if( formatter == NULL || formatter->name == NULL )
+  void *value;
+
+  if( !formatter || !formatter->name )
     return NULL;
 
-  if( formatters == NULL ){
+  if( !formatters ){
     formatters = NewDictionary();
 
-    if( formatters == NULL )
+    if( !formatters )
       return RaiseStatus( "constructor failure" );
   }
 
-  void * value = ( void * ) formatter;
-  if( SetDictionaryValue( formatters, formatter->name, value ) == NULL )
+  value = ( void * ) formatter;
+  if( !SetDictionaryValue( formatters, formatter->name, value ) )
     return NULL;
 
   return NULL;
@@ -47,8 +49,10 @@ DestroyFormatter
 
 Formatter *
 FindFormatterByName
-( const char * name )
+( const char *name )
 {
+  Formatter *formatter;
+
   if( !formatters ){
     formatters = NewDictionary();
 
@@ -56,7 +60,7 @@ FindFormatterByName
       return NULL;
   }
 
-  Formatter *formatter = GetDictionaryValue( formatters, name );
+  formatter = GetDictionaryValue( formatters, name );
 
   if( !formatter ){
     if( InitializeFormatterByName( name ) )
@@ -73,7 +77,7 @@ FormatRecord
 {
   if( !formatter || !formatter->format )
     return NULL;
-  
+
   return formatter->format( formatter, record );
 }
 
@@ -91,6 +95,8 @@ Status *
 SetFormatterOption
 ( Formatter * formatter, const char * option, void * value )
 {
+  Dictionary *result;
+
   if( formatter == NULL || option == NULL )
     return RaiseStatus( "empty argument" );
 
@@ -101,10 +107,7 @@ SetFormatterOption
       return RaiseStatus( "dictionary failure" );
   }
 
-  Dictionary * result;
-  result =  SetDictionaryValue( formatter->options, option, value );
-
-  if( result == NULL )
+  if( !SetDictionaryValue( formatter->options, option, value ) )
     return RaiseStatus( "dictionary failure" );
   else
     return NULL;

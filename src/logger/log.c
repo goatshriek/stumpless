@@ -57,21 +57,25 @@ Status *
 LogString
 ( Logger *logger, const char *value )
 {
+  Event *event;
+  Record *record;
+  RecordAttribute *attribute;
+
   if( !logger || !value )
     return RaiseStatus( "empty argument" );
 
-  Event *event = logger->default_event;
+  event = logger->default_event;
   if( !event ){
     event = FindEventByName( "informational" );
     if( !event )
       return RaiseStatus( "event failure" );
   }
 
-  Record *record = RecordForEvent( event );
+  record = RecordForEvent( event );
   if( !record )
     return RaiseStatus( "record failure" );
 
-  RecordAttribute *attribute = malloc( sizeof( RecordAttribute ) );
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( !attribute )
     return RaiseStatus( "record failure" );
 

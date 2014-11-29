@@ -12,10 +12,12 @@ type##ListReverseIterator *                                                    \
 Copy##type##ListReverseIterator                                                \
 ( const type##ListReverseIterator * iterator )                                 \
 {                                                                              \
+  type##ListReverseIterator *copy;                                             \
+                                                                               \
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \
-  type##ListReverseIterator * copy = malloc( sizeof( type##ListReverseIterator ) );\
+  copy = malloc( sizeof( type##ListReverseIterator ) );                        \
   if( !copy )                                                                  \
     return NULL;                                                               \
                                                                                \
@@ -57,10 +59,12 @@ type##ListReverseIterator *                                                    \
 New##type##ListReverseIterator                                                 \
 ( type##List * list, int position )                                            \
 {                                                                              \
+  type##ListReverseIterator *iterator;                                         \
+                                                                               \
   if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  type##ListReverseIterator * iterator = malloc( sizeof( type##ListReverseIterator ) );\
+  iterator = malloc( sizeof( type##ListReverseIterator ) );\
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \

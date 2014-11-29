@@ -127,10 +127,12 @@ Record *
 RecordForEvent
 ( Event *event )
 {
+  Record *record;
+
   if( !event )
     return NULL;
 
-  Record *record = malloc( sizeof( Record ) );
+  record = malloc( sizeof( Record ) );
   if( !record )
     return NULL;
 

@@ -30,9 +30,11 @@ static Dictionary * initializers = NULL;
 
 Status *
 InitializeHandlerByName
-( const char * name )
+( const char *name )
 {
-  if( initializers == NULL ){
+  Handler *( *initializer )();
+
+  if( !initializers ){
 
     initializers = NewDictionary();
     if( initializers == NULL )
@@ -41,9 +43,8 @@ InitializeHandlerByName
     ADD_HANDLER( "stream", Stream )
   }
 
-  Handler * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
-  if( initializer == NULL )
+  if( !initializer )
     return NULL;
   else
     return AddHandler( initializer() );

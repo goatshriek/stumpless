@@ -89,12 +89,12 @@ Logger *
 NewLogger
 ( const char *name )
 {
+  Logger *logger;
+
   if( !name ){
     RaiseStatus( "empty argument" );
     return NULL;
   }
-
-  Logger *logger;
 
   if( !loggers ){
     loggers = NewDictionary();

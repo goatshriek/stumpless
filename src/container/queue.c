@@ -9,10 +9,12 @@ Queue *
 CopyQueue
 ( const Queue *original )
 {
+  Queue *copy;
+
   if( !original )
     return NULL;
 
-  Queue *copy = malloc( sizeof( Queue ) );
+  copy = malloc( sizeof( Queue ) );
   if( !copy )
     return NULL;
 
@@ -74,10 +76,12 @@ void *
 PopFromQueue
 ( Queue *queue )
 {
+  void *value;
+
   if( !queue || !queue->elements || queue->front == queue->back )
     return NULL;
 
-  void *value = queue->elements[ queue->front ];
+  value = queue->elements[ queue->front ];
 
   queue->front = (queue->front + 1) % queue->capacity;
 
@@ -88,10 +92,12 @@ Queue *
 PushToQueue
 ( Queue *queue, void *element )
 {
+  unsigned new_back;
+
   if( !queue || !element || !queue->elements )
     return NULL;
 
-  unsigned new_back = (queue->back + 1) % queue->capacity;
+  new_back = (queue->back + 1) % queue->capacity;
   if( new_back == queue->front )
     return NULL;
 

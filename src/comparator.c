@@ -12,6 +12,8 @@ Status *
 AddComparator
 ( Comparator *comparator )
 {
+  void *value;
+
   if( !comparator || !comparator->name )
     return NULL;
 
@@ -22,7 +24,7 @@ AddComparator
       return RaiseStatus( "constructor failure" );
   }
 
-  void * value = ( void * ) comparator;
+  value = ( void * ) comparator;
   if( !SetDictionaryValue( comparators, comparator->name, value ) )
     return NULL;
 
@@ -46,6 +48,8 @@ Comparator *
 FindComparatorByName
 ( const char * name )
 {
+  Comparator *comparator;
+
   if( !comparators ){
     comparators = NewDictionary();
 
@@ -53,7 +57,7 @@ FindComparatorByName
       return NULL;
   }
 
-  Comparator * comparator = GetDictionaryValue( comparators, name );
+  comparator = GetDictionaryValue( comparators, name );
 
   if( !comparator ){
     if( InitializeComparatorByName( name ) )
@@ -76,8 +80,10 @@ GetComparatorOption
 
 Status *
 SetComparatorOption
-( Comparator * comparator, const char * option, void * value )
+( Comparator *comparator, const char *option, void *value )
 {
+  Dictionary *result;
+
   if( !comparator || !option )
     return RaiseStatus( "empty argument" );
 
@@ -88,7 +94,6 @@ SetComparatorOption
       return RaiseStatus( "dictionary failure" );
   }
 
-  Dictionary * result;
   result =  SetDictionaryValue( comparator->options, option, value );
 
   if( !result )

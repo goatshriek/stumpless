@@ -46,6 +46,8 @@ Status *
 InitializeEventByName
 ( const char *name )
 {
+  Event *( *initializer )();
+
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
@@ -91,7 +93,6 @@ InitializeEventByName
     ADD_EVENT( "warning", Warning )
   }
 
-  Event * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( !initializer )
     return NULL;

@@ -49,15 +49,17 @@ Status *
 LogToTargetList
 ( const TargetList *list, const Record *record )
 {
+  ListIterator *targets;
+  Target *target;
+
   if( !list || !record )
     return RaiseStatus( "empty argument" );
-  
-  ListIterator *targets = BeginList( list->list );
-  Target *target;
+
+  targets = BeginList( list->list );
   while( target = NextInListIterator( targets ) ){
     LogToTarget( target, record );
   }
-  
+
   return NULL;
 }
 

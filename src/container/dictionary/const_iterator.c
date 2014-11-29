@@ -9,10 +9,12 @@ DictionaryConstIterator *
 CopyDictionaryConstIterator
 ( const DictionaryConstIterator *iterator )
 {
+  DictionaryConstIterator *copy;
+
   if( !iterator )
     return NULL;
 
-  DictionaryConstIterator *copy = malloc( sizeof( DictionaryConstIterator ) );
+  copy = malloc( sizeof( DictionaryConstIterator ) );
   if( !copy )
     return NULL;
 
@@ -45,10 +47,12 @@ DictionaryConstIterator *
 NewDictionaryConstIterator
 ( const Dictionary *dictionary, int position )
 {
+  DictionaryConstIterator *iterator;
+
   if( DictionaryIsEmpty( dictionary ) )
     return NULL;
 
-  DictionaryConstIterator *iterator = malloc( sizeof( DictionaryConstIterator ) );
+  iterator = malloc( sizeof( DictionaryConstIterator ) );
   if( !iterator )
     return NULL;
 
@@ -64,10 +68,13 @@ const void *
 NextInDictionaryConstIterator
 ( DictionaryConstIterator *iterator )
 {
+  Node *previous;
+  void *value;
+
   if( !iterator || !iterator->current )
     return NULL;
 
-  void *value = iterator->current->value;
+  value = iterator->current->value;
 
   if( iterator->current->right_child ){
     iterator->current = iterator->current->right_child;
@@ -77,7 +84,7 @@ NextInDictionaryConstIterator
     return value;
   }
 
-  Node *previous = iterator->current;
+  previous = iterator->current;
   iterator->current = iterator->current->parent;
   while( iterator->current ){
     if( previous == iterator->current->left_child )

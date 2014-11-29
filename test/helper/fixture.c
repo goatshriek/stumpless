@@ -57,10 +57,12 @@ Output *
 TestFormatFunction
 ( const Formatter *formatter, const Record *record )
 {
+  Output *output;
+
   TestLogSetLastFormatter( formatter );
   TestLogSetLastFormattedRecord( record );
 
-  Output * output = RecordToText( formatter, record );
+  output = RecordToText( formatter, record );
   TestLogSetLastGeneratedOutput( output );
 
   return output;

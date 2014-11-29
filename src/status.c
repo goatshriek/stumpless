@@ -13,8 +13,10 @@ static Status *last_warning = NULL; // function call succeeded with minor proble
 
 Status *
 AddStatus
-( Status * status )
+( Status *status )
 {
+  void *value;
+
   if( !status || !status->name )
     return NULL;
 
@@ -25,7 +27,7 @@ AddStatus
       return NULL;
   }
 
-  void *value = ( void * ) status;
+  value = ( void * ) status;
   if( !SetDictionaryValue( status_dictionary, status->name, value ) )
     return NULL;
 
@@ -36,12 +38,12 @@ Status *
 FindStatusByName
 ( const char *name )
 {
+  Status *status;
+
   if( !status_dictionary )
     status_dictionary = NewDictionary();
 
-  Status *status = GetDictionaryValue( status_dictionary, name );
-
-  if( !status )
+  if( !GetDictionaryValue( status_dictionary, name ) )
     status = InitializeStatusByName( name );
 
   return status;

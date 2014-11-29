@@ -11,7 +11,9 @@ Value *                                                                        \
 NewValueFor##name                                                              \
 ( type element )                                                               \
 {                                                                              \
-  Value *value = malloc( sizeof( Value ) );                                    \
+  Value *value;                                                                \
+                                                                               \
+  value = malloc( sizeof( Value ) );                                           \
   if( !value )                                                                 \
     return NULL;                                                               \
                                                                                \
@@ -28,10 +30,12 @@ Value *                                                                        \
 NewValueFor##name##Array                                                       \
 ( const type *array, size_t length )                                           \
 {                                                                              \
+  Value *value;                                                                \
+                                                                               \
   if( !array || !length )                                                      \
     return NULL;                                                               \
                                                                                \
-  Value *value = malloc( sizeof( Value ) );                                    \
+  value = malloc( sizeof( Value ) );                                           \
   if( !value )                                                                 \
     return NULL;                                                               \
                                                                                \
@@ -55,10 +59,12 @@ NewValueFor##name##Array                                                       \
 Value *
 NewValueForBoolean( const Boolean * boolean )
 {
+  Value *value;
+
   if( !boolean )
     return NULL;
 
-  Value *value = malloc( sizeof( Value ) );
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -96,10 +102,12 @@ VALUE_FROM_FUNCTIONS( SignedChar, signed char, s_c )
 Value *
 NewValueForString( const char *str )
 {
+  Value *value;
+
   if( !str )
     return NULL;
 
-  Value *value = malloc( sizeof( Value ) );
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -131,10 +139,12 @@ Value *
 NewValueForVoid
 ( void *pointer )
 {
+  Value *value;
+
   if( !pointer )
     return NULL;
 
-  Value *value = malloc( sizeof( Value ) );
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 

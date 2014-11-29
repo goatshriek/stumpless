@@ -48,11 +48,13 @@ Record *
 RecordThroughAdapterList
 ( const AdapterList *list, Record *record )
 {
+  Adapter *adapter;
+  ListIterator *iterator;
+
   if( !list || !record )
     return NULL;
 
-  Adapter *adapter;
-  ListIterator * iterator = BeginList( list->list );
+  iterator = BeginList( list->list );
   while( adapter = NextInListIterator( iterator ) ) {
     adapter->adapt( adapter, record );
   }

@@ -6,26 +6,28 @@
 
 Stack *
 CopyStack
-( const Stack * stack )
+( const Stack *stack )
 {
-  if( stack == NULL )
+  Stack *copy;
+  unsigned i;
+
+  if( !stack )
     return NULL;
-  
-  Stack * copy = malloc( sizeof( Stack ) );
-  if( copy == NULL )
+
+  copy = malloc( sizeof( Stack ) );
+  if( !copy )
     return NULL;
-  
+
   copy->capacity = stack->capacity;
   copy->values = malloc( sizeof( void * ) * copy->capacity );
-  if( copy->values == NULL )
+  if( !copy->values )
     return NULL;
-  
-  unsigned i;
+
   for( i = 0; i < stack->top; i++ )
     copy->values[i] = stack->values[i];
-  
+
   copy->top = stack->top;
-  
+
   return copy;
 }
 
@@ -33,12 +35,12 @@ void
 DestroyStack
 ( Stack * stack )
 {
-  if( stack == NULL )
+  if( !stack )
     return;
-  
+
   free( stack->values );
   free( stack );
-  
+
   return;
 }
 
@@ -49,13 +51,13 @@ NewStack
   Stack * stack = malloc( sizeof( Stack ) );
   if( stack == NULL )
     return NULL;
-  
+
   stack->capacity = 10;
   stack->values = malloc( sizeof( void * ) * stack->capacity );
   if( stack->values == NULL )
     return NULL;
   stack->top = 0;
-  
+
   return stack;
 }
 
@@ -65,7 +67,7 @@ PeekAtStack
 {
   if( stack == NULL || stack->top == 0 )
     return NULL;
-  
+
   return stack->values[stack->top - 1];
 }
 
@@ -75,7 +77,7 @@ PopFromStack
 {
   if( stack == NULL || stack->top == 0 )
     return NULL;
-  
+
   return stack->values[--stack->top];
 }
 
@@ -85,13 +87,13 @@ PushToStack
 {
   if( stack == NULL )
     return NULL;
-  
+
   if( stack->top == stack->capacity )
     if( Resize( stack ) == NULL )
       return NULL;
-  
+
   stack->values[stack->top++] = value;
-  
+
   return stack;
 }
 
@@ -108,27 +110,29 @@ StackSize
 {
   if( stack == NULL )
     return 0;
-  
+
   return stack->top;
 }
 
 static
 Stack *
 Resize
-( Stack * stack )
+( Stack *stack )
 {
-  stack->capacity *= 2;
-  
-  void ** new_array = malloc( sizeof( void * ) * stack->capacity );
-  if( new_array == NULL )
-    return NULL;
-  
   unsigned i;
+  void **new_array;
+
+  stack->capacity *= 2;
+
+  new_array = malloc( sizeof( void * ) * stack->capacity );
+  if( !new_array )
+    return NULL;
+
   for( i = 0; i < stack->top; i++ )
     new_array[i] = stack->values[i];
-  
+
   free( stack->values );
   stack->values = new_array;
-  
+
   return stack;
 }

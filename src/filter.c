@@ -12,7 +12,9 @@ Status *
 AddFilter
 ( Filter * filter )
 {
-  if( filter == NULL || filter->name == NULL )
+  void *value;
+
+  if( !filter || !filter->name )
     return NULL;
 
   if( filters == NULL ){
@@ -22,8 +24,8 @@ AddFilter
       return RaiseStatus( "constructor failure" );
   }
 
-  void * value = ( void * ) filter;
-  if( SetDictionaryValue( filters, filter->name, value ) == NULL )
+  value = ( void * ) filter;
+  if( !SetDictionaryValue( filters, filter->name, value ) )
     return NULL;
 
   return NULL;
@@ -41,16 +43,18 @@ Filter *
 FindFilterByName
 ( const char * name )
 {
-  if( filters == NULL ){
+  Filter *filter;
+
+  if( !filters ){
     filters = NewDictionary();
 
-    if( filters == NULL )
+    if( !filters )
       return NULL;
   }
 
-  Filter * filter = GetDictionaryValue( filters, name );
+  filter = GetDictionaryValue( filters, name );
 
-  if( filter == NULL ){
+  if( !filter ){
     if( InitializeFilterByName( name ) != NULL )
       return NULL;
     filter = GetDictionaryValue( filters, name );
@@ -73,7 +77,9 @@ Status *
 SetFilterOption
 ( Filter * filter, const char * option, void * value )
 {
-  if( filter == NULL || option == NULL )
+  Dictionary *result;
+
+  if( !filter || !option )
     return RaiseStatus( "empty argument" );
 
   if( filter->options == NULL ){
@@ -83,10 +89,9 @@ SetFilterOption
       return RaiseStatus( "dictionary failure" );
   }
 
-  Dictionary * result;
   result =  SetDictionaryValue( filter->options, option, value );
 
-  if( result == NULL )
+  if( !result )
     return RaiseStatus( "dictionary failure" );
   else
     return NULL;

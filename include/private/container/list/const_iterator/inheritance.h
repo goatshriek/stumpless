@@ -12,10 +12,12 @@ type##ListConstIterator *                                                      \
 Copy##type##ListConstIterator                                                  \
 ( const type##ListConstIterator * iterator )                                   \
 {                                                                              \
+  type##ListConstIterator *copy;                                               \
+                                                                               \
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \
-  type##ListConstIterator * copy = malloc( sizeof( type##ListConstIterator ) );\
+  copy = malloc( sizeof( type##ListConstIterator ) );                          \
   if( !copy )                                                                  \
     return NULL;                                                               \
                                                                                \
@@ -57,10 +59,12 @@ type##ListConstIterator *                                                      \
 New##type##ListConstIterator                                                   \
 ( const type##List *list, int position )                                       \
 {                                                                              \
+  type##ListConstIterator *iterator;                                           \
+                                                                               \
   if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  type##ListConstIterator * iterator = malloc( sizeof( type##ListConstIterator ) );\
+  iterator = malloc( sizeof( type##ListConstIterator ) );                      \
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \

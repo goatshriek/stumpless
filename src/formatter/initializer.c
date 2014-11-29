@@ -36,6 +36,8 @@ Status *
 InitializeFormatterByName
 ( const char * name )
 {
+  Formatter *( *initializer )();
+
   if( !initializers ){
 
     initializers = NewDictionary();
@@ -46,7 +48,6 @@ InitializeFormatterByName
     ADD_FORMATTER( "text", Text )
   }
 
-  Formatter * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( !initializer )
     return NULL;

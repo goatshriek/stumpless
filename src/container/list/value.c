@@ -97,25 +97,29 @@ LIST_FRONT( Value )
 // todo rewrite to no longer depend on a buffer
 Status *
 ValueListIntoString
-( char * str, const ValueList * list )
+( char *str, const ValueList *list )
 {
+  char *buffer, *value_str;
+  Configuration *configuration;
+  ListIterator *values;
+  size_t buffer_size;
+  Value *value;
+
   if( !str || !list )
     return RaiseStatus( "empty argument" );
 
   str[0] = '\0';
 
-  Configuration * configuration = GetConfiguration();
+  configuration = GetConfiguration();
   if( !configuration )
     return RaiseStatus( "memory allocation failure" );
 
-  size_t buffer_size = configuration->string->buffer_size;
-  char * buffer = malloc( sizeof( char ) * ( buffer_size + 1 ) );
+  buffer_size = configuration->string->buffer_size;
+  buffer = malloc( sizeof( char ) * ( buffer_size + 1 ) );
   if( !buffer )
     return RaiseStatus( "memory allocation failure" );
 
-  Value * value;
-  char * value_str;
-  ListIterator * values = BeginList( list->list );
+  values = BeginList( list->list );
   while( value = NextInListIterator( values ) ){
     if( !value || !value->profile ){
       DestroyListIterator( values );
@@ -156,16 +160,19 @@ ValueList *
 ValueListToStrings
 ( const ValueList * list )
 {
+  char *str;
+  ListIterator *values;
+  Value *value;
+  ValueList *output;
+
   if( !list )
     return NULL;
 
-  ValueList * output = NewValueList();
+  output = NewValueList();
   if( !output )
     return NULL;
 
-  char * str;
-  Value * value;
-  ListIterator * values = BeginList( list->list );
+  values = BeginList( list->list );
   while( value = NextInListIterator( values ) ){
     str = value->profile->to_string( value );
     if( !AppendStringToValueList( output, str ) ){

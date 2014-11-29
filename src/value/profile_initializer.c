@@ -111,6 +111,8 @@ Status *
 InitializeValueProfileByName
 ( const char *name )
 {
+  ValueProfile *( *initializer )();
+
   if( !initializers ){
 
     initializers = NewDictionary();
@@ -152,7 +154,6 @@ InitializeValueProfileByName
     ADD_PROFILE( "void", Void )
   }
 
-  ValueProfile * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( !initializer )
     return NULL;

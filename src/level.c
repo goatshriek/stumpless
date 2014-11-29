@@ -39,6 +39,8 @@ Level *
 FindLevelByName
 ( const char *name )
 {
+  Level *level;
+
   if( !levels ){
     levels = NewDictionary();
 
@@ -46,7 +48,7 @@ FindLevelByName
       return NULL;
   }
 
-  Level *level = GetDictionaryValue( levels, name );
+  level = GetDictionaryValue( levels, name );
 
   if( !level ){
     if( InitializeLevelByName( name ) )

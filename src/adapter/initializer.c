@@ -32,6 +32,8 @@ Status *
 InitializeAdapterByName
 ( const char *name )
 {
+  Adapter *( *initializer )();
+
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
@@ -41,7 +43,6 @@ InitializeAdapterByName
     ADD_ADAPTER( "level", Level )
   }
 
-  Adapter * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( !initializer )
     return NULL;

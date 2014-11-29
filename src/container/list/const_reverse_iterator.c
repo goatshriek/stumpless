@@ -12,17 +12,19 @@ ListConstReverseIterator *
 CopyListConstReverseIterator
 ( const ListConstReverseIterator * iterator )
 {
+  ListConstReverseIterator *copy;
+
   if( !iterator )
     return NULL;
-  
-  ListConstReverseIterator * copy = malloc( sizeof( ListConstReverseIterator ) );
+
+  copy = malloc( sizeof( ListConstReverseIterator ) );
   if( !copy )
     return NULL;
-  
+
   copy->list = iterator->list;
   copy->current = iterator->current;
   copy->previous = iterator->previous;
-  
+
   return copy;
 }
 
@@ -31,7 +33,7 @@ DestroyListConstReverseIterator
 ( ListConstReverseIterator * iterator )
 {
   free( iterator );
-  
+
   return;
 }
 
@@ -41,7 +43,7 @@ ListConstReverseIteratorHasNext
 {
   if( !iterator )
     return 0;
-  
+
   return iterator->current != NULL;
 }
 
@@ -49,35 +51,39 @@ const void *
 NextInListConstReverseIterator
 ( ListConstReverseIterator * iterator )
 {
+  Node *temp;
+  const void *value;
+
   if( !iterator || !iterator->current )
     return NULL;
-  
-  const void * value = iterator->current->value;
-  
-  Node * temp = iterator->current;
+
+  value = iterator->current->value;
+
+  temp = iterator->current;
   iterator->current = XORNODES( iterator->previous, iterator->current->neighbors );
   iterator->previous = temp;
-  
+
   return value;
 }
 
 ListConstReverseIterator *
 NewListConstReverseIterator
-( const List * list, int position )
+( const List *list, int position )
 {
+  int i;
+  ListConstReverseIterator *iterator;
+  Node *current, *previous = NULL, *temp;
+
   if( !list )
     return NULL;
-  
-  ListConstReverseIterator * iterator = malloc( sizeof( ListConstReverseIterator ) );
+
+  iterator = malloc( sizeof( ListConstReverseIterator ) );
   if( !iterator )
     return NULL;
-  
+
   iterator->list = list;
-  
-  int i;
-  Node * temp;
-  Node * previous = NULL;
-  Node * current = list->first;
+
+  current = list->first;
   if( position >= 0 ){
     current = list->first;
     for( i = 0; i < position; i++ ){
@@ -93,8 +99,8 @@ NewListConstReverseIterator
       previous = temp;
     }
   }
-  
+
   iterator->current = current;
-  
+
   return iterator;
 }

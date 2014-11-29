@@ -77,10 +77,12 @@ type##List *                                                                   \
 Copy##type##List                                                               \
 ( const type##List * list )                                                    \
 {                                                                              \
+  type##List *copy;                                                            \
+                                                                               \
   if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  type##List * copy = malloc( sizeof( type##List ) );                          \
+  copy = malloc( sizeof( type##List ) );                                       \
   if( !copy )                                                                  \
     return NULL;                                                               \
                                                                                \

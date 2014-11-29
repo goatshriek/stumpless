@@ -40,6 +40,8 @@ Status *
 InitializeOutputProfileByName
 ( const char *name )
 {
+  OutputProfile *( *initializer )();
+
   if( !initializers ){
 
     initializers = NewDictionary();
@@ -50,7 +52,6 @@ InitializeOutputProfileByName
     ADD_PROFILE( "text", Text )
   }
 
-  OutputProfile * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( !initializer )
     return NULL;

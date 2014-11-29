@@ -13,6 +13,8 @@ Status *
 AddValueProfile
 ( ValueProfile *profile )
 {
+  void *value;
+
   if( !profile || !profile->name )
     return NULL;
 
@@ -23,7 +25,7 @@ AddValueProfile
       return RaiseStatus( "constructor failure" );
   }
 
-  void *value = ( void * ) profile;
+  value = ( void * ) profile;
   if( !SetDictionaryValue( profiles, profile->name, value ) )
     return NULL;
 
@@ -34,6 +36,8 @@ ValueProfile *
 FindValueProfileByName
 ( const char *name )
 {
+  ValueProfile *profile;
+
   if( !profiles ){
     profiles = NewDictionary();
 
@@ -41,7 +45,7 @@ FindValueProfileByName
       return NULL;
   }
 
-  ValueProfile *profile = GetDictionaryValue( profiles, name );
+  profile = GetDictionaryValue( profiles, name );
 
   if( !profile ){
     if( InitializeValueProfileByName( name ) )

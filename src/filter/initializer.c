@@ -38,6 +38,8 @@ Status *
 InitializeFilterByName
 ( const char *name )
 {
+  Filter *( *initializer )();
+
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
@@ -47,7 +49,6 @@ InitializeFilterByName
     ADD_FILTER( "level", Level )
   }
 
-  Filter * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( initializer == NULL )
     return NULL;

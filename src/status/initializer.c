@@ -80,7 +80,7 @@ InitializeEventFailureStatus
 ( void )
 {
   CREATE_STATUS
- 
+
   status->name = "event failure";
   status->description = "an Event could not be found";
   status->error = 1;
@@ -184,6 +184,8 @@ Status *
 InitializeStatusByName
 ( const char * name )
 {
+  Status *( *initializer )();
+
   if( !initializers ){
 
     initializers = NewDictionary();
@@ -205,7 +207,8 @@ InitializeStatusByName
     ADD_STATUS( "value profile not found", ValueProfileNotFound )
   }
 
-  Status * ( *initializer )() = GetDictionaryValue( initializers, name );
+  initializer = GetDictionaryValue( initializers, name );
+
   if( !initializer )
     return NULL;
   else

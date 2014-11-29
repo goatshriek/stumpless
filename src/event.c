@@ -47,6 +47,8 @@ Event *
 FindEventByName
 ( const char *name )
 {
+  Event *event;
+
   if( !events ){
     events = NewDictionary();
 
@@ -54,7 +56,7 @@ FindEventByName
       return NULL;
   }
 
-  Event *event = GetDictionaryValue( events, name );
+  event = GetDictionaryValue( events, name );
 
   if( !event ){
     if( InitializeEventByName( name ) )

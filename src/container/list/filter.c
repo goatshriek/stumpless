@@ -7,15 +7,10 @@
 #include "private/container/list/filter.h"
 #include "private/container/list/inheritance.h"
 #include "private/container/list/iterator.h"
-
 #include "private/container/list/const_iterator/filter.h"
-
 #include "private/container/list/const_reverse_iterator/filter.h"
-
 #include "private/container/list/iterator/filter.h"
-
 #include "private/container/list/reverse_iterator/filter.h"
-
 #include "static/container/list/filter.h"
 
 ADD_SEPARATOR_TO_LIST( Filter )
@@ -44,11 +39,13 @@ unsigned short
 RecordThroughFilterList
 ( const FilterList * list, const Record * record )
 {
+  Filter *filter;
+  ListIterator *filters;
+
   if( !list )
     return 1;
 
-  Filter * filter;
-  ListIterator * filters = BeginList( list->list );
+  filters = BeginList( list->list );
   while( filter = NextInListIterator( filters ) ){
     if( !filter->accept_record( filter, record ) ){
       DestroyListIterator( filters );

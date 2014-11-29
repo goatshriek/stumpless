@@ -8,15 +8,10 @@
 #include "private/container/list/handler.h"
 #include "private/container/list/inheritance.h"
 #include "private/container/list/iterator.h"
-
 #include "private/container/list/const_iterator/handler.h"
-
 #include "private/container/list/const_reverse_iterator/handler.h"
-
 #include "private/container/list/iterator/handler.h"
-
 #include "private/container/list/reverse_iterator/handler.h"
-
 #include "static/container/list/handler.h"
 
 ADD_SEPARATOR_TO_LIST( Handler )
@@ -55,14 +50,16 @@ NEW_LIST( Handler )
 
 Status *
 OutputThroughHandlerList
-( const HandlerList * list, const Output * output )
+( const HandlerList *list, const Output *output )
 {
+  Handler *handler;
+  ListIterator *handlers;
+  Status *status;
+
   if( !list || !output )
     return RaiseStatus( "empty argument" );
 
-  Status * status;
-  Handler * handler;
-  ListIterator * handlers = BeginList( list->list );
+  handlers = BeginList( list->list );
   while( handler = NextInListIterator( handlers ) ){
     if( !handler->handle )
       continue;

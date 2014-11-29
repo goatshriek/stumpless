@@ -7,24 +7,26 @@
 
 #include "private/handler/initializer.h"
 
-static Dictionary * handlers = NULL;
+static Dictionary *handlers = NULL;
 
 Status *
 AddHandler
-( Handler * handler )
+( Handler *handler )
 {
-  if( handler == NULL || handler->name == NULL )
+  void *value;
+
+  if( !handler || !handler->name )
     return NULL;
 
-  if( handlers == NULL ){
+  if( !handlers ){
     handlers = NewDictionary();
 
-    if( handlers == NULL )
+    if( !handlers )
       return RaiseStatus( "constructor failure" );
   }
 
-  void * value = ( void * ) handler;
-  if( SetDictionaryValue( handlers, handler->name, value ) == NULL )
+  value = ( void * ) handler;
+  if( !SetDictionaryValue( handlers, handler->name, value ) )
     return NULL;
 
   return NULL;
@@ -40,19 +42,21 @@ DestroyHandler
 
 Handler *
 FindHandlerByName
-( const char * name )
+( const char *name )
 {
-  if( handlers == NULL ){
+  Handler *handler;
+
+  if( !handlers ){
     handlers = NewDictionary();
 
-    if( handlers == NULL )
+    if( !handlers )
       return NULL;
   }
 
-  Handler * handler = GetDictionaryValue( handlers, name );
+  handler = GetDictionaryValue( handlers, name );
 
-  if( handler == NULL ){
-    if( InitializeHandlerByName( name ) != NULL )
+  if( !handler ){
+    if( InitializeHandlerByName( name ) )
       return NULL;
     handler = GetDictionaryValue( handlers, name );
   }
@@ -84,7 +88,9 @@ Status *
 SetHandlerOption
 ( Handler * handler, const char * option, void * value )
 {
-  if( handler == NULL || option == NULL )
+  Dictionary *result;
+
+  if( !handler || !option )
     return RaiseStatus( "empty argument" );
 
   if( handler->options == NULL ){
@@ -94,10 +100,9 @@ SetHandlerOption
       return RaiseStatus( "dictionary failure" );
   }
 
-  Dictionary * result;
   result =  SetDictionaryValue( handler->options, option, value );
 
-  if( result == NULL )
+  if( !result )
     return RaiseStatus( "dictionary failure" );
   else
     return NULL;

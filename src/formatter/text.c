@@ -18,10 +18,13 @@ Output *
 EventToText
 ( const Formatter *formatter, const Event *event )
 {
+  Output *attributes_output, *level_output, *output;
+  ValueList *list;
+
   if( !formatter || !event || !event->name )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -31,7 +34,7 @@ EventToText
     return NULL;
   }
 
-  ValueList *list = NewValueList();
+  list = NewValueList();
   if( !list ){
     DestroyOutput( output );
     return NULL;
@@ -40,7 +43,7 @@ EventToText
   AppendStringToValueList( list, event->name );
   AppendStringToValueList( list, " [" );
 
-  Output *level_output = LevelToText( formatter, event->level );
+  level_output = LevelToText( formatter, event->level );
   if( !level_output || !level_output->data ){
     DestroyOutput( output );
     DestroyValueList( list);
@@ -49,7 +52,7 @@ EventToText
 
   AppendStringToValueList( list, "] - " );
 
-  Output *attributes_output = EventAttributesToText( formatter, event->attributes );
+  attributes_output = EventAttributesToText( formatter, event->attributes );
   if( !attributes_output || !attributes_output->data ){
     DestroyOutput( output );
   }
@@ -63,14 +66,19 @@ Output *
 EventAttributesToText
 ( const Formatter *formatter, const Dictionary *attributes )
 {
+  DictionaryConstIterator *iterator;
+  const EventAttribute *attribute;
+  Output *attribute_output, *output;
+  ValueList *list;
+
   if( !formatter )
     return NULL;
 
-  DictionaryConstIterator *iterator = CBeginDictionary( attributes );
+  iterator = CBeginDictionary( attributes );
   if( !iterator )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output ){
     DestroyDictionaryConstIterator( iterator );
     return NULL;
@@ -82,14 +90,12 @@ EventAttributesToText
     return NULL;
   }
 
-  ValueList *list = NewValueList();
+  list = NewValueList();
   if( !list ){
     DestroyOutput( output );
     DestroyDictionaryConstIterator( iterator );
   }
 
-  const EventAttribute *attribute;
-  Output *attribute_output;
   while( attribute = NextInDictionaryConstIterator( iterator ) ){
     if( !ValueListIsEmpty( list ) )
       AppendStringToValueList( list, ", " );
@@ -108,10 +114,13 @@ Output *
 EventAttributeToText
 ( const Formatter *formatter, const EventAttribute *attribute )
 {
+  Output *output, *value_output;
+  ValueList *list;
+
   if( !formatter || !attribute || !attribute->name )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -119,13 +128,12 @@ EventAttributeToText
   if( !output->profile )
     return NULL;
 
-  ValueList *list = NewValueList();
+  list = NewValueList();
   if( !list )
     return NULL;
 
   AppendStringToValueList( list, attribute->name );
 
-  Output *value_output;
   if( attribute->default_value ){
     AppendStringToValueList( list, " [" );
     value_output = ValueToText( formatter, attribute->default_value );
@@ -143,10 +151,13 @@ Output *
 LevelToText
 ( const Formatter *formatter, const Level *level )
 {
+  Output *output;
+  ValueList *list;
+
   if( !formatter || !level || !level->name )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -156,7 +167,7 @@ LevelToText
     return NULL;
   }
 
-  ValueList *list = NewValueList();
+  list = NewValueList();
   if( !list ){
     DestroyOutput( output );
     return NULL;
@@ -179,14 +190,19 @@ Output *
 RecordAttributesToText
 ( const Formatter *formatter, const Dictionary *attributes )
 {
+  DictionaryConstIterator *iterator;
+  Output *attribute_output, *output;
+  const RecordAttribute *attribute;
+  ValueList *list;
+
   if( !formatter )
     return NULL;
 
-  DictionaryConstIterator *iterator = CBeginDictionary( attributes );
+  iterator = CBeginDictionary( attributes );
   if( !iterator )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output ){
     DestroyDictionaryConstIterator( iterator );
     return NULL;
@@ -198,14 +214,12 @@ RecordAttributesToText
     return NULL;
   }
 
-  ValueList *list = NewValueList();
+  list = NewValueList();
   if( !list ){
     DestroyOutput( output );
     DestroyDictionaryConstIterator( iterator );
   }
 
-  const RecordAttribute *attribute;
-  Output *attribute_output;
   while( attribute = NextInDictionaryConstIterator( iterator ) ){
     if( !ValueListIsEmpty( list ) )
       AppendStringToValueList( list, ", " );
@@ -224,12 +238,15 @@ Output *
 RecordAttributeToText
 ( const Formatter *formatter, const RecordAttribute *attribute )
 {
+  Output *output, *value_output;
+  ValueList *list;
+
   if( !formatter || !attribute ||
       ( !attribute->name && !attribute->event_attribute->name ) ||
       ( !attribute->value && !attribute->event_attribute->default_value ) )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -239,7 +256,7 @@ RecordAttributeToText
     return NULL;
   }
 
-  ValueList *list = NewValueList();
+  list = NewValueList();
   if( !list ){
     DestroyOutput( output );
     return NULL;
@@ -249,7 +266,7 @@ RecordAttributeToText
 
   AppendStringToValueList( list, ": " );
 
-  Output *value_output = ValueToText( formatter, attribute->value );
+  value_output = ValueToText( formatter, attribute->value );
   if( !value_output )
     value_output = ValueToText( formatter, attribute->event_attribute->default_value );
 
@@ -265,10 +282,13 @@ Output *
 RecordToText
 ( const Formatter *formatter, const Record *record )
 {
+  Output *attributes_output, *level_output, *output;
+  ValueList *list;
+
   if( !formatter || !record || !record->event )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -278,7 +298,7 @@ RecordToText
     return NULL;
   }
 
-  ValueList *list = NewValueList();
+  list = NewValueList();
   if( !list ){
     DestroyOutput( output );
     return NULL;
@@ -287,7 +307,7 @@ RecordToText
   AppendStringToValueList( list, record->event->name );
   AppendStringToValueList( list, " [" );
 
-  Output *level_output = LevelToText( formatter, record->event->level );
+  level_output = LevelToText( formatter, record->event->level );
   if( !level_output || !level_output->data ){
     DestroyOutput( output );
   }
@@ -295,7 +315,7 @@ RecordToText
 
   AppendStringToValueList( list, "] - " );
 
-  Output *attributes_output = RecordAttributesToText( formatter, record->attributes );
+  attributes_output = RecordAttributesToText( formatter, record->attributes );
   if( attributes_output && attributes_output->data ){
     AppendValueLists( list, attributes_output->data );
   }
@@ -308,10 +328,12 @@ Output *
 ValueToText
 ( const Formatter *formatter, const Value *value )
 {
+  Output *output;
+
   if( !formatter || !value || !value->profile || !value->profile->to_value_list )
     return NULL;
 
-  Output *output = malloc( sizeof( Output ) );
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 

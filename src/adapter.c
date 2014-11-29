@@ -17,7 +17,7 @@ AdaptRecord
 
   if( !record )
     return NULL;
-  
+
   return adapter->adapt( adapter, record );
 }
 
@@ -51,8 +51,10 @@ DestroyAdapter
 
 Adapter *
 FindAdapterByName
-( const char * name )
+( const char *name )
 {
+  Adapter *adapter;
+
   if( !adapters ){
     adapters = NewDictionary();
 
@@ -60,7 +62,7 @@ FindAdapterByName
       return NULL;
   }
 
-  Adapter *adapter = GetDictionaryValue( adapters, name );
+  adapter = GetDictionaryValue( adapters, name );
 
   if( !adapter ){
     if( InitializeAdapterByName( name ) )
@@ -85,6 +87,8 @@ Status *
 SetAdapterOption
 ( Adapter *adapter, const char *option, void *value )
 {
+  Dictionary *result;
+
   if( !adapter || !option )
     return RaiseStatus( "empty argument" );
 
@@ -95,7 +99,6 @@ SetAdapterOption
       return RaiseStatus( "dictionary failure" );
   }
 
-  Dictionary *result;
   result =  SetDictionaryValue( adapter->options, option, value );
 
   if( !result )

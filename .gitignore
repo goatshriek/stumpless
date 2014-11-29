@@ -6,6 +6,8 @@ m4/*
 autom4te.cache*
 aclocal.m4
 build/*
+stumpless-c/*
 configure
 Makefile
 Makefile.in
+/stumpless-c

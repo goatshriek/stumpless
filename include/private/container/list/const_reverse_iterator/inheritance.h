@@ -12,10 +12,12 @@ type##ListConstReverseIterator *                                               \
 Copy##type##ListConstReverseIterator                                           \
 ( const type##ListConstReverseIterator * iterator )                            \
 {                                                                              \
+  type##ListConstReverseIterator *copy;                                        \
+                                                                               \
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \
-  type##ListConstReverseIterator * copy = malloc( sizeof( type##ListConstReverseIterator ) );\
+  copy = malloc( sizeof( type##ListConstReverseIterator ) );                   \
   if( !copy )                                                                  \
     return NULL;                                                               \
                                                                                \
@@ -57,10 +59,12 @@ type##ListConstReverseIterator *                                               \
 New##type##ListConstReverseIterator                                            \
 ( const type##List *list, int position )                                       \
 {                                                                              \
+  type##ListConstReverseIterator *iterator;                                    \
+                                                                               \
   if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  type##ListConstReverseIterator * iterator = malloc( sizeof( type##ListConstReverseIterator ) );\
+  iterator = malloc( sizeof( type##ListConstReverseIterator ) );               \
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \

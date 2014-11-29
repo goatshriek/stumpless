@@ -12,10 +12,12 @@ type##ListIterator *                                                           \
 Copy##type##ListIterator                                                       \
 ( const type##ListIterator * iterator )                                        \
 {                                                                              \
+  type##ListIterator *copy;                                                    \
+                                                                               \
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \
-  type##ListIterator * copy = malloc( sizeof( type##ListIterator ) );          \
+  copy = malloc( sizeof( type##ListIterator ) );                               \
   if( !copy )                                                                  \
     return NULL;                                                               \
                                                                                \
@@ -57,10 +59,12 @@ type##ListIterator *                                                           \
 New##type##ListIterator                                                        \
 ( type##List *list, int position )                                             \
 {                                                                              \
+  type##ListIterator *iterator;                                                \
+                                                                               \
   if( !list )                                                                  \
     return NULL;                                                               \
                                                                                \
-  type##ListIterator * iterator = malloc( sizeof( type##ListIterator ) );      \
+  iterator = malloc( sizeof( type##ListIterator ) );                           \
   if( !iterator )                                                              \
     return NULL;                                                               \
                                                                                \

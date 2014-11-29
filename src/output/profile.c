@@ -12,6 +12,8 @@ Status *
 AddOutputProfile
 ( OutputProfile *profile )
 {
+  void *value;
+
   if( !profile || !profile->name )
     return NULL;
 
@@ -22,8 +24,8 @@ AddOutputProfile
       return RaiseStatus( "constructor failure" );
   }
 
-  void *value = ( void * ) profile;
-  if( SetDictionaryValue( profiles, profile->name, value ) == NULL )
+  value = ( void * ) profile;
+  if( !SetDictionaryValue( profiles, profile->name, value ) )
     return NULL;
 
   return NULL;
@@ -33,6 +35,8 @@ OutputProfile *
 FindOutputProfileByName
 ( const char *name )
 {
+  OutputProfile *profile;
+
   if( !profiles ){
     profiles = NewDictionary();
 
@@ -40,7 +44,7 @@ FindOutputProfileByName
       return NULL;
   }
 
-  OutputProfile *profile = GetDictionaryValue( profiles, name );
+  profile = GetDictionaryValue( profiles, name );
 
   if( !profile ){
     if( InitializeOutputProfileByName( name ) )

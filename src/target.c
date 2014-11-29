@@ -9,10 +9,12 @@ Target *
 CopyTarget
 ( const Target *target )
 {
+  Target *copy;
+
   if( !target )
     return NULL;
 
-  Target *copy = malloc( sizeof( Target ) );
+  copy = malloc( sizeof( Target ) );
   if( !copy )
     return NULL;
 

@@ -28,12 +28,12 @@ List *
 AppendLists
 ( List * first, const List * second )
 {
+  Node *node, *previous = NULL, *temp;
+
   if( !first )
     return NULL;
 
-  Node * temp;
-  Node * previous = NULL;
-  Node * node = second->first;
+  node = second->first;
   while( node ){
     AppendToList( first, node->value );
 
@@ -50,10 +50,12 @@ List *
 AppendToList
 ( List * list, void * value )
 {
+  Node *node;
+
   if( !list )
     return NULL;
 
-  Node * node = malloc( sizeof( Node ) );
+  node = malloc( sizeof( Node ) );
   if( !node )
     return NULL;
 
@@ -93,15 +95,16 @@ CEndList
 
 List *
 CopyList
-( const List * list )
+( const List *list )
 {
+  List *copy;
+  Node *node, *previous = NULL, *temp;
+
   if( !list )
     return NULL;
 
-  List * copy = NewList();
-  Node * temp;
-  Node * previous = NULL;
-  Node * node = list->first;
+  copy = NewList();
+  node = list->first;
   while( node ){
     AppendToList( copy, node->value );
 
@@ -162,12 +165,12 @@ unsigned short
 ListContains
 ( const List * list, const void * value )
 {
+  Node *node, *previous = NULL, *temp;
+
   if( !list )
     return 0;
 
-  Node * temp;
-  Node * previous = NULL;
-  Node * node = list->first;
+  node = list->first;
   while( node ){
     if( node->value == value )
       return 1;
@@ -201,14 +204,13 @@ unsigned
 ListSize
 ( const List * list )
 {
+  Node *node, *previous = NULL, *temp;
+  unsigned size = 0;
+
   if( !list )
     return 0;
 
-  unsigned size = 0;
-
-  Node * temp;
-  Node * previous = NULL;
-  Node * node = list->first;
+  node = list->first;
   while( node ){
     size++;
 
@@ -237,10 +239,12 @@ List *
 PrependToList
 ( List * list, void * value )
 {
+  Node *node;
+
   if( !list )
     return NULL;
 
-  Node * node = malloc( sizeof( Node ) );
+  node = malloc( sizeof( Node ) );
   if( !node )
     return NULL;
 
@@ -274,12 +278,14 @@ REndList
 static
 void
 DestroyNodes
-( Node * previous, Node * node )
+( Node *previous, Node *node )
 {
+  Node *next;
+
   if( !node )
     return;
 
-  Node * next = XORNODES( previous, node->neighbors );
+  next = XORNODES( previous, node->neighbors );
   free( node );
 
   DestroyNodes( node, next );
@@ -288,21 +294,23 @@ DestroyNodes
 static
 void *
 SeparateNodes
-( Node * previous, Node * node, void * value )
+( Node * previous, Node *node, void *value )
 {
+  Node *next, *next_next, *separator;
+
   if( node->neighbors == previous )
     return value;
 
-  Node * separator = malloc( sizeof( Node ) );
+  separator = malloc( sizeof( Node ) );
   if( !separator )
     return NULL;
 
-  Node * next = XORNODES( previous, node->neighbors );
+  next = XORNODES( previous, node->neighbors );
 
   separator->value = value;
   separator->neighbors = XORNODES( node, next );
 
-  Node * next_next = XORNODES( node, next->neighbors );
+  next_next = XORNODES( node, next->neighbors );
   node->neighbors = XORNODES( previous, separator );
   next->neighbors = XORNODES( separator, next_next );
 

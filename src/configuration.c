@@ -22,18 +22,20 @@ GetConfiguration( void )
 Status *
 InitializeConfiguration( void )
 {
+  size_t required_size;
+
   configuration = malloc( sizeof( Configuration ) );
-  if( configuration == NULL )
+  if( !configuration )
     return RaiseStatus( "memory allocation failure" );
 
-  size_t required_size = sizeof( FileConfiguration );
+  required_size = sizeof( FileConfiguration );
   configuration->file = malloc( required_size );
-  if( configuration->file == NULL )
+  if( !configuration->file )
     return RaiseStatus( "memory allocation failure" );
 
   required_size = sizeof( HTTPConfiguration );
   configuration->http = malloc( required_size );
-  if( configuration->http == NULL )
+  if( !configuration->http )
     return RaiseStatus( "memory allocation failure" );
 
   required_size = sizeof( ThreadingConfiguration );

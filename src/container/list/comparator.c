@@ -59,14 +59,16 @@ REND_LIST( Comparator )
 
 short
 RunComparatorList
-( ComparatorList * list, const void * value_1, const void * value_2 )
+( ComparatorList *list, const void *value_1, const void *value_2 )
 {
+  Comparator *comparator;
+  ListIterator *iterator;
+  short result;
+
   if( ComparatorListIsEmpty( list ) )
     return 0;
 
-  short result;
-  Comparator * comparator;
-  ListIterator * iterator = BeginList( list->list );
+  iterator = BeginList( list->list );
   while( comparator = NextInListIterator( iterator ) ){
     result = comparator->compare( comparator, value_1, value_2 );
 

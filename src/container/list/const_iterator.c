@@ -1,28 +1,27 @@
 #include <stdlib.h>
 
 #include "private/type.h"
-
 #include "private/container/list/const_iterator.h"
-
 #include "static/container/list.h"
-
 #include "static/container/list/const_iterator.h"
 
 ListConstIterator *
 CopyListConstIterator
 ( const ListConstIterator * iterator )
 {
+  ListConstIterator *copy;
+
   if( !iterator )
     return NULL;
-  
-  ListConstIterator * copy = malloc( sizeof( ListConstIterator ) );
+
+  copy = malloc( sizeof( ListConstIterator ) );
   if( !copy )
     return NULL;
-  
+
   copy->list = iterator->list;
   copy->current = iterator->current;
   copy->previous = iterator->previous;
-  
+
   return copy;
 }
 
@@ -31,7 +30,7 @@ DestroyListConstIterator
 ( ListConstIterator * iterator )
 {
   free( iterator );
-  
+
   return;
 }
 
@@ -41,7 +40,7 @@ ListConstIteratorHasNext
 {
   if( !iterator )
     return 0;
-  
+
   return iterator->current != NULL;
 }
 
@@ -49,35 +48,39 @@ const void *
 NextInListConstIterator
 ( ListConstIterator * iterator )
 {
+  Node *temp;
+  const void *value;
+
   if( !iterator || !iterator->current )
     return NULL;
-  
-  const void * value = iterator->current->value;
-  
-  Node * temp = iterator->current;
+
+  value = iterator->current->value;
+
+  temp = iterator->current;
   iterator->current = XORNODES( iterator->previous, iterator->current->neighbors );
   iterator->previous = temp;
-  
+
   return value;
 }
 
 ListConstIterator *
 NewListConstIterator
-( const List * list, int position )
+( const List *list, int position )
 {
+  int i;
+  ListConstIterator *iterator;
+  Node *current, *previous = NULL, *temp;
+
   if( !list )
     return NULL;
-  
-  ListConstIterator * iterator = malloc( sizeof( ListConstIterator ) );
+
+  iterator = malloc( sizeof( ListConstIterator ) );
   if( !iterator )
     return NULL;
-  
+
   iterator->list = list;
-  
-  int i;
-  Node * temp;
-  Node * previous = NULL;
-  Node * current = list->first;
+
+  current = list->first;
   if( position >= 0 ){
     current = list->first;
     for( i = 0; i < position; i++ ){
@@ -93,8 +96,8 @@ NewListConstIterator
       previous = temp;
     }
   }
-  
+
   iterator->current = current;
-  
+
   return iterator;
 }

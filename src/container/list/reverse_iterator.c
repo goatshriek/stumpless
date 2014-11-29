@@ -9,10 +9,12 @@ ListReverseIterator *
 CopyListReverseIterator
 ( const ListReverseIterator *iterator )
 {
+  ListReverseIterator *copy;
+
   if( !iterator )
     return NULL;
 
-  ListReverseIterator *copy = malloc( sizeof( ListReverseIterator ) );
+  copy = malloc( sizeof( ListReverseIterator ) );
   if( !copy )
     return NULL;
 
@@ -43,12 +45,15 @@ void *
 NextInListReverseIterator
 ( ListReverseIterator *iterator )
 {
+  Node *temp;
+  void *value;
+
   if( !iterator || !iterator->current )
     return NULL;
 
-  void * value = iterator->current->value;
+  value = iterator->current->value;
 
-  Node * temp = iterator->current;
+  temp = iterator->current;
   iterator->current = XORNODES( iterator->previous, temp->neighbors );
   iterator->previous = temp;
 
@@ -59,19 +64,19 @@ ListReverseIterator *
 NewListReverseIterator
 ( List *list, int position )
 {
+  int i, steps;
+  ListReverseIterator *iterator;
+  Node *current, *previous = NULL, *temp;
+
   if( !list )
     return NULL;
 
-  ListReverseIterator *iterator = malloc( sizeof( ListReverseIterator ) );
+  iterator = malloc( sizeof( ListReverseIterator ) );
   if( !iterator )
     return NULL;
 
   iterator->list = list;
 
-  int i, steps;
-  Node *temp;
-  Node *previous = NULL;
-  Node *current;
   if( position >= 0 ){
     current = list->last;
     steps = position;
@@ -98,12 +103,15 @@ void *
 PreviousInListReverseIterator
 ( ListReverseIterator *iterator )
 {
+  Node *temp;
+  void *value;
+
   if( !iterator || !iterator->current )
     return NULL;
 
-  void *value = iterator->previous->value;
+  value = iterator->previous->value;
 
-  Node *temp = iterator->previous;
+  temp = iterator->previous;
   iterator->previous = XORNODES( iterator->current, temp->neighbors );
   iterator->current = temp;
 

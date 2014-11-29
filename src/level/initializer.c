@@ -31,6 +31,8 @@ Status *
 InitializeLevelByName
 ( const char *name )
 {
+  Level *( *initializer )();
+
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
@@ -46,7 +48,6 @@ InitializeLevelByName
     ADD_LEVEL( "warning", Warning )
   }
 
-  Level *( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( !initializer )
     return NULL;

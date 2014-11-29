@@ -32,6 +32,8 @@ Status *
 InitializeComparatorByName
 ( const char *name )
 {
+  Comparator *( *initializer )();
+
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
@@ -40,7 +42,6 @@ InitializeComparatorByName
     ADD_COMPARATOR( "string", String )
   }
 
-  Comparator * ( *initializer )();
   initializer = GetDictionaryValue( initializers, name );
   if( !initializer )
     return NULL;
