@@ -1,0 +1,4 @@
+LIBRARY    Stumpless
+
+EXPORTS
+    VoidValueToString    @1
