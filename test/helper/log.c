@@ -14,12 +14,14 @@ InitializeTestLog
     if( !log )
       return NULL;
   }
-  
+
   log->last_adapted_record = NULL;
   log->last_adapter = NULL;
   log->last_formatted_record = NULL;
   log->last_formatter = NULL;
   log->last_generated_output = NULL;
+
+  return log;
 }
 
 const Record *
@@ -58,7 +60,7 @@ TestLogGetLastFormatter
 {
   if( !log )
     return NULL;
-  
+
   return log->last_formatter;
 }
 
@@ -78,7 +80,7 @@ TestLogGetLastHandledOutput
 {
   if( !log )
     return NULL;
-  
+
   return log->last_handled_output;
 }
 
@@ -88,7 +90,7 @@ TestLogGetLastHandler
 {
   if( !log )
     return NULL;
-  
+
   return log->last_handler;
 }
 
@@ -98,7 +100,7 @@ TestLogGetLastMessage
 {
   if( !log )
     return NULL;
-  
+
   return log->last_message;
 }
 
@@ -111,10 +113,10 @@ TestLogSetLastAdaptedRecord
     if( !log )
       return NULL;
   }
-  
+
   if( record )
     log->last_adapted_record = record;
-  
+
   return log;
 }
 
@@ -127,10 +129,10 @@ TestLogSetLastAdapter
     if( !log )
       return NULL;
   }
-   
+
   if( adapter )
     log->last_adapter = adapter;
-  
+
   return log;
 }
 
@@ -162,7 +164,7 @@ TestLogSetLastFormatter
 
   if( formatter )
     log->last_formatter = formatter;
-  
+
   return log;
 }
 
@@ -191,10 +193,10 @@ TestLogSetLastHandledOutput
     if( !log )
       return NULL;
   }
-  
+
   if( output )
     log->last_handled_output = output;
-  
+
   return log;
 }
 

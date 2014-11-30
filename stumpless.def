@@ -1,4 +1,49 @@
-LIBRARY    Stumpless
+LIBRARY    stumpless
 
 EXPORTS
-    VoidValueToString    @1
+    AdaptRecord                     @1
+    AddAdapter                      @2
+    AddComparatorToTree             @3
+    AddToTree                       @4
+    AppendStringToValueList         @5
+    AppendToAdapterList             @6
+    AppendToComparatorList          @7
+    AppendToFilterList              @8
+    AppendToFormatterList           @9
+    AppendToHandlerList             @10
+    AppendToList                    @11
+    AppendToTargetList              @12
+    AppendToValueList               @13
+    CBeginDictionary                @14
+    FindAdapterByName               @15
+    FindFilterByName                @16
+    FindFormatterByName             @17
+    FindOutputProfileByName         @18
+    FindValueProfileByName          @19
+    GetAdapterOption                @20
+    NewAdapterList                  @21
+    NewComparatorList               @22
+    NewDictionary                   @23
+    NewFilterList                   @24
+    NewFormatterList                @25
+    NewHandlerList                  @26
+    NewList                         @27
+    NewListIterator                 @28
+    NewListReverseIterator          @29
+    NewQueue                        @30
+    NewStack                        @31
+    NewTargetList                   @32
+    NewTree                         @33
+    NewValueForBoolean              @34
+    NewValueForString               @35
+    NewValueList                    @36
+    NextInDictionaryConstIterator   @37
+    OutputToString                  @38
+    PushToQueue                     @39
+    PushToStack                     @40
+    RaiseStatus                     @41
+    RecordToText                    @42
+    SetAdapterOption                @43
+    SetDictionaryValue              @44
+    SetRecordAttribute              @45
+    StringComparatorCompare         @46

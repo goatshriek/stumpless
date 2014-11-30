@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include <stumpless/formatter/text.h>
+#include <stumpless/record.h>
 #include <stumpless/value/constructor.h>
 
 #include "private/output.h"
@@ -48,7 +49,7 @@ TestAdaptFunction
   TestLogSetLastAdapter( adapter );
   TestLogSetLastAdaptedRecord( record );
 
-  SetRecordAttribute( record, "test adapt function attribute", "test attribute value" );
+  SetRecordAttribute( record, "test adapt function attribute", NewValueForString( "test attribute value" ) );
 
   return record;
 }
