@@ -33,7 +33,9 @@ Adapter *
 BuildAdapter
 ( void )
 {
-  Adapter *adapter = malloc( sizeof( Adapter ) );
+  Adapter *adapter;
+
+  adapter = malloc( sizeof( Adapter ) );
   if( !adapter )
     return NULL;
 
@@ -49,11 +51,14 @@ AdapterList *
 BuildAdapterList
 ( void )
 {
-  AdapterList *list = NewAdapterList();
+  Adapter *adapter;
+  AdapterList *list;
+
+  list = NewAdapterList();
   if( !list )
     return NULL;
 
-  Adapter *adapter = BuildAdapter();
+  adapter = BuildAdapter();
   if( !adapter )
     return NULL;
   if( !AppendToAdapterList( list, adapter ) )
@@ -72,7 +77,9 @@ Adapter *
 BuildBadAdapter
 ( void )
 {
-  Adapter *adapter = malloc( sizeof( Adapter ) );
+  Adapter *adapter;
+
+  adapter = malloc( sizeof( Adapter ) );
   if( !adapter )
     return NULL;
 
@@ -88,7 +95,9 @@ Formatter *
 BuildBadFormatter
 ( void )
 {
-  Formatter *formatter = malloc( sizeof( Formatter ) );
+  Formatter *formatter;
+
+  formatter = malloc( sizeof( Formatter ) );
   if( !formatter )
     return NULL;
 
@@ -110,7 +119,9 @@ Handler *
 BuildBadHandler
 ( void )
 {
-  Handler *handler = malloc( sizeof( Handler ) );
+  Handler *handler;
+
+  handler = malloc( sizeof( Handler ) );
   if( !handler )
     return NULL;
 
@@ -133,7 +144,9 @@ Target *
 BuildBadTarget
 ( void )
 {
-  Target *target = malloc( sizeof( Target ) );
+  Target *target;
+
+  target = malloc( sizeof( Target ) );
   if( !target )
     return NULL;
 
@@ -152,7 +165,9 @@ Boolean *
 BuildBoolean
 ( void )
 {
-  Boolean * boolean = malloc( sizeof( Boolean ) );
+  Boolean *boolean;
+
+  boolean = malloc( sizeof( Boolean ) );
   if( !boolean )
     return NULL;
 
@@ -171,11 +186,14 @@ Value *
 BuildBooleanValue
 ( void )
 {
-  Boolean * boolean = BuildBoolean();
+  Boolean *boolean;
+  Value *value;
+
+  boolean = BuildBoolean();
   if( !boolean )
     return NULL;
 
-  Value *value = NewValueForBoolean( boolean );
+  value = NewValueForBoolean( boolean );
   if( !value )
     return NULL;
 
@@ -185,13 +203,14 @@ BuildBooleanValue
 Output *
 BuildByteOutput( void )
 {
-  Output * output;
+  Output *output;
+
   output = malloc( sizeof( Output ) );
-  if( output == NULL )
+  if( !output )
     return NULL;
 
   output->profile = FindOutputProfileByName( "binary" );
-  if( output->profile == NULL )
+  if( !output->profile )
     return NULL;
 
   return output;
@@ -201,7 +220,10 @@ Value *
 BuildCharArrayValue
 ( void )
 {
-  Value * value = malloc( sizeof( Value ) );
+  char *array;
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -209,7 +231,7 @@ BuildCharArrayValue
   if( !value->profile )
     return NULL;
 
-  char *array = malloc( sizeof( char ) * 10 );
+  array = malloc( sizeof( char ) * 10 );
   if( !array )
     return NULL;
 
@@ -234,7 +256,9 @@ Comparator *
 BuildComparator
 ( void )
 {
-  Comparator *comparator = malloc( sizeof( Comparator ) );
+  Comparator *comparator;
+
+  comparator = malloc( sizeof( Comparator ) );
   if( !comparator )
     return NULL;
 
@@ -250,11 +274,14 @@ ComparatorList *
 BuildComparatorList
 ( void )
 {
-  ComparatorList *list = NewComparatorList();
+  Comparator *comparator;
+  ComparatorList *list;
+
+  list = NewComparatorList();
   if( !list )
     return NULL;
 
-  Comparator *comparator = BuildComparator();
+  comparator = BuildComparator();
   if( !comparator )
     return NULL;
   if( !AppendToComparatorList( list, comparator ) )
@@ -280,11 +307,13 @@ Dictionary *
 BuildDictionaryOfEventAttributes
 ( void )
 {
-  Dictionary *attributes = NewDictionary();
+  Dictionary *attributes;
+  EventAttribute *attribute;
+
+  attributes = NewDictionary();
   if( !attributes )
     return NULL;
 
-  EventAttribute *attribute;
   attribute = malloc( sizeof( EventAttribute ) );
   if( !attribute )
     return NULL;
@@ -313,17 +342,20 @@ Dictionary *
 BuildDictionaryOfRecordAttributes
 ( void )
 {
-  Dictionary *record_attributes = NewDictionary();
+  Dictionary *event_attributes, *record_attributes;
+  DictionaryConstIterator *iterator;
+  const EventAttribute *event_attribute;
+  RecordAttribute *record_attribute;
+
+  record_attributes = NewDictionary();
   if( !record_attributes )
     return NULL;
 
-  Dictionary *event_attributes = BuildDictionaryOfEventAttributes();
+  event_attributes = BuildDictionaryOfEventAttributes();
   if( !event_attributes )
     return NULL;
 
-  RecordAttribute *record_attribute;
-  const EventAttribute *event_attribute;
-  DictionaryConstIterator *iterator = CBeginDictionary( event_attributes );
+  iterator = CBeginDictionary( event_attributes );
   while( event_attribute = NextInDictionaryConstIterator( iterator ) ){
     if( strcmp( event_attribute->name, "Unused Attribute" ) == 0)
       continue;
@@ -358,7 +390,9 @@ Dictionary *
 BuildDictionaryOfStrings
 ( void )
 {
-  Dictionary *dictionary = NewDictionary();
+  Dictionary *dictionary;
+
+  dictionary = NewDictionary();
   if( !dictionary )
     return NULL;
 
@@ -529,17 +563,20 @@ FilterList *
 BuildFilterList
 ( void )
 {
-  FilterList * list = NewFilterList();
-  if( list == NULL )
+  Filter *filter;
+  FilterList *list;
+
+  list = NewFilterList();
+  if( !list )
     return NULL;
 
-  Filter * filter = FindFilterByName( "empty" );
-  if( filter == NULL )
+  filter = FindFilterByName( "empty" );
+  if( !filter )
     return NULL;
   AppendToFilterList( list, filter );
 
   filter = FindFilterByName( "level" );
-  if( filter == NULL )
+  if( !filter )
     return NULL;
   AppendToFilterList( list, filter );
 
@@ -550,7 +587,9 @@ Formatter *
 BuildFormatter
 ( void )
 {
-  Formatter *formatter = malloc( sizeof( Formatter ) );
+  Formatter *formatter;
+
+  formatter = malloc( sizeof( Formatter ) );
   if( !formatter )
     return NULL;
 
@@ -572,11 +611,14 @@ FormatterList *
 BuildFormatterList
 ( void )
 {
-  FormatterList *list = NewFormatterList();
+  Formatter *formatter;
+  FormatterList *list;
+
+  list = NewFormatterList();
   if( !list )
     return NULL;
 
-  Formatter * formatter = FindFormatterByName( "csv" );
+  formatter = FindFormatterByName( "csv" );
   if( !formatter )
     return NULL;
   if( !AppendToFormatterList( list, formatter ) )
@@ -595,7 +637,9 @@ Handler *
 BuildHandler
 ( void )
 {
-  Handler *handler = malloc( sizeof( Handler ) );
+  Handler *handler;
+
+  handler = malloc( sizeof( Handler ) );
   if( !handler )
     return NULL;
 
@@ -613,11 +657,14 @@ HandlerList *
 BuildHandlerList
 ( void )
 {
-  HandlerList *list = NewHandlerList();
+  Handler *handler;
+  HandlerList *list;
+
+  list = NewHandlerList();
   if( !list )
     return NULL;
 
-  Handler *handler = BuildHandler();
+  handler = BuildHandler();
   if( !handler )
     return NULL;
   if( !AppendToHandlerList( list, handler ) )
@@ -635,7 +682,10 @@ BuildHandlerList
 Value *
 BuildIntArrayValue( void )
 {
-  Value *value = malloc( sizeof( Value ) );
+  int *array;
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -645,7 +695,7 @@ BuildIntArrayValue( void )
   if( value->profile == NULL )
     return NULL;
 
-  int *array = malloc( sizeof( int ) * 10 );
+  array = malloc( sizeof( int ) * 10 );
   if( !array )
     return NULL;
 
@@ -667,14 +717,17 @@ BuildIntArrayValue( void )
 }
 
 Value *
-BuildIntValue( void )
+BuildIntValue
+( void )
 {
-  Value * value = malloc( sizeof( Value ) );
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
   value->profile = FindValueProfileByName( "int" );
-  if( value->profile == NULL )
+  if( !value->profile )
     return NULL;
 
   value->i = 45678;
@@ -686,7 +739,9 @@ Level *
 BuildLevel
 ( void )
 {
-  Level *level = malloc( sizeof( Level ) ) ;
+  Level *level;
+
+  level = malloc( sizeof( Level ) ) ;
   if( !level )
     return NULL;
 
@@ -702,7 +757,9 @@ ListIterator *
 BuildListIterator
 ( void )
 {
-  ListIterator * iterator = NewListIterator( BuildListOfStrings(), 0 );
+  ListIterator *iterator;
+
+  iterator = NewListIterator( BuildListOfStrings(), 0 );
   if( !iterator )
     return NULL;
 
@@ -713,8 +770,10 @@ List *
 BuildListOfStrings
 ( void )
 {
-  List * list = NewList();
-  if( list == NULL )
+  List *list;
+
+  list = NewList();
+  if( !list )
     return NULL;
 
   AppendToList( list, "This" );
@@ -732,7 +791,9 @@ ListReverseIterator *
 BuildListReverseIterator
 ( void )
 {
-  ListReverseIterator * iterator = NewListReverseIterator( BuildListOfStrings(), 0 );
+  ListReverseIterator *iterator;
+
+  iterator = NewListReverseIterator( BuildListOfStrings(), 0 );
   if( !iterator )
     return NULL;
 
@@ -743,7 +804,9 @@ Logger *
 BuildLogger
 ( void )
 {
-  Logger *logger = malloc( sizeof( Logger ) );
+  Logger *logger;
+
+  logger = malloc( sizeof( Logger ) );
   if( !logger )
     return NULL;
 
@@ -764,7 +827,9 @@ Output *
 BuildOutput
 ( void )
 {
-  Output *output = malloc( sizeof( Output ) );
+  Output *output;
+
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -783,8 +848,10 @@ OutputProfile *
 BuildOutputProfile
 ( void )
 {
-  OutputProfile * profile = malloc( sizeof( OutputProfile ) );
-  if( profile == NULL )
+  OutputProfile *profile;
+
+  profile = malloc( sizeof( OutputProfile ) );
+  if( !profile )
     return NULL;
 
   profile->into_mysql = NULL;
@@ -801,7 +868,9 @@ Queue *
 BuildQueue
 ( void )
 {
-  Queue *queue = NewQueue();
+  Queue *queue;
+
+  queue = NewQueue();
   if( !queue )
     return NULL;
 
@@ -816,7 +885,9 @@ Output *
 BuildRawStringOutput
 ( void )
 {
-  Output * output = malloc( sizeof( Output ) );
+  Output *output;
+
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -834,9 +905,12 @@ BuildRawStringOutput
 }
 
 Record *
-BuildRecord( void )
+BuildRecord
+( void )
 {
-  Record *record = malloc( sizeof( Record ) );
+  Record *record;
+
+  record = malloc( sizeof( Record ) );
   if( !record )
     return NULL;
 
@@ -855,7 +929,9 @@ RecordAttribute *
 BuildRecordAttribute
 ( void )
 {
-  RecordAttribute *attribute = malloc( sizeof( RecordAttribute ) );
+  RecordAttribute *attribute;
+
+  attribute = malloc( sizeof( RecordAttribute ) );
   if( !attribute )
     return NULL;
 
@@ -876,17 +952,19 @@ Stack *
 BuildStackOfStrings
 ( void )
 {
-  Stack * stack = NewStack();
-  if( stack == NULL )
+  Stack *stack;
+
+  stack = NewStack();
+  if( !stack )
     return NULL;
 
-  if( PushToStack( stack, "bottom" ) == NULL )
+  if( !PushToStack( stack, "bottom" ) )
     return NULL;
 
-  if( PushToStack( stack, "middle" ) == NULL )
+  if( !PushToStack( stack, "middle" ) )
     return NULL;
 
-  if( PushToStack( stack, "top" ) == NULL )
+  if( !PushToStack( stack, "top" ) )
     return NULL;
 
   return stack;
@@ -896,7 +974,9 @@ Value *
 BuildStringValue
 ( void )
 {
-  Value * value = malloc( sizeof( Value * ) );
+  Value *value;
+
+  value = malloc( sizeof( Value * ) );
   if( !value )
     return NULL;
 
@@ -913,7 +993,9 @@ Target *
 BuildTarget
 ( void )
 {
-  Target *target = malloc( sizeof( Target ) );
+  Target *target;
+
+  target = malloc( sizeof( Target ) );
   if( !target )
     return NULL;
 
@@ -932,7 +1014,9 @@ TargetList *
 BuildTargetList
 ( void )
 {
-  TargetList *list = NewTargetList();
+  TargetList *list;
+
+  list = NewTargetList();
   if( !list )
     return NULL;
 
@@ -946,7 +1030,10 @@ Output *
 BuildTextOutput
 ( void )
 {
-  Output *output = malloc( sizeof( Output ) );
+  Output *output;
+  ValueList *result, *values;
+
+  output = malloc( sizeof( Output ) );
   if( !output )
     return NULL;
 
@@ -954,11 +1041,11 @@ BuildTextOutput
   if( !output->profile )
     return NULL;
 
-  ValueList * values = NewValueList();
+  values = NewValueList();
   if( !values )
     return NULL;
 
-  ValueList * result = AppendStringToValueList( values, "First\n" );
+  result = AppendStringToValueList( values, "First\n" );
   if( !result )
     return NULL;
 
@@ -979,7 +1066,9 @@ Tree *
 BuildTreeOfStrings
 ( void )
 {
-  Tree * tree = NewTree();
+  Tree *tree;
+
+  tree = NewTree();
   if( !tree )
     return NULL;
 
@@ -996,9 +1085,12 @@ BuildTreeOfStrings
 }
 
 Value *
-BuildUnsignedIntValue( void )
+BuildUnsignedIntValue
+( void )
 {
-  Value *value = malloc( sizeof( Value ) );
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -1014,9 +1106,12 @@ BuildUnsignedIntValue( void )
 }
 
 Value *
-BuildUnsignedShortValue( void )
+BuildUnsignedShortValue
+( void )
 {
-  Value *value = malloc( sizeof( Value ) );
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -1035,7 +1130,9 @@ Value *
 BuildValue
 ( void )
 {
-  Value *value = malloc( sizeof( Value ) );
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -1053,12 +1150,12 @@ ValueList *
 BuildValueList
 ( void )
 {
-  ValueList *list = NewValueList();
+  Value *value;
+  ValueList *list, *result;
+
+  list = NewValueList();
   if( !list )
     return NULL;
-
-  Value * value;
-  ValueList * result;
 
   value = BuildIntArrayValue();
   if( !value )
@@ -1101,8 +1198,10 @@ BuildValueList
 ValueList *
 BuildValueListOfStrings( void )
 {
-  ValueList * list = NewValueList();
-  if( list == NULL )
+  ValueList *list;
+
+  list = NewValueList();
+  if( !list )
     return NULL;
 
   AppendStringToValueList( list, "this" );
@@ -1115,10 +1214,13 @@ BuildValueListOfStrings( void )
 }
 
 ValueProfile *
-BuildValueProfile( void )
+BuildValueProfile
+( void )
 {
-  ValueProfile * profile = malloc( sizeof( ValueProfile ) );
-  if( profile == NULL )
+  ValueProfile *profile;
+
+  profile = malloc( sizeof( ValueProfile ) );
+  if( !profile )
     return NULL;
 
   profile->name = "Test Profile";
@@ -1134,9 +1236,13 @@ BuildValueProfile( void )
 }
 
 Value *
-BuildVoidValue( void )
+BuildVoidValue
+( void )
 {
-  Value * value = malloc( sizeof( Value ) );
+  Boolean *boolean;
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return NULL;
 
@@ -1144,7 +1250,7 @@ BuildVoidValue( void )
   if( !value->profile )
     return NULL;
 
-  Boolean *boolean = BuildBoolean();
+  boolean = BuildBoolean();
   if( !boolean )
     return NULL;
 
@@ -1157,8 +1263,10 @@ Status *
 BuildWarningStatus
 ( void )
 {
-  Status * status = malloc( sizeof( Status ) );
-  if( status == NULL )
+  Status *status;
+
+  status = malloc( sizeof( Status ) );
+  if( !status )
     return NULL;
 
   status->error = 0;
