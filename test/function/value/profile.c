@@ -31,13 +31,13 @@ test_add_profile
   ValueProfile *found, *profile;
   Status *status;
 
-  ValueProfile *profile = BuildValueProfile();
+  profile = BuildValueProfile();
   FAIL_IF_NULL( profile, "the test profile could not be built" )
 
   status = AddValueProfile( profile );
   FAIL_IF_NOT_NULL( status, "the new profile could not be added" )
 
-  ValueProfile *found = FindValueProfileByName( profile->name );
+  found = FindValueProfileByName( profile->name );
   if( found != profile )
     return "the value was not added in such a way that it could be retrieved";
 

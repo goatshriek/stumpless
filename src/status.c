@@ -40,10 +40,15 @@ FindStatusByName
 {
   Status *status;
 
-  if( !status_dictionary )
+  if( !status_dictionary ){
     status_dictionary = NewDictionary();
+    if( !status_dictionary )
+      return NULL;
+  }
 
-  if( !GetDictionaryValue( status_dictionary, name ) )
+  status = GetDictionaryValue( status_dictionary, name );
+
+  if( !status )
     status = InitializeStatusByName( name );
 
   return status;

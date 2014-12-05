@@ -111,8 +111,13 @@ SetDictionaryValue
   Node *node;
 
   // todo add a search for existing keys
-  if( !dictionary )
+  if( !dictionary || !key )
     return NULL;
+
+  if( !value ){
+    RemoveDictionaryValue( dictionary, key );
+    return NULL;
+  }
 
   node = malloc( sizeof( Node ) );
   if( !node )

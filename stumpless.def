@@ -14,6 +14,7 @@ EXPORTS
     AppendToList                    @11
     AppendToTargetList              @12
     AppendToValueList               @13
+    BooleanToString                 @47
     CBeginDictionary                @14
     FindAdapterByName               @15
     FindFilterByName                @16

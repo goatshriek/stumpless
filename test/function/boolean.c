@@ -5,6 +5,7 @@
 #include "private/boolean.h"
 #include "private/type.h"
 
+#include "test/function/boolean.h"
 #include "test/helper.h"
 
 const char * test_to_string( void );
@@ -13,10 +14,10 @@ int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result;
-  
-  RUN_TEST( to_string )
-  
+  const char *result;
+
+  TEST( ToString )
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -24,21 +25,25 @@ main( void )
 }
 
 const char *
-test_to_string( void )
+TestToString
+( void )
 {
-  Boolean * boolean = BuildBoolean();
-  if( boolean == NULL )
+  Boolean *boolean;
+  char *str;
+
+  boolean = BuildBoolean();
+  if( !boolean )
     return "could not build the test boolean";
-  
-  char * str = BooleanToString( NULL );
-  if( str != NULL )
+
+  str = BooleanToString( NULL );
+  if( str )
     return "the string was not null for a null pointer";
-  
+
   str = BooleanToString( boolean );
-  if( str == NULL )
+  if( !str )
     return "the string was null for a non-null boolean";
   if( strcmp( str, "true" ) != 0 )
     return "the test boolean value did not yield the correct string output";
-  
+
   return NULL;
 }
