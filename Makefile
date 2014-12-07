@@ -16,6 +16,13 @@ $(OUTDIR):
     if not exist "$(OUTDIR)\src\$(NULL)" mkdir $(OUTDIR)\src
     if not exist "$(OUTDIR)\src\adapter\$(NULL)" mkdir $(OUTDIR)\src\adapter
     if not exist "$(OUTDIR)\src\comparator\$(NULL)" mkdir $(OUTDIR)\src\comparator
+    if not exist "$(OUTDIR)\src\container\$(NULL)" mkdir $(OUTDIR)\src\container
+    if not exist "$(OUTDIR)\src\container\dictionary\$(NULL)" mkdir $(OUTDIR)\src\container\dictionary
+    if not exist "$(OUTDIR)\src\container\list\$(NULL)" mkdir $(OUTDIR)\src\container\list
+    if not exist "$(OUTDIR)\src\container\list\const_iterator\$(NULL)" mkdir $(OUTDIR)\src\container\list\const_iterator
+    if not exist "$(OUTDIR)\src\container\list\const_reverse_iterator\$(NULL)" mkdir $(OUTDIR)\src\container\list\const_reverse_iterator
+    if not exist "$(OUTDIR)\src\container\list\iterator\$(NULL)" mkdir $(OUTDIR)\src\container\list\iterator
+    if not exist "$(OUTDIR)\src\container\list\reverse_iterator\$(NULL)" mkdir $(OUTDIR)\src\container\list\reverse_iterator
     if not exist "$(OUTDIR)\src\filter\$(NULL)" mkdir $(OUTDIR)\src\filter
     if not exist "$(OUTDIR)\src\formatter\$(NULL)" mkdir $(OUTDIR)\src\formatter
     if not exist "$(OUTDIR)\src\handler\$(NULL)" mkdir $(OUTDIR)\src\handler
@@ -39,6 +46,51 @@ $(OUTDIR)\stumpless.dll: $(OUTDIR)\src\adapter.obj \
                          $(OUTDIR)\src\comparator\base.obj \
                          $(OUTDIR)\src\comparator\initializer.obj \
                          $(OUTDIR)\src\configuration.obj \
+                         $(OUTDIR)\src\container\dictionary.obj \
+                         $(OUTDIR)\src\container\dictionary\const_iterator.obj \
+                         $(OUTDIR)\src\container\list.obj \
+                         $(OUTDIR)\src\container\list\adapter.obj \
+                         $(OUTDIR)\src\container\list\comparator.obj \
+                         $(OUTDIR)\src\container\list\const_iterator.obj \
+                         $(OUTDIR)\src\container\list\const_iterator\adapter.obj \
+                         $(OUTDIR)\src\container\list\const_iterator\comparator.obj \
+                         $(OUTDIR)\src\container\list\const_iterator\filter.obj \
+                         $(OUTDIR)\src\container\list\const_iterator\formatter.obj \
+                         $(OUTDIR)\src\container\list\const_iterator\handler.obj \
+                         $(OUTDIR)\src\container\list\const_iterator\target.obj \
+                         $(OUTDIR)\src\container\list\const_iterator\value.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator\adapter.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator\comparator.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator\filter.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator\formatter.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator\handler.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator\target.obj \
+                         $(OUTDIR)\src\container\list\const_reverse_iterator\value.obj \
+                         $(OUTDIR)\src\container\list\filter.obj \
+                         $(OUTDIR)\src\container\list\formatter.obj \
+                         $(OUTDIR)\src\container\list\handler.obj \
+                         $(OUTDIR)\src\container\list\iterator.obj \
+                         $(OUTDIR)\src\container\list\iterator\adapter.obj \
+                         $(OUTDIR)\src\container\list\iterator\comparator.obj \
+                         $(OUTDIR)\src\container\list\iterator\filter.obj \
+                         $(OUTDIR)\src\container\list\iterator\formatter.obj \
+                         $(OUTDIR)\src\container\list\iterator\handler.obj \
+                         $(OUTDIR)\src\container\list\iterator\target.obj \
+                         $(OUTDIR)\src\container\list\iterator\value.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator\adapter.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator\comparator.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator\filter.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator\formatter.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator\handler.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator\target.obj \
+                         $(OUTDIR)\src\container\list\reverse_iterator\value.obj \
+                         $(OUTDIR)\src\container\list\target.obj \
+                         $(OUTDIR)\src\container\list\value.obj \
+                         $(OUTDIR)\src\container\queue.obj \
+                         $(OUTDIR)\src\container\stack.obj \
+                         $(OUTDIR)\src\container\tree.obj \
                          $(OUTDIR)\src\event.obj \
                          $(OUTDIR)\src\event_attribute.obj \
                          $(OUTDIR)\src\filter.obj \
@@ -80,6 +132,51 @@ $(OUTDIR)\stumpless.dll: $(OUTDIR)\src\adapter.obj \
             $(OUTDIR)\src\comparator\base.obj \
             $(OUTDIR)\src\comparator\initializer.obj \
             $(OUTDIR)\src\configuration.obj \
+            $(OUTDIR)\src\container\dictionary.obj \
+            $(OUTDIR)\src\container\dictionary\const_iterator.obj \
+            $(OUTDIR)\src\container\list.obj \
+            $(OUTDIR)\src\container\list\adapter.obj \
+            $(OUTDIR)\src\container\list\comparator.obj \
+            $(OUTDIR)\src\container\list\const_iterator.obj \
+            $(OUTDIR)\src\container\list\const_iterator\adapter.obj \
+            $(OUTDIR)\src\container\list\const_iterator\comparator.obj \
+            $(OUTDIR)\src\container\list\const_iterator\filter.obj \
+            $(OUTDIR)\src\container\list\const_iterator\formatter.obj \
+            $(OUTDIR)\src\container\list\const_iterator\handler.obj \
+            $(OUTDIR)\src\container\list\const_iterator\target.obj \
+            $(OUTDIR)\src\container\list\const_iterator\value.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator\adapter.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator\comparator.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator\filter.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator\formatter.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator\handler.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator\target.obj \
+            $(OUTDIR)\src\container\list\const_reverse_iterator\value.obj \
+            $(OUTDIR)\src\container\list\filter.obj \
+            $(OUTDIR)\src\container\list\formatter.obj \
+            $(OUTDIR)\src\container\list\handler.obj \
+            $(OUTDIR)\src\container\list\iterator.obj \
+            $(OUTDIR)\src\container\list\iterator\adapter.obj \
+            $(OUTDIR)\src\container\list\iterator\comparator.obj \
+            $(OUTDIR)\src\container\list\iterator\filter.obj \
+            $(OUTDIR)\src\container\list\iterator\formatter.obj \
+            $(OUTDIR)\src\container\list\iterator\handler.obj \
+            $(OUTDIR)\src\container\list\iterator\target.obj \
+            $(OUTDIR)\src\container\list\iterator\value.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator\adapter.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator\comparator.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator\filter.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator\formatter.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator\handler.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator\target.obj \
+            $(OUTDIR)\src\container\list\reverse_iterator\value.obj \
+            $(OUTDIR)\src\container\list\target.obj \
+            $(OUTDIR)\src\container\list\value.obj \
+            $(OUTDIR)\src\container\queue.obj \
+            $(OUTDIR)\src\container\stack.obj \
+            $(OUTDIR)\src\container\tree.obj \
             $(OUTDIR)\src\event.obj \
             $(OUTDIR)\src\event_attribute.obj \
             $(OUTDIR)\src\filter.obj \
@@ -138,6 +235,141 @@ $(OUTDIR)\src\comparator\initializer.obj: $(SRCDIR)\comparator\initializer.c
     
 $(OUTDIR)\src\configuration.obj: $(SRCDIR)\configuration.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\configuration.c
+    
+$(OUTDIR)\src\container\dictionary.obj: $(SRCDIR)\container\dictionary.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\dictionary.c
+    
+$(OUTDIR)\src\container\dictionary\const_iterator.obj: $(SRCDIR)\container\dictionary\const_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\dictionary\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\dictionary\const_iterator.c
+    
+$(OUTDIR)\src\container\list.obj: $(SRCDIR)\container\list.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list.c
+    
+$(OUTDIR)\src\container\list\adapter.obj: $(SRCDIR)\container\list\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\adapter.c
+    
+$(OUTDIR)\src\container\list\comparator.obj: $(SRCDIR)\container\list\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\comparator.c
+    
+$(OUTDIR)\src\container\list\const_iterator.obj: $(SRCDIR)\container\list\const_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator.c
+    
+$(OUTDIR)\src\container\list\const_iterator\adapter.obj: $(SRCDIR)\container\list\const_iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\adapter.c
+    
+$(OUTDIR)\src\container\list\const_iterator\comparator.obj: $(SRCDIR)\container\list\const_iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\comparator.c
+    
+$(OUTDIR)\src\container\list\const_iterator\filter.obj: $(SRCDIR)\container\list\const_iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\filter.c
+    
+$(OUTDIR)\src\container\list\const_iterator\formatter.obj: $(SRCDIR)\container\list\const_iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\formatter.c
+    
+$(OUTDIR)\src\container\list\const_iterator\handler.obj: $(SRCDIR)\container\list\const_iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\handler.c
+    
+$(OUTDIR)\src\container\list\const_iterator\target.obj: $(SRCDIR)\container\list\const_iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\target.c
+    
+$(OUTDIR)\src\container\list\const_iterator\value.obj: $(SRCDIR)\container\list\const_iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\value.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator.obj: $(SRCDIR)\container\list\const_reverse_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator\adapter.obj: $(SRCDIR)\container\list\const_reverse_iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\adapter.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator\comparator.obj: $(SRCDIR)\container\list\const_reverse_iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\comparator.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator\filter.obj: $(SRCDIR)\container\list\const_reverse_iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\filter.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator\formatter.obj: $(SRCDIR)\container\list\const_reverse_iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\formatter.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator\handler.obj: $(SRCDIR)\container\list\const_reverse_iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\handler.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator\target.obj: $(SRCDIR)\container\list\const_reverse_iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\target.c
+    
+$(OUTDIR)\src\container\list\const_reverse_iterator\value.obj: $(SRCDIR)\container\list\const_reverse_iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\value.c
+    
+$(OUTDIR)\src\container\list\filter.obj: $(SRCDIR)\container\list\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\filter.c
+    
+$(OUTDIR)\src\container\list\formatter.obj: $(SRCDIR)\container\list\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\formatter.c
+    
+$(OUTDIR)\src\container\list\handler.obj: $(SRCDIR)\container\list\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\handler.c
+    
+$(OUTDIR)\src\container\list\iterator.obj: $(SRCDIR)\container\list\iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator.c
+    
+$(OUTDIR)\src\container\list\iterator\adapter.obj: $(SRCDIR)\container\list\iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\adapter.c
+    
+$(OUTDIR)\src\container\list\iterator\comparator.obj: $(SRCDIR)\container\list\iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\comparator.c
+    
+$(OUTDIR)\src\container\list\iterator\filter.obj: $(SRCDIR)\container\list\iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\filter.c
+    
+$(OUTDIR)\src\container\list\iterator\formatter.obj: $(SRCDIR)\container\list\iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\formatter.c
+    
+$(OUTDIR)\src\container\list\iterator\handler.obj: $(SRCDIR)\container\list\iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\handler.c
+    
+$(OUTDIR)\src\container\list\iterator\target.obj: $(SRCDIR)\container\list\iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\target.c
+    
+$(OUTDIR)\src\container\list\iterator\value.obj: $(SRCDIR)\container\list\iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\value.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator.obj: $(SRCDIR)\container\list\reverse_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator\adapter.obj: $(SRCDIR)\container\list\reverse_iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\adapter.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator\comparator.obj: $(SRCDIR)\container\list\reverse_iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\comparator.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator\filter.obj: $(SRCDIR)\container\list\reverse_iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\filter.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator\formatter.obj: $(SRCDIR)\container\list\reverse_iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\formatter.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator\handler.obj: $(SRCDIR)\container\list\reverse_iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\handler.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator\target.obj: $(SRCDIR)\container\list\reverse_iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\target.c
+    
+$(OUTDIR)\src\container\list\reverse_iterator\value.obj: $(SRCDIR)\container\list\reverse_iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\value.c
+    
+$(OUTDIR)\src\container\list\target.obj: $(SRCDIR)\container\list\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\target.c
+    
+$(OUTDIR)\src\container\list\value.obj: $(SRCDIR)\container\list\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\value.c
+    
+$(OUTDIR)\src\container\queue.obj: $(SRCDIR)\container\queue.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\queue.c
+    
+$(OUTDIR)\src\container\stack.obj: $(SRCDIR)\container\stack.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\stack.c
+    
+$(OUTDIR)\src\container\tree.obj: $(SRCDIR)\container\tree.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\tree.c
     
 $(OUTDIR)\src\event.obj: $(SRCDIR)\event.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\event.c
@@ -237,7 +469,7 @@ $(OUTDIR)\src\value\profile_initializer.obj: $(SRCDIR)\value\profile_initializer
     
 
 # run tests
-check: $(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\boolean.exe $(OUTDIR)\test\function\configuration.exe
+check: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\boolean.exe $(OUTDIR)\test\function\configuration.exe
     $(OUTDIR)\test\function\adapter.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Adapter Test Failed"
     $(OUTDIR)\test\function\boolean.exe >> $(OUTDIR)\test-suite.log
@@ -248,13 +480,13 @@ check: $(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\boolean.exe $
 
 # executable files
 $(OUTDIR)\test\function\adapter.exe: $(OUTDIR)\test\function\adapter.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\adapter.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(LIBDIR)\stumpless.lib
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\adapter.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
     
 $(OUTDIR)\test\function\boolean.exe: $(OUTDIR)\test\function\boolean.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\boolean.exe $(OUTDIR)\test\function\boolean.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(LIBDIR)\stumpless.lib
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\boolean.exe $(OUTDIR)\test\function\boolean.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
     
 $(OUTDIR)\test\function\configuration.exe: $(OUTDIR)\test\function\configuration.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\configuration.exe $(OUTDIR)\test\function\configuration.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(LIBDIR)\stumpless.lib
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\configuration.exe $(OUTDIR)\test\function\configuration.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
     
     
 # test object files
