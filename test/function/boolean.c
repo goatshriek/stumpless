@@ -8,8 +8,6 @@
 #include "test/function/boolean.h"
 #include "test/helper.h"
 
-const char * test_to_string( void );
-
 int
 main( void )
 {

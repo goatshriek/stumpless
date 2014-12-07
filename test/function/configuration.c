@@ -4,17 +4,17 @@
 #include "private/configuration.h"
 #include "private/type.h"
 
+#include "test/function/configuration.h"
 #include "test/helper.h"
 
-const char * test_initialization( void );
-
 int
-main( void )
+main
+( void )
 {
   unsigned failure_count = 0;
-  const char * result;
+  const char *result;
 
-  RUN_TEST( initialization )
+  TEST( Initialize )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -23,12 +23,15 @@ main( void )
 }
 
 const char *
-test_initialization( void )
+TestInitialize
+( void )
 {
-  if( InitializeConfiguration() != NULL )
-    return "initialization method returnedi an error";
+  Configuration *configuration;
 
-  Configuration * configuration = GetConfiguration();
+  if( InitializeConfiguration() )
+    return "initialization method returned an error";
+
+  configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "configuration was not initialized after call" )
   FAIL_IF_NULL( configuration->file, "file configuration was not initialized" )
   FAIL_IF_NULL( configuration->http, "http configuration was not initialized" )

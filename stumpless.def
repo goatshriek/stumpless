@@ -22,6 +22,8 @@ EXPORTS
     FindOutputProfileByName         @18
     FindValueProfileByName          @19
     GetAdapterOption                @20
+    GetConfiguration                @48
+    InitializeConfiguration         @49
     NewAdapterList                  @21
     NewComparatorList               @22
     NewDictionary                   @23
