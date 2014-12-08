@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "private/container/dictionary.h"
 #include "private/container/dictionary/const_iterator.h"
 #include "private/type.h"
 #include "static/container/dictionary.h"

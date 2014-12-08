@@ -37,7 +37,7 @@ DestroyTarget
 
 Status *
 LogToTarget
-( const Target *target, Record *record )
+( Target *target, const Record *record )
 {
   if( !target || !target->formatter || !target->handler || !record )
     return RaiseStatus( "empty argument" );

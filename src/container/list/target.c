@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stumpless/target.h>
+
 #include "private/container/list.h"
 #include "private/container/list/target.h"
 #include "private/container/list/inheritance.h"

@@ -38,6 +38,6 @@ DestroyTarget
  */
 Status *
 LogToTarget
-( const Target *target, Record *record );
+( Target *target, const Record *record );
 
 #endif

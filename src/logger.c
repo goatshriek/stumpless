@@ -11,6 +11,7 @@
 #include "private/container/list/adapter.h"
 #include "private/container/list/formatter.h"
 #include "private/container/list/iterator/formatter.h"
+#include "private/container/list/target.h"
 #include "private/formatter.h"
 #include "private/status.h"
 #include "private/type.h"

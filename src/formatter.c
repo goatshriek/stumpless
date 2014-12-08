@@ -1,6 +1,8 @@
 #include <stdlib.h>
 
 #include "private/container/dictionary.h"
+#include "private/container/list/filter.h"
+#include "private/container/list/formatter.h"
 #include "private/container/list/handler.h"
 #include "private/formatter.h"
 #include "private/formatter/initializer.h"
@@ -95,9 +97,7 @@ Status *
 SetFormatterOption
 ( Formatter * formatter, const char * option, void * value )
 {
-  Dictionary *result;
-
-  if( formatter == NULL || option == NULL )
+  if( !formatter || !option )
     return RaiseStatus( "empty argument" );
 
   if( formatter->options == NULL ){

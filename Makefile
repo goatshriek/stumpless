@@ -1,7 +1,5 @@
 !include <win32.mak>
 
-BASEDIR = C:\Users\Joel\code\stumpless-c
-
 INCDIR = $(BASEDIR)\include
 SRCDIR = $(BASEDIR)\src
 TESTDIR = $(BASEDIR)\test
@@ -470,11 +468,11 @@ $(OUTDIR)\src\value\profile_initializer.obj: $(SRCDIR)\value\profile_initializer
 
 # run tests
 check: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\boolean.exe $(OUTDIR)\test\function\configuration.exe
-    $(OUTDIR)\test\function\adapter.exe >> $(OUTDIR)\test-suite.log
+    - $(OUTDIR)\test\function\adapter.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Adapter Test Failed"
-    $(OUTDIR)\test\function\boolean.exe >> $(OUTDIR)\test-suite.log
+    - $(OUTDIR)\test\function\boolean.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Boolean Test Failed"
-    $(OUTDIR)\test\function\configuration.exe >> $(OUTDIR)\test-suite.log
+    - $(OUTDIR)\test\function\configuration.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Configuration Test Failed"
 
 

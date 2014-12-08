@@ -5,6 +5,7 @@
 #include <stumpless/record.h>
 #include <stumpless/value/constructor.h>
 
+#include "private/container/list/adapter.h"
 #include "private/container/list/target.h"
 #include "private/status.h"
 #include "private/type.h"
