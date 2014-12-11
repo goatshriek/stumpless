@@ -150,20 +150,20 @@ const char *
 test_into_string
 ( void )
 {
-  ValueList * list = BuildValueList();
+  ValueList *list = BuildValueList();
   if( !list )
     return "could not build the test list";
   char str[1000];
 
-  Status * status = ValueListIntoString( NULL, list );
+  Status *status = ValueListIntoString( NULL, list, 1000 );
   FAIL_IF_NULL( status, "an empty string did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
 
-  status = ValueListIntoString( str, NULL );
+  status = ValueListIntoString( str, NULL, 1000 );
   FAIL_IF_NULL( status, "an empty list did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty list did not generate the correct error" )
 
-  status = ValueListIntoString( str, list );
+  status = ValueListIntoString( str, list, 1000 );
   if( status )
     return "a valid string was not properly written into";
 
@@ -252,19 +252,19 @@ test_string_prepender( void )
 const char *
 test_to_string( void )
 {
-  ValueList * list = BuildValueList();
-  if( list == NULL )
-    return "could not build the test list";
-
-  char * str = ValueListToString( NULL );
-  if( str != NULL )
+  char *str = ValueListToString( NULL );
+  if( str )
     return "a null list did not return a null string";
 
-  str = ValueListToString( list );
-  if( str == NULL )
-    return "a valid list returend a null string";
+  ValueList *list = BuildValueList();
+  if( !list )
+    return "could not build the test list";
 
-  if( strstr( str, "4294967196" ) == NULL )
+  str = ValueListToString( list );
+  if( !str )
+    return "a valid list returned a null string";
+
+  if( !strstr( str, "4294967196" ) )
     return "the new string did not contain parts of the list";
 
   return NULL;

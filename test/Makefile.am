@@ -26,6 +26,7 @@ check_PROGRAMS = test/function/adapter \
                  test/function/container/dictionary/main \
                  test/function/container/list/adapter \
                  test/function/container/list/comparator \
+				 test/function/container/list/const_iterator_suite \
                  test/function/container/list/filter \
                  test/function/container/list/formatter \
                  test/function/container/list/handler \

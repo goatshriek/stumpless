@@ -4,6 +4,9 @@ test_function_container_list_adapter_LDADD = $(test_libraries)
 test_function_container_list_comparator_SOURCES = test/function/container/list/comparator.c
 test_function_container_list_comparator_LDADD = $(test_libraries)
 
+test_function_container_list_const_iterator_suite_SOURCES = test/function/container/list/const_iterator_suite.c
+test_function_container_list_const_iterator_suite_LDADD = $(test_libraries)
+
 test_function_container_list_filter_SOURCES = test/function/container/list/filter.c
 test_function_container_list_filter_LDADD = $(test_libraries)
 

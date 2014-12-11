@@ -12,6 +12,7 @@
 #include "private/container/list.h"
 #include "private/container/list/adapter.h"
 #include "private/container/list/comparator.h"
+#include "private/container/list/const_iterator.h"
 #include "private/container/list/filter.h"
 #include "private/container/list/formatter.h"
 #include "private/container/list/handler.h"
@@ -751,6 +752,19 @@ BuildLevel
   level->tertiary = 7;
 
   return level;
+}
+
+ListConstIterator *
+BuildListConstIterator
+( void )
+{
+  ListConstIterator *iterator;
+
+  iterator = NewListConstIterator( BuildListOfStrings(), 0 );
+  if( !iterator )
+    return NULL;
+
+  return iterator;
 }
 
 ListIterator *

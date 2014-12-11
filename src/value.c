@@ -38,13 +38,13 @@ name##ArrayValueToValueList                                                    \
   return list;                                                                 \
 }
 
+// todo use length parameter
 #define VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )        \
 Status *                                                                       \
 name##ValueIntoString                                                          \
-( char *str, const Value *value )                                              \
+( char *str, const Value *value, size_t length )                               \
 {                                                                              \
   const char *format;                                                          \
-  int result;                                                                  \
                                                                                \
   if( !str || !value  )                                                        \
     return RaiseStatus( "empty argument" );                                    \
@@ -52,8 +52,7 @@ name##ValueIntoString                                                          \
   format = value->format ? value->format : default_format;                     \
                                                                                \
   str[0] = '\0';                                                               \
-  result = sprintf( str, format, value->data_member );                         \
-  if( result < 0 )                                                             \
+  if( sprintf( str, format, value->data_member ) < 0 )                         \
     return RaiseStatus( "string write failure" );                              \
                                                                                \
   return NULL;                                                                 \
@@ -138,7 +137,7 @@ BooleanArrayValueToValueList
 
 Status *
 BooleanValueIntoString
-( char *str, const Value *value )
+( char *str, const Value *value, size_t length )
 {
   // todo need to implement
   return NULL;
@@ -289,10 +288,12 @@ StringArrayValueToValueList
 
 Status *
 StringValueIntoString
-( char *str, const Value *value )
+( char *str, const Value *value, size_t length )
 {
-  // todo need to implement
-  return NULL;
+  if( strncpy( str, value->c_p, length ) == str )
+    return NULL;
+  else
+    return RaiseStatus( "string write failure" );
 }
 
 char *
@@ -350,7 +351,7 @@ VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
 Status *
 ValueIntoString
-( char *str, const Value *value )
+( char *str, const Value *value, size_t length )
 {
   if( !value )
     return RaiseStatus( "empty argument" );
@@ -358,7 +359,7 @@ ValueIntoString
   if( !value->profile || !value->profile->into_string )
     return RaiseStatus( "malformed structure" );
 
-  return value->profile->into_string( str, value );
+  return value->profile->into_string( str, value, length );
 }
 
 char *
@@ -399,7 +400,7 @@ VoidArrayValueToValueList
 
 Status *
 VoidValueIntoString
-( char *str, const Value *value )
+( char *str, const Value *value, size_t length )
 {
   return NULL;
 }

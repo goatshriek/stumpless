@@ -14,7 +14,7 @@ BooleanArrayValueToValueList
 
 Status *
 BooleanValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 BooleanValueToString
@@ -26,7 +26,7 @@ CharArrayValueToValueList
 
 Status *
 CharValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 CharValueToString
@@ -46,7 +46,7 @@ DoubleArrayValueToValueList
 
 Status *
 DoubleValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 DoubleValueToString
@@ -58,7 +58,7 @@ FloatArrayValueToValueList
 
 Status *
 FloatValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 FloatValueToString
@@ -70,7 +70,7 @@ IntArrayValueToValueList
 
 Status *
 IntValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 IntValueToString
@@ -82,7 +82,7 @@ LongArrayValueToValueList
 
 Status *
 LongValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 LongValueToString
@@ -94,7 +94,7 @@ LongDoubleArrayValueToValueList
 
 Status *
 LongDoubleValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 LongDoubleValueToString
@@ -106,7 +106,7 @@ LongLongArrayValueToValueList
 
 Status *
 LongLongValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 LongLongValueToString
@@ -118,7 +118,7 @@ ShortArrayValueToValueList
 
 Status *
 ShortValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 ShortValueToString
@@ -130,7 +130,7 @@ SignedCharArrayValueToValueList
 
 Status *
 SignedCharValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 SignedCharValueToString
@@ -140,9 +140,20 @@ ValueList *
 StringArrayValueToValueList
 ( const Value * );
 
+/**
+ * Writes a string representing the provided value into the character buffer
+ * provided. Only writes up to length characters and stops. This means that the
+ * resulting string may  not be NULL-terminated.
+ *
+ * @param str the character buffer to write the string into
+ * @param value the value to get a string for
+ * @param length the maximum number of character to write to the buffer
+ *
+ * @return a Status describing the operation
+ */
 Status *
 StringValueIntoString
-( char *, const Value * );
+( char *str, const Value *value, size_t length );
 
 char *
 StringValueToString
@@ -154,7 +165,7 @@ UnsignedCharArrayValueToValueList
 
 Status *
 UnsignedCharValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 UnsignedCharValueToString
@@ -166,7 +177,7 @@ UnsignedIntArrayValueToValueList
 
 Status *
 UnsignedIntValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 UnsignedIntValueToString
@@ -178,7 +189,7 @@ UnsignedLongArrayValueToValueList
 
 Status *
 UnsignedLongValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 UnsignedLongValueToString
@@ -190,7 +201,7 @@ UnsignedLongLongArrayValueToValueList
 
 Status *
 UnsignedLongLongValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 UnsignedLongLongValueToString
@@ -202,7 +213,7 @@ UnsignedShortArrayValueToValueList
 
 Status *
 UnsignedShortValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 UnsignedShortValueToString
@@ -210,11 +221,7 @@ UnsignedShortValueToString
 
 Status *
 ValueIntoString
-( char *, const Value * );
-
-Status *
-ValueIntoString
-( char *, const Value * );
+( char *, const Value *, size_t );
 
 char *
 ValueToString
@@ -244,12 +251,13 @@ VoidArrayValueToValueList
  *
  * @param str a char buffer to put the string into
  * @param value the Value to get a string representation of
+ * @param length the maximum number of characters to write
  *
  * @return a Status for the operation
  */
 Status *
 VoidValueIntoString
-( char *str, const Value *value );
+( char *str, const Value *value, size_t length );
 
 /**
  * Creates a string representation of a Value representing a void pointer.

@@ -102,9 +102,20 @@ Value *
 ValueListFront
 ( const ValueList * );
 
+/**
+ * Puts the given ValueList into the string provided. Will write a maximum of
+ * characters provided by length and stop, which may result in a string that is
+ * not NULL terminated.
+ *
+ * @param str the char buffer to write the string to
+ * @param list the ValueList to write into the string
+ * @param length the maximum number of characters to write
+ *
+ * @return a Status describing the result
+ */
 Status *
 ValueListIntoString
-( char *, const ValueList * );
+( char *str, const ValueList *list, size_t length );
 
 unsigned short
 ValueListIsEmpty

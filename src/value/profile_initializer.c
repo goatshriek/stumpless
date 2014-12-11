@@ -19,10 +19,10 @@ Initialize##type_name##ArrayValueProfile                                       \
 ( void )                                                                       \
 {                                                                              \
   ValueProfile * profile = malloc( sizeof( ValueProfile ) );                   \
-  if( profile == NULL )                                                        \
+  if( !profile )                                                               \
     return NULL;                                                               \
                                                                                \
-  profile->into_string = NULL;                                                 \
+  profile->into_string = type_name##ArrayValueIntoString;                      \
   profile->name = profile_name;                                                \
   profile->to_binary = NULL;                                                   \
   profile->to_csv = NULL;                                                      \
@@ -41,7 +41,7 @@ Initialize##type_name##ValueProfile                                            \
 ( void )                                                                       \
 {                                                                              \
   ValueProfile * profile = malloc( sizeof( ValueProfile ) );                   \
-  if( profile == NULL )                                                        \
+  if( !profile )                                                               \
     return NULL;                                                               \
                                                                                \
   profile->into_string = type_name##ValueIntoString;                           \

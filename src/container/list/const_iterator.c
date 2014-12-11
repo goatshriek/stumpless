@@ -38,15 +38,12 @@ unsigned short
 ListConstIteratorHasNext
 ( const ListConstIterator * iterator )
 {
-  if( !iterator )
-    return 0;
-
-  return iterator->current != NULL;
+  return iterator != NULL && iterator->current != NULL;
 }
 
 const void *
 NextInListConstIterator
-( ListConstIterator * iterator )
+( ListConstIterator *iterator )
 {
   Node *temp;
   const void *value;
@@ -57,7 +54,7 @@ NextInListConstIterator
   value = iterator->current->value;
 
   temp = iterator->current;
-  iterator->current = XORNODES( iterator->previous, iterator->current->neighbors );
+  iterator->current = XORNODES( iterator->previous, temp->neighbors );
   iterator->previous = temp;
 
   return value;
@@ -67,7 +64,7 @@ ListConstIterator *
 NewListConstIterator
 ( const List *list, int position )
 {
-  int i;
+  int i, steps;
   ListConstIterator *iterator;
   Node *current, *previous = NULL, *temp;
 
@@ -80,24 +77,25 @@ NewListConstIterator
 
   iterator->list = list;
 
-  current = list->first;
   if( position >= 0 ){
     current = list->first;
-    for( i = 0; i < position; i++ ){
-      temp = current;
-      current = XORNODES( previous, current->neighbors );
-      previous = temp;
-    }
+    steps = position;
   } else {
     current = list->last;
-    for( i = 0; i > position; i-- ){
-      temp = current;
-      current = XORNODES( previous, current->neighbors );
-      previous = temp;
+    steps = -( position + 1 );
+  }
+
+  for( i = 0; i < steps; i++ ){
+    temp = current;
+    current = XORNODES( previous, current->neighbors );
+    if( !current ){
+      current = temp;
+      break;
     }
+    previous = temp;
   }
 
   iterator->current = current;
-
+  iterator->previous = previous;
   return iterator;
 }

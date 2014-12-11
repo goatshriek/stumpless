@@ -6,11 +6,12 @@
 
 #include "private/configuration.h"
 #include "private/container/list.h"
+#include "private/container/list/const_iterator.h"
+#include "private/container/list/const_iterator/value.h"
+#include "private/container/list/const_reverse_iterator/value.h"
 #include "private/container/list/inheritance.h"
 #include "private/container/list/iterator.h"
 #include "private/container/list/value.h"
-#include "private/container/list/const_iterator/value.h"
-#include "private/container/list/const_reverse_iterator/value.h"
 #include "private/container/list/iterator/value.h"
 #include "private/container/list/reverse_iterator/value.h"
 #include "private/status.h"
@@ -94,48 +95,33 @@ LIST_CONTAINS( Value )
 
 LIST_FRONT( Value )
 
-// todo rewrite to no longer depend on a buffer
 Status *
 ValueListIntoString
-( char *str, const ValueList *list )
+( char *str, const ValueList *list, size_t length )
 {
-  char *buffer, *value_str;
-  Configuration *configuration;
-  ListIterator *values;
-  size_t buffer_size;
-  Value *value;
+  ListConstIterator *values;
+  size_t current_position = 0, remaining_length;
+  Status *result;
+  const Value *value;
 
-  if( !str || !list )
+  if( !str || !list || length == 0 )
     return RaiseStatus( "empty argument" );
 
   str[0] = '\0';
 
-  configuration = GetConfiguration();
-  if( !configuration )
-    return RaiseStatus( "memory allocation failure" );
-
-  buffer_size = configuration->string->buffer_size;
-  buffer = malloc( sizeof( char ) * ( buffer_size + 1 ) );
-  if( !buffer )
-    return RaiseStatus( "memory allocation failure" );
-
-  values = BeginList( list->list );
-  while( value = NextInListIterator( values ) ){
-    if( !value || !value->profile ){
-      DestroyListIterator( values );
-      return RaiseStatus( "malformed structure" );
-    }
-
-    if( !value->profile->to_string ){
-      continue;
-    }
-
-    value_str = value->profile->to_string( value );
-    if( value_str )
-      strncat( str, value_str, buffer_size );
+  values = CBeginList( list->list );
+  while( value = NextInListConstIterator( values ) ){
+    current_position += strlen( str + current_position );
+    if( length < current_position )
+      remaining_length = current_position - length;
+    else
+      remaining_length = length - current_position;
+    result = ValueIntoString( str + current_position, value, remaining_length );
+    if( result )
+      return result;
   }
 
-  DestroyListIterator( values );
+  DestroyListConstIterator( values );
   return NULL;
 }
 
@@ -149,9 +135,11 @@ ValueListToString
 {
   Configuration * configuration = GetConfiguration();
   size_t buffer_size = configuration->string->buffer_size;
-  char * list_str = malloc( sizeof( char ) * buffer_size + 1 );
+  char *list_str = malloc( sizeof( char ) * buffer_size + 1 );
 
-  NULL_ON_FAILURE( ValueListIntoString( list_str, list ) )
+  NULL_ON_FAILURE( ValueListIntoString( list_str, list, buffer_size ) )
+
+  list_str[buffer_size + 1] = '\0';
 
   return list_str;
 }

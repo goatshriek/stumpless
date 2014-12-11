@@ -47,7 +47,9 @@ EventToText
   if( !level_output || !level_output->data ){
     DestroyOutput( output );
     DestroyValueList( list);
+    return NULL;
   }
+
   AppendValueLists( list, level_output->data );
 
   AppendStringToValueList( list, "] - " );
@@ -55,6 +57,7 @@ EventToText
   attributes_output = EventAttributesToText( formatter, event->attributes );
   if( !attributes_output || !attributes_output->data ){
     DestroyOutput( output );
+    return NULL;
   }
   AppendValueLists( list, attributes_output->data );
 
@@ -94,6 +97,7 @@ EventAttributesToText
   if( !list ){
     DestroyOutput( output );
     DestroyDictionaryConstIterator( iterator );
+    return NULL;
   }
 
   while( attribute = NextInDictionaryConstIterator( iterator ) ){
@@ -218,6 +222,7 @@ RecordAttributesToText
   if( !list ){
     DestroyOutput( output );
     DestroyDictionaryConstIterator( iterator );
+    return NULL;
   }
 
   while( attribute = NextInDictionaryConstIterator( iterator ) ){

@@ -98,17 +98,17 @@ test_into_string( void )
 
   char str[11];
 
-  Status * status = ValueIntoString( NULL, value );
+  Status * status = ValueIntoString( NULL, value, 11 );
   FAIL_IF_NULL( status, "an empty string did not genereate an abnormal status" )
 
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
 
-  status = ValueIntoString( str, NULL );
+  status = ValueIntoString( str, NULL, 11 );
   FAIL_IF_NULL( status, "an empty value did not genereate an abnormal status" )
 
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty value did not generate the correct error" )
 
-  status = ValueIntoString( str, value );
+  status = ValueIntoString( str, value, 11 );
   if( status != NULL )
     return "a correct void pointer value and string generated an error";
 
@@ -116,7 +116,7 @@ test_into_string( void )
     return "the string did not have the correct contents in it";
 
   value = BuildUnsignedIntValue();
-  status = ValueIntoString( str, value );
+  status = ValueIntoString( str, value, 11 );
   if( status != NULL )
     return "a singular unsigned int value and string generated an error";
 

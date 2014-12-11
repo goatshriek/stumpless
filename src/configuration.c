@@ -52,7 +52,7 @@ InitializeConfiguration( void )
   configuration->string = malloc( required_size );
   if( configuration->string == NULL )
     return RaiseStatus( "memory allocation failure" );
-  configuration->string->buffer_size = 100;
+  configuration->string->buffer_size = 200;
 
   return NULL;
 }

@@ -98,7 +98,7 @@ NextInListIterator
   if( !iterator || !iterator->current )
     return NULL;
 
- value = iterator->current->value;
+  value = iterator->current->value;
 
   temp = iterator->current;
   iterator->current = XORNODES( iterator->previous, temp->neighbors );

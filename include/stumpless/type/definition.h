@@ -348,7 +348,7 @@ struct ValueProfile {
   /** Comparators to use when comparing Values */
   ComparatorList *comparators;
   /** puts the Value into a provided string */
-  Status *( *into_string )( char *, const Value * );
+  Status *( *into_string )( char *, const Value *, size_t );
   const char *name; /**< the name of the profile */
   /** creates a binary Output using the Value*/
   Output *( *to_binary )( const Formatter *, const Value * );

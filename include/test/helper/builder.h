@@ -187,6 +187,20 @@ Level *
 BuildLevel
 ( void );
 
+/**
+ * Creates a ListConstIterator for a list of strings.
+ *
+ * @return a ListConstIterator at the beginning of the list, or NULL on failure
+ */
+ListConstIterator *
+BuildListConstIterator
+( void );
+
+/**
+ * Creates a ListIterator for a list of strings.
+ *
+ * @return a ListIterator at the beginning of the list, or NULL on failure
+ */
 ListIterator *
 BuildListIterator
 ( void );
