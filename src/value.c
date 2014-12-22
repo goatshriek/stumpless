@@ -12,6 +12,52 @@
 #include "private/status/checker.h"
 #include "private/type.h"
 
+#define ARRAY_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )  \
+Status *                                                                       \
+name##ArrayValueIntoString                                                     \
+( char *str, const Value *value, size_t length )                               \
+{                                                                              \
+  const char *format;                                                          \
+  size_t i, current_position = 0, remaining_length;                            \
+                                                                               \
+  if( !str || !value || length == 0 )                                          \
+    return RaiseStatus( "empty argument" );                                    \
+                                                                               \
+  format = value->format ? value->format : default_format;                     \
+                                                                               \
+  str[0] = '[';                                                                \
+  if( length > 1 )                                                             \
+    str[1] = '\0';                                                             \
+  else                                                                         \
+    return NULL;                                                               \
+                                                                               \
+  for( i = 0; i < value->length; i++ ){                                        \
+    current_position += strlen( str + current_position );                      \
+    if( length < current_position )                                            \
+      remaining_length = current_position - length;                            \
+    else                                                                       \
+      remaining_length = length - current_position;                            \
+    snprintf( str + current_position, remaining_length, format, value->data_member[i] );\
+                                                                               \
+    if( i + 1 >= value->length ){                                              \
+      current_position += strlen( str + current_position );                    \
+      if( length < current_position )                                          \
+        remaining_length = current_position - length;                          \
+      else                                                                     \
+        remaining_length = length - current_position;                          \
+      snprintf( str + current_position, remaining_length, "," );               \
+    }                                                                          \
+  }                                                                            \
+                                                                               \
+  current_position += strlen( str + current_position );                        \
+  if( length < current_position )                                              \
+    remaining_length = current_position - length;                              \
+  else                                                                         \
+    remaining_length = length - current_position;                              \
+  snprintf( str + current_position, remaining_length, "]" );                   \
+                                                                               \
+  return NULL;                                                                 \
+}
 
 #define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \
 ValueList *                                                                    \
@@ -39,7 +85,7 @@ name##ArrayValueToValueList                                                    \
 }
 
 // todo use length parameter
-#define VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )        \
+#define SINGULAR_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format ) \
 Status *                                                                       \
 name##ValueIntoString                                                          \
 ( char *str, const Value *value, size_t length )                               \
@@ -106,6 +152,13 @@ name##ValueToString                                                            \
   str[required_length] = '\0';                                                 \
                                                                                \
   return str;                                                                  \
+}
+
+Status *
+BooleanArrayValueIntoString
+( char *str, const Value *value, size_t length )
+{
+  return NULL;
 }
 
 ValueList *
@@ -175,9 +228,11 @@ BooleanValueToString
   return str;
 }
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( Char, c_p, "%c" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Char, c_p )
 
-VALUE_INTO_STRING_FUNCTION( Char, c, "%c" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( Char, c, "%c" )
 
 VALUE_TO_STRING_FUNCTION( Char, c, "%c" )
 
@@ -211,53 +266,76 @@ DestroyValue
   return;
 }
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( Double, d_p, "%g" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Double, d_p )
 
-VALUE_INTO_STRING_FUNCTION( Double, d, "%g" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( Double, d, "%g" )
 
 VALUE_TO_STRING_FUNCTION( Double, d, "%g" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( Float, f_p, "%g" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Float, f_p )
 
-VALUE_INTO_STRING_FUNCTION( Float, f, "%g" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( Float, f, "%g" )
 
 VALUE_TO_STRING_FUNCTION( Float, f, "%g" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( Int, i_p, "%i" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Int, i_p )
 
-VALUE_INTO_STRING_FUNCTION( Int, i, "%i" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( Int, i, "%i" )
 
 VALUE_TO_STRING_FUNCTION( Int, i, "%i" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( Long, l_p, "%li" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Long, l_p )
 
-VALUE_INTO_STRING_FUNCTION( Long, l, "%li" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( Long, l, "%li" )
 
 VALUE_TO_STRING_FUNCTION( Long, l, "%li" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( LongDouble, l_d_p, "%Lg" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( LongDouble, l_d_p )
 
-VALUE_INTO_STRING_FUNCTION( LongDouble, l_d, "%Lg" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( LongDouble, l_d, "%Lg" )
 
 VALUE_TO_STRING_FUNCTION( LongDouble, l_d, "%Lg" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( LongLong, l_l_p, "%lli" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( LongLong, l_l_p )
 
-VALUE_INTO_STRING_FUNCTION( LongLong, l_l, "%lli" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( LongLong, l_l, "%lli" )
 
 VALUE_TO_STRING_FUNCTION( LongLong, l_l, "%lli" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( Short, s_p, "%hi" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( Short, s_p )
 
-VALUE_INTO_STRING_FUNCTION( Short, s, "%hi" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( Short, s, "%hi" )
 
 VALUE_TO_STRING_FUNCTION( Short, s, "%hi" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( SignedChar, s_c_p, "%c" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( SignedChar, s_c_p )
 
-VALUE_INTO_STRING_FUNCTION( SignedChar, s_c, "%c" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
 VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "%c" )
+
+Status *
+StringArrayValueIntoString
+( char *str, const Value *value, size_t length )
+{
+  return NULL;
+}
 
 ValueList *
 StringArrayValueToValueList
@@ -319,33 +397,43 @@ StringValueToString
   return str;
 }
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( UnsignedChar, u_c_p, "%c" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedChar, u_c_p )
 
-VALUE_INTO_STRING_FUNCTION( UnsignedChar, u_c, "%c" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( UnsignedChar, u_c, "%c" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedChar, u_c, "%c" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( UnsignedInt, u_i_p, "%u" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedInt, u_i_p )
 
-VALUE_INTO_STRING_FUNCTION( UnsignedInt, u_i, "%u" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( UnsignedInt, u_i, "%u" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedInt, u_i, "%u" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( UnsignedLong, u_l_p, "%lu" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedLong, u_l_p )
 
-VALUE_INTO_STRING_FUNCTION( UnsignedLong, u_l, "%lu" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( UnsignedLong, u_l, "%lu" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedLong, u_l, "%lu" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( UnsignedLongLong, u_l_l_p, "%llu" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedLongLong, u_l_l_p )
 
-VALUE_INTO_STRING_FUNCTION( UnsignedLongLong, u_l_l, "%llu" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( UnsignedLongLong, u_l_l, "%llu" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedLongLong, u_l_l, "%llu" )
 
+ARRAY_VALUE_INTO_STRING_FUNCTION( UnsignedShort, u_s_p, "%hu" )
+
 ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( UnsignedShort, u_s_p )
 
-VALUE_INTO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
+SINGULAR_VALUE_INTO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
@@ -389,6 +477,13 @@ ValueToValueList
     return NULL;
 
   return list;
+}
+
+Status *
+VoidArrayValueIntoString
+( char *str, const Value *value, size_t length )
+{
+  return NULL;
 }
 
 ValueList *
