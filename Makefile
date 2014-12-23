@@ -5,6 +5,92 @@ SRCDIR = $(BASEDIR)\src
 TESTDIR = $(BASEDIR)\test
 OUTDIR = $(BASEDIR)\build
 STUMPLESSFLAGS = -D__STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+STUMPLESSOBJECTS = $(OUTDIR)\src\adapter.obj \
+                   $(OUTDIR)\src\adapter\base.obj \
+                   $(OUTDIR)\src\adapter\initializer.obj \
+                   $(OUTDIR)\src\boolean.obj \
+                   $(OUTDIR)\src\comparator.obj \
+                   $(OUTDIR)\src\comparator\base.obj \
+                   $(OUTDIR)\src\comparator\initializer.obj \
+                   $(OUTDIR)\src\configuration.obj \
+                   $(OUTDIR)\src\container\dictionary.obj \
+                   $(OUTDIR)\src\container\dictionary\const_iterator.obj \
+                   $(OUTDIR)\src\container\list.obj \
+                   $(OUTDIR)\src\container\list\adapter.obj \
+                   $(OUTDIR)\src\container\list\comparator.obj \
+                   $(OUTDIR)\src\container\list\const_iterator.obj \
+                   $(OUTDIR)\src\container\list\const_iterator\adapter.obj \
+                   $(OUTDIR)\src\container\list\const_iterator\comparator.obj \
+                   $(OUTDIR)\src\container\list\const_iterator\filter.obj \
+                   $(OUTDIR)\src\container\list\const_iterator\formatter.obj \
+                   $(OUTDIR)\src\container\list\const_iterator\handler.obj \
+                   $(OUTDIR)\src\container\list\const_iterator\target.obj \
+                   $(OUTDIR)\src\container\list\const_iterator\value.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator\adapter.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator\comparator.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator\filter.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator\formatter.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator\handler.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator\target.obj \
+                   $(OUTDIR)\src\container\list\const_reverse_iterator\value.obj \
+                   $(OUTDIR)\src\container\list\filter.obj \
+                   $(OUTDIR)\src\container\list\formatter.obj \
+                   $(OUTDIR)\src\container\list\handler.obj \
+                   $(OUTDIR)\src\container\list\iterator.obj \
+                   $(OUTDIR)\src\container\list\iterator\adapter.obj \
+                   $(OUTDIR)\src\container\list\iterator\comparator.obj \
+                   $(OUTDIR)\src\container\list\iterator\filter.obj \
+                   $(OUTDIR)\src\container\list\iterator\formatter.obj \
+                   $(OUTDIR)\src\container\list\iterator\handler.obj \
+                   $(OUTDIR)\src\container\list\iterator\target.obj \
+                   $(OUTDIR)\src\container\list\iterator\value.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator\adapter.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator\comparator.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator\filter.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator\formatter.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator\handler.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator\target.obj \
+                   $(OUTDIR)\src\container\list\reverse_iterator\value.obj \
+                   $(OUTDIR)\src\container\list\target.obj \
+                   $(OUTDIR)\src\container\list\value.obj \
+                   $(OUTDIR)\src\container\queue.obj \
+                   $(OUTDIR)\src\container\stack.obj \
+                   $(OUTDIR)\src\container\tree.obj \
+                   $(OUTDIR)\src\event.obj \
+                   $(OUTDIR)\src\event_attribute.obj \
+                   $(OUTDIR)\src\filter.obj \
+                   $(OUTDIR)\src\filter\base.obj \
+                   $(OUTDIR)\src\filter\initializer.obj \
+                   $(OUTDIR)\src\formatter.obj \
+                   $(OUTDIR)\src\formatter\csv.obj \
+                   $(OUTDIR)\src\formatter\initializer.obj \
+                   $(OUTDIR)\src\formatter\text.obj \
+                   $(OUTDIR)\src\handler.obj \
+                   $(OUTDIR)\src\handler\initializer.obj \
+                   $(OUTDIR)\src\handler\stream.obj \
+                   $(OUTDIR)\src\level.obj \
+                   $(OUTDIR)\src\level\initializer.obj \
+                   $(OUTDIR)\src\logger.obj \
+                   $(OUTDIR)\src\logger\getter.obj \
+                   $(OUTDIR)\src\logger\log.obj \
+                   $(OUTDIR)\src\logger\sender.obj \
+                   $(OUTDIR)\src\output.obj \
+                   $(OUTDIR)\src\output\profile.obj \
+                   $(OUTDIR)\src\output\profile_initializer.obj \
+                   $(OUTDIR)\src\private\event\initializer.obj \
+                   $(OUTDIR)\src\record.obj \
+                   $(OUTDIR)\src\record_attribute.obj \
+                   $(OUTDIR)\src\status.obj \
+                   $(OUTDIR)\src\status\initializer.obj \
+                   $(OUTDIR)\src\string_helper.obj \
+                   $(OUTDIR)\src\target.obj \
+                   $(OUTDIR)\src\value.obj \
+                   $(OUTDIR)\src\value\constructor.obj \
+                   $(OUTDIR)\src\value\profile.obj \
+                   $(OUTDIR)\src\value\profile_initializer.obj
+
 
 all: $(OUTDIR) $(OUTDIR)\stumpless.dll
 
@@ -35,180 +121,12 @@ $(OUTDIR):
     if not exist "$(OUTDIR)\test\function\$(NULL)" mkdir $(OUTDIR)\test\function
     if not exist "$(OUTDIR)\helper\$(NULL)" mkdir $(OUTDIR)\helper
     
+
     
 # build library
-$(OUTDIR)\stumpless.dll: $(OUTDIR)\src\adapter.obj \
-                         $(OUTDIR)\src\adapter\base.obj \
-                         $(OUTDIR)\src\adapter\initializer.obj \
-                         $(OUTDIR)\src\boolean.obj \
-                         $(OUTDIR)\src\comparator.obj \
-                         $(OUTDIR)\src\comparator\base.obj \
-                         $(OUTDIR)\src\comparator\initializer.obj \
-                         $(OUTDIR)\src\configuration.obj \
-                         $(OUTDIR)\src\container\dictionary.obj \
-                         $(OUTDIR)\src\container\dictionary\const_iterator.obj \
-                         $(OUTDIR)\src\container\list.obj \
-                         $(OUTDIR)\src\container\list\adapter.obj \
-                         $(OUTDIR)\src\container\list\comparator.obj \
-                         $(OUTDIR)\src\container\list\const_iterator.obj \
-                         $(OUTDIR)\src\container\list\const_iterator\adapter.obj \
-                         $(OUTDIR)\src\container\list\const_iterator\comparator.obj \
-                         $(OUTDIR)\src\container\list\const_iterator\filter.obj \
-                         $(OUTDIR)\src\container\list\const_iterator\formatter.obj \
-                         $(OUTDIR)\src\container\list\const_iterator\handler.obj \
-                         $(OUTDIR)\src\container\list\const_iterator\target.obj \
-                         $(OUTDIR)\src\container\list\const_iterator\value.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator\adapter.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator\comparator.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator\filter.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator\formatter.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator\handler.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator\target.obj \
-                         $(OUTDIR)\src\container\list\const_reverse_iterator\value.obj \
-                         $(OUTDIR)\src\container\list\filter.obj \
-                         $(OUTDIR)\src\container\list\formatter.obj \
-                         $(OUTDIR)\src\container\list\handler.obj \
-                         $(OUTDIR)\src\container\list\iterator.obj \
-                         $(OUTDIR)\src\container\list\iterator\adapter.obj \
-                         $(OUTDIR)\src\container\list\iterator\comparator.obj \
-                         $(OUTDIR)\src\container\list\iterator\filter.obj \
-                         $(OUTDIR)\src\container\list\iterator\formatter.obj \
-                         $(OUTDIR)\src\container\list\iterator\handler.obj \
-                         $(OUTDIR)\src\container\list\iterator\target.obj \
-                         $(OUTDIR)\src\container\list\iterator\value.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator\adapter.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator\comparator.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator\filter.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator\formatter.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator\handler.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator\target.obj \
-                         $(OUTDIR)\src\container\list\reverse_iterator\value.obj \
-                         $(OUTDIR)\src\container\list\target.obj \
-                         $(OUTDIR)\src\container\list\value.obj \
-                         $(OUTDIR)\src\container\queue.obj \
-                         $(OUTDIR)\src\container\stack.obj \
-                         $(OUTDIR)\src\container\tree.obj \
-                         $(OUTDIR)\src\event.obj \
-                         $(OUTDIR)\src\event_attribute.obj \
-                         $(OUTDIR)\src\filter.obj \
-                         $(OUTDIR)\src\filter\base.obj \
-                         $(OUTDIR)\src\filter\initializer.obj \
-                         $(OUTDIR)\src\formatter.obj \
-                         $(OUTDIR)\src\formatter\csv.obj \
-                         $(OUTDIR)\src\formatter\initializer.obj \
-                         $(OUTDIR)\src\formatter\text.obj \
-                         $(OUTDIR)\src\handler.obj \
-                         $(OUTDIR)\src\handler\initializer.obj \
-                         $(OUTDIR)\src\handler\stream.obj \
-                         $(OUTDIR)\src\level.obj \
-                         $(OUTDIR)\src\level\initializer.obj \
-                         $(OUTDIR)\src\logger.obj \
-                         $(OUTDIR)\src\logger\getter.obj \
-                         $(OUTDIR)\src\logger\log.obj \
-                         $(OUTDIR)\src\logger\sender.obj \
-                         $(OUTDIR)\src\output.obj \
-                         $(OUTDIR)\src\output\profile.obj \
-                         $(OUTDIR)\src\output\profile_initializer.obj \
-                         $(OUTDIR)\src\private\event\initializer.obj \
-                         $(OUTDIR)\src\record.obj \
-                         $(OUTDIR)\src\record_attribute.obj \
-                         $(OUTDIR)\src\status.obj \
-                         $(OUTDIR)\src\status\initializer.obj \
-                         $(OUTDIR)\src\string_helper.obj \
-                         $(OUTDIR)\src\target.obj \
-                         $(OUTDIR)\src\value.obj \
-                         $(OUTDIR)\src\value\constructor.obj \
-                         $(OUTDIR)\src\value\profile.obj \
-                         $(OUTDIR)\src\value\profile_initializer.obj
-    $(link) $(linkdebug) $(dlllflags) -out:$(OUTDIR)\stumpless.dll /DEF:$(BASEDIR)\stumpless.def \
-            $(OUTDIR)\src\adapter.obj \
-            $(OUTDIR)\src\adapter\base.obj \
-            $(OUTDIR)\src\adapter\initializer.obj \
-            $(OUTDIR)\src\boolean.obj \
-            $(OUTDIR)\src\comparator.obj \
-            $(OUTDIR)\src\comparator\base.obj \
-            $(OUTDIR)\src\comparator\initializer.obj \
-            $(OUTDIR)\src\configuration.obj \
-            $(OUTDIR)\src\container\dictionary.obj \
-            $(OUTDIR)\src\container\dictionary\const_iterator.obj \
-            $(OUTDIR)\src\container\list.obj \
-            $(OUTDIR)\src\container\list\adapter.obj \
-            $(OUTDIR)\src\container\list\comparator.obj \
-            $(OUTDIR)\src\container\list\const_iterator.obj \
-            $(OUTDIR)\src\container\list\const_iterator\adapter.obj \
-            $(OUTDIR)\src\container\list\const_iterator\comparator.obj \
-            $(OUTDIR)\src\container\list\const_iterator\filter.obj \
-            $(OUTDIR)\src\container\list\const_iterator\formatter.obj \
-            $(OUTDIR)\src\container\list\const_iterator\handler.obj \
-            $(OUTDIR)\src\container\list\const_iterator\target.obj \
-            $(OUTDIR)\src\container\list\const_iterator\value.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator\adapter.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator\comparator.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator\filter.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator\formatter.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator\handler.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator\target.obj \
-            $(OUTDIR)\src\container\list\const_reverse_iterator\value.obj \
-            $(OUTDIR)\src\container\list\filter.obj \
-            $(OUTDIR)\src\container\list\formatter.obj \
-            $(OUTDIR)\src\container\list\handler.obj \
-            $(OUTDIR)\src\container\list\iterator.obj \
-            $(OUTDIR)\src\container\list\iterator\adapter.obj \
-            $(OUTDIR)\src\container\list\iterator\comparator.obj \
-            $(OUTDIR)\src\container\list\iterator\filter.obj \
-            $(OUTDIR)\src\container\list\iterator\formatter.obj \
-            $(OUTDIR)\src\container\list\iterator\handler.obj \
-            $(OUTDIR)\src\container\list\iterator\target.obj \
-            $(OUTDIR)\src\container\list\iterator\value.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator\adapter.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator\comparator.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator\filter.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator\formatter.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator\handler.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator\target.obj \
-            $(OUTDIR)\src\container\list\reverse_iterator\value.obj \
-            $(OUTDIR)\src\container\list\target.obj \
-            $(OUTDIR)\src\container\list\value.obj \
-            $(OUTDIR)\src\container\queue.obj \
-            $(OUTDIR)\src\container\stack.obj \
-            $(OUTDIR)\src\container\tree.obj \
-            $(OUTDIR)\src\event.obj \
-            $(OUTDIR)\src\event_attribute.obj \
-            $(OUTDIR)\src\filter.obj \
-            $(OUTDIR)\src\filter\base.obj \
-            $(OUTDIR)\src\filter\initializer.obj \
-            $(OUTDIR)\src\formatter.obj \
-            $(OUTDIR)\src\formatter\csv.obj \
-            $(OUTDIR)\src\formatter\initializer.obj \
-            $(OUTDIR)\src\formatter\text.obj \
-            $(OUTDIR)\src\handler.obj \
-            $(OUTDIR)\src\handler\initializer.obj \
-            $(OUTDIR)\src\handler\stream.obj \
-            $(OUTDIR)\src\level.obj \
-            $(OUTDIR)\src\level\initializer.obj \
-            $(OUTDIR)\src\logger.obj \
-            $(OUTDIR)\src\logger\getter.obj \
-            $(OUTDIR)\src\logger\log.obj \
-            $(OUTDIR)\src\logger\sender.obj \
-            $(OUTDIR)\src\output.obj \
-            $(OUTDIR)\src\output\profile.obj \
-            $(OUTDIR)\src\output\profile_initializer.obj \
-            $(OUTDIR)\src\private\event\initializer.obj \
-            $(OUTDIR)\src\record.obj \
-            $(OUTDIR)\src\record_attribute.obj \
-            $(OUTDIR)\src\status.obj \
-            $(OUTDIR)\src\status\initializer.obj \
-            $(OUTDIR)\src\string_helper.obj \
-            $(OUTDIR)\src\target.obj \
-            $(OUTDIR)\src\value.obj \
-            $(OUTDIR)\src\value\constructor.obj \
-            $(OUTDIR)\src\value\profile.obj \
-            $(OUTDIR)\src\value\profile_initializer.obj
-    
+$(OUTDIR)\stumpless.dll: $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) $(dlllflags) -out:$(OUTDIR)\stumpless.dll /DEF:$(BASEDIR)\stumpless.def $(STUMPLESSOBJECTS)    
+
 
 # library object files
 $(OUTDIR)\src\adapter.obj: $(OUTDIR) $(SRCDIR)\adapter.c
@@ -468,35 +386,35 @@ $(OUTDIR)\src\value\profile_initializer.obj: $(SRCDIR)\value\profile_initializer
     
 
 # run tests
-check: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\boolean.exe $(OUTDIR)\test\function\configuration.exe
-    - $(OUTDIR)\test\function\adapter.exe >> $(OUTDIR)\test-suite.log
+check: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\configuration_suite.exe
+    - $(OUTDIR)\test\function\adapter_suite.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Adapter Test Failed"
-    - $(OUTDIR)\test\function\boolean.exe >> $(OUTDIR)\test-suite.log
+    - $(OUTDIR)\test\function\boolean_suite.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Boolean Test Failed"
-    - $(OUTDIR)\test\function\configuration.exe >> $(OUTDIR)\test-suite.log
+    - $(OUTDIR)\test\function\configuration_suite.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Configuration Test Failed"
 
 
 # executable files
-$(OUTDIR)\test\function\adapter.exe: $(OUTDIR)\test\function\adapter.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\adapter.exe $(OUTDIR)\test\function\adapter.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
+$(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
     
-$(OUTDIR)\test\function\boolean.exe: $(OUTDIR)\test\function\boolean.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\boolean.exe $(OUTDIR)\test\function\boolean.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
+$(OUTDIR)\test\function\boolean_suite.exe: $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
     
-$(OUTDIR)\test\function\configuration.exe: $(OUTDIR)\test\function\configuration.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\configuration.exe $(OUTDIR)\test\function\configuration.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
+$(OUTDIR)\test\function\configuration_suite.exe: $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
     
     
 # test object files
-$(OUTDIR)\test\function\adapter.obj: $(TESTDIR)\function\adapter.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\adapter.c
+$(OUTDIR)\test\function\adapter_suite.obj: $(TESTDIR)\function\adapter_suite.c
+    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\adapter_suite.c
     
-$(OUTDIR)\test\function\boolean.obj: $(TESTDIR)\function\boolean.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\boolean.c
+$(OUTDIR)\test\function\boolean_suite.obj: $(TESTDIR)\function\boolean_suite.c
+    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\boolean_suite.c
     
-$(OUTDIR)\test\function\configuration.obj: $(TESTDIR)\function\configuration.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\configuration.c
+$(OUTDIR)\test\function\configuration_suite.obj: $(TESTDIR)\function\configuration_suite.c
+    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\configuration_suite.c
 
 
 # helper library object files

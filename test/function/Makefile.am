@@ -1,11 +1,11 @@
-test_function_adapter_SOURCES = test/function/adapter.c
-test_function_adapter_LDADD = $(test_libraries)
+test_function_adapter_suite_SOURCES = test/function/adapter_suite.c
+test_function_adapter_suite_LDADD = $(test_libraries)
 
-test_function_boolean_SOURCES = test/function/boolean.c
-test_function_boolean_LDADD = $(test_libraries)
+test_function_boolean_suite_SOURCES = test/function/boolean_suite.c
+test_function_boolean_suite_LDADD = $(test_libraries)
 
-test_function_configuration_SOURCES = test/function/configuration.c
-test_function_configuration_LDADD = $(test_libraries)
+test_function_configuration_suite_SOURCES = test/function/configuration_suite.c
+test_function_configuration_suite_LDADD = $(test_libraries)
 
 test_function_event_SOURCES = test/function/event.c
 test_function_event_LDADD = $(test_libraries)

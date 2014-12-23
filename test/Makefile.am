@@ -1,8 +1,8 @@
-check_PROGRAMS = test/function/adapter \
-                 test/function/boolean \
+check_PROGRAMS = test/function/adapter_suite \
+                 test/function/boolean_suite \
                  test/function/comparator/base \
                  test/function/comparator/main \
-                 test/function/configuration \
+                 test/function/configuration_suite \
                  test/function/event \
                  test/function/filter/base \
                  test/function/filter/main \

@@ -9,9 +9,9 @@
 #include <stumpless/config/check.h>
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-# define SAFE_SPRINTF( str, length, format, ... ) sprintf_s( str, length, format, __VA_ARGS__ )
+# define SAFE_SPRINTF( ... ) sprintf_s( __VA_ARGS__ )
 #else
-# define SAFE_SPRINTF( str, length, format, ... ) snprintf( str, length, format, __VA_ARGS__ )
+# define SAFE_SPRINTF( ... ) snprintf( __VA_ARGS__ )
 #endif
 
 char *
