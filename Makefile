@@ -4,6 +4,7 @@ INCDIR = $(BASEDIR)\include
 SRCDIR = $(BASEDIR)\src
 TESTDIR = $(BASEDIR)\test
 OUTDIR = $(BASEDIR)\build
+STUMPLESSFLAGS = -D__STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
 
 all: $(OUTDIR) $(OUTDIR)\stumpless.dll
 
@@ -211,259 +212,259 @@ $(OUTDIR)\stumpless.dll: $(OUTDIR)\src\adapter.obj \
 
 # library object files
 $(OUTDIR)\src\adapter.obj: $(OUTDIR) $(SRCDIR)\adapter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\adapter.c
     
 $(OUTDIR)\src\adapter\base.obj: $(SRCDIR)\adapter\base.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\adapter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\adapter\base.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\adapter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\adapter\base.c
     
 $(OUTDIR)\src\adapter\initializer.obj: $(SRCDIR)\adapter\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\adapter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\adapter\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\adapter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\adapter\initializer.c
     
 $(OUTDIR)\src\boolean.obj: $(SRCDIR)\boolean.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\boolean.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\boolean.c
     
 $(OUTDIR)\src\comparator.obj: $(SRCDIR)\comparator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\comparator.c
     
 $(OUTDIR)\src\comparator\base.obj: $(SRCDIR)\comparator\base.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\comparator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\comparator\base.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\comparator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\comparator\base.c
     
 $(OUTDIR)\src\comparator\initializer.obj: $(SRCDIR)\comparator\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\comparator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\comparator\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\comparator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\comparator\initializer.c
     
 $(OUTDIR)\src\configuration.obj: $(SRCDIR)\configuration.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\configuration.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\configuration.c
     
 $(OUTDIR)\src\container\dictionary.obj: $(SRCDIR)\container\dictionary.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\dictionary.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\dictionary.c
     
 $(OUTDIR)\src\container\dictionary\const_iterator.obj: $(SRCDIR)\container\dictionary\const_iterator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\dictionary\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\dictionary\const_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\dictionary\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\dictionary\const_iterator.c
     
 $(OUTDIR)\src\container\list.obj: $(SRCDIR)\container\list.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list.c
     
 $(OUTDIR)\src\container\list\adapter.obj: $(SRCDIR)\container\list\adapter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\adapter.c
     
 $(OUTDIR)\src\container\list\comparator.obj: $(SRCDIR)\container\list\comparator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\comparator.c
     
 $(OUTDIR)\src\container\list\const_iterator.obj: $(SRCDIR)\container\list\const_iterator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator.c
     
 $(OUTDIR)\src\container\list\const_iterator\adapter.obj: $(SRCDIR)\container\list\const_iterator\adapter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\adapter.c
     
 $(OUTDIR)\src\container\list\const_iterator\comparator.obj: $(SRCDIR)\container\list\const_iterator\comparator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\comparator.c
     
 $(OUTDIR)\src\container\list\const_iterator\filter.obj: $(SRCDIR)\container\list\const_iterator\filter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\filter.c
     
 $(OUTDIR)\src\container\list\const_iterator\formatter.obj: $(SRCDIR)\container\list\const_iterator\formatter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\formatter.c
     
 $(OUTDIR)\src\container\list\const_iterator\handler.obj: $(SRCDIR)\container\list\const_iterator\handler.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\handler.c
     
 $(OUTDIR)\src\container\list\const_iterator\target.obj: $(SRCDIR)\container\list\const_iterator\target.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\target.c
     
 $(OUTDIR)\src\container\list\const_iterator\value.obj: $(SRCDIR)\container\list\const_iterator\value.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_iterator\value.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator.obj: $(SRCDIR)\container\list\const_reverse_iterator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator\adapter.obj: $(SRCDIR)\container\list\const_reverse_iterator\adapter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\adapter.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator\comparator.obj: $(SRCDIR)\container\list\const_reverse_iterator\comparator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\comparator.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator\filter.obj: $(SRCDIR)\container\list\const_reverse_iterator\filter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\filter.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator\formatter.obj: $(SRCDIR)\container\list\const_reverse_iterator\formatter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\formatter.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator\handler.obj: $(SRCDIR)\container\list\const_reverse_iterator\handler.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\handler.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator\target.obj: $(SRCDIR)\container\list\const_reverse_iterator\target.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\target.c
     
 $(OUTDIR)\src\container\list\const_reverse_iterator\value.obj: $(SRCDIR)\container\list\const_reverse_iterator\value.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\const_reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\const_reverse_iterator\value.c
     
 $(OUTDIR)\src\container\list\filter.obj: $(SRCDIR)\container\list\filter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\filter.c
     
 $(OUTDIR)\src\container\list\formatter.obj: $(SRCDIR)\container\list\formatter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\formatter.c
     
 $(OUTDIR)\src\container\list\handler.obj: $(SRCDIR)\container\list\handler.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\handler.c
     
 $(OUTDIR)\src\container\list\iterator.obj: $(SRCDIR)\container\list\iterator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator.c
     
 $(OUTDIR)\src\container\list\iterator\adapter.obj: $(SRCDIR)\container\list\iterator\adapter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\adapter.c
     
 $(OUTDIR)\src\container\list\iterator\comparator.obj: $(SRCDIR)\container\list\iterator\comparator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\comparator.c
     
 $(OUTDIR)\src\container\list\iterator\filter.obj: $(SRCDIR)\container\list\iterator\filter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\filter.c
     
 $(OUTDIR)\src\container\list\iterator\formatter.obj: $(SRCDIR)\container\list\iterator\formatter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\formatter.c
     
 $(OUTDIR)\src\container\list\iterator\handler.obj: $(SRCDIR)\container\list\iterator\handler.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\handler.c
     
 $(OUTDIR)\src\container\list\iterator\target.obj: $(SRCDIR)\container\list\iterator\target.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\target.c
     
 $(OUTDIR)\src\container\list\iterator\value.obj: $(SRCDIR)\container\list\iterator\value.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\iterator\value.c
     
 $(OUTDIR)\src\container\list\reverse_iterator.obj: $(SRCDIR)\container\list\reverse_iterator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator.c
     
 $(OUTDIR)\src\container\list\reverse_iterator\adapter.obj: $(SRCDIR)\container\list\reverse_iterator\adapter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\adapter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\adapter.c
     
 $(OUTDIR)\src\container\list\reverse_iterator\comparator.obj: $(SRCDIR)\container\list\reverse_iterator\comparator.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\comparator.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\comparator.c
     
 $(OUTDIR)\src\container\list\reverse_iterator\filter.obj: $(SRCDIR)\container\list\reverse_iterator\filter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\filter.c
     
 $(OUTDIR)\src\container\list\reverse_iterator\formatter.obj: $(SRCDIR)\container\list\reverse_iterator\formatter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\formatter.c
     
 $(OUTDIR)\src\container\list\reverse_iterator\handler.obj: $(SRCDIR)\container\list\reverse_iterator\handler.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\handler.c
     
 $(OUTDIR)\src\container\list\reverse_iterator\target.obj: $(SRCDIR)\container\list\reverse_iterator\target.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\target.c
     
 $(OUTDIR)\src\container\list\reverse_iterator\value.obj: $(SRCDIR)\container\list\reverse_iterator\value.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\reverse_iterator\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\reverse_iterator\value.c
     
 $(OUTDIR)\src\container\list\target.obj: $(SRCDIR)\container\list\target.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\target.c
     
 $(OUTDIR)\src\container\list\value.obj: $(SRCDIR)\container\list\value.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\list\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\list\value.c
     
 $(OUTDIR)\src\container\queue.obj: $(SRCDIR)\container\queue.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\queue.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\queue.c
     
 $(OUTDIR)\src\container\stack.obj: $(SRCDIR)\container\stack.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\stack.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\stack.c
     
 $(OUTDIR)\src\container\tree.obj: $(SRCDIR)\container\tree.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\tree.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\container\ /Fd$(OUTDIR)\src\ $(SRCDIR)\container\tree.c
     
 $(OUTDIR)\src\event.obj: $(SRCDIR)\event.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\event.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\event.c
     
 $(OUTDIR)\src\event_attribute.obj: $(SRCDIR)\event_attribute.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\event_attribute.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\event_attribute.c
     
 $(OUTDIR)\src\filter.obj: $(SRCDIR)\filter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\filter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\filter.c
     
 $(OUTDIR)\src\filter\base.obj: $(SRCDIR)\filter\base.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\filter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\filter\base.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\filter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\filter\base.c
     
 $(OUTDIR)\src\filter\initializer.obj: $(SRCDIR)\filter\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\filter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\filter\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\filter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\filter\initializer.c
     
 $(OUTDIR)\src\formatter.obj: $(SRCDIR)\formatter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter.c
     
 $(OUTDIR)\src\formatter\csv.obj: $(SRCDIR)\formatter\csv.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\formatter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter\csv.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\formatter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter\csv.c
     
 $(OUTDIR)\src\formatter\initializer.obj: $(SRCDIR)\formatter\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\formatter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\formatter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter\initializer.c
     
 $(OUTDIR)\src\formatter\text.obj: $(SRCDIR)\formatter\text.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\formatter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter\text.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\formatter\ /Fd$(OUTDIR)\src\ $(SRCDIR)\formatter\text.c
     
 $(OUTDIR)\src\handler.obj: $(SRCDIR)\handler.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\handler.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\handler.c
     
 $(OUTDIR)\src\handler\initializer.obj: $(SRCDIR)\handler\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\handler\ /Fd$(OUTDIR)\src\ $(SRCDIR)\handler\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\handler\ /Fd$(OUTDIR)\src\ $(SRCDIR)\handler\initializer.c
     
 $(OUTDIR)\src\handler\stream.obj: $(SRCDIR)\handler\stream.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\handler\ /Fd$(OUTDIR)\src\ $(SRCDIR)\handler\stream.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\handler\ /Fd$(OUTDIR)\src\ $(SRCDIR)\handler\stream.c
     
 $(OUTDIR)\src\level.obj: $(SRCDIR)\level.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\level.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\level.c
     
 $(OUTDIR)\src\level\initializer.obj: $(SRCDIR)\level\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\level\ /Fd$(OUTDIR)\src\ $(SRCDIR)\level\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\level\ /Fd$(OUTDIR)\src\ $(SRCDIR)\level\initializer.c
     
 $(OUTDIR)\src\logger.obj: $(SRCDIR)\logger.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger.c
     
 $(OUTDIR)\src\logger\getter.obj: $(SRCDIR)\logger\getter.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\logger\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger\getter.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\logger\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger\getter.c
     
 $(OUTDIR)\src\logger\log.obj: $(SRCDIR)\logger\log.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\logger\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger\log.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\logger\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger\log.c
     
 $(OUTDIR)\src\logger\sender.obj: $(SRCDIR)\logger\sender.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\logger\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger\sender.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\logger\ /Fd$(OUTDIR)\src\ $(SRCDIR)\logger\sender.c
     
 $(OUTDIR)\src\output.obj: $(SRCDIR)\output.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\output.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\output.c
     
 $(OUTDIR)\src\output\profile.obj: $(SRCDIR)\output\profile.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\output\ /Fd$(OUTDIR)\src\ $(SRCDIR)\output\profile.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\output\ /Fd$(OUTDIR)\src\ $(SRCDIR)\output\profile.c
     
 $(OUTDIR)\src\output\profile_initializer.obj: $(SRCDIR)\output\profile_initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\output\ /Fd$(OUTDIR)\src\ $(SRCDIR)\output\profile_initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\output\ /Fd$(OUTDIR)\src\ $(SRCDIR)\output\profile_initializer.c
     
 $(OUTDIR)\src\private\event\initializer.obj: $(SRCDIR)\private\event\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\private\event\ /Fd$(OUTDIR)\src\ $(SRCDIR)\private\event\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\private\event\ /Fd$(OUTDIR)\src\ $(SRCDIR)\private\event\initializer.c
     
 $(OUTDIR)\src\record.obj: $(SRCDIR)\record.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\record.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\record.c
     
 $(OUTDIR)\src\record_attribute.obj: $(SRCDIR)\record_attribute.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\record_attribute.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\record_attribute.c
     
 $(OUTDIR)\src\status.obj: $(SRCDIR)\status.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\status.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\status.c
     
 $(OUTDIR)\src\status\initializer.obj: $(SRCDIR)\status\initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\status\ /Fd$(OUTDIR)\src\ $(SRCDIR)\status\initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\status\ /Fd$(OUTDIR)\src\ $(SRCDIR)\status\initializer.c
     
 $(OUTDIR)\src\string_helper.obj: $(SRCDIR)\string_helper.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\string_helper.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\string_helper.c
     
 $(OUTDIR)\src\target.obj: $(SRCDIR)\target.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\target.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\target.c
     
 $(OUTDIR)\src\value.obj: $(SRCDIR)\value.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value.c
     
 $(OUTDIR)\src\value\constructor.obj: $(SRCDIR)\value\constructor.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\value\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value\constructor.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\value\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value\constructor.c
     
 $(OUTDIR)\src\value\profile.obj: $(SRCDIR)\value\profile.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\value\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value\profile.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\value\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value\profile.c
     
 $(OUTDIR)\src\value\profile_initializer.obj: $(SRCDIR)\value\profile_initializer.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\src\value\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value\profile_initializer.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\value\ /Fd$(OUTDIR)\src\ $(SRCDIR)\value\profile_initializer.c
     
 
 # run tests

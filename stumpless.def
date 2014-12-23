@@ -31,6 +31,7 @@ EXPORTS
     NewFormatterList                @25
     NewHandlerList                  @26
     NewList                         @27
+    NewListConstIterator            @50
     NewListIterator                 @28
     NewListReverseIterator          @29
     NewQueue                        @30

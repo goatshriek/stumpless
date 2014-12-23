@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stumpless/config/check.h>
+
 #include "private/string_helper.h"
 
 char *
@@ -19,7 +21,12 @@ copy_string
   if( !copy )
     return NULL;
 
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( copy, length, str, length );
+#else
   strncpy( copy, str, length );
+#endif
+
   copy[length] = '\0';
   return copy;
 }
@@ -114,18 +121,24 @@ replace_first_string
 ( char *string, const char *target, const char *replacement )
 {
   char *buffer, *location, *string_placeholder;
-  size_t span_length, replacement_length, target_length;
+  size_t span_length, string_length, replacement_length, target_length;
 
   if( !string )
     return NULL;
 
   target_length = strlen( target );
   replacement_length = strlen( replacement );
+  string_length = strlen( string );
 
-  buffer = malloc( sizeof( char ) * ( strlen( string ) + 1 ) );
+  buffer = malloc( sizeof( char ) * ( string_length + 1 ) );
   if( !buffer )
     return NULL;
-  strcpy( buffer, string );
+
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( buffer, string_length, string, string_length );
+#else
+  strncpy( buffer, string, string_length );
+#endif
 
   location = strstr( buffer, target );
   if( !location ){
@@ -134,10 +147,19 @@ replace_first_string
   }
 
   span_length = location - buffer;
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( string, span_length, buffer, span_length );
+#else
   strncpy( string, buffer, span_length );
+#endif
   string_placeholder = string + span_length;
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( string_placeholder, replacement_length, replacement, replacement_length );
+  strncpy_s( string_placeholder + replacement_length, string_length - span_length, location + target_length, string_length - span_length );
+#else
   strncpy( string_placeholder, replacement, replacement_length );
-  strcpy( string_placeholder + replacement_length, location + target_length );
+  strncpy( string_placeholder + replacement_length, location + target_length, string_length - span_length );
+#endif
 
   free( buffer );
 
@@ -149,31 +171,49 @@ replace_string
 ( char *string, const char *target, const char *replacement )
 {
   char *buffer, *buffer_placeholder, *location, *string_placeholder;
-  size_t replacement_length, span_length, target_length;
+  size_t replacement_length, string_length, span_length, target_length;
 
   if( !string )
     return NULL;
 
   target_length = strlen( target );
   replacement_length = strlen( replacement );
+  string_length = strlen( string );
 
-  buffer = malloc( sizeof( char ) * ( strlen( string ) + 1 ) );
+  buffer = malloc( sizeof( char ) * ( string_length + 1 ) );
   if( !buffer )
     return NULL;
-  strcpy( buffer, string );
+
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( buffer, string_length, string, string_length );
+#else
+  strncpy( buffer, string, string_length );
+#endif
 
   string_placeholder = string;
   buffer_placeholder = buffer;
   while( location = strstr( buffer_placeholder, target ) ){
     span_length = location - buffer_placeholder;
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+    strncpy_s( string_placeholder, span_length, buffer_placeholder, span_length );
+#else
     strncpy( string_placeholder, buffer_placeholder, span_length );
+#endif
     string_placeholder += span_length;
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+    strncpy_s( string_placeholder, replacement_length, replacement, replacement_length );
+#else
     strncpy( string_placeholder, replacement, replacement_length );
+#endif
     string_placeholder += replacement_length;
     buffer_placeholder = location + target_length;
   }
 
-  strcpy( string_placeholder, buffer_placeholder );
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( string_placeholder, string + string_length - string_placeholder, buffer_placeholder, string + string_length - string_placeholder );
+#else
+  strncpy( string_placeholder, buffer_placeholder, string + string_length - string_placeholder );
+#endif
   free( buffer );
 
   return string;

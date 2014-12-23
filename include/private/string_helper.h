@@ -1,5 +1,18 @@
-#ifndef STUMPLESS_STRING_HELPER_H
-#define STUMPLESS_STRING_HELPER_H
+#ifndef __STUMPLESS_PRIVATE_STRING_HELPER_H
+#define __STUMPLESS_PRIVATE_STRING_HELPER_H
+
+/**
+ * @file
+ * Helper functions for working with strings.
+ */
+
+#include <stumpless/config/check.h>
+
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+# define SAFE_SPRINTF( str, length, format, ... ) sprintf_s( str, length, format, __VA_ARGS__ )
+#else
+# define SAFE_SPRINTF( str, length, format, ... ) snprintf( str, length, format, __VA_ARGS__ )
+#endif
 
 char *
 copy_string

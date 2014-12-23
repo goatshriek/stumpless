@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stumpless/config/check.h>
 #include <stumpless/value.h>
 #include <stumpless/value/constructor.h>
 
@@ -10,6 +11,7 @@
 #include "private/container/list/value.h"
 #include "private/status.h"
 #include "private/status/checker.h"
+#include "private/string_helper.h"
 #include "private/type.h"
 
 #define ARRAY_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )  \
@@ -37,7 +39,8 @@ name##ArrayValueIntoString                                                     \
       remaining_length = current_position - length;                            \
     else                                                                       \
       remaining_length = length - current_position;                            \
-    snprintf( str + current_position, remaining_length, format, value->data_member[i] );\
+                                                                               \
+    SAFE_SPRINTF( str + current_position, remaining_length, format, value->data_member[i] );\
                                                                                \
     if( i + 1 >= value->length ){                                              \
       current_position += strlen( str + current_position );                    \
@@ -45,7 +48,7 @@ name##ArrayValueIntoString                                                     \
         remaining_length = current_position - length;                          \
       else                                                                     \
         remaining_length = length - current_position;                          \
-      snprintf( str + current_position, remaining_length, "," );               \
+      SAFE_SPRINTF( str + current_position, remaining_length, "," );           \
     }                                                                          \
   }                                                                            \
                                                                                \
@@ -54,7 +57,7 @@ name##ArrayValueIntoString                                                     \
     remaining_length = current_position - length;                              \
   else                                                                         \
     remaining_length = length - current_position;                              \
-  snprintf( str + current_position, remaining_length, "]" );                   \
+  SAFE_SPRINTF( str + current_position, remaining_length, "]" );               \
                                                                                \
   return NULL;                                                                 \
 }
@@ -84,7 +87,6 @@ name##ArrayValueToValueList                                                    \
   return list;                                                                 \
 }
 
-// todo use length parameter
 #define SINGULAR_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format ) \
 Status *                                                                       \
 name##ValueIntoString                                                          \
@@ -98,7 +100,7 @@ name##ValueIntoString                                                          \
   format = value->format ? value->format : default_format;                     \
                                                                                \
   str[0] = '\0';                                                               \
-  if( sprintf( str, format, value->data_member ) < 0 )                         \
+  if( SAFE_SPRINTF( str, length, format, value->data_member ) < 0 )            \
     return RaiseStatus( "string write failure" );                              \
                                                                                \
   return NULL;                                                                 \
@@ -133,7 +135,7 @@ name##ValueToString                                                            \
     return NULL;                                                               \
                                                                                \
   buffer[0] = '\0';                                                            \
-  result = sprintf( buffer, format, value->data_member );                      \
+  result = SAFE_SPRINTF( buffer, buffer_size, format, value->data_member );    \
   if( result < 0 )                                                             \
     return NULL;                                                               \
   buffer[buffer_length] = '\0';                                                \
@@ -146,7 +148,7 @@ name##ValueToString                                                            \
     return NULL;                                                               \
                                                                                \
   str[0] = '\0';                                                               \
-  result = sprintf( str, format, value->data_member );                         \
+  result = SAFE_SPRINTF( str, required_length, format, value->data_member );   \
   if( result < 0 )                                                             \
     return NULL;                                                               \
   str[required_length] = '\0';                                                 \
@@ -222,7 +224,11 @@ BooleanValueToString
     return NULL;
 
   str[0] = '\0';
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( str, str_length, description, str_length );
+#else
   strncpy( str, description, str_length );
+#endif
   str[str_length] = '\0';
 
   return str;
@@ -368,7 +374,11 @@ Status *
 StringValueIntoString
 ( char *str, const Value *value, size_t length )
 {
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  if( strncpy_s( str, length, value->c_p, length ) )
+#else
   if( strncpy( str, value->c_p, length ) == str )
+#endif
     return NULL;
   else
     return RaiseStatus( "string write failure" );
@@ -391,7 +401,11 @@ StringValueToString
     return NULL;
 
   str[0] = '\0';
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( str, str_length, value->c_p, str_length );
+#else
   strncpy( str, value->c_p, str_length );
+#endif
   str[str_length] = '\0';
 
   return str;
