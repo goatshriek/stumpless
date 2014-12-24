@@ -106,8 +106,6 @@ name##ValueIntoString                                                          \
   return NULL;                                                                 \
 }
 
-// todo this function can be adapted to no longer rely on the buffer, if
-// snprintf is available. Create configuration check to handle this case
 #define VALUE_TO_STRING_FUNCTION( name, data_member, default_format )          \
 char *                                                                         \
 name##ValueToString                                                            \
@@ -117,7 +115,7 @@ name##ValueToString                                                            \
   const char *format;                                                          \
   Configuration *configuration;                                                \
   int result;                                                                  \
-  size_t buffer_length, buffer_size, required_length;                          \
+  size_t buffer_size, required_length;                                         \
                                                                                \
   if( !value )                                                                 \
     return NULL;                                                               \
@@ -129,7 +127,6 @@ name##ValueToString                                                            \
     return NULL;                                                               \
                                                                                \
   buffer_size = configuration->string->buffer_size;                            \
-  buffer_length = buffer_size - 1;                                             \
   buffer = malloc( sizeof( char ) * buffer_size );                             \
   if( !buffer )                                                                \
     return NULL;                                                               \
@@ -138,12 +135,12 @@ name##ValueToString                                                            \
   result = SAFE_SPRINTF( buffer, buffer_size, format, value->data_member );    \
   if( result < 0 )                                                             \
     return NULL;                                                               \
-  buffer[buffer_length] = '\0';                                                \
+  buffer[buffer_size-1] = '\0';                                                \
                                                                                \
-  required_length = strlen( buffer );                                          \
+  required_length = strlen( buffer ) + 1;                                      \
   free( buffer );                                                              \
                                                                                \
-  str = malloc( sizeof( char ) * ( required_length + 1 ) );                    \
+  str = malloc( sizeof( char ) * ( required_length ) );                        \
   if( !str )                                                                   \
     return NULL;                                                               \
                                                                                \
@@ -151,7 +148,7 @@ name##ValueToString                                                            \
   result = SAFE_SPRINTF( str, required_length, format, value->data_member );   \
   if( result < 0 )                                                             \
     return NULL;                                                               \
-  str[required_length] = '\0';                                                 \
+  str[required_length-1] = '\0';                                               \
                                                                                \
   return str;                                                                  \
 }

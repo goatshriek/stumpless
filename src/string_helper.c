@@ -194,12 +194,15 @@ replace_string
   buffer_placeholder = buffer;
   while( location = strstr( buffer_placeholder, target ) ){
     span_length = location - buffer_placeholder;
+
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
     strncpy_s( string_placeholder, span_length, buffer_placeholder, span_length );
 #else
     strncpy( string_placeholder, buffer_placeholder, span_length );
 #endif
+
     string_placeholder += span_length;
+
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
     strncpy_s( string_placeholder, replacement_length, replacement, replacement_length );
 #else
@@ -210,10 +213,11 @@ replace_string
   }
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( string_placeholder, string + string_length - string_placeholder, buffer_placeholder, string + string_length - string_placeholder );
+  strncpy_s( string_placeholder, string + string_length - location, buffer_placeholder, string + string_length - location );
 #else
-  strncpy( string_placeholder, buffer_placeholder, string + string_length - string_placeholder );
+  strncpy( string_placeholder, buffer_placeholder, string + string_length - location );
 #endif
+
   free( buffer );
 
   return string;

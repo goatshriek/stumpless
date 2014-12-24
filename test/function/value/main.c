@@ -159,20 +159,21 @@ test_outside_access
 const char *
 test_to_string( void )
 {
-  Value * value = BuildIntValue();
-  if( value == NULL )
+  Value *value = BuildIntValue();
+
+  if( !value )
     return "the test value could not be created";
   char * str;
 
   str = ValueToString( NULL );
-  if( str != NULL )
+  if( str )
     return "a null value did not create a null string";
 
   str = ValueToString( value );
-  if( str == NULL )
+  if( !str )
     return "a valid value returned a null string";
 
-  if( strstr( str, "45678" ) == NULL )
+  if( !strstr( str, "45678" ) )
     return "the string did not contain the value's contents";
 
   return NULL;
