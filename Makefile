@@ -386,11 +386,13 @@ $(OUTDIR)\src\value\profile_initializer.obj: $(SRCDIR)\value\profile_initializer
     
 
 # run tests
-check: $(OUTDIR) $(STUMPLESSOBJECTS) $(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\configuration_suite.exe
+check: $(OUTDIR) $(STUMPLESSOBJECTS) $(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\comparator_suite.exe $(OUTDIR)\test\function\configuration_suite.exe
     - $(OUTDIR)\test\function\adapter_suite.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Adapter Test Failed"
     - $(OUTDIR)\test\function\boolean_suite.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Boolean Test Failed"
+    - $(OUTDIR)\test\function\comparator_suite.exe >> $(OUTDIR)\test-suite.log
+    if errorlevel 1 echo "Comparator Test Failed"
     - $(OUTDIR)\test\function\configuration_suite.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Configuration Test Failed"
 
@@ -402,6 +404,9 @@ $(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite
 $(OUTDIR)\test\function\boolean_suite.exe: $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
     $(link) $(linkdebug) -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
     
+$(OUTDIR)\test\function\comparator_suite.exe: $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\comparator_suite.exe $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+    
 $(OUTDIR)\test\function\configuration_suite.exe: $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
     $(link) $(linkdebug) -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
     
@@ -412,6 +417,9 @@ $(OUTDIR)\test\function\adapter_suite.obj: $(TESTDIR)\function\adapter_suite.c
     
 $(OUTDIR)\test\function\boolean_suite.obj: $(TESTDIR)\function\boolean_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\boolean_suite.c
+    
+$(OUTDIR)\test\function\comparator_suite.obj: $(TESTDIR)\function\comparator_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\comparator_suite.c
     
 $(OUTDIR)\test\function\configuration_suite.obj: $(TESTDIR)\function\configuration_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\configuration_suite.c

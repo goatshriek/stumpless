@@ -26,9 +26,11 @@ main( void )
 const char *
 test_destructor( void )
 {
+  Comparator *comparator;
+
   DestroyComparator( NULL );
 
-  Comparator *comparator = BuildComparator();
+  comparator = BuildComparator();
   if( !comparator )
     return "could not build test comparator";
 
