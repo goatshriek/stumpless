@@ -5,7 +5,7 @@
 #include "private/boolean.h"
 #include "private/type.h"
 
-#include "test/function/boolean.h"
+#include "test/function/boolean_suite.h"
 #include "test/helper.h"
 
 int

@@ -5,7 +5,7 @@
 
 #include <stumpless/value/constructor.h>
 
-#include "test/function/value/constructor.h"
+#include "test/function/value/constructor_suite.h"
 #include "test/helper.h"
 #include "test/type.h"
 

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/container/queue.h"
-#include "test/function/container/queue.h"
+#include "test/function/container/queue_suite.h"
 #include "test/helper.h"
 
 int

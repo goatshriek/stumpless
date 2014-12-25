@@ -1,1 +1,1 @@
-noinst_HEADERS += include/test/function/formatter/text.h
+noinst_HEADERS += include/test/function/formatter/text_suite.h

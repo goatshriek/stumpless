@@ -5,7 +5,7 @@
 #include <stumpless/event.h>
 #include <stumpless/record.h>
 
-#include "test/function/record.h"
+#include "test/function/record_suite.h"
 #include "test/helper.h"
 #include "test/type.h"
 

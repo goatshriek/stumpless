@@ -6,7 +6,7 @@
 
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
-#include "test/function/container/list/value.h"
+#include "test/function/container/list/value_suite.h"
 #include "test/helper.h"
 #include "test/inheritance/list.h"
 

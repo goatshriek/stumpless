@@ -5,7 +5,7 @@
 #include "private/container/list/value.h"
 #include "private/output.h"
 #include "private/type.h"
-#include "test/function/output.h"
+#include "test/function/output_suite.h"
 #include "test/helper.h"
 
 const char * test_is_empty( void );

@@ -4,7 +4,7 @@
 #include "private/configuration.h"
 #include "private/type.h"
 
-#include "test/function/configuration.h"
+#include "test/function/configuration_suite.h"
 #include "test/helper.h"
 
 int

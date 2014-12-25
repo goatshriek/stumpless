@@ -1,1 +1,1 @@
-noinst_HEADERS += include/test/function/value/constructor.h
+noinst_HEADERS += include/test/function/value/constructor_suite.h

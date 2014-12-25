@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "private/adapter.h"
-#include "test/function/adapter.h"
+#include "test/function/adapter_suite.h"
 #include "test/helper.h"
 #include "test/type.h"
 

@@ -9,7 +9,7 @@
 #include "private/formatter.h"
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
-#include "test/function/formatter/text.h"
+#include "test/function/formatter/text_suite.h"
 #include "test/helper.h"
 #include "test/type.h"
 

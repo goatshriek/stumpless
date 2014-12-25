@@ -6,7 +6,7 @@
 #include "private/container/dictionary/const_iterator.h"
 #include "static/container/dictionary.h"
 #include "static/container/dictionary/const_iterator.h"
-#include "test/function/container/dictionary/const_iterator.h"
+#include "test/function/container/dictionary/const_iterator_suite.h"
 #include "test/helper.h"
 #include "test/type.h"
 

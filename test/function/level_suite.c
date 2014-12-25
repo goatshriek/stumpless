@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "private/level.h"
-#include "test/function/level.h"
+#include "test/function/level_suite.h"
 #include "test/helper.h"
 #include "test/type.h"
 
@@ -12,7 +12,7 @@ main( void )
 {
   unsigned failure_count = 0;
   const char *result;
- 
+
   TEST( AlertLevel)
   //TEST( CriticalLevel)
   //TEST( DebugLevel)
@@ -22,7 +22,7 @@ main( void )
   TEST( LevelToString)
   //TEST( NoticeLevel)
   //TEST( WarningLevel)
-   
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -36,7 +36,7 @@ TestAlertLevel
   Level *level = FindLevelByName( "alert" );
   if( !level )
     return "the alert Level could not be found";
-  
+
   ASSERT_STRINGS_EQUAL( "alert", level->name, "the alert Level did not have the appropriate name" )
 
   return NULL;
@@ -49,13 +49,13 @@ TestLevelToString
   char *description = LevelToString( NULL );
   if( description )
     return "the description was not null for a null pointer";
-  
+
   Level *level = BuildLevel();
   description = LevelToString( level );
   if( !description )
     return "the description string was null for a non-null level pointer";
   if( !strstr( description, "Test Level" ) )
     return "the description did not contain the level's name";
-  
+
   return NULL;
 }

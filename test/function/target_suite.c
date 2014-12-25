@@ -4,7 +4,7 @@
 
 #include <stumpless/target.h>
 
-#include "test/function/target.h"
+#include "test/function/target_suite.h"
 #include "test/helper.h"
 #include "test/type.h"
 
