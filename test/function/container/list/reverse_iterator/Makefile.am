@@ -1,2 +1,1 @@
-test_function_container_list_reverse_iterator_reverse_iterator_SOURCES = test/function/container/list/reverse_iterator/reverse_iterator.c
-test_function_container_list_reverse_iterator_reverse_iterator_LDADD = $(test_libraries)
+

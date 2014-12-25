@@ -1,8 +1,5 @@
-test_function_output_main_SOURCES = test/function/output/main.c
-test_function_output_main_LDADD = $(test_libraries)
+test_function_output_profile_suite_SOURCES = test/function/output/profile_suite.c
+test_function_output_profile_suite_LDADD = $(test_libraries)
 
-test_function_output_profile_SOURCES = test/function/output/profile.c
-test_function_output_profile_LDADD = $(test_libraries)
-
-test_function_output_profile_initializer_SOURCES = test/function/output/profile_initializer.c
-test_function_output_profile_initializer_LDADD = $(test_libraries)
+test_function_output_profile_initializer_suite_SOURCES = test/function/output/profile_initializer_suite.c
+test_function_output_profile_initializer_suite_LDADD = $(test_libraries)

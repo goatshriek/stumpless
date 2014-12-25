@@ -1,2 +1,1 @@
-test_function_container_list_iterator_iterator_SOURCES = test/function/container/list/iterator/iterator.c
-test_function_container_list_iterator_iterator_LDADD = $(test_libraries)
+
