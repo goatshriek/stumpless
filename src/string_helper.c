@@ -17,17 +17,17 @@ copy_string
     return NULL;
 
   length = strlen( str );
-  copy = malloc( sizeof( char ) * length + 1 );
+  copy = malloc( sizeof( char ) * ( length + 1 ) );
   if( !copy )
     return NULL;
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( copy, length, str, length );
+  strncpy_s( copy, length + 1, str, _TRUNCATE );
 #else
   strncpy( copy, str, length );
+  copy[length] = '\0';
 #endif
 
-  copy[length] = '\0';
   return copy;
 }
 
@@ -135,7 +135,7 @@ replace_first_string
     return NULL;
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( buffer, string_length, string, string_length );
+  strncpy_s( buffer, string_length + 1, string, _TRUNCATE );
 #else
   strncpy( buffer, string, string_length );
 #endif
@@ -148,14 +148,14 @@ replace_first_string
 
   span_length = location - buffer;
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( string, span_length, buffer, span_length );
+  strncpy_s( string, span_length + 1, buffer, _TRUNCATE );
 #else
   strncpy( string, buffer, span_length );
 #endif
   string_placeholder = string + span_length;
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( string_placeholder, replacement_length, replacement, replacement_length );
-  strncpy_s( string_placeholder + replacement_length, string_length - span_length, location + target_length, string_length - span_length );
+  strncpy_s( string_placeholder, replacement_length + 1, replacement, _TRUNCATE );
+  strncpy_s( string_placeholder + replacement_length + 1, string_length - span_length, location + target_length, _TRUNCATE );
 #else
   strncpy( string_placeholder, replacement, replacement_length );
   strncpy( string_placeholder + replacement_length, location + target_length, string_length - span_length );
@@ -185,7 +185,7 @@ replace_string
     return NULL;
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( buffer, string_length, string, string_length );
+  strncpy_s( buffer, string_length + 1, string, _TRUNCATE );
 #else
   strncpy( buffer, string, string_length );
 #endif
@@ -196,7 +196,7 @@ replace_string
     span_length = location - buffer_placeholder;
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-    strncpy_s( string_placeholder, span_length, buffer_placeholder, span_length );
+    strncpy_s( string_placeholder, span_length + 1, buffer_placeholder, _TRUNCATE );
 #else
     strncpy( string_placeholder, buffer_placeholder, span_length );
 #endif
@@ -204,7 +204,7 @@ replace_string
     string_placeholder += span_length;
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-    strncpy_s( string_placeholder, replacement_length, replacement, replacement_length );
+    strncpy_s( string_placeholder, replacement_length + 1, replacement, _TRUNCATE );
 #else
     strncpy( string_placeholder, replacement, replacement_length );
 #endif
@@ -213,7 +213,7 @@ replace_string
   }
 
 #ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( string_placeholder, string + string_length - location, buffer_placeholder, string + string_length - location );
+  strncpy_s( string_placeholder, string + string_length - location + 1, buffer_placeholder, _TRUNCATE );
 #else
   strncpy( string_placeholder, buffer_placeholder, string + string_length - location );
 #endif

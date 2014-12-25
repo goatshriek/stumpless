@@ -5,11 +5,11 @@
 #include "private/type.h"
 
 char *
-BooleanToString( Boolean * boolean )
+BooleanToString( Boolean *boolean )
 {
-  if( boolean == NULL )
+  if( !boolean || !boolean->format )
     return NULL;
-  
+
   if( boolean->value )
     return copy_string( boolean->format->true_description );
   else

@@ -386,7 +386,7 @@ $(OUTDIR)\src\value\profile_initializer.obj: $(SRCDIR)\value\profile_initializer
     
 
 # run tests
-check: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\configuration_suite.exe
+check: $(OUTDIR) $(STUMPLESSOBJECTS) $(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\configuration_suite.exe
     - $(OUTDIR)\test\function\adapter_suite.exe >> $(OUTDIR)\test-suite.log
     if errorlevel 1 echo "Adapter Test Failed"
     - $(OUTDIR)\test\function\boolean_suite.exe >> $(OUTDIR)\test-suite.log
@@ -396,36 +396,36 @@ check: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\function\adapter_suite.exe $(OUTDI
 
 
 # executable files
-$(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
+$(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
     
 $(OUTDIR)\test\function\boolean_suite.exe: $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
     
 $(OUTDIR)\test\function\configuration_suite.exe: $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(OUTDIR)\stumpless.lib
+    $(link) $(linkdebug) -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
     
     
 # test object files
 $(OUTDIR)\test\function\adapter_suite.obj: $(TESTDIR)\function\adapter_suite.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\adapter_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\adapter_suite.c
     
 $(OUTDIR)\test\function\boolean_suite.obj: $(TESTDIR)\function\boolean_suite.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\boolean_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\boolean_suite.c
     
 $(OUTDIR)\test\function\configuration_suite.obj: $(TESTDIR)\function\configuration_suite.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\configuration_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\configuration_suite.c
 
 
 # helper library object files
 $(OUTDIR)\helper\builder.obj: $(TESTDIR)\helper\builder.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\builder.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\builder.c
 
 $(OUTDIR)\helper\fixture.obj: $(TESTDIR)\helper\fixture.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\fixture.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\fixture.c
 
 $(OUTDIR)\helper\log.obj: $(TESTDIR)\helper\log.c
-    $(cc) $(cflags) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\log.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\log.c
     
     
 clean:
