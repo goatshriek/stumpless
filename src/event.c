@@ -38,7 +38,7 @@ AddEvent
 
 char *
 EventToString
-( Event * event )
+( Event *event )
 {
   return OutputToString( EventToText( FindFormatterByName( "text" ), event ) );
 }

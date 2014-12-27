@@ -135,11 +135,11 @@ ValueListToString
 {
   Configuration * configuration = GetConfiguration();
   size_t buffer_size = configuration->string->buffer_size;
-  char *list_str = malloc( sizeof( char ) * buffer_size + 1 );
+  char *list_str = malloc( sizeof( char ) * ( buffer_size + 1 ) );
 
   NULL_ON_FAILURE( ValueListIntoString( list_str, list, buffer_size ) )
 
-  list_str[buffer_size + 1] = '\0';
+  list_str[buffer_size] = '\0';
 
   return list_str;
 }

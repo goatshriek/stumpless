@@ -38,12 +38,15 @@ const char *
 test_append_adapter
 ( void )
 {
-  Logger *logger = malloc( sizeof( logger ) );
+  Adapter *first_adapter;
+  Logger *logger;
+
+  logger = malloc( sizeof( logger ) );
   if( !logger )
     return "could not build the test logger";
   logger->targets = NULL;
 
-  Adapter *first_adapter = malloc( sizeof( Adapter ) );
+  first_adapter = malloc( sizeof( Adapter ) );
   if( !first_adapter )
     return "could not build the first test adapter";
 
@@ -82,12 +85,15 @@ const char *
 test_append_formatter
 ( void )
 {
-  Logger * logger = malloc( sizeof( logger ) );
+  Formatter *first_formatter;
+  Logger *logger;
+
+  logger = malloc( sizeof( logger ) );
   if( !logger )
     return "could not build the test logger";
   logger->targets = NULL;
 
-  Formatter * first_formatter = malloc( sizeof( Formatter ) );
+  first_formatter = malloc( sizeof( Formatter ) );
   if( !first_formatter )
     return "could not build the first test formatter";
 
@@ -133,7 +139,9 @@ const char *
 test_constructor
 ( void )
 {
-  Logger *logger = NewLogger( NULL );
+  Logger *logger;
+
+  logger = NewLogger( NULL );
   if( logger )
     return "a logger with no name was created";
 

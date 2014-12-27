@@ -36,7 +36,10 @@ const char *
 TestAlertEvent
 ( void )
 {
-  Event *event = FindEventByName( "alert" );
+  Event *event;
+  Level *level;
+
+  event = FindEventByName( "alert" );
   if( !event )
     return "could not find the alert event";
 
@@ -45,7 +48,7 @@ TestAlertEvent
 
   ASSERT_STRINGS_EQUAL( "alert", event->name, "the Event's name was not alert" )
 
-  Level *level = FindLevelByName( "alert" );
+  level = FindLevelByName( "alert" );
   if( !level )
     return "the alert level could not be found";
 
@@ -59,11 +62,17 @@ const char *
 TestEventToString
 ( void )
 {
-  char *description = EventToString( NULL );
+  char *description;
+  Event *event;
+
+  description = EventToString( NULL );
   if( description )
     return "the description was not NULL for a NULL pointer";
 
-  Event *event = BuildEvent();
+  event = BuildEvent();
+  if( !event )
+    return "could not build test Event";
+
   description = EventToString( event );
   if( !description )
     return "the description was NULL for a valid event pointer";

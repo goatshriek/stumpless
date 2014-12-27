@@ -33,7 +33,9 @@ const char *
 TestAlertLevel
 ( void )
 {
-  Level *level = FindLevelByName( "alert" );
+  Level *level;
+
+  level = FindLevelByName( "alert" );
   if( !level )
     return "the alert Level could not be found";
 
@@ -46,11 +48,14 @@ const char *
 TestLevelToString
 ( void )
 {
-  char *description = LevelToString( NULL );
+  char * description;
+  Level *level;
+
+  description = LevelToString( NULL );
   if( description )
     return "the description was not null for a null pointer";
 
-  Level *level = BuildLevel();
+  level = BuildLevel();
   description = LevelToString( level );
   if( !description )
     return "the description string was null for a non-null level pointer";

@@ -22,6 +22,7 @@ NewValueFor##name                                                              \
     return NULL;                                                               \
                                                                                \
   value->member = element;                                                     \
+  value->format = NULL;                                                        \
                                                                                \
   return value;                                                                \
 }                                                                              \
@@ -50,6 +51,7 @@ NewValueFor##name##Array                                                       \
   memcpy( value->member##_p, array, length );                                  \
                                                                                \
   value->length = length;                                                      \
+  value->format = NULL;                                                        \
                                                                                \
   return value;                                                                \
 }

@@ -28,14 +28,16 @@ const char *
 TestCopy
 ( void )
 {
+  Target *copy, *target;
+
   if( CopyTarget( NULL ) )
     return "a NULL Target returned a non-NULL Target";
 
-  Target *target = BuildTarget();
+  target = BuildTarget();
   if( !target )
     return "could not build a test Target";
 
-  Target *copy = CopyTarget( target );
+  copy = CopyTarget( target );
   if( !copy )
     return "a valid Target did not return a copy";
 
@@ -54,9 +56,11 @@ const char *
 TestDestroy
 ( void )
 {
+  Target *target;
+
   DestroyTarget( NULL );
 
-  Target *target = BuildTarget();
+  target = BuildTarget();
   if( !target )
     return "could not build a test Target";
 
@@ -69,12 +73,16 @@ const char *
 TestLogRecord
 ( void )
 {
-  Status *status = LogToTarget( NULL, NULL );
+  Record *record;
+  Status *status;
+  Target *target;
+
+  status = LogToTarget( NULL, NULL );
   if( !status )
     return "two null arguments did not raise an abnormal status";
   ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for two empty arguments" )
 
-  Target *target = BuildTarget();
+  target = BuildTarget();
   if( !target )
     return "could not build a test target";
 
@@ -83,7 +91,7 @@ TestLogRecord
     return "a null record did not raise an abnormal status";
   ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for an empty record" )
 
-  Record *record = BuildRecord();
+  record = BuildRecord();
   if( !record )
     return "could not build a test record";
 

@@ -114,7 +114,7 @@ TextOutputIsEmpty
 
 char *
 TextOutputToString
-( const Output * output )
+( const Output *output )
 {
   if( !output )
     return NULL;

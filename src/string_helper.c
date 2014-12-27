@@ -1,5 +1,7 @@
 #include <ctype.h>
+#include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include <stumpless/config/check.h>
@@ -21,12 +23,7 @@ copy_string
   if( !copy )
     return NULL;
 
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( copy, length + 1, str, _TRUNCATE );
-#else
-  strncpy( copy, str, length );
-  copy[length] = '\0';
-#endif
+  safe_strncpy( copy, str, length + 1 );
 
   return copy;
 }
@@ -134,11 +131,7 @@ replace_first_string
   if( !buffer )
     return NULL;
 
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( buffer, string_length + 1, string, _TRUNCATE );
-#else
-  strncpy( buffer, string, string_length );
-#endif
+  safe_strncpy( buffer, string, string_length + 1 );
 
   location = strstr( buffer, target );
   if( !location ){
@@ -147,19 +140,10 @@ replace_first_string
   }
 
   span_length = location - buffer;
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( string, span_length + 1, buffer, _TRUNCATE );
-#else
-  strncpy( string, buffer, span_length );
-#endif
+  safe_strncpy( string, buffer, span_length + 1 );
   string_placeholder = string + span_length;
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( string_placeholder, replacement_length + 1, replacement, _TRUNCATE );
-  strncpy_s( string_placeholder + replacement_length + 1, string_length - span_length, location + target_length, _TRUNCATE );
-#else
-  strncpy( string_placeholder, replacement, replacement_length );
-  strncpy( string_placeholder + replacement_length, location + target_length, string_length - span_length );
-#endif
+  safe_strncpy( string_placeholder, replacement, replacement_length );
+  safe_strncpy( string_placeholder + replacement_length, location + target_length, string_length - span_length + 1 );
 
   free( buffer );
 
@@ -184,41 +168,64 @@ replace_string
   if( !buffer )
     return NULL;
 
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( buffer, string_length + 1, string, _TRUNCATE );
-#else
-  strncpy( buffer, string, string_length );
-#endif
+  safe_strncpy( buffer, string, string_length + 1 );
 
   string_placeholder = string;
   buffer_placeholder = buffer;
   while( location = strstr( buffer_placeholder, target ) ){
     span_length = location - buffer_placeholder;
 
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-    strncpy_s( string_placeholder, span_length + 1, buffer_placeholder, _TRUNCATE );
-#else
-    strncpy( string_placeholder, buffer_placeholder, span_length );
-#endif
+    safe_strncpy( string_placeholder, buffer_placeholder, span_length + 1 );
 
     string_placeholder += span_length;
 
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-    strncpy_s( string_placeholder, replacement_length + 1, replacement, _TRUNCATE );
-#else
-    strncpy( string_placeholder, replacement, replacement_length );
-#endif
+    safe_strncpy( string_placeholder, replacement, replacement_length + 1 );
     string_placeholder += replacement_length;
     buffer_placeholder = location + target_length;
   }
 
-#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
-  strncpy_s( string_placeholder, string + string_length - location + 1, buffer_placeholder, _TRUNCATE );
-#else
-  strncpy( string_placeholder, buffer_placeholder, string + string_length - location );
-#endif
+  safe_strncpy( string_placeholder, buffer_placeholder, string + string_length - location + 1 );
 
   free( buffer );
 
   return string;
+}
+
+int
+safe_sprintf
+( char *str, size_t length, const char *format, ... )
+{
+  int result;
+  va_list args;
+
+  va_start( args, format );
+  result = vsafe_sprintf( str, length, format, args );
+  va_end( args );
+
+  return result;
+}
+
+char *
+safe_strncpy
+( char *destination, const char *source, size_t length )
+{
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  strncpy_s( destination, length, source, _TRUNCATE );
+#else
+  strncpy( destination, source, length-1 );
+  destination[length-1] = '\0';
+#endif
+
+  return destination;
+}
+
+int
+vsafe_sprintf
+( char *str, size_t length, const char *format, va_list args )
+{
+#ifdef __STUMPLESS_HAVE_CRT_SECURE_FUNCTIONS
+  return vsprintf_s( str, length, format, args );
+#else
+  return vsnprintf( str, length, format, args );
+#endif
 }

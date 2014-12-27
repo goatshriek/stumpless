@@ -37,13 +37,16 @@ const char *
 test_add_formatter
 ( void )
 {
-  Formatter * formatter = BuildFormatter();
+  Formatter *formatter, *found;
+  Status *status;
+
+  formatter = BuildFormatter();
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
-  Status * status = AddFormatter( formatter );
+  status = AddFormatter( formatter );
   FAIL_IF_NOT_NULL( status, "the new formatter could not be added" )
 
-  Formatter * found = FindFormatterByName( formatter->name );
+  found = FindFormatterByName( formatter->name );
   if( found != formatter )
     return "the value was not added in such a way that it could be retrieved";
 
@@ -54,14 +57,18 @@ const char *
 test_destructor
 ( void )
 {
+  Filter *filter;
+  FilterListIterator *filters;
+  Formatter *formatter;
+
   DestroyFormatter( NULL );
 
-  Formatter *formatter = BuildFormatter();
+  formatter = BuildFormatter();
   if( !formatter )
     return NULL;
 
-  FilterListIterator *filters = BeginFilterList( formatter->filters );
-  Filter *filter = NextInFilterListIterator( filters );
+  filters = BeginFilterList( formatter->filters );
+  filter = NextInFilterListIterator( filters );
 
   if( !filter || !filter->name )
     return "the formatter did not have a populated filter list";
@@ -78,7 +85,9 @@ const char *
 test_find_formatter_by_name
 ( void )
 {
-  Formatter * formatter = FindFormatterByName( "text" );
+  Formatter *formatter;
+
+  formatter = FindFormatterByName( "text" );
   FAIL_IF_NULL( formatter, "the intended formatter could not be retrieved" )
   ASSERT_STRINGS_EQUAL( "text", formatter->name, "the correct formatter was not returned" )
 
@@ -89,10 +98,13 @@ const char *
 test_get_option
 ( void )
 {
-  Formatter * formatter = BuildFormatter();
+  const char *value;
+  Formatter *formatter;
+
+  formatter = BuildFormatter();
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
-  const char * value = GetFormatterOption( NULL, NULL );
+  value = GetFormatterOption( NULL, NULL );
   FAIL_IF_NOT_NULL( value, "two NULL arguments returned a value" )
 
   value = GetFormatterOption( NULL, "whatever" );
@@ -115,13 +127,15 @@ const char *
 test_set_option
 ( void )
 {
-  Formatter * formatter = BuildFormatter();
+  const char *option = "test option";
+  Formatter *formatter;
+  Status *status;
+  void *value = "target value";
+
+  formatter = BuildFormatter();
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
-  const char * option = "test option";
-  void * value = "target value";
-
-  Status * status = SetFormatterOption( NULL, NULL, NULL );
+  status = SetFormatterOption( NULL, NULL, NULL );
   FAIL_IF_NULL( status, "three NULL arguments did not raise an error" )
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
 

@@ -38,7 +38,9 @@ const char *
 TestAlertRecord
 ( void )
 {
-  Record *record = NewAlertRecord( "test message" );
+  Record *record;
+
+  record = NewAlertRecord( "test message" );
   if( !record )
     return "the alert record was not correctly created";
   if( record->event != FindEventByName( "alert" ) )
@@ -51,10 +53,12 @@ const char *
 TestMergeRecords
 ( void )
 {
-  Record *merged = MergeRecords( NULL, NULL );
+  Record *merged, *primary, *secondary;
+
+  merged = MergeRecords( NULL, NULL );
   FAIL_IF_NOT_NULL( merged, "an record was created out of two null records" )
 
-  Record *primary = BuildEmptyRecord();
+  primary = BuildEmptyRecord();
   FAIL_IF_NULL( primary, "an empty record could not be built" )
   primary->event = NULL;
   primary->attributes = BuildDictionaryOfRecordAttributes();
@@ -67,7 +71,7 @@ TestMergeRecords
   if( merged != primary )
     return "a null primary did not return the secondary as the merged record";
 
-  Record *secondary = BuildEmptyRecord();
+  secondary = BuildEmptyRecord();
   FAIL_IF_NULL( secondary, "an empty record could not be built" )
   secondary->event = BuildEvent();
   FAIL_IF_NULL( secondary->event, "the test event could not be created" )
@@ -90,11 +94,14 @@ const char *
 TestRecordForEvent
 ( void )
 {
-  Event *event = BuildEvent();
+  Event *event;
+  Record *record;
+
+  event = BuildEvent();
   if( !event )
     return "could not build test Event";
 
-  Record *record = RecordForEvent( event );
+  record = RecordForEvent( event );
   if( !record )
     return "the record could not be created";
   if( record->event != event )
@@ -124,11 +131,14 @@ const char *
 TestRecordToString
 ( void )
 {
-  char *message = RecordToString( NULL );
+  char *message;
+  Record *record;
+
+  message = RecordToString( NULL );
   if( message )
     return "the message was not null for a null pointer";
 
-  Record *record = NewDebugRecord( "debug record message" );
+  record = NewDebugRecord( "debug record message" );
   if( !record )
     return "could not build a test Record";
   message = RecordToString( record );

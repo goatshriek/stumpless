@@ -31,7 +31,9 @@ const char *
 test_add_status
 ( void )
 {
-  Status * status = BuildErrorStatus();
+  Status *status;
+
+  status = BuildErrorStatus();
 
   if( AddStatus( status ) != status )
     return "the status was not added to the list";
@@ -43,7 +45,9 @@ const char *
 test_find_status_by_name
 ( void )
 {
-  Status * status = BuildFailureStatus();
+  Status *status;
+
+  status = BuildFailureStatus();
   FAIL_IF_NULL( status, "could not build the test status" )
 
   if( AddStatus( status ) != status )
@@ -59,7 +63,9 @@ const char *
 test_raise_abnormal_status
 ( void )
 {
-  Status * status = BuildWarningStatus();
+  Status *status;
+
+  status = BuildWarningStatus();
   FAIL_IF_NULL( status, "could not build the test status" )
 
   if( AddStatus( status ) != status )
@@ -78,13 +84,12 @@ const char *
 test_to_string
 ( void )
 {
-  Status * status = NULL;
+  Status *status;
 
   FAIL_IF_NOT_NULL( StatusToString( NULL ), "a NULL status did not return a NULL string" )
 
   status = BuildErrorStatus();
   FAIL_IF_NULL( status, "the test status could not be built" )
-
 
   return NULL;
 }

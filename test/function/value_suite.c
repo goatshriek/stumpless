@@ -38,9 +38,13 @@ const char *
 test_array_value_to_value_list
 ( void )
 {
-  Value * value = BuildUnsignedShortValue();
+  Value *value;
+  ValueList *list;
+  ValueListIterator *values;
+
+  value = BuildUnsignedShortValue();
   FAIL_IF_NULL( value, "could not build the test short value" )
-  ValueList * list = value->profile->to_value_list( value );
+  list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a non-array value could not be converted to a list" )
 
   value = BuildEmptyUnsignedIntArrayValue();
@@ -55,7 +59,7 @@ test_array_value_to_value_list
   list = value->profile->to_value_list( value );
   FAIL_IF_NULL( list, "a list could not be built from an int array value" )
 
-  ValueListIterator * values = BeginValueList( list );
+  values = BeginValueList( list );
   value = NextInValueListIterator( values );
   FAIL_IF_NULL( value, "the generated list was empty" )
   if( strcmp( value->profile->name, "int" ) != 0 )
@@ -78,9 +82,11 @@ test_array_value_to_value_list
 const char *
 test_destructor( void )
 {
+  Value *value;
+
   DestroyValue( NULL );
 
-  Value *value = NewValueForString( "testing value" );
+  value = NewValueForString( "testing value" );
   if( !value )
     return "the value could not be created";
 
@@ -92,13 +98,15 @@ test_destructor( void )
 const char *
 test_into_string( void )
 {
-  Value * value = BuildUnsignedIntValue();
-  if( value == NULL )
+  char str[11];
+  Status *status;
+  Value *value;
+
+  value = BuildUnsignedIntValue();
+  if( !value )
     return "could not build the test value";
 
-  char str[11];
-
-  Status * status = ValueIntoString( NULL, value, 11 );
+  status = ValueIntoString( NULL, value, 11 );
   FAIL_IF_NULL( status, "an empty string did not genereate an abnormal status" )
 
   ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
@@ -130,11 +138,14 @@ const char *
 test_outside_access
 ( void )
 {
-  Value *value = malloc( sizeof( Value ) );
+  long *num_list;
+  Value *value;
+
+  value = malloc( sizeof( Value ) );
   if( !value )
     return "the test value could not be created";
 
-  long *num_list = malloc( sizeof( float ) * 7 );
+  num_list = malloc( sizeof( float ) * 7 );
   if( !num_list )
     return "the test array could not be created";
 
@@ -159,11 +170,13 @@ test_outside_access
 const char *
 test_to_string( void )
 {
-  Value *value = BuildIntValue();
+  char *str;
+  Value *value;
+
+  value = BuildIntValue();
 
   if( !value )
     return "the test value could not be created";
-  char * str;
 
   str = ValueToString( NULL );
   if( str )

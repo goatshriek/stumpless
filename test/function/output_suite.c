@@ -32,9 +32,11 @@ const char *
 TestDestroy
 ( void )
 {
+  Output *output;
+
   DestroyOutput( NULL );
 
-  Output *output = BuildOutput();
+  output = BuildOutput();
   if( !output )
     return "could not build a test Output";
 
@@ -47,7 +49,9 @@ const char *
 test_is_empty
 ( void )
 {
-  Output *output = BuildTextOutput();
+  Output *output;
+
+  output = BuildTextOutput();
   FAIL_IF_NULL( output, "could not build test text output" )
 
   if( OutputIsEmpty( output ) )
