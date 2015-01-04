@@ -62,7 +62,7 @@ NewDictionary
 ()
 {
   Dictionary * dictionary = malloc( sizeof( Dictionary ) );
-  if( dictionary == NULL )
+  if( !dictionary )
     return NULL;
 
   dictionary->root = NULL;
@@ -149,9 +149,10 @@ AddNode
   Node *next;
 
   comparison =  strcmp( addition->key, node->key );
+
   if( comparison == 0 ){
     node->value = addition->value;
-    DestroyNode( addition );
+    // todo deal with memory leak introduced by not freeing the node
     return;
   }
 
@@ -216,19 +217,25 @@ GetNode
 static
 void
 LeftRotate
-( Dictionary * dictionary, Node * node )
+( Dictionary *dictionary, Node *node )
 {
-  Node * old_right = node->right_child;
+  Node *old_right;
+
+  old_right = node->right_child;
   node->right_child = old_right->left_child;
-  if( old_right->left_child != NULL )
+
+  if( old_right->left_child )
     old_right->left_child->parent = node;
+
   old_right->parent = node->parent;
-  if( node->parent == NULL )
+
+  if( !node->parent )
     dictionary->root = old_right;
   else if( node == node->parent->left_child )
     node->parent->left_child = old_right;
   else
     node->parent->right_child = old_right;
+
   old_right->left_child = node;
   node->parent = old_right;
 }
@@ -238,7 +245,7 @@ void
 ReplaceNode
 ( Dictionary * dictionary, Node * previous, Node * replacement )
 {
-  if( previous->parent == NULL )
+  if( !previous->parent )
     dictionary->root = replacement;
   else if( previous == previous->parent->left_child )
     previous->parent->left_child = replacement;
@@ -251,19 +258,25 @@ ReplaceNode
 static
 void
 RightRotate
-( Dictionary * dictionary, Node * node )
+( Dictionary *dictionary, Node *node )
 {
-  Node * old_left = node->left_child;
+  Node *old_left;
+
+  old_left = node->left_child;
   node->left_child = old_left->right_child;
-  if( old_left->right_child != NULL )
+
+  if( old_left->right_child )
     old_left->right_child->parent = node;
+
   old_left->parent = node->parent;
-  if( node->parent == NULL )
+
+  if( !node->parent )
     dictionary->root = old_left;
   else if( node == node->parent->left_child )
     node->parent->left_child = old_left;
   else
     node->parent->right_child = old_left;
+
   old_left->right_child = node;
   node->parent = old_left;
 }
@@ -271,12 +284,12 @@ RightRotate
 static
 void
 Splay
-( Dictionary * dictionary, Node * node )
+( Dictionary *dictionary, Node *node )
 {
-  if( node->parent == NULL )
+  if( !node->parent )
     return;
 
-  if( node->parent->parent == NULL ){
+  if( !node->parent->parent ){
     if( node->parent->left_child == node )
       RightRotate( dictionary, node->parent );
     else

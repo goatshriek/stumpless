@@ -68,7 +68,7 @@ void *
 GetHandlerOption
 ( const Handler * handler, const char * option )
 {
-  if( handler == NULL || option == NULL || handler->options == NULL )
+  if( !handler || !option || !handler->options )
     return NULL;
 
   return GetDictionaryValue( handler->options, option );

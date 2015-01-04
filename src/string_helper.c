@@ -120,7 +120,7 @@ replace_first_string
   char *buffer, *location, *string_placeholder;
   size_t span_length, string_length, replacement_length, target_length;
 
-  if( !string )
+  if( !string || !target  )
     return NULL;
 
   target_length = strlen( target );
@@ -142,8 +142,8 @@ replace_first_string
   span_length = location - buffer;
   safe_strncpy( string, buffer, span_length + 1 );
   string_placeholder = string + span_length;
-  safe_strncpy( string_placeholder, replacement, replacement_length );
-  safe_strncpy( string_placeholder + replacement_length, location + target_length, string_length - span_length + 1 );
+  safe_strncpy( string_placeholder, replacement, replacement_length + 1 );
+  safe_strncpy( string_placeholder + replacement_length, location + target_length, string_length - ( span_length + target_length ) + 1 );
 
   free( buffer );
 
@@ -184,7 +184,7 @@ replace_string
     buffer_placeholder = location + target_length;
   }
 
-  safe_strncpy( string_placeholder, buffer_placeholder, string + string_length - location + 1 );
+  safe_strncpy( string_placeholder, buffer_placeholder, string_length - ( buffer_placeholder - buffer ) + 1 );
 
   free( buffer );
 

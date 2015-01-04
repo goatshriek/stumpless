@@ -53,9 +53,13 @@ test_find_handler_by_name
 {
   Handler *handler;
 
-  AddHandler( BuildHandler() );
+  handler = BuildHandler();
+  if( !handler )
+    return "could not build test handler";
 
-  handler = FindHandlerByName( "test handler" );
+  AddHandler( handler );
+
+  handler = FindHandlerByName( handler->name );
   FAIL_IF_NULL( handler, "the intended handler could not be retrieved" )
   ASSERT_STRINGS_EQUAL( "test handler", handler->name, "the correct handler was not returned" )
 

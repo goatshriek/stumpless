@@ -721,19 +721,7 @@ Value *
 BuildIntValue
 ( void )
 {
-  Value *value;
-
-  value = malloc( sizeof( Value ) );
-  if( !value )
-    return NULL;
-
-  value->profile = FindValueProfileByName( "int" );
-  if( !value->profile )
-    return NULL;
-
-  value->i = 45678;
-
-  return value;
+  return NewValueForInt( 45678 );
 }
 
 Level *

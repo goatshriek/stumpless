@@ -95,22 +95,23 @@ test_replace_first
 ( void )
 {
   char str[100];
+  size_t buffer_size = 100;
 
-  strcpy( str, "How could this happen to me?" );
+  safe_strncpy( str, "How could this happen to me?", buffer_size );
   replace_first_string( str, "this", "this actually" );
-  ASSERT_STRINGS_EQUAL( str, "How could this actually happen to me?", "a single replacement was not handled properly" );
+  ASSERT_STRINGS_EQUAL( "How could this actually happen to me?", str, "a single replacement was not handled properly" );
 
-  strcpy( str, "How could this happen to me?" );
+  safe_strncpy( str, "How could this happen to me?", buffer_size );
   replace_first_string( str, "me?", "me!" );
-  ASSERT_STRINGS_EQUAL( str, "How could this happen to me!", "a replacement at the end was not handled properly" );
+  ASSERT_STRINGS_EQUAL( "How could this happen to me!", str, "a replacement at the end was not handled properly" );
 
-  strcpy( str, "How could this happen to me?" );
+  safe_strncpy( str, "How could this happen to me?", buffer_size );
   replace_first_string( str, "How could", "Did" );
-  ASSERT_STRINGS_EQUAL( str, "Did this happen to me?", "a replacement at the beginning was not handled properly" );
+  ASSERT_STRINGS_EQUAL( "Did this happen to me?", str, "a replacement at the beginning was not handled properly" );
 
-  strcpy( str, "How could this happen to me? I think this is unacceptable." );
+  safe_strncpy( str, "How could this happen to me? I think this is unacceptable.", buffer_size );
   replace_first_string( str, "this", "that" );
-  ASSERT_STRINGS_EQUAL( str, "How could that happen to me? I think this is unacceptable.", "two replacements were not handled properly" )
+  ASSERT_STRINGS_EQUAL( "How could that happen to me? I think this is unacceptable.", str, "two replacements were not handled properly" )
 
   return NULL;
 }
@@ -119,23 +120,24 @@ const char *
 test_replace_string
 ( void )
 {
-  char str[100];
+  char str[1000];
+  size_t buffer_size = 1000;
 
-  strcpy( str, "How could this happen to me?" );
+  safe_strncpy( str, "How could this happen to me?", buffer_size );
   replace_string( str, "this", "this actually" );
-  ASSERT_STRINGS_EQUAL( str, "How could this actually happen to me?", "a single replacement was not handled properly" );
+  ASSERT_STRINGS_EQUAL( "How could this actually happen to me?", str, "a single replacement was not handled properly" );
 
-  strcpy( str, "How could this happen to me?" );
+  safe_strncpy( str, "How could this happen to me?", buffer_size );
   replace_string( str, "me?", "me!" );
-  ASSERT_STRINGS_EQUAL( str, "How could this happen to me!", "a replacement at the end was not handled properly" );
+  ASSERT_STRINGS_EQUAL( "How could this happen to me!", str, "a replacement at the end was not handled properly" );
 
-  strcpy( str, "How could this happen to me?" );
+  safe_strncpy( str, "How could this happen to me?", buffer_size );
   replace_string( str, "How could", "Did" );
-  ASSERT_STRINGS_EQUAL( str, "Did this happen to me?", "a replacement at the beginning was not handled properly" );
+  ASSERT_STRINGS_EQUAL( "Did this happen to me?", str, "a replacement at the beginning was not handled properly" );
 
-  strcpy( str, "How could this happen to me? I think this is unacceptable." );
+  safe_strncpy( str, "How could this happen to me? I think this is unacceptable.", buffer_size );
   replace_string( str, "this", "that" );
-  ASSERT_STRINGS_EQUAL( str, "How could that happen to me? I think that is unacceptable.", "two replacements were not handled properly" )
+  ASSERT_STRINGS_EQUAL( "How could that happen to me? I think that is unacceptable.", str, "two replacements were not handled properly" )
 
   return NULL;
 }
