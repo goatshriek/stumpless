@@ -2,14 +2,14 @@
 #define __STUMPLESS_PRIVATE_LOGGER_LOG_H
 
 /** @file
- *  Functions used to log various elements directly to a Logger. 
+ *  Functions used to log various elements directly to a Logger.
  */
 
 #include "private/type.h"
 
 /** Logs a single character to a Logger. The Event Uses the default settings of the Logger
  *  provided. This includes the record level and the message.
- *  
+ *
  *  @param logger the Logger to use
  *  @param character the char to log
  *  @return a Status for the logging operation
@@ -75,7 +75,7 @@ LogLongLongArray
 ( Logger *, const long long *, unsigned );
 
 /** Logs a Record to a Logger. Uses the default settings of the Logger provided.
- *  
+ *
  *  @param logger the Logger to use
  *  @param record the Record to log
  *  @return a Status of the logging
@@ -100,9 +100,17 @@ Status *
 LogSignedCharArray
 ( Logger *, const signed char *, unsigned );
 
+/**
+ * Sends a single string to the provided Logger.
+ *
+ * @param logger the Logger to send the string to
+ * @param str the string to log
+ *
+ * @return a Status describing the result of the function.
+ */
 Status *
 LogString
-( Logger *, const char * );
+( Logger *logger, const char *str );
 
 Status *
 LogStringArray

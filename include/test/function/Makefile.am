@@ -7,4 +7,5 @@ noinst_HEADERS += include/test/function/adapter_suite.h \
 
 include include/test/function/container/Makefile.am
 include include/test/function/formatter/Makefile.am
+include include/test/function/logger/Makefile.am
 include include/test/function/value/Makefile.am
