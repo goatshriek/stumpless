@@ -119,7 +119,7 @@ $(OUTDIR):
     if not exist "$(OUTDIR)\src\status\$(NULL)" mkdir $(OUTDIR)\src\status
     if not exist "$(OUTDIR)\src\value\$(NULL)" mkdir $(OUTDIR)\src\value
     if not exist "$(OUTDIR)\test\function\$(NULL)" mkdir $(OUTDIR)\test\function
-    if not exist "$(OUTDIR)\helper\$(NULL)" mkdir $(OUTDIR)\helper
+    if not exist "$(OUTDIR)\test\helper\$(NULL)" mkdir $(OUTDIR)\test\helper
     
 
     
@@ -386,7 +386,9 @@ $(OUTDIR)\src\value\profile_initializer.obj: $(SRCDIR)\value\profile_initializer
     
 
 # run tests
-check: $(OUTDIR) $(STUMPLESSOBJECTS) \
+check: $(OUTDIR) \
+       $(STUMPLESSOBJECTS) \
+       $(OUTDIR)\stumpless.dll \
        $(OUTDIR)\test\function\adapter_suite.exe \
        $(OUTDIR)\test\function\boolean_suite.exe \
        $(OUTDIR)\test\function\comparator_suite.exe \
@@ -425,56 +427,56 @@ check: $(OUTDIR) $(STUMPLESSOBJECTS) \
 
 
 # executable files
-$(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\boolean_suite.exe: $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\boolean_suite.exe: $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\comparator_suite.exe: $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\comparator_suite.exe $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\comparator_suite.exe: $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\comparator_suite.exe $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\configuration_suite.exe: $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\configuration_suite.exe: $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\event_suite.exe: $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\event_suite.exe $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\event_suite.exe: $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\event_suite.exe $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\filter_suite.exe: $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\filter_suite.exe $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\filter_suite.exe: $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\filter_suite.exe $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\formatter_suite.exe: $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\formatter_suite.exe $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\formatter_suite.exe: $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\formatter_suite.exe $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\handler_suite.exe: $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\handler_suite.exe $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\handler_suite.exe: $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\handler_suite.exe $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\level_suite.exe: $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\level_suite.exe $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\level_suite.exe: $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\level_suite.exe $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\logger_suite.exe: $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\logger_suite.exe $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\logger_suite.exe: $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\logger_suite.exe $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\output_suite.exe: $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\output_suite.exe $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\output_suite.exe: $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\output_suite.exe $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\record_attribute_suite.exe: $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_attribute_suite.exe $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\record_attribute_suite.exe: $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_attribute_suite.exe $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\record_suite.exe: $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_suite.exe $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\record_suite.exe: $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_suite.exe $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\status_suite.exe: $(OUTDIR)\test\function\status_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\status_suite.exe $(OUTDIR)\test\function\status_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\status_suite.exe: $(OUTDIR)\test\function\status_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\status_suite.exe $(OUTDIR)\test\function\status_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\string_helper_suite.exe: $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\string_helper_suite.exe $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\string_helper_suite.exe: $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\string_helper_suite.exe $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\target_suite.exe: $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\target_suite.exe $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\target_suite.exe: $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\target_suite.exe $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\value_suite.exe: $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\helper\builder.obj  $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value_suite.exe $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\helper\builder.obj $(OUTDIR)\helper\fixture.obj $(OUTDIR)\helper\log.obj $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\value_suite.exe: $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value_suite.exe $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
     
     
 # test object files
@@ -530,15 +532,20 @@ $(OUTDIR)\test\function\value_suite.obj: $(TESTDIR)\function\value_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\value_suite.c
 
 
-# helper library object files
-$(OUTDIR)\helper\builder.obj: $(TESTDIR)\helper\builder.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\builder.c
+# build test helper library
+$(OUTDIR)\test\helper.dll: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\helper\builder.obj $(OUTDIR)\test\helper\fixture.obj $(OUTDIR)\test\helper\log.obj
+    $(link) $(linkdebug) $(dlllflags) -nologo -out:$(OUTDIR)\test\helper.dll /DEF:$(BASEDIR)\test\helper.def $(OUTDIR)\stumpless.lib $(OUTDIR)\test\helper\builder.obj $(OUTDIR)\test\helper\fixture.obj $(OUTDIR)\test\helper\log.obj  
+    
+    
+# test helper library object files
+$(OUTDIR)\test\helper\builder.obj: $(TESTDIR)\helper\builder.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\helper\ /Fd$(OUTDIR)\test\helper\ $(TESTDIR)\helper\builder.c
 
-$(OUTDIR)\helper\fixture.obj: $(TESTDIR)\helper\fixture.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\fixture.c
+$(OUTDIR)\test\helper\fixture.obj: $(TESTDIR)\helper\fixture.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\helper\ /Fd$(OUTDIR)\test\helper\ $(TESTDIR)\helper\fixture.c
 
-$(OUTDIR)\helper\log.obj: $(TESTDIR)\helper\log.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\helper\ /Fd$(OUTDIR)\helper\ $(TESTDIR)\helper\log.c
+$(OUTDIR)\test\helper\log.obj: $(TESTDIR)\helper\log.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\helper\ /Fd$(OUTDIR)\test\helper\ $(TESTDIR)\helper\log.c
     
     
 clean:
