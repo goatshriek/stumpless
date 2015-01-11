@@ -46,7 +46,7 @@ EXPORTS
     OutputToString                  @38
     PushToQueue                     @39
     PushToStack                     @40
-    RaiseStatus                     @41
+    RaiseException                  @41
     RecordToText                    @42
     SetAdapterOption                @43
     SetDictionaryValue              @44

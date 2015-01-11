@@ -5,31 +5,31 @@
 
 #include "private/type.h"
 
-Status *
+Exception *
 BinaryOutputIntoStream
 ( const Output *, FILE * );
 
-Status *
+Exception *
 CSVOutputIntoStream
 ( const Output *, FILE * );
 
-Status *
+Exception *
 HandleStreamOutput
 ( const Handler *handler, const Output * );
 
-Status *
+Exception *
 JSONOutputIntoStream
 ( const Output *, FILE * );
 
-Status *
+Exception *
 RawStringOutputIntoStream
 ( const Output *, FILE * );
 
-Status *
+Exception *
 TextOutputIntoStream
 ( const Output *, FILE * );
 
-Status *
+Exception *
 XMLOutputIntoStream
 ( const Output *, FILE * );
 

@@ -14,9 +14,9 @@
  * will not be accepted.
  *
  * @param event the Event to add to the list of Events
- * @return a Status for the addition operation
+ * @return a Exception for the addition operation
  */
-Status *
+Exception *
 AddEvent
 ( Event *event );
 

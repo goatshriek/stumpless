@@ -1,10 +1,11 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/comparator.h"
 #include "private/comparator/base.h"
 #include "private/comparator/initializer.h"
 #include "private/container/dictionary.h"
-#include "private/status.h"
 #include "private/type.h"
 
 #define ADD_COMPARATOR( name, function )                                       \
@@ -28,7 +29,7 @@ Initialize##function_name##Comparator                                          \
 
 static Dictionary *initializers = NULL;
 
-Status *
+Exception *
 InitializeComparatorByName
 ( const char *name )
 {
@@ -37,7 +38,7 @@ InitializeComparatorByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_COMPARATOR( "string", String )
   }

@@ -17,9 +17,9 @@
  * has already been Initialized, it will not be recreated.
  *
  * @param name the name of the Level to initialize
- * @return a Status of the initialization operation
+ * @return a Exception of the initialization operation
  */
-Status *
+Exception *
 InitializeLevelByName
 ( const char *name );
 

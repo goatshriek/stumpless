@@ -16,9 +16,9 @@
  * has already been Initialized, it will not be recreated.
  *
  * @param name the name of the Event to initialize
- * @return a Status of the initialization operation
+ * @return a Exception of the initialization operation
  */
-Status *
+Exception *
 InitializeEventByName
 ( const char *name );
 

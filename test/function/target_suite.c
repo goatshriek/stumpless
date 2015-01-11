@@ -73,36 +73,36 @@ const char *
 TestLogRecord
 ( void )
 {
+  Exception *e;
   Record *record;
-  Status *status;
   Target *target;
 
-  status = LogToTarget( NULL, NULL );
-  if( !status )
-    return "two null arguments did not raise an abnormal status";
-  ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for two empty arguments" )
+  e = LogToTarget( NULL, NULL );
+  if( !e )
+    return "two null arguments did not raise an abnormal e";
+  ASSERT_STRINGS_EQUAL( e->name, "empty argument", "an empty argument e was not returned for two empty arguments" )
 
   target = BuildTarget();
   if( !target )
     return "could not build a test target";
 
-  status = LogToTarget( target, NULL );
-  if( !status )
-    return "a null record did not raise an abnormal status";
-  ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for an empty record" )
+  e = LogToTarget( target, NULL );
+  if( !e )
+    return "a null record did not raise an abnormal e";
+  ASSERT_STRINGS_EQUAL( e->name, "empty argument", "an empty argument e was not returned for an empty record" )
 
   record = BuildRecord();
   if( !record )
     return "could not build a test record";
 
-  status = LogToTarget( NULL, record );
-  if( !status )
-    return "a null target did not raise an abnormal status";
-  ASSERT_STRINGS_EQUAL( status->name, "empty argument", "an empty argument status was not returned for an empty target" )
+  e = LogToTarget( NULL, record );
+  if( !e )
+    return "a null target did not raise an abnormal e";
+  ASSERT_STRINGS_EQUAL( e->name, "empty argument", "an empty argument e was not returned for an empty target" )
 
-  status = LogToTarget( target, record );
-  if( status )
-    return "an abnormal status was returned";
+  e = LogToTarget( target, record );
+  if( e )
+    return "an abnormal e was returned";
 
   return NULL;
 }

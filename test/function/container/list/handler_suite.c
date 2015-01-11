@@ -105,16 +105,16 @@ test_output_through
   if( !list )
     return "could not build the test list";
 
-  Status *status = OutputThroughHandlerList( list, NULL );
-  if( !status )
+  Exception *e = OutputThroughHandlerList( list, NULL );
+  if( !e )
     return "a null output did not generate an abnormal status";
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "a null output did not generate an empty argument error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "a null output did not generate an empty argument error" )
 
   Output *output = BuildTextOutput();
   if( !output )
     return "could not build the test output";
-  status = OutputThroughHandlerList( list, output );
-  if( status )
+  e = OutputThroughHandlerList( list, output );
+  if( e )
     return "a full output could not pass through the handler list";
 
   return NULL;

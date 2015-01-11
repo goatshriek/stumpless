@@ -1,6 +1,7 @@
 stumpless_includedir = $(includedir)/stumpless
 
 stumpless_include_HEADERS = include/stumpless/event.h \
+                            include/stumpless/exception.h \
                             include/stumpless/logger.h \
                             include/stumpless/record.h \
                             include/stumpless/record_attribute.h \

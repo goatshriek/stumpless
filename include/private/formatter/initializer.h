@@ -7,7 +7,7 @@ Formatter *
 InitializeCSVFormatter
 ( void );
 
-Status *
+Exception *
 InitializeFormatterByName
 ( const char * );
 

@@ -1,10 +1,11 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/dictionary.h"
 #include "private/handler.h"
 #include "private/handler/initializer.h"
 #include "private/handler/stream.h"
-#include "private/status.h"
 
 #define ADD_HANDLER( name, function )                                          \
 SetDictionaryValue( initializers, name, Initialize##function##Handler );
@@ -28,7 +29,7 @@ Initialize##function_name##Handler                                             \
 
 static Dictionary * initializers = NULL;
 
-Status *
+Exception *
 InitializeHandlerByName
 ( const char *name )
 {
@@ -38,7 +39,7 @@ InitializeHandlerByName
 
     initializers = NewDictionary();
     if( initializers == NULL )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_HANDLER( "stream", Stream )
   }

@@ -1,15 +1,16 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/dictionary.h"
 #include "private/handler.h"
-#include "private/status.h"
 #include "private/type.h"
 
 #include "private/handler/initializer.h"
 
 static Dictionary *handlers = NULL;
 
-Status *
+Exception *
 AddHandler
 ( Handler *handler )
 {
@@ -22,7 +23,7 @@ AddHandler
     handlers = NewDictionary();
 
     if( !handlers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
   }
 
   value = ( void * ) handler;
@@ -74,7 +75,7 @@ GetHandlerOption
   return GetDictionaryValue( handler->options, option );
 }
 
-Status *
+Exception *
 HandleOutput
 ( const Handler *handler, const Output *output )
 {
@@ -84,26 +85,26 @@ HandleOutput
   return handler->handle( handler, output );
 }
 
-Status *
+Exception *
 SetHandlerOption
 ( Handler * handler, const char * option, void * value )
 {
   Dictionary *result;
 
   if( !handler || !option )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( handler->options == NULL ){
     handler->options = NewDictionary();
 
     if( handler->options == NULL )
-      return RaiseStatus( "dictionary failure" );
+      return RaiseException( "dictionary failure" );
   }
 
   result =  SetDictionaryValue( handler->options, option, value );
 
   if( !result )
-    return RaiseStatus( "dictionary failure" );
+    return RaiseException( "dictionary failure" );
   else
     return NULL;
 }

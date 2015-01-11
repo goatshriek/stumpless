@@ -3,8 +3,8 @@
 
 #include "private/type.h"
 
-Status *
-SendLoggerStatus
+Exception *
+SendLoggerException
 ( Logger *logger )
 {
   // sends the status to the check status function
@@ -12,7 +12,7 @@ SendLoggerStatus
   return NULL;
 }
 
-Status *
+Exception *
 SendRecord
 ( Logger *logger, Record *record )
 {

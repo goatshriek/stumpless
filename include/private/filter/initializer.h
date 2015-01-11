@@ -7,7 +7,7 @@ Filter *
 InitializeEmptyFilter
 ( void );
 
-Status *
+Exception *
 InitializeFilterByName
 ( const char * );
 

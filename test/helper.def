@@ -25,16 +25,16 @@ EXPORTS
     BuildEmptyValue                   @22
     BuildRecord                       @23
     BuildRecordAttribute              @24
-    BuildErrorStatus                  @25
-    BuildEvent                        @26
-    BuildEventAttribute               @27
-    BuildFailureStatus                @28
-    BuildFilter                       @29
-    BuildFilterList                   @30
-    BuildFormatter                    @31
-    BuildFormatterList                @32
-    BuildHandler                      @33
-    BuildHandlerList                  @34
+    BuildEvent                        @25
+    BuildEventAttribute               @26
+    BuildFailureException             @27
+    BuildFilter                       @28
+    BuildFilterList                   @29
+    BuildFormatter                    @30
+    BuildFormatterList                @31
+    BuildHandler                      @32
+    BuildHandlerList                  @33
+    BuildInformationalException       @34
     BuildIntArrayValue                @35
     BuildIntValue                     @36
     BuildLevel                        @37
@@ -59,7 +59,7 @@ EXPORTS
     BuildValueList                    @56
     BuildValueProfile                 @57
     BuildVoidValue                    @58
-    BuildWarningStatus                @59
+    BuildWarningException             @59
     TestAdaptFunction                 @60
     TestFormatFunction                @61
     TestHandleFunction                @62

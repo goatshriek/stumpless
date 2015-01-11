@@ -3,7 +3,7 @@
 
 #include "private/type.h"
 
-Status *
+Exception *
 AddOutputProfile
 ( OutputProfile * );
 

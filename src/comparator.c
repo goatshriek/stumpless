@@ -1,14 +1,15 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/comparator.h"
 #include "private/comparator/initializer.h"
 #include "private/container/dictionary.h"
-#include "private/status.h"
 #include "private/type.h"
 
 static Dictionary * comparators = NULL;
 
-Status *
+Exception *
 AddComparator
 ( Comparator *comparator )
 {
@@ -21,7 +22,7 @@ AddComparator
     comparators = NewDictionary();
 
     if( !comparators )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
   }
 
   value = ( void * ) comparator;
@@ -78,26 +79,26 @@ GetComparatorOption
   return GetDictionaryValue( comparator->options, option );
 }
 
-Status *
+Exception *
 SetComparatorOption
 ( Comparator *comparator, const char *option, void *value )
 {
   Dictionary *result;
 
   if( !comparator || !option )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !comparator->options ){
     comparator->options = NewDictionary();
 
     if( !comparator->options )
-      return RaiseStatus( "dictionary failure" );
+      return RaiseException( "dictionary failure" );
   }
 
   result =  SetDictionaryValue( comparator->options, option, value );
 
   if( !result )
-    return RaiseStatus( "dictionary failure" );
+    return RaiseException( "dictionary failure" );
   else
     return NULL;
 }

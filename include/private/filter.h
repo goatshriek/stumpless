@@ -3,7 +3,7 @@
 
 #include "private/type.h"
 
-Status *
+Exception *
 AddFilter
 ( Filter * );
 
@@ -19,7 +19,7 @@ void *
 GetFilterOption
 ( const Filter *, const char * );
 
-Status *
+Exception *
 SetFilterOption
 ( Filter *, const char *, void * );
 

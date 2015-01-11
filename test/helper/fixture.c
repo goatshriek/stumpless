@@ -1,11 +1,11 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/formatter/text.h>
 #include <stumpless/record.h>
 #include <stumpless/value/constructor.h>
 
 #include "private/output.h"
-#include "private/status.h"
 #include "test/helper.h"
 #include "test/type.h"
 
@@ -29,14 +29,14 @@ BadFormatFunction
   return NULL;
 }
 
-Status *
+Exception *
 BadHandleFunction
 ( const Handler *handler, const Output *output )
 {
   TestLogSetLastHandler( handler );
   TestLogSetLastHandledOutput( output );
 
-  return RaiseStatus( "malformed structure" );
+  return RaiseException( "malformed structure" );
 }
 
 Record *
@@ -69,7 +69,7 @@ TestFormatFunction
   return output;
 }
 
-Status *
+Exception *
 TestHandleFunction
 ( const Handler *handler, const Output *output )
 {

@@ -1,14 +1,15 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/dictionary.h"
 #include "private/filter.h"
 #include "private/filter/initializer.h"
-#include "private/status.h"
 #include "private/type.h"
 
-static Dictionary * filters = NULL;
+static Dictionary *filters = NULL;
 
-Status *
+Exception *
 AddFilter
 ( Filter * filter )
 {
@@ -21,7 +22,7 @@ AddFilter
     filters = NewDictionary();
 
     if( filters == NULL )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
   }
 
   value = ( void * ) filter;
@@ -73,26 +74,26 @@ GetFilterOption
   return GetDictionaryValue( filter->options, option );
 }
 
-Status *
+Exception *
 SetFilterOption
 ( Filter * filter, const char * option, void * value )
 {
   Dictionary *result;
 
   if( !filter || !option )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( filter->options == NULL ){
     filter->options = NewDictionary();
 
     if( filter->options == NULL )
-      return RaiseStatus( "dictionary failure" );
+      return RaiseException( "dictionary failure" );
   }
 
   result =  SetDictionaryValue( filter->options, option, value );
 
   if( !result )
-    return RaiseStatus( "dictionary failure" );
+    return RaiseException( "dictionary failure" );
   else
     return NULL;
 }

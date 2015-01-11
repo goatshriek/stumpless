@@ -155,16 +155,16 @@ test_into_string
     return "could not build the test list";
   char str[1000];
 
-  Status *status = ValueListIntoString( NULL, list, 1000 );
-  FAIL_IF_NULL( status, "an empty string did not generate an abnormal status" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
+  Exception *e = ValueListIntoString( NULL, list, 1000 );
+  FAIL_IF_NULL( e, "an empty string did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty string did not generate the correct error" )
 
-  status = ValueListIntoString( str, NULL, 1000 );
-  FAIL_IF_NULL( status, "an empty list did not generate an abnormal status" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty list did not generate the correct error" )
+  e = ValueListIntoString( str, NULL, 1000 );
+  FAIL_IF_NULL( e, "an empty list did not generate an abnormal status" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty list did not generate the correct error" )
 
-  status = ValueListIntoString( str, list, 1000 );
-  if( status )
+  e = ValueListIntoString( str, list, 1000 );
+  if( e )
     return "a valid string was not properly written into";
 
   if( !strstr( str, "4294967196" ) )

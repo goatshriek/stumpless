@@ -13,6 +13,9 @@ test_function_configuration_suite_LDADD = $(test_libraries)
 test_function_event_suite_SOURCES = test/function/event_suite.c
 test_function_event_suite_LDADD = $(test_libraries)
 
+test_function_exception_suite_SOURCES = test/function/exception_suite.c
+test_function_exception_suite_LDADD = $(test_libraries)
+
 test_function_filter_suite_SOURCES = test/function/filter_suite.c
 test_function_filter_suite_LDADD = $(test_libraries)
 
@@ -37,9 +40,6 @@ test_function_record_suite_LDADD = $(test_libraries)
 test_function_record_attribute_suite_SOURCES = test/function/record_attribute_suite.c
 test_function_record_attribute_suite_LDADD = $(test_libraries)
 
-test_function_status_suite_SOURCES = test/function/status_suite.c
-test_function_status_suite_LDADD = $(test_libraries)
-
 test_function_string_helper_suite_SOURCES = test/function/string_helper_suite.c
 test_function_string_helper_suite_LDADD = $(test_libraries)
 
@@ -51,10 +51,10 @@ test_function_value_suite_LDADD = $(test_libraries)
 
 include test/function/comparator/Makefile.am
 include test/function/container/Makefile.am
+include test/function/exception/Makefile.am
 include test/function/filter/Makefile.am
 include test/function/formatter/Makefile.am
 include test/function/handler/Makefile.am
 include test/function/logger/Makefile.am
 include test/function/output/Makefile.am
-include test/function/status/Makefile.am
 include test/function/value/Makefile.am

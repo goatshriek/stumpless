@@ -14,9 +14,9 @@
  * will not be accepted.
  *
  * @param level the Level to add to the list of Levels
- * @return a Status for the addition operation
+ * @return a Exception for the addition operation
  */
-Status *
+Exception *
 AddLevel
 ( Level *level );
 

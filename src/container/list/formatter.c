@@ -1,22 +1,17 @@
 #include <stdlib.h>
 
-#include "private/container/list.h"
-#include "private/status.h"
-#include "private/type.h"
+#include <stumpless/exception.h>
 
+#include "private/container/list.h"
+#include "private/container/list/const_iterator/formatter.h"
+#include "private/container/list/const_reverse_iterator/formatter.h"
 #include "private/container/list/formatter.h"
 #include "private/container/list/handler.h"
 #include "private/container/list/inheritance.h"
 #include "private/container/list/iterator.h"
-
-#include "private/container/list/const_iterator/formatter.h"
-
-#include "private/container/list/const_reverse_iterator/formatter.h"
-
 #include "private/container/list/iterator/formatter.h"
-
 #include "private/container/list/reverse_iterator/formatter.h"
-
+#include "private/type.h"
 #include "static/container/list/formatter.h"
 
 ADD_SEPARATOR_TO_LIST( Formatter )

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <stumpless/event.h>
+#include <stumpless/exception.h>
 #include <stumpless/formatter/text.h>
 
 #include "private/container/dictionary.h"
@@ -11,27 +12,26 @@
 #include "private/formatter.h"
 #include "private/level.h"
 #include "private/output.h"
-#include "private/status.h"
 #include "private/type.h"
 
 static Dictionary *events = NULL; /**< currently initialized events (by name) */
 
-Status *
+Exception *
 AddEvent
 ( Event *event )
 {
   if( !event || !event->name )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !events ){
     events = NewDictionary();
 
     if( !events )
-      return RaiseStatus( "constructor failure");
+      return RaiseException( "constructor failure");
   }
 
   if( !SetDictionaryValue( events, event->name, event ) )
-    return RaiseStatus( "dictionary failure" );
+    return RaiseException( "dictionary failure" );
 
   return NULL;
 }

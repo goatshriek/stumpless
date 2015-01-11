@@ -8,7 +8,6 @@ noinst_HEADERS = include/private/adapter.h \
                  include/private/handler.h \
                  include/private/level.h \
                  include/private/output.h \
-                 include/private/status.h \
                  include/private/string_helper.h \
                  include/private/type.h
 
@@ -16,12 +15,12 @@ include include/private/adapter/Makefile.am
 include include/private/comparator/Makefile.am
 include include/private/container/Makefile.am
 include include/private/event/Makefile.am
+include include/private/exception/Makefile.am
 include include/private/filter/Makefile.am
 include include/private/formatter/Makefile.am
 include include/private/handler/Makefile.am
 include include/private/level/Makefile.am
 include include/private/logger/Makefile.am
 include include/private/output/Makefile.am
-include include/private/status/Makefile.am
 include include/private/type/Makefile.am
 include include/private/value/Makefile.am

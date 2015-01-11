@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/list/value.h"
 #include "private/container/list/const_iterator/value.h"
 #include "private/handler/stream.h"
-#include "private/status.h"
 #include "private/type.h"
 
-Status *
+Exception *
 BinaryOutputIntoStream
 ( const Output * output, FILE * stream )
 {
@@ -16,7 +17,7 @@ BinaryOutputIntoStream
   return NULL;
 }
 
-Status *
+Exception *
 CSVOutputIntoStream
 ( const Output * output, FILE * stream )
 {
@@ -25,24 +26,24 @@ CSVOutputIntoStream
   return NULL;
 }
 
-Status *
+Exception *
 HandleStreamOutput
 ( const Handler *handler, const Output *output )
 {
   FILE *destination;
 
   if( !output )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !output->profile || !output->profile->into_stream )
-    return RaiseStatus( "incompatible profile" );
+    return RaiseException( "incompatible profile" );
 
   destination = stdout;
 
   return output->profile->into_stream( output, destination );
 }
 
-Status *
+Exception *
 JSONOutputIntoStream
 ( const Output * output, FILE * stream )
 {
@@ -51,31 +52,31 @@ JSONOutputIntoStream
   return NULL;
 }
 
-Status *
+Exception *
 RawStringOutputIntoStream
 ( const Output *output, FILE *stream )
 {
   if( !output || !stream )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !output->data )
-    return RaiseStatus( "malformed structure" );
+    return RaiseException( "malformed structure" );
 
   if( fputs( ValueListToString( output->data ), stream ) < 0 )
-    return RaiseStatus( "stream write failure" );
+    return RaiseException( "stream write failure" );
 
   return NULL;
 }
 
-Status *
+Exception *
 TextOutputIntoStream
 ( const Output *output, FILE *stream )
 {
   if( !output || !stream )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !output->data )
-    return RaiseStatus( "malformed structure" );
+    return RaiseException( "malformed structure" );
 
   fputs( ValueListToString( output->data ), stream );
   return NULL;
@@ -85,12 +86,12 @@ TextOutputIntoStream
   while( value = NextInValueListConstIterator( values ) ){
     if( !value->data ){
       DestroyValueListConstIterator( values );
-      return RaiseStatus( "malformed structure" );
+      return RaiseException( "malformed structure" );
     }
 
     if( fputs( value->data->c_p, stream ) < 0 ){
       DestroyValueListConstIterator( values );
-      return RaiseStatus( "stream write failure" );
+      return RaiseException( "stream write failure" );
     }
   }
 
@@ -99,7 +100,7 @@ TextOutputIntoStream
   return NULL;
 }
 
-Status *
+Exception *
 XMLOutputIntoStream
 ( const Output * output, FILE * stream )
 {

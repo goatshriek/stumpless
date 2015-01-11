@@ -1,9 +1,9 @@
+#include <stumpless/exception.h>
 #include <stumpless/target.h>
 
 #include "private/formatter.h"
 #include "private/handler.h"
 #include "private/type.h"
-#include "private/status.h"
 
 Target *
 CopyTarget
@@ -35,12 +35,12 @@ DestroyTarget
   return;
 }
 
-Status *
+Exception *
 LogToTarget
 ( Target *target, const Record *record )
 {
   if( !target || !target->formatter || !target->handler || !record )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   return HandleOutput( target->handler, FormatRecord( target->formatter, record ) );
 }

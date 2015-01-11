@@ -122,18 +122,6 @@ Value *
 BuildEmptyValue
 ( void );
 
-Record *
-BuildRecord
-( void );
-
-RecordAttribute *
-BuildRecordAttribute
-( void );
-
-Status *
-BuildErrorStatus
-( void );
-
 Event *
 BuildEvent
 ( void );
@@ -142,8 +130,8 @@ EventAttribute *
 BuildEventAttribute
 ( void );
 
-Status *
-BuildFailureStatus
+Exception *
+BuildFailureException
 ( void );
 
 Filter *
@@ -173,6 +161,10 @@ BuildHandler
 
 HandlerList *
 BuildHandlerList
+( void );
+
+Exception *
+BuildInformationalException
 ( void );
 
 Value *
@@ -248,6 +240,14 @@ Output *
 BuildRawStringOutput
 ( void );
 
+Record *
+BuildRecord
+( void );
+
+RecordAttribute *
+BuildRecordAttribute
+( void );
+
 Stack *
 BuildStackOfStrings
 ( void );
@@ -312,8 +312,8 @@ Value *
 BuildVoidValue
 ( void );
 
-Status *
-BuildWarningStatus
+Exception *
+BuildWarningException
 ( void );
 
 #endif

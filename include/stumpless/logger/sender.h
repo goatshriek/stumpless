@@ -3,11 +3,11 @@
 
 #include "private/type.h"
 
-Status *
-SendLoggerStatus
+Exception *
+SendLoggerException
 ( Logger *logger );
 
-Status *
+Exception *
 SendRecord
 ( Logger *, Record * );
 

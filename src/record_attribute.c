@@ -1,9 +1,12 @@
+#include <stdlib.h>
+
 #include <stumpless/record_attribute.h>
 
 #include "private/container/dictionary.h"
 #include "private/type.h"
 
-static Dictionary *attributes = NULL; /**< all currently defined RecordAttributes */
+/** all currently defined RecordAttributes */
+static Dictionary *attributes = NULL;
 
 void
 DestroyRecordAttribute

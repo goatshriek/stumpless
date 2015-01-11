@@ -55,8 +55,8 @@ const char *
 test_initialize_by_name
 ( void )
 {
-  Status * status = InitializeValueProfileByName( "boolean" );
-  FAIL_IF_NOT_NULL( status, "the test profile could not be initialized" )
+  Exception *e = InitializeValueProfileByName( "boolean" );
+  FAIL_IF_NOT_NULL( e, "the test profile could not be initialized" )
 
   ValueProfile * profile = FindValueProfileByName( "boolean" );
   FAIL_IF_NULL( profile, "after being initialized, the profile was not loaded" )

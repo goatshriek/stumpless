@@ -1,12 +1,12 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/formatter/text.h>
 
 #include "private/container/dictionary.h"
 #include "private/formatter.h"
 #include "private/formatter/csv.h"
 #include "private/formatter/initializer.h"
-#include "private/status.h"
 
 #define FORMATTER_INITIALIZER_FUNCTION( formatter_name, function_name )        \
 Formatter *                                                                    \
@@ -32,7 +32,7 @@ static Dictionary *initializers = NULL;
 
 FORMATTER_INITIALIZER_FUNCTION( "csv", CSV )
 
-Status *
+Exception *
 InitializeFormatterByName
 ( const char * name )
 {
@@ -42,7 +42,7 @@ InitializeFormatterByName
 
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_FORMATTER( "csv", CSV )
     ADD_FORMATTER( "text", Text )

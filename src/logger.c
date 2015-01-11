@@ -1,5 +1,7 @@
 #include <stdlib.h>
+
 #include <stumpless/config.h>
+#include <stumpless/exception.h>
 #include <stumpless/logger.h>
 
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
@@ -13,12 +15,11 @@
 #include "private/container/list/iterator/formatter.h"
 #include "private/container/list/target.h"
 #include "private/formatter.h"
-#include "private/status.h"
 #include "private/type.h"
 
 static Dictionary *loggers = NULL;
 
-Status *
+Exception *
 AppendAdapterToLogger
 ( Logger *logger, Adapter *adapter )
 {
@@ -26,7 +27,7 @@ AppendAdapterToLogger
 }
 
 // todo refactor with append formatter to target list function
-Status *
+Exception *
 AppendFormatterToLogger
 ( Logger *logger, Formatter *formatter )
 {
@@ -34,15 +35,15 @@ AppendFormatterToLogger
 }
 
 // todo refactor with new target data structure
-Status *
+Exception *
 AppendHandlerToLogger
 ( Logger *logger, Handler *handler )
 {
   return NULL;
 }
 
-Status *
-CheckLoggerStatus
+Exception *
+CheckLoggerException
 ( Logger *logger )
 {
   // the invocating process will call this function to check the
@@ -78,7 +79,7 @@ Listen
   // a return will signify a fatal error which caused the logging to halt
 
   Record *record;
-  Status *status;
+  Exception *status;
 
   while( 1 ){
     record = ReceiveNextRecord( logger );
@@ -93,14 +94,14 @@ NewLogger
   Logger *logger;
 
   if( !name ){
-    RaiseStatus( "empty argument" );
+    RaiseException( "empty argument" );
     return NULL;
   }
 
   if( !loggers ){
     loggers = NewDictionary();
     if( !loggers ){
-      RaiseStatus( "constructor failure" );
+      RaiseException( "constructor failure" );
       return NULL;
     }
   } else if( logger = GetDictionaryValue( loggers, name ) ){
@@ -109,12 +110,12 @@ NewLogger
 
   logger = malloc( sizeof( Logger ) );
   if( !logger ){
-    RaiseStatus( "memory allocation failure" );
+    RaiseException( "memory allocation failure" );
     return NULL;
   }
 
   if( !SetDictionaryValue( loggers, name, logger ) ){
-    RaiseStatus( "dictionary failure" );
+    RaiseException( "dictionary failure" );
     return NULL;
   }
 
@@ -123,7 +124,7 @@ NewLogger
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
   int pipes[2];
   if( pipe( pipes ) == -1 ){
-    RaiseStatus( "pipe failure" );
+    RaiseException( "pipe failure" );
     return NULL;
   }
 
@@ -132,7 +133,7 @@ NewLogger
 
   pid_t process_id = fork();
   if( process_id == -1 ){
-    RaiseStatus( "fork failure" );
+    RaiseException( "fork failure" );
     return NULL;
   }
 
@@ -149,7 +150,7 @@ NewLogger
 
 
 // todo refactor to use new target structure in logger
-Status *
+Exception *
 ProcessRecord
 ( Logger *logger, Record *record )
 {

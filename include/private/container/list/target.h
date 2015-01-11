@@ -67,7 +67,7 @@ unsigned
 TargetListSize
 ( const TargetList * );
 
-Status *
+Exception *
 LogToTargetList
 ( const TargetList *, const Record * );
 

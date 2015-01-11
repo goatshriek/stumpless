@@ -36,7 +36,7 @@ DestroyTarget
  *
  * @return a Status for the result of operation
  */
-Status *
+Exception *
 LogToTarget
 ( Target *target, const Record *record );
 

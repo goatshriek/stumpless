@@ -4,6 +4,8 @@ check_PROGRAMS = test/function/adapter_suite \
                  test/function/comparator/base_suite \
                  test/function/configuration_suite \
                  test/function/event_suite \
+                 test/function/exception_suite \
+                 test/function/exception/initializer_suite \
                  test/function/filter_suite \
                  test/function/filter/base_suite \
                  test/function/level_suite \
@@ -14,8 +16,6 @@ check_PROGRAMS = test/function/adapter_suite \
                  test/function/output/profile_initializer_suite \
                  test/function/record_suite \
                  test/function/record_attribute_suite \
-                 test/function/status_suite \
-                 test/function/status/initializer_suite \
                  test/function/string_helper_suite \
                  test/function/target_suite \
                  test/function/value_suite \

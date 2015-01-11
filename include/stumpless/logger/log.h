@@ -12,65 +12,65 @@
  *
  *  @param logger the Logger to use
  *  @param character the char to log
- *  @return a Status for the logging operation
+ *  @return a Exception for the logging operation
  */
-Status *
+Exception *
 LogChar
 ( Logger *logger, char character );
 
-Status *
+Exception *
 LogCharArray
 ( Logger *, const char *, unsigned);
 
-Status *
+Exception *
 LogDouble
 ( Logger *, double );
 
-Status *
+Exception *
 LogDoubleArray
 ( Logger *, const double *, unsigned );
 
-Status *
+Exception *
 LogFloat
 ( Logger *, float );
 
-Status *
+Exception *
 LogFloatArray
 ( Logger *, const float *, unsigned );
 
-Status *
+Exception *
 LogInt
 ( Logger *, int );
 
-Status *
+Exception *
 LogIntArray
 ( Logger *, const int *, unsigned );
 
-Status *
-LogLoggerStatus
+Exception *
+LogLoggerException
 ( Logger * );
 
-Status *
+Exception *
 LogLong
 ( Logger *, long );
 
-Status *
+Exception *
 LogLongArray
 ( Logger *, const long *, unsigned );
 
-Status *
+Exception *
 LogLongDouble
 ( Logger *, long double );
 
-Status *
+Exception *
 LogLongDoubleArray
 ( Logger *, const long double *, unsigned );
 
-Status *
+Exception *
 LogLongLong
 ( Logger *, long long );
 
-Status *
+Exception *
 LogLongLongArray
 ( Logger *, const long long *, unsigned );
 
@@ -78,25 +78,25 @@ LogLongLongArray
  *
  *  @param logger the Logger to use
  *  @param record the Record to log
- *  @return a Status of the logging
+ *  @return a Exception of the logging
  */
-Status *
+Exception *
 LogRecord
 ( Logger *logger, Record *record );
 
-Status *
+Exception *
 LogShort
 ( Logger *, short );
 
-Status *
+Exception *
 LogShortArray
 ( Logger *, const short *, unsigned );
 
-Status *
+Exception *
 LogSignedChar
 ( Logger *, signed char );
 
-Status *
+Exception *
 LogSignedCharArray
 ( Logger *, const signed char *, unsigned );
 
@@ -106,57 +106,57 @@ LogSignedCharArray
  * @param logger the Logger to send the string to
  * @param str the string to log
  *
- * @return a Status describing the result of the function.
+ * @return a Exception describing the result of the function.
  */
-Status *
+Exception *
 LogString
 ( Logger *logger, const char *str );
 
-Status *
+Exception *
 LogStringArray
 ( Logger *, const char *, unsigned );
 
-Status *
+Exception *
 LogUnsignedChar
 ( Logger *, unsigned char );
 
-Status *
+Exception *
 LogUnsignedCharArray
 ( Logger *, const unsigned char *, unsigned );
 
-Status *
+Exception *
 LogUnsignedInt
 ( Logger *, unsigned int );
 
-Status *
+Exception *
 LogUnsignedIntArray
 ( Logger *, const unsigned int *, unsigned );
 
-Status *
+Exception *
 LogUnsignedLong
 ( Logger *, unsigned long );
 
-Status *
+Exception *
 LogUnsignedLongArray
 ( Logger *, const unsigned long *, unsigned );
 
-Status *
+Exception *
 LogUnsignedLongLong
 ( Logger *, unsigned long long );
 
-Status *
+Exception *
 LogUnsignedLongLongArray
 ( Logger *, const unsigned long long *, unsigned );
 
-Status *
+Exception *
 LogUnsignedShort
 ( Logger *, unsigned short );
 
-Status *
+Exception *
 LogUnsignedShortArray
 ( Logger *, const unsigned short *, unsigned );
 
-Status *
+Exception *
 LogVoid
 ( Logger *, const void *, unsigned );
 

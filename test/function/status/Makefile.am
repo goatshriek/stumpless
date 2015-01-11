@@ -1,2 +1,0 @@
-test_function_status_initializer_suite_SOURCES = test/function/status/initializer_suite.c
-test_function_status_initializer_suite_LDADD = $(test_libraries)

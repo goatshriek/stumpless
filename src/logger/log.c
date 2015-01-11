@@ -1,24 +1,24 @@
 #include <stdlib.h>
 
 #include <stumpless/event.h>
+#include <stumpless/exception.h>
 #include <stumpless/logger/log.h>
 #include <stumpless/record.h>
 #include <stumpless/value/constructor.h>
 
 #include "private/container/list/adapter.h"
 #include "private/container/list/target.h"
-#include "private/status.h"
 #include "private/type.h"
 
 #define LOG_FUNCTIONS( name, type )                                            \
-Status *                                                                       \
+Exception *                                                                       \
 Log##name                                                                      \
 ( Logger *logger, type value )                                                 \
 {                                                                              \
   return NULL;                                                                 \
 }                                                                              \
                                                                                \
-Status *                                                                       \
+Exception *                                                                       \
 Send##name##Array                                                              \
 ( Logger *logger, const type *value, unsigned length )                         \
 {                                                                              \
@@ -39,12 +39,12 @@ LOG_FUNCTIONS( LongDouble, long double )
 
 LOG_FUNCTIONS( LongLong, long long )
 
-Status *
+Exception *
 LogRecord
 ( Logger *logger, Record *record )
 {
   if( !logger || !record )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   RecordThroughAdapterList( logger->adapters, record );
   return LogToTargetList( logger->targets, record );
@@ -54,7 +54,7 @@ LOG_FUNCTIONS( Short, short )
 
 LOG_FUNCTIONS( SignedChar, signed char )
 
-Status *
+Exception *
 LogString
 ( Logger *logger, const char *value )
 {
@@ -63,29 +63,29 @@ LogString
   RecordAttribute *attribute;
 
   if( !logger || !value )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   event = logger->default_event;
   if( !event ){
     event = FindEventByName( "informational" );
     if( !event )
-      return RaiseStatus( "event failure" );
+      return RaiseException( "event failure" );
   }
 
   record = RecordForEvent( event );
   if( !record )
-    return RaiseStatus( "record failure" );
+    return RaiseException( "record failure" );
 
   attribute = malloc( sizeof( RecordAttribute ) );
   if( !attribute )
-    return RaiseStatus( "record failure" );
+    return RaiseException( "record failure" );
 
   SetRecordAttribute( record, "message", NewValueForString( value ) );
 
   return LogRecord( logger, record );
 }
 
-Status *
+Exception *
 LogStringArray
 ( Logger *logger, const char *value, unsigned length )
 {
@@ -102,7 +102,7 @@ LOG_FUNCTIONS( UnsignedLongLong, unsigned long long )
 
 LOG_FUNCTIONS( UnsignedShort, unsigned short )
 
-Status *
+Exception *
 LogVoid
 ( Logger *logger, const void *value, unsigned length )
 {

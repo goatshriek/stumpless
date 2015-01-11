@@ -1,11 +1,11 @@
 #include <stdlib.h>
 
 #include <stumpless/event.h>
+#include <stumpless/exception.h>
 
 #include "private/container/dictionary.h"
 #include "private/event/initializer.h"
 #include "private/level.h"
-#include "private/status.h"
 
 #define NEW_LEVEL_EVENT( event_name, function_name )                           \
 Event *                                                                        \
@@ -42,7 +42,7 @@ SetDictionaryValue( initializers, name, New##function##Event );
 
 static Dictionary *initializers = NULL;
 
-Status *
+Exception *
 InitializeEventByName
 ( const char *name )
 {
@@ -51,7 +51,7 @@ InitializeEventByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_EVENT( "alert", Alert )
     ADD_EVENT( "char", Char )

@@ -28,14 +28,14 @@ const char *
 test_add_profile
 ( void )
 {
+  Exception *e;
   ValueProfile *found, *profile;
-  Status *status;
 
   profile = BuildValueProfile();
   FAIL_IF_NULL( profile, "the test profile could not be built" )
 
-  status = AddValueProfile( profile );
-  FAIL_IF_NOT_NULL( status, "the new profile could not be added" )
+  e = AddValueProfile( profile );
+  FAIL_IF_NOT_NULL( e, "the new profile could not be added" )
 
   found = FindValueProfileByName( profile->name );
   if( found != profile )

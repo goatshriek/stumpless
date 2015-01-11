@@ -1,11 +1,11 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/formatter/text.h>
 #include <stumpless/value.h>
 #include <stumpless/value/profile.h>
 
 #include "private/container/dictionary.h"
-#include "private/status.h"
 #include "private/type.h"
 #include "private/value/profile_initializer.h"
 
@@ -107,7 +107,7 @@ SINGULAR_PROFILE_INITIALIZER( "unsigned long long", UnsignedLongLong )
 ARRAY_PROFILE_INITIALIZER( "unsigned short array", UnsignedShort )
 SINGULAR_PROFILE_INITIALIZER( "unsigned short", UnsignedShort )
 
-Status *
+Exception *
 InitializeValueProfileByName
 ( const char *name )
 {
@@ -117,7 +117,7 @@ InitializeValueProfileByName
 
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_PROFILE( "boolean array", BooleanArray  )
     ADD_PROFILE( "boolean", Boolean )

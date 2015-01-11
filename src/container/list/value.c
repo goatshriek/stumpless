@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/value.h>
 #include <stumpless/value/constructor.h>
 
@@ -14,8 +15,7 @@
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
 #include "private/container/list/reverse_iterator/value.h"
-#include "private/status.h"
-#include "private/status/checker.h"
+#include "private/exception/checker.h"
 #include "private/type.h"
 #include "static/container/list/value.h"
 
@@ -95,17 +95,17 @@ LIST_CONTAINS( Value )
 
 LIST_FRONT( Value )
 
-Status *
+Exception *
 ValueListIntoString
 ( char *str, const ValueList *list, size_t length )
 {
   ListConstIterator *values;
   size_t current_position = 0, remaining_length;
-  Status *result;
+  Exception *result;
   const Value *value;
 
   if( !str || !list || length == 0 )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   str[0] = '\0';
 

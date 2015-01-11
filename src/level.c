@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/formatter/text.h>
 
 #include "private/container/dictionary.h"
@@ -10,27 +11,26 @@
 #include "private/level.h"
 #include "private/level/initializer.h"
 #include "private/output.h"
-#include "private/status.h"
 #include "private/type.h"
 
 static Dictionary *levels = NULL; /**< currently initialized levels (by name) */
 
-Status *
+Exception *
 AddLevel
 ( Level *level )
 {
   if( !level || !level->name )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !levels ){
     levels = NewDictionary();
 
     if( !levels )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
   }
 
   if( !SetDictionaryValue( levels, level->name, level ) )
-    return RaiseStatus( "dictionary failure" );
+    return RaiseException( "dictionary failure" );
 
   return NULL;
 }

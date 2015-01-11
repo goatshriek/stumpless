@@ -1,0 +1,2 @@
+test_function_exception_initializer_suite_SOURCES = test/function/exception/initializer_suite.c
+test_function_exception_initializer_suite_LDADD = $(test_libraries)

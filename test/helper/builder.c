@@ -472,24 +472,6 @@ BuildEmptyValue
   return value;
 }
 
-Status *
-BuildErrorStatus
-( void )
-{
-  Status * status = malloc( sizeof( Status ) );
-  if( status == NULL )
-    return NULL;
-
-  status->error = 1;
-  status->failure = 0;
-  status->warning = 0;
-
-  status->name = "test error status";
-  status->description = "this status is meant to mimic a generic status that points at some error. Use it for testing purposes only.";
-
-  return status;
-}
-
 Event *
 BuildEvent
 ( void )
@@ -526,22 +508,22 @@ BuildEventAttribute
   return attribute;
 }
 
-Status *
-BuildFailureStatus
+Exception *
+BuildFailureException
 ( void )
 {
-  Status * status = malloc( sizeof( Status ) );
-  if( status == NULL )
+  Exception * e = malloc( sizeof( Exception ) );
+  if( e == NULL )
     return NULL;
 
-  status->error = 0;
-  status->failure = 1;
-  status->warning = 0;
+  e->failure = 1;
+  e->informational = 0;
+  e->warning = 0;
 
-  status->name = "test failure status";
-  status->description = "this status is meant to mimic a generic status that points at a failure of a function to finish. Use it for testing purposes only.";
+  e->name = "test failure e";
+  e->message = "this e is meant to mimic a generic e that points at a failure of a function to finish. Use it for testing purposes only.";
 
-  return status;
+  return e;
 }
 
 Filter *
@@ -678,6 +660,24 @@ BuildHandlerList
     return NULL;
 
   return list;
+}
+
+Exception *
+BuildInformationalException
+( void )
+{
+  Exception *e = malloc( sizeof( Exception ) );
+  if( e == NULL )
+    return NULL;
+
+  e->failure = 0;
+  e->informational = 1;
+  e->warning = 0;
+
+  e->name = "test error e";
+  e->message = "this exception is meant to mimic a generic exception that points at some error. Use it for testing purposes only.";
+
+  return e;
 }
 
 Value *
@@ -1261,22 +1261,22 @@ BuildVoidValue
   return value;
 }
 
-Status *
-BuildWarningStatus
+Exception *
+BuildWarningException
 ( void )
 {
-  Status *status;
+  Exception *e;
 
-  status = malloc( sizeof( Status ) );
-  if( !status )
+  e = malloc( sizeof( Exception ) );
+  if( !e )
     return NULL;
 
-  status->error = 0;
-  status->failure = 0;
-  status->warning = 1;
+  e->failure = 0;
+  e->informational = 0;
+  e->warning = 1;
 
-  status->name = "test warning status";
-  status->description = "this status is meant to mimic a generic status that seeks to warn of something that may turn into an error. Use it for testing purposes only.";
+  e->name = "test warning e";
+  e->message = "this e is meant to mimic a generic e that seeks to warn of something that may turn into an error. Use it for testing purposes only.";
 
-  return status;
+  return e;
 }

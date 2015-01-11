@@ -1,10 +1,11 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/dictionary.h"
 #include "private/filter.h"
 #include "private/filter/base.h"
 #include "private/filter/initializer.h"
-#include "private/status.h"
 #include "private/type.h"
 
 #define ADD_FILTER( name, function )                                           \
@@ -34,7 +35,7 @@ static Dictionary *initializers = NULL;
 
 FILTER_INITIALIZER_FUNCTION( "empty", Empty )
 
-Status *
+Exception *
 InitializeFilterByName
 ( const char *name )
 {
@@ -43,7 +44,7 @@ InitializeFilterByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_FILTER( "empty", Empty )
     ADD_FILTER( "level", Level )

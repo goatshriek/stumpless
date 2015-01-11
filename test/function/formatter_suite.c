@@ -38,13 +38,13 @@ test_add_formatter
 ( void )
 {
   Formatter *formatter, *found;
-  Status *status;
+  Exception *e;
 
   formatter = BuildFormatter();
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
-  status = AddFormatter( formatter );
-  FAIL_IF_NOT_NULL( status, "the new formatter could not be added" )
+  e = AddFormatter( formatter );
+  FAIL_IF_NOT_NULL( e, "the new formatter could not be added" )
 
   found = FindFormatterByName( formatter->name );
   if( found != formatter )
@@ -129,38 +129,38 @@ test_set_option
 {
   const char *option = "test option";
   Formatter *formatter;
-  Status *status;
+  Exception *e;
   void *value = "target value";
 
   formatter = BuildFormatter();
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
-  status = SetFormatterOption( NULL, NULL, NULL );
-  FAIL_IF_NULL( status, "three NULL arguments did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
+  e = SetFormatterOption( NULL, NULL, NULL );
+  FAIL_IF_NULL( e, "three NULL arguments did not raise an error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
 
-  status = SetFormatterOption( NULL, NULL, value );
-  FAIL_IF_NULL( status, "only a value did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
+  e = SetFormatterOption( NULL, NULL, value );
+  FAIL_IF_NULL( e, "only a value did not raise an error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
 
-  status = SetFormatterOption( NULL, option, value );
-  FAIL_IF_NULL( status, "a NULL formatter did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
+  e = SetFormatterOption( NULL, option, value );
+  FAIL_IF_NULL( e, "a NULL formatter did not raise an error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
 
-  status = SetFormatterOption( NULL, option, NULL );
-  FAIL_IF_NULL( status, "only an option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
+  e = SetFormatterOption( NULL, option, NULL );
+  FAIL_IF_NULL( e, "only an option did not raise an error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
 
-  status = SetFormatterOption( formatter, NULL, value );
-  FAIL_IF_NULL( status, "an empty option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
+  e = SetFormatterOption( formatter, NULL, value );
+  FAIL_IF_NULL( e, "an empty option did not raise an error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
 
-  status = SetFormatterOption( formatter, NULL, NULL );
-  FAIL_IF_NULL( status, "only a formatter did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "the error raised by empty argument was not correct" )
+  e = SetFormatterOption( formatter, NULL, NULL );
+  FAIL_IF_NULL( e, "only a formatter did not raise an error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
 
-  status = SetFormatterOption( formatter, option, value );
-  FAIL_IF_NOT_NULL( status, "could not set an option" )
+  e = SetFormatterOption( formatter, option, value );
+  FAIL_IF_NOT_NULL( e, "could not set an option" )
 
   return NULL;
 }

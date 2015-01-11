@@ -1,17 +1,18 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/dictionary.h"
 #include "private/container/list/filter.h"
 #include "private/container/list/formatter.h"
 #include "private/container/list/handler.h"
 #include "private/formatter.h"
 #include "private/formatter/initializer.h"
-#include "private/status.h"
 #include "private/type.h"
 
 static Dictionary *formatters = NULL;
 
-Status *
+Exception *
 AddFormatter
 ( Formatter * formatter )
 {
@@ -24,7 +25,7 @@ AddFormatter
     formatters = NewDictionary();
 
     if( !formatters )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
   }
 
   value = ( void * ) formatter;
@@ -93,22 +94,22 @@ GetFormatterOption
   return GetDictionaryValue( formatter->options, option );
 }
 
-Status *
+Exception *
 SetFormatterOption
 ( Formatter * formatter, const char * option, void * value )
 {
   if( !formatter || !option )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
-  if( formatter->options == NULL ){
+  if( !formatter->options ){
     formatter->options = NewDictionary();
 
-    if( formatter->options == NULL )
-      return RaiseStatus( "dictionary failure" );
+    if( !formatter->options )
+      return RaiseException( "dictionary failure" );
   }
 
   if( !SetDictionaryValue( formatter->options, option, value ) )
-    return RaiseStatus( "dictionary failure" );
+    return RaiseException( "dictionary failure" );
   else
     return NULL;
 }

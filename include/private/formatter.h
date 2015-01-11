@@ -3,7 +3,7 @@
 
 #include "private/type.h"
 
-Status *
+Exception *
 AddFormatter
 ( Formatter * );
 
@@ -23,7 +23,7 @@ void *
 GetFormatterOption
 ( const Formatter *, const char * );
 
-Status *
+Exception *
 SetFormatterOption
 ( Formatter *, const char *, void * );
 

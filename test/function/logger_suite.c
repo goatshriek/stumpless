@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/logger.h>
 
 #include "private/container/list/adapter.h"
 #include "private/container/list/formatter.h"
 #include "private/container/list/iterator/adapter.h"
 #include "private/container/list/iterator/formatter.h"
-#include "private/status.h"
 #include "private/type.h"
 #include "test/helper.h"
 

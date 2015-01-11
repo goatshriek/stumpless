@@ -8,6 +8,7 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/configuration.c \
                           src/event.c \
                           src/event_attribute.c \
+                          src/exception.c \
                           src/filter.c \
                           src/formatter.c \
                           src/handler.c \
@@ -16,7 +17,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/output.c \
                           src/record.c \
                           src/record_attribute.c \
-                          src/status.c \
                           src/string_helper.c \
                           src/target.c \
                           src/value.c
@@ -31,5 +31,4 @@ include src/level/Makefile.am
 include src/logger/Makefile.am
 include src/output/Makefile.am
 include src/private/Makefile.am
-include src/status/Makefile.am
 include src/value/Makefile.am

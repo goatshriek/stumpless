@@ -3,20 +3,20 @@
 
 #include <stumpless/type.h>
 
-Status *
+Exception *
 AppendAdapterToLogger
 ( Logger *, Adapter * );
 
-Status *
+Exception *
 AppendFormatterToLogger
 ( Logger *, Formatter * );
 
-Status *
+Exception *
 AppendHandlerToLogger
 ( Logger *, Handler * );
 
-Status *
-CheckLoggerStatus
+Exception *
+CheckLoggerException
 ( Logger * );
 
 void
@@ -31,7 +31,7 @@ Logger *
 NewLogger
 ( const char * );
 
-Status *
+Exception *
 ProcessRecord
 ( Logger *, Record * );
 

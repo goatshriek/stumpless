@@ -1,9 +1,10 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/dictionary.h"
 #include "private/level.h"
 #include "private/level/initializer.h"
-#include "private/status.h"
 
 #define NEW_LEVEL_FUNCTION( level_name, function_name, level_value )           \
 Level *                                                                        \
@@ -27,7 +28,7 @@ SetDictionaryValue( initializers, name, New##function##Level );
 
 static Dictionary *initializers = NULL;
 
-Status *
+Exception *
 InitializeLevelByName
 ( const char *name )
 {
@@ -36,7 +37,7 @@ InitializeLevelByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_LEVEL( "alert", Alert )
     ADD_LEVEL( "critical", Critical )

@@ -118,6 +118,22 @@ struct EventAttribute {
 };
 
 /**
+ * The result of an operation without a perfect completion.
+ */
+struct Exception {
+  unsigned short failure : 1; /**< the operation failed */
+  /** the operation succeeded with minor problems  */
+  unsigned short informational : 1;
+  /** the operation succeeded but with serious problems */
+  unsigned short warning : 1;
+
+  const char *message; /**< a detailed description of the problem  */
+  const char *name; /**< the name of the Exception */
+  /** the name of the function raising the exception */
+  const char *throwing_function;
+};
+
+/**
  * File configuration options for a Logger.
  */
 struct FileConfiguration {
@@ -153,8 +169,8 @@ struct Formatter {
  * Takes an Output and send it via a receiver.
  */
 struct Handler {
+  Exception *( *handle )( const Handler *, const Output * );
   FilterList *filters; /**< filters to apply before handling Output */
-  Status *( *handle )( const Handler *, const Output * );
   const char *name; /**< the name of the Handler */
   Dictionary *options; /**< options to customize behavior */
 };
@@ -216,17 +232,17 @@ struct Output {
  */
 struct OutputProfile {
   /** function to put an Output into a buffer */
-  Status *( *into_buffer )( const Output * );
+  Exception *( *into_buffer )( const Output * );
   /** function to send an Output using HTTP */
-  Status *( *into_http )( const Output * );
+  Exception *( *into_http )( const Output * );
   /** function to put an Output into a database */
-  Status *( *into_mysql )( const Output * );
+  Exception *( *into_mysql )( const Output * );
   /** function to put an Output into a stream */
-  Status *( *into_stream )( const Output *, FILE * );
+  Exception *( *into_stream )( const Output *, FILE * );
   /** function to put an Output into a string */
-  Status *( *into_string )( const Output * );
+  Exception *( *into_string )( const Output * );
   /** funciton to send an Output through a TCP socket */
-  Status *( *into_tcp )( const Output * );
+  Exception *( *into_tcp )( const Output * );
   /** checks to see if an Output is empty */
   unsigned short ( *is_empty )( const Output * );
   const char *name; /**< the name of the profile */
@@ -253,17 +269,6 @@ struct RecordAttribute {
   const EventAttribute *event_attribute;
   const char *name; /**< the name of the attribute */
   Value *value; /**< the value held in the attribute */
-};
-
-/**
- * The result of an operation without a perfect completion.
- */
-struct Status {
-  unsigned short error : 1; /**< there was a problem with the data */
-  unsigned short failure : 1; /**< there was a system-caused problem */
-  unsigned short warning : 1; /**< a non-fatal problem occurred */
-  const char *description; /**< a description of the problem described */
-  const char *name; /**< the name of the Status */
 };
 
 /**
@@ -348,7 +353,7 @@ struct ValueProfile {
   /** Comparators to use when comparing Values */
   ComparatorList *comparators;
   /** puts the Value into a provided string */
-  Status *( *into_string )( char *, const Value *, size_t );
+  Exception *( *into_string )( char *, const Value *, size_t );
   const char *name; /**< the name of the profile */
   /** creates a binary Output using the Value*/
   Output *( *to_binary )( const Formatter *, const Value * );

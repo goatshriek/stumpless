@@ -18,7 +18,7 @@
  */
 Record *
 BadAdaptFunction
-( const Adapter *adapter, Record *record ); 
+( const Adapter *adapter, Record *record );
 
 /**
  * Registers the Formatter and Record provided, and then returns NULL.
@@ -38,9 +38,9 @@ BadFormatFunction
  * @param handler the Handler to register
  * @param output the Output to register
  *
- * @return a failure Status 
+ * @return a failure Exception
  */
-Status *
+Exception *
 BadHandleFunction
 ( const Handler *handler, const Output *output );
 
@@ -62,7 +62,7 @@ TestAdaptFunction
  *
  * @param formatter the Formatter to register
  * @param record the Record to register
- * 
+ *
  * @return the record formatted as text Output
  */
 Output *
@@ -76,10 +76,10 @@ TestFormatFunction
  * @param handler the Handler to register
  * @param output the Output to register
  *
- * @return a Status with the result
+ * @return a Exception with the result
  */
-Status *
+Exception *
 TestHandleFunction
-( const Handler *handler, const Output *output ); 
+( const Handler *handler, const Output *output );
 
 #endif

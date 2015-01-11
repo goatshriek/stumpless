@@ -1,10 +1,11 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/container/dictionary.h"
 #include "private/output.h"
 #include "private/output/profile.h"
 #include "private/output/profile_initializer.h"
-#include "private/status.h"
 #include "private/type.h"
 
 #include "private/handler/stream.h"
@@ -36,7 +37,7 @@ Initialize##type_name##OutputProfile                                           \
 
 static Dictionary *initializers = NULL;
 
-Status *
+Exception *
 InitializeOutputProfileByName
 ( const char *name )
 {
@@ -46,7 +47,7 @@ InitializeOutputProfileByName
 
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_PROFILE( "raw string", RawString )
     ADD_PROFILE( "text", Text )

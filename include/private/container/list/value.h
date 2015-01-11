@@ -111,9 +111,9 @@ ValueListFront
  * @param list the ValueList to write into the string
  * @param length the maximum number of characters to write
  *
- * @return a Status describing the result
+ * @return a Exception describing the result
  */
-Status *
+Exception *
 ValueListIntoString
 ( char *str, const ValueList *list, size_t length );
 

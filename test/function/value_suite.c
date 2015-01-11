@@ -99,33 +99,33 @@ const char *
 test_into_string( void )
 {
   char str[11];
-  Status *status;
+  Exception *e;
   Value *value;
 
   value = BuildUnsignedIntValue();
   if( !value )
     return "could not build the test value";
 
-  status = ValueIntoString( NULL, value, 11 );
-  FAIL_IF_NULL( status, "an empty string did not genereate an abnormal status" )
+  e = ValueIntoString( NULL, value, 11 );
+  FAIL_IF_NULL( e, "an empty string did not genereate an abnormal e" )
 
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty string did not generate the correct error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty string did not generate the correct error" )
 
-  status = ValueIntoString( str, NULL, 11 );
-  FAIL_IF_NULL( status, "an empty value did not genereate an abnormal status" )
+  e = ValueIntoString( str, NULL, 11 );
+  FAIL_IF_NULL( e, "an empty value did not genereate an abnormal e" )
 
-  ASSERT_STRINGS_EQUAL( "empty argument", status->name, "an empty value did not generate the correct error" )
+  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty value did not generate the correct error" )
 
-  status = ValueIntoString( str, value, 11 );
-  if( status != NULL )
+  e = ValueIntoString( str, value, 11 );
+  if( e != NULL )
     return "a correct void pointer value and string generated an error";
 
   if( strstr( str, "4294967196" ) == NULL )
     return "the string did not have the correct contents in it";
 
   value = BuildUnsignedIntValue();
-  status = ValueIntoString( str, value, 11 );
-  if( status != NULL )
+  e = ValueIntoString( str, value, 11 );
+  if( e != NULL )
     return "a singular unsigned int value and string generated an error";
 
   if( strcmp( str, "4294967196") != 0 )

@@ -1,15 +1,15 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/value/profile.h>
 
 #include "private/container/dictionary.h"
-#include "private/status.h"
 #include "private/type.h"
 #include "private/value/profile_initializer.h"
 
 static Dictionary *profiles = NULL;
 
-Status *
+Exception *
 AddValueProfile
 ( ValueProfile *profile )
 {
@@ -22,7 +22,7 @@ AddValueProfile
     profiles = NewDictionary();
 
     if( !profiles )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
   }
 
   value = ( void * ) profile;

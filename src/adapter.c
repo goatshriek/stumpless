@@ -1,9 +1,10 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/adapter.h"
 #include "private/adapter/initializer.h"
 #include "private/container/dictionary.h"
-#include "private/status.h"
 #include "private/type.h"
 
 static Dictionary *adapters = NULL;
@@ -21,7 +22,7 @@ AdaptRecord
   return adapter->adapt( adapter, record );
 }
 
-Status *
+Exception *
 AddAdapter
 ( Adapter *adapter )
 {
@@ -32,7 +33,7 @@ AddAdapter
     adapters = NewDictionary();
 
     if( !adapters )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
   }
 
   if( !SetDictionaryValue( adapters, adapter->name, adapter ) )
@@ -83,26 +84,26 @@ GetAdapterOption
   return GetDictionaryValue( adapter->options, option );
 }
 
-Status *
+Exception *
 SetAdapterOption
 ( Adapter *adapter, const char *option, void *value )
 {
   Dictionary *result;
 
   if( !adapter || !option )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !adapter->options ){
     adapter->options = NewDictionary();
 
     if( !adapter->options )
-      return RaiseStatus( "dictionary failure" );
+      return RaiseException( "dictionary failure" );
   }
 
   result =  SetDictionaryValue( adapter->options, option, value );
 
   if( !result )
-    return RaiseStatus( "dictionary failure" );
+    return RaiseException( "dictionary failure" );
   else
     return NULL;
 }

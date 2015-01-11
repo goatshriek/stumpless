@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stumpless/exception.h>
 #include <stumpless/target.h>
 
 #include "private/container/list.h"
@@ -11,7 +12,6 @@
 #include "private/container/list/const_reverse_iterator/target.h"
 #include "private/container/list/iterator/target.h"
 #include "private/container/list/reverse_iterator/target.h"
-#include "private/status.h"
 #include "private/type.h"
 #include "static/container/list/target.h"
 
@@ -47,7 +47,7 @@ LIST_IS_EMPTY( Target )
 
 LIST_SIZE( Target )
 
-Status *
+Exception *
 LogToTargetList
 ( const TargetList *list, const Record *record )
 {
@@ -55,7 +55,7 @@ LogToTargetList
   Target *target;
 
   if( !list || !record )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   targets = BeginList( list->list );
   while( target = NextInListIterator( targets ) ){

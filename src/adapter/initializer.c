@@ -1,10 +1,11 @@
 #include <stdlib.h>
 
+#include <stumpless/exception.h>
+
 #include "private/adapter.h"
 #include "private/adapter/base.h"
 #include "private/adapter/initializer.h"
 #include "private/container/dictionary.h"
-#include "private/status.h"
 
 #define ADAPTER_INITIALIZER_FUNCTION( adapter_name, function_name )            \
 Adapter *                                                                      \
@@ -28,7 +29,7 @@ SetDictionaryValue( initializers, name, Initialize##function##Adapter );
 
 static Dictionary *initializers = NULL;
 
-Status *
+Exception *
 InitializeAdapterByName
 ( const char *name )
 {
@@ -37,7 +38,7 @@ InitializeAdapterByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseStatus( "constructor failure" );
+      return RaiseException( "constructor failure" );
 
     ADD_ADAPTER( "context", Context )
     ADD_ADAPTER( "level", Level )

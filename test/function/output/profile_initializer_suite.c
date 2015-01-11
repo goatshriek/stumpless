@@ -14,10 +14,10 @@ main( void )
 {
   unsigned failure_count = 0;
   const char * result;
-  
+
   RUN_TEST( initialize_by_name )
   RUN_TEST( initialize_text )
-  
+
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
@@ -28,13 +28,13 @@ const char *
 test_initialize_by_name
 ( void )
 {
-  Status * status = InitializeOutputProfileByName( "text" );
-  FAIL_IF_NOT_NULL( status, "the test profile could not be initialized" )
-  
+  Exception *e = InitializeOutputProfileByName( "text" );
+  FAIL_IF_NOT_NULL( e, "the test profile could not be initialized" )
+
   OutputProfile * profile = FindOutputProfileByName( "text" );
   FAIL_IF_NULL( profile, "after being initialized, the profile was not loaded" )
   ASSERT_STRINGS_EQUAL( "text", profile->name, "the incorrect profile was returned" )
-  
+
   return NULL;
 }
 
@@ -44,8 +44,8 @@ test_initialize_text
 {
   OutputProfile * profile = InitializeTextOutputProfile();
   FAIL_IF_NULL( profile, "the profile was not created" )
-  
+
   ASSERT_STRINGS_EQUAL( "text", profile->name, "the correct profile was not returned from initialization" )
-  
+
   return NULL;
 }

@@ -3,19 +3,19 @@
 #include <string.h>
 
 #include <stumpless/config/check.h>
+#include <stumpless/exception.h>
 #include <stumpless/value.h>
 #include <stumpless/value/constructor.h>
 
 #include "private/boolean.h"
 #include "private/configuration.h"
 #include "private/container/list/value.h"
-#include "private/status.h"
-#include "private/status/checker.h"
+#include "private/exception/checker.h"
 #include "private/string_helper.h"
 #include "private/type.h"
 
 #define ARRAY_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )  \
-Status *                                                                       \
+Exception *                                                                       \
 name##ArrayValueIntoString                                                     \
 ( char *str, const Value *value, size_t length )                               \
 {                                                                              \
@@ -23,7 +23,7 @@ name##ArrayValueIntoString                                                     \
   size_t i, current_position = 0, remaining_length;                            \
                                                                                \
   if( !str || !value || length == 0 )                                          \
-    return RaiseStatus( "empty argument" );                                    \
+    return RaiseException( "empty argument" );                                    \
                                                                                \
   format = value->format ? value->format : default_format;                     \
                                                                                \
@@ -88,19 +88,19 @@ name##ArrayValueToValueList                                                    \
 }
 
 #define SINGULAR_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )\
-Status *                                                                       \
+Exception *                                                                       \
 name##ValueIntoString                                                          \
 ( char *str, const Value *value, size_t length )                               \
 {                                                                              \
   const char *format;                                                          \
                                                                                \
   if( !str || !value  )                                                        \
-    return RaiseStatus( "empty argument" );                                    \
+    return RaiseException( "empty argument" );                                    \
                                                                                \
   format = value->format ? value->format : default_format;                     \
                                                                                \
   if( safe_sprintf( str, length, format, value->data_member ) < 0 )            \
-    return RaiseStatus( "string write failure" );                              \
+    return RaiseException( "string write failure" );                              \
                                                                                \
   return NULL;                                                                 \
 }
@@ -152,7 +152,7 @@ name##ValueToString                                                            \
   return str;                                                                  \
 }
 
-Status *
+Exception *
 BooleanArrayValueIntoString
 ( char *str, const Value *value, size_t length )
 {
@@ -186,7 +186,7 @@ BooleanArrayValueToValueList
   return list;
 }
 
-Status *
+Exception *
 BooleanValueIntoString
 ( char *str, const Value *value, size_t length )
 {
@@ -332,7 +332,7 @@ SINGULAR_VALUE_INTO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
 VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
-Status *
+Exception *
 StringArrayValueIntoString
 ( char *str, const Value *value, size_t length )
 {
@@ -366,7 +366,7 @@ StringArrayValueToValueList
   return list;
 }
 
-Status *
+Exception *
 StringValueIntoString
 ( char *str, const Value *value, size_t length )
 {
@@ -435,15 +435,15 @@ SINGULAR_VALUE_INTO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
-Status *
+Exception *
 ValueIntoString
 ( char *str, const Value *value, size_t length )
 {
   if( !value )
-    return RaiseStatus( "empty argument" );
+    return RaiseException( "empty argument" );
 
   if( !value->profile || !value->profile->into_string )
-    return RaiseStatus( "malformed structure" );
+    return RaiseException( "malformed structure" );
 
   return value->profile->into_string( str, value, length );
 }
@@ -477,7 +477,7 @@ ValueToValueList
   return list;
 }
 
-Status *
+Exception *
 VoidArrayValueIntoString
 ( char *str, const Value *value, size_t length )
 {
@@ -491,7 +491,7 @@ VoidArrayValueToValueList
   return NULL;
 }
 
-Status *
+Exception *
 VoidValueIntoString
 ( char *str, const Value *value, size_t length )
 {

@@ -11,7 +11,7 @@ Logger *
 InitializeErrorLogger
 ( void );
 
-Status *
+Exception *
 InitializeLoggerByName
 ( const char * );
 
