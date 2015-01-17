@@ -39,6 +39,7 @@ EXPORTS
     NewTargetList                   @32
     NewTree                         @33
     NewValueForBoolean              @34
+    NewValueForCharArray            @52
     NewValueForInt                  @51
     NewValueForString               @35
     NewValueList                    @36

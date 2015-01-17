@@ -39,28 +39,33 @@ const char *
 TestEvent
 ( void )
 {
+  char *str;
+  Event *event;
+  Formatter *formatter;
+  Output *output;
+
   if( EventToText( NULL, NULL ) )
     return "a NULL Formatter and Event returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "the text Formatter could not be found";
 
   if( EventToText( formatter, NULL ) )
     return "a NULL Event returned an Output";
 
-  Event *event = BuildEvent();
+  event = BuildEvent();
   if( !event )
     return "could not build a test Event";
 
   if( EventToText( NULL, event ) )
     return "a NULL Formatter returned an Output";
 
-  Output *output = EventToText( formatter, event );
+  output = EventToText( formatter, event );
   if( !output )
     return "an Event could not be formatted";
 
-  char *str = OutputToString( output );
+  str = OutputToString( output );
   if( !str )
     return "the Output could not be converted to a string";
 
@@ -73,28 +78,33 @@ const char *
 TestEventAttribute
 ( void )
 {
+  char *str;
+  EventAttribute *attribute;
+  Formatter *formatter;
+  Output *output;
+
   if( EventAttributeToText( NULL, NULL ) )
     return "a NULL Formatter and attribute returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "the text Formatter could not be found";
 
   if( EventAttributeToText( formatter, NULL ) )
     return "a NULL attribute returned an Output";
 
-  EventAttribute *attribute = BuildEventAttribute();
+  attribute = BuildEventAttribute();
   if( !attribute )
     return "could not build a test attribute";
 
   if( EventAttributeToText( NULL, attribute ) )
     return "a NULL Formatter returned an output";
 
-  Output *output = EventAttributeToText( formatter, attribute );
+  output = EventAttributeToText( formatter, attribute );
   if( !output )
     return "an attribute could not be formatted";
 
-  char *str = OutputToString( output );
+  str = OutputToString( output );
   if( !str )
     return "the Output could not be converted to a string";
 
@@ -107,28 +117,33 @@ const char *
 TestEventAttributes
 ( void )
 {
+  char *str;
+  Dictionary *attributes;
+  Formatter *formatter;
+  Output *output;
+
   if( EventAttributesToText( NULL, NULL ) )
     return "a NULL Formatter and attribute returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "the text Formatter could not be found";
 
   if( EventAttributesToText( formatter, NULL ) )
     return "a NULL Dictionary returned an Output";
 
-  Dictionary *attributes = BuildDictionaryOfEventAttributes();
+  attributes = BuildDictionaryOfEventAttributes();
   if( !attributes )
     return "could not build a test attribute Dictionary";
 
   if( EventAttributesToText( NULL, attributes ) )
     return "a NULL Formatter returned an output";
 
-  Output *output = EventAttributesToText( formatter, attributes );
+  output = EventAttributesToText( formatter, attributes );
   if( !output )
     return "a Dictionary of attributes could not be formatted";
 
-  char *str = OutputToString( output );
+  str = OutputToString( output );
   if( !str )
     return "the Output could not be converted to a string";
 
@@ -141,7 +156,9 @@ const char *
 TestInitializer
 ( void )
 {
-  Formatter *text_formatter = FindFormatterByName( "text" );
+  Formatter *text_formatter;
+
+  text_formatter = FindFormatterByName( "text" );
   if( !text_formatter )
     return "the text Formatter could not be found";
 
@@ -156,28 +173,33 @@ const char *
 TestLevel
 ( void )
 {
+  char *str;
+  Formatter *formatter;
+  Level *level;
+  Output *result;
+
   if( LevelToText( NULL, NULL ) )
     return "a NULL Formatter and Level returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "could not find text Formatter";
 
   if( LevelToText( formatter, NULL ) )
     return "a NULL Level returned an Output";
 
-  Level *level = BuildLevel();
+  level = BuildLevel();
   if( !level )
     return "could not build a test Level";
 
   if( LevelToText( NULL, level ) )
     return "a NULL Formatter returned an Output";
 
-  Output *result = LevelToText( formatter, level );
+  result = LevelToText( formatter, level );
   if( !result )
     return "a Level could not be formatted";
 
-  char *str = OutputToString( result );
+  str = OutputToString( result );
   if( !str )
     return "the Output could not be converted to a string";
   ASSERT_STRINGS_EQUAL( "Test Level (42.31.7)", str, "a complete Level was not formatted correctly" )
@@ -189,28 +211,33 @@ const char *
 TestRecord
 ( void )
 {
+  char *str;
+  Formatter *formatter;
+  Record *record;
+  Output *output;
+
   if( RecordToText( NULL, NULL ) )
     return "a NULL Formatter and Record returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "the text Formatter could not be found";
 
   if( RecordToText( formatter, NULL ) )
     return "a NULL Record returned an Output";
 
-  Record *record = BuildRecord();
+  record = BuildRecord();
   if( !record )
     return "could not build a test Record";
 
   if( RecordToText( NULL, record ) )
     return "a NULL Formatter returned an Output";
 
-  Output *output = RecordToText( formatter, record );
+  output = RecordToText( formatter, record );
   if( !output )
     return "a Record could not be formatted";
 
-  char *str = OutputToString( output );
+  str = OutputToString( output );
   if( !str )
     return "the Output could not be converted to a string";
 
@@ -223,28 +250,33 @@ const char *
 TestRecordAttribute
 ( void )
 {
+  char *str;
+  Formatter *formatter;
+  RecordAttribute *attribute;
+  Output *output;
+
   if( RecordAttributeToText( NULL, NULL ) )
     return "a NULL Formatter and attribute returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "the text Formatter could not be found";
 
   if( RecordAttributeToText( formatter, NULL ) )
     return "a NULL attribute returned an Output";
 
-  RecordAttribute *attribute = BuildRecordAttribute();
+  attribute = BuildRecordAttribute();
   if( !attribute )
     return "could not build a test attribute";
 
   if( RecordAttributeToText( NULL, attribute ) )
     return "a NULL Formatter returned an output";
 
-  Output *output = RecordAttributeToText( formatter, attribute );
+  output = RecordAttributeToText( formatter, attribute );
   if( !output )
     return "a full attribute could not be formatted";
 
-  char *str = OutputToString( output );
+  str = OutputToString( output );
   if( !str )
     return "the full Output could not be converted to a string";
 
@@ -268,28 +300,33 @@ const char *
 TestRecordAttributes
 ( void )
 {
+  char *str;
+  Dictionary *attributes;
+  Formatter *formatter;
+  Output *output;
+
   if( RecordAttributesToText( NULL, NULL ) )
     return "a NULL Formatter and attribute returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "the text Formatter could not be found";
 
   if( RecordAttributesToText( formatter, NULL ) )
     return "a NULL Dictionary returned an Output";
 
-  Dictionary *attributes = BuildDictionaryOfRecordAttributes();
+  attributes = BuildDictionaryOfRecordAttributes();
   if( !attributes )
     return "could not build a test attribute Dictionary";
 
   if( RecordAttributesToText( NULL, attributes ) )
     return "a NULL Formatter returned an output";
 
-  Output *output = RecordAttributesToText( formatter, attributes );
+  output = RecordAttributesToText( formatter, attributes );
   if( !output )
     return "a Dictionary of attributes could not be formatted";
 
-  char *str = OutputToString( output );
+  str = OutputToString( output );
   if( !str )
     return "the Output could not be converted to a string";
 
@@ -302,28 +339,33 @@ const char *
 TestValue
 ( void )
 {
+  char *str;
+  Formatter *formatter;
+  Output *output;
+  Value *value;
+
   if( ValueToText( NULL, NULL ) )
     return "a NULL Formatter and Value returned an Output";
 
-  Formatter *formatter = FindFormatterByName( "text" );
+  formatter = FindFormatterByName( "text" );
   if( !formatter )
     return "the text Formatter could not be found";
 
   if( ValueToText( formatter, NULL ) )
     return "a NULL Value returned an Output";
 
-  Value *value = BuildValue();
+  value = BuildValue();
   if( !value )
     return "could not build a test Value";
 
   if( ValueToText( NULL, value ) )
     return "a NULL Formatter returned an output";
 
-  Output *output = ValueToText( formatter, value );
+  output = ValueToText( formatter, value );
   if( !output )
     return "a Value could not be formatted";
 
-  char *str = OutputToString( output );
+  str = OutputToString( output );
   if( !str )
     return "the Output could not be converted to a string";
 

@@ -28,10 +28,13 @@ const char *
 test_initialize_by_name
 ( void )
 {
-  Exception *e = InitializeOutputProfileByName( "text" );
+  Exception *e;
+  OutputProfile *profile;
+
+  e = InitializeOutputProfileByName( "text" );
   FAIL_IF_NOT_NULL( e, "the test profile could not be initialized" )
 
-  OutputProfile * profile = FindOutputProfileByName( "text" );
+  profile = FindOutputProfileByName( "text" );
   FAIL_IF_NULL( profile, "after being initialized, the profile was not loaded" )
   ASSERT_STRINGS_EQUAL( "text", profile->name, "the incorrect profile was returned" )
 
@@ -42,7 +45,9 @@ const char *
 test_initialize_text
 ( void )
 {
-  OutputProfile * profile = InitializeTextOutputProfile();
+  OutputProfile *profile;
+
+  profile = InitializeTextOutputProfile();
   FAIL_IF_NULL( profile, "the profile was not created" )
 
   ASSERT_STRINGS_EQUAL( "text", profile->name, "the correct profile was not returned from initialization" )

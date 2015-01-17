@@ -222,15 +222,6 @@ BuildCharArrayValue
 ( void )
 {
   char *array;
-  Value *value;
-
-  value = malloc( sizeof( Value ) );
-  if( !value )
-    return NULL;
-
-  value->profile = FindValueProfileByName( "char array" );
-  if( !value->profile )
-    return NULL;
 
   array = malloc( sizeof( char ) * 10 );
   if( !array )
@@ -247,10 +238,7 @@ BuildCharArrayValue
   array[8] = 'i';
   array[9] = 'j';
 
-  value->c_p = array;
-  value->length = 10;
-
-  return value;
+  return NewValueForCharArray( array, 10 );
 }
 
 Comparator *

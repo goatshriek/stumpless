@@ -57,15 +57,21 @@ const char *
 test_raw_string_readability
 ( void )
 {
-  const char * filename = "raw_string_readability.txt";
+  char *buffer, *result;
+  const char *filename;
+  Exception *e;
+  FILE *test_file;
+  Output *text;
 
-  FILE * test_file = fopen( filename, "w+" );
+  filename = "raw_string_readability.txt";
+
+  test_file = fopen( filename, "w+" );
   FAIL_IF_NULL( test_file, "the test file could not be created" )
 
-  Output * text = BuildRawStringOutput();
+  text = BuildRawStringOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  Exception * e = RawStringOutputIntoStream( text, test_file );
+  e = RawStringOutputIntoStream( text, test_file );
   FAIL_IF_NOT_NULL( e, "the string could not be written to the file" )
 
   fclose( test_file );
@@ -73,10 +79,10 @@ test_raw_string_readability
   test_file = fopen( filename, "r" );
   FAIL_IF_NULL( test_file, "the test file could not be reopened" )
 
-  char * buffer = malloc( sizeof( char ) * 100 );
+  buffer = malloc( sizeof( char ) * 100 );
   FAIL_IF_NULL( buffer, "the test buffer could not be created" )
 
-  char * result = fgets( buffer, 100, test_file );
+  result = fgets( buffer, 100, test_file );
   FAIL_IF_NULL( result, "the first file read resulted in an error" )
   ASSERT_STRINGS_EQUAL( "Test String with\n", buffer, "the first string was not correct" )
 
@@ -96,13 +102,17 @@ const char *
 test_raw_string_write
 ( void )
 {
-  FILE * test_file = tmpfile();
+  Exception *e;
+  FILE *test_file;
+  Output *str;
+
+  test_file = tmpfile();
   FAIL_IF_NULL( test_file, "the test file could not be created" )
 
-  Output * str = BuildRawStringOutput();
+  str = BuildRawStringOutput();
   FAIL_IF_NULL( str, "the test output could not be built" )
 
-  Exception * e = RawStringOutputIntoStream( str, test_file );
+  e = RawStringOutputIntoStream( str, test_file );
   FAIL_IF_NOT_NULL( e, "the string could not be written to the file" )
 
   fclose( test_file );
@@ -114,15 +124,19 @@ const char *
 test_text_readability
 ( void )
 {
-  const char * filename = "text_readability.txt";
+  char *buffer, *result;
+  const char *filename = "text_readability.txt";
+  Exception *e;
+  FILE *test_file;
+  Output *text;
 
-  FILE * test_file = fopen( filename, "w+" );
+  test_file = fopen( filename, "w+" );
   FAIL_IF_NULL( test_file, "the test file could not be created" )
 
-  Output * text = BuildTextOutput();
+  text = BuildTextOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  Exception * e = TextOutputIntoStream( text, test_file );
+  e = TextOutputIntoStream( text, test_file );
   FAIL_IF_NOT_NULL( e, "the text could not be written to the file" )
 
   fclose( test_file );
@@ -130,10 +144,10 @@ test_text_readability
   test_file = fopen( filename, "r" );
   FAIL_IF_NULL( test_file, "the test file could not be reopened" )
 
-  char * buffer = malloc( sizeof( char ) * 10 );
+  buffer = malloc( sizeof( char ) * 10 );
   FAIL_IF_NULL( buffer, "the test buffer could not be created" )
 
-  char * result = fgets( buffer, 10, test_file );
+  result = fgets( buffer, 10, test_file );
   FAIL_IF_NULL( result, "the first file read resulted in an error" )
   ASSERT_STRINGS_EQUAL( "First\n", buffer, "the first string was not correct" )
 
@@ -157,13 +171,17 @@ const char *
 test_text_write
 ( void )
 {
-  FILE * test_file = tmpfile();
+  Exception *e;
+  FILE *test_file;
+  Output *text;
+
+  test_file = tmpfile();
   FAIL_IF_NULL( test_file, "the test file could not be created" )
 
-  Output * text = BuildTextOutput();
+  text = BuildTextOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  Exception * e = TextOutputIntoStream( text, test_file );
+  e = TextOutputIntoStream( text, test_file );
   FAIL_IF_NOT_NULL( e, "the text could not be written to the file" )
 
   fclose( test_file );

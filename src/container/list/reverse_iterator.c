@@ -41,6 +41,13 @@ ListReverseIteratorHasNext
   return iterator && iterator->current != NULL;
 }
 
+unsigned short
+ListReverseIteratorHasPrevious
+( const ListReverseIterator *iterator )
+{
+  return iterator && iterator->previous != NULL;
+}
+
 void *
 NextInListReverseIterator
 ( ListReverseIterator *iterator )
@@ -82,7 +89,7 @@ NewListReverseIterator
     steps = position;
   } else {
     current = list->first;
-    steps = -position;
+    steps = -( position + 1 );
   }
 
   for( i = 0; i < steps; i++ ){
@@ -96,6 +103,7 @@ NewListReverseIterator
   }
 
   iterator->current = current;
+  iterator->previous = previous;
   return iterator;
 }
 

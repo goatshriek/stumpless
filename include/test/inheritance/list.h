@@ -26,16 +26,20 @@ const char *                                                                   \
 test_append_to                                                                 \
 ( void )                                                                       \
 {                                                                              \
-  type##List *list = New##type##List();                                        \
+  type *first, *fourth, *retrieved, *second, *third;                           \
+  type##List *list, *result;                                                   \
+  type##ListIterator *iterator;                                                \
+                                                                               \
+  list = New##type##List();                                                    \
   if( !list )                                                                  \
     return "the list was not created";                                         \
                                                                                \
-  type *first = Build##type();                                                 \
-  type *second = Build##type();                                                \
-  type *third = Build##type();                                                 \
-  type *fourth = Build##type();                                                \
+  first = Build##type();                                                       \
+  second = Build##type();                                                      \
+  third = Build##type();                                                       \
+  fourth = Build##type();                                                      \
                                                                                \
-  type##List *result = AppendTo##type##List( list, first );                    \
+  result = AppendTo##type##List( list, first );                                \
   if( result != list )                                                         \
     return "the first member was not successfully added";                      \
                                                                                \
@@ -51,8 +55,8 @@ test_append_to                                                                 \
   if( result != list )                                                         \
     return "the fourth member was not successfully added";                     \
                                                                                \
-  type##ListIterator *iterator = Begin##type##List( list );                    \
-  type *retrieved = NextIn##type##ListIterator( iterator );                    \
+  iterator = Begin##type##List( list );                                        \
+  retrieved = NextIn##type##ListIterator( iterator );                          \
   if( !retrieved )                                                             \
     return "the list did not have any members";                                \
   if( retrieved != first )                                                     \
@@ -94,11 +98,15 @@ const char *                                                                   \
 test_back                                                                      \
 ( void )                                                                       \
 {                                                                              \
-  type *element = type##ListBack( NULL );                                      \
+  type *element, *last;                                                        \
+  type##List *list;                                                            \
+  type##ListIterator *iterator;                                                \
+                                                                               \
+  element = type##ListBack( NULL );                                            \
   if( element )                                                                \
     return "a null list returned a back element";                              \
                                                                                \
-  type##List *list = Build##type##List();                                      \
+  list = Build##type##List();                                                  \
   if( !list )                                                                  \
     return "could not build a test list";                                      \
                                                                                \
@@ -106,8 +114,7 @@ test_back                                                                      \
   if( !element )                                                               \
     return "a populated list did not have a back element";                     \
                                                                                \
-  type##ListIterator *iterator = Begin##type##List( list );                    \
-  type *last;                                                                  \
+  iterator = Begin##type##List( list );                                        \
   while( type##ListIteratorHasNext( iterator ) ){                              \
     last = NextIn##type##ListIterator( iterator );                             \
   }                                                                            \
@@ -123,11 +130,14 @@ const char *                                                                   \
 test_begin                                                                     \
 ( void )                                                                       \
 {                                                                              \
-  type##ListIterator *iterator = Begin##type##List( NULL );                    \
+  type##List *list;                                                            \
+  type##ListIterator *iterator;                                                \
+                                                                               \
+  iterator = Begin##type##List( NULL );                                        \
   if( iterator )                                                               \
     return "an iterator was created from a null list";                         \
                                                                                \
-  type##List *list = New##type##List();                                        \
+  list = New##type##List();                                                    \
   if( !list )                                                                  \
     return "could not create a new list";                                      \
                                                                                \
@@ -179,7 +189,9 @@ const char *                                                                   \
 test_constructor                                                               \
 ( void )                                                                       \
 {                                                                              \
-  type##List *list = New##type##List();                                        \
+  type##List *list;                                                            \
+                                                                               \
+  list = New##type##List();                                                    \
                                                                                \
   if( !list )                                                                  \
     return "could not create a new list";                                      \
@@ -197,15 +209,19 @@ const char *                                                                   \
 test_contains                                                                  \
 ( void )                                                                       \
 {                                                                              \
-  type##List *list = Build##type##List();                                      \
+  type *retrieved, *unlisted;                                                  \
+  type##List *list, *result;                                                   \
+  type##ListIterator *iterator;                                                \
+                                                                               \
+  list = Build##type##List();                                                  \
   if( !list )                                                                  \
     return "could not build a test list";                                      \
                                                                                \
-  type##ListIterator *iterator = Begin##type##List( list );                    \
+  iterator = Begin##type##List( list );                                        \
   if( !iterator )                                                              \
     return "an iterator could not be built from the test list";                \
                                                                                \
-  type *retrieved = NextIn##type##ListIterator( iterator );                    \
+  retrieved = NextIn##type##ListIterator( iterator );                          \
   if( !retrieved )                                                             \
     return "could not retrieve the first member of the list";                  \
                                                                                \
@@ -219,12 +235,12 @@ test_contains                                                                  \
   if( !type##ListContains( list, retrieved ) )                                 \
     return "the list did not contain the second member returned";              \
                                                                                \
-  type *unlisted = Build##type();                                              \
+  unlisted = Build##type();                                                    \
   if( !unlisted )                                                              \
     return "could not build a test member";                                    \
   if( type##ListContains( list, unlisted ) )                                   \
     return "the list contained a member that was newly created";               \
-  type##List *result = AppendTo##type##List( list, unlisted );                 \
+  result = AppendTo##type##List( list, unlisted );                             \
   if( result != list )                                                         \
     return "could not add a new element to the list";                          \
   if( !type##ListContains( list, unlisted ) )                                  \
@@ -241,11 +257,15 @@ const char *                                                                   \
 test_copy                                                                      \
 ( void )                                                                       \
 {                                                                              \
-  type##List *copy = Copy##type##List( NULL );                                 \
+  type *copy_member, *original_member;                                         \
+  type##List *copy, *list;                                                     \
+  type##ListIterator *copies, *originals;                                      \
+                                                                               \
+  copy = Copy##type##List( NULL );                                             \
   if( copy )                                                                   \
     return "a copy was returned of a null pointer";                            \
                                                                                \
-  type##List *list = Build##type##List();                                      \
+  list = Build##type##List();                                                  \
   if( !list )                                                                  \
     return "could not build a test list";                                      \
                                                                                \
@@ -255,15 +275,15 @@ test_copy                                                                      \
   if( copy == list )                                                           \
     return "the copy was the same as the original";                            \
                                                                                \
-  type##ListIterator *originals = Begin##type##List( list );                   \
+  originals = Begin##type##List( list );                                       \
   if( !originals )                                                             \
     return "an iterator could not be created for the original list";           \
-  type##ListIterator *copies = Begin##type##List( copy );                      \
+  copies = Begin##type##List( copy );                                          \
   if( !copies )                                                                \
     return "an iterator could not be created for the copied list";             \
                                                                                \
-  type *original_member = NextIn##type##ListIterator( originals );             \
-  type *copy_member = NextIn##type##ListIterator( copies );                    \
+  original_member = NextIn##type##ListIterator( originals );                   \
+  copy_member = NextIn##type##ListIterator( copies );                          \
   while( original_member ){                                                    \
     if( original_member != copy_member )                                       \
       return "the copy did not point to the same members as the original";     \
@@ -302,7 +322,9 @@ const char *                                                                   \
 test_destructor                                                                \
 ( void )                                                                       \
 {                                                                              \
-  type##List *list = New##type##List();                                        \
+  type##List *list;                                                            \
+                                                                               \
+  list = New##type##List();                                                    \
   if( !list )                                                                  \
     return "could not create a new list";                                      \
   Destroy##type##List( list );                                                 \
@@ -329,10 +351,12 @@ const char *                                                                   \
 test_is_empty                                                                  \
 ( void )                                                                       \
 {                                                                              \
+  type##List *list;                                                            \
+                                                                               \
   if( !type##ListIsEmpty( NULL ) )                                             \
     return "a null list was not deemed empty";                                 \
                                                                                \
-  type##List *list = Build##type##List();                                      \
+  list = Build##type##List();                                                  \
   if( !list )                                                                  \
     return "could not build a test list";                                      \
                                                                                \
@@ -349,11 +373,15 @@ const char *                                                                   \
 test_front                                                                     \
 ( void )                                                                       \
 {                                                                              \
-  type *element = type##ListFront( NULL );                                     \
+  type *element, *last;                                                        \
+  type##List *list;                                                            \
+  type##ListIterator *iterator;                                                \
+                                                                               \
+  element = type##ListFront( NULL );                                           \
   if( element )                                                                \
     return "a null list returned a front element";                             \
                                                                                \
-  type##List *list = Build##type##List();                                      \
+  list = Build##type##List();                                                  \
   if( !list )                                                                  \
     return "could not build a test list";                                      \
                                                                                \
@@ -361,8 +389,8 @@ test_front                                                                     \
   if( !element )                                                               \
     return "a populated list did not have a front element";                    \
                                                                                \
-  type##ListIterator *iterator = Begin##type##List( list );                    \
-  type *last = NextIn##type##ListIterator( iterator );                         \
+  iterator = Begin##type##List( list );                                        \
+  last = NextIn##type##ListIterator( iterator );                               \
                                                                                \
   if( element != last )                                                        \
     return "the last element of the list was not returned by back";            \
@@ -375,16 +403,20 @@ const char *                                                                   \
 test_prepend_to                                                                \
 ( void )                                                                       \
 {                                                                              \
-  type##List *list = New##type##List();                                        \
+  type *first, *fourth, *retrieved, *second, *third;                           \
+  type##List *list, *result;                                                   \
+  type##ListIterator *iterator;                                                \
+                                                                               \
+  list = New##type##List();                                                    \
   if( !list )                                                                  \
     return "the list was not created";                                         \
                                                                                \
-  type *first = Build##type();                                                 \
-  type *second = Build##type();                                                \
-  type *third = Build##type();                                                 \
-  type *fourth = Build##type();                                                \
+  first = Build##type();                                                       \
+  second = Build##type();                                                      \
+  third = Build##type();                                                       \
+  fourth = Build##type();                                                      \
                                                                                \
-  type##List *result = PrependTo##type##List( list, first );                   \
+  result = PrependTo##type##List( list, first );                               \
   if( result != list )                                                         \
     return "the first member was not successfully added";                      \
                                                                                \
@@ -400,8 +432,8 @@ test_prepend_to                                                                \
   if( result != list )                                                         \
     return "the fourth member was not successfully added";                     \
                                                                                \
-  type##ListIterator *iterator = Begin##type##List( list );                    \
-  type *retrieved = NextIn##type##ListIterator( iterator );                    \
+  iterator = Begin##type##List( list );                                        \
+  retrieved = NextIn##type##ListIterator( iterator );                          \
   if( !retrieved )                                                             \
     return "the list did not have any members";                                \
   if( retrieved != fourth )                                                    \

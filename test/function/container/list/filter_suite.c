@@ -101,13 +101,18 @@ const char *
 test_record_through
 ( void )
 {
-  FilterList *list = BuildFilterList();
+  Event *event;
+  FilterList *list;
+  Record *record;
+  unsigned accepted;
+
+  list = BuildFilterList();
   FAIL_IF_NULL( list, "could not build the test list" )
 
-  Record *record = BuildEmptyRecord();
+  record = BuildEmptyRecord();
   FAIL_IF_NULL( record, "the test record could not be built" )
 
-  unsigned accepted = RecordThroughFilterList( NULL, NULL );
+  accepted = RecordThroughFilterList( NULL, NULL );
   if( !accepted )
     return "a null list did not accept its input";
 
@@ -124,11 +129,11 @@ test_record_through
   if( !accepted )
     return "a full record was not accepted by the list";
 
-  Event *event = BuildEvent();
+  event = BuildEvent();
   if( !event )
     return "could not build test Event";
   event->level = NULL;
-  
+
   record->event = event;
   accepted = RecordThroughFilterList( list, record );
   if( accepted )

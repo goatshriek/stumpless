@@ -32,11 +32,13 @@ const char *
 TestCopy
 ( void )
 {
-  DictionaryConstIterator *copy = CopyDictionaryConstIterator( NULL );
+  DictionaryConstIterator *copy, *iterator;
+
+  copy = CopyDictionaryConstIterator( NULL );
   if( copy )
     return "an iterator was copied from a NULL iterator";
 
-  DictionaryConstIterator *iterator = BuildDictionaryConstIterator();
+  iterator = BuildDictionaryConstIterator();
   if( !iterator )
     return "could not build test iterator";
 
@@ -58,9 +60,11 @@ const char *
 TestDestroy
 ( void )
 {
+  DictionaryConstIterator *iterator;
+
   DestroyDictionaryConstIterator( NULL );
 
-  DictionaryConstIterator *iterator = BuildDictionaryConstIterator();
+  iterator = BuildDictionaryConstIterator();
   if( !iterator )
     return "could not build test iterator";
 
@@ -73,14 +77,17 @@ const char *
 TestHasNext
 ( void )
 {
+  Dictionary *dictionary;
+  DictionaryConstIterator *iterator;
+
   if( DictionaryConstIteratorHasNext( NULL ) )
     return "a NULL iterator had a next value";
 
-  Dictionary *dictionary = BuildDictionaryOfStrings();
+  dictionary = BuildDictionaryOfStrings();
   if( !dictionary )
     return "could not build test Dictionary";
 
-  DictionaryConstIterator *iterator = CBeginDictionary( dictionary );
+  iterator = CBeginDictionary( dictionary );
   if( !iterator )
     return "could not build test iterator";
 
@@ -109,11 +116,14 @@ const char *
 TestNew
 ( void )
 {
-  DictionaryConstIterator *iterator = NewDictionaryConstIterator( NULL, 0 );
+  Dictionary *dictionary;
+  DictionaryConstIterator *iterator;
+
+  iterator = NewDictionaryConstIterator( NULL, 0 );
   if( iterator )
     return "an iterator was created from a NULL Dictionary";
 
-  Dictionary *dictionary = BuildDictionaryOfStrings();
+  dictionary = BuildDictionaryOfStrings();
   if( !dictionary )
     return "could not build a test Dictionary";
 
@@ -133,15 +143,19 @@ const char *
 TestNext
 ( void )
 {
-  const char *value = NextInDictionaryConstIterator( NULL );
+  const char *value;
+  Dictionary *dictionary;
+  DictionaryConstIterator *iterator;
+
+  value = NextInDictionaryConstIterator( NULL );
   if( value )
     return "a NULL iterator returned a next value";
 
-  Dictionary *dictionary = BuildDictionaryOfStrings();
+  dictionary = BuildDictionaryOfStrings();
   if( !dictionary )
     return "could not build a test Dictionary";
 
-  DictionaryConstIterator *iterator = NewDictionaryConstIterator( dictionary, 0 );
+  iterator = NewDictionaryConstIterator( dictionary, 0 );
   if( !iterator )
     return "could not build a test iterator";
 

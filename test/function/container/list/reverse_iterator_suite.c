@@ -41,10 +41,13 @@ const char *
 test_constructor
 ( void )
 {
-  ListReverseIterator *iterator = RBeginList( NULL );
+  List *list;
+  ListReverseIterator *iterator;
+
+  iterator = RBeginList( NULL );
   FAIL_IF_NOT_NULL( iterator, "a null list returned a non-null iterator" )
 
-  List *list = BuildListOfStrings();
+  list = BuildListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
   iterator = RBeginList( list );
   FAIL_IF_NULL( iterator, "a non-null list returned a null iterator" )
@@ -61,14 +64,18 @@ const char *
 test_copy
 ( void )
 {
-  ListReverseIterator *copy = CopyListReverseIterator( NULL );
+  List *list;
+  ListReverseIterator *copy, *iterator;
+  Node *current;
+
+  copy = CopyListReverseIterator( NULL );
   FAIL_IF_NOT_NULL( copy, "copying a null iterator returned a non-null iterator" )
 
-  ListReverseIterator *iterator = BuildListReverseIterator();
+  iterator = BuildListReverseIterator();
   FAIL_IF_NULL( iterator, "could not build the test iterator" )
-  List *list = iterator->list;
+  list = iterator->list;
   FAIL_IF_NULL( list, "the iterator did not have a list" )
-  Node *current = iterator->current;
+  current = iterator->current;
   FAIL_IF_NULL( current, "the iterator did not start at the end of the list" )
 
   copy = CopyListReverseIterator( iterator );
@@ -84,17 +91,20 @@ test_copy
 const char *
 test_destructor( void )
 {
-  DestroyListIterator( NULL );
+  List *list;
+  ListReverseIterator *iterator;
 
-  ListReverseIterator *iterator = BuildListReverseIterator();
+  DestroyListReverseIterator( NULL );
+
+  iterator = BuildListReverseIterator();
   FAIL_IF_NULL( iterator, "could not build the test iterator" )
 
-  List *list = iterator->list;
+  list = iterator->list;
   FAIL_IF_NULL( list, "the iterator did not have a list" )
   if( ListIsEmpty( list ) )
     return "the iterator's list was empty";
 
-  DestroyListIterator( iterator );
+  DestroyListReverseIterator( iterator );
 
   if( ListIsEmpty( list ) )
     return "the iterator's list was destroyed as well";
@@ -103,13 +113,17 @@ test_destructor( void )
 }
 
 const char *
-test_has_next( void )
+test_has_next
+( void )
 {
+  ListReverseIterator *iterator;
+
   if( ListReverseIteratorHasNext( NULL ) )
     return "a null iterator had a next value";
 
-  ListReverseIterator *iterator = BuildListReverseIterator();
-  FAIL_IF_NULL( iterator, "could not build the test iterator" )
+  iterator = BuildListReverseIterator();
+  if( !iterator )
+    return "could not build the test iterator";
 
   while( iterator->current ){
     if( !ListReverseIteratorHasNext( iterator ) )
@@ -128,25 +142,27 @@ const char *
 test_has_previous
 ( void )
 {
-  if( ListIteratorHasPrevious( NULL ) )
+  ListReverseIterator *iterator;
+
+  if( ListReverseIteratorHasPrevious( NULL ) )
     return "a null iterator had a previous value";
 
-  ListReverseIterator *iterator = BuildListReverseIterator();
+  iterator = BuildListReverseIterator();
   if( !iterator )
     return "could not build the test iterator";
-  if( ListIteratorHasPrevious( iterator ) )
+  if( ListReverseIteratorHasPrevious( iterator ) )
     return "a new iterator had a previous value";
   if( !NextInListReverseIterator( iterator ) )
     return "the iterator did not have any values";
 
   while( iterator->current ){
-    if( !ListIteratorHasPrevious( iterator ) )
+    if( !ListReverseIteratorHasPrevious( iterator ) )
       return "an iterator that returned a value did not have a previous value";
 
     NextInListReverseIterator( iterator );
   }
 
-  if( !ListIteratorHasPrevious( iterator ) )
+  if( !ListReverseIteratorHasPrevious( iterator ) )
     return "a finished iterator did not have a previous value";
 
   return NULL;
@@ -156,14 +172,16 @@ const char *
 test_next
 ( void )
 {
+  ListReverseIterator *iterator;
+  Node *current;
+
   if( ListReverseIteratorHasNext( NULL ) )
     return "a null iterator had a next value";
 
-  ListReverseIterator *iterator = BuildListReverseIterator();
+  iterator = BuildListReverseIterator();
   if( !iterator )
     return "could not build the test iterator";
 
-  Node *current;
   while( ListReverseIteratorHasNext( iterator ) ){
     current = iterator->current;
 
@@ -184,14 +202,17 @@ const char *
 test_previous
 ( void )
 {
-  if( ListIteratorHasPrevious( NULL ) )
+  ListReverseIterator *iterator;
+  void *previous;
+
+  if( ListReverseIteratorHasPrevious( NULL ) )
     return "a null iterator had a previous value";
 
-  ListReverseIterator *iterator = BuildListReverseIterator();
+  iterator = BuildListReverseIterator();
   if( !iterator )
     return "could not build the test iterator";
 
-  void *previous = NextInListReverseIterator( iterator );
+  previous = NextInListReverseIterator( iterator );
   while( ListReverseIteratorHasNext( iterator ) ){
     if( PreviousInListReverseIterator( iterator ) != previous )
       return "calling previous did not return the previous value";

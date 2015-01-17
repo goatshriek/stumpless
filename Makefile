@@ -119,7 +119,19 @@ $(OUTDIR):
     if not exist "$(OUTDIR)\src\private\exception\$(NULL)" mkdir $(OUTDIR)\src\private\exception
     if not exist "$(OUTDIR)\src\value\$(NULL)" mkdir $(OUTDIR)\src\value
     if not exist "$(OUTDIR)\test\function\$(NULL)" mkdir $(OUTDIR)\test\function
+    if not exist "$(OUTDIR)\test\function\comparator\$(NULL)" mkdir $(OUTDIR)\test\function\comparator
+    if not exist "$(OUTDIR)\test\function\container\$(NULL)" mkdir $(OUTDIR)\test\function\container
+    if not exist "$(OUTDIR)\test\function\container\dictionary\$(NULL)" mkdir $(OUTDIR)\test\function\container\dictionary
+    if not exist "$(OUTDIR)\test\function\container\list\$(NULL)" mkdir $(OUTDIR)\test\function\container\list
+    if not exist "$(OUTDIR)\test\function\container\list\iterator\$(NULL)" mkdir $(OUTDIR)\test\function\container\list\iterator
+    if not exist "$(OUTDIR)\test\function\container\list\reverse_iterator\$(NULL)" mkdir $(OUTDIR)\test\function\container\list\reverse_iterator
     if not exist "$(OUTDIR)\test\function\exception\$(NULL)" mkdir $(OUTDIR)\test\function\exception
+    if not exist "$(OUTDIR)\test\function\filter\$(NULL)" mkdir $(OUTDIR)\test\function\filter
+    if not exist "$(OUTDIR)\test\function\formatter\$(NULL)" mkdir $(OUTDIR)\test\function\formatter
+    if not exist "$(OUTDIR)\test\function\handler\$(NULL)" mkdir $(OUTDIR)\test\function\handler
+    if not exist "$(OUTDIR)\test\function\logger\$(NULL)" mkdir $(OUTDIR)\test\function\logger
+    if not exist "$(OUTDIR)\test\function\output\$(NULL)" mkdir $(OUTDIR)\test\function\output
+    if not exist "$(OUTDIR)\test\function\value\$(NULL)" mkdir $(OUTDIR)\test\function\value
     if not exist "$(OUTDIR)\test\helper\$(NULL)" mkdir $(OUTDIR)\test\helper
     
 
@@ -393,99 +405,224 @@ check: $(OUTDIR) \
        $(OUTDIR)\test\function\adapter_suite.exe \
        $(OUTDIR)\test\function\boolean_suite.exe \
        $(OUTDIR)\test\function\comparator_suite.exe \
+       $(OUTDIR)\test\function\comparator\base_suite.exe \
        $(OUTDIR)\test\function\configuration_suite.exe \
+       $(OUTDIR)\test\function\container\dictionary_suite.exe \
+       $(OUTDIR)\test\function\container\dictionary\const_iterator_suite.exe \
+       $(OUTDIR)\test\function\container\list_suite.exe \
+       $(OUTDIR)\test\function\container\list\adapter_suite.exe \
+       $(OUTDIR)\test\function\container\list\comparator_suite.exe \
+       $(OUTDIR)\test\function\container\list\const_iterator_suite.exe \
+       $(OUTDIR)\test\function\container\list\filter_suite.exe \
+       $(OUTDIR)\test\function\container\list\formatter_suite.exe \
+       $(OUTDIR)\test\function\container\list\handler_suite.exe \
+       $(OUTDIR)\test\function\container\list\iterator_suite.exe \
+       $(OUTDIR)\test\function\container\list\reverse_iterator_suite.exe \
+       $(OUTDIR)\test\function\container\list\value_suite.exe \
+       $(OUTDIR)\test\function\container\queue_suite.exe \
+       $(OUTDIR)\test\function\container\stack_suite.exe \
+       $(OUTDIR)\test\function\container\tree_suite.exe \
        $(OUTDIR)\test\function\event_suite.exe \
        $(OUTDIR)\test\function\exception_suite.exe \
        $(OUTDIR)\test\function\exception\initializer_suite.exe \
        $(OUTDIR)\test\function\filter_suite.exe \
+       $(OUTDIR)\test\function\filter\base_suite.exe \
        $(OUTDIR)\test\function\formatter_suite.exe \
+       $(OUTDIR)\test\function\formatter\text_suite.exe \
        $(OUTDIR)\test\function\handler_suite.exe \
+       $(OUTDIR)\test\function\handler\stream_suite.exe \
        $(OUTDIR)\test\function\level_suite.exe \
        $(OUTDIR)\test\function\logger_suite.exe \
+       $(OUTDIR)\test\function\logger\log_suite.exe \
        $(OUTDIR)\test\function\output_suite.exe \
+       $(OUTDIR)\test\function\output\profile_suite.exe \
+       $(OUTDIR)\test\function\output\profile_initializer_suite.exe \
        $(OUTDIR)\test\function\record_attribute_suite.exe \
        $(OUTDIR)\test\function\record_suite.exe \
        $(OUTDIR)\test\function\string_helper_suite.exe \
        $(OUTDIR)\test\function\target_suite.exe \
-       $(OUTDIR)\test\function\value_suite.exe
-    - $(OUTDIR)\test\function\adapter_suite.exe > $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\boolean_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\comparator_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\configuration_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\event_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\exception_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\exception\initializer_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\filter_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\formatter_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\handler_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\level_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\logger_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\output_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\record_attribute_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\record_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\string_helper_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\target_suite.exe >> $(OUTDIR)\test-suite.log
-    - $(OUTDIR)\test\function\value_suite.exe >> $(OUTDIR)\test-suite.log
-    type $(OUTDIR)\test-suite.log
+       $(OUTDIR)\test\function\value_suite.exe \
+       $(OUTDIR)\test\function\value\constructor_suite.exe \
+       $(OUTDIR)\test\function\value\profile_suite.exe \
+       $(OUTDIR)\test\function\value\profile_initializer_suite.exe
+    cd $(OUTDIR)
+    $(OUTDIR)\test\function\adapter_suite.exe > $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\boolean_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\comparator_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\comparator\base_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\configuration_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\dictionary_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\dictionary\const_iterator_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\adapter_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\comparator_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\const_iterator_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\filter_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\formatter_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\handler_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\iterator_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\reverse_iterator_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\list\value_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\queue_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\stack_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\container\tree_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\event_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\exception_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\exception\initializer_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\filter_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\filter\base_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\formatter_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\formatter\text_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\handler_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\handler\stream_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\level_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\logger_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\logger\log_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\output_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\output\profile_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\output\profile_initializer_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\record_attribute_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\record_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\string_helper_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\target_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\value_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\value\constructor_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\value\profile_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\value\profile_initializer_suite.exe >> $(OUTDIR)\test-suite.log
 
 
 # executable files
-$(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\adapter_suite.exe: $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\adapter_suite.exe $(OUTDIR)\test\function\adapter_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\boolean_suite.exe: $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\boolean_suite.exe: $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\boolean_suite.exe $(OUTDIR)\test\function\boolean_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\comparator_suite.exe: $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\comparator_suite.exe $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\comparator_suite.exe: $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\comparator_suite.exe $(OUTDIR)\test\function\comparator_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\configuration_suite.exe: $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\comparator\base_suite.exe: $(OUTDIR)\test\function\comparator\base_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\comparator\base_suite.exe $(OUTDIR)\test\function\comparator\base_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\event_suite.exe: $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\event_suite.exe $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\configuration_suite.exe: $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\configuration_suite.exe $(OUTDIR)\test\function\configuration_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\exception_suite.exe: $(OUTDIR)\test\function\exception_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception_suite.exe $(OUTDIR)\test\function\exception_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\dictionary_suite.exe: $(OUTDIR)\test\function\container\dictionary_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\dictionary_suite.exe $(OUTDIR)\test\function\container\dictionary_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\exception\initializer_suite.exe: $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception\initializer_suite.exe $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\dictionary\const_iterator_suite.exe: $(OUTDIR)\test\function\container\dictionary\const_iterator_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\dictionary\const_iterator_suite.exe $(OUTDIR)\test\function\container\dictionary\const_iterator_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\initializer_suite.exe: $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception_suite.exe $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list_suite.exe: $(OUTDIR)\test\function\container\list_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list_suite.exe $(OUTDIR)\test\function\container\list_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\filter_suite.exe: $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\filter_suite.exe $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\adapter_suite.exe: $(OUTDIR)\test\function\container\list\adapter_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\adapter_suite.exe $(OUTDIR)\test\function\container\list\adapter_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\formatter_suite.exe: $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\formatter_suite.exe $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\comparator_suite.exe: $(OUTDIR)\test\function\container\list\comparator_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\comparator_suite.exe $(OUTDIR)\test\function\container\list\comparator_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\handler_suite.exe: $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\handler_suite.exe $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\const_iterator_suite.exe: $(OUTDIR)\test\function\container\list\const_iterator_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\const_iterator_suite.exe $(OUTDIR)\test\function\container\list\const_iterator_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\level_suite.exe: $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\level_suite.exe $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\filter_suite.exe: $(OUTDIR)\test\function\container\list\filter_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\filter_suite.exe $(OUTDIR)\test\function\container\list\filter_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\logger_suite.exe: $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\logger_suite.exe $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\formatter_suite.exe: $(OUTDIR)\test\function\container\list\formatter_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\formatter_suite.exe $(OUTDIR)\test\function\container\list\formatter_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\output_suite.exe: $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\output_suite.exe $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\handler_suite.exe: $(OUTDIR)\test\function\container\list\handler_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\handler_suite.exe $(OUTDIR)\test\function\container\list\handler_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\record_attribute_suite.exe: $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_attribute_suite.exe $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\iterator_suite.exe: $(OUTDIR)\test\function\container\list\iterator_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\iterator_suite.exe $(OUTDIR)\test\function\container\list\iterator_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\record_suite.exe: $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_suite.exe $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\reverse_iterator_suite.exe: $(OUTDIR)\test\function\container\list\reverse_iterator_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\reverse_iterator_suite.exe $(OUTDIR)\test\function\container\list\reverse_iterator_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\string_helper_suite.exe: $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\string_helper_suite.exe $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\list\value_suite.exe: $(OUTDIR)\test\function\container\list\value_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\list\value_suite.exe $(OUTDIR)\test\function\container\list\value_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\target_suite.exe: $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\target_suite.exe $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\queue_suite.exe: $(OUTDIR)\test\function\container\queue_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\queue_suite.exe $(OUTDIR)\test\function\container\queue_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
-$(OUTDIR)\test\function\value_suite.exe: $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\test\helper.dll $(STUMPLESSOBJECTS)
-    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value_suite.exe $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\test\helper.lib $(STUMPLESSOBJECTS)
+$(OUTDIR)\test\function\container\stack_suite.exe: $(OUTDIR)\test\function\container\stack_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\stack_suite.exe $(OUTDIR)\test\function\container\stack_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\container\tree_suite.exe: $(OUTDIR)\test\function\container\tree_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\container\tree_suite.exe $(OUTDIR)\test\function\container\tree_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\event_suite.exe: $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\event_suite.exe $(OUTDIR)\test\function\event_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\exception_suite.exe: $(OUTDIR)\test\function\exception_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception_suite.exe $(OUTDIR)\test\function\exception_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\exception\initializer_suite.exe: $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception\initializer_suite.exe $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\initializer_suite.exe: $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception_suite.exe $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\filter_suite.exe: $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\filter_suite.exe $(OUTDIR)\test\function\filter_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\filter\base_suite.exe: $(OUTDIR)\test\function\filter\base_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\filter\base_suite.exe $(OUTDIR)\test\function\filter\base_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\formatter_suite.exe: $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\formatter_suite.exe $(OUTDIR)\test\function\formatter_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\formatter\text_suite.exe: $(OUTDIR)\test\function\formatter\text_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\formatter\text_suite.exe $(OUTDIR)\test\function\formatter\text_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\handler_suite.exe: $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\handler_suite.exe $(OUTDIR)\test\function\handler_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\handler\stream_suite.exe: $(OUTDIR)\test\function\handler\stream_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\handler\stream_suite.exe $(OUTDIR)\test\function\handler\stream_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\level_suite.exe: $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\level_suite.exe $(OUTDIR)\test\function\level_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\logger_suite.exe: $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\logger_suite.exe $(OUTDIR)\test\function\logger_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\logger\log_suite.exe: $(OUTDIR)\test\function\logger\log_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\logger\log_suite.exe $(OUTDIR)\test\function\logger\log_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\output_suite.exe: $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\output_suite.exe $(OUTDIR)\test\function\output_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\output\profile_suite.exe: $(OUTDIR)\test\function\output\profile_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\output\profile_suite.exe $(OUTDIR)\test\function\output\profile_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\output\profile_initializer_suite.exe: $(OUTDIR)\test\function\output\profile_initializer_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\output\profile_initializer_suite.exe $(OUTDIR)\test\function\output\profile_initializer_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\record_attribute_suite.exe: $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_attribute_suite.exe $(OUTDIR)\test\function\record_attribute_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\record_suite.exe: $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\record_suite.exe $(OUTDIR)\test\function\record_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\string_helper_suite.exe: $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\string_helper_suite.exe $(OUTDIR)\test\function\string_helper_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\target_suite.exe: $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\target_suite.exe $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\value_suite.exe: $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value_suite.exe $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\value\constructor_suite.exe: $(OUTDIR)\test\function\value\constructor_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value\constructor_suite.exe $(OUTDIR)\test\function\value\constructor_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\value\profile_suite.exe: $(OUTDIR)\test\function\value\profile_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value\profile_suite.exe $(OUTDIR)\test\function\value\profile_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\value\profile_initializer_suite.exe: $(OUTDIR)\test\function\value\profile_initializer_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value\profile_initializer_suite.exe $(OUTDIR)\test\function\value\profile_initializer_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
     
 # test object files
@@ -498,8 +635,56 @@ $(OUTDIR)\test\function\boolean_suite.obj: $(TESTDIR)\function\boolean_suite.c
 $(OUTDIR)\test\function\comparator_suite.obj: $(TESTDIR)\function\comparator_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\comparator_suite.c
     
+$(OUTDIR)\test\function\comparator\base_suite.obj: $(TESTDIR)\function\comparator\base_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\comparator\ /Fd$(OUTDIR)\test\function\comparator\ $(TESTDIR)\function\comparator\base_suite.c
+    
 $(OUTDIR)\test\function\configuration_suite.obj: $(TESTDIR)\function\configuration_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\configuration_suite.c
+    
+$(OUTDIR)\test\function\container\dictionary_suite.obj: $(TESTDIR)\function\container\dictionary_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\ /Fd$(OUTDIR)\test\function\container\ $(TESTDIR)\function\container\dictionary_suite.c
+    
+$(OUTDIR)\test\function\container\dictionary\const_iterator_suite.obj: $(TESTDIR)\function\container\dictionary\const_iterator_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\dictionary\ /Fd$(OUTDIR)\test\function\container\dictionary\ $(TESTDIR)\function\container\dictionary\const_iterator_suite.c
+    
+$(OUTDIR)\test\function\container\list_suite.obj: $(TESTDIR)\function\container\list_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\ /Fd$(OUTDIR)\test\function\container\ $(TESTDIR)\function\container\list_suite.c
+    
+$(OUTDIR)\test\function\container\list\adapter_suite.obj: $(TESTDIR)\function\container\list\adapter_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\adapter_suite.c
+    
+$(OUTDIR)\test\function\container\list\comparator_suite.obj: $(TESTDIR)\function\container\list\comparator_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\comparator_suite.c
+    
+$(OUTDIR)\test\function\container\list\const_iterator_suite.obj: $(TESTDIR)\function\container\list\const_iterator_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\const_iterator_suite.c
+    
+$(OUTDIR)\test\function\container\list\filter_suite.obj: $(TESTDIR)\function\container\list\filter_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\filter_suite.c
+    
+$(OUTDIR)\test\function\container\list\formatter_suite.obj: $(TESTDIR)\function\container\list\formatter_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\formatter_suite.c
+    
+$(OUTDIR)\test\function\container\list\handler_suite.obj: $(TESTDIR)\function\container\list\handler_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\handler_suite.c
+    
+$(OUTDIR)\test\function\container\list\iterator_suite.obj: $(TESTDIR)\function\container\list\iterator_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\iterator_suite.c
+    
+$(OUTDIR)\test\function\container\list\reverse_iterator_suite.obj: $(TESTDIR)\function\container\list\reverse_iterator_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\reverse_iterator_suite.c
+    
+$(OUTDIR)\test\function\container\list\value_suite.obj: $(TESTDIR)\function\container\list\value_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\list\ /Fd$(OUTDIR)\test\function\container\list\ $(TESTDIR)\function\container\list\value_suite.c
+    
+$(OUTDIR)\test\function\container\queue_suite.obj: $(TESTDIR)\function\container\queue_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\ /Fd$(OUTDIR)\test\function\container\ $(TESTDIR)\function\container\queue_suite.c
+    
+$(OUTDIR)\test\function\container\stack_suite.obj: $(TESTDIR)\function\container\stack_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\ /Fd$(OUTDIR)\test\function\container\ $(TESTDIR)\function\container\stack_suite.c
+    
+$(OUTDIR)\test\function\container\tree_suite.obj: $(TESTDIR)\function\container\tree_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\container\ /Fd$(OUTDIR)\test\function\container\ $(TESTDIR)\function\container\tree_suite.c
     
 $(OUTDIR)\test\function\event_suite.obj: $(TESTDIR)\function\event_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\event_suite.c
@@ -513,11 +698,20 @@ $(OUTDIR)\test\function\exception\initializer_suite.obj: $(TESTDIR)\function\exc
 $(OUTDIR)\test\function\filter_suite.obj: $(TESTDIR)\function\filter_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\filter_suite.c
     
+$(OUTDIR)\test\function\filter\base_suite.obj: $(TESTDIR)\function\filter\base_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\filter\ /Fd$(OUTDIR)\test\function\filter\ $(TESTDIR)\function\filter\base_suite.c
+    
 $(OUTDIR)\test\function\formatter_suite.obj: $(TESTDIR)\function\formatter_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\formatter_suite.c
     
+$(OUTDIR)\test\function\formatter\text_suite.obj: $(TESTDIR)\function\formatter\text_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\formatter\ /Fd$(OUTDIR)\test\function\formatter\ $(TESTDIR)\function\formatter\text_suite.c
+    
 $(OUTDIR)\test\function\handler_suite.obj: $(TESTDIR)\function\handler_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\handler_suite.c
+    
+$(OUTDIR)\test\function\handler\stream_suite.obj: $(TESTDIR)\function\handler\stream_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\handler\ /Fd$(OUTDIR)\test\function\handler\ $(TESTDIR)\function\handler\stream_suite.c
     
 $(OUTDIR)\test\function\level_suite.obj: $(TESTDIR)\function\level_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\level_suite.c
@@ -525,8 +719,17 @@ $(OUTDIR)\test\function\level_suite.obj: $(TESTDIR)\function\level_suite.c
 $(OUTDIR)\test\function\logger_suite.obj: $(TESTDIR)\function\logger_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\logger_suite.c
     
+$(OUTDIR)\test\function\logger\log_suite.obj: $(TESTDIR)\function\logger\log_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\logger\ /Fd$(OUTDIR)\test\function\logger\ $(TESTDIR)\function\logger\log_suite.c
+    
 $(OUTDIR)\test\function\output_suite.obj: $(TESTDIR)\function\output_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\output_suite.c
+    
+$(OUTDIR)\test\function\output\profile_suite.obj: $(TESTDIR)\function\output\profile_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\output\ /Fd$(OUTDIR)\test\function\output\ $(TESTDIR)\function\output\profile_suite.c
+    
+$(OUTDIR)\test\function\output\profile_initializer_suite.obj: $(TESTDIR)\function\output\profile_initializer_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\output\ /Fd$(OUTDIR)\test\function\output\ $(TESTDIR)\function\output\profile_initializer_suite.c
     
 $(OUTDIR)\test\function\record_attribute_suite.obj: $(TESTDIR)\function\record_attribute_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\record_attribute_suite.c
@@ -542,11 +745,20 @@ $(OUTDIR)\test\function\target_suite.obj: $(TESTDIR)\function\target_suite.c
     
 $(OUTDIR)\test\function\value_suite.obj: $(TESTDIR)\function\value_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\value_suite.c
+    
+$(OUTDIR)\test\function\value\constructor_suite.obj: $(TESTDIR)\function\value\constructor_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\value\ /Fd$(OUTDIR)\test\function\value $(TESTDIR)\function\value\constructor_suite.c
+    
+$(OUTDIR)\test\function\value\profile_suite.obj: $(TESTDIR)\function\value\profile_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\value\ /Fd$(OUTDIR)\test\function\value $(TESTDIR)\function\value\profile_suite.c
+    
+$(OUTDIR)\test\function\value\profile_initializer_suite.obj: $(TESTDIR)\function\value\profile_initializer_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\value\ /Fd$(OUTDIR)\test\function\value $(TESTDIR)\function\value\profile_initializer_suite.c
 
 
 # build test helper library
-$(OUTDIR)\test\helper.dll: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\helper\builder.obj $(OUTDIR)\test\helper\fixture.obj $(OUTDIR)\test\helper\log.obj
-    $(link) $(linkdebug) $(dlllflags) -nologo -out:$(OUTDIR)\test\helper.dll /DEF:$(BASEDIR)\test\helper.def $(OUTDIR)\stumpless.lib $(OUTDIR)\test\helper\builder.obj $(OUTDIR)\test\helper\fixture.obj $(OUTDIR)\test\helper\log.obj  
+$(OUTDIR)\helper.dll: $(OUTDIR)\stumpless.dll $(OUTDIR)\test\helper\builder.obj $(OUTDIR)\test\helper\fixture.obj $(OUTDIR)\test\helper\log.obj
+    $(link) $(linkdebug) $(dlllflags) -nologo -out:$(OUTDIR)\helper.dll /DEF:$(BASEDIR)\test\helper.def $(OUTDIR)\stumpless.lib $(OUTDIR)\test\helper\builder.obj $(OUTDIR)\test\helper\fixture.obj $(OUTDIR)\test\helper\log.obj  
     
     
 # test helper library object files

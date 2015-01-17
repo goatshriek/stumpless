@@ -82,15 +82,17 @@ TestAppendChar
 ( void )
 {
   char test_char = 'c';
+  Value *last;
+  ValueList *list;
 
   if( AppendCharToValueList( NULL, test_char ) )
     return "a NULL ValueList returned a non-NULL result";
 
-  ValueList *list = BuildValueList();
+  list = BuildValueList();
   if( !list )
     return "could not build a test ValueList";
 
-  Value *last = ValueListBack( list );
+  last = ValueListBack( list );
   if( !last )
     return "the test list did not have a last element";
 
@@ -150,12 +152,15 @@ const char *
 test_into_string
 ( void )
 {
-  ValueList *list = BuildValueList();
+  char str[1000];
+  Exception *e;
+  ValueList *list;
+
+  list = BuildValueList();
   if( !list )
     return "could not build the test list";
-  char str[1000];
 
-  Exception *e = ValueListIntoString( NULL, list, 1000 );
+  e = ValueListIntoString( NULL, list, 1000 );
   FAIL_IF_NULL( e, "an empty string did not generate an abnormal status" )
   ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty string did not generate the correct error" )
 
@@ -187,10 +192,12 @@ TEST_SIZE( Value )
 const char *
 test_string_appender( void )
 {
-  ValueList * result = AppendStringToValueList( NULL, "str" );
+  ValueList *list, *result;
+
+  result = AppendStringToValueList( NULL, "str" );
   FAIL_IF_NOT_NULL( result, "an empty list did not generate an abnormal status" )
 
-  ValueList * list = BuildValueList();
+  list = BuildValueList();
   FAIL_IF_NULL( list, "could not build the test list" )
 
   result = AppendStringToValueList( list, NULL );
@@ -206,11 +213,15 @@ test_string_appender( void )
 const char *
 test_string_prepender( void )
 {
-  ValueList *list = NewValueList();
+  Value *value;
+  ValueList *list, *result;
+  ValueListIterator *iterator;
+
+  list = NewValueList();
   if( !list )
     return "could not build a new test list";
 
-  ValueList *result = PrependStringToValueList( NULL, NULL );
+  result = PrependStringToValueList( NULL, NULL );
   if( result )
     return "two null arguments did not return null";
 
@@ -226,8 +237,8 @@ test_string_prepender( void )
   if( result != list )
     return "a string could not be prepended to an empty list";
 
-  ValueListIterator *iterator = BeginValueList( list );
-  Value * value = NextInValueListIterator( iterator );
+  iterator = BeginValueList( list );
+  value = NextInValueListIterator( iterator );
   FAIL_IF_NULL( value, "the list still did not have any members" )
   ASSERT_STRINGS_EQUAL( "string", value->profile->name, "the new value was not a string" )
   ASSERT_STRINGS_EQUAL( "lonely little guy", value->c_p, "the new string was not equivalent to the added one" )
@@ -250,13 +261,17 @@ test_string_prepender( void )
 }
 
 const char *
-test_to_string( void )
+test_to_string
+( void )
 {
-  char *str = ValueListToString( NULL );
+  char *str;
+  ValueList *list;
+
+  str = ValueListToString( NULL );
   if( str )
     return "a null list did not return a null string";
 
-  ValueList *list = BuildValueList();
+  list = BuildValueList();
   if( !list )
     return "could not build the test list";
 
@@ -273,11 +288,13 @@ test_to_string( void )
 const char *
 test_unsigned_int_appender( void )
 {
-  ValueList *list = BuildValueList();
+  ValueList *list, *result;
+
+  list = BuildValueList();
   if( !list )
     return "could not build the test list";
 
-  ValueList *result  = AppendUnsignedIntToValueList( NULL, 3 );
+  result  = AppendUnsignedIntToValueList( NULL, 3 );
   if( result )
     return "a null list did not generate an abnormal status";
 

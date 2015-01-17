@@ -51,12 +51,15 @@ const char *
 test_append_value
 ( void )
 {
-  List * list = BuildListOfStrings();
+  List *list, *result;
+  void *str;
+
+  list = BuildListOfStrings();
   FAIL_IF_NULL( list, "the test list could not be built" );
   ASSERT_STRINGS_EQUAL( "Strings!", list->last->value, "the last part of the list was not what it was expected to be before the appending" )
 
-  void * str = ( void * ) "sucka";
-  List * result = AppendToList( list, str );
+  str = ( void * ) "sucka";
+  result = AppendToList( list, str );
   ASSERT_STRINGS_EQUAL( "sucka", list->last->value, "the last part of the list was not what was appended" )
 
   return NULL;
@@ -66,13 +69,15 @@ const char *
 test_appender
 ( void )
 {
-  List * list_1 = BuildListOfStrings();
+  List *list_1, *list_2, *result;
+
+  list_1 = BuildListOfStrings();
   FAIL_IF_NULL( list_1, "could not build the first list" )
 
-  List * list_2 = BuildListOfStrings();
+  list_2 = BuildListOfStrings();
   FAIL_IF_NULL( list_2, "could not build the second list" )
 
-  List * result = AppendToList( list_2, "this should be last" );
+  result = AppendToList( list_2, "this should be last" );
   FAIL_IF_NULL( result, "an extra value could not be added to the second list" )
 
   result = AppendLists( NULL, NULL );
@@ -92,16 +97,20 @@ const char *
 test_back
 ( void )
 {
-  void * value = ListBack( NULL );
+  List *list;
+  ListReverseIterator *iterator;
+  void *value;
+
+  value = ListBack( NULL );
   if( value )
     return "a null list had a back element";
 
-  List *list = BuildListOfStrings();
+  list = BuildListOfStrings();
   if( !list )
     return "could not build a test list";
 
   value = ListBack( list );
-  ListReverseIterator *iterator = RBeginList( list );
+  iterator = RBeginList( list );
   if( value != NextInListReverseIterator( iterator ) )
     return "the last record in the list was not returned";
 
@@ -112,7 +121,7 @@ const char *
 test_constructor
 ( void )
 {
-  List * list = NULL;
+  List *list;
 
   list = NewList();
 
@@ -127,11 +136,15 @@ const char *
 test_contains
 ( void )
 {
-  List * list = BuildListOfStrings();
+  char *value;
+  List *list;
+  ListIterator *iterator;
+
+  list = BuildListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
 
-  ListIterator * iterator = BeginList( list );
-  char * value = NextInListIterator( iterator );
+  iterator = BeginList( list );
+  value = NextInListIterator( iterator );
   FAIL_IF_NULL( value, "could not get the first list member" )
 
   if( !ListContains( list, value ) )
@@ -158,22 +171,22 @@ const char *
 test_copy
 ( void )
 {
-  List * list = BuildListOfStrings();
-  if( list == NULL )
+  List *copy, *list;
+
+  list = BuildListOfStrings();
+  if( !list )
     return "could not build the test list";
 
-  List * copy;
-
   copy = CopyList( NULL );
-  if( copy != NULL )
+  if( copy )
     return "the copy was not null for a null pointer";
 
   copy = CopyList( list );
-  if( copy == NULL )
+  if( !copy )
     return "the copy was null for a non-null pointer";
   if( copy == list )
     return "the copy was equal to the original list";
-  if( copy->first == NULL )
+  if( !copy->first )
     return "the copy did not actually contain any information";
   if( copy->first == list->first )
     return "the copy's nodes were the same instead of a copy";
@@ -186,17 +199,19 @@ test_copy
 const char *
 test_destructor( void )
 {
+  List *list;
+
   DestroyList( NULL );
 
-  List * list = NewList();
+  list = NewList();
 
-  if( list == NULL )
+  if( !list )
     return "the list was not created";
 
   DestroyList( list );
 
   list = BuildListOfStrings();
-  if( list == NULL )
+  if( !list )
      return "could not build the test list";
 
   DestroyList( list );
@@ -208,16 +223,20 @@ const char *
 test_front
 ( void )
 {
-  void * value = ListFront( NULL );
+  List *list;
+  ListIterator *iterator;
+  void *value;
+
+  value = ListFront( NULL );
   if( value )
     return "a null list had a front element";
 
-  List *list = BuildListOfStrings();
+  list = BuildListOfStrings();
   if( !list )
     return "could not build a test list";
 
   value = ListFront( list );
-  ListIterator *iterator = BeginList( list );
+  iterator = BeginList( list );
   if( value != NextInListIterator( iterator ) )
     return "the first record in the list was not returned";
 
@@ -228,7 +247,8 @@ const char *
 test_is_empty
 ( void )
 {
-  List * list = NULL;
+  List *list = NULL;
+
   if( !ListIsEmpty( list ) )
     return "a null list pointer was deemed empty";
 
@@ -237,7 +257,7 @@ test_is_empty
     return "a newly created list pointer was not deemed empty";
 
   list = BuildListOfStrings();
-  if( list == NULL )
+  if( !list )
     return "could not build the test list";
   if( ListIsEmpty( list ) )
     return "a full list was deemed empty";
@@ -248,12 +268,15 @@ test_is_empty
 const char *
 test_prepend_value( void )
 {
-  List * list = NewList();
+  List *list, *result;
+  void *value;
+
+  list = NewList();
   FAIL_IF_NULL( list, "could not build a new test list" )
 
-  void *value = ( void * ) "new start";
+  value = ( void * ) "new start";
 
-  List * result = PrependToList( NULL, NULL );
+  result = PrependToList( NULL, NULL );
   FAIL_IF_NOT_NULL( result, "two empty arguments did not generate an error" )
 
   result = PrependToList( NULL, value );
@@ -282,11 +305,13 @@ test_prepend_value( void )
 const char *
 test_separator( void )
 {
+  const char *str, *temp;
+  List *list, *result;
+  ListIterator *iterator;
+  void *separator = ( void * ) ", ";
 
-  void * separator = ( void * ) ", ";
-
-  List * list = NewList();
-  List * result = AddSeparatorToList( list, separator );
+  list = NewList();
+  result = AddSeparatorToList( list, separator );
   if( list != result )
     return "an empty list was not handled properly";
 
@@ -297,13 +322,13 @@ test_separator( void )
   if( list != result )
     return "the separator was not properly added to the list";
 
-  ListIterator * iterator = BeginList( list );
-  const char * str = NextInListIterator( iterator );
+  iterator = BeginList( list );
+  str = NextInListIterator( iterator );
   ASSERT_STRINGS_EQUAL( "This", str, "the first part of the list was not what was expected" )
   str = NextInListIterator( iterator );
   ASSERT_STRINGS_EQUAL( ", ", str, "the second part of the list was not what was expected" )
-  const char * temp = NextInListIterator( iterator );
-  while( temp != NULL ){
+  temp = NextInListIterator( iterator );
+  while( temp ){
     str = temp;
     temp = NextInListIterator( iterator );
   }
@@ -320,7 +345,9 @@ const char *
 test_size
 ( void )
 {
-  List * list = NewList();
+  List *list;
+
+  list = NewList();
   FAIL_IF_NULL( list, "could not build empty test list" )
 
   if( ListSize( list ) != 0 )

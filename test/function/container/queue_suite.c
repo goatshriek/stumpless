@@ -31,11 +31,13 @@ const char *
 TestCopy
 ( void )
 {
-  Queue *copy = CopyQueue( NULL );
+  Queue *copy, *original;
+
+  copy = CopyQueue( NULL );
   if( copy )
     return "a NULL Queue returned a non-NULL copy";
 
-  Queue *original = BuildQueue();
+  original = BuildQueue();
   if( !original )
     return "could not create test Queue";
 
@@ -59,9 +61,11 @@ const char *
 TestDestroy
 ( void )
 {
+  Queue *queue;
+
   DestroyQueue( NULL );
 
-  Queue *queue = BuildQueue();
+  queue = BuildQueue();
   if( !queue )
     return "could not build a test Queue";
 
@@ -74,10 +78,12 @@ const char *
 TestIsEmpty
 ( void )
 {
+  Queue *queue;
+
   if( !QueueIsEmpty( NULL ) )
     return "a NULL Queue was not empty";
 
-  Queue *queue = NewQueue();
+  queue = NewQueue();
   if( !queue )
     return "could not build a new Queue";
 
@@ -98,7 +104,9 @@ const char *
 TestNew
 ( void )
 {
-  Queue *queue = NewQueue();
+  Queue *queue;
+
+  queue = NewQueue();
   if( !queue )
     return "could not create a new Queue";
 
@@ -109,10 +117,13 @@ const char *
 TestPeek
 ( void )
 {
+  const char *result;
+  Queue *queue;
+
   if( PeekAtQueue( NULL ) )
     return "a NULL Queue had a first value";
 
-  Queue *queue = NewQueue();
+  queue = NewQueue();
   if( !queue )
     return "could not build a test Queue";
 
@@ -123,7 +134,7 @@ TestPeek
   if( !queue )
     return "could not build a test Queue";
 
-  const char *result = PeekAtQueue( queue );
+  result = PeekAtQueue( queue );
   if( !result )
     return "a populated Queue did not have a first value";
   ASSERT_STRINGS_EQUAL( "first element", result, "the first value in the Queue was not returned" )
@@ -135,10 +146,13 @@ const char *
 TestPop
 ( void )
 {
+  const char *result;
+  Queue *queue;
+
   if( PopFromQueue( NULL ) )
     return "a NULL Queue returned an element";
 
-  Queue *queue = NewQueue();
+  queue = NewQueue();
   if( !queue )
     return "could not build a new Queue";
   if( PopFromQueue( queue ) )
@@ -147,7 +161,7 @@ TestPop
   queue = BuildQueue();
   if( !queue )
     return "could not build a test Queue";
-  const char *result = PopFromQueue( queue );
+  result = PopFromQueue( queue );
   if( !result )
     return "a populated Queue did not return a first element";
   ASSERT_STRINGS_EQUAL( "first element", result, "the first element returned was not the first in the Queue" )
@@ -163,13 +177,16 @@ const char *
 TestPush
 ( void )
 {
+  const char *value;
+  Queue *queue;
+
   if( PushToQueue( NULL, NULL ) )
     return "a NULL Queue could be pushed to with a NULL element";
 
   if( PushToQueue( NULL, "first new element" ) )
     return "an element could be pushed to a new Queue";
 
-  Queue *queue = NewQueue();
+  queue = NewQueue();
   if( !queue )
     return "could not build a new Queue";
 
@@ -178,7 +195,7 @@ TestPush
 
   if( PushToQueue( queue, "first new element" ) != queue )
     return "a first element could not be properly pushed";
-  const char *value = PeekAtQueue( queue );
+  value = PeekAtQueue( queue );
   if( !value )
     return "could not get a value from the queue after the first push";
   ASSERT_STRINGS_EQUAL( "first new element", value, "an empty Queue did not have the correct element after a push" )
@@ -197,10 +214,12 @@ const char *
 TestSize
 ( void )
 {
+  Queue *queue;
+
   if( QueueSize( NULL ) != 0 )
     return "a NULL Queue did not have a size of 0";
 
-  Queue *queue = BuildQueue();
+  queue = BuildQueue();
   if( !queue )
     return "could not build a test Queue";
 

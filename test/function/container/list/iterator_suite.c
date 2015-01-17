@@ -41,10 +41,13 @@ const char *
 test_constructor
 ( void )
 {
-  ListIterator *iterator = BeginList( NULL );
+  List *list;
+  ListIterator *iterator;
+
+  iterator = BeginList( NULL );
   FAIL_IF_NOT_NULL( iterator, "a null list returned a non-null iterator" )
 
-  List *list = BuildListOfStrings();
+  list = BuildListOfStrings();
   FAIL_IF_NULL( list, "could not build the test list" )
   iterator = BeginList( list );
   FAIL_IF_NULL( iterator, "a non-null list returned a null iterator" )
@@ -61,14 +64,18 @@ const char *
 test_copy
 ( void )
 {
-  ListIterator *copy = CopyListIterator( NULL );
+  List *list;
+  ListIterator *copy, *iterator;
+  Node *current;
+
+  copy = CopyListIterator( NULL );
   FAIL_IF_NOT_NULL( copy, "copying a null iterator returned a non-null iterator" )
 
-  ListIterator *iterator = BuildListIterator();
+  iterator = BuildListIterator();
   FAIL_IF_NULL( iterator, "could not build the test iterator" )
-  List *list = iterator->list;
+  list = iterator->list;
   FAIL_IF_NULL( list, "the iterator did not have a list" )
-  Node *current = iterator->current;
+  current = iterator->current;
   FAIL_IF_NULL( current, "the iterator did not start at the beginning of the list" )
 
   copy = CopyListIterator( iterator );
@@ -82,14 +89,18 @@ test_copy
 }
 
 const char *
-test_destructor( void )
+test_destructor
+( void )
 {
+  List *list;
+  ListIterator *iterator;
+
   DestroyListIterator( NULL );
 
-  ListIterator *iterator = BuildListIterator();
+  iterator = BuildListIterator();
   FAIL_IF_NULL( iterator, "could not build the test iterator" )
 
-  List *list = iterator->list;
+  list = iterator->list;
   FAIL_IF_NULL( list, "the iterator did not have a list" )
   if( ListIsEmpty( list ) )
     return "the iterator's list was empty";
@@ -103,13 +114,17 @@ test_destructor( void )
 }
 
 const char *
-test_has_next( void )
+test_has_next
+( void )
 {
+  ListIterator *iterator;
+
   if( ListIteratorHasNext( NULL ) )
     return "a null iterator had a next value";
 
-  ListIterator *iterator = BuildListIterator();
-  FAIL_IF_NULL( iterator, "could not build the test iterator" )
+  iterator = BuildListIterator();
+  if( !iterator )
+    return "could not build the test iterator";
 
   while( iterator->current ){
     if( !ListIteratorHasNext( iterator ) )
@@ -128,10 +143,12 @@ const char *
 test_has_previous
 ( void )
 {
+  ListIterator *iterator;
+
   if( ListIteratorHasPrevious( NULL ) )
     return "a null iterator had a previous value";
 
-  ListIterator *iterator = BuildListIterator();
+  iterator = BuildListIterator();
   if( !iterator )
     return "could not build the test iterator";
   if( ListIteratorHasPrevious( iterator ) )
@@ -156,14 +173,16 @@ const char *
 test_next
 ( void )
 {
+  ListIterator *iterator;
+  Node *current;
+
   if( ListIteratorHasNext( NULL ) )
     return "a null iterator had a next value";
 
-  ListIterator *iterator = BuildListIterator();
+  iterator = BuildListIterator();
   if( !iterator )
     return "could not build the test iterator";
 
-  Node *current;
   while( ListIteratorHasNext( iterator ) ){
     current = iterator->current;
 
@@ -184,14 +203,17 @@ const char *
 test_previous
 ( void )
 {
+  ListIterator *iterator;
+  void *previous;
+
   if( ListIteratorHasPrevious( NULL ) )
     return "a null iterator had a previous value";
 
-  ListIterator *iterator = BuildListIterator();
+  iterator = BuildListIterator();
   if( !iterator )
     return "could not build the test iterator";
 
-  void *previous = NextInListIterator( iterator );
+  previous = NextInListIterator( iterator );
   while( ListIteratorHasNext( iterator ) ){
     if( PreviousInListIterator( iterator ) != previous )
       return "calling previous did not return the previous value";

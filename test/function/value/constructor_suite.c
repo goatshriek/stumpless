@@ -61,14 +61,17 @@ const char *
 TestVoid
 ( void )
 {
+  Value *value;
+  void *test;
+
   if( NewValueForVoid( NULL ) )
     return "a Value was created for a NULL pointer";
 
-  void *test = ( void * ) BuildValueList();
+  test = ( void * ) BuildValueList();
   if( !test )
     return "could not build a test ValueList";
 
-  Value *value = NewValueForVoid( test );
+  value = NewValueForVoid( test );
   if( !value )
     return "a Value could not be created for a pointer";
   if( value->v_p != test )
@@ -80,10 +83,13 @@ TestVoid
 const char *
 test_from_boolean( void )
 {
-  Boolean * boolean = BuildBoolean();
+  Boolean *boolean;
+  Value *value;
+
+  boolean = BuildBoolean();
   FAIL_IF_NULL( boolean, "could not build the test boolean" )
 
-  Value * value = NewValueForBoolean( NULL );
+  value = NewValueForBoolean( NULL );
   FAIL_IF_NOT_NULL( value, "a null boolean did not generate a null value" )
 
   value = NewValueForBoolean( boolean );
@@ -125,7 +131,7 @@ test_from_double( void )
 const char *
 test_from_float( void )
 {
-  float test_value = 789.64;
+  float test_value = 789.64f;
 
   Value * value = NewValueForFloat( test_value );
   FAIL_IF_NULL( value, "the value could not be built" )
@@ -282,7 +288,9 @@ test_from_unsigned_long( void )
 const char *
 test_from_unsigned_long_long( void )
 {
-  Value * value = NewValueForUnsignedLongLong( ULLONG_MAX );
+  Value *value;
+
+  value = NewValueForUnsignedLongLong( ULLONG_MAX );
   FAIL_IF_NULL( value, "the value could not be built" )
   if( strcmp( value->profile->name, "unsigned long long" ) != 0 )
     return "the value did not have the correct type";

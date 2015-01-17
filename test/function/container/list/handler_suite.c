@@ -101,16 +101,20 @@ const char *
 test_output_through
 ( void )
 {
-  HandlerList *list = BuildHandlerList();
+  Exception *e;
+  HandlerList *list;
+  Output *output;
+
+  list = BuildHandlerList();
   if( !list )
     return "could not build the test list";
 
-  Exception *e = OutputThroughHandlerList( list, NULL );
+  e = OutputThroughHandlerList( list, NULL );
   if( !e )
     return "a null output did not generate an abnormal status";
   ASSERT_STRINGS_EQUAL( "empty argument", e->name, "a null output did not generate an empty argument error" )
 
-  Output *output = BuildTextOutput();
+  output = BuildTextOutput();
   if( !output )
     return "could not build the test output";
   e = OutputThroughHandlerList( list, output );

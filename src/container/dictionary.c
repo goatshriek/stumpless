@@ -85,7 +85,7 @@ RemoveDictionaryValue
 
   if( !node->left_child ){
     ReplaceNode( dictionary, node, node->right_child );
-  } else if( node->right_child == NULL ){
+  } else if( !node->right_child ){
     ReplaceNode( dictionary, node, node->left_child );
   } else {
     minimum = SubtreeMinimum( node->right_child );
@@ -100,6 +100,8 @@ RemoveDictionaryValue
   }
 
   removed_value = node->value;
+  node->left_child = NULL;
+  node->right_child = NULL;
   DestroyNode( node );
   return removed_value;
 }
@@ -199,7 +201,7 @@ GetNode
   int comparison;
   Node *next;
 
-  if( !node )
+  if( !node || !node->key )
     return NULL;
 
   comparison =  strcmp( key, node->key );
@@ -243,7 +245,7 @@ LeftRotate
 static
 void
 ReplaceNode
-( Dictionary * dictionary, Node * previous, Node * replacement )
+( Dictionary *dictionary, Node *previous, Node *replacement )
 {
   if( !previous->parent )
     dictionary->root = replacement;
@@ -252,7 +254,7 @@ ReplaceNode
   else
     previous->parent->right_child = replacement;
 
-  if( replacement != NULL )
+  if( replacement )
     replacement->parent = previous->parent;
 }
 static
@@ -317,9 +319,9 @@ Splay
 static
 Node *
 SubtreeMinimum
-( Node * node )
+( Node *node )
 {
-  if( node->left_child == NULL )
+  if( !node->left_child )
     return node;
 
   return SubtreeMinimum( node->left_child );

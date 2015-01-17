@@ -46,7 +46,9 @@ const char *
 test_destructor
 ( void )
 {
-  Dictionary * dictionary = NewDictionary();
+  Dictionary *dictionary;
+
+  dictionary = NewDictionary();
 
   FAIL_IF_NULL( dictionary, "the dictionary was not created" )
 
@@ -64,25 +66,28 @@ const char *
 test_get_value
 ( void )
 {
-  Dictionary * dictionary = BuildDictionaryOfStrings();
+  const char *str;
+  Dictionary *dictionary;
+
+  dictionary = BuildDictionaryOfStrings();
   FAIL_IF_NULL( dictionary, "could not build the test dictionary" )
 
-  const char * string = GetDictionaryValue( NULL, NULL );
-  FAIL_IF_NOT_NULL( string, "two empty arguments returned a value" )
+  str = GetDictionaryValue( NULL, NULL );
+  FAIL_IF_NOT_NULL( str, "two empty arguments returned a value" )
 
-  string = GetDictionaryValue( NULL, "third" );
-  FAIL_IF_NOT_NULL( string, "a NULL dictionary returned a value" )
+  str = GetDictionaryValue( NULL, "third" );
+  FAIL_IF_NOT_NULL( str, "a NULL dictionary returned a value" )
 
-  string = GetDictionaryValue( dictionary, NULL );
-  FAIL_IF_NOT_NULL( string, "a NULL key returned a value" );
+  str = GetDictionaryValue( dictionary, NULL );
+  FAIL_IF_NOT_NULL( str, "a NULL key returned a value" );
 
-  string = GetDictionaryValue( dictionary, "third" );
-  FAIL_IF_NULL( string, "could not get the value" )
+  str = GetDictionaryValue( dictionary, "third" );
+  FAIL_IF_NULL( str, "could not get the value" )
 
-  ASSERT_STRINGS_EQUAL( "3rd", string, "the retrieved value was incorrect" )
+  ASSERT_STRINGS_EQUAL( "3rd", str, "the retrieved value was incorrect" )
 
-  string = GetDictionaryValue( dictionary, "one hundred" );
-  FAIL_IF_NOT_NULL( string, "a non-existent key returned a value" )
+  str = GetDictionaryValue( dictionary, "one hundred" );
+  FAIL_IF_NOT_NULL( str, "a non-existent key returned a value" )
 
   return NULL;
 }
@@ -91,13 +96,16 @@ const char *
 test_remove_value
 ( void )
 {
-  Dictionary * dictionary = BuildDictionaryOfStrings();
+  const char *removed, *retrieved;
+  Dictionary *dictionary;
+
+  dictionary = BuildDictionaryOfStrings();
   FAIL_IF_NULL( dictionary, "could not build the test dictionary" )
 
-  const char * retrieved = GetDictionaryValue( dictionary, "third" );
+  retrieved = GetDictionaryValue( dictionary, "third" );
   FAIL_IF_NULL( retrieved, "an existing value could not be retrieved" )
 
-  const char * removed = RemoveDictionaryValue( dictionary, "third" );
+  removed = RemoveDictionaryValue( dictionary, "third" );
   FAIL_IF_NULL( removed, "an existing value could not be removed" )
   ASSERT_STRINGS_EQUAL( retrieved, removed, "the value returned from a retrieval did not match that returned by a removal" )
 
@@ -111,10 +119,13 @@ const char *
 test_set_value
 ( void )
 {
-  Dictionary * dictionary = BuildDictionaryOfStrings();
+  const char *key, *retrieved, *value;
+  Dictionary *dictionary, *result;
+
+  dictionary = BuildDictionaryOfStrings();
   FAIL_IF_NULL( dictionary, "the test dictionary could not be built" )
 
-  const char * retrieved = GetDictionaryValue( NULL, NULL );
+  retrieved = GetDictionaryValue( NULL, NULL );
   FAIL_IF_NOT_NULL( retrieved, "two NULL arguments returned a value" )
 
   retrieved = GetDictionaryValue( NULL, "first" );
@@ -126,13 +137,12 @@ test_set_value
   retrieved = GetDictionaryValue( dictionary, "first" );
   ASSERT_STRINGS_EQUAL( "1st", retrieved, "before an addition, a value could not be properly retrieved" )
 
-  const char * key = "testing";
-  const char * value = "1-2-3";
+  key = "testing";
+  value = "1-2-3";
 
   retrieved = GetDictionaryValue( dictionary, key );
   FAIL_IF_NOT_NULL( retrieved, "a value was returned before the key was added" )
 
-  Dictionary * result;
   result = SetDictionaryValue( NULL, NULL, NULL );
   FAIL_IF_NOT_NULL( result, "three NULL arguments did not cause failure" )
 

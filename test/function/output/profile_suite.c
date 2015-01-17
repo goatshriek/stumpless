@@ -27,13 +27,16 @@ const char *
 test_add_profile
 ( void )
 {
-  OutputProfile * profile = BuildOutputProfile();
+  Exception *e;
+  OutputProfile *found, *profile;
+
+  profile = BuildOutputProfile();
   FAIL_IF_NULL( profile, "the test profile could not be built" )
 
-  Exception *e = AddOutputProfile( profile );
+  e = AddOutputProfile( profile );
   FAIL_IF_NOT_NULL( e, "the new profile could not be added" )
 
-  OutputProfile *found = FindOutputProfileByName( profile->name );
+  found = FindOutputProfileByName( profile->name );
   if( found != profile )
     return "the value was not added in such a way that it could be retrieved";
 
@@ -44,7 +47,9 @@ const char *
 test_find_profile_by_name
 ( void )
 {
-  OutputProfile * profile = FindOutputProfileByName( "text" );
+  OutputProfile *profile;
+
+  profile = FindOutputProfileByName( "text" );
   FAIL_IF_NULL( profile, "the intended profile could not be retrieved" )
   ASSERT_STRINGS_EQUAL( "text", profile->name, "the correct profile was not returned" )
 

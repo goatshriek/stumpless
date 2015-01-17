@@ -44,11 +44,13 @@ const char *
 test_empty_record
 ( void )
 {
+  Filter *filter;
   Record *record = NULL;
-  Filter *filter = BuildFilter();
+  unsigned short accepted;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   accepted = EmptyFilterAcceptRecord( filter, record );
   if( accepted )
@@ -73,11 +75,13 @@ const char *
 test_empty_output
 ( void )
 {
+  Filter *filter;
   Output *output = NULL;
-  Filter *filter = BuildFilter();
+  unsigned short accepted;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   accepted = EmptyFilterAcceptOutput( filter, output );
   if( accepted )
@@ -102,11 +106,13 @@ const char *
 test_level_record
 ( void )
 {
-  Record * record = NULL;
-  Filter *filter = BuildFilter();
+  Filter *filter;
+  Record *record = NULL;
+  unsigned short accepted;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   accepted = LevelFilterAcceptRecord( filter, record );
   if( accepted )
@@ -127,11 +133,13 @@ const char *
 test_level_output
 ( void )
 {
+  Filter *filter;
   Output *output = NULL;
-  Filter *filter = BuildFilter();
+  unsigned short accepted;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   accepted = LevelFilterAcceptOutput( filter, output );
   if( !accepted )
@@ -150,11 +158,13 @@ const char *
 test_level_value
 ( void )
 {
+  Filter *filter;
+  unsigned short accepted;
   Value *value = NULL;
-  Filter *filter = BuildFilter();
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   accepted = LevelFilterAcceptValue( filter, value );
   if( !accepted )
@@ -173,15 +183,19 @@ const char *
 test_empty_value
 ( void )
 {
-  Filter *filter = BuildFilter();
+  Filter *filter;
+  unsigned short accepted;
+  Value *value;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
 
-  unsigned short accepted = EmptyFilterAcceptValue( filter, NULL );
+  accepted = EmptyFilterAcceptValue( filter, NULL );
   if( accepted )
     return "a null value was accepted by the default empty filter";
 
-  Value *value = BuildUnsignedIntValue();
+  value = BuildUnsignedIntValue();
   FAIL_IF_NULL( value, "the test value could not be built" )
   accepted = EmptyFilterAcceptValue( filter, value );
   if( !accepted )
@@ -194,15 +208,18 @@ const char *
 test_invert_empty_record
 ( void )
 {
+  Dictionary *result;
+  Filter *filter;
   Record *record = NULL;
-  Filter *filter = BuildFilter();
+  unsigned short accepted;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   filter->options = NewDictionary();
   FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
-  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  result = SetDictionaryValue( filter->options, "invert", "non-null value" );
   if( result != filter->options )
     return "the invert option could not be set";
 
@@ -229,15 +246,18 @@ const char *
 test_invert_empty_output
 ( void )
 {
+  Dictionary *result;
+  Filter *filter;
   Output *output = NULL;
-  Filter *filter = BuildFilter();
+  unsigned short accepted;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   filter->options = NewDictionary();
   FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
-  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  result = SetDictionaryValue( filter->options, "invert", "non-null value" );
   if( result != filter->options )
     return "the invert option could not be set";
 
@@ -264,21 +284,26 @@ const char *
 test_invert_empty_value
 ( void )
 {
-  Filter *filter = BuildFilter();
+  Dictionary *result;
+  Filter *filter;
+  unsigned short accepted;
+  Value *value;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
 
   filter->options = NewDictionary();
   FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
-  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  result = SetDictionaryValue( filter->options, "invert", "non-null value" );
   if( result != filter->options )
     return "the invert option could not be set";
 
-  unsigned short accepted = EmptyFilterAcceptValue( filter, NULL );
+  accepted = EmptyFilterAcceptValue( filter, NULL );
   if( !accepted )
     return "a null value was not accepted by an inverted empty filter";
 
-  Value *value = BuildUnsignedIntValue();
+  value = BuildUnsignedIntValue();
   FAIL_IF_NULL( value, "the test value could not be built" )
   accepted = EmptyFilterAcceptValue( filter, value );
   if( accepted )
@@ -291,15 +316,18 @@ const char *
 test_invert_level_record
 ( void )
 {
+  Dictionary *result;
+  Filter *filter;
   Record *record = NULL;
-  Filter *filter = BuildFilter();
+  unsigned short accepted;
+
+  filter = BuildFilter();
   if( !filter )
     return "could not build test filter";
-  unsigned short accepted;
 
   filter->options = NewDictionary();
   FAIL_IF_NULL( filter->options, "the option dictionary could not be created" )
-  Dictionary *result = SetDictionaryValue( filter->options, "invert", "non-null value" );
+  result = SetDictionaryValue( filter->options, "invert", "non-null value" );
   if( result != filter->options )
     return "the invert option could not be set";
 
