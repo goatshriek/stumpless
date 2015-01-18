@@ -1,5 +1,6 @@
 noinst_HEADERS += include/test/function/adapter_suite.h \
                   include/test/function/event_suite.h \
+                  include/test/function/exception_suite.h \
                   include/test/function/level_suite.h \
                   include/test/function/output_suite.h \
                   include/test/function/record_suite.h \

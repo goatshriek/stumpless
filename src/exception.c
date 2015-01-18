@@ -101,7 +101,8 @@ RaiseException
 }
 
 const char *
-ExceptionToString( Exception *e )
+ExceptionToString
+( Exception *e )
 {
   if( !e )
     return NULL;

@@ -4,23 +4,19 @@
 #include <stumpless/exception.h>
 
 #include "private/type.h"
+#include "test/function/exception_suite.h"
 #include "test/helper.h"
-
-const char * test_add_e( void );
-const char * test_find_e_by_name( void );
-const char * test_raise_abnormal_e( void );
-const char * test_to_string( void );
 
 int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result;
+  const char *result;
 
-  RUN_TEST( add_e )
-  RUN_TEST( find_e_by_name )
-  RUN_TEST( raise_abnormal_e )
-  RUN_TEST( to_string )
+  TEST( AddException )
+  TEST( FindExceptionByName )
+  TEST( Raise )
+  TEST( ToString )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
@@ -29,12 +25,14 @@ main( void )
 }
 
 const char *
-test_add_e
+TestAddException
 ( void )
 {
   Exception *e;
 
   e = BuildInformationalException();
+  if( !e )
+    return "could not build a test Exception";
 
   if( AddException( e ) != e )
     return "the e was not added to the list";
@@ -43,13 +41,14 @@ test_add_e
 }
 
 const char *
-test_find_e_by_name
+TestFindExceptionByName
 ( void )
 {
   Exception *e;
 
   e = BuildFailureException();
-  FAIL_IF_NULL( e, "could not build the test e" )
+  if( !e )
+    return "could not build the test e";
 
   if( AddException( e ) != e )
     return "the e was not added to the list";
@@ -61,7 +60,7 @@ test_find_e_by_name
 }
 
 const char *
-test_raise_abnormal_e
+TestRaise
 ( void )
 {
   Exception *e;
@@ -82,15 +81,17 @@ test_raise_abnormal_e
 }
 
 const char *
-test_to_string
+TestToString
 ( void )
 {
   Exception *e;
 
-  FAIL_IF_NOT_NULL( ExceptionToString( NULL ), "a NULL exception did not return a NULL string" )
+  if( ExceptionToString( NULL ) )
+    return "a NULL exception did not return a NULL string";
 
   e = BuildInformationalException();
-  FAIL_IF_NULL( e, "the test exception could not be built" )
+  if( !e )
+    return "the test exception could not be built";
 
   return NULL;
 }

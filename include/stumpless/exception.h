@@ -1,7 +1,7 @@
-#ifndef STUMPLESS_EXCEPTION_H
-#define STUMPLESS_EXCEPTION_H
+#ifndef __STUMPLESS_EXCEPTION_H
+#define __STUMPLESS_EXCEPTION_H
 
-#include "private/type.h"
+#include <stumpless/type.h>
 
 /**
  * Adds an Exception to the list of registered Exceptions.
