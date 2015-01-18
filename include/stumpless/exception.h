@@ -15,13 +15,23 @@ AddException
 ( Exception *e );
 
 /**
+ * Destroys the provided Exception. If the exception exists in the list of
+ * registered Exceptions, it is removed.
+ *
+ * @param e the Exception to destroy
+ */
+void
+DestroyException
+( Exception *e );
+
+/**
  * Returns a new string representation of the provided Exception.
  *
  * @param e the Exception to get a string representation of
  *
  * @return a new string representing the Exception
  */
-const char *
+char *
 ExceptionToString
 ( Exception *e );
 

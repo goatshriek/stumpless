@@ -38,6 +38,28 @@ AddException
   return e;
 }
 
+void
+DestroyException
+( Exception *e )
+{
+  if( e ){
+    RemoveDictionaryValue( exception_dictionary, e->name );
+    free( e );
+  }
+
+  return;
+}
+
+char *
+ExceptionToString
+( Exception *e )
+{
+  if( !e )
+    return NULL;
+  else
+    return e->name;
+}
+
 Exception *
 FindExceptionByName
 ( const char *name )
@@ -99,14 +121,3 @@ RaiseException
 
   return e;
 }
-
-const char *
-ExceptionToString
-( Exception *e )
-{
-  if( !e )
-    return NULL;
-  else
-    return e->name;
-}
-

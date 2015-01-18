@@ -654,8 +654,10 @@ Exception *
 BuildInformationalException
 ( void )
 {
-  Exception *e = malloc( sizeof( Exception ) );
-  if( e == NULL )
+  Exception *e;
+
+  e = malloc( sizeof( Exception ) );
+  if( !e )
     return NULL;
 
   e->failure = 0;

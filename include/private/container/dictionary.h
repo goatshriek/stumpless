@@ -55,9 +55,16 @@ Dictionary *
 NewDictionary
 ();
 
+/**
+ * Removes the value associated with the provided key from the Dictionary. If
+ * the value does not exist nothing is done.
+ *
+ * @param dictionary the Dictionary to remove the value from
+ * @param key the key the value is associated with
+ */
 void *
 RemoveDictionaryValue
-( Dictionary *, const char * );
+( Dictionary *dictionary, const char *key );
 
 Dictionary *
 SetDictionaryValue
