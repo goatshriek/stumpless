@@ -47,11 +47,52 @@ TestFindByName
 ( void );
 
 /**
+ * Tests the GetLastFailureException function.
+ *
+ * @test Calling the RaiseException function with a failure Exception must
+ * return the correct Exception. The result of the GetLastFailureException
+ * function must match the last failure Exception raised.
+ *
+ * @return NULL on completion, or a string describing the failure
+ */
+const char *
+TestGetLastFailure
+( void );
+
+/**
+ * Tests the GetLastInformationalException function.
+ *
+ * @test Calling the RaiseException function with an informational Exception
+ * must return the correct Exception. The result of the
+ * GetLastInformationalException function must match the last informational
+ * Exception raised.
+ *
+ * @return NULL on completion, or a string describing the failure
+ */
+const char *
+TestGetLastInformational
+( void );
+
+/**
+ * Tests the GetLastWarningException function.
+ *
+ * @test Calling the RaiseException function with a warning Exception must
+ * return the correct Exception. The result of the GetLastWarningException
+ * function must match the last warning Exception raised.
+ *
+ * @return NULL on completion, or a string describing the failure
+ */
+const char *
+TestGetLastWarning
+( void );
+
+/**
  * Tests the RaiseException function.
  *
- * @test Calling the RaiseException function with the name of an added Exception
- * must return the correct Exception. The last Exception must be set after a
- * call to the function.
+ * @test Calling the RaiseException function with a NULL argument must return
+ * NULL. Calling the RaiseException function with the name of an Exception that
+ * has not been added must return NULL. Calling the RaiseException function with
+ * the name of an added Exception must return the correct Exception..
  *
  * @return NULL on completion, or a string describing the failure
  */
