@@ -193,7 +193,7 @@ TestRaise
   if( RaiseException( "this name doesn't exist" ) )
     return "a non-existent Exception name returned an Exception";
 
-  e = BuildFailureException( e );
+  e = BuildFailureException();
   if( !e )
     return "could not build a test Exception";
 

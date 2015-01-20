@@ -82,6 +82,7 @@ STUMPLESSOBJECTS = $(OUTDIR)\src\adapter.obj \
                    $(OUTDIR)\src\output\profile_initializer.obj \
                    $(OUTDIR)\src\private\event\initializer.obj \
                    $(OUTDIR)\src\private\exception\initializer.obj \
+                   $(OUTDIR)\src\private\exception\thrower.obj \
                    $(OUTDIR)\src\record.obj \
                    $(OUTDIR)\src\record_attribute.obj \
                    $(OUTDIR)\src\string_helper.obj \
@@ -373,6 +374,9 @@ $(OUTDIR)\src\private\event\initializer.obj: $(SRCDIR)\private\event\initializer
 $(OUTDIR)\src\private\exception\initializer.obj: $(SRCDIR)\private\exception\initializer.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\private\exception\ /Fd$(OUTDIR)\src\ $(SRCDIR)\private\exception\initializer.c
     
+$(OUTDIR)\src\private\exception\thrower.obj: $(SRCDIR)\private\exception\thrower.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\private\exception\ /Fd$(OUTDIR)\src\ $(SRCDIR)\private\exception\thrower.c
+    
 $(OUTDIR)\src\record.obj: $(SRCDIR)\record.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\record.c
     
@@ -425,6 +429,7 @@ check: $(OUTDIR) \
        $(OUTDIR)\test\function\event_suite.exe \
        $(OUTDIR)\test\function\exception_suite.exe \
        $(OUTDIR)\test\function\exception\initializer_suite.exe \
+       $(OUTDIR)\test\function\exception\thrower_suite.exe \
        $(OUTDIR)\test\function\filter_suite.exe \
        $(OUTDIR)\test\function\filter\base_suite.exe \
        $(OUTDIR)\test\function\formatter_suite.exe \
@@ -469,6 +474,7 @@ check: $(OUTDIR) \
     $(OUTDIR)\test\function\event_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\exception_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\exception\initializer_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\exception\thrower_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\filter_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\filter\base_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\formatter_suite.exe >> $(OUTDIR)\test-suite.log
@@ -560,6 +566,9 @@ $(OUTDIR)\test\function\exception_suite.exe: $(OUTDIR)\test\function\exception_s
     
 $(OUTDIR)\test\function\exception\initializer_suite.exe: $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
     $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception\initializer_suite.exe $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
+$(OUTDIR)\test\function\exception\thrower_suite.exe: $(OUTDIR)\test\function\exception\thrower_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception\thrower_suite.exe $(OUTDIR)\test\function\exception\thrower_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
 $(OUTDIR)\test\function\initializer_suite.exe: $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
     $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\exception_suite.exe $(OUTDIR)\test\function\exception\initializer_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
@@ -694,6 +703,9 @@ $(OUTDIR)\test\function\exception_suite.obj: $(TESTDIR)\function\exception_suite
     
 $(OUTDIR)\test\function\exception\initializer_suite.obj: $(TESTDIR)\function\exception\initializer_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\exception\ /Fd$(OUTDIR)\test\function\exception\ $(TESTDIR)\function\exception\initializer_suite.c
+    
+$(OUTDIR)\test\function\exception\thrower_suite.obj: $(TESTDIR)\function\exception\thrower_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\exception\ /Fd$(OUTDIR)\test\function\exception\ $(TESTDIR)\function\exception\thrower_suite.c
     
 $(OUTDIR)\test\function\filter_suite.obj: $(TESTDIR)\function\filter_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\filter_suite.c
