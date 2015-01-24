@@ -10,6 +10,7 @@
 struct TestLog {
   const Record *last_adapted_record; /**< the last Record adapted */
   const Adapter *last_adapter; /**< the last Adapter run */
+  const Exception *last_exception; /**< the last Exception thrown */
   const Record *last_formatted_record; /**< the last Record formatted */
   const Formatter *last_formatter; /**< the last Formatter run */
   const Output *last_generated_output; /**< the last Output generated */

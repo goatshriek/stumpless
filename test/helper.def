@@ -60,22 +60,26 @@ EXPORTS
     BuildValueProfile                 @57
     BuildVoidValue                    @58
     BuildWarningException             @59
-    TestAdaptFunction                 @60
-    TestFormatFunction                @61
-    TestHandleFunction                @62
-    TestLogGetLastAdaptedRecord       @63
-    TestLogGetLastAdapter             @64
-    TestLogGetLastFormattedRecord     @65
-    TestLogGetLastFormatter           @66
-    TestLogGetLastGeneratedOutput     @67
-    TestLogGetLastHandledOutput       @68
-    TestLogGetLastHandler             @69
-    TestLogGetLastMessage             @70
-    TestLogSetLastAdaptedRecord       @71
-    TestLogSetLastAdapter             @72
-    TestLogSetLastFormattedRecord     @73
-    TestLogSetLastFormatter           @74
-    TestLogSetLastGeneratedOutput     @75
-    TestLogSetLastHandledOutput       @76
-    TestLogSetLastHandler             @77
-    TestLogSetLastMessage             @78
+    InitializeTestLog                 @60
+    TestAdaptFunction                 @61
+    TestExceptionHandlerFunction      @62
+    TestFormatFunction                @63
+    TestHandleFunction                @64
+    TestLogGetLastAdaptedRecord       @65
+    TestLogGetLastAdapter             @66
+    TestLogGetLastException           @67
+    TestLogGetLastFormattedRecord     @68
+    TestLogGetLastFormatter           @69
+    TestLogGetLastGeneratedOutput     @70
+    TestLogGetLastHandledOutput       @71
+    TestLogGetLastHandler             @72
+    TestLogGetLastMessage             @73
+    TestLogSetLastAdaptedRecord       @74
+    TestLogSetLastAdapter             @75
+    TestLogSetLastException           @76
+    TestLogSetLastFormattedRecord     @77
+    TestLogSetLastFormatter           @78
+    TestLogSetLastGeneratedOutput     @79
+    TestLogSetLastHandledOutput       @80
+    TestLogSetLastHandler             @81
+    TestLogSetLastMessage             @82

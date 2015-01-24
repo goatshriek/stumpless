@@ -54,6 +54,14 @@ TestAdaptFunction
   return record;
 }
 
+void
+TestExceptionHandlerFunction
+( const Exception *e )
+{
+  TestLogSetLastException( e );
+  return;
+}
+
 Output *
 TestFormatFunction
 ( const Formatter *formatter, const Record *record )

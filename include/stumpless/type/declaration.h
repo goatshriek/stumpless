@@ -155,6 +155,7 @@ typedef struct ValueListIterator ValueListIterator;
 typedef struct ValueListReverseIterator ValueListReverseIterator;
 typedef struct ValueProfile ValueProfile;
 
-typedef unsigned char Byte;
+typedef unsigned char byte_t;
+typedef void ( *exception_handler_function_t )( const Exception * );
 
 #endif

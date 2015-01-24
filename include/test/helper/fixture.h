@@ -57,6 +57,15 @@ TestAdaptFunction
 ( const Adapter *adapter, Record *record );
 
 /**
+ * Registers the Exception thrown.
+ *
+ * @param e the Exception to register
+ */
+void
+TestExceptionHandlerFunction
+( const Exception *e );
+
+/**
  * Registers the Formatter called, the Record formatted, and the Output created,
  * and then formats the Record using the TextFormatter functions.
  *

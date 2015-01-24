@@ -5,6 +5,7 @@ check_PROGRAMS = test/function/adapter_suite \
                  test/function/configuration_suite \
                  test/function/event_suite \
                  test/function/exception_suite \
+                 test/function/exception/handler_suite \
                  test/function/exception/initializer_suite \
                  test/function/exception/thrower_suite \
                  test/function/filter_suite \

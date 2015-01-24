@@ -17,6 +17,7 @@ InitializeTestLog
 
   log->last_adapted_record = NULL;
   log->last_adapter = NULL;
+  log->last_exception = NULL;
   log->last_formatted_record = NULL;
   log->last_formatter = NULL;
   log->last_generated_output = NULL;
@@ -42,6 +43,16 @@ TestLogGetLastAdapter
     return NULL;
 
   return log->last_adapter;
+}
+
+const Exception *
+TestLogGetLastException
+( void )
+{
+  if( !log )
+    return NULL;
+
+  return log->last_exception;
 }
 
 const Record *
@@ -132,6 +143,22 @@ TestLogSetLastAdapter
 
   if( adapter )
     log->last_adapter = adapter;
+
+  return log;
+}
+
+TestLog *
+TestLogSetLastException
+( const Exception *e )
+{
+  if( !log ){
+    InitializeTestLog();
+    if( !log )
+      return NULL;
+  }
+
+  if( e )
+    log->last_exception = e;
 
   return log;
 }

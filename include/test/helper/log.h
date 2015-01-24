@@ -39,6 +39,15 @@ TestLogGetLastAdapter
 ( void );
 
 /**
+ * Get the last Exception thrown. Only Exceptions that register will be returned.
+ *
+ * @return the last Exception thrown, or NULL if one has not been registered
+ */
+const Exception *
+TestLogGetLastException
+( void );
+
+/**
  * Get the last Record Formatted. Only Formatters that register will update the
  * information.
  *
@@ -115,6 +124,17 @@ TestLogSetLastAdaptedRecord
 TestLog *
 TestLogSetLastAdapter
 ( const Adapter *adapter );
+
+/**
+ * Set the last thrown Exception. A NULL Exception is ignored.
+ *
+ * @param e the Exception to set
+ *
+ * @return the TestLog, or NULL if a problem is encountered
+ */
+TestLog *
+TestLogSetLastException
+( const Exception *e );
 
 /**
  * Set the last formatted Record. A NULL Record is ignored.

@@ -24,6 +24,7 @@ libstumpless_la_SOURCES = src/adapter.c \
 include src/adapter/Makefile.am
 include src/comparator/Makefile.am
 include src/container/Makefile.am
+include src/exception/Makefile.am
 include src/filter/Makefile.am
 include src/formatter/Makefile.am
 include src/handler/Makefile.am
