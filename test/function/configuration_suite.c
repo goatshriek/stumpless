@@ -28,8 +28,8 @@ TestInitialize
 {
   Configuration *configuration;
 
-  if( InitializeConfiguration() )
-    return "initialization method returned an error";
+  if( !InitializeConfiguration() )
+    return "initialization method did not complete successfully";
 
   configuration = GetConfiguration();
   FAIL_IF_NULL( configuration, "configuration was not initialized after call" )

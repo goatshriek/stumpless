@@ -7,11 +7,11 @@ Configuration *
 GetConfiguration
 ( void );
 
-Exception *
+Configuration *
 InitializeConfiguration
 ( void );
 
-Exception *
+Configuration *
 SetConfiguration
 ( Configuration * );
 
