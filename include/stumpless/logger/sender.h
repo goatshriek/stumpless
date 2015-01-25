@@ -7,7 +7,7 @@ Exception *
 SendLoggerException
 ( Logger *logger );
 
-Exception *
+Logger *
 SendRecord
 ( Logger *, Record * );
 

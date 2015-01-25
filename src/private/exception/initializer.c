@@ -152,21 +152,6 @@ InitializeMalformedStructureException
 }
 
 Exception *
-InitializeMemoryAllocationFailureException
-( void )
-{
-  CREATE_EXCEPTION
-
-  e->name = "memory allocation failure";
-  e->message = "a request for allocated memory was denied, likely meaning that there is none left";
-  e->informational = 0;
-  e->failure = 1;
-  e->warning = 0;
-
-  return e;
-}
-
-Exception *
 InitializePipeFailureException
 ( void )
 {
@@ -201,7 +186,6 @@ InitializeExceptionByName
     ADD_STATUS( "incompatible profile", IncompatibleProfile )
     ADD_STATUS( "list failure", ListFailure )
     ADD_STATUS( "malformed structure", MalformedStructure )
-    ADD_STATUS( "memory allocation failure", MemoryAllocationFailure )
     ADD_STATUS( "pipe failure", PipeFailure )
     ADD_STATUS( "stream write failure", StreamWriteFailure )
     ADD_STATUS( "string write failure", StringWriteFailure )

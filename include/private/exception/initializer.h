@@ -40,10 +40,6 @@ InitializeMalformedStructureException
 ( void );
 
 Exception *
-InitializeMemoryAllocationFailureException
-( void );
-
-Exception *
 InitializePipeFailureException
 ( void );
 

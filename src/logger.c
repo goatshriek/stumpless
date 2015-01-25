@@ -108,7 +108,7 @@ NewLogger
 
   logger = malloc( sizeof( Logger ) );
   if( !logger ){
-    RaiseException( "memory allocation failure" );
+    ThrowMemoryAllocationException();
     return NULL;
   }
 

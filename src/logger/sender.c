@@ -12,7 +12,7 @@ SendLoggerException
   return NULL;
 }
 
-Exception *
+Logger *
 SendRecord
 ( Logger *logger, Record *record )
 {

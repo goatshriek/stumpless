@@ -14,7 +14,6 @@ const char * test_initialize_duplicate( void );
 const char * test_initialize_empty_argument( void );
 const char * test_initialize_incompatible_profile( void );
 const char * test_initialize_malformed_structure( void );
-const char * test_initialize_memory_allocation_failure( void );
 const char * test_initialize_string_write_failure( void );
 const char * test_initialize_value_profile_not_found( void );
 
@@ -31,7 +30,6 @@ main( void )
   RUN_TEST( initialize_empty_argument )
   RUN_TEST( initialize_incompatible_profile )
   RUN_TEST( initialize_malformed_structure )
-  RUN_TEST( initialize_memory_allocation_failure )
   RUN_TEST( initialize_string_write_failure )
   RUN_TEST( initialize_value_profile_not_found )
 
@@ -122,18 +120,6 @@ test_initialize_malformed_structure
   FAIL_IF_NULL( e, "the e was not created" )
 
   ASSERT_STRINGS_EQUAL( "malformed structure", e->name, "the correct e was not returned from initialization" )
-
-  return NULL;
-}
-
-const char *
-test_initialize_memory_allocation_failure
-( void )
-{
-  Exception * e = InitializeMemoryAllocationFailureException();
-  FAIL_IF_NULL( e, "the e was not created" )
-
-  ASSERT_STRINGS_EQUAL( "memory allocation failure", e->name, "the correct e was not returned from initialization" )
 
   return NULL;
 }
