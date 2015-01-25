@@ -59,7 +59,7 @@ NewValueFor##name##Array                                                       \
 
 
 Value *
-NewValueForBoolean( const Boolean * boolean )
+NewValueForBoolean( const Boolean *boolean )
 {
   Value *value;
 

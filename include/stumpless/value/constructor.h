@@ -13,7 +13,7 @@ NewValueForChar
 
 Value *
 NewValueForCharArray
-( const char *, unsigned );
+( const char *, size_t );
 
 Value *
 NewValueForDouble
@@ -21,7 +21,7 @@ NewValueForDouble
 
 Value *
 NewValueForDoubleArray
-( const double *, unsigned );
+( const double *, size_t );
 
 Value *
 NewValueForFloat
@@ -29,7 +29,7 @@ NewValueForFloat
 
 Value *
 NewValueForFloatArray
-( const float *, unsigned );
+( const float *, size_t );
 
 Value *
 NewValueForInt
@@ -37,7 +37,7 @@ NewValueForInt
 
 Value *
 NewValueForIntArray
-( const int *, unsigned );
+( const int *, size_t );
 
 Value *
 NewValueForLong
@@ -45,7 +45,7 @@ NewValueForLong
 
 Value *
 NewValueForLongArray
-( const long *, unsigned );
+( const long *, size_t );
 
 Value *
 NewValueForLongDouble
@@ -53,7 +53,7 @@ NewValueForLongDouble
 
 Value *
 NewValueForLongDoubleArray
-( const long double *, unsigned );
+( const long double *, size_t );
 
 Value *
 NewValueForLongLong
@@ -61,7 +61,7 @@ NewValueForLongLong
 
 Value *
 NewValueForLongLongArray
-( const long long *, unsigned );
+( const long long *, size_t );
 
 Value *
 NewValueForShort
@@ -69,7 +69,7 @@ NewValueForShort
 
 Value *
 NewValueForShortArray
-( const short *, unsigned );
+( const short *, size_t );
 
 Value *
 NewValueForSignedChar
@@ -77,7 +77,7 @@ NewValueForSignedChar
 
 Value *
 NewValueForSignedCharArray
-( const signed char *, unsigned );
+( const signed char *, size_t );
 
 Value *
 NewValueForString
@@ -89,7 +89,7 @@ NewValueForUnsignedChar
 
 Value *
 NewValueForUnsignedCharArray
-( const unsigned char *, unsigned );
+( const unsigned char *, size_t );
 
 Value *
 NewValueForUnsignedInt
@@ -97,7 +97,7 @@ NewValueForUnsignedInt
 
 Value *
 NewValueForUnsignedIntArray
-( const unsigned *, unsigned );
+( const unsigned *, size_t );
 
 Value *
 NewValueForUnsignedLong
@@ -105,7 +105,7 @@ NewValueForUnsignedLong
 
 Value *
 NewValueForUnsignedLongArray
-( const unsigned long *, unsigned );
+( const unsigned long *, size_t );
 
 Value *
 NewValueForUnsignedLongLong
@@ -113,7 +113,7 @@ NewValueForUnsignedLongLong
 
 Value *
 NewValueForUnsignedLongLongArray
-( const unsigned long long *, unsigned );
+( const unsigned long long *, size_t );
 
 Value *
 NewValueForUnsignedShort
@@ -121,7 +121,7 @@ NewValueForUnsignedShort
 
 Value *
 NewValueForUnsignedShortArray
-( const unsigned short *, unsigned );
+( const unsigned short *, size_t );
 
 /**
  * Creates a new Value with the provided void pointer.
