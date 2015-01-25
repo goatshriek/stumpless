@@ -50,34 +50,6 @@ test_append_adapter
   if( !first_adapter )
     return "could not build the first test adapter";
 
-  /*
-  Status * status = AppendAdapterToLogger( logger, first_adapter );
-  FAIL_IF_NOT_NULL( status, "could not add an adapter to a NULL adapter list" )
-  FAIL_IF_NULL( logger->adapters, "the adapter list was not created" )
-  AdapterListIterator * adapters = BeginAdapterList( logger->adapters );
-  if( NextInAdapterListIterator( adapters ) != first_adapter )
-    return "the adapter was not correctly added to the logger's list";
-  DestroyAdapterListIterator( adapters );
-
-  status = AppendAdapterToLogger( logger, first_adapter );
-  FAIL_IF_NULL( status, "a duplicate adapter was added to the logger" )
-  ASSERT_STRINGS_EQUAL( "duplicate", status->name, "the duplicate adapter was not detected correctly" )
-
-  Adapter * second_adapter = malloc( sizeof( Adapter ) );
-  if( !second_adapter )
-    return "could not build the second test adapter";
-
-  status = AppendAdapterToLogger( logger, second_adapter );
-  FAIL_IF_NOT_NULL( status, "the second adapter was not correctly added" )
-  adapters = BeginAdapterList( logger->adapters );
-  if( NextInAdapterListIterator( adapters ) != first_adapter )
-    return "the adapters were not in the added order";
-  if( NextInAdapterListIterator( adapters ) != second_adapter )
-    return "the second adapter was not added to the list correctly";
-  FAIL_IF_NOT_NULL( NextInAdapterListIterator( adapters ), "more adapters were present in the logger" )
-  DestroyAdapterListIterator( adapters );
-  */
-
   return NULL;
 }
 
@@ -96,34 +68,6 @@ test_append_formatter
   first_formatter = malloc( sizeof( Formatter ) );
   if( !first_formatter )
     return "could not build the first test formatter";
-
-  /*
-  Status * status = AppendFormatterToLogger( logger, first_formatter );
-  FAIL_IF_NOT_NULL( status, "could not add an formatter to a NULL formatter list" )
-  FAIL_IF_NULL( logger->formatters, "the formatter list was not created" )
-  FormatterListIterator * formatters = BeginFormatterList( logger->formatters );
-  if( NextInFormatterListIterator( formatters ) != first_formatter )
-    return "the formatter was not correctly added to the logger's list";
-  DestroyFormatterListIterator( formatters );
-
-  status = AppendFormatterToLogger( logger, first_formatter );
-  FAIL_IF_NULL( status, "a duplicate formatter was added to the logger" )
-  ASSERT_STRINGS_EQUAL( "duplicate", status->name, "the duplicate formatter was not detected correctly" )
-
-  Formatter * second_formatter = malloc( sizeof( Formatter ) );
-  if( !second_formatter )
-    return "could not build the second test formatter";
-
-  status = AppendFormatterToLogger( logger, second_formatter );
-  FAIL_IF_NOT_NULL( status, "the second formatter was not correctly added" )
-  formatters = BeginFormatterList( logger->formatters );
-  if( NextInFormatterListIterator( formatters ) != first_formatter )
-    return "the formatters were not in the added order";
-  if( NextInFormatterListIterator( formatters ) != second_formatter )
-    return "the second formatter was not added to the list correctly";
-  FAIL_IF_NOT_NULL( NextInFormatterListIterator( formatters ), "more formatters were present in the logger" )
-  DestroyFormatterListIterator( formatters );
-  */
 
   return NULL;
 }

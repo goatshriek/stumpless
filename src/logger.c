@@ -19,15 +19,15 @@
 
 static Dictionary *loggers = NULL;
 
-Exception *
+Logger *
 AppendAdapterToLogger
 ( Logger *logger, Adapter *adapter )
 {
-  return NULL;
+  return logger;
 }
 
 // todo refactor with append formatter to target list function
-Exception *
+Logger *
 AppendFormatterToLogger
 ( Logger *logger, Formatter *formatter )
 {
@@ -35,7 +35,7 @@ AppendFormatterToLogger
 }
 
 // todo refactor with new target data structure
-Exception *
+Logger *
 AppendHandlerToLogger
 ( Logger *logger, Handler *handler )
 {
@@ -79,11 +79,9 @@ Listen
   // a return will signify a fatal error which caused the logging to halt
 
   Record *record;
-  Exception *status;
 
   while( 1 ){
-    record = ReceiveNextRecord( logger );
-    status = ProcessRecord( logger, record );
+    ProcessRecord( logger, ReceiveNextRecord( logger ) );
   }
 }
 
@@ -150,7 +148,7 @@ NewLogger
 
 
 // todo refactor to use new target structure in logger
-Exception *
+Logger *
 ProcessRecord
 ( Logger *logger, Record *record )
 {

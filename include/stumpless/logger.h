@@ -3,15 +3,15 @@
 
 #include <stumpless/type.h>
 
-Exception *
+Logger *
 AppendAdapterToLogger
 ( Logger *, Adapter * );
 
-Exception *
+Logger *
 AppendFormatterToLogger
 ( Logger *, Formatter * );
 
-Exception *
+Logger *
 AppendHandlerToLogger
 ( Logger *, Handler * );
 
@@ -31,7 +31,7 @@ Logger *
 NewLogger
 ( const char * );
 
-Exception *
+Logger *
 ProcessRecord
 ( Logger *, Record * );
 
