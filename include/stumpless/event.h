@@ -6,7 +6,7 @@
  * All functions for finding and working with Events.
  */
 
-#include "private/type.h"
+#include <stumpless/type.h>
 
 /**
  * Adds an Event to the overall list. This allows it to be returned by the
@@ -14,9 +14,10 @@
  * will not be accepted.
  *
  * @param event the Event to add to the list of Events
- * @return a Exception for the addition operation
+ *
+ * @return event
  */
-Exception *
+Event *
 AddEvent
 ( Event *event );
 
@@ -24,7 +25,8 @@ AddEvent
  * Creates a string that represents the specified Event. The format of the
  * string is identical to that of the TextFormatter format for an Event.
  *
- * @param event the event to get a string represtnation of
+ * @param event the event to get a string representation of
+ *
  * @return a pointer to a NULL-terminated string containing the representation
  */
 char *

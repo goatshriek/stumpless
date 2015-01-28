@@ -10,27 +10,24 @@
 
 static Dictionary *handlers = NULL;
 
-Exception *
+Handler *
 AddHandler
 ( Handler *handler )
 {
-  void *value;
-
   if( !handler || !handler->name )
-    return NULL;
+    return handler;
 
   if( !handlers ){
     handlers = NewDictionary();
 
+    // todo throw an Exception and return a failure
     if( !handlers )
-      return RaiseException( "constructor failure" );
+      return handler;
   }
 
-  value = ( void * ) handler;
-  if( !SetDictionaryValue( handlers, handler->name, value ) )
-    return NULL;
+  SetDictionaryValue( handlers, handler->name, ( void * ) handler );
 
-  return NULL;
+  return handler;
 }
 
 // todo implement
@@ -75,7 +72,7 @@ GetHandlerOption
   return GetDictionaryValue( handler->options, option );
 }
 
-Exception *
+const Handler *
 HandleOutput
 ( const Handler *handler, const Output *output )
 {
@@ -85,26 +82,28 @@ HandleOutput
   return handler->handle( handler, output );
 }
 
-Exception *
+Handler *
 SetHandlerOption
-( Handler * handler, const char * option, void * value )
+( Handler *handler, const char * option, void * value )
 {
   Dictionary *result;
 
   if( !handler || !option )
-    return RaiseException( "empty argument" );
+    return handler;
 
-  if( handler->options == NULL ){
+  if( !handler->options ){
     handler->options = NewDictionary();
 
-    if( handler->options == NULL )
-      return RaiseException( "dictionary failure" );
+    // todo raise an exception here or be fault tolerant
+    if( !handler->options )
+      return handler;
   }
 
   result =  SetDictionaryValue( handler->options, option, value );
 
+  // todo raise an Exception here or be fault tolerant
   if( !result )
-    return RaiseException( "dictionary failure" );
-  else
     return NULL;
+  else
+    return handler;
 }

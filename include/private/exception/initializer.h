@@ -16,10 +16,6 @@ InitializeDuplicateException
 ( void );
 
 Exception *
-InitializeEmptyArgumentException
-( void );
-
-Exception *
 InitializeEventFailureException
 ( void );
 

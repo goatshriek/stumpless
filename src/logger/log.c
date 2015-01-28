@@ -8,17 +8,18 @@
 
 #include "private/container/list/adapter.h"
 #include "private/container/list/target.h"
+#include "private/exception/thrower.h"
 #include "private/type.h"
 
 #define LOG_FUNCTIONS( name, type )                                            \
-Exception *                                                                       \
+Logger *                                                                       \
 Log##name                                                                      \
 ( Logger *logger, type value )                                                 \
 {                                                                              \
   return NULL;                                                                 \
 }                                                                              \
                                                                                \
-Exception *                                                                       \
+Logger *                                                                       \
 Send##name##Array                                                              \
 ( Logger *logger, const type *value, unsigned length )                         \
 {                                                                              \
@@ -39,22 +40,24 @@ LOG_FUNCTIONS( LongDouble, long double )
 
 LOG_FUNCTIONS( LongLong, long long )
 
-Exception *
+Logger *
 LogRecord
 ( Logger *logger, Record *record )
 {
   if( !logger || !record )
-    return RaiseException( "empty argument" );
+    return logger;
 
   RecordThroughAdapterList( logger->adapters, record );
-  return LogToTargetList( logger->targets, record );
+  LogToTargetList( logger->targets, record );
+
+  return logger;
 }
 
 LOG_FUNCTIONS( Short, short )
 
 LOG_FUNCTIONS( SignedChar, signed char )
 
-Exception *
+Logger *
 LogString
 ( Logger *logger, const char *value )
 {
@@ -63,33 +66,37 @@ LogString
   RecordAttribute *attribute;
 
   if( !logger || !value )
-    return RaiseException( "empty argument" );
+    return logger;
 
   event = logger->default_event;
   if( !event ){
     event = FindEventByName( "informational" );
+    // todo refactor to be fault tolerant
     if( !event )
-      return RaiseException( "event failure" );
+      return logger;
   }
 
   record = RecordForEvent( event );
+  // todo refactor to be fault tolerant
   if( !record )
-    return RaiseException( "record failure" );
+    return logger;
 
   attribute = malloc( sizeof( RecordAttribute ) );
-  if( !attribute )
-    return RaiseException( "record failure" );
+  if( !attribute ){
+    ThrowMemoryAllocationException();
+    return logger;
+  }
 
   SetRecordAttribute( record, "message", NewValueForString( value ) );
 
   return LogRecord( logger, record );
 }
 
-Exception *
+Logger *
 LogStringArray
 ( Logger *logger, const char *value, unsigned length )
 {
-  return NULL;
+  return logger;
 }
 
 LOG_FUNCTIONS( UnsignedChar, unsigned char )
@@ -102,9 +109,9 @@ LOG_FUNCTIONS( UnsignedLongLong, unsigned long long )
 
 LOG_FUNCTIONS( UnsignedShort, unsigned short )
 
-Exception *
+Logger *
 LogVoid
 ( Logger *logger, const void *value, unsigned length )
 {
-  return NULL;
+  return logger;
 }

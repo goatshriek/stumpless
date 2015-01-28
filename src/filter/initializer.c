@@ -22,7 +22,7 @@ Initialize##function_name##Filter                                              \
                                                                                \
   filter->name = filter_name;                                                  \
                                                                                \
-  filter->accept_record = function_name##FilterAcceptRecord;                     \
+  filter->accept_record = function_name##FilterAcceptRecord;                   \
   filter->accept_output = function_name##FilterAcceptOutput;                   \
   filter->accept_value = function_name##FilterAcceptValue;                     \
                                                                                \
@@ -51,10 +51,12 @@ InitializeFilterByName
   }
 
   initializer = GetDictionaryValue( initializers, name );
-  if( initializer == NULL )
+  if( !initializer ){
     return NULL;
-  else
-    return AddFilter( initializer() );
+  } else {
+    AddFilter( initializer() );
+    return NULL;
+  }
 }
 
 FILTER_INITIALIZER_FUNCTION( "level", Level )

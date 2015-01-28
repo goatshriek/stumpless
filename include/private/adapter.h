@@ -21,7 +21,7 @@ Record *
 AdaptRecord
 ( Adapter *adapter, Record *record );
 
-Exception *
+Adapter *
 AddAdapter
 ( Adapter * );
 
@@ -37,7 +37,7 @@ void *
 GetAdapterOption
 ( const Adapter *, const char * );
 
-Exception *
+Adapter *
 SetAdapterOption
 ( Adapter *, const char *, void * );
 

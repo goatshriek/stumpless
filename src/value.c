@@ -15,7 +15,7 @@
 #include "private/type.h"
 
 #define ARRAY_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )  \
-Exception *                                                                       \
+char *                                                                         \
 name##ArrayValueIntoString                                                     \
 ( char *str, const Value *value, size_t length )                               \
 {                                                                              \
@@ -23,7 +23,7 @@ name##ArrayValueIntoString                                                     \
   size_t i, current_position = 0, remaining_length;                            \
                                                                                \
   if( !str || !value || length == 0 )                                          \
-    return RaiseException( "empty argument" );                                    \
+    return str;                                                                \
                                                                                \
   format = value->format ? value->format : default_format;                     \
                                                                                \
@@ -59,7 +59,7 @@ name##ArrayValueIntoString                                                     \
     remaining_length = length - current_position;                              \
   safe_sprintf( str + current_position, remaining_length, "]" );               \
                                                                                \
-  return NULL;                                                                 \
+  return str;                                                                  \
 }
 
 #define ARRAY_VALUE_TO_VALUE_LIST_FUNCTION( name, data_member )                \
@@ -88,22 +88,23 @@ name##ArrayValueToValueList                                                    \
 }
 
 #define SINGULAR_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )\
-Exception *                                                                       \
+char *                                                                         \
 name##ValueIntoString                                                          \
 ( char *str, const Value *value, size_t length )                               \
 {                                                                              \
   const char *format;                                                          \
                                                                                \
   if( !str || !value  )                                                        \
-    return RaiseException( "empty argument" );                                    \
+    return str;                                                                \
                                                                                \
   format = value->format ? value->format : default_format;                     \
                                                                                \
   if( safe_sprintf( str, length, format, value->data_member ) < 0 )            \
-    return RaiseException( "string write failure" );                              \
+    return str;                                                                \
                                                                                \
-  return NULL;                                                                 \
+  return str;                                                                  \
 }
+// todo throw string printing exception at above if check
 
 #define VALUE_TO_STRING_FUNCTION( name, data_member, default_format )          \
 char *                                                                         \
@@ -152,11 +153,11 @@ name##ValueToString                                                            \
   return str;                                                                  \
 }
 
-Exception *
+char *
 BooleanArrayValueIntoString
 ( char *str, const Value *value, size_t length )
 {
-  return NULL;
+  return str;
 }
 
 ValueList *
@@ -186,12 +187,12 @@ BooleanArrayValueToValueList
   return list;
 }
 
-Exception *
+char *
 BooleanValueIntoString
 ( char *str, const Value *value, size_t length )
 {
   // todo need to implement
-  return NULL;
+  return str;
 }
 
 char *
@@ -332,11 +333,11 @@ SINGULAR_VALUE_INTO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
 VALUE_TO_STRING_FUNCTION( SignedChar, s_c, "%c" )
 
-Exception *
+char *
 StringArrayValueIntoString
 ( char *str, const Value *value, size_t length )
 {
-  return NULL;
+  return str;
 }
 
 ValueList *
@@ -366,12 +367,12 @@ StringArrayValueToValueList
   return list;
 }
 
-Exception *
+char *
 StringValueIntoString
 ( char *str, const Value *value, size_t length )
 {
   safe_strncpy( str, value->c_p, length );
-  return NULL;
+  return str;
 }
 
 char *
@@ -435,15 +436,16 @@ SINGULAR_VALUE_INTO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
 VALUE_TO_STRING_FUNCTION( UnsignedShort, u_s, "%hu" )
 
-Exception *
+char *
 ValueIntoString
 ( char *str, const Value *value, size_t length )
 {
   if( !value )
-    return RaiseException( "empty argument" );
+    return str;
 
+  // todo throw malformed structure exception
   if( !value->profile || !value->profile->into_string )
-    return RaiseException( "malformed structure" );
+    return str;
 
   return value->profile->into_string( str, value, length );
 }
@@ -477,11 +479,11 @@ ValueToValueList
   return list;
 }
 
-Exception *
+char *
 VoidArrayValueIntoString
 ( char *str, const Value *value, size_t length )
 {
-  return NULL;
+  return str;
 }
 
 ValueList *
@@ -491,11 +493,11 @@ VoidArrayValueToValueList
   return NULL;
 }
 
-Exception *
+char *
 VoidValueIntoString
 ( char *str, const Value *value, size_t length )
 {
-  return NULL;
+  return str;
 }
 
 char *

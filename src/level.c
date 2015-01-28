@@ -20,7 +20,7 @@ AddLevel
 ( Level *level )
 {
   if( !level || !level->name )
-    return RaiseException( "empty argument" );
+    return NULL;
 
   if( !levels ){
     levels = NewDictionary();

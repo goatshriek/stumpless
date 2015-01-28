@@ -103,22 +103,22 @@ test_output_through
 {
   Exception *e;
   HandlerList *list;
+  const HandlerList *result;
   Output *output;
 
   list = BuildHandlerList();
   if( !list )
     return "could not build the test list";
 
-  e = OutputThroughHandlerList( list, NULL );
-  if( !e )
-    return "a null output did not generate an abnormal status";
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "a null output did not generate an empty argument error" )
+  result = OutputThroughHandlerList( list, NULL );
+  if( result != list )
+    return "a NULL Output did not return the HandlerList";
 
   output = BuildTextOutput();
   if( !output )
     return "could not build the test output";
-  e = OutputThroughHandlerList( list, output );
-  if( e )
+  result = OutputThroughHandlerList( list, output );
+  if( result != list )
     return "a full output could not pass through the handler list";
 
   return NULL;

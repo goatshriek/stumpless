@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include <stumpless/logger.h>
 #include <stumpless/logger/sender.h>
 

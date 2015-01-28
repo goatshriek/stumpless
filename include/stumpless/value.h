@@ -11,16 +11,16 @@
 /**
  * Writes the provided value containing an array of Boolean structures into the
  * provided string. No more than length characters are written. The string will
- * be NULL terminated unless the length parameter is not large enough tod hold
+ * be NULL terminated unless the length parameter is not large enough to hold
  * the entire string, in which case the string may not be NULL terminated.
  *
  * @param str the char buffer to be written into
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 BooleanArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -28,7 +28,7 @@ ValueList *
 BooleanArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 BooleanValueIntoString
 ( char *, const Value *, size_t );
 
@@ -46,9 +46,9 @@ BooleanValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 CharArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -56,7 +56,7 @@ ValueList *
 CharArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 CharValueIntoString
 ( char *, const Value *, size_t );
 
@@ -82,9 +82,9 @@ DestroyValue
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 DoubleArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -92,7 +92,7 @@ ValueList *
 DoubleArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 DoubleValueIntoString
 ( char *, const Value *, size_t );
 
@@ -110,9 +110,9 @@ DoubleValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 FloatArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -120,7 +120,7 @@ ValueList *
 FloatArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 FloatValueIntoString
 ( char *, const Value *, size_t );
 
@@ -138,9 +138,9 @@ FloatValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 IntArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -148,7 +148,7 @@ ValueList *
 IntArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 IntValueIntoString
 ( char *, const Value *, size_t );
 
@@ -166,9 +166,9 @@ IntValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 LongArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -176,7 +176,7 @@ ValueList *
 LongArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 LongValueIntoString
 ( char *, const Value *, size_t );
 
@@ -194,9 +194,9 @@ LongValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 LongDoubleArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -204,7 +204,7 @@ ValueList *
 LongDoubleArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 LongDoubleValueIntoString
 ( char *, const Value *, size_t );
 
@@ -222,9 +222,9 @@ LongDoubleValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 LongLongArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -232,7 +232,7 @@ ValueList *
 LongLongArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 LongLongValueIntoString
 ( char *, const Value *, size_t );
 
@@ -250,9 +250,9 @@ LongLongValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 ShortArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -260,7 +260,7 @@ ValueList *
 ShortArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 ShortValueIntoString
 ( char *, const Value *, size_t );
 
@@ -278,9 +278,9 @@ ShortValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 SignedCharArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -288,7 +288,7 @@ ValueList *
 SignedCharArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 SignedCharValueIntoString
 ( char *, const Value *, size_t );
 
@@ -306,9 +306,9 @@ SignedCharValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 StringArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -325,9 +325,9 @@ StringArrayValueToValueList
  * @param value the value to get a string for
  * @param length the maximum number of character to write to the buffer
  *
- * @return a Exception describing the operation
+ * @return str
  */
-Exception *
+char *
 StringValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -345,9 +345,9 @@ StringValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 UnsignedCharArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -355,7 +355,7 @@ ValueList *
 UnsignedCharArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 UnsignedCharValueIntoString
 ( char *, const Value *, size_t );
 
@@ -373,9 +373,9 @@ UnsignedCharValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 UnsignedIntArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -383,7 +383,7 @@ ValueList *
 UnsignedIntArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 UnsignedIntValueIntoString
 ( char *, const Value *, size_t );
 
@@ -401,9 +401,9 @@ UnsignedIntValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 UnsignedLongArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -411,7 +411,7 @@ ValueList *
 UnsignedLongArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 UnsignedLongValueIntoString
 ( char *, const Value *, size_t );
 
@@ -429,9 +429,9 @@ UnsignedLongValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 UnsignedLongLongArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -439,7 +439,7 @@ ValueList *
 UnsignedLongLongArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 UnsignedLongLongValueIntoString
 ( char *, const Value *, size_t );
 
@@ -457,9 +457,9 @@ UnsignedLongLongValueToString
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 UnsignedShortArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -467,7 +467,7 @@ ValueList *
 UnsignedShortArrayValueToValueList
 ( const Value * );
 
-Exception *
+char *
 UnsignedShortValueIntoString
 ( char *, const Value *, size_t );
 
@@ -475,7 +475,7 @@ char *
 UnsignedShortValueToString
 ( const Value * );
 
-Exception *
+char *
 ValueIntoString
 ( char *, const Value *, size_t );
 
@@ -497,9 +497,9 @@ ValueToValueList
  * @param value the Value to be written to the string
  * @param length the maximum number of characters to write into the buffer
  *
- * @return a Exception representing the result of the operation
+ * @return str
  */
-Exception *
+char *
 VoidArrayValueIntoString
 ( char *str, const Value *value, size_t length );
 
@@ -525,9 +525,9 @@ VoidArrayValueToValueList
  * @param value the Value to get a string representation of
  * @param length the maximum number of characters to write
  *
- * @return a Exception for the operation
+ * @return str
  */
-Exception *
+char *
 VoidValueIntoString
 ( char *str, const Value *value, size_t length );
 

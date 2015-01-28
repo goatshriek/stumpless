@@ -1,5 +1,5 @@
-#ifndef STUMPLESS_PRIVATE_CONTAINER_DICTIONARY_H
-#define STUMPLESS_PRIVATE_CONTAINER_DICIONTARY_H
+#ifndef __STUMPLESS_PRIVATE_CONTAINER_DICTIONARY_H
+#define __STUMPLESS_PRIVATE_CONTAINER_DICIONTARY_H
 
 #include "private/type.h"
 
@@ -15,9 +15,14 @@ DictionaryConstIterator *
 CBeginDictionary
 ( const Dictionary *dictionary );
 
+/**
+ * Destroys the Dictionary provided.
+ *
+ * @param dictionary the Dictionary to destroy
+ */
 void
 DestroyDictionary
-( Dictionary * );
+( Dictionary *dictionary );
 
 /**
  * Checks the Dictionary to see if it's empty.
@@ -30,9 +35,18 @@ unsigned short
 DictionaryIsEmpty
 ( const Dictionary *dictionary );
 
+/**
+ * Retrieves a value from a Dictionary stored under a specific key.
+ *
+ * @param dictionary the Dictionary to retrieve the key from
+ * @param key the key of the value to retrieve
+ *
+ * @return the value with the key, or NULL if it does not exist. If dictionary
+ * or key is NULL, then NULL will be returned.
+ */
 void *
 GetDictionaryValue
-( Dictionary *, const char * );
+( Dictionary *dictionary, const char *key );
 
 /**
  * Combines the provided Dictionaries into the primary Dictionary. All keys
@@ -51,6 +65,11 @@ Dictionary *
 MergeDictionaries
 ( Dictionary *primary, Dictionary *secondary );
 
+/**
+ * Creates a new Dictionary.
+ *
+ * @return a new Dictionary
+ */
 Dictionary *
 NewDictionary
 ();
@@ -66,8 +85,18 @@ void *
 RemoveDictionaryValue
 ( Dictionary *dictionary, const char *key );
 
+/**
+ * Sets the value associated with the provided key in the provided Dictionary
+ * to a specific value.
+ *
+ * @param dictionary the Dictionary to set the value in
+ * @param key the string the value is to be stored under
+ * @param value the value to associated with the key
+ *
+ * @return dictionary
+ */
 Dictionary *
 SetDictionaryValue
-( Dictionary *, const char *, void * );
+( Dictionary *dictionary, const char *key, void *value );
 
 #endif

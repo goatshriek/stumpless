@@ -38,9 +38,9 @@ BadFormatFunction
  * @param handler the Handler to register
  * @param output the Output to register
  *
- * @return a failure Exception
+ * @return a non-NULL Handler not equal to handler
  */
-Exception *
+const Handler *
 BadHandleFunction
 ( const Handler *handler, const Output *output );
 
@@ -85,9 +85,9 @@ TestFormatFunction
  * @param handler the Handler to register
  * @param output the Output to register
  *
- * @return a Exception with the result
+ * @return handler
  */
-Exception *
+const Handler *
 TestHandleFunction
 ( const Handler *handler, const Output *output );
 

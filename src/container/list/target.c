@@ -47,7 +47,7 @@ LIST_IS_EMPTY( Target )
 
 LIST_SIZE( Target )
 
-Exception *
+const TargetList *
 LogToTargetList
 ( const TargetList *list, const Record *record )
 {
@@ -55,14 +55,14 @@ LogToTargetList
   Target *target;
 
   if( !list || !record )
-    return RaiseException( "empty argument" );
+    return list;
 
   targets = BeginList( list->list );
   while( target = NextInListIterator( targets ) ){
     LogToTarget( target, record );
   }
 
-  return NULL;
+  return list;
 }
 
 NEW_LIST( Target )

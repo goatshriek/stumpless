@@ -78,27 +78,24 @@ TestLogRecord
   Target *target;
 
   e = LogToTarget( NULL, NULL );
-  if( !e )
-    return "two null arguments did not raise an abnormal e";
-  ASSERT_STRINGS_EQUAL( e->name, "empty argument", "an empty argument e was not returned for two empty arguments" )
+  if( e )
+    return "two null arguments generated an Exception";
 
   target = BuildTarget();
   if( !target )
     return "could not build a test target";
 
   e = LogToTarget( target, NULL );
-  if( !e )
-    return "a null record did not raise an abnormal e";
-  ASSERT_STRINGS_EQUAL( e->name, "empty argument", "an empty argument e was not returned for an empty record" )
+  if( e )
+    return "a NULL Record generated an Exception";
 
   record = BuildRecord();
   if( !record )
     return "could not build a test record";
 
   e = LogToTarget( NULL, record );
-  if( !e )
-    return "a null target did not raise an abnormal e";
-  ASSERT_STRINGS_EQUAL( e->name, "empty argument", "an empty argument e was not returned for an empty target" )
+  if( e )
+    return "a NULL Target generated an Exception";
 
   e = LogToTarget( target, record );
   if( e )

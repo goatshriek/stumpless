@@ -73,7 +73,7 @@ HandlerList *
 NewHandlerList
 ();
 
-Exception *
+const HandlerList *
 OutputThroughHandlerList
 ( const HandlerList *, const Output * );
 

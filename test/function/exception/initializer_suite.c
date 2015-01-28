@@ -11,7 +11,6 @@ const char * test_initialize_by_name( void );
 const char * test_initialize_constructor_failure( void );
 const char * test_initialize_dictionary_failure( void );
 const char * test_initialize_duplicate( void );
-const char * test_initialize_empty_argument( void );
 const char * test_initialize_incompatible_profile( void );
 const char * test_initialize_malformed_structure( void );
 const char * test_initialize_string_write_failure( void );
@@ -27,7 +26,6 @@ main( void )
   RUN_TEST( initialize_constructor_failure )
   RUN_TEST( initialize_dictionary_failure )
   RUN_TEST( initialize_duplicate )
-  RUN_TEST( initialize_empty_argument )
   RUN_TEST( initialize_incompatible_profile )
   RUN_TEST( initialize_malformed_structure )
   RUN_TEST( initialize_string_write_failure )
@@ -43,10 +41,10 @@ const char *
 test_initialize_by_name
 ( void )
 {
-  Exception * e = InitializeExceptionByName( "empty argument" );
+  Exception * e = InitializeExceptionByName( "value profile not found" );
   FAIL_IF_NULL( e, "the test e could not be found" )
 
-  e = FindExceptionByName( "empty argument" );
+  e = FindExceptionByName( "value profile not found" );
   FAIL_IF_NULL( e, "after being initialized, the e was not loaded" )
 
   return NULL;
@@ -84,18 +82,6 @@ test_initialize_duplicate
   FAIL_IF_NULL( e, "the e was not created" )
 
   ASSERT_STRINGS_EQUAL( "duplicate", e->name, "the correct e was not returned from initialization" )
-
-  return NULL;
-}
-
-const char *
-test_initialize_empty_argument
-( void )
-{
-  Exception * e = InitializeEmptyArgumentException();
-  FAIL_IF_NULL( e, "the e was not created" )
-
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the correct e was not returned from initialization" )
 
   return NULL;
 }

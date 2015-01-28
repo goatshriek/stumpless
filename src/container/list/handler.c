@@ -48,31 +48,26 @@ LIST_SIZE( Handler )
 
 NEW_LIST( Handler )
 
-Exception *
+const HandlerList *
 OutputThroughHandlerList
 ( const HandlerList *list, const Output *output )
 {
   Handler *handler;
   ListIterator *handlers;
-  Exception *e;
 
   if( !list || !output )
-    return RaiseException( "empty argument" );
+    return list;
 
   handlers = BeginList( list->list );
   while( handler = NextInListIterator( handlers ) ){
     if( !handler->handle )
       continue;
 
-    e = handler->handle( handler, output );
-    if( e ){
-      DestroyListIterator( handlers );
-      return e;
-    }
+    handler->handle( handler, output );
   }
 
   DestroyListIterator( handlers );
-  return NULL;
+  return list;
 }
 
 PREPEND_TO_LIST( Handler )

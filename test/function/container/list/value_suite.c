@@ -153,23 +153,23 @@ test_into_string
 ( void )
 {
   char str[1000];
-  Exception *e;
+  char *result;
   ValueList *list;
 
   list = BuildValueList();
   if( !list )
     return "could not build the test list";
 
-  e = ValueListIntoString( NULL, list, 1000 );
-  FAIL_IF_NULL( e, "an empty string did not generate an abnormal status" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty string did not generate the correct error" )
+  result = ValueListIntoString( NULL, list, 1000 );
+  if( result )
+    return "a NULL string did not return str";
 
-  e = ValueListIntoString( str, NULL, 1000 );
-  FAIL_IF_NULL( e, "an empty list did not generate an abnormal status" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty list did not generate the correct error" )
+  result = ValueListIntoString( str, NULL, 1000 );
+  if( result != str )
+    return "a NULL Value caused a problem";
 
-  e = ValueListIntoString( str, list, 1000 );
-  if( e )
+  result = ValueListIntoString( str, list, 1000 );
+  if( result != str )
     return "a valid string was not properly written into";
 
   if( !strstr( str, "4294967196" ) )

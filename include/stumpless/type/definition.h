@@ -169,7 +169,8 @@ struct Formatter {
  * Takes an Output and send it via a receiver.
  */
 struct Handler {
-  Exception *( *handle )( const Handler *, const Output * );
+  /** the function used to process Output */
+  const Handler *( *handle )( const Handler *, const Output * );
   FilterList *filters; /**< filters to apply before handling Output */
   const char *name; /**< the name of the Handler */
   Dictionary *options; /**< options to customize behavior */
@@ -353,7 +354,7 @@ struct ValueProfile {
   /** Comparators to use when comparing Values */
   ComparatorList *comparators;
   /** puts the Value into a provided string */
-  Exception *( *into_string )( char *, const Value *, size_t );
+  char *( *into_string )( char *, const Value *, size_t );
   const char *name; /**< the name of the profile */
   /** creates a binary Output using the Value*/
   Output *( *to_binary )( const Formatter *, const Value * );

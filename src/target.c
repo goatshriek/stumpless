@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include <stumpless/exception.h>
 #include <stumpless/target.h>
 
@@ -40,7 +42,8 @@ LogToTarget
 ( Target *target, const Record *record )
 {
   if( !target || !target->formatter || !target->handler || !record )
-    return RaiseException( "empty argument" );
+    return NULL;
 
-  return HandleOutput( target->handler, FormatRecord( target->formatter, record ) );
+  HandleOutput( target->handler, FormatRecord( target->formatter, record ) );
+  return NULL;
 }

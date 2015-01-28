@@ -94,10 +94,12 @@ InitializeEventByName
   }
 
   initializer = GetDictionaryValue( initializers, name );
-  if( !initializer )
+  if( !initializer ){
     return NULL;
-  else
-    return AddEvent( initializer() );
+  } else {
+    AddEvent( initializer() );
+    return NULL;
+  }
 }
 
 NEW_LEVEL_EVENT( "alert", Alert )

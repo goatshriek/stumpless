@@ -22,24 +22,24 @@ AdaptRecord
   return adapter->adapt( adapter, record );
 }
 
-Exception *
+Adapter *
 AddAdapter
 ( Adapter *adapter )
 {
   if( !adapter || !adapter->name )
-    return NULL;
+    return adapter;
 
   if( !adapters ){
     adapters = NewDictionary();
 
+    // todo throw constructor failure error
     if( !adapters )
-      return RaiseException( "constructor failure" );
+      return adapter;
   }
 
-  if( !SetDictionaryValue( adapters, adapter->name, adapter ) )
-    return NULL;
+  SetDictionaryValue( adapters, adapter->name, adapter );
 
-  return NULL;
+  return adapter;
 }
 
 // todo implement
@@ -78,32 +78,28 @@ void *
 GetAdapterOption
 ( const Adapter * adapter, const char * option )
 {
-  if( adapter == NULL || option == NULL || adapter->options == NULL )
+  if( !adapter || !option || !adapter->options )
     return NULL;
 
   return GetDictionaryValue( adapter->options, option );
 }
 
-Exception *
+Adapter *
 SetAdapterOption
 ( Adapter *adapter, const char *option, void *value )
 {
-  Dictionary *result;
-
   if( !adapter || !option )
-    return RaiseException( "empty argument" );
+    return adapter;
 
   if( !adapter->options ){
     adapter->options = NewDictionary();
 
+    // todo throw dictionary constructor failure exception
     if( !adapter->options )
-      return RaiseException( "dictionary failure" );
+      return adapter;
   }
 
-  result =  SetDictionaryValue( adapter->options, option, value );
+  SetDictionaryValue( adapter->options, option, value );
 
-  if( !result )
-    return RaiseException( "dictionary failure" );
-  else
-    return NULL;
+  return adapter;
 }

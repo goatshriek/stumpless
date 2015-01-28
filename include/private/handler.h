@@ -3,7 +3,7 @@
 
 #include "private/type.h"
 
-Exception *
+Handler *
 AddHandler
 ( Handler * );
 
@@ -19,11 +19,11 @@ void *
 GetHandlerOption
 ( const Handler *, const char * );
 
-Exception *
+const Handler *
 HandleOutput
 ( const Handler *, const Output * );
 
-Exception *
+Handler *
 SetHandlerOption
 ( Handler *, const char *, void * );
 

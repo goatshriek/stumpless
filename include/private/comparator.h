@@ -3,7 +3,7 @@
 
 #include "private/type.h"
 
-Exception *
+Comparator *
 AddComparator
 ( Comparator * );
 
@@ -19,7 +19,7 @@ void *
 GetComparatorOption
 ( const Comparator *, const char * );
 
-Exception *
+Comparator *
 SetComparatorOption
 ( Comparator *, const char *, void * );
 

@@ -96,36 +96,35 @@ test_destructor( void )
 }
 
 const char *
-test_into_string( void )
+test_into_string
+( void )
 {
   char str[11];
-  Exception *e;
+  char *result;
   Value *value;
 
   value = BuildUnsignedIntValue();
   if( !value )
     return "could not build the test value";
 
-  e = ValueIntoString( NULL, value, 11 );
-  FAIL_IF_NULL( e, "an empty string did not genereate an abnormal e" )
+  result = ValueIntoString( NULL, value, 11 );
+  if( result )
+    return "an empty string caused a problem";
 
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty string did not generate the correct error" )
+  result = ValueIntoString( str, NULL, 11 );
+  if( result != str )
+    return "an empty Value caused a problem";
 
-  e = ValueIntoString( str, NULL, 11 );
-  FAIL_IF_NULL( e, "an empty value did not genereate an abnormal e" )
-
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "an empty value did not generate the correct error" )
-
-  e = ValueIntoString( str, value, 11 );
-  if( e != NULL )
-    return "a correct void pointer value and string generated an error";
+  result = ValueIntoString( str, value, 11 );
+  if( result != str )
+    return "a correct void pointer value and string caused a problem";
 
   if( strstr( str, "4294967196" ) == NULL )
     return "the string did not have the correct contents in it";
 
   value = BuildUnsignedIntValue();
-  e = ValueIntoString( str, value, 11 );
-  if( e != NULL )
+  result = ValueIntoString( str, value, 11 );
+  if( result != str )
     return "a singular unsigned int value and string generated an error";
 
   if( strcmp( str, "4294967196") != 0 )

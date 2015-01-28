@@ -95,17 +95,16 @@ LIST_CONTAINS( Value )
 
 LIST_FRONT( Value )
 
-Exception *
+char *
 ValueListIntoString
 ( char *str, const ValueList *list, size_t length )
 {
   ListConstIterator *values;
   size_t current_position = 0, remaining_length;
-  Exception *result;
   const Value *value;
 
   if( !str || !list || length == 0 )
-    return RaiseException( "empty argument" );
+    return str;
 
   str[0] = '\0';
 
@@ -116,13 +115,11 @@ ValueListIntoString
       remaining_length = current_position - length;
     else
       remaining_length = length - current_position;
-    result = ValueIntoString( str + current_position, value, remaining_length );
-    if( result )
-      return result;
+    ValueIntoString( str + current_position, value, remaining_length );
   }
 
   DestroyListConstIterator( values );
-  return NULL;
+  return str;
 }
 
 LIST_IS_EMPTY( Value )
@@ -133,11 +130,19 @@ char *
 ValueListToString
 ( const ValueList * list )
 {
-  Configuration * configuration = GetConfiguration();
-  size_t buffer_size = configuration->string->buffer_size;
-  char *list_str = malloc( sizeof( char ) * ( buffer_size + 1 ) );
+  char *list_str;
+  Configuration *configuration;
+  size_t buffer_size;
 
-  NULL_ON_FAILURE( ValueListIntoString( list_str, list, buffer_size ) )
+  if( !list )
+    return NULL;
+
+  configuration = GetConfiguration();
+  buffer_size = configuration->string->buffer_size;
+
+  list_str = malloc( sizeof( char ) * ( buffer_size + 1 ) );
+
+  ValueListIntoString( list_str, list, buffer_size );
 
   list_str[buffer_size] = '\0';
 

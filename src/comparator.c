@@ -9,27 +9,24 @@
 
 static Dictionary * comparators = NULL;
 
-Exception *
+Comparator *
 AddComparator
 ( Comparator *comparator )
 {
-  void *value;
-
   if( !comparator || !comparator->name )
     return NULL;
 
   if( !comparators ){
     comparators = NewDictionary();
 
+    // todo throw constructor failure exception
     if( !comparators )
-      return RaiseException( "constructor failure" );
+      return comparator;
   }
 
-  value = ( void * ) comparator;
-  if( !SetDictionaryValue( comparators, comparator->name, value ) )
-    return NULL;
+  SetDictionaryValue( comparators, comparator->name, ( void * ) comparator );
 
-  return NULL;
+  return comparator;
 }
 
 void
@@ -79,26 +76,22 @@ GetComparatorOption
   return GetDictionaryValue( comparator->options, option );
 }
 
-Exception *
+Comparator *
 SetComparatorOption
 ( Comparator *comparator, const char *option, void *value )
 {
-  Dictionary *result;
-
   if( !comparator || !option )
-    return RaiseException( "empty argument" );
+    return comparator;
 
   if( !comparator->options ){
     comparator->options = NewDictionary();
 
+    // todo throw dictionary constructor failure
     if( !comparator->options )
-      return RaiseException( "dictionary failure" );
+      return comparator;
   }
 
-  result =  SetDictionaryValue( comparator->options, option, value );
+  SetDictionaryValue( comparator->options, option, value );
 
-  if( !result )
-    return RaiseException( "dictionary failure" );
-  else
-    return NULL;
+  return comparator;
 }

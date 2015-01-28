@@ -5,31 +5,33 @@
 
 #include "private/type.h"
 
-Exception *
+// todo change stream argument to be first in IntoStream functions
+
+const Output *
 BinaryOutputIntoStream
 ( const Output *, FILE * );
 
-Exception *
+const Output *
 CSVOutputIntoStream
 ( const Output *, FILE * );
 
-Exception *
+const Handler *
 HandleStreamOutput
 ( const Handler *handler, const Output * );
 
-Exception *
+const Output *
 JSONOutputIntoStream
 ( const Output *, FILE * );
 
-Exception *
+const Output *
 RawStringOutputIntoStream
 ( const Output *, FILE * );
 
-Exception *
+const Output *
 TextOutputIntoStream
 ( const Output *, FILE * );
 
-Exception *
+const Output *
 XMLOutputIntoStream
 ( const Output *, FILE * );
 

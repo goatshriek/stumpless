@@ -8,78 +8,83 @@
 #include "private/handler/stream.h"
 #include "private/type.h"
 
-Exception *
+const Output *
 BinaryOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
 
-  return NULL;
+  return output;
 }
 
-Exception *
+const Output *
 CSVOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
 
-  return NULL;
+  return output;
 }
 
-Exception *
+const Handler *
 HandleStreamOutput
 ( const Handler *handler, const Output *output )
 {
   FILE *destination;
 
   if( !output )
-    return RaiseException( "empty argument" );
+    return handler;
 
+  // todo throw malformed profile exception here
   if( !output->profile || !output->profile->into_stream )
-    return RaiseException( "incompatible profile" );
+    return handler;
 
+  // todo this should go away eventually to read the handler
   destination = stdout;
 
-  return output->profile->into_stream( output, destination );
+  output->profile->into_stream( output, destination );
+  return handler;
 }
 
-Exception *
+const Output *
 JSONOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
 
-  return NULL;
+  return output;
 }
 
-Exception *
+const Output *
 RawStringOutputIntoStream
 ( const Output *output, FILE *stream )
 {
   if( !output || !stream )
-    return RaiseException( "empty argument" );
+    return output;
 
+  // todo throw malformed structure Exception here
   if( !output->data )
-    return RaiseException( "malformed structure" );
+    return output;
 
+  // todo throw stream write failure exception here
   if( fputs( ValueListToString( output->data ), stream ) < 0 )
-    return RaiseException( "stream write failure" );
+    return output;
 
-  return NULL;
+  return output;
 }
 
-Exception *
+const Output *
 TextOutputIntoStream
 ( const Output *output, FILE *stream )
 {
   if( !output || !stream )
-    return RaiseException( "empty argument" );
+    return output;
 
+  // todo throw malformed structure Exception here
   if( !output->data )
-    return RaiseException( "malformed structure" );
+    return output;;
 
   fputs( ValueListToString( output->data ), stream );
-  return NULL;
 
   /*const Value *value;
   ValueListConstIterator * values = CBeginValueList( output->data );
@@ -97,14 +102,14 @@ TextOutputIntoStream
 
   DestroyValueListConstIterator( values );*/
 
-  return NULL;
+  return output;
 }
 
-Exception *
+const Output *
 XMLOutputIntoStream
 ( const Output * output, FILE * stream )
 {
   // todo need to implement
 
-  return NULL;
+  return output;
 }

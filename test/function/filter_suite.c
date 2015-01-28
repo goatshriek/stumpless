@@ -31,14 +31,14 @@ const char *
 test_add_filter
 ( void )
 {
-  Filter *filter, *found;
-  Exception *e;
+  Filter *filter, *found, *result;
 
   filter = BuildFilter();
   FAIL_IF_NULL( filter, "the test filter could not be built" )
 
-  e = AddFilter( filter );
-  FAIL_IF_NOT_NULL( e, "the new filter could not be added" )
+  result = AddFilter( filter );
+  if( result != filter )
+    return "the new Filter could not be added";
 
   found = FindFilterByName( filter->name );
   if( found != filter )
@@ -94,39 +94,39 @@ test_set_option
 ( void )
 {
   const char *option = "test option";
-  Filter *filter;
-  Exception *e;
+  Filter *filter, *result;
   void *value = "target value";
 
   filter = BuildFilter();
   FAIL_IF_NULL( filter, "the test filter could not be built" )
 
-  e = SetFilterOption( NULL, NULL, NULL );
-  FAIL_IF_NULL( e, "three NULL arguments did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetFilterOption( NULL, NULL, NULL );
+  if( result )
+    return "three NULL arguments caused a problem";
 
-  e = SetFilterOption( NULL, NULL, value );
-  FAIL_IF_NULL( e, "only a value did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetFilterOption( NULL, NULL, value );
+  if( result )
+    return "only a Value caused a problem";
 
-  e = SetFilterOption( NULL, option, value );
-  FAIL_IF_NULL( e, "a NULL filter did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetFilterOption( NULL, option, value );
+  if( result )
+    return "a NULL Filter caused a problem";
 
-  e = SetFilterOption( NULL, option, NULL );
-  FAIL_IF_NULL( e, "only an option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetFilterOption( NULL, option, NULL );
+  if( result )
+    return "only an option caused a problem";
 
-  e = SetFilterOption( filter, NULL, value );
-  FAIL_IF_NULL( e, "an empty option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetFilterOption( filter, NULL, value );
+  if( result != filter )
+    return "an empty option caused a problem";
 
-  e = SetFilterOption( filter, NULL, NULL );
-  FAIL_IF_NULL( e, "only a filter did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetFilterOption( filter, NULL, NULL );
+  if( result != filter )
+    return "only a Filter caused a problem";
 
-  e = SetFilterOption( filter, option, value );
-  FAIL_IF_NOT_NULL( e, "could not set an option" )
+  result = SetFilterOption( filter, option, value );
+  if( result != filter )
+    return "could not set an option";
 
   return NULL;
 }

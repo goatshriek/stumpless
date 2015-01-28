@@ -31,14 +31,14 @@ const char *
 test_add_handler
 ( void )
 {
-  Handler *found, *handler;
-  Exception *e;
+  Handler *found, *handler, *result;
 
   handler = BuildHandler();
   FAIL_IF_NULL( handler, "the test handler could not be built" )
 
-  e = AddHandler( handler );
-  FAIL_IF_NOT_NULL( e, "the new handler could not be added" )
+  result = AddHandler( handler );
+  if( result != handler )
+    return "the new Handler could not be added";
 
   found = FindHandlerByName( handler->name );
   if( found != handler )
@@ -100,39 +100,40 @@ test_set_option
 ( void )
 {
   const char *option = "test option";
-  Handler *handler;
+  Handler *handler, *result;
   Exception *e;
   void *value = ( void * ) "target value";
 
   handler = BuildHandler();
   FAIL_IF_NULL( handler, "the test handler could not be built" )
 
-  e = SetHandlerOption( NULL, NULL, NULL );
-  FAIL_IF_NULL( e, "three NULL arguments did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetHandlerOption( NULL, NULL, NULL );
+  if( result )
+    return "three NULL argument caused a problem";
 
-  e = SetHandlerOption( NULL, NULL, value );
-  FAIL_IF_NULL( e, "only a value did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetHandlerOption( NULL, NULL, value );
+  if( result )
+    return "only a Value caused a problem";
 
-  e = SetHandlerOption( NULL, option, value );
-  FAIL_IF_NULL( e, "a NULL handler did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetHandlerOption( NULL, option, value );
+  if( result )
+    return "a NULL Handler caused a problem";
 
-  e = SetHandlerOption( NULL, option, NULL );
-  FAIL_IF_NULL( e, "only an option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetHandlerOption( NULL, option, NULL );
+  if( result )
+    return "only an option caused a problem";
 
-  e = SetHandlerOption( handler, NULL, value );
-  FAIL_IF_NULL( e, "an empty option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetHandlerOption( handler, NULL, value );
+  if( result != handler )
+    return "an empty option caused a problem";
 
-  e = SetHandlerOption( handler, NULL, NULL );
-  FAIL_IF_NULL( e, "only a handler did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetHandlerOption( handler, NULL, NULL );
+  if( result != handler )
+    return "only a Handler caused a problem";
 
-  e = SetHandlerOption( handler, option, value );
-  FAIL_IF_NOT_NULL( e, "could not set an option" )
+  result = SetHandlerOption( handler, option, value );
+  if( result != handler )
+    return "could not set an option";
 
   return NULL;
 }

@@ -64,15 +64,14 @@ const char *
 TestAddAdapter
 ( void )
 {
-  Adapter *adapter, *found;
-  Exception *e;
+  Adapter *adapter, *found, *result;
 
   adapter = BuildAdapter();
   if( !adapter )
     return "the test adapter could not be built";
 
-  e = AddAdapter( adapter );
-  if( e )
+  result = AddAdapter( adapter );
+  if( result != adapter )
     return "the new adapter could not be added";
 
   found = FindAdapterByName( adapter->name );
@@ -137,49 +136,41 @@ const char *
 TestSetOption
 ( void )
 {
-  Adapter *adapter;
+  Adapter *adapter, *result;
   const char *option;
-  Exception *e;
   void *value;
 
-  e = SetAdapterOption( NULL, NULL, NULL );
-  if( !e )
-    return "three NULL arguments did not raise an error";
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetAdapterOption( NULL, NULL, NULL );
+  if( result )
+    return "all NULL arguments generated a problem";
 
   value = "target value";
-  e = SetAdapterOption( NULL, NULL, value );
-  if( !e )
-    return "only a value did not raise an error";
-  return NULL;
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetAdapterOption( NULL, NULL, value );
+  if( result )
+    return "only a Value generated a problem";
 
   option = "test option";
-  e = SetAdapterOption( NULL, option, value );
-  if( !e )
-    return "a NULL adapter did not raise an error";
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetAdapterOption( NULL, option, value );
+  if( result )
+    return "a NULL Adapter generated a problem";
 
-  e = SetAdapterOption( NULL, option, NULL );
-  if( !e )
-    return "only an option did not raise an error";
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetAdapterOption( NULL, option, NULL );
+  if( result )
+    return "only an option caused a problem";
 
   adapter = BuildAdapter();
   if( !adapter )
     return "the test adapter could not be built";
-  e = SetAdapterOption( adapter, NULL, value );
-  if( !e )
-    return "an empty option did not raise an error";
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetAdapterOption( adapter, NULL, value );
+  if( result != adapter )
+    return "an empty option caused a problem";
 
-  e = SetAdapterOption( adapter, NULL, NULL );
-  if( !e )
-    return "only a adapter did not raise an error";
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  result = SetAdapterOption( adapter, NULL, NULL );
+  if( result != adapter )
+    return "only an Adapter caused a problem";
 
-  e = SetAdapterOption( adapter, option, value );
-  if( e )
+  result = SetAdapterOption( adapter, option, value );
+  if( result != adapter )
     return "could not set an option";
 
   return NULL;

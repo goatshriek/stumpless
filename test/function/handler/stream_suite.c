@@ -33,22 +33,23 @@ const char *
 test_stream_handler
 ( void )
 {
+  const Handler *result;
   Output *output = NULL;
-  Exception *e;
 
-  e = HandleStreamOutput( NULL, output );
-  FAIL_IF_NULL( e, "a null output did not generate an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "a null output did not raise an empty argument error" )
+  result = HandleStreamOutput( NULL, output );
+  if( result )
+    return "a NULL Output caused a problem";
 
   output = BuildTextOutput();
   FAIL_IF_NULL( output, "the test output could not be built" )
-  e = HandleStreamOutput( NULL, output );
-  FAIL_IF_NOT_NULL( e, "a normal output could not be handled by a stream with no options" )
+  result = HandleStreamOutput( NULL, output );
+  if( result )
+    return "a normal Output could not by a NULL Handler";
 
   output->profile->into_stream = NULL;
-  e = HandleStreamOutput( NULL, output );
-  FAIL_IF_NULL( e, "an output with no to stream function was properly handled" )
-  ASSERT_STRINGS_EQUAL( "incompatible profile", e->name, "an output with a profile incompatible with stream output did not return the appropriate error" )
+  result = HandleStreamOutput( NULL, output );
+  if( result )
+    return "an Output with no stream function caused problems";
 
   return NULL;
 }
@@ -71,8 +72,7 @@ test_raw_string_readability
   text = BuildRawStringOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  e = RawStringOutputIntoStream( text, test_file );
-  FAIL_IF_NOT_NULL( e, "the string could not be written to the file" )
+  RawStringOutputIntoStream( text, test_file );
 
   fclose( test_file );
 
@@ -112,8 +112,7 @@ test_raw_string_write
   str = BuildRawStringOutput();
   FAIL_IF_NULL( str, "the test output could not be built" )
 
-  e = RawStringOutputIntoStream( str, test_file );
-  FAIL_IF_NOT_NULL( e, "the string could not be written to the file" )
+  RawStringOutputIntoStream( str, test_file );
 
   fclose( test_file );
 
@@ -136,8 +135,7 @@ test_text_readability
   text = BuildTextOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  e = TextOutputIntoStream( text, test_file );
-  FAIL_IF_NOT_NULL( e, "the text could not be written to the file" )
+  TextOutputIntoStream( text, test_file );
 
   fclose( test_file );
 
@@ -181,8 +179,7 @@ test_text_write
   text = BuildTextOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  e = TextOutputIntoStream( text, test_file );
-  FAIL_IF_NOT_NULL( e, "the text could not be written to the file" )
+  TextOutputIntoStream( text, test_file );
 
   fclose( test_file );
 

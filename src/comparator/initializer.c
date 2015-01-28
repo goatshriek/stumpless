@@ -44,10 +44,12 @@ InitializeComparatorByName
   }
 
   initializer = GetDictionaryValue( initializers, name );
-  if( !initializer )
+  if( !initializer ){
     return NULL;
-  else
-    return AddComparator( initializer() );
+  } else {
+    AddComparator( initializer() );
+    return NULL;
+  }
 }
 
 COMPARATOR_INITIALIZER_FUNCTION( "string", String )

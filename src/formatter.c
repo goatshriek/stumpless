@@ -99,7 +99,7 @@ SetFormatterOption
 ( Formatter * formatter, const char * option, void * value )
 {
   if( !formatter || !option )
-    return RaiseException( "empty argument" );
+    return NULL;
 
   if( !formatter->options ){
     formatter->options = NewDictionary();

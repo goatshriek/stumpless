@@ -14,6 +14,7 @@
 #include "private/container/list/formatter.h"
 #include "private/container/list/iterator/formatter.h"
 #include "private/container/list/target.h"
+#include "private/exception/thrower.h"
 #include "private/formatter.h"
 #include "private/type.h"
 
@@ -78,8 +79,6 @@ Listen
   // logging process calls this function
   // a return will signify a fatal error which caused the logging to halt
 
-  Record *record;
-
   while( 1 ){
     ProcessRecord( logger, ReceiveNextRecord( logger ) );
   }
@@ -92,7 +91,6 @@ NewLogger
   Logger *logger;
 
   if( !name ){
-    RaiseException( "empty argument" );
     return NULL;
   }
 

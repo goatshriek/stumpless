@@ -19,7 +19,7 @@ int
 main( void )
 {
   unsigned failure_count = 0;
-  const char * result = NULL;
+  const char *result = NULL;
 
   RUN_TEST( add_formatter )
   RUN_TEST( destructor )
@@ -136,28 +136,28 @@ test_set_option
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
   e = SetFormatterOption( NULL, NULL, NULL );
-  FAIL_IF_NULL( e, "three NULL arguments did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  if( e )
+    return "three NULL arguments generated an Exception";
 
   e = SetFormatterOption( NULL, NULL, value );
-  FAIL_IF_NULL( e, "only a value did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  if( e )
+    return "only a Value generated an Exception";
 
   e = SetFormatterOption( NULL, option, value );
-  FAIL_IF_NULL( e, "a NULL formatter did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  if( e )
+    return "a NULL Formatter generated an Exception";
 
   e = SetFormatterOption( NULL, option, NULL );
-  FAIL_IF_NULL( e, "only an option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  if( e )
+    return "only an option generated an Exception";
 
   e = SetFormatterOption( formatter, NULL, value );
-  FAIL_IF_NULL( e, "an empty option did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  if( e )
+    return "an empty option generated an Exception";
 
   e = SetFormatterOption( formatter, NULL, NULL );
-  FAIL_IF_NULL( e, "only a formatter did not raise an error" )
-  ASSERT_STRINGS_EQUAL( "empty argument", e->name, "the error raised by empty argument was not correct" )
+  if( e )
+    return "only a Formatter generated an Exception";
 
   e = SetFormatterOption( formatter, option, value );
   FAIL_IF_NOT_NULL( e, "could not set an option" )

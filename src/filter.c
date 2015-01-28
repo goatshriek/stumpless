@@ -9,27 +9,24 @@
 
 static Dictionary *filters = NULL;
 
-Exception *
+Filter *
 AddFilter
 ( Filter * filter )
 {
-  void *value;
-
   if( !filter || !filter->name )
-    return NULL;
+    return filter;
 
-  if( filters == NULL ){
+  if( !filters ){
     filters = NewDictionary();
 
-    if( filters == NULL )
-      return RaiseException( "constructor failure" );
+    // todo throw constructor Exception
+    if( !filters )
+      return filter;
   }
 
-  value = ( void * ) filter;
-  if( !SetDictionaryValue( filters, filter->name, value ) )
-    return NULL;
+  SetDictionaryValue( filters, filter->name, ( void * ) filter );
 
-  return NULL;
+  return filter;
 }
 
 // todo implement
@@ -66,34 +63,30 @@ FindFilterByName
 
 void *
 GetFilterOption
-( const Filter * filter, const char * option )
+( const Filter *filter, const char *option )
 {
-  if( filter == NULL || option == NULL || filter->options == NULL )
+  if( !filter )
     return NULL;
 
   return GetDictionaryValue( filter->options, option );
 }
 
-Exception *
+Filter *
 SetFilterOption
-( Filter * filter, const char * option, void * value )
+( Filter *filter, const char *option, void *value )
 {
-  Dictionary *result;
-
   if( !filter || !option )
-    return RaiseException( "empty argument" );
+    return filter;
 
-  if( filter->options == NULL ){
+  if( !filter->options ){
     filter->options = NewDictionary();
 
-    if( filter->options == NULL )
-      return RaiseException( "dictionary failure" );
+    // todo throw constructor failure Exception
+    if( !filter->options )
+      return filter;
   }
 
-  result =  SetDictionaryValue( filter->options, option, value );
+  SetDictionaryValue( filter->options, option, value );
 
-  if( !result )
-    return RaiseException( "dictionary failure" );
-  else
-    return NULL;
+  return filter;
 }

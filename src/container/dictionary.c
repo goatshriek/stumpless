@@ -14,7 +14,7 @@ CBeginDictionary
 
 void
 DestroyDictionary
-( Dictionary * dictionary )
+( Dictionary *dictionary )
 {
   if( !dictionary )
     return;

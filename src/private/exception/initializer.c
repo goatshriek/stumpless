@@ -62,21 +62,6 @@ InitializeDuplicateException
 }
 
 Exception *
-InitializeEmptyArgumentException
-( void )
-{
-  CREATE_EXCEPTION
-
-  e->name = "empty argument";
-  e->message = "an argument required for the operation was either NULL or an empty structure";
-  e->informational = 1;
-  e->failure = 0;
-  e->warning = 0;
-
-  return e;
-}
-
-Exception *
 InitializeEventFailureException
 ( void )
 {
@@ -181,7 +166,6 @@ InitializeExceptionByName
     ADD_STATUS( "constructor failure", ConstructorFailure )
     ADD_STATUS( "dictionary failure", DictionaryFailure )
     ADD_STATUS( "duplicate", Duplicate )
-    ADD_STATUS( "empty argument", EmptyArgument )
     ADD_STATUS( "fork failure", ForkFailure )
     ADD_STATUS( "incompatible profile", IncompatibleProfile )
     ADD_STATUS( "list failure", ListFailure )

@@ -29,14 +29,15 @@ BadFormatFunction
   return NULL;
 }
 
-Exception *
+const Handler *
 BadHandleFunction
 ( const Handler *handler, const Output *output )
 {
   TestLogSetLastHandler( handler );
   TestLogSetLastHandledOutput( output );
 
-  return RaiseException( "malformed structure" );
+  // todo generate random address
+  return NULL;
 }
 
 Record *
@@ -77,7 +78,7 @@ TestFormatFunction
   return output;
 }
 
-Exception *
+const Handler *
 TestHandleFunction
 ( const Handler *handler, const Output *output )
 {
@@ -85,5 +86,5 @@ TestHandleFunction
   TestLogSetLastHandledOutput( output );
   TestLogSetLastMessage( OutputToString( output ) );
 
-  return NULL;
+  return handler;
 }

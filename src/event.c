@@ -16,24 +16,24 @@
 
 static Dictionary *events = NULL; /**< currently initialized events (by name) */
 
-Exception *
+Event *
 AddEvent
 ( Event *event )
 {
   if( !event || !event->name )
-    return RaiseException( "empty argument" );
+    return event;
 
   if( !events ){
     events = NewDictionary();
 
+    // todo throw dictionary constructor failure
     if( !events )
-      return RaiseException( "constructor failure");
+      return event;
   }
 
-  if( !SetDictionaryValue( events, event->name, event ) )
-    return RaiseException( "dictionary failure" );
+  SetDictionaryValue( events, event->name, event );
 
-  return NULL;
+  return event;
 }
 
 char *

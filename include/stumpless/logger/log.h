@@ -1,76 +1,77 @@
-#ifndef __STUMPLESS_PRIVATE_LOGGER_LOG_H
-#define __STUMPLESS_PRIVATE_LOGGER_LOG_H
+#ifndef __STUMPLESS_LOGGER_LOG_H
+#define __STUMPLESS_LOGGER_LOG_H
 
 /** @file
  *  Functions used to log various elements directly to a Logger.
  */
 
-#include "private/type.h"
+#include <stumpless/type.h>
 
 /** Logs a single character to a Logger. The Event Uses the default settings of the Logger
  *  provided. This includes the record level and the message.
  *
  *  @param logger the Logger to use
  *  @param character the char to log
- *  @return a Exception for the logging operation
+ *
+ *  @return logger
  */
-Exception *
+Logger *
 LogChar
 ( Logger *logger, char character );
 
-Exception *
+Logger *
 LogCharArray
 ( Logger *, const char *, unsigned);
 
-Exception *
+Logger *
 LogDouble
 ( Logger *, double );
 
-Exception *
+Logger *
 LogDoubleArray
 ( Logger *, const double *, unsigned );
 
-Exception *
+Logger *
 LogFloat
 ( Logger *, float );
 
-Exception *
+Logger *
 LogFloatArray
 ( Logger *, const float *, unsigned );
 
-Exception *
+Logger *
 LogInt
 ( Logger *, int );
 
-Exception *
+Logger *
 LogIntArray
 ( Logger *, const int *, unsigned );
 
-Exception *
+Logger *
 LogLoggerException
 ( Logger * );
 
-Exception *
+Logger *
 LogLong
 ( Logger *, long );
 
-Exception *
+Logger *
 LogLongArray
 ( Logger *, const long *, unsigned );
 
-Exception *
+Logger *
 LogLongDouble
 ( Logger *, long double );
 
-Exception *
+Logger *
 LogLongDoubleArray
 ( Logger *, const long double *, unsigned );
 
-Exception *
+Logger *
 LogLongLong
 ( Logger *, long long );
 
-Exception *
+Logger *
 LogLongLongArray
 ( Logger *, const long long *, unsigned );
 
@@ -80,23 +81,23 @@ LogLongLongArray
  *  @param record the Record to log
  *  @return a Exception of the logging
  */
-Exception *
+Logger *
 LogRecord
 ( Logger *logger, Record *record );
 
-Exception *
+Logger *
 LogShort
 ( Logger *, short );
 
-Exception *
+Logger *
 LogShortArray
 ( Logger *, const short *, unsigned );
 
-Exception *
+Logger *
 LogSignedChar
 ( Logger *, signed char );
 
-Exception *
+Logger *
 LogSignedCharArray
 ( Logger *, const signed char *, unsigned );
 
@@ -108,55 +109,55 @@ LogSignedCharArray
  *
  * @return a Exception describing the result of the function.
  */
-Exception *
+Logger *
 LogString
 ( Logger *logger, const char *str );
 
-Exception *
+Logger *
 LogStringArray
 ( Logger *, const char *, unsigned );
 
-Exception *
+Logger *
 LogUnsignedChar
 ( Logger *, unsigned char );
 
-Exception *
+Logger *
 LogUnsignedCharArray
 ( Logger *, const unsigned char *, unsigned );
 
-Exception *
+Logger *
 LogUnsignedInt
 ( Logger *, unsigned int );
 
-Exception *
+Logger *
 LogUnsignedIntArray
 ( Logger *, const unsigned int *, unsigned );
 
-Exception *
+Logger *
 LogUnsignedLong
 ( Logger *, unsigned long );
 
-Exception *
+Logger *
 LogUnsignedLongArray
 ( Logger *, const unsigned long *, unsigned );
 
-Exception *
+Logger *
 LogUnsignedLongLong
 ( Logger *, unsigned long long );
 
-Exception *
+Logger *
 LogUnsignedLongLongArray
 ( Logger *, const unsigned long long *, unsigned );
 
-Exception *
+Logger *
 LogUnsignedShort
 ( Logger *, unsigned short );
 
-Exception *
+Logger *
 LogUnsignedShortArray
 ( Logger *, const unsigned short *, unsigned );
 
-Exception *
+Logger *
 LogVoid
 ( Logger *, const void *, unsigned );
 

@@ -45,10 +45,12 @@ InitializeHandlerByName
   }
 
   initializer = GetDictionaryValue( initializers, name );
-  if( !initializer )
+  if( !initializer ){
     return NULL;
-  else
-    return AddHandler( initializer() );
+  } else {
+    AddHandler( initializer() );
+    return NULL;
+  }
 }
 
 HANDLER_INITIALIZER_FUNCTION( "stream", Stream )
