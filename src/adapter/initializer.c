@@ -45,10 +45,12 @@ InitializeAdapterByName
   }
 
   initializer = GetDictionaryValue( initializers, name );
-  if( !initializer )
+  if( !initializer ){
     return NULL;
-  else
-    return AddAdapter( initializer() );
+  } else {
+    AddAdapter( initializer() );
+    return NULL;
+  }
 }
 
 ADAPTER_INITIALIZER_FUNCTION( "context", Context )

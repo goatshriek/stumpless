@@ -40,9 +40,6 @@ test_function_record_suite_LDADD = $(test_libraries)
 test_function_record_attribute_suite_SOURCES = test/function/record_attribute_suite.c
 test_function_record_attribute_suite_LDADD = $(test_libraries)
 
-test_function_string_helper_suite_SOURCES = test/function/string_helper_suite.c
-test_function_string_helper_suite_LDADD = $(test_libraries)
-
 test_function_target_suite_SOURCES = test/function/target_suite.c
 test_function_target_suite_LDADD = $(test_libraries)
 
@@ -57,4 +54,5 @@ include test/function/formatter/Makefile.am
 include test/function/handler/Makefile.am
 include test/function/logger/Makefile.am
 include test/function/output/Makefile.am
+include test/function/utility/Makefile.am
 include test/function/value/Makefile.am

@@ -6,7 +6,7 @@
 
 #include <stumpless/config/check.h>
 
-#include "private/string_helper.h"
+#include "private/utility/string.h"
 
 char *
 copy_string

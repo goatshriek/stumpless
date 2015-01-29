@@ -84,9 +84,9 @@ STUMPLESSOBJECTS = $(OUTDIR)\src\adapter.obj \
                    $(OUTDIR)\src\private\event\initializer.obj \
                    $(OUTDIR)\src\private\exception\initializer.obj \
                    $(OUTDIR)\src\private\exception\thrower.obj \
+                   $(OUTDIR)\src\private\utility\string.obj \
                    $(OUTDIR)\src\record.obj \
                    $(OUTDIR)\src\record_attribute.obj \
-                   $(OUTDIR)\src\string_helper.obj \
                    $(OUTDIR)\src\target.obj \
                    $(OUTDIR)\src\value.obj \
                    $(OUTDIR)\src\value\constructor.obj \
@@ -120,6 +120,7 @@ $(OUTDIR):
     if not exist "$(OUTDIR)\src\private\$(NULL)" mkdir $(OUTDIR)\src\private
     if not exist "$(OUTDIR)\src\private\event\$(NULL)" mkdir $(OUTDIR)\src\private\event
     if not exist "$(OUTDIR)\src\private\exception\$(NULL)" mkdir $(OUTDIR)\src\private\exception
+    if not exist "$(OUTDIR)\src\private\utility\$(NULL)" mkdir $(OUTDIR)\src\private\utility
     if not exist "$(OUTDIR)\src\value\$(NULL)" mkdir $(OUTDIR)\src\value
     if not exist "$(OUTDIR)\test\function\$(NULL)" mkdir $(OUTDIR)\test\function
     if not exist "$(OUTDIR)\test\function\comparator\$(NULL)" mkdir $(OUTDIR)\test\function\comparator
@@ -134,6 +135,7 @@ $(OUTDIR):
     if not exist "$(OUTDIR)\test\function\handler\$(NULL)" mkdir $(OUTDIR)\test\function\handler
     if not exist "$(OUTDIR)\test\function\logger\$(NULL)" mkdir $(OUTDIR)\test\function\logger
     if not exist "$(OUTDIR)\test\function\output\$(NULL)" mkdir $(OUTDIR)\test\function\output
+    if not exist "$(OUTDIR)\test\function\utility\$(NULL)" mkdir $(OUTDIR)\test\function\utility
     if not exist "$(OUTDIR)\test\function\value\$(NULL)" mkdir $(OUTDIR)\test\function\value
     if not exist "$(OUTDIR)\test\helper\$(NULL)" mkdir $(OUTDIR)\test\helper
     
@@ -382,14 +384,14 @@ $(OUTDIR)\src\private\exception\initializer.obj: $(SRCDIR)\private\exception\ini
 $(OUTDIR)\src\private\exception\thrower.obj: $(SRCDIR)\private\exception\thrower.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\private\exception\ /Fd$(OUTDIR)\src\ $(SRCDIR)\private\exception\thrower.c
     
+$(OUTDIR)\src\private\utility\string.obj: $(SRCDIR)\private\utility\string.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\private\utility\ /Fd$(OUTDIR)\src\ $(SRCDIR)\private\utility\string.c
+    
 $(OUTDIR)\src\record.obj: $(SRCDIR)\record.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\record.c
     
 $(OUTDIR)\src\record_attribute.obj: $(SRCDIR)\record_attribute.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\record_attribute.c
-    
-$(OUTDIR)\src\string_helper.obj: $(SRCDIR)\string_helper.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\string_helper.c
     
 $(OUTDIR)\src\target.obj: $(SRCDIR)\target.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\src\ /Fd$(OUTDIR)\src\ $(SRCDIR)\target.c
@@ -450,8 +452,8 @@ check: $(OUTDIR) \
        $(OUTDIR)\test\function\output\profile_initializer_suite.exe \
        $(OUTDIR)\test\function\record_attribute_suite.exe \
        $(OUTDIR)\test\function\record_suite.exe \
-       $(OUTDIR)\test\function\string_helper_suite.exe \
        $(OUTDIR)\test\function\target_suite.exe \
+       $(OUTDIR)\test\function\utility\string_suite.exe \
        $(OUTDIR)\test\function\value_suite.exe \
        $(OUTDIR)\test\function\value\constructor_suite.exe \
        $(OUTDIR)\test\function\value\profile_suite.exe \
@@ -496,8 +498,8 @@ check: $(OUTDIR) \
     $(OUTDIR)\test\function\output\profile_initializer_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\record_attribute_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\record_suite.exe >> $(OUTDIR)\test-suite.log
-    $(OUTDIR)\test\function\string_helper_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\target_suite.exe >> $(OUTDIR)\test-suite.log
+    $(OUTDIR)\test\function\utility\string_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\value_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\value\constructor_suite.exe >> $(OUTDIR)\test-suite.log
     $(OUTDIR)\test\function\value\profile_suite.exe >> $(OUTDIR)\test-suite.log
@@ -631,6 +633,9 @@ $(OUTDIR)\test\function\string_helper_suite.exe: $(OUTDIR)\test\function\string_
 $(OUTDIR)\test\function\target_suite.exe: $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
     $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\target_suite.exe $(OUTDIR)\test\function\target_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
+$(OUTDIR)\test\function\utility\string_suite.exe: $(OUTDIR)\test\function\utility\string_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
+    $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\utility\string_suite.exe $(OUTDIR)\test\function\utility\string_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
+    
 $(OUTDIR)\test\function\value_suite.exe: $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\helper.dll $(STUMPLESSOBJECTS)
     $(link) $(linkdebug) -nologo -out:$(OUTDIR)\test\function\value_suite.exe $(OUTDIR)\test\function\value_suite.obj $(OUTDIR)\helper.lib $(STUMPLESSOBJECTS)
     
@@ -762,11 +767,11 @@ $(OUTDIR)\test\function\record_attribute_suite.obj: $(TESTDIR)\function\record_a
 $(OUTDIR)\test\function\record_suite.obj: $(TESTDIR)\function\record_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\record_suite.c
     
-$(OUTDIR)\test\function\string_helper_suite.obj: $(TESTDIR)\function\string_helper_suite.c
-    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\string_helper_suite.c
-    
 $(OUTDIR)\test\function\target_suite.obj: $(TESTDIR)\function\target_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\target_suite.c
+    
+$(OUTDIR)\test\function\utility\string_suite.obj: $(TESTDIR)\function\utility\string_suite.c
+    $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\utility\ /Fd$(OUTDIR)\test\function\utility\ $(TESTDIR)\function\utility\string_suite.c
     
 $(OUTDIR)\test\function\value_suite.obj: $(TESTDIR)\function\value_suite.c
     $(cc) $(cflags) $(cvarsdll) $(cdebug) $(STUMPLESSFLAGS) /I $(INCDIR) /Fo$(OUTDIR)\test\function\ /Fd$(OUTDIR)\test\function\ $(TESTDIR)\function\value_suite.c

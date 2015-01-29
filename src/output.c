@@ -1,11 +1,10 @@
 #include <stdlib.h>
 
 #include "private/configuration.h"
-#include "private/output.h"
-#include "private/string_helper.h"
-#include "private/type.h"
-
 #include "private/container/list/value.h"
+#include "private/output.h"
+#include "private/type.h"
+#include "private/utility/string.h"
 
 unsigned short
 BinaryOutputIsEmpty

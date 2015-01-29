@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/string_helper.h"
+#include "private/utility/string.h"
 
 #ifndef TOP_DIRECTORY
 #define TOP_DIRECTORY "./"

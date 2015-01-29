@@ -17,7 +17,6 @@ libstumpless_la_SOURCES = src/adapter.c \
                           src/output.c \
                           src/record.c \
                           src/record_attribute.c \
-                          src/string_helper.c \
                           src/target.c \
                           src/value.c
 

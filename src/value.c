@@ -11,8 +11,8 @@
 #include "private/configuration.h"
 #include "private/container/list/value.h"
 #include "private/exception/checker.h"
-#include "private/string_helper.h"
 #include "private/type.h"
+#include "private/utility/string.h"
 
 #define ARRAY_VALUE_INTO_STRING_FUNCTION( name, data_member, default_format )  \
 char *                                                                         \

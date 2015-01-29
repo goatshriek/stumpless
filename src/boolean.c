@@ -1,11 +1,12 @@
 #include <stdlib.h>
 
 #include "private/boolean.h"
-#include "private/string_helper.h"
 #include "private/type.h"
+#include "private/utility/string.h"
 
 char *
-BooleanToString( Boolean *boolean )
+BooleanToString
+( Boolean *boolean )
 {
   if( !boolean || !boolean->format )
     return NULL;

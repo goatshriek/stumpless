@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "private/string_helper.h"
+#include "private/utility/string.h"
 
 #include "test/helper.h"
 
