@@ -8,22 +8,22 @@
 #include "private/handler/stream.h"
 #include "private/type.h"
 
-const Output *
+FILE *
 BinaryOutputIntoStream
-( const Output * output, FILE * stream )
+( FILE *stream,  const Output *output )
 {
   // todo need to implement
 
-  return output;
+  return stream;
 }
 
-const Output *
+FILE *
 CSVOutputIntoStream
-( const Output * output, FILE * stream )
+( FILE *stream, const Output *output )
 {
   // todo need to implement
 
-  return output;
+  return stream;
 }
 
 const Handler *
@@ -42,47 +42,47 @@ HandleStreamOutput
   // todo this should go away eventually to read the handler
   destination = stdout;
 
-  output->profile->into_stream( output, destination );
+  output->profile->into_stream( destination, output );
   return handler;
 }
 
-const Output *
+FILE *
 JSONOutputIntoStream
-( const Output * output, FILE * stream )
+( FILE *stream, const Output *output )
 {
   // todo need to implement
 
-  return output;
+  return stream;
 }
 
-const Output *
+FILE *
 RawStringOutputIntoStream
-( const Output *output, FILE *stream )
+( FILE *stream, const Output *output )
 {
   if( !output || !stream )
-    return output;
+    return stream;
 
   // todo throw malformed structure Exception here
   if( !output->data )
-    return output;
+    return stream;
 
   // todo throw stream write failure exception here
   if( fputs( ValueListToString( output->data ), stream ) < 0 )
-    return output;
+    return stream;
 
-  return output;
+  return stream;
 }
 
-const Output *
+FILE *
 TextOutputIntoStream
-( const Output *output, FILE *stream )
+( FILE *stream, const Output *output )
 {
   if( !output || !stream )
-    return output;
+    return stream;
 
   // todo throw malformed structure Exception here
   if( !output->data )
-    return output;;
+    return stream;
 
   fputs( ValueListToString( output->data ), stream );
 
@@ -102,14 +102,14 @@ TextOutputIntoStream
 
   DestroyValueListConstIterator( values );*/
 
-  return output;
+  return stream;
 }
 
-const Output *
+FILE *
 XMLOutputIntoStream
-( const Output * output, FILE * stream )
+( FILE *stream, const Output *output )
 {
   // todo need to implement
 
-  return output;
+  return stream;
 }

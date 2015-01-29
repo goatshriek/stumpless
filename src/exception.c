@@ -5,6 +5,7 @@
 #include "private/container/dictionary.h"
 #include "private/exception/initializer.h"
 #include "private/type.h"
+#include "private/utility/string.h"
 
 static Dictionary *exception_dictionary = NULL;
 
@@ -57,7 +58,7 @@ ExceptionToString
   if( !e )
     return NULL;
   else
-    return e->name;
+    return copy_string( e->name );
 }
 
 Exception *

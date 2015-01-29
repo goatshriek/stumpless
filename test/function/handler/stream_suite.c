@@ -72,7 +72,7 @@ test_raw_string_readability
   text = BuildRawStringOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  RawStringOutputIntoStream( text, test_file );
+  RawStringOutputIntoStream( test_file, text );
 
   fclose( test_file );
 
@@ -112,7 +112,7 @@ test_raw_string_write
   str = BuildRawStringOutput();
   FAIL_IF_NULL( str, "the test output could not be built" )
 
-  RawStringOutputIntoStream( str, test_file );
+  RawStringOutputIntoStream( test_file, str );
 
   fclose( test_file );
 
@@ -135,7 +135,7 @@ test_text_readability
   text = BuildTextOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  TextOutputIntoStream( text, test_file );
+  TextOutputIntoStream( test_file, text );
 
   fclose( test_file );
 
@@ -179,7 +179,7 @@ test_text_write
   text = BuildTextOutput();
   FAIL_IF_NULL( text, "the test output could not be built" )
 
-  TextOutputIntoStream( text, test_file );
+  TextOutputIntoStream( test_file, text );
 
   fclose( test_file );
 

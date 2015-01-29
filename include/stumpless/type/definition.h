@@ -239,10 +239,10 @@ struct OutputProfile {
   /** function to put an Output into a database */
   Exception *( *into_mysql )( const Output * );
   /** function to put an Output into a stream */
-  Exception *( *into_stream )( const Output *, FILE * );
+  FILE *( *into_stream )( FILE *, const Output * );
   /** function to put an Output into a string */
   Exception *( *into_string )( const Output * );
-  /** funciton to send an Output through a TCP socket */
+  /** function to send an Output through a TCP socket */
   Exception *( *into_tcp )( const Output * );
   /** checks to see if an Output is empty */
   unsigned short ( *is_empty )( const Output * );

@@ -7,32 +7,32 @@
 
 // todo change stream argument to be first in IntoStream functions
 
-const Output *
+FILE *
 BinaryOutputIntoStream
-( const Output *, FILE * );
+( FILE *, const Output * );
 
-const Output *
+FILE *
 CSVOutputIntoStream
-( const Output *, FILE * );
+( FILE *, const Output * );
 
 const Handler *
 HandleStreamOutput
 ( const Handler *handler, const Output * );
 
-const Output *
+FILE *
 JSONOutputIntoStream
-( const Output *, FILE * );
+( FILE *, const Output * );
 
-const Output *
+FILE *
 RawStringOutputIntoStream
-( const Output *, FILE * );
+( FILE *, const Output * );
 
-const Output *
+FILE *
 TextOutputIntoStream
-( const Output *, FILE * );
+( FILE *, const Output * );
 
-const Output *
+FILE *
 XMLOutputIntoStream
-( const Output *, FILE * );
+( FILE *, const Output * );
 
 #endif
