@@ -131,7 +131,7 @@ ValueProfile *
 InitializeUnsignedShortValueProfile
 ( void );
 
-Exception *
+ValueProfile *
 InitializeValueProfileByName
 ( const char * );
 

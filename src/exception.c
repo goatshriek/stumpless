@@ -9,13 +9,6 @@
 
 static Dictionary *exception_dictionary = NULL;
 
-/** last error Exception raised */
-static Exception *last_failure = NULL;
-/** last informational Exception raised */
-static Exception *last_informational = NULL;
-/** last warning Exception raised */
-static Exception *last_warning = NULL;
-
 Exception *
 AddException
 ( Exception *e )
@@ -77,48 +70,6 @@ FindExceptionByName
 
   if( !e )
     e = InitializeExceptionByName( name );
-
-  return e;
-}
-
-Exception *
-GetLastFailureException
-( void )
-{
-  return last_failure;
-}
-
-Exception *
-GetLastInformationalException
-( void )
-{
-  return last_informational;
-}
-
-Exception *
-GetLastWarningException
-( void )
-{
-  return last_warning;
-}
-
-Exception *
-RaiseException
-( const char *name )
-{
-  Exception *e = FindExceptionByName( name );
-
-  if( !e )
-      return NULL;
-
-  if( e->failure )
-    last_failure = e;
-
-  if( e->informational )
-    last_informational = e;
-
-  if( e->warning )
-    last_warning = e;
 
   return e;
 }

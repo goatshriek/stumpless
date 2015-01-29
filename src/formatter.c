@@ -12,27 +12,23 @@
 
 static Dictionary *formatters = NULL;
 
-Exception *
+Formatter *
 AddFormatter
-( Formatter * formatter )
+( Formatter *formatter )
 {
-  void *value;
-
   if( !formatter || !formatter->name )
-    return NULL;
+    return formatter;
 
   if( !formatters ){
     formatters = NewDictionary();
 
     if( !formatters )
-      return RaiseException( "constructor failure" );
+      return formatter;
   }
 
-  value = ( void * ) formatter;
-  if( !SetDictionaryValue( formatters, formatter->name, value ) )
-    return NULL;
+  SetDictionaryValue( formatters, formatter->name, ( void * ) formatter );
 
-  return NULL;
+  return formatter;
 }
 
 void
@@ -65,11 +61,8 @@ FindFormatterByName
 
   formatter = GetDictionaryValue( formatters, name );
 
-  if( !formatter ){
-    if( InitializeFormatterByName( name ) )
-      return NULL;
-    formatter = GetDictionaryValue( formatters, name );
-  }
+  if( !formatter )
+    return InitializeFormatterByName( name );
 
   return formatter;
 }
@@ -94,22 +87,17 @@ GetFormatterOption
   return GetDictionaryValue( formatter->options, option );
 }
 
-Exception *
+Formatter *
 SetFormatterOption
-( Formatter * formatter, const char * option, void * value )
+( Formatter *formatter, const char *option, void *value )
 {
   if( !formatter || !option )
-    return NULL;
+    return formatter;
 
-  if( !formatter->options ){
+  if( !formatter->options )
     formatter->options = NewDictionary();
 
-    if( !formatter->options )
-      return RaiseException( "dictionary failure" );
-  }
+  SetDictionaryValue( formatter->options, option, value );
 
-  if( !SetDictionaryValue( formatter->options, option, value ) )
-    return RaiseException( "dictionary failure" );
-  else
-    return NULL;
+  return formatter;
 }

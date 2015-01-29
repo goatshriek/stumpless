@@ -107,7 +107,7 @@ SINGULAR_PROFILE_INITIALIZER( "unsigned long long", UnsignedLongLong )
 ARRAY_PROFILE_INITIALIZER( "unsigned short array", UnsignedShort )
 SINGULAR_PROFILE_INITIALIZER( "unsigned short", UnsignedShort )
 
-Exception *
+ValueProfile *
 InitializeValueProfileByName
 ( const char *name )
 {
@@ -117,7 +117,7 @@ InitializeValueProfileByName
 
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseException( "constructor failure" );
+      return NULL;
 
     ADD_PROFILE( "boolean array", BooleanArray  )
     ADD_PROFILE( "boolean", Boolean )

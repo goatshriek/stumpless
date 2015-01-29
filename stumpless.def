@@ -47,10 +47,9 @@ EXPORTS
     OutputToString                      @44
     PushToQueue                         @45
     PushToStack                         @46
-    RaiseException                      @47
-    RecordToText                        @48
-    SetAdapterOption                    @49
-    SetDictionaryValue                  @50
-    SetMemoryAllocationExceptionHandler @51
-    SetRecordAttribute                  @52
-    StringComparatorCompare             @53
+    RecordToText                        @47
+    SetAdapterOption                    @48
+    SetDictionaryValue                  @49
+    SetMemoryAllocationExceptionHandler @50
+    SetRecordAttribute                  @51
+    StringComparatorCompare             @52

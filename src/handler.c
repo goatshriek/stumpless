@@ -53,11 +53,8 @@ FindHandlerByName
 
   handler = GetDictionaryValue( handlers, name );
 
-  if( !handler ){
-    if( InitializeHandlerByName( name ) )
-      return NULL;
-    handler = GetDictionaryValue( handlers, name );
-  }
+  if( !handler )
+    return InitializeHandlerByName( name );
 
   return handler;
 }
@@ -84,7 +81,7 @@ HandleOutput
 
 Handler *
 SetHandlerOption
-( Handler *handler, const char * option, void * value )
+( Handler *handler, const char *option, void *value )
 {
   Dictionary *result;
 

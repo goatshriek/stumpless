@@ -1,9 +1,9 @@
-#ifndef STUMPLESS_PRIVATE_HANDLER_INITIALIZER_H
-#define STUMPLESS_PRIVATE_HANDLER_INITIALIZER_H
+#ifndef __STUMPLESS_PRIVATE_HANDLER_INITIALIZER_H
+#define __STUMPLESS_PRIVATE_HANDLER_INITIALIZER_H
 
 #include "private/type.h"
 
-Exception *
+Handler *
 InitializeHandlerByName
 ( const char * );
 

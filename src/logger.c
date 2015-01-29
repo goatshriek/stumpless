@@ -97,7 +97,6 @@ NewLogger
   if( !loggers ){
     loggers = NewDictionary();
     if( !loggers ){
-      RaiseException( "constructor failure" );
       return NULL;
     }
   } else if( logger = GetDictionaryValue( loggers, name ) ){
@@ -110,17 +109,13 @@ NewLogger
     return NULL;
   }
 
-  if( !SetDictionaryValue( loggers, name, logger ) ){
-    RaiseException( "dictionary failure" );
-    return NULL;
-  }
+  SetDictionaryValue( loggers, name, logger );
 
   logger->name = name;
 
 #ifdef __STUMPLESS_MULTIPROCESSING_ENABLED
   int pipes[2];
   if( pipe( pipes ) == -1 ){
-    RaiseException( "pipe failure" );
     return NULL;
   }
 
@@ -129,7 +124,6 @@ NewLogger
 
   pid_t process_id = fork();
   if( process_id == -1 ){
-    RaiseException( "fork failure" );
     return NULL;
   }
 

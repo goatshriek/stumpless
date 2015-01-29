@@ -32,7 +32,7 @@ static Dictionary *initializers = NULL;
 
 FORMATTER_INITIALIZER_FUNCTION( "csv", CSV )
 
-Exception *
+Formatter *
 InitializeFormatterByName
 ( const char * name )
 {
@@ -42,7 +42,7 @@ InitializeFormatterByName
 
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseException( "constructor failure" );
+      return NULL;
 
     ADD_FORMATTER( "csv", CSV )
     ADD_FORMATTER( "text", Text )

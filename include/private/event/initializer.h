@@ -12,13 +12,14 @@
  * Initializes the Event of the given name. Initialization consists of the
  * creation of the Event struct and its addition to the list of Events. Only
  * Events provided by the library can be initialized this way; custom Events
- * need to be manualy created and added to the list of events. If the Event
+ * need to be manually created and added to the list of events. If the Event
  * has already been Initialized, it will not be recreated.
  *
  * @param name the name of the Event to initialize
- * @return a Exception of the initialization operation
+ *
+ * @return the Event initialized
  */
-Exception *
+Event *
 InitializeEventByName
 ( const char *name );
 

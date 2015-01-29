@@ -16,10 +16,6 @@ main( void )
   TEST( Add )
   TEST( Destroy )
   TEST( FindByName )
-  TEST( GetLastFailure )
-  TEST( GetLastInformational )
-  TEST( GetLastWarning )
-  TEST( Raise )
   TEST( ToString )
 
   if( failure_count > 0 )
@@ -103,105 +99,6 @@ TestFindByName
 
   if( FindExceptionByName( e->name ) != e )
     return "the e returned was not the correct one";
-
-  DestroyException( e );
-
-  return NULL;
-}
-
-const char *
-TestGetLastFailure
-( void )
-{
-  Exception *e;
-
-  e = BuildFailureException();
-  if( !e )
-    return "could not build the a test failure Exception";
-
-  if( AddException( e ) != e )
-    return "the test failure Exception could not be added";
-
-  if( RaiseException( e->name ) != e )
-    return "the correct failure Exception was not returned";
-
-  if( GetLastFailureException() != e )
-    return "the failure Exception was not properly registered when raised";
-
-  DestroyException( e );
-
-  return NULL;
-}
-
-const char *
-TestGetLastInformational
-( void )
-{
-  Exception *e;
-
-  e = BuildInformationalException();
-  if( !e )
-    return "could not build the a test informational Exception";
-
-  if( AddException( e ) != e )
-    return "the test informational Exception could not be added";
-
-  if( RaiseException( e->name ) != e )
-    return "the correct informational Exception was not returned";
-
-  if( GetLastInformationalException() != e )
-    return "the informational Exception was not properly registered when raised";
-
-  DestroyException( e );
-
-  return NULL;
-}
-
-const char *
-TestGetLastWarning
-( void )
-{
-  Exception *e;
-
-  e = BuildWarningException();
-  if( !e )
-    return "could not build the a test warning Exception";
-
-  if( AddException( e ) != e )
-    return "the test warning exception could not be added";
-
-  if( RaiseException( e->name ) != e )
-    return "the correct warning Exception was not returned";
-
-  if( GetLastFailureException() != e )
-    return "the warning Exception was not properly registered when raised";
-
-  DestroyException( e );
-
-  return NULL;
-}
-
-const char *
-TestRaise
-( void )
-{
-  Exception *e;
-
-  if( RaiseException( NULL ) )
-    return "a NULL argument raised an Exception";
-
-  if( RaiseException( "this name doesn't exist" ) )
-    return "a non-existent Exception name returned an Exception";
-
-  e = BuildFailureException();
-  if( !e )
-    return "could not build a test Exception";
-
-  if( AddException( e ) != e )
-    return "could not add a new Exception";
-
-  if( RaiseException( e->name ) != e )
-    return "the correct Exception was not returned";
 
   DestroyException( e );
 

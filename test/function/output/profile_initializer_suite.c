@@ -28,11 +28,11 @@ const char *
 test_initialize_by_name
 ( void )
 {
-  Exception *e;
-  OutputProfile *profile;
+  OutputProfile *profile, *result;
 
-  e = InitializeOutputProfileByName( "text" );
-  FAIL_IF_NOT_NULL( e, "the test profile could not be initialized" )
+  result = InitializeOutputProfileByName( "text" );
+  if( !result )
+    return "the test profile could not be initialized";
 
   profile = FindOutputProfileByName( "text" );
   FAIL_IF_NULL( profile, "after being initialized, the profile was not loaded" )

@@ -28,7 +28,7 @@ SetDictionaryValue( initializers, name, New##function##Level );
 
 static Dictionary *initializers = NULL;
 
-Exception *
+Level *
 InitializeLevelByName
 ( const char *name )
 {
@@ -37,7 +37,7 @@ InitializeLevelByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseException( "constructor failure" );
+      return NULL;
 
     ADD_LEVEL( "alert", Alert )
     ADD_LEVEL( "critical", Critical )

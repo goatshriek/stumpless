@@ -37,7 +37,7 @@ Initialize##type_name##OutputProfile                                           \
 
 static Dictionary *initializers = NULL;
 
-Exception *
+OutputProfile *
 InitializeOutputProfileByName
 ( const char *name )
 {
@@ -47,7 +47,7 @@ InitializeOutputProfileByName
 
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseException( "constructor failure" );
+      return NULL;
 
     ADD_PROFILE( "raw string", RawString )
     ADD_PROFILE( "text", Text )

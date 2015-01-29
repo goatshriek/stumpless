@@ -86,22 +86,6 @@ TextOutputIntoStream
 
   fputs( ValueListToString( output->data ), stream );
 
-  /*const Value *value;
-  ValueListConstIterator * values = CBeginValueList( output->data );
-  while( value = NextInValueListConstIterator( values ) ){
-    if( !value->data ){
-      DestroyValueListConstIterator( values );
-      return RaiseException( "malformed structure" );
-    }
-
-    if( fputs( value->data->c_p, stream ) < 0 ){
-      DestroyValueListConstIterator( values );
-      return RaiseException( "stream write failure" );
-    }
-  }
-
-  DestroyValueListConstIterator( values );*/
-
   return stream;
 }
 

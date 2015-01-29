@@ -13,13 +13,14 @@
  * Initializes the Level of the given name. Initialization consists of the
  * creation of the Level struct and its addition to the list of Levels. Only
  * Levels provided by the library can be initialized this way; custom Levels
- * need to be manualy created and added to the list of levels. If the Level
+ * need to be manually created and added to the list of levels. If the Level
  * has already been Initialized, it will not be recreated.
  *
  * @param name the name of the Level to initialize
- * @return a Exception of the initialization operation
+ *
+ * @return the Level initialized
  */
-Exception *
+Level *
 InitializeLevelByName
 ( const char *name );
 

@@ -37,14 +37,14 @@ const char *
 test_add_formatter
 ( void )
 {
-  Formatter *formatter, *found;
-  Exception *e;
+  Formatter *formatter, *found, *result;
 
   formatter = BuildFormatter();
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
-  e = AddFormatter( formatter );
-  FAIL_IF_NOT_NULL( e, "the new formatter could not be added" )
+  result = AddFormatter( formatter );
+  if( result != formatter )
+    return "the new formatter could not be added";
 
   found = FindFormatterByName( formatter->name );
   if( found != formatter )
@@ -128,39 +128,39 @@ test_set_option
 ( void )
 {
   const char *option = "test option";
-  Formatter *formatter;
-  Exception *e;
+  Formatter *formatter, *result;
   void *value = "target value";
 
   formatter = BuildFormatter();
   FAIL_IF_NULL( formatter, "the test formatter could not be built" )
 
-  e = SetFormatterOption( NULL, NULL, NULL );
-  if( e )
-    return "three NULL arguments generated an Exception";
+  result = SetFormatterOption( NULL, NULL, NULL );
+  if( result )
+    return "three NULL arguments caused a problem";
 
-  e = SetFormatterOption( NULL, NULL, value );
-  if( e )
-    return "only a Value generated an Exception";
+  result = SetFormatterOption( NULL, NULL, value );
+  if( result )
+    return "only a Value caused a problem";
 
-  e = SetFormatterOption( NULL, option, value );
-  if( e )
-    return "a NULL Formatter generated an Exception";
+  result = SetFormatterOption( NULL, option, value );
+  if( result )
+    return "a NULL Formatter caused a problem";
 
-  e = SetFormatterOption( NULL, option, NULL );
-  if( e )
-    return "only an option generated an Exception";
+  result = SetFormatterOption( NULL, option, NULL );
+  if( result )
+    return "only an option caused a problem";
 
-  e = SetFormatterOption( formatter, NULL, value );
-  if( e )
-    return "an empty option generated an Exception";
+  result = SetFormatterOption( formatter, NULL, value );
+  if( result != formatter )
+    return "an empty option caused a problem";
 
-  e = SetFormatterOption( formatter, NULL, NULL );
-  if( e )
-    return "only a Formatter generated an Exception";
+  result = SetFormatterOption( formatter, NULL, NULL );
+  if( result != formatter )
+    return "only a Formatter caused a problem";
 
-  e = SetFormatterOption( formatter, option, value );
-  FAIL_IF_NOT_NULL( e, "could not set an option" )
+  result = SetFormatterOption( formatter, option, value );
+  if( result != formatter )
+    return "could not set an option";
 
   return NULL;
 }

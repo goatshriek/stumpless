@@ -11,7 +11,7 @@ static Dictionary *filters = NULL;
 
 Filter *
 AddFilter
-( Filter * filter )
+( Filter *filter )
 {
   if( !filter || !filter->name )
     return filter;
@@ -52,11 +52,8 @@ FindFilterByName
 
   filter = GetDictionaryValue( filters, name );
 
-  if( !filter ){
-    if( InitializeFilterByName( name ) != NULL )
-      return NULL;
-    filter = GetDictionaryValue( filters, name );
-  }
+  if( !filter )
+    return InitializeFilterByName( name );
 
   return filter;
 }

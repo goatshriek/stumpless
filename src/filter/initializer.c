@@ -35,7 +35,7 @@ static Dictionary *initializers = NULL;
 
 FILTER_INITIALIZER_FUNCTION( "empty", Empty )
 
-Exception *
+Filter *
 InitializeFilterByName
 ( const char *name )
 {
@@ -44,7 +44,7 @@ InitializeFilterByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseException( "constructor failure" );
+      return NULL;
 
     ADD_FILTER( "empty", Empty )
     ADD_FILTER( "level", Level )
@@ -54,8 +54,7 @@ InitializeFilterByName
   if( !initializer ){
     return NULL;
   } else {
-    AddFilter( initializer() );
-    return NULL;
+    return AddFilter( initializer() );
   }
 }
 

@@ -16,7 +16,7 @@
  * @param level the Level to add to the list of Levels
  * @return a Exception for the addition operation
  */
-Exception *
+Level *
 AddLevel
 ( Level *level );
 

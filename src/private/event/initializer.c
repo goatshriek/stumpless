@@ -42,7 +42,7 @@ SetDictionaryValue( initializers, name, New##function##Event );
 
 static Dictionary *initializers = NULL;
 
-Exception *
+Event *
 InitializeEventByName
 ( const char *name )
 {
@@ -51,7 +51,7 @@ InitializeEventByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseException( "constructor failure" );
+      return NULL;
 
     ADD_EVENT( "alert", Alert )
     ADD_EVENT( "char", Char )
@@ -97,8 +97,7 @@ InitializeEventByName
   if( !initializer ){
     return NULL;
   } else {
-    AddEvent( initializer() );
-    return NULL;
+    return AddEvent( initializer() );
   }
 }
 

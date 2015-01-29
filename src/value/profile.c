@@ -9,27 +9,19 @@
 
 static Dictionary *profiles = NULL;
 
-Exception *
+ValueProfile *
 AddValueProfile
 ( ValueProfile *profile )
 {
-  void *value;
-
   if( !profile || !profile->name )
-    return NULL;
+    return profile;
 
-  if( !profiles ){
+  if( !profiles )
     profiles = NewDictionary();
 
-    if( !profiles )
-      return RaiseException( "constructor failure" );
-  }
+  SetDictionaryValue( profiles, profile->name, ( void * ) profile );
 
-  value = ( void * ) profile;
-  if( !SetDictionaryValue( profiles, profile->name, value ) )
-    return NULL;
-
-  return NULL;
+  return profile;
 }
 
 ValueProfile *
@@ -47,11 +39,8 @@ FindValueProfileByName
 
   profile = GetDictionaryValue( profiles, name );
 
-  if( !profile ){
-    if( InitializeValueProfileByName( name ) )
-      return NULL;
-    profile = GetDictionaryValue( profiles, name );
-  }
+  if( !profile )
+    return InitializeValueProfileByName( name );
 
   return profile;
 }

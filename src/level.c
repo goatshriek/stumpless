@@ -15,24 +15,21 @@
 
 static Dictionary *levels = NULL; /**< currently initialized levels (by name) */
 
-Exception *
+Level *
 AddLevel
 ( Level *level )
 {
   if( !level || !level->name )
-    return NULL;
+    return level;
 
   if( !levels ){
     levels = NewDictionary();
 
-    if( !levels )
-      return RaiseException( "constructor failure" );
   }
 
-  if( !SetDictionaryValue( levels, level->name, level ) )
-    return RaiseException( "dictionary failure" );
+  SetDictionaryValue( levels, level->name, level );
 
-  return NULL;
+  return level;
 }
 
 Level *
@@ -50,11 +47,8 @@ FindLevelByName
 
   level = GetDictionaryValue( levels, name );
 
-  if( !level ){
-    if( InitializeLevelByName( name ) )
-      return NULL;
-    level = GetDictionaryValue( levels, name );
-  }
+  if( !level )
+    return InitializeLevelByName( name );
 
   return level;
 }

@@ -27,9 +27,9 @@ Initialize##function_name##Handler                                             \
   return handler;                                                              \
 }
 
-static Dictionary * initializers = NULL;
+static Dictionary *initializers = NULL;
 
-Exception *
+Handler *
 InitializeHandlerByName
 ( const char *name )
 {
@@ -38,8 +38,8 @@ InitializeHandlerByName
   if( !initializers ){
 
     initializers = NewDictionary();
-    if( initializers == NULL )
-      return RaiseException( "constructor failure" );
+    if( !initializers )
+      return NULL;
 
     ADD_HANDLER( "stream", Stream )
   }
@@ -48,8 +48,7 @@ InitializeHandlerByName
   if( !initializer ){
     return NULL;
   } else {
-    AddHandler( initializer() );
-    return NULL;
+    return AddHandler( initializer() );
   }
 }
 

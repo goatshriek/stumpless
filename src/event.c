@@ -58,11 +58,8 @@ FindEventByName
 
   event = GetDictionaryValue( events, name );
 
-  if( !event ){
-    if( InitializeEventByName( name ) )
-      return NULL;
-    event = GetDictionaryValue( events, name );
-  }
+  if( !event )
+    return InitializeEventByName( name );
 
   return event;
 }

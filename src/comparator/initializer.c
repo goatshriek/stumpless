@@ -29,7 +29,7 @@ Initialize##function_name##Comparator                                          \
 
 static Dictionary *initializers = NULL;
 
-Exception *
+Comparator *
 InitializeComparatorByName
 ( const char *name )
 {
@@ -38,7 +38,7 @@ InitializeComparatorByName
   if( !initializers ){
     initializers = NewDictionary();
     if( !initializers )
-      return RaiseException( "constructor failure" );
+      return NULL;
 
     ADD_COMPARATOR( "string", String )
   }
@@ -47,8 +47,7 @@ InitializeComparatorByName
   if( !initializer ){
     return NULL;
   } else {
-    AddComparator( initializer() );
-    return NULL;
+    return AddComparator( initializer() );
   }
 }
 

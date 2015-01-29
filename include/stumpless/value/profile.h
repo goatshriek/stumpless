@@ -3,7 +3,7 @@
 
 #include <stumpless/type.h>
 
-Exception *
+ValueProfile *
 AddValueProfile
 ( ValueProfile * );
 
