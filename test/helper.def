@@ -27,59 +27,57 @@ EXPORTS
     BuildRecordAttribute              @24
     BuildEvent                        @25
     BuildEventAttribute               @26
-    BuildFailureException             @27
+    BuildException                    @27
     BuildFilter                       @28
     BuildFilterList                   @29
     BuildFormatter                    @30
     BuildFormatterList                @31
     BuildHandler                      @32
     BuildHandlerList                  @33
-    BuildInformationalException       @34
-    BuildIntArrayValue                @35
-    BuildIntValue                     @36
-    BuildLevel                        @37
-    BuildListConstIterator            @38
-    BuildListIterator                 @39
-    BuildListOfStrings                @40
-    BuildListReverseIterator          @41
-    BuildLogger                       @42
-    BuildOutput                       @43
-    BuildOutputProfile                @44
-    BuildQueue                        @45
-    BuildRawStringOutput              @46
-    BuildStackOfStrings               @47
-    BuildStringValue                  @48
-    BuildTarget                       @49
-    BuildTargetList                   @50
-    BuildTextOutput                   @51
-    BuildTreeOfStrings                @52
-    BuildUnsignedIntValue             @53
-    BuildUnsignedShortValue           @54
-    BuildValue                        @55
-    BuildValueList                    @56
-    BuildValueProfile                 @57
-    BuildVoidValue                    @58
-    BuildWarningException             @59
-    InitializeTestLog                 @60
-    TestAdaptFunction                 @61
-    TestExceptionHandlerFunction      @62
-    TestFormatFunction                @63
-    TestHandleFunction                @64
-    TestLogGetLastAdaptedRecord       @65
-    TestLogGetLastAdapter             @66
-    TestLogGetLastException           @67
-    TestLogGetLastFormattedRecord     @68
-    TestLogGetLastFormatter           @69
-    TestLogGetLastGeneratedOutput     @70
-    TestLogGetLastHandledOutput       @71
-    TestLogGetLastHandler             @72
-    TestLogGetLastMessage             @73
-    TestLogSetLastAdaptedRecord       @74
-    TestLogSetLastAdapter             @75
-    TestLogSetLastException           @76
-    TestLogSetLastFormattedRecord     @77
-    TestLogSetLastFormatter           @78
-    TestLogSetLastGeneratedOutput     @79
-    TestLogSetLastHandledOutput       @80
-    TestLogSetLastHandler             @81
-    TestLogSetLastMessage             @82
+    BuildIntArrayValue                @34
+    BuildIntValue                     @35
+    BuildLevel                        @36
+    BuildListConstIterator            @37
+    BuildListIterator                 @38
+    BuildListOfStrings                @39
+    BuildListReverseIterator          @40
+    BuildLogger                       @41
+    BuildOutput                       @42
+    BuildOutputProfile                @43
+    BuildQueue                        @44
+    BuildRawStringOutput              @45
+    BuildStackOfStrings               @46
+    BuildStringValue                  @47
+    BuildTarget                       @48
+    BuildTargetList                   @49
+    BuildTextOutput                   @50
+    BuildTreeOfStrings                @51
+    BuildUnsignedIntValue             @52
+    BuildUnsignedShortValue           @53
+    BuildValue                        @54
+    BuildValueList                    @55
+    BuildValueProfile                 @56
+    BuildVoidValue                    @57
+    InitializeTestLog                 @58
+    TestAdaptFunction                 @59
+    TestExceptionHandlerFunction      @60
+    TestFormatFunction                @61
+    TestHandleFunction                @62
+    TestLogGetLastAdaptedRecord       @63
+    TestLogGetLastAdapter             @64
+    TestLogGetLastException           @65
+    TestLogGetLastFormattedRecord     @66
+    TestLogGetLastFormatter           @67
+    TestLogGetLastGeneratedOutput     @68
+    TestLogGetLastHandledOutput       @69
+    TestLogGetLastHandler             @70
+    TestLogGetLastMessage             @71
+    TestLogSetLastAdaptedRecord       @72
+    TestLogSetLastAdapter             @73
+    TestLogSetLastException           @74
+    TestLogSetLastFormattedRecord     @75
+    TestLogSetLastFormatter           @76
+    TestLogSetLastGeneratedOutput     @77
+    TestLogSetLastHandledOutput       @78
+    TestLogSetLastHandler             @79
+    TestLogSetLastMessage             @80

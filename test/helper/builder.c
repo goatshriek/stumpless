@@ -497,18 +497,14 @@ BuildEventAttribute
 }
 
 Exception *
-BuildFailureException
+BuildException
 ( void )
 {
-  Exception * e = malloc( sizeof( Exception ) );
-  if( e == NULL )
+  Exception *e = malloc( sizeof( Exception ) );
+  if( !e )
     return NULL;
 
-  e->failure = 1;
-  e->informational = 0;
-  e->warning = 0;
-
-  e->name = "test failure e";
+  e->name = "test exception";
   e->message = "this e is meant to mimic a generic e that points at a failure of a function to finish. Use it for testing purposes only.";
 
   return e;
@@ -648,26 +644,6 @@ BuildHandlerList
     return NULL;
 
   return list;
-}
-
-Exception *
-BuildInformationalException
-( void )
-{
-  Exception *e;
-
-  e = malloc( sizeof( Exception ) );
-  if( !e )
-    return NULL;
-
-  e->failure = 0;
-  e->informational = 1;
-  e->warning = 0;
-
-  e->name = "test error e";
-  e->message = "this exception is meant to mimic a generic exception that points at some error. Use it for testing purposes only.";
-
-  return e;
 }
 
 Value *
@@ -1249,24 +1225,4 @@ BuildVoidValue
   value->v_p = (void *) boolean;
 
   return value;
-}
-
-Exception *
-BuildWarningException
-( void )
-{
-  Exception *e;
-
-  e = malloc( sizeof( Exception ) );
-  if( !e )
-    return NULL;
-
-  e->failure = 0;
-  e->informational = 0;
-  e->warning = 1;
-
-  e->name = "test warning e";
-  e->message = "this e is meant to mimic a generic e that seeks to warn of something that may turn into an error. Use it for testing purposes only.";
-
-  return e;
 }

@@ -131,7 +131,7 @@ BuildEventAttribute
 ( void );
 
 Exception *
-BuildFailureException
+BuildException
 ( void );
 
 Filter *
@@ -161,10 +161,6 @@ BuildHandler
 
 HandlerList *
 BuildHandlerList
-( void );
-
-Exception *
-BuildInformationalException
 ( void );
 
 Value *
@@ -310,10 +306,6 @@ BuildValueProfile
 
 Value *
 BuildVoidValue
-( void );
-
-Exception *
-BuildWarningException
 ( void );
 
 #endif

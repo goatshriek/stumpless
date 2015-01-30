@@ -121,16 +121,8 @@ struct EventAttribute {
  * The result of an operation without a perfect completion.
  */
 struct Exception {
-  unsigned short failure : 1; /**< the operation failed */
-  /** the operation succeeded with minor problems  */
-  unsigned short informational : 1;
-  /** the operation succeeded but with serious problems */
-  unsigned short warning : 1;
-
   const char *message; /**< a detailed description of the problem  */
   const char *name; /**< the name of the Exception */
-  /** the name of the function raising the exception */
-  const char *throwing_function;
 };
 
 /**

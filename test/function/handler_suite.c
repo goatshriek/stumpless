@@ -101,7 +101,6 @@ test_set_option
 {
   const char *option = "test option";
   Handler *handler, *result;
-  Exception *e;
   void *value = ( void * ) "target value";
 
   handler = BuildHandler();
