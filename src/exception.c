@@ -1,16 +1,14 @@
 #include <stdlib.h>
 
 #include <stumpless/exception.h>
+#include <stumpless/type.h>
 
-#include "private/type.h"
 #include "private/utility/string.h"
 
 void
-DestroyException
+CatchException
 ( Exception *e )
 {
-  free( e );
-
   return;
 }
 
@@ -22,4 +20,11 @@ ExceptionToString
     return NULL;
   else
     return copy_string( e->name );
+}
+
+Exception *
+GetNextException
+( void )
+{
+  return NULL;
 }

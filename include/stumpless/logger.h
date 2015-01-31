@@ -15,10 +15,6 @@ Logger *
 AppendHandlerToLogger
 ( Logger *, Handler * );
 
-Exception *
-CheckLoggerException
-( Logger * );
-
 void
 DestroyLogger
 ( Logger * );

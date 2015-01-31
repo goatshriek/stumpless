@@ -63,7 +63,7 @@ TestAdaptFunction
  */
 void
 TestExceptionHandlerFunction
-( const Exception *e );
+( Exception *e );
 
 /**
  * Registers the Formatter called, the Record formatted, and the Output created,

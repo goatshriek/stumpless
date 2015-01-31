@@ -4,12 +4,13 @@
 #include <stumpless/type.h>
 
 /**
- * Destroys the provided Exception.
+ * Marks the Exception provided as dealt with. The Exception will be destroyed
+ * after this call.
  *
- * @param e the Exception to destroy
+ * @param e the Exception to catch.
  */
 void
-DestroyException
+CatchException
 ( Exception *e );
 
 /**
@@ -22,5 +23,15 @@ DestroyException
 char *
 ExceptionToString
 ( Exception *e );
+
+/**
+ * Gives the next uncaught Exception. Exceptions are returned in the order
+ * thrown.
+ *
+ * @return the last Exception thrown, or NULL if one has not been thrown
+ */
+Exception *
+GetNextException
+( void );
 
 #endif

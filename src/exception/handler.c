@@ -12,7 +12,7 @@ GetMemoryAllocationExceptionHandler
 
 void
 SetMemoryAllocationExceptionHandler
-( void (*handler)( const Exception *) )
+( exception_handler_function_t handler )
 {
   memory_allocation_handler = handler;
   return;

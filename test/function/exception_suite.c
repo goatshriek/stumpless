@@ -13,30 +13,12 @@ main( void )
   unsigned failure_count = 0;
   const char *result;
 
-  TEST( Destroy )
   TEST( ToString )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
-}
-
-const char *
-TestDestroy
-( void )
-{
-  Exception *e;
-
-  DestroyException( NULL );
-
-  e = BuildException();
-  if( !e )
-    return "could not build a test failure Exception";
-
-  DestroyException( e );
-
-  return NULL;
 }
 
 const char *
@@ -59,8 +41,6 @@ TestToString
 
   if( !strstr( str, e->name ) )
     return "the string did not contain the Exception's name";
-
-  DestroyException( e );
 
   return NULL;
 }

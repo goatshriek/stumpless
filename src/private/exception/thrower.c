@@ -1,16 +1,29 @@
 #include <stdlib.h>
 
 #include <stumpless/exception/handler.h>
-#include <stumpless/type.h>
 
+#include "private/container/queue.h"
 #include "private/exception/thrower.h"
+#include "private/type.h"
+
+static Queue *exceptions = NULL;
+
+Queue *
+GetExceptionStack
+( void )
+{
+  if( !exceptions )
+    exceptions = NewQueue();
+
+  return exceptions;
+}
 
 Exception *
 ThrowMemoryAllocationException
 ( void )
 {
   Exception *e;
-  void (*handler)( const Exception *);
+  exception_handler_function_t handler;
 
   e = malloc( sizeof( Exception ) );
   if( !e )
@@ -18,6 +31,10 @@ ThrowMemoryAllocationException
 
   e->name = "memory allocation failure";
   e->message = "a request for allocated memory was denied, likely meaning that there is none left";
+
+  if( !exceptions )
+    exceptions = NewQueue();
+  PushToQueue( exceptions, e );
 
   handler = GetMemoryAllocationExceptionHandler();
   if( handler )

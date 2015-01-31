@@ -43,17 +43,6 @@ AppendHandlerToLogger
   return NULL;
 }
 
-Exception *
-CheckLoggerException
-( Logger *logger )
-{
-  // the invocating process will call this function to check the
-  // current status of a Logger, which will be the status of the last
-  // logging attempt
-
-  return NULL;
-}
-
 void
 DestroyLogger
 ( Logger *logger )

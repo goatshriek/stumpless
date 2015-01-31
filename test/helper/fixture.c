@@ -57,7 +57,7 @@ TestAdaptFunction
 
 void
 TestExceptionHandlerFunction
-( const Exception *e )
+( Exception *e )
 {
   TestLogSetLastException( e );
   return;

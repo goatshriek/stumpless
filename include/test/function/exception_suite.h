@@ -8,18 +8,6 @@
 
 
 /**
- * Tests the DestroyException function.
- *
- * @test Calling the function with a NULL argument must not cause a failure.
- * Destroying an Exception must not cause a failure.
- *
- * @return NULL on completion, or a string describing the failure
- */
-const char *
-TestDestroy
-( void );
-
-/**
  * Tests the ExceptionToString function.
  *
  * @test A NULL argument must return NULL. A valid Exception must return a
