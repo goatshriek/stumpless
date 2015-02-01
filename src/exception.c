@@ -3,13 +3,14 @@
 #include <stumpless/exception.h>
 #include <stumpless/type.h>
 
+#include "private/exception/thrower.h"
 #include "private/utility/string.h"
 
 void
 CatchException
 ( Exception *e )
 {
-  return;
+  DestroyException( e );
 }
 
 char *
@@ -23,8 +24,8 @@ ExceptionToString
 }
 
 Exception *
-GetNextException
+GetUncaughtException
 ( void )
 {
-  return NULL;
+  return GetNextException();
 }

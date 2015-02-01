@@ -48,7 +48,7 @@ TestSetMemoryAllocationExceptionHandler
 
   InitializeTestLog();
 
-  SetMemoryAllocationExceptionHandler( TestExceptionHandlerFunction );
+  SetMemoryAllocationExceptionHandler( BadExceptionHandlerFunction );
   ThrowMemoryAllocationException();
 
   e = TestLogGetLastException();

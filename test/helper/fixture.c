@@ -19,6 +19,15 @@ BadAdaptFunction
   return NULL;
 }
 
+void
+BadExceptionHandlerFunction
+( Exception *e )
+{
+  TestLogSetLastException( e );
+
+  return;
+}
+
 Output *
 BadFormatFunction
 ( const Formatter *formatter, const Record *record )
@@ -59,8 +68,7 @@ void
 TestExceptionHandlerFunction
 ( Exception *e )
 {
-  TestLogSetLastException( e );
-  return;
+  CatchException( e );
 }
 
 Output *

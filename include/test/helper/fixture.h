@@ -21,6 +21,15 @@ BadAdaptFunction
 ( const Adapter *adapter, Record *record );
 
 /**
+ * Registers the Exception thrown, then returns without catching it.
+ *
+ * @param e the Exception thrown
+ */
+void
+BadExceptionHandlerFunction
+( Exception *e );
+
+/**
  * Registers the Formatter and Record provided, and then returns NULL.
  *
  * @param formatter the Formatter to register
@@ -57,9 +66,9 @@ TestAdaptFunction
 ( const Adapter *adapter, Record *record );
 
 /**
- * Registers the Exception thrown.
+ * Catches the Exception thrown.
  *
- * @param e the Exception to register
+ * @param e the Exception to catch
  */
 void
 TestExceptionHandlerFunction

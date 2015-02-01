@@ -4,12 +4,22 @@
 #include "private/type.h"
 
 /**
- * Returns the current Queue of all uncaught Exceptions.
+ * Destroys the provided Exception, and removes it from the list of active
+ * (uncaught) Exceptions.
  *
- * @return a Queue of all current Exceptions
+ * @param e the Exception to destroy
  */
-Queue *
-GetExceptionStack
+void
+DestroyException
+( Exception *e );
+
+/**
+ * Returns the first Exception thrown that has not yet been caught.
+ *
+ * @return the first uncaught Exception
+ */
+Exception *
+GetNextException
 ( void );
 
 /**

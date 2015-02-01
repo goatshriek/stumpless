@@ -12,6 +12,7 @@ main( void )
   unsigned failure_count = 0;
   const char *result;
 
+  TEST( Contains )
   TEST( Copy )
   TEST( Destroy )
   TEST( IsEmpty )
@@ -19,12 +20,47 @@ main( void )
   TEST( Peek )
   TEST( Pop )
   TEST( Push )
+  TEST( Remove )
   TEST( Size )
 
   if( failure_count > 0 )
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;
+}
+
+const char *
+TestContains
+( void )
+{
+  Queue *queue;
+  void *value = "this value does not exist in the Queue";
+
+  if( QueueContains( NULL, NULL ) )
+    return "a NULL Queue did not return 0";
+
+  if( QueueContains( NULL, value ) )
+    return "a NULL Queue contained a value";
+
+  queue = BuildQueue();
+  if( !queue)
+    return "could not build a test Queue";
+
+  if( QueueContains( queue, NULL ) )
+    return "a Queue contained a NULL value";
+
+  if( QueueContains( queue, value ) )
+    return "a Queue contained a value not in it";
+
+  value = PeekAtQueue( queue );
+  if( QueueContains( queue, value ) != 1 )
+    return "a Queue did not contain a value pulled from it";
+
+  PushToQueue( queue, value );
+  if( QueueContains( queue, value ) != 2 )
+    return "the correct count of a value existing twice was not returned";
+
+  return NULL;
 }
 
 const char *
@@ -206,6 +242,59 @@ TestPush
   if( !value )
     return "could not get a value from the queue after the second push";
   ASSERT_STRINGS_EQUAL( "first new element", value, "a second element was pushed to the front instead of the back" )
+
+  return NULL;
+}
+
+const char *
+TestRemove
+( void )
+{
+  Queue *queue;
+  void *value = "this value not in the Queue";
+
+  if( RemoveFromQueue( NULL, NULL ) )
+    return "a NULL Queue and value did not return NULL";
+
+  if( RemoveFromQueue( NULL, value ) )
+    return "a NULL Queue did not return NULL";
+
+  queue = BuildQueue();
+  if( !queue )
+    return "could not build a test Queue";
+
+  if( RemoveFromQueue( queue, NULL ) )
+    return "a NULL value did not return NULL";
+
+  if( RemoveFromQueue( queue, value ) )
+    return "a non-existent value was removed from the Queue";
+
+  value = PeekAtQueue( queue );
+  if( RemoveFromQueue( queue, value ) != value )
+    return "a value could not be removed from the Queue";
+
+  value = PeekAtQueue( queue );
+  PushToQueue( queue, value );
+
+  if( RemoveFromQueue( queue, value ) != value )
+    return "a value in the Queue twice could not be removed";
+
+  if( !QueueContains( queue, value ) )
+    return "both occurrences were removed from the Queue";
+
+  if( PeekAtQueue( queue) == value )
+    return "the first value was not the one removed from the Queue";
+
+  DestroyQueue( queue );
+
+  queue = NewQueue();
+
+  PushToQueue( queue, value );
+  if( RemoveFromQueue( queue, value ) != value )
+    return "the only value in a Queue was not removed";
+  if( !QueueIsEmpty( queue ) )
+    return "removing the last element did not set the Queue to empty";
+
 
   return NULL;
 }

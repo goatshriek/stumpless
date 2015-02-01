@@ -29,9 +29,10 @@ ExceptionToString
  * thrown.
  *
  * @return the last Exception thrown, or NULL if one has not been thrown
+ * without being caught
  */
 Exception *
-GetNextException
+GetUncaughtException
 ( void );
 
 #endif

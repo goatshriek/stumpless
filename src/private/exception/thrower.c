@@ -8,14 +8,19 @@
 
 static Queue *exceptions = NULL;
 
-Queue *
-GetExceptionStack
+void
+DestroyException
+( Exception *e )
+{
+  RemoveFromQueue( exceptions, e );
+  free( e );
+}
+
+Exception *
+GetNextException
 ( void )
 {
-  if( !exceptions )
-    exceptions = NewQueue();
-
-  return exceptions;
+  return PeekAtQueue( exceptions );
 }
 
 Exception *

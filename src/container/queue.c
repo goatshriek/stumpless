@@ -66,10 +66,10 @@ void *
 PeekAtQueue
 ( const Queue *queue )
 {
-  if( !queue || !queue->elements || queue->front == queue->back )
+  if( QueueIsEmpty( queue ) )
     return NULL;
-
-  return queue->elements[ queue->front ];
+  else
+    return queue->elements[ queue->front ];
 }
 
 void *
@@ -94,7 +94,7 @@ PushToQueue
 {
   unsigned new_back;
 
-  if( !queue || !element || !queue->elements )
+  if( !queue || !element )
     return NULL;
 
   new_back = (queue->back + 1) % queue->capacity;
@@ -107,6 +107,26 @@ PushToQueue
   return queue;
 }
 
+size_t
+QueueContains
+( const Queue *queue, const void *value )
+{
+  size_t count = 0, current;
+
+  if( QueueIsEmpty( queue ) )
+    return 0;
+
+  current = queue->front;
+  while( current != queue->back ){
+    if( queue->elements[current] == value )
+      count++;
+
+    current = ( current + 1 ) % queue->capacity;
+  }
+
+  return count;
+}
+
 unsigned short
 QueueIsEmpty
 ( const Queue *queue )
@@ -114,7 +134,7 @@ QueueIsEmpty
   return queue == NULL || queue->front == queue->back;
 }
 
-unsigned
+size_t
 QueueSize
 ( const Queue *queue )
 {
@@ -124,4 +144,32 @@ QueueSize
     return queue->back - queue->front;
   else
     return queue->back + queue->capacity - queue->front;
+}
+
+void *
+RemoveFromQueue
+( Queue *queue, void *value )
+{
+  size_t current;
+
+  if( QueueIsEmpty( queue ) )
+    return NULL;
+
+  current = queue->front;
+  while( current != queue->back ){
+    if( queue->elements[current] == value ){
+      queue->back = queue->back == 0 ? queue->capacity - 1 : queue->back - 1;
+
+      while( current != queue->back ){
+        queue->elements[current] = queue->elements[( current + 1 ) % queue->capacity];
+        current = (current + 1 ) % queue->capacity;
+      }
+
+      return value;
+    }
+
+    current = ( current + 1 ) % queue->capacity;
+  }
+
+  return NULL;
 }

@@ -74,6 +74,19 @@ PushToQueue
 ( Queue *queue, void *value );
 
 /**
+ * Searches a Queue for a specific value.
+ *
+ * @param queue the Queue to search for the value
+ * @param value the value to search for in the Queue
+ *
+ * @return the number of times the Queue contains the value, and 0 if it does
+ * not
+ */
+size_t
+QueueContains
+( const Queue *queue, const void *value );
+
+/**
  * Checks a Queue to see if it's empty.
  *
  * @param queue the Queue to check
@@ -92,8 +105,22 @@ QueueIsEmpty
  *
  * @return the number of elements in the Queue
  */
-unsigned
+size_t
 QueueSize
 ( const Queue *queue);
+
+/**
+ * Removes the first occurrence of a value from the Queue given. If the value
+ * exists more than once in the Queue, the first from the bottom (the one that
+ * would be popped first) is removed.
+ *
+ * @param queue the Queue to remove the value from
+ * @param value the value to remove
+ *
+ * @return the value removed, or NULL if the value did not exist in the Queue
+ */
+void *
+RemoveFromQueue
+( Queue *queue, void *value );
 
 #endif

@@ -9,6 +9,19 @@
 #include "test/type.h"
 
 /**
+ * Tests the QueueContains function.
+ *
+ * @test A NULL queue must return 0. A NULL or a value not existing in the Queue
+ * must return 0. A value existing in the Queue must return 1. A value existing
+ * twice in the Queue must return 2.
+ *
+ * @return NULL on completion, or a string describing the failure
+ */
+const char *
+TestContains
+( void );
+
+/**
  * Tests the CopyQueue function.
  *
  * @test a NULL Queue must return NULL. The copied Queue must point at the same
@@ -93,6 +106,21 @@ TestPop
  */
 const char *
 TestPush
+( void );
+
+/**
+ * Tests the RemoveFromQueue function.
+ *
+ * @test A NULL Queue or value must return NULL. A value that is not in the
+ * Queue will return NULL. A value that is in the Queue must be removed and
+ * returned. A Queue that has the value twice will have the first occurrence
+ * removed and returned, but not the second. Removing the only element in a
+ * Queue must remove the element and leave the Queue empty.
+ *
+ * @return NULL on completion, or a string describing the failure
+ */
+const char *
+TestRemove
 ( void );
 
 /**
