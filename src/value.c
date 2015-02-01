@@ -10,7 +10,6 @@
 #include "private/boolean.h"
 #include "private/configuration.h"
 #include "private/container/list/value.h"
-#include "private/exception/checker.h"
 #include "private/type.h"
 #include "private/utility/string.h"
 

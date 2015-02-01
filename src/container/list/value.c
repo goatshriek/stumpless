@@ -15,7 +15,6 @@
 #include "private/container/list/value.h"
 #include "private/container/list/iterator/value.h"
 #include "private/container/list/reverse_iterator/value.h"
-#include "private/exception/checker.h"
 #include "private/type.h"
 #include "static/container/list/value.h"
 

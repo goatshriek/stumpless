@@ -1,2 +1,1 @@
-noinst_HEADERS += include/private/exception/checker.h \
-				  include/private/exception/thrower.h
+noinst_HEADERS += include/private/exception/thrower.h

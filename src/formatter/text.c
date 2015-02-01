@@ -9,7 +9,6 @@
 #include "private/container/dictionary.h"
 #include "private/container/dictionary/const_iterator.h"
 #include "private/container/list/value.h"
-#include "private/exception/checker.h"
 #include "private/output.h"
 #include "private/output/profile.h"
 #include "private/type.h"
