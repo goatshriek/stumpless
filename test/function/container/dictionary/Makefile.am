@@ -1,2 +1,0 @@
-test_function_container_dictionary_const_iterator_suite_SOURCES = test/function/container/dictionary/const_iterator_suite.c
-test_function_container_dictionary_const_iterator_suite_LDADD = $(test_libraries)

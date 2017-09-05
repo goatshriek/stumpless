@@ -1,1 +1,0 @@
-noinst_HEADERS += include/test/function/logger/log_suite.h
