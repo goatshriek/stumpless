@@ -17,13 +17,32 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <error.h>
 #include <stdlib.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 
 int main(void){
-  // open pipe
+  // create and open pipe
+  int log_socket;
+  struct sockaddr_un log_socket_addr;
+
+  log_socket_addr.sun_family = AF_UNIX;
+  memcpy(&log_socket_addr.sun_data, "/dev/stumpless", 15);
+
+  log_socket = socket(log_socket_addr.sun_family, SOCK_DGRAM, 0);
+  if(s < 0){
+    perror("could not create socket: ");
+    return EXIT_FAILURE;
+  }
+
+  if( bind(log_socket, log_socket_addr, sizeof(log_socket_addr.sun_family)+15) < 0 ){
+    perror("could not bind socket: ");
+    return EXIT_FAILURE;
+  }
 
   while(1){
-    //listen on pipe
+    // use recvfrom
   }
 
   return EXIT_SUCCESS;
