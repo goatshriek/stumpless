@@ -17,8 +17,14 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "stumpless.h"
+#include <stdlib.h>
 
-int stumpless(const char *message){
-  return 0;
+int main(void){
+  // open pipe
+
+  while(1){
+    //listen on pipe
+  }
+
+  return EXIT_SUCCESS;
 }
