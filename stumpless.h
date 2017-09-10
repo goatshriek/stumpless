@@ -20,4 +20,6 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
+int stumpless(const char *message);
+
 #endif /* __STUMPLESS_H */
