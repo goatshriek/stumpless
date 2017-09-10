@@ -16,3 +16,8 @@
  * You should have received a copy of the GNU General Public License along with
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#ifndef __STUMPLESS_H
+#define __STUMPLESS_H
+
+#endif /* __STUMPLESS_H */
