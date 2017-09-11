@@ -19,31 +19,43 @@
 
 #include <error.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <sys/un.h>
 
 int main(void){
   // create and open pipe
   int log_socket;
   struct sockaddr_un log_socket_addr;
+  struct sockaddr_un from_addr;
+  ssize_t msg_len;
+  socklen_t size;
+  char buf[1024];
 
   log_socket_addr.sun_family = AF_UNIX;
-  memcpy(&log_socket_addr.sun_data, "/dev/stumpless", 15);
+  memcpy(&log_socket_addr.sun_path, "/dev/stumpless", 15);
 
   log_socket = socket(log_socket_addr.sun_family, SOCK_DGRAM, 0);
-  if(s < 0){
+  if(log_socket < 0){
     perror("could not create socket: ");
     return EXIT_FAILURE;
   }
 
-  if( bind(log_socket, log_socket_addr, sizeof(log_socket_addr.sun_family)+15) < 0 ){
+  if( bind(log_socket, (struct sockaddr *) &log_socket_addr, sizeof(log_socket_addr.sun_family)+15) < 0 ){
     perror("could not bind socket: ");
     return EXIT_FAILURE;
   }
 
-  while(1){
-    // use recvfrom
+  size = 100;
+  msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
+  if(msg_len < 0){
+    perror("message recieve failure: ");
   }
+
+  printf("%s\n", buf);
+
+  
 
   return EXIT_SUCCESS;
 }
