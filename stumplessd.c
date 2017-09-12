@@ -55,7 +55,5 @@ int main(void){
 
   printf("%s\n", buf);
 
-  
-
   return EXIT_SUCCESS;
 }

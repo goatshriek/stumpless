@@ -20,6 +20,13 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
+struct stumpless_target {
+  const char *name;
+  int options;
+  int facility;
+}
+
+struct stumpless_target *stumpless_open_target(const char *name, int options, int facility);
 int stumpless(const char *message);
 
 #endif /* __STUMPLESS_H */
