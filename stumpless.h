@@ -21,10 +21,10 @@
 #define __STUMPLESS_H
 
 struct stumpless_target {
-  const char *name;
+  char *name;
   int options;
   int facility;
-}
+};
 
 struct stumpless_target *stumpless_open_target(const char *name, int options, int facility);
 int stumpless(const char *message);

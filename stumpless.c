@@ -19,37 +19,30 @@
 
 #include <error.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include "stumpless.h"
 
+static struct stumpless_target *current_target;
+static struct sockaddr_un target_socket_addr, my_socket_addr;
+static int my_socket;
+
 int stumpless(const char *message){
-  int my_socket;
-  struct sockaddr_un log_socket_addr, my_addr;
   ssize_t msg_len;
   socklen_t size;
   size=100;
 
-  log_socket_addr.sun_family = AF_UNIX;
-  memcpy(&log_socket_addr.sun_path, "/dev/stumpless", 15);
-
-  my_addr.sun_family = AF_UNIX;
-  memcpy(&my_addr.sun_path, "\0/stumpless-test", 17);
-
-  my_socket = socket(my_addr.sun_family, SOCK_DGRAM, 0);
-  if(my_socket < 0){
-    perror("could not create socket: ");
-    return -1;
+  if( !current_target ){
+    current_target = stumpless_open_target("/dev/stumpless", 0, 0);
+    if( !current_target ){
+      return -1;
+    }
   }
 
-  if( bind(my_socket, (struct sockaddr *) &my_addr, sizeof(my_addr.sun_family)+17) < 0 ){
-    perror("could not bind socket: ");
-    return -1;
-  }
-
-  msg_len = sendto(my_socket, message, strlen(message)+1, 0, (struct sockaddr *) &log_socket_addr, size);
+  msg_len = sendto(my_socket, message, strlen(message)+1, 0, (struct sockaddr *) &target_socket_addr, size);
   if(msg_len > 0){
     printf("message sent");
   } else {
@@ -57,4 +50,51 @@ int stumpless(const char *message){
   }
 
   return 0;
+}
+
+struct stumpless_target *
+stumpless_open_target(const char *name, int options, int facility){
+  struct stumpless_target *target;
+  size_t name_len;
+
+  target = malloc(sizeof(struct stumpless_target));
+  if( !target ){
+    return NULL;
+  }
+
+  name_len = strlen(name) + 1;
+  target->name = malloc(name_len);
+  if( !target->name ){
+    free(target);
+    return NULL;
+  }
+
+  memcpy(target->name, name, name_len);
+
+  target->options = options;
+  target->facility = facility;
+
+  target_socket_addr.sun_family = AF_UNIX;
+  memcpy(&target_socket_addr.sun_path, name, name_len);
+
+  my_socket_addr.sun_family = AF_UNIX;
+  memcpy(&my_socket_addr.sun_path, "\0/stumpless-test", 17);
+
+  my_socket = socket(my_socket_addr.sun_family, SOCK_DGRAM, 0);
+  if(my_socket < 0){
+    perror("could not create socket: ");
+    free(target->name);
+    free(target);
+    return NULL;
+  }
+
+  if( bind(my_socket, (struct sockaddr *) &my_socket_addr, sizeof(my_socket_addr.sun_family)+17) < 0 ){
+    perror("could not bind socket: ");
+    free(target->name);
+    free(target);
+    return NULL;
+  }
+
+  current_target = target;
+  return target;
 }
