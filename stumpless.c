@@ -98,3 +98,12 @@ stumpless_open_target(const char *name, int options, int facility){
   current_target = target;
   return target;
 }
+
+void
+stumpless_close_target(struct stumpless_target *target){
+  if(!target){
+    return;
+  }
+
+  close(my_socket);
+}

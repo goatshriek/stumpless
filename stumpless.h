@@ -27,6 +27,7 @@ struct stumpless_target {
 };
 
 struct stumpless_target *stumpless_open_target(const char *name, int options, int facility);
+void stumpless_close_target(struct stumpless_target *target);
 int stumpless(const char *message);
 
 #endif /* __STUMPLESS_H */
