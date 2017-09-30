@@ -17,13 +17,12 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <error.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <unistd.h>
 #include "stumpless.h"
 
 static struct stumpless_target *current_target;
