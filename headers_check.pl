@@ -1,12 +1,9 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 
-sub uniq {
-  my %seen;
-  grep !$seen{$_}++, @_;
-}
-
-my $file = "stumpless.c";
+my $file = "stumplessd.c";
 open(SOURCE, $file) or die("could not open file");
 
 my %manifest = (
@@ -22,6 +19,9 @@ my %manifest = (
   "struct sockaddr" => "sys/socket.h",
   "struct sockaddr_un" => "sys/un.h",
   "stumpless" => "stumpless.h",
+  "struct stumpless_target" => "stumpless.h",
+  "stumpless_open_target" => "stumpless.h",
+  "stumpless_close_target" => "stumpless.h",
   "close" => "unistd.h"
 );
 
