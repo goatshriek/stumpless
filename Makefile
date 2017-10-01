@@ -1,6 +1,8 @@
-test: stumpless.o stumplessd.o stumpless-test.o
+all: stumpless.o stumplessd.o stumpless-test.o
 	gcc -o stumpless-test stumpless.o stumpless-test.o
 	gcc -o stumplessd stumplessd.o
+
+test: stumpless.o stumplessd.o stumpless-test.o
 	./stumpless-test
 
 stumpless.o: stumpless.c
