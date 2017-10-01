@@ -35,19 +35,19 @@ int stumpless(const char *message){
   size=100;
 
   if( !current_target ){
-    current_target = stumpless_open_target("/dev/stumpless", 0, 0);
+    current_target = stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
     if( !current_target ){
       return -1;
     }
   }
 
   msg_len = sendto(my_socket, message, strlen(message)+1, 0, (struct sockaddr *) &target_socket_addr, size);
-  if(msg_len > 0){
-    printf("message sent");
-  } else {
-    perror("could not send message: ");
+  if(msg_len <= 0){
+    perror("could not send message");
+    return -1;
   }
 
+  printf("message sent\n");
   return 0;
 }
 
@@ -81,14 +81,14 @@ stumpless_open_target(const char *name, int options, int facility){
 
   my_socket = socket(my_socket_addr.sun_family, SOCK_DGRAM, 0);
   if(my_socket < 0){
-    perror("could not create socket: ");
+    perror("could not create socket");
     free(target->name);
     free(target);
     return NULL;
   }
 
   if( bind(my_socket, (struct sockaddr *) &my_socket_addr, sizeof(my_socket_addr.sun_family)+17) < 0 ){
-    perror("could not bind socket: ");
+    perror("could not bind socket");
     free(target->name);
     free(target);
     return NULL;

@@ -9,20 +9,23 @@ open(SOURCE, $file) or die("could not open file");
 my %manifest = (
   "memcpy" => "string.h",
   "printf" => "stdio.h",
+  "perror" => "stdio.h",
   "socklen_t" => "sys/socket.h",
   "recvfrom" => "sys/socket.h",
-  "perror" => "stdio.h",
+  "struct sockaddr" => "sys/socket.h",
+  "sendto" => "sys/socket.h",
   "ssize_t" => "sys/un.h",
+  "struct sockaddr_un" => "sys/un.h",
+  "close" => "unistd.h",
   "EXIT_FAILURE" => "stdlib.h",
   "EXIT_SUCCESS" => "stdlib.h",
   "NULL" => "stdlib.h",
-  "struct sockaddr" => "sys/socket.h",
-  "struct sockaddr_un" => "sys/un.h",
   "stumpless" => "stumpless.h",
   "struct stumpless_target" => "stumpless.h",
   "stumpless_open_target" => "stumpless.h",
   "stumpless_close_target" => "stumpless.h",
-  "close" => "unistd.h"
+  "STUMPLESS_PIPE_NAME" => "stumpless.h",
+  "STUMPLESS_PIPE_NAME_LENGTH" => "stumpless.h"
 );
 
 my %actual_includes;

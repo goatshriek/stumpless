@@ -22,9 +22,10 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <unistd.h>
+#include "stumpless.h"
 
 int main(void){
-  // create and open pipe
   int log_socket;
   struct sockaddr_un log_socket_addr;
   struct sockaddr_un from_addr;
@@ -33,26 +34,28 @@ int main(void){
   char buf[1024];
 
   log_socket_addr.sun_family = AF_UNIX;
-  memcpy(&log_socket_addr.sun_path, "/dev/stumpless", 15);
+  memcpy(&log_socket_addr.sun_path, STUMPLESS_PIPE_NAME, STUMPLESS_PIPE_NAME_LENGTH+1);
 
   log_socket = socket(log_socket_addr.sun_family, SOCK_DGRAM, 0);
   if(log_socket < 0){
-    perror("could not create socket: ");
+    perror("could not create socket");
     return EXIT_FAILURE;
   }
 
-  if( bind(log_socket, (struct sockaddr *) &log_socket_addr, sizeof(log_socket_addr.sun_family)+15) < 0 ){
-    perror("could not bind socket: ");
+  if( bind(log_socket, (struct sockaddr *) &log_socket_addr, sizeof(log_socket_addr.sun_family)+STUMPLESS_PIPE_NAME_LENGTH+1) < 0 ){
+    perror("could not bind socket");
     return EXIT_FAILURE;
   }
 
   size = 100;
   msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
   if(msg_len < 0){
-    perror("message recieve failure: ");
+    perror("message recieve failure");
   }
 
   printf("%s\n", buf);
+  close(log_socket);
+  unlink(STUMPLESS_PIPE_NAME);
 
   return EXIT_SUCCESS;
 }
