@@ -20,8 +20,8 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
-#define STUMPLESS_PIPE_NAME "/home/angel/testpipe"
-#define STUMPLESS_PIPE_NAME_LENGTH 20
+#define STUMPLESS_PIPE_NAME "/tmp/stumplesstestpipe"
+#define STUMPLESS_PIPE_NAME_LENGTH 22
 
 struct stumpless_target {
   char *name;
