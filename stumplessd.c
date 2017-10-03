@@ -26,11 +26,11 @@
 #include "stumpless.h"
 
 int main(void){
-  int log_socket;
+  int log_socket, message_count=0;
   struct sockaddr_un log_socket_addr;
   struct sockaddr_un from_addr;
   ssize_t msg_len;
-  socklen_t size;
+  socklen_t size = 100;
   char buf[1024];
 
   log_socket_addr.sun_family = AF_UNIX;
@@ -47,13 +47,18 @@ int main(void){
     return EXIT_FAILURE;
   }
 
-  size = 100;
-  msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
-  if(msg_len < 0){
-    perror("message recieve failure");
+  
+  while(message_count < 5){
+    msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
+    if(msg_len < 0){
+      perror("message recieve failure");
+    } else {
+      printf("%s\n", buf);
+    }
+    message_count++;
   }
-
-  printf("%s\n", buf);
+  
+  
   close(log_socket);
   unlink(STUMPLESS_PIPE_NAME);
 
