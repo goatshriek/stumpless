@@ -36,7 +36,6 @@ void sigint_handler(int signo){
 }
 
 int main(void){
-  int message_count=0;
   struct sockaddr_un log_socket_addr;
   struct sockaddr_un from_addr;
   ssize_t msg_len;
@@ -47,7 +46,7 @@ int main(void){
   memcpy(&log_socket_addr.sun_path, STUMPLESS_PIPE_NAME, STUMPLESS_PIPE_NAME_LENGTH+1);
 
   if(signal(SIGINT, &sigint_handler) == SIG_ERR){
-    perror("could not register signal handler for SIGINT");
+    perror("could not register signal handler for SIGINTit ");
     return EXIT_FAILURE;
   }
   
@@ -62,17 +61,14 @@ int main(void){
     return EXIT_FAILURE;
   }
   
-  while(message_count < 5){
+  while(1){
     msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
     if(msg_len < 0){
       perror("message recieve failure");
     } else {
       printf("%s\n", buf);
     }
-    message_count++;
   }
-  
-  sigint_handler(SIGINT);
 
   // this should never be hit
   return EXIT_FAILURE;
