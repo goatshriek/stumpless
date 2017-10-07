@@ -20,13 +20,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
 #include "stumpless.h"
 
+static int log_socket=0;
+
+void sigint_handler(int signo){
+  close(log_socket);
+  unlink(STUMPLESS_PIPE_NAME);
+  
+  exit(EXIT_SUCCESS);
+}
+
 int main(void){
-  int log_socket, message_count=0;
+  int message_count=0;
   struct sockaddr_un log_socket_addr;
   struct sockaddr_un from_addr;
   ssize_t msg_len;
@@ -36,6 +46,11 @@ int main(void){
   log_socket_addr.sun_family = AF_UNIX;
   memcpy(&log_socket_addr.sun_path, STUMPLESS_PIPE_NAME, STUMPLESS_PIPE_NAME_LENGTH+1);
 
+  if(signal(SIGINT, &sigint_handler) == SIG_ERR){
+    perror("could not register signal handler for SIGINT");
+    return EXIT_FAILURE;
+  }
+  
   log_socket = socket(log_socket_addr.sun_family, SOCK_DGRAM, 0);
   if(log_socket < 0){
     perror("could not create socket");
@@ -46,7 +61,6 @@ int main(void){
     perror("could not bind socket");
     return EXIT_FAILURE;
   }
-
   
   while(message_count < 5){
     msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
@@ -58,9 +72,8 @@ int main(void){
     message_count++;
   }
   
-  
-  close(log_socket);
-  unlink(STUMPLESS_PIPE_NAME);
+  sigint_handler(SIGINT);
 
-  return EXIT_SUCCESS;
+  // this should never be hit
+  return EXIT_FAILURE;
 }
