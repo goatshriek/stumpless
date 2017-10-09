@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-my $file = "stumplessd.c";
+my $file = "src/stumpless.c";
 open(SOURCE, $file) or die("could not open file");
 
 my %manifest = (
@@ -29,6 +29,7 @@ my %manifest = (
   "STUMPLESS_PIPE_NAME" => "stumpless.h",
   "STUMPLESS_PIPE_NAME_LENGTH" => "stumpless.h",
   "STUMPLESS_MAX_TARGET_COUNT" => "stumpless.h",
+  "struct target" => "target.h",
   "syslog" => "syslog.h",
   "LOG_INFO" => "syslog.h",
   "clock_t" => "sys/types.h",

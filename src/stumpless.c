@@ -23,17 +23,15 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
-#include "stumpless.h"
+#include <stumpless.h>
+#include "target.h"
 
-static struct stumpless_target **targets=NULL;
+static struct target **targets=NULL;
 static stumpless_id_t current_target=0;
-static struct sockaddr_un target_socket_addr, my_socket_addr;
-static int my_socket;
 
 int stumpless(const char *message){
+  struct target *target;
   ssize_t msg_len;
-  socklen_t size;
-  size=100;
 
   if( current_target == 0 ){
     stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
@@ -42,7 +40,9 @@ int stumpless(const char *message){
     }
   }
 
-  msg_len = sendto(my_socket, message, strlen(message)+1, 0, (struct sockaddr *) &target_socket_addr, size);
+  target = targets[current_target-1];
+  
+  msg_len = sendto(target->local_socket, message, strlen(message)+1, 0, (struct sockaddr *) &target->target_addr, target->target_addr_len);
   if(msg_len <= 0){
     perror("could not send message");
     return -1;
@@ -53,10 +53,11 @@ int stumpless(const char *message){
 
 struct stumpless_target *
 stumpless_open_target(const char *name, int options, int facility){
-  struct stumpless_target *target;
+  struct stumpless_target *pub_target;
+  struct target *priv_target;
   size_t name_len;
 
-  if( current_target == STUMPLESS_MAX_TARGET_COUNT-1){
+  if( current_target == STUMPLESS_MAX_TARGET_COUNT-1 ){
     return NULL;
   }
 
@@ -66,53 +67,72 @@ stumpless_open_target(const char *name, int options, int facility){
       return NULL;
   }
 
-  target = malloc(sizeof(struct stumpless_target));
-  if( !target ){
+  pub_target = malloc(sizeof(struct stumpless_target));
+  if( !pub_target ){
+    return NULL;
+  }
+  
+  priv_target = malloc(sizeof(struct target));
+  if( !priv_target ){
+    free(pub_target);
     return NULL;
   }
 
   name_len = strlen(name) + 1;
-  target->name = malloc(name_len);
-  if( !target->name ){
-    free(target);
+  pub_target->name = malloc(name_len);
+  if( !pub_target->name ){
+    free(pub_target);
+    free(priv_target);
     return NULL;
   }
 
-  memcpy(target->name, name, name_len);
+  memcpy(pub_target->name, name, name_len);
 
-  target->id = current_target++;
-  target->options = options;
-  target->facility = facility;
+  pub_target->id = current_target++;
+  pub_target->options = options;
+  pub_target->facility = facility;
 
-  target_socket_addr.sun_family = AF_UNIX;
-  memcpy(&target_socket_addr.sun_path, name, name_len);
+  priv_target->target_addr.sun_family = AF_UNIX;
+  memcpy(&priv_target->target_addr.sun_path, name, name_len);
 
-  my_socket_addr.sun_family = AF_UNIX;
-  memcpy(&my_socket_addr.sun_path, "\0/stumpless-test", 17);
+  priv_target->local_addr.sun_family = AF_UNIX;
+  memcpy(&priv_target->local_addr.sun_path, "\0/stumpless-test", 17);
 
-  my_socket = socket(my_socket_addr.sun_family, SOCK_DGRAM, 0);
-  if(my_socket < 0){
+  priv_target->local_socket = socket(priv_target->local_addr.sun_family, SOCK_DGRAM, 0);
+  if(priv_target->local_socket < 0){
     perror("could not create socket");
-    free(target->name);
-    free(target);
+    free(pub_target->name);
+    free(pub_target);
+    free(priv_target);
     return NULL;
   }
 
-  if( bind(my_socket, (struct sockaddr *) &my_socket_addr, sizeof(my_socket_addr.sun_family)+17) < 0 ){
+  if( bind(priv_target->local_socket, (struct sockaddr *) &priv_target->local_addr, sizeof(priv_target->local_addr.sun_family)+17) < 0 ){
     perror("could not bind socket");
-    free(target->name);
-    free(target);
+    free(pub_target->name);
+    free(pub_target);
+    free(priv_target);
     return NULL;
   }
 
-  return target;
+  priv_target->target_addr_len = sizeof(priv_target->target_addr);
+  targets[pub_target->id] = priv_target;
+  
+  return pub_target;
 }
 
 void
 stumpless_close_target(struct stumpless_target *target){
-  if(!target){
+  struct target *priv_target;
+  
+  if(!target || !targets){
     return;
   }
-
-  close(my_socket);
+  
+  priv_target = targets[target->id];
+  
+  close(priv_target->local_socket);
+  free(priv_target);
+  
+  // todo need to clean up the id list
 }
