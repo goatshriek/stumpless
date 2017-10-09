@@ -28,7 +28,8 @@ my %manifest = (
   "stumpless_open_target" => "stumpless.h",
   "stumpless_close_target" => "stumpless.h",
   "STUMPLESS_PIPE_NAME" => "stumpless.h",
-  "STUMPLESS_PIPE_NAME_LENGTH" => "stumpless.h"
+  "STUMPLESS_PIPE_NAME_LENGTH" => "stumpless.h",
+  "STUMPLESS_MAX_TARGET_COUNT" => "stumpless.h"
 );
 
 my %actual_includes;
