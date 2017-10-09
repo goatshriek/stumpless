@@ -9,8 +9,8 @@ test: all
 stumpless.o: src/stumpless.c include/stumpless.h
 	gcc -Wall -I include -c src/stumpless.c
 
-stumplessd.o: stumplessd.c include/stumpless.h
-	gcc -Wall -I include -c stumplessd.c
+stumplessd.o: src/daemon/stumplessd.c include/stumpless.h
+	gcc -Wall -I include -c src/daemon/stumplessd.c
 
 stumpless-test.o: test/stumpless-test.c include/stumpless.h
 	gcc -Wall -I include -c test/stumpless-test.c
