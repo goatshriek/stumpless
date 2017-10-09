@@ -14,7 +14,6 @@ my %manifest = (
   "recvfrom" => "sys/socket.h",
   "struct sockaddr" => "sys/socket.h",
   "sendto" => "sys/socket.h",
-  "ssize_t" => "sys/un.h",
   "struct sockaddr_un" => "sys/un.h",
   "close" => "unistd.h",
   "EXIT_FAILURE" => "stdlib.h",
@@ -29,7 +28,11 @@ my %manifest = (
   "stumpless_close_target" => "stumpless.h",
   "STUMPLESS_PIPE_NAME" => "stumpless.h",
   "STUMPLESS_PIPE_NAME_LENGTH" => "stumpless.h",
-  "STUMPLESS_MAX_TARGET_COUNT" => "stumpless.h"
+  "STUMPLESS_MAX_TARGET_COUNT" => "stumpless.h",
+  "clock_t" => "sys/types.h",
+  "ssize_t" => "sys/types.h",
+  "clock" => "time.h",
+  "CLOCKS_PER_SEC" => "time.h"
 );
 
 my %actual_includes;

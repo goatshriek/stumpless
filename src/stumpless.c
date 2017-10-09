@@ -56,6 +56,10 @@ stumpless_open_target(const char *name, int options, int facility){
   struct stumpless_target *target;
   size_t name_len;
 
+  if( current_target == STUMPLESS_MAX_TARGET_COUNT-1){
+    return NULL;
+  }
+
   if(!targets){
     targets = malloc(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
     if(!targets)
