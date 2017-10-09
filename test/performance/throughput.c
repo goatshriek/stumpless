@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stumpless.h>
 #include <sys/types.h>
+#include <syslog.h>
 #include <time.h>
 
 int main(void){
@@ -15,8 +16,14 @@ int main(void){
     stumpless("testing");
   }
   finish = clock();
+  printf("time to run stumpless: %Lf seconds\n", ((finish-start)/(long double)CLOCKS_PER_SEC));
 
-  printf("time to run: %Lf seconds\n", ((finish-start)/(long double)CLOCKS_PER_SEC));
+  start = clock();
+  for(i=0; i < message_count; i++){
+    syslog(LOG_INFO, "testing");
+  }
+  finish = clock();
+  printf("time to run syslog: %Lf seconds\n", ((finish-start)/(long double)CLOCKS_PER_SEC));
 
   return EXIT_SUCCESS;
 }
