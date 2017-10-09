@@ -25,7 +25,8 @@
 #include <unistd.h>
 #include "stumpless.h"
 
-static struct stumpless_target *current_target;
+static struct stumpless_target **targets=NULL;
+static stumpless_id_t current_target=0;
 static struct sockaddr_un target_socket_addr, my_socket_addr;
 static int my_socket;
 
@@ -34,9 +35,9 @@ int stumpless(const char *message){
   socklen_t size;
   size=100;
 
-  if( !current_target ){
-    current_target = stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
-    if( !current_target ){
+  if( current_target == 0 ){
+    stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
+    if( current_target == 0 ){
       return -1;
     }
   }
@@ -47,7 +48,6 @@ int stumpless(const char *message){
     return -1;
   }
 
-  printf("message sent\n");
   return 0;
 }
 
@@ -55,6 +55,12 @@ struct stumpless_target *
 stumpless_open_target(const char *name, int options, int facility){
   struct stumpless_target *target;
   size_t name_len;
+
+  if(!targets){
+    targets = malloc(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
+    if(!targets)
+      return NULL;
+  }
 
   target = malloc(sizeof(struct stumpless_target));
   if( !target ){
@@ -70,6 +76,7 @@ stumpless_open_target(const char *name, int options, int facility){
 
   memcpy(target->name, name, name_len);
 
+  target->id = current_target++;
   target->options = options;
   target->facility = facility;
 
@@ -94,7 +101,6 @@ stumpless_open_target(const char *name, int options, int facility){
     return NULL;
   }
 
-  current_target = target;
   return target;
 }
 

@@ -22,8 +22,12 @@
 
 #define STUMPLESS_PIPE_NAME "/tmp/stumplesstestpipe"
 #define STUMPLESS_PIPE_NAME_LENGTH 22
+#define STUMPLESS_MAX_TARGET_COUNT 10
+
+typedef int stumpless_id_t;
 
 struct stumpless_target {
+  stumpless_id_t id;
   char *name;
   int options;
   int facility;
