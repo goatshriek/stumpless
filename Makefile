@@ -5,8 +5,8 @@ all: stumpless.o stumplessd.o stumpless-test.o
 test: all
 	./stumpless-test
 
-stumpless.o: stumpless.c include/stumpless.h
-	gcc -Wall -I include -c stumpless.c
+stumpless.o: src/stumpless.c include/stumpless.h
+	gcc -Wall -I include -c src/stumpless.c
 
 stumplessd.o: stumplessd.c include/stumpless.h
 	gcc -Wall -I include -c stumplessd.c
@@ -15,6 +15,6 @@ stumpless-test.o: stumpless-test.c include/stumpless.h
 	gcc -Wall -I include -c stumpless-test.c
 
 clean:
-	rm -f *.o
+	rm *.o
 	rm -f stumplessd
 	rm -f stumpless-test
