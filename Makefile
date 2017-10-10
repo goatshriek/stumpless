@@ -1,13 +1,16 @@
 INCLUDEDIR = include
 CFLAGS = -Wall -g -I $(INCLUDEDIR)/stumpless -I $(INCLUDEDIR)
 
-all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o
-	gcc -o stumpless-test stumpless.o stumpless-test.o
-	gcc -o test-throughput stumpless.o throughput.o
+all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o
+	gcc -o stumpless-test stumpless.o target.o stumpless-test.o
+	gcc -o test-throughput stumpless.o target.o throughput.o
 	gcc -o stumplessd stumplessd.o
 
 test: all
 	./test-throughput
+
+target.o: src/target.c $(INCLUDEDIR)/target.h
+	gcc $(CFLAGS) -c src/target.c
 
 stumpless.o: src/stumpless.c $(INCLUDEDIR)/stumpless/stumpless.h
 	gcc $(CFLAGS) -c src/stumpless.c

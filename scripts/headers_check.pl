@@ -8,12 +8,14 @@ open(SOURCE, $file) or die("could not open file");
 
 my %manifest = (
   "memcpy" => "string.h",
+  "size_t" => "string.h",
   "printf" => "stdio.h",
   "perror" => "stdio.h",
   "socklen_t" => "sys/socket.h",
   "recvfrom" => "sys/socket.h",
   "struct sockaddr" => "sys/socket.h",
   "sendto" => "sys/socket.h",
+  "AF_UNIX" => "sys/socket.h",
   "struct sockaddr_un" => "sys/un.h",
   "close" => "unistd.h",
   "EXIT_FAILURE" => "stdlib.h",

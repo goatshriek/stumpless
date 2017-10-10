@@ -72,13 +72,13 @@ stumpless_open_target(const char *name, int options, int facility){
     return NULL;
   }
   
-  priv_target = malloc(sizeof(struct target));
+  name_len = strlen(name) ;
+  priv_target = new_target(name, name_len);
   if( !priv_target ){
     free(pub_target);
     return NULL;
   }
 
-  name_len = strlen(name) + 1;
   pub_target->name = malloc(name_len);
   if( !pub_target->name ){
     free(pub_target);
@@ -92,30 +92,6 @@ stumpless_open_target(const char *name, int options, int facility){
   pub_target->options = options;
   pub_target->facility = facility;
 
-  priv_target->target_addr.sun_family = AF_UNIX;
-  memcpy(&priv_target->target_addr.sun_path, name, name_len);
-
-  priv_target->local_addr.sun_family = AF_UNIX;
-  memcpy(&priv_target->local_addr.sun_path, "\0/stumpless-test", 17);
-
-  priv_target->local_socket = socket(priv_target->local_addr.sun_family, SOCK_DGRAM, 0);
-  if(priv_target->local_socket < 0){
-    perror("could not create socket");
-    free(pub_target->name);
-    free(pub_target);
-    free(priv_target);
-    return NULL;
-  }
-
-  if( bind(priv_target->local_socket, (struct sockaddr *) &priv_target->local_addr, sizeof(priv_target->local_addr.sun_family)+17) < 0 ){
-    perror("could not bind socket");
-    free(pub_target->name);
-    free(pub_target);
-    free(priv_target);
-    return NULL;
-  }
-
-  priv_target->target_addr_len = sizeof(priv_target->target_addr);
   targets[pub_target->id] = priv_target;
   
   return pub_target;
@@ -123,16 +99,9 @@ stumpless_open_target(const char *name, int options, int facility){
 
 void
 stumpless_close_target(struct stumpless_target *target){
-  struct target *priv_target;
-  
-  if(!target || !targets){
-    return;
+  if(target && targets){
+    destroy_target(targets[target->id]);
   }
-  
-  priv_target = targets[target->id];
-  
-  close(priv_target->local_socket);
-  free(priv_target);
   
   // todo need to clean up the id list
 }

@@ -20,6 +20,7 @@
 #ifndef __STUMPLESS_TARGET_H
 #define __STUMPLESS_TARGET_H
  
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/un.h>
  
@@ -29,5 +30,8 @@ struct target {
   struct sockaddr_un local_addr;
   int local_socket;
 };
+
+struct target *new_target(const char *dest, size_t dest_len);
+void destroy_target(struct target *trgt);
 
 #endif /* __STUMPLESS_TARGET_H */
