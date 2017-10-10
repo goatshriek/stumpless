@@ -3,8 +3,8 @@
 use strict;
 use warnings;
 
-my $file = "src/stumpless.c";
-open(SOURCE, $file) or die("could not open file");
+my $file = $ARGV[0];
+open(SOURCE, $file) or die("could not open file: $file");
 
 my %manifest = (
   "memcpy" => "string.h",
