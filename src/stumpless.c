@@ -30,20 +30,14 @@ static struct target **targets=NULL;
 static stumpless_id_t current_target=0;
 
 int stumpless(const char *message){
-  struct target *target;
-  ssize_t msg_len;
-
   if( current_target == 0 ){
     stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
     if( current_target == 0 ){
       return -1;
     }
   }
-
-  target = targets[current_target-1];
   
-  msg_len = sendto(target->local_socket, message, strlen(message)+1, 0, (struct sockaddr *) &target->target_addr, target->target_addr_len);
-  if(msg_len <= 0){
+  if( sendto_target(targets[current_target-1], message) <= 0){
     perror("could not send message");
     return -1;
   }

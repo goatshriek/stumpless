@@ -22,6 +22,7 @@
  
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <sys/un.h>
  
 struct target {
@@ -33,5 +34,6 @@ struct target {
 
 struct target *new_target(const char *dest, size_t dest_len);
 void destroy_target(struct target *trgt);
+ssize_t sendto_target(const struct target *trgt, const char *msg);
 
 #endif /* __STUMPLESS_TARGET_H */

@@ -63,3 +63,11 @@ void destroy_target(struct target *trgt){
   close(trgt->local_socket);
   free(trgt);
 }
+
+ssize_t sendto_target(const struct target *trgt, const char *msg){
+  if(!trgt || !msg){
+    return 0;
+  }
+  
+  return sendto(trgt->local_socket, msg, strlen(msg)+1, 0, (struct sockaddr *) &trgt->target_addr, trgt->target_addr_len);
+}
