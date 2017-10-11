@@ -17,12 +17,10 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <unistd.h>
 #include <stumpless.h>
 #include "target.h"
 

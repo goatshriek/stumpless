@@ -10,18 +10,23 @@ test: all
 	./test-throughput
 
 target.o: src/target.c $(INCLUDEDIR)/target.h
+	scripts/headers_check.pl src/target.c
 	gcc $(CFLAGS) -c src/target.c
 
 stumpless.o: src/stumpless.c $(INCLUDEDIR)/stumpless/stumpless.h
+	scripts/headers_check.pl src/stumpless.c
 	gcc $(CFLAGS) -c src/stumpless.c
 
 stumplessd.o: src/daemon/stumplessd.c $(INCLUDEDIR)/stumpless/stumpless.h
+	scripts/headers_check.pl src/daemon/stumplessd.c
 	gcc $(CFLAGS) -c src/daemon/stumplessd.c
 
 stumpless-test.o: test/stumpless-test.c $(INCLUDEDIR)/stumpless/stumpless.h
+	scripts/headers_check.pl test/stumpless-test.c
 	gcc $(CFLAGS) -c test/stumpless-test.c
 
 test-throughput.o: test/performance/throughput.c
+	scripts/headers_check.pl test/performance/throughput.c
 	gcc $(CFLAGS) -c test/performance/throughput.c
 
 clean:

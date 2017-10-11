@@ -17,6 +17,7 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -37,7 +38,7 @@ struct target *new_target(const char *dest, size_t dest_len){
   trgt->target_addr.sun_path[dest_len] = '\0';
   
   trgt->local_addr.sun_family = AF_UNIX;
-  memcpy(&trgt->local_addr.sun_path, "\0/stumpless-test", 17);
+  memcpy(&trgt->local_addr.sun_path, "\0/stmplss-tst", 14);
   
   trgt->local_socket = socket(trgt->local_addr.sun_family, SOCK_DGRAM, 0);
   if(trgt->local_socket < 0){
@@ -45,7 +46,7 @@ struct target *new_target(const char *dest, size_t dest_len){
     return NULL;
   }
   
-  if( bind(trgt->local_socket, (struct sockaddr *) &trgt->local_addr, sizeof(trgt->local_addr.sun_family)+17) < 0 ){
+  if( bind(trgt->local_socket, (struct sockaddr *) &trgt->local_addr, sizeof(trgt->local_addr)) < 0 ){
     free(trgt);
     return NULL;
   }
