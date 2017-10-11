@@ -32,6 +32,7 @@ test-throughput.o: test/performance/throughput.c
 clean:
 	rm -f *.o
 	rm -f *.log
+	rm -f *.csv
 	rm -f stumplessd
 	rm -f stumpless-test
 	rm -f test-throughput

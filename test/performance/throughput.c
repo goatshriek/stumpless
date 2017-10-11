@@ -9,21 +9,31 @@ int main(void){
   const unsigned message_count = 1000;
   clock_t start, finish;
   unsigned i;
+  FILE *outfile;
+  long double stumpless_result, syslog_result;
 
-
+  outfile = fopen("throughput-results.csv", "w");
+  if( !outfile ){
+    perror("could not create outfile");
+    return EXIT_FAILURE;
+  }
+  
   start = clock();
   for(i=0; i < message_count; i++){
     stumpless("testing");
   }
   finish = clock();
-  printf("time to run stumpless: %Lf seconds\n", ((finish-start)/(long double)CLOCKS_PER_SEC));
+  stumpless_result = (finish-start)/(long double)CLOCKS_PER_SEC;
 
   start = clock();
   for(i=0; i < message_count; i++){
     syslog(LOG_INFO, "testing");
   }
   finish = clock();
-  printf("time to run syslog: %Lf seconds\n", ((finish-start)/(long double)CLOCKS_PER_SEC));
+  syslog_result = (finish-start)/(long double)CLOCKS_PER_SEC;
+  fprintf(outfile, "%d,%Lf,%Lf\n", message_count, stumpless_result, syslog_result);
 
+  fclose(outfile);
+  
   return EXIT_SUCCESS;
 }
