@@ -58,14 +58,14 @@ foreach my $line (<SOURCE>) {
 
 foreach my $include (keys %actual_includes){
   if(!$needed_includes{$include}){
-    print "$file: unnecessary include: $include\n";
+    print STDERR "$file: unnecessary include: $include\n";
   }
 }
 
 foreach my $include (keys %needed_includes){
   if(!$actual_includes{$include}){
     my $symbol = $needed_includes{$include};
-    print "$file: missing include: $include due to usage of $symbol\n";
+    print STDERR "$file: missing include: $include due to usage of $symbol\n";
   }  
 }
 
