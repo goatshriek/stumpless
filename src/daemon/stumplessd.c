@@ -17,8 +17,9 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
+#include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <signal.h>
 #include <sys/socket.h>
@@ -28,8 +29,10 @@
 #include "stumpless.h"
 
 static int log_socket=0;
+static FILE *outfile=NULL;
 
 void sigint_handler(int signo){
+  fclose(outfile);
   close(log_socket);
   unlink(STUMPLESS_PIPE_NAME);
   
@@ -42,6 +45,12 @@ int main(void){
   ssize_t msg_len;
   socklen_t size = 100;
   char buf[1024];
+  
+  outfile = fopen("stumplessd-out.log", "w");
+  if( !outfile ){
+    perror("could not open output file");
+    return EXIT_FAILURE;
+  }
 
   log_socket_addr.sun_family = AF_UNIX;
   memcpy(&log_socket_addr.sun_path, STUMPLESS_PIPE_NAME, STUMPLESS_PIPE_NAME_LENGTH+1);
@@ -67,7 +76,7 @@ int main(void){
     if(msg_len < 0){
       perror("message recieve failure");
     } else {
-      printf("%s\n", buf);
+      fprintf(outfile, "%s\n", buf);
     }
   }
 
