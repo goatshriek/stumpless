@@ -6,7 +6,7 @@
 #include <time.h>
 
 int main(void){
-  const unsigned message_count = 1000;
+  unsigned message_count;
   clock_t start, finish;
   unsigned i;
   FILE *outfile;
@@ -18,21 +18,23 @@ int main(void){
     return EXIT_FAILURE;
   }
   
-  start = clock();
-  for(i=0; i < message_count; i++){
-    stumpless("testing");
+  for(message_count = 100; message_count <= 100000; message_count *= 10){
+    start = clock();
+    for(i=0; i < message_count; i++){
+      stumpless("testing");
+    }
+    finish = clock();
+    stumpless_result = (finish-start)/(long double)CLOCKS_PER_SEC;
+    
+    start = clock();
+    for(i=0; i < message_count; i++){
+      syslog(LOG_INFO, "testing");
+    }
+    finish = clock();
+    syslog_result = (finish-start)/(long double)CLOCKS_PER_SEC;
+    fprintf(outfile, "%d,%Lf,%Lf\n", message_count, stumpless_result, syslog_result);
   }
-  finish = clock();
-  stumpless_result = (finish-start)/(long double)CLOCKS_PER_SEC;
-
-  start = clock();
-  for(i=0; i < message_count; i++){
-    syslog(LOG_INFO, "testing");
-  }
-  finish = clock();
-  syslog_result = (finish-start)/(long double)CLOCKS_PER_SEC;
-  fprintf(outfile, "%d,%Lf,%Lf\n", message_count, stumpless_result, syslog_result);
-
+  
   fclose(outfile);
   
   return EXIT_SUCCESS;
