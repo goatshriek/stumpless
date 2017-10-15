@@ -1,5 +1,5 @@
 INCLUDEDIR = include
-CFLAGS = -Wall -g -I $(INCLUDEDIR)/stumpless -I $(INCLUDEDIR)
+CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)/stumpless -I $(INCLUDEDIR)
 
 all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o
 	gcc -o stumpless-test stumpless.o target.o stumpless-test.o

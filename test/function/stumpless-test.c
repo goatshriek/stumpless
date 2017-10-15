@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "stumpless.h"
 
 int main(void){
