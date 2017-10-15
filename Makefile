@@ -7,7 +7,10 @@ all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o
 	gcc -o stumplessd stumplessd.o
 
 test: all
+	./stumplessd &
 	./test-throughput
+	./stumpless-test
+	pkill stumplessd
 
 target.o: src/target.c $(INCLUDEDIR)/target.h
 	scripts/headers_check.pl src/target.c
