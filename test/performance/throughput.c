@@ -17,8 +17,10 @@ int main(void){
     perror("could not create outfile");
     return EXIT_FAILURE;
   }
+
+  fprintf(outfile, "message_count,stumpless_time,syslog_time\n");
   
-  for(message_count = 100; message_count <= 100000; message_count *= 10){
+  for(message_count = 100; message_count <= 10000; message_count *= 10){
     start = clock();
     for(i=0; i < message_count; i++){
       stumpless("testing");

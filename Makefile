@@ -24,9 +24,9 @@ stumplessd.o: src/daemon/stumplessd.c $(INCLUDEDIR)/stumpless/stumpless.h
 	scripts/headers_check.pl src/daemon/stumplessd.c
 	gcc $(CFLAGS) -c src/daemon/stumplessd.c
 
-stumpless-test.o: test/stumpless-test.c $(INCLUDEDIR)/stumpless/stumpless.h
-	scripts/headers_check.pl test/stumpless-test.c
-	gcc $(CFLAGS) -c test/stumpless-test.c
+stumpless-test.o: test/function/stumpless-test.c $(INCLUDEDIR)/stumpless/stumpless.h
+	scripts/headers_check.pl test/function/stumpless-test.c
+	gcc $(CFLAGS) -c test/function/stumpless-test.c
 
 test-throughput.o: test/performance/throughput.c
 	scripts/headers_check.pl test/performance/throughput.c
@@ -36,6 +36,7 @@ clean:
 	rm -f *.o
 	rm -f *.log
 	rm -f *.csv
-	rm -f stumplessd
 	rm -f stumpless-test
 	rm -f test-throughput
+	rm -f stumplessd
+	if [ -e /tmp/stumplesstestpipe ]; then unlink /tmp/stumplesstestpipe ; fi
