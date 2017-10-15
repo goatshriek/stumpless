@@ -10,7 +10,7 @@ test: all
 	./stumplessd &
 	./test-throughput
 	./stumpless-test
-	pkill stumplessd
+	pkill --signal SIGINT stumplessd
 
 target.o: src/target.c $(INCLUDEDIR)/target.h
 	scripts/headers_check.pl src/target.c
