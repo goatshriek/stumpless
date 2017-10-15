@@ -2,13 +2,14 @@ INCLUDEDIR = include
 CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)/stumpless -I $(INCLUDEDIR)
 
 all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o
-	gcc -o stumplessd stumplessd.o
+	mkdir -p ./bin
+	gcc -o ./bin/stumplessd stumplessd.o
 	mkdir -p ./test/bin
 	gcc -o ./test/bin/stumpless stumpless.o target.o stumpless-test.o
 	gcc -o ./test/bin/throughput stumpless.o target.o throughput.o
 
 test: all
-	./stumplessd &
+	./bin/stumplessd &
 	./test/bin/throughput
 	./test/bin/stumpless
 	pkill --signal SIGINT stumplessd
@@ -38,5 +39,5 @@ clean:
 	rm -f *.log
 	rm -f *.csv
 	rm -rf ./test/bin
-	rm -f stumplessd
+	rm -rf ./bin
 	if [ -e /tmp/stumplesstestpipe ]; then unlink /tmp/stumplesstestpipe ; fi
