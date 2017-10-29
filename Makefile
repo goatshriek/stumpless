@@ -4,12 +4,12 @@ CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)/stumpless -I $(INCLUDEDIR)
 all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o
 	mkdir -p ./bin
 	gcc -o ./bin/stumplessd stumplessd.o
-	mkdir -p ./test/bin
-	gcc -o ./test/bin/stumpless stumpless.o target.o stumpless-test.o
-	gcc -o ./test/bin/throughput stumpless.o target.o throughput.o
 	ld -shared stumpless.o target.o -o libstumpless.so
 
 test: all
+	mkdir -p ./test/bin
+	gcc -o ./test/bin/stumpless stumpless.o target.o stumpless-test.o
+	gcc -o ./test/bin/throughput stumpless.o target.o throughput.o
 	./bin/stumplessd &
 	./test/bin/throughput
 	./test/bin/stumpless
@@ -38,10 +38,11 @@ test-throughput.o: test/performance/throughput.c
 swig: all
 	swig -python -Iinclude/stumpless lib/swig/stumpless.i
 	gcc -c -fPIC -Iinclude/stumpless -I/usr/include/python2.7 lib/swig/stumpless_wrap.c
-	ld -shared -L. -rpath-link . -rpath . -lstumpless stumpless_wrap.o -o _stumpless.so
+	ld -shared -L. -rpath-link . -rpath . -lstumpless stumpless_wrap.o -o lib/swig/_stumpless.so
 
 swig-clean:
 	rm -rf ./lib/swig/*.c
+	rm -rf ./lib/swig/*.so
 	rm -rf ./lib/swig/*.pyc
 	rm -rf ./lib/swig/*.py
   
@@ -53,3 +54,5 @@ clean: swig-clean
 	rm -rf ./test/bin
 	rm -rf ./bin
 	if [ -e /tmp/stumplesstestpipe ]; then unlink /tmp/stumplesstestpipe ; fi
+
+.PHONY: clean
