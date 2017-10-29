@@ -39,15 +39,17 @@ swig: all
 	swig -python -Iinclude/stumpless lib/swig/stumpless.i
 	gcc -c -fPIC -Iinclude/stumpless -I/usr/include/python2.7 lib/swig/stumpless_wrap.c
 	ld -shared -L. -rpath-link . -rpath . -lstumpless stumpless_wrap.o -o _stumpless.so
+
+swig-clean:
+	rm -rf ./lib/swig/*.c
+	rm -rf ./lib/swig/*.pyc
+	rm -rf ./lib/swig/*.py
   
-clean:
+clean: swig-clean
 	rm -f *.o
 	rm -f *.so
 	rm -f *.log
 	rm -f *.csv
 	rm -rf ./test/bin
 	rm -rf ./bin
-	rm -rf ./lib/swig/*.c
-	rm -rf ./lib/swig/*.pyc
-	rm -rf ./lib/swig/*.py
 	if [ -e /tmp/stumplesstestpipe ]; then unlink /tmp/stumplesstestpipe ; fi
