@@ -17,8 +17,8 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUMPLESS_TARGET_H
-#define __STUMPLESS_TARGET_H
+#ifndef __STUMPLESS_PRIVATE_TARGET_H
+#define __STUMPLESS_PRIVATE_TARGET_H
  
 #include <string.h>
 #include <sys/socket.h>
@@ -36,4 +36,4 @@ struct target *new_target(const char *dest, size_t dest_len);
 void destroy_target(struct target *trgt);
 ssize_t sendto_target(const struct target *trgt, const char *msg);
 
-#endif /* __STUMPLESS_TARGET_H */
+#endif /* __STUMPLESS_PRIVATE_TARGET_H */
