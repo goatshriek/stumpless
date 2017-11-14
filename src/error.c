@@ -16,18 +16,18 @@
  * You should have received a copy of the GNU General Public License along with
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+#include <stumpless/error.h>
 
-#ifndef __STUMPLESS_ERROR_H
-#define __STUMPLESS_ERROR_H
+static struct stumpless_error *last_error=NULL;
 
-typedef int stumpless_error_id_t;
+struct stumpless_error *stumpless_get_error(){
+  return last_error;
+}
 
-struct stumpless_error {
-  stumpless_error_id_t id;
-};
-
-struct stumpless_error *stumpless_get_error();
-
-// todo add error access functionality
-
-#endif /* __STUMPLESS_ERROR_H */
+void clear_error(){
+  if(last_error){
+    free(last_error);
+    last_error = NULL;
+  }
+}
