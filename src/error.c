@@ -16,7 +16,9 @@
  * You should have received a copy of the GNU General Public License along with
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+#include <stddef.h>
+#include <stdlib.h>
 #include <stumpless/error.h>
 
 static struct stumpless_error *last_error=NULL;
