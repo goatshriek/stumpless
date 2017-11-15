@@ -5,19 +5,18 @@ LIBDIR = $(TOPDIR)/lib
 SCRIPTSDIR = $(TOPDIR)/scripts
 TESTDIR = $(TOPDIR)/test
 CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
+CPPFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 
-all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o error.o
+all: stumpless.o stumplessd.o test-throughput.o target.o error.o
 	mkdir -p ./bin
 	gcc -o ./bin/stumplessd stumplessd.o
 	ld -shared stumpless.o target.o error.o -o libstumpless.so
 
-test: all
-	mkdir -p ./bin/test
-	gcc stumpless-test.o -o ./bin/test/stumpless -L. -lstumpless -Wl,-rpath=.
+test: all test-function-stumpless
 	gcc throughput.o -o ./bin/test/throughput -L. -lstumpless -Wl,-rpath=.
 	./bin/stumplessd &
 	./bin/test/throughput
-	./bin/test/stumpless
+	./bin/test/function/stumpless
 	pkill --signal SIGINT stumplessd
 
 error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private/error.h
@@ -36,9 +35,10 @@ stumplessd.o: $(SRCDIR)/daemon/stumplessd.c $(INCLUDEDIR)/stumpless.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/daemon/stumplessd.c
 	gcc $(CFLAGS) -c $(SRCDIR)/daemon/stumplessd.c
 
-stumpless-test.o: $(TESTDIR)/function/stumpless-test.c $(INCLUDEDIR)/stumpless.h
-	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/stumpless-test.c
-	gcc $(CFLAGS) -c $(TESTDIR)/function/stumpless-test.c
+test-function-stumpless: all $(TESTDIR)/function/stumpless.cpp $(INCLUDEDIR)/stumpless.h
+	mkdir -p ./bin/test/function
+	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/stumpless.cpp
+	g++ $(TESTDIR)/function/stumpless.cpp -o ./bin/test/function/stumpless $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.
 
 test-throughput.o: $(TESTDIR)/performance/throughput.c
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/performance/throughput.c
