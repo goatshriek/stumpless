@@ -12,8 +12,7 @@ all: stumpless.o stumplessd.o test-throughput.o target.o error.o
 	gcc -o ./bin/stumplessd stumplessd.o
 	ld -shared stumpless.o target.o error.o -o libstumpless.so
 
-test: all test-function-stumpless
-	gcc throughput.o -o ./bin/test/throughput -L. -lstumpless -Wl,-rpath=.
+test: all test-function test-throughput
 	./bin/stumplessd &
 	./bin/test/throughput
 	./bin/test/function/stumpless
@@ -35,10 +34,15 @@ stumplessd.o: $(SRCDIR)/daemon/stumplessd.c $(INCLUDEDIR)/stumpless.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/daemon/stumplessd.c
 	gcc $(CFLAGS) -c $(SRCDIR)/daemon/stumplessd.c
 
+test-function: all test-function-stumpless
+
 test-function-stumpless: all $(TESTDIR)/function/stumpless.cpp $(INCLUDEDIR)/stumpless.h
 	mkdir -p ./bin/test/function
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/stumpless.cpp
 	g++ $(TESTDIR)/function/stumpless.cpp -o ./bin/test/function/stumpless $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.
+
+test-throughput: test-throughput.o
+	gcc throughput.o -o ./bin/test/throughput -L. -lstumpless -Wl,-rpath=.
 
 test-throughput.o: $(TESTDIR)/performance/throughput.c
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/performance/throughput.c
