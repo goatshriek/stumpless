@@ -23,5 +23,6 @@
 #define __STUMPLESS_PRIVATE_ERROR_H
 
 void clear_error();
+void raise_memory_allocation_failure();
 
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

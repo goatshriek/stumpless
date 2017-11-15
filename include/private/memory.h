@@ -17,17 +17,13 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUMPLESS_ERROR_H
-#define __STUMPLESS_ERROR_H
+#include <stumpless/error.h>
 
-enum stumpless_error_id{
-  MEMORY_ALLOCATION_FAILURE
-};
+#ifndef __STUMPLESS_PRIVATE_MEMORY_H
+#define __STUMPLESS_PRIVATE_MEMORY_H
 
-struct stumpless_error {
-  enum stumpless_error_id id;
-};
+#include <stddef.h>
 
-struct stumpless_error *stumpless_get_error();
+void *alloc_mem(size_t amount);
 
-#endif /* __STUMPLESS_ERROR_H */
+#endif /* __STUMPLESS_PRIVATE_MEMORY_H */

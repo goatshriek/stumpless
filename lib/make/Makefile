@@ -7,10 +7,10 @@ TESTDIR = $(TOPDIR)/test
 CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 CPPFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 
-all: stumpless.o stumplessd.o test-throughput.o target.o error.o
+all: stumpless.o stumplessd.o test-throughput.o target.o memory.o error.o
 	mkdir -p ./bin
 	gcc -o ./bin/stumplessd stumplessd.o
-	ld -shared stumpless.o target.o error.o -o libstumpless.so
+	ld -shared stumpless.o target.o memory.o error.o -o libstumpless.so
 
 test: all test-function test-throughput
 	./bin/stumplessd &
@@ -21,6 +21,10 @@ test: all test-function test-throughput
 error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private/error.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/error.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/error.c
+
+memory.o: $(SRCDIR)/memory.c $(INCLUDEDIR)/private/memory.h
+	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/memory.c
+	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/memory.c
 
 target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/target.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target.c

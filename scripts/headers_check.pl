@@ -8,6 +8,7 @@ open(SOURCE, $file) or die("could not open file: $file");
 
 my %manifest = (
   "AF_UNIX" => "sys/socket.h",
+  "alloc_mem" => "private/memory.h",
   "clear_error" => "private/error.h",
   "clock" => "time.h",
   "clock_t" => "sys/types.h",
@@ -26,6 +27,7 @@ my %manifest = (
   "NULL" => "stddef.h",
   "perror" => "stdio.h",
   "printf" => "stdio.h",
+  "raise_memory_allocation_failure" => "private/error.h",
   "recvfrom" => "sys/socket.h",
   "sendto" => "sys/socket.h",
   "SIG_ERR" => "signal.h",

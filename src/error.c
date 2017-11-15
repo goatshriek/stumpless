@@ -23,14 +23,24 @@
 #include "private/error.h"
 
 static struct stumpless_error *last_error=NULL;
+static short error_valid=0;
 
 struct stumpless_error *stumpless_get_error(){
   return last_error;
 }
 
 void clear_error(){
-  if(last_error){
-    free(last_error);
-    last_error = NULL;
+  error_valid = 0;
+}
+
+void raise_memory_allocation_failure(){
+  if( !last_error ){
+    last_error = malloc(sizeof(struct stumpless_error));
+    if( !last_error ){
+      error_valid = 0;
+      return;
+    }
   }
+  
+  last_error->id = MEMORY_ALLOCATION_FAILURE;
 }
