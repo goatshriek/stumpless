@@ -4,7 +4,7 @@ SRCDIR = $(TOPDIR)/src
 LIBDIR = $(TOPDIR)/lib
 SCRIPTSDIR = $(TOPDIR)/scripts
 TESTDIR = $(TOPDIR)/test
-CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)/stumpless -I $(INCLUDEDIR) -I $(INCLUDEDIR)/private
+CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 
 all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o error.o
 	mkdir -p ./bin
@@ -13,8 +13,8 @@ all: stumpless.o stumplessd.o stumpless-test.o test-throughput.o target.o error.
 
 test: all
 	mkdir -p ./bin/test
-	gcc -o ./bin/test/stumpless stumpless.o target.o stumpless-test.o
-	gcc -o ./bin/test/throughput stumpless.o target.o throughput.o
+	gcc stumpless-test.o -o ./bin/test/stumpless -L. -lstumpless -Wl,-rpath=.
+	gcc throughput.o -o ./bin/test/throughput -L. -lstumpless -Wl,-rpath=.
 	./bin/stumplessd &
 	./bin/test/throughput
 	./bin/test/stumpless

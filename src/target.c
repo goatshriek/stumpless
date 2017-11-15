@@ -22,7 +22,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include "target.h"
+#include "private/target.h"
 
 struct target *new_target(const char *dest, size_t dest_len){
   struct target *trgt;

@@ -22,12 +22,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stumpless.h>
-#include "target.h"
+#include "private/target.h"
+#include "private/error.h"
 
 static struct target **targets=NULL;
 static stumpless_id_t current_target=0;
 
 int stumpless(const char *message){
+  clear_error();
+  
   if( current_target == 0 ){
     stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
     if( current_target == 0 ){
@@ -45,6 +48,7 @@ int stumpless(const char *message){
 
 struct stumpless_target *
 stumpless_open_target(const char *name, int options, int facility){
+  clear_error();
   struct stumpless_target *pub_target;
   struct target *priv_target;
   size_t name_len;
@@ -91,6 +95,8 @@ stumpless_open_target(const char *name, int options, int facility){
 
 void
 stumpless_close_target(struct stumpless_target *target){
+  clear_error();
+  
   if(target && targets){
     destroy_target(targets[target->id]);
   }

@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stumpless/error.h>
+#include "private/error.h"
 
 static struct stumpless_error *last_error=NULL;
 
