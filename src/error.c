@@ -26,7 +26,10 @@ static struct stumpless_error *last_error=NULL;
 static short error_valid=0;
 
 struct stumpless_error *stumpless_get_error(){
-  return last_error;
+  if(error_valid)
+    return last_error;
+  else
+    return NULL;
 }
 
 void clear_error(){
@@ -43,4 +46,5 @@ void raise_memory_allocation_failure(){
   }
   
   last_error->id = MEMORY_ALLOCATION_FAILURE;
+  error_valid = 1;
 }

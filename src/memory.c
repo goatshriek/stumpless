@@ -25,6 +25,7 @@
 void *alloc_mem(size_t amount){
   void *mem = malloc(amount);
   if( !mem ){
+    raise_memory_allocation_failure();
     return NULL;
   }
   
