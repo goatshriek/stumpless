@@ -20,6 +20,10 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
+#define STUMPLESS_MAJOR_VERSION 0
+#define STUMPLESS_MINOR_VERSION 0
+#define STUMPLESS_PATCH_VERSION 1
+
 #define STUMPLESS_PIPE_NAME "/tmp/stumplesstestpipe"
 #define STUMPLESS_PIPE_NAME_LENGTH 22
 #define STUMPLESS_MAX_TARGET_COUNT 10
@@ -37,9 +41,16 @@ struct stumpless_target {
   int facility;
 };
 
+struct stumpless_version {
+  int major_version;
+  int minor_version;
+  int patch_version;
+}
+
 struct stumpless_target *stumpless_open_target(const char *name, int options, int facility);
 void stumpless_close_target(struct stumpless_target *target);
 int stumpless(const char *message);
+struct stumpless_version *get_stumpless_version();
 
 #ifdef __cplusplus
 } /* extern "C" */
