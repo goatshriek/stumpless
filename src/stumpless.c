@@ -19,7 +19,6 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stumpless.h>
 #include "private/error.h"

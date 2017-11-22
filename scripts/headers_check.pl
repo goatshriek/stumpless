@@ -55,8 +55,18 @@ my %manifest = (
 
 my %actual_includes;
 my %needed_includes;
+my $skipping=0;
 
 foreach my $line (<SOURCE>) {
+  if($line =~ m/\*\//){
+    $skipping = 0;
+  }
+  
+  if($line =~ m/\/\*/ or $skipping){
+    $skipping = 1;
+    next;
+  }
+  
   if($line =~ m/#include\s*["<](.*)[">]/){
     $actual_includes{$1} = 1;
   } else {
