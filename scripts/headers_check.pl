@@ -21,6 +21,7 @@ my %manifest = (
   "fopen" => "stdio.h",
   "fprintf" => "stdio.h",
   "free" => "stdlib.h",
+  "free_mem" => "private/memory.h",
   "LOG_INFO" => "syslog.h",
   "malloc" => "stdlib.h",
   "memcpy" => "string.h",

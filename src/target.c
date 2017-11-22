@@ -22,12 +22,13 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "private/memory.h"
 #include "private/target.h"
 
 struct target *new_target(const char *dest, size_t dest_len){
   struct target *trgt;
   
-  trgt = malloc(sizeof(struct target));
+  trgt = alloc_mem(sizeof(struct target));
   if( !trgt ){
     return NULL;
   }
@@ -42,12 +43,12 @@ struct target *new_target(const char *dest, size_t dest_len){
   
   trgt->local_socket = socket(trgt->local_addr.sun_family, SOCK_DGRAM, 0);
   if(trgt->local_socket < 0){
-    free(trgt);
+    free_mem(trgt);
     return NULL;
   }
   
   if( bind(trgt->local_socket, (struct sockaddr *) &trgt->local_addr, sizeof(trgt->local_addr)) < 0 ){
-    free(trgt);
+    free_mem(trgt);
     return NULL;
   }
   
@@ -62,7 +63,7 @@ void destroy_target(struct target *trgt){
   }
   
   close(trgt->local_socket);
-  free(trgt);
+  free_mem(trgt);
 }
 
 ssize_t sendto_target(const struct target *trgt, const char *msg){

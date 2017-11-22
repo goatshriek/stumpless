@@ -22,8 +22,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stumpless.h>
-#include "private/target.h"
 #include "private/error.h"
+#include "private/memory.h"
+#include "private/target.h"
 
 static struct target **targets=NULL;
 static stumpless_id_t current_target=0;
@@ -58,12 +59,12 @@ stumpless_open_target(const char *name, int options, int facility){
   }
 
   if(!targets){
-    targets = malloc(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
+    targets = alloc_mem(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
     if(!targets)
       return NULL;
   }
 
-  pub_target = malloc(sizeof(struct stumpless_target));
+  pub_target = alloc_mem(sizeof(struct stumpless_target));
   if( !pub_target ){
     return NULL;
   }
@@ -71,14 +72,14 @@ stumpless_open_target(const char *name, int options, int facility){
   name_len = strlen(name) ;
   priv_target = new_target(name, name_len);
   if( !priv_target ){
-    free(pub_target);
+    free_mem(pub_target);
     return NULL;
   }
 
-  pub_target->name = malloc(name_len);
+  pub_target->name = alloc_mem(name_len);
   if( !pub_target->name ){
-    free(pub_target);
-    free(priv_target);
+    free_mem(pub_target);
+    free_mem(priv_target);
     return NULL;
   }
 
