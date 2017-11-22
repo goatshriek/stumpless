@@ -53,16 +53,23 @@ test-throughput.o: $(TESTDIR)/performance/throughput.c
 	gcc $(CFLAGS) -c $(TESTDIR)/performance/throughput.c
 
 swig: all
-	swig -python -I$(INCLUDEDIR)/stumpless -o stumpless_python_wrap.c -outdir . $(LIBDIR)/swig/stumpless.i
-	gcc -c -fPIC -I$(INCLUDEDIR)/stumpless -I/usr/include/python2.7 ./stumpless_python_wrap.c
-	ld -shared -L. -rpath-link . -rpath . -lstumpless stumpless_python_wrap.o -o ./_stumpless.so
+	mkdir -p ./lib/swig
+	swig -python -I$(INCLUDEDIR) -o ./lib/swig/stumpless_python_wrap.c -outdir ./lib/swig $(LIBDIR)/swig/stumpless.i
+	gcc ./lib/swig/stumpless_python_wrap.c -c -fPIC -I$(INCLUDEDIR) -I/usr/include/python2.7 -o ./lib/swig/stumpless_python_wrap.o
+	ld ./lib/swig/stumpless_python_wrap.o -shared -L. -rpath-link . -rpath . -lstumpless -o ./lib/swig/_stumpless.so
 
 swig-clean:
-	rm -rf *_wrap.*
-	rm -rf *.so
-	rm -rf *.pyc
-	rm -rf *.py
-  
+	rm -rf ./lib/swig/*_wrap.*
+	rm -rf ./lib/swig/*.so
+	rm -rf ./lib/swig/*.pyc
+	rm -rf ./lib/swig/*.py
+	if [ -e lib/swig ]; then rmdir --ignore-fail-on-non-empty -p lib/swig ; fi
+
+swig-test: swig
+	./bin/stumplessd &
+	$(TESTDIR)/lib/swig/test-python.py
+	pkill --signal SIGINT stumplessd
+ 
 clean: swig-clean
 	rm -f *.o
 	rm -f *.so
@@ -71,4 +78,4 @@ clean: swig-clean
 	rm -rf ./bin
 	if [ -e /tmp/stumplesstestpipe ]; then unlink /tmp/stumplesstestpipe ; fi
 
-.PHONY: clean
+.PHONY: clean swig-clean
