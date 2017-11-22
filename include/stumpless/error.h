@@ -20,6 +20,10 @@
 #ifndef __STUMPLESS_ERROR_H
 #define __STUMPLESS_ERROR_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum stumpless_error_id{
   MEMORY_ALLOCATION_FAILURE
 };
@@ -29,5 +33,9 @@ struct stumpless_error {
 };
 
 struct stumpless_error *stumpless_get_error();
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* __STUMPLESS_ERROR_H */
