@@ -31,3 +31,9 @@ void *alloc_mem(size_t amount){
   
   return mem;
 }
+
+void free_mem(void *mem){
+  if(mem){
+    free(mem);
+  }
+}

@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-
-extern "C" int stumpless(const char *message);
+#include <stumpless.h>
 
 TEST(StumplessTest, RawString){
   EXPECT_EQ(0, stumpless("testing"));

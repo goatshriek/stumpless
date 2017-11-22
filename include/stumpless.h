@@ -24,6 +24,10 @@
 #define STUMPLESS_PIPE_NAME_LENGTH 22
 #define STUMPLESS_MAX_TARGET_COUNT 10
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef int stumpless_id_t;
 
 struct stumpless_target {
@@ -36,5 +40,9 @@ struct stumpless_target {
 struct stumpless_target *stumpless_open_target(const char *name, int options, int facility);
 void stumpless_close_target(struct stumpless_target *target);
 int stumpless(const char *message);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* __STUMPLESS_H */

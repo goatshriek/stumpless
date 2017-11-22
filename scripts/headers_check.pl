@@ -30,6 +30,7 @@ my %manifest = (
   "printf" => "stdio.h",
   "raise_memory_allocation_failure" => "private/error.h",
   "recvfrom" => "sys/socket.h",
+  "RUN_ALL_TESTS" => "gtest/gtest.h",
   "sendto" => "sys/socket.h",
   "SIG_ERR" => "signal.h",
   "SIGINT" => "signal.h",
