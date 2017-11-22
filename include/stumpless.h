@@ -42,10 +42,10 @@ struct stumpless_target {
 };
 
 struct stumpless_version {
-  int major_version;
-  int minor_version;
-  int patch_version;
-}
+  int major;
+  int minor;
+  int patch;
+};
 
 struct stumpless_target *stumpless_open_target(const char *name, int options, int facility);
 void stumpless_close_target(struct stumpless_target *target);

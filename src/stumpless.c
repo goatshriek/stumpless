@@ -115,9 +115,9 @@ get_stumpless_version(){
     return NULL;
   }
 
-  version->major_version = STUMPLESS_MAJOR_VERSION;
-  version->minor_version = STUMPLESS_MINOR_VERSION;
-  version->patch_version = STUMPLESS_PATCH_VERSION;
+  version->major = STUMPLESS_MAJOR_VERSION;
+  version->minor = STUMPLESS_MINOR_VERSION;
+  version->patch = STUMPLESS_PATCH_VERSION;
 
   return version;
 }
