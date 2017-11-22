@@ -67,7 +67,7 @@ swig-clean:
 
 swig-test: swig
 	./bin/stumplessd &
-	$(TESTDIR)/lib/swig/test-python.py
+	$(TESTDIR)/lib/swig/python-version.py
 	pkill --signal SIGINT stumplessd
  
 clean: swig-clean
