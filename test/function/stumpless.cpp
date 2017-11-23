@@ -1,10 +1,25 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <stumpless/error.h>
+#include <fstream>
+using namespace std;
 
 TEST(StumplessTest, RawString){
+  ifstream logFile;
+  std::string line;
+  
   EXPECT_EQ(0, stumpless("testing"));
   EXPECT_EQ(NULL, stumpless_get_error());
+  
+  logFile.open("stumplessd-out.log");
+  if(!logFile){
+    FAIL() << "the log file did not exist";
+  }
+  
+  std::getline(logFile, line);
+  EXPECT_EQ("testing", line);
+  
+  logFile.close();
 }
 
 TEST(GetStumplessVersionTest, Function){

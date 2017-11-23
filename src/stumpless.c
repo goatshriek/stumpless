@@ -48,11 +48,12 @@ int stumpless(const char *message){
 
 struct stumpless_target *
 stumpless_open_target(const char *name, int options, int facility){
-  clear_error();
   struct stumpless_target *pub_target;
   struct target *priv_target;
   size_t name_len;
 
+  clear_error();
+  
   if( current_target == STUMPLESS_MAX_TARGET_COUNT-1 ){
     return NULL;
   }
