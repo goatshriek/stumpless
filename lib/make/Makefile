@@ -1,4 +1,6 @@
-TOPDIR = ../..
+mkfile_path := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+TOPDIR = $(abspath $(mkfile_path)../..)
 INCLUDEDIR = $(TOPDIR)/include
 SRCDIR = $(TOPDIR)/src
 LIBDIR = $(TOPDIR)/lib
@@ -6,6 +8,7 @@ SCRIPTSDIR = $(TOPDIR)/scripts
 TESTDIR = $(TOPDIR)/test
 CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 CPPFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
+
 
 all: stumpless.o stumplessd.o test-throughput.o target.o memory.o error.o
 	mkdir -p ./bin
