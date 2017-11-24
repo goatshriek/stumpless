@@ -24,8 +24,8 @@
 #define STUMPLESS_MINOR_VERSION 0
 #define STUMPLESS_PATCH_VERSION 1
 
-#define STUMPLESS_PIPE_NAME "/tmp/stumplesstestpipe"
-#define STUMPLESS_PIPE_NAME_LENGTH 22
+#define STUMPLESS_SOCKET_NAME "/tmp/stumplesstestpipe"
+#define STUMPLESS_SOCKET_NAME_LENGTH 22
 #define STUMPLESS_MAX_TARGET_COUNT 10
 
 #ifdef __cplusplus

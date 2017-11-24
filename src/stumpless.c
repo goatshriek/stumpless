@@ -30,7 +30,7 @@ int stumpless(const char *message){
 
   current_target = stumpless_get_current_target();
   if(!current_target){
-    current_target = stumpless_open_socket_target(STUMPLESS_PIPE_NAME, 0, 0);
+    current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
   }
 
   return stumpless_add_entry(current_target, message);

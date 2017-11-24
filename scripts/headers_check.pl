@@ -51,8 +51,8 @@ my %manifest = (
   "stumpless_get_error" => "stumpless/error.h",
   "STUMPLESS_MAX_TARGET_COUNT" => "stumpless.h",
   "stumpless_open_target" => "stumpless/target.h",
-  "STUMPLESS_PIPE_NAME" => "stumpless.h",
-  "STUMPLESS_PIPE_NAME_LENGTH" => "stumpless.h",
+  "STUMPLESS_SOCKET_NAME" => "stumpless.h",
+  "STUMPLESS_SOCKET_NAME_LENGTH" => "stumpless.h",
   "syslog" => "syslog.h"
 );
 

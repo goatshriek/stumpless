@@ -34,7 +34,7 @@ static FILE *outfile=NULL;
 void sigint_handler(int signo){
   fclose(outfile);
   close(log_socket);
-  unlink(STUMPLESS_PIPE_NAME);
+  unlink(STUMPLESS_SOCKET_NAME);
   
   exit(EXIT_SUCCESS);
 }
@@ -53,7 +53,7 @@ int main(void){
   }
 
   log_socket_addr.sun_family = AF_UNIX;
-  memcpy(&log_socket_addr.sun_path, STUMPLESS_PIPE_NAME, STUMPLESS_PIPE_NAME_LENGTH+1);
+  memcpy(&log_socket_addr.sun_path, STUMPLESS_SOCKET_NAME, STUMPLESS_SOCKET_NAME_LENGTH+1);
 
   if(signal(SIGINT, &sigint_handler) == SIG_ERR){
     perror("could not register signal handler for SIGINT");
@@ -66,7 +66,7 @@ int main(void){
     return EXIT_FAILURE;
   }
 
-  if( bind(log_socket, (struct sockaddr *) &log_socket_addr, sizeof(log_socket_addr.sun_family)+STUMPLESS_PIPE_NAME_LENGTH+1) < 0 ){
+  if( bind(log_socket, (struct sockaddr *) &log_socket_addr, sizeof(log_socket_addr.sun_family)+STUMPLESS_SOCKET_NAME_LENGTH+1) < 0 ){
     perror("could not bind socket");
     return EXIT_FAILURE;
   }
