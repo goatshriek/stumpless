@@ -18,11 +18,82 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <stumpless.h>
+#include <stumpless/target.h>
+#include "private/error.h"
 #include "private/memory.h"
 #include "private/target.h"
+
+static struct target **targets=NULL;
+static struct stumpless_target *current_target=NULL;
+
+struct stumpless_target *
+stumpless_open_target(const char *name, int options, int facility){
+  struct stumpless_target *pub_target;
+  struct target *priv_target;
+  size_t name_len;
+
+  clear_error();
+  
+  if( current_target && current_target->id == STUMPLESS_MAX_TARGET_COUNT-1 ){
+    return NULL;
+  }
+
+  if(!targets){
+    targets = alloc_mem(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
+    if(!targets)
+      return NULL;
+  }
+
+  pub_target = alloc_mem(sizeof(struct stumpless_target));
+  if( !pub_target ){
+    return NULL;
+  }
+  
+  name_len = strlen(name) ;
+  priv_target = new_target(name, name_len);
+  if( !priv_target ){
+    free_mem(pub_target);
+    return NULL;
+  }
+
+  pub_target->name = alloc_mem(name_len);
+  if( !pub_target->name ){
+    free_mem(pub_target);
+    free_mem(priv_target);
+    return NULL;
+  }
+
+  memcpy(pub_target->name, name, name_len);
+
+  if(current_target)
+    pub_target->id = current_target->id+1;
+  else
+    pub_target->id = 0;
+
+  pub_target->options = options;
+  pub_target->facility = facility;
+
+  targets[pub_target->id] = priv_target;
+
+  current_target = pub_target;
+  return pub_target;
+}
+
+void
+stumpless_close_target(struct stumpless_target *target){
+  clear_error();
+  
+  if(target && targets){
+    destroy_target(targets[target->id]);
+  }
+  
+  // todo need to clean up the id list
+}
 
 struct target *new_target(const char *dest, size_t dest_len){
   struct target *trgt;
@@ -71,4 +142,25 @@ ssize_t sendto_target(const struct target *trgt, const char *msg){
   }
   
   return sendto(trgt->local_socket, msg, strlen(msg)+1, 0, (struct sockaddr *) &trgt->target_addr, trgt->target_addr_len);
+}
+
+int stumpless_add_entry(struct stumpless_target *target, const char *message){
+  clear_error();
+ 
+  if( !target || !targets ){
+    return -1;
+  }
+ 
+  if( sendto_target(targets[target->id], message) <= 0){
+    perror("could not send message");
+    return -1;
+  }
+
+  return 0;
+}
+
+struct stumpless_target *stumpless_get_current_target(){
+  clear_error();
+
+  return current_target;
 }

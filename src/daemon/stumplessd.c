@@ -71,15 +71,13 @@ int main(void){
     return EXIT_FAILURE;
   }
 
-  printf("entering receive loop\n");
-  
   while(1){
     msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
     if(msg_len < 0){
       perror("message recieve failure");
     } else {
-      printf("message received\n");
       fprintf(outfile, "%s\n", buf);
+      fflush(outfile);
     }
   }
 

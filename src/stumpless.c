@@ -18,91 +18,22 @@
  */
 
 #include <stddef.h>
-#include <stdio.h>
-#include <string.h>
 #include <stumpless.h>
+#include <stumpless/target.h>
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/target.h"
-
-static struct target **targets=NULL;
-static stumpless_id_t current_target=0;
 
 int stumpless(const char *message){
-  clear_error();
-  
-  if( current_target == 0 ){
-    stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
-    if( current_target == 0 ){
-      return -1;
-    }
-  }
-  
-  if( sendto_target(targets[current_target-1], message) <= 0){
-    perror("could not send message");
-    return -1;
-  }
-
-  return 0;
-}
-
-struct stumpless_target *
-stumpless_open_target(const char *name, int options, int facility){
-  struct stumpless_target *pub_target;
-  struct target *priv_target;
-  size_t name_len;
+  struct stumpless_target *current_target;
 
   clear_error();
-  
-  if( current_target == STUMPLESS_MAX_TARGET_COUNT-1 ){
-    return NULL;
+
+  current_target = stumpless_get_current_target();
+  if(!current_target){
+    current_target = stumpless_open_target(STUMPLESS_PIPE_NAME, 0, 0);
   }
 
-  if(!targets){
-    targets = alloc_mem(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
-    if(!targets)
-      return NULL;
-  }
-
-  pub_target = alloc_mem(sizeof(struct stumpless_target));
-  if( !pub_target ){
-    return NULL;
-  }
-  
-  name_len = strlen(name) ;
-  priv_target = new_target(name, name_len);
-  if( !priv_target ){
-    free_mem(pub_target);
-    return NULL;
-  }
-
-  pub_target->name = alloc_mem(name_len);
-  if( !pub_target->name ){
-    free_mem(pub_target);
-    free_mem(priv_target);
-    return NULL;
-  }
-
-  memcpy(pub_target->name, name, name_len);
-
-  pub_target->id = current_target++;
-  pub_target->options = options;
-  pub_target->facility = facility;
-
-  targets[pub_target->id] = priv_target;
-  
-  return pub_target;
-}
-
-void
-stumpless_close_target(struct stumpless_target *target){
-  clear_error();
-  
-  if(target && targets){
-    destroy_target(targets[target->id]);
-  }
-  
-  // todo need to clean up the id list
+  return stumpless_add_entry(current_target, message);
 }
 
 struct stumpless_version *
