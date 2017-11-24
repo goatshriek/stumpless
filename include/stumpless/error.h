@@ -25,7 +25,7 @@ extern "C" {
 #endif
 
 enum stumpless_error_id{
-  MEMORY_ALLOCATION_FAILURE
+  STUMPLESS_MEMORY_ALLOCATION_FAILURE
 };
 
 struct stumpless_error {

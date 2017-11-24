@@ -45,6 +45,6 @@ void raise_memory_allocation_failure(){
     }
   }
   
-  last_error->id = MEMORY_ALLOCATION_FAILURE;
+  last_error->id = STUMPLESS_MEMORY_ALLOCATION_FAILURE;
   error_valid = 1;
 }
