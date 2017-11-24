@@ -25,6 +25,7 @@ extern "C" {
 #endif
 
 enum stumpless_target_type {
+  STUMPLESS_BUFFER_TARGET,
   STUMPLESS_SOCKET_TARGET
 };
 
@@ -32,13 +33,14 @@ typedef int stumpless_id_t;
 
 struct stumpless_target {
   stumpless_id_t id;
+  enum stumpless_target_type type;
   char *name;
   int options;
   int facility;
 };
 
-struct stumpless_target *stumpless_open_target(const char *name, int options, int facility);
-void stumpless_close_target(struct stumpless_target *target);
+struct stumpless_target *stumpless_open_socket_target(const char *name, int options, int facility);
+void stumpless_close_socket_target(struct stumpless_target *target);
 int stumpless_add_entry(struct stumpless_target *target, const char *message);
 struct stumpless_target *stumpless_get_current_target();
 

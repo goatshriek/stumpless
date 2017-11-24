@@ -32,7 +32,7 @@ static struct target **targets=NULL;
 static struct stumpless_target *current_target=NULL;
 
 struct stumpless_target *
-stumpless_open_target(const char *name, int options, int facility){
+stumpless_open_socket_target(const char *name, int options, int facility){
   struct stumpless_target *pub_target;
   struct target *priv_target;
   size_t name_len;
@@ -85,7 +85,7 @@ stumpless_open_target(const char *name, int options, int facility){
 }
 
 void
-stumpless_close_target(struct stumpless_target *target){
+stumpless_close_socket_target(struct stumpless_target *target){
   clear_error();
   
   if(target && targets){

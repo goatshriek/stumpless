@@ -17,6 +17,11 @@ Of course if you would like to test the generated wrappers for languages other
 than C then you will need the language environment installed in order to run the
 tests.
 
+## Documentation
+The specification for the Syslogv2 protocol is in an XML file that can be used
+to generate an RFC-styled document outlining the details. In order to generate
+text, HTML, or other RFC output you will need to use the `xml2rfc` tool,
+
 ## Simplified Wrapper Interface Generator (SWIG)
 The SWIG project is used to expose the functionality of Stumpless to languages
 beyond normal C. The `swig` executable must be available in order to build any
