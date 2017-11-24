@@ -46,7 +46,7 @@ int main(void){
   socklen_t size = 100;
   char buf[1024];
   
-  outfile = fopen("stumplessd-out.log", "w");
+  outfile = fopen("stumplessd-out.log", "a");
   if( !outfile ){
     perror("could not open output file");
     return EXIT_FAILURE;
@@ -56,7 +56,7 @@ int main(void){
   memcpy(&log_socket_addr.sun_path, STUMPLESS_PIPE_NAME, STUMPLESS_PIPE_NAME_LENGTH+1);
 
   if(signal(SIGINT, &sigint_handler) == SIG_ERR){
-    perror("could not register signal handler for SIGINTit ");
+    perror("could not register signal handler for SIGINT");
     return EXIT_FAILURE;
   }
   
@@ -70,12 +70,15 @@ int main(void){
     perror("could not bind socket");
     return EXIT_FAILURE;
   }
+
+  printf("entering receive loop\n");
   
   while(1){
     msg_len = recvfrom(log_socket, buf, 1024, 0, (struct sockaddr *) &from_addr, &size);
     if(msg_len < 0){
       perror("message recieve failure");
     } else {
+      printf("message received\n");
       fprintf(outfile, "%s\n", buf);
     }
   }

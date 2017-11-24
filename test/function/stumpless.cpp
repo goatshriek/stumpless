@@ -1,50 +1,43 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <stumpless/error.h>
-#include <fstream>
-using namespace std;
 
-TEST(StumplessTest, RawString){
-  ifstream logFile;
-  std::string line;
-  
-  EXPECT_EQ(0, stumpless("testing"));
-  EXPECT_EQ(NULL, stumpless_get_error());
-  
-  logFile.open("stumplessd-out.log");
-  if(!logFile){
-    FAIL() << "the log file did not exist";
+namespace {
+
+  class StumplessTest : public ::testing::Test {};
+
+  TEST(StumplessTest, RawString){
+    EXPECT_EQ(0, stumpless("testing 1"));
+    EXPECT_EQ(0, stumpless("testing 2"));
+    EXPECT_EQ(0, stumpless("testing 3"));
+    EXPECT_EQ(NULL, stumpless_get_error());
   }
   
-  std::getline(logFile, line);
-  EXPECT_EQ("testing", line);
+  TEST(GetStumplessVersionTest, Function){
+    struct stumpless_version *version;
   
-  logFile.close();
-}
+    version = get_stumpless_version();
+  
+    ASSERT_TRUE(version != NULL);
+    ASSERT_TRUE(version->major >= 0);
+    ASSERT_TRUE(version->minor >= 0);
+    ASSERT_TRUE(version->patch >= 0);
+  }
+  
+  TEST(GetStumplessVersionTest, Defines){
+    #ifndef STUMPLESS_MAJOR_VERSION
+      FAIL();
+    #endif
+  
+    #ifndef STUMPLESS_MINOR_VERSION
+      FAIL();
+    #endif
+  
+    #ifndef STUMPLESS_PATCH_VERSION
+      FAIL();
+    #endif
+  }
 
-TEST(GetStumplessVersionTest, Function){
-  struct stumpless_version *version;
-
-  version = get_stumpless_version();
-
-  ASSERT_TRUE(version != NULL);
-  ASSERT_TRUE(version->major >= 0);
-  ASSERT_TRUE(version->minor >= 0);
-  ASSERT_TRUE(version->patch >= 0);
-}
-
-TEST(GetStumplessVersionTest, Defines){
-  #ifndef STUMPLESS_MAJOR_VERSION
-    FAIL();
-  #endif
-
-  #ifndef STUMPLESS_MINOR_VERSION
-    FAIL();
-  #endif
-
-  #ifndef STUMPLESS_PATCH_VERSION
-    FAIL();
-  #endif
 }
 
 int main(int argc, char **argv){
