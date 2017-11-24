@@ -23,7 +23,7 @@ memory.o: $(SRCDIR)/memory.c $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/memory.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/memory.c
 
-target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/target.h $(INCLUDEDIR)/stumpless/target.h
+target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/target.h $(INCLUDEDIR)/stumpless/target.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/target.c
 

@@ -39,10 +39,10 @@ struct stumpless_target {
   int facility;
 };
 
-struct stumpless_target *stumpless_open_socket_target(const char *name, int options, int facility);
-void stumpless_close_socket_target(struct stumpless_target *target);
 int stumpless_add_entry(struct stumpless_target *target, const char *message);
+void stumpless_close_socket_target(struct stumpless_target *target);
 struct stumpless_target *stumpless_get_current_target();
+struct stumpless_target *stumpless_open_socket_target(const char *name, int options, int facility);
 
 #ifdef __cplusplus
 } /* extern "C" */

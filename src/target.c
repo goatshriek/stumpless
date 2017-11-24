@@ -28,13 +28,45 @@
 #include "private/memory.h"
 #include "private/target.h"
 
-static struct target **targets=NULL;
+static struct socket_target **targets=NULL;
 static struct stumpless_target *current_target=NULL;
+
+int stumpless_add_entry(struct stumpless_target *target, const char *message){
+  clear_error();
+ 
+  if( !target || !targets ){
+    return -1;
+  }
+ 
+  if( sendto_socket_target(targets[target->id], message) <= 0){
+    perror("could not send message");
+    return -1;
+  }
+
+  return 0;
+}
+
+void
+stumpless_close_socket_target(struct stumpless_target *target){
+  clear_error();
+  
+  if(target && targets){
+    destroy_socket_target(targets[target->id]);
+  }
+  
+  // todo need to clean up the id list
+}
+
+struct stumpless_target *stumpless_get_current_target(){
+  clear_error();
+
+  return current_target;
+}
 
 struct stumpless_target *
 stumpless_open_socket_target(const char *name, int options, int facility){
   struct stumpless_target *pub_target;
-  struct target *priv_target;
+  struct socket_target *priv_target;
   size_t name_len;
 
   clear_error();
@@ -55,7 +87,7 @@ stumpless_open_socket_target(const char *name, int options, int facility){
   }
   
   name_len = strlen(name) ;
-  priv_target = new_target(name, name_len);
+  priv_target = new_socket_target(name, name_len);
   if( !priv_target ){
     free_mem(pub_target);
     return NULL;
@@ -84,21 +116,22 @@ stumpless_open_socket_target(const char *name, int options, int facility){
   return pub_target;
 }
 
-void
-stumpless_close_socket_target(struct stumpless_target *target){
-  clear_error();
-  
-  if(target && targets){
-    destroy_target(targets[target->id]);
+
+/* private definitions */
+
+void destroy_socket_target(struct socket_target *trgt){
+  if( !trgt ){
+    return;
   }
   
-  // todo need to clean up the id list
+  close(trgt->local_socket);
+  free_mem(trgt);
 }
 
-struct target *new_target(const char *dest, size_t dest_len){
-  struct target *trgt;
+struct socket_target *new_socket_target(const char *dest, size_t dest_len){
+  struct socket_target *trgt;
   
-  trgt = alloc_mem(sizeof(struct target));
+  trgt = alloc_mem(sizeof(struct socket_target));
   if( !trgt ){
     return NULL;
   }
@@ -127,40 +160,10 @@ struct target *new_target(const char *dest, size_t dest_len){
   return trgt;
 }
 
-void destroy_target(struct target *trgt){
-  if( !trgt ){
-    return;
-  }
-  
-  close(trgt->local_socket);
-  free_mem(trgt);
-}
-
-ssize_t sendto_target(const struct target *trgt, const char *msg){
+ssize_t sendto_socket_target(const struct socket_target *trgt, const char *msg){
   if(!trgt || !msg){
     return 0;
   }
   
   return sendto(trgt->local_socket, msg, strlen(msg)+1, 0, (struct sockaddr *) &trgt->target_addr, trgt->target_addr_len);
-}
-
-int stumpless_add_entry(struct stumpless_target *target, const char *message){
-  clear_error();
- 
-  if( !target || !targets ){
-    return -1;
-  }
- 
-  if( sendto_target(targets[target->id], message) <= 0){
-    perror("could not send message");
-    return -1;
-  }
-
-  return 0;
-}
-
-struct stumpless_target *stumpless_get_current_target(){
-  clear_error();
-
-  return current_target;
 }
