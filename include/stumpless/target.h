@@ -24,6 +24,10 @@
 extern "C" {
 #endif
 
+enum stumpless_target_type {
+  STUMPLESS_SOCKET_TARGET
+};
+
 typedef int stumpless_id_t;
 
 struct stumpless_target {
