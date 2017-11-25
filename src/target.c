@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stumpless/target.h>
 #include "private/error.h"
+#include "private/target/buffer.h"
 #include "private/target/socket.h"
 
 static struct stumpless_target *current_target=NULL;
@@ -39,7 +40,14 @@ int stumpless_add_entry(struct stumpless_target *target, const char *message){
         return -1;
       }
       break;
+    case STUMPLESS_BUFFER_TARGET:
+      if( sendto_buffer_target(target, message) <= 0 ){
+        printf("could not send message to target");
+        return -1;
+      }
+      break;
     default:
+      printf("target type unrecognized\n");
       return -1;
   }
 
