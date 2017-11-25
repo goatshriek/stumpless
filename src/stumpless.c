@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include <stumpless/target.h>
+#include <stumpless/target/socket.h>
 #include "private/error.h"
 #include "private/memory.h"
 

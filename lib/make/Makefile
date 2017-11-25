@@ -10,10 +10,10 @@ CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 CPPFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 
 
-all: stumpless.o stumplessd.o target.o memory.o error.o
+all: stumpless.o stumplessd.o target.o memory.o error.o socket.o
 	mkdir -p ./bin
 	gcc -o ./bin/stumplessd stumplessd.o
-	ld -shared stumpless.o target.o memory.o error.o -o libstumpless.so
+	ld -shared stumpless.o target.o memory.o error.o socket.o -o libstumpless.so
 
 error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private/error.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/error.c
@@ -23,9 +23,13 @@ memory.o: $(SRCDIR)/memory.c $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/memory.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/memory.c
 
-target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/target.h $(INCLUDEDIR)/stumpless/target.h
+target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/stumpless/target.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/target.c
+
+socket.o: $(SRCDIR)/target/socket.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h $(INCLUDEDIR)/private/target/socket.h
+	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target/socket.c
+	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/target/socket.c
 
 stumpless.o: $(SRCDIR)/stumpless.c $(INCLUDEDIR)/stumpless.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/stumpless.c
