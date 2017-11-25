@@ -19,12 +19,12 @@
 
 #include <stddef.h>
 #include <string.h>
-#include <unistd.h>
 #include <stumpless.h>
 #include <stumpless/target.h>
+#include <stumpless/target/buffer.h>
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/target/socket.h"
+#include "private/target/buffer.h"
 
 static struct buffer_target **targets=NULL;
 
@@ -101,11 +101,11 @@ stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int op
 /* private definitions */
 
 void destroy_buffer_target(struct buffer_target *target){
-  if( !trgt ){
+  if( !target ){
     return;
   }
   
-  free_mem(trgt);
+  free_mem(target);
 }
 
 struct buffer_target *new_buffer_target(char *buffer, size_t size){
@@ -122,19 +122,40 @@ struct buffer_target *new_buffer_target(char *buffer, size_t size){
   
   target->buffer = buffer;
   target->size = size;
+  target->position = 0;
  
-  return trgt;
+  return target;
 }
 
-ssize_t sendto_buffer_target(const struct stumpless_target *target, const char *msg){
+int sendto_buffer_target(const struct stumpless_target *target, const char *msg){
   struct buffer_target *priv_trgt;
+  size_t msg_len;
+  size_t buffer_remaining;
 
   if(!target || !targets || !msg){
     return 0;
   }
   
   priv_trgt = targets[target->id];
+  msg_len = strlen(msg);
 
-  // todo need to finish
-  return 0;
+  if(msg_len >= priv_trgt->size){
+    // todo generate error buffer too small
+    return -1;
+  }
+
+  buffer_remaining = priv_trgt->size - priv_trgt->position;
+  
+  if(buffer_remaining > msg_len){
+    memcpy(priv_trgt->buffer+priv_trgt->position, msg, msg_len);
+    priv_trgt->position = msg_len+1;
+  } else {
+    memcpy(priv_trgt->buffer+priv_trgt->position, msg, buffer_remaining);
+    memcpy(priv_trgt->buffer, msg+buffer_remaining, msg_len-buffer_remaining);
+    priv_trgt->position = msg_len - buffer_remaining + 1;
+  }
+
+  priv_trgt->buffer[priv_trgt->position-1] = '\0';
+
+  return msg_len+1;
 }

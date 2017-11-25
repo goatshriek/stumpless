@@ -14,6 +14,7 @@ my %manifest = (
   "clock_t" => "sys/types.h",
   "CLOCKS_PER_SEC" => "time.h",
   "close" => "unistd.h",
+  "destroy_buffer_target" => "private/target/buffer.h",
   "destroy_socket_target" => "private/target/socket.h",
   "EXIT_FAILURE" => "stdlib.h",
   "EXIT_SUCCESS" => "stdlib.h",
@@ -26,6 +27,7 @@ my %manifest = (
   "LOG_INFO" => "syslog.h",
   "malloc" => "stdlib.h",
   "memcpy" => "string.h",
+  "new_buffer_target" => "private/target/buffer.h",
   "new_socket_target" => "private/target/socket.h",
   "NULL" => "stddef.h",
   "perror" => "stdio.h",
@@ -34,6 +36,7 @@ my %manifest = (
   "recvfrom" => "sys/socket.h",
   "RUN_ALL_TESTS" => "gtest/gtest.h",
   "sendto" => "sys/socket.h",
+  "sendto_buffer_target" => "private/target/buffer.h",
   "sendto_socket_target" => "private/target/socket.h",
   "SIG_ERR" => "signal.h",
   "SIGINT" => "signal.h",
@@ -43,16 +46,19 @@ my %manifest = (
   "ssize_t" => "sys/types.h",
   "struct sockaddr" => "sys/socket.h",
   "struct sockaddr_un" => "sys/un.h",
+  "struct buffer_target" => "private/target/buffer.h",
   "struct socket_target" => "private/target/socket.h",
   "struct stumpless_error" => "stumpless/error.h",
   "struct stumpless_target" => "stumpless/target.h",
   "stumpless" => "stumpless.h",
   "stumpless_add_entry" => "stumpless/target.h",
+  "stumpless_close_buffer_target" => "stumpless/target/buffer.h",
   "stumpless_close_socket_target" => "stumpless/target/socket.h",
   "stumpless_error_id_t" => "stumpless/error.h",
   "stumpless_get_current_target" => "stumpless/target.h",
   "stumpless_get_error" => "stumpless/error.h",
   "STUMPLESS_MAX_TARGET_COUNT" => "stumpless.h",
+  "stumpless_open_buffer_target" => "stumpless/target/buffer.h",
   "stumpless_open_socket_target" => "stumpless/target/socket.h",
   "stumpless_set_current_target" => "stumpless/target.h",
   "STUMPLESS_SOCKET_NAME" => "stumpless.h",
@@ -79,7 +85,7 @@ foreach my $line (<SOURCE>) {
     $actual_includes{$1} = 1;
   } else {
     while(my($k, $v) = each %manifest){
-      if($line =~ m/\W$k\W/){
+      if($line =~ m/\W$k\W/ or $line =~ m/^$k\W/){
         $needed_includes{$v} = $k;
       }
     }
