@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 void stumpless_close_buffer_target(struct stumpless_target *target);
-struct stumpless_target *stumpless_open_buffer_target(char *buffer, size_t size, int options, int facility);
+struct stumpless_target *stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int options, int facility);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -26,7 +26,7 @@
 struct buffer_target {
   char *buffer;
   size_t size;
-  int local_socket;
+  size_t position;
 };
 
 void destroy_buffer_target(struct buffer_target *target);
