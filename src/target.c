@@ -37,10 +37,16 @@ int stumpless_add_entry(struct stumpless_target *target, const char *message){
   if( !target || !targets ){
     return -1;
   }
- 
-  if( sendto_socket_target(targets[target->id], message) <= 0){
-    perror("could not send message");
-    return -1;
+
+  switch(target->type){
+    case STUMPLESS_SOCKET_TARGET:
+      if( sendto_socket_target(targets[target->id], message) <= 0){
+        perror("could not send message");
+        return -1;
+      }
+      break;
+    default:
+      return -1;
   }
 
   return 0;
@@ -107,6 +113,7 @@ stumpless_open_socket_target(const char *name, int options, int facility){
   else
     pub_target->id = 0;
 
+  pub_target->type = STUMPLESS_SOCKET_TARGET;
   pub_target->options = options;
   pub_target->facility = facility;
 
