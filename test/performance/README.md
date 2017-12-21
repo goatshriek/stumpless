@@ -1,9 +1,8 @@
 # Performance Testing
 
-Performance testing of the library consists of throughput testing.
+Performance testing of the library consists of performing a variety of
+benchmarks on each function in the library.
 
-## `throughput.c`
+## `stumpless.cpp
 
-Sends several basic messages directly to the daemon service. Records the time
-required for both the stumpless library and the standard library syslog function
-and outputs these to a results file in CSV format.
+Runs benchmarks on the stumpless function.

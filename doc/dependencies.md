@@ -17,6 +17,13 @@ Of course if you would like to test the generated wrappers for languages other
 than C then you will need the language environment installed in order to run the
 tests.
 
+The performance test suite for the project uses the Google Benchmark suite. The
+headers and library must be installed on the system in order for the benchmarks
+to build and run.
+
+More information on the Google Benchmark framework may be found on the project
+[Github page](https://github.com/google/benchmark).
+
 ## Documentation
 The specification for the Syslogv2 protocol is in an XML file that can be used
 to generate an RFC-styled document outlining the details. In order to generate
