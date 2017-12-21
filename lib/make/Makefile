@@ -7,7 +7,7 @@ LIBDIR = $(TOPDIR)/lib
 SCRIPTSDIR = $(TOPDIR)/scripts
 TESTDIR = $(TOPDIR)/test
 CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
-CPPFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
+CPPFLAGS = -std=c++11 -Wall -g -O0 -I $(INCLUDEDIR)
 
 
 all: stumpless.o stumplessd.o target.o memory.o error.o socket.o buffer.o
@@ -66,16 +66,16 @@ test-function-target-buffer: all
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/target/buffer.cpp
 	g++ $(TESTDIR)/function/target/buffer.cpp -o ./bin/test/function/target/buffer $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.
 
-test-performance: test-performance-throughput
+test-performance: test-performance-stumpless
 	./bin/stumplessd &
-	./bin/test/throughput
+	./bin/test/performance/stumpless
 	pkill --signal SIGINT stumplessd
 	rm ./stumplessd-out.log
 
-test-performance-throughput: $(TESTDIR)/performance/throughput.c
-	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/performance/throughput.c
-	gcc $(CFLAGS) -c $(TESTDIR)/performance/throughput.c
-	gcc throughput.o -o ./bin/test/throughput -L. -lstumpless -Wl,-rpath=.
+test-performance-stumpless: all $(TESTDIR)/performance/stumpless.cpp
+	mkdir -p ./bin/test/performance
+	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/performance/stumpless.cpp
+	g++ $(TESTDIR)/performance/stumpless.cpp -o ./bin/test/performance/stumpless $(CPPFLAGS) -L. -lbenchmark -lstumpless -lpthread -Wl,-rpath=.
 
 swig: all $(LIBDIR)/swig/stumpless.i
 	mkdir -p ./lib/swig
