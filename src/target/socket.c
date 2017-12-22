@@ -20,8 +20,11 @@
 #include <stddef.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <stumpless.h>
 #include <stumpless/target.h>
+#include <stumpless/target/socket.h>
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/target/socket.h"

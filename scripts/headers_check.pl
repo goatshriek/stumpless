@@ -9,6 +9,8 @@ open(SOURCE, $file) or die("could not open file: $file");
 my %manifest = (
   "AF_UNIX" => "sys/socket.h",
   "alloc_mem" => "private/memory.h",
+  "BENCHMARK" => "benchmark/benchmark.h",
+  "BENCHMARK_MAIN" => "benchmark/benchmark.h",
   "clear_error" => "private/error.h",
   "clock" => "time.h",
   "clock_t" => "sys/types.h",
