@@ -13,6 +13,7 @@ namespace {
       struct stumpless_target *target;
 
       virtual void SetUp(){
+        buffer[0] = '\0';
         target = stumpless_open_buffer_target("buffer target testing", buffer, 100, 0, 0);
       }
 
@@ -26,6 +27,8 @@ namespace {
 
     EXPECT_EQ(0, stumpless("testing 1"));
     EXPECT_EQ(NULL, stumpless_get_error());
+
+    ASSERT_STREQ("testing 1", buffer);
   }
 
   class BufferTargetOpenTest : public ::testing::Test {
