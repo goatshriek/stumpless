@@ -21,17 +21,22 @@
 #include <stdio.h>
 #include <stumpless/target.h>
 #include "private/error.h"
+#include "private/formatter.h"
 #include "private/target/buffer.h"
 #include "private/target/socket.h"
 
 static struct stumpless_target *current_target=NULL;
 
-int stumpless_add_entry(struct stumpless_target *target, const char *message){
+int stumpless_add_entry(struct stumpless_target *target, const char *entry){
+  char *message;
+
   clear_error();
  
   if( !target ){
     return -1;
   }
+
+  message = format_entry(target, entry);
 
   switch(target->type){
     case STUMPLESS_SOCKET_TARGET:

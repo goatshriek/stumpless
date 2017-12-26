@@ -17,8 +17,6 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stumpless/error.h>
-
 #ifndef __STUMPLESS_PRIVATE_MEMORY_H
 #define __STUMPLESS_PRIVATE_MEMORY_H
 

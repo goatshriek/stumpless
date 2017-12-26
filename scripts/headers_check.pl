@@ -23,6 +23,7 @@ my %manifest = (
   "fclose" => "stdio.h",
   "FILE" => "stdio.h",
   "fopen" => "stdio.h",
+  "format_entry" => "private/formatter.h",
   "fprintf" => "stdio.h",
   "free" => "stdlib.h",
   "free_mem" => "private/memory.h",

@@ -17,34 +17,11 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUMPLESS_TARGET_H
-#define __STUMPLESS_TARGET_H
+#ifndef __STUMPLESS_PRIVATE_FORMATTER_H
+#define __STUMPLESS_PRIVATE_FORMATTER_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <stumpless/target.h>
 
-enum stumpless_target_type {
-  STUMPLESS_BUFFER_TARGET,
-  STUMPLESS_SOCKET_TARGET
-};
+char *format_entry(const struct stumpless_target *target, const char *message);
 
-typedef int stumpless_id_t;
-
-struct stumpless_target {
-  stumpless_id_t id;
-  enum stumpless_target_type type;
-  char *name;
-  int options;
-  int facility;
-};
-
-int stumpless_add_entry(struct stumpless_target *target, const char *entry);
-struct stumpless_target *stumpless_get_current_target();
-void stumpless_set_current_target(struct stumpless_target *target);
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
-
-#endif /* __STUMPLESS_TARGET_H */
+#endif /* __STUMPLESS_PRIVATE_FORMATTER_H */
