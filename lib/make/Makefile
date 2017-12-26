@@ -23,23 +23,23 @@ error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/error.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/error.c
 
-memory.o: $(SRCDIR)/memory.c $(INCLUDEDIR)/private/memory.h
+memory.o: $(SRCDIR)/memory.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/memory.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/memory.c
 
-target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/stumpless/target.h
+target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/private/target/buffer.h $(INCLUDEDIR)/private/target/socket.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/target.c
 
-socket.o: $(SRCDIR)/target/socket.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h $(INCLUDEDIR)/private/target/socket.h
+socket.o: $(SRCDIR)/target/socket.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/stumpless/target/socket.h $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h $(INCLUDEDIR)/private/target/socket.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target/socket.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/target/socket.c
 
-buffer.o: $(SRCDIR)/target/buffer.c
+buffer.o: $(SRCDIR)/target/buffer.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/stumpless/target/buffer.h $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h $(INCLUDEDIR)/private/target/buffer.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target/buffer.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/target/buffer.c
 
-stumpless.o: $(SRCDIR)/stumpless.c $(INCLUDEDIR)/stumpless.h
+stumpless.o: $(SRCDIR)/stumpless.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/stumpless/target/socket.h $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/stumpless.c
 	gcc $(CFLAGS) -c -fPIC $(SRCDIR)/stumpless.c
 
