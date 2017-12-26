@@ -21,8 +21,18 @@ namespace {
       }
   };
 
-  // todo need to move this to a different test case without the fixture
-  TEST_F(BufferTargetTest, NormalOpenTarget){
+  TEST_F(BufferTargetTest, Basic){
+    ASSERT_TRUE(stumpless_get_current_target() != NULL);
+
+    EXPECT_EQ(0, stumpless("testing 1"));
+    EXPECT_EQ(NULL, stumpless_get_error());
+  }
+
+  class BufferTargetOpenTest : public ::testing::Test {
+
+  };
+
+  TEST(BufferTargetOpenTest, NormalOpenTarget){
     struct stumpless_target *target;
     char buffer[100];
 
@@ -32,13 +42,6 @@ namespace {
     EXPECT_EQ(target, stumpless_get_current_target());
 
     stumpless_close_buffer_target(target);
-  }
-
-  TEST_F(BufferTargetTest, Basic){
-    ASSERT_TRUE(stumpless_get_current_target() != NULL);
-
-    EXPECT_EQ(0, stumpless("testing 1"));
-    EXPECT_EQ(NULL, stumpless_get_error());
   }
   
 }

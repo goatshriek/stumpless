@@ -47,7 +47,12 @@ stumplessd.o: $(SRCDIR)/daemon/stumplessd.c $(INCLUDEDIR)/stumpless.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/daemon/stumplessd.c
 	gcc $(CFLAGS) -c $(SRCDIR)/daemon/stumplessd.c
 
-test: test-function test-performance
+test: bin/stumplessd bin/test/function/stumpless bin/test/function/target/buffer bin/test/performance/stumpless
+	./bin/stumplessd &
+	./bin/test/function/stumpless
+	./bin/test/function/target/buffer
+	./bin/test/performance/stumpless
+	pkill --signal SIGINT stumplessd
 
 test-function: bin/stumplessd bin/test/function/stumpless bin/test/function/target/buffer
 	./bin/stumplessd &
@@ -65,11 +70,10 @@ bin/test/function/target/buffer: libstumpless.so
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/target/buffer.cpp
 	g++ $(TESTDIR)/function/target/buffer.cpp -o ./bin/test/function/target/buffer $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.
 
-test-performance: bin/test/performance/stumpless
+test-performance: bin/stumplessd bin/test/performance/stumpless
 	./bin/stumplessd &
 	./bin/test/performance/stumpless
 	pkill --signal SIGINT stumplessd
-	rm ./stumplessd-out.log
 
 bin/test/performance/stumpless: libstumpless.so $(TESTDIR)/performance/stumpless.cpp
 	mkdir -p ./bin/test/performance
