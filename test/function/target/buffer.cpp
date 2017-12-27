@@ -9,8 +9,6 @@
 
 #define TEST_BUFFER_LENGTH 1024
 
-using ::testing::MatchesRegex;
-
 namespace {
 
   class BufferTargetTest : public ::testing::Test {
