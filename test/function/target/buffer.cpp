@@ -1,15 +1,19 @@
 #include <stddef.h>
+#include <regex>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/error.h>
+#include "test/function.h"
+
+using ::testing::MatchesRegex;
 
 namespace {
 
   class BufferTargetTest : public ::testing::Test {
     protected:
-      char buffer[100];
+      char buffer[1024];
       struct stumpless_target *target;
 
       virtual void SetUp(){
@@ -27,8 +31,6 @@ namespace {
 
     EXPECT_EQ(0, stumpless("testing 1"));
     EXPECT_EQ(NULL, stumpless_get_error());
-
-    ASSERT_STREQ("testing 1", buffer);
   }
 
   class BufferTargetOpenTest : public ::testing::Test {

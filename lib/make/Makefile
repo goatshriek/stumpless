@@ -69,7 +69,7 @@ bin/test/function/stumpless: libstumpless.so $(TESTDIR)/function/stumpless.cpp $
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/stumpless.cpp
 	g++ $(TESTDIR)/function/stumpless.cpp -o ./bin/test/function/stumpless $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.
 
-bin/test/function/target/buffer: libstumpless.so
+bin/test/function/target/buffer: libstumpless.so $(TESTDIR)/function/target/buffer.cpp $(INCLUDEDIR)/test/function.h
 	mkdir -p ./bin/test/function/target
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/target/buffer.cpp
 	g++ $(TESTDIR)/function/target/buffer.cpp -o ./bin/test/function/target/buffer $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.

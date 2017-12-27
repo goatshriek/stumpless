@@ -9,6 +9,7 @@ open(SOURCE, $file) or die("could not open file: $file");
 my %manifest = (
   "AF_UNIX" => "sys/socket.h",
   "alloc_mem" => "private/memory.h",
+  "ASSERT_THAT" => "gmock/gmock.h",
   "BENCHMARK" => "benchmark/benchmark.h",
   "BENCHMARK_MAIN" => "benchmark/benchmark.h",
   "clear_error" => "private/error.h",
@@ -37,6 +38,7 @@ my %manifest = (
   "printf" => "stdio.h",
   "raise_memory_allocation_failure" => "private/error.h",
   "recvfrom" => "sys/socket.h",
+  "RFC_5424_REGEX_STRING" => "test/function.h",
   "RUN_ALL_TESTS" => "gtest/gtest.h",
   "sendto" => "sys/socket.h",
   "sendto_buffer_target" => "private/target/buffer.h",
