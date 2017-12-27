@@ -69,12 +69,12 @@ test-function: bin/stumplessd bin/test/function/stumpless bin/test/function/targ
 bin/test/function/stumpless: libstumpless.so $(TESTDIR)/function/stumpless.cpp $(INCLUDEDIR)/stumpless.h
 	mkdir -p ./bin/test/function
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/stumpless.cpp
-	$(CXX) $(TESTDIR)/function/stumpless.cpp -o ./bin/test/function/stumpless $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.
+	$(CXX) $(TESTDIR)/function/stumpless.cpp -o ./bin/test/function/stumpless $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=.
 
 bin/test/function/target/buffer: libstumpless.so $(TESTDIR)/function/target/buffer.cpp $(INCLUDEDIR)/test/function.h
 	mkdir -p ./bin/test/function/target
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/target/buffer.cpp
-	$(CXX) $(TESTDIR)/function/target/buffer.cpp -o ./bin/test/function/target/buffer $(CPPFLAGS) -L. -lgtest -lstumpless -Wl,-rpath=.
+	$(CXX) $(TESTDIR)/function/target/buffer.cpp -o ./bin/test/function/target/buffer $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=.
 
 test-performance: bin/stumplessd bin/test/performance/stumpless
 	./bin/stumplessd &
