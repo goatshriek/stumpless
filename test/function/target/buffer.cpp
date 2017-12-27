@@ -7,18 +7,20 @@
 #include <stumpless/error.h>
 #include "test/function.h"
 
+#define TEST_BUFFER_LENGTH 1024
+
 using ::testing::MatchesRegex;
 
 namespace {
 
   class BufferTargetTest : public ::testing::Test {
     protected:
-      char buffer[1024];
+      char buffer[TEST_BUFFER_LENGTH];
       struct stumpless_target *target;
 
       virtual void SetUp(){
         buffer[0] = '\0';
-        target = stumpless_open_buffer_target("buffer target testing", buffer, 100, 0, 0);
+        target = stumpless_open_buffer_target("buffer target testing", buffer, TEST_BUFFER_LENGTH, 0, 0);
       }
 
       virtual void TearDown(){
@@ -30,6 +32,20 @@ namespace {
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
 
     EXPECT_EQ(0, stumpless("testing 1"));
+    EXPECT_EQ(NULL, stumpless_get_error());
+  }
+
+  TEST_F(BufferTargetTest, Overflow){
+    const char *test_string = "smash the stack for fun and profit`";
+    size_t test_string_len = strlen(test_string);
+
+    ASSERT_TRUE(stumpless_get_current_target() != NULL);
+
+    for(size_t bytes_written=0; bytes_written <= TEST_BUFFER_LENGTH; bytes_written += test_string_len ){
+      ASSERT_EQ(0, stumpless(test_string));
+      ASSERT_EQ(NULL, stumpless_get_error());
+    }
+
     EXPECT_EQ(NULL, stumpless_get_error());
   }
 
