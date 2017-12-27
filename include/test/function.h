@@ -20,7 +20,7 @@
 #ifndef __STUMPLESS_TEST_FUNCTION_H
 #define __STUMPLESS_TEST_FUNCTION_H
 
-#define RFC_5424_REGEX_STRING "^"                                    /* PRI */ \
+#define RFC_5424_REGEX_STRING "^\\d"                                    /* PRI */ \
                               ""                                  /* HEADER */ \
                               ""                                      /* SP */ \
                               ""                               /* TIMESTAMP */ \

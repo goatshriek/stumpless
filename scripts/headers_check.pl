@@ -49,6 +49,7 @@ my %manifest = (
   "size_t" => "stddef.h",
   "socklen_t" => "sys/socket.h",
   "ssize_t" => "sys/types.h",
+  "std::regex" => "regex",
   "struct sockaddr" => "sys/socket.h",
   "struct sockaddr_un" => "sys/un.h",
   "struct buffer_target" => "private/target/buffer.h",
