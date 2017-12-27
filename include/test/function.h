@@ -20,11 +20,15 @@
 #ifndef __STUMPLESS_TEST_FUNCTION_H
 #define __STUMPLESS_TEST_FUNCTION_H
 
-#define RFC_5424_REGEX_STRING "^\\d"                                    /* PRI */ \
-                              ""                                  /* HEADER */ \
-                              ""                                      /* SP */ \
-                              ""                               /* TIMESTAMP */ \
-                              ""                                      /* SP */ \
+// this format is outlined in https://tools.ietf.org/html/rfc5424
+#define RFC_5424_REGEX_STRING "^<\\d{1,3}>"                          /* PRI */ \
+                              "[1-9]\\d{0,2}"                     /* HEADER */ \
+                              " "                                     /* SP */ \
+                              "-|("                            /* TIMESTAMP */ \
+                              ""                               /* FULL-DATE */ \
+			      "T"                                    /* "T" */ \
+                              ""                               /* FULL-TIME */ \
+                              ")"                                     /* SP */ \
                               ""                                /* HOSTNAME */ \
                               ""                                      /* SP */ \
                               ""                                /* APP-NAME */ \

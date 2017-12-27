@@ -26,8 +26,14 @@ char *format_entry(const struct stumpless_target *target, const char *message){
 
   // todo make this configurable or smarter
   buffer = alloc_mem(1024);
-  buffer[0] = '2';
-  buffer[1] = '\0';
+  buffer[0] = '<';
+  buffer[1] = '1';
+  buffer[2] = '7';
+  buffer[3] = '>';
+  buffer[4] = '3';
+  buffer[5] = ' ';
+  buffer[6] = '-';
+  buffer[7] = '\0';
 
   // fill in fields
 

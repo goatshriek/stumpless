@@ -32,7 +32,7 @@ namespace {
     EXPECT_EQ(0, stumpless("testing 1"));
     EXPECT_EQ(NULL, stumpless_get_error());
 
-    EXPECT_TRUE(std::regex_match(std::string(buffer), std::regex(RFC_5424_REGEX_STRING)));
+    EXPECT_TRUE(std::regex_match(buffer, std::regex(RFC_5424_REGEX_STRING)));
   }
 
   TEST_F(BufferTargetTest, Overflow){
