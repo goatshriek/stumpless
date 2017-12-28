@@ -24,11 +24,16 @@
 #define RFC_5424_REGEX_STRING "^<\\d{1,3}>"                          /* PRI */ \
                               "[1-9]\\d{0,2}"                     /* HEADER */ \
                               " "                                     /* SP */ \
-                              "-|("                            /* TIMESTAMP */ \
-                              ""                               /* FULL-DATE */ \
+                              "(-|("                           /* TIMESTAMP */ \
+                              "\\d{4}-\\d{2}-\\d{2}"           /* FULL-DATE */ \
 			      "T"                                    /* "T" */ \
-                              ""                               /* FULL-TIME */ \
-                              ")"                                     /* SP */ \
+                              "\\d{2}:\\d{2}:\\d{2}"        /* PARTIAL-TIME */ \
+			      "(\\.\\d{1,6})?"              /* TIME-SECFRAC */ \
+                              "(Z|("                         /* TIME-OFFSET */ \
+			      "(\\+|-)\\d{2}:\\d{2}"      /* TIME-NUMOFFSET */ \
+                              "))"                           /* TIME-OFFSET */ \
+                              "))"                             /* TIMESTAMP */ \
+                              " "                                     /* SP */ \
                               ""                                /* HOSTNAME */ \
                               ""                                      /* SP */ \
                               ""                                /* APP-NAME */ \

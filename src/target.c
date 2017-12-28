@@ -28,7 +28,7 @@
 static struct stumpless_target *current_target=NULL;
 
 int stumpless_add_entry(struct stumpless_target *target, const char *entry){
-  char *message;
+  const char *message = "<17>3 2003-10-11T22:14:15.003Z ";
 
   clear_error();
  
@@ -36,7 +36,7 @@ int stumpless_add_entry(struct stumpless_target *target, const char *entry){
     return -1;
   }
 
-  message = format_entry(target, entry);
+  //message = format_entry(target, entry);
 
   switch(target->type){
     case STUMPLESS_SOCKET_TARGET:
