@@ -34,8 +34,8 @@
                               "))"                           /* TIME-OFFSET */ \
                               "))"                             /* TIMESTAMP */ \
                               " "                                     /* SP */ \
-                              ""                                /* HOSTNAME */ \
-                              ""                                      /* SP */ \
+                              "(-|([!-~]{1,255}))"              /* HOSTNAME */ \
+                              " "                                     /* SP */ \
                               ""                                /* APP-NAME */ \
                               ""                                      /* SP */ \
                               ""                                  /* PROCID */ \
