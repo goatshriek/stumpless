@@ -37,6 +37,7 @@ struct stumpless_target {
   char *name;
   int options;
   int facility;
+  int severity;
 };
 
 int stumpless_add_entry(struct stumpless_target *target, const char *entry);

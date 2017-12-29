@@ -17,20 +17,50 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stddef.h>
+#include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <time.h>
 #include <stumpless/target.h>
 #include "private/formatter.h"
 #include "private/memory.h"
 
 char *format_entry(const struct stumpless_target *target, const char *message){
-  char *buffer;
+  char *buffer, *position;
+  int prival;
 
   // todo make the size configurable or smarter
   buffer = alloc_mem(1024);
+  if( !buffer ){
+    return NULL;
+  }
 
-  memcpy(buffer, "<165>1 2003-10-11T22:14:15.003Z mymachine.example.com evntslog - ID47 [exampleSDID@32473 iut=\"3\" eventSource=\"Application\" eventID=\"1011\"] BOMAn application event log entry...", 181);
+  prival = target->facility*8 + target->severity;
+  position = buffer + snprintf(buffer, RFC_5424_MAX_PRI_LENGTH+3, "<%d>1 ", prival);
+  position += new_rfc5424_timestamp(position, 1024-(position-buffer));
 
-  // fill in fields
+  snprintf(position, 1024-(position-buffer), " - - - - - %s", message);
 
   return buffer;
+}
+
+ssize_t new_rfc5424_timestamp(char *destination, size_t size){
+  char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
+  struct tm *now;
+  time_t now_timer;
+  size_t written;
+
+  now_timer = time(NULL);
+  now = gmtime(&now_timer);
+  // todo add support for fractional times
+  written = strftime(buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", now);
+
+  if(written > size){
+    return -(written);
+  } else {
+    memcpy(destination, buffer, written);
+    return written;
+  }
+
 }

@@ -25,6 +25,8 @@
  * Note that this regular expression does not ensure total compliance with the
  * RFC. Specifically, the following aspects of the specification are left
  * unchecked:
+ * - the range of the PRIVAL is not validated, only that it is a number between
+ *   one and three digits
  * - month and day values are not checked for sanit (for example, the 30th of
  *   february will not be rejected
  * - proper escaping of characters in the PARAM-VALUE elements within structured

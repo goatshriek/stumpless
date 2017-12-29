@@ -90,6 +90,7 @@ stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int op
   pub_target->type = STUMPLESS_BUFFER_TARGET;
   pub_target->options = options;
   pub_target->facility = facility;
+  pub_target->severity = 6; // todo change this from a hardcoded value
 
   targets[pub_target->id] = priv_target;
 
