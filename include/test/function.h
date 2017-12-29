@@ -21,11 +21,17 @@
 #define __STUMPLESS_TEST_FUNCTION_H
 
 /*
- * This format is outlined in https://tools.ietf.org/html/rfc5424
+ * This format is specified in https://tools.ietf.org/html/rfc5424
  * Note that this regular expression does not ensure total compliance with the
  * RFC. Specifically, the following aspects of the specification are left
  * unchecked:
- *
+ * - month and day values are not checked for sanit (for example, the 30th of
+ *   february will not be rejected
+ * - proper escaping of characters in the PARAM-VALUE elements within structured
+ *   data is not detected
+ * - the values in MSG are not checked for encoding differences, for example
+ *   the BOM is not detected
+ * todo document with parenthesis groups align to which elements in the RFC
  */
 #define RFC_5424_REGEX_STRING "^<\\d{1,3}>"                          /* PRI */ \
                               "[1-9]\\d{0,2}"                     /* HEADER */ \
