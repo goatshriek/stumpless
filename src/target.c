@@ -28,7 +28,7 @@
 static struct stumpless_target *current_target=NULL;
 
 int stumpless_add_entry(struct stumpless_target *target, const char *entry){
-  const char *message = "<17>3 2003-10-11T22:14:15.003Z test-hostname ";
+  const char *message = "<165>1 2003-10-11T22:14:15.003Z mymachine.example.com evntslog - ID47 [exampleSDID@32473 iut=\"3\" eventSource=\"Application\" eventID=\"1011\"] BOMAn application event log entry...";
 
   clear_error();
  

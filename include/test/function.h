@@ -20,7 +20,13 @@
 #ifndef __STUMPLESS_TEST_FUNCTION_H
 #define __STUMPLESS_TEST_FUNCTION_H
 
-// this format is outlined in https://tools.ietf.org/html/rfc5424
+/*
+ * This format is outlined in https://tools.ietf.org/html/rfc5424
+ * Note that this regular expression does not ensure total compliance with the
+ * RFC. Specifically, the following aspects of the specification are left
+ * unchecked:
+ *
+ */
 #define RFC_5424_REGEX_STRING "^<\\d{1,3}>"                          /* PRI */ \
                               "[1-9]\\d{0,2}"                     /* HEADER */ \
                               " "                                     /* SP */ \
@@ -36,14 +42,20 @@
                               " "                                     /* SP */ \
                               "(-|([!-~]{1,255}))"              /* HOSTNAME */ \
                               " "                                     /* SP */ \
-                              ""                                /* APP-NAME */ \
-                              ""                                      /* SP */ \
-                              ""                                  /* PROCID */ \
-                              ""                                      /* SP */ \
-                              ""                                   /* MSGID */ \
-                              ""                                      /* SP */ \
-                              ""                         /* STRUCTURED-DATA */ \
-                              ""                                      /* SP */ \
-                              "$"                                    /* MSG */
+                              "(-|([!-~]{1,48}))"               /* APP-NAME */ \
+                              " "                                     /* SP */ \
+                              "(-|([!-~]{1,128}))"                /* PROCID */ \
+                              " "                                     /* SP */ \
+                              "(-|([!-~]{1,32}))"                  /* MSGID */ \
+                              " "                                     /* SP */ \
+                              "(-|(("                    /* STRUCTURED-DATA */ \
+                              "\\["                           /* SD-ELEMENT */ \
+                              "[!#-<>-\\\\\\^-~]{1,32}"            /* SD-ID */ \
+			      "( [!#-<>-\\\\\\^-~]{1,32}"     /* PARAM-NAME */ \
+                              "=\".*\")*"                    /* PARAM-VALUE */ \
+			      "\\]"                           /* SD-ELEMENT */ \
+                              ")+))"                     /* STRUCTURED-DATA */ \
+                              " "                                     /* SP */ \
+                              ".*$"                                  /* MSG */
 
 #endif /* __STUMPLESS_TEST_FUNCTION_H */
