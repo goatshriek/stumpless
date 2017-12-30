@@ -27,12 +27,19 @@ namespace {
   };
 
   TEST_F(BufferTargetTest, Basic){
+    int i=0;
+    std::cmatch matches;
+
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
 
     EXPECT_EQ(0, stumpless("testing 1"));
     EXPECT_EQ(NULL, stumpless_get_error());
 
-    ASSERT_TRUE(std::regex_match(buffer, std::regex(RFC_5424_REGEX_STRING)));
+    ASSERT_TRUE(std::regex_match(buffer, matches, std::regex(RFC_5424_REGEX_STRING)));
+
+    for(auto m=matches.begin(); m != matches.end(); ++m){
+      std::cout << "match " << i++ << ": " << *m << "\n";
+    }
   }
 
   TEST_F(BufferTargetTest, Overflow){

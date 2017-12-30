@@ -40,7 +40,7 @@ char *format_entry(const struct stumpless_target *target, const char *message){
   position = buffer + snprintf(buffer, RFC_5424_MAX_PRI_LENGTH+3, "<%d>1 ", prival);
   position += new_rfc5424_timestamp(position, 1024-(position-buffer));
 
-  snprintf(position, 1024-(position-buffer), " - - - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\" eventID=\"1011\"][examplePriority@32473 class=\"high\"] %s", message);
+  snprintf(position, 1024-(position-buffer), " - - - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", message);
 
   return buffer;
 }

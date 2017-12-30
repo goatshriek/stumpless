@@ -59,8 +59,8 @@
  * 17 - STRUCTURED-DATA
  * 18 - 1*SD-ELEMENT if STRUCTURED-DATA was not NILVALUE
  * 19 - 1*SD-ELEMENT IF STRUCTURED-DATA was not NILVALUE
- * 20 - the last SD-ID in the message
- * 21 - the last PARAM-NAME="PARAM-VALUE" in the message
+ * 20 - the first SD-ID in the message
+ * 21 - everything from the first PARAM-NAME to the last "PARAM-VALUE"
  * 22 - MSG (the log message itself)
  */
 #define RFC_5424_REGEX_STRING "^<(\\d{1,3})>"                        /* PRI */ \
@@ -88,7 +88,7 @@
                               "\\["                           /* SD-ELEMENT */ \
                               "([!#-<>-\\\\\\^-~]{1,32})"          /* SD-ID */ \
 			      "( [!#-<>-\\\\\\^-~]{1,32}"     /* PARAM-NAME */ \
-                              "=\"[^\\]]*\")*"               /* PARAM-VALUE */ \
+                              "=\".*\")*"                    /* PARAM-VALUE */ \
 			      "\\]"                           /* SD-ELEMENT */ \
                               ")+))"                     /* STRUCTURED-DATA */ \
                               " "                                     /* SP */ \
