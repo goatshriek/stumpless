@@ -17,8 +17,8 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUMPLESS_TEST_FUNCTION_H
-#define __STUMPLESS_TEST_FUNCTION_H
+#ifndef __STUMPLESS_TEST_FUNCTION_RFC5424_HPP
+#define __STUMPLESS_TEST_FUNCTION_RFC5424_HPP
 
 /*
  * This format is specified in https://tools.ietf.org/html/rfc5424
@@ -94,4 +94,6 @@
                               " "                                     /* SP */ \
                               "(.*)$"                                /* MSG */
 
-#endif /* __STUMPLESS_TEST_FUNCTION_H */
+void TestRFC5424Compliance(const char *syslog_msg);
+
+#endif /* __STUMPLESS_TEST_FUNCTION_RFC5424_HPP */

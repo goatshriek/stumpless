@@ -1,11 +1,10 @@
 #include <stddef.h>
 #include <gtest/gtest.h>
-#include <regex>
 #include <stumpless.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/error.h>
-#include "test/function.h"
+#include "test/function/rfc5424.hpp"
 
 #define TEST_BUFFER_LENGTH 1024
 
@@ -27,19 +26,14 @@ namespace {
   };
 
   TEST_F(BufferTargetTest, Basic){
-    int i=0;
-    std::cmatch matches;
+    SCOPED_TRACE("BufferTargetTest.Basic");
 
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
 
     EXPECT_EQ(0, stumpless("testing 1"));
     EXPECT_EQ(NULL, stumpless_get_error());
 
-    ASSERT_TRUE(std::regex_match(buffer, matches, std::regex(RFC_5424_REGEX_STRING)));
-
-    for(auto m=matches.begin(); m != matches.end(); ++m){
-      std::cout << "match " << i++ << ": " << *m << "\n";
-    }
+    TestRFC5424Compliance(buffer);
   }
 
   TEST_F(BufferTargetTest, Overflow){

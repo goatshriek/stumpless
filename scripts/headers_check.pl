@@ -77,7 +77,8 @@ my %manifest = (
   "stumpless_set_current_target" => "stumpless/target.h",
   "STUMPLESS_SOCKET_NAME" => "stumpless.h",
   "STUMPLESS_SOCKET_NAME_LENGTH" => "stumpless.h",
-  "syslog" => "syslog.h"
+  "syslog" => "syslog.h",
+  "TestRFC5424Compliance" => "test/function/rfc5424.hpp"
 );
 
 my %actual_includes;

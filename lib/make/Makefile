@@ -71,10 +71,18 @@ bin/test/function/stumpless: libstumpless.so $(TESTDIR)/function/stumpless.cpp $
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/stumpless.cpp
 	$(CXX) $(TESTDIR)/function/stumpless.cpp -o ./bin/test/function/stumpless $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=.
 
-bin/test/function/target/buffer: libstumpless.so $(TESTDIR)/function/target/buffer.cpp $(INCLUDEDIR)/test/function.h
+bin/test/function/target/buffer: libstumpless.so test/function/target/buffer.o rfc5424.o
 	mkdir -p ./bin/test/function/target
+	$(CXX) ./test/function/target/buffer.o rfc5424.o $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=. -o ./bin/test/function/target/buffer
+
+test/function/target/buffer.o: $(TESTDIR)/function/target/buffer.cpp $(INCLUDEDIR)/test/function/rfc5424.hpp
+	mkdir -p ./test/function/target
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/target/buffer.cpp
-	$(CXX) $(TESTDIR)/function/target/buffer.cpp -o ./bin/test/function/target/buffer $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=.
+	$(CXX) $(TESTDIR)/function/target/buffer.cpp $(CPPFLAGS) -c -o ./test/function/target/buffer.o
+
+rfc5424.o: $(TESTDIR)/function/rfc5424.cpp $(INCLUDEDIR)/test/function/rfc5424.hpp
+	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/rfc5424.cpp
+	$(CXX) $(TESTDIR)/function/rfc5424.cpp $(CPPFLAGS) -c
 
 test-performance: bin/stumplessd bin/test/performance/stumpless
 	./bin/stumplessd &
@@ -108,6 +116,7 @@ clean:
 	rm -rf ./lib/swig/*.pyc
 	rm -rf ./lib/swig/*.py
 	if [ -e lib/swig ]; then rmdir --ignore-fail-on-non-empty -p lib/swig ; fi
+	rm -f ./test/function/*.o
 	rm -f *.o
 	rm -f *.so
 	rm -f *.log
