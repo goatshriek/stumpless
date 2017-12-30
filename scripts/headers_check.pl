@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use Term::ANSIColor;
 use strict;
 use warnings;
 
@@ -10,6 +11,7 @@ my %manifest = (
   "AF_UNIX" => "sys/socket.h",
   "alloc_mem" => "private/memory.h",
   "ASSERT_THAT" => "gmock/gmock.h",
+  "ASSERT_TRUE" => "gtest/gtest.h",
   "BENCHMARK" => "benchmark/benchmark.h",
   "BENCHMARK_MAIN" => "benchmark/benchmark.h",
   "clear_error" => "private/error.h",
@@ -40,7 +42,7 @@ my %manifest = (
   "printf" => "stdio.h",
   "raise_memory_allocation_failure" => "private/error.h",
   "recvfrom" => "sys/socket.h",
-  "RFC_5424_REGEX_STRING" => "test/function.h",
+  "RFC_5424_REGEX_STRING" => "test/function/rfc5424.hpp",
   "RUN_ALL_TESTS" => "gtest/gtest.h",
   "sendto" => "sys/socket.h",
   "sendto_buffer_target" => "private/target/buffer.h",
@@ -104,6 +106,8 @@ foreach my $line (<SOURCE>) {
   }
 }
 
+print STDERR color('red');
+
 foreach my $include (keys %actual_includes){
   if(!$needed_includes{$include}){
     print STDERR "$file: unnecessary include: $include\n";
@@ -117,4 +121,5 @@ foreach my $include (keys %needed_includes){
   }  
 }
 
+print STDERR color('reset');
 close(SOURCE);
