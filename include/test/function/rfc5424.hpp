@@ -32,8 +32,11 @@
  *   february will not be rejected
  * - proper escaping of characters in the PARAM-VALUE elements within structured
  *   data is not detected
- * - the values in MSG are not checked for encoding differences, for example
- *   the BOM is not detected
+ * - the values in MSG are not checked for UTF-8 compliance if the MSG is indeed
+ *   encoded in UTF-8
+ * If full compliance needs to be checked the TestRFC5424Compliance function
+ * can be used to verify the above components as well. The function is written
+ * for use with the Google Test framework.
  *
  * This expression will also populate several subgroups on the message, assuming
  * that there is a match. A description of each of these subgroups ordered by
@@ -115,11 +118,13 @@
 #define RFC_5424_PROCID_MATCH_INDEX 16
 #define RFC_5424_MSGID_MATCH_INDEX 18
 #define RFC_5424_STRUCTURED_DATA_MATCH_INDEX 20
+#define RFC_5424_SD_ELEMENTS_MATCH_INDEX 21
 #define RFC_5424_MSG_MATCH_INDEX 25
 
 #define RFC_5424_PRIVAL_MIN 0
 #define RFC_5424_PRIVAL_MAX 191
 
 void TestRFC5424Compliance(const char *syslog_msg);
+void TestRFC5424StructuredData(const char *sd_elements);
 
 #endif /* __STUMPLESS_TEST_FUNCTION_RFC5424_HPP */
