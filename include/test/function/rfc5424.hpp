@@ -32,8 +32,10 @@
  *   february will not be rejected
  * - proper escaping of characters in the PARAM-VALUE elements within structured
  *   data is not detected
- * - the values in MSG are not checked for UTF-8 compliance if the MSG is indeed
- *   encoded in UTF-8
+ * - SD-IDs and the associated PARAM-NAMEs are not checked according to the
+ *   registrations with the IANA
+ * - the values in PARAM-VALUE and MSG are not checked for UTF-8 compliance if
+ *   the MSG is indeed encoded in UTF-8
  * If full compliance needs to be checked the TestRFC5424Compliance function
  * can be used to verify the above components as well. The function is written
  * for use with the Google Test framework.

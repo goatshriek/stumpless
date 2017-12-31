@@ -102,6 +102,7 @@ void TestRFC5424StructuredData(const char *structured_data){
         current_state = SD_ID_NAME;
         break;
 
+      // todo validate with RFC
       case SD_ID_NAME:
         if(*c == '@'){
           current_state = SD_ID_ENTERPRISE_NUMBER;
@@ -121,6 +122,7 @@ void TestRFC5424StructuredData(const char *structured_data){
         ASSERT_NE(*c, '"');
         break;
 
+      // todo validate with registry
       case SD_ID_ENTERPRISE_NUMBER:
         if(*c == ']'){
           current_state = SD_ELEMENT_BEGIN;
