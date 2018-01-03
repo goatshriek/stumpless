@@ -26,7 +26,7 @@
 #include "private/formatter.h"
 #include "private/memory.h"
 
-char *format_entry(const struct stumpless_target *target, const char *message){
+char *format_entry(const struct stumpless_target *target, const char *entry){
   char *buffer, *position;
   int prival;
 
@@ -38,14 +38,14 @@ char *format_entry(const struct stumpless_target *target, const char *message){
 
   prival = target->facility*8 + target->severity;
   position = buffer + snprintf(buffer, RFC_5424_MAX_PRI_LENGTH+3, "<%d>1 ", prival);
-  position += new_rfc5424_timestamp(position, 1024-(position-buffer));
+  position += get_rfc5424_timestamp(position, 1024-(position-buffer));
 
-  snprintf(position, 1024-(position-buffer), " - - - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", message);
+  snprintf(position, 1024-(position-buffer), " - - - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", entry);
 
   return buffer;
 }
 
-ssize_t new_rfc5424_timestamp(char *destination, size_t size){
+ssize_t get_rfc5424_timestamp(char *destination, size_t size){
   char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
   struct tm *now;
   time_t now_timer;

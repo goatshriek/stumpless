@@ -27,10 +27,10 @@
 #define RFC_5424_MAX_PRI_LENGTH 5
 #define RFC_5424_MAX_TIMESTAMP_LENGTH 32
 
-char *format_entry(const struct stumpless_target *target, const char *message);
+char *format_entry(const struct stumpless_target *target, const char *entry);
 
 /*
- * Creates a new timestamp and writes it to the character buffer provided in
+ * Gets the current timestamp and writes it to the character buffer provided in
  * destination. The time reflected by the timestamp will be as close to the time
  * of the function invocation as feasible.
  *
@@ -44,6 +44,6 @@ char *format_entry(const struct stumpless_target *target, const char *message);
  * enough space in the destination as deterimined by size, the return value will
  * be a negative number indicating how many bytes were actually needed.
  */
-ssize_t new_rfc5424_timestamp(char *destination, size_t size);
+ssize_t get_rfc5424_timestamp(char *destination, size_t size);
 
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */
