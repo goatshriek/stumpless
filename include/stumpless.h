@@ -20,10 +20,6 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
-#define STUMPLESS_MAJOR_VERSION 0
-#define STUMPLESS_MINOR_VERSION 0
-#define STUMPLESS_PATCH_VERSION 1
-
 #define STUMPLESS_SOCKET_NAME "/tmp/stumplesstestpipe"
 #define STUMPLESS_SOCKET_NAME_LENGTH 22
 #define STUMPLESS_MAX_TARGET_COUNT 10
@@ -34,14 +30,7 @@ extern "C" {
 
 typedef int stumpless_id_t;
 
-struct stumpless_version {
-  int major;
-  int minor;
-  int patch;
-};
-
 int stumpless(const char *message);
-struct stumpless_version *get_stumpless_version();
 
 #ifdef __cplusplus
 } /* extern "C" */

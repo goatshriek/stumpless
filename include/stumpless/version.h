@@ -17,28 +17,27 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stumpless.h>
-#include <stumpless/entry.h>
-#include <stumpless/target.h>
-#include <stumpless/target/socket.h>
-#include "private/error.h"
+#ifndef __STUMPLESS_VERSION_H
+#define __STUMPLESS_VERSION_H
 
-int stumpless(const char *message){
-  struct stumpless_entry *entry;
-  struct stumpless_target *current_target;
+#define STUMPLESS_MAJOR_VERSION 0
+#define STUMPLESS_MINOR_VERSION 0
+#define STUMPLESS_PATCH_VERSION 1
 
-  clear_error();
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-  current_target = stumpless_get_current_target();
-  if(!current_target){
-    current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
-  }
+struct stumpless_version {
+  int major;
+  int minor;
+  int patch;
+};
 
-  entry = stumpless_new_entry("APP-NAME", message);
-  if(!entry){
-    return -1;
-  }
+struct stumpless_version *get_stumpless_version();
 
-  return stumpless_add_entry(current_target, entry);
-}
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
+#endif /* __STUMPLESS_VERSION_H */

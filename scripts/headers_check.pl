@@ -66,6 +66,7 @@ my %manifest = (
   "struct stumpless_entry" => "stumpless/entry.h",
   "struct stumpless_error" => "stumpless/error.h",
   "struct stumpless_target" => "stumpless/target.h",
+  "struct stumpless_version" => "stumpless/version.h",
   "time_t" => "time.h",
   "struct tm" => "time.h",
   "stumpless" => "stumpless.h",

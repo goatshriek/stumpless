@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include <stumpless/version.h>
 #include <stumpless/error.h>
 
 namespace {
