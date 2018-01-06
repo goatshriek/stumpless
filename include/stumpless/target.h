@@ -20,6 +20,8 @@
 #ifndef __STUMPLESS_TARGET_H
 #define __STUMPLESS_TARGET_H
 
+#include <stumpless.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -28,8 +30,6 @@ enum stumpless_target_type {
   STUMPLESS_BUFFER_TARGET,
   STUMPLESS_SOCKET_TARGET
 };
-
-typedef int stumpless_id_t;
 
 struct stumpless_target {
   stumpless_id_t id;

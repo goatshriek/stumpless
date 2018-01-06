@@ -73,6 +73,7 @@ my %manifest = (
   "stumpless_error_id_t" => "stumpless/error.h",
   "stumpless_get_current_target" => "stumpless/target.h",
   "stumpless_get_error" => "stumpless/error.h",
+  "stumpless_id_t" => "stumpless.h",
   "STUMPLESS_MAX_TARGET_COUNT" => "stumpless.h",
   "stumpless_open_buffer_target" => "stumpless/target/buffer.h",
   "stumpless_open_socket_target" => "stumpless/target/socket.h",

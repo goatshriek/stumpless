@@ -32,10 +32,20 @@
 extern "C" {
 #endif
 
+typedef int stumpless_id_t;
+
 struct stumpless_version {
   int major;
   int minor;
   int patch;
+};
+
+struct stumpless_entry {
+  stumpless_id_t id;
+  char *app_name;
+  size_t app_name_length;
+  char *message;
+  size_t message_length;
 };
 
 int stumpless(const char *message);
