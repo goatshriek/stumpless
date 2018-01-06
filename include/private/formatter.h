@@ -27,6 +27,7 @@
 #define RFC_5424_MAX_PRI_LENGTH 5
 #define RFC_5424_MAX_TIMESTAMP_LENGTH 32
 #define RFC_5424_MAX_HOSTNAME_LENGTH 255
+#define RFC_5424_MAX_PROCID_LENGTH 128
 
 char *format_entry(const struct stumpless_target *target, const char *entry);
 

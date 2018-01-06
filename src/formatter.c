@@ -83,8 +83,17 @@ ssize_t get_msgid(char *destination, size_t size){
 }
 
 ssize_t get_procid(char *destination, size_t size){
-  *(destination++) = '-';
-  return 1;
+  char buffer[RFC_5424_MAX_PROCID_LENGTH];
+  size_t written;
+
+  written = snprintf(buffer, RFC_5424_MAX_PROCID_LENGTH, "%d", getpid());
+
+  if(written > size){
+    return -((ssize_t)written);
+  } else {
+    memcpy(destination, buffer, written);
+    return written;
+  }
 }
 
 ssize_t get_rfc5424_timestamp(char *destination, size_t size){
