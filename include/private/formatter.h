@@ -26,8 +26,11 @@
 
 #define RFC_5424_MAX_PRI_LENGTH 5
 #define RFC_5424_MAX_TIMESTAMP_LENGTH 32
+#define RFC_5424_MAX_HOSTNAME_LENGTH 255
 
 char *format_entry(const struct stumpless_target *target, const char *entry);
+
+ssize_t get_hostname(char *destination, size_t size);
 
 /*
  * Gets the current timestamp and writes it to the character buffer provided in
@@ -37,7 +40,7 @@ char *format_entry(const struct stumpless_target *target, const char *entry);
  * A NULL teriminating character will NOT be written to destination.
  *
  * If sufficient space is not available in the destination according to the size
- * provided, nothing will be written to the destination..
+ * provided, nothing will be written to the destination.
  *
  * Upon success the return value is the number of bytes written into
  * destination. If there is an error, the return value is -1. If there is not

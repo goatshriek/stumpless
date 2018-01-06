@@ -78,7 +78,8 @@ my %manifest = (
   "STUMPLESS_SOCKET_NAME" => "stumpless.h",
   "STUMPLESS_SOCKET_NAME_LENGTH" => "stumpless.h",
   "syslog" => "syslog.h",
-  "TestRFC5424Compliance" => "test/function/rfc5424.hpp"
+  "TestRFC5424Compliance" => "test/function/rfc5424.hpp",
+  "gethostname" => "unistd.h"
 );
 
 my %actual_includes;

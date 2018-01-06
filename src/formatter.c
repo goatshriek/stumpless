@@ -22,6 +22,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>
+#include <unistd.h>
 #include <stumpless/target.h>
 #include "private/formatter.h"
 #include "private/memory.h"
@@ -39,10 +40,29 @@ char *format_entry(const struct stumpless_target *target, const char *entry){
   prival = target->facility*8 + target->severity;
   position = buffer + snprintf(buffer, RFC_5424_MAX_PRI_LENGTH+3, "<%d>1 ", prival);
   position += get_rfc5424_timestamp(position, 1024-(position-buffer));
+  *position = ' ';
+  position++;
+  position += get_hostname(position, 1024-(position-buffer));
 
-  snprintf(position, 1024-(position-buffer), " - - - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", entry);
+  snprintf(position, 1024-(position-buffer), " - - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", entry);
 
   return buffer;
+}
+
+ssize_t get_hostname(char *destination, size_t size){
+  char buffer[RFC_5424_MAX_HOSTNAME_LENGTH+1];
+  size_t hostname_length;
+
+  gethostname(buffer, RFC_5424_MAX_HOSTNAME_LENGTH);
+  buffer[RFC_5424_MAX_HOSTNAME_LENGTH] = '\0';
+  hostname_length = strlen(buffer);
+
+  if(hostname_length > size){
+    return -((ssize_t)hostname_length);
+  } else {
+    memcpy(destination, buffer, hostname_length);
+    return hostname_length;
+  }
 }
 
 ssize_t get_rfc5424_timestamp(char *destination, size_t size){
@@ -57,7 +77,7 @@ ssize_t get_rfc5424_timestamp(char *destination, size_t size){
   written = strftime(buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", now);
 
   if(written > size){
-    return -(written);
+    return -((ssize_t)written);
   } else {
     memcpy(destination, buffer, written);
     return written;
