@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Joel Anderson.
+ * Copyright 2018, Joel Anderson.
  * All Rights Reserved.
  *
  * This file is part of Stumpless.
@@ -18,46 +18,37 @@
  */
 
 #include <stddef.h>
-#include <stumpless.h>
+#include <string.h>
 #include <stumpless/entry.h>
-#include <stumpless/target.h>
-#include <stumpless/target/socket.h>
 #include "private/error.h"
 #include "private/memory.h"
 
-int stumpless(const char *message){
+struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *message){
   struct stumpless_entry *entry;
-  struct stumpless_target *current_target;
 
   clear_error();
 
-  current_target = stumpless_get_current_target();
-  if(!current_target){
-    current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
-  }
-
-  entry = stumpless_new_entry("APP-NAME", message);
+  entry = alloc_mem(sizeof(struct stumpless_entry));
   if(!entry){
-    return -1;
-  }
-
-  return stumpless_add_entry(current_target, entry);
-}
-
-struct stumpless_version *
-get_stumpless_version(){
-  struct stumpless_version *version;
-
-  clear_error();
-
-  version = alloc_mem(sizeof(struct stumpless_version));
-  if(!version){
     return NULL;
   }
 
-  version->major = STUMPLESS_MAJOR_VERSION;
-  version->minor = STUMPLESS_MINOR_VERSION;
-  version->patch = STUMPLESS_PATCH_VERSION;
+  entry->app_name_length = strlen(app_name);
+  entry->app_name = alloc_mem(entry->app_name_length);
+  if(!entry->app_name){
+    free_mem(entry);
+    return NULL;
+  }
+  memcpy(entry->app_name, app_name, entry->app_name_length);
 
-  return version;
+  entry->message_length = strlen(message);
+  entry->message = alloc_mem(entry->message_length);
+  if(!entry->message){
+    free_mem(entry->app_name);
+    free_mem(entry);
+    return NULL;
+  }
+  memcpy(entry->message, message, entry->message_length);
+
+  return entry;
 }

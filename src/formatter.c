@@ -23,11 +23,12 @@
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include "private/formatter.h"
 #include "private/memory.h"
 
-char *format_entry(const struct stumpless_target *target, const char *entry){
+char *format_entry(const struct stumpless_target *target, struct stumpless_entry *entry){
   char *buffer, *position;
   int prival;
 
@@ -50,8 +51,8 @@ char *format_entry(const struct stumpless_target *target, const char *entry){
   position += get_msgid(position, 1024-(position-buffer));
   *(position++) = ' ';
   position += get_structured_data(position, 1024-(position-buffer));
-
-  snprintf(position, 1024-(position-buffer), " %s", entry);
+  *(position++) = ' ';
+  memcpy(position, entry->message, entry->message_length);
 
   return buffer;
 }

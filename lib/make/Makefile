@@ -18,12 +18,16 @@ bin/stumplessd: stumplessd.o
 	mkdir -p ./bin
 	$(CC) -o ./bin/stumplessd stumplessd.o
 
-libstumpless.so: stumpless.o target.o memory.o error.o socket.o buffer.o formatter.o
-	ld $(LDFLAGS) stumpless.o target.o memory.o error.o socket.o buffer.o formatter.o -o libstumpless.so
+libstumpless.so: stumpless.o target.o memory.o error.o socket.o buffer.o formatter.o entry.o
+	ld $(LDFLAGS) stumpless.o target.o memory.o error.o socket.o buffer.o formatter.o entry.o -o libstumpless.so
 
 error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private/error.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/error.c
 	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/error.c
+
+entry.o: $(SRCDIR)/entry.c $(INCLUDEDIR)/stumpless/entry.h
+	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/entry.c
+	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/entry.c
 
 formatter.o: $(SRCDIR)/formatter.c $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/formatter.c

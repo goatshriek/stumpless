@@ -22,6 +22,7 @@
 
 #include <stddef.h>
 #include <sys/types.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 
 #define RFC_5424_MAX_PRI_LENGTH 5
@@ -29,7 +30,7 @@
 #define RFC_5424_MAX_HOSTNAME_LENGTH 255
 #define RFC_5424_MAX_PROCID_LENGTH 128
 
-char *format_entry(const struct stumpless_target *target, const char *entry);
+char *format_entry(const struct stumpless_target *target, struct stumpless_entry *entry);
 
 ssize_t get_app_name(char *destination, size_t size);
 ssize_t get_hostname(char *destination, size_t size);

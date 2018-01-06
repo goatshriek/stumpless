@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <string.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <stumpless/target.h>

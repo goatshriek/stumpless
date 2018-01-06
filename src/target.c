@@ -19,6 +19,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include "private/error.h"
 #include "private/formatter.h"
@@ -27,7 +28,7 @@
 
 static struct stumpless_target *current_target=NULL;
 
-int stumpless_add_entry(struct stumpless_target *target, const char *entry){
+int stumpless_add_entry(struct stumpless_target *target, struct stumpless_entry *entry){
   char *message;
 
   clear_error();

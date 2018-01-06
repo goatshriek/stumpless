@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Joel Anderson.
+ * Copyright 2018, Joel Anderson.
  * All Rights Reserved.
  *
  * This file is part of Stumpless.
@@ -17,36 +17,28 @@
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __STUMPLESS_TARGET_H
-#define __STUMPLESS_TARGET_H
+#ifndef __STUMPLESS_ENTRY_H
+#define __STUMPLESS_ENTRY_H
 
+#include <stddef.h>
 #include <stumpless.h>
-#include <stumpless/entry.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-enum stumpless_target_type {
-  STUMPLESS_BUFFER_TARGET,
-  STUMPLESS_SOCKET_TARGET
-};
-
-struct stumpless_target {
+struct stumpless_entry {
   stumpless_id_t id;
-  enum stumpless_target_type type;
-  char *name;
-  int options;
-  int facility;
-  int severity;
+  char *app_name;
+  size_t app_name_length;
+  char *message;
+  size_t message_length;
 };
 
-int stumpless_add_entry(struct stumpless_target *target, struct stumpless_entry *entry);
-struct stumpless_target *stumpless_get_current_target();
-void stumpless_set_current_target(struct stumpless_target *target);
+struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *message);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* __STUMPLESS_TARGET_H */
+#endif /* __STUMPLESS_ENTRY_H */
