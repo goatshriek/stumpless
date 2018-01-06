@@ -52,4 +52,6 @@ ssize_t get_procid(char *destination, size_t size);
  */
 ssize_t get_rfc5424_timestamp(char *destination, size_t size);
 
+ssize_t get_structured_data(char *destination, size_t size);
+
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */

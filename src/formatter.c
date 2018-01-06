@@ -48,8 +48,10 @@ char *format_entry(const struct stumpless_target *target, const char *entry){
   position += get_procid(position, 1024-(position-buffer));
   *(position++) = ' ';
   position += get_msgid(position, 1024-(position-buffer));
+  *(position++) = ' ';
+  position += get_structured_data(position, 1024-(position-buffer));
 
-  snprintf(position, 1024-(position-buffer), " [exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", entry);
+  snprintf(position, 1024-(position-buffer), " %s", entry);
 
   return buffer;
 }
@@ -102,5 +104,18 @@ ssize_t get_rfc5424_timestamp(char *destination, size_t size){
     memcpy(destination, buffer, written);
     return written;
   }
+}
 
+ssize_t get_structured_data(char *destination, size_t size){
+  const char *sd = "[exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"]";
+  size_t sd_length;
+  
+  sd_length = strlen(sd);
+
+  if(sd_length > size){
+    return -((size_t)sd_length);
+  } else {
+    memcpy(destination, sd, sd_length);
+    return sd_length;
+  }
 }
