@@ -40,13 +40,23 @@ char *format_entry(const struct stumpless_target *target, const char *entry){
   prival = target->facility*8 + target->severity;
   position = buffer + snprintf(buffer, RFC_5424_MAX_PRI_LENGTH+3, "<%d>1 ", prival);
   position += get_rfc5424_timestamp(position, 1024-(position-buffer));
-  *position = ' ';
-  position++;
+  *(position++) = ' ';
   position += get_hostname(position, 1024-(position-buffer));
+  *(position++) = ' ';
+  position += get_app_name(position, 1024-(position-buffer));
+  *(position++) = ' ';
+  position += get_procid(position, 1024-(position-buffer));
+  *(position++) = ' ';
+  position += get_msgid(position, 1024-(position-buffer));
 
-  snprintf(position, 1024-(position-buffer), " - - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", entry);
+  snprintf(position, 1024-(position-buffer), " [exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"] %s", entry);
 
   return buffer;
+}
+
+ssize_t get_app_name(char *destination, size_t size){
+  *(destination++) = '-';
+  return 1;
 }
 
 ssize_t get_hostname(char *destination, size_t size){
@@ -63,6 +73,16 @@ ssize_t get_hostname(char *destination, size_t size){
     memcpy(destination, buffer, hostname_length);
     return hostname_length;
   }
+}
+
+ssize_t get_msgid(char *destination, size_t size){
+  *(destination++) = '-';
+  return 1;
+}
+
+ssize_t get_procid(char *destination, size_t size){
+  *(destination++) = '-';
+  return 1;
 }
 
 ssize_t get_rfc5424_timestamp(char *destination, size_t size){

@@ -30,7 +30,10 @@
 
 char *format_entry(const struct stumpless_target *target, const char *entry);
 
+ssize_t get_app_name(char *destination, size_t size);
 ssize_t get_hostname(char *destination, size_t size);
+ssize_t get_msgid(char *destination, size_t size);
+ssize_t get_procid(char *destination, size_t size);
 
 /*
  * Gets the current timestamp and writes it to the character buffer provided in
