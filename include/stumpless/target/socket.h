@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Joel Anderson.
+ * Copyright 2018, Joel Anderson.
  * All Rights Reserved.
  *
  * This file is part of Stumpless.
@@ -29,6 +29,7 @@
 extern "C" {
 #endif
 
+int stumpless(const char *message);
 void stumpless_close_socket_target(struct stumpless_target *target);
 struct stumpless_target *stumpless_open_socket_target(const char *name, int options, int facility);
 

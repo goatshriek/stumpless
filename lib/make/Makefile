@@ -18,8 +18,8 @@ bin/stumplessd: stumplessd.o
 	mkdir -p ./bin
 	$(CC) -o ./bin/stumplessd stumplessd.o
 
-libstumpless.so: stumpless.o target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o
-	ld $(LDFLAGS) stumpless.o target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o -o libstumpless.so
+libstumpless.so: target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o
+	ld $(LDFLAGS) target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o -o libstumpless.so
 
 error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private/error.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/error.c
@@ -52,10 +52,6 @@ socket.o: $(SRCDIR)/target/socket.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stum
 buffer.o: $(SRCDIR)/target/buffer.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/stumpless/target/buffer.h $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h $(INCLUDEDIR)/private/target/buffer.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target/buffer.c
 	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/target/buffer.c
-
-stumpless.o: $(SRCDIR)/stumpless.c $(INCLUDEDIR)/stumpless.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/stumpless/target/socket.h $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h
-	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/stumpless.c
-	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/stumpless.c
 
 stumplessd.o: $(SRCDIR)/daemon/stumplessd.c $(INCLUDEDIR)/stumpless.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/daemon/stumplessd.c

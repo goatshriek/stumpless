@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/error.h"
@@ -29,6 +30,25 @@
 #include "private/target/socket.h"
 
 static struct socket_target **targets=NULL;
+
+int stumpless(const char *message){
+  struct stumpless_entry *entry;
+  struct stumpless_target *current_target;
+
+  clear_error();
+
+  current_target = stumpless_get_current_target();
+  if(!current_target){
+    current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
+  }
+
+  entry = stumpless_new_entry("APP-NAME", message);
+  if(!entry){
+    return -1;
+  }
+
+  return stumpless_add_entry(current_target, entry);
+}
 
 void
 stumpless_close_socket_target(struct stumpless_target *target){

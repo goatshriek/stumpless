@@ -24,7 +24,6 @@
 extern "C" {
 #endif
 
-int stumpless(const char *message);
 
 #ifdef __cplusplus
 } /* extern "C" */
