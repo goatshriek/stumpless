@@ -26,7 +26,7 @@
 #include <sys/types.h>
 #include <sys/un.h>
 #include <unistd.h>
-#include "stumpless.h"
+#include <stumpless/target/socket.h>
 
 static int log_socket=0;
 static FILE *outfile=NULL;

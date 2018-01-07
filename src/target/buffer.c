@@ -19,7 +19,6 @@
 
 #include <stddef.h>
 #include <string.h>
-#include <stumpless.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include "private/error.h"

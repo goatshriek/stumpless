@@ -22,7 +22,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <stumpless.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/error.h"

@@ -21,7 +21,7 @@
 #define __STUMPLESS_ENTRY_H
 
 #include <stddef.h>
-#include <stumpless.h>
+#include <stumpless/id.h>
 
 #ifdef __cplusplus
 extern "C" {

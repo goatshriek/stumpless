@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Joel Anderson.
+ * Copyright 2018, Joel Anderson.
  * All Rights Reserved.
  *
  * This file is part of Stumpless.
@@ -20,15 +20,9 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
-#define STUMPLESS_SOCKET_NAME "/tmp/stumplesstestpipe"
-#define STUMPLESS_SOCKET_NAME_LENGTH 22
-#define STUMPLESS_MAX_TARGET_COUNT 10
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef int stumpless_id_t;
 
 int stumpless(const char *message);
 

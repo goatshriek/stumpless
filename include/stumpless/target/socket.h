@@ -22,6 +22,9 @@
 
 #include <stumpless/target.h>
 
+#define STUMPLESS_SOCKET_NAME "/tmp/stumplesstestpipe"
+#define STUMPLESS_SOCKET_NAME_LENGTH 22
+
 #ifdef __cplusplus
 extern "C" {
 #endif
