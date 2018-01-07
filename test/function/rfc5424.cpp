@@ -20,6 +20,7 @@
 #include <regex>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/function/utf8.hpp"
 
 void TestRFC5424Compliance(const char *syslog_msg){
   std::cmatch matches;
@@ -66,8 +67,11 @@ void TestRFC5424Compliance(const char *syslog_msg){
   }
 
   TestRFC5424StructuredData(matches.str(RFC_5424_STRUCTURED_DATA_MATCH_INDEX).c_str());
-  
-  // todo checking of MSG formatting
+ 
+  const char *msg = matches.str(RFC_5424_MSG_MATCH_INDEX).c_str();
+  if(msg[0] == '\xef' && msg[1] == '\xbb' && msg[2] == '\xbf'){
+    TestUTF8Compliance(msg);
+  }
 }
 
 void TestRFC5424StructuredData(const char *structured_data){

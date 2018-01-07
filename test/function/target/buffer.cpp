@@ -1,9 +1,9 @@
 #include <stddef.h>
 #include <string.h>
 #include <gtest/gtest.h>
-#include <stumpless.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
+#include <stumpless/target/socket.h>
 #include <stumpless/error.h>
 #include "test/function/rfc5424.hpp"
 
@@ -31,7 +31,7 @@ namespace {
 
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
 
-    EXPECT_EQ(0, stumpless("testing 1"));
+    EXPECT_EQ(0, stumpless("\xef\xbb\xbftesting 1"));
     EXPECT_EQ(NULL, stumpless_get_error());
 
     TestRFC5424Compliance(buffer);

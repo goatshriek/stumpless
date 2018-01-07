@@ -75,9 +75,9 @@ bin/test/function/stumpless: libstumpless.so $(TESTDIR)/function/stumpless.cpp $
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/stumpless.cpp
 	$(CXX) $(TESTDIR)/function/stumpless.cpp -o ./bin/test/function/stumpless $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=.
 
-bin/test/function/target/buffer: libstumpless.so test/function/target/buffer.o rfc5424.o
+bin/test/function/target/buffer: libstumpless.so test/function/target/buffer.o rfc5424.o utf8.o
 	mkdir -p ./bin/test/function/target
-	$(CXX) ./test/function/target/buffer.o rfc5424.o $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=. -o ./bin/test/function/target/buffer
+	$(CXX) ./test/function/target/buffer.o utf8.o rfc5424.o $(CPPFLAGS) -L. -lgtest -lstumpless -lpthread -Wl,-rpath=. -o ./bin/test/function/target/buffer
 
 test/function/target/buffer.o: $(TESTDIR)/function/target/buffer.cpp $(INCLUDEDIR)/test/function/rfc5424.hpp
 	mkdir -p ./test/function/target
@@ -87,6 +87,10 @@ test/function/target/buffer.o: $(TESTDIR)/function/target/buffer.cpp $(INCLUDEDI
 rfc5424.o: $(TESTDIR)/function/rfc5424.cpp $(INCLUDEDIR)/test/function/rfc5424.hpp
 	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/rfc5424.cpp
 	$(CXX) $(TESTDIR)/function/rfc5424.cpp $(CPPFLAGS) -c
+
+utf8.o: $(TESTDIR)/function/utf8.cpp $(INCLUDEDIR)/test/function/utf8.hpp
+	$(SCRIPTSDIR)/headers_check.pl $(TESTDIR)/function/utf8.cpp
+	$(CXX) $(TESTDIR)/function/utf8.cpp $(CPPFLAGS) -c
 
 test-performance: bin/stumplessd bin/test/performance/stumpless
 	./bin/stumplessd &

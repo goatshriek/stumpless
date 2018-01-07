@@ -56,6 +56,7 @@ my %manifest = (
   "snprintf" => "stdio.h",
   "socklen_t" => "sys/socket.h",
   "ssize_t" => "sys/types.h",
+  "std::cout" => "iostream",
   "std::regex" => "regex",
   "strftime" => "time.h",
   "strlen" => "string.h",
@@ -86,6 +87,7 @@ my %manifest = (
   "STUMPLESS_SOCKET_NAME_LENGTH" => "stumpless/target/socket.h",
   "syslog" => "syslog.h",
   "TestRFC5424Compliance" => "test/function/rfc5424.hpp",
+  "TestUTF8Compliance" => "test/function/utf8.hpp",
   "gethostname" => "unistd.h"
 );
 
