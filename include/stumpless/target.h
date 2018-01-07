@@ -20,8 +20,8 @@
 #ifndef __STUMPLESS_TARGET_H
 #define __STUMPLESS_TARGET_H
 
-#include <stumpless.h>
 #include <stumpless/entry.h>
+#include <stumpless/id.h>
 
 #define STUMPLESS_MAX_TARGET_COUNT 10
 

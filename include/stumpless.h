@@ -20,13 +20,12 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#include <stumpless/entry.h>
+#include <stumpless/error.h>
+#include <stumpless/id.h>
+#include <stumpless/target.h>
+#include <stumpless/target/buffer.h>
+#include <stumpless/target/socket.h>
+#include <stumpless/version.h>
 
 #endif /* __STUMPLESS_H */
