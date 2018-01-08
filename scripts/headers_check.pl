@@ -23,6 +23,7 @@ my %manifest = (
   "destroy_socket_target" => "private/target/socket.h",
   "EXIT_FAILURE" => "stdlib.h",
   "EXIT_SUCCESS" => "stdlib.h",
+  "FAIL" => "gtest/gtest.h",
   "fclose" => "stdio.h",
   "FILE" => "stdio.h",
   "fopen" => "stdio.h",

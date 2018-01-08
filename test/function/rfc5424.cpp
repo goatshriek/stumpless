@@ -75,16 +75,18 @@ void TestRFC5424Compliance(const char *syslog_msg){
 }
 
 void TestRFC5424StructuredData(const char *structured_data){
-  const int INIT_STATE = 0;
-  const int SD_ELEMENT_EMPTY = 1;
-  const int SD_ELEMENT_BEGIN = 2;
-  const int SD_ID_NAME = 3;
-  const int SD_ID_ENTERPRISE_NUMBER = 4;
-  const int SD_PARAM_NAME = 5;
-  const int SD_PARAM_VALUE_BEGIN = 6;
-  const int SD_PARAM_VALUE = 7;
-  const int SD_PARAM_VALUE_END = 8;
-  int current_state = SD_ELEMENT_BEGIN;
+  enum sd_state {
+    INIT_STATE,
+    SD_ELEMENT_EMPTY,
+    SD_ELEMENT_BEGIN,
+    SD_ID_NAME,
+    SD_ID_ENTERPRISE_NUMBER,
+    SD_PARAM_NAME,
+    SD_PARAM_VALUE_BEGIN,
+    SD_PARAM_VALUE,
+    SD_PARAM_VALUE_END
+  };
+  enum sd_state current_state = SD_ELEMENT_BEGIN;
   bool backslash_preceded = false;
 
   for(const char *c=structured_data; *c != '\0'; c++){

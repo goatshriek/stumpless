@@ -31,7 +31,7 @@ namespace {
 
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
 
-    EXPECT_EQ(0, stumpless("\xef\xbb\xbftesting 1"));
+    EXPECT_EQ(0, stumpless("\xef\xbb\xbftesting \xd3\xb0 1"));
     EXPECT_EQ(NULL, stumpless_get_error());
 
     TestRFC5424Compliance(buffer);
