@@ -31,6 +31,8 @@ my %manifest = (
   "fprintf" => "stdio.h",
   "free" => "stdlib.h",
   "free_mem" => "private/memory.h",
+  "get_app_name" => "private/entry.h",
+  "gethostname" => "unistd.h",
   "getpid" => "unistd.h",
   "gmtime" => "time.h",
   "LOG_INFO" => "syslog.h",
@@ -69,7 +71,6 @@ my %manifest = (
   "struct stumpless_error" => "stumpless/error.h",
   "struct stumpless_target" => "stumpless/target.h",
   "struct stumpless_version" => "stumpless/version.h",
-  "time_t" => "time.h",
   "struct tm" => "time.h",
   "stumpless" => "stumpless/target/socket.h",
   "stumpless_add_entry" => "stumpless/target.h",
@@ -89,7 +90,7 @@ my %manifest = (
   "syslog" => "syslog.h",
   "TestRFC5424Compliance" => "test/function/rfc5424.hpp",
   "TestUTF8Compliance" => "test/function/utf8.hpp",
-  "gethostname" => "unistd.h"
+  "time_t" => "time.h"
 );
 
 my %actual_includes;

@@ -42,7 +42,7 @@ int stumpless(const char *message){
     current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
   }
 
-  entry = stumpless_new_entry("APP-NAME", message);
+  entry = stumpless_new_entry("APP-NAME", "MSGID", message);
   if(!entry){
     return -1;
   }

@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
+#include "private/entry.h"
 #include "private/formatter.h"
 #include "private/memory.h"
 
@@ -44,7 +45,7 @@ char *format_entry(const struct stumpless_target *target, struct stumpless_entry
   *(position++) = ' ';
   position += get_hostname(position, 1024-(position-buffer));
   *(position++) = ' ';
-  position += get_app_name(position, 1024-(position-buffer));
+  position += get_app_name(entry, position, 1024-(position-buffer));
   *(position++) = ' ';
   position += get_procid(position, 1024-(position-buffer));
   *(position++) = ' ';
@@ -55,11 +56,6 @@ char *format_entry(const struct stumpless_target *target, struct stumpless_entry
   memcpy(position, entry->message, entry->message_length);
 
   return buffer;
-}
-
-ssize_t get_app_name(char *destination, size_t size){
-  *(destination++) = '-';
-  return 1;
 }
 
 ssize_t get_hostname(char *destination, size_t size){

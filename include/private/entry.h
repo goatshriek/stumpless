@@ -16,32 +16,13 @@
  * You should have received a copy of the GNU General Public License along with
  * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+#include <sys/types.h>
+#include <stumpless/entry.h>
 
-#ifndef __STUMPLESS_ENTRY_H
-#define __STUMPLESS_ENTRY_H
+#ifndef __STUMPLESS_PRIVATE_ENTRY_H
+#define __STUMPLESS_PRIVATE_ENTRY_H
 
-#include <stddef.h>
-#include <stumpless/id.h>
+ssize_t get_app_name(struct stumpless_entry *entry, char *destination, size_t size);
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-struct stumpless_entry {
-  stumpless_id_t id;
-  char *app_name;
-  size_t app_name_length;
-  char *message;
-  size_t message_length;
-  char *msgid;
-  size_t msgid_length;
-};
-
-struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *msgid, const char *message);
-void stumpless_destroy_entry(struct stumpless_entry *entry);
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
-
-#endif /* __STUMPLESS_ENTRY_H */
+#endif /* __STUMPLESS_PRIVATE_ENTRY_H */

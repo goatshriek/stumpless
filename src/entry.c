@@ -19,11 +19,13 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <sys/types.h>
 #include <stumpless/entry.h>
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
 
-struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *message){
+struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *msgid, const char *message){
   struct stumpless_entry *entry;
 
   clear_error();
@@ -41,9 +43,19 @@ struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *me
   }
   memcpy(entry->app_name, app_name, entry->app_name_length);
 
+  entry->msgid_length = strlen(msgid);
+  entry->msgid = alloc_mem(entry->msgid_length);
+  if(!entry->msgid){
+    free_mem(entry->app_name);
+    free_mem(entry);
+    return NULL;
+  }
+  memcpy(entry->msgid, msgid, entry->msgid_length);
+
   entry->message_length = strlen(message);
   entry->message = alloc_mem(entry->message_length);
   if(!entry->message){
+    free_mem(entry->msgid);
     free_mem(entry->app_name);
     free_mem(entry);
     return NULL;
@@ -51,4 +63,29 @@ struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *me
   memcpy(entry->message, message, entry->message_length);
 
   return entry;
+}
+
+void stumpless_destroy_entry(struct stumpless_entry *entry){
+  if(!entry){
+    return;
+  }
+
+  free_mem(entry->msgid);
+  free_mem(entry->app_name);
+  free_mem(entry->message);
+  free_mem(entry);
+}
+
+/* private functions */
+ssize_t get_app_name(struct stumpless_entry *entry, char *destination, size_t size){
+  if(!entry || !destination || !entry->app_name){
+    return 0;
+  }
+
+  if( entry->app_name_length > size){
+    return -((ssize_t)(entry->app_name_length));
+  } else {
+    memcpy(destination, entry->app_name, entry->app_name_length);
+    return entry->app_name_length;
+  }
 }
