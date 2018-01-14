@@ -1,3 +1,22 @@
+/*
+ * Copyright 2018, Joel Anderson.
+ * All Rights Reserved.
+ *
+ * This file is part of Stumpless.
+ * 
+ * Stumpless is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ * 
+ * Stumpless is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * Stumpless.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stddef.h>
 #include <string.h>
 #include <gtest/gtest.h>
@@ -31,7 +50,7 @@ namespace {
 
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
 
-    EXPECT_EQ(0, stumpless("\xef\xbb\xbftesting \xd3\xb0 1"));
+    EXPECT_EQ(0, stumpless("\xef\xbb\xbftesting 1 \xe0\xaf\x81"));
     EXPECT_EQ(NULL, stumpless_get_error());
 
     TestRFC5424Compliance(buffer);

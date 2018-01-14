@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Joel Anderson.
+ * Copyright 2018, Joel Anderson.
  * All Rights Reserved.
  *
  * This file is part of Stumpless.
@@ -18,6 +18,7 @@
  */
 
 #include <regex>
+#include <stdlib.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
 #include "test/function/utf8.hpp"
@@ -68,7 +69,9 @@ void TestRFC5424Compliance(const char *syslog_msg){
 
   TestRFC5424StructuredData(matches.str(RFC_5424_STRUCTURED_DATA_MATCH_INDEX).c_str());
  
-  const char *msg = matches.str(RFC_5424_MSG_MATCH_INDEX).c_str();
+  std::string msg_string = matches.str(RFC_5424_MSG_MATCH_INDEX);
+  char *msg = (char *)malloc(msg_string.length() + 1);
+  strcpy(msg, msg_string.c_str());
   if(msg[0] == '\xef' && msg[1] == '\xbb' && msg[2] == '\xbf'){
     TestUTF8Compliance(msg);
   }
