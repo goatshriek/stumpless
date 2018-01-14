@@ -117,7 +117,7 @@ ssize_t get_rfc5424_timestamp(char *destination, size_t size){
 }
 
 ssize_t get_structured_data(char *destination, size_t size){
-  const char *sd = "[exampleSDID@32473 iut=\"3\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"]";
+  const char *sd = "[exampleSDID@32473 iut=\"3\xcf\x8f\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"]";
   size_t sd_length;
   
   sd_length = strlen(sd);

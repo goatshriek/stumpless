@@ -75,6 +75,7 @@ void TestRFC5424Compliance(const char *syslog_msg){
   if(msg[0] == '\xef' && msg[1] == '\xbb' && msg[2] == '\xbf'){
     TestUTF8Compliance(msg);
   }
+  free(msg);
 }
 
 void TestRFC5424StructuredData(const char *structured_data){
@@ -91,6 +92,7 @@ void TestRFC5424StructuredData(const char *structured_data){
   };
   enum sd_state current_state = SD_ELEMENT_BEGIN;
   bool backslash_preceded = false;
+  std::string paramValue;
 
   for(const char *c=structured_data; *c != '\0'; c++){
     switch(current_state){
@@ -160,10 +162,11 @@ void TestRFC5424StructuredData(const char *structured_data){
       case SD_PARAM_VALUE_BEGIN:
         ASSERT_EQ(*c, '"');
         current_state = SD_PARAM_VALUE;
+        paramValue = std::string();
         break;
 
-      // todo need to do UTF-8 validation on this string
       case SD_PARAM_VALUE:
+        paramValue.push_back(*c);
         if(backslash_preceded){
           backslash_preceded = false;
           break;
@@ -182,6 +185,7 @@ void TestRFC5424StructuredData(const char *structured_data){
         break;
 
       case SD_PARAM_VALUE_END:
+        TestUTF8Compliance(paramValue.c_str());
         if(*c == ' '){
           current_state = SD_PARAM_NAME;
           break;
