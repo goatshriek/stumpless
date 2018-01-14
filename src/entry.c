@@ -89,3 +89,29 @@ ssize_t get_app_name(struct stumpless_entry *entry, char *destination, size_t si
     return entry->app_name_length;
   }
 }
+
+ssize_t get_msgid(struct stumpless_entry *entry, char *destination, size_t size){
+  if(!entry || !destination || !entry->msgid){
+    return 0;
+  }
+
+  if( entry->msgid_length > size){
+    return -((ssize_t)(entry->msgid_length));
+  } else {
+    memcpy(destination, entry->msgid, entry->msgid_length);
+    return entry->msgid_length;
+  }
+}
+
+ssize_t get_message(struct stumpless_entry *entry, char *destination, size_t size){
+  if(!entry || !destination || !entry->message){
+    return 0;
+  }
+
+  if( entry->message_length > size){
+    return -((ssize_t)(entry->message_length));
+  } else {
+    memcpy(destination, entry->message, entry->message_length);
+    return entry->message_length;
+  }
+}

@@ -49,11 +49,11 @@ char *format_entry(const struct stumpless_target *target, struct stumpless_entry
   *(position++) = ' ';
   position += get_procid(position, 1024-(position-buffer));
   *(position++) = ' ';
-  position += get_msgid(position, 1024-(position-buffer));
+  position += get_msgid(entry, position, 1024-(position-buffer));
   *(position++) = ' ';
   position += get_structured_data(position, 1024-(position-buffer));
   *(position++) = ' ';
-  memcpy(position, entry->message, entry->message_length);
+  get_message(entry, position, 1024-(position-buffer));
 
   return buffer;
 }
@@ -72,11 +72,6 @@ ssize_t get_hostname(char *destination, size_t size){
     memcpy(destination, buffer, hostname_length);
     return hostname_length;
   }
-}
-
-ssize_t get_msgid(char *destination, size_t size){
-  *(destination++) = '-';
-  return 1;
 }
 
 ssize_t get_procid(char *destination, size_t size){
