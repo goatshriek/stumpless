@@ -92,8 +92,10 @@ void TestUTF8Compliance(const char *str){
 
       case FOUR_CHAR:
         ASSERT_EQ(*c & '\xc0', '\x80') << "invalid continuation byte";
+        bytes[char_count] = *c & '\x3f';
         char_count++;
         if(char_count == 4){
+          ASSERT_NE(bytes[0] | (bytes[1] & '\x30'), 0) << "non-shortest form not allowed";
           current_state = LEAD_CHAR;
         }
         break;
@@ -101,8 +103,10 @@ void TestUTF8Compliance(const char *str){
 
       case FIVE_CHAR:
         ASSERT_EQ(*c & '\xc0', '\x80') << "invalid continuation byte";
+        bytes[char_count] = *c & '\x3f';
         char_count++;
         if(char_count == 5){
+          ASSERT_NE(bytes[0] | (bytes[1] & '\x38'), 0) << "non-shortest form not allowed";
           current_state = LEAD_CHAR;
         }
         break;
@@ -110,8 +114,10 @@ void TestUTF8Compliance(const char *str){
 
       case SIX_CHAR:
         ASSERT_EQ(*c & '\xc0', '\x80') << "invalid continuation byte";
+        bytes[char_count] = *c & '\x3f';
         char_count++;
         if(char_count == 6){
+          ASSERT_NE(bytes[0] | (bytes[1] & '\x3c'), 0) << "non-shortest form not allowed";
           current_state = LEAD_CHAR;
         }
         break;

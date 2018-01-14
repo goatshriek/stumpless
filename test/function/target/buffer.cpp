@@ -50,7 +50,7 @@ namespace {
 
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
 
-    EXPECT_EQ(0, stumpless("\xef\xbb\xbftesting 1 \xe0\xaf\x81"));
+    EXPECT_EQ(0, stumpless("\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f"));
     EXPECT_EQ(NULL, stumpless_get_error());
 
     TestRFC5424Compliance(buffer);
