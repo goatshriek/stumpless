@@ -18,11 +18,14 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
 #include <stumpless/entry.h>
+#include <unistd.h>
 #include "private/entry.h"
 #include "private/error.h"
+#include "private/formatter.h"
 #include "private/memory.h"
 
 struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *msgid, const char *message){
@@ -90,6 +93,22 @@ ssize_t get_app_name(struct stumpless_entry *entry, char *destination, size_t si
   }
 }
 
+ssize_t get_hostname(char *destination, size_t size){
+  char buffer[RFC_5424_MAX_HOSTNAME_LENGTH+1];
+  size_t hostname_length;
+
+  gethostname(buffer, RFC_5424_MAX_HOSTNAME_LENGTH);
+  buffer[RFC_5424_MAX_HOSTNAME_LENGTH] = '\0';
+  hostname_length = strlen(buffer);
+
+  if(hostname_length > size){
+    return -((ssize_t)hostname_length);
+  } else {
+    memcpy(destination, buffer, hostname_length);
+    return hostname_length;
+  }
+}
+
 ssize_t get_msgid(struct stumpless_entry *entry, char *destination, size_t size){
   if(!entry || !destination || !entry->msgid){
     return 0;
@@ -113,5 +132,33 @@ ssize_t get_message(struct stumpless_entry *entry, char *destination, size_t siz
   } else {
     memcpy(destination, entry->message, entry->message_length);
     return entry->message_length;
+  }
+}
+
+ssize_t get_procid(char *destination, size_t size){
+  char buffer[RFC_5424_MAX_PROCID_LENGTH];
+  size_t written;
+
+  written = snprintf(buffer, RFC_5424_MAX_PROCID_LENGTH, "%d", getpid());
+
+  if(written > size){
+    return -((ssize_t)written);
+  } else {
+    memcpy(destination, buffer, written);
+    return written;
+  }
+}
+
+ssize_t get_structured_data(char *destination, size_t size){
+  const char *sd = "[exampleSDID@32473 iut=\"3\xcf\x8f\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"]";
+  size_t sd_length;
+  
+  sd_length = strlen(sd);
+
+  if(sd_length > size){
+    return -((size_t)sd_length);
+  } else {
+    memcpy(destination, sd, sd_length);
+    return sd_length;
   }
 }

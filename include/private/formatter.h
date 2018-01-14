@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Joel Anderson.
+ * Copyright 2018, Joel Anderson.
  * All Rights Reserved.
  *
  * This file is part of Stumpless.
@@ -32,9 +32,6 @@
 
 char *format_entry(const struct stumpless_target *target, struct stumpless_entry *entry);
 
-ssize_t get_hostname(char *destination, size_t size);
-ssize_t get_procid(char *destination, size_t size);
-
 /*
  * Gets the current timestamp and writes it to the character buffer provided in
  * destination. The time reflected by the timestamp will be as close to the time
@@ -51,7 +48,5 @@ ssize_t get_procid(char *destination, size_t size);
  * be a negative number indicating how many bytes were actually needed.
  */
 ssize_t get_rfc5424_timestamp(char *destination, size_t size);
-
-ssize_t get_structured_data(char *destination, size_t size);
 
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */

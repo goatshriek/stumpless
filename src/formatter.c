@@ -22,7 +22,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>
-#include <unistd.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include "private/entry.h"
@@ -58,36 +57,6 @@ char *format_entry(const struct stumpless_target *target, struct stumpless_entry
   return buffer;
 }
 
-ssize_t get_hostname(char *destination, size_t size){
-  char buffer[RFC_5424_MAX_HOSTNAME_LENGTH+1];
-  size_t hostname_length;
-
-  gethostname(buffer, RFC_5424_MAX_HOSTNAME_LENGTH);
-  buffer[RFC_5424_MAX_HOSTNAME_LENGTH] = '\0';
-  hostname_length = strlen(buffer);
-
-  if(hostname_length > size){
-    return -((ssize_t)hostname_length);
-  } else {
-    memcpy(destination, buffer, hostname_length);
-    return hostname_length;
-  }
-}
-
-ssize_t get_procid(char *destination, size_t size){
-  char buffer[RFC_5424_MAX_PROCID_LENGTH];
-  size_t written;
-
-  written = snprintf(buffer, RFC_5424_MAX_PROCID_LENGTH, "%d", getpid());
-
-  if(written > size){
-    return -((ssize_t)written);
-  } else {
-    memcpy(destination, buffer, written);
-    return written;
-  }
-}
-
 ssize_t get_rfc5424_timestamp(char *destination, size_t size){
   char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
   struct tm *now;
@@ -104,19 +73,5 @@ ssize_t get_rfc5424_timestamp(char *destination, size_t size){
   } else {
     memcpy(destination, buffer, written);
     return written;
-  }
-}
-
-ssize_t get_structured_data(char *destination, size_t size){
-  const char *sd = "[exampleSDID@32473 iut=\"3\xcf\x8f\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"]";
-  size_t sd_length;
-  
-  sd_length = strlen(sd);
-
-  if(sd_length > size){
-    return -((size_t)sd_length);
-  } else {
-    memcpy(destination, sd, sd_length);
-    return sd_length;
   }
 }

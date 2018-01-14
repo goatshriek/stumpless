@@ -24,7 +24,10 @@
 #define __STUMPLESS_PRIVATE_ENTRY_H
 
 ssize_t get_app_name(struct stumpless_entry *entry, char *destination, size_t size);
+ssize_t get_hostname(char *destination, size_t size);
 ssize_t get_msgid(struct stumpless_entry *entry, char *destination, size_t size);
 ssize_t get_message(struct stumpless_entry *entry, char *destination, size_t size);
+ssize_t get_procid(char *destination, size_t size);
+ssize_t get_structured_data(char *destination, size_t size);
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */
