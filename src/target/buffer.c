@@ -22,10 +22,12 @@
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include "private/error.h"
+#include "private/id.h"
 #include "private/memory.h"
 #include "private/target/buffer.h"
 
-static struct buffer_target **targets=NULL;
+//static struct buffer_target **targets=NULL;
+static struct id_map *targets=NULL;
 
 /* public functions */
 
@@ -34,7 +36,7 @@ stumpless_close_buffer_target(struct stumpless_target *target){
   clear_error();
   
   if(target && targets){
-    destroy_buffer_target(targets[target->id]);
+    destroy_buffer_target(get_by_id(targets, target->id));
   }
   
   // todo need to clean up the id list
@@ -42,70 +44,63 @@ stumpless_close_buffer_target(struct stumpless_target *target){
 
 struct stumpless_target *
 stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int options, int facility){
-  struct stumpless_target *pub_target, *current_target;
+  struct stumpless_target *pub_target;
   struct buffer_target *priv_target;
   size_t name_len;
 
   clear_error();
   
-  current_target = stumpless_get_current_target();
-  if( current_target && current_target->id == STUMPLESS_MAX_TARGET_COUNT-1 ){
-    return NULL;
-  }
-
   if(!targets){
-    targets = alloc_mem(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
-    if(!targets)
-      return NULL;
+    targets = new_id_map();
+    if(!targets){
+      goto fail;
+    }
   }
 
   pub_target = alloc_mem(sizeof(struct stumpless_target));
   if( !pub_target ){
-    return NULL;
+    goto fail;
   }
   
   priv_target = new_buffer_target(buffer, size);
   if( !priv_target ){
-    free_mem(pub_target);
-    return NULL;
+    goto fail_priv_target;
   }
 
   name_len = strlen(name);
   pub_target->name = alloc_mem(name_len+1);
   if( !pub_target->name ){
-    free_mem(pub_target);
-    free_mem(priv_target);
-    return NULL;
+    goto fail_pub_name;
   }
 
   memcpy(pub_target->name, name, name_len);
   pub_target->name[name_len] = '\0';
-
-  if(current_target)
-    pub_target->id = current_target->id+1;
-  else
-    pub_target->id = 0;
-
   pub_target->type = STUMPLESS_BUFFER_TARGET;
   pub_target->options = options;
   pub_target->facility = facility;
   pub_target->severity = 6; // todo change this from a hardcoded value
-
-  targets[pub_target->id] = priv_target;
+  pub_target->id = add_to_id_map(targets, priv_target);
 
   stumpless_set_current_target(pub_target);
   return pub_target;
+
+
+fail_pub_name:
+  free_mem(priv_target);
+fail_priv_target:
+  free_mem(pub_target);
+fail:
+  return NULL;
 }
 
 
 /* private definitions */
 
 void destroy_buffer_target(struct buffer_target *target){
-  if( !target ){
-    return;
+  if( target ){
+    free_mem(target);
   }
   
-  free_mem(target);
 }
 
 struct buffer_target *new_buffer_target(char *buffer, size_t size){
@@ -136,7 +131,7 @@ int sendto_buffer_target(const struct stumpless_target *target, const char *msg)
     return 0;
   }
   
-  priv_trgt = targets[target->id];
+  priv_trgt = get_by_id(targets, target->id);
   msg_len = strlen(msg);
 
   if(msg_len >= priv_trgt->size){

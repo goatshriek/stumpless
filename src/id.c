@@ -69,7 +69,7 @@ void destroy_id_map(struct id_map *map){
   free_mem(map);
 }
 
-void *get_id(struct id_map *map, stumpless_id_t id){
+void *get_by_id(struct id_map *map, stumpless_id_t id){
   struct id_map_node *curr;
 
   if(!map){
