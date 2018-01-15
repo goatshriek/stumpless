@@ -90,7 +90,7 @@ void TestRFC5424StructuredData(const char *structured_data){
     SD_PARAM_VALUE,
     SD_PARAM_VALUE_END
   };
-  enum sd_state current_state = SD_ELEMENT_BEGIN;
+  enum sd_state current_state = INIT_STATE;
   bool backslash_preceded = false;
   std::string paramValue;
 

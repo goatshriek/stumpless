@@ -325,7 +325,7 @@ ssize_t get_structured_data(struct stumpless_entry *entry, char *destination, si
   }
 
   if(entry->element_count == 0){
-    if(size < 1){
+    if(size >= 1){
       *destination = '-';
       return 1;
     } else {

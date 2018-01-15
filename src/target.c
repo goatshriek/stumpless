@@ -31,8 +31,6 @@ static struct stumpless_target *current_target=NULL;
 
 int stumpless(const char *message){
   struct stumpless_entry *entry;
-  struct stumpless_element *element;
-  struct stumpless_param *param;
   struct stumpless_target *current_target;
   int result;
 
@@ -47,15 +45,6 @@ int stumpless(const char *message){
   if(!entry){
     return -1;
   }
-
-  element = stumpless_new_element("exampleSDID@32473");
-  param = stumpless_new_param("iut", "3\xcf\x8f");
-  stumpless_add_param(element, param);
-  param = stumpless_new_param("eventSource", "Application");
-  stumpless_add_param(element, param);
-  param = stumpless_new_param("eventID", "1011");
-  stumpless_add_param(element, param);
-  stumpless_add_element(entry, element);
 
   result = stumpless_add_entry(current_target, entry);
   stumpless_destroy_entry(entry);
