@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Joel Anderson.
+ * Copyright 2018, Joel Anderson.
  * All Rights Reserved.
  *
  * This file is part of Stumpless.
@@ -43,6 +43,7 @@ struct stumpless_target {
   int severity;
 };
 
+int stumpless(const char *message);
 int stumpless_add_entry(struct stumpless_target *target, struct stumpless_entry *entry);
 struct stumpless_target *stumpless_get_current_target();
 void stumpless_set_current_target(struct stumpless_target *target);

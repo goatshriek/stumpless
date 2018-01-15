@@ -21,12 +21,46 @@
 #include <stdio.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
+#include <stumpless/target/socket.h>
 #include "private/error.h"
 #include "private/formatter.h"
 #include "private/target/buffer.h"
 #include "private/target/socket.h"
 
 static struct stumpless_target *current_target=NULL;
+
+int stumpless(const char *message){
+  struct stumpless_entry *entry;
+  struct stumpless_element *element;
+  struct stumpless_param *param;
+  struct stumpless_target *current_target;
+  int result;
+
+  clear_error();
+
+  current_target = stumpless_get_current_target();
+  if(!current_target){
+    current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
+  }
+
+  entry = stumpless_new_entry("APP-NAME", "MSGID", message);
+  if(!entry){
+    return -1;
+  }
+
+  element = stumpless_new_element("exampleSDID@32473");
+  param = stumpless_new_param("iut", "3\xcf\x8f");
+  stumpless_add_param(element, param);
+  param = stumpless_new_param("eventSource", "Application");
+  stumpless_add_param(element, param);
+  param = stumpless_new_param("eventID", "1011");
+  stumpless_add_param(element, param);
+  stumpless_add_element(entry, element);
+
+  result = stumpless_add_entry(current_target, entry);
+  stumpless_destroy_entry(entry);
+  return result;
+}
 
 int stumpless_add_entry(struct stumpless_target *target, struct stumpless_entry *entry){
   char *message;
