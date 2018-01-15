@@ -35,6 +35,7 @@ stumpless_add_element(struct stumpless_entry *entry, struct stumpless_element *e
   clear_error();
 
   if(!entry || !element){
+    raise_empty_argument();
     return NULL;
   }
 
@@ -64,6 +65,7 @@ struct stumpless_element *stumpless_add_param(struct stumpless_element *element,
   clear_error();
 
   if(!element || !param){
+    raise_empty_argument();
     return NULL;
   }
 
@@ -169,6 +171,7 @@ struct stumpless_param *stumpless_new_param(const char *name, const char *value)
   clear_error();
 
   if(!name || !value){
+    raise_empty_argument();
     goto fail;
   }
 
@@ -314,15 +317,53 @@ ssize_t get_procid(char *destination, size_t size){
 }
 
 ssize_t get_structured_data(struct stumpless_entry *entry, char *destination, size_t size){
-  const char *sd = "[exampleSDID@32473 iut=\"3\xcf\x8f\" eventSource=\"Application\\]\" eventID=\"1011\"][example2@32473 class=\"high\"]";
-  size_t sd_length;
+  char buffer[1024];
+  size_t written=0, i, j;
   
-  sd_length = strlen(sd);
+  if(!entry){
+    return 0;
+  }
 
-  if(sd_length > size){
-    return -((size_t)sd_length);
+  if(entry->element_count == 0){
+    if(size < 1){
+      *destination = '-';
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+
+  if(!entry->elements){
+    return 0;
+  }
+
+  for(i=0; i < entry->element_count; i++){
+    *(buffer+written) = '[';
+    written++;
+    memcpy(buffer+written, entry->elements[i]->name, entry->elements[i]->name_length);
+    written += entry->elements[i]->name_length;
+    for(j=0; j < entry->elements[i]->param_count; j++){
+      *(buffer+written) = ' ';
+      written++;
+      memcpy(buffer+written, entry->elements[i]->params[j]->name, entry->elements[i]->params[j]->name_length);
+      written += entry->elements[i]->params[j]->name_length;
+      *(buffer+written) = '=';
+      written++;
+      *(buffer+written) = '"';
+      written++;
+      memcpy(buffer+written, entry->elements[i]->params[j]->value, entry->elements[i]->params[j]->value_length);
+      written += entry->elements[i]->params[j]->value_length;
+      *(buffer+written) = '"';
+      written++;
+    }
+    *(buffer+written) = ']';
+    written++;
+  }
+ 
+  if(written > size){
+    return -((size_t)written);
   } else {
-    memcpy(destination, sd, sd_length);
-    return sd_length;
+    memcpy(destination, buffer, written);
+    return written;
   }
 }

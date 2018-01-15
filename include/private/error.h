@@ -23,7 +23,7 @@
 #define __STUMPLESS_PRIVATE_ERROR_H
 
 void clear_error();
-void raise_empty_argument_error();
+void raise_empty_argument();
 void raise_error(enum stumpless_error_id id);
 void raise_memory_allocation_failure();
 

@@ -50,8 +50,12 @@ int stumpless(const char *message){
     return -1;
   }
 
-  param = stumpless_new_param("name", "value");
-  element = stumpless_new_element("SD-ID");
+  element = stumpless_new_element("exampleSDID@32473");
+  param = stumpless_new_param("iut", "3\xcf\x8f");
+  stumpless_add_param(element, param);
+  param = stumpless_new_param("eventSource", "Application");
+  stumpless_add_param(element, param);
+  param = stumpless_new_param("eventID", "1011");
   stumpless_add_param(element, param);
   stumpless_add_element(entry, element);
 
