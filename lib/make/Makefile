@@ -18,8 +18,8 @@ bin/stumplessd: stumplessd.o
 	mkdir -p ./bin
 	$(CC) -o ./bin/stumplessd stumplessd.o
 
-libstumpless.so: target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o
-	ld $(LDFLAGS) target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o -o libstumpless.so
+libstumpless.so: target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o id.o
+	ld $(LDFLAGS) target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o id.o -o libstumpless.so
 
 error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private/error.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/error.c
@@ -32,6 +32,10 @@ entry.o: $(SRCDIR)/entry.c $(INCLUDEDIR)/stumpless/entry.h
 formatter.o: $(SRCDIR)/formatter.c $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/formatter.c
 	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/formatter.c
+
+id.o: $(SRCDIR)/id.c $(INCLUDEDIR)/stumpless/id.h $(INCLUDEDIR)/private/id.h $(INCLUDEDIR)/private/memory.h
+	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/id.c
+	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/id.c
 
 memory.o: $(SRCDIR)/memory.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/memory.c
