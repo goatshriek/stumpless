@@ -84,7 +84,6 @@ stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int op
   stumpless_set_current_target(pub_target);
   return pub_target;
 
-
 fail_pub_name:
   free_mem(priv_target);
 fail_priv_target:

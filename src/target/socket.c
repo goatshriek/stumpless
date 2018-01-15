@@ -25,17 +25,18 @@
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/error.h"
+#include "private/id.h"
 #include "private/memory.h"
 #include "private/target/socket.h"
 
-static struct socket_target **targets=NULL;
+static struct id_map *targets=NULL;
 
 void
 stumpless_close_socket_target(struct stumpless_target *target){
   clear_error();
   
   if(target && targets){
-    destroy_socket_target(targets[target->id]);
+    destroy_socket_target(get_by_id(targets, target->id));
   }
   
   // todo need to clean up the id list
@@ -43,57 +44,52 @@ stumpless_close_socket_target(struct stumpless_target *target){
 
 struct stumpless_target *
 stumpless_open_socket_target(const char *name, int options, int facility){
-  struct stumpless_target *pub_target, *current_target;
+  struct stumpless_target *pub_target;
   struct socket_target *priv_target;
   size_t name_len;
 
   clear_error();
   
-  current_target = stumpless_get_current_target();
-  if( current_target && current_target->id == STUMPLESS_MAX_TARGET_COUNT-1 ){
-    return NULL;
-  }
-
   if(!targets){
-    targets = alloc_mem(sizeof(struct stumpless_target *) * STUMPLESS_MAX_TARGET_COUNT);
-    if(!targets)
-      return NULL;
+    targets = new_id_map();
+    if(!targets){
+      goto fail;
+    }
   }
 
   pub_target = alloc_mem(sizeof(struct stumpless_target));
   if( !pub_target ){
-    return NULL;
+    goto fail;
   }
   
   name_len = strlen(name) ;
   priv_target = new_socket_target(name, name_len);
   if( !priv_target ){
-    free_mem(pub_target);
-    return NULL;
+    goto fail_priv_target;
   }
 
   pub_target->name = alloc_mem(name_len);
   if( !pub_target->name ){
-    free_mem(pub_target);
-    free_mem(priv_target);
-    return NULL;
+    goto fail_pub_name;
   }
 
   memcpy(pub_target->name, name, name_len);
-
-  if(current_target)
-    pub_target->id = current_target->id+1;
-  else
-    pub_target->id = 0;
-
+  pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_SOCKET_TARGET;
   pub_target->options = options;
   pub_target->facility = facility;
-
-  targets[pub_target->id] = priv_target;
+  pub_target->severity = 6; // todo change this from a hardcoded value
+  pub_target->id = add_to_id_map(targets, priv_target);
 
   stumpless_set_current_target(pub_target);
   return pub_target;
+
+fail_pub_name:
+  free_mem(priv_target);
+fail_priv_target:
+  free_mem(pub_target);
+fail:
+  return NULL;
 }
 
 
@@ -147,7 +143,7 @@ ssize_t sendto_socket_target(const struct stumpless_target *target, const char *
     return 0;
   }
   
-  priv_trgt = targets[target->id];
+  priv_trgt = get_by_id(targets, target->id);
 
   return sendto(priv_trgt->local_socket, msg, strlen(msg)+1, 0, (struct sockaddr *) &priv_trgt->target_addr, priv_trgt->target_addr_len);
 }
