@@ -32,11 +32,17 @@ struct stumpless_error *stumpless_get_error(){
     return NULL;
 }
 
+/* private functions */
+
 void clear_error(){
   error_valid = 0;
 }
 
-void raise_memory_allocation_failure(){
+void raise_empty_argument(){
+  raise_error(STUMPLESS_EMPTY_ARGUMENT);
+}
+
+void raise_error(enum stumpless_error_id id){
   if( !last_error ){
     last_error = malloc(sizeof(struct stumpless_error));
     if( !last_error ){
@@ -45,6 +51,10 @@ void raise_memory_allocation_failure(){
     }
   }
   
-  last_error->id = STUMPLESS_MEMORY_ALLOCATION_FAILURE;
+  last_error->id = id;
   error_valid = 1;
+}
+
+void raise_memory_allocation_failure(){
+  raise_error(STUMPLESS_MEMORY_ALLOCATION_FAILURE);
 }

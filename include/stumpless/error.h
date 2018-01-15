@@ -25,6 +25,7 @@ extern "C" {
 #endif
 
 enum stumpless_error_id{
+  STUMPLESS_EMPTY_ARGUMENT,
   STUMPLESS_MEMORY_ALLOCATION_FAILURE
 };
 
