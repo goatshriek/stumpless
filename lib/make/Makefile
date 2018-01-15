@@ -131,9 +131,9 @@ clean:
 	rm -f ./test/function/target/*.o
 	if [ -e ./test/function/target ]; then rmdir --ignore-fail-on-non-empty ./test/function/target ; fi
 	rm -f ./test/function/*.o
-	if [ -e ./test/function/target ]; then rmdir --ignore-fail-on-non-empty ./test/function ; fi
+	if [ -e ./test/function ]; then rmdir --ignore-fail-on-non-empty ./test/function ; fi
 	rm -f ./test/*.o
-	if [ -e ./test/function/target ]; then rmdir --ignore-fail-on-non-empty ./test ; fi
+	if [ -e ./test ]; then rmdir --ignore-fail-on-non-empty ./test ; fi
 	rm -f *.o
 	rm -f *.so
 	rm -f *.log
