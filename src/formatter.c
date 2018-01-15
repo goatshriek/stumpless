@@ -50,7 +50,7 @@ char *format_entry(const struct stumpless_target *target, struct stumpless_entry
   *(position++) = ' ';
   position += get_msgid(entry, position, 1024-(position-buffer));
   *(position++) = ' ';
-  position += get_structured_data(position, 1024-(position-buffer));
+  position += get_structured_data(entry, position, 1024-(position-buffer));
   *(position++) = ' ';
   get_message(entry, position, 1024-(position-buffer));
 

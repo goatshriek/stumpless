@@ -33,7 +33,10 @@ static struct socket_target **targets=NULL;
 
 int stumpless(const char *message){
   struct stumpless_entry *entry;
+  struct stumpless_element *element;
+  struct stumpless_param *param;
   struct stumpless_target *current_target;
+  int result;
 
   clear_error();
 
@@ -47,7 +50,14 @@ int stumpless(const char *message){
     return -1;
   }
 
-  return stumpless_add_entry(current_target, entry);
+  param = stumpless_new_param("name", "value");
+  element = stumpless_new_element("SD-ID");
+  stumpless_add_param(element, param);
+  stumpless_add_element(entry, element);
+
+  result = stumpless_add_entry(current_target, entry);
+  stumpless_destroy_entry(entry);
+  return result;
 }
 
 void

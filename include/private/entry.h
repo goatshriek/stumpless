@@ -28,6 +28,6 @@ ssize_t get_hostname(char *destination, size_t size);
 ssize_t get_msgid(struct stumpless_entry *entry, char *destination, size_t size);
 ssize_t get_message(struct stumpless_entry *entry, char *destination, size_t size);
 ssize_t get_procid(char *destination, size_t size);
-ssize_t get_structured_data(char *destination, size_t size);
+ssize_t get_structured_data(struct stumpless_entry *entry, char *destination, size_t size);
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */
