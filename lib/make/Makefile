@@ -12,6 +12,8 @@ CFLAGS = -Wall -g -O0 -I $(INCLUDEDIR)
 CPPFLAGS = -std=c++11 -Wall -g -O0 -I $(INCLUDEDIR)
 LDFLAGS = -shared
 
+-include config.mk
+
 all: libstumpless.so bin/stumplessd
 
 bin/stumplessd: stumplessd.o
@@ -68,11 +70,16 @@ test: bin/stumplessd bin/test/function/stumpless bin/test/function/target/buffer
 	./bin/test/performance/stumpless
 	pkill --signal SIGINT stumplessd
 
+ifeq ($(CONF_HAVE_LIB_GTEST), y)
 test-function: bin/stumplessd bin/test/function/stumpless bin/test/function/target/buffer
 	./bin/stumplessd &
 	./bin/test/function/stumpless
 	./bin/test/function/target/buffer
 	pkill --signal SIGINT stumplessd
+else
+test-function:
+	echo "gtest is not available, which is required for functionality tests"
+endif
 
 bin/test/function/stumpless: libstumpless.so $(TESTDIR)/function/stumpless.cpp $(INCLUDEDIR)/stumpless.h
 	mkdir -p ./bin/test/function
