@@ -20,8 +20,8 @@ bin/stumplessd: stumplessd.o
 	mkdir -p ./bin
 	$(CC) -o ./bin/stumplessd stumplessd.o
 
-libstumpless.so: target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o id.o
-	ld $(LDFLAGS) target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o id.o -o libstumpless.so
+libstumpless.so: target.o strbuilder.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o id.o
+	ld $(LDFLAGS) strbuilder.o target.o memory.o error.o socket.o buffer.o formatter.o entry.o version.o id.o -o libstumpless.so
 
 error.o: $(SRCDIR)/error.c $(INCLUDEDIR)/stumpless/error.h $(INCLUDEDIR)/private/error.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/error.c
@@ -42,6 +42,10 @@ id.o: $(SRCDIR)/id.c $(INCLUDEDIR)/stumpless/id.h $(INCLUDEDIR)/private/id.h $(I
 memory.o: $(SRCDIR)/memory.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/private/memory.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/memory.c
 	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/memory.c
+
+strbuilder.o: $(SRCDIR)/strbuilder.c $(INCLUDEDIR)/private/strbuilder.h
+	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/strbuilder.c
+	$(CC) $(CFLAGS) -c -fPIC $(SRCDIR)/strbuilder.c
 
 target.o: $(SRCDIR)/target.c $(INCLUDEDIR)/private/error.h $(INCLUDEDIR)/stumpless/target.h $(INCLUDEDIR)/private/target/buffer.h $(INCLUDEDIR)/private/target/socket.h
 	$(SCRIPTSDIR)/headers_check.pl $(SRCDIR)/target.c

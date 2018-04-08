@@ -53,8 +53,8 @@ namespace {
     TestRFC5424Compliance(buffer);
   }
 
-  TEST_F(BufferTargetTest, Overflow){
-    const char *test_string = "smash the stack for fun and profit`";
+  TEST_F(BufferTargetTest, WrapAround){
+    const char *test_string = "smash the stack for fun and profit";
     size_t test_string_len = strlen(test_string);
 
     ASSERT_TRUE(stumpless_get_current_target() != NULL);
@@ -65,6 +65,21 @@ namespace {
     }
 
     EXPECT_EQ(NULL, stumpless_get_error());
+  }
+
+  TEST_F(BufferTargetTest, OverFill){
+    char test_string[TEST_BUFFER_LENGTH+1];
+    struct stumpless_error *error;
+
+    ASSERT_TRUE(stumpless_get_current_target() != NULL);
+
+    memset(test_string, 'g', TEST_BUFFER_LENGTH);
+    test_string[TEST_BUFFER_LENGTH] = '\0';
+    ASSERT_EQ(-1, stumpless(test_string));
+
+    error = stumpless_get_error();
+    ASSERT_TRUE(error != NULL);
+    EXPECT_EQ(error->id, STUMPLESS_ARGUMENT_TOO_BIG);
   }
 
   class BufferTargetOpenTest : public ::testing::Test {

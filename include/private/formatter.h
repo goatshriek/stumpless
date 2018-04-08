@@ -30,20 +30,10 @@
 char *format_entry(const struct stumpless_target *target, struct stumpless_entry *entry);
 
 /*
- * Gets the current timestamp and writes it to the character buffer provided in
- * destination. The time reflected by the timestamp will be as close to the time
- * of the function invocation as feasible.
- *
- * A NULL teriminating character will NOT be written to destination.
- *
- * If sufficient space is not available in the destination according to the size
- * provided, nothing will be written to the destination.
- *
- * Upon success the return value is the number of bytes written into
- * destination. If there is an error, the return value is -1. If there is not
- * enough space in the destination as deterimined by size, the return value will
- * be a negative number indicating how many bytes were actually needed.
+ * Gets the current timestamp and writes it to the string builder. The time
+ * reflected by the timestamp will be as close to the time of the function
+ * invocation as feasible.
  */
-ssize_t get_rfc5424_timestamp(char *destination, size_t size);
+struct strbuilder *strbuilder_append_rfc5424_timestamp(struct strbuilder *builder);
 
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */

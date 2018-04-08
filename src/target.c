@@ -68,12 +68,11 @@ int stumpless_add_entry(struct stumpless_target *target, struct stumpless_entry 
       break;
     case STUMPLESS_BUFFER_TARGET:
       if( sendto_buffer_target(target, message) <= 0 ){
-        printf("could not send message to target");
         return -1;
       }
       break;
     default:
-      printf("target type unrecognized\n");
+      perror("target type unrecognized\n");
       return -1;
   }
 

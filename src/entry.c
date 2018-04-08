@@ -15,14 +15,13 @@
  */
 
 #include <stddef.h>
-#include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include <stumpless/entry.h>
 #include <unistd.h>
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/formatter.h"
+#include "private/strbuilder.h"
 #include "private/memory.h"
 
 struct stumpless_entry *
@@ -32,7 +31,7 @@ stumpless_add_element(struct stumpless_entry *entry, struct stumpless_element *e
   clear_error();
 
   if(!entry || !element){
-    raise_empty_argument();
+    raise_argument_empty();
     return NULL;
   }
 
@@ -62,7 +61,7 @@ struct stumpless_element *stumpless_add_param(struct stumpless_element *element,
   clear_error();
 
   if(!element || !param){
-    raise_empty_argument();
+    raise_argument_empty();
     return NULL;
   }
 
@@ -168,7 +167,7 @@ struct stumpless_param *stumpless_new_param(const char *name, const char *value)
   clear_error();
 
   if(!name || !value){
-    raise_empty_argument();
+    raise_argument_empty();
     goto fail;
   }
 
@@ -244,123 +243,94 @@ void stumpless_destroy_param(struct stumpless_param *param){
 }
 
 /* private functions */
-ssize_t get_app_name(struct stumpless_entry *entry, char *destination, size_t size){
-  if(!entry || !destination || !entry->app_name){
-    return 0;
+struct strbuilder *
+strbuilder_append_app_name(struct strbuilder *builder,
+                           const struct stumpless_entry *entry){
+  if(!entry){
+    return NULL;
   }
 
-  if( entry->app_name_length > size){
-    return -((ssize_t)(entry->app_name_length));
-  } else {
-    memcpy(destination, entry->app_name, entry->app_name_length);
-    return entry->app_name_length;
-  }
+  return strbuilder_append_buffer(builder,
+                                  entry->app_name,
+                                  entry->app_name_length);
 }
 
-ssize_t get_hostname(char *destination, size_t size){
+struct strbuilder *strbuilder_append_hostname(struct strbuilder *builder){
   char buffer[RFC_5424_MAX_HOSTNAME_LENGTH+1];
-  size_t hostname_length;
 
   gethostname(buffer, RFC_5424_MAX_HOSTNAME_LENGTH);
   buffer[RFC_5424_MAX_HOSTNAME_LENGTH] = '\0';
-  hostname_length = strlen(buffer);
 
-  if(hostname_length > size){
-    return -((ssize_t)hostname_length);
-  } else {
-    memcpy(destination, buffer, hostname_length);
-    return hostname_length;
-  }
+  return strbuilder_append_string(builder, buffer);
 }
 
-ssize_t get_msgid(struct stumpless_entry *entry, char *destination, size_t size){
-  if(!entry || !destination || !entry->msgid){
-    return 0;
+struct strbuilder *strbuilder_append_msgid(struct strbuilder *builder,
+                                           const struct stumpless_entry *entry){
+  if(!entry){
+    return NULL;
   }
 
-  if( entry->msgid_length > size){
-    return -((ssize_t)(entry->msgid_length));
-  } else {
-    memcpy(destination, entry->msgid, entry->msgid_length);
-    return entry->msgid_length;
-  }
+  return strbuilder_append_buffer(builder, entry->msgid, entry->msgid_length);
 }
 
-ssize_t get_message(struct stumpless_entry *entry, char *destination, size_t size){
-  if(!entry || !destination || !entry->message){
-    return 0;
+struct strbuilder *
+strbuilder_append_message(struct strbuilder *builder,
+                          const struct stumpless_entry *entry){
+  if(!entry){
+    return NULL;
   }
 
-  if( entry->message_length > size){
-    return -((ssize_t)(entry->message_length));
-  } else {
-    memcpy(destination, entry->message, entry->message_length);
-    return entry->message_length;
-  }
+  return strbuilder_append_buffer(builder,
+                                  entry->message,
+                                  entry->message_length);
 }
 
-ssize_t get_procid(char *destination, size_t size){
-  char buffer[RFC_5424_MAX_PROCID_LENGTH];
-  size_t written;
-
-  written = snprintf(buffer, RFC_5424_MAX_PROCID_LENGTH, "%d", getpid());
-
-  if(written > size){
-    return -((ssize_t)written);
-  } else {
-    memcpy(destination, buffer, written);
-    return written;
-  }
+struct strbuilder *strbuilder_append_procid(struct strbuilder *builder){
+  return strbuilder_append_int(builder, getpid());
 }
 
-ssize_t get_structured_data(struct stumpless_entry *entry, char *destination, size_t size){
-  char buffer[1024];
-  size_t written=0, i, j;
+struct strbuilder *
+strbuilder_append_structured_data(struct strbuilder *builder,
+                                  const struct stumpless_entry *entry){
+  size_t i, j;
   
   if(!entry){
-    return 0;
+    return NULL;
   }
 
   if(entry->element_count == 0){
-    if(size >= 1){
-      *destination = '-';
-      return 1;
-    } else {
-      return -1;
-    }
+    return strbuilder_append_char(builder, '-');
   }
 
   if(!entry->elements){
-    return 0;
+    return builder;
   }
 
   for(i=0; i < entry->element_count; i++){
-    *(buffer+written) = '[';
-    written++;
-    memcpy(buffer+written, entry->elements[i]->name, entry->elements[i]->name_length);
-    written += entry->elements[i]->name_length;
+    builder = strbuilder_append_char(builder, '[');
+    builder = strbuilder_append_buffer(builder,
+                                       entry->elements[i]->name,
+                                       entry->elements[i]->name_length);
+
     for(j=0; j < entry->elements[i]->param_count; j++){
-      *(buffer+written) = ' ';
-      written++;
-      memcpy(buffer+written, entry->elements[i]->params[j]->name, entry->elements[i]->params[j]->name_length);
-      written += entry->elements[i]->params[j]->name_length;
-      *(buffer+written) = '=';
-      written++;
-      *(buffer+written) = '"';
-      written++;
-      memcpy(buffer+written, entry->elements[i]->params[j]->value, entry->elements[i]->params[j]->value_length);
-      written += entry->elements[i]->params[j]->value_length;
-      *(buffer+written) = '"';
-      written++;
+      builder = strbuilder_append_char(builder, ' ');
+
+      builder = strbuilder_append_buffer(builder,
+                                         entry->elements[i]->params[j]->name,
+                                         entry->elements[i]->params[j]->name_length);
+
+      builder = strbuilder_append_char(builder, '=');
+      builder = strbuilder_append_char(builder, '"');
+
+      builder = strbuilder_append_buffer(builder,
+                                         entry->elements[i]->params[j]->value,
+                                         entry->elements[i]->params[j]->value_length);
+
+      builder = strbuilder_append_char(builder, '"');
     }
-    *(buffer+written) = ']';
-    written++;
+
+    builder = strbuilder_append_char(builder, ']');
   }
- 
-  if(written > size){
-    return -((size_t)written);
-  } else {
-    memcpy(destination, buffer, written);
-    return written;
-  }
+
+  return builder; 
 }

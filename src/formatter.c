@@ -15,46 +15,47 @@
  */
 
 #include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
 #include <time.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include "private/entry.h"
+#include "private/strbuilder.h"
 #include "private/formatter.h"
-#include "private/memory.h"
 
 char *format_entry(const struct stumpless_target *target, struct stumpless_entry *entry){
-  char *buffer, *position;
+  char *str;
+  struct strbuilder *builder, *first_builder;
   int prival;
 
-  // todo make the size configurable or smarter
-  buffer = alloc_mem(1024);
-  if( !buffer ){
-    return NULL;
-  }
+  first_builder = strbuilder_new();
+
+  builder = strbuilder_append_char(first_builder, '<');
 
   prival = target->facility*8 + target->severity;
-  position = buffer + snprintf(buffer, RFC_5424_MAX_PRI_LENGTH+3, "<%d>1 ", prival);
-  position += get_rfc5424_timestamp(position, 1024-(position-buffer));
-  *(position++) = ' ';
-  position += get_hostname(position, 1024-(position-buffer));
-  *(position++) = ' ';
-  position += get_app_name(entry, position, 1024-(position-buffer));
-  *(position++) = ' ';
-  position += get_procid(position, 1024-(position-buffer));
-  *(position++) = ' ';
-  position += get_msgid(entry, position, 1024-(position-buffer));
-  *(position++) = ' ';
-  position += get_structured_data(entry, position, 1024-(position-buffer));
-  *(position++) = ' ';
-  get_message(entry, position, 1024-(position-buffer));
+  builder = strbuilder_append_int(builder, prival);
 
-  return buffer;
+  builder = strbuilder_append_string(builder, ">1 ");
+  builder = strbuilder_append_rfc5424_timestamp(builder);
+  builder = strbuilder_append_char(builder, ' ');
+  builder = strbuilder_append_hostname(builder);
+  builder = strbuilder_append_char(builder, ' ');
+  builder = strbuilder_append_app_name(builder, entry);
+  builder = strbuilder_append_char(builder, ' ');
+  builder = strbuilder_append_procid(builder);
+  builder = strbuilder_append_char(builder, ' ');
+  builder = strbuilder_append_msgid(builder, entry);
+  builder = strbuilder_append_char(builder, ' ');
+  builder = strbuilder_append_structured_data(builder, entry);
+  builder = strbuilder_append_char(builder, ' ');
+  builder = strbuilder_append_message(builder, entry);
+
+  str = strbuilder_to_string(builder);
+  strbuilder_destroy(first_builder);
+
+  return str;
 }
 
-ssize_t get_rfc5424_timestamp(char *destination, size_t size){
+struct strbuilder *strbuilder_append_rfc5424_timestamp(struct strbuilder *builder){
   char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
   struct tm *now;
   time_t now_timer;
@@ -64,11 +65,5 @@ ssize_t get_rfc5424_timestamp(char *destination, size_t size){
   now = gmtime(&now_timer);
   // todo add support for fractional times
   written = strftime(buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", now);
-
-  if(written > size){
-    return -((ssize_t)written);
-  } else {
-    memcpy(destination, buffer, written);
-    return written;
-  }
+  return strbuilder_append_buffer(builder, buffer, written);
 }

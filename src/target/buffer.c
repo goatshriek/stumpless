@@ -126,12 +126,12 @@ int sendto_buffer_target(const struct stumpless_target *target, const char *msg)
   if(!target || !targets || !msg){
     return 0;
   }
-  
+ 
   priv_trgt = get_by_id(targets, target->id);
   msg_len = strlen(msg);
 
   if(msg_len >= priv_trgt->size){
-    // todo generate error buffer too small
+    raise_argument_too_big();
     return -1;
   }
 

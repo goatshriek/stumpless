@@ -35,8 +35,12 @@ void clear_error(){
   error_valid = 0;
 }
 
-void raise_empty_argument(){
-  raise_error(STUMPLESS_EMPTY_ARGUMENT);
+void raise_argument_empty(){
+  raise_error(STUMPLESS_ARGUMENT_EMPTY);
+}
+
+void raise_argument_too_big(){
+  raise_error(STUMPLESS_ARGUMENT_TOO_BIG);
 }
 
 void raise_error(enum stumpless_error_id id){
