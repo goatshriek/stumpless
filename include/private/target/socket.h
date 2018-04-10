@@ -32,6 +32,6 @@ struct socket_target {
 
 void destroy_socket_target(struct socket_target *trgt);
 struct socket_target *new_socket_target(const char *dest, size_t dest_len);
-ssize_t sendto_socket_target(const struct stumpless_target *trgt, const char *msg);
+int sendto_socket_target(const struct stumpless_target *trgt, const char *msg);
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_SOCKET_H */

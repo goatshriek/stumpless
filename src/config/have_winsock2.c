@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_ERROR_H
-#define __STUMPLESS_PRIVATE_ERROR_H
+#include <winsock2.h>
+#include "private/config/have_winsock2.h"
 
-#include <stumpless/error.h>
+int winsock2_gethostname(char *buffer, size_t namelen) {
+  int result;
+  WSADATA wsa_data;
 
-void clear_error();
-void raise_argument_empty();
-void raise_argument_too_big();
-void raise_error(enum stumpless_error_id id);
-void raise_memory_allocation_failure();
-void raise_target_unsupported();
+  result = gethostname(buffer, namelen);
+  
+  if (result == SOCKET_ERROR) {
+	  if (WSAGetLastError() == WSANOTINITIALISED) {
+		  WSAStartup(MAKEWORD(2, 2), &wsa_data);
+		  result = gethostname(buffer, namelen);
+	  }
+  }
 
-#endif /* __STUMPLESS_PRIVATE_ERROR_H */
+  return result;
+}

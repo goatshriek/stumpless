@@ -13,17 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+#ifndef __STUMPLESS_PRIVATE_CONFIG_H
+#define __STUMPLESS_PRIVATE_CONFIG_H
 
-#ifndef __STUMPLESS_PRIVATE_ERROR_H
-#define __STUMPLESS_PRIVATE_ERROR_H
+#cmakedefine HAVE_SYS_SOCKET_H 1
+#cmakedefine HAVE_UNISTD_H 1
+#cmakedefine HAVE_WINDOWS_H 1
+#cmakedefine HAVE_WINSOCK2_H 1
 
-#include <stumpless/error.h>
-
-void clear_error();
-void raise_argument_empty();
-void raise_argument_too_big();
-void raise_error(enum stumpless_error_id id);
-void raise_memory_allocation_failure();
-void raise_target_unsupported();
-
-#endif /* __STUMPLESS_PRIVATE_ERROR_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_H */

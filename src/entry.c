@@ -17,7 +17,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
-#include <unistd.h>
+#include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/formatter.h"
@@ -258,8 +258,7 @@ strbuilder_append_app_name(struct strbuilder *builder,
 struct strbuilder *strbuilder_append_hostname(struct strbuilder *builder){
   char buffer[RFC_5424_MAX_HOSTNAME_LENGTH+1];
 
-  gethostname(buffer, RFC_5424_MAX_HOSTNAME_LENGTH);
-  buffer[RFC_5424_MAX_HOSTNAME_LENGTH] = '\0';
+  config_gethostname(buffer, RFC_5424_MAX_HOSTNAME_LENGTH+1);
 
   return strbuilder_append_string(builder, buffer);
 }
@@ -286,7 +285,7 @@ strbuilder_append_message(struct strbuilder *builder,
 }
 
 struct strbuilder *strbuilder_append_procid(struct strbuilder *builder){
-  return strbuilder_append_int(builder, getpid());
+  return strbuilder_append_int(builder, config_getpid());
 }
 
 struct strbuilder *

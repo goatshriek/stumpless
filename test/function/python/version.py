@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 #Copyright 2018 Joel E. Anderson
 #
 #Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,19 +14,16 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-#!/usr/bin/python
+import stumpless
 
-import imp
-stumpless_module = imp.load_source('stumpless', 'lib/swig/stumpless.py')
+version = stumpless.get_stumpless_version()
 
-version = stumpless_module.get_stumpless_version()
-
-if version.major != stumpless_module.STUMPLESS_MAJOR_VERSION:
+if version.major != stumpless.STUMPLESS_MAJOR_VERSION:
   print("major version attribute did not match module attribute")
 
-if version.minor != stumpless_module.STUMPLESS_MINOR_VERSION:
+if version.minor != stumpless.STUMPLESS_MINOR_VERSION:
 
   print("minor version attribute did not match module attribute")
 
-if version.patch != stumpless_module.STUMPLESS_PATCH_VERSION:
+if version.patch != stumpless.STUMPLESS_PATCH_VERSION:
   print("patch version attribute did not match module attribute")

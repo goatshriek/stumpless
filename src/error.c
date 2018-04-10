@@ -59,3 +59,7 @@ void raise_error(enum stumpless_error_id id){
 void raise_memory_allocation_failure(){
   raise_error(STUMPLESS_MEMORY_ALLOCATION_FAILURE);
 }
+
+void raise_target_unsupported() {
+  raise_error(STUMPLESS_TARGET_UNSUPPORTED);
+}

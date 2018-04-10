@@ -1,3 +1,0 @@
-[submodule "lib/swig"]
-	path = lib/swig
-	url = git@github.com:swig/swig.git

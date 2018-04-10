@@ -17,12 +17,14 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/entry.h>
+#include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
+#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/formatter.h"
+#include "private/target.h"
 #include "private/target/buffer.h"
-#include "private/target/socket.h"
 
 static struct stumpless_target *current_target=NULL;
 
@@ -35,7 +37,8 @@ int stumpless(const char *message){
 
   current_target = stumpless_get_current_target();
   if(!current_target){
-    current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
+    //current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0, 0);
+	return -1;
   }
 
   entry = stumpless_new_entry("APP-NAME", "MSGID", message);
@@ -61,19 +64,14 @@ int stumpless_add_entry(struct stumpless_target *target, struct stumpless_entry 
 
   switch(target->type){
     case STUMPLESS_SOCKET_TARGET:
-      if( sendto_socket_target(target, message) <= 0){
-        perror("could not send message");
-        return -1;
-      }
-      break;
+      return config_sendto_socket_target(target, message);
     case STUMPLESS_BUFFER_TARGET:
       if( sendto_buffer_target(target, message) <= 0 ){
         return -1;
       }
       break;
     default:
-      perror("target type unrecognized\n");
-      return -1;
+	  return target_unsupported(target, message);
   }
 
   return 0;
@@ -87,4 +85,11 @@ struct stumpless_target *stumpless_get_current_target(){
 
 void stumpless_set_current_target(struct stumpless_target *target){
   current_target = target;
+}
+
+/* private definitions */
+
+int target_unsupported(const struct stumpless_target *target, const char *msg) {
+  raise_target_unsupported();
+  return -1;
 }

@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_ERROR_H
-#define __STUMPLESS_PRIVATE_ERROR_H
+#ifndef __STUMPLESS_PRIVATE_TARGET_H
+#define __STUMPLESS_PRIVATE_TARGET_H
+ 
+int target_unsupported(const struct stumpless_target *target, const char *msg);
 
-#include <stumpless/error.h>
-
-void clear_error();
-void raise_argument_empty();
-void raise_argument_too_big();
-void raise_error(enum stumpless_error_id id);
-void raise_memory_allocation_failure();
-void raise_target_unsupported();
-
-#endif /* __STUMPLESS_PRIVATE_ERROR_H */
+#endif /* __STUMPLESS_PRIVATE_TARGET_H */

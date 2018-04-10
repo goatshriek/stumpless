@@ -1,3 +1,5 @@
 *.o
 *.log
 *.so
+.vs/*
+CMakeSettings.json

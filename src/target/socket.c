@@ -133,7 +133,7 @@ struct socket_target *new_socket_target(const char *dest, size_t dest_len){
   return trgt;
 }
 
-ssize_t sendto_socket_target(const struct stumpless_target *target, const char *msg){
+int sendto_socket_target(const struct stumpless_target *target, const char *msg){
   struct socket_target *priv_trgt;
 
   if(!target || !targets || !msg){

@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_ERROR_H
-#define __STUMPLESS_PRIVATE_ERROR_H
+#include <stddef.h>
+#include <unistd.h>
+#include "private/config/have_unistd.h"
 
-#include <stumpless/error.h>
+int unistd_gethostname(char *buffer, size_t namelen) {
+  int result;
 
-void clear_error();
-void raise_argument_empty();
-void raise_argument_too_big();
-void raise_error(enum stumpless_error_id id);
-void raise_memory_allocation_failure();
-void raise_target_unsupported();
+  result = gethostname(buffer, namelen);
+  buffer[namelen - 1] = '\0';
 
-#endif /* __STUMPLESS_PRIVATE_ERROR_H */
+  return result;
+}
+
+int unistd_getpid() {
+  return (int)(getpid());
+}

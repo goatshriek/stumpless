@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_ERROR_H
-#define __STUMPLESS_PRIVATE_ERROR_H
+#include <windows.h>
 
-#include <stumpless/error.h>
-
-void clear_error();
-void raise_argument_empty();
-void raise_argument_too_big();
-void raise_error(enum stumpless_error_id id);
-void raise_memory_allocation_failure();
-void raise_target_unsupported();
-
-#endif /* __STUMPLESS_PRIVATE_ERROR_H */
+int windows_getpid() {
+  return (int)(GetCurrentProcessId());
+}
