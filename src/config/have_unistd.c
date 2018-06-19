@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -18,15 +19,17 @@
 #include <unistd.h>
 #include "private/config/have_unistd.h"
 
-int unistd_gethostname(char *buffer, size_t namelen) {
+int
+unistd_gethostname( char *buffer, size_t namelen ) {
   int result;
 
-  result = gethostname(buffer, namelen);
+  result = gethostname( buffer, namelen );
   buffer[namelen - 1] = '\0';
 
   return result;
 }
 
-int unistd_getpid() {
-  return (int)(getpid());
+int
+unistd_getpid( void ) {
+  return ( int ) ( getpid(  ) );
 }

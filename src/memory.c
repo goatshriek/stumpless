@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -19,18 +20,20 @@
 #include "private/error.h"
 #include "private/memory.h"
 
-void *alloc_mem(size_t amount){
-  void *mem = malloc(amount);
-  if( !mem ){
-    raise_memory_allocation_failure();
+void *
+alloc_mem( size_t amount ) {
+  void *mem = malloc( amount );
+  if( !mem ) {
+    raise_memory_allocation_failure(  );
     return NULL;
   }
-  
+
   return mem;
 }
 
-void free_mem(void *mem){
-  if(mem){
-    free(mem);
+void
+free_mem( void *mem ) {
+  if( mem ) {
+    free( mem );
   }
 }

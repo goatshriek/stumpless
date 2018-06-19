@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,8 +16,9 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_TARGET_H
-#define __STUMPLESS_PRIVATE_TARGET_H
- 
-int target_unsupported(const struct stumpless_target *target, const char *msg);
+#  define __STUMPLESS_PRIVATE_TARGET_H
+
+int target_unsupported( const struct stumpless_target *target,
+                        const char *msg );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_H */

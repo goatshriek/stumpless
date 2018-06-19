@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,19 +16,20 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_TARGET_BUFFER_H
-#define __STUMPLESS_PRIVATE_TARGET_BUFFER_H
+#  define __STUMPLESS_PRIVATE_TARGET_BUFFER_H
 
-#include <stddef.h> 
-#include <stumpless/target.h>
- 
+#  include <stddef.h>
+#  include <stumpless/target.h>
+
 struct buffer_target {
   char *buffer;
   size_t size;
   size_t position;
 };
 
-void destroy_buffer_target(struct buffer_target *target);
-struct buffer_target *new_buffer_target(char *buffer, size_t size);
-int sendto_buffer_target(const struct stumpless_target *target, const char *msg);
+void destroy_buffer_target( struct buffer_target *target );
+struct buffer_target *new_buffer_target( char *buffer, size_t size );
+int sendto_buffer_target( const struct stumpless_target *target,
+                          const char *msg );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_BUFFER_H */

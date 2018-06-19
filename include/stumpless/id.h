@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,16 +16,16 @@
  */
 
 #ifndef __STUMPLESS_ID_H
-#define __STUMPLESS_ID_H
+#  define __STUMPLESS_ID_H
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
-typedef int stumpless_id_t;
+  typedef int stumpless_id_t;
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
-#endif /* __STUMPLESS_ID_H */
+#endif                          /* __STUMPLESS_ID_H */

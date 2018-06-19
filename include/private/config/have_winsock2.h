@@ -1,3 +1,4 @@
+
 /*
 * Copyright 2018 Joel E. Anderson
 *
@@ -15,8 +16,8 @@
 */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
-#define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
 
-int winsock2_gethostname(char *buffer, size_t namelen);
+int winsock2_gethostname( char *buffer, size_t namelen );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H */

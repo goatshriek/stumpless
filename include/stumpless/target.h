@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,38 +16,39 @@
  */
 
 #ifndef __STUMPLESS_TARGET_H
-#define __STUMPLESS_TARGET_H
+#  define __STUMPLESS_TARGET_H
 
-#include <stumpless/entry.h>
-#include <stumpless/id.h>
+#  include <stumpless/entry.h>
+#  include <stumpless/id.h>
 
-#define STUMPLESS_MAX_TARGET_COUNT 10
+#  define STUMPLESS_MAX_TARGET_COUNT 10
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
-enum stumpless_target_type {
-  STUMPLESS_BUFFER_TARGET,
-  STUMPLESS_SOCKET_TARGET
-};
+  enum stumpless_target_type {
+    STUMPLESS_BUFFER_TARGET,
+    STUMPLESS_SOCKET_TARGET
+  };
 
-struct stumpless_target {
-  stumpless_id_t id;
-  enum stumpless_target_type type;
-  char *name;
-  int options;
-  int facility;
-  int severity;
-};
+  struct stumpless_target {
+    stumpless_id_t id;
+    enum stumpless_target_type type;
+    char *name;
+    int options;
+    int facility;
+    int severity;
+  };
 
-int stumpless(const char *message);
-int stumpless_add_entry(struct stumpless_target *target, struct stumpless_entry *entry);
-struct stumpless_target *stumpless_get_current_target();
-void stumpless_set_current_target(struct stumpless_target *target);
+  int stumpless( const char *message );
+  int stumpless_add_entry( struct stumpless_target *target,
+                           struct stumpless_entry *entry );
+  struct stumpless_target *stumpless_get_current_target(  );
+  void stumpless_set_current_target( struct stumpless_target *target );
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
-#endif /* __STUMPLESS_TARGET_H */
+#endif                          /* __STUMPLESS_TARGET_H */

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,15 +16,15 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_ERROR_H
-#define __STUMPLESS_PRIVATE_ERROR_H
+#  define __STUMPLESS_PRIVATE_ERROR_H
 
-#include <stumpless/error.h>
+#  include <stumpless/error.h>
 
-void clear_error();
-void raise_argument_empty();
-void raise_argument_too_big();
-void raise_error(enum stumpless_error_id id);
-void raise_memory_allocation_failure();
-void raise_target_unsupported();
+void clear_error( void );
+void raise_argument_empty( void );
+void raise_argument_too_big( void );
+void raise_error( enum stumpless_error_id id );
+void raise_memory_allocation_failure( void );
+void raise_target_unsupported( void );
 
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

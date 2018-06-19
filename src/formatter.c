@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -22,48 +23,51 @@
 #include "private/strbuilder.h"
 #include "private/formatter.h"
 
-char *format_entry(const struct stumpless_target *target, struct stumpless_entry *entry){
+char *
+format_entry( const struct stumpless_target *target,
+              struct stumpless_entry *entry ) {
   char *str;
   struct strbuilder *builder, *first_builder;
   int prival;
 
-  first_builder = strbuilder_new();
+  first_builder = strbuilder_new(  );
 
-  builder = strbuilder_append_char(first_builder, '<');
+  builder = strbuilder_append_char( first_builder, '<' );
 
-  prival = target->facility*8 + target->severity;
-  builder = strbuilder_append_int(builder, prival);
+  prival = target->facility * 8 + target->severity;
+  builder = strbuilder_append_int( builder, prival );
 
-  builder = strbuilder_append_string(builder, ">1 ");
-  builder = strbuilder_append_rfc5424_timestamp(builder);
-  builder = strbuilder_append_char(builder, ' ');
-  builder = strbuilder_append_hostname(builder);
-  builder = strbuilder_append_char(builder, ' ');
-  builder = strbuilder_append_app_name(builder, entry);
-  builder = strbuilder_append_char(builder, ' ');
-  builder = strbuilder_append_procid(builder);
-  builder = strbuilder_append_char(builder, ' ');
-  builder = strbuilder_append_msgid(builder, entry);
-  builder = strbuilder_append_char(builder, ' ');
-  builder = strbuilder_append_structured_data(builder, entry);
-  builder = strbuilder_append_char(builder, ' ');
-  builder = strbuilder_append_message(builder, entry);
+  builder = strbuilder_append_string( builder, ">1 " );
+  builder = strbuilder_append_rfc5424_timestamp( builder );
+  builder = strbuilder_append_char( builder, ' ' );
+  builder = strbuilder_append_hostname( builder );
+  builder = strbuilder_append_char( builder, ' ' );
+  builder = strbuilder_append_app_name( builder, entry );
+  builder = strbuilder_append_char( builder, ' ' );
+  builder = strbuilder_append_procid( builder );
+  builder = strbuilder_append_char( builder, ' ' );
+  builder = strbuilder_append_msgid( builder, entry );
+  builder = strbuilder_append_char( builder, ' ' );
+  builder = strbuilder_append_structured_data( builder, entry );
+  builder = strbuilder_append_char( builder, ' ' );
+  builder = strbuilder_append_message( builder, entry );
 
-  str = strbuilder_to_string(builder);
-  strbuilder_destroy(first_builder);
+  str = strbuilder_to_string( builder );
+  strbuilder_destroy( first_builder );
 
   return str;
 }
 
-struct strbuilder *strbuilder_append_rfc5424_timestamp(struct strbuilder *builder){
+struct strbuilder *
+strbuilder_append_rfc5424_timestamp( struct strbuilder *builder ) {
   char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
   struct tm *now;
   time_t now_timer;
   size_t written;
 
-  now_timer = time(NULL);
-  now = gmtime(&now_timer);
+  now_timer = time( NULL );
+  now = gmtime( &now_timer );
   // todo add support for fractional times
-  written = strftime(buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", now);
-  return strbuilder_append_buffer(builder, buffer, written);
+  written = strftime( buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", now );
+  return strbuilder_append_buffer( builder, buffer, written );
 }

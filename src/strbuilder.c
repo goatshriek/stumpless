@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -20,92 +21,98 @@
 #include <string.h>
 #include "private/strbuilder.h"
 
-static size_t increase_size(struct strbuilder *builder){
+static size_t
+increase_size( struct strbuilder *builder ) {
   char *old_buffer, *new_buffer;
   size_t old_size, new_size;
 
   old_buffer = builder->buffer;
   old_size = builder->buffer_end - old_buffer;
-  new_size = old_size*2;
-  new_buffer = realloc(old_buffer, new_size);
-  if(!new_buffer){
+  new_size = old_size * 2;
+  new_buffer = realloc( old_buffer, new_size );
+  if( !new_buffer ) {
     return 0;
   }
 
-  builder->position = new_buffer + (builder->position-old_buffer);
+  builder->position = new_buffer + ( builder->position - old_buffer );
   builder->buffer = new_buffer;
   builder->buffer_end = new_buffer + new_size;
 
   return old_size;
 }
 
-struct strbuilder *strbuilder_append_buffer(struct strbuilder *builder, const char *buffer, size_t size){
+struct strbuilder *
+strbuilder_append_buffer( struct strbuilder *builder, const char *buffer,
+                          size_t size ) {
   size_t size_added, size_left;
 
-  if(!builder || !buffer){
+  if( !builder || !buffer ) {
     return NULL;
   }
 
   size_left = builder->buffer_end - builder->position;
-  while(size_left < size){
-    size_added = increase_size(builder);
-    if(size_added == 0){
+  while ( size_left < size ) {
+    size_added = increase_size( builder );
+    if( size_added == 0 ) {
       return NULL;
     } else {
       size_left += size_added;
     }
   }
 
-  memcpy(builder->position, buffer, size);
+  memcpy( builder->position, buffer, size );
   builder->position += size;
 
   return builder;
 }
 
-struct strbuilder *strbuilder_append_char(struct strbuilder *builder, char c){
-  if(!builder){
+struct strbuilder *
+strbuilder_append_char( struct strbuilder *builder, char c ) {
+  if( !builder ) {
     return NULL;
   }
 
-  if(builder->position == builder->buffer_end){
-    if(increase_size(builder) == 0){
+  if( builder->position == builder->buffer_end ) {
+    if( increase_size( builder ) == 0 ) {
       return NULL;
     }
   }
 
-  *(builder->position) = c;
-  (builder->position)++;
+  *( builder->position ) = c;
+  ( builder->position )++;
 
   return builder;
 }
 
-struct strbuilder *strbuilder_append_int(struct strbuilder *builder, int i){
-  char buffer[100]; //todo need to make more precise
+struct strbuilder *
+strbuilder_append_int( struct strbuilder *builder, int i ) {
+  char buffer[100];             // todo need to make more precise
 
-  if(!builder){
+  if( !builder ) {
     return NULL;
   }
 
-  snprintf(buffer, 100, "%d", i);
-  return strbuilder_append_string(builder, buffer);
+  snprintf( buffer, 100, "%d", i );
+  return strbuilder_append_string( builder, buffer );
 }
 
-struct strbuilder *strbuilder_append_string(struct strbuilder *builder, const char *str){
+struct strbuilder *
+strbuilder_append_string( struct strbuilder *builder, const char *str ) {
   const char *curr;
 
-  if(!builder){
+  if( !builder ) {
     return NULL;
   }
 
   curr = str;
-  while(*curr != '\0'){
-    if(builder->position == builder->buffer_end){
-      if(increase_size(builder) == 0){
+  while ( *curr != '\0' ) {
+    if( builder->position == builder->buffer_end ) {
+      if( increase_size( builder ) == 0 ) {
         return NULL;
       }
     }
-      
-    *(builder->position) = *curr;
+
+    *( builder->position ) = *curr;
     builder->position++;
 
     curr++;
@@ -114,40 +121,44 @@ struct strbuilder *strbuilder_append_string(struct strbuilder *builder, const ch
   return builder;
 }
 
-void strbuilder_destroy(struct strbuilder *builder){
-  free(builder);
+void
+strbuilder_destroy( struct strbuilder *builder ) {
+  free( builder );
 }
 
-char *strbuilder_to_string(struct strbuilder *builder){
-  if(strbuilder_append_char(builder, '\0') == NULL){
+char *
+strbuilder_to_string( struct strbuilder *builder ) {
+  if( strbuilder_append_char( builder, '\0' ) == NULL ) {
     return NULL;
   } else {
     return builder->buffer;
   }
 }
 
-struct strbuilder *strbuilder_new(){
-  return strbuilder_new_sized(STRBUILDER_DEFAULT_BUFFER_SIZE);
+struct strbuilder *
+strbuilder_new(  ) {
+  return strbuilder_new_sized( STRBUILDER_DEFAULT_BUFFER_SIZE );
 }
 
-struct strbuilder *strbuilder_new_sized(size_t size){
+struct strbuilder *
+strbuilder_new_sized( size_t size ) {
   struct strbuilder *builder;
   char *buffer;
- 
-  builder = malloc(sizeof(struct strbuilder));
-  if(!builder){
+
+  builder = malloc( sizeof( struct strbuilder ) );
+  if( !builder ) {
     return NULL;
   }
 
-  buffer = malloc(size);
-  if(!buffer){
-    free(builder);
+  buffer = malloc( size );
+  if( !buffer ) {
+    free( builder );
     return NULL;
   }
 
   builder->buffer = buffer;
   builder->position = buffer;
-  builder->buffer_end = buffer+size;
+  builder->buffer_end = buffer + size;
 
   return builder;
 }

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -16,6 +17,7 @@
 
 #include <windows.h>
 
-int windows_getpid() {
-  return (int)(GetCurrentProcessId());
+int
+windows_getpid( void ) {
+  return ( int ) ( GetCurrentProcessId(  ) );
 }

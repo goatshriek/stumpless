@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,11 +16,11 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_MEMORY_H
-#define __STUMPLESS_PRIVATE_MEMORY_H
+#  define __STUMPLESS_PRIVATE_MEMORY_H
 
-#include <stddef.h>
+#  include <stddef.h>
 
-void *alloc_mem(size_t amount);
-void free_mem(void *mem);
+void *alloc_mem( size_t amount );
+void free_mem( void *mem );
 
 #endif /* __STUMPLESS_PRIVATE_MEMORY_H */

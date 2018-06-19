@@ -1,6 +1,6 @@
 # Stumpless
 
-[![Build Status](https://travis-ci.org/goatshriek/stumpless.svg?branch=master)](https://travis-ci.org/goatshriek/stumpless.svg?branch=master)
+[![Build Status](https://travis-ci.org/goatshriek/stumpless.svg?branch=master)](https://travis-ci.org/goatshriek/stumpless)
 
 A very simple logging library.
 

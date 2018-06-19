@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,14 +16,14 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_TARGET_SOCKET_H
-#define __STUMPLESS_PRIVATE_TARGET_SOCKET_H
- 
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/un.h>
-#include <stumpless/target.h>
- 
+#  define __STUMPLESS_PRIVATE_TARGET_SOCKET_H
+
+#  include <string.h>
+#  include <sys/socket.h>
+#  include <sys/types.h>
+#  include <sys/un.h>
+#  include <stumpless/target.h>
+
 struct socket_target {
   struct sockaddr_un target_addr;
   socklen_t target_addr_len;
@@ -30,8 +31,9 @@ struct socket_target {
   int local_socket;
 };
 
-void destroy_socket_target(struct socket_target *trgt);
-struct socket_target *new_socket_target(const char *dest, size_t dest_len);
-int sendto_socket_target(const struct stumpless_target *trgt, const char *msg);
+void destroy_socket_target( struct socket_target *trgt );
+struct socket_target *new_socket_target( const char *dest, size_t dest_len );
+int sendto_socket_target( const struct stumpless_target *trgt,
+                          const char *msg );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_SOCKET_H */
