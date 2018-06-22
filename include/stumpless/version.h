@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,26 +16,26 @@
  */
 
 #ifndef __STUMPLESS_VERSION_H
-#define __STUMPLESS_VERSION_H
+#  define __STUMPLESS_VERSION_H
 
-#define STUMPLESS_MAJOR_VERSION 0
-#define STUMPLESS_MINOR_VERSION 0
-#define STUMPLESS_PATCH_VERSION 1
+#  define STUMPLESS_MAJOR_VERSION 0
+#  define STUMPLESS_MINOR_VERSION 0
+#  define STUMPLESS_PATCH_VERSION 1
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
-struct stumpless_version {
-  int major;
-  int minor;
-  int patch;
-};
+  struct stumpless_version {
+    int major;
+    int minor;
+    int patch;
+  };
 
-struct stumpless_version *get_stumpless_version();
+  struct stumpless_version *get_stumpless_version( void );
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
-#endif /* __STUMPLESS_VERSION_H */
+#endif                          /* __STUMPLESS_VERSION_H */

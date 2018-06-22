@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,11 +16,11 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_STRBUILDER_H
-#define __STUMPLESS_PRIVATE_STRBUILDER_H
+#  define __STUMPLESS_PRIVATE_STRBUILDER_H
 
-#include <stddef.h>
+#  include <stddef.h>
 
-#define STRBUILDER_DEFAULT_BUFFER_SIZE 1024
+#  define STRBUILDER_DEFAULT_BUFFER_SIZE 1024
 
 struct strbuilder {
   char *buffer;
@@ -27,13 +28,15 @@ struct strbuilder {
   char *buffer_end;
 };
 
-struct strbuilder *strbuilder_append_buffer(struct strbuilder *builder, const char *buffer, size_t size);
-struct strbuilder *strbuilder_append_char(struct strbuilder *builder, char c);
-struct strbuilder *strbuilder_append_int(struct strbuilder *builder, int i);
-struct strbuilder *strbuilder_append_string(struct strbuilder *builder, const char *str);
-void strbuilder_destroy(struct strbuilder *builder);
-char *strbuilder_to_string(struct strbuilder *builder);
-struct strbuilder *strbuilder_new();
-struct strbuilder *strbuilder_new_sized(size_t size);
+struct strbuilder *strbuilder_append_buffer( struct strbuilder *builder,
+                                             const char *buffer, size_t size );
+struct strbuilder *strbuilder_append_char( struct strbuilder *builder, char c );
+struct strbuilder *strbuilder_append_int( struct strbuilder *builder, int i );
+struct strbuilder *strbuilder_append_string( struct strbuilder *builder,
+                                             const char *str );
+void strbuilder_destroy( struct strbuilder *builder );
+char *strbuilder_to_string( struct strbuilder *builder );
+struct strbuilder *strbuilder_new( void );
+struct strbuilder *strbuilder_new_sized( size_t size );
 
 #endif /* __STUMPLESS_PRIVATE_STRBUILDER_H */

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -20,13 +21,13 @@
 #include "private/memory.h"
 
 struct stumpless_version *
-get_stumpless_version(){
+get_stumpless_version( void ) {
   struct stumpless_version *version;
 
-  clear_error();
+  clear_error(  );
 
-  version = alloc_mem(sizeof(struct stumpless_version));
-  if(!version){
+  version = alloc_mem( sizeof( struct stumpless_version ) );
+  if( !version ) {
     return NULL;
   }
 

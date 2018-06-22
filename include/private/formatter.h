@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,25 +16,27 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_FORMATTER_H
-#define __STUMPLESS_PRIVATE_FORMATTER_H
+#  define __STUMPLESS_PRIVATE_FORMATTER_H
 
-#include <stddef.h>
-#include <sys/types.h>
-#include <stumpless/entry.h>
-#include <stumpless/target.h>
+#  include <stddef.h>
+#  include <sys/types.h>
+#  include <stumpless/entry.h>
+#  include <stumpless/target.h>
 
-#define RFC_5424_MAX_PRI_LENGTH 5
-#define RFC_5424_MAX_TIMESTAMP_LENGTH 32
-#define RFC_5424_MAX_HOSTNAME_LENGTH 255
-#define RFC_5424_MAX_PROCID_LENGTH 128
+#  define RFC_5424_MAX_PRI_LENGTH 5
+#  define RFC_5424_MAX_TIMESTAMP_LENGTH 32
+#  define RFC_5424_MAX_HOSTNAME_LENGTH 255
+#  define RFC_5424_MAX_PROCID_LENGTH 128
 
-char *format_entry(const struct stumpless_target *target, struct stumpless_entry *entry);
+char *format_entry( const struct stumpless_target *target,
+                    struct stumpless_entry *entry );
 
 /*
  * Gets the current timestamp and writes it to the string builder. The time
  * reflected by the timestamp will be as close to the time of the function
  * invocation as feasible.
  */
-struct strbuilder *strbuilder_append_rfc5424_timestamp(struct strbuilder *builder);
+struct strbuilder *strbuilder_append_rfc5424_timestamp( struct strbuilder
+                                                        *builder );
 
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -13,18 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <sys/types.h>
 #include <stumpless/entry.h>
 
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
-#define __STUMPLESS_PRIVATE_ENTRY_H
+#  define __STUMPLESS_PRIVATE_ENTRY_H
 
-struct strbuilder *strbuilder_append_app_name(struct strbuilder *builder, const struct stumpless_entry *entry);
-struct strbuilder *strbuilder_append_hostname(struct strbuilder *builder);
-struct strbuilder *strbuilder_append_msgid(struct strbuilder *builder, const struct stumpless_entry *entry);
-struct strbuilder *strbuilder_append_message(struct strbuilder *builder, const struct stumpless_entry *entry);
-struct strbuilder *strbuilder_append_procid(struct strbuilder *builder);
-struct strbuilder *strbuilder_append_structured_data(struct strbuilder *builder, const struct stumpless_entry *entry);
+struct strbuilder *strbuilder_append_app_name( struct strbuilder *builder, const struct stumpless_entry
+                                               *entry );
+struct strbuilder *strbuilder_append_hostname( struct strbuilder *builder );
+struct strbuilder *strbuilder_append_msgid( struct strbuilder *builder, const struct stumpless_entry
+                                            *entry );
+struct strbuilder *strbuilder_append_message( struct strbuilder *builder, const struct stumpless_entry
+                                              *entry );
+struct strbuilder *strbuilder_append_procid( struct strbuilder *builder );
+struct strbuilder *strbuilder_append_structured_data( struct strbuilder
+                                                      *builder, const struct
+                                                      stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */

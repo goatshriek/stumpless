@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -24,67 +25,67 @@
 #include "private/target/buffer.h"
 
 //static struct buffer_target **targets=NULL;
-static struct id_map *targets=NULL;
+static struct id_map *targets = NULL;
 
 /* public functions */
 
 void
-stumpless_close_buffer_target(struct stumpless_target *target){
-  clear_error();
-  
-  if(target && targets){
-    destroy_buffer_target(get_by_id(targets, target->id));
+stumpless_close_buffer_target( struct stumpless_target *target ) {
+  clear_error(  );
+
+  if( target && targets ) {
+    destroy_buffer_target( get_by_id( targets, target->id ) );
   }
-  
   // todo need to clean up the id list
 }
 
 struct stumpless_target *
-stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int options, int facility){
+stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
+                              int options, int facility ) {
   struct stumpless_target *pub_target;
   struct buffer_target *priv_target;
   size_t name_len;
 
-  clear_error();
-  
-  if(!targets){
-    targets = new_id_map();
-    if(!targets){
+  clear_error(  );
+
+  if( !targets ) {
+    targets = new_id_map(  );
+    if( !targets ) {
       goto fail;
     }
   }
 
-  pub_target = alloc_mem(sizeof(struct stumpless_target));
-  if( !pub_target ){
+  pub_target = alloc_mem( sizeof( *pub_target ) );
+  if( !pub_target ) {
     goto fail;
   }
-  
-  priv_target = new_buffer_target(buffer, size);
-  if( !priv_target ){
+
+  priv_target = new_buffer_target( buffer, size );
+  if( !priv_target ) {
     goto fail_priv_target;
   }
 
-  name_len = strlen(name);
-  pub_target->name = alloc_mem(name_len+1);
-  if( !pub_target->name ){
+  name_len = strlen( name );
+  pub_target->name = alloc_mem( name_len + 1 );
+  if( !pub_target->name ) {
     goto fail_pub_name;
   }
 
-  memcpy(pub_target->name, name, name_len);
+  memcpy( pub_target->name, name, name_len );
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_BUFFER_TARGET;
   pub_target->options = options;
   pub_target->facility = facility;
-  pub_target->severity = 6; // todo change this from a hardcoded value
-  pub_target->id = add_to_id_map(targets, priv_target);
+  pub_target->severity = 6;     // todo change this from a hardcoded value
+  pub_target->id = add_to_id_map( targets, priv_target );
 
-  stumpless_set_current_target(pub_target);
+  stumpless_set_current_target( pub_target );
   return pub_target;
 
 fail_pub_name:
-  free_mem(priv_target);
+  free_mem( priv_target );
 fail_priv_target:
-  free_mem(pub_target);
+  free_mem( pub_target );
 fail:
   return NULL;
 }
@@ -92,61 +93,65 @@ fail:
 
 /* private definitions */
 
-void destroy_buffer_target(struct buffer_target *target){
-  if( target ){
-    free_mem(target);
+void
+destroy_buffer_target( struct buffer_target *target ) {
+  if( target ) {
+    free_mem( target );
   }
-  
+
 }
 
-struct buffer_target *new_buffer_target(char *buffer, size_t size){
+struct buffer_target *
+new_buffer_target( char *buffer, size_t size ) {
   struct buffer_target *target;
 
-  if(!buffer){
+  if( !buffer ) {
     return NULL;
   }
-  
-  target = alloc_mem(sizeof(struct buffer_target));
-  if( !target ){
+
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
     return NULL;
   }
-  
+
   target->buffer = buffer;
   target->size = size;
   target->position = 0;
- 
+
   return target;
 }
 
-int sendto_buffer_target(const struct stumpless_target *target, const char *msg){
+int
+sendto_buffer_target( const struct stumpless_target *target, const char *msg ) {
   struct buffer_target *priv_trgt;
   size_t msg_len;
   size_t buffer_remaining;
 
-  if(!target || !targets || !msg){
+  if( !target || !targets || !msg ) {
     return 0;
   }
- 
-  priv_trgt = get_by_id(targets, target->id);
-  msg_len = strlen(msg);
 
-  if(msg_len >= priv_trgt->size){
-    raise_argument_too_big();
+  priv_trgt = get_by_id( targets, target->id );
+  msg_len = strlen( msg );
+
+  if( msg_len >= priv_trgt->size ) {
+    raise_argument_too_big(  );
     return -1;
   }
 
   buffer_remaining = priv_trgt->size - priv_trgt->position;
-  
-  if(buffer_remaining > msg_len){
-    memcpy(priv_trgt->buffer+priv_trgt->position, msg, msg_len);
-    priv_trgt->position = msg_len+1;
+
+  if( buffer_remaining > msg_len ) {
+    memcpy( priv_trgt->buffer + priv_trgt->position, msg, msg_len );
+    priv_trgt->position = msg_len + 1;
   } else {
-    memcpy(priv_trgt->buffer+priv_trgt->position, msg, buffer_remaining);
-    memcpy(priv_trgt->buffer, msg+buffer_remaining, msg_len-buffer_remaining);
+    memcpy( priv_trgt->buffer + priv_trgt->position, msg, buffer_remaining );
+    memcpy( priv_trgt->buffer, msg + buffer_remaining,
+            msg_len - buffer_remaining );
     priv_trgt->position = msg_len - buffer_remaining + 1;
   }
 
-  priv_trgt->buffer[priv_trgt->position-1] = '\0';
+  priv_trgt->buffer[priv_trgt->position - 1] = '\0';
 
-  return msg_len+1;
+  return msg_len + 1;
 }

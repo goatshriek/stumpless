@@ -1,3 +1,4 @@
+
 /*
 * Copyright 2018 Joel E. Anderson
 *
@@ -15,11 +16,11 @@
 */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H
-#define __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H
 
-#include <stddef.h>
+#  include <stddef.h>
 
-int unistd_gethostname(char *buffer, size_t namelen);
-int unistd_getpid();
+int unistd_gethostname( char *buffer, size_t namelen );
+int unistd_getpid( void );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H */

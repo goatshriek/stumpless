@@ -1,3 +1,4 @@
+
 /*
 * Copyright 2018 Joel E. Anderson
 *
@@ -15,8 +16,8 @@
 */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
-#define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 
-int windows_getpid();
+int windows_getpid( void );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H */

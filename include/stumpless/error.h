@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,27 +16,27 @@
  */
 
 #ifndef __STUMPLESS_ERROR_H
-#define __STUMPLESS_ERROR_H
+#  define __STUMPLESS_ERROR_H
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
-enum stumpless_error_id{
-  STUMPLESS_ARGUMENT_EMPTY,
-  STUMPLESS_ARGUMENT_TOO_BIG,
-  STUMPLESS_MEMORY_ALLOCATION_FAILURE,
-  STUMPLESS_TARGET_UNSUPPORTED
-};
+  enum stumpless_error_id {
+    STUMPLESS_ARGUMENT_EMPTY,
+    STUMPLESS_ARGUMENT_TOO_BIG,
+    STUMPLESS_MEMORY_ALLOCATION_FAILURE,
+    STUMPLESS_TARGET_UNSUPPORTED
+  };
 
-struct stumpless_error {
-  enum stumpless_error_id id;
-};
+  struct stumpless_error {
+    enum stumpless_error_id id;
+  };
 
-struct stumpless_error *stumpless_get_error();
+  struct stumpless_error *stumpless_get_error( void );
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
-#endif /* __STUMPLESS_ERROR_H */
+#endif                          /* __STUMPLESS_ERROR_H */

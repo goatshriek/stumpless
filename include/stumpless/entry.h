@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,52 +16,60 @@
  */
 
 #ifndef __STUMPLESS_ENTRY_H
-#define __STUMPLESS_ENTRY_H
+#  define __STUMPLESS_ENTRY_H
 
-#include <stddef.h>
-#include <stumpless/id.h>
+#  include <stddef.h>
+#  include <stumpless/id.h>
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
-struct stumpless_param {
-  char *name;
-  size_t name_length;
-  char *value;
-  size_t value_length;
-};
+  struct stumpless_param {
+    char *name;
+    size_t name_length;
+    char *value;
+    size_t value_length;
+  };
 
-struct stumpless_element {
-  char *name;
-  size_t name_length;
-  struct stumpless_param **params;
-  size_t param_count;
-};
+  struct stumpless_element {
+    char *name;
+    size_t name_length;
+    struct stumpless_param **params;
+    size_t param_count;
+  };
 
-struct stumpless_entry {
-  stumpless_id_t id;
-  char *app_name;
-  size_t app_name_length;
-  char *message;
-  size_t message_length;
-  char *msgid;
-  size_t msgid_length;
-  struct stumpless_element **elements;
-  size_t element_count;
-};
+  struct stumpless_entry {
+    stumpless_id_t id;
+    char *app_name;
+    size_t app_name_length;
+    char *message;
+    size_t message_length;
+    char *msgid;
+    size_t msgid_length;
+    struct stumpless_element **elements;
+    size_t element_count;
+  };
 
-struct stumpless_entry *stumpless_add_element(struct stumpless_entry *entry, struct stumpless_element *element);
-struct stumpless_element *stumpless_add_param(struct stumpless_element *element, struct stumpless_param *param);
-struct stumpless_element *stumpless_new_element(const char *name);
-struct stumpless_entry *stumpless_new_entry(const char *app_name, const char *msgid, const char *message);
-struct stumpless_param *stumpless_new_param(const char *name, const char *value);
-void stumpless_destroy_element(struct stumpless_element *element);
-void stumpless_destroy_entry(struct stumpless_entry *entry);
-void stumpless_destroy_param(struct stumpless_param *param);
+  struct stumpless_entry *stumpless_add_element( struct stumpless_entry *entry,
+                                                 struct stumpless_element
+                                                 *element );
+  struct stumpless_element *stumpless_add_param( struct stumpless_element
+                                                 *element,
+                                                 struct stumpless_param
+                                                 *param );
+  struct stumpless_element *stumpless_new_element( const char *name );
+  struct stumpless_entry *stumpless_new_entry( const char *app_name,
+                                               const char *msgid,
+                                               const char *message );
+  struct stumpless_param *stumpless_new_param( const char *name,
+                                               const char *value );
+  void stumpless_destroy_element( struct stumpless_element *element );
+  void stumpless_destroy_entry( struct stumpless_entry *entry );
+  void stumpless_destroy_param( struct stumpless_param *param );
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
-#endif /* __STUMPLESS_ENTRY_H */
+#endif                          /* __STUMPLESS_ENTRY_H */

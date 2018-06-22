@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -17,17 +18,18 @@
 #include <winsock2.h>
 #include "private/config/have_winsock2.h"
 
-int winsock2_gethostname(char *buffer, size_t namelen) {
+int
+winsock2_gethostname( char *buffer, size_t namelen ) {
   int result;
   WSADATA wsa_data;
 
-  result = gethostname(buffer, namelen);
-  
-  if (result == SOCKET_ERROR) {
-	  if (WSAGetLastError() == WSANOTINITIALISED) {
-		  WSAStartup(MAKEWORD(2, 2), &wsa_data);
-		  result = gethostname(buffer, namelen);
-	  }
+  result = gethostname( buffer, namelen );
+
+  if( result == SOCKET_ERROR ) {
+    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
+      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+      result = gethostname( buffer, namelen );
+    }
   }
 
   return result;

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,8 +16,8 @@
  */
 
 #ifndef __STUMPLESS_TEST_FUNCTION_UTF8_HPP
-#define __STUMPLESS_TEST_FUNCTION_UTF8_HPP
+#  define __STUMPLESS_TEST_FUNCTION_UTF8_HPP
 
-void TestUTF8Compliance(const char *str);
+void TestUTF8Compliance( const char *str );
 
 #endif /* __STUMPLESS_TEST_FUNCTION_UTF8_HPP */

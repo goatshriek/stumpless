@@ -1,9 +1,9 @@
 ## Build Environment
 In order to compile the library, a standard suite of build tools must be
-available. These tools are standard for building a C project and are listed
+available. These tools are standard for building C projects and are listed
 below:
- * `make` for build targets and orchestration
- * `gcc` for compilation of C source code
+ * `cmake` for build targets and orchestration
+ * a toolchain that can be used by cmake (gcc, for example)
 
 ## Testing
 The test suite for the project is written using the Google Test suite. The
@@ -27,12 +27,13 @@ More information on the Google Benchmark framework may be found on the project
 ## Documentation
 The specification for the Syslogv2 protocol is in an XML file that can be used
 to generate an RFC-styled document outlining the details. In order to generate
-text, HTML, or other RFC output you will need to use the `xml2rfc` tool,
+text, HTML, or other RFC output you will need to use the `xml2rfc` tool.
 
 ## Development
 If you wish to develop within the stumpless project itself, you will need a few
 additional tools:
  * `perl` for some of the development scripts
+ * `indent` to format sources according to the project standard
 
 ## Simplified Wrapper Interface Generator (SWIG)
 The SWIG project is used to expose the functionality of Stumpless to languages

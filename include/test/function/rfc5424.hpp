@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,7 +16,7 @@
  */
 
 #ifndef __STUMPLESS_TEST_FUNCTION_RFC5424_HPP
-#define __STUMPLESS_TEST_FUNCTION_RFC5424_HPP
+#  define __STUMPLESS_TEST_FUNCTION_RFC5424_HPP
 
 /*
  * This format is specified in https://tools.ietf.org/html/rfc5424
@@ -71,59 +72,59 @@
  * 24 - everything from the first PARAM-NAME to the last "PARAM-VALUE"
  * 25 - MSG (the log message itself)
  */
-#define RFC_5424_REGEX_STRING "^<(\\d{1,3})>"                        /* PRI */ \
-                              "([1-9]\\d{0,2})"                  /* VERSION */ \
-                              " "                                     /* SP */ \
-                              "(-|("                           /* TIMESTAMP */ \
-                              "(\\d{4})-(\\d{2})-(\\d{2})"     /* FULL-DATE */ \
-			      "T"                                    /* "T" */ \
-                              "\\d{2}:\\d{2}:\\d{2}"        /* PARTIAL-TIME */ \
-			      "(\\.\\d{1,6})?"              /* TIME-SECFRAC */ \
-                              "(Z|("                         /* TIME-OFFSET */ \
-			      "(\\+|-)\\d{2}:\\d{2}"      /* TIME-NUMOFFSET */ \
-                              "))"                           /* TIME-OFFSET */ \
-                              "))"                             /* TIMESTAMP */ \
-                              " "                                     /* SP */ \
-                              "(-|([!-~]{1,255}))"              /* HOSTNAME */ \
-                              " "                                     /* SP */ \
-                              "(-|([!-~]{1,48}))"               /* APP-NAME */ \
-                              " "                                     /* SP */ \
-                              "(-|([!-~]{1,128}))"                /* PROCID */ \
-                              " "                                     /* SP */ \
-                              "(-|([!-~]{1,32}))"                  /* MSGID */ \
-                              " "                                     /* SP */ \
-                              "(-|(("                    /* STRUCTURED-DATA */ \
-                              "\\["                           /* SD-ELEMENT */ \
-                              "([!#-<>-\\\\\\^-~]{1,32})"          /* SD-ID */ \
-			      "( [!#-<>-\\\\\\^-~]{1,32}"     /* PARAM-NAME */ \
-                              "=\".*\")*"                    /* PARAM-VALUE */ \
-			      "\\]"                           /* SD-ELEMENT */ \
-                              ")+))"                     /* STRUCTURED-DATA */ \
-                              " "                                     /* SP */ \
-                              "(.*)$"                                /* MSG */
+#  define RFC_5424_REGEX_STRING "^<(\\d{1,3})>"                      /* PRI */ \
+                                "([1-9]\\d{0,2})"                /* VERSION */ \
+                                " "                                   /* SP */ \
+                                "(-|("                         /* TIMESTAMP */ \
+                                "(\\d{4})-(\\d{2})-(\\d{2})"   /* FULL-DATE */ \
+          		      "T"                                    /* "T" */ \
+                                "\\d{2}:\\d{2}:\\d{2}"      /* PARTIAL-TIME */ \
+          		      "(\\.\\d{1,6})?"              /* TIME-SECFRAC */ \
+                                "(Z|("                       /* TIME-OFFSET */ \
+          		      "(\\+|-)\\d{2}:\\d{2}"      /* TIME-NUMOFFSET */ \
+                                "))"                         /* TIME-OFFSET */ \
+                                "))"                           /* TIMESTAMP */ \
+                                " "                                   /* SP */ \
+                                "(-|([!-~]{1,255}))"            /* HOSTNAME */ \
+                                " "                                   /* SP */ \
+                                "(-|([!-~]{1,48}))"             /* APP-NAME */ \
+                                " "                                   /* SP */ \
+                                "(-|([!-~]{1,128}))"              /* PROCID */ \
+                                " "                                   /* SP */ \
+                                "(-|([!-~]{1,32}))"                /* MSGID */ \
+                                " "                                   /* SP */ \
+                                "(-|(("                  /* STRUCTURED-DATA */ \
+                                "\\["                         /* SD-ELEMENT */ \
+                                "([!#-<>-\\\\\\^-~]{1,32})"        /* SD-ID */ \
+          		      "( [!#-<>-\\\\\\^-~]{1,32}"     /* PARAM-NAME */ \
+                                "=\".*\")*"                  /* PARAM-VALUE */ \
+          		      "\\]"                           /* SD-ELEMENT */ \
+                                ")+))"                   /* STRUCTURED-DATA */ \
+                                " "                                   /* SP */ \
+                                "(.*)$" /* MSG */
 
-#define RFC_5424_SYSLOG_MSG_MATCH_INDEX 0
-#define RFC_5424_PRIVAL_MATCH_INDEX 1
-#define RFC_5424_VERSION_MATCH_INDEX 2
-#define RFC_5424_TIMESTAMP_MATCH_INDEX 3
-#define RFC_5424_DATE_FULLYEAR_MATCH_INDEX 5
-#define RFC_5424_DATE_MONTH_MATCH_INDEX 6
-#define RFC_5424_DATE_MDAY_MATCH_INDEX 7
-#define RFC_5424_TIME_SECFRAC_MATCH_INDEX 8
-#define RFC_5424_TIME_OFFSET_MATCH_INDEX 9
-#define RFC_5424_TIME_NUMOFFSET_MATCH_INDEX 10
-#define RFC_5424_HOSTNAME_MATCH_INDEX 12
-#define RFC_5424_APP_NAME_MATCH_INDEX 14
-#define RFC_5424_PROCID_MATCH_INDEX 16
-#define RFC_5424_MSGID_MATCH_INDEX 18
-#define RFC_5424_STRUCTURED_DATA_MATCH_INDEX 20
-#define RFC_5424_SD_ELEMENTS_MATCH_INDEX 21
-#define RFC_5424_MSG_MATCH_INDEX 25
+#  define RFC_5424_SYSLOG_MSG_MATCH_INDEX 0
+#  define RFC_5424_PRIVAL_MATCH_INDEX 1
+#  define RFC_5424_VERSION_MATCH_INDEX 2
+#  define RFC_5424_TIMESTAMP_MATCH_INDEX 3
+#  define RFC_5424_DATE_FULLYEAR_MATCH_INDEX 5
+#  define RFC_5424_DATE_MONTH_MATCH_INDEX 6
+#  define RFC_5424_DATE_MDAY_MATCH_INDEX 7
+#  define RFC_5424_TIME_SECFRAC_MATCH_INDEX 8
+#  define RFC_5424_TIME_OFFSET_MATCH_INDEX 9
+#  define RFC_5424_TIME_NUMOFFSET_MATCH_INDEX 10
+#  define RFC_5424_HOSTNAME_MATCH_INDEX 12
+#  define RFC_5424_APP_NAME_MATCH_INDEX 14
+#  define RFC_5424_PROCID_MATCH_INDEX 16
+#  define RFC_5424_MSGID_MATCH_INDEX 18
+#  define RFC_5424_STRUCTURED_DATA_MATCH_INDEX 20
+#  define RFC_5424_SD_ELEMENTS_MATCH_INDEX 21
+#  define RFC_5424_MSG_MATCH_INDEX 25
 
-#define RFC_5424_PRIVAL_MIN 0
-#define RFC_5424_PRIVAL_MAX 191
+#  define RFC_5424_PRIVAL_MIN 0
+#  define RFC_5424_PRIVAL_MAX 191
 
-void TestRFC5424Compliance(const char *syslog_msg);
-void TestRFC5424StructuredData(const char *sd_elements);
+void TestRFC5424Compliance( const char *syslog_msg );
+void TestRFC5424StructuredData( const char *sd_elements );
 
 #endif /* __STUMPLESS_TEST_FUNCTION_RFC5424_HPP */

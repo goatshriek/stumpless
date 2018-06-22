@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,22 +16,24 @@
  */
 
 #ifndef __STUMPLESS_TARGET_SOCKET_H
-#define __STUMPLESS_TARGET_SOCKET_H
+#  define __STUMPLESS_TARGET_SOCKET_H
 
-#include <stumpless/target.h>
+#  include <stumpless/target.h>
 
-#define STUMPLESS_SOCKET_NAME "/tmp/stumplesstestpipe"
-#define STUMPLESS_SOCKET_NAME_LENGTH 22
+#  define STUMPLESS_SOCKET_NAME "/tmp/stumplesstestpipe"
+#  define STUMPLESS_SOCKET_NAME_LENGTH 22
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
-void stumpless_close_socket_target(struct stumpless_target *target);
-struct stumpless_target *stumpless_open_socket_target(const char *name, int options, int facility);
+  void stumpless_close_socket_target( struct stumpless_target *target );
+  struct stumpless_target *stumpless_open_socket_target( const char *name,
+                                                         int options,
+                                                         int facility );
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
-#endif /* __STUMPLESS_TARGET_SOCKET_H */
+#endif                          /* __STUMPLESS_TARGET_SOCKET_H */

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2018 Joel E. Anderson
  * 
@@ -15,20 +16,24 @@
  */
 
 #ifndef __STUMPLESS_TARGET_BUFFER_H
-#define __STUMPLESS_TARGET_BUFFER_H
+#  define __STUMPLESS_TARGET_BUFFER_H
 
-#include <stddef.h>
-#include <stumpless/target.h>
+#  include <stddef.h>
+#  include <stumpless/target.h>
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
-void stumpless_close_buffer_target(struct stumpless_target *target);
-struct stumpless_target *stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int options, int facility);
+  void stumpless_close_buffer_target( struct stumpless_target *target );
+  struct stumpless_target *stumpless_open_buffer_target( const char *name,
+                                                         char *buffer,
+                                                         size_t size,
+                                                         int options,
+                                                         int facility );
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
-#endif /* __STUMPLESS_TARGET_BUFFER_H */
+#endif                          /* __STUMPLESS_TARGET_BUFFER_H */
