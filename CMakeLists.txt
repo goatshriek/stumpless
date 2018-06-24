@@ -138,7 +138,11 @@ target_link_libraries(buffer
   libgtest
 )
 
-target_include_directories(buffer PRIVATE include)
+target_include_directories(buffer
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
 
 add_test(NAME buffer
   COMMAND buffer

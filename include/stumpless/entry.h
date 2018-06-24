@@ -84,7 +84,7 @@ extern "C" {
 #    define STUMPLESS_SEVERITY_MASK_UPTO(severity) ((1<<(severity+1))-1)
 
 /* facility codes as specified in RFC 5424*/
-#    define STUMPLESS_FACILITY_KERN   (0<<3)
+#    define STUMPLESS_FACILITY_KERN   0
 #    define STUMPLESS_FACILITY_USER   (1<<3)
 #    define STUMPLESS_FACILITY_MAIL   (2<<3)
 #    define STUMPLESS_FACILITY_DAEMON (3<<3)
