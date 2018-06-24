@@ -10,7 +10,12 @@ image:
 - Visual Studio 2017
 - Visual Studio 2015
 
+platform:
+- x64
+
 init:
+- set arch=
+- if "%arch%"=="Win64" ( set arch= Win64)
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%arch%" )
 
@@ -21,4 +26,4 @@ before_build:
     cmake .. -G %generator%
 
 build:
-  project: c:\project\stumpless\build\template.sln
+  project: c:\project\stumpless\build\stumpless.sln
