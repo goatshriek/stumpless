@@ -92,7 +92,7 @@ add_dependencies(libgtest gtest)
 
 if(WIN32)
   set_target_properties(libgtest PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/gtestd.lib"
+      "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtestd.lib"
       "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
@@ -107,7 +107,7 @@ add_dependencies(libgmock gtest)
 
 if(WIN32)
   set_target_properties(libgmock PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/gmockd.lib"
+      "IMPORTED_LOCATION" "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmockd.lib"
       "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
