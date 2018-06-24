@@ -28,15 +28,11 @@ format_entry( const struct stumpless_target *target,
               struct stumpless_entry *entry ) {
   char *str;
   struct strbuilder *builder, *first_builder;
-  int prival;
 
   first_builder = strbuilder_new(  );
 
   builder = strbuilder_append_char( first_builder, '<' );
-
-  prival = target->facility * 8 + target->severity;
-  builder = strbuilder_append_int( builder, prival );
-
+  builder = strbuilder_append_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
   builder = strbuilder_append_rfc5424_timestamp( builder );
   builder = strbuilder_append_char( builder, ' ' );

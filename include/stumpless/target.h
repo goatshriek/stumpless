@@ -37,8 +37,8 @@ extern "C" {
     enum stumpless_target_type type;
     char *name;
     int options;
-    int facility;
-    int severity;
+    int default_prival;
+    int mask;
   };
 
   int stumpless( const char *message );
@@ -50,5 +50,4 @@ extern "C" {
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
-
 #endif                          /* __STUMPLESS_TARGET_H */

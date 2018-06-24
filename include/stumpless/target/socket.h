@@ -30,10 +30,9 @@ extern "C" {
   void stumpless_close_socket_target( struct stumpless_target *target );
   struct stumpless_target *stumpless_open_socket_target( const char *name,
                                                          int options,
-                                                         int facility );
+                                                         int default_facility );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
-
 #endif                          /* __STUMPLESS_TARGET_SOCKET_H */

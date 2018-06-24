@@ -1,7 +1,10 @@
-LIBRARY   stumpless
+LIBRARY   STUMPLESS
 EXPORTS  
   stumpless                     @1
-  stumpless_close_buffer_target @2
-  stumpless_get_current_target  @3
-  stumpless_get_error           @4
-  stumpless_open_buffer_target  @5
+  stumpless_add_entry           @2
+  stumpless_close_buffer_target @3
+  stumpless_destroy_entry       @4
+  stumpless_get_current_target  @5
+  stumpless_get_error           @6
+  stumpless_new_entry           @7
+  stumpless_open_buffer_target  @8

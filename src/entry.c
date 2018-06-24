@@ -38,7 +38,6 @@ stumpless_add_element( struct stumpless_entry *entry,
     raise_argument_empty(  );
     return NULL;
   }
-
   // todo need to check for duplicates first
 
   old_elements_size = sizeof( element ) * entry->element_count;
@@ -131,8 +130,8 @@ fail:
 }
 
 struct stumpless_entry *
-stumpless_new_entry( const char *app_name, const char *msgid,
-                     const char *message ) {
+stumpless_new_entry( int facility, int severity, const char *app_name,
+                     const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
 
   clear_error(  );
@@ -141,6 +140,8 @@ stumpless_new_entry( const char *app_name, const char *msgid,
   if( !entry ) {
     goto fail;
   }
+
+  entry->prival = get_prival( facility, severity );
 
   entry->app_name_length = strlen( app_name );
   entry->app_name = alloc_mem( entry->app_name_length );
@@ -264,6 +265,22 @@ stumpless_destroy_param( struct stumpless_param *param ) {
 }
 
 /* private functions */
+
+int
+get_facility( int prival ) {
+  return (prival>>3)<<3;
+}
+
+int
+get_prival( int facility, int severity ) {
+  return facility & severity;
+}
+
+int
+get_severity( int prival ) {
+  return prival & 0x3;
+}
+
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry ) {

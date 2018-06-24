@@ -19,4 +19,4 @@ indent \
   --preprocessor-indentation2 \
   --space-after-parentheses \
   --tab-size2 \
-  $1
+  "$@"
