@@ -13,6 +13,10 @@ image:
 platform:
 - x64
 
+environment:
+  matrix:
+  - arch: Win64
+
 init:
 - set arch=
 - if "%arch%"=="Win64" ( set arch= Win64)
