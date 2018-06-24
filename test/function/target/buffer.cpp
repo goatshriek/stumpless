@@ -19,10 +19,7 @@
 #include <string.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <stumpless/target.h>
-#include <stumpless/target/buffer.h>
-#include <stumpless/target/socket.h>
-#include <stumpless/error.h>
+#include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 
 #define TEST_BUFFER_LENGTH 1024
@@ -31,8 +28,9 @@ using::testing::HasSubstr;
 
 namespace {
 
-class BufferTargetTest:
-  public::testing::Test {
+  class
+    BufferTargetTest:
+    public::testing::Test {
   protected:
     char
       buffer[TEST_BUFFER_LENGTH];
@@ -49,8 +47,10 @@ class BufferTargetTest:
                                       TEST_BUFFER_LENGTH, 0, 0 );
 
       basic_entry =
-        stumpless_new_entry( 3, 3, "stumpless-unit-test", "basic-entry",
-                             "basic test message" );
+        stumpless_new_entry( STUMPLESS_SEVERITY_INFO,
+                             STUMPLESS_FACILITY_USER,
+                             "stumpless-unit-test",
+                             "basic-entry", "basic test message" );
     } virtual void
       TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
@@ -64,7 +64,9 @@ class BufferTargetTest:
     EXPECT_EQ( 0, stumpless_add_entry( target, basic_entry ) );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
-    EXPECT_THAT( buffer, HasSubstr( "<27>" ) );
+    EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
+
+	TestRFC5424Compliance(buffer);
   }
 
   TEST_F( BufferTargetTest, Basic ) {
@@ -99,7 +101,8 @@ class BufferTargetTest:
   TEST_F( BufferTargetTest, WrapAround ) {
     const char *
       test_string = "smash the stack for fun and profit";
-    size_t test_string_len = strlen( test_string );
+    size_t
+      test_string_len = strlen( test_string );
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
@@ -112,8 +115,9 @@ class BufferTargetTest:
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
 
-class BufferTargetOpenTest:
-  public::testing::Test {
+  class
+    BufferTargetOpenTest:
+    public::testing::Test {
 
   };
 

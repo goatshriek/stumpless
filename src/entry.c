@@ -130,7 +130,7 @@ fail:
 }
 
 struct stumpless_entry *
-stumpless_new_entry( int facility, int severity, const char *app_name,
+stumpless_new_entry( int severity, int facility, const char *app_name,
                      const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
 
@@ -141,7 +141,7 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
     goto fail;
   }
 
-  entry->prival = get_prival( facility, severity );
+  entry->prival = get_prival( severity, facility );
 
   entry->app_name_length = strlen( app_name );
   entry->app_name = alloc_mem( entry->app_name_length );
@@ -268,17 +268,17 @@ stumpless_destroy_param( struct stumpless_param *param ) {
 
 int
 get_facility( int prival ) {
-  return prival / 8;
+  return (prival>>3)<<3;
 }
 
 int
 get_prival( int facility, int severity ) {
-  return facility * 8 + severity;
+  return facility & severity;
 }
 
 int
 get_severity( int prival ) {
-  return prival % 8;
+  return prival & 0x3;
 }
 
 struct strbuilder *
