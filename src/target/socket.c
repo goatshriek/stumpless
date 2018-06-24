@@ -18,10 +18,10 @@
 #include <stddef.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/id.h"
 #include "private/memory.h"
@@ -75,7 +75,7 @@ stumpless_open_socket_target( const char *name, int options,
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_SOCKET_TARGET;
   pub_target->options = options;
-  pub_target->default_facility = default_facility;
+  pub_target->default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
   pub_target->id = add_to_id_map( targets, priv_target );
 
   stumpless_set_current_target( pub_target );

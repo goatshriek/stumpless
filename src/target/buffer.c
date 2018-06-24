@@ -19,6 +19,7 @@
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/id.h"
 #include "private/memory.h"
