@@ -130,7 +130,7 @@ fail:
 }
 
 struct stumpless_entry *
-stumpless_new_entry( int severity, int facility, const char *app_name,
+stumpless_new_entry( int facility, int severity, const char *app_name,
                      const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
 
@@ -141,7 +141,7 @@ stumpless_new_entry( int severity, int facility, const char *app_name,
     goto fail;
   }
 
-  entry->prival = get_prival( severity, facility );
+  entry->prival = get_prival( facility, severity );
 
   entry->app_name_length = strlen( app_name );
   entry->app_name = alloc_mem( entry->app_name_length );

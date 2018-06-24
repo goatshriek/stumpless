@@ -33,7 +33,7 @@ int
 stumpless( const char *message ) {
   struct stumpless_entry *entry;
   struct stumpless_target *current_target;
-  int result;
+  int result, severity, facility;
 
   clear_error(  );
 
@@ -44,8 +44,10 @@ stumpless( const char *message ) {
     return -1;
   }
 
+  facility = get_facility(current_target->default_prival);
+  severity = get_severity(current_target->default_prival);
   entry =
-    stumpless_new_entry( current_target->default_facility, 0, "APP-NAME",
+    stumpless_new_entry( facility, severity, "APP-NAME",
                          "MSGID", message );
   if( !entry ) {
     return -1;

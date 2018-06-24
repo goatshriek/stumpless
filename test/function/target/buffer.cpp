@@ -47,8 +47,8 @@ namespace {
                                       TEST_BUFFER_LENGTH, 0, 0 );
 
       basic_entry =
-        stumpless_new_entry( STUMPLESS_SEVERITY_INFO,
-                             STUMPLESS_FACILITY_USER,
+        stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                             STUMPLESS_SEVERITY_INFO,
                              "stumpless-unit-test",
                              "basic-entry", "basic test message" );
     } virtual void
@@ -77,6 +77,8 @@ namespace {
     EXPECT_EQ( 0,
                stumpless( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" ) );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+	EXPECT_THAT(buffer, HasSubstr( std::to_string( target->default_prival ) ) );
 
     TestRFC5424Compliance( buffer );
   }

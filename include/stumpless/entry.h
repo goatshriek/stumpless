@@ -160,7 +160,7 @@ extern "C" {
                                                  *element, struct stumpless_param
                                                  *param );
   struct stumpless_element *stumpless_new_element( const char *name );
-  struct stumpless_entry *stumpless_new_entry( int severity, int facility,
+  struct stumpless_entry *stumpless_new_entry( int facility, int severity,
                                                const char *app_name,
                                                const char *msgid,
                                                const char *message );

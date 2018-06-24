@@ -75,7 +75,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_BUFFER_TARGET;
   pub_target->options = options;
-  pub_target->default_facility = default_facility;
+  pub_target->default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
   pub_target->id = add_to_id_map( targets, priv_target );
 
   stumpless_set_current_target( pub_target );

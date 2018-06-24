@@ -37,7 +37,7 @@ extern "C" {
     enum stumpless_target_type type;
     char *name;
     int options;
-    int default_facility;
+    int default_prival;
     int mask;
   };
 
