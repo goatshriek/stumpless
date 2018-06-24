@@ -51,6 +51,7 @@ if(HAVE_WINSOCK2_H)
   find_library(WINSOCK2 NAMES Ws2_32)
 endif(HAVE_WINSOCK2_H)
 
+check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${CMAKE_BINARY_DIR}/include/stumpless/config.h)
 
 add_library(stumpless SHARED ${STUMPLESS_SOURCES})
