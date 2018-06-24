@@ -30,4 +30,7 @@ before_build:
     cmake .. -G %generator%
 
 build:
-  project: c:\project\stumpless\build\stumpless.vcxproj
+  project: stumpless.vcxproj
+
+test_script:
+  - msbuild check.vcxproj
