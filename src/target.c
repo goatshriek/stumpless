@@ -44,7 +44,9 @@ stumpless( const char *message ) {
     return -1;
   }
 
-  entry = stumpless_new_entry( "APP-NAME", "MSGID", message );
+  entry =
+    stumpless_new_entry( current_target->default_facility, 0, "APP-NAME",
+                         "MSGID", message );
   if( !entry ) {
     return -1;
   }

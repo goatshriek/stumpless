@@ -41,7 +41,7 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
-                              int options, int facility ) {
+                              int options, int default_facility ) {
   struct stumpless_target *pub_target;
   struct buffer_target *priv_target;
   size_t name_len;
@@ -75,8 +75,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_BUFFER_TARGET;
   pub_target->options = options;
-  pub_target->facility = facility;
-  pub_target->severity = 6;     // todo change this from a hardcoded value
+  pub_target->default_facility = default_facility;
   pub_target->id = add_to_id_map( targets, priv_target );
 
   stumpless_set_current_target( pub_target );

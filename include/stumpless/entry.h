@@ -41,6 +41,7 @@ extern "C" {
 
   struct stumpless_entry {
     stumpless_id_t id;
+    int prival;
     char *app_name;
     size_t app_name_length;
     char *message;
@@ -51,15 +52,21 @@ extern "C" {
     size_t element_count;
   };
 
-  struct stumpless_entry *stumpless_add_element( struct stumpless_entry *entry,
-                                                 struct stumpless_element
+  /* 
+   * While the functions provided right now offer basic creation and deletion
+   * capabilities, there will need to be many more added to make working with
+   * the messages, elements, and params easier. For example, hash-style accessors
+   * and assignments, as well as a clear memory management strategy.
+   */
+
+  struct stumpless_entry *stumpless_add_element( struct stumpless_entry *entry, struct stumpless_element
                                                  *element );
   struct stumpless_element *stumpless_add_param( struct stumpless_element
-                                                 *element,
-                                                 struct stumpless_param
+                                                 *element, struct stumpless_param
                                                  *param );
   struct stumpless_element *stumpless_new_element( const char *name );
-  struct stumpless_entry *stumpless_new_entry( const char *app_name,
+  struct stumpless_entry *stumpless_new_entry( int facility, int severity,
+                                               const char *app_name,
                                                const char *msgid,
                                                const char *message );
   struct stumpless_param *stumpless_new_param( const char *name,
@@ -71,5 +78,4 @@ extern "C" {
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
-
 #endif                          /* __STUMPLESS_ENTRY_H */

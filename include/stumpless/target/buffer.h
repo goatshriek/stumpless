@@ -30,10 +30,9 @@ extern "C" {
                                                          char *buffer,
                                                          size_t size,
                                                          int options,
-                                                         int facility );
+                                                         int default_facility );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
-
 #endif                          /* __STUMPLESS_TARGET_BUFFER_H */

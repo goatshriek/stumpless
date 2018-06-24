@@ -40,7 +40,8 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_open_socket_target( const char *name, int options, int facility ) {
+stumpless_open_socket_target( const char *name, int options,
+                              int default_facility ) {
   struct stumpless_target *pub_target;
   struct socket_target *priv_target;
   size_t name_len;
@@ -74,8 +75,7 @@ stumpless_open_socket_target( const char *name, int options, int facility ) {
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_SOCKET_TARGET;
   pub_target->options = options;
-  pub_target->facility = facility;
-  pub_target->severity = 6;     // todo change this from a hardcoded value
+  pub_target->default_facility = default_facility;
   pub_target->id = add_to_id_map( targets, priv_target );
 
   stumpless_set_current_target( pub_target );
