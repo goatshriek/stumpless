@@ -162,10 +162,17 @@ add_test(NAME buffer
   COMMAND buffer
 )
 
-add_custom_target(check
-  COMMAND ${CMAKE_CTEST_COMMAND}
-  DEPENDS buffer
-)
+if(WIN32)
+  add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
+    DEPENDS buffer
+  )
+else()
+  add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND}
+    DEPENDS buffer
+  )
+endif(WIN32)
 
 # google benchmark support
 ExternalProject_Add(benchmark
