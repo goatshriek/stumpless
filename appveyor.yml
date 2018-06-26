@@ -27,7 +27,7 @@ before_build:
 - cmd: |-
     mkdir build
     cd build
-    cmake .. -G %generator%
+    cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration%
 
 build:
   project: c:\project\stumpless\build\stumpless.vcxproj
