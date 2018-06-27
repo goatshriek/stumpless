@@ -76,7 +76,7 @@ include(ExternalProject)
 ExternalProject_Add(gtest
     URL https://github.com/google/googletest/archive/master.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-	CMAKE_ARGS -Dgtest_force_shared_crt=ON
+    CMAKE_ARGS -Dgtest_force_shared_crt=ON
     INSTALL_COMMAND ""
 )
 
@@ -91,10 +91,17 @@ add_library(libgtest IMPORTED STATIC GLOBAL)
 add_dependencies(libgtest gtest)
 
 if(WIN32)
-  set_target_properties(libgtest PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/gtestd.lib"
-      "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-  )
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set_target_properties(libgtest PROPERTIES
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtestd.lib"
+        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+    )
+  else()
+    set_target_properties(libgtest PROPERTIES
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtest.lib"
+        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+    )
+  endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
   set_target_properties(libgtest PROPERTIES
       "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/libgtest.a"
@@ -106,10 +113,17 @@ add_library(libgmock IMPORTED STATIC GLOBAL)
 add_dependencies(libgmock gtest)
 
 if(WIN32)
-  set_target_properties(libgmock PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/gmockd.lib"
-      "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-  )
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set_target_properties(libgmock PROPERTIES
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmockd.lib"
+        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+    )
+  else()
+    set_target_properties(libgmock PROPERTIES
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmock.lib"
+        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+    )
+  endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
   set_target_properties(libgmock PROPERTIES
       "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
@@ -148,15 +162,23 @@ add_test(NAME buffer
   COMMAND buffer
 )
 
-add_custom_target(check
-  COMMAND ${CMAKE_CTEST_COMMAND}
-  DEPENDS buffer
-)
+if(WIN32)
+  add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
+    DEPENDS buffer
+  )
+else()
+  add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND}
+    DEPENDS buffer
+  )
+endif(WIN32)
 
 # google benchmark support
 ExternalProject_Add(benchmark
     URL https://github.com/google/benchmark/archive/master.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
+    CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON
     INSTALL_COMMAND ""
 )
 

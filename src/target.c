@@ -16,12 +16,12 @@
  */
 
 #include <stddef.h>
-#include <stdio.h>
 #include <stumpless/entry.h>
 #include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/config/wrapper.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/formatter.h"
 #include "private/target.h"
