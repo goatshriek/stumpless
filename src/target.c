@@ -98,6 +98,18 @@ stumpless_set_current_target( struct stumpless_target *target ) {
   current_target = target;
 }
 
+struct stumpless_target *
+stumpless_target_set_default_app_name(struct stumpless_target *target,
+                                      char *app_name){
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_target_set_default_msgid(struct stumpless_target *target,
+                                   char *msgid){
+  return NULL;
+}
+
 /* private definitions */
 
 int
