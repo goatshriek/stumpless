@@ -41,7 +41,7 @@ extern "C" {
     char *default_app_name;
     size_t default_app_name_length;
     char *default_msgid;
-    char *default_msgid_length;
+    size_t default_msgid_length;
     int mask;
   };
 
@@ -55,12 +55,12 @@ extern "C" {
   void stumpless_set_current_target( struct stumpless_target *target );
 
   struct stumpless_target *
-  stumpless_target_set_default_app_name( struct stumpless_target *target,
-                                         char *app_name );
+  stumpless_set_target_default_app_name( struct stumpless_target *target,
+                                         const char *app_name );
 
   struct stumpless_target *
-  stumpless_target_set_default_msgid( struct stumpless_target *target,
-                                      char *msgid );
+  stumpless_set_target_default_msgid( struct stumpless_target *target,
+                                      const char *msgid );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

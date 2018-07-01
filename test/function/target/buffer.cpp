@@ -32,12 +32,9 @@ namespace {
     BufferTargetTest:
     public::testing::Test {
   protected:
-    char
-      buffer[TEST_BUFFER_LENGTH];
-    struct stumpless_target *
-      target;
-    struct stumpless_entry *
-      basic_entry;
+    char buffer[TEST_BUFFER_LENGTH];
+    struct stumpless_target *target;
+    struct stumpless_entry *basic_entry;
 
     virtual void
       SetUp( void ) {
@@ -45,6 +42,8 @@ namespace {
       target =
         stumpless_open_buffer_target( "buffer target testing", buffer,
                                       TEST_BUFFER_LENGTH, 0, 0 );
+      stumpless_set_target_default_app_name( target, "buffer-target-test" );
+      stumpless_set_target_default_msgid( target, "default-message" );
 
       basic_entry =
         stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -78,7 +77,9 @@ namespace {
                stumpless( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" ) );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
-	EXPECT_THAT(buffer, HasSubstr( std::to_string( target->default_prival ) ) );
+    EXPECT_THAT( buffer, HasSubstr( std::to_string( target->default_prival ) ) );
+    EXPECT_THAT( buffer, HasSubstr( "buffer-target-test" ) );
+    EXPECT_THAT( buffer, HasSubstr( "default-message" ) );
 
     TestRFC5424Compliance( buffer );
   }

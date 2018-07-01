@@ -257,6 +257,26 @@ stumpless_destroy_param( struct stumpless_param *param ) {
   free_mem( param );
 }
 
+struct stumpless_entry *
+stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_name ){
+  size_t *app_name_length;
+
+  clear_error(  );
+
+  if( !entry ){
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  app_name_length = &( entry->app_name_length );
+  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
+  if( !entry->app_name ) {
+    return NULL;
+  } else {
+    return entry;
+  }
+}
+
 /* private functions */
 
 int

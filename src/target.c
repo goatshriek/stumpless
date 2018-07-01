@@ -24,6 +24,8 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/formatter.h"
+#include "private/memory.h"
+#include "private/strhelper.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
 
@@ -32,28 +34,46 @@ static struct stumpless_target *current_target = NULL;
 int
 stumpless( const char *message ) {
   struct stumpless_entry *entry;
-  struct stumpless_target *current_target;
+  struct stumpless_target *target;
   int result, severity, facility;
 
   clear_error(  );
 
-  current_target = stumpless_get_current_target(  );
-  if( !current_target ) {
-    // current_target = stumpless_open_socket_target(STUMPLESS_SOCKET_NAME, 0,
-    // 0);
+  target = stumpless_get_current_target(  );
+  if( !target ) {
     return -1;
   }
 
+  // todo this entry creation should happen only once, not every time an event
+  // is logged
   facility = get_facility(current_target->default_prival);
   severity = get_severity(current_target->default_prival);
-  entry =
-    stumpless_new_entry( facility, severity, "APP-NAME",
-                         "MSGID", message );
+  entry = stumpless_new_entry( facility, severity, "-", "-", message );
   if( !entry ) {
     return -1;
   }
 
-  result = stumpless_add_entry( current_target, entry );
+  if( target->default_app_name ){
+    entry->app_name = alloc_mem( target->default_app_name_length );
+    if( !entry->app_name ){
+      return -1;
+    }
+ 
+    memcpy( entry->app_name, target->default_app_name, target->default_app_name_length );
+    entry->app_name_length = target->default_app_name_length;
+  }
+
+  if( target->default_msgid ){
+    entry->msgid = alloc_mem( target->default_msgid_length );
+    if( !entry->msgid ){
+      return -1;
+    }
+ 
+    memcpy( entry->msgid, target->default_msgid, target->default_msgid_length );
+    entry->msgid_length = target->default_msgid_length;
+  }
+
+  result = stumpless_add_entry( target, entry );
   stumpless_destroy_entry( entry );
   return result;
 }
@@ -99,15 +119,43 @@ stumpless_set_current_target( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_target_set_default_app_name(struct stumpless_target *target,
-                                      char *app_name){
-  return NULL;
+stumpless_set_target_default_app_name( struct stumpless_target *target,
+                                       const char *app_name){
+  size_t *app_name_length;
+  char *sized_name;
+
+  clear_error(  );
+
+  app_name_length = &( target->default_app_name_length );
+  sized_name = cstring_to_sized_string( app_name, app_name_length );
+  if( !sized_name ){
+    return NULL;
+
+  } else {
+    target->default_app_name = sized_name;
+    return target;
+
+  }
 }
 
 struct stumpless_target *
-stumpless_target_set_default_msgid(struct stumpless_target *target,
-                                   char *msgid){
-  return NULL;
+stumpless_set_target_default_msgid(struct stumpless_target *target,
+                                   const char *msgid){
+  size_t *msgid_length;
+  char *sized_msgid;
+
+  clear_error(  );
+
+  msgid_length = &( target->default_msgid_length );
+  sized_msgid = cstring_to_sized_string( msgid, msgid_length );
+  if( !sized_msgid ){
+    return NULL;
+
+  } else {
+    target->default_msgid = sized_msgid;
+    return target;
+
+  }
 }
 
 /* private definitions */

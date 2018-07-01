@@ -156,19 +156,29 @@ extern "C" {
 
   struct stumpless_entry *stumpless_add_element( struct stumpless_entry *entry, struct stumpless_element
                                                  *element );
+
   struct stumpless_element *stumpless_add_param( struct stumpless_element
                                                  *element, struct stumpless_param
                                                  *param );
+
+  void stumpless_destroy_element( struct stumpless_element *element );
+
+  void stumpless_destroy_entry( struct stumpless_entry *entry );
+
+  void stumpless_destroy_param( struct stumpless_param *param );
+  
   struct stumpless_element *stumpless_new_element( const char *name );
+
   struct stumpless_entry *stumpless_new_entry( int facility, int severity,
                                                const char *app_name,
                                                const char *msgid,
                                                const char *message );
+
   struct stumpless_param *stumpless_new_param( const char *name,
                                                const char *value );
-  void stumpless_destroy_element( struct stumpless_element *element );
-  void stumpless_destroy_entry( struct stumpless_entry *entry );
-  void stumpless_destroy_param( struct stumpless_param *param );
+
+  struct stumpless_entry *
+  stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_name );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */
