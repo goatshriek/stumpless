@@ -15,12 +15,22 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_STRHELPER_H
-#  define __STUMPLESS_PRIVATE_STRHELPER_H
-
-#  include<stddef.h>
+#include <stddef.h>
+#include <string.h>
+#include "private/memory.h"
+#include "private/strhelper.h"
 
 char *
-cstring_to_sized_string( const char *str, size_t *length );
+cstring_to_sized_string( const char *str, size_t *length ){
+  char *sized_string;
 
-#endif /* __STUMPLESS_PRIVATE_STRHELPER_H */
+  *length = strlen( str );
+  sized_string = alloc_mem( *length );
+  if( !sized_string ) {
+    return NULL;
+  }
+
+  memcpy( sized_string, str, *length );
+
+  return sized_string;
+}
