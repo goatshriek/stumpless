@@ -29,4 +29,9 @@ before_script:
   - cd build
   - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" ..
 
-script: make && make CTEST_OUTPUT_ON_FAILURE=1 check
+script:
+  - make && make CTEST_OUTPUT_ON_FAILURE=1 check
+
+after_success:
+  - cd ..
+  - bash <(curl -s https://codecov.io/bash)
