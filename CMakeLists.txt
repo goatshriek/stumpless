@@ -4,6 +4,7 @@ project(stumpless VERSION 0.1.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
+option(COVERAGE "Include coverage information" OFF)
 
 # check for header files
 include(CheckIncludeFiles)
@@ -63,6 +64,11 @@ set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 if(HAVE_WINSOCK2_H)
   target_link_libraries(stumpless PRIVATE Ws2_32)
 endif(HAVE_WINSOCK2_H)
+
+if(COVERAGE)
+  target_compile_options(stumpless PRIVATE --coverage)
+  target_link_libraries(stumpless PRIVATE --coverage)
+endif(COVERAGE)
 
 target_include_directories(stumpless
   PRIVATE
