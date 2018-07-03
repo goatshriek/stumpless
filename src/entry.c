@@ -23,6 +23,7 @@
 #include "private/error.h"
 #include "private/formatter.h"
 #include "private/strbuilder.h"
+#include "private/strhelper.h"
 #include "private/memory.h"
 
 struct stumpless_entry *
@@ -110,13 +111,11 @@ stumpless_new_element( const char *name ) {
     goto fail;
   }
 
-  element->name_length = strlen( name );
-  element->name = alloc_mem( element->name_length );
+  element->name = cstring_to_sized_string( name, &( element->name_length ) );
   if( !element->name ) {
     goto fail_name;
   }
 
-  memcpy( element->name, name, element->name_length );
   element->params = NULL;
   element->param_count = 0;
 
@@ -133,6 +132,7 @@ struct stumpless_entry *
 stumpless_new_entry( int facility, int severity, const char *app_name,
                      const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
+  size_t *app_name_length, *msgid_length, *message_length;
 
   clear_error(  );
 
@@ -143,26 +143,23 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
 
   entry->prival = get_prival( facility, severity );
 
-  entry->app_name_length = strlen( app_name );
-  entry->app_name = alloc_mem( entry->app_name_length );
+  app_name_length = &( entry->app_name_length );
+  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
   if( !entry->app_name ) {
     goto fail_app_name;
   }
-  memcpy( entry->app_name, app_name, entry->app_name_length );
 
-  entry->msgid_length = strlen( msgid );
-  entry->msgid = alloc_mem( entry->msgid_length );
+  msgid_length = &( entry->msgid_length );
+  entry->msgid = cstring_to_sized_string( msgid, msgid_length );
   if( !entry->msgid ) {
     goto fail_msgid;
   }
-  memcpy( entry->msgid, msgid, entry->msgid_length );
 
-  entry->message_length = strlen( message );
-  entry->message = alloc_mem( entry->message_length );
+  message_length = &( entry->message_length );
+  entry->message = cstring_to_sized_string( message, message_length );
   if( !entry->message ) {
     goto fail_message;
   }
-  memcpy( entry->message, message, entry->message_length );
 
   entry->elements = NULL;
   entry->element_count = 0;
@@ -195,19 +192,15 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail;
   }
 
-  param->name_length = strlen( name );
-  param->name = alloc_mem( param->name_length );
+  param->name = cstring_to_sized_string( name, &( param->name_length ) );
   if( !param->name ) {
     goto fail_name;
   }
-  memcpy( param->name, name, param->name_length );
 
-  param->value_length = strlen( value );
-  param->value = alloc_mem( param->value_length );
+  param->value = cstring_to_sized_string( value, &( param->value_length ) );
   if( !param->value ) {
     goto fail_value;
   }
-  memcpy( param->value, value, param->value_length );
 
   return param;
 
@@ -264,11 +257,31 @@ stumpless_destroy_param( struct stumpless_param *param ) {
   free_mem( param );
 }
 
+struct stumpless_entry *
+stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_name ){
+  size_t *app_name_length;
+
+  clear_error(  );
+
+  if( !entry ){
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  app_name_length = &( entry->app_name_length );
+  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
+  if( !entry->app_name ) {
+    return NULL;
+  } else {
+    return entry;
+  }
+}
+
 /* private functions */
 
 int
 get_facility( int prival ) {
-  return (prival>>3)<<3;
+  return ( prival >> 3 ) << 3;
 }
 
 int
