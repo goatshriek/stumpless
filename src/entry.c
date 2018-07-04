@@ -286,7 +286,7 @@ get_facility( int prival ) {
 
 int
 get_prival( int facility, int severity ) {
-  return facility & severity;
+  return facility | severity;
 }
 
 int

@@ -40,8 +40,9 @@ namespace {
                                  message );
     
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-    
+ 
     ASSERT_TRUE( entry != NULL );
+    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
     EXPECT_EQ( NULL, entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
@@ -56,6 +57,8 @@ namespace {
     ASSERT_EQ( strlen( message ), entry->message_length );
     ASSERT_TRUE( entry->message != NULL );
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
+
+    stumpless_destroy_entry( entry );
   }
   
 }
