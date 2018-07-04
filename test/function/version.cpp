@@ -16,21 +16,12 @@
 
 #include <stddef.h>
 #include <gtest/gtest.h>
-#include <stumpless/error.h>
-#include <stumpless/target/socket.h>
-#include <stumpless/version.h>
+#include <stumpless.h>
 
 namespace {
 
-  class StumplessTest : public ::testing::Test {};
+  class VersionTest : public ::testing::Test {};
 
-  TEST(StumplessTest, RawString){
-    EXPECT_EQ(0, stumpless("testing 1"));
-    EXPECT_EQ(0, stumpless("testing 2"));
-    EXPECT_EQ(0, stumpless("testing 3"));
-    EXPECT_EQ(NULL, stumpless_get_error());
-  }
-  
   TEST(GetStumplessVersionTest, Function){
     struct stumpless_version *version;
   

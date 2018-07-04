@@ -16,6 +16,7 @@
  */
 
 #include <stddef.h>
+#include <stumpless/config.h>
 #include <stumpless/version.h>
 #include "private/error.h"
 #include "private/memory.h"
