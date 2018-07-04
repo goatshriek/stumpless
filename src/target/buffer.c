@@ -52,6 +52,11 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
 
   clear_error(  );
 
+  if( !name || !buffer ){
+    raise_argument_empty(  );
+    return NULL;
+  }
+
   if( !targets ) {
     targets = new_id_map(  );
     if( !targets ) {
@@ -111,10 +116,6 @@ destroy_buffer_target( struct buffer_target *target ) {
 struct buffer_target *
 new_buffer_target( char *buffer, size_t size ) {
   struct buffer_target *target;
-
-  if( !buffer ) {
-    return NULL;
-  }
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {

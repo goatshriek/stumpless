@@ -125,10 +125,8 @@ namespace {
   };
 
   TEST( BufferTargetOpenTest, NormalOpenTarget ) {
-    struct stumpless_target *
-      target;
-    char
-      buffer[100];
+    struct stumpless_target *target;
+    char buffer[100];
 
     target = stumpless_open_buffer_target( "normal target", buffer, 100, 0, 0 );
     ASSERT_TRUE( target != NULL );
@@ -136,6 +134,31 @@ namespace {
     EXPECT_EQ( target, stumpless_get_current_target(  ) );
 
     stumpless_close_buffer_target( target );
+  }
+
+  TEST( BufferTargetOpenTest, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( NULL, buffer, 100, 0, 0 );
+    ASSERT_TRUE( target == NULL );
+    
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( BufferTargetOpenTest, NullBuffer ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "null-buffer", NULL, 100, 0, 0 );
+    ASSERT_TRUE( target == NULL );
+    
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }
