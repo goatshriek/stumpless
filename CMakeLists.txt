@@ -144,6 +144,30 @@ include_directories("${source_dir}/googletest/include"
 # test suites
 enable_testing()
 
+add_executable(entry
+  EXCLUDE_FROM_ALL
+  test/function/entry.cpp
+)
+
+set_target_properties(entry
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+)
+
+target_link_libraries(entry
+  stumpless
+  libgtest
+)
+
+target_include_directories(entry
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME entry
+  COMMAND entry
+)
+
 add_executable(version
   EXCLUDE_FROM_ALL
   test/function/version.cpp
@@ -196,12 +220,12 @@ add_test(NAME buffer
 if(WIN32)
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-    DEPENDS buffer version
+    DEPENDS buffer entry version
   )
 else()
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer version
+    DEPENDS buffer entry version
   )
 endif(WIN32)
 
