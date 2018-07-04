@@ -21,9 +21,40 @@
 
 namespace {
 
-  class EntryTest : public ::testing::Test {};
+  class EntryTest : public::testing::Test {
+    protected:
+      struct stumpless_entry *basic_entry;
 
-  TEST(EntryTest, New){
+      virtual void
+      SetUp( void ) {
+        basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                           STUMPLESS_SEVERITY_INFO,
+                                           "basic-app-name",
+                                           "basic-msgid",
+                                           "basic message" );
+      }
+
+      virtual void
+      TearDown( void ){
+        stumpless_destroy_entry( basic_entry );
+      }
+  };
+  
+  TEST_F( EntryTest, AddElement ) {
+    struct stumpless_entry *entry;
+    struct stumpless_element *element;
+
+    element = stumpless_new_element( "test-new-element" );
+    ASSERT_TRUE( element != NULL );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    
+    entry = stumpless_add_element( basic_entry, element );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    ASSERT_TRUE( entry != NULL );
+    EXPECT_EQ( basic_entry, entry );
+  }
+  
+  TEST(NewEntryTest, New){
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";

@@ -281,7 +281,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_nam
 
 int
 get_facility( int prival ) {
-  return ( prival >> 3 ) << 3;
+  return ( prival >> 2 ) << 2;
 }
 
 int
