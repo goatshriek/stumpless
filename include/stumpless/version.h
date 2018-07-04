@@ -28,7 +28,7 @@ extern "C" {
     int patch;
   };
 
-  struct stumpless_version *get_stumpless_version( void );
+  struct stumpless_version *stumpless_get_version( void );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

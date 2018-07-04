@@ -16,7 +16,7 @@
 
 import stumpless
 
-version = stumpless.get_stumpless_version()
+version = stumpless.stumpless_get_version()
 
 if version.major != stumpless.STUMPLESS_MAJOR_VERSION:
   print("major version attribute did not match module attribute")

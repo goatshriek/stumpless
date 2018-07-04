@@ -6,7 +6,8 @@ EXPORTS
   stumpless_destroy_entry               @4
   stumpless_get_current_target          @5
   stumpless_get_error                   @6
-  stumpless_new_entry                   @7
-  stumpless_open_buffer_target          @8
-  stumpless_set_target_default_app_name @9
-  stumpless_set_target_default_msgid    @10
+  stumpless_get_version                 @7
+  stumpless_new_entry                   @8
+  stumpless_open_buffer_target          @9
+  stumpless_set_target_default_app_name @10
+  stumpless_set_target_default_msgid    @11

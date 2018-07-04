@@ -22,7 +22,7 @@
 #include "private/memory.h"
 
 struct stumpless_version *
-get_stumpless_version( void ) {
+stumpless_get_version( void ) {
   struct stumpless_version *version;
 
   clear_error(  );

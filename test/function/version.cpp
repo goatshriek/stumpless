@@ -22,10 +22,10 @@ namespace {
 
   class VersionTest : public ::testing::Test {};
 
-  TEST(GetStumplessVersionTest, Function){
+  TEST(GetVersionTest, Function){
     struct stumpless_version *version;
   
-    version = get_stumpless_version();
+    version = stumpless_get_version();
   
     ASSERT_TRUE(version != NULL);
     ASSERT_TRUE(version->major >= 0);
@@ -33,7 +33,7 @@ namespace {
     ASSERT_TRUE(version->patch >= 0);
   }
   
-  TEST(GetStumplessVersionTest, Defines){
+  TEST(GetVersionTest, Defines){
     #ifndef STUMPLESS_MAJOR_VERSION
       FAIL();
     #endif
