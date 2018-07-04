@@ -34,4 +34,6 @@ script:
 
 after_success:
   - cd ..
+  - pwd
+  - which gcov
   - bash <(curl -s https://codecov.io/bash)
