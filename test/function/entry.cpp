@@ -54,7 +54,19 @@ namespace {
     EXPECT_EQ( basic_entry, entry );
   }
   
-  TEST(NewEntryTest, New){
+  TEST_F( EntryTest, AddNullElement ) {
+    struct stumpless_entry *entry;
+    struct stumpless_error *error;
+
+    entry = stumpless_add_element( basic_entry, NULL );
+    ASSERT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+  
+  TEST( NewEntryTest, New ){
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
@@ -90,6 +102,25 @@ namespace {
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
     stumpless_destroy_entry( entry );
+  }
+
+  TEST( AddElementTest, NullEntry ){
+    struct stumpless_entry *entry;
+    struct stumpless_element *element;
+    struct stumpless_error *error;
+
+    element = stumpless_new_element( "test-new-element" );
+    ASSERT_TRUE( element != NULL );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+    entry = stumpless_add_element( NULL, element );
+    ASSERT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_element( element );
   }
   
 }

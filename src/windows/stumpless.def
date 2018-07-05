@@ -4,12 +4,13 @@ EXPORTS
   stumpless_add_element                 @2
   stumpless_add_entry                   @3
   stumpless_close_buffer_target         @4
-  stumpless_destroy_entry               @5
-  stumpless_get_current_target          @6
-  stumpless_get_error                   @7
-  stumpless_get_version                 @8
-  stumpless_new_element                 @9
-  stumpless_new_entry                   @10
-  stumpless_open_buffer_target          @11
-  stumpless_set_target_default_app_name @12
-  stumpless_set_target_default_msgid    @13
+  stumpless_destroy_element             @5
+  stumpless_destroy_entry               @6
+  stumpless_get_current_target          @7
+  stumpless_get_error                   @8
+  stumpless_get_version                 @9
+  stumpless_new_element                 @10
+  stumpless_new_entry                   @11
+  stumpless_open_buffer_target          @12
+  stumpless_set_target_default_app_name @13
+  stumpless_set_target_default_msgid    @14
