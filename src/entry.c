@@ -103,6 +103,7 @@ stumpless_new_element( const char *name ) {
   clear_error(  );
 
   if( !name ) {
+    raise_argument_empty(  );
     goto fail;
   }
 

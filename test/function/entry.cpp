@@ -65,6 +65,20 @@ namespace {
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
+
+  /* non-fixture tests */
+
+  TEST( NewElementTest, NullName ) {
+    struct stumpless_element *element;
+    struct stumpless_error *error;
+
+    element = stumpless_new_element( NULL );    
+    EXPECT_TRUE( element == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
   
   TEST( NewEntryTest, New ){
     struct stumpless_entry *entry;
