@@ -88,6 +88,23 @@ namespace {
     EXPECT_EQ( basic_entry, entry );
   }
 
+  TEST_F( EntryTest, SetAppName ) {
+    struct stumpless_entry *entry;
+    const char *previous_app_name;
+    const char *new_app_name = "new-app-name";
+
+    size_t new_app_name_length = strlen( new_app_name );
+
+    previous_app_name = basic_entry->app_name;
+
+    entry = stumpless_set_entry_app_name( basic_entry, new_app_name );
+    EXPECT_EQ( entry, basic_entry );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+    ASSERT_EQ( new_app_name_length, basic_entry->app_name_length );
+    ASSERT_EQ( 0, memcmp( basic_entry->app_name, new_app_name, new_app_name_length ) );
+  }
+
   /* non-fixture tests */
 
   TEST( AddElementTest, NullEntry ){
@@ -217,7 +234,18 @@ namespace {
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
-  
+ 
+  TEST( SetAppNameTest, NullEntry ) {
+    struct stumpless_entry *entry;
+    struct stumpless_error *error;
+
+    entry = stumpless_set_entry_app_name( NULL, "new-app-name" );
+    ASSERT_EQ( NULL, entry );
+    
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  } 
 }
 
 int main(int argc, char **argv){
