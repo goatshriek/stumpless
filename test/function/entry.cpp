@@ -90,6 +90,37 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( AddElementTest, NullEntry ){
+    struct stumpless_entry *entry;
+    struct stumpless_element *element;
+    struct stumpless_error *error;
+
+    element = stumpless_new_element( "test-new-element" );
+    ASSERT_TRUE( element != NULL );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+    entry = stumpless_add_element( NULL, element );
+    ASSERT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_element( element );
+  }
+
+  TEST( DestroyElementTest, NullElement ) {
+    stumpless_destroy_element( NULL );
+  }
+
+  TEST( DestroyEntryTest, NullEntry ) {
+    stumpless_destroy_entry( NULL );
+  }
+
+  TEST( DestroyParamTest, NullParam ) {
+    stumpless_destroy_param( NULL );
+  }
+
   TEST( NewElementTest, NullName ) {
     struct stumpless_element *element;
     struct stumpless_error *error;
@@ -129,42 +160,62 @@ namespace {
     ASSERT_TRUE( entry->app_name != NULL );
     ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
 
-    ASSERT_EQ( strlen( msgid ), entry->msgid_length );
+    ASSERT_EQ( msgid_length, entry->msgid_length );
     ASSERT_TRUE( entry->msgid != NULL );
     ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
 
-    ASSERT_EQ( strlen( message ), entry->message_length );
+    ASSERT_EQ( message_length, entry->message_length );
     ASSERT_TRUE( entry->message != NULL );
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
     stumpless_destroy_entry( entry );
   }
 
-  TEST( AddElementTest, NullEntry ){
-    struct stumpless_entry *entry;
-    struct stumpless_element *element;
+  TEST( NewParamTest, New ){
+    struct stumpless_param *param;
+    const char *name = "test-param-name";
+    const char *value = "test-param-value";
+  
+    size_t name_length = strlen( name );
+    size_t value_length = strlen( value );
+ 
+    param = stumpless_new_param( name, value );
+    ASSERT_TRUE( param != NULL );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+   
+    ASSERT_EQ( name_length, param->name_length );
+    ASSERT_TRUE( param->name != NULL );
+    ASSERT_EQ( 0, memcmp( param->name, name, name_length ) );
+    
+    ASSERT_EQ( value_length, param->value_length );
+    ASSERT_TRUE( param->value != NULL );
+    ASSERT_EQ( 0, memcmp( param->value, value, value_length ) );
+
+    stumpless_destroy_param( param );
+  }
+
+  TEST( NewParamTest, NullName ) {
+    struct stumpless_param *param;
     struct stumpless_error *error;
 
-    element = stumpless_new_element( "test-new-element" );
-    ASSERT_TRUE( element != NULL );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
-
-    entry = stumpless_add_element( NULL, element );
-    ASSERT_TRUE( entry == NULL );
+    param = stumpless_new_param( NULL, "test-value" );    
+    EXPECT_TRUE( param == NULL );
 
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-
-    stumpless_destroy_element( element );
   }
 
-  TEST( DestroyElementTest, NullElement ) {
-    stumpless_destroy_element( NULL );
-  }
+  TEST( NewParamTest, NullValue ) {
+    struct stumpless_param *param;
+    struct stumpless_error *error;
 
-  TEST( DestroyEntryTest, NullEntry ) {
-    stumpless_destroy_entry( NULL );
+    param = stumpless_new_param( "test-name", NULL );    
+    EXPECT_TRUE( param == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
   
 }
