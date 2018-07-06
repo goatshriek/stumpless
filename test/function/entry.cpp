@@ -15,7 +15,6 @@
  */
 
 #include <stddef.h>
-//#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 
@@ -64,6 +63,29 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+  
+  TEST_F( EntryTest, AddTwoElements ) {
+    struct stumpless_entry *entry;
+    struct stumpless_element *element1, *element2;
+
+    element1 = stumpless_new_element( "test-new-element-1" );
+    ASSERT_TRUE( element1 != NULL );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    
+    entry = stumpless_add_element( basic_entry, element1 );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    ASSERT_TRUE( entry != NULL );
+    EXPECT_EQ( basic_entry, entry );
+
+    element2 = stumpless_new_element( "test-new-element-2" );
+    ASSERT_TRUE( element2 != NULL );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    
+    entry = stumpless_add_element( basic_entry, element2 );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    ASSERT_TRUE( entry != NULL );
+    EXPECT_EQ( basic_entry, entry );
   }
 
   /* non-fixture tests */
