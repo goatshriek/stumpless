@@ -26,11 +26,16 @@ namespace {
 
       virtual void
       SetUp( void ) {
+        struct stumpless_element *element;
+
         basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                            STUMPLESS_SEVERITY_INFO,
                                            "basic-app-name",
                                            "basic-msgid",
                                            "basic message" );
+
+        element = stumpless_new_element( "basic-element" );
+        stumpless_add_element( basic_entry, element );
       }
 
       virtual void
@@ -63,6 +68,41 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST_F( EntryTest, AddNullParam ) {
+    struct stumpless_element *element, *result;
+    struct stumpless_error *error;
+
+    element = basic_entry->elements[0];
+    ASSERT_TRUE( element != NULL );
+
+    result = stumpless_add_param( element, NULL );
+    ASSERT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+
+    // todo test to make sure that param count has not changed
+  }
+
+  TEST_F( EntryTest, AddParam ) {
+    struct stumpless_element *element, *result;
+    struct stumpless_param *param;
+
+    element = basic_entry->elements[0];
+    ASSERT_TRUE( element != NULL );
+    
+    param = stumpless_new_param( "test-param-name", "test-param-value" );
+    ASSERT_TRUE( param != NULL );
+
+    result = stumpless_add_param( element, param );
+    EXPECT_EQ( element, result );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+   
+    // todo test that param count has increased 
+    // todo test to make sure that new param actually exists
   }
   
   TEST_F( EntryTest, AddTwoElements ) {
