@@ -158,6 +158,14 @@ namespace {
 
     stumpless_destroy_element( element );
   }
+
+  TEST( DestroyElementTest, NullElement ) {
+    stumpless_destroy_element( NULL );
+  }
+
+  TEST( DestroyEntryTest, NullEntry ) {
+    stumpless_destroy_entry( NULL );
+  }
   
 }
 
