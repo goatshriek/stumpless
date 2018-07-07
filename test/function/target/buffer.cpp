@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 
 /*
  * Copyright 2018 Joel E. Anderson
@@ -75,8 +76,11 @@ namespace {
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
 
-	TestRFC5424Compliance(buffer);
+    TestRFC5424Compliance(buffer);
   }
 
   TEST_F( BufferTargetTest, Basic ) {
