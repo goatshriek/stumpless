@@ -144,6 +144,31 @@ include_directories("${source_dir}/googletest/include"
 # test suites
 enable_testing()
 
+add_executable(buffer
+  EXCLUDE_FROM_ALL
+  test/function/target/buffer.cpp
+  test/function/rfc5424.cpp
+  test/function/utf8.cpp
+)
+set_target_properties(buffer
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+)
+
+target_link_libraries(buffer
+  stumpless
+  libgtest
+)
+
+target_include_directories(buffer
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME buffer
+  COMMAND buffer
+)
+
 add_executable(entry
   EXCLUDE_FROM_ALL
   test/function/entry.cpp
@@ -166,6 +191,30 @@ target_include_directories(entry
 
 add_test(NAME entry
   COMMAND entry
+)
+
+add_executable(memory
+  EXCLUDE_FROM_ALL
+  test/function/memory.cpp
+)
+
+set_target_properties(memory
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+)
+
+target_link_libraries(memory
+  stumpless
+  libgtest
+)
+
+target_include_directories(memory
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME memory
+  COMMAND memory
 )
 
 add_executable(version
@@ -192,40 +241,15 @@ add_test(NAME version
   COMMAND version
 )
 
-add_executable(buffer
-  EXCLUDE_FROM_ALL
-  test/function/target/buffer.cpp
-  test/function/rfc5424.cpp
-  test/function/utf8.cpp
-)
-set_target_properties(buffer
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
-)
-
-target_link_libraries(buffer
-  stumpless
-  libgtest
-)
-
-target_include_directories(buffer
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME buffer
-  COMMAND buffer
-)
-
 if(WIN32)
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-    DEPENDS buffer entry version
+    DEPENDS buffer entry memory version
   )
 else()
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer entry version
+    DEPENDS buffer entry memory version
   )
 endif(WIN32)
 
