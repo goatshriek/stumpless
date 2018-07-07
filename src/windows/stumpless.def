@@ -16,5 +16,7 @@ EXPORTS
   stumpless_new_param                   @14
   stumpless_open_buffer_target          @15
   stumpless_set_entry_app_name          @16
-  stumpless_set_target_default_app_name @17
-  stumpless_set_target_default_msgid    @18
+  stumpless_set_free                    @17
+  stumpless_set_malloc                  @18
+  stumpless_set_target_default_app_name @19
+  stumpless_set_target_default_msgid    @20
