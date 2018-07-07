@@ -22,6 +22,16 @@ namespace {
 
   class MemoryTest : public ::testing::Test {};
 
+  TEST( SetFreeTest, CustomFunction ) {
+    void (*result)(void *);
+
+    result = stumpless_set_free( [](void *ptr){ return; } );
+    EXPECT_TRUE( result != NULL );
+
+    result = stumpless_set_free( free );
+    ASSERT_TRUE( result == free );
+  }
+
   TEST( SetFreeTest, NullFunction ) {
     void (*result)(void *);
 
