@@ -128,6 +128,31 @@ namespace {
     EXPECT_EQ( basic_entry, entry );
   }
 
+  TEST_F( EntryTest, AddTwoParams ) {
+    struct stumpless_element *element, *result;
+    struct stumpless_param *param1, *param2;
+
+    element = basic_entry->elements[0];
+    ASSERT_TRUE( element != NULL );
+    
+    param1 = stumpless_new_param( "test-param-name-1", "test-param-value-1" );
+    ASSERT_TRUE( param1 != NULL );
+
+    result = stumpless_add_param( element, param1 );
+    EXPECT_EQ( element, result );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    
+    param2 = stumpless_new_param( "test-param-name-2", "test-param-value-2" );
+    ASSERT_TRUE( param2 != NULL );
+
+    result = stumpless_add_param( element, param2 );
+    EXPECT_EQ( element, result );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+   
+    // todo test that param count has increased 
+    // todo test to make sure that new param actually exists
+  }
+
   TEST_F( EntryTest, SetAppName ) {
     struct stumpless_entry *entry;
     const char *previous_app_name;
