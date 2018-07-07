@@ -21,8 +21,8 @@
 #include "private/error.h"
 #include "private/memory.h"
 
-typedef void *(*malloc_func_t)(size_t);
-typedef void (*free_func_t)(void *);
+typedef void *( *malloc_func_t ) ( size_t );
+typedef void ( *free_func_t ) ( void * );
 
 static malloc_func_t stumpless_malloc = malloc;
 static free_func_t stumpless_free = free;

@@ -36,6 +36,10 @@ namespace {
 
         element = stumpless_new_element( "basic-element" );
         stumpless_add_element( basic_entry, element );
+
+        // cause a failure so that memory allocation tests will still have an
+        // error that they can return
+        stumpless_new_element( NULL );
       }
 
       virtual void
@@ -56,6 +60,33 @@ namespace {
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
     ASSERT_TRUE( entry != NULL );
     EXPECT_EQ( basic_entry, entry );
+  }
+
+  TEST_F( EntryTest, AddElementMemoryFailure ) {
+    struct stumpless_entry *entry;
+    struct stumpless_element *element;
+    struct stumpless_error *error;
+    void *(*result)(size_t);
+
+    element = stumpless_new_element( "test-memory-failure" );
+    ASSERT_TRUE( element != NULL );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+   
+    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( result != NULL );
+ 
+    entry = stumpless_add_element( basic_entry, element );
+    EXPECT_EQ( NULL, entry );
+
+    error = stumpless_get_error(  );
+
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
   }
   
   TEST_F( EntryTest, AddNullElement ) {
