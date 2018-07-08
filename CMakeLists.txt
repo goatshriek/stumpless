@@ -243,6 +243,30 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   )
 endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
 
+add_executable(target
+  EXCLUDE_FROM_ALL
+  test/function/target.cpp
+)
+
+set_target_properties(target
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+)
+
+target_link_libraries(target
+  stumpless
+  libgtest
+)
+
+target_include_directories(target
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME target
+  COMMAND target
+)
+
 add_executable(version
   EXCLUDE_FROM_ALL
   test/function/version.cpp
@@ -270,12 +294,12 @@ add_test(NAME version
 if(WIN32)
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-    DEPENDS buffer entry memory version
+    DEPENDS buffer entry memory target version
   )
 else()
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer entry memory socket version
+    DEPENDS buffer entry memory socket target version
   )
 endif(WIN32)
 

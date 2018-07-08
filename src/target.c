@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 
 /*
  * Copyright 2018 Joel E. Anderson
@@ -85,7 +86,8 @@ stumpless_add_entry( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target ) {
+  if( !target || !entry ) {
+    raise_argument_empty(  );
     return -1;
   }
 
