@@ -31,6 +31,17 @@ namespace {
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( SocketTargetOpenTest, Basic ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_socket_target( "basic-socket-target", 0, 0 );
+    ASSERT_TRUE( target != NULL );
+    ASSERT_EQ( NULL, stumpless_get_error(  ) );
+
+    stumpless_close_socket_target( target );
+  }
+
   TEST( SocketTargetOpenTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
