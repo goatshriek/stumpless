@@ -52,24 +52,6 @@ add_to_id_map( struct id_map *map, void *value ) {
   return new->id;
 }
 
-void
-destroy_id_map( struct id_map *map ) {
-  struct id_map_node *next, *remove = NULL;
-
-  if( !map ) {
-    return;
-  }
-
-  next = map->root;
-  while ( next != NULL ) {
-    remove = next;
-    next = next->next;
-    free_mem( remove );
-  }
-
-  free_mem( map );
-}
-
 void *
 get_by_id( struct id_map *map, stumpless_id_t id ) {
   struct id_map_node *curr;
