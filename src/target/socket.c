@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 
 /*
  * Copyright 2018 Joel E. Anderson
@@ -33,7 +34,12 @@ void
 stumpless_close_socket_target( struct stumpless_target *target ) {
   clear_error(  );
 
-  if( target && targets ) {
+  if( !target ) {
+    raise_argument_empty(  );
+    return;
+  }
+
+  if( targets ) {
     destroy_socket_target( get_by_id( targets, target->id ) );
   }
   // todo need to clean up the id list
@@ -47,6 +53,11 @@ stumpless_open_socket_target( const char *name, int options,
   size_t name_len;
 
   clear_error(  );
+
+  if( !name ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
 
   if( !targets ) {
     targets = new_id_map(  );
@@ -75,7 +86,8 @@ stumpless_open_socket_target( const char *name, int options,
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_SOCKET_TARGET;
   pub_target->options = options;
-  pub_target->default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
+  pub_target->default_prival =
+    get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
   pub_target->id = add_to_id_map( targets, priv_target );
 
   stumpless_set_current_target( pub_target );

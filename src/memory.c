@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 
 /*
  * Copyright 2018 Joel E. Anderson
@@ -17,12 +18,47 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <stumpless/memory.h>
 #include "private/error.h"
 #include "private/memory.h"
 
+typedef void *( *malloc_func_t ) ( size_t );
+typedef void ( *free_func_t ) ( void * );
+
+static malloc_func_t stumpless_malloc = malloc;
+static free_func_t stumpless_free = free;
+
+malloc_func_t
+stumpless_set_malloc( malloc_func_t malloc_func ) {
+  clear_error(  );
+
+  if( !malloc_func ) {
+    raise_argument_empty(  );
+    return NULL;
+  } else {
+    stumpless_malloc = malloc_func;
+    return stumpless_malloc;
+  }
+}
+
+free_func_t
+stumpless_set_free( free_func_t free_func ) {
+  clear_error(  );
+
+  if( !free_func ) {
+    raise_argument_empty(  );
+    return NULL;
+  } else {
+    stumpless_free = free_func;
+    return stumpless_free;
+  }
+}
+
+/* private functions */
+
 void *
 alloc_mem( size_t amount ) {
-  void *mem = malloc( amount );
+  void *mem = stumpless_malloc( amount );
   if( !mem ) {
     raise_memory_allocation_failure(  );
     return NULL;
@@ -34,6 +70,6 @@ alloc_mem( size_t amount ) {
 void
 free_mem( void *mem ) {
   if( mem ) {
-    free( mem );
+    stumpless_free( mem );
   }
 }

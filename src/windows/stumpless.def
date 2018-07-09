@@ -1,12 +1,22 @@
 LIBRARY   STUMPLESS
 EXPORTS  
   stumpless                             @1
-  stumpless_add_entry                   @2
-  stumpless_close_buffer_target         @3
-  stumpless_destroy_entry               @4
-  stumpless_get_current_target          @5
-  stumpless_get_error                   @6
-  stumpless_new_entry                   @7
-  stumpless_open_buffer_target          @8
-  stumpless_set_target_default_app_name @9
-  stumpless_set_target_default_msgid    @10
+  stumpless_add_element                 @2
+  stumpless_add_entry                   @3
+  stumpless_add_param                   @4
+  stumpless_close_buffer_target         @5
+  stumpless_destroy_element             @6
+  stumpless_destroy_entry               @7
+  stumpless_destroy_param               @8
+  stumpless_get_current_target          @9
+  stumpless_get_error                   @10
+  stumpless_get_version                 @11
+  stumpless_new_element                 @12
+  stumpless_new_entry                   @13
+  stumpless_new_param                   @14
+  stumpless_open_buffer_target          @15
+  stumpless_set_entry_app_name          @16
+  stumpless_set_free                    @17
+  stumpless_set_malloc                  @18
+  stumpless_set_target_default_app_name @19
+  stumpless_set_target_default_msgid    @20

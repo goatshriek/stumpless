@@ -15,16 +15,21 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_H
-#define __STUMPLESS_H
+#ifndef __STUMPLESS_MEMORY_H
+#  define __STUMPLESS_MEMORY_H
 
-#include <stumpless/entry.h>
-#include <stumpless/error.h>
-#include <stumpless/id.h>
-#include <stumpless/memory.h>
-#include <stumpless/target.h>
-#include <stumpless/target/buffer.h>
-#include <stumpless/target/socket.h>
-#include <stumpless/version.h>
+#  include <stddef.h>
 
-#endif /* __STUMPLESS_H */
+#  ifdef __cplusplus
+extern "C" {
+#  endif
+
+void * (*stumpless_set_malloc( void *(*malloc_func)(size_t) ) )( size_t );
+
+void (*stumpless_set_free( void (*free_func)(void *) ) )( void * );
+
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
+
+#endif                          /* __STUMPLESS_MEMORY_H */

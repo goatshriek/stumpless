@@ -18,10 +18,6 @@
 #ifndef __STUMPLESS_VERSION_H
 #  define __STUMPLESS_VERSION_H
 
-#  define STUMPLESS_MAJOR_VERSION 0
-#  define STUMPLESS_MINOR_VERSION 0
-#  define STUMPLESS_PATCH_VERSION 1
-
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -32,7 +28,7 @@ extern "C" {
     int patch;
   };
 
-  struct stumpless_version *get_stumpless_version( void );
+  struct stumpless_version *stumpless_get_version( void );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

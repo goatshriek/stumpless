@@ -103,6 +103,7 @@ stumpless_new_element( const char *name ) {
   clear_error(  );
 
   if( !name ) {
+    raise_argument_empty(  );
     goto fail;
   }
 
@@ -281,12 +282,12 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_nam
 
 int
 get_facility( int prival ) {
-  return ( prival >> 3 ) << 3;
+  return ( prival >> 2 ) << 2;
 }
 
 int
 get_prival( int facility, int severity ) {
-  return facility & severity;
+  return facility | severity;
 }
 
 int

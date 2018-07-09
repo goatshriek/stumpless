@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 
 /*
  * Copyright 2018 Joel E. Anderson
@@ -37,21 +38,32 @@ namespace {
     struct stumpless_entry *basic_entry;
 
     virtual void
-      SetUp( void ) {
+    SetUp( void ) {
+      struct stumpless_element *element;
+      struct stumpless_param *param;
+
       buffer[0] = '\0';
-      target =
-        stumpless_open_buffer_target( "buffer target testing", buffer,
-                                      TEST_BUFFER_LENGTH, 0, 0 );
+      target = stumpless_open_buffer_target( "buffer target testing", buffer,
+                                             TEST_BUFFER_LENGTH, 0, 0 );
+
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
 
-      basic_entry =
-        stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                             STUMPLESS_SEVERITY_INFO,
-                             "stumpless-unit-test",
-                             "basic-entry", "basic test message" );
-    } virtual void
-      TearDown( void ) {
+      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                        "stumpless-unit-test",
+                                        "basic-entry",
+                                        "basic test message" );
+
+      element = stumpless_new_element( "basic-element" );
+      stumpless_add_element( basic_entry, element );
+
+      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
+      stumpless_add_param( element, param );
+    }
+
+    virtual void
+    TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_buffer_target( target );
     }
@@ -64,8 +76,11 @@ namespace {
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
 
-	TestRFC5424Compliance(buffer);
+    TestRFC5424Compliance(buffer);
   }
 
   TEST_F( BufferTargetTest, Basic ) {
@@ -125,10 +140,8 @@ namespace {
   };
 
   TEST( BufferTargetOpenTest, NormalOpenTarget ) {
-    struct stumpless_target *
-      target;
-    char
-      buffer[100];
+    struct stumpless_target *target;
+    char buffer[100];
 
     target = stumpless_open_buffer_target( "normal target", buffer, 100, 0, 0 );
     ASSERT_TRUE( target != NULL );
@@ -136,6 +149,31 @@ namespace {
     EXPECT_EQ( target, stumpless_get_current_target(  ) );
 
     stumpless_close_buffer_target( target );
+  }
+
+  TEST( BufferTargetOpenTest, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( NULL, buffer, 100, 0, 0 );
+    ASSERT_TRUE( target == NULL );
+    
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( BufferTargetOpenTest, NullBuffer ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "null-buffer", NULL, 100, 0, 0 );
+    ASSERT_TRUE( target == NULL );
+    
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }

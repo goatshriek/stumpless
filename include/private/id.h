@@ -32,7 +32,6 @@ struct id_map {
 
 /* returns 0 on error, id otherwise */
 stumpless_id_t add_to_id_map( struct id_map *map, void *value );
-void destroy_id_map( struct id_map *map );
 void *get_by_id( struct id_map *map, stumpless_id_t id );
 struct id_map *new_id_map( void );
 
