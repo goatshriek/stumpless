@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <stdio.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -47,10 +48,16 @@ namespace {
         memcpy(&test_socket_addr.sun_path, socket_name, strlen(socket_name)+1);
       
         test_socket = socket(test_socket_addr.sun_family, SOCK_DGRAM, 0);
+        if( test_socket < 0 ){
+          perror("socket");
+        }
+
         read_timeout.tv_sec = 2;
         read_timeout.tv_usec = 0;
         setsockopt(test_socket, SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout); 
-        bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr.sun_family)+strlen(socket_name)+1);
+        if( bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr.sun_family)+strlen(socket_name)+1) < 0 ){
+          perror("bind");
+        }
 
         target = stumpless_open_socket_target( socket_name, 0, 0 );
 
