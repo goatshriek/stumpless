@@ -39,6 +39,7 @@ my %manifest = (
   "gethostname" => "unistd.h",
   "getpid" => "unistd.h",
   "gmtime" => "time.h",
+  "HasSubstr" => "gmock/gmock.h",
   "LOG_INFO" => "syslog.h",
   "malloc" => "stdlib.h",
   "memcpy" => "string.h",

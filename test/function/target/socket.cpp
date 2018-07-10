@@ -16,10 +16,84 @@
  * limitations under the License.
  */
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 
+using::testing::HasSubstr;
+
 namespace {
+
+  class SocketTargetTest: public::testing::Test {
+
+    protected:
+      int test_socket;
+      const char *socket_name = "sockettargettest";
+      char buffer[1024];
+      struct stumpless_target *target;
+      struct stumpless_entry *basic_entry;
+
+      virtual void
+      SetUp( void ) {
+        struct sockaddr_un test_socket_addr;
+        struct stumpless_element *element;
+        struct stumpless_param *param;
+
+        test_socket_addr.sun_family = AF_UNIX;
+        memcpy(&test_socket_addr.sun_path, socket_name, strlen(socket_name)+1);
+      
+        test_socket = socket(test_socket_addr.sun_family, SOCK_DGRAM, 0);
+      
+        bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr.sun_family)+strlen(socket_name)+1);
+
+        target = stumpless_open_socket_target( socket_name, 0, 0 );
+
+        basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                           STUMPLESS_SEVERITY_INFO,
+                                          "stumpless-unit-test",
+                                          "basic-entry",
+                                          "basic test message" );
+  
+        element = stumpless_new_element( "basic-element" );
+        stumpless_add_element( basic_entry, element );
+  
+        param = stumpless_new_param( "basic-param-name", "basic-param-value" );
+        stumpless_add_param( element, param );
+      }
+
+      virtual void
+      TearDown( void ) {
+        stumpless_close_socket_target( target );
+        close( test_socket );
+        unlink( socket_name );
+      }
+
+      void
+      GetNextMessage( void ) {
+        ssize_t msg_len;
+        struct sockaddr_un from_addr;
+        socklen_t size = 100;
+
+        msg_len = recvfrom(test_socket, buffer, 1024, 0, (struct sockaddr *) &from_addr, &size);
+        buffer[msg_len] = '\0';
+      }
+
+  };
+
+  TEST_F( SocketTargetTest, AddEntry ) {
+    stumpless_add_entry( target, basic_entry );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+    GetNextMessage(  );
+
+    EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
+  }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
