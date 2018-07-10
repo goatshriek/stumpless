@@ -112,6 +112,7 @@ destroy_socket_target( struct socket_target *trgt ) {
   }
 
   close( trgt->local_socket );
+  unlink("stmplss-tst");
   free_mem( trgt );
 }
 
@@ -131,7 +132,7 @@ new_socket_target( const char *dest, size_t dest_len ) {
   printf("opening socket: '%s'\n", trgt->target_addr.sun_path );
 
   trgt->local_addr.sun_family = AF_UNIX;
-  memcpy( &trgt->local_addr.sun_path, "\0/stmplss-tst", 14 );
+  memcpy( &trgt->local_addr.sun_path, "stmplss-tst", 12 );
 
   trgt->local_socket = socket( trgt->local_addr.sun_family, SOCK_DGRAM, 0 );
   if( trgt->local_socket < 0 ) {

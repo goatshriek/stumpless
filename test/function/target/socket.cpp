@@ -55,7 +55,8 @@ namespace {
 
         read_timeout.tv_sec = 2;
         read_timeout.tv_usec = 0;
-        setsockopt(test_socket, SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout); 
+        setsockopt(test_socket, SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout);
+ 
         if( bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr)) != 0 ){
           perror("bind");
         }
