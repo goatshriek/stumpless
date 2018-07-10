@@ -124,6 +124,27 @@ namespace {
     stumpless_close_socket_target( target );
   }
 
+  TEST( SocketTargetOpenTest, MemoryFailure ) {
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    void *(*result)(size_t);
+   
+    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( result != NULL );
+
+    target = stumpless_open_socket_target( "basic-socket-target", 0, 0 );
+    EXPECT_EQ( NULL, target );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
+  }
+
   TEST( SocketTargetOpenTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
