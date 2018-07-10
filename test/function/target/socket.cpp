@@ -98,8 +98,16 @@ namespace {
   };
 
   TEST_F( SocketTargetTest, AddEntry ) {
+    struct stumpless_error *error;
+
     stumpless_add_entry( target, basic_entry );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    error = stumpless_get_error(  );
+
+    if( error ){
+      printf( "%d\n", (int)error->id );
+      perror("sendto failure");
+    }
 
     GetNextMessage(  );
 
