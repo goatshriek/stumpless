@@ -19,7 +19,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <stdio.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -46,20 +45,14 @@ namespace {
 
         test_socket_addr.sun_family = AF_UNIX;
         memcpy(&test_socket_addr.sun_path, socket_name, strlen(socket_name)+1);
-        printf("listening on socket: '%s'\n", test_socket_addr.sun_path);
       
         test_socket = socket(test_socket_addr.sun_family, SOCK_DGRAM, 0);
-        if( test_socket < 0 ){
-          perror("socket");
-        }
 
         read_timeout.tv_sec = 2;
         read_timeout.tv_usec = 0;
         setsockopt(test_socket, SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout);
  
-        if( bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr)) != 0 ){
-          perror("bind");
-        }
+        bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr));
 
         target = stumpless_open_socket_target( socket_name, 0, 0 );
 
@@ -100,26 +93,14 @@ namespace {
   };
 
   TEST_F( SocketTargetTest, AddEntry ) {
-    struct stumpless_error *error;
-
     stumpless_add_entry( target, basic_entry );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-    error = stumpless_get_error(  );
-
-    if( error ){
-      printf( "%d\n", (int)error->id );
-      perror("sendto failure");
-    }
-
     GetNextMessage(  );
 
-    /* in some cases (OS X) synchronous socket testing may not work. */
-    if( buffer[0] == '\0' ) {
-      EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
-      EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
-      EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
-      EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
-    }
+    EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
+    EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
