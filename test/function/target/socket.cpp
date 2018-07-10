@@ -41,12 +41,15 @@ namespace {
         struct sockaddr_un test_socket_addr;
         struct stumpless_element *element;
         struct stumpless_param *param;
+        struct timeval read_timeout;
 
         test_socket_addr.sun_family = AF_UNIX;
         memcpy(&test_socket_addr.sun_path, socket_name, strlen(socket_name)+1);
       
         test_socket = socket(test_socket_addr.sun_family, SOCK_DGRAM, 0);
-      
+        read_timeout.tv_sec = 0;
+        read_timeout.tv_usec = 10;
+        setsockopt(test_socket, SOL_SOCKET, SO_RCVTIMEO, &read_timeout, sizeof read_timeout); 
         bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr.sun_family)+strlen(socket_name)+1);
 
         target = stumpless_open_socket_target( socket_name, 0, 0 );
