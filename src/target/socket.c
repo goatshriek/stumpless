@@ -18,6 +18,7 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <stumpless/target.h>
@@ -127,6 +128,7 @@ new_socket_target( const char *dest, size_t dest_len ) {
   // todo need to check dest_len before this memcpy happens
   memcpy( &trgt->target_addr.sun_path, dest, dest_len );
   trgt->target_addr.sun_path[dest_len] = '\0';
+  printf("opening socket: %s\n", trgt->target_addr.sun_path );
 
   trgt->local_addr.sun_family = AF_UNIX;
   memcpy( &trgt->local_addr.sun_path, "\0/stmplss-tst", 14 );
