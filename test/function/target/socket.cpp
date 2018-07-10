@@ -46,6 +46,7 @@ namespace {
 
         test_socket_addr.sun_family = AF_UNIX;
         memcpy(&test_socket_addr.sun_path, socket_name, strlen(socket_name)+1);
+        printf("listening on socket: '%s'\n", test_socket_addr.sun_path);
       
         test_socket = socket(test_socket_addr.sun_family, SOCK_DGRAM, 0);
         if( test_socket < 0 ){
