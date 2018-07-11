@@ -221,6 +221,8 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   add_executable(socket
     EXCLUDE_FROM_ALL
     test/function/target/socket.cpp
+    test/function/rfc5424.cpp
+    test/function/utf8.cpp
   )
   
   set_target_properties(socket

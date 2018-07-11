@@ -50,6 +50,7 @@ my %manifest = (
   "perror" => "stdio.h",
   "pid_t" => "sys/types.h",
   "printf" => "stdio.h",
+  "raise_invalid_id" => "private/error.h",
   "raise_memory_allocation_failure" => "private/error.h",
   "recvfrom" => "sys/socket.h",
   "RFC_5424_MAX_PRI_LENGTH" => "private/formatter.h",

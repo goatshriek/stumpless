@@ -159,6 +159,10 @@ sendto_socket_target( const struct stumpless_target *target, const char *msg ) {
   }
 
   priv_trgt = get_by_id( targets, target->id );
+  if( !priv_trgt ) {
+    raise_invalid_id(  );
+    return -1;
+  }
 
   return sendto( priv_trgt->local_socket, msg, strlen( msg ) + 1, 0,
                  ( struct sockaddr * ) &priv_trgt->target_addr,

@@ -64,6 +64,10 @@ raise_error( enum stumpless_error_id id ) {
 }
 
 void
+raise_invalid_id( void ) {
+  raise_error( STUMPLESS_INVALID_ID );
+}
+void
 raise_memory_allocation_failure( void ) {
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 }

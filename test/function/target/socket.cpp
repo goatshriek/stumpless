@@ -15,13 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include <sys/types.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <sys/un.h>
+#include <unistd.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/function/rfc5424.hpp"
 
 using::testing::HasSubstr;
 
@@ -101,6 +105,24 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
     EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
     EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
+
+    TestRFC5424Compliance(buffer);
+  }
+
+  TEST_F( SocketTargetTest, AddEntryToBadIdTarget ) {
+    struct stumpless_target target_copy;
+    struct stumpless_error *error;
+    int result;
+
+    memcpy( &target_copy, target, sizeof( *target ) );
+    target_copy.id = -33;
+
+    result = stumpless_add_entry( &target_copy, basic_entry );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_INVALID_ID );
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
