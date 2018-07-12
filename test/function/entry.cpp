@@ -81,7 +81,6 @@ namespace {
     EXPECT_EQ( NULL, entry );
 
     error = stumpless_get_error(  );
-
     EXPECT_TRUE( error != NULL );
 
     if( error ) {
