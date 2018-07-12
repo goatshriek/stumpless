@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "private/error.h"
+#include "private/memory.h"
 #include "private/strbuilder.h"
 
 static size_t
@@ -124,7 +126,7 @@ strbuilder_append_string( struct strbuilder *builder, const char *str ) {
 
 void
 strbuilder_destroy( struct strbuilder *builder ) {
-  free( builder );
+  free_mem( builder );
 }
 
 char *
@@ -146,14 +148,16 @@ strbuilder_new_sized( size_t size ) {
   struct strbuilder *builder;
   char *buffer;
 
-  builder = malloc( sizeof( struct strbuilder ) );
+  builder = alloc_mem( sizeof( *builder ) );
   if( !builder ) {
+    raise_memory_allocation_failure(  );
     return NULL;
   }
 
-  buffer = malloc( size );
+  buffer = alloc_mem( size );
   if( !buffer ) {
-    free( builder );
+    free_mem( builder );
+    raise_memory_allocation_failure(  );
     return NULL;
   }
 

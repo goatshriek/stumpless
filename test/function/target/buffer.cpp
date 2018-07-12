@@ -70,9 +70,12 @@ namespace {
   };
 
   TEST_F( BufferTargetTest, AddEntry ) {
+    int result;
+
     SCOPED_TRACE( "BufferTargetTest.AddEntry" );
 
-    EXPECT_EQ( 0, stumpless_add_entry( target, basic_entry ) );
+    result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
@@ -84,12 +87,14 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, Basic ) {
+    int result;
+
     SCOPED_TRACE( "BufferTargetTest.Basic" );
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
-    EXPECT_EQ( 0,
-               stumpless( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" ) );
+    result = stumpless( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
+    EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( target->default_prival ) ) );
@@ -117,16 +122,16 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, WrapAround ) {
-    const char *
-      test_string = "smash the stack for fun and profit";
-    size_t
-      test_string_len = strlen( test_string );
+    const char *test_string = "smash the stack for fun and profit";
+    size_t test_string_len = strlen( test_string );
+    int result;
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
     for( size_t bytes_written = 0; bytes_written <= TEST_BUFFER_LENGTH;
          bytes_written += test_string_len ) {
-      ASSERT_EQ( 0, stumpless( test_string ) );
+      result = stumpless( test_string );
+      EXPECT_GE( result, 0 );
       ASSERT_EQ( NULL, stumpless_get_error(  ) );
     }
 

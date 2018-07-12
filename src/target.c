@@ -92,20 +92,18 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   message = format_entry( target, entry );
+  if( !message ) {
+    return -1;
+  }
 
   switch ( target->type ) {
     case STUMPLESS_SOCKET_TARGET:
       return config_sendto_socket_target( target, message );
     case STUMPLESS_BUFFER_TARGET:
-      if( sendto_buffer_target( target, message ) <= 0 ) {
-        return -1;
-      }
-      break;
+      return sendto_buffer_target( target, message );
     default:
       return target_unsupported( target, message );
   }
-
-  return 0;
 }
 
 struct stumpless_target *

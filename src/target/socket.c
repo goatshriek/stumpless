@@ -111,6 +111,7 @@ destroy_socket_target( struct socket_target *trgt ) {
   }
 
   close( trgt->local_socket );
+  unlink("stmplss-tst");
   free_mem( trgt );
 }
 
@@ -129,7 +130,7 @@ new_socket_target( const char *dest, size_t dest_len ) {
   trgt->target_addr.sun_path[dest_len] = '\0';
 
   trgt->local_addr.sun_family = AF_UNIX;
-  memcpy( &trgt->local_addr.sun_path, "\0/stmplss-tst", 14 );
+  memcpy( &trgt->local_addr.sun_path, "stmplss-tst", 12 );
 
   trgt->local_socket = socket( trgt->local_addr.sun_family, SOCK_DGRAM, 0 );
   if( trgt->local_socket < 0 ) {
@@ -153,11 +154,11 @@ int
 sendto_socket_target( const struct stumpless_target *target, const char *msg ) {
   struct socket_target *priv_trgt;
 
-  if( !target || !targets || !msg ) {
-    return 0;
-  }
-
   priv_trgt = get_by_id( targets, target->id );
+  if( !priv_trgt ) {
+    raise_invalid_id(  );
+    return -1;
+  }
 
   return sendto( priv_trgt->local_socket, msg, strlen( msg ) + 1, 0,
                  ( struct sockaddr * ) &priv_trgt->target_addr,

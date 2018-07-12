@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-project(stumpless VERSION 0.1.0)
+project(stumpless VERSION 0.1.1)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -221,6 +221,8 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   add_executable(socket
     EXCLUDE_FROM_ALL
     test/function/target/socket.cpp
+    test/function/rfc5424.cpp
+    test/function/utf8.cpp
   )
   
   set_target_properties(socket
