@@ -154,10 +154,6 @@ int
 sendto_socket_target( const struct stumpless_target *target, const char *msg ) {
   struct socket_target *priv_trgt;
 
-  if( !target || !targets || !msg ) {
-    return 0;
-  }
-
   priv_trgt = get_by_id( targets, target->id );
   if( !priv_trgt ) {
     raise_invalid_id(  );

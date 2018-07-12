@@ -125,6 +125,31 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_INVALID_ID );
   }
 
+  /* non-fixture tests */
+
+  TEST( SocketTargetAddTest, Uninitialized ) {
+    struct stumpless_target target;
+    struct stumpless_entry *entry;
+    struct stumpless_error *error;
+    int result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                "stumpless-unit-test",
+                                "basic-entry",
+                                "basic test message" );
+
+    target.type = STUMPLESS_SOCKET_TARGET;
+    result = stumpless_add_entry( &target, entry );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    ASSERT_EQ( error->id, STUMPLESS_INVALID_ID );
+
+    stumpless_destroy_entry( entry );
+  }
+
   TEST( SocketTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
 
