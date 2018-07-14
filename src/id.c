@@ -28,10 +28,6 @@ add_to_id_map( struct id_map *map, void *value ) {
   stumpless_id_t index;
   size_t i;
 
-  if( !map || !value ) {
-    return -1;
-  }
-
   for( i = 0; i < map->map_size; i++ ) {
     if( map->values[i] == NULL ) {
       map->values[i] = value;
