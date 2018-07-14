@@ -190,6 +190,7 @@ namespace {
                                 "basic test message" );
 
     target.type = STUMPLESS_SOCKET_TARGET;
+    target.id = 4;
     result = stumpless_add_entry( &target, entry );
     EXPECT_LT( result, 0 );
 
