@@ -247,6 +247,11 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
+    target = NULL;
+    if( !target ) {
+      FAIL(  );
+    }
+
     target = stumpless_open_socket_target( NULL, 0, 0 );
     ASSERT_TRUE( target == NULL );
 
