@@ -22,9 +22,11 @@
 #include "private/error.h"
 #include "private/memory.h"
 
+typedef void *( *calloc_func_t ) ( size_t, size_t );
 typedef void *( *malloc_func_t ) ( size_t );
 typedef void ( *free_func_t ) ( void * );
 
+static calloc_func_t stumpless_calloc = calloc;
 static malloc_func_t stumpless_malloc = malloc;
 static free_func_t stumpless_free = free;
 
@@ -59,6 +61,17 @@ stumpless_set_free( free_func_t free_func ) {
 void *
 alloc_mem( size_t amount ) {
   void *mem = stumpless_malloc( amount );
+  if( !mem ) {
+    raise_memory_allocation_failure(  );
+    return NULL;
+  }
+
+  return mem;
+}
+
+void *
+alloc_zeroed_mem( size_t number, size_t size ) {
+  void *mem = stumpless_calloc( number, size );
   if( !mem ) {
     raise_memory_allocation_failure(  );
     return NULL;

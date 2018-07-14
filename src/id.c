@@ -61,8 +61,8 @@ new_id_map(  ) {
     return NULL;
   }
 
-  map->map_size = sizeof( *( map->values ) ) * 64;
-  map->values = alloc_mem( map->map_size );
+  map->map_size = 64;
+  map->values = alloc_zeroed_mem( map->map_size, sizeof( *( map->values ) ) );
   if( !map->values ) {
     free_mem( map );
     return NULL;
