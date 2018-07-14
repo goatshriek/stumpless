@@ -24,11 +24,8 @@
 #include "private/error.h"
 #include "private/id.h"
 #include "private/memory.h"
+#include "private/target.h"
 #include "private/target/buffer.h"
-
-static struct id_map *targets = NULL;
-
-/* public functions */
 
 // todo need to deal with memory leak - how to clean up public targets
 // and their members?
@@ -36,11 +33,13 @@ void
 stumpless_close_buffer_target( struct stumpless_target *target ) {
   clear_error(  );
 
-  if( target && targets ) {
-    destroy_buffer_target( get_by_id( targets, target->id ) );
-    remove_by_id( targets, target->id );
+  if( !target ) {
+    raise_argument_empty(  );
+    return;
   }
-  // todo need to clean up the id list
+
+  destroy_buffer_target( get_priv_target( target->id ) );
+  unregister_priv_target( target->id );
 }
 
 struct stumpless_target *
@@ -55,13 +54,6 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   if( !name || !buffer ) {
     raise_argument_empty(  );
     return NULL;
-  }
-
-  if( !targets ) {
-    targets = new_id_map(  );
-    if( !targets ) {
-      goto fail;
-    }
   }
 
   pub_target = alloc_mem( sizeof( *pub_target ) );
@@ -86,7 +78,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   pub_target->options = options;
   pub_target->default_prival =
     get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
-  pub_target->id = add_to_id_map( targets, priv_target );
+  pub_target->id = register_priv_target( priv_target );
   pub_target->default_app_name = NULL;
   pub_target->default_app_name_length = 0;
   pub_target->default_msgid = NULL;
@@ -131,37 +123,30 @@ new_buffer_target( char *buffer, size_t size ) {
 }
 
 int
-sendto_buffer_target( const struct stumpless_target *target, const char *msg ) {
-  struct buffer_target *priv_trgt;
+sendto_buffer_target( struct buffer_target *target, const char *msg ) {
   size_t msg_len;
   size_t buffer_remaining;
 
-  priv_trgt = get_by_id( targets, target->id );
-  if( !priv_trgt ) {
-    raise_invalid_id(  );
-    return -1;
-  }
-
   msg_len = strlen( msg );
 
-  if( msg_len >= priv_trgt->size ) {
+  if( msg_len >= target->size ) {
     raise_argument_too_big(  );
     return -1;
   }
 
-  buffer_remaining = priv_trgt->size - priv_trgt->position;
+  buffer_remaining = target->size - target->position;
 
   if( buffer_remaining > msg_len ) {
-    memcpy( priv_trgt->buffer + priv_trgt->position, msg, msg_len );
-    priv_trgt->position = msg_len + 1;
+    memcpy( target->buffer + target->position, msg, msg_len );
+    target->position = msg_len + 1;
   } else {
-    memcpy( priv_trgt->buffer + priv_trgt->position, msg, buffer_remaining );
-    memcpy( priv_trgt->buffer, msg + buffer_remaining,
+    memcpy( target->buffer + target->position, msg, buffer_remaining );
+    memcpy( target->buffer, msg + buffer_remaining,
             msg_len - buffer_remaining );
-    priv_trgt->position = msg_len - buffer_remaining + 1;
+    target->position = msg_len - buffer_remaining + 1;
   }
 
-  priv_trgt->buffer[priv_trgt->position - 1] = '\0';
+  target->buffer[target->position - 1] = '\0';
 
   return msg_len + 1;
 }

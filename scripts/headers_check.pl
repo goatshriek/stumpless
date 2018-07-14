@@ -34,6 +34,7 @@ my %manifest = (
   "free" => "stdlib.h",
   "free_mem" => "private/memory.h",
   "get_facility" => "private/entry.h",
+  "get_priv_target" => "private/target.h",
   "get_prival" => "private/entry.h",
   "get_severity" => "private/entry.h",
   "gethostname" => "unistd.h",

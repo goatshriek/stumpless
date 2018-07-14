@@ -30,7 +30,7 @@ struct buffer_target {
 
 void destroy_buffer_target( struct buffer_target *target );
 struct buffer_target *new_buffer_target( char *buffer, size_t size );
-int sendto_buffer_target( const struct stumpless_target *target,
+int sendto_buffer_target( struct buffer_target *target,
                           const char *msg );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_BUFFER_H */

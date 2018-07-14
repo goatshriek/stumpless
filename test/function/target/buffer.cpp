@@ -169,6 +169,16 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( BufferTargetCloseTest, NullTarget ) {
+    struct stumpless_error *error;
+
+    stumpless_close_buffer_target( NULL );
+    
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST( BufferTargetOpenTest, NormalOpenTarget ) {
     struct stumpless_target *target;
     char buffer[100];

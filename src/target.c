@@ -99,17 +99,17 @@ stumpless_add_entry( struct stumpless_target *target,
     return -1;
   }
 
+  priv_target = get_by_id( priv_targets, target->id );
+  if( !priv_target ) {
+    raise_invalid_id(  );
+    return -1;
+  }
+
   switch ( target->type ) {
     case STUMPLESS_SOCKET_TARGET:
-      priv_target = get_by_id( priv_targets, target->id );
-      if( !priv_target ) {
-        raise_invalid_id(  );
-        return -1;
-      }
-
       return config_sendto_socket_target( priv_target, message );
     case STUMPLESS_BUFFER_TARGET:
-      return sendto_buffer_target( target, message );
+      return sendto_buffer_target( priv_target, message );
     default:
       return target_unsupported( target, message );
   }
