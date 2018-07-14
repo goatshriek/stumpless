@@ -26,9 +26,8 @@
 #include "private/error.h"
 #include "private/id.h"
 #include "private/memory.h"
+#include "private/target.h"
 #include "private/target/socket.h"
-
-static struct id_map *targets = NULL;
 
 void
 stumpless_close_socket_target( struct stumpless_target *target ) {
@@ -39,11 +38,8 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
     return;
   }
 
-  if( targets ) {
-    destroy_socket_target( get_by_id( targets, target->id ) );
-    remove_by_id( targets, target->id );
-  }
-  // todo need to clean up the id list
+  destroy_socket_target( get_priv_target( target->id ) );
+  unregister_priv_target( target->id );
 }
 
 struct stumpless_target *
@@ -58,13 +54,6 @@ stumpless_open_socket_target( const char *name, int options,
   if( !name ) {
     raise_argument_empty(  );
     return NULL;
-  }
-
-  if( !targets ) {
-    targets = new_id_map(  );
-    if( !targets ) {
-      goto fail;
-    }
   }
 
   pub_target = alloc_mem( sizeof( *pub_target ) );
@@ -89,7 +78,7 @@ stumpless_open_socket_target( const char *name, int options,
   pub_target->options = options;
   pub_target->default_prival =
     get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
-  pub_target->id = add_to_id_map( targets, priv_target );
+  pub_target->id = register_priv_target( priv_target );
 
   stumpless_set_current_target( pub_target );
   return pub_target;
@@ -152,16 +141,8 @@ new_socket_target( const char *dest, size_t dest_len ) {
 }
 
 int
-sendto_socket_target( const struct stumpless_target *target, const char *msg ) {
-  struct socket_target *priv_trgt;
-
-  priv_trgt = get_by_id( targets, target->id );
-  if( !priv_trgt ) {
-    raise_invalid_id(  );
-    return -1;
-  }
-
-  return sendto( priv_trgt->local_socket, msg, strlen( msg ) + 1, 0,
-                 ( struct sockaddr * ) &priv_trgt->target_addr,
-                 priv_trgt->target_addr_len );
+sendto_socket_target( const struct socket_target *target, const char *msg ) {
+  return sendto( target->local_socket, msg, strlen( msg ) + 1, 0,
+                 ( struct sockaddr * ) &target->target_addr,
+                 target->target_addr_len );
 }

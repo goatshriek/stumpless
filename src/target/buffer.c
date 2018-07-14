@@ -26,7 +26,6 @@
 #include "private/memory.h"
 #include "private/target/buffer.h"
 
-//static struct buffer_target **targets=NULL;
 static struct id_map *targets = NULL;
 
 /* public functions */

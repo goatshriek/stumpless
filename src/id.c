@@ -21,8 +21,6 @@
 #include "private/id.h"
 #include "private/memory.h"
 
-static stumpless_id_t next_id = 1;
-
 stumpless_id_t
 add_to_id_map( struct id_map *map, void *value ) {
   stumpless_id_t index;
