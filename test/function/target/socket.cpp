@@ -228,7 +228,7 @@ namespace {
     void *(*result)(size_t);
    
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( result != NULL );
+    EXPECT_TRUE( result != NULL );
 
     target = stumpless_open_socket_target( "basic-socket-target", 0, 0 );
     EXPECT_EQ( NULL, target );
@@ -246,11 +246,6 @@ namespace {
   TEST( SocketTargetOpenTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
-
-    target = NULL;
-    if( !target ) {
-      FAIL(  );
-    }
 
     target = stumpless_open_socket_target( NULL, 0, 0 );
     ASSERT_TRUE( target == NULL );
