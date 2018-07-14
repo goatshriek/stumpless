@@ -138,11 +138,36 @@ namespace {
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
 
-  class
-    BufferTargetOpenTest:
-    public::testing::Test {
+  /* non-fixture tests */
 
-  };
+  TEST( BufferTargetAddTest, AddAfterClose ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    int result;
+    char buffer[100];
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                "stumpless-unit-test",
+                                "basic-entry",
+                                "basic test message" );
+
+    target = stumpless_open_buffer_target( "normal target", buffer, 100, 0, 0 );
+    ASSERT_TRUE( target != NULL );
+    ASSERT_EQ( NULL, stumpless_get_error(  ) );
+
+    stumpless_close_buffer_target( target );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    ASSERT_EQ( error->id, STUMPLESS_INVALID_ID );
+
+    stumpless_destroy_entry( entry );
+  }
 
   TEST( BufferTargetOpenTest, NormalOpenTarget ) {
     struct stumpless_target *target;
