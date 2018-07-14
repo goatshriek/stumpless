@@ -51,7 +51,7 @@ stumpless_open_socket_target( const char *name, int options,
 
   clear_error(  );
 
-  if( name == NULL ) {
+  if( !name ) {
     raise_argument_empty(  );
     return NULL;
   }
