@@ -25,49 +25,31 @@ static stumpless_id_t next_id = 1;
 
 stumpless_id_t
 add_to_id_map( struct id_map *map, void *value ) {
-  struct id_map_node *new, *curr;
+  stumpless_id_t index;
+  size_t i;
 
   if( !map || !value ) {
-    return 0;
+    return -1;
   }
 
-  new = alloc_mem( sizeof( *new ) );
-  if( !new ) {
-    return 0;
-  }
-  new->id = next_id++;
-  new->next = NULL;
-  new->value = value;
-
-  curr = map->root;
-  if( !curr ) {
-    map->root = new;
-  }
-  else {
-    while ( curr->next ) {
-      curr = curr->next;
+  for( i = 0; i < map->map_size; i++ ) {
+    if( map->values[i] == NULL ) {
+      map->values[i] = value;
+      return i;
     }
-    curr->next = new;
   }
 
-  return new->id;
+  // todo map has filled up
+  return -1;
 }
 
 void *
 get_by_id( struct id_map *map, stumpless_id_t id ) {
-  struct id_map_node *curr;
-
-  if( !map ) {
+  if( !map || id < 0 || id >= map->map_size ) {
     return NULL;
+  } else {
+    return map->values[id];
   }
-
-  for( curr = map->root; curr != NULL; curr = curr->next ) {
-    if( curr->id == id ) {
-      return curr->value;
-    }
-  }
-
-  return NULL;
 }
 
 struct id_map *
@@ -79,7 +61,19 @@ new_id_map(  ) {
     return NULL;
   }
 
-  map->root = NULL;
+  map->map_size = sizeof( *( map->values ) ) * 64;
+  map->values = alloc_mem( map->map_size );
+  if( !map->values ) {
+    free_mem( map );
+    return NULL;
+  }
 
   return map;
+}
+
+void
+remove_by_id( struct id_map *map, stumpless_id_t id ) {
+  if( map && id >= 0 && id < map->map_size ) {
+    map->values[id] = NULL;
+  }
 }

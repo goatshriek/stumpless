@@ -39,8 +39,8 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
 
   if( target && targets ) {
     destroy_buffer_target( get_by_id( targets, target->id ) );
+    remove_by_id( targets, target->id );
   }
-
   // todo need to clean up the id list
 }
 
@@ -53,7 +53,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
 
   clear_error(  );
 
-  if( !name || !buffer ){
+  if( !name || !buffer ) {
     raise_argument_empty(  );
     return NULL;
   }
@@ -85,7 +85,8 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_BUFFER_TARGET;
   pub_target->options = options;
-  pub_target->default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
+  pub_target->default_prival =
+    get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
   pub_target->id = add_to_id_map( targets, priv_target );
   pub_target->default_app_name = NULL;
   pub_target->default_app_name_length = 0;
@@ -136,11 +137,12 @@ sendto_buffer_target( const struct stumpless_target *target, const char *msg ) {
   size_t msg_len;
   size_t buffer_remaining;
 
-  if( !target || !targets || !msg ) {
-    return 0;
+  priv_trgt = get_by_id( targets, target->id );
+  if( !priv_trgt ) {
+    raise_invalid_id(  );
+    return -1;
   }
 
-  priv_trgt = get_by_id( targets, target->id );
   msg_len = strlen( msg );
 
   if( msg_len >= priv_trgt->size ) {

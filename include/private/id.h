@@ -21,19 +21,15 @@
 
 #  include <stumpless/id.h>
 
-struct id_map_node {
-  struct id_map_node *next;
-  stumpless_id_t id;
-  void *value;
-};
-
 struct id_map {
-  struct id_map_node *root;
+  void **values;
+  size_t map_size;
 };
 
 /* returns 0 on error, id otherwise */
 stumpless_id_t add_to_id_map( struct id_map *map, void *value );
 void *get_by_id( struct id_map *map, stumpless_id_t id );
 struct id_map *new_id_map( void );
+void remove_by_id( struct id_map *map, stumpless_id_t id );
 
 #endif /* __STUMPLESS_PRIVATE_ID_H */
