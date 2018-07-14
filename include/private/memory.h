@@ -22,7 +22,6 @@
 #  include <stddef.h>
 
 void *alloc_mem( size_t amount );
-void *alloc_zeroed_mem( size_t number, size_t size );
 void free_mem( void *mem );
 
 #endif /* __STUMPLESS_PRIVATE_MEMORY_H */

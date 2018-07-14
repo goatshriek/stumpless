@@ -55,6 +55,7 @@ get_by_id( struct id_map *map, stumpless_id_t id ) {
 struct id_map *
 new_id_map(  ) {
   struct id_map *map;
+  size_t i;
 
   map = alloc_mem( sizeof( *map ) );
   if( !map ) {
@@ -62,10 +63,14 @@ new_id_map(  ) {
   }
 
   map->map_size = 64;
-  map->values = alloc_zeroed_mem( map->map_size, sizeof( *( map->values ) ) );
+  map->values = alloc_mem( map->map_size * sizeof( *( map->values ) ) );
   if( !map->values ) {
     free_mem( map );
     return NULL;
+  } else {
+    for( i=0; i < map->map_size; i++ ) {
+      map->values[i] = NULL;
+    }
   }
 
   return map;
