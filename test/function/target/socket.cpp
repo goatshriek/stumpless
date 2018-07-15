@@ -243,7 +243,7 @@ namespace {
     stumpless_set_malloc( malloc );
   }
 
-  TEST( SocketTargetOpenTest, NullName ) {
+  TEST( SocketTargetOpenTestDifferent, NullName ) {
   //  struct stumpless_target *target;
   //  struct stumpless_error *error;
     ASSERT_TRUE( NULL == (void *)0 );
