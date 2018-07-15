@@ -179,7 +179,7 @@ namespace {
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( BufferTargetOpenTest, NormalOpenTarget ) {
+  TEST( BufferTargetOpenTest, Basic ) {
     struct stumpless_target *target;
     char buffer[100];
 
@@ -191,12 +191,11 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
-  TEST( BufferTargetOpenTest, NullName ) {
+  TEST( BufferTargetOpenTest, NullBuffer ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
-    char buffer[100];
 
-    target = stumpless_open_buffer_target( NULL, buffer, 100, 0, 0 );
+    target = stumpless_open_buffer_target( "null-buffer", NULL, 100, 0, 0 );
     ASSERT_TRUE( target == NULL );
     
     error = stumpless_get_error(  );
@@ -204,11 +203,12 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( BufferTargetOpenTest, NullBuffer ) {
+  TEST( BufferTargetOpenTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
+    char buffer[100];
 
-    target = stumpless_open_buffer_target( "null-buffer", NULL, 100, 0, 0 );
+    target = stumpless_open_buffer_target( NULL, buffer, 100, 0, 0 );
     ASSERT_TRUE( target == NULL );
     
     error = stumpless_get_error(  );
