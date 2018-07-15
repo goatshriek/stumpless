@@ -105,10 +105,8 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, OverFill ) {
-    char
-      test_string[TEST_BUFFER_LENGTH + 1];
-    struct stumpless_error *
-      error;
+    char test_string[TEST_BUFFER_LENGTH + 1];
+    struct stumpless_error *error;
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
@@ -122,20 +120,16 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, WrapAround ) {
-    const char *test_string = "smash the stack for fun and profit";
-    size_t test_string_len = strlen( test_string );
+    size_t bytes_written=0;
     int result;
 
-    ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
+    while( bytes_written <= TEST_BUFFER_LENGTH ) {
+      result = stumpless_add_entry( target, basic_entry );
+      EXPECT_GT( result, 0 );
+      EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
-    for( size_t bytes_written = 0; bytes_written <= TEST_BUFFER_LENGTH;
-         bytes_written += test_string_len ) {
-      result = stumpless( test_string );
-      EXPECT_GE( result, 0 );
-      ASSERT_EQ( NULL, stumpless_get_error(  ) );
+      bytes_written += result;
     }
-
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
 
   /* non-fixture tests */
