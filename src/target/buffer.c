@@ -16,14 +16,12 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include "private/entry.h"
 #include "private/error.h"
-#include "private/id.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
@@ -136,8 +134,6 @@ sendto_buffer_target( struct buffer_target *target, const char *msg ) {
   }
 
   buffer_remaining = target->size - target->position;
-
-  printf("target size: %d\n target position: %d\nmessage length: %d\n", target->size, target->position, msg_len);
 
   if( buffer_remaining > msg_len ) {
     memcpy( target->buffer + target->position, msg, msg_len );
