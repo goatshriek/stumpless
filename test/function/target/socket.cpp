@@ -243,17 +243,17 @@ namespace {
     stumpless_set_malloc( malloc );
   }
 
-  //TEST( SocketTargetOpenTest, NullName ) {
+  TEST( SocketTargetOpenTest, NullName ) {
   //  struct stumpless_target *target;
   //  struct stumpless_error *error;
-
+    ASSERT_TRUE( NULL == 0 );
   //  target = stumpless_open_socket_target( NULL, 0, 0 );
   //  ASSERT_TRUE( target == NULL );
 
   //  error = stumpless_get_error(  );
   //  ASSERT_TRUE( error != NULL );
   //  ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-  //}
+  }
 
 }
 
