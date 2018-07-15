@@ -221,7 +221,7 @@ namespace {
 
     stumpless_close_socket_target( target );
   }
-
+*/
   TEST( SocketTargetOpenTest, MemoryFailure ) {
     struct stumpless_error *error;
     struct stumpless_target *target;
@@ -242,7 +242,7 @@ namespace {
 
     stumpless_set_malloc( malloc );
   }
-*/
+
   TEST( SocketTargetOpenTest, NullName ) {
   //  struct stumpless_target *target;
   //  struct stumpless_error *error;
