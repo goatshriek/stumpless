@@ -241,7 +241,7 @@ namespace {
     }
 
     result = stumpless_set_malloc( malloc );
-    EXPECT_EQ( result, malloc );
+    EXPECT_TRUE( result == malloc );
   }
 
   TEST( SocketTargetOpenTest, NullName ) {
