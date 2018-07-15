@@ -240,10 +240,11 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
 
-    stumpless_set_malloc( malloc );
+    result = stumpless_set_malloc( malloc );
+    EXPECT_EQ( result, malloc );
   }
 
-  TEST( SocketTargetOpenTestDifferent, NullName ) {
+  TEST( SocketTargetOpenTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
