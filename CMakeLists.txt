@@ -83,7 +83,7 @@ include(ExternalProject)
 ExternalProject_Add(gtest
     URL https://github.com/google/googletest/archive/master.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-    CMAKE_ARGS -Dgtest_force_shared_crt=ON
+    CMAKE_ARGS -Dgtest_force_shared_crt=ON -Dgtest_disable_pthreads=OFF
     INSTALL_COMMAND ""
 )
 
