@@ -53,7 +53,7 @@ stumpless_open_socket_target( const char *name, int options,
 
   if( !name ) {
     raise_argument_empty(  );
-    return NULL;
+    goto fail;
   }
 
   pub_target = alloc_mem( sizeof( *pub_target ) );

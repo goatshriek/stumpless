@@ -210,7 +210,7 @@ namespace {
     ASSERT_TRUE( error != NULL );
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
-/*
+
   TEST( SocketTargetOpenTest, Basic ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
@@ -221,7 +221,7 @@ namespace {
 
     stumpless_close_socket_target( target );
   }
-*/
+
   TEST( SocketTargetOpenTest, MemoryFailure ) {
     struct stumpless_error *error;
     struct stumpless_target *target;
