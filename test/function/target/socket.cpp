@@ -244,6 +244,16 @@ namespace {
     EXPECT_TRUE( result == malloc );
   }
 
+  /*
+   * For some reason, having this test in the same suite as the other two tests
+   * for stumpless_open_socket_target causes a segfault in os x travis build.
+   * I haven't been able to reproduce this locally to troubleshoot, and the
+   * segfault appears to happen before the test even runs (a test that just
+   * asserts true still causes a segfault), and removing either the Basic test
+   * or this test itself makes the error this go away. For now I've simply
+   * renamed the test suite, but a more permanent solution would figure out why
+   * this was happening and stop it.
+   */
   TEST( SocketTargetOpenNullTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
