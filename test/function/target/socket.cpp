@@ -244,7 +244,7 @@ namespace {
     EXPECT_TRUE( result == malloc );
   }
 
-  TEST( SocketTargetOpenTest, NullName ) {
+  TEST( SocketTargetOpenNullTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
