@@ -44,6 +44,7 @@ my %manifest = (
   "LOG_INFO" => "syslog.h",
   "malloc" => "stdlib.h",
   "memcpy" => "string.h",
+  "memset" => "string.h",
   "new_buffer_target" => "private/target/buffer.h",
   "new_rfc5424_timestamp" => "private/formatter.h",
   "new_socket_target" => "private/target/socket.h",

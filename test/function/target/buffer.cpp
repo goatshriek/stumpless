@@ -120,16 +120,27 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, WrapAround ) {
-    size_t bytes_written=0;
+    size_t bytes_written=0, write_count=0, null_count=0, i;
     int result;
+
+    memset( buffer, 0, TEST_BUFFER_LENGTH );
 
     while( bytes_written <= TEST_BUFFER_LENGTH ) {
       result = stumpless_add_entry( target, basic_entry );
       EXPECT_GT( result, 0 );
       EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
+      write_count++;
       bytes_written += result;
     }
+
+    for( i=0; i < TEST_BUFFER_LENGTH; i++ ) {
+      if( buffer[i] == '\0' ) {
+        null_count++;
+      }
+    }
+
+    ASSERT_EQ( null_count, write_count );
   }
 
   /* non-fixture tests */
