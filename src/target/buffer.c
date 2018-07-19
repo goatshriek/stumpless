@@ -71,13 +71,17 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
     goto fail_pub_name;
   }
 
+  pub_target->id = register_priv_target( priv_target );
+  if( pub_target->id < 0 ) {
+    goto fail_pub_name;
+  }
+
   memcpy( pub_target->name, name, name_len );
   pub_target->name[name_len] = '\0';
   pub_target->type = STUMPLESS_BUFFER_TARGET;
   pub_target->options = options;
   pub_target->default_prival =
     get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
-  pub_target->id = register_priv_target( priv_target );
   pub_target->default_app_name = NULL;
   pub_target->default_app_name_length = 0;
   pub_target->default_msgid = NULL;

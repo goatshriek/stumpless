@@ -221,6 +221,23 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( BufferTargetOpenTest, Open100Targets ) {
+    char buffer[100];
+    struct stumpless_target *targets[100];
+    struct stumpless_error *error;
+    size_t i;
+    
+    for( i=0; i < 100; i++ ) {
+      targets[i] = stumpless_open_buffer_target( "many target test", buffer, 100, 0, 0 );
+      ASSERT_TRUE( targets[i] != NULL );
+      ASSERT_EQ( NULL, stumpless_get_error(  ) );
+    }
+
+    for( i=0; i < 100; i++ ) {
+      stumpless_close_buffer_target( targets[i] );
+    }
+  }
+
 }
 
 int
