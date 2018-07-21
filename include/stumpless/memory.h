@@ -25,9 +25,17 @@
 extern "C" {
 #  endif
 
-void * (*stumpless_set_malloc( void *(*malloc_func)(size_t) ) )( size_t );
+void *
+( *stumpless_set_malloc( void * ( *malloc_func )( size_t ) ) )
+( size_t );
 
-void (*stumpless_set_free( void (*free_func)(void *) ) )( void * );
+void
+( *stumpless_set_free( void ( *free_func )( void *) ) )
+( void * );
+
+void *
+( *stumpless_set_realloc( void * ( *realloc_func ) ( void *, size_t) ) )
+( void *, size_t );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

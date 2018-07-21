@@ -23,8 +23,8 @@
 #include "private/memory.h"
 
 typedef void ( *free_func_t ) ( void * );
-typedef void *( *malloc_func_t ) ( size_t );
-typedef void *( *realloc_func_t ) ( void *, size_t );
+typedef void * ( *malloc_func_t ) ( size_t );
+typedef void * ( *realloc_func_t ) ( void *, size_t );
 
 static free_func_t stumpless_free = free;
 static malloc_func_t stumpless_malloc = malloc;
@@ -53,6 +53,19 @@ stumpless_set_free( free_func_t free_func ) {
   } else {
     stumpless_free = free_func;
     return stumpless_free;
+  }
+}
+
+realloc_func_t
+stumpless_set_realloc( realloc_func_t realloc_func ) {
+  clear_error(  );
+
+  if( !realloc_func ) {
+    raise_argument_empty(  );
+    return NULL;
+  } else {
+    stumpless_realloc = realloc_func;
+    return stumpless_realloc;
   }
 }
 

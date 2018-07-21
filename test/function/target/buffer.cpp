@@ -228,7 +228,11 @@ namespace {
     size_t i;
     
     for( i=0; i < 100; i++ ) {
-      targets[i] = stumpless_open_buffer_target( "many target test", buffer, 100, 0, 0 );
+      targets[i] = stumpless_open_buffer_target( "many target test",
+                                                 buffer,
+                                                 100,
+                                                 0,
+                                                 0 );
       ASSERT_TRUE( targets[i] != NULL );
       ASSERT_EQ( NULL, stumpless_get_error(  ) );
     }
@@ -238,6 +242,44 @@ namespace {
     }
   }
 
+  TEST( BufferTargetOpenTest, Open100TargetWithReallocFailure ) {
+    char buffer[100];
+    struct stumpless_target *targets[100];
+    struct stumpless_error *error;
+    int i;
+    void *(*result)(void *, size_t);
+   
+    result = stumpless_set_realloc( [](void *mem, size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( result != NULL );
+ 
+    for( i=0; i < 100; i++ ) {
+      targets[i] = stumpless_open_buffer_target( "target realloc failure test",
+                                                 buffer,
+                                                 100,
+                                                 0,
+                                                 0 );
+      if( targets[i] == NULL ) {
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error != NULL );
+        EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    
+        result = stumpless_set_realloc( realloc );
+        EXPECT_TRUE( result == realloc );
+
+        while( i >= 0 ) {
+          i--;
+          stumpless_close_buffer_target( targets[i] );
+        }
+
+        break;
+      }
+
+    }
+
+    if( i == 0 ) {
+      FAIL(  );
+    }
+  }
 }
 
 int

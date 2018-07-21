@@ -18,5 +18,6 @@ EXPORTS
   stumpless_set_entry_app_name          @16
   stumpless_set_free                    @17
   stumpless_set_malloc                  @18
-  stumpless_set_target_default_app_name @19
-  stumpless_set_target_default_msgid    @20
+  stumpless_set_realloc                 @19
+  stumpless_set_target_default_app_name @20
+  stumpless_set_target_default_msgid    @21

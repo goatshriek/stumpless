@@ -48,6 +48,18 @@ namespace {
     ASSERT_EQ( NULL, result );
   }
 
+  TEST( SetReallocTest, NullFunction ) {
+    void * (*result)(void *, size_t);
+    struct stumpless_error *error;
+
+    result = stumpless_set_realloc( NULL );
+    ASSERT_EQ( NULL, result );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
 }
 
 int main(int argc, char **argv){
