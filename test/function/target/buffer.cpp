@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -242,17 +243,18 @@ namespace {
     }
   }
 
-  TEST( BufferTargetOpenTest, Open100TargetWithReallocFailure ) {
+  TEST( BufferTargetOpenTest, Open200TargetWithReallocFailure ) {
     char buffer[100];
-    struct stumpless_target *targets[100];
+    struct stumpless_target *targets[200];
     struct stumpless_error *error;
     int i;
     void *(*result)(void *, size_t);
    
     result = stumpless_set_realloc( [](void *mem, size_t size)->void *{ return NULL; } );
     EXPECT_TRUE( result != NULL );
+    ASSERT_TRUE( result != realloc );
  
-    for( i=0; i < 100; i++ ) {
+    for( i=0; i < 200; i++ ) {
       targets[i] = stumpless_open_buffer_target( "target realloc failure test",
                                                  buffer,
                                                  100,
@@ -266,7 +268,7 @@ namespace {
         result = stumpless_set_realloc( realloc );
         EXPECT_TRUE( result == realloc );
 
-        while( i >= 0 ) {
+        while( i > 0 ) {
           i--;
           stumpless_close_buffer_target( targets[i] );
         }
@@ -276,9 +278,7 @@ namespace {
 
     }
 
-    if( i == 0 ) {
-      FAIL(  );
-    }
+    ASSERT_EQ( i, 0 );
   }
 }
 
