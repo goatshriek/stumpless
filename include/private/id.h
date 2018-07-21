@@ -23,7 +23,7 @@
 
 struct id_map {
   void **values;
-  size_t map_size;
+  size_t size;
 };
 
 /* returns 0 on error, id otherwise */

@@ -22,11 +22,13 @@
 #include "private/error.h"
 #include "private/memory.h"
 
-typedef void *( *malloc_func_t ) ( size_t );
 typedef void ( *free_func_t ) ( void * );
+typedef void *( *malloc_func_t ) ( size_t );
+typedef void *( *realloc_func_t ) ( void *, size_t );
 
-static malloc_func_t stumpless_malloc = malloc;
 static free_func_t stumpless_free = free;
+static malloc_func_t stumpless_malloc = malloc;
+static realloc_func_t stumpless_realloc = realloc;
 
 malloc_func_t
 stumpless_set_malloc( malloc_func_t malloc_func ) {
@@ -57,11 +59,11 @@ stumpless_set_free( free_func_t free_func ) {
 /* private functions */
 
 void *
-alloc_mem( size_t amount ) {
-  void *mem = stumpless_malloc( amount );
+alloc_mem( size_t size ) {
+  void *mem = stumpless_malloc( size );
+
   if( !mem ) {
     raise_memory_allocation_failure(  );
-    return NULL;
   }
 
   return mem;
@@ -72,4 +74,15 @@ free_mem( void *mem ) {
   if( mem ) {
     stumpless_free( mem );
   }
+}
+
+void *
+realloc_mem( void *mem, size_t size ) {
+  void *new_mem = stumpless_realloc( mem, size );
+
+  if( !new_mem ) {
+    raise_memory_allocation_failure(  );
+  }
+
+  return new_mem;
 }

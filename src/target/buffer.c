@@ -91,7 +91,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   return pub_target;
 
 fail_pub_name:
-  free_mem( priv_target );
+  destroy_buffer_target( priv_target );
 fail_priv_target:
   free_mem( pub_target );
 fail:
