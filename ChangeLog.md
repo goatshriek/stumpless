@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add file target capability.
 
 ## [0.1.1] - 2018-07-21
+### Added
+ - Add `stumpless_set_realloc` function.
+
 ### Fixed
  - Targets are now removed upon closure.
  - Buffer targets now properly advance to write to the next available portion of
