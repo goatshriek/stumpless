@@ -205,6 +205,18 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( SocketTargetCloseTest, BadIdTarget ) {
+    struct stumpless_target *target;
+
+    target = ( struct stumpless_target * ) malloc( sizeof( *target ) );
+    ASSERT_TRUE( target != NULL );
+
+    target->name = NULL;
+    target->id = -33;
+
+    stumpless_close_socket_target( target );
+  }
+
   TEST( SocketTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
 
