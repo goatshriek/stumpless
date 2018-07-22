@@ -39,6 +39,8 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
 
   destroy_buffer_target( get_priv_target( target->id ) );
   unregister_priv_target( target->id );
+  free_mem( target->name );
+  free_mem( target );
 }
 
 struct stumpless_target *
@@ -73,7 +75,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
 
   pub_target->id = register_priv_target( priv_target );
   if( pub_target->id < 0 ) {
-    goto fail_pub_name;
+    goto fail_id;
   }
 
   memcpy( pub_target->name, name, name_len );
@@ -90,6 +92,8 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   stumpless_set_current_target( pub_target );
   return pub_target;
 
+fail_id:
+  free_mem( pub_target->name );
 fail_pub_name:
   destroy_buffer_target( priv_target );
 fail_priv_target:

@@ -40,6 +40,8 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
 
   destroy_socket_target( get_priv_target( target->id ) );
   unregister_priv_target( target->id );
+  free_mem( target->name );
+  free_mem( target );
 }
 
 struct stumpless_target *

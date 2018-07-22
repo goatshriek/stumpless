@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add `stumpless_set_realloc` function.
 
 ### Fixed
- - Targets are now removed upon closure.
+ - Targets are now removed and their memory freed upon closure.
  - Buffer targets now properly advance to write to the next available portion of
    the buffer instead of overwriting previous messages.
  - The `test/function` README is now accurate.
