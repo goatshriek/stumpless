@@ -330,7 +330,7 @@ namespace {
    * renamed the test suite, but a more permanent solution would figure out why
    * this was happening and stop it.
    */
-  TEST( SocketTargetOpenNullTest, NullName ) {
+  TEST( SocketTargetOpenTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
