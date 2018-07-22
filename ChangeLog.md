@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
  - Add file target capability.
 
+## [0.1.1] - 2018-07-21
+### Fixed
+ - Targets are now removed upon closure.
+ - Buffer targets now properly advance to write to the next available portion of
+   the buffer instead of overwriting previous messages.
+
 ## [0.1.0] - 2018-07-08
 ### Added
  - Add socket target capability.
