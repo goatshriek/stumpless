@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
 #include <stddef.h>
 #include <string.h>
 #include <unistd.h>
@@ -66,7 +65,6 @@ stumpless_open_socket_target( const char *name,
 
   pub_target = alloc_mem( sizeof( *pub_target ) );
   if( !pub_target ) {
-    printf("pub target allocation failed\n");
     goto fail;
   }
 
@@ -96,19 +94,16 @@ stumpless_open_socket_target( const char *name,
   }
 
   if( !priv_target ) {
-    printf("private target creation failed\n");
     goto fail_priv_target;
   }
 
   pub_target->name = alloc_mem( name_len + 1 );
   if( !pub_target->name ) {
-    printf("name allocation failed\n");
     goto fail_pub_name;
   }
 
   pub_target->id = register_priv_target( priv_target );
   if( pub_target->id < 0 ) {
-    printf("id creation failed\n");
     goto fail_id;
   }
 
@@ -153,7 +148,6 @@ new_socket_target( const char *dest, size_t dest_len,
 
   trgt = alloc_mem( sizeof( *trgt ) );
   if( !trgt ) {
-    printf("could not allocate private target memory\n");
     return NULL;
   }
 
@@ -168,7 +162,6 @@ new_socket_target( const char *dest, size_t dest_len,
   trgt->local_socket = socket( trgt->local_addr.sun_family, SOCK_DGRAM, 0 );
   if( trgt->local_socket < 0 ) {
     free_mem( trgt );
-    printf("could not open local socket\n");
     return NULL;
   }
 
@@ -176,7 +169,6 @@ new_socket_target( const char *dest, size_t dest_len,
       ( trgt->local_socket, ( struct sockaddr * ) &trgt->local_addr,
         sizeof( trgt->local_addr ) ) < 0 ) {
     free_mem( trgt );
-    printf("could not bind to local socket\n");
     return NULL;
   }
 

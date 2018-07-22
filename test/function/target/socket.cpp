@@ -98,12 +98,8 @@ namespace {
   };
 
   TEST_F( SocketTargetTest, AddEntry ) {
-    struct stumpless_error *error;
-
     stumpless_add_entry( target, basic_entry );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-    error = stumpless_get_error(  );
-    if( error ) { printf( "error id: %d\n", error->id ); }
     GetNextMessage(  );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
