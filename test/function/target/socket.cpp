@@ -285,6 +285,18 @@ namespace {
     EXPECT_TRUE( result == malloc );
   }
 
+  TEST( SocketTargetOpenTest, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_socket_target( NULL, NULL, 0, 0 );
+    ASSERT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST( SocketTargetOpenTest, Open200TargetsWithReallocFailure ) {
     struct stumpless_target *targets[200];
     struct stumpless_error *error;
@@ -318,28 +330,6 @@ namespace {
     }
 
     ASSERT_EQ( i, 0 );
-  }
-
-  /*
-   * For some reason, having this test in the same suite as the other two tests
-   * for stumpless_open_socket_target causes a segfault in os x travis build.
-   * I haven't been able to reproduce this locally to troubleshoot, and the
-   * segfault appears to happen before the test even runs (a test that just
-   * asserts true still causes a segfault), and removing either the Basic test
-   * or this test itself makes the error this go away. For now I've simply
-   * renamed the test suite, but a more permanent solution would figure out why
-   * this was happening and stop it.
-   */
-  TEST( SocketTargetOpenTest, NullName ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
-
-    target = stumpless_open_socket_target( NULL, NULL, 0, 0 );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }
