@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +59,7 @@ namespace {
  
         bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr));
 
-        target = stumpless_open_socket_target( socket_name, 0, 0 );
+        target = stumpless_open_socket_target( socket_name, "test-function-target-socket", 0, 0 );
 
         basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                            STUMPLESS_SEVERITY_INFO,
@@ -97,8 +98,12 @@ namespace {
   };
 
   TEST_F( SocketTargetTest, AddEntry ) {
+    struct stumpless_error *error;
+
     stumpless_add_entry( target, basic_entry );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    error = stumpless_get_error(  );
+    if( error ) { printf( "error id: %d\n", error->id ); }
     GetNextMessage(  );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
@@ -115,7 +120,7 @@ namespace {
     int add_result;
    
     set_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_result != NULL );
+    EXPECT_TRUE( set_result != NULL );
 
     add_result = stumpless_add_entry( target, basic_entry );
     EXPECT_LT( add_result, 0 );
@@ -127,7 +132,9 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
 
-    stumpless_set_malloc( malloc );
+    set_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_result != NULL );
+    EXPECT_TRUE( set_result == malloc );
   }
 
   TEST_F( SocketTargetTest, AddEntryToBadIdTarget ) {
@@ -135,6 +142,7 @@ namespace {
     struct stumpless_error *error;
     int result;
 
+    ASSERT_TRUE( target != NULL );
     memcpy( &target_copy, target, sizeof( *target ) );
     target_copy.id = -33;
 
@@ -160,7 +168,7 @@ namespace {
                                 "basic-entry",
                                 "basic test message" );
 
-    target = stumpless_open_socket_target( "basic-socket-target", 0, 0 );
+    target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
     ASSERT_TRUE( target != NULL );
     ASSERT_EQ( NULL, stumpless_get_error(  ) );
 
@@ -215,7 +223,7 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
-    target = stumpless_open_socket_target( "basic-socket-target", 0, 0 );
+    target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
     ASSERT_TRUE( target != NULL );
     ASSERT_EQ( NULL, stumpless_get_error(  ) );
 
@@ -230,7 +238,7 @@ namespace {
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     EXPECT_TRUE( result != NULL );
 
-    target = stumpless_open_socket_target( "basic-socket-target", 0, 0 );
+    target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
     EXPECT_EQ( NULL, target );
 
     error = stumpless_get_error(  );
@@ -242,6 +250,41 @@ namespace {
 
     result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( result == malloc );
+  }
+
+  TEST( SocketTargetOpenTest, Open200TargetsWithReallocFailure ) {
+    struct stumpless_target *targets[200];
+    struct stumpless_error *error;
+    int i;
+    void *(*result)(void *, size_t);
+   
+    result = stumpless_set_realloc( [](void *mem, size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( result != NULL );
+    ASSERT_TRUE( result != realloc );
+ 
+    for( i=0; i < 200; i++ ) {
+      targets[i] = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
+      if( targets[i] == NULL ) {
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error != NULL );
+        if( error != NULL ) {
+          EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+        }
+    
+        result = stumpless_set_realloc( realloc );
+        EXPECT_TRUE( result == realloc );
+
+        while( i > 0 ) {
+          i--;
+          stumpless_close_socket_target( targets[i] );
+        }
+
+        break;
+      }
+
+    }
+
+    ASSERT_EQ( i, 0 );
   }
 
   /*
@@ -258,7 +301,7 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
-    target = stumpless_open_socket_target( NULL, 0, 0 );
+    target = stumpless_open_socket_target( NULL, NULL, 0, 0 );
     ASSERT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );

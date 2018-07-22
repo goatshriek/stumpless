@@ -8,7 +8,7 @@
 A very simple logging library.
 
 Current features include:
-* nothing! (yet)
+* RFC 5424 compliant logging to Linux sockets and character buffers.
 
 ## Documentation
 If you're curious about how something in stumpless works, you can check the

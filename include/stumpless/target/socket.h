@@ -28,10 +28,14 @@
 extern "C" {
 #  endif
 
-  void stumpless_close_socket_target( struct stumpless_target *target );
-  struct stumpless_target *stumpless_open_socket_target( const char *name,
-                                                         int options,
-                                                         int default_facility );
+  void
+  stumpless_close_socket_target( struct stumpless_target *target );
+
+  struct stumpless_target *
+  stumpless_open_socket_target( const char *name,
+                                const char *local_socket,
+                                int options,
+                                int default_facility );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

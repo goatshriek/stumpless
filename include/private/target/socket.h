@@ -32,9 +32,15 @@ struct socket_target {
   int local_socket;
 };
 
-void destroy_socket_target( struct socket_target *trgt );
-struct socket_target *new_socket_target( const char *dest, size_t dest_len );
-int sendto_socket_target( const struct socket_target *target,
-                          const char *msg );
+void
+destroy_socket_target( struct socket_target *trgt );
+
+struct socket_target *
+new_socket_target( const char *dest, size_t dest_len,
+                   const char *source, size_t source_len );
+
+int
+sendto_socket_target( const struct socket_target *target,
+                      const char *msg );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_SOCKET_H */

@@ -243,7 +243,7 @@ namespace {
     }
   }
 
-  TEST( BufferTargetOpenTest, Open200TargetWithReallocFailure ) {
+  TEST( BufferTargetOpenTest, Open200TargetsWithReallocFailure ) {
     char buffer[100];
     struct stumpless_target *targets[200];
     struct stumpless_error *error;
@@ -263,7 +263,9 @@ namespace {
       if( targets[i] == NULL ) {
         error = stumpless_get_error(  );
         EXPECT_TRUE( error != NULL );
-        EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+        if( error != NULL ) {
+          EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+        }
     
         result = stumpless_set_realloc( realloc );
         EXPECT_TRUE( result == realloc );
