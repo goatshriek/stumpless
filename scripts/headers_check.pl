@@ -54,6 +54,7 @@ my %manifest = (
   "printf" => "stdio.h",
   "raise_invalid_id" => "private/error.h",
   "raise_memory_allocation_failure" => "private/error.h",
+  "raise_socket_bind_failure" => "private/error.h",
   "realloc" => "stdlib.h",
   "realloc_mem" => "private/memory.h",
   "recvfrom" => "sys/socket.h",

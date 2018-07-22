@@ -27,6 +27,7 @@ void raise_argument_too_big( void );
 void raise_error( enum stumpless_error_id id );
 void raise_invalid_id( void );
 void raise_memory_allocation_failure( void );
+void raise_socket_bind_failure( void );
 void raise_target_unsupported( void );
 
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

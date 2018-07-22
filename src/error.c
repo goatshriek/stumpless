@@ -73,6 +73,11 @@ raise_memory_allocation_failure( void ) {
 }
 
 void
+raise_socket_bind_failure( void ) {
+  raise_error( STUMPLESS_SOCKET_BIND_FAILURE );
+}
+
+void
 raise_target_unsupported( void ) {
   raise_error( STUMPLESS_TARGET_UNSUPPORTED );
 }

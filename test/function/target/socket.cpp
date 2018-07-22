@@ -226,6 +226,31 @@ namespace {
     stumpless_close_socket_target( target );
   }
 
+  TEST( SocketTargetOpenTest, LocalSocketAlreadyExists ) {
+    struct sockaddr_un local_socket_addr;
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    const char *local_socket_name = "taken";
+    int local_socket;
+
+    local_socket_addr.sun_family = AF_UNIX;
+    memcpy(&local_socket_addr.sun_path, local_socket_name, strlen(local_socket_name)+1);
+    local_socket = socket(local_socket_addr.sun_family, SOCK_DGRAM, 0);
+    bind(local_socket, (struct sockaddr *) &local_socket_addr, sizeof(local_socket_addr));
+
+    target = stumpless_open_socket_target( "socket-taken-test", local_socket_name, 0, 0 );
+    EXPECT_EQ( NULL, target );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_SOCKET_BIND_FAILURE );
+    }
+
+    close( local_socket );
+    unlink( local_socket_name );
+  }
+
   TEST( SocketTargetOpenTest, MemoryFailure ) {
     struct stumpless_error *error;
     struct stumpless_target *target;

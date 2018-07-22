@@ -24,7 +24,6 @@
 #include <stumpless/target/socket.h>
 #include "private/entry.h"
 #include "private/error.h"
-#include "private/id.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/socket.h"
@@ -169,6 +168,7 @@ new_socket_target( const char *dest, size_t dest_len,
       ( trgt->local_socket, ( struct sockaddr * ) &trgt->local_addr,
         sizeof( trgt->local_addr ) ) < 0 ) {
     free_mem( trgt );
+    raise_socket_bind_failure(  );
     return NULL;
   }
 
