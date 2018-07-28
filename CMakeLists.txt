@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-project(stumpless VERSION 1.0.0)
+project(stumpless VERSION 1.0.1)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -309,7 +309,7 @@ endif(WIN32)
 ExternalProject_Add(benchmark
     URL https://github.com/google/benchmark/archive/master.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
-    CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON
+    CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE
     INSTALL_COMMAND ""
 )
 
@@ -330,21 +330,33 @@ set_target_properties(libbenchmark PROPERTIES
 )
 include_directories("${source_dir}/include")
 
-add_executable(bench-stumpless
+add_executable(perf-target
   EXCLUDE_FROM_ALL
-  test/performance/stumpless.cpp
+  test/performance/target.cpp
 )
-target_link_libraries(bench-stumpless
+
+target_link_libraries(perf-target
   stumpless
   libbenchmark
 )
 
-target_include_directories(bench-stumpless PRIVATE include)
+set_target_properties(perf-target
+  PROPERTIES
+  OUTPUT_NAME "target"
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/performance"
+)
+
+target_include_directories(perf-target
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
 
 add_custom_target(bench
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bench-stumpless
-    DEPENDS bench-stumpless
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test/performance/target
+    DEPENDS perf-target
 )
+
 
 # add in the swig project
 if(BUILD_PYTHON)

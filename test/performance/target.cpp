@@ -14,15 +14,37 @@
  * limitations under the License.
  */
 
+#include <stdlib.h>
 #include <benchmark/benchmark.h>
-#include <stumpless/target/socket.h>
+#include <stumpless.h>
 
-static void StumplessString(benchmark::State& state){
+static size_t alloc_count=0;
+
+void *malloc_counter(size_t size){
+  alloc_count += size;
+  return malloc(size);
+}
+
+static void Stumpless(benchmark::State& state){
+  char buffer[1000];
+  struct stumpless_target *target;
+
+  alloc_count = 0;
+  stumpless_set_malloc( malloc_counter );
+
+  target = stumpless_open_buffer_target( "stumpless-perf", buffer, 1000, 0, 0 );
+  stumpless_set_current_target( target );
+
   for(auto _ : state){
     stumpless("testing");
   }
+
+  stumpless_close_buffer_target( target );
+  stumpless_set_malloc( malloc );
+
+  state.counters["MemoryAllocated"] = alloc_count;
 }
 
-BENCHMARK(StumplessString);
+BENCHMARK(Stumpless);
 
 BENCHMARK_MAIN();

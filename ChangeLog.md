@@ -8,20 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add file target capability.
  - Add windows event log target capability.
 
-## [1.0.0] - 2018-07-22
+## [1.0.1] - 2018-07-28
 ### Added
- - Add `stumpless_set_realloc` function.
-
-### Changed
- - Added local socket parameter to `stumpless_open_socket_target` function.
+ - Benchmark tests measure the amount of memory allocated.
 
 ### Fixed
- - Targets are now removed and their memory freed upon closure.
- - Buffer targets now properly advance to write to the next available portion of
-   the buffer instead of overwriting previous messages.
- - The `test/function` README is now accurate.
+ - Removed versions prior to 1.0.0 to match repository history.
+ - Benchmark tests now function properly.
 
-## [0.1.0] - 2018-07-08
+## [1.0.0] - 2018-07-28
 ### Added
  - Add socket target capability.
  - Add buffer target capability.
