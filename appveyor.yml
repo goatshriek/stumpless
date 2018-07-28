@@ -1,0 +1,36 @@
+version: 1.0.{build}-{branch}
+
+clone_folder: c:\project\stumpless
+
+configuration:
+- Release
+- Debug
+
+image:
+- Visual Studio 2017
+- Visual Studio 2015
+
+platform:
+- x64
+
+environment:
+  matrix:
+  - arch: Win64
+
+init:
+- set arch=
+- if "%arch%"=="Win64" ( set arch= Win64)
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%arch%" )
+
+before_build:
+- cmd: |-
+    mkdir build
+    cd build
+    cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration%
+
+build:
+  project: c:\project\stumpless\build\stumpless.vcxproj
+
+test_script:
+  - msbuild c:\project\stumpless\build\check.vcxproj
