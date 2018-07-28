@@ -1,0 +1,9 @@
+*.c~
+*.cpp~
+*.h~
+*.hpp~
+*.o
+*.log
+*.so
+.vs/*
+CMakeSettings.json

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stumpless | stumpless</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+doxygen.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">stumpless</a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-dox-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path d="m6 0c-3.3144 0-6 2.6856-6 6 0 3.3144 2.6856 6 6 6 1.4858 0 2.8463-0.54083 3.8945-1.4355-0.0164 0.33797 0.14734 0.75854 0.5 1.1504l3.2227 3.7891c0.55185 0.6139 1.4517 0.66544 2.002 0.11524 0.55022-0.55022 0.49866-1.4501-0.11524-2.002l-3.7891-3.2246c-0.39184-0.35266-0.81242-0.51469-1.1504-0.5 0.89472-1.0482 1.4355-2.4088 1.4355-3.8945 0-3.3128-2.6856-5.998-6-5.998zm0 1.5625a4.4375 4.4375 0 0 1 4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375-4.4375 4.4375 4.4375 0 0 1 4.4375-4.4375z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-dox-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <path d="m6 0c-3.3144 0-6 2.6856-6 6 0 3.3144 2.6856 6 6 6 1.4858 0 2.8463-0.54083 3.8945-1.4355-0.0164 0.33797 0.14734 0.75854 0.5 1.1504l3.2227 3.7891c0.55185 0.6139 1.4517 0.66544 2.002 0.11524 0.55022-0.55022 0.49866-1.4501-0.11524-2.002l-3.7891-3.2246c-0.39184-0.35266-0.81242-0.51469-1.1504-0.5 0.89472-1.0482 1.4355-2.4088 1.4355-3.8945 0-3.3128-2.6856-5.998-6-5.998zm0 1.5625a4.4375 4.4375 0 0 1 4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375-4.4375 4.4375 4.4375 0 0 1 4.4375-4.4375z"/>
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          Stumpless
+        </h1>
+<p>A logging library built with a <a href="https://github.com/goatshriek/stumpless/blob/master/docs/vision.md">vision</a>: a rich and intuitive interface, standards compliance, fast performance, and a small footprint.</p><p>Currently stumpless offers <a href="https://tools.ietf.org/html/rfc5424">standardized</a> logging to the following targets:</p><ul><li>network servers (<a href="https://tools.ietf.org/html/rfc5426">UDP</a> or <a href="https://tools.ietf.org/html/rfc6587">TCP</a> over IPv4 or IPv6)</li><li>files</li><li>streams</li><li>Linux sockets</li><li>the Windows Event Log</li><li>character buffers</li></ul><h3>Basic Usage</h3><p>If you want to start off slow, then you can use the <code>stumplog</code> function as a direct replacement for the syslog function:</p><pre class="m-code"><span class="n">syslog</span><span class="p">(</span> <span class="n">LOG_INFO</span> <span class="o">|</span> <span class="n">LOG_USER</span><span class="p">,</span> <span class="s">&quot;My message&quot;</span> <span class="p">);</span>
+
+<span class="c1">// the above can be directly replaced with:</span>
+<span class="n">stumplog</span><span class="p">(</span> <span class="n">LOG_INFO</span> <span class="o">|</span> <span class="n">LOG_USER</span><span class="p">,</span> <span class="s">&quot;My message&quot;</span> <span class="p">);</span></pre><p>If you haven&#x27;t opened a target, this will log messages to the default target for the platform: on a Linux this is <code>/dev/log</code>, on a Mac system this will be <code>/var/run/syslog</code>, and on a Windows machine it is the Windows Event Log. If you open a target or a few before calling <code>stumplog</code>, then logs will be sent to the most recently opened target.</p><p>If you want an even shorter function call, you can use the <code>stumpless</code> function to just send a message to the default target:</p><pre class="m-code"><span class="n">stumpless</span><span class="p">(</span> <span class="s">&quot;My message&quot;</span> <span class="p">);</span></pre><p>And of course, you can use format specifiers in both functions just as you would with <code>printf</code>:</p><pre class="m-code"><span class="n">stumpless</span><span class="p">(</span> <span class="s">&quot;Login attempt failure #%d for user %s&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">username</span> <span class="p">);</span></pre><p>If you want to open your own target, then you simply open the target that you want and start sending messages. For example, to log to a file:</p><pre class="m-code"><span class="n">target</span> <span class="o">=</span> <span class="n">stumpless_open_file_target</span><span class="p">(</span> <span class="s">&quot;example.log&quot;</span><span class="p">,</span>
+                                     <span class="n">STUMPLESS_OPTION_NONE</span><span class="p">,</span>
+                                     <span class="n">STUMPLESS_FACILITY_USER</span> <span class="p">);</span>
+<span class="c1">// uses the last opened target by default</span>
+<span class="n">stumpless</span><span class="p">(</span> <span class="s">&quot;Login attempt failure #%d for user %s&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">username</span> <span class="p">);</span></pre><p>Sending messages over the network to something like Splunk or rsyslog is just as easy:</p><pre class="m-code"><span class="n">target</span> <span class="o">=</span> <span class="n">stumpless_open_udp4_target</span><span class="p">(</span> <span class="s">&quot;send-to-splunk-example&quot;</span><span class="p">,</span>
+                                     <span class="s">&quot;mylogserver.com&quot;</span><span class="p">,</span> <span class="c1">// or use an IP</span>
+                                     <span class="n">STUMPLESS_OPTION_NONE</span><span class="p">,</span>
+                                     <span class="n">STUMPLESS_FACILITY_USER</span> <span class="p">);</span>
+<span class="n">stumpless</span><span class="p">(</span> <span class="s">&quot;Login attempt failure #%d for user %s&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">username</span> <span class="p">);</span></pre><p>If you have multiple targets, you can send messages to a chosen target like this:</p><pre class="m-code"><span class="n">stumpless_add_message</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span>
+                       <span class="s">&quot;Login attempt failure #%d for user %s&quot;</span><span class="p">,</span>
+                       <span class="n">count</span><span class="p">,</span>
+                       <span class="n">username</span> <span class="p">);</span></pre><p>It&#x27;s as easy as that! For more detailed examples of different targets and more complicated message structures, check out the <a href="https://github.com/goatshriek/stumpless/tree/master/docs/examples">examples</a>. for detailed walkthroughs and annotated example code for using various features of the library.</p><h3>Further Documentation</h3><p>If you&#x27;re curious about how something in stumpless works that isn&#x27;t explained here, you can check the appropriate section of the documentation, stored in the docs folder of the repository. Folders in the repository contain their own README files that detail what they contain and any other relevant information.</p>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-dox-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-dox-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-dox-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search.js"></script>
+<script src="searchdata.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>stumpless. Created by <a href="https://doxygen.org/">Doxygen</a> 1.8.13 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>
