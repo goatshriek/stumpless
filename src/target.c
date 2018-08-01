@@ -33,10 +33,10 @@
 
 static struct stumpless_target *current_target = NULL;
 static struct id_map *priv_targets = NULL;
+static struct stumpless_entry *cached_entry = NULL;
 
 int
 stumpless( const char *message ) {
-  struct stumpless_entry *entry;
   struct stumpless_target *target;
   int result, severity, facility;
 
@@ -47,37 +47,39 @@ stumpless( const char *message ) {
     return -1;
   }
 
-  // todo this entry creation should happen only once, not every time an event
-  // is logged
-  facility = get_facility(current_target->default_prival);
-  severity = get_severity(current_target->default_prival);
-  entry = stumpless_new_entry( facility, severity, "-", "-", message );
-  if( !entry ) {
-    return -1;
-  }
-
-  if( target->default_app_name ){
-    entry->app_name = alloc_mem( target->default_app_name_length );
-    if( !entry->app_name ){
+  if( !cached_entry ) {
+    cached_entry = stumpless_new_entry( 0, 0, "-", "-", message );
+    if( !cached_entry ) {
       return -1;
     }
- 
-    memcpy( entry->app_name, target->default_app_name, target->default_app_name_length );
-    entry->app_name_length = target->default_app_name_length;
-  }
 
-  if( target->default_msgid ){
-    entry->msgid = alloc_mem( target->default_msgid_length );
-    if( !entry->msgid ){
-      return -1;
+    cached_entry->prival = current_target->default_prival;
+
+    if( target->default_app_name ){
+      cached_entry->app_name = alloc_mem( target->default_app_name_length );
+      if( !cached_entry->app_name ){
+        return -1;
+      }
+   
+      memcpy( cached_entry->app_name, target->default_app_name, target->default_app_name_length );
+      cached_entry->app_name_length = target->default_app_name_length;
     }
- 
-    memcpy( entry->msgid, target->default_msgid, target->default_msgid_length );
-    entry->msgid_length = target->default_msgid_length;
+  
+    if( target->default_msgid ){
+      cached_entry->msgid = alloc_mem( target->default_msgid_length );
+      if( !cached_entry->msgid ){
+        return -1;
+      }
+   
+      memcpy( cached_entry->msgid, target->default_msgid, target->default_msgid_length );
+      cached_entry->msgid_length = target->default_msgid_length;
+    }
+
   }
 
-  result = stumpless_add_entry( target, entry );
-  stumpless_destroy_entry( entry );
+  stumpless_set_entry_message( cached_entry, message );
+
+  result = stumpless_add_entry( target, cached_entry );
   return result;
 }
 

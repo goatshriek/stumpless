@@ -190,6 +190,10 @@ extern "C" {
   stumpless_set_entry_app_name( struct stumpless_entry *entry,
                                 const char *app_name );
 
+  struct stumpless_entry *
+  stumpless_set_entry_message( struct stumpless_entry *entry,
+                               const char *message );
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif

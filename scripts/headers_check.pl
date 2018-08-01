@@ -103,6 +103,7 @@ my %manifest = (
   "stumpless_open_buffer_target" => "stumpless/target/buffer.h",
   "stumpless_open_socket_target" => "stumpless/target/socket.h",
   "stumpless_set_current_target" => "stumpless/target.h",
+  "stumpless_set_entry_message" => "stumpless/entry.h",
   "stumpless_set_free" => "stumpless/memory.h",
   "stumpless_set_malloc" => "stumpless/memory.h",
   "STUMPLESS_SOCKET_NAME" => "stumpless/target/socket.h",
