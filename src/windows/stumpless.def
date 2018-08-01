@@ -21,3 +21,4 @@ EXPORTS
   stumpless_set_realloc                 @19
   stumpless_set_target_default_app_name @20
   stumpless_set_target_default_msgid    @21
+  stumpless_set_entry_message           @22

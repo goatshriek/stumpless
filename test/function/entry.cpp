@@ -342,7 +342,20 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-  } 
+  }
+
+  TEST( SetMessageTest, NullEntry ) {
+    struct stumpless_entry *result;
+    struct stumpless_error *error;
+
+    result = stumpless_set_entry_message( NULL, "test-message" );
+    ASSERT_EQ( NULL, result );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
 }
 
 int main(int argc, char **argv){

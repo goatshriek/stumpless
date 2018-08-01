@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add file target capability.
  - Add windows event log target capability.
 
-## [1.0.1] - 2018-07-28
+## [1.1.0] - 2018-07-28
 ### Added
  - Benchmark tests measure the amount of memory allocated.
+ - Add `stumpless_set_entry_message` function.
 
 ### Fixed
  - Removed versions prior to 1.0.0 to match repository history.

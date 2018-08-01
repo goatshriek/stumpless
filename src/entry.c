@@ -279,6 +279,30 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_nam
   }
 }
 
+struct stumpless_entry *
+stumpless_set_entry_message( struct stumpless_entry *entry,
+                             const char *message ){
+  char *converted_message;
+  size_t message_length;
+
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  converted_message = cstring_to_sized_string( message, &( message_length ) );
+  if( !converted_message ) {
+    return NULL;
+  } else {
+    free_mem( entry->message );
+    entry->message = converted_message;
+    entry->message_length = message_length;
+    return entry;
+  }
+}
+
 /* private functions */
 
 int
