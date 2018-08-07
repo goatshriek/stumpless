@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"
@@ -139,26 +140,21 @@ strbuilder_to_string( struct strbuilder *builder ) {
 }
 
 struct strbuilder *
-strbuilder_new(  ) {
-  return strbuilder_new_sized( STRBUILDER_DEFAULT_BUFFER_SIZE );
-}
-
-struct strbuilder *
-strbuilder_new_sized( size_t size ) {
+strbuilder_new( void ) {
   struct strbuilder *builder;
   char *buffer;
+  size_t size;
 
   builder = alloc_mem( sizeof( *builder ) );
   if( !builder ) {
-    raise_memory_allocation_failure(  );
-    return NULL;
+    goto fail;
   }
+
+  size = config_getpagesize(  );
 
   buffer = alloc_mem( size );
   if( !buffer ) {
-    free_mem( builder );
-    raise_memory_allocation_failure(  );
-    return NULL;
+    goto fail_buffer;
   }
 
   builder->buffer = buffer;
@@ -166,4 +162,9 @@ strbuilder_new_sized( size_t size ) {
   builder->buffer_end = buffer + size;
 
   return builder;
+
+fail_buffer:
+  free_mem( builder );
+fail:
+  return NULL;
 }

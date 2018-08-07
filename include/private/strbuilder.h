@@ -21,8 +21,6 @@
 
 #  include <stddef.h>
 
-#  define STRBUILDER_DEFAULT_BUFFER_SIZE 1024
-
 struct strbuilder {
   char *buffer;
   char *position;
@@ -38,6 +36,5 @@ struct strbuilder *strbuilder_append_string( struct strbuilder *builder,
 void strbuilder_destroy( struct strbuilder *builder );
 char *strbuilder_to_string( struct strbuilder *builder );
 struct strbuilder *strbuilder_new( void );
-struct strbuilder *strbuilder_new_sized( size_t size );
 
 #endif /* __STUMPLESS_PRIVATE_STRBUILDER_H */

@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stumpless/memory.h>
+#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/memory.h"
 
@@ -87,6 +88,18 @@ free_mem( void *mem ) {
   if( mem ) {
     stumpless_free( mem );
   }
+}
+
+size_t
+get_paged_size( size_t size ) {
+  size_t paged_size;
+
+  paged_size = config_getpagesize(  );
+  while( paged_size < size ) {
+    paged_size *= 2;
+  }
+
+  return paged_size;
 }
 
 void *

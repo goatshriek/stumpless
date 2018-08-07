@@ -30,6 +30,11 @@ unistd_gethostname( char *buffer, size_t namelen ) {
   return result;
 }
 
+size_t
+unistd_getpagesize( void ) {
+  return ( size_t ) getpagesize(  );
+}
+
 int
 unistd_getpid( void ) {
   return ( int ) ( getpid(  ) );
