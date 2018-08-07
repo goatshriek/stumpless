@@ -24,7 +24,7 @@
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 
-#define TEST_BUFFER_LENGTH 1024
+#define TEST_BUFFER_LENGTH 1048576
 
 using::testing::HasSubstr;
 
