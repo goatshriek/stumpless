@@ -19,7 +19,6 @@ set(STUMPLESS_SOURCES
   src/entry.c
   src/error.c
   src/formatter.c
-  src/id.c
   src/memory.c
   src/strbuilder.c
   src/strhelper.c

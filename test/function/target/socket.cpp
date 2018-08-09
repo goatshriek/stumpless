@@ -140,7 +140,7 @@ namespace {
 
     ASSERT_TRUE( target != NULL );
     memcpy( &target_copy, target, sizeof( *target ) );
-    target_copy.id = -33;
+    target_copy.id = NULL;
 
     result = stumpless_add_entry( &target_copy, basic_entry );
     EXPECT_LT( result, 0 );
@@ -151,35 +151,6 @@ namespace {
   }
 
   /* non-fixture tests */
-
-  TEST( SocketTargetAddTest, AddAfterClose ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
-    struct stumpless_entry *entry;
-    int result;
-
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                "stumpless-unit-test",
-                                "basic-entry",
-                                "basic test message" );
-
-    target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
-    ASSERT_TRUE( target != NULL );
-    ASSERT_EQ( NULL, stumpless_get_error(  ) );
-
-
-    stumpless_close_socket_target( target );
-
-    result = stumpless_add_entry( target, entry );
-    EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_INVALID_ID );
-
-    stumpless_destroy_entry( entry );
-  }
 
   TEST( SocketTargetAddTest, Uninitialized ) {
     struct stumpless_target target;
@@ -194,7 +165,7 @@ namespace {
                                 "basic test message" );
 
     target.type = STUMPLESS_SOCKET_TARGET;
-    target.id = 4;
+    target.id = NULL;
     result = stumpless_add_entry( &target, entry );
     EXPECT_LT( result, 0 );
 
@@ -212,7 +183,7 @@ namespace {
     ASSERT_TRUE( target != NULL );
 
     target->name = NULL;
-    target->id = -33;
+    target->id = NULL;
 
     stumpless_close_socket_target( target );
   }
@@ -296,42 +267,6 @@ namespace {
     ASSERT_TRUE( error != NULL );
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
-
-  TEST( SocketTargetOpenTest, Open200TargetsWithReallocFailure ) {
-    struct stumpless_target *targets[200];
-    struct stumpless_error *error;
-    int i;
-    void *(*result)(void *, size_t);
-   
-    result = stumpless_set_realloc( [](void *mem, size_t size)->void *{ return NULL; } );
-    EXPECT_TRUE( result != NULL );
-    ASSERT_TRUE( result != realloc );
- 
-    for( i=0; i < 200; i++ ) {
-      targets[i] = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
-      if( targets[i] == NULL ) {
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error != NULL );
-        if( error != NULL ) {
-          EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-        }
-    
-        result = stumpless_set_realloc( realloc );
-        EXPECT_TRUE( result == realloc );
-
-        while( i > 0 ) {
-          i--;
-          stumpless_close_socket_target( targets[i] );
-        }
-
-        break;
-      }
-
-    }
-
-    ASSERT_EQ( i, 0 );
-  }
-
 }
 
 int

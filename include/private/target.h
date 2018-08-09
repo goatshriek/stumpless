@@ -19,15 +19,6 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_H
 #  define __STUMPLESS_PRIVATE_TARGET_H
 
-void *
-get_priv_target( stumpless_id_t id );
-
-stumpless_id_t
-register_priv_target( void *target );
-
-void
-unregister_priv_target( stumpless_id_t id );
-
 int
 target_unsupported( const struct stumpless_target *target,
                     const char *msg );

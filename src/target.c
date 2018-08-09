@@ -25,7 +25,6 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/formatter.h"
-#include "private/id.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
 #include "private/target.h"
@@ -87,7 +86,6 @@ int
 stumpless_add_entry( struct stumpless_target *target,
                      struct stumpless_entry *entry ) {
   char *message;
-  void *priv_target;
 
   clear_error(  );
 
@@ -101,17 +99,16 @@ stumpless_add_entry( struct stumpless_target *target,
     return -1;
   }
 
-  priv_target = get_by_id( priv_targets, target->id );
-  if( !priv_target ) {
+  if( !target->id ) {
     raise_invalid_id(  );
     return -1;
   }
 
   switch ( target->type ) {
     case STUMPLESS_SOCKET_TARGET:
-      return config_sendto_socket_target( priv_target, message );
+      return config_sendto_socket_target( target->id, message );
     case STUMPLESS_BUFFER_TARGET:
-      return sendto_buffer_target( priv_target, message );
+      return sendto_buffer_target( target->id, message );
     default:
       return target_unsupported( target, message );
   }
@@ -170,28 +167,6 @@ stumpless_set_target_default_msgid(struct stumpless_target *target,
 }
 
 /* private definitions */
-
-void *
-get_priv_target( stumpless_id_t id ) {
-  return get_by_id( priv_targets, id );
-}
-
-stumpless_id_t
-register_priv_target( void *target ) {
-  if( !priv_targets ) {
-    priv_targets = new_id_map(  );
-    if( !priv_targets ) {
-      return -1;
-    }
-  }
-
-  return add_to_id_map( priv_targets, target );
-}
-
-void
-unregister_priv_target( stumpless_id_t id ) {
-  remove_by_id( priv_targets, id );
-}
 
 int
 target_unsupported( const struct stumpless_target *target, const char *msg ) {
