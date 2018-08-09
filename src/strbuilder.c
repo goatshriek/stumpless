@@ -18,10 +18,8 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "private/config/wrapper.h"
-#include "private/error.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"
 
@@ -33,7 +31,7 @@ increase_size( struct strbuilder *builder ) {
   old_buffer = builder->buffer;
   old_size = builder->buffer_end - old_buffer;
   new_size = old_size * 2;
-  new_buffer = realloc( old_buffer, new_size );
+  new_buffer = realloc_mem( old_buffer, new_size );
   if( !new_buffer ) {
     return 0;
   }
