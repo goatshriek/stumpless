@@ -105,6 +105,31 @@ namespace {
     TestRFC5424Compliance( buffer );
   }
 
+  TEST_F( BufferTargetTest, LargeReallocFailure ) {
+    char test_string[4096];
+    void * (*realloc_result)(void *, size_t);
+    int result;
+    struct stumpless_error *error;
+
+    ASSERT_EQ( target, stumpless_get_current_target(  ) );
+
+    realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    EXPECT_TRUE( realloc_result != NULL );
+
+    memset( test_string, 'h', 4095 );
+    test_string[4095] = '\0';
+    result = stumpless( test_string );
+
+    EXPECT_LT( result, 0 );
+    
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    
+    realloc_result = stumpless_set_realloc( realloc );
+    ASSERT_TRUE( realloc == realloc_result );
+  }
+
   TEST_F( BufferTargetTest, OverFill ) {
     char test_string[TEST_BUFFER_LENGTH + 1];
     struct stumpless_error *error;
