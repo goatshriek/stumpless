@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,47 @@
 #include "private/config/wrapper.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"
+
+static size_t entry_size = sizeof( struct strbuilder );
+static size_t cache_size;
+char cache_locks[200];
+void *cached_builders = NULL;
+
+struct strbuilder *
+strbuilder_cache_alloc( void ) {
+  size_t initial_size, i;
+  int *status;
+
+  if( !cached_builders ) {
+    initial_size = get_paged_size( entry_size );
+    cached_builders = alloc_mem( initial_size );
+    if( !cached_builders ) {
+      return NULL;
+    }
+
+    cache_size = initial_size / entry_size;
+    for( i = 0; i < cache_size; i++ ) {
+      cache_locks[i] = 0;
+    }
+  }
+
+  for( i = 0; i < cache_size; i++ ) {
+    if( cache_locks[i] == 0 ) {
+      cache_locks[i] = 1;
+      return cached_builders + ( i * sizeof( struct strbuilder ) );
+    }
+  }
+
+  return NULL;
+}
+
+void
+strbuilder_cache_free( struct strbuilder *builder ){
+  size_t i;
+
+  i = ( ( void * ) builder - cached_builders ) / sizeof( struct strbuilder );
+  cache_locks[i] = 0;
+}
 
 static size_t
 increase_size( struct strbuilder *builder ) {
@@ -83,6 +124,11 @@ strbuilder_append_char( struct strbuilder *builder, char c ) {
   *( builder->position ) = c;
   ( builder->position )++;
 
+  printf("=====char append\n");
+  printf("builder buffer: %p\n",builder->buffer);
+  printf("builder position: %p\n",builder->position);
+  printf("builder buffer_end: %p\n",builder->buffer_end);
+
   return builder;
 }
 
@@ -125,7 +171,9 @@ strbuilder_append_string( struct strbuilder *builder, const char *str ) {
 
 void
 strbuilder_destroy( struct strbuilder *builder ) {
-  free_mem( builder );
+  if( builder ) {
+    strbuilder_cache_free( builder );
+  }
 }
 
 char *
@@ -143,7 +191,7 @@ strbuilder_new( void ) {
   char *buffer;
   size_t size;
 
-  builder = alloc_mem( sizeof( *builder ) );
+  builder = strbuilder_cache_alloc(  );
   if( !builder ) {
     goto fail;
   }
@@ -159,10 +207,15 @@ strbuilder_new( void ) {
   builder->position = buffer;
   builder->buffer_end = buffer + size;
 
+  printf("buffer: %p\n",buffer);
+  printf("builder buffer: %p\n",builder->buffer);
+  printf("builder position: %p\n",builder->position);
+  printf("builder buffer_end: %p\n",builder->buffer_end);
+
   return builder;
 
 fail_buffer:
-  free_mem( builder );
+  strbuilder_cache_free( builder );
 fail:
   return NULL;
 }

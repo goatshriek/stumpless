@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -121,11 +121,13 @@ namespace {
     result = stumpless( test_string );
 
     EXPECT_LT( result, 0 );
-    
+
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
     realloc_result = stumpless_set_realloc( realloc );
     ASSERT_TRUE( realloc == realloc_result );
   }
@@ -175,7 +177,7 @@ namespace {
     struct stumpless_error *error;
 
     stumpless_close_buffer_target( NULL );
-    
+
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
@@ -199,7 +201,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "null-buffer", NULL, 100, 0, 0 );
     ASSERT_TRUE( target == NULL );
-    
+
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
@@ -212,7 +214,7 @@ namespace {
 
     target = stumpless_open_buffer_target( NULL, buffer, 100, 0, 0 );
     ASSERT_TRUE( target == NULL );
-    
+
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
@@ -223,7 +225,7 @@ namespace {
     struct stumpless_target *targets[100];
     struct stumpless_error *error;
     size_t i;
-    
+
     for( i=0; i < 100; i++ ) {
       targets[i] = stumpless_open_buffer_target( "many target test",
                                                  buffer,
