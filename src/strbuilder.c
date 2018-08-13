@@ -124,11 +124,6 @@ strbuilder_append_char( struct strbuilder *builder, char c ) {
   *( builder->position ) = c;
   ( builder->position )++;
 
-  printf("=====char append\n");
-  printf("builder buffer: %p\n",builder->buffer);
-  printf("builder position: %p\n",builder->position);
-  printf("builder buffer_end: %p\n",builder->buffer_end);
-
   return builder;
 }
 
@@ -206,11 +201,6 @@ strbuilder_new( void ) {
   builder->buffer = buffer;
   builder->position = buffer;
   builder->buffer_end = buffer + size;
-
-  printf("buffer: %p\n",buffer);
-  printf("builder buffer: %p\n",builder->buffer);
-  printf("builder position: %p\n",builder->position);
-  printf("builder buffer_end: %p\n",builder->buffer_end);
 
   return builder;
 
