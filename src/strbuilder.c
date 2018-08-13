@@ -49,7 +49,7 @@ strbuilder_cache_alloc( void ) {
   for( i = 0; i < cache_size; i++ ) {
     if( cache_locks[i] == 0 ) {
       cache_locks[i] = 1;
-      return cached_builders + ( i * sizeof( struct strbuilder ) );
+      return ( ( struct strbuilder * ) cached_builders ) + ( i * sizeof( struct strbuilder ) );
     }
   }
 
@@ -60,7 +60,7 @@ void
 strbuilder_cache_free( struct strbuilder *builder ){
   size_t i;
 
-  i = ( ( void * ) builder - cached_builders ) / sizeof( struct strbuilder );
+  i = ( builder - ( struct strbuilder * ) cached_builders ) / sizeof( struct strbuilder );
   cache_locks[i] = 0;
 }
 
