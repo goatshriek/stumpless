@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,6 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/target.h"
 #include "private/target/buffer.h"
 
 // todo need to deal with memory leak - how to clean up public targets
@@ -121,30 +120,28 @@ new_buffer_target( char *buffer, size_t size ) {
 }
 
 int
-sendto_buffer_target( struct buffer_target *target, const char *msg ) {
-  size_t msg_len;
+sendto_buffer_target( struct buffer_target *target,
+                      const char *msg, size_t msg_length ) {
   size_t buffer_remaining;
 
-  msg_len = strlen( msg );
-
-  if( msg_len >= target->size ) {
+  if( msg_length >= target->size ) {
     raise_argument_too_big(  );
     return -1;
   }
 
   buffer_remaining = target->size - target->position;
 
-  if( buffer_remaining > msg_len ) {
-    memcpy( target->buffer + target->position, msg, msg_len );
-    target->position += msg_len + 1;
+  if( buffer_remaining > msg_length ) {
+    memcpy( target->buffer + target->position, msg, msg_length );
+    target->position += msg_length + 1;
   } else {
     memcpy( target->buffer + target->position, msg, buffer_remaining );
     memcpy( target->buffer, msg + buffer_remaining,
-            msg_len - buffer_remaining );
-    target->position = msg_len - buffer_remaining + 1;
+            msg_length - buffer_remaining );
+    target->position = msg_length - buffer_remaining + 1;
   }
 
   target->buffer[target->position - 1] = '\0';
 
-  return msg_len + 1;
+  return msg_length + 1;
 }

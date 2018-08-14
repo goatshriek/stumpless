@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,14 +27,29 @@ struct strbuilder {
   char *buffer_end;
 };
 
-struct strbuilder *strbuilder_append_buffer( struct strbuilder *builder,
-                                             const char *buffer, size_t size );
-struct strbuilder *strbuilder_append_char( struct strbuilder *builder, char c );
-struct strbuilder *strbuilder_append_int( struct strbuilder *builder, int i );
-struct strbuilder *strbuilder_append_string( struct strbuilder *builder,
-                                             const char *str );
-void strbuilder_destroy( struct strbuilder *builder );
-char *strbuilder_to_string( struct strbuilder *builder );
-struct strbuilder *strbuilder_new( void );
+struct strbuilder *
+strbuilder_append_buffer( struct strbuilder *builder,
+                          const char *buffer, size_t size );
+
+struct strbuilder *
+strbuilder_append_char( struct strbuilder *builder, char c );
+
+struct strbuilder *
+strbuilder_append_int( struct strbuilder *builder, int i );
+
+struct strbuilder *
+strbuilder_append_string( struct strbuilder *builder,
+                          const char *str );
+char *
+strbuilder_get_buffer( struct strbuilder *builder, size_t *length );
+
+void
+strbuilder_destroy( struct strbuilder *builder );
+
+char *
+strbuilder_to_string( struct strbuilder *builder );
+
+struct strbuilder *
+strbuilder_new( void );
 
 #endif /* __STUMPLESS_PRIVATE_STRBUILDER_H */

@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,6 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/target.h"
 #include "private/target/socket.h"
 
 static size_t next_socket_number = 0;
@@ -47,8 +46,7 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_socket_target( const char *name,
                               const char *local_socket,
-                              int options,
-                              int default_facility ) {
+                              int options, int default_facility ) {
   struct stumpless_target *target;
   size_t name_len, local_socket_len;
   char default_socket[15];
@@ -85,9 +83,10 @@ stumpless_open_socket_target( const char *name,
     default_socket[14] = '\0';
     next_socket_number++;
     target->id = new_socket_target( name, name_len, default_socket, 15 );
-  } else { 
+  } else {
     local_socket_len = strlen( local_socket );
-    target->id = new_socket_target( name, name_len, local_socket, local_socket_len );
+    target->id =
+      new_socket_target( name, name_len, local_socket, local_socket_len );
   }
 
   if( !target->id ) {
@@ -169,8 +168,9 @@ new_socket_target( const char *dest, size_t dest_len,
 }
 
 int
-sendto_socket_target( const struct socket_target *target, const char *msg ) {
-  return sendto( target->local_socket, msg, strlen( msg ) + 1, 0,
+sendto_socket_target( const struct socket_target *target,
+                      const char *msg, size_t msg_length ) {
+  return sendto( target->local_socket, msg, msg_length, 0,
                  ( struct sockaddr * ) &target->target_addr,
                  target->target_addr_len );
 }

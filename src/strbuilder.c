@@ -26,7 +26,7 @@
 static size_t entry_size = sizeof( struct strbuilder );
 static size_t cache_size;
 char cache_locks[200];
-void *cached_builders = NULL;
+struct strbuilder *cached_builders = NULL;
 
 struct strbuilder *
 strbuilder_cache_alloc( void ) {
@@ -49,7 +49,7 @@ strbuilder_cache_alloc( void ) {
   for( i = 0; i < cache_size; i++ ) {
     if( cache_locks[i] == 0 ) {
       cache_locks[i] = 1;
-      return ( ( struct strbuilder * ) cached_builders ) + ( i * sizeof( struct strbuilder ) );
+      return cached_builders + ( i * sizeof( struct strbuilder ) );
     }
   }
 
@@ -57,10 +57,10 @@ strbuilder_cache_alloc( void ) {
 }
 
 void
-strbuilder_cache_free( struct strbuilder *builder ){
+strbuilder_cache_free( struct strbuilder *builder ) {
   size_t i;
 
-  i = ( builder - ( struct strbuilder * ) cached_builders ) / sizeof( struct strbuilder );
+  i = ( builder - cached_builders ) / sizeof( struct strbuilder );
   cache_locks[i] = 0;
 }
 
@@ -162,6 +162,16 @@ strbuilder_append_string( struct strbuilder *builder, const char *str ) {
   }
 
   return builder;
+}
+
+char *
+strbuilder_get_buffer( struct strbuilder *builder, size_t * length ) {
+  if( builder ) {
+    *length = builder->position - builder->buffer;
+    return builder->buffer;
+  } else {
+    return NULL;
+  }
 }
 
 void

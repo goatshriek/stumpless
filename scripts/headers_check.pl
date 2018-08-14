@@ -21,6 +21,7 @@ my %manifest = (
   "close" => "unistd.h",
   "config_gethostname" => "private/config/wrapper.h",
   "config_getpagesize" => "private/config/wrapper.h",
+  "config_sendto_socket_target" => "private/config/wrapper.h",
   "cstring_to_sized_string" => "private/strhelper.h",
   "destroy_buffer_target" => "private/target/buffer.h",
   "destroy_socket_target" => "private/target/socket.h",
@@ -54,6 +55,7 @@ my %manifest = (
   "perror" => "stdio.h",
   "pid_t" => "sys/types.h",
   "printf" => "stdio.h",
+  "raise_argument_empty" => "private/error.h",
   "raise_invalid_id" => "private/error.h",
   "raise_memory_allocation_failure" => "private/error.h",
   "raise_socket_bind_failure" => "private/error.h",
@@ -79,6 +81,7 @@ my %manifest = (
   "std::cout" => "iostream",
   "std::regex" => "regex",
   "strbuilder_append_app_name" => "private/entry.h",
+  "strbuilder_get_buffer" => "private/strbuilder.h",
   "strftime" => "time.h",
   "strlen" => "string.h",
   "struct buffer_target" => "private/target/buffer.h",
@@ -109,6 +112,7 @@ my %manifest = (
   "STUMPLESS_SOCKET_NAME" => "stumpless/target/socket.h",
   "STUMPLESS_SOCKET_NAME_LENGTH" => "stumpless/target/socket.h",
   "syslog" => "syslog.h",
+  "target_unsupported" => "private/target.h",
   "TestRFC5424Compliance" => "test/function/rfc5424.hpp",
   "TestUTF8Compliance" => "test/function/utf8.hpp",
   "time_t" => "time.h"
@@ -123,13 +127,13 @@ foreach my $line (<SOURCE>) {
     $skipping = 0;
     next;
   }
-  
+
   if($line =~ m/\/\*/ or $skipping){
     $skipping = 1;
     next;
   }
-  
-  if($line =~ m/#include\s*["<](.*)[">]/){
+
+  if($line =~ m/#\s*include\s*["<](.*)[">]/){
     $actual_includes{$1} = 1;
   } else {
     while(my($k, $v) = each %manifest){
@@ -152,7 +156,7 @@ foreach my $include (keys %needed_includes){
   if(!$actual_includes{$include}){
     my $symbol = $needed_includes{$include};
     print STDERR "$file: missing include: $include due to usage of $symbol\n";
-  }  
+  }
 }
 
 print STDERR color('reset');
