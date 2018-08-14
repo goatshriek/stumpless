@@ -46,9 +46,6 @@ strbuilder_get_buffer( struct strbuilder *builder, size_t *length );
 void
 strbuilder_destroy( struct strbuilder *builder );
 
-char *
-strbuilder_to_string( struct strbuilder *builder );
-
 struct strbuilder *
 strbuilder_new( void );
 

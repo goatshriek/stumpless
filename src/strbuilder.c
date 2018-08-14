@@ -181,15 +181,6 @@ strbuilder_destroy( struct strbuilder *builder ) {
   }
 }
 
-char *
-strbuilder_to_string( struct strbuilder *builder ) {
-  if( strbuilder_append_char( builder, '\0' ) == NULL ) {
-    return NULL;
-  } else {
-    return builder->buffer;
-  }
-}
-
 struct strbuilder *
 strbuilder_new( void ) {
   struct strbuilder *builder;
