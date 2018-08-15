@@ -268,6 +268,32 @@ add_test(NAME target
   COMMAND target
 )
 
+add_executable(socket_add_malloc_failure
+  EXCLUDE_FROM_ALL
+  test/function/startup/target/socket_add_malloc_failure.cpp
+)
+
+set_target_properties(socket_add_malloc_failure
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+  OUTPUT_NAME "socket_add_malloc_failure"
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/function/startup/target"
+)
+
+target_link_libraries(socket_add_malloc_failure
+  stumpless
+  libgtest
+)
+
+target_include_directories(socket_add_malloc_failure
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME socket_add_malloc_failure
+  COMMAND ${CMAKE_BINARY_DIR}/test/function/startup/target/socket_add_malloc_failure
+)
+
 add_executable(version
   EXCLUDE_FROM_ALL
   test/function/version.cpp
@@ -300,7 +326,7 @@ if(WIN32)
 else()
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer entry memory socket target version
+    DEPENDS buffer entry memory socket socket_add_malloc_failure target version
   )
 endif(WIN32)
 

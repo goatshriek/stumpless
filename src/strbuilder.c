@@ -28,6 +28,11 @@ static size_t cache_size;
 char cache_locks[200];
 struct strbuilder *cached_builders = NULL;
 
+void
+strbuilder_init( struct strbuilder *builder ) {
+  builder->buffer = NULL;
+}
+
 struct strbuilder *
 strbuilder_cache_alloc( void ) {
   size_t initial_size, i;
@@ -43,6 +48,7 @@ strbuilder_cache_alloc( void ) {
     cache_size = initial_size / entry_size;
     for( i = 0; i < cache_size; i++ ) {
       cache_locks[i] = 0;
+      strbuilder_init( cached_builders + ( i * entry_size ) );
     }
   }
 
@@ -184,7 +190,6 @@ strbuilder_destroy( struct strbuilder *builder ) {
 struct strbuilder *
 strbuilder_new( void ) {
   struct strbuilder *builder;
-  char *buffer;
   size_t size;
 
   builder = strbuilder_cache_alloc(  );
@@ -194,15 +199,16 @@ strbuilder_new( void ) {
 
   size = config_getpagesize(  );
 
-  buffer = alloc_mem( size );
-  if( !buffer ) {
-    goto fail_buffer;
+  if( !builder->buffer ) {
+    builder->buffer = alloc_mem( size );
+    if( !builder->buffer ) {
+      goto fail_buffer;
+    }
+
+    builder->buffer_end = builder->buffer + size;
   }
 
-  builder->buffer = buffer;
-  builder->position = buffer;
-  builder->buffer_end = buffer + size;
-
+  builder->position = builder->buffer;
   return builder;
 
 fail_buffer:

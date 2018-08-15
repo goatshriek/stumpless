@@ -110,29 +110,6 @@ namespace {
     TestRFC5424Compliance(buffer);
   }
 
-  TEST_F( SocketTargetTest, AddEntryMemoryFailure ) {
-    struct stumpless_error *error;
-    void *(*set_result)(size_t);
-    int add_result;
-   
-    set_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    EXPECT_TRUE( set_result != NULL );
-
-    add_result = stumpless_add_entry( target, basic_entry );
-    EXPECT_LT( add_result, 0 );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
-
-    set_result = stumpless_set_malloc( malloc );
-    EXPECT_TRUE( set_result != NULL );
-    EXPECT_TRUE( set_result == malloc );
-  }
-
   TEST_F( SocketTargetTest, AddEntryToBadIdTarget ) {
     struct stumpless_target target_copy;
     struct stumpless_error *error;
