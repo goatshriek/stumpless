@@ -19,54 +19,18 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include "private/cache.h"
 #include "private/config/wrapper.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"
 
-static size_t entry_size = sizeof( struct strbuilder );
-static size_t cache_size;
-char cache_locks[500];
-struct strbuilder *cached_builders = NULL;
+static struct cache *strbuilder_cache = NULL;
 
 void
-strbuilder_init( struct strbuilder *builder ) {
-  builder->buffer = NULL;
-}
+strbuilder_init( void *builder ) {
+  struct strbuilder *b = ( struct strbuilder * ) builder;
 
-struct strbuilder *
-strbuilder_cache_alloc( void ) {
-  size_t initial_size, i;
-
-  if( !cached_builders ) {
-    initial_size = get_paged_size( entry_size );
-    cached_builders = alloc_mem( initial_size );
-    if( !cached_builders ) {
-      return NULL;
-    }
-
-    cache_size = initial_size / entry_size;
-    for( i = 0; i < cache_size; i++ ) {
-      cache_locks[i] = 0;
-      strbuilder_init( &cached_builders[i] );
-    }
-  }
-
-  for( i = 0; i < cache_size; i++ ) {
-    if( cache_locks[i] == 0 ) {
-      cache_locks[i] = 1;
-      return cached_builders + ( i * entry_size );
-    }
-  }
-
-  return NULL;
-}
-
-void
-strbuilder_cache_free( struct strbuilder *builder ) {
-  size_t i;
-
-  i = ( builder - cached_builders ) / sizeof( struct strbuilder );
-  cache_locks[i] = 0;
+  b->buffer = NULL;
 }
 
 static size_t
@@ -181,9 +145,7 @@ strbuilder_get_buffer( struct strbuilder *builder, size_t * length ) {
 
 void
 strbuilder_destroy( struct strbuilder *builder ) {
-  if( builder ) {
-    strbuilder_cache_free( builder );
-  }
+  cache_free( strbuilder_cache, builder );
 }
 
 struct strbuilder *
@@ -191,7 +153,15 @@ strbuilder_new( void ) {
   struct strbuilder *builder;
   size_t size;
 
-  builder = strbuilder_cache_alloc(  );
+  if( !strbuilder_cache ) {
+    strbuilder_cache = cache_new( sizeof( *builder ), strbuilder_init );
+
+    if( !strbuilder_cache ) {
+      goto fail;
+    }
+  }
+
+  builder = cache_alloc( strbuilder_cache );
   if( !builder ) {
     goto fail;
   }
@@ -212,7 +182,7 @@ strbuilder_new( void ) {
   return builder;
 
 fail_buffer:
-  strbuilder_cache_free( builder );
+  cache_free( strbuilder_cache, builder );
 fail:
   return NULL;
 }

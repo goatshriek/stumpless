@@ -16,6 +16,7 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${CMAKE_BINARY_DIR}/include/private/config.h)
 
 set(STUMPLESS_SOURCES
+  src/cache.c
   src/entry.c
   src/error.c
   src/formatter.c
