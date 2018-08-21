@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
+#include "private/cache.h"
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -26,6 +27,8 @@
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/memory.h"
+
+static struct cache *entry_cache = NULL;
 
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
@@ -138,7 +141,15 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
 
   clear_error(  );
 
-  entry = alloc_mem( sizeof( *entry ) );
+  if( !entry_cache ) {
+    entry_cache = cache_new( sizeof( *entry ), NULL );
+
+    if( !entry_cache ) {
+      goto fail;
+    }
+  }
+
+  entry = cache_alloc( entry_cache );
   if( !entry ) {
     goto fail;
   }
@@ -173,7 +184,7 @@ fail_message:
 fail_msgid:
   free_mem( entry->app_name );
 fail_app_name:
-  free_mem( entry );
+  cache_free( entry_cache, entry );
 fail:
   return NULL;
 }
@@ -245,7 +256,8 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
   free_mem( entry->msgid );
   free_mem( entry->app_name );
   free_mem( entry->message );
-  free_mem( entry );
+
+  cache_free( entry_cache, entry );
 }
 
 void
@@ -260,12 +272,13 @@ stumpless_destroy_param( struct stumpless_param *param ) {
 }
 
 struct stumpless_entry *
-stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_name ){
+stumpless_set_entry_app_name( struct stumpless_entry *entry,
+                              const char *app_name ) {
   size_t *app_name_length;
 
   clear_error(  );
 
-  if( !entry ){
+  if( !entry ) {
     raise_argument_empty(  );
     return NULL;
   }
@@ -281,7 +294,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_nam
 
 struct stumpless_entry *
 stumpless_set_entry_message( struct stumpless_entry *entry,
-                             const char *message ){
+                             const char *message ) {
   char *converted_message;
   size_t message_length;
 
