@@ -26,7 +26,7 @@
 
 static struct cache *strbuilder_cache = NULL;
 
-void
+static void
 strbuilder_init( void *builder ) {
   struct strbuilder *b = ( struct strbuilder * ) builder;
 

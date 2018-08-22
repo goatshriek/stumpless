@@ -16,31 +16,81 @@
  * limitations under the License.
  */
 
+#include <stdint.h>
 #include <stddef.h>
 #include "private/cache.h"
 #include "private/memory.h"
 
+static void
+init_page( struct cache *c, size_t page_index ) {
+  size_t entries_per_page, i;
+
+  entries_per_page = c->page_size / c->entry_size;
+  for( i = 0; i < entries_per_page; i++ ) {
+    c->locks[ ( ( page_index + 1 ) * entries_per_page ) + i] = 0;
+
+    if( c->entry_init ) {
+      c->entry_init( c->pages[page_index] + ( i * c->entry_size ) );
+    }
+  }
+}
+
+static int
+add_page( struct cache *c ) {
+  size_t new_page_index;
+  char *new_page;
+
+  new_page_index = c->page_count;
+  c->page_count++;
+
+  new_page = alloc_mem( c->page_size );
+  if( !new_page ) {
+    return -1;
+  }
+
+  init_page( c, new_page_index );
+  c->pages[new_page_index] = new_page;
+
+  return new_page_index;
+}
+
 void *
 cache_alloc( struct cache *c ) {
-  size_t i;
+  size_t i, entries_per_page;
+  int new_page;
+  char *current_page;
 
-  for( i = 0; i < c->size; i++ ) {
+  entries_per_page = c->page_size / c->entry_size;
+  for( i = 0; i < entries_per_page * c->page_count; i++ ) {
     if( c->locks[i] == 0 ) {
       c->locks[i] = 1;
-      return c->mem + ( i * c->entry_size );
+      current_page = c->pages[i / entries_per_page];
+      return current_page + ( ( i % entries_per_page ) * c->entry_size );
     }
   }
 
-  // todo need to expand the cache here instead
-  return NULL;
+  new_page = add_page( c );
+  if( new_page < 0 ) {
+    return NULL;
+  }
+
+  c->locks[new_page * entries_per_page] = 1;
+  return c->pages[new_page];
 }
 
 void
 cache_free( struct cache *c, void *entry ) {
-  size_t index;
+  size_t entry_index, i, entries_per_page;
 
-  index = ( ( char * ) entry - c->mem ) / c->entry_size;
-  c->locks[index] = 0;
+  for( i = 0; i < c->page_count; i++ ) {
+    if( (uintptr_t)entry >= (uintptr_t)c->pages[i] && (uintptr_t)entry < (uintptr_t)(c->pages[i] + c->page_size) ) {
+      entries_per_page = c->page_size / c->entry_size;
+      entry_index = ( i * entries_per_page ) + ( ( ( char * ) entry - c->pages[i] ) / c->entry_size );
+      
+      c->locks[entry_index] = 0;
+      return;
+    }
+  }
 }
 
 struct cache *
@@ -62,10 +112,11 @@ cache_new( size_t size, void ( *entry_init ) ( void * ) ) {
 
   c->entry_init = entry_init;
   c->entry_size = size;
-  c->mem = mem;
-  c->size = mem_size / size;
+  c->page_size = mem_size;
+  c->pages[0] = mem;
+  c->page_count = 1;
 
-  for( i = 0; i < c->size; i++ ) {
+  for( i = 0; i < ( mem_size / size ); i++ ) {
     c->locks[i] = 0;
 
     if( entry_init ) {

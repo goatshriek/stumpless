@@ -246,6 +246,35 @@ namespace {
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
+
+  TEST( NewEntryTest, MoreThan500Entries ) {
+    struct stumpless_entry *entry[500];
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    size_t app_name_length = strlen( app_name );
+    size_t msgid_length = strlen( msgid );
+    size_t message_length = strlen( message );
+    size_t i;
+
+    for( i = 0; i < 500; i++ ) {
+      entry[i] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                      STUMPLESS_SEVERITY_INFO,
+                                      app_name,
+                                      msgid,
+                                      message );
+      
+      EXPECT_EQ( NULL, stumpless_get_error(  ) );
+ 
+      EXPECT_TRUE( entry[i] != NULL );
+    }
+
+    for( i = 0; i < 500; i++ ) {
+      stumpless_destroy_entry( entry[i] );
+    }
+    
+  }
   
   TEST( NewEntryTest, New ){
     struct stumpless_entry *entry;

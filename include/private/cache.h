@@ -24,9 +24,10 @@
 struct cache {
   void ( *entry_init ) ( void * );
   size_t entry_size;
-  char *mem;
-  size_t size;
-  char locks[500];
+  char *pages[10];
+  size_t page_count;
+  size_t page_size;
+  char locks[1000];
 };
 
 void *
