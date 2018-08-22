@@ -118,7 +118,8 @@ my %manifest = (
   "target_unsupported" => "private/target.h",
   "TestRFC5424Compliance" => "test/function/rfc5424.hpp",
   "TestUTF8Compliance" => "test/function/utf8.hpp",
-  "time_t" => "time.h"
+  "time_t" => "time.h",
+  "uintptr_t" => "stdint.h"
 );
 
 my %actual_includes;

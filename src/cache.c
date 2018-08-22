@@ -27,7 +27,7 @@ init_page( struct cache *c, size_t page_index ) {
 
   entries_per_page = c->page_size / c->entry_size;
   for( i = 0; i < entries_per_page; i++ ) {
-    c->locks[ ( ( page_index + 1 ) * entries_per_page ) + i] = 0;
+    c->locks[( page_index * entries_per_page ) + i] = 0;
 
     if( c->entry_init ) {
       c->entry_init( c->pages[page_index] + ( i * c->entry_size ) );
@@ -48,8 +48,8 @@ add_page( struct cache *c ) {
     return -1;
   }
 
-  init_page( c, new_page_index );
   c->pages[new_page_index] = new_page;
+  init_page( c, new_page_index );
 
   return new_page_index;
 }
@@ -83,10 +83,14 @@ cache_free( struct cache *c, void *entry ) {
   size_t entry_index, i, entries_per_page;
 
   for( i = 0; i < c->page_count; i++ ) {
-    if( (uintptr_t)entry >= (uintptr_t)c->pages[i] && (uintptr_t)entry < (uintptr_t)(c->pages[i] + c->page_size) ) {
+    if( ( uintptr_t ) entry >= ( uintptr_t ) c->pages[i]
+        && ( uintptr_t ) entry <
+        ( uintptr_t ) ( c->pages[i] + c->page_size ) ) {
       entries_per_page = c->page_size / c->entry_size;
-      entry_index = ( i * entries_per_page ) + ( ( ( char * ) entry - c->pages[i] ) / c->entry_size );
-      
+      entry_index =
+        ( i * entries_per_page ) +
+        ( ( ( char * ) entry - c->pages[i] ) / c->entry_size );
+
       c->locks[entry_index] = 0;
       return;
     }
@@ -96,32 +100,21 @@ cache_free( struct cache *c, void *entry ) {
 struct cache *
 cache_new( size_t size, void ( *entry_init ) ( void * ) ) {
   struct cache *c;
-  char *mem;
-  size_t mem_size, i;
+  size_t first_page;
 
   c = alloc_mem( sizeof( *c ) );
   if( !c ) {
     goto fail;
   }
 
-  mem_size = get_paged_size( size );
-  mem = alloc_mem( mem_size );
-  if( !mem ) {
-    goto fail_mem;
-  }
-
   c->entry_init = entry_init;
   c->entry_size = size;
-  c->page_size = mem_size;
-  c->pages[0] = mem;
-  c->page_count = 1;
+  c->page_size = get_paged_size( size );
+  c->page_count = 0;
 
-  for( i = 0; i < ( mem_size / size ); i++ ) {
-    c->locks[i] = 0;
-
-    if( entry_init ) {
-      entry_init( mem + ( i * c->entry_size ) );
-    }
+  first_page = add_page( c );
+  if( first_page != 0 ) {
+    goto fail_mem;
   }
 
   return c;
