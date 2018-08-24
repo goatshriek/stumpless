@@ -69,7 +69,7 @@ cache_alloc( struct cache *c ) {
     locks = current_page + ( entries_per_page * c->entry_size );
     for( j = 0; j < entries_per_page; j++ ) {
       if( locks[j] == 0 ) {
-        locks[i] = 1;
+        locks[j] = 1;
         return current_page + ( j * c->entry_size );
       }
     }
