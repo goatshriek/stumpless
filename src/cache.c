@@ -24,13 +24,16 @@
 static void
 init_page( struct cache *c, size_t page_index ) {
   size_t entries_per_page, i;
+  char *current_page, *locks;
 
-  entries_per_page = c->page_size / c->entry_size;
+  current_page = c->pages[page_index];
+  entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
   for( i = 0; i < entries_per_page; i++ ) {
-    c->locks[( page_index * entries_per_page ) + i] = 0;
+    locks = current_page + ( entries_per_page * c->entry_size );
+    locks[i] = 0;
 
     if( c->entry_init ) {
-      c->entry_init( c->pages[page_index] + ( i * c->entry_size ) );
+      c->entry_init( current_page + ( i * c->entry_size ) );
     }
   }
 }
@@ -56,16 +59,19 @@ add_page( struct cache *c ) {
 
 void *
 cache_alloc( struct cache *c ) {
-  size_t i, entries_per_page;
+  size_t i, j, entries_per_page;
   int new_page;
-  char *current_page;
+  char *current_page, *locks;
 
-  entries_per_page = c->page_size / c->entry_size;
-  for( i = 0; i < entries_per_page * c->page_count; i++ ) {
-    if( c->locks[i] == 0 ) {
-      c->locks[i] = 1;
-      current_page = c->pages[i / entries_per_page];
-      return current_page + ( ( i % entries_per_page ) * c->entry_size );
+  entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
+  for( i = 0; i < c->page_count; i++ ) {
+    current_page = c->pages[i];
+    locks = current_page + ( entries_per_page * c->entry_size );
+    for( j = 0; j < entries_per_page; j++ ) {
+      if( locks[j] == 0 ) {
+        locks[i] = 1;
+        return current_page + ( j * c->entry_size );
+      }
     }
   }
 
@@ -74,24 +80,32 @@ cache_alloc( struct cache *c ) {
     return NULL;
   }
 
-  c->locks[new_page * entries_per_page] = 1;
-  return c->pages[new_page];
+  current_page = c->pages[new_page];
+  locks = current_page + ( entries_per_page * c->entry_size );
+  locks[0] = 1;
+  return current_page;
 }
 
 void
 cache_free( struct cache *c, void *entry ) {
   size_t entry_index, i, entries_per_page;
+  char *current_page, *locks;
+  uintptr_t entry_int, current_page_int;
+
+  entry_int = ( uintptr_t ) entry;
 
   for( i = 0; i < c->page_count; i++ ) {
-    if( ( uintptr_t ) entry >= ( uintptr_t ) c->pages[i]
-        && ( uintptr_t ) entry <
-        ( uintptr_t ) ( c->pages[i] + c->page_size ) ) {
-      entries_per_page = c->page_size / c->entry_size;
-      entry_index =
-        ( i * entries_per_page ) +
-        ( ( ( char * ) entry - c->pages[i] ) / c->entry_size );
+    current_page = c->pages[i];
+    current_page_int = ( uintptr_t ) current_page;
 
-      c->locks[entry_index] = 0;
+    if( entry_int >= current_page_int
+        && entry_int < ( current_page_int + c->page_size ) ) {
+
+      entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
+      locks = current_page + ( entries_per_page * c->entry_size );
+      entry_index = ( ( char * ) entry - current_page ) / c->entry_size;
+      locks[entry_index] = 0;
+
       return;
     }
   }

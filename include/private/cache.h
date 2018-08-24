@@ -27,7 +27,6 @@ struct cache {
   char *pages[10];
   size_t page_count;
   size_t page_size;
-  char locks[1000];
 };
 
 void *
