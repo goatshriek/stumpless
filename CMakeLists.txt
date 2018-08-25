@@ -200,8 +200,6 @@ add_executable(entry_memory_failure
 
 set_target_properties(entry_memory_failure
   PROPERTIES COMPILE_FLAGS "-std=c++11"
-  OUTPUT_NAME "entry_memory_failure"
-  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/function/startup"
 )
 
 target_link_libraries(entry_memory_failure
@@ -216,7 +214,7 @@ target_include_directories(entry_memory_failure
 )
 
 add_test(NAME entry_memory_failure
-  COMMAND ${CMAKE_BINARY_DIR}/test/function/startup/entry_memory_failure
+  COMMAND entry_memory_failure
 )
 
 add_executable(memory
