@@ -41,16 +41,23 @@ init_page( struct cache *c, size_t page_index ) {
 static int
 add_page( struct cache *c ) {
   size_t new_page_index;
+  char **new_pages;
   char *new_page;
 
-  new_page_index = c->page_count;
-  c->page_count++;
+  new_pages = realloc_mem( c->pages, sizeof( char * ) * ( c->page_count + 1 ) );
+  if( !new_pages ) {
+    return -1;
+  }
 
   new_page = alloc_mem( c->page_size );
   if( !new_page ) {
     return -1;
   }
 
+  new_page_index = c->page_count;
+  c->page_count++;
+
+  c->pages = new_pages;
   c->pages[new_page_index] = new_page;
   init_page( c, new_page_index );
 
@@ -121,6 +128,11 @@ cache_new( size_t size, void ( *entry_init ) ( void * ) ) {
     goto fail;
   }
 
+  c->pages = alloc_mem( sizeof( char * ) );
+  if( !c->pages ) {
+    goto fail_pages;
+  }
+
   c->entry_init = entry_init;
   c->entry_size = size;
   c->page_size = get_paged_size( size );
@@ -128,13 +140,13 @@ cache_new( size_t size, void ( *entry_init ) ( void * ) ) {
 
   first_page = add_page( c );
   if( first_page != 0 ) {
-    goto fail_mem;
+    goto fail_pages;
   }
 
   return c;
 
 
-fail_mem:
+fail_pages:
   free_mem( c );
 fail:
   return NULL;
