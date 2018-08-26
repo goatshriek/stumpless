@@ -23,19 +23,8 @@
 namespace {
 
   class VersionTest : public ::testing::Test {};
-
-  TEST(GetVersionTest, Function){
-    struct stumpless_version *version;
   
-    version = stumpless_get_version();
-  
-    ASSERT_TRUE(version != NULL);
-    ASSERT_TRUE(version->major >= 0);
-    ASSERT_TRUE(version->minor >= 0);
-    ASSERT_TRUE(version->patch >= 0);
-  }
-  
-  TEST(GetVersionTest, Defines){
+  TEST(GetVersion, Defines){
     #ifndef STUMPLESS_MAJOR_VERSION
       FAIL();
     #endif
@@ -47,6 +36,38 @@ namespace {
     #ifndef STUMPLESS_PATCH_VERSION
       FAIL();
     #endif
+  }
+
+  TEST( GetVersion, Function ) {
+    struct stumpless_version *version;
+  
+    version = stumpless_get_version();
+  
+    ASSERT_TRUE(version != NULL);
+    ASSERT_TRUE(version->major >= 0);
+    ASSERT_TRUE(version->minor >= 0);
+    ASSERT_TRUE(version->patch >= 0);
+  }
+
+  TEST( GetVersion, MemoryFailure ) {
+    struct stumpless_version *version;
+    struct stumpless_error *error;
+    void *(*result)(size_t);
+   
+    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( result != NULL );
+
+    version = stumpless_get_version(  );
+    EXPECT_EQ( NULL, version );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
   }
 
 }
