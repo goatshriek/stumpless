@@ -321,10 +321,6 @@ get_prival( int facility, int severity ) {
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry ) {
-  if( !entry ) {
-    return NULL;
-  }
-
   return strbuilder_append_buffer( builder,
                                    entry->app_name, entry->app_name_length );
 }
@@ -341,22 +337,12 @@ strbuilder_append_hostname( struct strbuilder *builder ) {
 struct strbuilder *
 strbuilder_append_msgid( struct strbuilder *builder,
                          const struct stumpless_entry *entry ) {
-
-  if( !entry ) {
-    return NULL;
-  }
-
   return strbuilder_append_buffer( builder, entry->msgid, entry->msgid_length );
 }
 
 struct strbuilder *
 strbuilder_append_message( struct strbuilder *builder,
                            const struct stumpless_entry *entry ) {
-
-  if( !entry ) {
-    return NULL;
-  }
-
   return strbuilder_append_buffer( builder,
                                    entry->message, entry->message_length );
 }
@@ -373,16 +359,8 @@ strbuilder_append_structured_data( struct strbuilder *builder,
   struct stumpless_element *element;
   struct stumpless_param *param;
 
-  if( !entry ) {
-    return NULL;
-  }
-
   if( entry->element_count == 0 ) {
     return strbuilder_append_char( builder, '-' );
-  }
-
-  if( !entry->elements ) {
-    return builder;
   }
 
   for( i = 0; i < entry->element_count; i++ ) {
