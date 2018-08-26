@@ -226,6 +226,8 @@ void
 stumpless_destroy_element( struct stumpless_element *element ) {
   size_t i;
 
+  clear_error(  );
+
   if( !element ) {
     return;
   }
@@ -238,6 +240,8 @@ stumpless_destroy_element( struct stumpless_element *element ) {
 void
 stumpless_destroy_entry( struct stumpless_entry *entry ) {
   size_t i;
+
+  clear_error(  );
 
   if( !entry ) {
     return;
@@ -257,6 +261,8 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
 
 void
 stumpless_destroy_param( struct stumpless_param *param ) {
+  clear_error(  );
+
   if( !param ) {
     return;
   }
