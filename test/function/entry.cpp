@@ -136,6 +136,34 @@ namespace {
     // todo test that param count has increased 
     // todo test to make sure that new param actually exists
   }
+
+  TEST_F( EntryTest, AddParamMemoryFailure ) {
+    struct stumpless_element *element, *result;
+    struct stumpless_param *param;
+    struct stumpless_error *error;
+    void * (*set_realloc_result)(void *, size_t);
+
+    element = basic_entry->elements[0];
+    ASSERT_TRUE( element != NULL );
+    
+    param = stumpless_new_param( "test-param-name", "test-param-value" );
+    ASSERT_TRUE( param != NULL );
+   
+    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    ASSERT_TRUE( set_realloc_result != NULL );
+
+    result = stumpless_add_param( element, param );
+    EXPECT_EQ( NULL, result );
+    
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+   
+    stumpless_set_realloc( realloc );
+  }
   
   TEST_F( EntryTest, AddTwoElements ) {
     struct stumpless_entry *entry;
@@ -235,6 +263,27 @@ namespace {
     stumpless_destroy_param( NULL );
   }
 
+  TEST( NewElementTest, MemoryFailure ) {
+    struct stumpless_element *element;
+    struct stumpless_error *error;
+    void *(*result)(size_t);
+   
+    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( result != NULL );
+
+    element = stumpless_new_element( "memory-failure" );
+    EXPECT_EQ( NULL, element );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
+  }
+
   TEST( NewElementTest, NullName ) {
     struct stumpless_element *element;
     struct stumpless_error *error;
@@ -312,6 +361,27 @@ namespace {
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
     stumpless_destroy_entry( entry );
+  }
+
+  TEST( NewParamTest, MemoryFailure ) {
+    struct stumpless_param *param;
+    struct stumpless_error *error;
+    void *(*result)(size_t);
+   
+    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( result != NULL );
+
+    param = stumpless_new_param( "memory-failure", "just-happened" );
+    EXPECT_EQ( NULL, param );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
   }
 
   TEST( NewParamTest, New ){

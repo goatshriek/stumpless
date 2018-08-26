@@ -83,14 +83,9 @@ stumpless_add_param( struct stumpless_element *element,
   old_params_size = sizeof( param ) * element->param_count;
   new_params_size = old_params_size + sizeof( param );
 
-  new_params = alloc_mem( new_params_size );
+  new_params = realloc_mem( element->params, new_params_size );
   if( !new_params ) {
     return NULL;
-  }
-
-  if( element->params != NULL ) {
-    memcpy( new_params, element->params, old_params_size );
-    free_mem( element->params );
   }
 
   new_params[element->param_count] = param;
@@ -319,18 +314,8 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
 /* private functions */
 
 int
-get_facility( int prival ) {
-  return ( prival >> 2 ) << 2;
-}
-
-int
 get_prival( int facility, int severity ) {
   return facility | severity;
-}
-
-int
-get_severity( int prival ) {
-  return prival & 0x3;
 }
 
 struct strbuilder *
