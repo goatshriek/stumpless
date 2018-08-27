@@ -22,20 +22,29 @@
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
 #  define __STUMPLESS_PRIVATE_ENTRY_H
 
-int get_facility( int prival );
-int get_prival( int facility, int severity );
-int get_severity( int prival );
+int
+get_prival( int facility, int severity );
 
-struct strbuilder *strbuilder_append_app_name( struct strbuilder *builder, const struct stumpless_entry
-                                               *entry );
-struct strbuilder *strbuilder_append_hostname( struct strbuilder *builder );
-struct strbuilder *strbuilder_append_msgid( struct strbuilder *builder, const struct stumpless_entry
-                                            *entry );
-struct strbuilder *strbuilder_append_message( struct strbuilder *builder, const struct stumpless_entry
-                                              *entry );
-struct strbuilder *strbuilder_append_procid( struct strbuilder *builder );
-struct strbuilder *strbuilder_append_structured_data( struct strbuilder
-                                                      *builder, const struct
-                                                      stumpless_entry *entry );
+struct strbuilder *
+strbuilder_append_app_name( struct strbuilder *builder,
+                            const struct stumpless_entry *entry );
+
+struct strbuilder *
+strbuilder_append_hostname( struct strbuilder *builder );
+
+struct strbuilder *
+strbuilder_append_msgid( struct strbuilder *builder,
+                         const struct stumpless_entry *entry );
+
+struct strbuilder *
+strbuilder_append_message( struct strbuilder *builder,
+                           const struct stumpless_entry *entry );
+
+struct strbuilder *
+strbuilder_append_procid( struct strbuilder *builder );
+
+struct strbuilder *
+strbuilder_append_structured_data( struct strbuilder *builder,
+                                   const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */

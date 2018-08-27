@@ -17,48 +17,29 @@
  */
 
 #include <stddef.h>
+#include <stdlib.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 
+using::testing::HasSubstr;
+
 namespace {
 
-  class VersionTest : public ::testing::Test {};
-  
-  TEST(GetVersion, Defines){
-    #ifndef STUMPLESS_MAJOR_VERSION
-      FAIL();
-    #endif
-  
-    #ifndef STUMPLESS_MINOR_VERSION
-      FAIL();
-    #endif
-  
-    #ifndef STUMPLESS_PATCH_VERSION
-      FAIL();
-    #endif
-  }
-
-  TEST( GetVersion, Function ) {
-    struct stumpless_version *version;
-  
-    version = stumpless_get_version();
-  
-    ASSERT_TRUE(version != NULL);
-    ASSERT_TRUE(version->major >= 0);
-    ASSERT_TRUE(version->minor >= 0);
-    ASSERT_TRUE(version->patch >= 0);
-  }
-
-  TEST( GetVersion, MemoryFailure ) {
-    struct stumpless_version *version;
+  TEST( EntryStartupTest, MemoryFailure ) {
+    struct stumpless_entry *entry;
     struct stumpless_error *error;
     void *(*result)(size_t);
    
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( result != NULL );
 
-    version = stumpless_get_version(  );
-    EXPECT_EQ( NULL, version );
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "app-name",
+                                 "msgid",
+                                 "message" );
+    EXPECT_EQ( NULL, entry );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
@@ -69,10 +50,10 @@ namespace {
 
     stumpless_set_malloc( malloc );
   }
-
 }
 
-int main(int argc, char **argv){
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+int
+main( int argc, char **argv ) {
+  ::testing::InitGoogleTest( &argc, argv );
+  return RUN_ALL_TESTS(  );
 }

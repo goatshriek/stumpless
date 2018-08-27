@@ -63,7 +63,59 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry( entry );
-  } 
+  }
+
+  TEST( SetDefaultAppName, MemoryFailure ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+    void *(*set_malloc_result)(size_t);
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    ASSERT_TRUE( target != NULL );
+   
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    target_result = stumpless_set_target_default_app_name( target, "app-name" );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( SetDefaultMsgId, MemoryFailure ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+    void *(*set_malloc_result)(size_t);
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    ASSERT_TRUE( target != NULL );
+   
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    target_result = stumpless_set_target_default_msgid( target, "msgid" );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
+    stumpless_close_buffer_target( target );
+  }
 }
 
 int main(int argc, char **argv){

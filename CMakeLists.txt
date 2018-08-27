@@ -16,10 +16,10 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${CMAKE_BINARY_DIR}/include/private/config.h)
 
 set(STUMPLESS_SOURCES
+  src/cache.c
   src/entry.c
   src/error.c
   src/formatter.c
-  src/id.c
   src/memory.c
   src/strbuilder.c
   src/strhelper.c
@@ -193,6 +193,30 @@ add_test(NAME entry
   COMMAND entry
 )
 
+add_executable(entry_memory_failure
+  EXCLUDE_FROM_ALL
+  test/function/startup/entry_memory_failure.cpp
+)
+
+set_target_properties(entry_memory_failure
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+)
+
+target_link_libraries(entry_memory_failure
+  stumpless
+  libgtest
+)
+
+target_include_directories(entry_memory_failure
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME entry_memory_failure
+  COMMAND entry_memory_failure
+)
+
 add_executable(memory
   EXCLUDE_FROM_ALL
   test/function/memory.cpp
@@ -242,6 +266,32 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   
   add_test(NAME socket
     COMMAND socket
+  )
+
+  add_executable(socket_add_malloc_failure
+    EXCLUDE_FROM_ALL
+    test/function/startup/target/socket_add_malloc_failure.cpp
+  )
+  
+  set_target_properties(socket_add_malloc_failure
+    PROPERTIES COMPILE_FLAGS "-std=c++11"
+    OUTPUT_NAME "socket_add_malloc_failure"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/function/startup/target"
+  )
+  
+  target_link_libraries(socket_add_malloc_failure
+    stumpless
+    libgtest
+  )
+  
+  target_include_directories(socket_add_malloc_failure
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+  )
+  
+  add_test(NAME socket_add_malloc_failure
+    COMMAND ${CMAKE_BINARY_DIR}/test/function/startup/target/socket_add_malloc_failure
   )
 endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
 
@@ -296,12 +346,12 @@ add_test(NAME version
 if(WIN32)
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-    DEPENDS buffer entry memory target version
+    DEPENDS buffer entry entry_memory_failure memory target version
   )
 else()
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer entry memory socket target version
+    DEPENDS buffer entry entry_memory_failure memory socket socket_add_malloc_failure target version
   )
 endif(WIN32)
 

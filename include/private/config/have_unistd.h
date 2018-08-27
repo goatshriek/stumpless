@@ -22,6 +22,7 @@
 #  include <stddef.h>
 
 int unistd_gethostname( char *buffer, size_t namelen );
+size_t unistd_getpagesize( void );
 int unistd_getpid( void );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H */
