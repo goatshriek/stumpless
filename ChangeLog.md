@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - Benchmark tests measure the amount of memory allocated.
  - Add `stumpless_set_entry_message` function.
+ - Integration with SonarCloud for analysis.
 
 ### Fixed
  - Removed versions prior to 1.0.0 to match repository history.
