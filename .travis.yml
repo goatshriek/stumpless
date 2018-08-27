@@ -1,5 +1,9 @@
 language: c
 
+addons:
+  sonarcloud:
+    organization: "goatshriek-github"
+
 matrix:
   include:
     - os: linux
@@ -38,3 +42,4 @@ script:
 after_success:
   - cd ..
   - bash <(curl -s https://codecov.io/bash)
+  - sonar-scanner
