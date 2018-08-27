@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
  - Removed versions prior to 1.0.0 to match repository history.
  - Benchmark tests now function properly.
+ - Memory efficiency improved significantly.
 
 ## [1.0.0] - 2018-07-28
 ### Added
