@@ -1,7 +1,5 @@
 language: c
 
-addons:
-
 matrix:
   include:
     - os: linux
@@ -38,17 +36,10 @@ before_script:
   - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ..
 
 script:
-  - pwd
-  - ls
-  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all
-  - pwd
-  - ls
+  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
   - make CTEST_OUTPUT_ON_FAILURE=1 check
 
 after_success:
   - cd ..
-  - pwd
-  - ls
-  - ls bw-output
   - bash <(curl -s https://codecov.io/bash)
   - sonar-scanner
