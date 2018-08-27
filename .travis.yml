@@ -40,12 +40,15 @@ before_script:
 script:
   - pwd
   - ls
-  - build-wrapper-linux-x86-64 --out-dir bw-output make all
+  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all
   - pwd
   - ls
   - make CTEST_OUTPUT_ON_FAILURE=1 check
 
 after_success:
   - cd ..
+  - pwd
+  - ls
+  - ls bw-output
   - bash <(curl -s https://codecov.io/bash)
   - sonar-scanner
