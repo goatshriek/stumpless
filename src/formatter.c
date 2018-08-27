@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,15 +24,13 @@
 #include "private/strbuilder.h"
 #include "private/formatter.h"
 
-char *
+struct strbuilder *
 format_entry( const struct stumpless_target *target,
               struct stumpless_entry *entry ) {
-  char *str;
-  struct strbuilder *builder, *first_builder;
+  struct strbuilder *builder;
 
-  first_builder = strbuilder_new(  );
-
-  builder = strbuilder_append_char( first_builder, '<' );
+  builder = strbuilder_new(  );
+  builder = strbuilder_append_char( builder, '<' );
   builder = strbuilder_append_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
   builder = strbuilder_append_rfc5424_timestamp( builder );
@@ -49,10 +47,7 @@ format_entry( const struct stumpless_target *target,
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_message( builder, entry );
 
-  str = strbuilder_to_string( builder );
-  strbuilder_destroy( first_builder );
-
-  return str;
+  return builder;
 }
 
 struct strbuilder *

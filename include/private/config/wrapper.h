@@ -49,6 +49,13 @@
 #    define config_gethostname(buffer, namelen) winsock2_gethostname((buffer), (namelen))
 #  endif
 
+/* definition of config_getpagesize */
+#  ifdef HAVE_UNISTD_H
+#    define config_getpagesize unistd_getpagesize
+#  elif HAVE_WINDOWS_H
+#    define config_getpagesize windows_getpagesize
+#  endif
+
 /* definition of config_getpid */
 #  ifdef HAVE_UNISTD_H
 #    define config_getpid unistd_getpid

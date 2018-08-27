@@ -18,6 +18,15 @@
 
 #include <windows.h>
 
+size_t
+windows_getpagesize( void ) {
+  SYSTEM_INFO info;
+
+  GetSystemInfo( &info );
+
+  return ( size_t ) info.dwPageSize;
+}
+
 int
 windows_getpid( void ) {
   return ( int ) ( GetCurrentProcessId(  ) );

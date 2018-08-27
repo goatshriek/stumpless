@@ -23,6 +23,7 @@
 
 void *alloc_mem( size_t size );
 void free_mem( void *mem );
+size_t get_paged_size( size_t size );
 void *realloc_mem( void *mem, size_t size );
 
 #endif /* __STUMPLESS_PRIVATE_MEMORY_H */

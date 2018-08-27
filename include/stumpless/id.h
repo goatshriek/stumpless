@@ -23,7 +23,7 @@
 extern "C" {
 #  endif
 
-  typedef int stumpless_id_t;
+  typedef void * stumpless_id_t;
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

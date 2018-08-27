@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 
-#define TEST_BUFFER_LENGTH 1024
+#define TEST_BUFFER_LENGTH 8192
 
 using::testing::HasSubstr;
 
@@ -105,6 +105,33 @@ namespace {
     TestRFC5424Compliance( buffer );
   }
 
+  TEST_F( BufferTargetTest, LargeReallocFailure ) {
+    char test_string[4096];
+    void * (*realloc_result)(void *, size_t);
+    int result;
+    struct stumpless_error *error;
+
+    ASSERT_EQ( target, stumpless_get_current_target(  ) );
+
+    realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    EXPECT_TRUE( realloc_result != NULL );
+
+    memset( test_string, 'h', 4095 );
+    test_string[4095] = '\0';
+    result = stumpless( test_string );
+
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    realloc_result = stumpless_set_realloc( realloc );
+    ASSERT_TRUE( realloc == realloc_result );
+  }
+
   TEST_F( BufferTargetTest, OverFill ) {
     char test_string[TEST_BUFFER_LENGTH + 1];
     struct stumpless_error *error;
@@ -146,40 +173,11 @@ namespace {
 
   /* non-fixture tests */
 
-  TEST( BufferTargetAddTest, AddAfterClose ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
-    struct stumpless_entry *entry;
-    int result;
-    char buffer[100];
-
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                "stumpless-unit-test",
-                                "basic-entry",
-                                "basic test message" );
-
-    target = stumpless_open_buffer_target( "normal target", buffer, 100, 0, 0 );
-    ASSERT_TRUE( target != NULL );
-    ASSERT_EQ( NULL, stumpless_get_error(  ) );
-
-    stumpless_close_buffer_target( target );
-
-    result = stumpless_add_entry( target, entry );
-    EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_INVALID_ID );
-
-    stumpless_destroy_entry( entry );
-  }
-
   TEST( BufferTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
 
     stumpless_close_buffer_target( NULL );
-    
+
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
@@ -203,7 +201,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "null-buffer", NULL, 100, 0, 0 );
     ASSERT_TRUE( target == NULL );
-    
+
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
@@ -216,7 +214,7 @@ namespace {
 
     target = stumpless_open_buffer_target( NULL, buffer, 100, 0, 0 );
     ASSERT_TRUE( target == NULL );
-    
+
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
@@ -227,7 +225,7 @@ namespace {
     struct stumpless_target *targets[100];
     struct stumpless_error *error;
     size_t i;
-    
+
     for( i=0; i < 100; i++ ) {
       targets[i] = stumpless_open_buffer_target( "many target test",
                                                  buffer,
@@ -241,46 +239,6 @@ namespace {
     for( i=0; i < 100; i++ ) {
       stumpless_close_buffer_target( targets[i] );
     }
-  }
-
-  TEST( BufferTargetOpenTest, Open200TargetsWithReallocFailure ) {
-    char buffer[100];
-    struct stumpless_target *targets[200];
-    struct stumpless_error *error;
-    int i;
-    void *(*result)(void *, size_t);
-   
-    result = stumpless_set_realloc( [](void *mem, size_t size)->void *{ return NULL; } );
-    EXPECT_TRUE( result != NULL );
-    ASSERT_TRUE( result != realloc );
- 
-    for( i=0; i < 200; i++ ) {
-      targets[i] = stumpless_open_buffer_target( "target realloc failure test",
-                                                 buffer,
-                                                 100,
-                                                 0,
-                                                 0 );
-      if( targets[i] == NULL ) {
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error != NULL );
-        if( error != NULL ) {
-          EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-        }
-    
-        result = stumpless_set_realloc( realloc );
-        EXPECT_TRUE( result == realloc );
-
-        while( i > 0 ) {
-          i--;
-          stumpless_close_buffer_target( targets[i] );
-        }
-
-        break;
-      }
-
-    }
-
-    ASSERT_EQ( i, 0 );
   }
 }
 
