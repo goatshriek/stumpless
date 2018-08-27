@@ -48,7 +48,8 @@ stumpless_open_socket_target( const char *name,
                               const char *local_socket,
                               int options, int default_facility ) {
   struct stumpless_target *target;
-  size_t name_len, local_socket_len;
+  size_t name_len;
+  size_t local_socket_len;
   char default_socket[15];
 
   clear_error(  );

@@ -35,8 +35,10 @@ strbuilder_init( void *builder ) {
 
 static size_t
 increase_size( struct strbuilder *builder ) {
-  char *old_buffer, *new_buffer;
-  size_t old_size, new_size;
+  char *old_buffer;
+  char *new_buffer;
+  size_t old_size;
+  size_t new_size;
 
   old_buffer = builder->buffer;
   old_size = builder->buffer_end - old_buffer;
@@ -56,7 +58,8 @@ increase_size( struct strbuilder *builder ) {
 struct strbuilder *
 strbuilder_append_buffer( struct strbuilder *builder, const char *buffer,
                           size_t size ) {
-  size_t size_added, size_left;
+  size_t size_added;
+  size_t size_left;
 
   if( !builder || !buffer ) {
     return NULL;
