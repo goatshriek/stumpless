@@ -38,7 +38,11 @@ before_script:
   - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ..
 
 script:
+  - pwd
+  - ls
   - build-wrapper-linux-x86-64 --out-dir bw-output make all
+  - pwd
+  - ls
   - make CTEST_OUTPUT_ON_FAILURE=1 check
 
 after_success:
