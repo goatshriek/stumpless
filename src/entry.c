@@ -35,7 +35,8 @@ stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
 
   struct stumpless_element **new_elements;
-  size_t old_elements_size, new_elements_size;
+  size_t old_elements_size;
+  size_t new_elements_size;
 
   clear_error(  );
 
