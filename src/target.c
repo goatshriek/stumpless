@@ -38,8 +38,6 @@ int
 stumpless( const char *message ) {
   struct stumpless_target *target;
   int result;
-  int severity;
-  int facility;
 
   clear_error(  );
 

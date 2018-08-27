@@ -83,12 +83,15 @@ strbuilder_append_buffer( struct strbuilder *builder, const char *buffer,
 
 struct strbuilder *
 strbuilder_append_char( struct strbuilder *builder, char c ) {
+  size_t old_size;
+
   if( !builder ) {
     return NULL;
   }
 
   if( builder->position == builder->buffer_end ) {
-    if( increase_size( builder ) == 0 ) {
+    old_size = increase_size( builder );
+    if( old_size == 0 ) {
       return NULL;
     }
   }
@@ -114,6 +117,7 @@ strbuilder_append_int( struct strbuilder *builder, int i ) {
 struct strbuilder *
 strbuilder_append_string( struct strbuilder *builder, const char *str ) {
   const char *curr;
+  size_t old_size;
 
   if( !builder ) {
     return NULL;
@@ -122,7 +126,8 @@ strbuilder_append_string( struct strbuilder *builder, const char *str ) {
   curr = str;
   while ( *curr != '\0' ) {
     if( builder->position == builder->buffer_end ) {
-      if( increase_size( builder ) == 0 ) {
+      old_size = increase_size( builder );
+      if( old_size == 0 ) {
         return NULL;
       }
     }
