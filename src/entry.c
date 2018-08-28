@@ -35,7 +35,8 @@ stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
 
   struct stumpless_element **new_elements;
-  size_t old_elements_size, new_elements_size;
+  size_t old_elements_size;
+  size_t new_elements_size;
 
   clear_error(  );
 
@@ -71,7 +72,8 @@ stumpless_add_param( struct stumpless_element *element,
                      struct stumpless_param *param ) {
 
   struct stumpless_param **new_params;
-  size_t old_params_size, new_params_size;
+  size_t old_params_size;
+  size_t new_params_size;
 
   clear_error(  );
 
@@ -132,7 +134,9 @@ struct stumpless_entry *
 stumpless_new_entry( int facility, int severity, const char *app_name,
                      const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
-  size_t *app_name_length, *msgid_length, *message_length;
+  size_t *app_name_length;
+  size_t *msgid_length;
+  size_t *message_length;
 
   clear_error(  );
 
@@ -361,7 +365,8 @@ strbuilder_append_procid( struct strbuilder *builder ) {
 struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry ) {
-  size_t i, j;
+  size_t i;
+  size_t j;
   struct stumpless_element *element;
   struct stumpless_param *param;
 

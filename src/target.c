@@ -37,7 +37,7 @@ static struct stumpless_entry *cached_entry = NULL;
 int
 stumpless( const char *message ) {
   struct stumpless_target *target;
-  int result, severity, facility;
+  int result;
 
   clear_error(  );
 
