@@ -35,8 +35,10 @@ strbuilder_init( void *builder ) {
 
 static size_t
 increase_size( struct strbuilder *builder ) {
-  char *old_buffer, *new_buffer;
-  size_t old_size, new_size;
+  char *old_buffer;
+  char *new_buffer;
+  size_t old_size;
+  size_t new_size;
 
   old_buffer = builder->buffer;
   old_size = builder->buffer_end - old_buffer;
@@ -56,7 +58,8 @@ increase_size( struct strbuilder *builder ) {
 struct strbuilder *
 strbuilder_append_buffer( struct strbuilder *builder, const char *buffer,
                           size_t size ) {
-  size_t size_added, size_left;
+  size_t size_added;
+  size_t size_left;
 
   if( !builder || !buffer ) {
     return NULL;
@@ -80,12 +83,15 @@ strbuilder_append_buffer( struct strbuilder *builder, const char *buffer,
 
 struct strbuilder *
 strbuilder_append_char( struct strbuilder *builder, char c ) {
+  size_t old_size;
+
   if( !builder ) {
     return NULL;
   }
 
   if( builder->position == builder->buffer_end ) {
-    if( increase_size( builder ) == 0 ) {
+    old_size = increase_size( builder );
+    if( old_size == 0 ) {
       return NULL;
     }
   }
@@ -111,6 +117,7 @@ strbuilder_append_int( struct strbuilder *builder, int i ) {
 struct strbuilder *
 strbuilder_append_string( struct strbuilder *builder, const char *str ) {
   const char *curr;
+  size_t old_size;
 
   if( !builder ) {
     return NULL;
@@ -119,7 +126,8 @@ strbuilder_append_string( struct strbuilder *builder, const char *str ) {
   curr = str;
   while ( *curr != '\0' ) {
     if( builder->position == builder->buffer_end ) {
-      if( increase_size( builder ) == 0 ) {
+      old_size = increase_size( builder );
+      if( old_size == 0 ) {
         return NULL;
       }
     }

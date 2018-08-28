@@ -23,8 +23,10 @@
 
 static void
 init_page( struct cache *c, size_t page_index ) {
-  size_t entries_per_page, i;
-  char *current_page, *locks;
+  size_t entries_per_page;
+  size_t i;
+  char *current_page;
+  char *locks;
 
   current_page = c->pages[page_index];
   entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
@@ -66,9 +68,12 @@ add_page( struct cache *c ) {
 
 void *
 cache_alloc( struct cache *c ) {
-  size_t i, j, entries_per_page;
+  size_t i;
+  size_t j;
+  size_t entries_per_page;
   int new_page;
-  char *current_page, *locks;
+  char *current_page;
+  char *locks;
 
   entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
   for( i = 0; i < c->page_count; i++ ) {
@@ -95,9 +100,13 @@ cache_alloc( struct cache *c ) {
 
 void
 cache_free( struct cache *c, void *entry ) {
-  size_t entry_index, i, entries_per_page;
-  char *current_page, *locks;
-  uintptr_t entry_int, current_page_int;
+  size_t entry_index;
+  size_t i;
+  size_t entries_per_page;
+  char *current_page;
+  char *locks;
+  uintptr_t entry_int;
+  uintptr_t current_page_int;
 
   entry_int = ( uintptr_t ) entry;
 
