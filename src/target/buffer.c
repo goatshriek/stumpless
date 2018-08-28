@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,6 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/target.h"
 #include "private/target/buffer.h"
 
 // todo need to deal with memory leak - how to clean up public targets
@@ -37,8 +36,7 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
     return;
   }
 
-  destroy_buffer_target( get_priv_target( target->id ) );
-  unregister_priv_target( target->id );
+  destroy_buffer_target( target->id );
   free_mem( target->name );
   free_mem( target );
 }
@@ -46,8 +44,7 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
                               int options, int default_facility ) {
-  struct stumpless_target *pub_target;
-  struct buffer_target *priv_target;
+  struct stumpless_target *target;
   size_t name_len;
 
   clear_error(  );
@@ -57,47 +54,40 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
     return NULL;
   }
 
-  pub_target = alloc_mem( sizeof( *pub_target ) );
-  if( !pub_target ) {
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
     goto fail;
   }
 
-  priv_target = new_buffer_target( buffer, size );
-  if( !priv_target ) {
-    goto fail_priv_target;
-  }
-
-  name_len = strlen( name );
-  pub_target->name = alloc_mem( name_len + 1 );
-  if( !pub_target->name ) {
-    goto fail_pub_name;
-  }
-
-  pub_target->id = register_priv_target( priv_target );
-  if( pub_target->id < 0 ) {
+  target->id = new_buffer_target( buffer, size );
+  if( !target->id ) {
     goto fail_id;
   }
 
-  memcpy( pub_target->name, name, name_len );
-  pub_target->name[name_len] = '\0';
-  pub_target->type = STUMPLESS_BUFFER_TARGET;
-  pub_target->options = options;
-  pub_target->default_prival =
+  name_len = strlen( name );
+  target->name = alloc_mem( name_len + 1 );
+  if( !target->name ) {
+    goto fail_name;
+  }
+
+  memcpy( target->name, name, name_len );
+  target->name[name_len] = '\0';
+  target->type = STUMPLESS_BUFFER_TARGET;
+  target->options = options;
+  target->default_prival =
     get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
-  pub_target->default_app_name = NULL;
-  pub_target->default_app_name_length = 0;
-  pub_target->default_msgid = NULL;
-  pub_target->default_msgid_length = 0;
+  target->default_app_name = NULL;
+  target->default_app_name_length = 0;
+  target->default_msgid = NULL;
+  target->default_msgid_length = 0;
 
-  stumpless_set_current_target( pub_target );
-  return pub_target;
+  stumpless_set_current_target( target );
+  return target;
 
+fail_name:
+  destroy_buffer_target( target->id );
 fail_id:
-  free_mem( pub_target->name );
-fail_pub_name:
-  destroy_buffer_target( priv_target );
-fail_priv_target:
-  free_mem( pub_target );
+  free_mem( target );
 fail:
   return NULL;
 }
@@ -130,30 +120,28 @@ new_buffer_target( char *buffer, size_t size ) {
 }
 
 int
-sendto_buffer_target( struct buffer_target *target, const char *msg ) {
-  size_t msg_len;
+sendto_buffer_target( struct buffer_target *target,
+                      const char *msg, size_t msg_length ) {
   size_t buffer_remaining;
 
-  msg_len = strlen( msg );
-
-  if( msg_len >= target->size ) {
+  if( msg_length >= target->size ) {
     raise_argument_too_big(  );
     return -1;
   }
 
   buffer_remaining = target->size - target->position;
 
-  if( buffer_remaining > msg_len ) {
-    memcpy( target->buffer + target->position, msg, msg_len );
-    target->position += msg_len + 1;
+  if( buffer_remaining > msg_length ) {
+    memcpy( target->buffer + target->position, msg, msg_length );
+    target->position += msg_length + 1;
   } else {
     memcpy( target->buffer + target->position, msg, buffer_remaining );
     memcpy( target->buffer, msg + buffer_remaining,
-            msg_len - buffer_remaining );
-    target->position = msg_len - buffer_remaining + 1;
+            msg_length - buffer_remaining );
+    target->position = msg_length - buffer_remaining + 1;
   }
 
   target->buffer[target->position - 1] = '\0';
 
-  return msg_len + 1;
+  return msg_length + 1;
 }

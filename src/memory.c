@@ -19,12 +19,13 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stumpless/memory.h>
+#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/memory.h"
 
 typedef void ( *free_func_t ) ( void * );
-typedef void * ( *malloc_func_t ) ( size_t );
-typedef void * ( *realloc_func_t ) ( void *, size_t );
+typedef void *( *malloc_func_t ) ( size_t );
+typedef void *( *realloc_func_t ) ( void *, size_t );
 
 static free_func_t stumpless_free = free;
 static malloc_func_t stumpless_malloc = malloc;
@@ -84,9 +85,19 @@ alloc_mem( size_t size ) {
 
 void
 free_mem( void *mem ) {
-  if( mem ) {
-    stumpless_free( mem );
+  stumpless_free( mem );
+}
+
+size_t
+get_paged_size( size_t size ) {
+  size_t paged_size;
+
+  paged_size = config_getpagesize(  );
+  while ( paged_size < size ) {
+    paged_size *= 2;
   }
+
+  return paged_size;
 }
 
 void *

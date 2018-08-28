@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,6 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/target.h"
 #include "private/target/socket.h"
 
 static size_t next_socket_number = 0;
@@ -39,8 +38,7 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
     return;
   }
 
-  destroy_socket_target( get_priv_target( target->id ) );
-  unregister_priv_target( target->id );
+  destroy_socket_target( target->id );
   free_mem( target->name );
   free_mem( target );
 }
@@ -48,11 +46,10 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_socket_target( const char *name,
                               const char *local_socket,
-                              int options,
-                              int default_facility ) {
-  struct stumpless_target *pub_target;
-  struct socket_target *priv_target;
-  size_t name_len, local_socket_len;
+                              int options, int default_facility ) {
+  struct stumpless_target *target;
+  size_t name_len;
+  size_t local_socket_len;
   char default_socket[15];
 
   clear_error(  );
@@ -62,8 +59,8 @@ stumpless_open_socket_target( const char *name,
     goto fail;
   }
 
-  pub_target = alloc_mem( sizeof( *pub_target ) );
-  if( !pub_target ) {
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
     goto fail;
   }
 
@@ -86,42 +83,36 @@ stumpless_open_socket_target( const char *name,
     default_socket[13] = ( next_socket_number & 0xf ) + 97;
     default_socket[14] = '\0';
     next_socket_number++;
-    priv_target = new_socket_target( name, name_len, default_socket, 15 );
-  } else { 
+    target->id = new_socket_target( name, name_len, default_socket, 15 );
+  } else {
     local_socket_len = strlen( local_socket );
-    priv_target = new_socket_target( name, name_len, local_socket, local_socket_len );
+    target->id =
+      new_socket_target( name, name_len, local_socket, local_socket_len );
   }
 
-  if( !priv_target ) {
-    goto fail_priv_target;
-  }
-
-  pub_target->name = alloc_mem( name_len + 1 );
-  if( !pub_target->name ) {
-    goto fail_pub_name;
-  }
-
-  pub_target->id = register_priv_target( priv_target );
-  if( pub_target->id < 0 ) {
+  if( !target->id ) {
     goto fail_id;
   }
 
-  memcpy( pub_target->name, name, name_len );
-  pub_target->name[name_len] = '\0';
-  pub_target->type = STUMPLESS_SOCKET_TARGET;
-  pub_target->options = options;
-  pub_target->default_prival =
+  target->name = alloc_mem( name_len + 1 );
+  if( !target->name ) {
+    goto fail_name;
+  }
+
+  memcpy( target->name, name, name_len );
+  target->name[name_len] = '\0';
+  target->type = STUMPLESS_SOCKET_TARGET;
+  target->options = options;
+  target->default_prival =
     get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
 
-  stumpless_set_current_target( pub_target );
-  return pub_target;
+  stumpless_set_current_target( target );
+  return target;
 
+fail_name:
+  destroy_socket_target( target->id );
 fail_id:
-  free_mem( pub_target->name );
-fail_pub_name:
-  destroy_socket_target( priv_target );
-fail_priv_target:
-  free_mem( pub_target );
+  free_mem( target );
 fail:
   return NULL;
 }
@@ -178,8 +169,9 @@ new_socket_target( const char *dest, size_t dest_len,
 }
 
 int
-sendto_socket_target( const struct socket_target *target, const char *msg ) {
-  return sendto( target->local_socket, msg, strlen( msg ) + 1, 0,
+sendto_socket_target( const struct socket_target *target,
+                      const char *msg, size_t msg_length ) {
+  return sendto( target->local_socket, msg, msg_length, 0,
                  ( struct sockaddr * ) &target->target_addr,
                  target->target_addr_len );
 }

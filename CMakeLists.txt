@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-project(stumpless VERSION 1.0.0)
+project(stumpless VERSION 1.0.1)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -16,10 +16,10 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${CMAKE_BINARY_DIR}/include/private/config.h)
 
 set(STUMPLESS_SOURCES
+  src/cache.c
   src/entry.c
   src/error.c
   src/formatter.c
-  src/id.c
   src/memory.c
   src/strbuilder.c
   src/strhelper.c
@@ -193,6 +193,30 @@ add_test(NAME entry
   COMMAND entry
 )
 
+add_executable(entry_memory_failure
+  EXCLUDE_FROM_ALL
+  test/function/startup/entry_memory_failure.cpp
+)
+
+set_target_properties(entry_memory_failure
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+)
+
+target_link_libraries(entry_memory_failure
+  stumpless
+  libgtest
+)
+
+target_include_directories(entry_memory_failure
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME entry_memory_failure
+  COMMAND entry_memory_failure
+)
+
 add_executable(memory
   EXCLUDE_FROM_ALL
   test/function/memory.cpp
@@ -242,6 +266,32 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   
   add_test(NAME socket
     COMMAND socket
+  )
+
+  add_executable(socket_add_malloc_failure
+    EXCLUDE_FROM_ALL
+    test/function/startup/target/socket_add_malloc_failure.cpp
+  )
+  
+  set_target_properties(socket_add_malloc_failure
+    PROPERTIES COMPILE_FLAGS "-std=c++11"
+    OUTPUT_NAME "socket_add_malloc_failure"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/function/startup/target"
+  )
+  
+  target_link_libraries(socket_add_malloc_failure
+    stumpless
+    libgtest
+  )
+  
+  target_include_directories(socket_add_malloc_failure
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+  )
+  
+  add_test(NAME socket_add_malloc_failure
+    COMMAND ${CMAKE_BINARY_DIR}/test/function/startup/target/socket_add_malloc_failure
   )
 endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
 
@@ -296,12 +346,12 @@ add_test(NAME version
 if(WIN32)
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-    DEPENDS buffer entry memory target version
+    DEPENDS buffer entry entry_memory_failure memory target version
   )
 else()
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer entry memory socket target version
+    DEPENDS buffer entry entry_memory_failure memory socket socket_add_malloc_failure target version
   )
 endif(WIN32)
 
@@ -309,7 +359,7 @@ endif(WIN32)
 ExternalProject_Add(benchmark
     URL https://github.com/google/benchmark/archive/master.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
-    CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON
+    CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE
     INSTALL_COMMAND ""
 )
 
@@ -330,21 +380,33 @@ set_target_properties(libbenchmark PROPERTIES
 )
 include_directories("${source_dir}/include")
 
-add_executable(bench-stumpless
+add_executable(perf-target
   EXCLUDE_FROM_ALL
-  test/performance/stumpless.cpp
+  test/performance/target.cpp
 )
-target_link_libraries(bench-stumpless
+
+target_link_libraries(perf-target
   stumpless
   libbenchmark
 )
 
-target_include_directories(bench-stumpless PRIVATE include)
+set_target_properties(perf-target
+  PROPERTIES
+  OUTPUT_NAME "target"
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/performance"
+)
+
+target_include_directories(perf-target
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
 
 add_custom_target(bench
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bench-stumpless
-    DEPENDS bench-stumpless
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test/performance/target
+    DEPENDS perf-target
 )
+
 
 # add in the swig project
 if(BUILD_PYTHON)

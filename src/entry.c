@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
+#include "private/cache.h"
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -27,12 +28,15 @@
 #include "private/strhelper.h"
 #include "private/memory.h"
 
+static struct cache *entry_cache = NULL;
+
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
 
   struct stumpless_element **new_elements;
-  size_t old_elements_size, new_elements_size;
+  size_t old_elements_size;
+  size_t new_elements_size;
 
   clear_error(  );
 
@@ -68,7 +72,8 @@ stumpless_add_param( struct stumpless_element *element,
                      struct stumpless_param *param ) {
 
   struct stumpless_param **new_params;
-  size_t old_params_size, new_params_size;
+  size_t old_params_size;
+  size_t new_params_size;
 
   clear_error(  );
 
@@ -80,14 +85,9 @@ stumpless_add_param( struct stumpless_element *element,
   old_params_size = sizeof( param ) * element->param_count;
   new_params_size = old_params_size + sizeof( param );
 
-  new_params = alloc_mem( new_params_size );
+  new_params = realloc_mem( element->params, new_params_size );
   if( !new_params ) {
     return NULL;
-  }
-
-  if( element->params != NULL ) {
-    memcpy( new_params, element->params, old_params_size );
-    free_mem( element->params );
   }
 
   new_params[element->param_count] = param;
@@ -134,11 +134,21 @@ struct stumpless_entry *
 stumpless_new_entry( int facility, int severity, const char *app_name,
                      const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
-  size_t *app_name_length, *msgid_length, *message_length;
+  size_t *app_name_length;
+  size_t *msgid_length;
+  size_t *message_length;
 
   clear_error(  );
 
-  entry = alloc_mem( sizeof( *entry ) );
+  if( !entry_cache ) {
+    entry_cache = cache_new( sizeof( *entry ), NULL );
+
+    if( !entry_cache ) {
+      goto fail;
+    }
+  }
+
+  entry = cache_alloc( entry_cache );
   if( !entry ) {
     goto fail;
   }
@@ -173,7 +183,7 @@ fail_message:
 fail_msgid:
   free_mem( entry->app_name );
 fail_app_name:
-  free_mem( entry );
+  cache_free( entry_cache, entry );
 fail:
   return NULL;
 }
@@ -220,6 +230,8 @@ void
 stumpless_destroy_element( struct stumpless_element *element ) {
   size_t i;
 
+  clear_error(  );
+
   if( !element ) {
     return;
   }
@@ -233,6 +245,8 @@ void
 stumpless_destroy_entry( struct stumpless_entry *entry ) {
   size_t i;
 
+  clear_error(  );
+
   if( !entry ) {
     return;
   }
@@ -245,11 +259,14 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
   free_mem( entry->msgid );
   free_mem( entry->app_name );
   free_mem( entry->message );
-  free_mem( entry );
+
+  cache_free( entry_cache, entry );
 }
 
 void
 stumpless_destroy_param( struct stumpless_param *param ) {
+  clear_error(  );
+
   if( !param ) {
     return;
   }
@@ -260,12 +277,13 @@ stumpless_destroy_param( struct stumpless_param *param ) {
 }
 
 struct stumpless_entry *
-stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_name ){
+stumpless_set_entry_app_name( struct stumpless_entry *entry,
+                              const char *app_name ) {
   size_t *app_name_length;
 
   clear_error(  );
 
-  if( !entry ){
+  if( !entry ) {
     raise_argument_empty(  );
     return NULL;
   }
@@ -279,30 +297,40 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry, const char *app_nam
   }
 }
 
-/* private functions */
+struct stumpless_entry *
+stumpless_set_entry_message( struct stumpless_entry *entry,
+                             const char *message ) {
+  char *converted_message;
+  size_t message_length;
 
-int
-get_facility( int prival ) {
-  return ( prival >> 2 ) << 2;
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  converted_message = cstring_to_sized_string( message, &( message_length ) );
+  if( !converted_message ) {
+    return NULL;
+  } else {
+    free_mem( entry->message );
+    entry->message = converted_message;
+    entry->message_length = message_length;
+    return entry;
+  }
 }
+
+/* private functions */
 
 int
 get_prival( int facility, int severity ) {
   return facility | severity;
 }
 
-int
-get_severity( int prival ) {
-  return prival & 0x3;
-}
-
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry ) {
-  if( !entry ) {
-    return NULL;
-  }
-
   return strbuilder_append_buffer( builder,
                                    entry->app_name, entry->app_name_length );
 }
@@ -319,22 +347,12 @@ strbuilder_append_hostname( struct strbuilder *builder ) {
 struct strbuilder *
 strbuilder_append_msgid( struct strbuilder *builder,
                          const struct stumpless_entry *entry ) {
-
-  if( !entry ) {
-    return NULL;
-  }
-
   return strbuilder_append_buffer( builder, entry->msgid, entry->msgid_length );
 }
 
 struct strbuilder *
 strbuilder_append_message( struct strbuilder *builder,
                            const struct stumpless_entry *entry ) {
-
-  if( !entry ) {
-    return NULL;
-  }
-
   return strbuilder_append_buffer( builder,
                                    entry->message, entry->message_length );
 }
@@ -347,20 +365,13 @@ strbuilder_append_procid( struct strbuilder *builder ) {
 struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry ) {
-  size_t i, j;
+  size_t i;
+  size_t j;
   struct stumpless_element *element;
   struct stumpless_param *param;
 
-  if( !entry ) {
-    return NULL;
-  }
-
   if( entry->element_count == 0 ) {
     return strbuilder_append_char( builder, '-' );
-  }
-
-  if( !entry->elements ) {
-    return builder;
   }
 
   for( i = 0; i < entry->element_count; i++ ) {

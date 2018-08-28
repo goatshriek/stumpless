@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,20 +16,26 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_ID_H
-#  define __STUMPLESS_PRIVATE_ID_H
+#ifndef __STUMPLESS_PRIVATE_CACHE_H
+#  define __STUMPLESS_PRIVATE_CACHE_H
 
-#  include <stumpless/id.h>
+#  include <stddef.h>
 
-struct id_map {
-  void **values;
-  size_t size;
+struct cache {
+  void ( *entry_init ) ( void * );
+  size_t entry_size;
+  char **pages;
+  size_t page_count;
+  size_t page_size;
 };
 
-/* returns 0 on error, id otherwise */
-stumpless_id_t add_to_id_map( struct id_map *map, void *value );
-void *get_by_id( struct id_map *map, stumpless_id_t id );
-struct id_map *new_id_map( void );
-void remove_by_id( struct id_map *map, stumpless_id_t id );
+void *
+cache_alloc( struct cache *c );
 
-#endif /* __STUMPLESS_PRIVATE_ID_H */
+void
+cache_free( struct cache *c, void *entry );
+
+struct cache *
+cache_new( size_t size, void ( *entry_init ) ( void * ) );
+
+#endif /* __STUMPLESS_PRIVATE_CACHE_H */
