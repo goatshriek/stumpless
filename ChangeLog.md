@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add file target capability.
  - Add windows event log target capability.
 
+## [1.2.0] - 2018-08-29
+### Added
+ - Increased coverage on object cache.
+
 ## [1.1.1] - 2018-08-28
 ### Added
  - Add SonarCloud quality gate badge to README.
