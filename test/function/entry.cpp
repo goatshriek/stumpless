@@ -336,7 +336,7 @@ namespace {
     }
 
     set_malloc_result = stumpless_set_malloc( malloc );
-    ASSERT_EQ( set_malloc_result, malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
 
     ASSERT_NE( i, 500 );
 
