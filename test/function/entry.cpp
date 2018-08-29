@@ -296,54 +296,46 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( NewEntryTest, MallocFailure ) {
-    struct stumpless_entry *entry[1000];
+  TEST( NewEntryTest, MallocFailureOnSecond ) {
+    struct stumpless_entry *first_entry;
+    struct stumpless_entry *second_entry;
     struct stumpless_error *error;
-    int i;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
     void *(*set_malloc_result)(size_t);
 
     // create at least one entry to allow the cache to initialize
-    entry[0] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                    STUMPLESS_SEVERITY_INFO,
-                                    app_name,
-                                    msgid,
-                                    message );
-    ASSERT_TRUE( entry[0] != NULL );
+    first_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       msgid,
+                                       message );
+    ASSERT_TRUE( first_entry != NULL );
    
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( set_malloc_result != NULL );
 
-    for( i = 1; i < 1000; i++ ) {
-      entry[i] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                      STUMPLESS_SEVERITY_INFO,
-                                      app_name,
-                                      msgid,
-                                      message );
+    second_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        app_name,
+                                        msgid,
+                                        message );
 
-      if( entry[i] == NULL ) {
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error != NULL );
+    EXPECT_TRUE( second_entry == NULL );
 
-        if( error ) {
-          EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-        }
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
 
-        break;
-      }
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
 
-    ASSERT_NE( i, 1000 );
-
-    while( i >= 0 ) {
-      stumpless_destroy_entry( entry[i] );
-      i--;
-    }
+    stumpless_destroy_entry( second_entry );
+    stumpless_destroy_entry( first_entry );
   }
 
   TEST( NewEntryTest, MoreThan500Entries ) {
