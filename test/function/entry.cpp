@@ -297,7 +297,7 @@ namespace {
   }
 
   TEST( NewEntryTest, MallocFailure ) {
-    struct stumpless_entry *entry[500];
+    struct stumpless_entry *entry[1000];
     struct stumpless_error *error;
     int i;
     const char *app_name = "test-app-name";
@@ -316,7 +316,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( set_malloc_result != NULL );
 
-    for( i = 1; i < 500; i++ ) {
+    for( i = 1; i < 1000; i++ ) {
       entry[i] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                       STUMPLESS_SEVERITY_INFO,
                                       app_name,
@@ -338,7 +338,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
 
-    ASSERT_NE( i, 500 );
+    ASSERT_NE( i, 1000 );
 
     while( i >= 0 ) {
       stumpless_destroy_entry( entry[i] );
