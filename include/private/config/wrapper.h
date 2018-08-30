@@ -34,6 +34,14 @@
 #    include "private/config/have_winsock2.h"
 #  endif
 
+#  ifdef HAVE_GMTIME_R
+#    include "private/config/have_gmtime_r.h"
+#  endif
+
+#  ifdef HAVE_GMTIME_S
+#    include "private/config/have_gmtime_s.h"
+#  endif
+
 /* definition of config_socket */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include "private/target/socket.h"
@@ -61,6 +69,13 @@
 #    define config_getpid unistd_getpid
 #  elif HAVE_WINDOWS_H
 #    define config_getpid windows_getpid
+#  endif
+
+/* definition of config_now_tm */
+#  ifdef HAVE_GMTIME_R
+#    define config_now_tm gmtime_r_now_tm
+#  elif HAVE_GMTIME_S
+#    define config_now_tm gmtime_s_now_tm
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */

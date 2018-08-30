@@ -20,6 +20,7 @@
 #include <time.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
+#include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/strbuilder.h"
 #include "private/formatter.h"
@@ -53,13 +54,11 @@ format_entry( const struct stumpless_target *target,
 struct strbuilder *
 strbuilder_append_rfc5424_timestamp( struct strbuilder *builder ) {
   char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
-  struct tm *now;
-  time_t now_timer;
+  struct tm now;
   size_t written;
 
-  now_timer = time( NULL );
-  now = gmtime( &now_timer );
+  config_now_tm( &now );
   // todo add support for fractional times
-  written = strftime( buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", now );
+  written = strftime( buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", &now );
   return strbuilder_append_buffer( builder, buffer, written );
 }

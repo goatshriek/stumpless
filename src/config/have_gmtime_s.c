@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+// SPDX-License-Identifier: Apache-2.0
 
 /*
  * Copyright 2018 Joel E. Anderson
@@ -15,18 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_H
-#define __STUMPLESS_PRIVATE_CONFIG_H
 
-/* header checks */
-#cmakedefine HAVE_SYS_SOCKET_H 1
-#cmakedefine HAVE_UNISTD_H 1
-#cmakedefine HAVE_WINDOWS_H 1
-#cmakedefine HAVE_WINSOCK2_H 1
+#include <stddef.h>
+#include <time.h>
+#include "private/config/have_gmtime_s.h"
 
-/* symbol checks */
-#cmakedefine HAVE_GMTIME_R 1
-#cmakedefine HAVE_GMTIME_S 1
+struct tm *
+gmtime_s_now_tm( struct tm *now ) {
+  time_t now_timer;
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_H */
+  now_timer = time( NULL );
+  return gmtime_s( now, &now_timer );
+}
