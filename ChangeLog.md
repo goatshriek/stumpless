@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - Increased coverage on object cache.
 
+### Removed
+ - Use of unsafe gmtime function.
+
 ## [1.1.1] - 2018-08-28
 ### Added
  - Add SonarCloud quality gate badge to README.
