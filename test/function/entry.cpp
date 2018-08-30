@@ -296,6 +296,48 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( NewEntryTest, MallocFailureOnSecond ) {
+    struct stumpless_entry *first_entry;
+    struct stumpless_entry *second_entry;
+    struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    void *(*set_malloc_result)(size_t);
+
+    // create at least one entry to allow the cache to initialize
+    first_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       msgid,
+                                       message );
+    ASSERT_TRUE( first_entry != NULL );
+   
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    second_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        app_name,
+                                        msgid,
+                                        message );
+
+    EXPECT_TRUE( second_entry == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry( second_entry );
+    stumpless_destroy_entry( first_entry );
+  }
+
   TEST( NewEntryTest, MoreThan500Entries ) {
     struct stumpless_entry *entry[500];
     const char *app_name = "test-app-name";
@@ -361,6 +403,57 @@ namespace {
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
     stumpless_destroy_entry( entry );
+  }
+
+  TEST( NewEntryTest, ReallocFailureOnSecond ) {
+    struct stumpless_entry *entries[2000];
+    struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    void * (*set_realloc_result)(void *, size_t);
+    int i;
+
+    // create at least one entry to allow the cache to initialize
+    entries[0] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                      STUMPLESS_SEVERITY_INFO,
+                                      app_name,
+                                      msgid,
+                                      message );
+    ASSERT_TRUE( entries[0] != NULL );
+   
+    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    ASSERT_TRUE( set_realloc_result != NULL );
+
+    for( i = 1; i < 2000; i++ ) {
+     entries[i] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       msgid,
+                                       message ); 
+
+      if( !entries[i] ) {
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error != NULL );
+
+        if( error ) {
+          EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+        }
+
+        break;
+      }
+    }
+
+    EXPECT_NE( i, 2000 );
+
+    set_realloc_result = stumpless_set_realloc( realloc );
+    ASSERT_TRUE( set_realloc_result == realloc );
+
+    i--;
+    while( i > 0 ) {
+      stumpless_destroy_entry( entries[i] );
+      i--;
+    }
   }
 
   TEST( NewParamTest, MemoryFailure ) {
@@ -457,7 +550,7 @@ namespace {
 
 }
 
-int main(int argc, char **argv){
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+int main( int argc, char **argv ) {
+  ::testing::InitGoogleTest( &argc, argv );
+  return RUN_ALL_TESTS(  );
 }
