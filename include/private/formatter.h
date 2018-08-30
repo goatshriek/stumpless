@@ -29,8 +29,7 @@
 #  define RFC_5424_MAX_PROCID_LENGTH 128
 
 struct strbuilder *
-format_entry( const struct stumpless_target *target,
-              struct stumpless_entry *entry );
+format_entry( struct stumpless_entry *entry );
 
 /*
  * Gets the current timestamp and writes it to the string builder. The time

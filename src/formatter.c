@@ -26,8 +26,7 @@
 #include "private/formatter.h"
 
 struct strbuilder *
-format_entry( const struct stumpless_target *target,
-              struct stumpless_entry *entry ) {
+format_entry( struct stumpless_entry *entry ) {
   struct strbuilder *builder;
 
   builder = strbuilder_new(  );
