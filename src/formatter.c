@@ -19,7 +19,6 @@
 #include <stddef.h>
 #include <time.h>
 #include <stumpless/entry.h>
-#include <stumpless/target.h>
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/strbuilder.h"
@@ -52,12 +51,25 @@ format_entry( struct stumpless_entry *entry ) {
 
 struct strbuilder *
 strbuilder_append_rfc5424_timestamp( struct strbuilder *builder ) {
-  char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
-  struct tm now;
+  struct strbuilder *result_builder;
+  char buffer[RFC_5424_WHOLE_TIME_BUFFER_SIZE];
+  struct tm now_tm;
+  struct timespec now_ts;
   size_t written;
+  int get_now_result;
+  int microseconds_fraction;
 
-  config_now_tm( &now );
-  // todo add support for fractional times
-  written = strftime( buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", &now );
-  return strbuilder_append_buffer( builder, buffer, written );
+  get_now_result = config_get_now( &now_tm, &now_ts );
+  if( get_now_result != 0 ) {
+    return NULL;
+  }
+
+  written = strftime( buffer, RFC_5424_WHOLE_TIME_BUFFER_SIZE, "%FT%T", &now_tm );
+  result_builder = strbuilder_append_buffer( builder, buffer, written );
+  result_builder = strbuilder_append_char( result_builder, '.' );
+
+  microseconds_fraction = ( now_ts.tv_nsec / 1000 ) % 1000000;
+  result_builder = strbuilder_append_int( result_builder, microseconds_fraction );
+
+  return strbuilder_append_char( result_builder, 'Z' );
 }

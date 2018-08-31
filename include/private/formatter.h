@@ -27,6 +27,7 @@
 #  define RFC_5424_MAX_TIMESTAMP_LENGTH 32
 #  define RFC_5424_MAX_HOSTNAME_LENGTH 255
 #  define RFC_5424_MAX_PROCID_LENGTH 128
+#  define RFC_5424_WHOLE_TIME_BUFFER_SIZE 20
 
 struct strbuilder *
 format_entry( struct stumpless_entry *entry );

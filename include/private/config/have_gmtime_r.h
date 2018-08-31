@@ -19,7 +19,9 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
 
-struct tm *
-gmtime_r_now_tm( struct tm *now );
+#include <time.h>
+
+int
+gmtime_r_get_now( struct tm *now_tm, struct timespec *now_ts );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H */

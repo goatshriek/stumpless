@@ -16,14 +16,17 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
 #include <time.h>
 #include "private/config/have_gmtime_s.h"
 
-struct tm *
-gmtime_s_now_tm( struct tm *now ) {
-  time_t now_timer;
+int
+gmtime_s_get_now( struct tm *now_tm, struct timespec *now_ts ) {
+  int gettime_result;
 
-  now_timer = time( NULL );
-  return gmtime_s( now, &now_timer );
+  gettime_result = clock_gettime( CLOCK_REALTIME, now_ts );
+  if( gettime_result != 0 ) {
+    return gettime_result;
+  }
+
+  return gmtime_s( now_tm, now_ts->tv_sec );
 }

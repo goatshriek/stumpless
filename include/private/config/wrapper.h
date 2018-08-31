@@ -19,7 +19,6 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 
-#  include <stumpless/config.h>
 #  include "private/config.h"
 
 #  ifdef HAVE_UNISTD_H
@@ -47,8 +46,18 @@
 #    include "private/target/socket.h"
 #    define config_sendto_socket_target sendto_socket_target
 #  else
+#    include "private/target.h"
 #    define config_sendto_socket_target target_unsupported
 #  endif
+
+/* definition of config_get_now */
+#  ifdef HAVE_GMTIME_R
+#    define config_get_now gmtime_r_get_now
+#  elif HAVE_GMTIME_S
+#    define config_get_now gmtime_s_get_now
+#  endif
+
+/* definition of config_get_time_secfrac */
 
 /* definition of config_gethostname */
 #  ifdef HAVE_UNISTD_H
@@ -69,13 +78,6 @@
 #    define config_getpid unistd_getpid
 #  elif HAVE_WINDOWS_H
 #    define config_getpid windows_getpid
-#  endif
-
-/* definition of config_now_tm */
-#  ifdef HAVE_GMTIME_R
-#    define config_now_tm gmtime_r_now_tm
-#  elif HAVE_GMTIME_S
-#    define config_now_tm gmtime_s_now_tm
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */
