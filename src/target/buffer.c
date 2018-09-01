@@ -25,6 +25,8 @@
 #include "private/memory.h"
 #include "private/target/buffer.h"
 
+// todo need to deal with memory leak - how to clean up public targets
+// and their members?
 void
 stumpless_close_buffer_target( struct stumpless_target *target ) {
   clear_error(  );
