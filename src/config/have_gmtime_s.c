@@ -17,16 +17,25 @@
  */
 
 #include <time.h>
+#include <windows.h>
 #include "private/config/have_gmtime_s.h"
 
 int
 gmtime_s_get_now( struct tm *now_tm, struct timespec *now_ts ) {
-  int gettime_result;
+  SYSTEMTIME now_st;
 
-  gettime_result = clock_gettime( CLOCK_REALTIME, now_ts );
-  if( gettime_result != 0 ) {
-    return gettime_result;
-  }
+  GetSystemTime( &now_st );
 
-  return gmtime_s( now_tm, now_ts->tv_sec );
+  now_tm->tm_sec = now_st.wSecond;
+  now_tm->tm_min = now_st.wMinute;
+  now_tm->tm_hour = now_st.wHour;
+  now_tm->tm_mday = now_st.wDay;
+  now_tm->tm_mon = now_st.wMonth - 1;
+  now_tm->tm_year = now_st.wYear - 1900;
+  now_tm->tm_isdst = -1;
+
+  // only good for the fraction, not for absolute value
+  now_ts->tv_nsec = now_st.wMilliseconds * 1000;
+
+  return 0;
 }

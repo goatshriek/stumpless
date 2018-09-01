@@ -131,6 +131,7 @@ my %manifest = (
   "STUMPLESS_SOCKET_SOCKET_TARGETS_SUPPORTED" => "stumpless/config.h",
   "STUMPLESS_SYSLOG_H_COMPATIBLE" => "stumpless/config.h",
   "syslog" => "syslog.h",
+  "SYSTEMTIME" => "windows.h",
   "target_unsupported" => "private/target.h",
   "TestRFC5424Compliance" => "test/function/rfc5424.hpp",
   "TestUTF8Compliance" => "test/function/utf8.hpp",
