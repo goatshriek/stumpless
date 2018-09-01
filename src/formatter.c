@@ -27,15 +27,16 @@ struct strbuilder *
 format_entry( struct stumpless_entry *entry ) {
   char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
   struct strbuilder *builder;
-  size_t written;
+  size_t timestamp_size;
 
-  written = config_get_now( timestamp );
+  // do this as soon as possible to be closer to invocation
+  timestamp_size = config_get_now( timestamp );
 
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
   builder = strbuilder_append_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
-  builder = strbuilder_append_buffer( builder, timestamp, written );
+  builder = strbuilder_append_buffer( builder, timestamp, timestamp_size );
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_hostname( builder );
   builder = strbuilder_append_char( builder, ' ' );
