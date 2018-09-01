@@ -37,10 +37,6 @@
 #    include "private/config/have_gmtime_r.h"
 #  endif
 
-#  ifdef HAVE_GMTIME_S
-#    include "private/config/have_gmtime_s.h"
-#  endif
-
 /* definition of config_socket */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include "private/target/socket.h"
@@ -56,8 +52,6 @@
 #  elif HAVE_WINDOWS_H
 #    define config_get_now windows_get_now
 #  endif
-
-/* definition of config_get_time_secfrac */
 
 /* definition of config_gethostname */
 #  ifdef HAVE_UNISTD_H

@@ -17,7 +17,6 @@
  */
 
 #include <stddef.h>
-#include <time.h>
 #include <stumpless/entry.h>
 #include "private/config/wrapper.h"
 #include "private/entry.h"

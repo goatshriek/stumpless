@@ -39,18 +39,16 @@ windows_get_now( char *buffer ) {
                                  &now_st,
                                  L"yyyy'-'MM'-'dd",
                                  full_date,
-                                 RFC_5424_FULL_DATE_BUFFER_SIZE,
-                                 NULL );
+                                 RFC_5424_FULL_DATE_BUFFER_SIZE, NULL );
   if( date_result == 0 ) {
     return 0;
   }
-  date_result--; // drop off the NULL character
+  date_result--;                // drop off the NULL character
 
   error = wcstombs_s( &conversion_count,
                       buffer,
                       RFC_5424_FULL_DATE_BUFFER_SIZE,
-                      full_date,
-                      RFC_5424_FULL_DATE_BUFFER_SIZE - 1 );
+                      full_date, RFC_5424_FULL_DATE_BUFFER_SIZE - 1 );
   if( error != 0 ) {
     return 0;
   }
@@ -59,26 +57,23 @@ windows_get_now( char *buffer ) {
                                  0,
                                  &now_st,
                                  L"'T'HH':'mm':'ss",
-                                 full_time,
-                                 RFC_5424_FULL_TIME_BUFFER_SIZE );
+                                 full_time, RFC_5424_FULL_TIME_BUFFER_SIZE );
   if( time_result == 0 ) {
     return 0;
   }
-  time_result--; // drop off the NULL character
+  time_result--;                // drop off the NULL character
 
   error = wcstombs_s( &conversion_count,
                       buffer + date_result,
                       RFC_5424_FULL_TIME_BUFFER_SIZE,
-                      full_time,
-                      RFC_5424_FULL_TIME_BUFFER_SIZE - 1 );
+                      full_time, RFC_5424_FULL_TIME_BUFFER_SIZE - 1 );
   if( error != 0 ) {
     return 0;
   }
 
   snprintf_result = snprintf( buffer + date_result + time_result,
                               RFC_5424_TIME_SECFRAC_BUFFER_SIZE + 2,
-                              ".%03dZ",
-                              now_st.wMilliseconds );
+                              ".%03dZ", now_st.wMilliseconds );
   if( snprintf_result < 0 ) {
     return 0;
   }

@@ -84,8 +84,6 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
     EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
 
-    printf( buffer );
-
     TestRFC5424Compliance(buffer);
   }
 
