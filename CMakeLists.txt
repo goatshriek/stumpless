@@ -15,7 +15,6 @@ check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
-check_symbol_exists(gmtime_s time.h HAVE_GMTIME_S)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${CMAKE_BINARY_DIR}/include/private/config.h)
 
 set(STUMPLESS_SOURCES
@@ -59,10 +58,6 @@ endif(HAVE_WINSOCK2_H)
 if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
 endif(HAVE_GMTIME_R)
-
-if(HAVE_GMTIME_S)
-  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_s.c)
-endif(HAVE_GMTIME_S)
 
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${CMAKE_BINARY_DIR}/include/stumpless/config.h)

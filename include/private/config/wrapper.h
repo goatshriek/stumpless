@@ -53,8 +53,8 @@
 /* definition of config_get_now */
 #  ifdef HAVE_GMTIME_R
 #    define config_get_now gmtime_r_get_now
-#  elif HAVE_GMTIME_S
-#    define config_get_now gmtime_s_get_now
+#  elif HAVE_WINDOWS_H
+#    define config_get_now windows_get_now
 #  endif
 
 /* definition of config_get_time_secfrac */

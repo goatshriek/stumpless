@@ -27,6 +27,5 @@
 
 /* symbol checks */
 #cmakedefine HAVE_GMTIME_R 1
-#cmakedefine HAVE_GMTIME_S 1
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */

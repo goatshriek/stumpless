@@ -26,13 +26,17 @@
 
 struct strbuilder *
 format_entry( struct stumpless_entry *entry ) {
+  char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
   struct strbuilder *builder;
+  size_t written;
+
+  written = config_get_now( timestamp );
 
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
   builder = strbuilder_append_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
-  builder = strbuilder_append_rfc5424_timestamp( builder );
+  builder = strbuilder_append_buffer( builder, timestamp, written );
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_hostname( builder );
   builder = strbuilder_append_char( builder, ' ' );
@@ -49,6 +53,7 @@ format_entry( struct stumpless_entry *entry ) {
   return builder;
 }
 
+/*
 struct strbuilder *
 strbuilder_append_rfc5424_timestamp( struct strbuilder *builder ) {
   struct strbuilder *result_builder;
@@ -73,3 +78,4 @@ strbuilder_append_rfc5424_timestamp( struct strbuilder *builder ) {
 
   return strbuilder_append_char( result_builder, 'Z' );
 }
+*/

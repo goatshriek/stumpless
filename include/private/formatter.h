@@ -23,11 +23,15 @@
 #  include <stumpless/target.h>
 #  include "private/strbuilder.h"
 
+#  define RFC_5424_FULL_DATE_BUFFER_SIZE 11
+#  define RFC_5424_FULL_TIME_BUFFER_SIZE 10
 #  define RFC_5424_MAX_PRI_LENGTH 5
 #  define RFC_5424_MAX_TIMESTAMP_LENGTH 32
 #  define RFC_5424_MAX_HOSTNAME_LENGTH 255
 #  define RFC_5424_MAX_PROCID_LENGTH 128
+#  define RFC_5424_TIMESTAMP_BUFFER_SIZE 33
 #  define RFC_5424_WHOLE_TIME_BUFFER_SIZE 20
+#  define RFC_5424_TIME_SECFRAC_BUFFER_SIZE 8
 
 struct strbuilder *
 format_entry( struct stumpless_entry *entry );
@@ -37,7 +41,7 @@ format_entry( struct stumpless_entry *entry );
  * reflected by the timestamp will be as close to the time of the function
  * invocation as feasible.
  */
-struct strbuilder *
-strbuilder_append_rfc5424_timestamp( struct strbuilder *builder );
+//struct strbuilder *
+//strbuilder_append_rfc5424_timestamp( struct strbuilder *builder );
 
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */
