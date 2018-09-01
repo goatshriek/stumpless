@@ -19,7 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
 
-#include <time.h>
+#include <stddef.h>
 
 size_t
 gmtime_r_get_now( char *buffer );
