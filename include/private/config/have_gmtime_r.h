@@ -21,7 +21,7 @@
 
 #include <time.h>
 
-int
-gmtime_r_get_now( struct tm *now_tm, struct timespec *now_ts );
+size_t
+gmtime_r_get_now( char *buffer );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H */

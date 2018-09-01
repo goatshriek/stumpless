@@ -16,8 +16,11 @@
  * limitations under the License.
  */
 
+#include <stddef.h>
+#include <stdio.h>
 #include <time.h>
 #include "private/config/have_gmtime_r.h"
+#include "private/formatter.h"
 
 size_t
 gmtime_r_get_now( char *buffer ) {
