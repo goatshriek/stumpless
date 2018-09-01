@@ -36,12 +36,4 @@
 struct strbuilder *
 format_entry( struct stumpless_entry *entry );
 
-/*
- * Gets the current timestamp and writes it to the string builder. The time
- * reflected by the timestamp will be as close to the time of the function
- * invocation as feasible.
- */
-//struct strbuilder *
-//strbuilder_append_rfc5424_timestamp( struct strbuilder *builder );
-
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */
