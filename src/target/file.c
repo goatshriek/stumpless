@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
@@ -94,6 +95,7 @@ fail:
 
 void
 destroy_file_target( struct file_target *target ) {
+  fclose( target->stream );
   free_mem( target );
 }
 
@@ -103,16 +105,24 @@ new_file_target( const char *filename ) {
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
-    return NULL;
+    goto fail;
   }
 
-  target->handle = NULL;
+  target->stream = fopen( filename, "a" );
+  if( !target->stream ) {
+    goto fail_stream;
+  }
 
   return target;
+
+fail_stream:
+  free_mem( target );
+fail:
+  return NULL;
 }
 
 int
 sendto_file_target( struct file_target *target,
                     const char *msg, size_t msg_length ) {
-  return -1;
+  return fwrite( msg, sizeof( char ), msg_length, target->stream );
 }

@@ -40,6 +40,7 @@ my %manifest = (
   "fprintf" => "stdio.h",
   "free" => "stdlib.h",
   "free_mem" => "private/memory.h",
+  "fwrite" => "stdio.h",
   "get_facility" => "private/entry.h",
   "get_paged_size" => "private/memory.h",
   "get_priv_target" => "private/target.h",

@@ -23,7 +23,7 @@
 #  include <stdio.h>
 
 struct file_target {
-  FILE *handle;
+  FILE *stream;
 };
 
 void

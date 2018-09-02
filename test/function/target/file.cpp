@@ -66,6 +66,30 @@ namespace {
     EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
+
+  /* non-fixture tests */
+
+  TEST( FileTargetCloseTest, NullTarget ) {
+    struct stumpless_error *error;
+
+    stumpless_close_file_target( NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( FileTargetOpenTest, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_file_target( NULL, 0, 0 );
+    ASSERT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
 }
 
 int
