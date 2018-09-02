@@ -22,3 +22,5 @@ EXPORTS
   stumpless_set_target_default_app_name @20
   stumpless_set_target_default_msgid    @21
   stumpless_set_entry_message           @22
+  stumpless_close_file_target           @23
+  stumpless_open_file_target            @24
