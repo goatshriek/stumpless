@@ -15,8 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <fstream>
 #include <stddef.h>
+#include <stdlib.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"

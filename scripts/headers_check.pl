@@ -101,6 +101,7 @@ my %manifest = (
   "socklen_t" => "sys/socket.h",
   "ssize_t" => "sys/types.h",
   "std::cout" => "iostream",
+  "std::ifstream" => "fstream",
   "std::regex" => "regex",
   "strbuilder_append_app_name" => "private/entry.h",
   "strbuilder_get_buffer" => "private/strbuilder.h",
