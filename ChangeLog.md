@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add file target capability.
  - Add windows event log target capability.
 
-## [1.2.0] - 2018-08-29
+## [1.2.0] - 2018-09-01
 ### Added
  - Increased coverage on object cache.
+ - Support for fractional timestamps.
+
+### Removed
+ - Use of unsafe gmtime function.
 
 ## [1.1.1] - 2018-08-28
 ### Added

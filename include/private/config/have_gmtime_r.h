@@ -16,16 +16,12 @@
 * limitations under the License.
 */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
-#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
+
+#include <stddef.h>
 
 size_t
-windows_get_now( char *buffer );
+gmtime_r_get_now( char *buffer );
 
-size_t
-windows_getpagesize( void );
-
-int
-windows_getpid( void );
-
-#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H */

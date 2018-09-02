@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-project(stumpless VERSION 1.0.1)
+project(stumpless VERSION 1.2.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -8,11 +8,13 @@ option(COVERAGE "Include coverage information" OFF)
 
 # check for header files
 include(CheckIncludeFiles)
+include(CheckSymbolExists)
 
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
+check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${CMAKE_BINARY_DIR}/include/private/config.h)
 
 set(STUMPLESS_SOURCES
@@ -52,6 +54,10 @@ if(HAVE_WINSOCK2_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
   find_library(WINSOCK2 NAMES Ws2_32)
 endif(HAVE_WINSOCK2_H)
+
+if(HAVE_GMTIME_R)
+  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
+endif(HAVE_GMTIME_R)
 
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${CMAKE_BINARY_DIR}/include/stumpless/config.h)

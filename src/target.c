@@ -104,7 +104,7 @@ stumpless_add_entry( struct stumpless_target *target,
     return -1;
   }
 
-  builder = format_entry( target, entry );
+  builder = format_entry( entry );
   if( !builder ) {
     return -1;
   }

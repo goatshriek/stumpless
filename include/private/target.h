@@ -19,6 +19,9 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_H
 #  define __STUMPLESS_PRIVATE_TARGET_H
 
+#include <stddef.h>
+#include <stumpless/target.h>
+
 int
 target_unsupported( const struct stumpless_target *target,
                     const char *msg,

@@ -19,9 +19,13 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_H
 #define __STUMPLESS_PRIVATE_CONFIG_H
 
+/* header checks */
 #cmakedefine HAVE_SYS_SOCKET_H 1
 #cmakedefine HAVE_UNISTD_H 1
 #cmakedefine HAVE_WINDOWS_H 1
 #cmakedefine HAVE_WINSOCK2_H 1
+
+/* symbol checks */
+#cmakedefine HAVE_GMTIME_R 1
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */
