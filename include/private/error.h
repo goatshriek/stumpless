@@ -25,6 +25,7 @@ void clear_error( void );
 void raise_argument_empty( void );
 void raise_argument_too_big( void );
 void raise_error( enum stumpless_error_id id );
+void raise_file_open_failure( void );
 void raise_invalid_id( void );
 void raise_memory_allocation_failure( void );
 void raise_socket_bind_failure( void );

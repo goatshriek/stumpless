@@ -79,6 +79,20 @@ namespace {
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( FileTargetOpenTest, Directory ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+   
+    target = stumpless_open_file_target( "/", 0, 0 );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_FILE_OPEN_FAILURE );
+    }
+  }
+
   TEST( FileTargetOpenTest, MallocFailure ) {
     struct stumpless_target *target;
     struct stumpless_error *error;

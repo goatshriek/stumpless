@@ -110,6 +110,7 @@ new_file_target( const char *filename ) {
 
   target->stream = fopen( filename, "a" );
   if( !target->stream ) {
+    raise_file_open_failure(  );
     goto fail_stream;
   }
 
