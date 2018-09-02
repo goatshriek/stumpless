@@ -23,7 +23,6 @@
 #  include <stdio.h>
 
 struct file_target {
-  const char *filename;
   FILE *handle;
 };
 

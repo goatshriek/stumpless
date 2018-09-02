@@ -95,10 +95,7 @@ fail:
 
 void
 destroy_buffer_target( struct buffer_target *target ) {
-  if( target ) {
-    free_mem( target );
-  }
-
+  free_mem( target );
 }
 
 struct buffer_target *
