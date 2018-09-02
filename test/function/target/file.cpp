@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include <fstream>
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include "test/function/rfc5424.hpp"
 
 namespace {
-  class EntryTargetTest : public::testing::Test {
+  class FileTargetTest : public::testing::Test {
     protected:
       const char *filename;
       struct stumpless_target *target;
@@ -57,7 +58,7 @@ namespace {
     }
   };
 
-  TEST_F( EntryTargetTest, AddEntry ) {
+  TEST_F( FileTargetTest, AddEntry ) {
     int result;
 
     SCOPED_TRACE( "EntryTargetTest.AddEntry" );
@@ -77,6 +78,48 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( FileTargetFormat, NewlineSeparator ) {
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
+    struct stumpless_element *element;
+    struct stumpless_param *param;
+    const char *filename = "filetargetformattest.log";
+    size_t line_count = 3;
+    size_t i;
+
+    remove( filename );
+    target = stumpless_open_file_target( filename, 0, 0 );
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                "stumpless-unit-test",
+                                "basic-entry",
+                                "basic test message" );
+
+    element = stumpless_new_element( "basic-element" );
+    stumpless_add_element( entry, element );
+
+    param = stumpless_new_param( "basic-param-name", "basic-param-value" );
+    stumpless_add_param( element, param );
+
+    for( i = 0; i < line_count; i++ ) {
+      stumpless_add_entry( target, entry );
+    }
+
+    stumpless_destroy_entry( entry );
+    stumpless_close_file_target( target );
+
+    std::ifstream infile( filename );
+    std::string line;
+    i = 0;
+    while( std::getline( infile, line ) ) {
+      TestRFC5424Compliance( line.c_str() );
+      i++;
+    }
+
+    EXPECT_EQ( i, line_count );
   }
 
   TEST( FileTargetOpenTest, Directory ) {

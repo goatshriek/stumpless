@@ -125,5 +125,10 @@ fail:
 int
 sendto_file_target( struct file_target *target,
                     const char *msg, size_t msg_length ) {
-  return fwrite( msg, sizeof( char ), msg_length, target->stream );
+  int result;
+
+  result = fwrite( msg, sizeof( char ), msg_length, target->stream );
+  fputc( '\n', target->stream );
+
+  return result + 1;
 }

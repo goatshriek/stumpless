@@ -227,6 +227,8 @@ add_test(NAME entry_memory_failure
 add_executable(file
   EXCLUDE_FROM_ALL
   test/function/target/file.cpp
+  test/function/rfc5424.cpp
+  test/function/utf8.cpp
 )
 
 set_target_properties(file
