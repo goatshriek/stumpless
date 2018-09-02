@@ -16,17 +16,24 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_H
-#define __STUMPLESS_H
+#ifndef __STUMPLESS_TARGET_FILE_H
+#  define __STUMPLESS_TARGET_FILE_H
 
-#include <stumpless/entry.h>
-#include <stumpless/error.h>
-#include <stumpless/id.h>
-#include <stumpless/memory.h>
-#include <stumpless/target.h>
-#include <stumpless/target/buffer.h>
-#include <stumpless/target/file.h>
-#include <stumpless/target/socket.h>
-#include <stumpless/version.h>
+#  include <stumpless/target.h>
 
-#endif /* __STUMPLESS_H */
+#  ifdef __cplusplus
+extern "C" {
+#  endif
+
+  void
+  stumpless_close_file_target( struct stumpless_target *target );
+
+  struct stumpless_target *
+  stumpless_open_file_target( const char *name,
+                              int options,
+                              int default_facility );
+
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
+#endif                          /* __STUMPLESS_TARGET_FILE_H */

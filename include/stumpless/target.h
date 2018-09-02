@@ -30,6 +30,7 @@ extern "C" {
 
   enum stumpless_target_type {
     STUMPLESS_BUFFER_TARGET,
+    STUMPLESS_FILE_TARGET,
     STUMPLESS_SOCKET_TARGET
   };
 

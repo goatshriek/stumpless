@@ -27,6 +27,7 @@ set(STUMPLESS_SOURCES
   src/strhelper.c
   src/target.c
   src/target/buffer.c
+  src/target/file.c
   src/version.c
 )
 
