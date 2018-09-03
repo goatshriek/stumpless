@@ -17,16 +17,17 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <stumpless/target.h>
-#include <stumpless/target/buffer.h>
+#include <stumpless/target/file.h>
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/target/buffer.h"
+#include "private/target/file.h"
 
 void
-stumpless_close_buffer_target( struct stumpless_target *target ) {
+stumpless_close_file_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
@@ -34,20 +35,20 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
     return;
   }
 
-  destroy_buffer_target( target->id );
+  destroy_file_target( target->id );
   free_mem( target->name );
   free_mem( target );
 }
 
 struct stumpless_target *
-stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
-                              int options, int default_facility ) {
+stumpless_open_file_target( const char *name,
+                            int options, int default_facility ) {
   struct stumpless_target *target;
   size_t name_len;
 
   clear_error(  );
 
-  if( !name || !buffer ) {
+  if( !name ) {
     raise_argument_empty(  );
     return NULL;
   }
@@ -57,7 +58,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
     goto fail;
   }
 
-  target->id = new_buffer_target( buffer, size );
+  target->id = new_file_target( name );
   if( !target->id ) {
     goto fail_id;
   }
@@ -70,7 +71,7 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
 
   memcpy( target->name, name, name_len );
   target->name[name_len] = '\0';
-  target->type = STUMPLESS_BUFFER_TARGET;
+  target->type = STUMPLESS_FILE_TARGET;
   target->options = options;
   target->default_prival =
     get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
@@ -83,60 +84,63 @@ stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
   return target;
 
 fail_name:
-  destroy_buffer_target( target->id );
+  destroy_file_target( target->id );
 fail_id:
   free_mem( target );
 fail:
   return NULL;
 }
 
-
 /* private definitions */
 
 void
-destroy_buffer_target( struct buffer_target *target ) {
+destroy_file_target( struct file_target *target ) {
+  fclose( target->stream );
   free_mem( target );
 }
 
-struct buffer_target *
-new_buffer_target( char *buffer, size_t size ) {
-  struct buffer_target *target;
+struct file_target *
+new_file_target( const char *filename ) {
+  struct file_target *target;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
-    return NULL;
+    goto fail;
   }
 
-  target->buffer = buffer;
-  target->size = size;
-  target->position = 0;
+  target->stream = fopen( filename, "a" );
+  if( !target->stream ) {
+    raise_file_open_failure(  );
+    goto fail_stream;
+  }
 
   return target;
+
+fail_stream:
+  free_mem( target );
+fail:
+  return NULL;
 }
 
 int
-sendto_buffer_target( struct buffer_target *target,
-                      const char *msg, size_t msg_length ) {
-  size_t buffer_remaining;
+sendto_file_target( struct file_target *target,
+                    const char *msg, size_t msg_length ) {
+  size_t fwrite_result;
+  int putc_result;
 
-  if( msg_length >= target->size ) {
-    raise_argument_too_big(  );
-    return -1;
+  fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
+  if( fwrite_result != msg_length ) {
+    goto write_failure;
   }
 
-  buffer_remaining = target->size - target->position;
-
-  if( buffer_remaining > msg_length ) {
-    memcpy( target->buffer + target->position, msg, msg_length );
-    target->position += msg_length + 1;
-  } else {
-    memcpy( target->buffer + target->position, msg, buffer_remaining );
-    memcpy( target->buffer, msg + buffer_remaining,
-            msg_length - buffer_remaining );
-    target->position = msg_length - buffer_remaining + 1;
+  putc_result = fputc( '\n', target->stream );
+  if( putc_result != '\n' ) {
+    goto write_failure;
   }
 
-  target->buffer[target->position - 1] = '\0';
+  return fwrite_result + 1;
 
-  return msg_length + 1;
+write_failure:
+  raise_file_write_failure(  );
+  return -1;
 }

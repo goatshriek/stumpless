@@ -25,6 +25,7 @@
 #include <stumpless/memory.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
+#include <stumpless/target/file.h>
 #include <stumpless/target/socket.h>
 #include <stumpless/version.h>
 

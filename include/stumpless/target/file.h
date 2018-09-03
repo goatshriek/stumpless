@@ -16,39 +16,24 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_ERROR_H
-#  define __STUMPLESS_PRIVATE_ERROR_H
+#ifndef __STUMPLESS_TARGET_FILE_H
+#  define __STUMPLESS_TARGET_FILE_H
 
-#  include <stumpless/error.h>
+#  include <stumpless/target.h>
 
-void
-clear_error( void );
+#  ifdef __cplusplus
+extern "C" {
+#  endif
 
-void
-raise_argument_empty( void );
+  void
+  stumpless_close_file_target( struct stumpless_target *target );
 
-void
-raise_argument_too_big( void );
+  struct stumpless_target *
+  stumpless_open_file_target( const char *name,
+                              int options,
+                              int default_facility );
 
-void
-raise_error( enum stumpless_error_id id );
-
-void
-raise_file_open_failure( void );
-
-void
-raise_file_write_failure( void );
-
-void
-raise_invalid_id( void );
-
-void
-raise_memory_allocation_failure( void );
-
-void
-raise_socket_bind_failure( void );
-
-void
-raise_target_unsupported( void );
-
-#endif /* __STUMPLESS_PRIVATE_ERROR_H */
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
+#endif                          /* __STUMPLESS_TARGET_FILE_H */

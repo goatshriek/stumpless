@@ -27,6 +27,7 @@ set(STUMPLESS_SOURCES
   src/strhelper.c
   src/target.c
   src/target/buffer.c
+  src/target/file.c
   src/version.c
 )
 
@@ -223,6 +224,32 @@ add_test(NAME entry_memory_failure
   COMMAND entry_memory_failure
 )
 
+add_executable(file
+  EXCLUDE_FROM_ALL
+  test/function/target/file.cpp
+  test/function/rfc5424.cpp
+  test/function/utf8.cpp
+)
+
+set_target_properties(file
+  PROPERTIES COMPILE_FLAGS "-std=c++11"
+)
+
+target_link_libraries(file
+  stumpless
+  libgtest
+)
+
+target_include_directories(file
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+add_test(NAME file
+  COMMAND file
+)
+
 add_executable(memory
   EXCLUDE_FROM_ALL
   test/function/memory.cpp
@@ -352,12 +379,12 @@ add_test(NAME version
 if(WIN32)
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-    DEPENDS buffer entry entry_memory_failure memory target version
+    DEPENDS buffer entry entry_memory_failure file memory target version
   )
 else()
   add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer entry entry_memory_failure memory socket socket_add_malloc_failure target version
+    DEPENDS buffer entry entry_memory_failure file memory socket socket_add_malloc_failure target version
   )
 endif(WIN32)
 

@@ -29,6 +29,7 @@
 #include "private/strhelper.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
+#include "private/target/file.h"
 
 static struct stumpless_target *current_target = NULL;
 static struct id_map *priv_targets = NULL;
@@ -112,9 +113,13 @@ stumpless_add_entry( struct stumpless_target *target,
   buffer = strbuilder_get_buffer( builder, &builder_length );
 
   switch ( target->type ) {
+    case STUMPLESS_FILE_TARGET:
+      result = sendto_file_target( target->id, buffer, builder_length );
+      break;
     case STUMPLESS_SOCKET_TARGET:
-      result =
-        config_sendto_socket_target( target->id, buffer, builder_length );
+      result = config_sendto_socket_target( target->id,
+                                            buffer,
+                                            builder_length );
       break;
     case STUMPLESS_BUFFER_TARGET:
       result = sendto_buffer_target( target->id, buffer, builder_length );

@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,39 +16,25 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_ERROR_H
-#  define __STUMPLESS_PRIVATE_ERROR_H
+#ifndef __STUMPLESS_PRIVATE_TARGET_FILE_H
+#  define __STUMPLESS_PRIVATE_TARGET_FILE_H
 
-#  include <stumpless/error.h>
+#  include <stddef.h>
+#  include <stdio.h>
 
-void
-clear_error( void );
-
-void
-raise_argument_empty( void );
-
-void
-raise_argument_too_big( void );
+struct file_target {
+  FILE *stream;
+};
 
 void
-raise_error( enum stumpless_error_id id );
+destroy_file_target( struct file_target *target );
 
-void
-raise_file_open_failure( void );
+struct file_target *
+new_file_target( const char *filename );
 
-void
-raise_file_write_failure( void );
+int
+sendto_file_target( struct file_target *target,
+                    const char *msg,
+                    size_t msg_length );
 
-void
-raise_invalid_id( void );
-
-void
-raise_memory_allocation_failure( void );
-
-void
-raise_socket_bind_failure( void );
-
-void
-raise_target_unsupported( void );
-
-#endif /* __STUMPLESS_PRIVATE_ERROR_H */
+#endif /* __STUMPLESS_PRIVATE_TARGET_FILE_H */

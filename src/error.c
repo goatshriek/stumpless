@@ -64,6 +64,16 @@ raise_error( enum stumpless_error_id id ) {
 }
 
 void
+raise_file_open_failure( void ) {
+  raise_error( STUMPLESS_FILE_OPEN_FAILURE );
+}
+
+void
+raise_file_write_failure( void ) {
+  raise_error( STUMPLESS_FILE_WRITE_FAILURE );
+}
+
+void
 raise_invalid_id( void ) {
   raise_error( STUMPLESS_INVALID_ID );
 }
