@@ -37,13 +37,22 @@
 #    include "private/config/have_gmtime_r.h"
 #  endif
 
-/* definition of config_socket */
+/* definition of config_sendto_socket_target */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include "private/target/socket.h"
 #    define config_sendto_socket_target sendto_socket_target
 #  else
 #    include "private/target.h"
 #    define config_sendto_socket_target target_unsupported
+#  endif
+
+/* definition of config_sendto_wel_target */
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include "private/target/wel.h"
+#    define config_sendto_wel_target sendto_wel_target
+#  else
+#    include "private/target.h"
+#    define config_sendto_wel_target target_unsupported
 #  endif
 
 /* definition of config_get_now */

@@ -16,25 +16,24 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_H
-#define __STUMPLESS_H
+#ifndef __STUMPLESS_TARGET_WEL_H
+#  define __STUMPLESS_TARGET_WEL_H
 
-#  include <stumpless/config.h>
-#  include <stumpless/entry.h>
-#  include <stumpless/error.h>
-#  include <stumpless/id.h>
-#  include <stumpless/memory.h>
 #  include <stumpless/target.h>
-#  include <stumpless/target/buffer.h>
-#  include <stumpless/target/file.h>
-#  include <stumpless/version.h>
 
-#  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
-#    include <stumpless/target/socket.h>
+#  ifdef __cplusplus
+extern "C" {
 #  endif
 
-#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-#    include <stumpless/target/wel.h>
-#  endif
+  void
+  stumpless_close_wel_target( struct stumpless_target *target );
 
-#endif /* __STUMPLESS_H */
+  struct stumpless_target *
+  stumpless_open_wel_target( const char *name,
+                             int options,
+                             int default_facility );
+
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
+#endif                          /* __STUMPLESS_TARGET_WEL_H */
