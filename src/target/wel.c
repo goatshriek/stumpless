@@ -40,9 +40,9 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_open_wel_target( const char *name,
-                           int options,
-                           int default_facility ) {
+stumpless_open_local_wel_target( const char *name,
+                                 int options,
+                                 int default_facility ) {
   struct stumpless_target *target;
   size_t name_len;
 
