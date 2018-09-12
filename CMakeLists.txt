@@ -512,3 +512,13 @@ if(BUILD_PYTHON)
   )
 
 endif()
+
+
+# documentation generation
+find_program(HAVE_DOXYGEN NAMES doxygen)
+
+if(HAVE_DOXYGEN)
+  add_custom_target(docs
+    COMMAND doxygen ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+  )
+endif(HAVE_DOXYGEN)
