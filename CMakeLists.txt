@@ -518,7 +518,9 @@ endif()
 find_program(HAVE_DOXYGEN NAMES doxygen)
 
 if(HAVE_DOXYGEN)
+  configure_file(${PROJECT_SOURCE_DIR}/docs/Doxyfile.in ${CMAKE_BINARY_DIR}/docs/Doxyfile)
+
   add_custom_target(docs
-    COMMAND doxygen ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+    COMMAND doxygen ${CMAKE_BINARY_DIR}/docs/Doxyfile
   )
 endif(HAVE_DOXYGEN)
