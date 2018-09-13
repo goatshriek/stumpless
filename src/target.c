@@ -105,6 +105,12 @@ stumpless_add_entry( struct stumpless_target *target,
     return -1;
   }
 
+  // windows targets are not formatted in code
+  // their formatting comes from message text files instead
+  if( target->type == STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
+    return config_sendto_wel_target( target->id, entry );
+  }
+
   builder = format_entry( entry );
   if( !builder ) {
     return -1;
@@ -126,10 +132,6 @@ stumpless_add_entry( struct stumpless_target *target,
       result = config_sendto_socket_target( target->id,
                                             buffer,
                                             builder_length );
-      break;
-
-    case STUMPLESS_WINDOWS_EVENT_LOG_TARGET:
-      result = config_sendto_wel_target( target->id, buffer, builder_length );
       break;
 
     default:
