@@ -51,4 +51,10 @@ raise_socket_bind_failure( void );
 void
 raise_target_unsupported( void );
 
+void
+raise_wel_close_failure( void );
+
+void
+raise_wel_open_failure( void );
+
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

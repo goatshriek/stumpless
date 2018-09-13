@@ -20,6 +20,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
 #include <string.h>
+#include <windows.h>
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
@@ -60,7 +61,7 @@ stumpless_open_local_wel_target( const char *name,
 
   name_len = strlen( name );
 
-  target->id = new_wel_target(  );
+  target->id = new_wel_target( NULL, NULL );
 
   if( !target->id ) {
     goto fail_id;
@@ -93,16 +94,55 @@ fail:
 /* private definitions */
 
 void
-destroy_wel_target( struct wel_target *trgt ) {
-  return;
+destroy_wel_target( struct wel_target *target ) {
+  BOOL success;
+
+  success = DeregisterEventSource( target->handle );
+  if( !success ) {
+    raise_wel_close_failure(  );
+  }
+
+  free_mem( target );
 }
 
 struct wel_target *
-new_wel_target( void ) {
+new_wel_target( LPCSTR server_name, LPCSTR source_name ){
+  struct wel_target *target;
+
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
+    goto fail;
+  }
+
+  target->handle = RegisterEventSourceA( server_name, source_name );
+  if( !target->handle ) {
+    raise_wel_open_failure(  );
+    goto fail_handle;
+  }
+
+  return target;
+
+fail_handle:
+  free_mem( target );
+fail:
   return NULL;
 }
 
 int
 sendto_wel_target( const struct wel_target *target, const char *msg, size_t msg_length ) {
+  BOOL success;
+
+  success = ReportEventA(
+    target->handle,
+    0, //  WORD   wType - need to translate (or accept from custom function)
+    0, //  WORD   wCategory - defined by user
+    0, //  DWORD  dwEventID - defined by user
+    NULL,
+    0, //  WORD   wNumStrings, - same as the entry element count
+    0,
+    NULL,//  LPCSTR *lpStrings - use the element names - will need to build list separately
+    NULL
+  );
+
   return -1;
 }

@@ -20,16 +20,17 @@
 #  define __STUMPLESS_PRIVATE_TARGET_WEL_H
 
 #include <stddef.h>
+#include <windows.h>
 
 struct wel_target {
-  int temp;
+  HANDLE handle;
 };
 
 void
-destroy_wel_target( struct wel_target *trgt );
+destroy_wel_target( struct wel_target *target );
 
 struct wel_target *
-new_wel_target( void );
+new_wel_target( LPCSTR server_name, LPCSTR source_name );
 
 int
 sendto_wel_target( const struct wel_target *target,

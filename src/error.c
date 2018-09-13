@@ -91,3 +91,13 @@ void
 raise_target_unsupported( void ) {
   raise_error( STUMPLESS_TARGET_UNSUPPORTED );
 }
+
+void
+raise_wel_close_failure( void ){
+  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE );
+}
+
+void
+raise_wel_open_failure( void ){
+  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE );
+}
