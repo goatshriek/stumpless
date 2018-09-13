@@ -117,6 +117,7 @@ my %manifest = (
   "strbuilder_get_buffer" => "private/strbuilder.h",
   "strftime" => "time.h",
   "strlen" => "string.h",
+  "strncpy" => "string.h",
   "struct buffer_target" => "private/target/buffer.h",
   "struct file_target" => "private/target/file.h",
   "struct sockaddr" => "sys/socket.h",
@@ -178,7 +179,8 @@ my %manifest = (
   "unistd_getpid" => "private/config/have_unistd.h",
   "windows_getpagesize" => "private/config/have_windows.h",
   "windows_getpid" => "private/config/have_windows.h",
-  "winsock2_gethostname" => "private/config/have_winsock2.h"
+  "winsock2_gethostname" => "private/config/have_winsock2.h",
+  "WORD" => "windows.h"
 );
 
 my %actual_includes;

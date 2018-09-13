@@ -23,6 +23,10 @@
 #  include <stumpless/config.h>
 #  include <stumpless/id.h>
 
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include <windows.h>
+#  endif
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -146,6 +150,10 @@ extern "C" {
     size_t msgid_length;
     struct stumpless_element **elements;
     size_t element_count;
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+    WORD wel_insertion_count;
+    LPSTR *wel_insertion_strings;
+#  endif
   };
 
   /* 

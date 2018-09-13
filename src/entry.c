@@ -49,19 +49,14 @@ stumpless_add_element( struct stumpless_entry *entry,
   old_elements_size = sizeof( element ) * entry->element_count;
   new_elements_size = old_elements_size + sizeof( element );
 
-  new_elements = alloc_mem( new_elements_size );
+  new_elements = realloc_mem( entry->elements, new_elements_size );
   if( !new_elements ) {
     return NULL;
   }
 
-  if( entry->elements != NULL ) {
-    memcpy( new_elements, entry->elements, old_elements_size );
-    free_mem( entry->elements );
-  }
-
   new_elements[entry->element_count] = element;
-  entry->element_count++;
   entry->elements = new_elements;
+  entry->element_count++;
 
   return entry;
 }
