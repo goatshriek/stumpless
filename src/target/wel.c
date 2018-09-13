@@ -61,7 +61,7 @@ stumpless_open_local_wel_target( const char *name,
 
   name_len = strlen( name );
 
-  target->id = new_wel_target( NULL, NULL );
+  target->id = new_wel_target( NULL, name );
 
   if( !target->id ) {
     goto fail_id;
