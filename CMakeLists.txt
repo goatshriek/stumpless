@@ -6,11 +6,16 @@ option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
+find_package(Threads REQUIRED)
+
 # load modules
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
+include(ExternalProject)
 
 # load utilities
+include(tools/cmake/benchmark.cmake)
+include(tools/cmake/gtest.cmake)
 include(tools/cmake/test.cmake)
 
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
@@ -86,71 +91,6 @@ target_include_directories(stumpless
   ${CMAKE_BINARY_DIR}/include
 )
 
-# adding in the gtest support
-find_package(Threads REQUIRED)
-include(ExternalProject)
-
-ExternalProject_Add(gtest
-    URL https://github.com/google/googletest/archive/master.zip
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-    CMAKE_ARGS -Dgtest_force_shared_crt=ON
-    INSTALL_COMMAND ""
-)
-
-set_target_properties(gtest
-  PROPERTIES
-  EXCLUDE_FROM_ALL TRUE
-)
-
-ExternalProject_Get_Property(gtest source_dir binary_dir)
-
-add_library(libgtest IMPORTED STATIC GLOBAL)
-add_dependencies(libgtest gtest)
-
-if(WIN32)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set_target_properties(libgtest PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtestd.lib"
-        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-    )
-  else()
-    set_target_properties(libgtest PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtest.lib"
-        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-    )
-  endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-else()
-  set_target_properties(libgtest PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/libgtest.a"
-      "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-  )
-endif(WIN32)
-
-add_library(libgmock IMPORTED STATIC GLOBAL)
-add_dependencies(libgmock gtest)
-
-if(WIN32)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set_target_properties(libgmock PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmockd.lib"
-        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-    )
-  else()
-    set_target_properties(libgmock PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmock.lib"
-        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-    )
-  endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-else()
-  set_target_properties(libgmock PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
-      "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-  )
-endif(WIN32)
-
-include_directories("${source_dir}/googletest/include"
-                    "${source_dir}/googlemock/include")
-
 # test suites
 enable_testing()
 
@@ -203,32 +143,7 @@ add_custom_target(check
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
-
-# google benchmark support
-ExternalProject_Add(benchmark
-    URL https://github.com/google/benchmark/archive/master.zip
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
-    CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE
-    INSTALL_COMMAND ""
-)
-
-set_target_properties(benchmark
-  PROPERTIES
-  EXCLUDE_FROM_ALL TRUE
-)
-
-ExternalProject_Get_Property(benchmark source_dir binary_dir)
-
-add_library(libbenchmark IMPORTED STATIC GLOBAL)
-add_dependencies(libbenchmark benchmark)
-
-set_target_properties(libbenchmark PROPERTIES
-  EXCLUDE_FROM_ALL TRUE
-  IMPORTED_LOCATION "${binary_dir}/src/libbenchmark.a"
-  IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
-)
-include_directories("${source_dir}/include")
-
+# performance tests
 add_performance_test(target
   test/performance/target.cpp
 )
