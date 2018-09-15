@@ -200,7 +200,7 @@ endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
 
 add_custom_target(check
   COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-  DEPENDS ${STUMPLESS_FUNCTION_TEST_TARGETS}
+  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
 
@@ -233,9 +233,12 @@ add_performance_test(target
   test/performance/target.cpp
 )
 
+# there has to be a way to do this dynamically instead of listing each
+# index separately...
+list(GET STUMPLESS_PERFORMANCE_TESTS 0 BENCH_COMMAND_0)
 add_custom_target(bench
-    COMMAND performance-test-target
-    DEPENDS ${STUMPLESS_PERFORMANCE_TEST_TARGETS}
+  COMMAND ${BENCH_COMMAND_0}
+  DEPENDS ${STUMPLESS_PERFORMANCE_TESTS}
 )
 
 

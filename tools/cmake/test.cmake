@@ -1,5 +1,5 @@
 macro(add_function_test name)
-  list(APPEND STUMPLESS_FUNCTION_TEST_TARGETS function-test-${name})
+  list(APPEND STUMPLESS_FUNCTION_TESTS function-test-${name})
 
   add_executable(function-test-${name}
     EXCLUDE_FROM_ALL
@@ -29,7 +29,7 @@ macro(add_function_test name)
 endmacro(add_function_test)
 
 macro(add_performance_test name)
-  list(APPEND STUMPLESS_PERFORMANCE_TEST_TARGETS performance-test-${name})
+  list(APPEND STUMPLESS_PERFORMANCE_TESTS performance-test-${name})
 
   add_executable(performance-test-${name}
     EXCLUDE_FROM_ALL
