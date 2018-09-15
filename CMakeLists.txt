@@ -16,6 +16,7 @@ include(ExternalProject)
 # load utilities
 include(tools/cmake/benchmark.cmake)
 include(tools/cmake/gtest.cmake)
+include(tools/cmake/swig.cmake)
 include(tools/cmake/test.cmake)
 
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
@@ -159,30 +160,11 @@ add_custom_target(bench
 
 # add in the swig project
 if(BUILD_PYTHON)
-  ExternalProject_Add(swig
-    URL https://github.com/swig/swig/archive/master.zip
-    PREFIX ${CMAKE_BINARY_DIR}/swig
-    CONFIGURE_COMMAND cd <SOURCE_DIR> && <SOURCE_DIR>/autogen.sh && cd <BINARY_DIR> && <SOURCE_DIR>/configure --without-alllang --with-python
-    BUILD_COMMAND ${MAKE}
-    INSTALL_COMMAND ""
-  )
-
-  set_target_properties(swig
-    PROPERTIES
-    EXCLUDE_FROM_ALL TRUE
-  )
-
-  ExternalProject_Get_Property(swig
-    source_dir
-  )
-
-  ExternalProject_Get_Property(swig
-    binary_dir
-  )
+  add_swig_project()
 
   add_custom_command(
     OUTPUT ${CMAKE_BINARY_DIR}/stumpless_python_wrap.c
-    COMMAND ${CMAKE_COMMAND} -E env SWIG_LIB=${source_dir}/Lib ${binary_dir}/swig -python -I${PROJECT_SOURCE_DIR}/include -o ${CMAKE_BINARY_DIR}/stumpless_python_wrap.c -outdir ${CMAKE_BINARY_DIR} ${PROJECT_SOURCE_DIR}/src/swig/stumpless.i
+    COMMAND ${CMAKE_COMMAND} -E env SWIG_LIB=${source_dir}/Lib ${binary_dir}/swig -python -I${PROJECT_SOURCE_DIR}/include -I${CMAKE_BINARY_DIR}/include -o ${CMAKE_BINARY_DIR}/stumpless_python_wrap.c -outdir ${CMAKE_BINARY_DIR} ${PROJECT_SOURCE_DIR}/src/swig/stumpless.i
     MAIN_DEPENDENCY swig
   )
 
@@ -196,7 +178,8 @@ if(BUILD_PYTHON)
 
   target_include_directories(stumplesspython
     PRIVATE /usr/include/python2.7
-    PRIVATE include
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
   )
 
   set_target_properties(stumplesspython
