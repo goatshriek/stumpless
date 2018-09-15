@@ -30,4 +30,4 @@ inclusion checks.
 
 ## tools
 The `tools` directory contains files to support outside tools used by stumpless,
-such as build (cmake) and documentation generation (doxygen).
+such as cmake for the build.

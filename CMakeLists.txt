@@ -152,6 +152,16 @@ include_directories("${source_dir}/googletest/include"
                     "${source_dir}/googlemock/include")
 
 # test suites
+set(STUMPLESS_FUNCTION_TESTS
+  buffer
+  entry
+  entry_memory_failure
+  file
+  memory
+  target
+  version
+)
+
 enable_testing()
 
 add_function_test(buffer
@@ -187,6 +197,8 @@ add_function_test(version
 )
 
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
+  list(APPEND STUMPLESS_FUNCTION_TESTS socket socket_add_malloc_failure)
+
   add_function_test(socket
     test/function/target/socket.cpp
     test/function/rfc5424.cpp
@@ -198,17 +210,11 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   )
 endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
 
-if(WIN32)
-  add_custom_target(check
-    COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-    DEPENDS buffer entry entry_memory_failure file memory target version
-  )
-else()
-  add_custom_target(check
-    COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS buffer entry entry_memory_failure file memory socket socket_add_malloc_failure target version
-  )
-endif(WIN32)
+add_custom_target(check
+  COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
+  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
+)
+
 
 # google benchmark support
 ExternalProject_Add(benchmark
