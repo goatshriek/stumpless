@@ -6,9 +6,12 @@ option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
-# check for header files
+# load modules
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
+
+# load utilities
+include(tools/cmake/test.cmake)
 
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(unistd.h HAVE_UNISTD_H)
@@ -151,230 +154,49 @@ include_directories("${source_dir}/googletest/include"
 # test suites
 enable_testing()
 
-add_executable(buffer
-  EXCLUDE_FROM_ALL
+add_function_test(buffer
   test/function/target/buffer.cpp
   test/function/rfc5424.cpp
   test/function/utf8.cpp
 )
-set_target_properties(buffer
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
-)
 
-target_link_libraries(buffer
-  stumpless
-  libgtest
-)
-
-target_include_directories(buffer
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME buffer
-  COMMAND buffer
-)
-
-add_executable(entry
-  EXCLUDE_FROM_ALL
+add_function_test(entry
   test/function/entry.cpp
 )
 
-set_target_properties(entry
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
-)
-
-target_link_libraries(entry
-  stumpless
-  libgtest
-)
-
-target_include_directories(entry
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME entry
-  COMMAND entry
-)
-
-add_executable(entry_memory_failure
-  EXCLUDE_FROM_ALL
+add_function_test(entry_memory_failure
   test/function/startup/entry_memory_failure.cpp
 )
 
-set_target_properties(entry_memory_failure
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
-)
-
-target_link_libraries(entry_memory_failure
-  stumpless
-  libgtest
-)
-
-target_include_directories(entry_memory_failure
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME entry_memory_failure
-  COMMAND entry_memory_failure
-)
-
-add_executable(file
-  EXCLUDE_FROM_ALL
+add_function_test(file
   test/function/target/file.cpp
   test/function/rfc5424.cpp
   test/function/utf8.cpp
 )
 
-set_target_properties(file
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
-)
-
-target_link_libraries(file
-  stumpless
-  libgtest
-)
-
-target_include_directories(file
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME file
-  COMMAND file
-)
-
-add_executable(memory
-  EXCLUDE_FROM_ALL
+add_function_test(memory
   test/function/memory.cpp
 )
 
-set_target_properties(memory
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
+add_function_test(target
+  test/function/target.cpp
 )
 
-target_link_libraries(memory
-  stumpless
-  libgtest
-)
-
-target_include_directories(memory
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME memory
-  COMMAND memory
+add_function_test(version
+  test/function/version.cpp
 )
 
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
-  add_executable(socket
-    EXCLUDE_FROM_ALL
+  add_function_test(socket
     test/function/target/socket.cpp
     test/function/rfc5424.cpp
     test/function/utf8.cpp
   )
-  
-  set_target_properties(socket
-    PROPERTIES COMPILE_FLAGS "-std=c++11"
-  )
-  
-  target_link_libraries(socket
-    stumpless
-    libgtest
-  )
-  
-  target_include_directories(socket
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
-  )
-  
-  add_test(NAME socket
-    COMMAND socket
-  )
 
-  add_executable(socket_add_malloc_failure
-    EXCLUDE_FROM_ALL
+  add_function_test(socket_add_malloc_failure
     test/function/startup/target/socket_add_malloc_failure.cpp
   )
-  
-  set_target_properties(socket_add_malloc_failure
-    PROPERTIES COMPILE_FLAGS "-std=c++11"
-    OUTPUT_NAME "socket_add_malloc_failure"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/function/startup/target"
-  )
-  
-  target_link_libraries(socket_add_malloc_failure
-    stumpless
-    libgtest
-  )
-  
-  target_include_directories(socket_add_malloc_failure
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
-  )
-  
-  add_test(NAME socket_add_malloc_failure
-    COMMAND ${CMAKE_BINARY_DIR}/test/function/startup/target/socket_add_malloc_failure
-  )
 endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
-
-add_executable(target
-  EXCLUDE_FROM_ALL
-  test/function/target.cpp
-)
-
-set_target_properties(target
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
-)
-
-target_link_libraries(target
-  stumpless
-  libgtest
-)
-
-target_include_directories(target
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME target
-  COMMAND target
-)
-
-add_executable(version
-  EXCLUDE_FROM_ALL
-  test/function/version.cpp
-)
-
-set_target_properties(version
-  PROPERTIES COMPILE_FLAGS "-std=c++11"
-)
-
-target_link_libraries(version
-  stumpless
-  libgtest
-)
-
-target_include_directories(version
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-add_test(NAME version
-  COMMAND version
-)
 
 if(WIN32)
   add_custom_target(check
@@ -450,49 +272,49 @@ if(BUILD_PYTHON)
     BUILD_COMMAND ${MAKE}
     INSTALL_COMMAND ""
   )
-  
+
   set_target_properties(swig
     PROPERTIES
     EXCLUDE_FROM_ALL TRUE
   )
-  
+
   ExternalProject_Get_Property(swig
     source_dir
   )
-  
+
   ExternalProject_Get_Property(swig
     binary_dir
   )
-  
+
   add_custom_command(
     OUTPUT ${CMAKE_BINARY_DIR}/stumpless_python_wrap.c
     COMMAND ${CMAKE_COMMAND} -E env SWIG_LIB=${source_dir}/Lib ${binary_dir}/swig -python -I${PROJECT_SOURCE_DIR}/include -o ${CMAKE_BINARY_DIR}/stumpless_python_wrap.c -outdir ${CMAKE_BINARY_DIR} ${PROJECT_SOURCE_DIR}/src/swig/stumpless.i
     MAIN_DEPENDENCY swig
   )
-  
+
   add_library(stumplesspython SHARED
     ${CMAKE_BINARY_DIR}/stumpless_python_wrap.c
   )
-  
+
   target_link_libraries(stumplesspython
     optimized stumpless
   )
-  
+
   target_include_directories(stumplesspython
     PRIVATE /usr/include/python2.7
     PRIVATE include
   )
-  
+
   set_target_properties(stumplesspython
     PROPERTIES
     PREFIX "_"
     OUTPUT_NAME stumpless
   )
-  
+
   set(CTEST_ENVIRONMENT
     "PYTHONPATH=${CMAKE_BINARY_DIR}"
   )
-  
+
   add_dependencies(check
     stumplesspython
   )

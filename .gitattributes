@@ -1,5 +1,6 @@
 * text eol=lf
 
 *.c text
+*.cmake text
 *.h text
 *.xml text
