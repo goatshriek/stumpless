@@ -1,4 +1,6 @@
-function(add_function_test name)
+macro(add_function_test name)
+  list(APPEND STUMPLESS_FUNCTION_TESTS ${name})
+
   add_executable(${name}
     EXCLUDE_FROM_ALL
     ${ARGN}
@@ -22,4 +24,4 @@ function(add_function_test name)
   add_test(NAME ${name}
     COMMAND ${name}
   )
-endfunction(add_function_test)
+endmacro(add_function_test)

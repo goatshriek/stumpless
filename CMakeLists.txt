@@ -152,16 +152,6 @@ include_directories("${source_dir}/googletest/include"
                     "${source_dir}/googlemock/include")
 
 # test suites
-set(STUMPLESS_FUNCTION_TESTS
-  buffer
-  entry
-  entry_memory_failure
-  file
-  memory
-  target
-  version
-)
-
 enable_testing()
 
 add_function_test(buffer
@@ -197,8 +187,6 @@ add_function_test(version
 )
 
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
-  list(APPEND STUMPLESS_FUNCTION_TESTS socket socket_add_malloc_failure)
-
   add_function_test(socket
     test/function/target/socket.cpp
     test/function/rfc5424.cpp
