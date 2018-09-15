@@ -133,6 +133,7 @@ my %manifest = (
   "struct wel_target" => "private/target/wel.h",
   "stumpless" => "stumpless/target/socket.h",
   "stumpless_add_entry" => "stumpless/target.h",
+  "stumpless_add_wel_insertion_string" => "private/config/wel_supported.h",
   "STUMPLESS_BUFFER_TARGET" => "stumpless/target.h",
   "stumpless_close_buffer_target" => "stumpless/target/buffer.h",
   "stumpless_close_file_target" => "stumpless/target/file.h",
