@@ -200,7 +200,7 @@ endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
 
 add_custom_target(check
   COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
+  DEPENDS ${STUMPLESS_FUNCTION_TEST_TARGETS}
 )
 
 
@@ -229,31 +229,13 @@ set_target_properties(libbenchmark PROPERTIES
 )
 include_directories("${source_dir}/include")
 
-add_executable(perf-target
-  EXCLUDE_FROM_ALL
+add_performance_test(target
   test/performance/target.cpp
 )
 
-target_link_libraries(perf-target
-  stumpless
-  libbenchmark
-)
-
-set_target_properties(perf-target
-  PROPERTIES
-  OUTPUT_NAME "target"
-  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/performance"
-)
-
-target_include_directories(perf-target
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
 add_custom_target(bench
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test/performance/target
-    DEPENDS perf-target
+    COMMAND performance-test-target
+    DEPENDS ${STUMPLESS_PERFORMANCE_TEST_TARGETS}
 )
 
 
