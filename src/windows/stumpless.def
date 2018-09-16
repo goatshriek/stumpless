@@ -24,3 +24,4 @@ EXPORTS
   stumpless_set_entry_message           @22
   stumpless_close_file_target           @23
   stumpless_open_file_target            @24
+  stumpless_set_current_target          @25
