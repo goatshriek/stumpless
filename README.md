@@ -24,10 +24,9 @@ folder. An XML file is included which can be used to generate the desired RFC
 document using the `xml2rfc` tool.
 
 ## scripts
-The `scripts` directory contains useful single-file tools useful for
-the development of the project, such as file formatting scripts and header
-inclusion checks.
+The `scripts` directory contains single-file tools useful for the development
+of the project, such as file formatting scripts and header inclusion checks.
 
 ## tools
-The `tools` directory contains files to support outside tools used by stumpless,
-such as cmake for the build.
+The `tools` directory contains files to support third-party tools used by
+stumpless, such as cmake.
