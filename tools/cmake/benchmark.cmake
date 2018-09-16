@@ -16,16 +16,15 @@ add_library(libbenchmark IMPORTED STATIC GLOBAL)
 add_dependencies(libbenchmark benchmark)
 
 if(WIN32)
-  set_target_properties(libbenchmark PROPERTIES
-    IMPORTED_LOCATION "${binary_dir}/src/benchmark.lib"
-    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
-  )
+  set(benchmark_imported_location "${binary_dir}/src/benchmark.lib")
 else()
-  set_target_properties(libbenchmark PROPERTIES
-    EXCLUDE_FROM_ALL TRUE
-    IMPORTED_LOCATION "${binary_dir}/src/libbenchmark.a"
-    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
-  )
+  set(benchmark_imported_location "${binary_dir}/src/libbenchmark.a")
 endif(WIN32)
+
+set_target_properties(libbenchmark PROPERTIES
+  EXCLUDE_FROM_ALL TRUE
+  IMPORTED_LOCATION "${benchmark_imported_location}"
+  IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
+)
 
 include_directories("${source_dir}/include")
