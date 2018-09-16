@@ -223,7 +223,6 @@ namespace {
   TEST( BufferTargetOpenTest, Open100Targets ) {
     char buffer[100];
     struct stumpless_target *targets[100];
-    struct stumpless_error *error;
     size_t i;
 
     for( i=0; i < 100; i++ ) {
