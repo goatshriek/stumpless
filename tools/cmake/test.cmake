@@ -36,10 +36,18 @@ macro(add_performance_test name)
     ${ARGN}
   )
 
-  target_link_libraries(performance-test-${name}
-    stumpless
-    libbenchmark
-  )
+  if(MSVC)
+    target_link_libraries(performance-test-${name}
+      stumpless
+      libbenchmark
+      Shlwapi.lib
+    )
+  else()
+    target_link_libraries(performance-test-${name}
+      stumpless
+      libbenchmark
+    )
+  endif(MSVC)
 
   set_target_properties(performance-test-${name}
     PROPERTIES
