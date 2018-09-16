@@ -6,10 +6,16 @@ macro(add_function_test name)
     ${ARGN}
   )
 
+  if(MSVC)
+    set(function_test_compile_flags "")
+  else()
+    set(function_test_compile_flags "-std=c++11")
+  endif(MSVC)
+
   set_target_properties(function-test-${name}
     PROPERTIES
     OUTPUT_NAME function-test-${name}
-    COMPILE_FLAGS "-std=c++11"
+    COMPILE_FLAGS "${function_test_compile_flags}"
   )
 
   target_link_libraries(function-test-${name}

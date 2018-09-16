@@ -68,14 +68,14 @@ namespace {
     struct stumpless_entry *entry;
     struct stumpless_element *element;
     struct stumpless_error *error;
-    void *(*result)(size_t);
+    void * (*set_realloc_result)(void *, size_t);
 
     element = stumpless_new_element( "test-memory-failure" );
     ASSERT_TRUE( element != NULL );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
    
-    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( result != NULL );
+    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    ASSERT_TRUE( set_realloc_result != NULL );
  
     entry = stumpless_add_element( basic_entry, element );
     EXPECT_EQ( NULL, entry );
@@ -87,7 +87,8 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
 
-    stumpless_set_malloc( malloc );
+    set_realloc_result = stumpless_set_realloc( realloc );
+    EXPECT_TRUE( set_realloc_result == realloc );
   }
   
   TEST_F( EntryTest, AddNullElement ) {

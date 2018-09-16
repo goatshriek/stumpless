@@ -16,6 +16,14 @@
  * limitations under the License.
  */
 
+#include <stddef.h>
+#include <string.h>
+#include <stumpless/entry.h>
+#include <windows.h>
+#include "private/config/wel_supported.h"
+#include "private/error.h"
+#include "private/memory.h"
+
 struct stumpless_entry *
 stumpless_add_wel_insertion_string( struct stumpless_entry *entry,
                                     LPCSTR str ) {
