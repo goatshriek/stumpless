@@ -22,7 +22,7 @@ if(WIN32)
     set(gtest_imported_location "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtest.lib")
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
-    set(gtest_imported_location "${binary_dir}/googlemock/gtest/libgtest.a")
+  set(gtest_imported_location "${binary_dir}/googlemock/gtest/libgtest.a")
 endif(WIN32)
 
 set_target_properties(libgtest PROPERTIES
