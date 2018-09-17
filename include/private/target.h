@@ -23,8 +23,12 @@
 #include <stumpless/target.h>
 
 int
-target_unsupported( const struct stumpless_target *target,
-                    const char *msg,
-                    size_t msg_length );
+send_entry_to_unsupported_target( const struct stumpless_target *target,
+                                  const struct stumpless_entry *entry );
+
+int
+sendto_unsupported_target( const struct stumpless_target *target,
+                           const char *msg,
+                           size_t msg_length );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_H */

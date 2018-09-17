@@ -43,16 +43,16 @@
 #    define config_sendto_socket_target sendto_socket_target
 #  else
 #    include "private/target.h"
-#    define config_sendto_socket_target target_unsupported
+#    define config_sendto_socket_target sendto_unsupported_target
 #  endif
 
 /* definition of config_sendto_wel_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include "private/target/wel.h"
-#    define config_sendto_wel_target sendto_wel_target
+#    define config_send_entry_to_wel_target send_entry_to_wel_target
 #  else
 #    include "private/target.h"
-#    define config_sendto_wel_target target_unsupported
+#    define config_send_entry_to_wel_target send_entry_to_unsupported_target
 #  endif
 
 /* definition of config_get_now */

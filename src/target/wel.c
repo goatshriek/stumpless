@@ -129,8 +129,8 @@ fail:
 }
 
 int
-sendto_wel_target( const struct wel_target *target,
-                   const struct stumpless_entry *entry ) {
+send_entry_to_wel_target( const struct wel_target *target,
+                          const struct stumpless_entry *entry ) {
   BOOL success;
 
   success = ReportEventA(

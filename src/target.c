@@ -108,7 +108,7 @@ stumpless_add_entry( struct stumpless_target *target,
   // windows targets are not formatted in code
   // their formatting comes from message text files instead
   if( target->type == STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
-    return config_sendto_wel_target( target->id, entry );
+    return config_send_entry_to_wel_target( target->id, entry );
   }
 
   builder = format_entry( entry );
@@ -135,7 +135,7 @@ stumpless_add_entry( struct stumpless_target *target,
       break;
 
     default:
-      result = target_unsupported( target, buffer, builder_length );
+      result = sendto_unsupported_target( target, buffer, builder_length );
   }
 
   strbuilder_destroy( builder );
@@ -197,8 +197,15 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 /* private definitions */
 
 int
-target_unsupported( const struct stumpless_target *target,
-                    const char *msg, size_t msg_length ) {
+send_entry_to_unsupported_target( const struct stumpless_target *target,
+                                  const struct stumpless_entry *entry ) {
+  raise_target_unsupported(  );
+  return -1;
+}
+
+int
+sendto_unsupported_target( const struct stumpless_target *target,
+                           const char *msg, size_t msg_length ) {
   raise_target_unsupported(  );
   return -1;
 }

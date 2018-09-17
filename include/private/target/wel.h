@@ -33,7 +33,7 @@ struct wel_target *
 new_wel_target( LPCSTR server_name, LPCSTR source_name );
 
 int
-sendto_wel_target( const struct wel_target *target,
-                   const struct stumpless_entry *entry );
+send_entry_to_wel_target( const struct wel_target *target,
+                          const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_WEL_H */
