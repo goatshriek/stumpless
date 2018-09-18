@@ -135,13 +135,13 @@ send_entry_to_wel_target( const struct wel_target *target,
 
   success = ReportEventA(
     target->handle,
-    0, //  WORD   wType - need to translate (or accept from custom function)
+    entry->wel_type,
     0, //  WORD   wCategory - defined by user
     0, //  DWORD  dwEventID - defined by user
     NULL,
-    0, //  WORD   wNumStrings, - same as the entry element count
+    entry->wel_insertion_count,
     0,
-    NULL,//  LPCSTR *lpStrings - use the element names - will need to build list separately
+    entry->wel_insertion_strings,
     NULL
   );
 

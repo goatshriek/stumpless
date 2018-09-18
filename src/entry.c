@@ -125,8 +125,11 @@ fail:
 }
 
 struct stumpless_entry *
-stumpless_new_entry( int facility, int severity, const char *app_name,
-                     const char *msgid, const char *message ) {
+stumpless_new_entry( int facility,
+                     int severity,
+                     const char *app_name,
+                     const char *msgid,
+                     const char *message ) {
   struct stumpless_entry *entry;
   size_t *app_name_length;
   size_t *msgid_length;
@@ -147,8 +150,6 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
     goto fail;
   }
 
-  entry->prival = get_prival( facility, severity );
-
   app_name_length = &( entry->app_name_length );
   entry->app_name = cstring_to_sized_string( app_name, app_name_length );
   if( !entry->app_name ) {
@@ -168,7 +169,9 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
   }
 
   config_initialize_insertion_strings( entry );
+  config_set_entry_wel_type( entry, severity );
 
+  entry->prival = get_prival( facility, severity );
   entry->elements = NULL;
   entry->element_count = 0;
 

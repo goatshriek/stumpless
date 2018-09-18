@@ -151,6 +151,7 @@ extern "C" {
     struct stumpless_element **elements;
     size_t element_count;
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+    WORD wel_type;
     WORD wel_insertion_count;
     LPSTR *wel_insertion_strings;
 #  endif

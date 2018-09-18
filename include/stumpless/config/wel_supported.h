@@ -26,9 +26,12 @@
 extern "C" {
 #  endif
 
-struct stumpless_entry *
-stumpless_add_wel_insertion_string( struct stumpless_entry *entry,
-                                    LPCSTR str );
+  struct stumpless_entry *
+  stumpless_add_wel_insertion_string( struct stumpless_entry *entry,
+                                      LPCSTR str );
+
+  struct stumpless_entry *
+  stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

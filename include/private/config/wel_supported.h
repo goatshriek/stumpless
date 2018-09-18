@@ -27,4 +27,7 @@ destroy_insertion_strings( struct stumpless_entry *entry );
 void
 initialize_insertion_strings( struct stumpless_entry *entry );
 
+void
+set_entry_wel_type( struct stumpless_entry *entry, int severity );
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H */

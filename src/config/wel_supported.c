@@ -70,11 +70,25 @@ fail:
   return NULL;
 }
 
+struct stumpless_entry *
+stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ){
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  entry->wel_type = type;
+
+  return entry;
+}
+
 /* private definitions */
 
 void
 destroy_insertion_strings( struct stumpless_entry *entry ) {
-  size_t i;
+  WORD i;
 
   for( i = 0; i < entry->wel_insertion_count; i++ ) {
     free_mem( entry->wel_insertion_strings[i] );
@@ -87,4 +101,24 @@ void
 initialize_insertion_strings( struct stumpless_entry *entry ) {
   entry->wel_insertion_strings = NULL;
   entry->wel_insertion_count = 0;
+}
+
+void
+set_entry_wel_type( struct stumpless_entry *entry, int severity ) {
+  switch( severity ) {
+    case STUMPLESS_SEVERITY_ERR:
+      entry->wel_type = EVENTLOG_ERROR_TYPE;
+      break;
+
+    case STUMPLESS_SEVERITY_INFO:
+      entry->wel_type = EVENTLOG_INFORMATION_TYPE;
+      break;
+
+    case STUMPLESS_SEVERITY_WARN:
+      entry->wel_type = EVENTLOG_WARNING_TYPE;
+      break;
+
+    default:
+      entry->wel_type = EVENTLOG_SUCCESS;
+  }
 }
