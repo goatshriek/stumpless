@@ -16,11 +16,6 @@
  * limitations under the License.
  */
 
-/**
- * @file
- * Functions for working with Windows Event Log targets.
- */
-
 #ifndef __STUMPLESS_TARGET_WEL_H
 #  define __STUMPLESS_TARGET_WEL_H
 
@@ -30,33 +25,13 @@
 extern "C" {
 #  endif
 
-/**
- * Closes a Windows Event Log target. Once a target is closed, it's memory is
- * freed and it should not be used any more.
- *
- * Because this function does not return anything, error codes can be checked
- * by a call to stumpless_get_error().
- *
- * @param target The Windows Event Log target to close
- */
   void
   stumpless_close_wel_target( struct stumpless_target *target );
 
-/**
- * 
- */
   struct stumpless_target *
   stumpless_open_local_wel_target( const char *name,
                                    int options,
                                    int default_facility );
-
-/**
- * 
- */
-  struct stumpless_target *
-  stumpless_open_remote_wel_target( const char *name,
-                                    int options,
-                                    int default_facility );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

@@ -17,7 +17,6 @@
  */
 
 #include <stddef.h>
-#include <string.h>
 #include <stumpless/entry.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
@@ -168,6 +167,8 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
     goto fail_message;
   }
 
+  config_initialize_insertion_strings( entry );
+
   entry->elements = NULL;
   entry->element_count = 0;
 
@@ -245,6 +246,8 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
   if( !entry ) {
     return;
   }
+
+  config_destroy_insertion_strings( entry );
 
   for( i = 0; i < entry->element_count; i++ ) {
     stumpless_destroy_element( entry->elements[i] );

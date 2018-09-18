@@ -18,6 +18,7 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
 #include <windows.h>
 #include "private/config/wel_supported.h"
@@ -67,4 +68,23 @@ fail_realloc:
   free_mem( str_copy );
 fail:
   return NULL;
+}
+
+/* private definitions */
+
+void
+destroy_insertion_strings( struct stumpless_entry *entry ) {
+  size_t i;
+
+  for( i = 0; i < entry->wel_insertion_count; i++ ) {
+    free_mem( entry->wel_insertion_strings[i] );
+  }
+
+  free_mem( entry->wel_insertion_strings );
+}
+
+void
+initialize_insertion_strings( struct stumpless_entry *entry ) {
+  entry->wel_insertion_strings = NULL;
+  entry->wel_insertion_count = 0;
 }

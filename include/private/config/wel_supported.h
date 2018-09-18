@@ -19,10 +19,12 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 
-#include <stddef.h>
+#include <stumpless/entry.h>
 
-struct stumpless_entry *
-stumpless_add_wel_insertion_string( struct stumpless_entry *entry,
-                                    LPCSTR str );
+void
+destroy_insertion_strings( struct stumpless_entry *entry );
+
+void
+initialize_insertion_strings( struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H */
