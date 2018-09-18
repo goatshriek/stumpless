@@ -56,8 +56,8 @@
 #  else
 #    include "private/target.h"
 #    define config_send_entry_to_wel_target send_entry_to_unsupported_target
-#    define config_destroy_insertion_strings ((void)0)
-#    define config_initialize_insertion_strings ((void)0)
+#    define config_destroy_insertion_strings(PARAM) ((void)0)
+#    define config_initialize_insertion_strings(PARAM) ((void)0)
 #  endif
 
 /* definition of config_get_now */
