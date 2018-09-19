@@ -71,6 +71,34 @@ fail:
 }
 
 struct stumpless_entry *
+stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  entry->wel_category = category;
+
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  entry->wel_event_id = event_id;
+
+  return entry;
+}
+
+struct stumpless_entry *
 stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ){
   clear_error(  );
 

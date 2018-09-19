@@ -136,8 +136,8 @@ send_entry_to_wel_target( const struct wel_target *target,
   success = ReportEventA(
     target->handle,
     entry->wel_type,
-    0, //  WORD   wCategory - defined by user
-    0, //  DWORD  dwEventID - defined by user
+    entry->wel_category,
+    entry->wel_event_id,
     NULL,
     entry->wel_insertion_count,
     0,

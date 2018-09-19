@@ -31,6 +31,12 @@ extern "C" {
                                       LPCSTR str );
 
   struct stumpless_entry *
+  stumpless_set_wel_category( struct stumpless_entry *entry, WORD category );
+
+  struct stumpless_entry *
+  stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
+
+  struct stumpless_entry *
   stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
 
 #  ifdef __cplusplus
