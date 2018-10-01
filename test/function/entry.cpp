@@ -16,8 +16,10 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
 #include <gtest/gtest.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stumpless.h>
 
 namespace {
@@ -549,9 +551,4 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
-}
-
-int main( int argc, char **argv ) {
-  ::testing::InitGoogleTest( &argc, argv );
-  return RUN_ALL_TESTS(  );
 }
