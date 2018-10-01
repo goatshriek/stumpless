@@ -21,6 +21,7 @@ macro(add_function_test name)
   target_link_libraries(function-test-${name}
     stumpless
     libgtest
+    libgtestmain
   )
 
   target_include_directories(function-test-${name}
