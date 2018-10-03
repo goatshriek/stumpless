@@ -91,6 +91,13 @@ fail:
 }
 
 
+struct stumpless_target *
+stumpless_open_remote_wel_target( const char *name,
+                                  int options,
+                                  int default_facility ) {
+  return NULL;
+}
+
 /* private definitions */
 
 void
@@ -145,5 +152,9 @@ send_entry_to_wel_target( const struct wel_target *target,
     NULL
   );
 
-  return -1;
+  if( success ) {
+    return 1;
+  } else {
+    return -1;
+  }
 }

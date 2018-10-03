@@ -28,3 +28,6 @@ EXPORTS
   stumpless_set_wel_category            @26
   stumpless_set_wel_event_id            @27
   stumpless_set_wel_type                @28
+  stumpless_open_local_wel_target       @29
+  stumpless_open_remote_wel_target      @30
+  stumpless_close_wel_target            @31

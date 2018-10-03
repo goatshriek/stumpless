@@ -47,16 +47,6 @@ set_target_properties(libgtestmain PROPERTIES
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
-#if(WIN32)
-#  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-#    set(gmock_imported_location "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmockd.lib")
-#  else()
-#    set(gmock_imported_location "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmock.lib")
-#  endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-#else()
-#  set(gmock_imported_location "${binary_dir}/googlemock/libgmock.a")
-#endif(WIN32)
-
 set_target_properties(libgmock PROPERTIES
   IMPORTED_LOCATION "${gmock_imported_location}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"

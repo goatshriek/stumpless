@@ -33,6 +33,11 @@ extern "C" {
                                    int options,
                                    int default_facility );
 
+  struct stumpless_target *
+  stumpless_open_remote_wel_target( const char *name,
+                                    int options,
+                                    int default_facility );
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
