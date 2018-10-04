@@ -85,6 +85,7 @@ ExternalProject_Add(gtest
     GIT_TAG release-1.8.1
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
     CMAKE_ARGS -Dgtest_force_shared_crt=ON
+    UPDATE_COMMAND ""
     INSTALL_COMMAND ""
 )
 
@@ -101,18 +102,18 @@ add_dependencies(libgtest gtest)
 if(WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set_target_properties(libgtest PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib"
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtestd.lib"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
     )
   else()
     set_target_properties(libgtest PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib"
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtest.lib"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
     )
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
   set_target_properties(libgtest PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/lib/libgtest.a"
+      "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/libgtest.a"
       "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
   )
 endif(WIN32)
@@ -123,18 +124,18 @@ add_dependencies(libgmock gtest)
 if(WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set_target_properties(libgmock PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/gmockd.lib"
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gmockd.lib"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
     )
   else()
     set_target_properties(libgmock PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/gmock.lib"
+        "IMPORTED_LOCATION" "${binary_dir}/googlemock/gmock.lib"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
     )
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
   set_target_properties(libgmock PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/lib/libgmock.a"
+      "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
       "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
   )
 endif(WIN32)
@@ -471,3 +472,4 @@ if(BUILD_PYTHON)
   )
 
 endif()
+
