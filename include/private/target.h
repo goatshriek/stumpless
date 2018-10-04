@@ -22,6 +22,12 @@
 #include <stddef.h>
 #include <stumpless/target.h>
 
+struct stumpless_target *
+new_target( enum stumpless_target_type type,
+            const char *name,
+            int options,
+            int default_facility );
+
 int
 send_entry_to_unsupported_target( const struct stumpless_target *target,
                                   const struct stumpless_entry *entry );

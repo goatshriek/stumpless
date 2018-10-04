@@ -52,6 +52,7 @@ namespace {
     virtual void
     TearDown( void ) {
       stumpless_close_wel_target( target );
+      stumpless_destroy_entry( basic_entry );
     }
   };
 
