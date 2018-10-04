@@ -90,6 +90,9 @@ ExternalProject_Add(gtest
 set_target_properties(gtest
   PROPERTIES
   EXCLUDE_FROM_ALL TRUE
+  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib
+  LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}/lib
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}/lib
 )
 
 ExternalProject_Get_Property(gtest source_dir binary_dir)
