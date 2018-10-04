@@ -90,9 +90,6 @@ ExternalProject_Add(gtest
 set_target_properties(gtest
   PROPERTIES
   EXCLUDE_FROM_ALL TRUE
-  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib
-  LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}/lib
-  LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}/lib
 )
 
 ExternalProject_Get_Property(gtest source_dir binary_dir)
@@ -103,12 +100,12 @@ add_dependencies(libgtest gtest)
 if(WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set_target_properties(libgtest PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/gtestd.lib"
+        "IMPORTED_LOCATION" "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
     )
   else()
     set_target_properties(libgtest PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/gtest.lib"
+        "IMPORTED_LOCATION" "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib"
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
     )
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
