@@ -81,7 +81,8 @@ find_package(Threads REQUIRED)
 include(ExternalProject)
 
 ExternalProject_Add(gtest
-    URL https://github.com/google/googletest/archive/master.zip
+    GIT_REPOSITORY https://github.com/google/googletest
+    GIT_TAG release-1.8.1
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
     CMAKE_ARGS -Dgtest_force_shared_crt=ON
     INSTALL_COMMAND ""
