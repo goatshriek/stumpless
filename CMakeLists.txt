@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-project(stumpless VERSION 1.0.1)
+project(stumpless VERSION 1.1.2)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -81,9 +81,11 @@ find_package(Threads REQUIRED)
 include(ExternalProject)
 
 ExternalProject_Add(gtest
-    URL https://github.com/google/googletest/archive/master.zip
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG release-1.8.1
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
     CMAKE_ARGS -Dgtest_force_shared_crt=ON
+    UPDATE_COMMAND ""
     INSTALL_COMMAND ""
 )
 
