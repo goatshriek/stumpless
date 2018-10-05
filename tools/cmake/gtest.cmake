@@ -1,7 +1,9 @@
 ExternalProject_Add(gtest
-    URL https://github.com/google/googletest/archive/master.zip
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG release-1.8.1
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
     CMAKE_ARGS -Dgtest_force_shared_crt=ON
+    UPDATE_COMMAND ""
     INSTALL_COMMAND ""
 )
 
