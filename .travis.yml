@@ -10,7 +10,7 @@ matrix:
           packages:
             - g++-6
       env:
-        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" CXX_FLAGS=-std=c++11
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
     - os: linux
       dist: trusty
       addons:
@@ -22,10 +22,10 @@ matrix:
         sonarcloud:
           organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" CXX_FLAGS=-std=c++11
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - os: osx
       env:
-        - MATRIX_EVAL="CC=clang && CXX=clang++" CXX_FLAGS=-std=c++11
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
 
 before_install:
   - eval "${MATRIX_EVAL}"
