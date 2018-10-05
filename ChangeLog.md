@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
  - Use of unsafe gmtime function.
 
+## [1.1.2] - 2018-10-04
+### Fixed
+ - Specify googletest release 1.8.1 to fix broken builds.
+
 ## [1.1.1] - 2018-08-28
 ### Added
  - Add SonarCloud quality gate badge to README.
