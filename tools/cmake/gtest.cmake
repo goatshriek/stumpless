@@ -1,10 +1,9 @@
 ExternalProject_Add(gtest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG master
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-    CMAKE_ARGS -Dgtest_force_shared_crt=ON
-    UPDATE_COMMAND ""
-    INSTALL_COMMAND ""
+  URL https://github.com/google/googletest/archive/master.zip
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
+  CMAKE_ARGS -Dgtest_force_shared_crt=ON
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
 )
 
 set_target_properties(gtest
