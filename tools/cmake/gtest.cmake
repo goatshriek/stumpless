@@ -1,7 +1,7 @@
 ExternalProject_Add(gtest
   URL https://github.com/google/googletest/archive/master.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-  CMAKE_ARGS -Dgtest_force_shared_crt=ON
+  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_CXX_FLAGS=-std=c++11
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
 )
@@ -24,18 +24,18 @@ add_dependencies(libgmock gtest)
 
 if(WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(gtest_imported_location "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtestd.lib")
-    set(gtest_main_imported_location "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
-    set(gmock_imported_location "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmockd.lib")
+    set(gtest_imported_location "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib")
+    set(gtest_main_imported_location "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
+    set(gmock_imported_location "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmockd.lib")
   else()
-    set(gtest_imported_location "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtest.lib")
-    set(gtest_main_imported_location "${binary_dir}/googlemock/gtest/${CMAKE_CFG_INTDIR}/gtest_main.lib")
-    set(gmock_imported_location "${binary_dir}/googlemock/${CMAKE_CFG_INTDIR}/gmock.lib")
+    set(gtest_imported_location "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib")
+    set(gtest_main_imported_location "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_main.lib")
+    set(gmock_imported_location "${binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmock.lib")
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
-  set(gtest_imported_location "${binary_dir}/googlemock/gtest/libgtest.a")
-  set(gtest_main_imported_location "${binary_dir}/googlemock/gtest/libgtest_main.a")
-  set(gmock_imported_location "${binary_dir}/googlemock/libgmock.a")
+  set(gtest_imported_location "${binary_dir}/lib/libgtest.a")
+  set(gtest_main_imported_location "${binary_dir}/lib/libgtest_main.a")
+  set(gmock_imported_location "${binary_dir}/lib/libgmock.a")
 endif(WIN32)
 
 set_target_properties(libgtest PROPERTIES
