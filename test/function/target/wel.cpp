@@ -31,9 +31,9 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      target = stumpless_open_local_wel_target( "stumpless", 0, 0 );
+      target = stumpless_open_local_wel_target( "wel-target-test", 0, 0 );
 
-      stumpless_set_target_default_app_name( target, "buffer-target-test" );
+      stumpless_set_target_default_app_name( target, "wel-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
 
       basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -58,8 +58,6 @@ namespace {
 
   TEST_F( WelTargetTest, AddEntry ) {
     int result;
-
-    SCOPED_TRACE( "EntryTargetTest.AddEntry" );
 
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_GE( result, 0 );

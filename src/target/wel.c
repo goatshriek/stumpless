@@ -17,13 +17,14 @@
  */
 
 #include <stddef.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
 #include <string.h>
 #include <windows.h>
-#include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/target.h"
 #include "private/target/wel.h"
 
 void
@@ -54,30 +55,23 @@ stumpless_open_local_wel_target( const char *name,
     goto fail;
   }
 
-  target = alloc_mem( sizeof( *target ) );
+  target = new_target(
+    STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
+    name,
+    strlen( name ),
+    options,
+    default_facility
+  );
+
   if( !target ) {
     goto fail;
   }
-
-  name_len = strlen( name );
 
   target->id = new_wel_target( NULL, name );
 
   if( !target->id ) {
     goto fail_id;
   }
-
-  target->name = alloc_mem( name_len + 1 );
-  if( !target->name ) {
-    goto fail_name;
-  }
-
-  memcpy( target->name, name, name_len );
-  target->name[name_len] = '\0';
-  target->type = STUMPLESS_WINDOWS_EVENT_LOG_TARGET;
-  target->options = options;
-  target->default_prival =
-    get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
 
   stumpless_set_current_target( target );
   return target;

@@ -22,6 +22,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/config/wrapper.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/formatter.h"
 #include "private/memory.h"
@@ -195,6 +196,39 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 }
 
 /* private definitions */
+struct stumpless_target *
+new_target( enum stumpless_target_type type,
+            const char *name,
+            size_t name_len,
+            int options,
+            int default_facility ) {
+  struct stumpless_target *target;
+  int default_prival;
+
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
+    goto fail;
+  }
+
+  target->name = alloc_mem( name_len + 1 );
+  if( !target->name ) {
+    goto fail_name;
+  }
+
+  memcpy( target->name, name, name_len );
+  target->name[name_len] = '\0';
+  target->type = type;
+  target->options = options;
+  default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
+  target->default_prival = default_prival;
+
+  return target;
+
+fail_name:
+  free_mem( target );
+fail:
+  return NULL;
+}
 
 int
 send_entry_to_unsupported_target( const struct stumpless_target *target,

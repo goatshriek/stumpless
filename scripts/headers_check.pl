@@ -78,6 +78,7 @@ my %manifest = (
   "new_buffer_target" => "private/target/buffer.h",
   "new_file_target" => "private/target/file.h",
   "new_socket_target" => "private/target/socket.h",
+  "new_target" => "private/target.h",
   "new_wel_target" => "private/target/wel.h",
   "NULL" => "stddef.h",
   "perror" => "stdio.h",
