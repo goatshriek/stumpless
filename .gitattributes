@@ -1,13 +1,14 @@
 * text eol=lf
 
-*.c text
-*.cpp text
-*.cmake text
+*.c text eol=lf
+*.cpp text eol=lf
+*.cmake text eol=lf
 *.def text eol=crlf
-*.h text
-*.i text
+*.h text eol=lf
+*.i text eol=lf
 *.mc text eol=crlf
-*.pl text
-*.sh text
-*.txt text
-*.xml text
+*.pl text eol=lf
+*.sh text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+
