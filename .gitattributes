@@ -7,5 +7,7 @@
 *.h text
 *.i text
 *.mc text eol=crlf
+*.pl text
+*.sh text
 *.txt text
 *.xml text
