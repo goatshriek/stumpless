@@ -19,47 +19,81 @@
 #include <gtest/gtest.h>
 #include <stddef.h>
 #include <stumpless.h>
+#include "test/function/windows/events.h"
 
 namespace {
   class WelTargetTest : public::testing::Test {
     protected:
       struct stumpless_target *target;
-      struct stumpless_entry *basic_entry;
+      struct stumpless_entry *simple_entry;
+      struct stumpless_entry *one_insertion_entry;
+      struct stumpless_entry *two_insertion_entry;
 
     virtual void
     SetUp( void ) {
-      struct stumpless_element *element;
-      struct stumpless_param *param;
-
       target = stumpless_open_local_wel_target( "wel-target-test", 0, 0 );
 
-      stumpless_set_target_default_app_name( target, "wel-target-test" );
-      stumpless_set_target_default_msgid( target, "default-message" );
+      simple_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                          STUMPLESS_SEVERITY_INFO,
+                                         "stumpless-wel-unit-test",
+                                         "simple-entry",
+                                         "simple test message" );
 
-      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                        "stumpless-unit-test",
-                                        "basic-entry",
-                                        "basic test message" );
+      stumpless_set_wel_category( simple_entry, CATEGORY_TEST );
+      stumpless_set_wel_event_id( simple_entry, MSG_SIMPLE );
+      stumpless_set_wel_type( simple_entry, EVENTLOG_SUCCESS );
 
-      element = stumpless_new_element( "basic-element" );
-      stumpless_add_element( basic_entry, element );
+      one_insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                                 STUMPLESS_SEVERITY_INFO,
+                                                 "stumpless-wel-unit-test",
+                                                 "single-insertion-entry",
+                                                 "message with one insertion string" );
 
-      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-      stumpless_add_param( element, param );
+      stumpless_set_wel_category( one_insertion_entry, CATEGORY_TEST );
+      stumpless_set_wel_event_id( one_insertion_entry, MSG_ONE_INSERTION );
+      stumpless_set_wel_type( one_insertion_entry, EVENTLOG_SUCCESS );
+      stumpless_add_wel_insertion_string( one_insertion_entry, "insertion-string-1" );
+
+      two_insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                                 STUMPLESS_SEVERITY_INFO,
+                                                "stumpless-wel-unit-test",
+                                                "two-insertion-entry",
+                                                "message with two insertion strings" );
+
+      stumpless_set_wel_category( two_insertion_entry, CATEGORY_TEST );
+      stumpless_set_wel_event_id( two_insertion_entry, MSG_ONE_INSERTION );
+      stumpless_set_wel_type( two_insertion_entry, EVENTLOG_SUCCESS );
+      stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-1" );
+      stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-2" );
     }
 
     virtual void
     TearDown( void ) {
       stumpless_close_wel_target( target );
-      stumpless_destroy_entry( basic_entry );
+      stumpless_destroy_entry( simple_entry );
     }
   };
 
-  TEST_F( WelTargetTest, AddEntry ) {
+  TEST_F( WelTargetTest, AddEntryWithOneInsertionString ) {
     int result;
 
-    result = stumpless_add_entry( target, basic_entry );
+    result = stumpless_add_entry( target, one_insertion_entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+  }
+
+  TEST_F( WelTargetTest, AddEntryWithTwoInsertionStrings ) {
+    int result;
+
+    result = stumpless_add_entry( target, two_insertion_entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+  }
+
+  TEST_F( WelTargetTest, AddSimpleEntry ) {
+    int result;
+
+    result = stumpless_add_entry( target, simple_entry );
     EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
