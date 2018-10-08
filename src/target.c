@@ -196,6 +196,13 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 }
 
 /* private definitions */
+
+void
+destroy_target( struct stumpless_target *target ) {
+  free_mem( target->name );
+  free_mem( target );
+}
+
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,
@@ -221,6 +228,10 @@ new_target( enum stumpless_target_type type,
   target->options = options;
   default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
   target->default_prival = default_prival;
+  target->default_app_name = NULL;
+  target->default_app_name_length = 0;
+  target->default_msgid = NULL;
+  target->default_msgid_length = 0;
 
   return target;
 

@@ -37,8 +37,7 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
   }
 
   destroy_wel_target( target->id );
-  free_mem( target->name );
-  free_mem( target );
+  destroy_target( target );
 }
 
 struct stumpless_target *
@@ -76,10 +75,8 @@ stumpless_open_local_wel_target( const char *name,
   stumpless_set_current_target( target );
   return target;
 
-fail_name:
-  destroy_wel_target( target->id );
 fail_id:
-  free_mem( target );
+  destroy_target( target );
 fail:
   return NULL;
 }

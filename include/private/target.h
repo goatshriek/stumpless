@@ -22,6 +22,9 @@
 #include <stddef.h>
 #include <stumpless/target.h>
 
+void
+destroy_target( struct stumpless_target *target );
+
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,

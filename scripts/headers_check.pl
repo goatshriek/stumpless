@@ -36,6 +36,7 @@ my %manifest = (
   "destroy_file_target" => "private/target/file.h",
   "destroy_insertion_strings" => "private/config/wel_supported.h",
   "destroy_socket_target" => "private/target/socket.h",
+  "destroy_target" => "private/target.h",
   "destroy_wel_target" => "private/target/wel.h",
   "DWORD" => "windows.h",
   "EVENTLOG_ERROR_TYPE" => "windows.h",
