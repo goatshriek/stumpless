@@ -3,8 +3,9 @@
 *.c text
 *.cpp text
 *.cmake text
-*.def text
+*.def text eol=crlf
 *.h text
 *.i text
+*.mc text eol=crlf
 *.txt text
 *.xml text
