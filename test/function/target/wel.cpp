@@ -35,9 +35,9 @@ namespace {
 
       simple_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                           STUMPLESS_SEVERITY_INFO,
-                                         "stumpless-wel-unit-test",
-                                         "simple-entry",
-                                         "simple test message" );
+                                          "stumpless-wel-unit-test",
+                                          "simple-entry",
+                                          "simple test message" );
 
       stumpless_set_wel_category( simple_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( simple_entry, MSG_SIMPLE );
@@ -56,9 +56,9 @@ namespace {
 
       two_insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                                  STUMPLESS_SEVERITY_INFO,
-                                                "stumpless-wel-unit-test",
-                                                "two-insertion-entry",
-                                                "message with two insertion strings" );
+                                                 "stumpless-wel-unit-test",
+                                                 "two-insertion-entry",
+                                                 "message with two insertion strings" );
 
       stumpless_set_wel_category( two_insertion_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( two_insertion_entry, MSG_ONE_INSERTION );
@@ -99,6 +99,44 @@ namespace {
   }
 
   /* non-fixture tests */
+
+  TEST( WelEntryInsertionString, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_add_wel_insertion_string( NULL, "test-string" );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelEntryInsertionString, NullString ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry_result;
+    struct stumpless_entry *simple_entry;
+ 
+    simple_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        "stumpless-wel-unit-test",
+                                        "simple-entry",
+                                        "simple test message" );
+    ASSERT_TRUE( simple_entry != NULL );
+
+    stumpless_set_wel_category( simple_entry, CATEGORY_TEST );
+    stumpless_set_wel_event_id( simple_entry, MSG_SIMPLE );
+    stumpless_set_wel_type( simple_entry, EVENTLOG_SUCCESS );  
+ 
+    entry_result = stumpless_add_wel_insertion_string( simple_entry, NULL );
+    EXPECT_TRUE( entry_result == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry( simple_entry );
+  }
 
   TEST( WelTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
