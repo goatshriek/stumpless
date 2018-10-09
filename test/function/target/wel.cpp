@@ -100,6 +100,30 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( WelEntryCategory, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_category( NULL, CATEGORY_TEST );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelEntryEventId, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_event_id( NULL, MSG_SIMPLE );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST( WelEntryInsertionString, NullEntry ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry;
@@ -136,6 +160,18 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry( simple_entry );
+  }
+
+  TEST( WelEntryType, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelTargetCloseTest, NullTarget ) {
