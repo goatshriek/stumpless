@@ -22,17 +22,14 @@
 #include "test/function/windows/events.h"
 
 namespace {
-  class WelTargetTest : public::testing::Test {
+  class WelSupportedTest : public::testing::Test {
     protected:
-      struct stumpless_target *target;
       struct stumpless_entry *simple_entry;
       struct stumpless_entry *one_insertion_entry;
       struct stumpless_entry *two_insertion_entry;
 
     virtual void
     SetUp( void ) {
-      target = stumpless_open_local_wel_target( "wel-target-test", 0, 0 );
-
       simple_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                           STUMPLESS_SEVERITY_INFO,
                                           "stumpless-wel-unit-test",
@@ -69,46 +66,71 @@ namespace {
 
     virtual void
     TearDown( void ) {
-      stumpless_close_wel_target( target );
       stumpless_destroy_entry( simple_entry );
       stumpless_destroy_entry( one_insertion_entry );
       stumpless_destroy_entry( two_insertion_entry );
     }
   };
 
-  TEST_F( WelTargetTest, AddEntryWithOneInsertionString ) {
-    int result;
+  TEST_F( WelSupportedTest, AddNullInsertionString ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry_result;
+ 
+    entry_result = stumpless_add_wel_insertion_string( simple_entry, NULL );
+    EXPECT_TRUE( entry_result == NULL );
 
-    result = stumpless_add_entry( target, one_insertion_entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
-  }
-
-  TEST_F( WelTargetTest, AddEntryWithTwoInsertionStrings ) {
-    int result;
-
-    result = stumpless_add_entry( target, two_insertion_entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
-  }
-
-  TEST_F( WelTargetTest, AddSimpleEntry ) {
-    int result;
-
-    result = stumpless_add_entry( target, simple_entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
   /* non-fixture tests */
 
-  TEST( WelTargetCloseTest, NullTarget ) {
+  TEST( WelEntryCategory, NullEntry ) {
     struct stumpless_error *error;
-
-    stumpless_close_wel_target( NULL );
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_category( NULL, CATEGORY_TEST );
+    EXPECT_TRUE( entry == NULL );
 
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelEntryEventId, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_event_id( NULL, MSG_SIMPLE );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelEntryInsertionString, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_add_wel_insertion_string( NULL, "test-string" );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelEntryType, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 }
