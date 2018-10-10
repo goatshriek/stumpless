@@ -161,12 +161,13 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
      DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
      COMMENT "Generating test event resources")
 
-  add_function_test(wel_supported
-    test/function/config/wel_supported.cpp
-  )
-
   add_function_test(wel
     test/function/target/wel.cpp
+    ${PROJECT_BINARY_DIR}/events.rc
+  )
+
+  add_function_test(wel_supported
+    test/function/config/wel_supported.cpp
     ${PROJECT_BINARY_DIR}/events.rc
   )
 endif(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)

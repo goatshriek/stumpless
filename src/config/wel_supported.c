@@ -42,7 +42,7 @@ stumpless_add_wel_insertion_string( struct stumpless_entry *entry,
   }
 
   str_length = strlen( str );
-  str_copy = alloc_mem( str_length );
+  str_copy = alloc_mem( str_length + 1 );
   if( !str_copy ) {
     goto fail;
   }
