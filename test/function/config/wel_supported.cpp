@@ -25,8 +25,6 @@ namespace {
   class WelSupportedTest : public::testing::Test {
     protected:
       struct stumpless_entry *simple_entry;
-      struct stumpless_entry *one_insertion_entry;
-      struct stumpless_entry *two_insertion_entry;
 
     virtual void
     SetUp( void ) {
@@ -39,36 +37,11 @@ namespace {
       stumpless_set_wel_category( simple_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( simple_entry, MSG_SIMPLE );
       stumpless_set_wel_type( simple_entry, EVENTLOG_SUCCESS );
-
-      one_insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                                 STUMPLESS_SEVERITY_INFO,
-                                                 "stumpless-wel-unit-test",
-                                                 "single-insertion-entry",
-                                                 "message with one insertion string" );
-
-      stumpless_set_wel_category( one_insertion_entry, CATEGORY_TEST );
-      stumpless_set_wel_event_id( one_insertion_entry, MSG_ONE_INSERTION );
-      stumpless_set_wel_type( one_insertion_entry, EVENTLOG_SUCCESS );
-      stumpless_add_wel_insertion_string( one_insertion_entry, "insertion-string-1" );
-
-      two_insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                                 STUMPLESS_SEVERITY_INFO,
-                                                 "stumpless-wel-unit-test",
-                                                 "two-insertion-entry",
-                                                 "message with two insertion strings" );
-
-      stumpless_set_wel_category( two_insertion_entry, CATEGORY_TEST );
-      stumpless_set_wel_event_id( two_insertion_entry, MSG_ONE_INSERTION );
-      stumpless_set_wel_type( two_insertion_entry, EVENTLOG_SUCCESS );
-      stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-1" );
-      stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-2" );
     }
 
     virtual void
     TearDown( void ) {
       stumpless_destroy_entry( simple_entry );
-      stumpless_destroy_entry( one_insertion_entry );
-      stumpless_destroy_entry( two_insertion_entry );
     }
   };
 
@@ -85,6 +58,47 @@ namespace {
   }
 
   /* non-fixture tests */
+
+  TEST( WelAddInsertionTest, AddSingleString ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *entry_result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );  
+    ASSERT_TRUE( entry != NULL );
+
+    entry_result = stumpless_add_wel_insertion_string( entry, "testing" );
+    EXPECT_EQ( entry_result, entry );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_destroy_entry( entry );
+  }
+
+  TEST( WelAddInsertionTest, AddTwoStrings ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *entry_result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );  
+    ASSERT_TRUE( entry != NULL );
+
+    entry_result = stumpless_add_wel_insertion_string( entry, "first string" );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    entry_result = stumpless_add_wel_insertion_string( entry, "second string" );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_destroy_entry( entry );
+  }
 
   TEST( WelEntryCategory, NullEntry ) {
     struct stumpless_error *error;
