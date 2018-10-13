@@ -45,7 +45,6 @@ stumpless_open_local_wel_target( const char *name,
                                  int options,
                                  int default_facility ) {
   struct stumpless_target *target;
-  size_t name_len;
 
   clear_error(  );
 
@@ -131,7 +130,7 @@ send_entry_to_wel_target( const struct wel_target *target,
                           const struct stumpless_entry *entry ) {
   BOOL success;
 
-  success = ReportEventA(
+  success = ReportEvent(
     target->handle,
     entry->wel_type,
     entry->wel_category,

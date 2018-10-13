@@ -94,10 +94,39 @@ namespace {
 
   TEST_F( WelTargetTest, AddSimpleEntry ) {
     int result;
+    HANDLE event_log_handle;
+    BOOL success;
+    BYTE buffer[1000];
+    DWORD dwBytesRead = 0;
+    DWORD dwMinimumBytesToRead = 0;
+    PEVENTLOGRECORD record;
+    LPWSTR retrieved_message;
 
     result = stumpless_add_entry( target, simple_entry );
     EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+    // read from the event log and find the entry
+    event_log_handle = OpenEventLog( NULL, "wel-target-test" );
+    ASSERT_TRUE( event_log_handle != NULL );
+
+    success = ReadEventLog(
+      event_log_handle,
+      EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
+      0,
+      buffer,
+      1000,
+      &dwBytesRead,
+      &dwMinimumBytesToRead
+    );
+    EXPECT_TRUE( success );
+
+    record = (PEVENTLOGRECORD)buffer;
+
+    retrieved_message = (LPWSTR)(record + record->StringOffset);
+    EXPECT_TRUE( retrieved_message != NULL );
+
+    CloseEventLog( event_log_handle );
   }
 
   /* non-fixture tests */
