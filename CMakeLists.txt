@@ -172,6 +172,7 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
     test/function/target/wel.cpp
     ${PROJECT_BINARY_DIR}/events.rc
   )
+  add_dependencies(function-test-wel events)
 
   add_function_test(wel_supported
     test/function/config/wel_supported.cpp
