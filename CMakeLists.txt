@@ -54,7 +54,7 @@ else()
 endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
 
 if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
-  message("socket targets are not supported without windows.h")
+  message("windows event log targets are not supported without windows.h")
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
 else()
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
@@ -160,6 +160,13 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
         -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
      DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
      COMMENT "Generating test event resources")
+
+  add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
+  set_target_properties(events PROPERTIES LINKER_LANGUAGE "CXX" )
+  set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
+  set_target_properties(events PROPERTIES VERSION ${PROJECT_VERSION})
+  set_target_properties(events PROPERTIES SOVERSION 0)
+  set_target_properties(events PROPERTIES PUBLIC_HEADER "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h")
 
   add_function_test(wel
     test/function/target/wel.cpp

@@ -97,10 +97,12 @@ namespace {
     HANDLE event_log_handle;
     BOOL success;
     BYTE buffer[1000];
-    DWORD dwBytesRead = 0;
-    DWORD dwMinimumBytesToRead = 0;
+    DWORD format_result;
+    DWORD bytes_read = 0;
+    DWORD minimum_bytes_to_read = 0;
+    HMODULE resource_dll;
     PEVENTLOGRECORD record;
-    LPWSTR retrieved_message;
+    LPTSTR message_buffer;
 
     result = stumpless_add_entry( target, simple_entry );
     EXPECT_GE( result, 0 );
@@ -116,15 +118,30 @@ namespace {
       0,
       buffer,
       1000,
-      &dwBytesRead,
-      &dwMinimumBytesToRead
+      &bytes_read,
+      &minimum_bytes_to_read
     );
     EXPECT_TRUE( success );
 
     record = (PEVENTLOGRECORD)buffer;
 
-    retrieved_message = (LPWSTR)(record + record->StringOffset);
-    EXPECT_TRUE( retrieved_message != NULL );
+    EXPECT_EQ( record->EventID, MSG_SIMPLE );
+
+    resource_dll = LoadLibraryEx("events.dll", NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
+    EXPECT_TRUE( resource_dll != NULL );
+
+    format_result = FormatMessage(
+      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE,
+      resource_dll,
+      record->EventID,
+      0,
+      (LPTSTR)&message_buffer,
+      1000,
+      NULL
+    );
+    EXPECT_NE( format_result, 0 );
+
+    printf( "message: %s\n", message_buffer );
 
     CloseEventLog( event_log_handle );
   }
