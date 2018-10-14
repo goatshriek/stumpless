@@ -143,8 +143,6 @@ namespace {
     );
     EXPECT_NE( format_result, 0 );
 
-    printf( "message: %s\n", message_buffer );
-
     CloseEventLog( event_log_handle );
   }
 

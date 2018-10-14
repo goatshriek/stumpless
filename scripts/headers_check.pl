@@ -76,6 +76,7 @@ my %manifest = (
   "malloc" => "stdlib.h",
   "memcpy" => "string.h",
   "memset" => "string.h",
+  "MSG_SIMPLE" => "test/function/windows/events.h",
   "new_buffer_target" => "private/target/buffer.h",
   "new_file_target" => "private/target/file.h",
   "new_socket_target" => "private/target/socket.h",
