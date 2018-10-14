@@ -43,7 +43,6 @@ struct stumpless_target *
 stumpless_open_file_target( const char *name,
                             int options, int default_facility ) {
   struct stumpless_target *target;
-  size_t name_len;
 
   clear_error(  );
 

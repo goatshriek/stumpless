@@ -42,7 +42,6 @@ struct stumpless_target *
 stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
                               int options, int default_facility ) {
   struct stumpless_target *target;
-  size_t name_len;
 
   clear_error(  );
 
