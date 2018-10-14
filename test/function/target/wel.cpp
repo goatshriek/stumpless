@@ -33,6 +33,8 @@ namespace {
       struct stumpless_entry *simple_entry;
       struct stumpless_entry *one_insertion_entry;
       struct stumpless_entry *two_insertion_entry;
+      const char *insertion_string_1 = "insertion-string-1";
+      const char *insertion_string_2 = "insertion-string-2";
 
     virtual void
     SetUp( void ) {
@@ -57,7 +59,7 @@ namespace {
       stumpless_set_wel_category( one_insertion_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( one_insertion_entry, MSG_ONE_INSERTION );
       stumpless_set_wel_type( one_insertion_entry, EVENTLOG_SUCCESS );
-      stumpless_add_wel_insertion_string( one_insertion_entry, "insertion-string-1" );
+      stumpless_add_wel_insertion_string( one_insertion_entry, insertion_string_1 );
 
       two_insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                                  STUMPLESS_SEVERITY_INFO,
@@ -68,8 +70,8 @@ namespace {
       stumpless_set_wel_category( two_insertion_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( two_insertion_entry, MSG_TWO_INSERTIONS );
       stumpless_set_wel_type( two_insertion_entry, EVENTLOG_SUCCESS );
-      stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-1" );
-      stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-2" );
+      stumpless_add_wel_insertion_string( two_insertion_entry, insertion_string_1 );
+      stumpless_add_wel_insertion_string( two_insertion_entry, insertion_string_2 );
     }
 
     virtual void
@@ -143,8 +145,8 @@ namespace {
     );
     EXPECT_NE( format_result, 0 );
     
-    EXPECT_THAT( message_buffer, HasSubstr( "insertion-string-1" ) );
-    EXPECT_THAT( message_buffer, HasSubstr( "insertion-string-2" ) );
+    EXPECT_THAT( message_buffer, HasSubstr( insertion_string_1 ) );
+    EXPECT_THAT( message_buffer, HasSubstr( insertion_string_2 ) );
 
     CloseEventLog( event_log_handle );
   }
