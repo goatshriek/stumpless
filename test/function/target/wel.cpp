@@ -16,10 +16,15 @@
  * limitations under the License.
  */
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stddef.h>
+#include <string.h>
 #include <stumpless.h>
+#include <windows.h>
 #include "test/function/windows/events.h"
+
+using::testing::HasSubstr;
 
 namespace {
   class WelTargetTest : public::testing::Test {
@@ -61,7 +66,7 @@ namespace {
                                                  "message with two insertion strings" );
 
       stumpless_set_wel_category( two_insertion_entry, CATEGORY_TEST );
-      stumpless_set_wel_event_id( two_insertion_entry, MSG_ONE_INSERTION );
+      stumpless_set_wel_event_id( two_insertion_entry, MSG_TWO_INSERTIONS );
       stumpless_set_wel_type( two_insertion_entry, EVENTLOG_SUCCESS );
       stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-1" );
       stumpless_add_wel_insertion_string( two_insertion_entry, "insertion-string-2" );
@@ -86,10 +91,62 @@ namespace {
 
   TEST_F( WelTargetTest, AddEntryWithTwoInsertionStrings ) {
     int result;
+    HANDLE event_log_handle;
+    BOOL success;
+    BYTE buffer[1000];
+    DWORD format_result;
+    DWORD bytes_read = 0;
+    DWORD minimum_bytes_to_read = 0;
+    HMODULE resource_dll;
+    PEVENTLOGRECORD record;
+    LPTSTR insertion_strings[2];
+    LPTSTR message_buffer;
 
     result = stumpless_add_entry( target, two_insertion_entry );
     EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+    // read from the event log and find the entry
+    event_log_handle = OpenEventLog( NULL, "wel-target-test" );
+    ASSERT_TRUE( event_log_handle != NULL );
+
+    success = ReadEventLog(
+      event_log_handle,
+      EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
+      0,
+      buffer,
+      1000,
+      &bytes_read,
+      &minimum_bytes_to_read
+    );
+    EXPECT_TRUE( success );
+
+    record = ( PEVENTLOGRECORD ) buffer;
+    EXPECT_EQ( record->EventID, MSG_TWO_INSERTIONS );
+    EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
+    EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
+
+    resource_dll = LoadLibraryEx( "events.dll", NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE );
+    EXPECT_TRUE( resource_dll != NULL );
+
+    insertion_strings[0] = ( LPTSTR ) ( buffer + record->StringOffset );
+    insertion_strings[1] = ( LPTSTR ) ( insertion_strings[0] + strlen( insertion_strings[0] ) + 1 );
+
+    format_result = FormatMessage(
+      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_ARGUMENT_ARRAY,
+      resource_dll,
+      record->EventID,
+      0,
+      (LPTSTR)&message_buffer,
+      1000,
+      (va_list*)(insertion_strings)
+    );
+    EXPECT_NE( format_result, 0 );
+    
+    EXPECT_THAT( message_buffer, HasSubstr( "insertion-string-1" ) );
+    EXPECT_THAT( message_buffer, HasSubstr( "insertion-string-2" ) );
+
+    CloseEventLog( event_log_handle );
   }
 
   TEST_F( WelTargetTest, AddSimpleEntry ) {
@@ -123,8 +180,7 @@ namespace {
     );
     EXPECT_TRUE( success );
 
-    record = (PEVENTLOGRECORD)buffer;
-
+    record = ( PEVENTLOGRECORD )buffer;
     EXPECT_EQ( record->EventID, MSG_SIMPLE );
     EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
     EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
