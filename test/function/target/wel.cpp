@@ -126,6 +126,8 @@ namespace {
     record = (PEVENTLOGRECORD)buffer;
 
     EXPECT_EQ( record->EventID, MSG_SIMPLE );
+    EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
+    EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
 
     resource_dll = LoadLibraryEx("events.dll", NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
     EXPECT_TRUE( resource_dll != NULL );

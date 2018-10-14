@@ -13,11 +13,19 @@ FacilityNames=(
 
 LanguageNames=(English=0x0409:MSG00409)
 
+; // category definitions
+
+MessageIdTypedef=WORD
+
 MessageId=0x1
 SymbolicName=CATEGORY_TEST
 Language=English
 Test Category
 .
+
+; // message definitions
+
+MessageIdTypedef=DWORD
 
 MessageId=0x11
 Severity=Success
