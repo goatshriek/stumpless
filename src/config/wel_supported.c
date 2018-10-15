@@ -26,51 +26,6 @@
 #include "private/memory.h"
 
 struct stumpless_entry *
-stumpless_add_wel_insertion_string( struct stumpless_entry *entry,
-                                    LPCSTR str ) {
-  LPSTR *new_strings;
-  LPSTR str_copy;
-  size_t str_length;
-  size_t old_size;
-  size_t new_size;
-
-  clear_error(  );
-
-  if( !entry || !str ) {
-    raise_argument_empty(  );
-    goto fail;
-  }
-
-  str_length = strlen( str );
-  str_copy = alloc_mem( str_length + 1 );
-  if( !str_copy ) {
-    goto fail;
-  }
-
-  old_size = sizeof( LPCSTR ) * entry->wel_insertion_count;
-  new_size = old_size + sizeof( LPCSTR );
-
-  new_strings = realloc_mem( entry->wel_insertion_strings, new_size );
-  if( !new_strings ) {
-    goto fail_realloc;
-  }
-
-  memcpy( str_copy, str, str_length );
-  str_copy[str_length] = '\0';
-  new_strings[entry->wel_insertion_count] = str_copy;
-
-  entry->wel_insertion_strings = new_strings;
-  entry->wel_insertion_count++;
-  return entry;
-
-
-fail_realloc:
-  free_mem( str_copy );
-fail:
-  return NULL;
-}
-
-struct stumpless_entry *
 stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
   clear_error(  );
 
@@ -96,6 +51,58 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
   entry->wel_event_id = event_id;
 
   return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
+                                    WORD index,
+                                    LPCSTR str ) {
+  LPSTR *new_strings;
+  LPSTR str_copy;
+  WORD i;
+  size_t str_length;
+  size_t new_size;
+
+  clear_error(  );
+
+  if( !entry || !str ) {
+    raise_argument_empty(  );
+    goto fail;
+  }
+
+  str_length = strlen( str );
+  str_copy = alloc_mem( str_length + 1 );
+  if( !str_copy ) {
+    goto fail;
+  }
+
+  if( index >= entry->wel_insertion_count ) {
+    new_size = sizeof( LPCSTR ) * ( index + 1 );
+
+    new_strings = realloc_mem( entry->wel_insertion_strings, new_size );
+    if( !new_strings ) {
+      goto fail_realloc;
+    } else {
+      for( i = entry->wel_insertion_count; i < index; i++ ) {
+        new_strings[i] = NULL;
+      }
+
+      entry->wel_insertion_strings = new_strings;
+      entry->wel_insertion_count = index + 1;
+    }
+  }
+
+  memcpy( str_copy, str, str_length );
+  str_copy[str_length] = '\0';
+  entry->wel_insertion_strings[index] = str_copy;
+
+  return entry;
+
+
+fail_realloc:
+  free_mem( str_copy );
+fail:
+  return NULL;
 }
 
 struct stumpless_entry *

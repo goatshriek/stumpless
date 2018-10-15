@@ -59,7 +59,7 @@ namespace {
       stumpless_set_wel_category( one_insertion_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( one_insertion_entry, MSG_ONE_INSERTION );
       stumpless_set_wel_type( one_insertion_entry, EVENTLOG_SUCCESS );
-      stumpless_add_wel_insertion_string( one_insertion_entry, insertion_string_1 );
+      stumpless_set_wel_insertion_string( one_insertion_entry, 0, insertion_string_1 );
 
       two_insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                                  STUMPLESS_SEVERITY_INFO,
@@ -70,8 +70,8 @@ namespace {
       stumpless_set_wel_category( two_insertion_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( two_insertion_entry, MSG_TWO_INSERTIONS );
       stumpless_set_wel_type( two_insertion_entry, EVENTLOG_SUCCESS );
-      stumpless_add_wel_insertion_string( two_insertion_entry, insertion_string_1 );
-      stumpless_add_wel_insertion_string( two_insertion_entry, insertion_string_2 );
+      stumpless_set_wel_insertion_string( two_insertion_entry, 0, insertion_string_1 );
+      stumpless_set_wel_insertion_string( two_insertion_entry, 1, insertion_string_2 );
     }
 
     virtual void

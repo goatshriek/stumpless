@@ -45,11 +45,11 @@ namespace {
     }
   };
 
-  TEST_F( WelSupportedTest, AddNullInsertionString ) {
+  TEST_F( WelSupportedTest, SetNullInsertionString ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry_result;
  
-    entry_result = stumpless_add_wel_insertion_string( simple_entry, NULL );
+    entry_result = stumpless_set_wel_insertion_string( simple_entry, 0, NULL );
     EXPECT_TRUE( entry_result == NULL );
 
     error = stumpless_get_error(  );
@@ -59,7 +59,7 @@ namespace {
 
   /* non-fixture tests */
 
-  TEST( WelAddInsertionTest, AddSingleString ) {
+  TEST( WelAddInsertionTest, SetSingleString ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *entry_result;
 
@@ -70,7 +70,7 @@ namespace {
                                  "simple test message" );  
     ASSERT_TRUE( entry != NULL );
 
-    entry_result = stumpless_add_wel_insertion_string( entry, "testing" );
+    entry_result = stumpless_set_wel_insertion_string( entry, 0, "testing" );
     EXPECT_EQ( entry_result, entry );
 
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
@@ -78,7 +78,7 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
-  TEST( WelAddInsertionTest, AddTwoStrings ) {
+  TEST( WelAddInsertionTest, SetTwoStrings ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *entry_result;
 
@@ -89,11 +89,33 @@ namespace {
                                  "simple test message" );  
     ASSERT_TRUE( entry != NULL );
 
-    entry_result = stumpless_add_wel_insertion_string( entry, "first string" );
+    entry_result = stumpless_set_wel_insertion_string( entry, 0, "first string" );
     EXPECT_EQ( entry_result, entry );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
-    entry_result = stumpless_add_wel_insertion_string( entry, "second string" );
+    entry_result = stumpless_set_wel_insertion_string( entry, 1, "second string" );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_destroy_entry( entry );
+  }
+
+  TEST( WelAddInsertionTest, SetTwoStringsOutOfOrder ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *entry_result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );  
+    ASSERT_TRUE( entry != NULL );
+
+    entry_result = stumpless_set_wel_insertion_string( entry, 1, "second string" );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    entry_result = stumpless_set_wel_insertion_string( entry, 0, "first string" );
     EXPECT_EQ( entry_result, entry );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
@@ -128,7 +150,7 @@ namespace {
     struct stumpless_error *error;
     struct stumpless_entry *entry;
     
-    entry = stumpless_add_wel_insertion_string( NULL, "test-string" );
+    entry = stumpless_set_wel_insertion_string( NULL, 0, "test-string" );
     EXPECT_TRUE( entry == NULL );
 
     error = stumpless_get_error(  );
