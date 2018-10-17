@@ -22,10 +22,13 @@
 #include <stumpless/entry.h>
 
 void
-destroy_insertion_strings( struct stumpless_entry *entry );
+destroy_insertion_params( struct stumpless_entry *entry );
 
 void
-initialize_insertion_strings( struct stumpless_entry *entry );
+initialize_insertion_params( struct stumpless_entry *entry );
+
+struct stumpless_param *
+resize_insertion_params( struct stumpless_entry *entry, DWORD max_index );
 
 void
 set_entry_wel_type( struct stumpless_entry *entry, int severity );

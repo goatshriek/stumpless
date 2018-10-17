@@ -128,7 +128,7 @@ extern "C" {
   struct stumpless_param {
     char *name;
     size_t name_length;
-    char *value;
+    char *value;         /**< NULL-terminated string to support wel insertion strings */
     size_t value_length;
   };
 
@@ -155,7 +155,8 @@ extern "C" {
     WORD wel_category;
     DWORD wel_event_id;
     WORD wel_insertion_count;
-    LPSTR *wel_insertion_strings;
+    LPCSTR *wel_insertion_strings;
+    struct stumpless_param **wel_insertion_params;
 #  endif
   };
 

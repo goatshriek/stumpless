@@ -42,8 +42,7 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_open_local_wel_target( const char *name,
-                                 int options,
-                                 int default_facility ) {
+                                 int options, int default_facility ) {
   struct stumpless_target *target;
 
   clear_error(  );
@@ -53,13 +52,8 @@ stumpless_open_local_wel_target( const char *name,
     goto fail;
   }
 
-  target = new_target(
-    STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
-    name,
-    strlen( name ),
-    options,
-    default_facility
-  );
+  target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
+                       name, strlen( name ), options, default_facility );
 
   if( !target ) {
     goto fail;
@@ -83,8 +77,7 @@ fail:
 
 struct stumpless_target *
 stumpless_open_remote_wel_target( const char *name,
-                                  int options,
-                                  int default_facility ) {
+                                  int options, int default_facility ) {
   return NULL;
 }
 
@@ -103,7 +96,7 @@ destroy_wel_target( struct wel_target *target ) {
 }
 
 struct wel_target *
-new_wel_target( LPCSTR server_name, LPCSTR source_name ){
+new_wel_target( LPCSTR server_name, LPCSTR source_name ) {
   struct wel_target *target;
 
   target = alloc_mem( sizeof( *target ) );
@@ -129,18 +122,23 @@ int
 send_entry_to_wel_target( const struct wel_target *target,
                           const struct stumpless_entry *entry ) {
   BOOL success;
+  WORD i;
 
-  success = ReportEvent(
-    target->handle,
-    entry->wel_type,
-    entry->wel_category,
-    entry->wel_event_id,
-    NULL,
-    entry->wel_insertion_count,
-    0,
-    entry->wel_insertion_strings,
-    NULL
-  );
+  for( i = 0; i < entry->wel_insertion_count; i++ ) {
+    if( entry->wel_insertion_params[i] ) {
+      entry->wel_insertion_strings[i] = entry->wel_insertion_params[i]->value;
+    } else {
+      entry->wel_insertion_strings[i] = NULL;
+    }
+  }
+
+  success = ReportEvent( target->handle,
+                         entry->wel_type,
+                         entry->wel_category,
+                         entry->wel_event_id,
+                         NULL,
+                         entry->wel_insertion_count,
+                         0, entry->wel_insertion_strings, NULL );
 
   if( success ) {
     return 1;

@@ -51,13 +51,13 @@
 #    include "private/config/wel_supported.h"
 #    include "private/target/wel.h"
 #    define config_send_entry_to_wel_target send_entry_to_wel_target
-#    define config_destroy_insertion_strings destroy_insertion_strings
-#    define config_initialize_insertion_strings initialize_insertion_strings
+#    define config_destroy_insertion_params destroy_insertion_params
+#    define config_initialize_insertion_params initialize_insertion_params
 #    define config_set_entry_wel_type set_entry_wel_type
 #  else
 #    include "private/target.h"
 #    define config_send_entry_to_wel_target send_entry_to_unsupported_target
-#    define config_destroy_insertion_strings( ENTRY ) ( ( void ) 0 )
+#    define config_destroy_insertion_params( ENTRY ) ( ( void ) 0 )
 #    define config_initialize_insertion_strings( ENTRY ) ( ( void ) 0 )
 #    define config_set_entry_wel_type( ENTRY, SEVERITY ) ( ( void ) 0 )
 #  endif

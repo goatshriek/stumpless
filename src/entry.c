@@ -128,8 +128,7 @@ struct stumpless_entry *
 stumpless_new_entry( int facility,
                      int severity,
                      const char *app_name,
-                     const char *msgid,
-                     const char *message ) {
+                     const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
   size_t *app_name_length;
   size_t *msgid_length;
@@ -168,7 +167,7 @@ stumpless_new_entry( int facility,
     goto fail_message;
   }
 
-  config_initialize_insertion_strings( entry );
+  config_initialize_insertion_params( entry );
   config_set_entry_wel_type( entry, severity );
 
   entry->prival = get_prival( facility, severity );
@@ -208,11 +207,13 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail_name;
   }
 
-  param->value = cstring_to_sized_string( value, &( param->value_length ) );
+  param->value_length = strlen( value );
+  param->value = alloc_mem( param->value_length + 1 );
   if( !param->value ) {
     goto fail_value;
   }
-
+  memcpy( param->value, value, param->value_length );
+  param->value[param->value_length] = '\0';
   return param;
 
 fail_value:
@@ -250,7 +251,7 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
     return;
   }
 
-  config_destroy_insertion_strings( entry );
+  config_destroy_insertion_params( entry );
 
   for( i = 0; i < entry->element_count; i++ ) {
     stumpless_destroy_element( entry->elements[i] );

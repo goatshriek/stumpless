@@ -54,14 +54,32 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
 }
 
 struct stumpless_entry *
+stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
+                                   WORD index, struct stumpless_param *param ) {
+  clear_error(  );
+
+  if( !entry || !param ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
+  if( index >= entry->wel_insertion_count ) {
+    if( !resize_insertion_params( entry, index ) ) {
+      return NULL;
+    }
+  }
+
+  entry->wel_insertion_params[index] = param;
+
+  return entry;
+}
+
+struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
-                                    WORD index,
-                                    LPCSTR str ) {
-  LPSTR *new_strings;
+                                    WORD index, LPCSTR str ) {
   LPSTR str_copy;
-  WORD i;
   size_t str_length;
-  size_t new_size;
+  struct stumpless_param *param;
 
   clear_error(  );
 
@@ -70,43 +88,42 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
     goto fail;
   }
 
-  str_length = strlen( str );
-  str_copy = alloc_mem( str_length + 1 );
-  if( !str_copy ) {
+  param = alloc_mem( sizeof( *param ) );
+  if( !param ) {
     goto fail;
   }
 
+  str_length = strlen( str );
+  str_copy = alloc_mem( str_length + 1 );
+  if( !str_copy ) {
+    goto fail_str;
+  }
+
   if( index >= entry->wel_insertion_count ) {
-    new_size = sizeof( LPCSTR ) * ( index + 1 );
-
-    new_strings = realloc_mem( entry->wel_insertion_strings, new_size );
-    if( !new_strings ) {
-      goto fail_realloc;
-    } else {
-      for( i = entry->wel_insertion_count; i < index; i++ ) {
-        new_strings[i] = NULL;
-      }
-
-      entry->wel_insertion_strings = new_strings;
-      entry->wel_insertion_count = index + 1;
+    if( !resize_insertion_params( entry, index ) ) {
+      goto fail_resize;
     }
   }
 
   memcpy( str_copy, str, str_length );
   str_copy[str_length] = '\0';
-  entry->wel_insertion_strings[index] = str_copy;
+  param->value = str_copy;
+  param->value_length = str_length;
+  entry->wel_insertion_params[index] = param;
 
   return entry;
 
 
-fail_realloc:
+fail_resize:
   free_mem( str_copy );
+fail_str:
+  free_mem( param );
 fail:
   return NULL;
 }
 
 struct stumpless_entry *
-stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ){
+stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   clear_error(  );
 
   if( !entry ) {
@@ -122,25 +139,69 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ){
 /* private definitions */
 
 void
-destroy_insertion_strings( struct stumpless_entry *entry ) {
+destroy_insertion_params( struct stumpless_entry *entry ) {
   WORD i;
 
   for( i = 0; i < entry->wel_insertion_count; i++ ) {
-    free_mem( entry->wel_insertion_strings[i] );
+    if( entry->wel_insertion_params[i]
+        && !entry->wel_insertion_params[i]->name ) {
+      free_mem( entry->wel_insertion_params[i]->value );
+      free_mem( entry->wel_insertion_params[i] );
+    }
   }
 
-  free_mem( entry->wel_insertion_strings );
+  free_mem( entry->wel_insertion_params );
 }
 
 void
-initialize_insertion_strings( struct stumpless_entry *entry ) {
+initialize_insertion_params( struct stumpless_entry *entry ) {
   entry->wel_insertion_strings = NULL;
+  entry->wel_insertion_params = NULL;
   entry->wel_insertion_count = 0;
+}
+
+struct stumpless_param *
+resize_insertion_params( struct stumpless_entry *entry, DWORD max_index ) {
+  size_t new_size;
+  struct stumpless_param **new_params;
+  LPCSTR *new_strings;
+  WORD i;
+
+  new_size = sizeof( *new_params ) * ( max_index + 1 );
+  new_params = realloc_mem( entry->wel_insertion_params, new_size );
+  if( !new_params ) {
+    return NULL;
+
+  } else {
+    for( i = entry->wel_insertion_count; i <= max_index; i++ ) {
+      new_params[i] = NULL;
+    }
+
+    entry->wel_insertion_params = new_params;
+
+  }
+
+  new_size = sizeof( LPCSTR ) * ( max_index + 1 );
+  new_strings = realloc_mem( entry->wel_insertion_strings, new_size );
+  if( !new_strings ) {
+    return NULL;
+
+  } else {
+    for( i = entry->wel_insertion_count; i <= max_index; i++ ) {
+      new_strings[i] = NULL;
+    }
+
+    entry->wel_insertion_strings = new_strings;
+
+  }
+
+  entry->wel_insertion_count = max_index + 1;
+  return new_params;
 }
 
 void
 set_entry_wel_type( struct stumpless_entry *entry, int severity ) {
-  switch( severity ) {
+  switch ( severity ) {
     case STUMPLESS_SEVERITY_ERR:
       entry->wel_type = EVENTLOG_ERROR_TYPE;
       break;

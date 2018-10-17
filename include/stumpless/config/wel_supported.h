@@ -33,6 +33,11 @@ extern "C" {
   stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
 
   struct stumpless_entry *
+  stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
+                                     WORD index,
+                                     struct stumpless_param *param );
+
+  struct stumpless_entry *
   stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                       WORD index,
                                       LPCSTR str );
