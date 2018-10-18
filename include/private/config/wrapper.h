@@ -58,7 +58,7 @@
 #    include "private/target.h"
 #    define config_send_entry_to_wel_target send_entry_to_unsupported_target
 #    define config_destroy_insertion_params( ENTRY ) ( ( void ) 0 )
-#    define config_initialize_insertion_strings( ENTRY ) ( ( void ) 0 )
+#    define config_initialize_insertion_params( ENTRY ) ( ( void ) 0 )
 #    define config_set_entry_wel_type( ENTRY, SEVERITY ) ( ( void ) 0 )
 #  endif
 

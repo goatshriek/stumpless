@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/entry.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
