@@ -19,7 +19,8 @@ endif(WIN32)
 ExternalProject_Add(gtest
   URL https://github.com/google/googletest/archive/master.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_CXX_FLAGS=-std=c++11
+#  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_CXX_FLAGS=-std=c++11
+  CMAKE_ARGS -Dgtest_force_shared_crt=ON
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BINARY_DIR "${my_gtest_binary_dir}"
