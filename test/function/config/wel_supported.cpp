@@ -45,6 +45,18 @@ namespace {
     }
   };
 
+  TEST_F( WelSupportedTest, SetNullInsertionParam ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry_result;
+ 
+    entry_result = stumpless_set_wel_insertion_param( simple_entry, 0, NULL );
+    EXPECT_TRUE( entry_result == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST_F( WelSupportedTest, SetNullInsertionString ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry_result;
