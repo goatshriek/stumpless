@@ -155,7 +155,7 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
       "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
       "${PROJECT_BINARY_DIR}/events.rc"
      COMMAND mc -c
-        -U "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc" 
+        -U "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
         -r "${PROJECT_BINARY_DIR}"
         -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
      DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
