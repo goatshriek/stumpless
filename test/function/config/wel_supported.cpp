@@ -71,7 +71,161 @@ namespace {
 
   /* non-fixture tests */
 
-  TEST( WelAddInsertionTest, SetSingleString ) {
+  TEST( WelEntryCategoryTest, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_category( NULL, CATEGORY_TEST );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelEntryEventIdTest, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_event_id( NULL, MSG_SIMPLE );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelEntryTypeTest, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelSetEntryInsertionParamTest, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    struct stumpless_param *param;
+
+    param = stumpless_new_param( "param-name", "param-value" );
+    ASSERT_TRUE( param != NULL );
+    
+    entry = stumpless_set_wel_insertion_param( NULL, 0, param );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_param( param );
+  }
+
+  TEST( WelSetInsertionParamTest, SetSingleParam ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *entry_result;
+    struct stumpless_param *param;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );  
+    ASSERT_TRUE( entry != NULL );
+
+    param = stumpless_new_param( "param-name", "param-value" );
+    ASSERT_TRUE( param != NULL );
+
+    entry_result = stumpless_set_wel_insertion_param( entry, 0, param );
+    EXPECT_EQ( entry_result, entry );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_destroy_entry( entry );
+    stumpless_destroy_param( param );
+  }
+
+  TEST( WelSetInsertionParamTest, SetTwoParams ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *entry_result;
+    struct stumpless_param *param_1;
+    struct stumpless_param *param_2;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );  
+    ASSERT_TRUE( entry != NULL );
+
+    param_1 = stumpless_new_param( "param-1-name", "param-1-value" );
+    ASSERT_TRUE( param_1 != NULL );
+
+    param_2 = stumpless_new_param( "param-2-name", "param-2-value" );
+    ASSERT_TRUE( param_2 != NULL );
+
+    entry_result = stumpless_set_wel_insertion_param( entry, 0, param_1 );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    entry_result = stumpless_set_wel_insertion_param( entry, 1, param_2 );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_destroy_entry( entry );
+    stumpless_destroy_param( param_1 );
+    stumpless_destroy_param( param_2 );
+  }
+
+  TEST( WelSetInsertionParamTest, SetTwoParamsOutOfOrder ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *entry_result;
+    struct stumpless_param *param_1;
+    struct stumpless_param *param_2;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );  
+    ASSERT_TRUE( entry != NULL );
+
+    param_1 = stumpless_new_param( "param-1-name", "param-1-value" );
+    ASSERT_TRUE( param_1 != NULL );
+
+    param_2 = stumpless_new_param( "param-2-name", "param-2-value" );
+    ASSERT_TRUE( param_2 != NULL );
+
+    entry_result = stumpless_set_wel_insertion_string( entry, 1, "second string" );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    entry_result = stumpless_set_wel_insertion_string( entry, 0, "first string" );
+    EXPECT_EQ( entry_result, entry );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_destroy_entry( entry );
+    stumpless_destroy_param( param_1 );
+    stumpless_destroy_param( param_2 );
+  }
+
+  TEST( WelSetEntryInsertionStringTest, NullEntry ) {
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    
+    entry = stumpless_set_wel_insertion_string( NULL, 0, "test-string" );
+    EXPECT_TRUE( entry == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelSetInsertionStringTest, SetSingleString ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *entry_result;
 
@@ -90,7 +244,7 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
-  TEST( WelAddInsertionTest, SetTwoStrings ) {
+  TEST( WelSetInsertionStringTest, SetTwoStrings ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *entry_result;
 
@@ -112,7 +266,7 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
-  TEST( WelAddInsertionTest, SetTwoStringsOutOfOrder ) {
+  TEST( WelSetInsertionStringTest, SetTwoStringsOutOfOrder ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *entry_result;
 
@@ -132,53 +286,5 @@ namespace {
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     stumpless_destroy_entry( entry );
-  }
-
-  TEST( WelEntryCategory, NullEntry ) {
-    struct stumpless_error *error;
-    struct stumpless_entry *entry;
-    
-    entry = stumpless_set_wel_category( NULL, CATEGORY_TEST );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-  }
-
-  TEST( WelEntryEventId, NullEntry ) {
-    struct stumpless_error *error;
-    struct stumpless_entry *entry;
-    
-    entry = stumpless_set_wel_event_id( NULL, MSG_SIMPLE );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-  }
-
-  TEST( WelEntryInsertionString, NullEntry ) {
-    struct stumpless_error *error;
-    struct stumpless_entry *entry;
-    
-    entry = stumpless_set_wel_insertion_string( NULL, 0, "test-string" );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-  }
-
-  TEST( WelEntryType, NullEntry ) {
-    struct stumpless_error *error;
-    struct stumpless_entry *entry;
-    
-    entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 }
