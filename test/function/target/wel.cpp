@@ -227,16 +227,4 @@ namespace {
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
-
-  TEST( WelTargetOpenRemoteTest, NullServer ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
-
-    target = stumpless_open_remote_wel_target( NULL, "null-server-test", 0, 0 );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-  }
 }

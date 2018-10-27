@@ -88,7 +88,7 @@ stumpless_open_remote_wel_target( const char *server,
 
    clear_error(  );
 
-   if( !server || !name ) {
+   if( !name ) {
      raise_argument_empty(  );
      goto fail;
    }
