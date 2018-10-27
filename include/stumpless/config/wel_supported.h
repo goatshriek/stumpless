@@ -6,7 +6,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -16,11 +16,16 @@
  * limitations under the License.
  */
 
+/**
+ * @file
+ * Functions necessary when using Windows Event Log targets.
+ */
+
 #ifndef __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 #  define __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 
-#include <stumpless/entry.h>
-#include <windows.h>
+#  include <stumpless/entry.h>
+#  include <windows.h>
 
 #  ifdef __cplusplus
 extern "C" {
@@ -34,12 +39,13 @@ extern "C" {
  * they are sent.
  *
  * @param entry The entry to modify.
+ *
  * @param category The category to assign. This should be a category defined
  * in a header generated using the Windows Message Compiler.
  *
- * @return The modified entry if no error is encountered. If an error is
- * encountered, then NULL will be returned and the global error code will be
- * set appropriately.
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set
+ * appropriately.
  */
 struct stumpless_entry *
 stumpless_set_wel_category( struct stumpless_entry *entry, WORD category );
@@ -52,12 +58,12 @@ stumpless_set_wel_category( struct stumpless_entry *entry, WORD category );
  * they are sent.
  *
  * @param entry The entry to modify.
+ *
  * @param event_id The event id to assign. This should be a event id defined
  * in a header generated using the Windows Message Compiler.
  *
- * @return The modified entry if no error is encountered. If an error is
- * encountered, then NULL will be returned and the global error code will be
- * set appropriately.
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
  */
 struct stumpless_entry *
 stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
@@ -74,18 +80,20 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
  *
  * Note that insertion strings use the value of the param at log time. If the
  * value changes between log entries, it will reflect these changes in the log
- * itself as well.
+ * itself as well. This also means that you should not destroy a param unless
+ * you are sure that no entries exist that are using it.
  *
  * @param entry The entry to modify.
+ *
  * @param index The index of the insertion string to use the param for. Valid
  * values are greater than or equal to 0, with 0 being the first string in a
  * message.
+ *
  * @param param The param to use for the insertion strings. The value of the
  * param will be used during logging.
  *
- * @return The modified entry if no error is encountered. If an error is
- * encountered, then NULL will be returned and the global error code will be
- * set appropriately.
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
  */
 struct stumpless_entry *
 stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
@@ -107,14 +115,15 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
  * if the string changes or is destroyed later.
  *
  * @param entry The entry to modify.
+ *
  * @param index The index of the insertion string to use the param for. Valid
  * values are greater than or equal to 0, with 0 being the first string in a
  * message.
+ *
  * @param str The string to use for the insertion string.
  *
- * @return The modified entry if no error is encountered. If an error is
- * encountered, then NULL will be returned and the global error code will be
- * set appropriately.
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
  */
 struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
@@ -129,12 +138,12 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
  * they are sent.
  *
  * @param entry The entry to modify.
+ *
  * @param type The type to assign. This should be a type defined
  * in a header generated using the Windows Message Compiler.
  *
- * @return The modified entry if no error is encountered. If an error is
- * encountered, then NULL will be returned and the global error code will be
- * set appropriately.
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
  */
 struct stumpless_entry *
 stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );

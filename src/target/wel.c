@@ -42,7 +42,8 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_open_local_wel_target( const char *name,
-                                 int options, int default_facility ) {
+                                 int options,
+                                 int default_facility ) {
   struct stumpless_target *target;
 
   clear_error(  );
@@ -53,7 +54,10 @@ stumpless_open_local_wel_target( const char *name,
   }
 
   target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
-                       name, strlen( name ), options, default_facility );
+                       name,
+                       strlen( name ),
+                       options,
+                       default_facility );
 
   if( !target ) {
     goto fail;

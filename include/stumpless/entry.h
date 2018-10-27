@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -160,7 +160,7 @@ extern "C" {
 #  endif
   };
 
-  /* 
+  /*
    * While the functions provided right now offer basic creation and deletion
    * capabilities, there will need to be many more added to make working with
    * the messages, elements, and params easier. For example, hash-style accessors
@@ -183,7 +183,7 @@ extern "C" {
 
   void
   stumpless_destroy_param( struct stumpless_param *param );
-  
+
   struct stumpless_element *
   stumpless_new_element( const char *name );
 
