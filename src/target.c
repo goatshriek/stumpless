@@ -107,7 +107,7 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   // windows targets are not formatted in code
-  // their formatting comes from message text files instead
+  // instead their formatting comes from message text files
   if( target->type == STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
     return config_send_entry_to_wel_target( target->id, entry );
   }
