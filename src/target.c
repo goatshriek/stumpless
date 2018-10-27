@@ -244,13 +244,21 @@ fail:
 int
 send_entry_to_unsupported_target( const struct stumpless_target *target,
                                   const struct stumpless_entry *entry ) {
+  ( void ) target;
+  ( void ) entry;
+
   raise_target_unsupported(  );
   return -1;
 }
 
 int
 sendto_unsupported_target( const struct stumpless_target *target,
-                           const char *msg, size_t msg_length ) {
+                           const char *msg,
+                           size_t msg_length ) {
+  ( void ) target;
+  ( void ) msg;
+  ( void ) msg_length;
+
   raise_target_unsupported(  );
   return -1;
 }
