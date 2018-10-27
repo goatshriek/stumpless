@@ -80,9 +80,42 @@ fail:
 
 
 struct stumpless_target *
-stumpless_open_remote_wel_target( const char *name,
-                                  int options, int default_facility ) {
-  return NULL;
+stumpless_open_remote_wel_target( const char *server,
+                                  const char *name,
+                                  int options,
+                                  int default_facility ) {
+   struct stumpless_target *target;
+
+   clear_error(  );
+
+   if( !server || !name ) {
+     raise_argument_empty(  );
+     goto fail;
+   }
+
+   target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
+                        name,
+                        strlen( name ),
+                        options,
+                        default_facility );
+
+   if( !target ) {
+     goto fail;
+   }
+
+   target->id = new_wel_target( server, name );
+
+   if( !target->id ) {
+     goto fail_id;
+   }
+
+   stumpless_set_current_target( target );
+   return target;
+
+ fail_id:
+   destroy_target( target );
+ fail:
+   return NULL;
 }
 
 /* private definitions */
