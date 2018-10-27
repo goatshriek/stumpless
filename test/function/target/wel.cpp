@@ -144,7 +144,7 @@ namespace {
       (va_list*)(insertion_strings)
     );
     EXPECT_NE( format_result, 0 );
-    
+
     EXPECT_THAT( message_buffer, HasSubstr( insertion_string_1 ) );
     EXPECT_THAT( message_buffer, HasSubstr( insertion_string_2 ) );
 

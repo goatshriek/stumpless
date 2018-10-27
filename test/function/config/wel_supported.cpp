@@ -48,7 +48,7 @@ namespace {
   TEST_F( WelSupportedTest, SetNullInsertionParam ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry_result;
- 
+
     entry_result = stumpless_set_wel_insertion_param( simple_entry, 0, NULL );
     EXPECT_TRUE( entry_result == NULL );
 
@@ -60,7 +60,7 @@ namespace {
   TEST_F( WelSupportedTest, SetNullInsertionString ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry_result;
- 
+
     entry_result = stumpless_set_wel_insertion_string( simple_entry, 0, NULL );
     EXPECT_TRUE( entry_result == NULL );
 
@@ -74,7 +74,7 @@ namespace {
   TEST( WelEntryCategoryTest, NullEntry ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry;
-    
+
     entry = stumpless_set_wel_category( NULL, CATEGORY_TEST );
     EXPECT_TRUE( entry == NULL );
 
@@ -86,7 +86,7 @@ namespace {
   TEST( WelEntryEventIdTest, NullEntry ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry;
-    
+
     entry = stumpless_set_wel_event_id( NULL, MSG_SIMPLE );
     EXPECT_TRUE( entry == NULL );
 
@@ -98,7 +98,7 @@ namespace {
   TEST( WelEntryTypeTest, NullEntry ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry;
-    
+
     entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
     EXPECT_TRUE( entry == NULL );
 
@@ -114,7 +114,7 @@ namespace {
 
     param = stumpless_new_param( "param-name", "param-value" );
     ASSERT_TRUE( param != NULL );
-    
+
     entry = stumpless_set_wel_insertion_param( NULL, 0, param );
     EXPECT_TRUE( entry == NULL );
 
@@ -134,7 +134,7 @@ namespace {
                                  STUMPLESS_SEVERITY_INFO,
                                  "stumpless-wel-unit-test",
                                  "simple-entry",
-                                 "simple test message" );  
+                                 "simple test message" );
     ASSERT_TRUE( entry != NULL );
 
     param = stumpless_new_param( "param-name", "param-value" );
@@ -159,7 +159,7 @@ namespace {
                                  STUMPLESS_SEVERITY_INFO,
                                  "stumpless-wel-unit-test",
                                  "simple-entry",
-                                 "simple test message" );  
+                                 "simple test message" );
     ASSERT_TRUE( entry != NULL );
 
     param_1 = stumpless_new_param( "param-1-name", "param-1-value" );
@@ -191,7 +191,7 @@ namespace {
                                  STUMPLESS_SEVERITY_INFO,
                                  "stumpless-wel-unit-test",
                                  "simple-entry",
-                                 "simple test message" );  
+                                 "simple test message" );
     ASSERT_TRUE( entry != NULL );
 
     param_1 = stumpless_new_param( "param-1-name", "param-1-value" );
@@ -216,7 +216,7 @@ namespace {
   TEST( WelSetEntryInsertionStringTest, NullEntry ) {
     struct stumpless_error *error;
     struct stumpless_entry *entry;
-    
+
     entry = stumpless_set_wel_insertion_string( NULL, 0, "test-string" );
     EXPECT_TRUE( entry == NULL );
 
@@ -233,7 +233,7 @@ namespace {
                                  STUMPLESS_SEVERITY_INFO,
                                  "stumpless-wel-unit-test",
                                  "simple-entry",
-                                 "simple test message" );  
+                                 "simple test message" );
     ASSERT_TRUE( entry != NULL );
 
     entry_result = stumpless_set_wel_insertion_string( entry, 0, "testing" );
@@ -252,7 +252,7 @@ namespace {
                                  STUMPLESS_SEVERITY_INFO,
                                  "stumpless-wel-unit-test",
                                  "simple-entry",
-                                 "simple test message" );  
+                                 "simple test message" );
     ASSERT_TRUE( entry != NULL );
 
     entry_result = stumpless_set_wel_insertion_string( entry, 0, "first string" );
@@ -274,7 +274,7 @@ namespace {
                                  STUMPLESS_SEVERITY_INFO,
                                  "stumpless-wel-unit-test",
                                  "simple-entry",
-                                 "simple test message" );  
+                                 "simple test message" );
     ASSERT_TRUE( entry != NULL );
 
     entry_result = stumpless_set_wel_insertion_string( entry, 1, "second string" );
