@@ -77,6 +77,7 @@ void
 raise_invalid_id( void ) {
   raise_error( STUMPLESS_INVALID_ID );
 }
+
 void
 raise_memory_allocation_failure( void ) {
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -93,11 +94,11 @@ raise_target_unsupported( void ) {
 }
 
 void
-raise_wel_close_failure( void ){
+raise_wel_close_failure( void ) {
   raise_error( STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE );
 }
 
 void
-raise_wel_open_failure( void ){
+raise_wel_open_failure( void ) {
   raise_error( STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE );
 }
