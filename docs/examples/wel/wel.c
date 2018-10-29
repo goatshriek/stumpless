@@ -24,5 +24,5 @@ int
 main( int argc, char **argv ) {
   printf("example run!\n");
 
-  return EXIT_SUCCESS;
+  return EXIT_FAILURE;
 }
