@@ -9,10 +9,12 @@ option(COVERAGE "Include coverage information" OFF)
 
 find_package(Threads REQUIRED)
 
+
 # load modules
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
 include(ExternalProject)
+
 
 # load utilities
 include(tools/cmake/benchmark.cmake)
@@ -102,6 +104,7 @@ target_include_directories(stumpless
   ${CMAKE_BINARY_DIR}/include
 )
 
+
 # test suites
 enable_testing()
 
@@ -185,13 +188,12 @@ add_custom_target(check
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
+
 # performance tests
 add_performance_test(target
   test/performance/target.cpp
 )
 
-# there has to be a way to do this dynamically instead of listing each
-# index separately...
 list(GET STUMPLESS_PERFORMANCE_TESTS 0 BENCH_COMMAND_0)
 add_custom_target(bench
   COMMAND ${BENCH_COMMAND_0}
@@ -199,7 +201,7 @@ add_custom_target(bench
 )
 
 
-# add in the swig project
+# python support
 if(BUILD_PYTHON)
   add_swig_project()
 
@@ -255,3 +257,20 @@ if(HAVE_DOXYGEN)
     COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
   )
 endif(HAVE_DOXYGEN)
+
+
+# examples
+if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+  add_executable(wel_example
+    EXCLUDE_FROM_ALL
+    ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
+  )
+
+  target_link_libraries(wel_example stumpless)
+
+  target_include_directories(wel_example
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+  )
+endif(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)

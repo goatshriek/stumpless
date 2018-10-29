@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
  - Network target capability.
+ - Compile-time log level filtering.
+ - Format-string style logging from `stumpless` call.
+ - Thread-safe operation.
 
 ## [1.2.0] - 2018-10-26
 ### Added

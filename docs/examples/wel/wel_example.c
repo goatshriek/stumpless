@@ -16,9 +16,13 @@
  * limitations under the License.
  */
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <stumpless.h>
 
 int
 main( int argc, char **argv ) {
+  printf("example run!\n");
+
   return EXIT_SUCCESS;
 }
