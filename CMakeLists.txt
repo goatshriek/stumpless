@@ -269,9 +269,7 @@ add_custom_target(check
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
-# example target
-list(GET STUMPLESS_EXAMPLES 0 EXAMPLE_COMMAND_0)
+# examples target
 add_custom_target(examples
-  COMMAND ${EXAMPLE_COMMAND_0}
-  DEPENDS ${STUMPLESS_EXAMPLES}
+  DEPENDS ${STUMPLESS_EXAMPLE_RUNNERS}
 )

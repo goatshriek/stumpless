@@ -14,5 +14,11 @@ macro(add_example name)
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
-  ) 
+  )
+
+  list(APPEND STUMPLESS_EXAMPLE_RUNNERS run-example-${name})
+  add_custom_target(run-example-${name}
+    COMMAND "example-${name}"
+    DEPENDS example-${name}
+  )
 endmacro(add_example)
