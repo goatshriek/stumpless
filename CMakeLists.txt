@@ -106,7 +106,7 @@ target_include_directories(stumpless
 )
 
 
-# standard test suites
+# standard functionality tests
 enable_testing()
 
 add_function_test(buffer
@@ -139,6 +139,12 @@ add_function_test(target
 
 add_function_test(version
   test/function/version.cpp
+)
+
+
+# standard performance tests
+add_performance_test(target
+  test/performance/target.cpp
 )
 
 
@@ -191,18 +197,6 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
     ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel.c
   )
 endif(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
-
-
-# performance tests
-add_performance_test(target
-  test/performance/target.cpp
-)
-
-list(GET STUMPLESS_PERFORMANCE_TESTS 0 BENCH_COMMAND_0)
-add_custom_target(bench
-  COMMAND ${BENCH_COMMAND_0}
-  DEPENDS ${STUMPLESS_PERFORMANCE_TESTS}
-)
 
 
 # python support
@@ -263,11 +257,18 @@ if(HAVE_DOXYGEN)
 endif(HAVE_DOXYGEN)
 
 
-# test suite target
+# function test suite target
 add_custom_target(check
   COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
+
+
+# performance test suite target
+add_custom_target(bench
+  DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
+)
+
 
 # examples target
 add_custom_target(examples

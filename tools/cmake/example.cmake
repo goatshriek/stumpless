@@ -1,6 +1,4 @@
 macro(add_example name)
-  list(APPEND STUMPLESS_EXAMPLES example-${name})
-
   add_executable(example-${name}
     EXCLUDE_FROM_ALL
     ${ARGN}

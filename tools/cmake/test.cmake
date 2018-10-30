@@ -36,8 +36,6 @@ macro(add_function_test name)
 endmacro(add_function_test)
 
 macro(add_performance_test name)
-  list(APPEND STUMPLESS_PERFORMANCE_TESTS performance-test-${name})
-
   add_executable(performance-test-${name}
     EXCLUDE_FROM_ALL
     ${ARGN}
@@ -65,5 +63,11 @@ macro(add_performance_test name)
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
+  )
+
+  list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test-${name})
+  add_custom_target(run-performance-test-${name}
+    COMMAND "performance-test-${name}"
+    DEPENDS performance-test-${name}
   )
 endmacro(add_performance_test)
