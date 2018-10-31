@@ -101,6 +101,7 @@ my %manifest = (
   "realloc" => "stdlib.h",
   "realloc_mem" => "private/memory.h",
   "recvfrom" => "sys/socket.h",
+  "RegisterEventSource" => "windows.h",
   "ReportEvent" => "windows.h",
   "resize_insertion_params" => "private/config/wel_supported.h",
   "RFC_5424_FULL_DATE_BUFFER_SIZE" => "private/formatter.h",

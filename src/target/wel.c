@@ -141,7 +141,7 @@ new_wel_target( LPCSTR server_name, LPCSTR source_name ) {
     goto fail;
   }
 
-  target->handle = RegisterEventSourceA( server_name, source_name );
+  target->handle = RegisterEventSource( server_name, source_name );
   if( !target->handle ) {
     raise_wel_open_failure(  );
     goto fail_handle;
