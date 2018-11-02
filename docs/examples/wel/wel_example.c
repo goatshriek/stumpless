@@ -19,9 +19,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stumpless.h>
+#include "example_events.h"
 
 int
 main( int argc, char **argv ) {
+  struct stumpless_target *wel_target;
+  struct stumpless_entry *entry;
+  struct stumpless_param *child_name;
+  struct stumpless_param *tree_type;
+
   printf("example run!\n");
 
   return EXIT_SUCCESS;

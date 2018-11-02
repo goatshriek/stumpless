@@ -194,7 +194,7 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   )
 
   add_example(wel
-    ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel.c
+    ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
   )
 endif(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
 
