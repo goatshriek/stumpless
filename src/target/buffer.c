@@ -21,6 +21,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
@@ -39,8 +40,11 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_open_buffer_target( const char *name, char *buffer, size_t size,
-                              int options, int default_facility ) {
+stumpless_open_buffer_target( const char *name,
+                              char *buffer,
+                              size_t size,
+                              int options,
+                              int default_facility ) {
   struct stumpless_target *target;
 
   clear_error(  );
@@ -102,7 +106,8 @@ new_buffer_target( char *buffer, size_t size ) {
 
 int
 sendto_buffer_target( struct buffer_target *target,
-                      const char *msg, size_t msg_length ) {
+                      const char *msg,
+                      size_t msg_length ) {
   size_t buffer_remaining;
 
   if( msg_length >= target->size ) {
@@ -117,12 +122,13 @@ sendto_buffer_target( struct buffer_target *target,
     target->position += msg_length + 1;
   } else {
     memcpy( target->buffer + target->position, msg, buffer_remaining );
-    memcpy( target->buffer, msg + buffer_remaining,
+    memcpy( target->buffer,
+            msg + buffer_remaining,
             msg_length - buffer_remaining );
     target->position = msg_length - buffer_remaining + 1;
   }
 
   target->buffer[target->position - 1] = '\0';
 
-  return msg_length + 1;
+  return cap_size_t_to_int( msg_length + 1 );
 }

@@ -16,27 +16,18 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <winsock2.h>
-#include "private/config/have_winsock2.h"
-#include "private/inthelper.h"
+#include <stdio.h>
+#include "private/config/have_fopen_s.h"
 
-int
-winsock2_gethostname( char *buffer, size_t namelen ) {
-  int capped_namelen;
-  int result;
-  WSADATA wsa_data;
+FILE *
+fopen_s_fopen( const char *filename, const char *mode ) {
+  FILE *handle;
+  errno_t result;
 
-  capped_namelen = cap_size_t_to_int( namelen );
-
-  result = gethostname( buffer, capped_namelen );
-
-  if( result == SOCKET_ERROR ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      result = gethostname( buffer, capped_namelen );
-    }
+  result = fopen_s( &handle, filename, mode );
+  if( result != 0 ){
+    return NULL;
+  } else {
+    return handle;
   }
-
-  return result;
 }

@@ -25,7 +25,7 @@ struct cache {
   void ( *entry_init ) ( void * );
   size_t entry_size;
   char **pages;
-  size_t page_count;
+  int page_count;
   size_t page_size;
 };
 

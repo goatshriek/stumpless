@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Apache-2.0
+/* SPDX-License-Identifier: Apache-2.0 */
 
 /*
  * Copyright 2018 Joel E. Anderson
@@ -16,27 +16,12 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <winsock2.h>
-#include "private/config/have_winsock2.h"
-#include "private/inthelper.h"
+#ifndef __STUMPLESS_PRIVATE_INTHELPER_H
+#  define __STUMPLESS_PRIVATE_INTHELPER_H
+
+#  include <stddef.h>
 
 int
-winsock2_gethostname( char *buffer, size_t namelen ) {
-  int capped_namelen;
-  int result;
-  WSADATA wsa_data;
+cap_size_t_to_int( size_t val );
 
-  capped_namelen = cap_size_t_to_int( namelen );
-
-  result = gethostname( buffer, capped_namelen );
-
-  if( result == SOCKET_ERROR ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      result = gethostname( buffer, capped_namelen );
-    }
-  }
-
-  return result;
-}
+#endif /* __STUMPLESS_PRIVATE_INTHELPER_H */

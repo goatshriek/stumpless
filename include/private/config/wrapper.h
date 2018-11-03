@@ -33,6 +33,10 @@
 #    include "private/config/have_winsock2.h"
 #  endif
 
+#  ifdef HAVE_FOPEN_S
+#    include "private/config/have_fopen_s.h"
+#  endif
+
 #  ifdef HAVE_GMTIME_R
 #    include "private/config/have_gmtime_r.h"
 #  endif
@@ -60,6 +64,13 @@
 #    define config_destroy_insertion_params( ENTRY ) ( ( void ) 0 )
 #    define config_initialize_insertion_params( ENTRY ) ( ( void ) 0 )
 #    define config_set_entry_wel_type( ENTRY, SEVERITY ) ( ( void ) 0 )
+#  endif
+
+/* definition of config_fopen */
+#  ifdef HAVE_FOPEN_S
+#    define config_fopen fopen_s_fopen
+#  else
+#    define config_fopen fopen
 #  endif
 
 /* definition of config_get_now */
