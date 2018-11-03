@@ -43,7 +43,7 @@ gmtime_r_get_now( char *buffer ) {
   written = strftime( buffer, RFC_5424_WHOLE_TIME_BUFFER_SIZE, "%FT%T", &now_tm );
   written += snprintf( buffer + written,
                        RFC_5424_TIME_SECFRAC_BUFFER_SIZE + 2,
-                       ".%06dZ",
+                       ".%06ldZ",
                        ( now_ts.tv_nsec / 1000 ) % 1000000 );
 
   return written;
