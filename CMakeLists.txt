@@ -173,7 +173,8 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
         -r "${PROJECT_BINARY_DIR}"
         -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
      DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
-     COMMENT "Generating test event resources")
+     COMMENT "Generating test event resources"
+  )
 
   add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
   set_target_properties(events PROPERTIES LINKER_LANGUAGE "CXX" )
@@ -193,8 +194,21 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
     ${PROJECT_BINARY_DIR}/events.rc
   )
 
+  ADD_CUSTOM_COMMAND(
+     OUTPUT
+      "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
+      "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
+     COMMAND mc -c
+        -U "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
+        -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
+        -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
+     DEPENDS "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
+     COMMENT "Generating wel example event resources"
+  )
+
   add_example(wel
     ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
+    ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
   )
 endif(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
 

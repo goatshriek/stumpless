@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stumpless.h>
-#include "example_events.h"
+#include "docs/examples/wel/example_events.h"
 
 int
 main( int argc, char **argv ) {
