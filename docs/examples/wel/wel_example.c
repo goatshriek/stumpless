@@ -28,7 +28,17 @@ main( int argc, char **argv ) {
   struct stumpless_param *child_name;
   struct stumpless_param *tree_type;
 
-  printf("example run!\n");
+  // opening a Windows Event Log target in the "KidsAndTrees" log
+  wel_target = stumpless_open_local_wel_target( "KidsAndTrees", 0, 0 );
+  if( !wel_target ) {
+    printf( "could not open the local Windows Event Log" );
+    return EXIT_FAILURE;
+  }
+
+  // creating a basic entry
+
+  // closing the target
+  stumpless_close_wel_target( wel_target );
 
   return EXIT_SUCCESS;
 }

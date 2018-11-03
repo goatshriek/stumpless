@@ -18,6 +18,7 @@ my %manifest = (
   "cache_alloc" => "private/cache.h",
   "cache_free" => "private/cache.h",
   "cache_new" => "private/cache.h",
+  "CATEGORY_TREE" => "docs/examples/wel/example_events.h",
   "clear_error" => "private/error.h",
   "clock" => "time.h",
   "clock_t" => "sys/types.h",
