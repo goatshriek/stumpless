@@ -20,7 +20,7 @@ by inclusion of the `stumpless.h` header (the exact definition will appear in
 
 For this example, we will consider an application that needs to record the types
 of trees identified by children during a nature walk. Specifically, we will look
-at the event that occurs when a child points out a tree. 
+at the event that occurs when a child points out a tree.
 
 Creation of a Windows Event Log target is done using either the
 `stumpless_open_local_wel_target` or `stumpless_open_remote_wel_target` function
