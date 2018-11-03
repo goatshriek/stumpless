@@ -20,11 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Doxygen documentation support.
 
 ### Fixed
- - Fix compiler
-
-### Removed
- - Use of fopen_s function when available.
+ - Use of unsafe fopen when fopen_s is available.
  - Use of unsafe gmtime function when gmtime_r is available.
+ - Safely convert from size_t to int types.
 
 ## [1.1.2] - 2018-10-04
 ### Fixed
