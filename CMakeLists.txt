@@ -61,8 +61,8 @@ if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
 else()
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
-  list(APPEND STUMPLESS_SOURCES src/target/wel.c)
-  list(APPEND STUMPLESS_SOURCES src/config/wel_supported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
 endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
 
 if(HAVE_UNISTD_H)
@@ -184,13 +184,13 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   set_target_properties(events PROPERTIES PUBLIC_HEADER "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h")
 
   add_function_test(wel
-    test/function/target/wel.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp
     ${PROJECT_BINARY_DIR}/events.rc
   )
   add_dependencies(function-test-wel events)
 
   add_function_test(wel_supported
-    test/function/config/wel_supported.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp
     ${PROJECT_BINARY_DIR}/events.rc
   )
 
