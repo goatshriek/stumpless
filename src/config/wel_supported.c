@@ -55,7 +55,8 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
 
 struct stumpless_entry *
 stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
-                                   WORD index, struct stumpless_param *param ) {
+                                   WORD index,
+                                   struct stumpless_param *param ) {
   clear_error(  );
 
   if( !entry || !param ) {
@@ -76,7 +77,8 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
 
 struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
-                                    WORD index, LPCSTR str ) {
+                                    WORD index,
+                                    LPCSTR str ) {
   LPSTR str_copy;
   size_t str_length;
   struct stumpless_param *param;
@@ -166,8 +168,8 @@ initialize_insertion_params( struct stumpless_entry *entry ) {
   entry->wel_insertion_count = 0;
 }
 
-struct stumpless_param *
-resize_insertion_params( struct stumpless_entry *entry, DWORD max_index ) {
+struct stumpless_param **
+resize_insertion_params( struct stumpless_entry *entry, WORD max_index ) {
   size_t new_size;
   struct stumpless_param **new_params;
   LPCSTR *new_strings;
@@ -188,7 +190,7 @@ resize_insertion_params( struct stumpless_entry *entry, DWORD max_index ) {
   }
 
   new_size = sizeof( LPCSTR ) * ( max_index + 1 );
-  new_strings = realloc_mem( entry->wel_insertion_strings, new_size );
+  new_strings = realloc_mem( ( void * ) entry->wel_insertion_strings, new_size );
   if( !new_strings ) {
     return NULL;
 

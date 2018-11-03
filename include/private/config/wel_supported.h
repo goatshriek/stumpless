@@ -30,8 +30,8 @@ destroy_insertion_string_param( struct stumpless_param *param );
 void
 initialize_insertion_params( struct stumpless_entry *entry );
 
-struct stumpless_param *
-resize_insertion_params( struct stumpless_entry *entry, DWORD max_index );
+struct stumpless_param **
+resize_insertion_params( struct stumpless_entry *entry, WORD max_index );
 
 void
 set_entry_wel_type( struct stumpless_entry *entry, int severity );

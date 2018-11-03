@@ -173,7 +173,9 @@ send_entry_to_wel_target( const struct wel_target *target,
                          entry->wel_event_id,
                          NULL,
                          entry->wel_insertion_count,
-                         0, entry->wel_insertion_strings, NULL );
+                         0,
+                         entry->wel_insertion_strings,
+                         NULL );
 
   if( success ) {
     return 1;
