@@ -105,6 +105,8 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
     }
   }
 
+  destroy_insertion_string_param( entry->wel_insertion_params[index] );
+
   memcpy( str_copy, str, str_length );
   str_copy[str_length] = '\0';
   param->value = str_copy;
@@ -143,14 +145,18 @@ destroy_insertion_params( struct stumpless_entry *entry ) {
   WORD i;
 
   for( i = 0; i < entry->wel_insertion_count; i++ ) {
-    if( entry->wel_insertion_params[i]
-        && !entry->wel_insertion_params[i]->name ) {
-      free_mem( entry->wel_insertion_params[i]->value );
-      free_mem( entry->wel_insertion_params[i] );
-    }
+    destroy_insertion_string_param( entry->wel_insertion_params[i] );
   }
 
   free_mem( entry->wel_insertion_params );
+}
+
+void
+destroy_insertion_string_param( struct stumpless_param *param ) {
+  if( param && !param->name ) {
+    free_mem( param->value );
+    free_mem( param );
+  }
 }
 
 void

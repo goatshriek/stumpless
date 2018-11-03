@@ -25,6 +25,9 @@ void
 destroy_insertion_params( struct stumpless_entry *entry );
 
 void
+destroy_insertion_string_param( struct stumpless_param *param );
+
+void
 initialize_insertion_params( struct stumpless_entry *entry );
 
 struct stumpless_param *

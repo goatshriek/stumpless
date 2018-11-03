@@ -11,12 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Thread-safe operation.
  - Examples for file and socket targets.
 
-## [1.2.0] - 2018-10-26
+## [1.2.0] - 2018-11-3
 ### Added
  - Increased coverage on object cache.
  - Support for fractional timestamps.
  - File target capability.
  - Windows Event Log target capability.
+ - Doxygen documentation support.
 
 ### Removed
  - Use of unsafe gmtime function.
