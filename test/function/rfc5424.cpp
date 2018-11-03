@@ -70,7 +70,8 @@ void TestRFC5424Compliance(const char *syslog_msg){
  
   std::string msg_string = matches.str(RFC_5424_MSG_MATCH_INDEX);
   char *msg = (char *)malloc(msg_string.length() + 1);
-  strcpy(msg, msg_string.c_str());
+  msg_string.copy( msg, msg_string.length() );
+  msg[msg_string.length()] = '\0';
   if(msg[0] == '\xef' && msg[1] == '\xbb' && msg[2] == '\xbf'){
     TestUTF8Compliance(msg);
   }
