@@ -22,9 +22,23 @@
 #include <stddef.h>
 #include <stumpless/target.h>
 
+void
+destroy_target( struct stumpless_target *target );
+
+struct stumpless_target *
+new_target( enum stumpless_target_type type,
+            const char *name,
+            size_t name_len,
+            int options,
+            int default_facility );
+
 int
-target_unsupported( const struct stumpless_target *target,
-                    const char *msg,
-                    size_t msg_length );
+send_entry_to_unsupported_target( const struct stumpless_target *target,
+                                  const struct stumpless_entry *entry );
+
+int
+sendto_unsupported_target( const struct stumpless_target *target,
+                           const char *msg,
+                           size_t msg_length );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_H */

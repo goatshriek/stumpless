@@ -1,20 +1,24 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 1.2.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
+option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
 find_package(Threads REQUIRED)
+
 
 # load modules
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
 include(ExternalProject)
 
+
 # load utilities
 include(tools/cmake/benchmark.cmake)
+include(tools/cmake/example.cmake)
 include(tools/cmake/gtest.cmake)
 include(tools/cmake/swig.cmake)
 include(tools/cmake/test.cmake)
@@ -51,6 +55,15 @@ else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
   list(APPEND STUMPLESS_SOURCES src/target/socket.c)
 endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
+
+if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
+  message("windows event log targets are not supported without windows.h")
+  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
+endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
 
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
@@ -92,7 +105,8 @@ target_include_directories(stumpless
   ${CMAKE_BINARY_DIR}/include
 )
 
-# test suites
+
+# standard functionality tests
 enable_testing()
 
 add_function_test(buffer
@@ -127,6 +141,14 @@ add_function_test(version
   test/function/version.cpp
 )
 
+
+# standard performance tests
+add_performance_test(target
+  test/performance/target.cpp
+)
+
+
+# socket target support
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   add_function_test(socket
     test/function/target/socket.cpp
@@ -139,26 +161,59 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   )
 endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
 
-add_custom_target(check
-  COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
-)
 
-# performance tests
-add_performance_test(target
-  test/performance/target.cpp
-)
+# windows event log target support
+if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+  ADD_CUSTOM_COMMAND(
+     OUTPUT
+      "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
+      "${PROJECT_BINARY_DIR}/events.rc"
+     COMMAND mc -c
+        -U "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
+        -r "${PROJECT_BINARY_DIR}"
+        -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
+     DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
+     COMMENT "Generating test event resources"
+  )
 
-# there has to be a way to do this dynamically instead of listing each
-# index separately...
-list(GET STUMPLESS_PERFORMANCE_TESTS 0 BENCH_COMMAND_0)
-add_custom_target(bench
-  COMMAND ${BENCH_COMMAND_0}
-  DEPENDS ${STUMPLESS_PERFORMANCE_TESTS}
-)
+  add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
+  set_target_properties(events PROPERTIES LINKER_LANGUAGE "CXX" )
+  set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
+  set_target_properties(events PROPERTIES VERSION ${PROJECT_VERSION})
+  set_target_properties(events PROPERTIES SOVERSION 0)
+  set_target_properties(events PROPERTIES PUBLIC_HEADER "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h")
+
+  add_function_test(wel
+    ${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp
+    ${PROJECT_BINARY_DIR}/events.rc
+  )
+  add_dependencies(function-test-wel events)
+
+  add_function_test(wel_supported
+    ${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp
+    ${PROJECT_BINARY_DIR}/events.rc
+  )
+
+  ADD_CUSTOM_COMMAND(
+     OUTPUT
+      "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
+      "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
+     COMMAND mc -c
+        -U "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
+        -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
+        -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
+     DEPENDS "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
+     COMMENT "Generating wel example event resources"
+  )
+
+  add_example(wel
+    ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
+    ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
+  )
+endif(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
 
 
-# add in the swig project
+# python support
 if(BUILD_PYTHON)
   add_swig_project()
 
@@ -202,3 +257,34 @@ if(BUILD_PYTHON)
   )
 
 endif()
+
+
+# documentation generation
+find_program(HAVE_DOXYGEN NAMES doxygen)
+
+if(HAVE_DOXYGEN)
+  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile)
+
+  add_custom_target(docs
+    COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
+  )
+endif(HAVE_DOXYGEN)
+
+
+# function test suite target
+add_custom_target(check
+  COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
+  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
+)
+
+
+# performance test suite target
+add_custom_target(bench
+  DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
+)
+
+
+# examples target
+add_custom_target(examples
+  DEPENDS ${STUMPLESS_EXAMPLE_RUNNERS}
+)

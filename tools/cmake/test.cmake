@@ -6,15 +6,22 @@ macro(add_function_test name)
     ${ARGN}
   )
 
+  if(MSVC)
+    set(function_test_compile_flags "")
+  else()
+    set(function_test_compile_flags "-std=c++11")
+  endif(MSVC)
+
   set_target_properties(function-test-${name}
     PROPERTIES
     OUTPUT_NAME function-test-${name}
-    COMPILE_FLAGS "-std=c++11"
+    COMPILE_FLAGS "${function_test_compile_flags}"
   )
 
   target_link_libraries(function-test-${name}
     stumpless
     libgtest
+    libgtestmain
   )
 
   target_include_directories(function-test-${name}
@@ -29,8 +36,6 @@ macro(add_function_test name)
 endmacro(add_function_test)
 
 macro(add_performance_test name)
-  list(APPEND STUMPLESS_PERFORMANCE_TESTS performance-test-${name})
-
   add_executable(performance-test-${name}
     EXCLUDE_FROM_ALL
     ${ARGN}
@@ -58,5 +63,11 @@ macro(add_performance_test name)
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
+  )
+
+  list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test-${name})
+  add_custom_target(run-performance-test-${name}
+    COMMAND "performance-test-${name}"
+    DEPENDS performance-test-${name}
   )
 endmacro(add_performance_test)

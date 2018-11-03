@@ -25,6 +25,10 @@ More information on the Google Benchmark framework may be found on the project
 [Github page](https://github.com/google/benchmark).
 
 ## Documentation
+General documentation of how functions behave is included as block comments in
+the public header files. Documentation can also be generated using `doxygen`.
+This can be done by using the cmake target `docs`.
+
 The specification for the Syslogv2 protocol is in an XML file that can be used
 to generate an RFC-styled document outlining the details. In order to generate
 text, HTML, or other RFC output you will need to use the `xml2rfc` tool.

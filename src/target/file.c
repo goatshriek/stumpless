@@ -21,9 +21,9 @@
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
-#include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/target.h"
 #include "private/target/file.h"
 
 void
@@ -36,15 +36,13 @@ stumpless_close_file_target( struct stumpless_target *target ) {
   }
 
   destroy_file_target( target->id );
-  free_mem( target->name );
-  free_mem( target );
+  destroy_target( target );
 }
 
 struct stumpless_target *
 stumpless_open_file_target( const char *name,
                             int options, int default_facility ) {
   struct stumpless_target *target;
-  size_t name_len;
 
   clear_error(  );
 
@@ -53,7 +51,14 @@ stumpless_open_file_target( const char *name,
     return NULL;
   }
 
-  target = alloc_mem( sizeof( *target ) );
+  target = new_target(
+    STUMPLESS_FILE_TARGET,
+    name,
+    strlen( name ),
+    options,
+    default_facility
+  );
+
   if( !target ) {
     goto fail;
   }
@@ -63,30 +68,11 @@ stumpless_open_file_target( const char *name,
     goto fail_id;
   }
 
-  name_len = strlen( name );
-  target->name = alloc_mem( name_len + 1 );
-  if( !target->name ) {
-    goto fail_name;
-  }
-
-  memcpy( target->name, name, name_len );
-  target->name[name_len] = '\0';
-  target->type = STUMPLESS_FILE_TARGET;
-  target->options = options;
-  target->default_prival =
-    get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
-  target->default_app_name = NULL;
-  target->default_app_name_length = 0;
-  target->default_msgid = NULL;
-  target->default_msgid_length = 0;
-
   stumpless_set_current_target( target );
   return target;
 
-fail_name:
-  destroy_file_target( target->id );
 fail_id:
-  free_mem( target );
+  destroy_target( target );
 fail:
   return NULL;
 }
