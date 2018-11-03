@@ -38,7 +38,7 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      target = stumpless_open_local_wel_target( "wel-target-test", 0, 0 );
+      target = stumpless_open_local_wel_target( "wel-target-test", 0 );
 
       simple_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                           STUMPLESS_SEVERITY_INFO,
@@ -220,7 +220,7 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
-    target = stumpless_open_remote_wel_target( "remote-server", NULL, 0, 0 );
+    target = stumpless_open_remote_wel_target( "remote-server", NULL, 0 );
     ASSERT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );

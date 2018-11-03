@@ -55,16 +55,12 @@ stumpless_close_wel_target( struct stumpless_target *target );
  * @param options The options to use for the logging target. This is a bit-wise
  * or of one or more \c STUMPLESS_OPTION values.
  *
- * @param default_facility The default facility to use for entries sent to the
- * target. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
 stumpless_open_local_wel_target( const char *name,
-                                 int options,
-                                 int default_facility );
+                                 int options );
 
 /**
  * Opens a Windows Event Log target on a remote machine.
@@ -80,17 +76,13 @@ stumpless_open_local_wel_target( const char *name,
  * @param options The options to use for the logging target. This is a bit-wise
  * or of one or more \c STUMPLESS_OPTION values.
  *
- * @param default_facility The default facility to use for entries sent to the
- * target. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
 stumpless_open_remote_wel_target( const char *server,
                                   const char *name,
-                                  int options,
-                                  int default_facility );
+                                  int options );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

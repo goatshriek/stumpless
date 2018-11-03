@@ -42,8 +42,7 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_open_local_wel_target( const char *name,
-                                 int options,
-                                 int default_facility ) {
+                                 int options ) {
   struct stumpless_target *target;
 
   clear_error(  );
@@ -57,7 +56,7 @@ stumpless_open_local_wel_target( const char *name,
                        name,
                        strlen( name ),
                        options,
-                       default_facility );
+                       0 );
 
   if( !target ) {
     goto fail;
@@ -82,8 +81,7 @@ fail:
 struct stumpless_target *
 stumpless_open_remote_wel_target( const char *server,
                                   const char *name,
-                                  int options,
-                                  int default_facility ) {
+                                  int options ) {
    struct stumpless_target *target;
 
    clear_error(  );
@@ -97,7 +95,7 @@ stumpless_open_remote_wel_target( const char *server,
                         name,
                         strlen( name ),
                         options,
-                        default_facility );
+                        0 );
 
    if( !target ) {
      goto fail;
