@@ -146,7 +146,7 @@ main( int argc, char **argv ) {
     return EXIT_FAILURE;
   }
 
-  result = stumpless_set_wel_insertion_string( basic_entry, 0, child_name );
+  result = stumpless_set_wel_insertion_param( basic_entry, 0, child_name );
   if( !result ) {
     printf( "could not set the first insertion string of a basic entry" );
     return EXIT_FAILURE;
@@ -158,7 +158,7 @@ main( int argc, char **argv ) {
     return EXIT_FAILURE;
   }
   
-  result = stumpless_set_wel_insertion_string( basic_entry, 1, tree_type );
+  result = stumpless_set_wel_insertion_param( basic_entry, 1, tree_type );
   if( !result ) {
     printf( "could not set the second insertion string of a basic entry" );
     return EXIT_FAILURE;
