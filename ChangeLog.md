@@ -19,8 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Windows Event Log target capability.
  - Doxygen documentation support.
 
+### Fixed
+ - Fix compiler
+
 ### Removed
- - Use of unsafe gmtime function.
+ - Use of fopen_s function when available.
+ - Use of unsafe gmtime function when gmtime_r is available.
 
 ## [1.1.2] - 2018-10-04
 ### Fixed
