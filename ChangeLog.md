@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - File target capability.
  - Windows Event Log target capability.
  - Doxygen documentation support.
+ - Stream target capability.
 
 ### Fixed
  - Use of unsafe fopen when fopen_s is available.
