@@ -21,7 +21,9 @@
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
+#include "private/config/wrapper.h"
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/file.h"
@@ -94,7 +96,7 @@ new_file_target( const char *filename ) {
     goto fail;
   }
 
-  target->stream = fopen( filename, "a" );
+  target->stream = config_fopen( filename, "a" );
   if( !target->stream ) {
     raise_file_open_failure(  );
     goto fail_stream;
@@ -110,7 +112,8 @@ fail:
 
 int
 sendto_file_target( struct file_target *target,
-                    const char *msg, size_t msg_length ) {
+                    const char *msg,
+                    size_t msg_length ) {
   size_t fwrite_result;
   int putc_result;
 
@@ -124,7 +127,7 @@ sendto_file_target( struct file_target *target,
     goto write_failure;
   }
 
-  return fwrite_result + 1;
+  return cap_size_t_to_int( fwrite_result + 1 );
 
 write_failure:
   raise_file_write_failure(  );

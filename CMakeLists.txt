@@ -27,21 +27,24 @@ check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
+
+check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${CMAKE_BINARY_DIR}/include/private/config.h)
 
 set(STUMPLESS_SOURCES
-  src/cache.c
-  src/entry.c
-  src/error.c
-  src/formatter.c
-  src/memory.c
-  src/strbuilder.c
-  src/strhelper.c
-  src/target.c
-  src/target/buffer.c
-  src/target/file.c
-  src/version.c
+  ${PROJECT_SOURCE_DIR}/src/cache.c
+  ${PROJECT_SOURCE_DIR}/src/entry.c
+  ${PROJECT_SOURCE_DIR}/src/error.c
+  ${PROJECT_SOURCE_DIR}/src/formatter.c
+  ${PROJECT_SOURCE_DIR}/src/inthelper.c
+  ${PROJECT_SOURCE_DIR}/src/memory.c
+  ${PROJECT_SOURCE_DIR}/src/strbuilder.c
+  ${PROJECT_SOURCE_DIR}/src/strhelper.c
+  ${PROJECT_SOURCE_DIR}/src/target.c
+  ${PROJECT_SOURCE_DIR}/src/target/buffer.c
+  ${PROJECT_SOURCE_DIR}/src/target/file.c
+  ${PROJECT_SOURCE_DIR}/src/version.c
 )
 
 if(WIN32)
@@ -77,6 +80,10 @@ if(HAVE_WINSOCK2_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
   find_library(WINSOCK2 NAMES Ws2_32)
 endif(HAVE_WINSOCK2_H)
+
+if(HAVE_FOPEN_S)
+  list(APPEND STUMPLESS_SOURCES src/config/have_fopen_s.c)
+endif(HAVE_FOPEN_S)
 
 if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)

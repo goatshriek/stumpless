@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,27 +16,15 @@
  * limitations under the License.
  */
 
+#include <limits.h>
 #include <stddef.h>
-#include <winsock2.h>
-#include "private/config/have_winsock2.h"
 #include "private/inthelper.h"
 
 int
-winsock2_gethostname( char *buffer, size_t namelen ) {
-  int capped_namelen;
-  int result;
-  WSADATA wsa_data;
-
-  capped_namelen = cap_size_t_to_int( namelen );
-
-  result = gethostname( buffer, capped_namelen );
-
-  if( result == SOCKET_ERROR ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      result = gethostname( buffer, capped_namelen );
-    }
+cap_size_t_to_int( size_t val ){
+  if( val > INT_MAX ) {
+    return INT_MAX;
+  } else {
+    return ( int ) val;
   }
-
-  return result;
 }

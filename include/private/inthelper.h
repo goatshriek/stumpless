@@ -16,26 +16,12 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CACHE_H
-#  define __STUMPLESS_PRIVATE_CACHE_H
+#ifndef __STUMPLESS_PRIVATE_INTHELPER_H
+#  define __STUMPLESS_PRIVATE_INTHELPER_H
 
 #  include <stddef.h>
 
-struct cache {
-  void ( *entry_init ) ( void * );
-  size_t entry_size;
-  char **pages;
-  int page_count;
-  size_t page_size;
-};
+int
+cap_size_t_to_int( size_t val );
 
-void *
-cache_alloc( struct cache *c );
-
-void
-cache_free( struct cache *c, void *entry );
-
-struct cache *
-cache_new( size_t size, void ( *entry_init ) ( void * ) );
-
-#endif /* __STUMPLESS_PRIVATE_CACHE_H */
+#endif /* __STUMPLESS_PRIVATE_INTHELPER_H */
