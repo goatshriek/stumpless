@@ -196,4 +196,37 @@ namespace {
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
+
+  TEST( StreamTargetWriteTest, ReadOnlyStream ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    struct stumpless_entry *basic_entry;
+    const char *filename = "null-name.log";
+    FILE *stream;
+    int result;
+
+    basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                      "stumpless-unit-test",
+                                      "basic-entry",
+                                      "basic test message" );
+    ASSERT_TRUE( basic_entry != NULL );
+
+    stream = fopen( filename, "r" );
+    ASSERT_TRUE( stream != NULL );
+
+    target = stumpless_open_stream_target( filename, stream, 0, 0 );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_add_entry( target, basic_entry );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_STREAM_WRITE_FAILURE );
+
+    stumpless_destroy_entry( basic_entry );
+    fclose( stream );
+    stumpless_close_stream_target( target );
+  }
 }
