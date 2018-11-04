@@ -89,6 +89,11 @@ raise_socket_bind_failure( void ) {
 }
 
 void
+raise_stream_write_failure( void ) {
+  raise_error( STUMPLESS_STREAM_WRITE_FAILURE );
+}
+
+void
 raise_target_unsupported( void ) {
   raise_error( STUMPLESS_TARGET_UNSUPPORTED );
 }
