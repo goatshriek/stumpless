@@ -141,6 +141,12 @@ add_function_test(memory
   test/function/memory.cpp
 )
 
+add_function_test(stream
+  test/function/target/stream.cpp
+  test/function/rfc5424.cpp
+  test/function/utf8.cpp
+)
+
 add_function_test(target
   test/function/target.cpp
 )

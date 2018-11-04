@@ -49,7 +49,7 @@ stumpless_open_stream_target( const char *name,
 
   clear_error(  );
 
-  if( !name ) {
+  if( !name || !stream ) {
     raise_argument_empty(  );
     return NULL;
   }
