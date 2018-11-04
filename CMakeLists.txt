@@ -54,6 +54,10 @@ endif(WIN32)
 if(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
   message("socket targets are not supported without sys/socket.h")
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
+
+  add_function_test(socket_unsupported
+    ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+  )
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
   list(APPEND STUMPLESS_SOURCES src/target/socket.c)
@@ -62,6 +66,10 @@ endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
 if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
   message("windows event log targets are not supported without windows.h")
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
+
+  add_function_test(wel_unsupported
+    ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
+  )
 else()
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
