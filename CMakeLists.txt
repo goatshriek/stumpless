@@ -128,9 +128,17 @@ add_library(rfc5424_checker
   OBJECT ${PROJECT_SOURCE_DIR}/test/function/rfc5424.cpp ${PROJECT_SOURCE_DIR}/test/function/utf8.cpp
 )
 
+add_dependencies(rfc5424_checker libgtest)
+
+target_include_directories(rfc5424_checker
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)
+
 add_function_test(buffer
   test/function/target/buffer.cpp
-  $<TARGET_OBJECTS:objlib>
+  $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(entry
@@ -143,7 +151,7 @@ add_function_test(entry_memory_failure
 
 add_function_test(file
   test/function/target/file.cpp
-  $<TARGET_OBJECTS:objlib>
+  $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(memory
@@ -169,7 +177,7 @@ add_performance_test(target
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   add_function_test(socket
     test/function/target/socket.cpp
-    $<TARGET_OBJECTS:objlib>
+    $<TARGET_OBJECTS:rfc5424_checker>
   )
 
   add_function_test(socket_add_malloc_failure
