@@ -197,6 +197,44 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( StreamTargetStderrTest, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    const char *filename = "null-name.log";
+    FILE *stream;
+
+    stream = fopen( filename, "w+" );
+    ASSERT_TRUE( stream != NULL );
+
+    target = stumpless_open_stderr_target( NULL, 0, 0 );
+    EXPECT_TRUE( target == NULL );
+
+    fclose( stream );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( StreamTargetStdoutTest, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    const char *filename = "null-name.log";
+    FILE *stream;
+
+    stream = fopen( filename, "w+" );
+    ASSERT_TRUE( stream != NULL );
+
+    target = stumpless_open_stdout_target( NULL, 0, 0 );
+    EXPECT_TRUE( target == NULL );
+
+    fclose( stream );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST( StreamTargetWriteTest, ReadOnlyStream ) {
     struct stumpless_target *target;
     struct stumpless_error *error;

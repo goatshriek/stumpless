@@ -41,6 +41,27 @@ stumpless_close_stream_target( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
+stumpless_open_stderr_target( const char *name,
+                              int options,
+                              int default_facility ) {
+  return stumpless_open_stream_target( name,
+                                       stderr,
+                                       options,
+                                       default_facility );
+}
+
+struct stumpless_target *
+stumpless_open_stdout_target( const char *name,
+                              int options,
+                              int default_facility ) {
+  return stumpless_open_stream_target( name,
+                                       stdout,
+                                       options,
+                                       default_facility );
+
+}
+
+struct stumpless_target *
 stumpless_open_stream_target( const char *name,
                               FILE *stream,
                               int options,
