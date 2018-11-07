@@ -71,3 +71,16 @@ macro(add_performance_test name)
     DEPENDS performance-test-${name}
   )
 endmacro(add_performance_test)
+
+# RFC 5424 checking tools
+add_library(rfc5424_checker
+  OBJECT ${PROJECT_SOURCE_DIR}/test/function/rfc5424.cpp ${PROJECT_SOURCE_DIR}/test/function/utf8.cpp
+)
+
+add_dependencies(rfc5424_checker libgtest)
+
+target_include_directories(rfc5424_checker
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)
