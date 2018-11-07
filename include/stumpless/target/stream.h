@@ -52,7 +52,7 @@ stumpless_close_stream_target( struct stumpless_target *target );
  * or of one or more \c STUMPLESS_OPTION values.
  *
  * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them.
+ * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
  *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
@@ -72,7 +72,7 @@ stumpless_open_stderr_target( const char *name,
  * or of one or more \c STUMPLESS_OPTION values.
  *
  * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them.
+ * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
  *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
@@ -101,7 +101,7 @@ stumpless_open_stdout_target( const char *name,
  * or of one or more \c STUMPLESS_OPTION values.
  *
  * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them.
+ * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
  *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
