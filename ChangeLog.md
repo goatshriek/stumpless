@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Thread-safe operation.
  - Examples for file and socket targets.
 
-## [1.2.0] - 2018-11-3
+## [1.2.0] - 2018-11-8
 ### Added
  - Increased coverage on object cache.
  - Support for fractional timestamps.
@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Use of unsafe fopen when fopen_s is available.
  - Use of unsafe gmtime function when gmtime_r is available.
  - Safely convert from size_t to int types.
+ - Inclusion of RFC 5424 test sources in multiple executables, using an object
+   library instead.
 
 ## [1.1.2] - 2018-10-04
 ### Fixed

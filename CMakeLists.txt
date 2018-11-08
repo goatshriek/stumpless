@@ -127,8 +127,7 @@ enable_testing()
 
 add_function_test(buffer
   test/function/target/buffer.cpp
-  test/function/rfc5424.cpp
-  test/function/utf8.cpp
+  $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(entry
@@ -141,8 +140,7 @@ add_function_test(entry_memory_failure
 
 add_function_test(file
   test/function/target/file.cpp
-  test/function/rfc5424.cpp
-  test/function/utf8.cpp
+  $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(memory
@@ -174,8 +172,7 @@ add_performance_test(target
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   add_function_test(socket
     test/function/target/socket.cpp
-    test/function/rfc5424.cpp
-    test/function/utf8.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
   )
 
   add_function_test(socket_add_malloc_failure
