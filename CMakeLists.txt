@@ -149,8 +149,7 @@ add_function_test(memory
 
 add_function_test(stream
   test/function/target/stream.cpp
-  test/function/rfc5424.cpp
-  test/function/utf8.cpp
+  $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(target
