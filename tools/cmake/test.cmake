@@ -1,3 +1,9 @@
+if(MSVC)
+  set(function_test_compile_flags "")
+else()
+  set(function_test_compile_flags "-std=c++11")
+endif(MSVC)
+
 macro(add_function_test name)
   list(APPEND STUMPLESS_FUNCTION_TESTS function-test-${name})
 
@@ -5,12 +11,6 @@ macro(add_function_test name)
     EXCLUDE_FROM_ALL
     ${ARGN}
   )
-
-  if(MSVC)
-    set(function_test_compile_flags "")
-  else()
-    set(function_test_compile_flags "-std=c++11")
-  endif(MSVC)
 
   set_target_properties(function-test-${name}
     PROPERTIES
@@ -75,6 +75,11 @@ endmacro(add_performance_test)
 # RFC 5424 checking tools
 add_library(rfc5424_checker
   OBJECT ${PROJECT_SOURCE_DIR}/test/function/rfc5424.cpp ${PROJECT_SOURCE_DIR}/test/function/utf8.cpp
+)
+
+set_target_properties(rfc5424_checker
+  PROPERTIES
+  COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
 add_dependencies(rfc5424_checker libgtest)
