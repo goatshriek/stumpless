@@ -161,6 +161,11 @@ add_function_test(version
 )
 
 
+# standard examples
+add_example(stream
+  ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
+)
+
 # standard performance tests
 add_performance_test(target
   test/performance/target.cpp
