@@ -64,9 +64,20 @@ raise_error( enum stumpless_error_id id ) {
 }
 
 void
+raise_file_open_failure( void ) {
+  raise_error( STUMPLESS_FILE_OPEN_FAILURE );
+}
+
+void
+raise_file_write_failure( void ) {
+  raise_error( STUMPLESS_FILE_WRITE_FAILURE );
+}
+
+void
 raise_invalid_id( void ) {
   raise_error( STUMPLESS_INVALID_ID );
 }
+
 void
 raise_memory_allocation_failure( void ) {
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -78,6 +89,21 @@ raise_socket_bind_failure( void ) {
 }
 
 void
+raise_stream_write_failure( void ) {
+  raise_error( STUMPLESS_STREAM_WRITE_FAILURE );
+}
+
+void
 raise_target_unsupported( void ) {
   raise_error( STUMPLESS_TARGET_UNSUPPORTED );
+}
+
+void
+raise_wel_close_failure( void ) {
+  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE );
+}
+
+void
+raise_wel_open_failure( void ) {
+  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE );
 }

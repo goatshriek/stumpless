@@ -17,23 +17,26 @@
  */
 
 #include <stddef.h>
-#include <time.h>
 #include <stumpless/entry.h>
-#include <stumpless/target.h>
+#include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/strbuilder.h"
 #include "private/formatter.h"
 
 struct strbuilder *
-format_entry( const struct stumpless_target *target,
-              struct stumpless_entry *entry ) {
+format_entry( struct stumpless_entry *entry ) {
+  char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
   struct strbuilder *builder;
+  size_t timestamp_size;
+
+  // do this as soon as possible to be closer to invocation
+  timestamp_size = config_get_now( timestamp );
 
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
   builder = strbuilder_append_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
-  builder = strbuilder_append_rfc5424_timestamp( builder );
+  builder = strbuilder_append_buffer( builder, timestamp, timestamp_size );
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_hostname( builder );
   builder = strbuilder_append_char( builder, ' ' );
@@ -48,18 +51,4 @@ format_entry( const struct stumpless_target *target,
   builder = strbuilder_append_message( builder, entry );
 
   return builder;
-}
-
-struct strbuilder *
-strbuilder_append_rfc5424_timestamp( struct strbuilder *builder ) {
-  char buffer[RFC_5424_MAX_TIMESTAMP_LENGTH];
-  struct tm *now;
-  time_t now_timer;
-  size_t written;
-
-  now_timer = time( NULL );
-  now = gmtime( &now_timer );
-  // todo add support for fractional times
-  written = strftime( buffer, RFC_5424_MAX_TIMESTAMP_LENGTH, "%FT%TZ", now );
-  return strbuilder_append_buffer( builder, buffer, written );
 }

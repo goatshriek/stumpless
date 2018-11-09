@@ -21,13 +21,43 @@
 
 #  include <stumpless/error.h>
 
-void clear_error( void );
-void raise_argument_empty( void );
-void raise_argument_too_big( void );
-void raise_error( enum stumpless_error_id id );
-void raise_invalid_id( void );
-void raise_memory_allocation_failure( void );
-void raise_socket_bind_failure( void );
-void raise_target_unsupported( void );
+void
+clear_error( void );
+
+void
+raise_argument_empty( void );
+
+void
+raise_argument_too_big( void );
+
+void
+raise_error( enum stumpless_error_id id );
+
+void
+raise_file_open_failure( void );
+
+void
+raise_file_write_failure( void );
+
+void
+raise_invalid_id( void );
+
+void
+raise_memory_allocation_failure( void );
+
+void
+raise_socket_bind_failure( void );
+
+void
+raise_stream_write_failure( void );
+
+void
+raise_target_unsupported( void );
+
+void
+raise_wel_close_failure( void );
+
+void
+raise_wel_open_failure( void );
 
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

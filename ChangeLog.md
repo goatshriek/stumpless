@@ -5,8 +5,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
- - Add file target capability.
- - Add windows event log target capability.
+ - Network target capability.
+ - Compile-time log level filtering.
+ - Format-string style logging from `stumpless` call.
+ - Thread-safe operation.
+ - Examples for file and socket targets.
+
+## [1.2.0] - 2018-11-9
+### Added
+ - Increased coverage on object cache.
+ - Support for fractional timestamps.
+ - File target capability.
+ - Windows Event Log target capability.
+ - Doxygen documentation support.
+ - Tests for unsupported targets.
+ - Stream target capability.
+
+### Fixed
+ - Use of unsafe fopen when fopen_s is available.
+ - Use of unsafe gmtime function when gmtime_r is available.
+ - Safely convert from size_t to int types.
+ - Inclusion of RFC 5424 test sources in multiple executables, using an object
+   library instead.
 
 ## [1.1.2] - 2018-10-04
 ### Fixed

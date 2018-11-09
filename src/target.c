@@ -22,6 +22,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/config/wrapper.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/formatter.h"
 #include "private/memory.h"
@@ -29,6 +30,8 @@
 #include "private/strhelper.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
+#include "private/target/file.h"
+#include "private/target/stream.h"
 
 static struct stumpless_target *current_target = NULL;
 static struct id_map *priv_targets = NULL;
@@ -104,7 +107,13 @@ stumpless_add_entry( struct stumpless_target *target,
     return -1;
   }
 
-  builder = format_entry( target, entry );
+  // windows targets are not formatted in code
+  // instead their formatting comes from message text files
+  if( target->type == STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
+    return config_send_entry_to_wel_target( target->id, entry );
+  }
+
+  builder = format_entry( entry );
   if( !builder ) {
     return -1;
   }
@@ -112,15 +121,27 @@ stumpless_add_entry( struct stumpless_target *target,
   buffer = strbuilder_get_buffer( builder, &builder_length );
 
   switch ( target->type ) {
-    case STUMPLESS_SOCKET_TARGET:
-      result =
-        config_sendto_socket_target( target->id, buffer, builder_length );
-      break;
+
     case STUMPLESS_BUFFER_TARGET:
       result = sendto_buffer_target( target->id, buffer, builder_length );
       break;
+
+    case STUMPLESS_FILE_TARGET:
+      result = sendto_file_target( target->id, buffer, builder_length );
+      break;
+
+    case STUMPLESS_SOCKET_TARGET:
+      result = config_sendto_socket_target( target->id,
+                                            buffer,
+                                            builder_length );
+      break;
+
+    case STUMPLESS_STREAM_TARGET:
+      result = sendto_stream_target( target->id, buffer, builder_length );
+      break;
+
     default:
-      result = target_unsupported( target, buffer, builder_length );
+      result = sendto_unsupported_target( target, buffer, builder_length );
   }
 
   strbuilder_destroy( builder );
@@ -181,9 +202,68 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 
 /* private definitions */
 
+void
+destroy_target( struct stumpless_target *target ) {
+  free_mem( target->name );
+  free_mem( target );
+}
+
+struct stumpless_target *
+new_target( enum stumpless_target_type type,
+            const char *name,
+            size_t name_len,
+            int options,
+            int default_facility ) {
+  struct stumpless_target *target;
+  int default_prival;
+
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
+    goto fail;
+  }
+
+  target->name = alloc_mem( name_len + 1 );
+  if( !target->name ) {
+    goto fail_name;
+  }
+
+  memcpy( target->name, name, name_len );
+  target->name[name_len] = '\0';
+  target->type = type;
+  target->options = options;
+  default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
+  target->default_prival = default_prival;
+  target->default_app_name = NULL;
+  target->default_app_name_length = 0;
+  target->default_msgid = NULL;
+  target->default_msgid_length = 0;
+
+  return target;
+
+fail_name:
+  free_mem( target );
+fail:
+  return NULL;
+}
+
 int
-target_unsupported( const struct stumpless_target *target,
-                    const char *msg, size_t msg_length ) {
+send_entry_to_unsupported_target( const struct stumpless_target *target,
+                                  const struct stumpless_entry *entry ) {
+  ( void ) target;
+  ( void ) entry;
+
+  raise_target_unsupported(  );
+  return -1;
+}
+
+int
+sendto_unsupported_target( const struct stumpless_target *target,
+                           const char *msg,
+                           size_t msg_length ) {
+  ( void ) target;
+  ( void ) msg;
+  ( void ) msg_length;
+
   raise_target_unsupported(  );
   return -1;
 }

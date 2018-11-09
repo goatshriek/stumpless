@@ -42,7 +42,7 @@ init_page( struct cache *c, size_t page_index ) {
 
 static int
 add_page( struct cache *c ) {
-  size_t new_page_index;
+  int new_page_index;
   char **new_pages;
   char *new_page;
 

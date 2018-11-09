@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,10 @@
 #  include <stddef.h>
 #  include <stumpless/config.h>
 #  include <stumpless/id.h>
+
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include <windows.h>
+#  endif
 
 #  ifdef __cplusplus
 extern "C" {
@@ -124,7 +128,7 @@ extern "C" {
   struct stumpless_param {
     char *name;
     size_t name_length;
-    char *value;
+    char *value;         /**< NULL-terminated string to support wel insertion strings */
     size_t value_length;
   };
 
@@ -146,9 +150,17 @@ extern "C" {
     size_t msgid_length;
     struct stumpless_element **elements;
     size_t element_count;
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+    WORD wel_type;
+    WORD wel_category;
+    DWORD wel_event_id;
+    WORD wel_insertion_count;
+    LPCSTR *wel_insertion_strings;
+    struct stumpless_param **wel_insertion_params;
+#  endif
   };
 
-  /* 
+  /*
    * While the functions provided right now offer basic creation and deletion
    * capabilities, there will need to be many more added to make working with
    * the messages, elements, and params easier. For example, hash-style accessors
@@ -171,7 +183,7 @@ extern "C" {
 
   void
   stumpless_destroy_param( struct stumpless_param *param );
-  
+
   struct stumpless_element *
   stumpless_new_element( const char *name );
 

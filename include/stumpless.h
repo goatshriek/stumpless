@@ -19,13 +19,24 @@
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
 
-#include <stumpless/entry.h>
-#include <stumpless/error.h>
-#include <stumpless/id.h>
-#include <stumpless/memory.h>
-#include <stumpless/target.h>
-#include <stumpless/target/buffer.h>
-#include <stumpless/target/socket.h>
-#include <stumpless/version.h>
+#  include <stumpless/config.h>
+#  include <stumpless/entry.h>
+#  include <stumpless/error.h>
+#  include <stumpless/id.h>
+#  include <stumpless/memory.h>
+#  include <stumpless/target.h>
+#  include <stumpless/target/buffer.h>
+#  include <stumpless/target/file.h>
+#  include <stumpless/target/stream.h>
+#  include <stumpless/version.h>
+
+#  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    include <stumpless/target/socket.h>
+#  endif
+
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include <stumpless/config/wel_supported.h>
+#    include <stumpless/target/wel.h>
+#  endif
 
 #endif /* __STUMPLESS_H */

@@ -30,7 +30,10 @@ extern "C" {
 
   enum stumpless_target_type {
     STUMPLESS_BUFFER_TARGET,
-    STUMPLESS_SOCKET_TARGET
+    STUMPLESS_FILE_TARGET,
+    STUMPLESS_SOCKET_TARGET,
+    STUMPLESS_STREAM_TARGET,
+    STUMPLESS_WINDOWS_EVENT_LOG_TARGET
   };
 
   struct stumpless_target {

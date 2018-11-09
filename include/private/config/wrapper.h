@@ -19,7 +19,6 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 
-#  include <stumpless/config.h>
 #  include "private/config.h"
 
 #  ifdef HAVE_UNISTD_H
@@ -34,12 +33,51 @@
 #    include "private/config/have_winsock2.h"
 #  endif
 
-/* definition of config_socket */
+#  ifdef HAVE_FOPEN_S
+#    include "private/config/have_fopen_s.h"
+#  endif
+
+#  ifdef HAVE_GMTIME_R
+#    include "private/config/have_gmtime_r.h"
+#  endif
+
+/* definition of config_sendto_socket_target */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include "private/target/socket.h"
 #    define config_sendto_socket_target sendto_socket_target
 #  else
-#    define config_sendto_socket_target target_unsupported
+#    include "private/target.h"
+#    define config_sendto_socket_target sendto_unsupported_target
+#  endif
+
+/* definition of config_sendto_wel_target */
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include "private/config/wel_supported.h"
+#    include "private/target/wel.h"
+#    define config_send_entry_to_wel_target send_entry_to_wel_target
+#    define config_destroy_insertion_params destroy_insertion_params
+#    define config_initialize_insertion_params initialize_insertion_params
+#    define config_set_entry_wel_type set_entry_wel_type
+#  else
+#    include "private/target.h"
+#    define config_send_entry_to_wel_target send_entry_to_unsupported_target
+#    define config_destroy_insertion_params( ENTRY ) ( ( void ) 0 )
+#    define config_initialize_insertion_params( ENTRY ) ( ( void ) 0 )
+#    define config_set_entry_wel_type( ENTRY, SEVERITY ) ( ( void ) 0 )
+#  endif
+
+/* definition of config_fopen */
+#  ifdef HAVE_FOPEN_S
+#    define config_fopen fopen_s_fopen
+#  else
+#    define config_fopen fopen
+#  endif
+
+/* definition of config_get_now */
+#  ifdef HAVE_GMTIME_R
+#    define config_get_now gmtime_r_get_now
+#  elif HAVE_WINDOWS_H
+#    define config_get_now windows_get_now
 #  endif
 
 /* definition of config_gethostname */

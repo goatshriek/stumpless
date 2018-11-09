@@ -223,7 +223,6 @@ namespace {
   TEST( BufferTargetOpenTest, Open100Targets ) {
     char buffer[100];
     struct stumpless_target *targets[100];
-    struct stumpless_error *error;
     size_t i;
 
     for( i=0; i < 100; i++ ) {
@@ -240,10 +239,4 @@ namespace {
       stumpless_close_buffer_target( targets[i] );
     }
   }
-}
-
-int
-main( int argc, char **argv ) {
-  ::testing::InitGoogleTest( &argc, argv );
-  return RUN_ALL_TESTS(  );
 }

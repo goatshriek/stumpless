@@ -49,19 +49,14 @@ stumpless_add_element( struct stumpless_entry *entry,
   old_elements_size = sizeof( element ) * entry->element_count;
   new_elements_size = old_elements_size + sizeof( element );
 
-  new_elements = alloc_mem( new_elements_size );
+  new_elements = realloc_mem( entry->elements, new_elements_size );
   if( !new_elements ) {
     return NULL;
   }
 
-  if( entry->elements != NULL ) {
-    memcpy( new_elements, entry->elements, old_elements_size );
-    free_mem( entry->elements );
-  }
-
   new_elements[entry->element_count] = element;
-  entry->element_count++;
   entry->elements = new_elements;
+  entry->element_count++;
 
   return entry;
 }
@@ -131,7 +126,9 @@ fail:
 }
 
 struct stumpless_entry *
-stumpless_new_entry( int facility, int severity, const char *app_name,
+stumpless_new_entry( int facility,
+                     int severity,
+                     const char *app_name,
                      const char *msgid, const char *message ) {
   struct stumpless_entry *entry;
   size_t *app_name_length;
@@ -153,8 +150,6 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
     goto fail;
   }
 
-  entry->prival = get_prival( facility, severity );
-
   app_name_length = &( entry->app_name_length );
   entry->app_name = cstring_to_sized_string( app_name, app_name_length );
   if( !entry->app_name ) {
@@ -173,6 +168,10 @@ stumpless_new_entry( int facility, int severity, const char *app_name,
     goto fail_message;
   }
 
+  config_initialize_insertion_params( entry );
+  config_set_entry_wel_type( entry, severity );
+
+  entry->prival = get_prival( facility, severity );
   entry->elements = NULL;
   entry->element_count = 0;
 
@@ -209,11 +208,13 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail_name;
   }
 
-  param->value = cstring_to_sized_string( value, &( param->value_length ) );
+  param->value_length = strlen( value );
+  param->value = alloc_mem( param->value_length + 1 );
   if( !param->value ) {
     goto fail_value;
   }
-
+  memcpy( param->value, value, param->value_length );
+  param->value[param->value_length] = '\0';
   return param;
 
 fail_value:
@@ -250,6 +251,8 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
   if( !entry ) {
     return;
   }
+
+  config_destroy_insertion_params( entry );
 
   for( i = 0; i < entry->element_count; i++ ) {
     stumpless_destroy_element( entry->elements[i] );

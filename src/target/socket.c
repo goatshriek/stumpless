@@ -22,9 +22,9 @@
 #include <sys/socket.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
-#include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/target.h"
 #include "private/target/socket.h"
 
 static size_t next_socket_number = 0;
@@ -39,8 +39,7 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
   }
 
   destroy_socket_target( target->id );
-  free_mem( target->name );
-  free_mem( target );
+  destroy_target( target );
 }
 
 struct stumpless_target *
@@ -59,12 +58,19 @@ stumpless_open_socket_target( const char *name,
     goto fail;
   }
 
-  target = alloc_mem( sizeof( *target ) );
+  name_len = strlen( name );
+  target = new_target(
+    STUMPLESS_SOCKET_TARGET,
+    name,
+    name_len,
+    options,
+    default_facility
+  );
+
   if( !target ) {
     goto fail;
   }
 
-  name_len = strlen( name );
 
   if( !local_socket ) {
     default_socket[0] = 's';
@@ -94,25 +100,11 @@ stumpless_open_socket_target( const char *name,
     goto fail_id;
   }
 
-  target->name = alloc_mem( name_len + 1 );
-  if( !target->name ) {
-    goto fail_name;
-  }
-
-  memcpy( target->name, name, name_len );
-  target->name[name_len] = '\0';
-  target->type = STUMPLESS_SOCKET_TARGET;
-  target->options = options;
-  target->default_prival =
-    get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
-
   stumpless_set_current_target( target );
   return target;
 
-fail_name:
-  destroy_socket_target( target->id );
 fail_id:
-  free_mem( target );
+  destroy_target( target );
 fail:
   return NULL;
 }

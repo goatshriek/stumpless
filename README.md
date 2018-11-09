@@ -6,20 +6,26 @@
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=stumpless&metric=alert_status)](https://sonarcloud.io/dashboard?id=stumpless)
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A very simple logging library.
+A logging library built with the goals of a rich and intuitive interface,
+standards compliance, fast performance, and a small footprint.
 
-Current features include:
-* RFC 5424 compliant logging to Linux sockets and character buffers.
+Currently stumpless offers RFC 5424 compliant logging to the following targets:
+ * files
+ * streams
+ * character buffers
+ * Linux sockets
+ * the Windows Event Log
 
 ## Documentation
 If you're curious about how something in stumpless works, you can check the
-appropriate section of the documentation, stored in the `doc` folder.
-
-### Syslog v2 Specification
-An RFC-style definition of the Syslog v2 protocol is given in the `doc/syslogv2`
-folder. An XML file is included which can be used to generate the desired RFC
-document using the `xml2rfc` tool.
+appropriate section of the documentation, stored in the `docs` folder. You can
+also look in the `docs/examples` folder for in-depth walkthroughs and annotated
+example code for using various features of the library.
 
 ## scripts
-The `scripts` directory contains useful single-file tools that are useful for
-the development of the project.
+The `scripts` directory contains single-file tools useful for the development
+of the project, such as file formatting scripts and header inclusion checks.
+
+## tools
+The `tools` directory contains files to support third-party tools used by
+stumpless, such as cmake.
