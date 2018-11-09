@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Thread-safe operation.
  - Examples for file and socket targets.
 
-## [1.2.0] - 2018-11-8
+## [1.2.0] - 2018-11-9
 ### Added
  - Increased coverage on object cache.
  - Support for fractional timestamps.
