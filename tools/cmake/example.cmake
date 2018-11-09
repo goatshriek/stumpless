@@ -1,7 +1,18 @@
+if(MSVC)
+  set(example_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
+else()
+  set(function_test_compile_flags "")
+endif(MSVC)
+
 macro(add_example name)
   add_executable(example-${name}
     EXCLUDE_FROM_ALL
     ${ARGN}
+  )
+
+  set_target_properties(example-${name}
+    PROPERTIES
+    COMPILE_FLAGS "${example_compile_flags}"
   )
 
   target_link_libraries(example-${name}

@@ -9,12 +9,12 @@
 A logging library built with the goals of a rich and intuitive interface,
 standards compliance, fast performance, and a small footprint.
 
-Current features include:
-* RFC 5424 compliant logging to the following targets:
-  * files
-  * character buffers
-  * Linux sockets
-  * the Windows Event Log
+Currently stumpless offers RFC 5424 compliant logging to the following targets:
+ * files
+ * streams
+ * character buffers
+ * Linux sockets
+ * the Windows Event Log
 
 ## Documentation
 If you're curious about how something in stumpless works, you can check the

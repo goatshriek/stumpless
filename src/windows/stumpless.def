@@ -33,3 +33,7 @@ EXPORTS
   stumpless_set_wel_insertion_param     @31
   stumpless_set_wel_insertion_string    @32
   stumpless_set_wel_type                @33
+  stumpless_close_stream_target         @34
+  stumpless_open_stderr_target          @35
+  stumpless_open_stdout_target          @36
+  stumpless_open_stream_target          @37

@@ -44,6 +44,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target.c
   ${PROJECT_SOURCE_DIR}/src/target/buffer.c
   ${PROJECT_SOURCE_DIR}/src/target/file.c
+  ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
 )
 
@@ -146,6 +147,11 @@ add_function_test(memory
   test/function/memory.cpp
 )
 
+add_function_test(stream
+  test/function/target/stream.cpp
+  $<TARGET_OBJECTS:rfc5424_checker>
+)
+
 add_function_test(target
   test/function/target.cpp
 )
@@ -154,6 +160,11 @@ add_function_test(version
   test/function/version.cpp
 )
 
+
+# standard examples
+add_example(stream
+  ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
+)
 
 # standard performance tests
 add_performance_test(target

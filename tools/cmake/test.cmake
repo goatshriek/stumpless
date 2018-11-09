@@ -1,5 +1,5 @@
 if(MSVC)
-  set(function_test_compile_flags "")
+  set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
 else()
   set(function_test_compile_flags "-std=c++11")
 endif(MSVC)
