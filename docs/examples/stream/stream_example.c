@@ -49,7 +49,7 @@ main( int argc, char **argv ) {
     printf( "could not create and add an element to the entry" );
     return EXIT_FAILURE;
   }
-  
+
 
   param = stumpless_new_param( "basic-param-name", "basic-param-value" );
   element_result = stumpless_add_param( element, param );
