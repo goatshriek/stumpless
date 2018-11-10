@@ -1,4 +1,8 @@
+enable_testing()
+
 if(MSVC)
+  # the benefit of simple test code outweighs the burden of writing
+  # platform-dependent code, such as the _s functions, just for tests
   set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
 else()
   set(function_test_compile_flags "-std=c++11")

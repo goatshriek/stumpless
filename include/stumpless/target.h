@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_TARGET_H
 #  define __STUMPLESS_TARGET_H
 
+#  include <stddef.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
