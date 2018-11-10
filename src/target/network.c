@@ -16,7 +16,10 @@
  * limitations under the License.
  */
 
+#include <stddef.h>
+#include <stumpless/target.h>
 #include <stumpless/target/network.h>
+#include "private/target/network.h"
 
 void
 stumpless_close_network_target( struct stumpless_target *target );
@@ -55,4 +58,25 @@ stumpless_open_udp4_target( const char *name,
                                         STUMPLESS_UDP_TRANSPORT_PROTOCOL,
                                         options,
                                         default_facility );
+}
+
+/* private definitions */
+
+void
+destroy_network_target( struct network_target *target ) {
+  return;
+}
+
+struct network_target *
+new_network_target( const char *target,
+                    enum stumpless_network_protocol network,
+                    enum stumpless_transport_protocol transport ) {
+  return NULL;
+}
+
+int
+sendto_network_target( struct network_target *target,
+                       const char *msg,
+                       size_t msg_length ) {
+  return -1;
 }
