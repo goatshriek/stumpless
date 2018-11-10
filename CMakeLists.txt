@@ -121,8 +121,10 @@ set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 
 install(TARGETS stumpless
+  RUNTIME DESTINATION "bin"
   LIBRARY DESTINATION "lib"
   PUBLIC_HEADER DESTINATION "include"
+  ARCHIVE DESTINATION "lib/static"
 )
 
 install(FILES
