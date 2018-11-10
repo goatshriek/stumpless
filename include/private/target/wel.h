@@ -19,8 +19,8 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_WEL_H
 #  define __STUMPLESS_PRIVATE_TARGET_WEL_H
 
-#include <stddef.h>
 #include <windows.h>
+#include <stumpless/entry.h>
 
 struct wel_target {
   HANDLE handle;
