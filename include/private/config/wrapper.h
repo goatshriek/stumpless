@@ -41,6 +41,15 @@
 #    include "private/config/have_gmtime_r.h"
 #  endif
 
+/* definition of config_sendto_network_target */
+#  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
+#    include "private/target/network.h"
+#    define config_sendto_network_target sendto_network_target
+#  else
+#    include "private/target.h"
+#    define config_sendto_network_target sendto_unsupported_target
+#  endif
+
 /* definition of config_sendto_socket_target */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include "private/target/socket.h"

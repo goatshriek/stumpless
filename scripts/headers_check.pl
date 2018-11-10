@@ -32,6 +32,7 @@ my %manifest = (
   "config_get_now" => "private/config/wrapper.h",
   "config_initialize_insertion_params" => "private/config/wrapper.h",
   "config_send_entry_to_wel_target" => "private/config/wrapper.h",
+  "config_sendto_network_target" => "private/config/wrapper.h",
   "config_sendto_socket_target" => "private/config/wrapper.h",
   "config_set_entry_wel_type" => "private/config/wrapper.h",
   "cstring_to_sized_string" => "private/strhelper.h",

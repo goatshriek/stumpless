@@ -31,6 +31,7 @@
 #include "private/target.h"
 #include "private/target/buffer.h"
 #include "private/target/file.h"
+#include "private/target/network.h"
 #include "private/target/stream.h"
 
 static struct stumpless_target *current_target = NULL;
@@ -128,6 +129,12 @@ stumpless_add_entry( struct stumpless_target *target,
 
     case STUMPLESS_FILE_TARGET:
       result = sendto_file_target( target->id, buffer, builder_length );
+      break;
+
+    case STUMPLESS_NETWORK_TARGET:
+      result = config_sendto_network_target( target->id,
+                                             buffer,
+                                             builder_length );
       break;
 
     case STUMPLESS_SOCKET_TARGET:
