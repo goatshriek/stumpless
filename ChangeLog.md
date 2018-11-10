@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
- - Network target capability.
  - Compile-time log level filtering.
  - Format-string style logging from `stumpless` call.
  - Thread-safe operation.
@@ -14,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.0] - 2018-11-10
 ### Added
  - Install target and documentation.
+ - Network target capability.
 
 ## [1.2.0] - 2018-11-9
 ### Added

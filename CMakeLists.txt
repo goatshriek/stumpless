@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.2.3)
 project(stumpless VERSION 1.3.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
+option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
@@ -78,6 +79,17 @@ endif(HAVE_FOPEN_S)
 if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
 endif(HAVE_GMTIME_R)
+
+
+# network target support
+if(ENABLE_NETWORK_TARGETS)
+  list(APPEND STUMPLESS_SOURCES src/target/network.c)
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
+    DESTINATION "include/stumpless/target"
+  )
+endif(ENABLE_NETWORK_TARGETS)
 
 
 # socket target support

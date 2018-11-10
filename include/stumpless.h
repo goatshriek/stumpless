@@ -30,6 +30,10 @@
 #  include <stumpless/target/stream.h>
 #  include <stumpless/version.h>
 
+#  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
+#    include <stumpless/target/network.h>
+#  endif
+
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include <stumpless/target/socket.h>
 #  endif
