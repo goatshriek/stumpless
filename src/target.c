@@ -168,6 +168,11 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
 
   clear_error(  );
 
+  if( !target || !app_name ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
   app_name_length = &( target->default_app_name_length );
   sized_name = cstring_to_sized_string( app_name, app_name_length );
   if( !sized_name ) {
@@ -187,6 +192,11 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   char *sized_msgid;
 
   clear_error(  );
+
+  if( !target || !msgid ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
 
   msgid_length = &( target->default_msgid_length );
   sized_msgid = cstring_to_sized_string( msgid, msgid_length );

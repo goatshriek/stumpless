@@ -31,21 +31,19 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      target = stumpless_open_network_target( "test-self",
-                                              "127.0.0.1",
-                                              STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                              STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                              0,
-                                              STUMPLESS_FACILITY_USER );
+      target = stumpless_open_udp4_target( "test-self",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
 
-      stumpless_set_target_default_app_name( target, "buffer-target-test" );
+      stumpless_set_target_default_app_name( target, "network-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
 
       basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
-                                        "stumpless-unit-test",
-                                        "basic-entry",
-                                        "basic test message" );
+                                         "stumpless-unit-test",
+                                         "basic-entry",
+                                         "basic test message" );
 
       element = stumpless_new_element( "basic-element" );
       stumpless_add_element( basic_entry, element );
@@ -110,6 +108,66 @@ namespace {
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL,
                                             0,
                                             STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenTcp4Test, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp4_target( NULL,
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenTcp4Test, NullDestination ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp4_target( "no-name-provided",
+                                         NULL,
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenUdp4Test, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_udp4_target( NULL,
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenUdp4Test, NullDestination ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_udp4_target( "no-name-provided",
+                                         NULL,
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );

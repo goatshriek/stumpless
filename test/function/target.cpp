@@ -91,6 +91,41 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( SetDefaultAppName, NullName ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_target_default_app_name( target, NULL );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( SetDefaultAppName, NullTarget ) {
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target_result = stumpless_set_target_default_app_name( NULL, "app-name" );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+  }
+
   TEST( SetDefaultMsgId, MemoryFailure ) {
     char buffer[100];
     struct stumpless_target *target;
@@ -115,5 +150,40 @@ namespace {
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
+  }
+
+  TEST( SetDefaultMsgId, NullName ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_target_default_msgid( target, NULL );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( SetDefaultMsgId, NullTarget ) {
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target_result = stumpless_set_target_default_msgid( NULL, "msgid" );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 }
