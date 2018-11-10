@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2.3)
 
-project(stumpless VERSION 1.2.0)
+project(stumpless VERSION 1.3.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
