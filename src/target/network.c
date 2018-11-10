@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
+#include "private/error.h"
 #include "private/target/network.h"
 
 void
@@ -33,6 +34,13 @@ stumpless_open_network_target( const char *name,
                                enum stumpless_transport_protocol transport,
                                int options,
                                int default_facility ) {
+  clear_error(  );
+
+  if( !name || !destination ) {
+    raise_argument_empty(  );
+    return NULL;
+  }
+
   return NULL;
 }
 
