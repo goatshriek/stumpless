@@ -23,15 +23,19 @@ include(tools/cmake/gtest.cmake)
 include(tools/cmake/swig.cmake)
 include(tools/cmake/test.cmake)
 
+
+# building configuration
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
+check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
 check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
-configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${CMAKE_BINARY_DIR}/include/private/config.h)
 
+
+# standard source files
 set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/cache.c
   ${PROJECT_SOURCE_DIR}/src/entry.c
@@ -48,49 +52,11 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/version.c
 )
 
+
+# configuration-specific source files
 if(WIN32)
   list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
 endif(WIN32)
-
-if(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
-  message("socket targets are not supported without sys/socket.h")
-  set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
-
-  add_function_test(socket_unsupported
-    ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
-  )
-else()
-  set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
-  list(APPEND STUMPLESS_SOURCES src/target/socket.c)
-
-  install(FILES
-    ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
-    DESTINATION "include/stumpless/target"
-  )
-endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
-
-if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
-  message("windows event log targets are not supported without windows.h")
-  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
-
-  add_function_test(wel_unsupported
-    ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
-  )
-else()
-  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
-  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
-  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
-
-  install(FILES
-    ${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h
-    DESTINATION "include/stumpless/config"
-  )
-
-  install(FILES
-    ${PROJECT_SOURCE_DIR}/include/stumpless/target/wel.h
-    DESTINATION "include/stumpless/target"
-  )
-endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
 
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
@@ -113,106 +79,24 @@ if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
 endif(HAVE_GMTIME_R)
 
-check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
-configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
-
-add_library(stumpless SHARED ${STUMPLESS_SOURCES})
-set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
-
-install(TARGETS stumpless
-  RUNTIME DESTINATION "bin"
-  LIBRARY DESTINATION "lib"
-  PUBLIC_HEADER DESTINATION "include"
-  ARCHIVE DESTINATION "lib/static"
-)
-
-install(FILES
-  ${PROJECT_BINARY_DIR}/include/stumpless/config.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/entry.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/error.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
-  DESTINATION "include/stumpless"
-)
-
-install(FILES
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h
-  DESTINATION "include/stumpless/target"
-)
-
-if(HAVE_WINSOCK2_H)
-  target_link_libraries(stumpless PRIVATE Ws2_32)
-endif(HAVE_WINSOCK2_H)
-
-if(COVERAGE)
-  target_compile_options(stumpless PRIVATE --coverage)
-  target_link_libraries(stumpless PRIVATE --coverage)
-endif(COVERAGE)
-
-target_include_directories(stumpless
-  PRIVATE
-  ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-)
-
-
-# standard functionality tests
-enable_testing()
-
-add_function_test(buffer
-  test/function/target/buffer.cpp
-  $<TARGET_OBJECTS:rfc5424_checker>
-)
-
-add_function_test(entry
-  test/function/entry.cpp
-)
-
-add_function_test(entry_memory_failure
-  test/function/startup/entry_memory_failure.cpp
-)
-
-add_function_test(file
-  test/function/target/file.cpp
-  $<TARGET_OBJECTS:rfc5424_checker>
-)
-
-add_function_test(memory
-  test/function/memory.cpp
-)
-
-add_function_test(stream
-  test/function/target/stream.cpp
-  $<TARGET_OBJECTS:rfc5424_checker>
-)
-
-add_function_test(target
-  test/function/target.cpp
-)
-
-add_function_test(version
-  test/function/version.cpp
-)
-
-
-# standard examples
-add_example(stream
-  ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
-)
-
-# standard performance tests
-add_performance_test(target
-  test/performance/target.cpp
-)
-
 
 # socket target support
-if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
+if(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
+  message("socket targets are not supported without sys/socket.h")
+  set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
+
+  add_function_test(socket_unsupported
+    ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+  )
+else()
+  set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
+  list(APPEND STUMPLESS_SOURCES src/target/socket.c)
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
+    DESTINATION "include/stumpless/target"
+  )
+
   add_function_test(socket
     test/function/target/socket.cpp
     $<TARGET_OBJECTS:rfc5424_checker>
@@ -221,11 +105,33 @@ if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   add_function_test(socket_add_malloc_failure
     test/function/startup/target/socket_add_malloc_failure.cpp
   )
-endif(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
+endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
 
 
 # windows event log target support
-if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
+  message("windows event log targets are not supported without windows.h")
+  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
+
+  add_function_test(wel_unsupported
+    ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
+  )
+else()
+  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
+
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h
+    DESTINATION "include/stumpless/config"
+  )
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/wel.h
+    DESTINATION "include/stumpless/target"
+  )
+
   ADD_CUSTOM_COMMAND(
      OUTPUT
       "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
@@ -272,7 +178,122 @@ if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
     ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
     ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
   )
-endif(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
+
+
+# shared library definition
+add_library(stumpless SHARED ${STUMPLESS_SOURCES})
+set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
+
+if(HAVE_WINSOCK2_H)
+  target_link_libraries(stumpless PRIVATE Ws2_32)
+endif(HAVE_WINSOCK2_H)
+
+if(COVERAGE)
+  target_compile_options(stumpless PRIVATE --coverage)
+  target_link_libraries(stumpless PRIVATE --coverage)
+endif(COVERAGE)
+
+target_include_directories(stumpless
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${CMAKE_BINARY_DIR}/include
+)
+
+
+# generating configuration files
+configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
+configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${PROJECT_BINARY_DIR}/include/private/config.h)
+
+
+# installation of the library
+install(TARGETS stumpless
+  RUNTIME DESTINATION "bin"
+  LIBRARY DESTINATION "lib"
+  PUBLIC_HEADER DESTINATION "include"
+  ARCHIVE DESTINATION "lib/static"
+)
+
+install(FILES
+  ${PROJECT_BINARY_DIR}/include/stumpless/config.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/entry.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/error.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
+  DESTINATION "include/stumpless"
+)
+
+install(FILES
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h
+  DESTINATION "include/stumpless/target"
+)
+
+
+# functionality tests
+add_function_test(buffer
+  test/function/target/buffer.cpp
+  $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_function_test(entry
+  test/function/entry.cpp
+)
+
+add_function_test(entry_memory_failure
+  test/function/startup/entry_memory_failure.cpp
+)
+
+add_function_test(file
+  test/function/target/file.cpp
+  $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_function_test(memory
+  test/function/memory.cpp
+)
+
+add_function_test(stream
+  test/function/target/stream.cpp
+  $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_function_test(target
+  test/function/target.cpp
+)
+
+add_function_test(version
+  test/function/version.cpp
+)
+
+add_custom_target(check
+  COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
+  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
+)
+
+
+# examples
+add_example(stream
+  ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
+)
+
+add_custom_target(examples
+  DEPENDS ${STUMPLESS_EXAMPLE_RUNNERS}
+)
+
+
+# performance tests
+add_performance_test(target
+  test/performance/target.cpp
+)
+
+add_custom_target(bench
+  DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
+)
 
 
 # python support
@@ -331,22 +352,3 @@ if(HAVE_DOXYGEN)
     COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
   )
 endif(HAVE_DOXYGEN)
-
-
-# function test suite target
-add_custom_target(check
-  COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
-)
-
-
-# performance test suite target
-add_custom_target(bench
-  DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
-)
-
-
-# examples target
-add_custom_target(examples
-  DEPENDS ${STUMPLESS_EXAMPLE_RUNNERS}
-)
