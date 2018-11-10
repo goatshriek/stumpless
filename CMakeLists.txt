@@ -62,6 +62,11 @@ if(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
   list(APPEND STUMPLESS_SOURCES src/target/socket.c)
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
+    DESTINATION "include/stumpless/target"
+  )
 endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
 
 if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
@@ -75,6 +80,16 @@ else()
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h
+    DESTINATION "include/stumpless/config"
+  )
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/wel.h
+    DESTINATION "include/stumpless/target"
+  )
 endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
 
 if(HAVE_UNISTD_H)
@@ -99,12 +114,34 @@ if(HAVE_GMTIME_R)
 endif(HAVE_GMTIME_R)
 
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
-configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${CMAKE_BINARY_DIR}/include/stumpless/config.h)
+configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
 
 add_library(stumpless SHARED ${STUMPLESS_SOURCES})
 set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(stumpless PROPERTIES SOVERSION 0)
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
+
+install(TARGETS stumpless
+  LIBRARY DESTINATION "lib"
+  PUBLIC_HEADER DESTINATION "include"
+)
+
+install(FILES
+  ${PROJECT_BINARY_DIR}/include/stumpless/config.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/entry.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/error.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
+  DESTINATION "include/stumpless"
+)
+
+install(FILES
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h
+  DESTINATION "include/stumpless/target"
+)
 
 if(HAVE_WINSOCK2_H)
   target_link_libraries(stumpless PRIVATE Ws2_32)

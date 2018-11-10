@@ -74,6 +74,7 @@ endmacro(add_performance_test)
 
 # RFC 5424 checking tools
 add_library(rfc5424_checker
+  EXCLUDE_FROM_ALL
   OBJECT ${PROJECT_SOURCE_DIR}/test/function/rfc5424.cpp ${PROJECT_SOURCE_DIR}/test/function/utf8.cpp
 )
 

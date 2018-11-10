@@ -26,10 +26,3 @@ You can use the install target to install the library on your machine after the
 build.
 
     make install
-
-If you later decide that you don't want the library installed after all, then
-you can use the uninstall target to remove the library. If you're doing this
-later on with a different download, make sure that you're using the same version
-of the library, to avoid missing any files.
-
-    make uninstall
