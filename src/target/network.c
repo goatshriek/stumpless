@@ -22,11 +22,13 @@
 #include "private/target/network.h"
 
 void
-stumpless_close_network_target( struct stumpless_target *target );
+stumpless_close_network_target( struct stumpless_target *target ) {
+  return;
+}
 
 struct stumpless_target *
 stumpless_open_network_target( const char *name,
-                               const char *target,
+                               const char *destination,
                                enum stumpless_network_protocol network,
                                enum stumpless_transport_protocol transport,
                                int options,
@@ -36,11 +38,11 @@ stumpless_open_network_target( const char *name,
 
 struct stumpless_target *
 stumpless_open_tcp4_target( const char *name,
-                            const char *target,
+                            const char *destination,
                             int options,
                             int default_facility ) {
   return stumpless_open_network_target( name,
-                                        target,
+                                        destination,
                                         STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                         STUMPLESS_TCP_TRANSPORT_PROTOCOL,
                                         options,
@@ -49,11 +51,11 @@ stumpless_open_tcp4_target( const char *name,
 
 struct stumpless_target *
 stumpless_open_udp4_target( const char *name,
-                            const char *target,
+                            const char *destination,
                             int options,
                             int default_facility ) {
   return stumpless_open_network_target( name,
-                                        target,
+                                        destination,
                                         STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                         STUMPLESS_UDP_TRANSPORT_PROTOCOL,
                                         options,
@@ -68,7 +70,7 @@ destroy_network_target( struct network_target *target ) {
 }
 
 struct network_target *
-new_network_target( const char *target,
+new_network_target( const char *destination,
                     enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport ) {
   return NULL;

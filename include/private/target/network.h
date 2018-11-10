@@ -43,7 +43,7 @@ void
 destroy_network_target( struct network_target *target );
 
 struct network_target *
-new_network_target( const char *target,
+new_network_target( const char *destination,
                     enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport );
 

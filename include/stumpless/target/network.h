@@ -68,8 +68,8 @@ stumpless_close_network_target( struct stumpless_target *target );
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
- * @param target The target to send the messages to. This could be a hostname or
- * an IP address.
+ * @param destination The destination to send the messages to. This could be a
+ * hostname or an IP address.
  *
  * @param network The network protocol to use.
  *
@@ -86,7 +86,7 @@ stumpless_close_network_target( struct stumpless_target *target );
  */
 struct stumpless_target *
 stumpless_open_network_target( const char *name,
-                               const char *target,
+                               const char *destination,
                                enum stumpless_network_protocol network,
                                enum stumpless_transport_protocol transport,
                                int options,
@@ -100,8 +100,8 @@ stumpless_open_network_target( const char *name,
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
- * @param target The target to send the messages to. This could be a hostname or
- * an IP address.
+ * @param destination The destination to send the messages to. This could be a
+ * hostname or an IP address.
  *
  * @param options The options to use for the logging target. This is a bit-wise
  * or of one or more \c STUMPLESS_OPTION values.
@@ -114,7 +114,7 @@ stumpless_open_network_target( const char *name,
  */
 struct stumpless_target *
 stumpless_open_tcp4_target( const char *name,
-                            const char *target,
+                            const char *destination,
                             int options,
                             int default_facility );
 
@@ -126,8 +126,8 @@ stumpless_open_tcp4_target( const char *name,
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
- * @param target The target to send the messages to. This could be a hostname or
- * an IP address.
+ * @param destination The destination to send the messages to. This could be a
+ * hostname or an IP address.
  *
  * @param options The options to use for the logging target. This is a bit-wise
  * or of one or more \c STUMPLESS_OPTION values.
@@ -140,7 +140,7 @@ stumpless_open_tcp4_target( const char *name,
  */
 struct stumpless_target *
 stumpless_open_udp4_target( const char *name,
-                            const char *target,
+                            const char *destination,
                             int options,
                             int default_facility );
 

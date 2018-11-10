@@ -37,3 +37,7 @@ EXPORTS
   stumpless_open_stderr_target          @35
   stumpless_open_stdout_target          @36
   stumpless_open_stream_target          @37
+  stumpless_close_network_target        @38
+  stumpless_open_network_target         @39
+  stumpless_open_tcp4_target            @40
+  stumpless_open_udp4_target            @41
