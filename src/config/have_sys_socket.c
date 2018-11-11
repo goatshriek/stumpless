@@ -69,6 +69,12 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
   cast_addr_in->sin_port = htons( 514 );
 
+  if( connect( handle,
+           ( struct sockaddr * ) &details->target_addr,
+           sizeof( details->target_addr ) ) == -1 ){
+             goto fail;
+           }
+
   details->handle = handle;
   return details;
 
@@ -94,12 +100,10 @@ sys_socket_sendto_udp4_target( struct udp4_details *details,
                                size_t msg_length ) {
   int result;
 
-  result = sendto( details->handle,
-                   msg,
-                   msg_length,
-                   0,
-                   ( struct sockaddr * ) &details->target_addr,
-                   sizeof( struct sockaddr_storage ) );
+  result = send( details->handle,
+                 msg,
+                 msg_length,
+                 0);
 
   if( result == -1 ){
     perror("send failed");
