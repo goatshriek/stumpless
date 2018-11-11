@@ -18,6 +18,7 @@
 
 #include "private/config/have_sys_socket.h"
 
+#include <stdio.h>
 #include <arpa/inet.h>
 #include <stddef.h>
 #include <sys/socket.h>
@@ -90,10 +91,18 @@ int
 sys_socket_sendto_udp4_target( struct udp4_details *details,
                                const char *msg,
                                size_t msg_length ) {
-  return sendto( details->handle,
+  int result;
+
+  result = sendto( details->handle,
                  msg,
                  msg_length,
                  0,
                  ( struct sockaddr * ) &details->target_addr,
                  sizeof( details->target_addr ) );
+
+  if( result == -1 ){
+    perror("send failed: ");
+  }
+
+  return result;
 }

@@ -62,8 +62,6 @@ namespace {
   TEST_F( NetworkTargetTest, AddEntry ) {
     int result;
 
-    SCOPED_TRACE( "EntryTargetTest.AddEntry" );
-
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );

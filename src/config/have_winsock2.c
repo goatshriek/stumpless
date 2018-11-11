@@ -18,7 +18,6 @@
 
 #include "private/config/have_winsock2.h"
 
-#include <stdio.h>
 #include <stddef.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -100,7 +99,6 @@ winsock2_open_udp4_target( struct udp4_details *details,
       WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
       if( handle == INVALID_SOCKET ) {
-        printf( "could not create the socket: %d\n", WSAGetLastError(  ) );
         goto fail;
       }
     }
