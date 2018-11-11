@@ -62,13 +62,17 @@ sys_socket_open_udp4_target( struct udp4_details *details,
                              const char *destination ) {
   int handle;
   struct sockaddr_in *cast_addr_in;
+  int result;
 
   handle = socket( PF_INET, SOCK_DGRAM, 0 );
 
   memset( &details->target_addr, '\0', sizeof( struct sockaddr_storage ) );
   cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
   cast_addr_in->sin_family = PF_INET;
-  inet_pton( PF_INET, destination, &cast_addr_in->sin_addr.s_addr );
+  result = inet_pton( PF_INET, destination, &cast_addr_in->sin_addr.s_addr );
+  if( result != 1){
+    perror("inet_pton failed");
+  }
   cast_addr_in->sin_port = htons( 514 );
 
   if( connect( handle,
