@@ -25,6 +25,16 @@
 #include "private/inthelper.h"
 #include "private/target/network.h"
 
+void
+winsock2_close_tcp4_target( struct tcp4_details *details ) {
+  closesocket( details->handle );
+}
+
+void
+winsock2_close_udp4_target( struct udp4_details *details ) {
+  closesocket( details->handle );
+}
+
 int
 winsock2_gethostname( char *buffer, size_t namelen ) {
   int capped_namelen;

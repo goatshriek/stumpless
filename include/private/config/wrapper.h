@@ -113,6 +113,8 @@
 /* definition of network target functions */
 #  ifdef HAVE_WINSOCK2_H
 #    include "private/config/have_winsock2.h"
+#    define config_close_tcp4_target winsock2_close_tcp4_target
+#    define config_close_udp4_target winsock2_close_udp4_target
 #    define config_open_tcp4_target winsock2_open_tcp4_target
 #    define config_open_udp4_target winsock2_open_udp4_target
 #    define config_sendto_tcp4_target winsock2_sendto_tcp4_target

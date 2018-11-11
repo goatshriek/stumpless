@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
+#include "private/config/wrapper.h"
+
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
-#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/target.h"
@@ -35,6 +36,7 @@ stumpless_close_network_target( struct stumpless_target *target ) {
     return;
   }
 
+  destroy_network_target( target->id );
   destroy_target( target );
 }
 
@@ -108,6 +110,28 @@ stumpless_open_udp4_target( const char *name,
 
 void
 destroy_network_target( struct network_target *target ) {
+
+  if( target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    raise_network_protocol_unsupported(  );
+    return;
+  }
+
+  switch( target->transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      config_close_tcp4_target( &target->details.tcp4 );
+      break;
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      config_close_udp4_target( &target->details.udp4 );
+      break;
+
+    default:
+      raise_transport_protocol_unsupported(  );
+      return;
+
+  }
+
   free_mem( target );
 }
 

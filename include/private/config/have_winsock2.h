@@ -22,6 +22,12 @@
 
 #  include "private/target/network.h"
 
+void
+winsock2_close_tcp4_target( struct tcp4_details *details );
+
+void
+winsock2_close_udp4_target( struct udp4_details *details );
+
 int winsock2_gethostname( char *buffer, size_t namelen );
 
 struct tcp4_details *
