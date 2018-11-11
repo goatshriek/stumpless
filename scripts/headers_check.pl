@@ -144,6 +144,7 @@ my %manifest = (
   "signal" => "signal.h",
   "size_t" => "stddef.h",
   "snprintf" => "stdio.h",
+  "SOCKET" => "winsock2.h",
   "socklen_t" => "sys/socket.h",
   "ssize_t" => "sys/types.h",
   "std::cout" => "iostream",
