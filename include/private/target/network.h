@@ -21,13 +21,18 @@
 
 #  include <stddef.h>
 #  include <stumpless/target/network.h>
+#  include "private/config.h"
 
 struct tcp4_details {
-  int placeholder; // todo add this later
+#ifdef HAVE_WINSOCK2_H
+  SOCKET handle;
+#endif
 };
 
 struct udp4_details {
-  int placeholder; // todo add this later
+#ifdef HAVE_WINSOCK2_H
+  SOCKET handle;
+#endif
 };
 
 struct network_target {

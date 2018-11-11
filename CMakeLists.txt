@@ -83,18 +83,23 @@ endif(HAVE_GMTIME_R)
 
 # network target support
 if(ENABLE_NETWORK_TARGETS)
-  set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)
+  if(NOT HAVE_WINSOCK2_H)
+    message("network targets are not supported without winsock2.h")
+    set(STUMPLESS_NETWORK_TARGETS_SUPPORTED FALSE)
+  else()
+    set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)
 
-  list(APPEND STUMPLESS_SOURCES src/target/network.c)
+    list(APPEND STUMPLESS_SOURCES src/target/network.c)
 
-  install(FILES
-    ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
-    DESTINATION "include/stumpless/target"
-  )
+    install(FILES
+      ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
+      DESTINATION "include/stumpless/target"
+    )
 
-  add_function_test(network
-    ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
-  )
+    add_function_test(network
+      ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
+    )
+  endif(NOT HAVE_WINSOCK2_H)
 endif(ENABLE_NETWORK_TARGETS)
 
 
