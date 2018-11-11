@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 #include <stddef.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
