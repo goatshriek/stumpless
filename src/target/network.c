@@ -111,11 +111,6 @@ stumpless_open_udp4_target( const char *name,
 void
 destroy_network_target( struct network_target *target ) {
 
-  if( target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-    raise_network_protocol_unsupported(  );
-    return;
-  }
-
   switch( target->transport ) {
 
     case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
@@ -125,10 +120,6 @@ destroy_network_target( struct network_target *target ) {
     case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
       config_close_udp4_target( &target->details.udp4 );
       break;
-
-    default:
-      raise_transport_protocol_unsupported(  );
-      return;
 
   }
 
@@ -191,11 +182,6 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length ) {
-  if( target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-    raise_network_protocol_unsupported(  );
-    return -1;
-  }
-
   switch( target->transport ) {
 
     case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
@@ -203,14 +189,9 @@ sendto_network_target( struct network_target *target,
                                         msg,
                                         msg_length );
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+    default: // remaining option: STUMPLESS_UDP_TRANSPORT_PROTOCOL
       return config_sendto_udp4_target( &target->details.udp4,
                                         msg,
                                         msg_length );
-
-    default:
-      raise_transport_protocol_unsupported(  );
-      return -1;
-
   }
 }

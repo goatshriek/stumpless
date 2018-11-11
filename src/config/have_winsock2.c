@@ -61,7 +61,6 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
   SOCKET handle;
   PSOCKADDR_IN cast_addr_in;
   WSADATA wsa_data;
-  int bind_result;
 
   handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
 
@@ -83,8 +82,6 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
   details->handle = handle;
   return details;
 
-fail_bind:
-  closesocket( handle );
 fail:
   return NULL;
 }
@@ -95,7 +92,6 @@ winsock2_open_udp4_target( struct udp4_details *details,
   SOCKET handle;
   PSOCKADDR_IN cast_addr_in;
   WSADATA wsa_data;
-  int bind_result;
 
   handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
 
@@ -118,8 +114,6 @@ winsock2_open_udp4_target( struct udp4_details *details,
   details->handle = handle;
   return details;
 
-fail_bind:
-  closesocket( handle );
 fail:
   return NULL;
 }
@@ -130,7 +124,7 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
                              size_t msg_length ) {
   return sendto( details->handle,
                  msg,
-                 msg_length,
+                 cap_size_t_to_int( msg_length ),
                  0,
                  ( PSOCKADDR) &details->target_addr,
                  sizeof( details->target_addr ) );
@@ -142,7 +136,7 @@ winsock2_sendto_udp4_target( struct udp4_details *details,
                              size_t msg_length ) {
   return sendto( details->handle,
                  msg,
-                 msg_length,
+                 cap_size_t_to_int( msg_length ),
                  0,
                  ( PSOCKADDR) &details->target_addr,
                  sizeof( details->target_addr ) );
