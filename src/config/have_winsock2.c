@@ -16,10 +16,12 @@
  * limitations under the License.
  */
 
+#include "private/config/have_winsock2.h"
+
+#include <stdio.h>
 #include <stddef.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include "private/config/have_winsock2.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"
 
@@ -47,7 +49,6 @@ struct tcp4_details *
 winsock2_open_tcp4_target( struct tcp4_details *details,
                            const char *destination ) {
   SOCKET handle;
-  SOCKADDR_STORAGE local_addr;
   PSOCKADDR_IN cast_addr_in;
   WSADATA wsa_data;
   int bind_result;
@@ -62,15 +63,6 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
         goto fail;
       }
     }
-  }
-
-  cast_addr_in = ( PSOCKADDR_IN ) &local_addr;
-  cast_addr_in->sin_family = AF_INET;
-  inet_pton( AF_INET, "127.0.0.1", &cast_addr_in->sin_addr.s_addr );
-  cast_addr_in->sin_port = htons( 27015 );
-  bind_result = bind( handle, ( PSOCKADDR ) &local_addr, sizeof( local_addr ) );
-  if( bind_result == SOCKET_ERROR ) {
-    goto fail_bind;
   }
 
   cast_addr_in = ( PSOCKADDR_IN ) &details->target_addr;
@@ -91,8 +83,7 @@ struct udp4_details *
 winsock2_open_udp4_target( struct udp4_details *details,
                            const char *destination ) {
   SOCKET handle;
-  SOCKADDR_STORAGE local_addr;
-  PSOCKADDR_IN local_addr_in;
+  PSOCKADDR_IN cast_addr_in;
   WSADATA wsa_data;
   int bind_result;
 
@@ -103,19 +94,16 @@ winsock2_open_udp4_target( struct udp4_details *details,
       WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
       if( handle == INVALID_SOCKET ) {
+        printf( "could not create the socket: %d\n", WSAGetLastError(  ) );
         goto fail;
       }
     }
   }
 
-  local_addr_in = ( PSOCKADDR_IN ) &local_addr;
-  local_addr_in->sin_family = AF_INET;
-  inet_pton( AF_INET, "127.0.0.1", &local_addr_in->sin_addr.s_addr );
-  local_addr_in->sin_port = htons( 27015 );
-  bind_result = bind( handle, ( PSOCKADDR ) &local_addr, sizeof( local_addr ) );
-  if( bind_result == SOCKET_ERROR ) {
-    goto fail_bind;
-  }
+  cast_addr_in = ( PSOCKADDR_IN ) &details->target_addr;
+  cast_addr_in->sin_family = AF_INET;
+  inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
+  cast_addr_in->sin_port = htons( 601 );
 
   details->handle = handle;
   return details;
@@ -130,12 +118,22 @@ int
 winsock2_sendto_tcp4_target( struct tcp4_details *details,
                              const char *msg,
                              size_t msg_length ) {
-  return -1;
+  return sendto( details->handle,
+                 msg,
+                 msg_length,
+                 0,
+                 ( PSOCKADDR) &details->target_addr,
+                 sizeof( details->target_addr ) );
 }
 
 int
 winsock2_sendto_udp4_target( struct udp4_details *details,
                              const char *msg,
                              size_t msg_length ) {
-  return -1;
+  return sendto( details->handle,
+                 msg,
+                 msg_length,
+                 0,
+                 ( PSOCKADDR) &details->target_addr,
+                 sizeof( details->target_addr ) );
 }

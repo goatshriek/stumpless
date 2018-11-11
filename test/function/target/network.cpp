@@ -65,8 +65,8 @@ namespace {
     SCOPED_TRACE( "EntryTargetTest.AddEntry" );
 
     result = stumpless_add_entry( target, basic_entry );
-    //EXPECT_GE( result, 0 );
-    //EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_GE( result, 0 );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
 
   /* non-fixture tests */
@@ -87,7 +87,8 @@ namespace {
 
     target = stumpless_open_network_target( "bad-network",
                                             "127.0.0.1",
-                                            ( enum stumpless_network_protocol ) -1, // assuming this isn't a valid one
+                                            // assuming this isn't a valid protocol
+                                            ( enum stumpless_network_protocol ) -1,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL,
                                             0,
                                             STUMPLESS_FACILITY_USER );
@@ -105,7 +106,8 @@ namespace {
     target = stumpless_open_network_target( "bad-network",
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            ( enum stumpless_transport_protocol ) -1, // assuming this isn't a valid one
+                                            // assuming this isn't a valid protocol
+                                            ( enum stumpless_transport_protocol ) -1,
                                             0,
                                             STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
@@ -207,5 +209,22 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenUdp4Test, ToSelf ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_udp4_target( "target-to-self",
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+
+    ASSERT_TRUE( target != NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    stumpless_close_network_target( target );
   }
 }
