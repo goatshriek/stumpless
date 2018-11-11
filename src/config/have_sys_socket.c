@@ -98,10 +98,10 @@ sys_socket_sendto_udp4_target( struct udp4_details *details,
                  msg_length,
                  0,
                  ( struct sockaddr * ) &details->target_addr,
-                 sizeof( details->target_addr ) );
+                 sizeof( struct sockaddr_storage ) );
 
   if( result == -1 ){
-    perror("send failed: ");
+    perror("send failed");
   }
 
   return result;
