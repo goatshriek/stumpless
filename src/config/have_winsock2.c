@@ -20,6 +20,7 @@
 #include <winsock2.h>
 #include "private/config/have_winsock2.h"
 #include "private/inthelper.h"
+#include "private/target/network.h"
 
 int
 winsock2_gethostname( char *buffer, size_t namelen ) {
@@ -39,4 +40,16 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
   }
 
   return result;
+}
+
+struct tcp4_details *
+winsock2_open_tcp4_target( struct tcp4_details *details,
+                           const char *destination ) {
+  return NULL;
+}
+
+struct udp4_details *
+winsock2_open_udp4_target( struct udp4_details *details,
+                           const char *destination ) {
+  return NULL;
 }

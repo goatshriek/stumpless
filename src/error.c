@@ -84,6 +84,11 @@ raise_memory_allocation_failure( void ) {
 }
 
 void
+raise_network_protocol_unsupported( void ) {
+  raise_error( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
+}
+
+void
 raise_socket_bind_failure( void ) {
   raise_error( STUMPLESS_SOCKET_BIND_FAILURE );
 }
@@ -96,6 +101,11 @@ raise_stream_write_failure( void ) {
 void
 raise_target_unsupported( void ) {
   raise_error( STUMPLESS_TARGET_UNSUPPORTED );
+}
+
+void
+raise_transport_protocol_unsupported( void ) {
+  raise_error( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
 }
 
 void

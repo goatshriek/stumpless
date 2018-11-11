@@ -16,9 +16,19 @@
 * limitations under the License.
 */
 
+#include "private/target/network.h"
+
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
 
 int winsock2_gethostname( char *buffer, size_t namelen );
+
+struct tcp4_details *
+winsock2_open_tcp4_target( struct tcp4_details *details,
+                           const char *destination );
+
+struct udp4_details *
+winsock2_open_udp4_target( struct udp4_details *details,
+                           const char *destination );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H */

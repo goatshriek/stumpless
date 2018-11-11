@@ -46,6 +46,9 @@ void
 raise_memory_allocation_failure( void );
 
 void
+raise_network_protocol_unsupported( void );
+
+void
 raise_socket_bind_failure( void );
 
 void
@@ -53,6 +56,9 @@ raise_stream_write_failure( void );
 
 void
 raise_target_unsupported( void );
+
+void
+raise_transport_protocol_unsupported( void );
 
 void
 raise_wel_close_failure( void );
