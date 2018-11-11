@@ -19,11 +19,10 @@
 #include "private/config/have_sys_socket.h"
 
 #include <arpa/inet.h>
-#include <netinet/ip.h>
-#include <sys/types.h>
+#include <stddef.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include "private/inthelper.h"
+#include "private/target/network.h"
 
 void
 sys_socket_close_tcp4_target( struct tcp4_details *details ) {
