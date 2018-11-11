@@ -72,6 +72,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   if( connect( handle,
            ( struct sockaddr * ) &details->target_addr,
            sizeof( details->target_addr ) ) == -1 ){
+             perror("connect failed");
              goto fail;
            }
 
