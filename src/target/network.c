@@ -124,9 +124,6 @@ new_network_target( const char *destination,
     goto fail;
   }
 
-  target->network = network;
-  target->transport = transport;
-
   if( network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
     raise_network_protocol_unsupported(  );
     goto fail_details;
@@ -156,6 +153,8 @@ new_network_target( const char *destination,
 
   }
 
+  target->network = network;
+  target->transport = transport;
   return target;
 
 fail_details:
@@ -168,5 +167,26 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length ) {
-  return -1;
+  if( target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    raise_network_protocol_unsupported(  );
+    return -1;
+  }
+
+  switch( target->transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      return config_sendto_tcp4_target( &target->details.tcp4,
+                                        msg,
+                                        msg_length );
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      return config_sendto_udp4_target( &target->details.udp4,
+                                        msg,
+                                        msg_length );
+
+    default:
+      raise_transport_protocol_unsupported(  );
+      return -1;
+
+  }
 }

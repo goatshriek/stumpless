@@ -105,6 +105,8 @@
 #    include "private/config/have_winsock2.h"
 #    define config_open_tcp4_target winsock2_open_tcp4_target
 #    define config_open_udp4_target winsock2_open_udp4_target
+#    define config_sendto_tcp4_target winsock2_sendto_tcp4_target
+#    define config_sendto_udp4_target winsock2_sendto_udp4_target
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */

@@ -36,6 +36,8 @@ my %manifest = (
   "config_send_entry_to_wel_target" => "private/config/wrapper.h",
   "config_sendto_network_target" => "private/config/wrapper.h",
   "config_sendto_socket_target" => "private/config/wrapper.h",
+  "config_sendto_tcp4_target" => "private/config/wrapper.h",
+  "config_sendto_udp4_target" => "private/config/wrapper.h",
   "config_set_entry_wel_type" => "private/config/wrapper.h",
   "cstring_to_sized_string" => "private/strhelper.h",
   "destroy_buffer_target" => "private/target/buffer.h",
@@ -78,6 +80,7 @@ my %manifest = (
   "HAVE_UNISTD_H" => "private/config.h",
   "HAVE_WINDOWS_H" => "private/config.h",
   "HAVE_WINSOCK2_H" => "private/config.h",
+  "inet_pton" => "ws2tcpip.h",
   "initialize_insertion_params" => "private/config/wel_supported.h",
   "INT_MAX" => "limits.h",
   "LPCSTR" => "windows.h",
@@ -245,6 +248,8 @@ my %manifest = (
   "winsock2_gethostname" => "private/config/have_winsock2.h",
   "winsock2_open_tcp4_target" => "private/config/have_winsock2.h",
   "winsock2_open_udp4_target" => "private/config/have_winsock2.h",
+  "winsock2_sendto_tcp4_target" => "private/config/have_winsock2.h",
+  "winsock2_sendto_udp4_target" => "private/config/have_winsock2.h",
   "WORD" => "windows.h"
 );
 

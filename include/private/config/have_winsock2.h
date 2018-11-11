@@ -31,4 +31,14 @@ struct udp4_details *
 winsock2_open_udp4_target( struct udp4_details *details,
                            const char *destination );
 
+int
+winsock2_sendto_tcp4_target( struct tcp4_details *details,
+                             const char *msg,
+                             size_t msg_length );
+
+int
+winsock2_sendto_udp4_target( struct udp4_details *details,
+                             const char *msg,
+                             size_t msg_length );
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H */

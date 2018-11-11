@@ -18,6 +18,7 @@
 
 #include <stddef.h>
 #include <winsock2.h>
+#include <ws2tcpip.h>
 #include "private/config/have_winsock2.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"
@@ -65,14 +66,14 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
 
   local_addr_in = ( PSOCKADDR_IN ) &local_addr;
   local_addr_in->sin_family = AF_INET;
-  local_addr_in->sin_addr.s_addr = inet_addr( "127.0.0.1" );
+  inet_pton( AF_INET, "127.0.0.1", &( local_addr_in->sin_addr.s_addr ) );
   local_addr_in->sin_port = htons( 27015 );
   bind_result = bind( handle, ( PSOCKADDR ) &local_addr, sizeof( local_addr ) );
   if( bind_result == SOCKET_ERROR ) {
     goto fail_bind;
   }
 
-  details->handle = details;
+  details->handle = handle;
   return details;
 
 fail_bind:
@@ -97,25 +98,39 @@ winsock2_open_udp4_target( struct udp4_details *details,
       WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
       if( handle == INVALID_SOCKET ) {
-        return NULL;
+        goto fail;
       }
     }
   }
 
   local_addr_in = ( PSOCKADDR_IN ) &local_addr;
   local_addr_in->sin_family = AF_INET;
-  local_addr_in->sin_addr.s_addr = inet_addr( "127.0.0.1" );
+  inet_pton( AF_INET, "127.0.0.1", &( local_addr_in->sin_addr.s_addr ) );
   local_addr_in->sin_port = htons( 27015 );
   bind_result = bind( handle, ( PSOCKADDR ) &local_addr, sizeof( local_addr ) );
   if( bind_result == SOCKET_ERROR ) {
     goto fail_bind;
   }
 
-  details->handle = details;
+  details->handle = handle;
   return details;
 
 fail_bind:
   closesocket( handle );
 fail:
   return NULL;
+}
+
+int
+winsock2_sendto_tcp4_target( struct tcp4_details *details,
+                             const char *msg,
+                             size_t msg_length ) {
+  return -1;
+}
+
+int
+winsock2_sendto_udp4_target( struct udp4_details *details,
+                             const char *msg,
+                             size_t msg_length ) {
+  return -1;
 }
