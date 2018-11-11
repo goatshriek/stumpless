@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 #include <stddef.h>
 #include <string.h>
 #include <sys/types.h>
@@ -61,10 +62,16 @@ struct udp4_details *
 sys_socket_open_udp4_target( struct udp4_details *details,
                              const char *destination ) {
   int handle;
+  struct addrinfo *addr_result;
   struct sockaddr_in *cast_addr_in;
   int result;
 
   handle = socket( PF_INET, SOCK_DGRAM, 0 );
+
+  result = getaddrinfo( destination, "514", NULL, &addr_result );
+  if( result != 0 ) {
+    perror("getaddrinfo failed");
+  }
 
   memset( &details->target_addr, '\0', sizeof( struct sockaddr_storage ) );
   cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
@@ -75,9 +82,12 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   }
   cast_addr_in->sin_port = htons( 514 );
 
+  //if( connect( handle,
+  //             ( struct sockaddr * ) &details->target_addr,
+  //             sizeof( struct sockaddr_storage ) ) == -1 ){
   if( connect( handle,
-               ( struct sockaddr * ) &details->target_addr,
-               sizeof( struct sockaddr_storage ) ) == -1 ){
+               addr_result->ai_addr,
+               addr_result->ai_addrlen ) == -1 ){
     perror("connect failed");
     goto fail;
            }

@@ -32,7 +32,7 @@ namespace {
       struct stumpless_param *param;
 
       target = stumpless_open_udp4_target( "test-self",
-                                           "127.0.0.254",
+                                           "127.0.0.1",
                                            0,
                                            STUMPLESS_FACILITY_USER );
 
