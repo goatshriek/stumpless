@@ -46,6 +46,10 @@ struct tcp4_details *
 winsock2_open_tcp4_target( struct tcp4_details *details,
                            const char *destination ) {
   SOCKET handle;
+  SOCKADDR_STORAGE local_addr;
+  PSOCKADDR_IN local_addr_in;
+  WSADATA wsa_data;
+  int bind_result;
 
   handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
 
@@ -54,20 +58,37 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
       WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
       if( handle == INVALID_SOCKET ) {
-        return NULL;
+        goto fail;
       }
     }
   }
 
-  details->handle = details;
+  local_addr_in = ( PSOCKADDR_IN ) &local_addr;
+  local_addr_in->sin_family = AF_INET;
+  local_addr_in->sin_addr.s_addr = inet_addr( "127.0.0.1" );
+  local_addr_in->sin_port = htons( 27015 );
+  bind_result = bind( handle, ( PSOCKADDR ) &local_addr, sizeof( local_addr ) );
+  if( bind_result == SOCKET_ERROR ) {
+    goto fail_bind;
+  }
 
+  details->handle = details;
   return details;
+
+fail_bind:
+  closesocket( handle );
+fail:
+  return NULL;
 }
 
 struct udp4_details *
 winsock2_open_udp4_target( struct udp4_details *details,
                            const char *destination ) {
   SOCKET handle;
+  SOCKADDR_STORAGE local_addr;
+  PSOCKADDR_IN local_addr_in;
+  WSADATA wsa_data;
+  int bind_result;
 
   handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
 
@@ -81,7 +102,20 @@ winsock2_open_udp4_target( struct udp4_details *details,
     }
   }
 
-  details->handle = details;
+  local_addr_in = ( PSOCKADDR_IN ) &local_addr;
+  local_addr_in->sin_family = AF_INET;
+  local_addr_in->sin_addr.s_addr = inet_addr( "127.0.0.1" );
+  local_addr_in->sin_port = htons( 27015 );
+  bind_result = bind( handle, ( PSOCKADDR ) &local_addr, sizeof( local_addr ) );
+  if( bind_result == SOCKET_ERROR ) {
+    goto fail_bind;
+  }
 
+  details->handle = details;
   return details;
+
+fail_bind:
+  closesocket( handle );
+fail:
+  return NULL;
 }
