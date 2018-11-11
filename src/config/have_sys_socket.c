@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 #include <stddef.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include "private/target/network.h"
@@ -66,7 +67,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
   cast_addr_in->sin_family = AF_INET;
   inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
-  cast_addr_in->sin_port = htons( 601 );
+  cast_addr_in->sin_port = htons( 514 );
 
   details->handle = handle;
   return details;
@@ -94,11 +95,11 @@ sys_socket_sendto_udp4_target( struct udp4_details *details,
   int result;
 
   result = sendto( details->handle,
-                 msg,
-                 msg_length,
-                 0,
-                 ( struct sockaddr * ) &details->target_addr,
-                 sizeof( struct sockaddr_storage ) );
+                   msg,
+                   msg_length,
+                   0,
+                   ( struct sockaddr * ) &details->target_addr,
+                   sizeof( struct sockaddr_storage ) );
 
   if( result == -1 ){
     perror("send failed");

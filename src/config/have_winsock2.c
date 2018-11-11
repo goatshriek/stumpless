@@ -107,7 +107,7 @@ winsock2_open_udp4_target( struct udp4_details *details,
   cast_addr_in = ( PSOCKADDR_IN ) &details->target_addr;
   cast_addr_in->sin_family = AF_INET;
   inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
-  cast_addr_in->sin_port = htons( 601 );
+  cast_addr_in->sin_port = htons( 514 );
 
   details->handle = handle;
   return details;
