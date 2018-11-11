@@ -66,14 +66,14 @@ sys_socket_open_udp4_target( struct udp4_details *details,
 
   cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
   cast_addr_in->sin_family = AF_INET;
-  inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
+  inet_pton( PF_INET, destination, &cast_addr_in->sin_addr.s_addr );
   cast_addr_in->sin_port = htons( 514 );
 
   if( connect( handle,
-           ( struct sockaddr * ) &details->target_addr,
-           sizeof( details->target_addr ) ) == -1 ){
-             perror("connect failed");
-             goto fail;
+               ( struct sockaddr * ) &details->target_addr,
+               sizeof( details->target_addr ) ) == -1 ){
+    perror("connect failed");
+    goto fail;
            }
 
   details->handle = handle;
