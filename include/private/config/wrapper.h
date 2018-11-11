@@ -19,7 +19,9 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 
+
 #  include "private/config.h"
+
 
 /* definition of config_sendto_network_target */
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
@@ -30,6 +32,7 @@
 #    define config_sendto_network_target sendto_unsupported_target
 #  endif
 
+
 /* definition of config_sendto_socket_target */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include "private/target/socket.h"
@@ -38,6 +41,7 @@
 #    include "private/target.h"
 #    define config_sendto_socket_target sendto_unsupported_target
 #  endif
+
 
 /* definition of config_sendto_wel_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
@@ -55,6 +59,7 @@
 #    define config_set_entry_wel_type( ENTRY, SEVERITY ) ( ( void ) 0 )
 #  endif
 
+
 /* definition of config_fopen */
 #  ifdef HAVE_FOPEN_S
 #    include "private/config/have_fopen_s.h"
@@ -63,6 +68,7 @@
 #    include <stdio.h>
 #    define config_fopen fopen
 #  endif
+
 
 /* definition of config_get_now */
 #  ifdef HAVE_GMTIME_R
@@ -73,6 +79,7 @@
 #    define config_get_now windows_get_now
 #  endif
 
+
 /* definition of config_gethostname */
 #  ifdef HAVE_UNISTD_H
 #    include "private/config/have_unistd.h"
@@ -81,6 +88,7 @@
 #    include "private/config/have_winsock2.h"
 #    define config_gethostname(buffer, namelen) winsock2_gethostname((buffer), (namelen))
 #  endif
+
 
 /* definition of config_getpagesize */
 #  ifdef HAVE_UNISTD_H
@@ -91,6 +99,7 @@
 #    define config_getpagesize windows_getpagesize
 #  endif
 
+
 /* definition of config_getpid */
 #  ifdef HAVE_UNISTD_H
 #    include "private/config/have_unistd.h"
@@ -100,6 +109,7 @@
 #    define config_getpid windows_getpid
 #  endif
 
+
 /* definition of network target functions */
 #  ifdef HAVE_WINSOCK2_H
 #    include "private/config/have_winsock2.h"
@@ -108,5 +118,6 @@
 #    define config_sendto_tcp4_target winsock2_sendto_tcp4_target
 #    define config_sendto_udp4_target winsock2_sendto_udp4_target
 #  endif
+
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */

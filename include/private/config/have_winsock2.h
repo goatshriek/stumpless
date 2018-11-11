@@ -16,10 +16,11 @@
 * limitations under the License.
 */
 
-#include "private/target/network.h"
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
+
+#  include "private/target/network.h"
 
 int winsock2_gethostname( char *buffer, size_t namelen );
 

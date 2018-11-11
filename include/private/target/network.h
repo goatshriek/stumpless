@@ -23,15 +23,21 @@
 #  include <stumpless/target/network.h>
 #  include "private/config.h"
 
+#ifdef HAVE_WINSOCK2_H
+#  include <winsock2.h>
+#endif
+
 struct tcp4_details {
 #ifdef HAVE_WINSOCK2_H
   SOCKET handle;
+  SOCKADDR_STORAGE target_addr;
 #endif
 };
 
 struct udp4_details {
 #ifdef HAVE_WINSOCK2_H
   SOCKET handle;
+  SOCKADDR_STORAGE target_addr;
 #endif
 };
 
