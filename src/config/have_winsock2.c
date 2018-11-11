@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -126,7 +126,7 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
                  msg,
                  cap_size_t_to_int( msg_length ),
                  0,
-                 ( PSOCKADDR) &details->target_addr,
+                 ( PSOCKADDR ) &details->target_addr,
                  sizeof( details->target_addr ) );
 }
 
@@ -138,6 +138,6 @@ winsock2_sendto_udp4_target( struct udp4_details *details,
                  msg,
                  cap_size_t_to_int( msg_length ),
                  0,
-                 ( PSOCKADDR) &details->target_addr,
+                 ( PSOCKADDR ) &details->target_addr,
                  sizeof( details->target_addr ) );
 }
