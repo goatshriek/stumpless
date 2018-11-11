@@ -64,6 +64,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
 
   handle = socket( AF_INET, SOCK_DGRAM, 0 );
 
+  memset( &details->target_addr, '\0', sizeof( struct sockaddr_storage ) );
   cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
   cast_addr_in->sin_family = AF_INET;
   inet_pton( PF_INET, destination, &cast_addr_in->sin_addr.s_addr );
@@ -71,7 +72,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
 
   if( connect( handle,
                ( struct sockaddr * ) &details->target_addr,
-               sizeof( details->target_addr ) ) == -1 ){
+               sizeof( struct sockaddr_storage ) ) == -1 ){
     perror("connect failed");
     goto fail;
            }
