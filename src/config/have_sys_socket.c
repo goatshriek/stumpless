@@ -63,7 +63,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   int handle;
   struct sockaddr_in *cast_addr_in;
 
-  handle = socket( AF_INET, SOCK_DGRAM, 0 );
+  handle = socket( PF_INET, SOCK_DGRAM, 0 );
 
   memset( &details->target_addr, '\0', sizeof( struct sockaddr_storage ) );
   cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
