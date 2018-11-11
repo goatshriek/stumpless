@@ -45,11 +45,43 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
 struct tcp4_details *
 winsock2_open_tcp4_target( struct tcp4_details *details,
                            const char *destination ) {
-  return NULL;
+  SOCKET handle;
+
+  handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+
+  if( handle == INVALID_SOCKET ) {
+    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
+      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+      handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+      if( handle == INVALID_SOCKET ) {
+        return NULL;
+      }
+    }
+  }
+
+  details->handle = details;
+
+  return details;
 }
 
 struct udp4_details *
 winsock2_open_udp4_target( struct udp4_details *details,
                            const char *destination ) {
-  return NULL;
+  SOCKET handle;
+
+  handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+
+  if( handle == INVALID_SOCKET ) {
+    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
+      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+      handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+      if( handle == INVALID_SOCKET ) {
+        return NULL;
+      }
+    }
+  }
+
+  details->handle = details;
+
+  return details;
 }
