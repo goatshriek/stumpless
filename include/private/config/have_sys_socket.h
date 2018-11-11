@@ -19,6 +19,30 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_SYS_SOCKET_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_SYS_SOCKET_H
 
-// more to add here
+#include "private/target/network.h"
+
+void
+sys_socket_close_tcp4_target( struct tcp4_details *details );
+
+void
+sys_socket_close_udp4_target( struct udp4_details *details );
+
+struct tcp4_details *
+sys_socket_open_tcp4_target( struct tcp4_details *details,
+                             const char *destination );
+
+struct udp4_details *
+sys_socket_open_udp4_target( struct udp4_details *details,
+                             const char *destination );
+
+int
+sys_socket_sendto_tcp4_target( struct tcp4_details *details,
+                               const char *msg,
+                               size_t msg_length );
+
+int
+sys_socket_sendto_udp4_target( struct udp4_details *details,
+                               const char *msg,
+                               size_t msg_length );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_SYS_SOCKET_H */

@@ -111,7 +111,15 @@
 
 
 /* definition of network target functions */
-#  ifdef HAVE_WINSOCK2_H
+#  ifdef HAVE_SYS_SOCKET_H
+#    include "private/config/have_sys_socket.h"
+#    define config_close_tcp4_target sys_socket_close_tcp4_target
+#    define config_close_udp4_target sys_socket_close_udp4_target
+#    define config_open_tcp4_target sys_socket_open_tcp4_target
+#    define config_open_udp4_target sys_socket_open_udp4_target
+#    define config_sendto_tcp4_target sys_socket_sendto_tcp4_target
+#    define config_sendto_udp4_target sys_socket_sendto_udp4_target
+#  elif HAVE_WINSOCK2_H
 #    include "private/config/have_winsock2.h"
 #    define config_close_tcp4_target winsock2_close_tcp4_target
 #    define config_close_udp4_target winsock2_close_udp4_target

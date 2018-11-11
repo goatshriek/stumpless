@@ -19,26 +19,36 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_NETWORK_H
 #  define __STUMPLESS_PRIVATE_TARGET_NETWORK_H
 
-#  include <stddef.h>
-#  include <stumpless/target/network.h>
 #  include "private/config.h"
 
-#ifdef HAVE_WINSOCK2_H
-#  include <winsock2.h>
-#endif
+#  include <stddef.h>
+#  include <stumpless/target/network.h>
+
+#  ifdef HAVE_SYS_SOCKET_H
+#    include <sys/types.h>
+#    include <sys/socket.h>
+#  elif HAVE_WINSOCK2_H
+#    include <winsock2.h>
+#  endif
 
 struct tcp4_details {
-#ifdef HAVE_WINSOCK2_H
+#  ifdef HAVE_SYS_SOCKET_H
+  int handle;
+  struct sockaddr_storage target_addr;
+#  elif HAVE_WINSOCK2_H
   SOCKET handle;
   SOCKADDR_STORAGE target_addr;
-#endif
+#  endif
 };
 
 struct udp4_details {
-#ifdef HAVE_WINSOCK2_H
+#  ifdef HAVE_SYS_SOCKET_H
+  int handle;
+  struct sockaddr_storage target_addr;
+#  elif HAVE_WINSOCK2_H
   SOCKET handle;
   SOCKADDR_STORAGE target_addr;
-#endif
+#  endif
 };
 
 struct network_target {

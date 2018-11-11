@@ -55,9 +55,17 @@ set(STUMPLESS_SOURCES
 
 
 # configuration-specific source files
-if(WIN32)
-  list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
-endif(WIN32)
+if(HAVE_FOPEN_S)
+  list(APPEND STUMPLESS_SOURCES src/config/have_fopen_s.c)
+endif(HAVE_FOPEN_S)
+
+if(HAVE_GMTIME_R)
+  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
+endif(HAVE_GMTIME_R)
+
+if(HAVE_SYS_SOCKET_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
+endif(HAVE_SYS_SOCKET_H)
 
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
@@ -72,19 +80,15 @@ if(HAVE_WINSOCK2_H)
   find_library(WINSOCK2 NAMES Ws2_32)
 endif(HAVE_WINSOCK2_H)
 
-if(HAVE_FOPEN_S)
-  list(APPEND STUMPLESS_SOURCES src/config/have_fopen_s.c)
-endif(HAVE_FOPEN_S)
-
-if(HAVE_GMTIME_R)
-  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
-endif(HAVE_GMTIME_R)
+if(WIN32)
+  list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
+endif(WIN32)
 
 
 # network target support
 if(ENABLE_NETWORK_TARGETS)
-  if(NOT HAVE_WINSOCK2_H)
-    message("network targets are not supported without winsock2.h")
+  if(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
+    message("network targets are not supported without either winsock2.h or sys/socket.h")
     set(STUMPLESS_NETWORK_TARGETS_SUPPORTED FALSE)
   else()
     set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)
@@ -99,7 +103,7 @@ if(ENABLE_NETWORK_TARGETS)
     add_function_test(network
       ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
     )
-  endif(NOT HAVE_WINSOCK2_H)
+  endif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
 endif(ENABLE_NETWORK_TARGETS)
 
 
