@@ -33,7 +33,7 @@ stumpless_close_file_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "target is NULL" );
     return;
   }
 
@@ -49,7 +49,7 @@ stumpless_open_file_target( const char *name,
   clear_error(  );
 
   if( !name ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "name is NULL" );
     return NULL;
   }
 

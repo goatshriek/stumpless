@@ -23,25 +23,46 @@
 extern "C" {
 #  endif
 
-  enum stumpless_error_id {
-    STUMPLESS_ARGUMENT_EMPTY,
-    STUMPLESS_ARGUMENT_TOO_BIG,
-    STUMPLESS_FILE_OPEN_FAILURE,
-    STUMPLESS_FILE_WRITE_FAILURE,
-    STUMPLESS_INVALID_ID,
-    STUMPLESS_MEMORY_ALLOCATION_FAILURE,
-    STUMPLESS_SOCKET_BIND_FAILURE,
-    STUMPLESS_STREAM_WRITE_FAILURE,
-    STUMPLESS_TARGET_UNSUPPORTED,
-    STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE,
-    STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE
-  };
+/**
+ * An identifier of the types of errors that might be encountered. Note that
+ * the same error may be encountered in different contexts.
+ */
+enum stumpless_error_id {
+  STUMPLESS_ARGUMENT_EMPTY,
+  STUMPLESS_ARGUMENT_TOO_BIG,
+  STUMPLESS_FILE_OPEN_FAILURE,
+  STUMPLESS_FILE_WRITE_FAILURE,
+  STUMPLESS_INVALID_ID,
+  STUMPLESS_MEMORY_ALLOCATION_FAILURE,
+  STUMPLESS_SOCKET_BIND_FAILURE,
+  STUMPLESS_STREAM_WRITE_FAILURE,
+  STUMPLESS_TARGET_UNSUPPORTED,
+  STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE,
+  STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE
+};
 
-  struct stumpless_error {
-    enum stumpless_error_id id;
-  };
+/**
+ * Information describing an error encountered by the library.
+ */
+struct stumpless_error {
+  enum stumpless_error_id id; /**< error family */
+  const char *message; /**< specific details of the failure */
+  int code; /**< an error code possibly providing more information */
+  const char *code_type; /**< a description of the error code */
+};
 
-  struct stumpless_error *stumpless_get_error( void );
+/**
+ * Retrieves the error encountered by the last library call.
+ *
+ * Note that the id is the only field of the error that is guaranteed to be set.
+ * Other members may or may not be set, depending on the context of the error.
+ *
+ * If the code_type is NULL, then the code is not valid and should be ignored.
+ *
+ * @return A stumpless_error struct describing the error encountered by the last
+ * function call. If no error was encountered, this will be NULL.
+ */
+struct stumpless_error *stumpless_get_error( void );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

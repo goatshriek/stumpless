@@ -36,7 +36,7 @@ stumpless_set_malloc( malloc_func_t malloc_func ) {
   clear_error(  );
 
   if( !malloc_func ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "malloc_func is NULL" );
     return NULL;
   } else {
     stumpless_malloc = malloc_func;
@@ -49,7 +49,7 @@ stumpless_set_free( free_func_t free_func ) {
   clear_error(  );
 
   if( !free_func ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "free_func is NULL" );
     return NULL;
   } else {
     stumpless_free = free_func;
@@ -62,7 +62,7 @@ stumpless_set_realloc( realloc_func_t realloc_func ) {
   clear_error(  );
 
   if( !realloc_func ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "realloc_func is NULL" );
     return NULL;
   } else {
     stumpless_realloc = realloc_func;

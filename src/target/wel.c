@@ -32,7 +32,7 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "target is NULL" );
     return;
   }
 
@@ -48,7 +48,7 @@ stumpless_open_local_wel_target( const char *name,
   clear_error(  );
 
   if( !name ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "name is NULL" );
     goto fail;
   }
 
@@ -87,7 +87,7 @@ stumpless_open_remote_wel_target( const char *server,
    clear_error(  );
 
    if( !name ) {
-     raise_argument_empty(  );
+     raise_argument_empty( "name is NULL" );
      goto fail;
    }
 

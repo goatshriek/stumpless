@@ -30,7 +30,7 @@ stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
   clear_error(  );
 
   if( !entry ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
@@ -44,7 +44,7 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
   clear_error(  );
 
   if( !entry ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
@@ -59,8 +59,13 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
                                    struct stumpless_param *param ) {
   clear_error(  );
 
-  if( !entry || !param ) {
-    raise_argument_empty(  );
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( !param ) {
+    raise_argument_empty( "param is NULL" );
     return NULL;
   }
 
@@ -85,8 +90,13 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
 
   clear_error(  );
 
-  if( !entry || !str ) {
-    raise_argument_empty(  );
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  if( !str ) {
+    raise_argument_empty( "str is NULL" );
     goto fail;
   }
 
@@ -131,7 +141,7 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   clear_error(  );
 
   if( !entry ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 

@@ -40,17 +40,20 @@ clear_error( void ) {
 }
 
 void
-raise_argument_empty( void ) {
-  raise_error( STUMPLESS_ARGUMENT_EMPTY );
+raise_argument_empty( const char *message ) {
+  raise_error( STUMPLESS_ARGUMENT_EMPTY, message, 0, NULL );
 }
 
 void
 raise_argument_too_big( void ) {
-  raise_error( STUMPLESS_ARGUMENT_TOO_BIG );
+  raise_error( STUMPLESS_ARGUMENT_TOO_BIG, NULL, 0, NULL );
 }
 
 void
-raise_error( enum stumpless_error_id id ) {
+raise_error( enum stumpless_error_id id,
+             const char *message,
+             int code,
+             const char *code_type ) {
   if( !last_error ) {
     last_error = malloc( sizeof( struct stumpless_error ) );
     if( !last_error ) {
@@ -60,50 +63,53 @@ raise_error( enum stumpless_error_id id ) {
   }
 
   last_error->id = id;
+  last_error->message = message;
+  last_error->code = code;
+  last_error->code_type = code_type;
   error_valid = 1;
 }
 
 void
 raise_file_open_failure( void ) {
-  raise_error( STUMPLESS_FILE_OPEN_FAILURE );
+  raise_error( STUMPLESS_FILE_OPEN_FAILURE, NULL, 0, NULL );
 }
 
 void
 raise_file_write_failure( void ) {
-  raise_error( STUMPLESS_FILE_WRITE_FAILURE );
+  raise_error( STUMPLESS_FILE_WRITE_FAILURE, NULL, 0, NULL );
 }
 
 void
 raise_invalid_id( void ) {
-  raise_error( STUMPLESS_INVALID_ID );
+  raise_error( STUMPLESS_INVALID_ID, NULL, 0, NULL );
 }
 
 void
 raise_memory_allocation_failure( void ) {
-  raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+  raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE, NULL, 0, NULL );
 }
 
 void
 raise_socket_bind_failure( void ) {
-  raise_error( STUMPLESS_SOCKET_BIND_FAILURE );
+  raise_error( STUMPLESS_SOCKET_BIND_FAILURE, NULL, 0, NULL );
 }
 
 void
 raise_stream_write_failure( void ) {
-  raise_error( STUMPLESS_STREAM_WRITE_FAILURE );
+  raise_error( STUMPLESS_STREAM_WRITE_FAILURE, NULL, 0, NULL );
 }
 
 void
 raise_target_unsupported( void ) {
-  raise_error( STUMPLESS_TARGET_UNSUPPORTED );
+  raise_error( STUMPLESS_TARGET_UNSUPPORTED, NULL, 0, NULL );
 }
 
 void
 raise_wel_close_failure( void ) {
-  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE );
+  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE, NULL, 0, NULL );
 }
 
 void
 raise_wel_open_failure( void ) {
-  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE );
+  raise_error( STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE, NULL, 0, NULL );
 }

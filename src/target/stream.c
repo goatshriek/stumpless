@@ -32,7 +32,7 @@ stumpless_close_stream_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "target is NULL" );
     return;
   }
 
@@ -70,8 +70,13 @@ stumpless_open_stream_target( const char *name,
 
   clear_error(  );
 
-  if( !name || !stream ) {
-    raise_argument_empty(  );
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return NULL;
+  }
+
+  if( !stream ) {
+    raise_argument_empty( "stream is NULL" );
     return NULL;
   }
 
