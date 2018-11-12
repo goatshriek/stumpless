@@ -21,7 +21,53 @@
 #include <gtest/gtest.h>
 
 namespace {
-  class NetworkTargetTest : public::testing::Test {
+  class Tcp4TargetTest : public::testing::Test {
+    protected:
+      struct stumpless_target *target;
+      struct stumpless_entry *basic_entry;
+
+    virtual void
+    SetUp( void ) {
+      struct stumpless_element *element;
+      struct stumpless_param *param;
+
+      target = stumpless_open_tcp4_target( "test-self",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+
+      stumpless_set_target_default_app_name( target, "network-target-test" );
+      stumpless_set_target_default_msgid( target, "default-message" );
+
+      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                         "stumpless-unit-test",
+                                         "basic-entry",
+                                         "basic test message" );
+
+      element = stumpless_new_element( "basic-element" );
+      stumpless_add_element( basic_entry, element );
+
+      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
+      stumpless_add_param( element, param );
+    }
+
+    virtual void
+    TearDown( void ) {
+      stumpless_destroy_entry( basic_entry );
+      stumpless_close_network_target( target );
+    }
+  };
+
+  TEST_F( Tcp4TargetTest, AddEntry ) {
+    int result;
+
+    result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+  }
+
+  class Udp4TargetTest : public::testing::Test {
     protected:
       struct stumpless_target *target;
       struct stumpless_entry *basic_entry;
@@ -59,7 +105,7 @@ namespace {
     }
   };
 
-  TEST_F( NetworkTargetTest, AddEntry ) {
+  TEST_F( Udp4TargetTest, AddEntry ) {
     int result;
 
     result = stumpless_add_entry( target, basic_entry );
