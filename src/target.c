@@ -35,7 +35,6 @@
 #include "private/target/stream.h"
 
 static struct stumpless_target *current_target = NULL;
-static struct id_map *priv_targets = NULL;
 static struct stumpless_entry *cached_entry = NULL;
 
 int
