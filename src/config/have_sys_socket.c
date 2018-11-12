@@ -61,7 +61,7 @@ sys_socket_open_tcp4_target( struct tcp4_details *details,
   if( result == -1 ) {
     raise_socket_connect_failure( "connect failed with IPv4/TCP socket",
                                   errno,
-                                  "errno after the failed call to connect" );
+                                  "errno after the failed call" );
     goto fail_socket;
   }
 
@@ -100,7 +100,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   if( result == -1 ) {
     raise_socket_connect_failure( "connect failed with IPv4/UDP socket",
                                   errno,
-                                  "errno after the failed call to connect" );
+                                  "errno after the failed call" );
     goto fail_socket;
   }
 
@@ -129,7 +129,7 @@ sys_socket_sendto_tcp4_target( struct tcp4_details *details,
   if( result == -1 ){
     raise_socket_send_failure( "send failed with IPv4/UDP socket",
                                errno,
-                               "errno after the failed call to send");
+                               "errno after the failed call");
   }
 
   return result;
