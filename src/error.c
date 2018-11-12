@@ -112,6 +112,13 @@ raise_socket_connect_failure( const char *message,
 }
 
 void
+raise_socket_send_failure( const char *message,
+                           int code,
+                           const char *code_type ) {
+  raise_error( STUMPLESS_SOCKET_SEND_FAILURE, message, code, code_type );
+}
+
+void
 raise_stream_write_failure( void ) {
   raise_error( STUMPLESS_STREAM_WRITE_FAILURE, NULL, 0, NULL );
 }

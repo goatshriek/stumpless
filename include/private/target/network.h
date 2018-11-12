@@ -34,7 +34,6 @@
 struct tcp4_details {
 #  ifdef HAVE_SYS_SOCKET_H
   int handle;
-  struct sockaddr_storage target_addr;
 #  elif HAVE_WINSOCK2_H
   SOCKET handle;
   SOCKADDR_STORAGE target_addr;
@@ -44,7 +43,6 @@ struct tcp4_details {
 struct udp4_details {
 #  ifdef HAVE_SYS_SOCKET_H
   int handle;
-  struct sockaddr_storage target_addr;
 #  elif HAVE_WINSOCK2_H
   SOCKET handle;
   SOCKADDR_STORAGE target_addr;

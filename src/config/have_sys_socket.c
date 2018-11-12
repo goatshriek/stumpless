@@ -18,8 +18,6 @@
 
 #include "private/config/have_sys_socket.h"
 
-#include <stdio.h>
-#include <arpa/inet.h>
 #include <errno.h>
 #include <netdb.h>
 #include <stddef.h>
@@ -43,18 +41,37 @@ struct tcp4_details *
 sys_socket_open_tcp4_target( struct tcp4_details *details,
                              const char *destination ) {
   int handle;
-  struct sockaddr_in *cast_addr_in;
+  struct addrinfo *addr_result;
+  int result;
 
   handle = socket( AF_INET, SOCK_STREAM, 0 );
 
-  cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
-  cast_addr_in->sin_family = AF_INET;
-  inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
-  cast_addr_in->sin_port = htons( 601 );
+  result = getaddrinfo( destination, "514", NULL, &addr_result );
+  if( result != 0 ) {
+    raise_address_failure( "getaddrinfo failed on name",
+                           result,
+                           "return code from getaddrinfo" );
+    goto fail;
+  }
 
+  result = connect( handle,
+                    addr_result->ai_addr,
+                    addr_result->ai_addrlen );
+
+  if( result == -1 ) {
+    raise_socket_connect_failure( "connect failed with IPv4/TCP socket",
+                                  errno,
+                                  "errno after the failed call to connect" );
+    goto fail_socket;
+  }
+
+  freeaddrinfo( addr_result );
   details->handle = handle;
   return details;
 
+
+fail_socket:
+  freeaddrinfo( addr_result );
 fail:
   return NULL;
 }
@@ -81,7 +98,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
                     addr_result->ai_addrlen );
 
   if( result == -1 ) {
-    raise_socket_connect_failure( "connect failed",
+    raise_socket_connect_failure( "connect failed with IPv4/UDP socket",
                                   errno,
                                   "errno after the failed call to connect" );
     goto fail_socket;
@@ -102,12 +119,20 @@ int
 sys_socket_sendto_tcp4_target( struct tcp4_details *details,
                                const char *msg,
                                size_t msg_length ) {
-  return sendto( details->handle,
+  int result;
+
+  result = send( details->handle,
                  msg,
                  msg_length,
-                 0,
-                 ( struct sockaddr * ) &details->target_addr,
-                 sizeof( details->target_addr ) );
+                 0 );
+
+  if( result == -1 ){
+    raise_socket_send_failure( "send failed with IPv4/UDP socket",
+                               errno,
+                               "errno after the failed call to send");
+  }
+
+  return result;
 }
 
 int
@@ -119,10 +144,12 @@ sys_socket_sendto_udp4_target( struct udp4_details *details,
   result = send( details->handle,
                  msg,
                  msg_length,
-                 0);
+                 0 );
 
   if( result == -1 ){
-    perror("send failed");
+    raise_socket_send_failure( "send failed with IPv4/UDP socket",
+                               errno,
+                               "errno after the failed call to send");
   }
 
   return result;

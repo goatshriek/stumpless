@@ -63,6 +63,11 @@ raise_socket_connect_failure( const char *message,
                               const char *code_type );
 
 void
+raise_socket_send_failure( const char *message,
+                           int code,
+                           const char *code_type );
+
+void
 raise_stream_write_failure( void );
 
 void
