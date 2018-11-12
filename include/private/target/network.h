@@ -36,7 +36,6 @@ struct tcp4_details {
   int handle;
 #  elif HAVE_WINSOCK2_H
   SOCKET handle;
-  SOCKADDR_STORAGE target_addr;
 #  endif
 };
 

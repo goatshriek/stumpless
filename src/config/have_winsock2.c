@@ -59,8 +59,9 @@ struct tcp4_details *
 winsock2_open_tcp4_target( struct tcp4_details *details,
                            const char *destination ) {
   SOCKET handle;
-  PSOCKADDR_IN cast_addr_in;
+  PADDRINFOA addr_result;
   WSADATA wsa_data;
+  int result;
 
   handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
 
@@ -74,14 +75,31 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
     }
   }
 
-  cast_addr_in = ( PSOCKADDR_IN ) &details->target_addr;
-  cast_addr_in->sin_family = AF_INET;
-  inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
-  cast_addr_in->sin_port = htons( 601 );
+  result = getaddrinfo( destination, "514", NULL, &addr_result );
+  if( result != 0 ) {
+    raise_address_failure( "getaddrinfo failed on name",
+                           result,
+                           "Windows Socket error code" );
+    goto fail;
+  }
 
+  result = connect( handle,
+                    addr_result->ai_addr,
+                    cap_size_t_to_int( addr_result->ai_addrlen ) );
+
+  if( result == SOCKET_ERROR ) {
+    raise_socket_connect_failure( "connect failed with IPv4/UDP socket",
+                                  WSAGetLastError(  ),
+                                  "WSAGetLastError after the failed call" );
+    goto fail_socket;
+  }
+
+  freeaddrinfo( addr_result );
   details->handle = handle;
   return details;
 
+fail_socket:
+  freeaddrinfo( addr_result );
 fail:
   return NULL;
 }
@@ -139,12 +157,10 @@ int
 winsock2_sendto_tcp4_target( struct tcp4_details *details,
                              const char *msg,
                              size_t msg_length ) {
-  return sendto( details->handle,
-                 msg,
-                 cap_size_t_to_int( msg_length ),
-                 0,
-                 ( PSOCKADDR ) &details->target_addr,
-                 sizeof( details->target_addr ) );
+  return send( details->handle,
+               msg,
+               cap_size_t_to_int( msg_length ),
+               0 );
 }
 
 int
