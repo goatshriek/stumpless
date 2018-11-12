@@ -40,6 +40,11 @@ clear_error( void ) {
 }
 
 void
+raise_address_failure( const char *message, int code, const char *code_type ) {
+  raise_error( STUMPLESS_ADDRESS_FAILURE, message, code, code_type );
+}
+
+void
 raise_argument_empty( const char *message ) {
   raise_error( STUMPLESS_ARGUMENT_EMPTY, message, 0, NULL );
 }
@@ -97,6 +102,13 @@ raise_network_protocol_unsupported( void ) {
 void
 raise_socket_bind_failure( void ) {
   raise_error( STUMPLESS_SOCKET_BIND_FAILURE, NULL, 0, NULL );
+}
+
+void
+raise_socket_connect_failure( const char *message,
+                              int code,
+                              const char *code_type ) {
+  raise_error( STUMPLESS_SOCKET_CONNECT_FAILURE, message, code, code_type );
 }
 
 void

@@ -20,11 +20,13 @@
 
 #include <stdio.h>
 #include <arpa/inet.h>
+#include <errno.h>
 #include <netdb.h>
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "private/error.h"
 #include "private/target/network.h"
 
 void
@@ -68,19 +70,30 @@ sys_socket_open_udp4_target( struct udp4_details *details,
 
   result = getaddrinfo( destination, "514", NULL, &addr_result );
   if( result != 0 ) {
-    perror("getaddrinfo failed");
+    raise_address_failure( "getaddrinfo failed on name",
+                           result,
+                           "return code from getaddrinfo" );
+    goto fail;
   }
 
-  if( connect( handle,
-               addr_result->ai_addr,
-               addr_result->ai_addrlen ) == -1 ){
-    perror("connect failed");
-    goto fail;
-           }
+  result = connect( handle,
+                    addr_result->ai_addr,
+                    addr_result->ai_addrlen );
 
+  if( result == -1 ) {
+    raise_socket_connect_failure( "connect failed",
+                                  errno,
+                                  "errno after the failed call to connect" );
+    goto fail_socket;
+  }
+
+  freeaddrinfo( addr_result );
   details->handle = handle;
   return details;
 
+
+fail_socket:
+  freeaddrinfo( addr_result );
 fail:
   return NULL;
 }

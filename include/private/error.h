@@ -25,6 +25,9 @@ void
 clear_error( void );
 
 void
+raise_address_failure( const char *message, int code, const char *code_type );
+
+void
 raise_argument_empty( const char *message );
 
 void
@@ -53,6 +56,11 @@ raise_network_protocol_unsupported( void );
 
 void
 raise_socket_bind_failure( void );
+
+void
+raise_socket_connect_failure( const char *message,
+                              int code,
+                              const char *code_type );
 
 void
 raise_stream_write_failure( void );
