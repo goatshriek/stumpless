@@ -66,7 +66,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   struct sockaddr_in *cast_addr_in;
   int result;
 
-  handle = socket( PF_INET, SOCK_DGRAM, 0 );
+  handle = socket( AF_INET, SOCK_DGRAM, 0 );
 
   result = getaddrinfo( destination, "514", NULL, &addr_result );
   if( result != 0 ) {
@@ -75,16 +75,13 @@ sys_socket_open_udp4_target( struct udp4_details *details,
 
   memset( &details->target_addr, '\0', sizeof( struct sockaddr_storage ) );
   cast_addr_in = ( struct sockaddr_in * ) &details->target_addr;
-  cast_addr_in->sin_family = PF_INET;
-  result = inet_pton( PF_INET, destination, &cast_addr_in->sin_addr.s_addr );
+  cast_addr_in->sin_family = AF_INET;
+  result = inet_pton( AF_INET, destination, &cast_addr_in->sin_addr.s_addr );
   if( result != 1){
     perror("inet_pton failed");
   }
   cast_addr_in->sin_port = htons( 514 );
 
-  //if( connect( handle,
-  //             ( struct sockaddr * ) &details->target_addr,
-  //             sizeof( struct sockaddr_storage ) ) == -1 ){
   if( connect( handle,
                addr_result->ai_addr,
                addr_result->ai_addrlen ) == -1 ){
