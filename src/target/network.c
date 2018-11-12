@@ -111,15 +111,11 @@ stumpless_open_udp4_target( const char *name,
 void
 destroy_network_target( struct network_target *target ) {
 
-  switch( target->transport ) {
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
+    config_close_tcp4_target( &target->details.tcp4 );
 
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      config_close_tcp4_target( &target->details.tcp4 );
-      break;
-
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      config_close_udp4_target( &target->details.udp4 );
-      break;
+  } else {
+    config_close_udp4_target( &target->details.udp4 );
 
   }
 
