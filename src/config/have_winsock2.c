@@ -157,18 +157,40 @@ int
 winsock2_sendto_tcp4_target( struct tcp4_details *details,
                              const char *msg,
                              size_t msg_length ) {
-  return send( details->handle,
-               msg,
-               cap_size_t_to_int( msg_length ),
-               0 );
+  int result;
+
+  result = send( details->handle,
+                 msg,
+                 cap_size_t_to_int( msg_length ),
+                 0 );
+
+  if( result == SOCKET_ERROR ) {
+    raise_socket_send_failure( "send failed with IPv4/TCP socket",
+                               WSAGetLastError(  ),
+                               "WSAGetLastError after the failed call" );
+    return -1;
+  }
+
+  return result;
 }
 
 int
 winsock2_sendto_udp4_target( struct udp4_details *details,
                              const char *msg,
                              size_t msg_length ) {
-  return send( details->handle,
-               msg,
-               cap_size_t_to_int( msg_length ),
-               0 );
+  int result;
+
+  result = send( details->handle,
+                 msg,
+                 cap_size_t_to_int( msg_length ),
+                 0 );
+
+  if( result == SOCKET_ERROR ) {
+    raise_socket_send_failure( "send failed with IPv4/UDP socket",
+                               WSAGetLastError(  ),
+                               "WSAGetLastError after the failed call" );
+    return -1;
+  }
+
+  return result;
 }

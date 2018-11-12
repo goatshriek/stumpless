@@ -127,7 +127,7 @@ sys_socket_sendto_tcp4_target( struct tcp4_details *details,
                  0 );
 
   if( result == -1 ){
-    raise_socket_send_failure( "send failed with IPv4/UDP socket",
+    raise_socket_send_failure( "send failed with IPv4/TCP socket",
                                errno,
                                "errno after the failed call");
   }
