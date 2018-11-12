@@ -31,7 +31,7 @@ stumpless_close_buffer_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "target is NULL" );
     return;
   }
 
@@ -49,8 +49,13 @@ stumpless_open_buffer_target( const char *name,
 
   clear_error(  );
 
-  if( !name || !buffer ) {
-    raise_argument_empty(  );
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return NULL;
+  }
+
+  if( !buffer ) {
+    raise_argument_empty( "buffer is NULL" );
     return NULL;
   }
 
@@ -111,7 +116,9 @@ sendto_buffer_target( struct buffer_target *target,
   size_t buffer_remaining;
 
   if( msg_length >= target->size ) {
-    raise_argument_too_big(  );
+    raise_argument_too_big( "buffer is too small for the given message",
+                            cap_size_t_to_int( msg_length ),
+                            "size of the message that is too large" );
     return -1;
   }
 

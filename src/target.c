@@ -98,8 +98,13 @@ stumpless_add_entry( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target || !entry ) {
-    raise_argument_empty(  );
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return -1;
+  }
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
     return -1;
   }
 
