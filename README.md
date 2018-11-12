@@ -10,7 +10,8 @@ A logging library built with the goals of a rich and intuitive interface,
 standards compliance, fast performance, and a small footprint.
 
 Currently stumpless offers RFC 5424 compliant logging to the following targets:
- * network servers (TCP or UDP over IPv4)
+ * network servers ([TCP](https://tools.ietf.org/html/rfc6587) or
+   [UDP](https://tools.ietf.org/html/rfc5426) over IPv4)
  * files
  * streams
  * character buffers
