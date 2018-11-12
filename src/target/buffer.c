@@ -116,7 +116,9 @@ sendto_buffer_target( struct buffer_target *target,
   size_t buffer_remaining;
 
   if( msg_length >= target->size ) {
-    raise_argument_too_big(  );
+    raise_argument_too_big( "buffer is too small for the given message",
+                            cap_size_t_to_int( msg_length ),
+                            "size of the message that is too large" );
     return -1;
   }
 

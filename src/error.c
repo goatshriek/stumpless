@@ -45,8 +45,8 @@ raise_argument_empty( const char *message ) {
 }
 
 void
-raise_argument_too_big( void ) {
-  raise_error( STUMPLESS_ARGUMENT_TOO_BIG, NULL, 0, NULL );
+raise_argument_too_big( const char *message, int code, const char *code_type ) {
+  raise_error( STUMPLESS_ARGUMENT_TOO_BIG, message, code, code_type );
 }
 
 void
