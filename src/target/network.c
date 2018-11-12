@@ -182,16 +182,11 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length ) {
-  switch( target->transport ) {
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
+    return config_sendto_tcp4_target( &target->details.tcp4, msg, msg_length );
 
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      return config_sendto_tcp4_target( &target->details.tcp4,
-                                        msg,
-                                        msg_length );
+  } else {
+    return config_sendto_udp4_target( &target->details.udp4, msg, msg_length );
 
-    default: // remaining option: STUMPLESS_UDP_TRANSPORT_PROTOCOL
-      return config_sendto_udp4_target( &target->details.udp4,
-                                        msg,
-                                        msg_length );
   }
 }
