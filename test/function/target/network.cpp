@@ -20,16 +20,58 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 
+#ifdef _WIN32
+#  include <winsock2.h>
+#  include <ws2tcpip.h>
+#else
+#  include <errno.h>
+#  include <netdb.h>
+#  include <sys/types.h>
+#  include <sys/socket.h>
+#  include <unistd.h>
+#endif
+
+#define TCP_FIXTURES_DISABLED_WARNING "TCP fixture tests will not run without permissions to bind" \
+                                      " to a local socket to receive messages."
+
 namespace {
   class Tcp4TargetTest : public::testing::Test {
     protected:
       struct stumpless_target *target;
       struct stumpless_entry *basic_entry;
+      bool tcp_fixtures_enabled = true;
+#ifdef _WIN32
+      SOCKET handle;
+#else
+      int handle;
+#endif
 
     virtual void
     SetUp( void ) {
       struct stumpless_element *element;
       struct stumpless_param *param;
+      struct stumpless_error *error;
+
+      // setting up to receive the sent messages
+#ifdef _WIN32
+      PADDRINFOA addr_result;
+      handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      bind(handle, addr_result->ai_addr, addr_result->ai_addrlen );
+      freeaddrinfo( addr_result );
+#else
+      struct addrinfo *addr_result;
+      handle = socket( AF_INET, SOCK_STREAM, 0 );
+      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+        if( errno == EACCES ) {
+          printf( "WARNING: " TCP_FIXTURES_DISABLED_WARNING "\n" );
+          tcp_fixtures_enabled = false;
+        }
+      }
+      listen( handle, 1 );
+      freeaddrinfo( addr_result );
+#endif
 
       target = stumpless_open_tcp4_target( "test-self",
                                            "127.0.0.1",
@@ -56,15 +98,34 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_network_target( target );
+
+#ifdef _WIN32
+      closesocket( handle );
+#else
+      close( handle );
+#endif
     }
   };
 
   TEST_F( Tcp4TargetTest, AddEntry ) {
     int result;
+    struct stumpless_error *error;
 
-    result = stumpless_add_entry( target, basic_entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    if( !tcp_fixtures_enabled ) {
+      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
+
+    } else {
+      ASSERT_TRUE( target != NULL );
+      ASSERT_TRUE( basic_entry != NULL );
+
+      result = stumpless_add_entry( target, basic_entry );
+      EXPECT_GE( result, 0 );
+
+      error = stumpless_get_error( );
+      if( error ) {
+        FAIL(  ) << error->message;
+      }
+    }
   }
 
   class Udp4TargetTest : public::testing::Test {
