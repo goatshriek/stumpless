@@ -180,8 +180,13 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target || !app_name ) {
-    raise_argument_empty(  );
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  if( !app_name ) {
+    raise_argument_empty( "app_name is NULL" );
     return NULL;
   }
 
@@ -205,8 +210,13 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target || !msgid ) {
-    raise_argument_empty(  );
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  if( !msgid ) {
+    raise_argument_empty( "msgid is NULL" );
     return NULL;
   }
 

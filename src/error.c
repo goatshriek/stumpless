@@ -91,7 +91,7 @@ raise_memory_allocation_failure( void ) {
 
 void
 raise_network_protocol_unsupported( void ) {
-  raise_error( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
+  raise_error( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED, NULL, 0, NULL );
 }
 
 void
@@ -111,7 +111,7 @@ raise_target_unsupported( void ) {
 
 void
 raise_transport_protocol_unsupported( void ) {
-  raise_error( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+  raise_error( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED, NULL, 0, NULL );
 }
 
 void

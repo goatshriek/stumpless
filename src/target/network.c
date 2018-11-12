@@ -32,7 +32,7 @@ stumpless_close_network_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "target is NULL" );
     return;
   }
 
@@ -51,8 +51,13 @@ stumpless_open_network_target( const char *name,
 
   clear_error(  );
 
-  if( !name || !destination ) {
-    raise_argument_empty(  );
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    goto fail;
+  }
+
+  if( !destination ) {
+    raise_argument_empty( "destination is NULL" );
     goto fail;
   }
 
