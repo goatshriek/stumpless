@@ -25,13 +25,16 @@ void
 clear_error( void );
 
 void
-raise_argument_empty( void );
+raise_argument_empty( const char *message );
 
 void
-raise_argument_too_big( void );
+raise_argument_too_big( const char *message, int code, const char *code_type );
 
 void
-raise_error( enum stumpless_error_id id );
+raise_error( enum stumpless_error_id id,
+             const char *message,
+             int code,
+             const char *code_type );
 
 void
 raise_file_open_failure( void );

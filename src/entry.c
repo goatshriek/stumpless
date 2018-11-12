@@ -40,8 +40,13 @@ stumpless_add_element( struct stumpless_entry *entry,
 
   clear_error(  );
 
-  if( !entry || !element ) {
-    raise_argument_empty(  );
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
     return NULL;
   }
   // todo need to check for duplicates first
@@ -72,8 +77,13 @@ stumpless_add_param( struct stumpless_element *element,
 
   clear_error(  );
 
-  if( !element || !param ) {
-    raise_argument_empty(  );
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( !param ) {
+    raise_argument_empty( "param is NULL" );
     return NULL;
   }
 
@@ -99,7 +109,7 @@ stumpless_new_element( const char *name ) {
   clear_error(  );
 
   if( !name ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "name is NULL" );
     goto fail;
   }
 
@@ -193,8 +203,13 @@ stumpless_new_param( const char *name, const char *value ) {
 
   clear_error(  );
 
-  if( !name || !value ) {
-    raise_argument_empty(  );
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    goto fail;
+  }
+
+  if( !value ) {
+    raise_argument_empty( "value is NULL" );
     goto fail;
   }
 
@@ -287,7 +302,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   clear_error(  );
 
   if( !entry ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
@@ -309,7 +324,7 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
   clear_error(  );
 
   if( !entry ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
