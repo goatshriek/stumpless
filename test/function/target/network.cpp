@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <stumpless.h>
-#include <gtest/gtest.h>
 
 #ifdef _WIN32
 #  include <winsock2.h>
@@ -30,6 +27,10 @@
 #  include <sys/socket.h>
 #  include <unistd.h>
 #endif
+
+#include <stddef.h>
+#include <stumpless.h>
+#include <gtest/gtest.h>
 
 #define TCP_FIXTURES_DISABLED_WARNING "TCP fixture tests will not run without permissions to bind" \
                                       " to a local socket to receive messages."
@@ -50,14 +51,16 @@ namespace {
     SetUp( void ) {
       struct stumpless_element *element;
       struct stumpless_param *param;
-      struct stumpless_error *error;
 
       // setting up to receive the sent messages
 #ifdef _WIN32
       PADDRINFOA addr_result;
+      WSADATA wsa_data;
+      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
       getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
-      bind(handle, addr_result->ai_addr, addr_result->ai_addrlen );
+      bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
+      listen( handle, 1 );
       freeaddrinfo( addr_result );
 #else
       struct addrinfo *addr_result;

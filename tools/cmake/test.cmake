@@ -22,11 +22,20 @@ macro(add_function_test name)
     COMPILE_FLAGS "${function_test_compile_flags}"
   )
 
-  target_link_libraries(function-test-${name}
-    stumpless
-    libgtest
-    libgtestmain
-  )
+  if(HAVE_WINSOCK2_H AND ${name} STREQUAL network)
+    target_link_libraries(function-test-${name}
+      stumpless
+      libgtest
+      libgtestmain
+      Ws2_32
+    )
+  else()
+    target_link_libraries(function-test-${name}
+      stumpless
+      libgtest
+      libgtestmain
+    )
+  endif(HAVE_WINSOCK2_H AND ${name} STREQUAL network)
 
   target_include_directories(function-test-${name}
     PRIVATE
