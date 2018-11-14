@@ -8,45 +8,45 @@ else()
   set(function_test_compile_flags "-std=c++11")
 endif(MSVC)
 
-macro(add_function_test name)
-  list(APPEND STUMPLESS_FUNCTION_TESTS function-test-${name})
+function(private_add_function_test)
+  set(single_val_args NAME)
+  set(multi_val_args SOURCES LIBRARIES)
+  cmake_parse_arguments(FUNCTION_TEST_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
 
-  add_executable(function-test-${name}
+  add_executable(function-test-${FUNCTION_TEST_ARG_NAME}
     EXCLUDE_FROM_ALL
-    ${ARGN}
+    ${FUNCTION_TEST_ARG_SOURCES}
   )
 
-  set_target_properties(function-test-${name}
+  set_target_properties(function-test-${FUNCTION_TEST_ARG_NAME}
     PROPERTIES
-    OUTPUT_NAME function-test-${name}
+    OUTPUT_NAME function-test-${FUNCTION_TEST_ARG_NAME}
     COMPILE_FLAGS "${function_test_compile_flags}"
   )
 
-  if(HAVE_WINSOCK2_H AND ${name} STREQUAL network)
-    target_link_libraries(function-test-${name}
-      stumpless
-      libgtest
-      libgtestmain
-      Ws2_32
-    )
-  else()
-    target_link_libraries(function-test-${name}
-      stumpless
-      libgtest
-      libgtestmain
-    )
-  endif(HAVE_WINSOCK2_H AND ${name} STREQUAL network)
+  target_link_libraries(function-test-${FUNCTION_TEST_ARG_NAME}
+    stumpless
+    libgtest
+    libgtestmain
+    ${FUNCTION_TEST_ARG_LIBRARIES}
+  )
 
-  target_include_directories(function-test-${name}
+  target_include_directories(function-test-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
   )
 
-  add_test(NAME ${name}
-    COMMAND function-test-${name}
+  add_test(NAME ${FUNCTION_TEST_ARG_NAME}
+    COMMAND function-test-${FUNCTION_TEST_ARG_NAME}
   )
-endmacro(add_function_test)
+endfunction(private_add_function_test)
+
+macro(add_function_test name)
+  list(APPEND STUMPLESS_FUNCTION_TESTS function-test-${name})
+
+  private_add_function_test(NAME ${name} ${ARGN})
+endmacro(add_function_test name)
 
 macro(add_performance_test name)
   add_executable(performance-test-${name}

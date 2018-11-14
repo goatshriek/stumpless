@@ -101,7 +101,8 @@ if(ENABLE_NETWORK_TARGETS)
     )
 
     add_function_test(network
-      ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
+      SOURCES ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
+      LIBRARIES Ws2_32
     )
   endif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
 endif(ENABLE_NETWORK_TARGETS)
@@ -113,7 +114,7 @@ if(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
 
   add_function_test(socket_unsupported
-    ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
   )
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
@@ -125,12 +126,13 @@ else()
   )
 
   add_function_test(socket
-    test/function/target/socket.cpp
-    $<TARGET_OBJECTS:rfc5424_checker>
+    SOURCES
+      test/function/target/socket.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
   )
 
   add_function_test(socket_add_malloc_failure
-    test/function/startup/target/socket_add_malloc_failure.cpp
+    SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
   )
 endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
 
@@ -141,7 +143,7 @@ if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
 
   add_function_test(wel_unsupported
-    ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
+    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
   )
 else()
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
@@ -179,14 +181,16 @@ else()
   set_target_properties(events PROPERTIES PUBLIC_HEADER "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h")
 
   add_function_test(wel
-    ${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp
-    ${PROJECT_BINARY_DIR}/events.rc
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp
+      ${PROJECT_BINARY_DIR}/events.rc
   )
   add_dependencies(function-test-wel events)
 
   add_function_test(wel_supported
-    ${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp
-    ${PROJECT_BINARY_DIR}/events.rc
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp
+      ${PROJECT_BINARY_DIR}/events.rc
   )
 
   ADD_CUSTOM_COMMAND(
@@ -263,38 +267,41 @@ install(FILES
 
 # functionality tests
 add_function_test(buffer
-  test/function/target/buffer.cpp
-  $<TARGET_OBJECTS:rfc5424_checker>
+  SOURCES
+    test/function/target/buffer.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(entry
-  test/function/entry.cpp
+  SOURCES test/function/entry.cpp
 )
 
 add_function_test(entry_memory_failure
-  test/function/startup/entry_memory_failure.cpp
+  SOURCES test/function/startup/entry_memory_failure.cpp
 )
 
 add_function_test(file
-  test/function/target/file.cpp
-  $<TARGET_OBJECTS:rfc5424_checker>
+  SOURCES
+    test/function/target/file.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(memory
-  test/function/memory.cpp
+  SOURCES test/function/memory.cpp
 )
 
 add_function_test(stream
-  test/function/target/stream.cpp
-  $<TARGET_OBJECTS:rfc5424_checker>
+  SOURCES
+    test/function/target/stream.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(target
-  test/function/target.cpp
+  SOURCES test/function/target.cpp
 )
 
 add_function_test(version
-  test/function/version.cpp
+  SOURCES test/function/version.cpp
 )
 
 add_custom_target(check
