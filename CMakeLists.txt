@@ -100,9 +100,13 @@ if(ENABLE_NETWORK_TARGETS)
       DESTINATION "include/stumpless/target"
     )
 
+    if(WIN32)
+      set(network_libraries Ws2_32)
+    endif(WIN32)
+
     add_function_test(network
       SOURCES ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
-      LIBRARIES Ws2_32
+      LIBRARIES ${network_libraries}
     )
   endif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
 endif(ENABLE_NETWORK_TARGETS)
