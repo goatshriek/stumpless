@@ -26,7 +26,7 @@
 namespace {
   class FileTargetTest : public::testing::Test {
     protected:
-      const char *filename;
+      const char *filename = "testfile.log";
       struct stumpless_target *target;
       struct stumpless_entry *basic_entry;
 
@@ -35,7 +35,7 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      target = stumpless_open_file_target( "testfile.log", 0, 0 );
+      target = stumpless_open_file_target( filename, 0, 0 );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -92,6 +92,7 @@ namespace {
     size_t line_count = 3;
     size_t i;
 
+    remove( filename );
     target = stumpless_open_file_target( filename, 0, 0 );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
