@@ -31,6 +31,7 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include "test/function/rfc5424.hpp"
 
 #define TCP_FIXTURES_DISABLED_WARNING "TCP fixture tests will not run without permissions to bind" \
                                       " to a local socket to receive messages."
@@ -41,6 +42,7 @@ namespace {
       struct stumpless_target *target;
       struct stumpless_entry *basic_entry;
       bool tcp_fixtures_enabled = true;
+      char buffer[2048];
 #ifdef _WIN32
       SOCKET handle;
 #else
@@ -108,6 +110,43 @@ namespace {
       close( handle );
 #endif
     }
+
+    void
+    GetNextMessage( void ) {
+#ifdef _WIN32
+      SOCKET accepted;
+      int msg_len;
+      struct sockaddr_storage fromaddr;
+      int fromaddr_len = sizeof( sockaddr_storage );
+
+      accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+      if( accepted == INVALID_SOCKET ) {
+        printf( "could not accept connection: %d\n", WSAGetLastError(  ) );
+      }
+
+      msg_len = recv( accepted, buffer, 1024, 0 );
+      if( msg_len == SOCKET_ERROR ) {
+        buffer[0] = '\0';
+        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
+      } else {
+        buffer[msg_len] = '\0';
+      }
+
+      printf( "%s\n", buffer );
+      closesocket( accepted );
+#else
+      ssize_t msg_len;
+      struct sockaddr fromaddr;
+      socklen_t fromaddr_len;
+
+      msg_len = recvfrom( handle, buffer, 1024, 0, &fromaddr, &fromaddr_len );
+      if( msg_len < 0 ) {
+        buffer[0] = '\0';
+      } else {
+        buffer[msg_len] = '\0';
+      }
+#endif
+    }
   };
 
   TEST_F( Tcp4TargetTest, AddEntry ) {
@@ -128,6 +167,9 @@ namespace {
       if( error ) {
         FAIL(  ) << error->message;
       }
+
+      GetNextMessage(  );
+      TestRFC5424Compliance( buffer );
     }
   }
 

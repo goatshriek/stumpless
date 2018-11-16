@@ -105,7 +105,9 @@ if(ENABLE_NETWORK_TARGETS)
     endif(WIN32)
 
     add_function_test(network
-      SOURCES ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
+      SOURCES
+        ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
+        $<TARGET_OBJECTS:rfc5424_checker>
       LIBRARIES ${network_libraries}
     )
   endif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)

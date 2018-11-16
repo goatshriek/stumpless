@@ -25,7 +25,9 @@
 void TestRFC5424Compliance(const char *syslog_msg){
   std::cmatch matches;
   std::regex rfcRegex(RFC_5424_REGEX_STRING);
-  ASSERT_TRUE(std::regex_match(syslog_msg, matches, rfcRegex));
+  if( !std::regex_match(syslog_msg, matches, rfcRegex) ) {
+    FAIL(  ) << "message does not match RFC 5424 regex: " << syslog_msg;
+  }
 
   int prival = std::stoi(matches[1]);
   EXPECT_GE(prival, RFC_5424_PRIVAL_MIN);
