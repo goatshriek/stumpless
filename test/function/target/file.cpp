@@ -57,6 +57,7 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_file_target( target );
+      remove( filename );
     }
   };
 
@@ -91,7 +92,6 @@ namespace {
     size_t line_count = 3;
     size_t i;
 
-    remove( filename );
     target = stumpless_open_file_target( filename, 0, 0 );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -122,6 +122,7 @@ namespace {
     }
 
     EXPECT_EQ( i, line_count );
+    remove( filename );
   }
 
   TEST( FileTargetOpenTest, Directory ) {
@@ -139,6 +140,7 @@ namespace {
   }
 
   TEST( FileTargetOpenTest, MallocFailure ) {
+    const char *filename = "open-malloc-fail.log";
     struct stumpless_target *target;
     struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
@@ -146,7 +148,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( set_malloc_result != NULL );
    
-    target = stumpless_open_file_target( "open-malloc-fail.log", 0, 0 );
+    target = stumpless_open_file_target( filename, 0, 0 );
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
@@ -157,6 +159,7 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
+    remove( filename );
   }
 
   TEST( FileTargetOpenTest, NullName ) {

@@ -136,10 +136,13 @@ namespace {
       closesocket( accepted );
 #else
       ssize_t msg_len;
-      struct sockaddr fromaddr;
-      socklen_t fromaddr_len;
+      int accepted;
+      struct sockaddr_storage fromaddr;
+      socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
 
-      msg_len = recvfrom( handle, buffer, 1024, 0, &fromaddr, &fromaddr_len );
+      accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+
+      msg_len = recv( accepted, buffer, 1024, 0 );
       if( msg_len < 0 ) {
         buffer[0] = '\0';
       } else {
