@@ -36,6 +36,9 @@
 #define TCP_FIXTURES_DISABLED_WARNING "TCP fixture tests will not run without permissions to bind" \
                                       " to a local socket to receive messages."
 
+#define UDP_FIXTURES_DISABLED_WARNING "UDP fixture tests will not run without permissions to bind" \
+                                      " to a local socket to receive messages."
+
 namespace {
   class Tcp4TargetTest : public::testing::Test {
     protected:
@@ -132,7 +135,6 @@ namespace {
         buffer[msg_len] = '\0';
       }
 
-      printf( "%s\n", buffer );
       closesocket( accepted );
 #else
       ssize_t msg_len;
@@ -180,11 +182,42 @@ namespace {
     protected:
       struct stumpless_target *target;
       struct stumpless_entry *basic_entry;
+      bool udp_fixtures_enabled = true;
+      char buffer[2048];
+#ifdef _WIN32
+      SOCKET handle;
+#else
+      int handle;
+#endif
 
     virtual void
     SetUp( void ) {
       struct stumpless_element *element;
       struct stumpless_param *param;
+
+      // setting up to receive the sent messages
+#ifdef _WIN32
+      PADDRINFOA addr_result;
+      WSADATA wsa_data;
+      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+      handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
+      listen( handle, 1 );
+      freeaddrinfo( addr_result );
+#else
+      struct addrinfo *addr_result;
+      handle = socket( AF_INET, SOCK_DGRAM, 0 );
+      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+        if( errno == EACCES ) {
+          printf( "WARNING: " UDP_FIXTURES_DISABLED_WARNING "\n" );
+          udp_fixtures_enabled = false;
+        }
+      }
+      listen( handle, 1 );
+      freeaddrinfo( addr_result );
+#endif
 
       target = stumpless_open_udp4_target( "test-self",
                                            "127.0.0.1",
@@ -211,15 +244,61 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_network_target( target );
+
+#ifdef _WIN32
+      closesocket( handle );
+#else
+      close( handle );
+#endif
+    }
+
+    void
+    GetNextMessage( void ) {
+#ifdef _WIN32
+      int msg_len;
+
+      msg_len = recv( handle, buffer, 1024, 0 );
+      if( msg_len == SOCKET_ERROR ) {
+        buffer[0] = '\0';
+        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
+      } else {
+        buffer[msg_len] = '\0';
+      }
+#else
+      ssize_t msg_len;
+
+      msg_len = recv( handle, buffer, 1024, 0 );
+      if( msg_len < 0 ) {
+        buffer[0] = '\0';
+      } else {
+        buffer[msg_len] = '\0';
+      }
+#endif
     }
   };
 
   TEST_F( Udp4TargetTest, AddEntry ) {
     int result;
+    struct stumpless_error *error;
 
-    result = stumpless_add_entry( target, basic_entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    if( !udp_fixtures_enabled ) {
+      SUCCEED(  ) << UDP_FIXTURES_DISABLED_WARNING;
+
+    } else {
+      ASSERT_TRUE( target != NULL );
+      ASSERT_TRUE( basic_entry != NULL );
+
+      result = stumpless_add_entry( target, basic_entry );
+      EXPECT_GE( result, 0 );
+
+      error = stumpless_get_error( );
+      if( error ) {
+        FAIL(  ) << error->message;
+      }
+
+      GetNextMessage(  );
+      TestRFC5424Compliance( buffer );
+    }
   }
 
   /* non-fixture tests */
