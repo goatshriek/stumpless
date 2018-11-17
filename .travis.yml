@@ -23,6 +23,17 @@ matrix:
           organization: "goatshriek-github"
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - os: linux
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
     - os: osx
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
@@ -33,7 +44,7 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ..
+  - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..
 
 script:
   - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
