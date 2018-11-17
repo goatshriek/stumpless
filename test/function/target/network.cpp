@@ -315,7 +315,7 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
+    EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
     }
@@ -362,7 +362,7 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
+    EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
     }
