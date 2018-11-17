@@ -117,7 +117,7 @@ else()
       $<TARGET_OBJECTS:rfc5424_checker>
     LIBRARIES ${network_libraries}
   )
-endif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
+endif(NOT ENABLE_NETWORK_TARGETS)
 
 
 # socket target support
@@ -154,7 +154,7 @@ else()
   add_function_test(socket_add_malloc_failure
     SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
   )
-endif(NOT HAVE_SYS_SOCKET_H)
+endif(NOT ENABLE_SOCKET_TARGETS)
 
 
 # windows event log target support

@@ -65,6 +65,42 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( AddEntryTest, UnsupportedType ) {
+    struct stumpless_entry *entry;
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    int result;
+    char buffer[10];
+
+    target = stumpless_open_buffer_target( "null entry testing",
+                                           buffer,
+                                           10,
+                                           0,
+                                           0 );
+    ASSERT_TRUE( target != NULL );
+    // assuming this isn't a valid type
+    target->type = ( enum stumpless_target_type ) -1;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-unit-test",
+                                 "basic-entry",
+                                 "basic test message" );
+    ASSERT_TRUE( entry != NULL );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_LT( result, 0 );
+    
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    }
+
+    stumpless_close_buffer_target( target );
+    stumpless_destroy_entry( entry );
+  }
+
   TEST( SetDefaultAppName, MemoryFailure ) {
     char buffer[100];
     struct stumpless_target *target;
