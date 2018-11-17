@@ -19,10 +19,12 @@
 #include "private/config/have_winsock2.h"
 
 #include <stddef.h>
+#include <stdio.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "private/error.h"
 #include "private/inthelper.h"
+#include "private/memory.h"
 #include "private/target/network.h"
 
 void
@@ -158,10 +160,21 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
                              const char *msg,
                              size_t msg_length ) {
   int result;
+  char *buffer;
+  size_t int_length;
+
+  buffer = alloc_mem( msg_length + 50 );
+  if( !buffer ) {
+    return -1;
+  }
+
+  snprintf( buffer, 50, "%zd ", msg_length );
+  int_length = strlen( buffer );
+  memcpy( buffer + int_length, msg, msg_length );
 
   result = send( details->handle,
-                 msg,
-                 cap_size_t_to_int( msg_length ),
+                 buffer,
+                 cap_size_t_to_int( int_length + msg_length ),
                  0 );
 
   if( result == SOCKET_ERROR ) {

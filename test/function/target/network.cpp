@@ -159,6 +159,7 @@ namespace {
     int result;
     int octet_count;
     struct stumpless_error *error;
+    char *syslog_msg;
     std::cmatch matches;
     std::regex octet_count_regex( "^(\\d+) (.*)$" );
 
@@ -186,7 +187,8 @@ namespace {
         EXPECT_EQ( octet_count + 1 + matches[1].length(  ), strlen( buffer ) );
       }
 
-      TestRFC5424Compliance( buffer + ( matches[1].length(  ) ) + 1 );
+      syslog_msg = buffer + matches[1].length(  ) + 1;
+      TestRFC5424Compliance( syslog_msg );
     }
   }
 

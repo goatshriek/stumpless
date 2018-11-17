@@ -104,13 +104,13 @@ strbuilder_append_char( struct strbuilder *builder, char c ) {
 
 struct strbuilder *
 strbuilder_append_int( struct strbuilder *builder, int i ) {
-  char buffer[100];             // todo need to make more precise
+  char buffer[50];             // todo need to make more precise
 
   if( !builder ) {
     return NULL;
   }
 
-  snprintf( buffer, 100, "%d", i );
+  snprintf( buffer, sizeof( buffer ), "%d", i );
   return strbuilder_append_string( builder, buffer );
 }
 
