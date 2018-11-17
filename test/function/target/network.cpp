@@ -270,6 +270,32 @@ namespace {
     ASSERT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
   }
 
+  TEST( NetworkTargetOpenTest, MallocFailure ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+    void * ( *set_malloc_result ) ( size_t );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    target = stumpless_open_network_target( "malloc-failure-target",
+                                            "127.0.0.1",
+                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL,
+                                            0,
+                                            STUMPLESS_FACILITY_USER );   
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+  }
+
   TEST( NetworkTargetOpenTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
