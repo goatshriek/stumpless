@@ -115,13 +115,21 @@ endif(ENABLE_NETWORK_TARGETS)
 
 
 # socket target support
-if(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
+if(NOT ENABLE_SOCKET_TARGETS)
+  set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
+
+  add_function_test(socket_unsupported
+    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+  )
+
+elseif(NOT HAVE_SYS_SOCKET_H)
   message("socket targets are not supported without sys/socket.h")
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
 
   add_function_test(socket_unsupported
     SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
   )
+
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
   list(APPEND STUMPLESS_SOURCES src/target/socket.c)
