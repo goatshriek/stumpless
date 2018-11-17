@@ -86,32 +86,38 @@ endif(WIN32)
 
 
 # network target support
-if(ENABLE_NETWORK_TARGETS)
-  if(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
-    message("network targets are not supported without either winsock2.h or sys/socket.h")
-    set(STUMPLESS_NETWORK_TARGETS_SUPPORTED FALSE)
-  else()
-    set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)
+if(NOT ENABLE_NETWORK_TARGETS)
+  set(STUMPLESS_NETWORK_TARGETS_SUPPORTED FALSE)
 
-    list(APPEND STUMPLESS_SOURCES src/target/network.c)
+  add_function_test(network_unsupported
+    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/network_unsupported.cpp
+  )
 
-    install(FILES
-      ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
-      DESTINATION "include/stumpless/target"
-    )
+elseif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
+  message("network targets are not supported without either winsock2.h or sys/socket.h")
+  set(STUMPLESS_NETWORK_TARGETS_SUPPORTED FALSE)
 
-    if(WIN32)
-      set(network_libraries Ws2_32)
-    endif(WIN32)
+else()
+  set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)
 
-    add_function_test(network
-      SOURCES
-        ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
-        $<TARGET_OBJECTS:rfc5424_checker>
-      LIBRARIES ${network_libraries}
-    )
-  endif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
-endif(ENABLE_NETWORK_TARGETS)
+  list(APPEND STUMPLESS_SOURCES src/target/network.c)
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
+    DESTINATION "include/stumpless/target"
+  )
+
+  if(WIN32)
+    set(network_libraries Ws2_32)
+  endif(WIN32)
+
+  add_function_test(network
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+    LIBRARIES ${network_libraries}
+  )
+endif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
 
 
 # socket target support
@@ -148,7 +154,7 @@ else()
   add_function_test(socket_add_malloc_failure
     SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
   )
-endif(ENABLE_SOCKET_TARGETS AND NOT HAVE_SYS_SOCKET_H)
+endif(NOT HAVE_SYS_SOCKET_H)
 
 
 # windows event log target support
