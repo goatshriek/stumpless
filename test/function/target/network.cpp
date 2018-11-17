@@ -186,7 +186,7 @@ namespace {
         EXPECT_EQ( octet_count + 1 + matches[1].length(  ), strlen( buffer ) );
       }
 
-      TestRFC5424Compliance( buffer );
+      TestRFC5424Compliance( buffer + ( matches[1].length(  ) ) + 1 );
     }
   }
 
