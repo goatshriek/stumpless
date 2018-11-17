@@ -28,6 +28,7 @@
 #  include <unistd.h>
 #endif
 
+#include <regex>
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
@@ -156,7 +157,10 @@ namespace {
 
   TEST_F( Tcp4TargetTest, AddEntry ) {
     int result;
+    int octet_count;
     struct stumpless_error *error;
+    std::cmatch matches;
+    std::regex octet_count_regex( "^(\\d+) (.*)$" );
 
     if( !tcp_fixtures_enabled ) {
       SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
@@ -174,6 +178,14 @@ namespace {
       }
 
       GetNextMessage(  );
+
+      if( !std::regex_match( buffer, matches, octet_count_regex ) ) {
+        FAIL(  ) << "octet count was not at the beginning of the message";
+      } else {
+        octet_count = std::stoi(matches[1]);
+        EXPECT_EQ( octet_count + 1 + matches[1].length(  ), strlen( buffer ) );
+      }
+
       TestRFC5424Compliance( buffer );
     }
   }
