@@ -31,6 +31,7 @@
 #include <regex>
 #include <stddef.h>
 #include <stumpless.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
 
@@ -39,6 +40,8 @@
 
 #define UDP_FIXTURES_DISABLED_WARNING "UDP fixture tests will not run without permissions to bind" \
                                       " to a local socket to receive messages."
+
+using::testing::HasSubstr;
 
 namespace {
   class Tcp4TargetTest : public::testing::Test {
@@ -532,5 +535,20 @@ namespace {
     EXPECT_TRUE( error == NULL );
 
     stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetSetUdpMaxMessage, NullTarget ) {
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+
+    result = stumpless_set_udp_max_message_size( NULL, 1500 );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
   }
 }
