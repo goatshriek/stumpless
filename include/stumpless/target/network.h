@@ -25,6 +25,14 @@
 
 #  include <stumpless/target.h>
 
+/**
+ * The default message size for UDP network targets. This is set to account for
+ * an MTU of 1500 byes, a 20 byte IP header, and an 8 byte datagram header. If
+ * you wish to change this value for a particular target, then you must use the
+ * stumpless_set_udp_max_message_size function on the target.
+ */
+#define STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE 1472
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -45,12 +53,6 @@ enum stumpless_transport_protocol {
 };
 
 /**
- * The default message size for UDP network targets. This is set to account for
- * an MTU of 1500 byes, a 20 byte IP header, and an 8 byte datagram header.
- */
-#define STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE 1472
-
-/**
  * Closes a network target.
  *
  * This function does NOT close the stream associated with the target. It does
@@ -61,6 +63,18 @@ enum stumpless_transport_protocol {
  */
 void
 stumpless_close_network_target( struct stumpless_target *target );
+
+/**
+ * Gets the current maximum message size of a UDP network target.
+ *
+ * @param target The target to be get the message size from..
+ *
+ * @return The current maximum message size of the supplied target if no error
+ * is encountered. In the event of an error, 0 is returned and an error code is
+ * set appropriately.
+ */
+size_t
+stumpless_get_udp_max_message_size( struct stumpless_target *target );
 
 /**
  * Opens a network target for remote logging.
@@ -149,6 +163,30 @@ stumpless_open_udp4_target( const char *name,
                             const char *destination,
                             int options,
                             int default_facility );
+
+/**
+ * Sets the maximum message size of a UDP network target.
+ *
+ * Messages that are longer than the maximum size are truncated to this length.
+ * If the underlying transport for a network target can support a larger
+ * datagram and you need support for longer messages, then you can use this
+ * option to increase the size. Likewise, the option can be used to force
+ * smaller datagrams if needed, for example in the case of extra overhead in the
+ * IP header beyond the typical 20 bytes.
+ *
+ * Without calling this function, UDP targets start with a maximum message size
+ * set to \c STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE.
+ *
+ * @param target The target to be modified.
+ *
+ * @param max_msg_size The new maximum message size for the supplied target.
+ *
+ * @return The modified target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_udp_max_message_size( struct stumpless_target *target,
+                                    size_t max_msg_size );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

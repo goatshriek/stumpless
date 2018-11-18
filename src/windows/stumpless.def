@@ -41,3 +41,5 @@ EXPORTS
   stumpless_open_network_target         @39
   stumpless_open_tcp4_target            @40
   stumpless_open_udp4_target            @41
+  stumpless_get_udp_max_message_size    @42
+  stumpless_set_udp_max_message_size    @43
