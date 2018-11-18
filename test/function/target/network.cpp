@@ -52,8 +52,10 @@ namespace {
       char buffer[2048];
 #ifdef _WIN32
       SOCKET handle;
+      SOCKET accepted = INVALID_SOCKET;
 #else
       int handle;
+      int accepted = -1;
 #endif
 
     virtual void
@@ -112,8 +114,10 @@ namespace {
       stumpless_close_network_target( target );
 
 #ifdef _WIN32
+      closesocket( accepted );
       closesocket( handle );
 #else
+      close( accepted );
       close( handle );
 #endif
     }
@@ -121,14 +125,15 @@ namespace {
     void
     GetNextMessage( void ) {
 #ifdef _WIN32
-      SOCKET accepted;
       int msg_len;
       struct sockaddr_storage fromaddr;
       int fromaddr_len = sizeof( sockaddr_storage );
 
-      accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
       if( accepted == INVALID_SOCKET ) {
-        printf( "could not accept connection: %d\n", WSAGetLastError(  ) );
+      accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+        if( accepted == INVALID_SOCKET ) {
+          printf( "could not accept connection: %d\n", WSAGetLastError(  ) );
+        }
       }
 
       msg_len = recv( accepted, buffer, 1024, 0 );
@@ -138,15 +143,14 @@ namespace {
       } else {
         buffer[msg_len] = '\0';
       }
-
-      closesocket( accepted );
 #else
       ssize_t msg_len;
-      int accepted;
       struct sockaddr_storage fromaddr;
       socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
 
-      accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+      if( accepted == -1 ) {
+        accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+      }
 
       msg_len = recv( accepted, buffer, 1024, 0 );
       if( msg_len < 0 ) {
