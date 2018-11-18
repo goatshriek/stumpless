@@ -23,6 +23,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/network.h"
@@ -245,11 +246,21 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length ) {
-  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
-    return config_sendto_tcp4_target( &target->details.tcp4, msg, msg_length );
+  size_t effective_length;
+
+  if( target->transport == STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
+    if( msg_length > target->max_msg_size ) {
+      effective_length = target->max_msg_size;
+      raise_argument_too_big( "message is too large to be sent in a single datagram",
+                              cap_size_t_to_int( msg_length ),
+                              "size of the message that is too large" );
+    } else {
+      effective_length = msg_length;
+    }
+    return config_sendto_udp4_target( &target->details.udp4, msg, effective_length );
 
   } else {
-    return config_sendto_udp4_target( &target->details.udp4, msg, msg_length );
+    return config_sendto_tcp4_target( &target->details.tcp4, msg, msg_length );
 
   }
 }

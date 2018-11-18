@@ -41,7 +41,9 @@
 #define UDP_FIXTURES_DISABLED_WARNING "UDP fixture tests will not run without permissions to bind" \
                                       " to a local socket to receive messages."
 
+using::testing::EndsWith;
 using::testing::HasSubstr;
+using::testing::Not;
 
 namespace {
   class Tcp4TargetTest : public::testing::Test {
@@ -289,6 +291,7 @@ namespace {
 
       stumpless_set_target_default_app_name( target, "network-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
+      stumpless_set_udp_max_message_size( target, 500 );
 
       basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
@@ -361,6 +364,57 @@ namespace {
 
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
+    }
+  }
+
+  TEST_F( Udp4TargetTest, TruncatedMessage ) {
+    int result;
+    struct stumpless_entry *long_entry;
+    struct stumpless_error *error;
+    char *message;
+    size_t max_msg_size;
+    size_t my_msg_size;
+
+    if( !udp_fixtures_enabled ) {
+      SUCCEED(  ) << UDP_FIXTURES_DISABLED_WARNING;
+
+    } else {
+      ASSERT_TRUE( target != NULL );
+
+      max_msg_size = stumpless_get_udp_max_message_size( target );
+      ASSERT_NE( max_msg_size, 0 );
+
+      my_msg_size = max_msg_size + 10;
+      message = ( char * ) malloc( my_msg_size );
+      ASSERT_TRUE( message != NULL );
+      memset( message, 'a', max_msg_size );
+      strncpy( message + max_msg_size, "truncated", 10 );
+      message[my_msg_size-1] = '\0';
+
+      // due to the message header more than just the word 'truncated' will be
+      // taken from the message - this is just a basic test
+      long_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        "stumpless-unit-test",
+                                        "basic-entry",
+                                        message );
+      ASSERT_TRUE( long_entry != NULL );
+
+      result = stumpless_add_entry( target, long_entry );
+      EXPECT_GE( result, 0 );
+
+      error = stumpless_get_error( );
+      EXPECT_TRUE( error != NULL );
+      if( error ) {
+        EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_TOO_BIG );
+      }
+
+      GetNextMessage(  );
+      TestRFC5424Compliance( buffer );
+      printf( buffer );
+      EXPECT_THAT( buffer, Not( EndsWith( "truncated" ) ) );
+
+      free( message );
     }
   }
 
