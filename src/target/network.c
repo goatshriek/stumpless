@@ -39,6 +39,20 @@ stumpless_close_network_target( struct stumpless_target *target ) {
   destroy_network_target( target->id );
   destroy_target( target );
 }
+size_t
+stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
+  struct network_target *net_target;
+
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return 0;
+  }
+
+  net_target = target->id;
+  return net_target->max_msg_size;
+}
 
 struct stumpless_target *
 stumpless_open_network_target( const char *name,
@@ -111,6 +125,24 @@ stumpless_open_udp4_target( const char *name,
                                         default_facility );
 }
 
+struct stumpless_target *
+stumpless_set_udp_max_message_size( struct stumpless_target *target,
+                                    size_t max_msg_size ) {
+  struct network_target *net_target;
+
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  net_target = target->id;
+  net_target->max_msg_size = max_msg_size;
+
+  return target;
+}
+
 /* private definitions */
 
 void
@@ -171,6 +203,7 @@ new_network_target( const char *destination,
 
   target->network = network;
   target->transport = transport;
+  target->max_msg_size = STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE;
   return target;
 
 fail_details:

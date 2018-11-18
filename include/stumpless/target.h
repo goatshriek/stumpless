@@ -23,8 +23,6 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
-#  define STUMPLESS_MAX_TARGET_COUNT 10
-
 #  ifdef __cplusplus
 extern "C" {
 #  endif

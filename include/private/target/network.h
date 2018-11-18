@@ -44,13 +44,13 @@ struct udp4_details {
   int handle;
 #  elif HAVE_WINSOCK2_H
   SOCKET handle;
-  SOCKADDR_STORAGE target_addr;
 #  endif
 };
 
 struct network_target {
   enum stumpless_network_protocol network;
   enum stumpless_transport_protocol transport;
+  size_t max_msg_size;
   union {
     struct tcp4_details tcp4;
     struct udp4_details udp4;
