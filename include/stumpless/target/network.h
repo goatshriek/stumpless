@@ -45,6 +45,12 @@ enum stumpless_transport_protocol {
 };
 
 /**
+ * The default message size for UDP network targets. This is set to account for
+ * an MTU of 1500 byes, a 20 byte IP header, and an 8 byte datagram header.
+ */
+#define STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE 1472
+
+/**
  * Closes a network target.
  *
  * This function does NOT close the stream associated with the target. It does

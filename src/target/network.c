@@ -171,6 +171,7 @@ new_network_target( const char *destination,
 
   target->network = network;
   target->transport = transport;
+  target->max_msg_size = STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE;
   return target;
 
 fail_details:
