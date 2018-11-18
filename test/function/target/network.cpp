@@ -388,6 +388,8 @@ namespace {
       message = ( char * ) malloc( my_msg_size );
       ASSERT_TRUE( message != NULL );
       memset( message, 'a', max_msg_size );
+      strncpy( message, "present", 7 );
+      message[7] = 'a';
       strncpy( message + max_msg_size, "truncated", 10 );
       message[my_msg_size-1] = '\0';
 
@@ -411,8 +413,8 @@ namespace {
 
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
-      printf( buffer );
       EXPECT_THAT( buffer, Not( EndsWith( "truncated" ) ) );
+      EXPECT_THAT( buffer, HasSubstr( "present" ) );
 
       free( message );
     }
