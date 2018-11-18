@@ -71,6 +71,9 @@ void
 raise_stream_write_failure( void );
 
 void
+raise_target_incompatible( const char *message );
+
+void
 raise_target_unsupported( void );
 
 void

@@ -195,6 +195,48 @@ namespace {
     }
   }
 
+  TEST_F( Tcp4TargetTest, GetUdpMaxMessageSize ) {
+    size_t result;
+    struct stumpless_error *error;
+
+    if( !tcp_fixtures_enabled ) {
+      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
+
+    } else {
+      ASSERT_TRUE( target != NULL );
+
+      result = stumpless_get_udp_max_message_size( target );
+      EXPECT_EQ( result, 0 );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error != NULL );
+      if( error ) {
+        EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+      }
+    }
+  }
+
+  TEST_F( Tcp4TargetTest, SetUdpMaxMessageSize ) {
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+
+    if( !tcp_fixtures_enabled ) {
+      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
+
+    } else {
+      ASSERT_TRUE( target != NULL );
+
+      result = stumpless_set_udp_max_message_size( target, 1500 );
+      EXPECT_TRUE( result == NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error != NULL );
+      if( error ) {
+        EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+      }
+    }
+  }
+
   class Udp4TargetTest : public::testing::Test {
     protected:
       struct stumpless_target *target;
@@ -328,6 +370,46 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetGetUdpMaxMessage, BadTargetType ) {
+    size_t result;
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( "not-a-udp-target",
+                                           buffer,
+                                           100,
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_get_udp_max_message_size( target );
+    EXPECT_EQ( result, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( NetworkTargetGetUdpMaxMessage, NullTarget ) {
+    size_t result;
+    struct stumpless_error *error;
+
+    result = stumpless_get_udp_max_message_size( NULL );
+    EXPECT_TRUE( result == 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
   }
 
   TEST( NetworkTargetOpenTest, BadNetworkProtocol ) {
@@ -535,6 +617,31 @@ namespace {
     EXPECT_TRUE( error == NULL );
 
     stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetSetUdpMaxMessage, BadTargetType ) {
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( "not-a-udp-target",
+                                           buffer,
+                                           100,
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_set_udp_max_message_size( target, 1500 );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+    }
+
+    stumpless_close_buffer_target( target );
   }
 
   TEST( NetworkTargetSetUdpMaxMessage, NullTarget ) {

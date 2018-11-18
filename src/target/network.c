@@ -47,11 +47,25 @@ stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
-    return 0;
+    goto fail;
+  }
+
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( "max message size is only valid for network"
+                               " targets" );
+    goto fail;
   }
 
   net_target = target->id;
+  if( net_target->transport != STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
+    raise_target_incompatible( "max message size is only valid for UDP targets" );
+    goto fail;
+  }
+
   return net_target->max_msg_size;
+
+fail:
+  return 0;
 }
 
 struct stumpless_target *
@@ -134,13 +148,28 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
-    return NULL;
+    goto fail;
+  }
+
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( "max message size is only valid for network"
+                               " targets" );
+    goto fail;
+  }
+
+  net_target = target->id;
+  if( net_target->transport != STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
+    raise_target_incompatible( "max message size is only valid for UDP targets" );
+    goto fail;
   }
 
   net_target = target->id;
   net_target->max_msg_size = max_msg_size;
 
   return target;
+
+fail:
+  return NULL;
 }
 
 /* private definitions */

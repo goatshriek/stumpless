@@ -124,6 +124,11 @@ raise_stream_write_failure( void ) {
 }
 
 void
+raise_target_incompatible( const char *message ) {
+  raise_error( STUMPLESS_TARGET_INCOMPATIBLE, message, 0, NULL );
+}
+
+void
 raise_target_unsupported( void ) {
   raise_error( STUMPLESS_TARGET_UNSUPPORTED, NULL, 0, NULL );
 }
