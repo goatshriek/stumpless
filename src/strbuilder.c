@@ -143,12 +143,8 @@ strbuilder_append_string( struct strbuilder *builder, const char *str ) {
 
 char *
 strbuilder_get_buffer( struct strbuilder *builder, size_t * length ) {
-  if( builder ) {
-    *length = builder->position - builder->buffer;
-    return builder->buffer;
-  } else {
-    return NULL;
-  }
+  *length = builder->position - builder->buffer;
+  return builder->buffer;
 }
 
 void
