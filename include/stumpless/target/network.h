@@ -65,9 +65,21 @@ void
 stumpless_close_network_target( struct stumpless_target *target );
 
 /**
+ * Gets the transport port number of a network target.
+ *
+ * @param target The target to get the port number from.
+ *
+ * @return The current port number of the network target, encoded as a string.
+ * In the event of an error, NULL is return and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_transport_port( struct stumpless_target *target );
+
+/**
  * Gets the current maximum message size of a UDP network target.
  *
- * @param target The target to be get the message size from..
+ * @param target The target to be get the message size from.
  *
  * @return The current maximum message size of the supplied target if no error
  * is encountered. In the event of an error, 0 is returned and an error code is
@@ -163,6 +175,22 @@ stumpless_open_udp4_target( const char *name,
                             const char *destination,
                             int options,
                             int default_facility );
+
+/**
+ * Sets the transport port number of a network target.
+ *
+ * @param target The target to be modified.
+ *
+ * @param port The new transport port number to use. This is an ASCII string,
+ * and will be copied by the function. After the call returns, the parameter
+ * will not be referenced again and can be destroyed as needed.
+ *
+ * @return The modified target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_transport_port( struct stumpless_target *target,
+                              const char *port );
 
 /**
  * Sets the maximum message size of a UDP network target.
