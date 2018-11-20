@@ -16,6 +16,9 @@ platform:
 environment:
   matrix:
   - arch: Win64
+    network_targets_status: OFF
+  - arch: Win64
+    network_targets_status: ON
 
 init:
 - set arch=
