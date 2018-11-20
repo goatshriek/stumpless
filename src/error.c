@@ -129,8 +129,8 @@ raise_target_incompatible( const char *message ) {
 }
 
 void
-raise_target_unsupported( void ) {
-  raise_error( STUMPLESS_TARGET_UNSUPPORTED, NULL, 0, NULL );
+raise_target_unsupported( const char *message ) {
+  raise_error( STUMPLESS_TARGET_UNSUPPORTED, message, 0, NULL );
 }
 
 void

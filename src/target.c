@@ -283,7 +283,7 @@ send_entry_to_unsupported_target( const struct stumpless_target *target,
   ( void ) target;
   ( void ) entry;
 
-  raise_target_unsupported(  );
+  raise_target_unsupported( "attempted to send an entry to an unsupported target type" );
   return -1;
 }
 
@@ -295,6 +295,6 @@ sendto_unsupported_target( const struct stumpless_target *target,
   ( void ) msg;
   ( void ) msg_length;
 
-  raise_target_unsupported(  );
+  raise_target_unsupported( "attempted to send a message to an unsupported target type" );
   return -1;
 }

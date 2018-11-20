@@ -89,6 +89,10 @@ endif(WIN32)
 if(NOT ENABLE_NETWORK_TARGETS)
   set(STUMPLESS_NETWORK_TARGETS_SUPPORTED FALSE)
 
+  if(WIN32)
+    list(APPEND STUMPLESS_SOURCES src/config/network_unsupported.c)
+  endif(WIN32)
+
   add_function_test(network_unsupported
     SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/network_unsupported.cpp
   )
@@ -96,6 +100,14 @@ if(NOT ENABLE_NETWORK_TARGETS)
 elseif(NOT HAVE_WINSOCK2_H AND NOT HAVE_SYS_SOCKET_H)
   message("network targets are not supported without either winsock2.h or sys/socket.h")
   set(STUMPLESS_NETWORK_TARGETS_SUPPORTED FALSE)
+
+  if(WIN32)
+    list(APPEND STUMPLESS_SOURCES src/config/network_unsupported.c)
+  endif(WIN32)
+
+  add_function_test(network_unsupported
+    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/network_unsupported.cpp
+  )
 
 else()
   set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)

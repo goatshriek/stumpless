@@ -40,6 +40,12 @@ stumpless_close_network_target( struct stumpless_target *target ) {
   destroy_network_target( target->id );
   destroy_target( target );
 }
+
+const char *
+stumpless_get_transport_port( struct stumpless_target *target ) {
+  return NULL;
+}
+
 size_t
 stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
   struct network_target *net_target;
@@ -138,6 +144,12 @@ stumpless_open_udp4_target( const char *name,
                                         STUMPLESS_UDP_TRANSPORT_PROTOCOL,
                                         options,
                                         default_facility );
+}
+
+struct stumpless_target *
+stumpless_set_transport_port( struct stumpless_target *target,
+                              const char *port ) {
+  return NULL;
 }
 
 struct stumpless_target *

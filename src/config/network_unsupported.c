@@ -1,0 +1,80 @@
+// SPDX-License-Identifier: Apache-2.0
+
+/*
+ * Copyright 2018 Joel E. Anderson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <stumpless/target/network.h>
+#include "private/error.h"
+
+void
+stumpless_close_network_target( struct stumpless_target *target ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+}
+
+const char *
+stumpless_get_transport_port( struct stumpless_target *target ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+size_t
+stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return 0;
+}
+
+struct stumpless_target *
+stumpless_open_network_target( const char *name,
+                               const char *destination,
+                               enum stumpless_network_protocol network,
+                               enum stumpless_transport_protocol transport,
+                               int options,
+                               int default_facility ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_open_tcp4_target( const char *name,
+                            const char *destination,
+                            int options,
+                            int default_facility ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_open_udp4_target( const char *name,
+                            const char *destination,
+                            int options,
+                            int default_facility ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_set_transport_port( struct stumpless_target *target,
+                              const char *port ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_set_udp_max_message_size( struct stumpless_target *target,
+                                    size_t max_msg_size ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}

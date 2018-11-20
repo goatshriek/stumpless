@@ -74,7 +74,7 @@ void
 raise_target_incompatible( const char *message );
 
 void
-raise_target_unsupported( void );
+raise_target_unsupported( const char *message );
 
 void
 raise_transport_protocol_unsupported( void );
