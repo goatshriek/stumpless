@@ -31,7 +31,12 @@
 #    include <winsock2.h>
 #  endif
 
+#  define DEFAULT_TCP_PORT "514"
+#  define DEFAULT_UDP_PORT "514"
+
 struct tcp4_details {
+  const char *port;
+
 #  ifdef HAVE_SYS_SOCKET_H
   int handle;
 #  elif HAVE_WINSOCK2_H
@@ -40,6 +45,8 @@ struct tcp4_details {
 };
 
 struct udp4_details {
+  const char *port;
+
 #  ifdef HAVE_SYS_SOCKET_H
   int handle;
 #  elif HAVE_WINSOCK2_H

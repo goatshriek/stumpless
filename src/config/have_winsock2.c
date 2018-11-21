@@ -77,7 +77,7 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
     }
   }
 
-  result = getaddrinfo( destination, "514", NULL, &addr_result );
+  result = getaddrinfo( destination, DEFAULT_TCP_PORT, NULL, &addr_result );
   if( result != 0 ) {
     raise_address_failure( "getaddrinfo failed on name",
                            result,
@@ -97,6 +97,7 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
   }
 
   freeaddrinfo( addr_result );
+  details->port = DEFAULT_TCP_PORT;
   details->handle = handle;
   return details;
 
@@ -126,7 +127,7 @@ winsock2_open_udp4_target( struct udp4_details *details,
     }
   }
 
-  result = getaddrinfo( destination, "514", NULL, &addr_result );
+  result = getaddrinfo( destination, DEFAULT_UDP_PORT, NULL, &addr_result );
   if( result != 0 ) {
     raise_address_failure( "getaddrinfo failed on name",
                            result,
@@ -146,6 +147,7 @@ winsock2_open_udp4_target( struct udp4_details *details,
   }
 
   freeaddrinfo( addr_result );
+  details->port = DEFAULT_UDP_PORT;
   details->handle = handle;
   return details;
 
@@ -176,6 +178,7 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
                  buffer,
                  cap_size_t_to_int( int_length + msg_length ),
                  0 );
+  free_mem( buffer );
 
   if( result == SOCKET_ERROR ) {
     raise_socket_send_failure( "send failed with IPv4/TCP socket",
