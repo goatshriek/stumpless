@@ -64,7 +64,7 @@ stumpless_get_transport_port( struct stumpless_target *target ) {
       return net_target->details.tcp4.port;
 
     case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      return net_target->details.tcp4.port;
+      return net_target->details.udp4.port;
 
     default:
       raise_target_incompatible( "transport port is not valid for this network"
