@@ -43,6 +43,36 @@ stumpless_close_network_target( struct stumpless_target *target ) {
 
 const char *
 stumpless_get_transport_port( struct stumpless_target *target ) {
+  struct network_target *net_target;
+
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    goto fail;
+  }
+
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( "transport port is only valid for network"
+                               " targets" );
+    goto fail;
+  }
+
+  net_target = target->id;
+  switch( net_target->transport ) {
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      return net_target->details.tcp4.port;
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      return net_target->details.tcp4.port;
+
+    default:
+      raise_target_incompatible( "transport port is not valid for this network"
+                                 " target" );
+      goto fail;
+  }
+
+fail:
   return NULL;
 }
 

@@ -52,6 +52,7 @@ namespace {
       struct stumpless_entry *basic_entry;
       bool tcp_fixtures_enabled = true;
       char buffer[2048];
+      const char *port = "514";
 #ifdef _WIN32
       SOCKET handle;
       SOCKET accepted = INVALID_SOCKET;
@@ -71,14 +72,14 @@ namespace {
       WSADATA wsa_data;
       WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
-      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
       bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
       listen( handle, 1 );
       freeaddrinfo( addr_result );
 #else
       struct addrinfo *addr_result;
       handle = socket( AF_INET, SOCK_STREAM, 0 );
-      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
       if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
         if( errno == EACCES ) {
           printf( "WARNING: " TCP_FIXTURES_DISABLED_WARNING "\n" );
@@ -199,6 +200,16 @@ namespace {
       syslog_msg = buffer + matches[1].length(  ) + 1;
       TestRFC5424Compliance( syslog_msg );
     }
+  }
+
+  TEST_F( Tcp4TargetTest, GetTransportPort ) {
+    const char *port_result;
+
+    port_result = stumpless_get_transport_port( target );
+
+    ASSERT_TRUE( port_result != NULL );
+    EXPECT_TRUE( port_result != port );
+    EXPECT_STREQ( port_result, port );
   }
 
   TEST_F( Tcp4TargetTest, GetUdpMaxMessageSize ) {
@@ -430,6 +441,21 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetGetTransportPort, NullTarget ) {
+    const char *result;
+    struct stumpless_error *error;
+
+    result = stumpless_get_transport_port( NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
   }
 
   TEST( NetworkTargetGetUdpMaxMessage, BadTargetType ) {
