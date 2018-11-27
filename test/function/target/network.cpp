@@ -205,11 +205,16 @@ namespace {
   TEST_F( Tcp4TargetTest, GetTransportPort ) {
     const char *port_result;
 
-    port_result = stumpless_get_transport_port( target );
+    if( !tcp_fixtures_enabled ) {
+      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
 
-    ASSERT_TRUE( port_result != NULL );
-    EXPECT_TRUE( port_result != port );
-    EXPECT_STREQ( port_result, port );
+    } else {
+      port_result = stumpless_get_transport_port( target );
+
+      ASSERT_TRUE( port_result != NULL );
+      EXPECT_TRUE( port_result != port );
+      EXPECT_STREQ( port_result, port );
+    }
   }
 
   TEST_F( Tcp4TargetTest, GetUdpMaxMessageSize ) {
