@@ -463,6 +463,31 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetGetTransportProtocol, BadTargetType ) {
+    const char *result;
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( "not-a-udp-target",
+                                           buffer,
+                                           100,
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_get_transport_port( target );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( NetworkTargetGetUdpMaxMessage, BadTargetType ) {
     size_t result;
     struct stumpless_error *error;
