@@ -25,6 +25,7 @@
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
+#include "private/strhelper.h"
 #include "private/target.h"
 #include "private/target/network.h"
 
@@ -179,6 +180,46 @@ stumpless_open_udp4_target( const char *name,
 struct stumpless_target *
 stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
+  struct network_target *net_target;
+  const char *new_port;
+
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    goto fail;
+  }
+
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( "transport port is only valid for network"
+                               " targets" );
+    goto fail;
+  }
+
+  new_port = copy_cstring( port );
+  if( !new_port ) {
+    goto fail;
+  }
+
+  net_target = target->id;
+  switch( net_target->transport ) {
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      net_target->details.tcp4.port = new_port;
+      break;
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      net_target->details.udp4.port = new_port;
+      break;
+
+    default:
+      raise_target_incompatible( "transport port is not valid for this network"
+                                 " target" );
+      goto fail;
+  }
+
+  return target;
+
+fail:
   return NULL;
 }
 

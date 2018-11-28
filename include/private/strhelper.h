@@ -22,6 +22,9 @@
 #  include<stddef.h>
 
 char *
+copy_cstring( const char *str );
+
+char *
 cstring_to_sized_string( const char *str, size_t *length );
 
 #endif /* __STUMPLESS_PRIVATE_STRHELPER_H */

@@ -193,7 +193,7 @@ namespace {
       if( !std::regex_match( buffer, matches, octet_count_regex ) ) {
         FAIL(  ) << "octet count was not at the beginning of the message";
       } else {
-        octet_count = std::stoi(matches[1]);
+        octet_count = std::stoi( matches[1] );
         EXPECT_EQ( octet_count + 1 + matches[1].length(  ), strlen( buffer ) );
       }
 
@@ -744,6 +744,39 @@ namespace {
                                          STUMPLESS_FACILITY_USER );
 
     ASSERT_TRUE( target != NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetSetTransportPort, AfterTargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    const char *new_port = "515";
+    const char *default_port;
+    const char *current_port;
+
+
+    target = stumpless_open_udp4_target( "target-to-self",
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    default_port = stumpless_get_transport_port( target );
+    EXPECT_TRUE( default_port != NULL );
+    ASSERT_STRNE( default_port, new_port );
+
+    result = stumpless_set_transport_port( target, new_port );
+    EXPECT_TRUE( result != NULL );
+
+    current_port = stumpless_get_transport_port( target );
+    EXPECT_TRUE( current_port != NULL );
+    EXPECT_TRUE( current_port != new_port );
+    EXPECT_STREQ( new_port, current_port );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );

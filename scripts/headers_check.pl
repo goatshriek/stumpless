@@ -41,6 +41,7 @@ my %manifest = (
   "config_sendto_tcp4_target" => "private/config/wrapper.h",
   "config_sendto_udp4_target" => "private/config/wrapper.h",
   "config_set_entry_wel_type" => "private/config/wrapper.h",
+  "copy_cstring" => "private/strhelper.h",
   "cstring_to_sized_string" => "private/strhelper.h",
   "DEFAULT_TCP_PORT" => "private/target/network.h",
   "DEFAULT_UDP_PORT" => "private/target/network.h",

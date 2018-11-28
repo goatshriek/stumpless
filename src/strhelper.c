@@ -22,6 +22,23 @@
 #include "private/strhelper.h"
 
 char *
+copy_cstring( const char *str ) {
+  char *new_string;
+  size_t length;
+
+  length = strlen( str );
+  new_string = alloc_mem( length + 1 );
+  if( !new_string ) {
+    return NULL;
+  }
+
+  memcpy( new_string, str, length );
+  new_string[length] = '\0';
+
+  return new_string;
+}
+
+char *
 cstring_to_sized_string( const char *str, size_t *length ){
   char *sized_string;
 
