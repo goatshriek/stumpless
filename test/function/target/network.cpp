@@ -265,6 +265,7 @@ namespace {
       struct stumpless_entry *basic_entry;
       bool udp_fixtures_enabled = true;
       char buffer[2048];
+      const char *port = "514";
 #ifdef _WIN32
       SOCKET handle;
 #else
@@ -282,14 +283,14 @@ namespace {
       WSADATA wsa_data;
       WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
-      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
       bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
       listen( handle, 1 );
       freeaddrinfo( addr_result );
 #else
       struct addrinfo *addr_result;
       handle = socket( AF_INET, SOCK_DGRAM, 0 );
-      getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
       if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
         if( errno == EACCES ) {
           printf( "WARNING: " UDP_FIXTURES_DISABLED_WARNING "\n" );
@@ -380,6 +381,21 @@ namespace {
 
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
+    }
+  }
+
+  TEST_F( Udp4TargetTest, GetTransportPort ) {
+    const char *port_result;
+
+    if( !udp_fixtures_enabled ) {
+      SUCCEED(  ) << UDP_FIXTURES_DISABLED_WARNING;
+
+    } else {
+      port_result = stumpless_get_transport_port( target );
+
+      ASSERT_TRUE( port_result != NULL );
+      EXPECT_TRUE( port_result != port );
+      EXPECT_STREQ( port_result, port );
     }
   }
 
