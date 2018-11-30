@@ -282,6 +282,8 @@ my %manifest = (
   "winsock2_open_udp4_target" => "private/config/have_winsock2.h",
   "winsock2_sendto_tcp4_target" => "private/config/have_winsock2.h",
   "winsock2_sendto_udp4_target" => "private/config/have_winsock2.h",
+  "winsock2_set_tcp4_port" => "private/config/have_winsock2.h",
+  "winsock2_set_udp4_port" => "private/config/have_winsock2.h",
   "WORD" => "windows.h"
 );
 

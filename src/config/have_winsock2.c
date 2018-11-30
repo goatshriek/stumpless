@@ -20,6 +20,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "private/error.h"
@@ -59,7 +60,8 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
 
 struct tcp4_details *
 winsock2_open_tcp4_target( struct tcp4_details *details,
-                           const char *destination ) {
+                           const char *destination,
+                           const char *port ) {
   SOCKET handle;
   PADDRINFOA addr_result;
   WSADATA wsa_data;
@@ -77,7 +79,7 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
     }
   }
 
-  result = getaddrinfo( destination, DEFAULT_TCP_PORT, NULL, &addr_result );
+  result = getaddrinfo( destination, port, NULL, &addr_result );
   if( result != 0 ) {
     raise_address_failure( "getaddrinfo failed on name",
                            result,
@@ -97,19 +99,22 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
   }
 
   freeaddrinfo( addr_result );
-  details->port = DEFAULT_TCP_PORT;
+  details->port = port;
   details->handle = handle;
   return details;
 
 fail_socket:
   freeaddrinfo( addr_result );
 fail:
+  details->port = NULL;
+  details->handle = INVALID_SOCKET;
   return NULL;
 }
 
 struct udp4_details *
 winsock2_open_udp4_target( struct udp4_details *details,
-                           const char *destination ) {
+                           const char *destination,
+                           const char *port ) {
   SOCKET handle;
   PADDRINFOA addr_result;
   WSADATA wsa_data;
@@ -127,7 +132,7 @@ winsock2_open_udp4_target( struct udp4_details *details,
     }
   }
 
-  result = getaddrinfo( destination, DEFAULT_UDP_PORT, NULL, &addr_result );
+  result = getaddrinfo( destination, port, NULL, &addr_result );
   if( result != 0 ) {
     raise_address_failure( "getaddrinfo failed on name",
                            result,
@@ -147,13 +152,15 @@ winsock2_open_udp4_target( struct udp4_details *details,
   }
 
   freeaddrinfo( addr_result );
-  details->port = DEFAULT_UDP_PORT;
+  details->port = port;
   details->handle = handle;
   return details;
 
 fail_socket:
   freeaddrinfo( addr_result );
 fail:
+  details->port = NULL;
+  details->handle = INVALID_SOCKET;
   return NULL;
 }
 
@@ -209,4 +216,20 @@ winsock2_sendto_udp4_target( struct udp4_details *details,
   }
 
   return result;
+}
+
+struct tcp4_details *
+winsock2_set_tcp4_port( struct tcp4_details *details,
+                        const char *destination,
+                        const char *port ) {
+  winsock2_close_tcp4_target( details );
+  return winsock2_open_tcp4_target( details, destination, port );
+}
+
+struct udp4_details *
+winsock2_set_udp4_port( struct udp4_details *details,
+                        const char *destination,
+                        const char *port ) {
+  winsock2_close_udp4_target( details );
+  return winsock2_open_udp4_target( details, destination, port );
 }

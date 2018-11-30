@@ -32,11 +32,13 @@ int winsock2_gethostname( char *buffer, size_t namelen );
 
 struct tcp4_details *
 winsock2_open_tcp4_target( struct tcp4_details *details,
-                           const char *destination );
+                           const char *destination,
+                           const char *port );
 
 struct udp4_details *
 winsock2_open_udp4_target( struct udp4_details *details,
-                           const char *destination );
+                           const char *destination,
+                           const char *port );
 
 int
 winsock2_sendto_tcp4_target( struct tcp4_details *details,
@@ -47,5 +49,15 @@ int
 winsock2_sendto_udp4_target( struct udp4_details *details,
                              const char *msg,
                              size_t msg_length );
+
+struct tcp4_details *
+winsock2_set_tcp4_port( struct tcp4_details *details,
+                        const char *destination,
+                        const char *port );
+
+struct udp4_details *
+winsock2_set_udp4_port( struct udp4_details *details,
+                        const char *destination,
+                        const char *port );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H */

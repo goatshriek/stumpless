@@ -119,6 +119,8 @@
 #    define config_open_udp4_target sys_socket_open_udp4_target
 #    define config_sendto_tcp4_target sys_socket_sendto_tcp4_target
 #    define config_sendto_udp4_target sys_socket_sendto_udp4_target
+#    define config_set_tcp4_port sys_socket_set_tcp4_port
+#    define config_set_udp4_port sys_socket_set_udp4_port
 #  elif HAVE_WINSOCK2_H
 #    include "private/config/have_winsock2.h"
 #    define config_close_tcp4_target winsock2_close_tcp4_target
@@ -127,6 +129,8 @@
 #    define config_open_udp4_target winsock2_open_udp4_target
 #    define config_sendto_tcp4_target winsock2_sendto_tcp4_target
 #    define config_sendto_udp4_target winsock2_sendto_udp4_target
+#    define config_set_tcp4_port winsock2_set_tcp4_port
+#    define config_set_udp4_port winsock2_set_udp4_port
 #  endif
 
 

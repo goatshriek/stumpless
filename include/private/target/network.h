@@ -55,6 +55,7 @@ struct udp4_details {
 };
 
 struct network_target {
+  const char *destination;
   enum stumpless_network_protocol network;
   enum stumpless_transport_protocol transport;
   size_t max_msg_size;

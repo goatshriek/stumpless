@@ -755,10 +755,41 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
+    struct stumpless_entry *entry;
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
+    bool could_bind = true;
+    char buffer[2048];
 
+      // setting up to receive the sent messages
+#ifdef _WIN32
+    SOCKET handle;
+    SOCKET accepted = INVALID_SOCKET;
+    PADDRINFOA addr_result;
+    WSADATA wsa_data;
+    int msg_len;
+    WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+    handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
+    bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
+    listen( handle, 1 );
+    freeaddrinfo( addr_result );
+#else
+    int handle;
+    int accepted = -1;
+    struct addrinfo *addr_result;
+    ssize_t msg_len;
+    handle = socket( AF_INET, SOCK_DGRAM, 0 );
+    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
+    if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+      if( errno == EACCES ) {
+        could_not_bind = false;
+      }
+    }
+    listen( handle, 1 );
+    freeaddrinfo( addr_result );
+#endif
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
@@ -780,6 +811,35 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
+
+    if( could_bind ) {
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      stumpless_add_entry( target, entry );
+      EXPECT_TRUE( result != NULL );
+
+#ifdef _WIN32
+      msg_len = recv( handle, buffer, 1024, 0 );
+      if( msg_len == SOCKET_ERROR ) {
+        buffer[0] = '\0';
+        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
+      } else {
+        buffer[msg_len] = '\0';
+      }
+#else
+      msg_len = recv( handle, buffer, 1024, 0 );
+      if( msg_len < 0 ) {
+        buffer[0] = '\0';
+      } else {
+        buffer[msg_len] = '\0';
+      }
+#endif
+
+      EXPECT_TRUE( buffer[0] != '\0' );
+    }
 
     stumpless_close_network_target( target );
   }

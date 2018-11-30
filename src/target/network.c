@@ -22,6 +22,7 @@
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
+#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
@@ -182,6 +183,10 @@ stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
   struct network_target *net_target;
   const char *new_port;
+  union {
+    struct tcp4_details *tcp4;
+    struct udp4_details *udp4;
+  } details;
 
   clear_error(  );
 
@@ -204,11 +209,21 @@ stumpless_set_transport_port( struct stumpless_target *target,
   net_target = target->id;
   switch( net_target->transport ) {
     case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      net_target->details.tcp4.port = new_port;
+      details.tcp4 = config_set_tcp4_port( &net_target->details.tcp4,
+                                           net_target->destination,
+                                           new_port );
+      if( !details.tcp4) {
+        goto fail;
+      }
       break;
 
     case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      net_target->details.udp4.port = new_port;
+      details.udp4 = config_set_udp4_port( &net_target->details.udp4,
+                                           net_target->destination,
+                                           new_port );
+      if( !details.udp4 ) {
+        goto fail;
+      }
       break;
 
     default:
@@ -269,6 +284,7 @@ destroy_network_target( struct network_target *target ) {
 
   }
 
+  free_mem( ( void * ) target->destination );
   free_mem( target );
 }
 
@@ -279,47 +295,58 @@ new_network_target( const char *destination,
   struct network_target *target;
   struct tcp4_details *tcp4_result;
   struct udp4_details *udp4_result;
+  const char *destination_copy;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
     goto fail;
   }
 
+  destination_copy = copy_cstring( destination );
+  if( !destination_copy ) {
+    goto fail_destination;
+  }
+
   if( network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
     raise_network_protocol_unsupported(  );
-    goto fail_details;
+    goto fail_protocol;
   }
 
   switch( transport ) {
 
     case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
       tcp4_result = config_open_tcp4_target( &target->details.tcp4,
-                                             destination );
+                                             destination,
+                                             DEFAULT_TCP_PORT );
       if( !tcp4_result ) {
-        goto fail_details;
+        goto fail_protocol;
       }
       break;
 
     case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
       udp4_result = config_open_udp4_target( &target->details.udp4,
-                                             destination );
+                                             destination,
+                                             DEFAULT_UDP_PORT );
       if( !udp4_result ) {
-        goto fail_details;
+        goto fail_protocol;
       }
       break;
 
     default:
       raise_transport_protocol_unsupported(  );
-      goto fail_details;
+      goto fail_protocol;
 
   }
 
   target->network = network;
   target->transport = transport;
   target->max_msg_size = STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE;
+  target->destination = destination_copy;
   return target;
 
-fail_details:
+fail_protocol:
+  free_mem( ( void * ) destination_copy );
+fail_destination:
   free_mem( target );
 fail:
   return NULL;
