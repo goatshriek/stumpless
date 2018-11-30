@@ -784,7 +784,7 @@ namespace {
     getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
     if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
       if( errno == EACCES ) {
-        could_not_bind = false;
+        could_bind = false;
       }
     }
     listen( handle, 1 );
