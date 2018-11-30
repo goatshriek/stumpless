@@ -29,11 +29,13 @@ sys_socket_close_udp4_target( struct udp4_details *details );
 
 struct tcp4_details *
 sys_socket_open_tcp4_target( struct tcp4_details *details,
-                             const char *destination );
+                             const char *destination,
+                             const char *port );
 
 struct udp4_details *
 sys_socket_open_udp4_target( struct udp4_details *details,
-                             const char *destination );
+                             const char *destination,
+                             const char *port );
 
 int
 sys_socket_sendto_tcp4_target( struct tcp4_details *details,
@@ -44,5 +46,15 @@ int
 sys_socket_sendto_udp4_target( struct udp4_details *details,
                                const char *msg,
                                size_t msg_length );
+
+struct tcp4_details *
+sys_socket_set_tcp4_port( struct tcp4_details *details,
+                          const char *destination,
+                          const char *port );
+
+struct udp4_details *
+sys_socket_set_udp4_port( struct udp4_details *details,
+                          const char *destination,
+                          const char *port );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_SYS_SOCKET_H */

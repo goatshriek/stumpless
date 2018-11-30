@@ -42,14 +42,15 @@ sys_socket_close_udp4_target( struct udp4_details *details ) {
 
 struct tcp4_details *
 sys_socket_open_tcp4_target( struct tcp4_details *details,
-                             const char *destination ) {
+                             const char *destination,
+                             const char *port ) {
   int handle;
   struct addrinfo *addr_result;
   int result;
 
   handle = socket( AF_INET, SOCK_STREAM, 0 );
 
-  result = getaddrinfo( destination, DEFAULT_TCP_PORT, NULL, &addr_result );
+  result = getaddrinfo( destination, port, NULL, &addr_result );
   if( result != 0 ) {
     raise_address_failure( "getaddrinfo failed on name",
                            result,
@@ -69,7 +70,7 @@ sys_socket_open_tcp4_target( struct tcp4_details *details,
   }
 
   freeaddrinfo( addr_result );
-  details->port = DEFAULT_TCP_PORT;
+  details->port = port;
   details->handle = handle;
   return details;
 
@@ -82,14 +83,15 @@ fail:
 
 struct udp4_details *
 sys_socket_open_udp4_target( struct udp4_details *details,
-                             const char *destination ) {
+                             const char *destination,
+                             const char *port ) {
   int handle;
   struct addrinfo *addr_result;
   int result;
 
   handle = socket( AF_INET, SOCK_DGRAM, 0 );
 
-  result = getaddrinfo( destination, DEFAULT_UDP_PORT, NULL, &addr_result );
+  result = getaddrinfo( destination, port, NULL, &addr_result );
   if( result != 0 ) {
     raise_address_failure( "getaddrinfo failed on name",
                            result,
@@ -109,7 +111,7 @@ sys_socket_open_udp4_target( struct udp4_details *details,
   }
 
   freeaddrinfo( addr_result );
-  details->port = DEFAULT_UDP_PORT;
+  details->port = port;
   details->handle = handle;
   return details;
 
@@ -170,4 +172,20 @@ sys_socket_sendto_udp4_target( struct udp4_details *details,
   }
 
   return result;
+}
+
+struct tcp4_details *
+sys_socket_set_tcp4_port( struct tcp4_details *details,
+                          const char *destination,
+                          const char *port ) {
+  sys_socket_close_tcp4_target( details );
+  return sys_socket_open_tcp4_target( details, destination, port );
+}
+
+struct udp4_details *
+sys_socket_set_udp4_port( struct udp4_details *details,
+                          const char *destination,
+                          const char *port ) {
+  sys_socket_close_udp4_target( details );
+  return sys_socket_open_udp4_target( details, destination, port );
 }
