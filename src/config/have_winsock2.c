@@ -28,6 +28,58 @@
 #include "private/memory.h"
 #include "private/target/network.h"
 
+static
+SOCKET
+winsock_open_socket( const char *destination,
+                     const char *port,
+                     int af,
+                     int type,
+                     int protocol ) {
+  SOCKET handle;
+  PADDRINFOA addr_result;
+  WSADATA wsa_data;
+  int result;
+
+  handle = socket( af, type, protocol );
+
+  if( handle == INVALID_SOCKET ) {
+    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
+      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+      handle = socket( af, type, protocol );
+      if( handle == INVALID_SOCKET ) {
+        goto fail;
+      }
+    }
+  }
+
+  result = getaddrinfo( destination, port, NULL, &addr_result );
+  if( result != 0 ) {
+    raise_address_failure( "getaddrinfo failed on name",
+                           result,
+                           "Windows Socket error code" );
+    goto fail;
+  }
+
+  result = connect( handle,
+                    addr_result->ai_addr,
+                    cap_size_t_to_int( addr_result->ai_addrlen ) );
+
+  if( result == SOCKET_ERROR ) {
+    raise_socket_connect_failure( "connect failed on winsock2 socket",
+                                  WSAGetLastError(  ),
+                                  "WSAGetLastError after the failed call" );
+    goto fail_socket;
+  }
+
+  freeaddrinfo( addr_result );
+  return handle;
+
+fail_socket:
+  freeaddrinfo( addr_result );
+fail:
+  return INVALID_SOCKET;
+}
+
 void
 winsock2_close_tcp4_target( struct tcp4_details *details ) {
   closesocket( details->handle );
@@ -63,52 +115,23 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
                            const char *destination,
                            const char *port ) {
   SOCKET handle;
-  PADDRINFOA addr_result;
-  WSADATA wsa_data;
-  int result;
 
-  handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+  handle = winsock_open_socket( destination,
+                                port,
+                                AF_INET,
+                                SOCK_STREAM,
+                                IPPROTO_TCP );
 
   if( handle == INVALID_SOCKET ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
-      if( handle == INVALID_SOCKET ) {
-        goto fail;
-      }
-    }
+    details->port = NULL;
+    details->handle = INVALID_SOCKET;
+    return NULL;
+
+  } else {
+    details->port = port;
+    details->handle = handle;
+    return details;
   }
-
-  result = getaddrinfo( destination, port, NULL, &addr_result );
-  if( result != 0 ) {
-    raise_address_failure( "getaddrinfo failed on name",
-                           result,
-                           "Windows Socket error code" );
-    goto fail;
-  }
-
-  result = connect( handle,
-                    addr_result->ai_addr,
-                    cap_size_t_to_int( addr_result->ai_addrlen ) );
-
-  if( result == SOCKET_ERROR ) {
-    raise_socket_connect_failure( "connect failed with IPv4/UDP socket",
-                                  WSAGetLastError(  ),
-                                  "WSAGetLastError after the failed call" );
-    goto fail_socket;
-  }
-
-  freeaddrinfo( addr_result );
-  details->port = port;
-  details->handle = handle;
-  return details;
-
-fail_socket:
-  freeaddrinfo( addr_result );
-fail:
-  details->port = NULL;
-  details->handle = INVALID_SOCKET;
-  return NULL;
 }
 
 struct udp4_details *
@@ -116,52 +139,23 @@ winsock2_open_udp4_target( struct udp4_details *details,
                            const char *destination,
                            const char *port ) {
   SOCKET handle;
-  PADDRINFOA addr_result;
-  WSADATA wsa_data;
-  int result;
 
-  handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+  handle = winsock_open_socket( destination,
+                                port,
+                                AF_INET,
+                                SOCK_DGRAM,
+                                IPPROTO_UDP );
 
   if( handle == INVALID_SOCKET ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
-      if( handle == INVALID_SOCKET ) {
-        goto fail;
-      }
-    }
+    details->port = NULL;
+    details->handle = INVALID_SOCKET;
+    return NULL;
+
+  } else {
+    details->port = port;
+    details->handle = handle;
+    return details;
   }
-
-  result = getaddrinfo( destination, port, NULL, &addr_result );
-  if( result != 0 ) {
-    raise_address_failure( "getaddrinfo failed on name",
-                           result,
-                           "Windows Socket error code" );
-    goto fail;
-  }
-
-  result = connect( handle,
-                    addr_result->ai_addr,
-                    cap_size_t_to_int( addr_result->ai_addrlen ) );
-
-  if( result == SOCKET_ERROR ) {
-    raise_socket_connect_failure( "connect failed with IPv4/UDP socket",
-                                  WSAGetLastError(  ),
-                                  "WSAGetLastError after the failed call" );
-    goto fail_socket;
-  }
-
-  freeaddrinfo( addr_result );
-  details->port = port;
-  details->handle = handle;
-  return details;
-
-fail_socket:
-  freeaddrinfo( addr_result );
-fail:
-  details->port = NULL;
-  details->handle = INVALID_SOCKET;
-  return NULL;
 }
 
 int
