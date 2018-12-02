@@ -897,10 +897,33 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( NetworkTargetSetTransportPort, NullPort ) {
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+
+    target = stumpless_open_udp4_target( "target-to-self",
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_set_transport_port( target, NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "port" ) );
+    }
+
+    stumpless_close_network_target( target );
+  }
+
   TEST( NetworkTargetSetTransportPort, NullTarget ) {
     struct stumpless_error *error;
     struct stumpless_target *result;
-    char buffer[100];
 
     result = stumpless_set_transport_port( NULL, "5514" );
     EXPECT_TRUE( result == NULL );

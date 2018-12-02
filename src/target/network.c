@@ -195,6 +195,11 @@ stumpless_set_transport_port( struct stumpless_target *target,
     goto fail;
   }
 
+  if( !port ) {
+    raise_argument_empty( "port is NULL" );
+    goto fail;
+  }
+
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     raise_target_incompatible( "transport port is only valid for network"
                                " targets" );
