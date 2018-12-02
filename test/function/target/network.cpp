@@ -762,7 +762,6 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
-    struct stumpless_entry *entry;
     const char *default_port;
     const char *bad_port = "337zrat";
     socket_handle_t handle;
@@ -797,7 +796,6 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
-    struct stumpless_entry *entry;
     const char *default_port;
     const char *bad_port = "337zrat";
 

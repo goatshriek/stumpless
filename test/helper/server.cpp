@@ -78,7 +78,6 @@ open_udp_server_socket( const char *dest, const char *port ){
 
 socket_handle_t
 accept_tcp_connection( socket_handle_t handle ) {
-  ssize_t msg_len;
   struct sockaddr_storage fromaddr;
   socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
 
@@ -86,7 +85,7 @@ accept_tcp_connection( socket_handle_t handle ) {
 }
 
 void
-recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len ) {
+recv_from_handle( socket_handle_t handle, char *buff, int buff_len ) {
   int msg_len;
 
   msg_len = recv( handle, buff, buff_len, 0 );
