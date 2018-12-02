@@ -909,6 +909,7 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
