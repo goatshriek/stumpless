@@ -115,8 +115,6 @@ set_target_properties(test_helper_server
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-add_dependencies(test_helper_server libgtest)
-
 target_include_directories(test_helper_server
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include

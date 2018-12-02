@@ -90,10 +90,9 @@ recv_from_handle( socket_handle_t handle, char *buff, int buff_len ) {
 
   msg_len = recv( handle, buff, buff_len, 0 );
   if( msg_len == SOCKET_ERROR ) {
-    buffer[0] = '\0';
-    printf( "could not receive message: %d\n", WSAGetLastError(  ) );
+    buff[0] = '\0';
   } else {
-    buffer[msg_len] = '\0';
+    buff[msg_len] = '\0';
   }
 }
 

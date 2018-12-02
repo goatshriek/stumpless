@@ -24,7 +24,7 @@
 typedef SOCKET socket_handle_t;
 #  else
 #    define BAD_HANDLE -1
-  typedef int socket_handle_t;
+typedef int socket_handle_t;
 #  endif
 
 socket_handle_t
@@ -36,8 +36,13 @@ open_udp_server_socket( const char *dest, const char *port );
 socket_handle_t
 accept_tcp_connection( socket_handle_t handle );
 
+#  ifdef _WIN32
+void
+recv_from_handle( socket_handle_t handle, char *buff, int buff_len );
+#  else
 void
 recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len );
+#endif
 
 void
 close_server_socket( socket_handle_t handle );
