@@ -749,7 +749,143 @@ namespace {
     stumpless_close_network_target( target );
   }
 
-  TEST( NetworkTargetSetTransportPort, AfterTargetOpen ) {
+  TEST( NetworkTargetSetTransportPort, AfterTcpTargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *new_port = "515";
+    const char *default_port;
+    const char *current_port;
+    bool could_bind = true;
+    char buffer[2048];
+
+      // setting up to receive the sent messages
+#ifdef _WIN32
+    SOCKET default_port_handle;
+    SOCKET new_port_handle;
+    SOCKET accepted;
+    PADDRINFOA addr_result;
+    WSADATA wsa_data;
+    int msg_len;
+
+    WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+
+    default_port_handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+    getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+    bind( default_port_handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
+    listen( default_port_handle, 1 );
+    freeaddrinfo( addr_result );
+
+    new_port_handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
+    bind( new_port_handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
+    listen( new_port_handle, 1 );
+    freeaddrinfo( addr_result );
+#else
+    int default_port_handle;
+    int new_port_handle;
+    int accepted;
+    struct addrinfo *addr_result;
+    ssize_t msg_len;
+
+    default_port_handle = socket( AF_INET, SOCK_STREAM, 0 );
+    getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
+    if( bind( default_port_handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+      if( errno == EACCES ) {
+        could_bind = false;
+      }
+    }
+    listen( default_port_handle, 1 );
+    freeaddrinfo( addr_result );
+
+    new_port_handle = socket( AF_INET, SOCK_STREAM, 0 );
+    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
+    if( bind( new_port_handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+      if( errno == EACCES ) {
+        could_bind = false;
+      }
+    }
+    listen( new_port_handle, 1 );
+    freeaddrinfo( addr_result );
+#endif
+
+    if( could_bind ) {
+      target = stumpless_open_tcp4_target( "target-to-self",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
+
+      default_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( default_port != NULL );
+      ASSERT_STRNE( default_port, new_port );
+
+      result = stumpless_set_transport_port( target, new_port );
+      EXPECT_TRUE( result != NULL );
+
+      current_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( current_port != NULL );
+      EXPECT_TRUE( current_port != new_port );
+      EXPECT_STREQ( new_port, current_port );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      stumpless_add_entry( target, entry );
+      EXPECT_TRUE( result != NULL );
+
+#ifdef _WIN32
+      int msg_len;
+      struct sockaddr_storage fromaddr;
+      int fromaddr_len = sizeof( sockaddr_storage );
+
+      accepted = accept( new_port_handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+      if( accepted == INVALID_SOCKET ) {
+        printf( "could not accept connection: %d\n", WSAGetLastError(  ) );
+      }
+
+      msg_len = recv( accepted, buffer, 1024, 0 );
+      if( msg_len == SOCKET_ERROR ) {
+        buffer[0] = '\0';
+        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
+      } else {
+        buffer[msg_len] = '\0';
+      }
+
+      closesocket( accepted );
+      closesocket( default_port_handle );
+      closesocket( new_port_handle );
+#else
+      ssize_t msg_len;
+      struct sockaddr_storage fromaddr;
+      socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
+
+      accepted = accept( new_port_handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+
+      msg_len = recv( accepted, buffer, 1024, 0 );
+      if( msg_len < 0 ) {
+        buffer[0] = '\0';
+      } else {
+        buffer[msg_len] = '\0';
+      }
+
+      close( accepted );
+      close( default_port_handle );
+      close( new_port_handle );
+#endif
+
+      EXPECT_TRUE( buffer[0] != '\0' );
+      stumpless_close_network_target( target );
+    }
+  }
+
+  TEST( NetworkTargetSetTransportPort, AfterUdpTargetOpen ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
@@ -763,7 +899,6 @@ namespace {
       // setting up to receive the sent messages
 #ifdef _WIN32
     SOCKET handle;
-    SOCKET accepted = INVALID_SOCKET;
     PADDRINFOA addr_result;
     WSADATA wsa_data;
     int msg_len;
@@ -775,7 +910,6 @@ namespace {
     freeaddrinfo( addr_result );
 #else
     int handle;
-    int accepted = -1;
     struct addrinfo *addr_result;
     ssize_t msg_len;
     handle = socket( AF_INET, SOCK_DGRAM, 0 );
