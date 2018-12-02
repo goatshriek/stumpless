@@ -912,7 +912,42 @@ namespace {
     stumpless_close_network_target( target );
   }
 
-  TEST( NetworkTargetSetTransportPort, BadPort ) {
+  TEST( NetworkTargetSetTransportPort, BadTcpPort ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *default_port;
+    const char *bad_port = "337zrat";
+    socket_handle_t handle;
+
+    handle = open_tcp_server_socket( "127.0.0.1", "514" );
+    if( handle != BAD_HANDLE ) {
+      target = stumpless_open_tcp4_target( "target-to-self",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
+
+      default_port = stumpless_get_transport_port( target );
+      ASSERT_TRUE( default_port != NULL );
+      ASSERT_STRNE( default_port, bad_port );
+
+      result = stumpless_set_transport_port( target, bad_port );
+      EXPECT_TRUE( result == NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error != NULL );
+      if( error ) {
+        EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+      }
+
+      close_server_socket( handle );
+      stumpless_close_network_target( target );
+    }
+  }
+
+  TEST( NetworkTargetSetTransportPort, BadUdpPort ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
