@@ -35,13 +35,168 @@
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
 
-#define BINDING_DISABLED_WARNING "some network tests will not run without"     \
-                                 " permissions to bind to a local socket to"   \
-                                 " to receive messages."
+#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
+                                 " ability to listen on a local socket to"     \
+                                 " receive messages."
 
 using::testing::EndsWith;
 using::testing::HasSubstr;
 using::testing::Not;
+
+#ifdef _WIN32
+#  define BAD_HANDLE INVALID_SOCKET
+
+typedef SOCKET socket_handle_t;
+
+static
+socket_handle_t
+open_tcp_server_socket( const char *dest, const char *port ){
+  SOCKET handle;
+  PADDRINFOA addr_result;
+  WSADATA wsa_data;
+
+  handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+  if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
+    WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+    handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+    if( handle == INVALID_SOCKET ) {
+      return INVALID_SOCKET;
+    }
+  }
+
+  getaddrinfo( dest, port, NULL, &addr_result );
+  bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
+  listen( handle, 1 );
+  freeaddrinfo( addr_result );
+
+  return handle;
+}
+
+static
+socket_handle_t
+open_udp_server_socket( const char *dest, const char *port ){
+  SOCKET handle;
+  PADDRINFOA addr_result;
+  WSADATA wsa_data;
+
+  handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+  if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
+    WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+    handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+    if( handle == INVALID_SOCKET ) {
+      return INVALID_SOCKET;
+    }
+  }
+
+  getaddrinfo( dest, port, NULL, &addr_result );
+  bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
+  listen( handle, 1 );
+  freeaddrinfo( addr_result );
+
+  return handle;
+}
+
+static
+socket_handle_t
+accept_tcp_connection( socket_handle_t handle ) {
+  ssize_t msg_len;
+  struct sockaddr_storage fromaddr;
+  socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
+
+  return accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+}
+
+static
+void
+recv_from_server( socket_handle_t handle, char *buff, size_t buff_len ) {
+  int msg_len;
+
+  msg_len = recv( handle, buff, buff_len, 0 );
+  if( msg_len == SOCKET_ERROR ) {
+    buffer[0] = '\0';
+    printf( "could not receive message: %d\n", WSAGetLastError(  ) );
+  } else {
+    buffer[msg_len] = '\0';
+  }
+}
+
+static
+void
+close_server_socket( socket_handle_t handle ) {
+  closesocket( handle );
+}
+
+#else
+#  define BAD_HANDLE -1
+
+typedef int socket_handle_t;
+
+static
+socket_handle_t
+open_tcp_server_socket( const char *dest, const char *port ) {
+  int handle;
+  struct addrinfo *addr_result;
+
+  handle = socket( AF_INET, SOCK_STREAM, 0 );
+  getaddrinfo( dest, port, NULL, &addr_result );
+  if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+    return BAD_HANDLE;
+  }
+
+  listen( handle, 1 );
+  freeaddrinfo( addr_result );
+
+  return handle;
+}
+
+static
+socket_handle_t
+open_udp_server_socket( const char *dest, const char *port ) {
+  int handle;
+  struct addrinfo *addr_result;
+
+  handle = socket( AF_INET, SOCK_DGRAM, 0 );
+  getaddrinfo( dest, port, NULL, &addr_result );
+  if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+    return BAD_HANDLE;
+  }
+
+  listen( handle, 1 );
+  freeaddrinfo( addr_result );
+
+  return handle;
+}
+
+static
+socket_handle_t
+accept_tcp_connection( socket_handle_t handle ) {
+  struct sockaddr_storage fromaddr;
+  socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
+
+  return accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
+}
+
+static
+void
+recv_from_server( socket_handle_t handle, char *buff, size_t buff_len ) {
+  ssize_t msg_len;
+
+  msg_len = recv( handle, buff, buff_len, 0 );
+  if( msg_len < 0 ) {
+    buff[0] = '\0';
+  } else {
+    buff[msg_len] = '\0';
+  }
+}
+
+static
+void
+close_server_socket( socket_handle_t handle ) {
+  close( handle );
+}
+
+#endif
+
 
 namespace {
   class Tcp4TargetTest : public::testing::Test {
@@ -51,13 +206,8 @@ namespace {
       bool tcp_fixtures_enabled = true;
       char buffer[2048];
       const char *port = "514";
-#ifdef _WIN32
-      SOCKET handle;
-      SOCKET accepted = INVALID_SOCKET;
-#else
-      int handle;
-      int accepted = -1;
-#endif
+      socket_handle_t handle;
+      socket_handle_t accepted = BAD_HANDLE;
 
     virtual void
     SetUp( void ) {
@@ -65,28 +215,11 @@ namespace {
       struct stumpless_param *param;
 
       // setting up to receive the sent messages
-#ifdef _WIN32
-      PADDRINFOA addr_result;
-      WSADATA wsa_data;
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
-      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
-      bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
-      listen( handle, 1 );
-      freeaddrinfo( addr_result );
-#else
-      struct addrinfo *addr_result;
-      handle = socket( AF_INET, SOCK_STREAM, 0 );
-      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
-      if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
-        if( errno == EACCES ) {
-          printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
-          tcp_fixtures_enabled = false;
-        }
+      handle = open_tcp_server_socket( "127.0.0.1", port );
+      if( handle == BAD_HANDLE ) {
+        printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+        tcp_fixtures_enabled = false;
       }
-      listen( handle, 1 );
-      freeaddrinfo( addr_result );
-#endif
 
       target = stumpless_open_tcp4_target( "test-self",
                                            "127.0.0.1",
@@ -113,53 +246,20 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_network_target( target );
+      close_server_socket( handle );
 
-#ifdef _WIN32
-      closesocket( accepted );
-      closesocket( handle );
-#else
-      close( accepted );
-      close( handle );
-#endif
+      if( accepted != BAD_HANDLE ) {
+        close_server_socket( accepted );
+      }
     }
 
     void
     GetNextMessage( void ) {
-#ifdef _WIN32
-      int msg_len;
-      struct sockaddr_storage fromaddr;
-      int fromaddr_len = sizeof( sockaddr_storage );
-
-      if( accepted == INVALID_SOCKET ) {
-      accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
-        if( accepted == INVALID_SOCKET ) {
-          printf( "could not accept connection: %d\n", WSAGetLastError(  ) );
-        }
+      if( accepted == BAD_HANDLE ) {
+        accepted = accept_tcp_connection( handle );
       }
 
-      msg_len = recv( accepted, buffer, 1024, 0 );
-      if( msg_len == SOCKET_ERROR ) {
-        buffer[0] = '\0';
-        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
-      } else {
-        buffer[msg_len] = '\0';
-      }
-#else
-      ssize_t msg_len;
-      struct sockaddr_storage fromaddr;
-      socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
-
-      if( accepted == -1 ) {
-        accepted = accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
-      }
-
-      msg_len = recv( accepted, buffer, 1024, 0 );
-      if( msg_len < 0 ) {
-        buffer[0] = '\0';
-      } else {
-        buffer[msg_len] = '\0';
-      }
-#endif
+      recv_from_server( accepted, buffer, 1024 );
     }
   };
 
