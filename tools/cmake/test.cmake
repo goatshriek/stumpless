@@ -92,7 +92,7 @@ function(private_add_performance_test)
 endfunction(private_add_performance_test)
 
 macro(add_performance_test name)
-  list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test${name})
+  list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test-${name})
 
   private_add_performance_test(NAME ${name} ${ARGN})
 endmacro(add_performance_test)
