@@ -35,11 +35,9 @@
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
 
-#define TCP_FIXTURES_DISABLED_WARNING "TCP fixture tests will not run without permissions to bind" \
-                                      " to a local socket to receive messages."
-
-#define UDP_FIXTURES_DISABLED_WARNING "UDP fixture tests will not run without permissions to bind" \
-                                      " to a local socket to receive messages."
+#define BINDING_DISABLED_WARNING "some network tests will not run without"     \
+                                 " permissions to bind to a local socket to"   \
+                                 " to receive messages."
 
 using::testing::EndsWith;
 using::testing::HasSubstr;
@@ -82,7 +80,7 @@ namespace {
       getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
       if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
         if( errno == EACCES ) {
-          printf( "WARNING: " TCP_FIXTURES_DISABLED_WARNING "\n" );
+          printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
           tcp_fixtures_enabled = false;
         }
       }
@@ -174,7 +172,7 @@ namespace {
     std::regex octet_count_regex( "^(\\d+) (.*)$" );
 
     if( !tcp_fixtures_enabled ) {
-      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
+      SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
       ASSERT_TRUE( target != NULL );
@@ -206,7 +204,7 @@ namespace {
     const char *port_result;
 
     if( !tcp_fixtures_enabled ) {
-      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
+      SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
       port_result = stumpless_get_transport_port( target );
@@ -222,7 +220,7 @@ namespace {
     struct stumpless_error *error;
 
     if( !tcp_fixtures_enabled ) {
-      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
+      SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
       ASSERT_TRUE( target != NULL );
@@ -243,7 +241,7 @@ namespace {
     struct stumpless_error *error;
 
     if( !tcp_fixtures_enabled ) {
-      SUCCEED(  ) << TCP_FIXTURES_DISABLED_WARNING;
+      SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
       ASSERT_TRUE( target != NULL );
@@ -293,7 +291,7 @@ namespace {
       getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
       if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
         if( errno == EACCES ) {
-          printf( "WARNING: " UDP_FIXTURES_DISABLED_WARNING "\n" );
+          printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
           udp_fixtures_enabled = false;
         }
       }
@@ -365,7 +363,7 @@ namespace {
     struct stumpless_error *error;
 
     if( !udp_fixtures_enabled ) {
-      SUCCEED(  ) << UDP_FIXTURES_DISABLED_WARNING;
+      SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
       ASSERT_TRUE( target != NULL );
@@ -388,7 +386,7 @@ namespace {
     const char *port_result;
 
     if( !udp_fixtures_enabled ) {
-      SUCCEED(  ) << UDP_FIXTURES_DISABLED_WARNING;
+      SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
       port_result = stumpless_get_transport_port( target );
@@ -408,7 +406,7 @@ namespace {
     size_t my_msg_size;
 
     if( !udp_fixtures_enabled ) {
-      SUCCEED(  ) << UDP_FIXTURES_DISABLED_WARNING;
+      SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
       ASSERT_TRUE( target != NULL );
@@ -593,7 +591,7 @@ namespace {
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL,
                                             0,
-                                            STUMPLESS_FACILITY_USER );   
+                                            STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
