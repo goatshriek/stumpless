@@ -108,7 +108,7 @@ accept_tcp_connection( socket_handle_t handle ) {
 
 static
 void
-recv_from_server( socket_handle_t handle, char *buff, size_t buff_len ) {
+recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len ) {
   int msg_len;
 
   msg_len = recv( handle, buff, buff_len, 0 );
@@ -178,7 +178,7 @@ accept_tcp_connection( socket_handle_t handle ) {
 
 static
 void
-recv_from_server( socket_handle_t handle, char *buff, size_t buff_len ) {
+recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len ) {
   ssize_t msg_len;
 
   msg_len = recv( handle, buff, buff_len, 0 );
@@ -258,7 +258,7 @@ namespace {
         accepted = accept_tcp_connection( handle );
       }
 
-      recv_from_server( accepted, buffer, 1024 );
+      recv_from_handle( accepted, buffer, 1024 );
     }
   };
 
@@ -408,7 +408,7 @@ namespace {
 
     void
     GetNextMessage( void ) {
-      recv_from_server( handle, buffer, 2048 );
+      recv_from_handle( handle, buffer, 2048 );
     }
   };
 
@@ -851,7 +851,7 @@ namespace {
       EXPECT_TRUE( result != NULL );
 
       accepted = accept_tcp_connection( new_port_handle );
-      recv_from_server( accepted, buffer, 2048 );
+      recv_from_handle( accepted, buffer, 2048 );
       EXPECT_TRUE( buffer[0] != '\0' );
 
       close_server_socket( accepted );
@@ -904,7 +904,7 @@ namespace {
       stumpless_add_entry( target, entry );
       EXPECT_TRUE( result != NULL );
 
-      recv_from_server( handle, buffer, 1024 );
+      recv_from_handle( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );
     }
 
