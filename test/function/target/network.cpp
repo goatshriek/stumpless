@@ -194,7 +194,6 @@ void
 close_server_socket( socket_handle_t handle ) {
   close( handle );
 }
-
 #endif
 
 
@@ -364,11 +363,7 @@ namespace {
       bool udp_fixtures_enabled = true;
       char buffer[2048];
       const char *port = "514";
-#ifdef _WIN32
-      SOCKET handle;
-#else
-      int handle;
-#endif
+      socket_handle_t handle;
 
     virtual void
     SetUp( void ) {
@@ -376,28 +371,11 @@ namespace {
       struct stumpless_param *param;
 
       // setting up to receive the sent messages
-#ifdef _WIN32
-      PADDRINFOA addr_result;
-      WSADATA wsa_data;
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
-      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
-      bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
-      listen( handle, 1 );
-      freeaddrinfo( addr_result );
-#else
-      struct addrinfo *addr_result;
-      handle = socket( AF_INET, SOCK_DGRAM, 0 );
-      getaddrinfo( "127.0.0.1", port, NULL, &addr_result );
-      if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
-        if( errno == EACCES ) {
-          printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
-          udp_fixtures_enabled = false;
-        }
+      handle = open_udp_server_socket( "127.0.0.1", port );
+      if( handle == BAD_HANDLE ) {
+        printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+        udp_fixtures_enabled = false;
       }
-      listen( handle, 1 );
-      freeaddrinfo( addr_result );
-#endif
 
       target = stumpless_open_udp4_target( "test-self",
                                            "127.0.0.1",
@@ -425,36 +403,12 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_network_target( target );
-
-#ifdef _WIN32
-      closesocket( handle );
-#else
-      close( handle );
-#endif
+      close_server_socket( handle );
     }
 
     void
     GetNextMessage( void ) {
-#ifdef _WIN32
-      int msg_len;
-
-      msg_len = recv( handle, buffer, 1024, 0 );
-      if( msg_len == SOCKET_ERROR ) {
-        buffer[0] = '\0';
-        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
-      } else {
-        buffer[msg_len] = '\0';
-      }
-#else
-      ssize_t msg_len;
-
-      msg_len = recv( handle, buffer, 1024, 0 );
-      if( msg_len < 0 ) {
-        buffer[0] = '\0';
-      } else {
-        buffer[msg_len] = '\0';
-      }
-#endif
+      recv_from_server( handle, buffer, 2048 );
     }
   };
 
@@ -859,58 +813,14 @@ namespace {
     const char *current_port;
     bool could_bind = true;
     char buffer[2048];
+    socket_handle_t accepted;
+    socket_handle_t default_port_handle;
+    socket_handle_t new_port_handle;
 
-      // setting up to receive the sent messages
-#ifdef _WIN32
-    SOCKET default_port_handle;
-    SOCKET new_port_handle;
-    SOCKET accepted;
-    PADDRINFOA addr_result;
-    WSADATA wsa_data;
-    int msg_len;
+    default_port_handle = open_tcp_server_socket( "127.0.0.1", "514" );
+    new_port_handle = open_tcp_server_socket( "127.0.0.1", new_port );
 
-    WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-
-    default_port_handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
-    getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
-    bind( default_port_handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
-    listen( default_port_handle, 1 );
-    freeaddrinfo( addr_result );
-
-    new_port_handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
-    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
-    bind( new_port_handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
-    listen( new_port_handle, 1 );
-    freeaddrinfo( addr_result );
-#else
-    int default_port_handle;
-    int new_port_handle;
-    int accepted;
-    struct addrinfo *addr_result;
-    ssize_t msg_len;
-
-    default_port_handle = socket( AF_INET, SOCK_STREAM, 0 );
-    getaddrinfo( "127.0.0.1", "514", NULL, &addr_result );
-    if( bind( default_port_handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
-      if( errno == EACCES ) {
-        could_bind = false;
-      }
-    }
-    listen( default_port_handle, 1 );
-    freeaddrinfo( addr_result );
-
-    new_port_handle = socket( AF_INET, SOCK_STREAM, 0 );
-    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
-    if( bind( new_port_handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
-      if( errno == EACCES ) {
-        could_bind = false;
-      }
-    }
-    listen( new_port_handle, 1 );
-    freeaddrinfo( addr_result );
-#endif
-
-    if( could_bind ) {
+    if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
       target = stumpless_open_tcp4_target( "target-to-self",
                                            "127.0.0.1",
                                            0,
@@ -940,47 +850,13 @@ namespace {
       stumpless_add_entry( target, entry );
       EXPECT_TRUE( result != NULL );
 
-#ifdef _WIN32
-      int msg_len;
-      struct sockaddr_storage fromaddr;
-      int fromaddr_len = sizeof( sockaddr_storage );
-
-      accepted = accept( new_port_handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
-      if( accepted == INVALID_SOCKET ) {
-        printf( "could not accept connection: %d\n", WSAGetLastError(  ) );
-      }
-
-      msg_len = recv( accepted, buffer, 1024, 0 );
-      if( msg_len == SOCKET_ERROR ) {
-        buffer[0] = '\0';
-        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
-      } else {
-        buffer[msg_len] = '\0';
-      }
-
-      closesocket( accepted );
-      closesocket( default_port_handle );
-      closesocket( new_port_handle );
-#else
-      ssize_t msg_len;
-      struct sockaddr_storage fromaddr;
-      socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
-
-      accepted = accept( new_port_handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
-
-      msg_len = recv( accepted, buffer, 1024, 0 );
-      if( msg_len < 0 ) {
-        buffer[0] = '\0';
-      } else {
-        buffer[msg_len] = '\0';
-      }
-
-      close( accepted );
-      close( default_port_handle );
-      close( new_port_handle );
-#endif
-
+      accepted = accept_tcp_connection( new_port_handle );
+      recv_from_server( accepted, buffer, 2048 );
       EXPECT_TRUE( buffer[0] != '\0' );
+
+      close_server_socket( accepted );
+      close_server_socket( default_port_handle );
+      close_server_socket( new_port_handle );
       stumpless_close_network_target( target );
     }
   }
@@ -993,35 +869,10 @@ namespace {
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
-    bool could_bind = true;
     char buffer[2048];
+    socket_handle_t handle;
 
-      // setting up to receive the sent messages
-#ifdef _WIN32
-    SOCKET handle;
-    PADDRINFOA addr_result;
-    WSADATA wsa_data;
-    int msg_len;
-    WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-    handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
-    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
-    bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
-    listen( handle, 1 );
-    freeaddrinfo( addr_result );
-#else
-    int handle;
-    struct addrinfo *addr_result;
-    ssize_t msg_len;
-    handle = socket( AF_INET, SOCK_DGRAM, 0 );
-    getaddrinfo( "127.0.0.1", new_port, NULL, &addr_result );
-    if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
-      if( errno == EACCES ) {
-        could_bind = false;
-      }
-    }
-    listen( handle, 1 );
-    freeaddrinfo( addr_result );
-#endif
+    handle = open_udp_server_socket( "127.0.0.1", new_port );
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
@@ -1044,7 +895,7 @@ namespace {
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
 
-    if( could_bind ) {
+    if( handle != BAD_HANDLE ) {
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                    STUMPLESS_SEVERITY_INFO,
                                    "stumpless-unit-test",
@@ -1053,26 +904,11 @@ namespace {
       stumpless_add_entry( target, entry );
       EXPECT_TRUE( result != NULL );
 
-#ifdef _WIN32
-      msg_len = recv( handle, buffer, 1024, 0 );
-      if( msg_len == SOCKET_ERROR ) {
-        buffer[0] = '\0';
-        printf( "could not receive message: %d\n", WSAGetLastError(  ) );
-      } else {
-        buffer[msg_len] = '\0';
-      }
-#else
-      msg_len = recv( handle, buffer, 1024, 0 );
-      if( msg_len < 0 ) {
-        buffer[0] = '\0';
-      } else {
-        buffer[msg_len] = '\0';
-      }
-#endif
-
+      recv_from_server( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );
     }
 
+    close_server_socket( handle );
     stumpless_close_network_target( target );
   }
 
