@@ -897,6 +897,42 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( NetworkTargetSetTransportPort, MallocFailure ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    const char *default_port;
+    const char *new_port = "5514";
+    void * ( *set_malloc_result ) ( size_t );
+
+    target = stumpless_open_udp4_target( "target-to-self",
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    default_port = stumpless_get_transport_port( target );
+    ASSERT_TRUE( default_port != NULL );
+    ASSERT_STRNE( default_port, new_port );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_transport_port( target, new_port );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+
+    stumpless_close_network_target( target );
+  }
+
   TEST( NetworkTargetSetTransportPort, NullPort ) {
     struct stumpless_error *error;
     struct stumpless_target *target;
