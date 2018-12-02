@@ -99,7 +99,6 @@ open_udp_server_socket( const char *dest, const char *port ){
 static
 socket_handle_t
 accept_tcp_connection( socket_handle_t handle ) {
-  ssize_t msg_len;
   struct sockaddr_storage fromaddr;
   socklen_t fromaddr_len = sizeof( struct sockaddr_storage );
 
@@ -108,15 +107,15 @@ accept_tcp_connection( socket_handle_t handle ) {
 
 static
 void
-recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len ) {
+recv_from_handle( socket_handle_t handle, char *buff, int buff_len ) {
   int msg_len;
 
   msg_len = recv( handle, buff, buff_len, 0 );
   if( msg_len == SOCKET_ERROR ) {
-    buffer[0] = '\0';
+    buff[0] = '\0';
     printf( "could not receive message: %d\n", WSAGetLastError(  ) );
   } else {
-    buffer[msg_len] = '\0';
+    buff[msg_len] = '\0';
   }
 }
 
@@ -916,7 +915,6 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
-    struct stumpless_entry *entry;
     const char *default_port;
     const char *bad_port = "337zrat";
     socket_handle_t handle;
@@ -951,7 +949,6 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
-    struct stumpless_entry *entry;
     const char *default_port;
     const char *bad_port = "337zrat";
 
