@@ -127,7 +127,13 @@ else()
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
       $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
+  )
+
+  add_performance_test(network
+    test/performance/target/network.cpp
+    $<TARGET_OBJECTS:test_helper_server>
   )
 endif(NOT ENABLE_NETWORK_TARGETS)
 

@@ -103,3 +103,22 @@ target_include_directories(rfc5424_checker
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
 )
+
+# helper libraries
+add_library(test_helper_server
+  EXCLUDE_FROM_ALL
+  OBJECT ${PROJECT_SOURCE_DIR}/test/helper/server.cpp
+)
+
+set_target_properties(test_helper_server
+  PROPERTIES
+  COMPILE_FLAGS "${function_test_compile_flags}"
+)
+
+add_dependencies(test_helper_server libgtest)
+
+target_include_directories(test_helper_server
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)
