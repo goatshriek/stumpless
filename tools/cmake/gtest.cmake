@@ -17,7 +17,7 @@ else()
 endif(WIN32)
 
 ExternalProject_Add(gtest
-  URL https://github.com/google/googletest/archive/master.zip
+  URL https://github.com/abseil/googletest/archive/master.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
   CMAKE_ARGS -Dgtest_force_shared_crt=ON
   UPDATE_COMMAND ""
