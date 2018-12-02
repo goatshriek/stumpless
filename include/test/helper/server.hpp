@@ -20,6 +20,7 @@
 #  define __STUMPLESS_TEST_HELPER_SERVER_HPP
 
 #  ifdef _WIN32
+#  include <winsock2.h>
 #    define BAD_HANDLE INVALID_SOCKET
 typedef SOCKET socket_handle_t;
 #  else

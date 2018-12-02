@@ -60,7 +60,7 @@ static void AddEntryToTcp4Target( benchmark::State& state ) {
 
     recv_from_handle( accepted, buffer, 1024 );
   }
-  state.counters["MemoryAllocated"] = alloc_count;
+  state.counters["MemoryAllocated"] = ( double ) alloc_count;
 
   close_server_socket( accepted );
   close_server_socket( handle );
@@ -90,7 +90,7 @@ static void AddEntryToUdp4Target( benchmark::State& state ) {
   for(auto _ : state){
     stumpless_add_entry( target, entry );
   }
-  state.counters["MemoryAllocated"] = alloc_count;
+  state.counters["MemoryAllocated"] = ( double ) alloc_count;
 
   stumpless_destroy_entry( entry );
   stumpless_close_network_target( target );

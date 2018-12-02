@@ -132,8 +132,10 @@ else()
   )
 
   add_performance_test(network
-    test/performance/target/network.cpp
-    $<TARGET_OBJECTS:test_helper_server>
+    SOURCES
+      test/performance/target/network.cpp
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
   )
 endif(NOT ENABLE_NETWORK_TARGETS)
 
@@ -360,7 +362,7 @@ add_custom_target(examples
 
 # performance tests
 add_performance_test(target
-  test/performance/target.cpp
+  SOURCES test/performance/target.cpp
 )
 
 add_custom_target(bench

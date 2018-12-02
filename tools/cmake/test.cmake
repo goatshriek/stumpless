@@ -48,41 +48,53 @@ macro(add_function_test name)
   private_add_function_test(NAME ${name} ${ARGN})
 endmacro(add_function_test name)
 
-macro(add_performance_test name)
-  add_executable(performance-test-${name}
+function(private_add_performance_test)
+  set(single_val_args NAME)
+  set(multi_val_args SOURCES LIBRARIES)
+  cmake_parse_arguments(FUNCTION_PERF_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+
+  add_executable(performance-test-${FUNCTION_PERF_ARG_NAME}
     EXCLUDE_FROM_ALL
-    ${ARGN}
+    ${FUNCTION_PERF_ARG_SOURCES}
   )
 
   if(MSVC)
-    target_link_libraries(performance-test-${name}
+    target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
       libbenchmark
       Shlwapi.lib
+      ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   else()
-    target_link_libraries(performance-test-${name}
+    target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
       libbenchmark
+      ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   endif(MSVC)
 
-  set_target_properties(performance-test-${name}
+  set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
     PROPERTIES
-    OUTPUT_NAME performance-test-${name}
+    OUTPUT_NAME performance-test-${FUNCTION_PERF_ARG_NAME}
   )
 
-  target_include_directories(performance-test-${name}
+  target_include_directories(performance-test-${FUNCTION_PERF_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
   )
 
-  list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test-${name})
-  add_custom_target(run-performance-test-${name}
-    COMMAND "performance-test-${name}"
-    DEPENDS performance-test-${name}
+  add_custom_target(run-performance-test-${FUNCTION_PERF_ARG_NAME}
+    COMMAND "performance-test-${FUNCTION_PERF_ARG_NAME}"
+    DEPENDS performance-test-${FUNCTION_PERF_ARG_NAME}
   )
+
+endfunction(private_add_performance_test)
+
+macro(add_performance_test name)
+  list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test${name})
+
+  private_add_performance_test(NAME ${name} ${ARGN})
 endmacro(add_performance_test)
 
 # RFC 5424 checking tools
