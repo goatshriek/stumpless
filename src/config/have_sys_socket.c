@@ -30,6 +30,47 @@
 #include "private/memory.h"
 #include "private/target/network.h"
 
+static
+int
+sys_socket_open_socket( const char *destination,
+                        const char *port,
+                        int domain,
+                        int type,
+                        int protocol ) {
+  int handle;
+  struct addrinfo *addr_result;
+  int result;
+
+  handle = socket( domain, type, protocol );
+
+  result = getaddrinfo( destination, port, NULL, &addr_result );
+  if( result != 0 ) {
+    raise_address_failure( "getaddrinfo failed on name",
+                           result,
+                           "return code from getaddrinfo" );
+    goto fail;
+  }
+
+  result = connect( handle,
+                    addr_result->ai_addr,
+                    addr_result->ai_addrlen );
+
+  if( result == -1 ) {
+    raise_socket_connect_failure( "connect failed with socket",
+                                  errno,
+                                  "errno after the failed call" );
+    goto fail_socket;
+  }
+
+  return handle;
+
+
+fail_socket:
+  freeaddrinfo( addr_result );
+fail:
+  return -1;
+}
+
 void
 sys_socket_close_tcp4_target( struct tcp4_details *details ) {
   close( details->handle );
@@ -45,40 +86,21 @@ sys_socket_open_tcp4_target( struct tcp4_details *details,
                              const char *destination,
                              const char *port ) {
   int handle;
-  struct addrinfo *addr_result;
-  int result;
-
-  handle = socket( AF_INET, SOCK_STREAM, 0 );
-
-  result = getaddrinfo( destination, port, NULL, &addr_result );
-  if( result != 0 ) {
-    raise_address_failure( "getaddrinfo failed on name",
-                           result,
-                           "return code from getaddrinfo" );
-    goto fail;
-  }
-
-  result = connect( handle,
-                    addr_result->ai_addr,
-                    addr_result->ai_addrlen );
-
-  if( result == -1 ) {
-    raise_socket_connect_failure( "connect failed with IPv4/TCP socket",
-                                  errno,
-                                  "errno after the failed call" );
-    goto fail_socket;
-  }
-
-  freeaddrinfo( addr_result );
-  details->port = port;
+  handle = sys_socket_open_socket( destination,
+                                   port,
+                                   AF_INET,
+                                   SOCK_STREAM,
+                                   0 );
   details->handle = handle;
-  return details;
 
+  if( handle == -1 ) {
+    details->port = NULL;
+    return NULL;
 
-fail_socket:
-  freeaddrinfo( addr_result );
-fail:
-  return NULL;
+  } else {
+    details->port = port;
+    return details;
+  }
 }
 
 struct udp4_details *
@@ -86,40 +108,21 @@ sys_socket_open_udp4_target( struct udp4_details *details,
                              const char *destination,
                              const char *port ) {
   int handle;
-  struct addrinfo *addr_result;
-  int result;
-
-  handle = socket( AF_INET, SOCK_DGRAM, 0 );
-
-  result = getaddrinfo( destination, port, NULL, &addr_result );
-  if( result != 0 ) {
-    raise_address_failure( "getaddrinfo failed on name",
-                           result,
-                           "return code from getaddrinfo" );
-    goto fail;
-  }
-
-  result = connect( handle,
-                    addr_result->ai_addr,
-                    addr_result->ai_addrlen );
-
-  if( result == -1 ) {
-    raise_socket_connect_failure( "connect failed with IPv4/UDP socket",
-                                  errno,
-                                  "errno after the failed call" );
-    goto fail_socket;
-  }
-
-  freeaddrinfo( addr_result );
-  details->port = port;
+  handle = sys_socket_open_socket( destination,
+                                   port,
+                                   AF_INET,
+                                   SOCK_DGRAM,
+                                   0 );
   details->handle = handle;
-  return details;
 
+  if( handle == -1 ) {
+    details->port = NULL;
+    return NULL;
 
-fail_socket:
-  freeaddrinfo( addr_result );
-fail:
-  return NULL;
+  } else {
+    details->port = port;
+    return details;
+  }
 }
 
 int

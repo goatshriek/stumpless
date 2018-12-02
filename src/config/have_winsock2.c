@@ -121,15 +121,14 @@ winsock2_open_tcp4_target( struct tcp4_details *details,
                                 AF_INET,
                                 SOCK_STREAM,
                                 IPPROTO_TCP );
+  details->handle = handle;
 
   if( handle == INVALID_SOCKET ) {
     details->port = NULL;
-    details->handle = INVALID_SOCKET;
     return NULL;
 
   } else {
     details->port = port;
-    details->handle = handle;
     return details;
   }
 }
