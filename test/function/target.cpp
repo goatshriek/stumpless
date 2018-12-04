@@ -90,7 +90,7 @@ namespace {
 
     result = stumpless_add_entry( target, entry );
     EXPECT_LT( result, 0 );
-    
+
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
     if( error ) {
