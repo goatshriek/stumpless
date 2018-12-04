@@ -24,9 +24,16 @@
 
 static size_t alloc_count = 0;
 
-void *malloc_counter( size_t size ){
+void *
+malloc_counter( size_t size ){
   alloc_count += size;
   return malloc( size );
+}
+
+void *
+realloc_counter( void *old_mem, size_t new_size ) {
+  alloc_count += new_size;
+  return realloc( old_mem, new_size );
 }
 
 static void AddEntryToTcp4Target( benchmark::State& state ) {
@@ -51,6 +58,7 @@ static void AddEntryToTcp4Target( benchmark::State& state ) {
   accepted = accept_tcp_connection( handle );
 
   stumpless_set_malloc( malloc_counter );
+  stumpless_set_realloc( realloc_counter );
 
   alloc_count = 0;
   for(auto _ : state){
@@ -67,6 +75,7 @@ static void AddEntryToTcp4Target( benchmark::State& state ) {
   stumpless_destroy_entry( entry );
   stumpless_close_network_target( target );
   stumpless_set_malloc( malloc );
+  stumpless_set_realloc( realloc );
 }
 
 static void AddEntryToUdp4Target( benchmark::State& state ) {

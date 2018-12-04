@@ -28,6 +28,9 @@
 #include "private/memory.h"
 #include "private/target/network.h"
 
+static char *tcp_send_buffer = NULL;
+size_t tcp_send_buffer_length = 0;
+
 static
 SOCKET
 winsock_open_socket( const char *destination,
@@ -162,23 +165,30 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
                              const char *msg,
                              size_t msg_length ) {
   int result;
-  char *buffer;
   size_t int_length;
+  size_t required_length;
 
-  buffer = alloc_mem( msg_length + 50 );
-  if( !buffer ) {
-    return -1;
+  required_length = msg_length + 50;
+  if( tcp_send_buffer_length < required_length ) {
+    tcp_send_buffer = realloc_mem( tcp_send_buffer, required_length );
+
+    if( !tcp_send_buffer ) {
+      return -1;
+
+    } else {
+      tcp_send_buffer_length = required_length;
+
+    }
   }
 
-  snprintf( buffer, 50, "%zd ", msg_length );
-  int_length = strlen( buffer );
-  memcpy( buffer + int_length, msg, msg_length );
+  snprintf( tcp_send_buffer, 50, "%zd ", msg_length );
+  int_length = strlen( tcp_send_buffer );
+  memcpy( tcp_send_buffer + int_length, msg, msg_length );
 
   result = send( details->handle,
-                 buffer,
+                 tcp_send_buffer,
                  cap_size_t_to_int( int_length + msg_length ),
                  0 );
-  free_mem( buffer );
 
   if( result == SOCKET_ERROR ) {
     raise_socket_send_failure( "send failed with IPv4/TCP socket",

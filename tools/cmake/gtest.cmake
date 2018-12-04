@@ -19,7 +19,7 @@ endif(WIN32)
 ExternalProject_Add(gtest
   URL https://github.com/abseil/googletest/archive/master.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-  CMAKE_ARGS -Dgtest_force_shared_crt=ON
+  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BINARY_DIR "${my_gtest_binary_dir}"
