@@ -22,17 +22,25 @@
 #include <stumpless.h>
 #include "test/helper/server.hpp"
 
-static size_t alloc_count = 0;
+static size_t tcp_malloc_count = 0;
+static size_t udp_malloc_count = 0;
+static size_t realloc_count = 0;
 
 void *
-malloc_counter( size_t size ){
-  alloc_count += size;
+tcp_malloc_counter( size_t size ){
+  tcp_malloc_count += size;
+  return malloc( size );
+}
+
+void *
+udp_malloc_counter( size_t size ){
+  udp_malloc_count += size;
   return malloc( size );
 }
 
 void *
 realloc_counter( void *old_mem, size_t new_size ) {
-  alloc_count += new_size;
+  realloc_count += new_size;
   return realloc( old_mem, new_size );
 }
 
@@ -57,10 +65,9 @@ static void AddEntryToTcp4Target( benchmark::State& state ) {
                                "this entry is for performance testing" );
   accepted = accept_tcp_connection( handle );
 
-  stumpless_set_malloc( malloc_counter );
+  stumpless_set_malloc( tcp_malloc_counter );
   stumpless_set_realloc( realloc_counter );
 
-  alloc_count = 0;
   for(auto _ : state){
     if( stumpless_add_entry( target, entry ) < 0 ) {
       state.SkipWithError( "could not send an entry to the tcp target" );
@@ -68,7 +75,8 @@ static void AddEntryToTcp4Target( benchmark::State& state ) {
 
     recv_from_handle( accepted, buffer, 1024 );
   }
-  state.counters["MemoryAllocated"] = ( double ) alloc_count;
+  state.counters["MemoryAllocated"] = ( double ) tcp_malloc_count;
+  state.counters["MemoryReallocated"] = ( double ) realloc_count;
 
   close_server_socket( accepted );
   close_server_socket( handle );
@@ -82,7 +90,7 @@ static void AddEntryToUdp4Target( benchmark::State& state ) {
   struct stumpless_target *target;
   struct stumpless_entry *entry;
 
-  stumpless_set_malloc( malloc_counter );
+  stumpless_set_malloc( udp_malloc_counter );
 
   target = stumpless_open_udp4_target( "udp4-perf",
                                        "127.0.0.1",
@@ -95,11 +103,10 @@ static void AddEntryToUdp4Target( benchmark::State& state ) {
                                "network-target",
                                "this entry is for performance testing" );
 
-  alloc_count = 0;
   for(auto _ : state){
     stumpless_add_entry( target, entry );
   }
-  state.counters["MemoryAllocated"] = ( double ) alloc_count;
+  state.counters["MemoryAllocated"] = ( double ) udp_malloc_count;
 
   stumpless_destroy_entry( entry );
   stumpless_close_network_target( target );
