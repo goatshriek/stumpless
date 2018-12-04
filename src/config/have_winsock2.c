@@ -167,15 +167,17 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
   int result;
   size_t int_length;
   size_t required_length;
+  char *new_buffer;
 
   required_length = msg_length + 50;
   if( tcp_send_buffer_length < required_length ) {
-    tcp_send_buffer = realloc_mem( tcp_send_buffer, required_length );
+    new_buffer = realloc_mem( tcp_send_buffer, required_length );
 
-    if( !tcp_send_buffer ) {
+    if( !new_buffer ) {
       return -1;
 
     } else {
+      tcp_send_buffer = new_buffer;
       tcp_send_buffer_length = required_length;
 
     }
