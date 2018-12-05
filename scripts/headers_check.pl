@@ -161,6 +161,7 @@ my %manifest = (
   "struct wel_target" => "private/target/wel.h",
   "stumpless" => "stumpless/target.h",
   "stumpless_add_entry" => "stumpless/target.h",
+  "stumpless_free_all" => "stumpless/memory.h",
   "stumpless_set_wel_insertion_string" => "stumpless/config/wel_supported.h",
   "STUMPLESS_BUFFER_TARGET" => "stumpless/target.h",
   "stumpless_close_buffer_target" => "stumpless/target/buffer.h",

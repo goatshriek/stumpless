@@ -31,6 +31,13 @@ static free_func_t stumpless_free = free;
 static malloc_func_t stumpless_malloc = malloc;
 static realloc_func_t stumpless_realloc = realloc;
 
+void
+stumpless_free_all( void ) {
+  clear_error(  );
+
+  // add cleanup code
+}
+
 malloc_func_t
 stumpless_set_malloc( malloc_func_t malloc_func ) {
   clear_error(  );

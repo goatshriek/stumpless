@@ -24,6 +24,10 @@ namespace {
 
   class MemoryTest : public ::testing::Test {};
 
+  TEST( FreeAllTest, SimpleCall ) {
+    stumpless_free_all(  );
+  }
+
   TEST( SetFreeTest, CustomFunction ) {
     void (*result)(void *);
 
