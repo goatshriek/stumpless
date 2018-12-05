@@ -74,8 +74,12 @@ namespace {
       ASSERT_GE( add_result, 0 );
     }
 
+    stumpless_destroy_entry( entry );
+    stumpless_close_buffer_target( target );
+
     stumpless_free_all(  );
 
-    ASSERT_EQ( buffer_leak_memory_counter.alloc_total, buffer_leak_memory_counter.free_total );
+    ASSERT_EQ( buffer_leak_memory_counter.alloc_total,
+               buffer_leak_memory_counter.free_total );
   }
 }

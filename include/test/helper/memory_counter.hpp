@@ -71,7 +71,7 @@ PREFIX##_memory_counter_realloc( void *mem, size_t new_size ) {                \
     PREFIX##_memory_counter.alloc_total += new_size - old_size;                \
   }                                                                            \
                                                                                \
-  return mem;                                                                  \
+  return new_mem;                                                              \
 }                                                                              \
                                                                                \
 static void                                                                    \
