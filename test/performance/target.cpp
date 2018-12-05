@@ -18,7 +18,6 @@
 #include <stumpless.h>
 #include "test/helper/memory_counter.hpp"
 
-
 NEW_MEMORY_COUNTER( stumpless )
 
 static void Stumpless(benchmark::State& state){
@@ -40,10 +39,10 @@ static void Stumpless(benchmark::State& state){
   stumpless_close_buffer_target( target );
 
   state.counters["CallsToAlloc"] = ( double ) stumpless_memory_counter.malloc_count;
-  state.counters["MemoryAllocated"] = ( double ) stumpless_memory_counter.malloc_total;
+  state.counters["MemoryAllocated"] = ( double ) stumpless_memory_counter.alloc_total;
   state.counters["CallsToRealloc"] = ( double ) stumpless_memory_counter.realloc_count;
-  state.counters["MemoryReallocated"] = ( double ) stumpless_memory_counter.realloc_total;
   state.counters["CallsToFree"] = ( double ) stumpless_memory_counter.free_count;
+  state.counters["MemoryFreed"] = ( double ) stumpless_memory_counter.free_total;
 }
 
 BENCHMARK(Stumpless);

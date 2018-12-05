@@ -24,40 +24,60 @@
 
 struct memory_counter {
   size_t malloc_count;
-  size_t malloc_total;
+  size_t alloc_total;
   size_t realloc_count;
-  size_t realloc_total;
   size_t free_count;
+  size_t free_total;
 };
 
 #define INIT_MEMORY_COUNTER(PREFIX)                                            \
 PREFIX##_memory_counter.malloc_count = 0;                                      \
-PREFIX##_memory_counter.malloc_total = 0;                                      \
+PREFIX##_memory_counter.alloc_total = 0;                                       \
 PREFIX##_memory_counter.realloc_count = 0;                                     \
-PREFIX##_memory_counter.realloc_total = 0;                                     \
-PREFIX##_memory_counter.free_count = 0;
+PREFIX##_memory_counter.free_count = 0;                                        \
+PREFIX##_memory_counter.free_total = 0;
 
 
 #define NEW_MEMORY_COUNTER(PREFIX)                                             \
 static struct memory_counter PREFIX##_memory_counter;                          \
+static std::map<void *, size_t> PREFIX##_memory_counter_map;                   \
                                                                                \
 static void *                                                                  \
 PREFIX##_memory_counter_malloc( size_t size ) {                                \
+  void *mem;                                                                   \
+                                                                               \
   PREFIX##_memory_counter.malloc_count++;                                      \
-  PREFIX##_memory_counter.malloc_total += size;                                \
-  return malloc( size );                                                       \
+  PREFIX##_memory_counter.alloc_total += size;                                 \
+  mem = malloc( size );                                                        \
+                                                                               \
+  if( mem != NULL ) {                                                          \
+    PREFIX##_memory_counter_map[mem] = size;                                   \
+  }                                                                            \
+                                                                               \
+  return mem;                                                                  \
 }                                                                              \
                                                                                \
 static void *                                                                  \
 PREFIX##_memory_counter_realloc( void *mem, size_t new_size ) {                \
+  void *new_mem;                                                               \
+  size_t old_size;                                                             \
+                                                                               \
   PREFIX##_memory_counter.realloc_count++;                                     \
-  PREFIX##_memory_counter.realloc_total += new_size;                           \
-  return realloc( mem, new_size );                                             \
+  new_mem = realloc( mem, new_size );                                          \
+  if( new_mem != NULL ) {                                                      \
+    old_size = PREFIX##_memory_counter_map[mem];                               \
+    PREFIX##_memory_counter_map[mem] = 0;                                      \
+    PREFIX##_memory_counter_map[new_mem] = new_size;                           \
+    PREFIX##_memory_counter.alloc_total += new_size - old_size;                \
+  }                                                                            \
+                                                                               \
+  return mem;                                                                  \
 }                                                                              \
                                                                                \
 static void                                                                    \
 PREFIX##_memory_counter_free( void *mem ) {                                    \
   PREFIX##_memory_counter.free_count++;                                        \
+  PREFIX##_memory_counter.free_total += PREFIX##_memory_counter_map[mem];      \
   free( mem );                                                                 \
 }
 
