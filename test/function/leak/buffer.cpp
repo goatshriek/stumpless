@@ -17,11 +17,13 @@
  */
 
 #include <stddef.h>
-#include <stdlib.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include "test/helper/memory_counter.hpp"
 
 #define TEST_BUFFER_LENGTH 2048
+
+NEW_MEMORY_COUNTER( buffer_leak )
 
 namespace {
 
@@ -35,6 +37,11 @@ namespace {
     struct stumpless_param *param;
     size_t i;
     int add_result;
+
+    INIT_MEMORY_COUNTER( buffer_leak );
+    stumpless_set_malloc( buffer_leak_memory_counter_malloc );
+    stumpless_set_realloc( buffer_leak_memory_counter_realloc );
+    stumpless_set_free( buffer_leak_memory_counter_free );
 
     target = stumpless_open_buffer_target( "buffer-leak-testing",
                                            buffer,
@@ -68,5 +75,7 @@ namespace {
     }
 
     stumpless_free_all(  );
+
+    ASSERT_EQ( buffer_leak_memory_counter.alloc_total, buffer_leak_memory_counter.free_total );
   }
 }
