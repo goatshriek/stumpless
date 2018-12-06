@@ -44,6 +44,7 @@ my %manifest = (
   "destroy_target" => "private/target.h",
   "destroy_wel_target" => "private/target/wel.h",
   "DWORD" => "windows.h",
+  "entry_free_all" => "private/entry.h",
   "EVENTLOG_ERROR_TYPE" => "windows.h",
   "EVENTLOG_INFORMATION_TYPE" => "windows.h",
   "EVENTLOG_SUCCESS" => "windows.h",

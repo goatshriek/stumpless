@@ -341,6 +341,11 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
 
 /* private functions */
 
+void
+entry_free_all( void ) {
+  cache_destroy( entry_cache );
+}
+
 int
 get_prival( int facility, int severity ) {
   return facility | severity;

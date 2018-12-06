@@ -53,7 +53,7 @@ destroy_page( struct cache *c, size_t page_index ) {
     locks = current_page + ( entries_per_page * c->entry_size );
     locks[i] = 0;
 
-    if( c->entry_init ) {
+    if( c->entry_teardown ) {
       c->entry_teardown( current_page + ( i * c->entry_size ) );
     }
   }
