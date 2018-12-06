@@ -99,6 +99,18 @@ cache_alloc( struct cache *c ) {
 }
 
 void
+cache_destroy( struct cache *c ) {
+  size_t i;
+
+  for( i = 0; i < c->page_count; i++ ) {
+    free_mem( c->pages[i] );
+  }
+
+  free_mem( c->pages );
+  free_mem( c );
+}
+
+void
 cache_free( struct cache *c, void *entry ) {
   size_t entry_index;
   size_t i;

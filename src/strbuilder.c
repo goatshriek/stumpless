@@ -141,6 +141,12 @@ strbuilder_append_string( struct strbuilder *builder, const char *str ) {
   return builder;
 }
 
+void
+strbuilder_free_all( void ) {
+  cache_destroy( strbuilder_cache );
+  strbuilder_cache = NULL;
+}
+
 char *
 strbuilder_get_buffer( struct strbuilder *builder, size_t * length ) {
   *length = builder->position - builder->buffer;

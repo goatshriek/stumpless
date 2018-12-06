@@ -33,6 +33,9 @@ void *
 cache_alloc( struct cache *c );
 
 void
+cache_destroy( struct cache *c );
+
+void
 cache_free( struct cache *c, void *entry );
 
 struct cache *
