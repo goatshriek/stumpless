@@ -33,6 +33,13 @@ strbuilder_init( void *builder ) {
   b->buffer = NULL;
 }
 
+static void
+strbuilder_teardown( void *builder ) {
+  struct strbuilder *b = ( struct strbuilder * ) builder;
+
+  free_mem( b->buffer );
+}
+
 static size_t
 increase_size( struct strbuilder *builder ) {
   char *old_buffer;
@@ -164,7 +171,7 @@ strbuilder_new( void ) {
   size_t size;
 
   if( !strbuilder_cache ) {
-    strbuilder_cache = cache_new( sizeof( *builder ), strbuilder_init );
+    strbuilder_cache = cache_new( sizeof( *builder ), strbuilder_init, strbuilder_teardown );
 
     if( !strbuilder_cache ) {
       goto fail;

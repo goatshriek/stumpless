@@ -148,7 +148,7 @@ stumpless_new_entry( int facility,
   clear_error(  );
 
   if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL );
+    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
 
     if( !entry_cache ) {
       goto fail;
