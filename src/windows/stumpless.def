@@ -37,11 +37,12 @@ EXPORTS
   stumpless_open_stderr_target          @35
   stumpless_open_stdout_target          @36
   stumpless_open_stream_target          @37
-  stumpless_close_network_target        @38
-  stumpless_open_network_target         @39
-  stumpless_open_tcp4_target            @40
-  stumpless_open_udp4_target            @41
-  stumpless_get_transport_port          @42
-  stumpless_get_udp_max_message_size    @43
-  stumpless_set_transport_port          @44
-  stumpless_set_udp_max_message_size    @45
+  stumpless_free_all                    @38
+  stumpless_close_network_target        @39
+  stumpless_open_network_target         @40
+  stumpless_open_tcp4_target            @41
+  stumpless_open_udp4_target            @42
+  stumpless_get_transport_port          @43
+  stumpless_get_udp_max_message_size    @44
+  stumpless_set_transport_port          @45
+  stumpless_set_udp_max_message_size    @46

@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+/** @file
+ * Functions for controlling memory allocation during execution.
+ */
+
 #ifndef __STUMPLESS_MEMORY_H
 #  define __STUMPLESS_MEMORY_H
 
@@ -24,6 +28,23 @@
 #  ifdef __cplusplus
 extern "C" {
 #  endif
+
+/**
+ * Frees all memory allocated internally by library calls.
+ *
+ * This function serves as a final exit function, which should be called when
+ * an application using the library is preparing to exit or when the library is
+ * no longer needed. Before this function is called, all targets must be closed
+ * and no pointers to any structs should be retained. Failing to do this will
+ * result in undefined behavior.
+ *
+ * Calling other functions after a call to this function is acceptable, however
+ * execution times may be longer than usual as memory used to cache objects may
+ * need to be allocated. If other functions are called, this function should be
+ * called again before exit to ensure a memory leak does not exist.
+ */
+void
+stumpless_free_all( void );
 
 void *
 ( *stumpless_set_malloc( void * ( *malloc_func )( size_t ) ) )
