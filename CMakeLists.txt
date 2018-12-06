@@ -313,7 +313,7 @@ add_function_test(buffer
 )
 
 add_function_test(buffer_leak
-  test/function/leak/buffer.cpp
+  SOURCES test/function/leak/buffer.cpp
 )
 
 add_function_test(entry
