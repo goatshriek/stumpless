@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Install target and documentation.
  - Memory leak controlled with stumpless_free_all function.
 
+### Fixed
+ - Various memory leaks.
+
 ## [1.2.0] - 2018-11-09
 ### Added
  - Increased coverage on object cache.

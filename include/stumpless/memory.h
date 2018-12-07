@@ -30,7 +30,7 @@ extern "C" {
 #  endif
 
 /**
- * Frees all memory allocated internally by library calls.
+ * Frees all memory allocated internally.
  *
  * This function serves as a final exit function, which should be called when
  * an application using the library is preparing to exit or when the library is
