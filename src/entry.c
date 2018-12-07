@@ -256,6 +256,7 @@ stumpless_destroy_element( struct stumpless_element *element ) {
     stumpless_destroy_param( element->params[i] );
   }
 
+  free_mem( element->params );
   free_mem( element->name );
   free_mem( element );
 }
