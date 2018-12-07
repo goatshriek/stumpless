@@ -122,6 +122,10 @@ void
 cache_destroy( struct cache *c ) {
   size_t i;
 
+  if( !c ) {
+    return;
+  }
+
   for( i = 0; i < c->page_count; i++ ) {
     destroy_page( c, i );
     free_mem( c->pages[i] );
