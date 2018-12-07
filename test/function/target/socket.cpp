@@ -160,6 +160,8 @@ namespace {
     ASSERT_TRUE( target != NULL );
 
     target->name = NULL;
+    target->default_app_name = NULL;
+    target->default_msgid = NULL;
     target->id = NULL;
 
     stumpless_close_socket_target( target );
