@@ -41,7 +41,7 @@ init_page( struct cache *c, size_t page_index ) {
 }
 
 static void
-destroy_page( struct cache *c, size_t page_index ) {
+teardown_page( struct cache *c, size_t page_index ) {
   size_t entries_per_page;
   size_t i;
   char *current_page;
@@ -127,7 +127,7 @@ cache_destroy( struct cache *c ) {
   }
 
   for( i = 0; i < c->page_count; i++ ) {
-    destroy_page( c, i );
+    teardown_page( c, i );
     free_mem( c->pages[i] );
   }
 
