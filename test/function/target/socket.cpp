@@ -162,7 +162,7 @@ namespace {
     target->name = NULL;
     target->id = NULL;
 
-    free( target );
+    stumpless_close_socket_target( target );
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
