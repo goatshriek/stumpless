@@ -40,6 +40,26 @@ init_page( struct cache *c, size_t page_index ) {
   }
 }
 
+static void
+destroy_page( struct cache *c, size_t page_index ) {
+  size_t entries_per_page;
+  size_t i;
+  char *current_page;
+  char *locks;
+
+  current_page = c->pages[page_index];
+  entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
+  for( i = 0; i < entries_per_page; i++ ) {
+    locks = current_page + ( entries_per_page * c->entry_size );
+    locks[i] = 0;
+
+    if( c->entry_teardown ) {
+      c->entry_teardown( current_page + ( i * c->entry_size ) );
+    }
+  }
+
+}
+
 static int
 add_page( struct cache *c ) {
   int new_page_index;
@@ -99,6 +119,23 @@ cache_alloc( struct cache *c ) {
 }
 
 void
+cache_destroy( struct cache *c ) {
+  size_t i;
+
+  if( !c ) {
+    return;
+  }
+
+  for( i = 0; i < c->page_count; i++ ) {
+    destroy_page( c, i );
+    free_mem( c->pages[i] );
+  }
+
+  free_mem( c->pages );
+  free_mem( c );
+}
+
+void
 cache_free( struct cache *c, void *entry ) {
   size_t entry_index;
   size_t i;
@@ -128,7 +165,9 @@ cache_free( struct cache *c, void *entry ) {
 }
 
 struct cache *
-cache_new( size_t size, void ( *entry_init ) ( void * ) ) {
+cache_new( size_t size,
+           void ( *entry_init ) ( void * ),
+           void ( *entry_teardown ) ( void * ) ) {
   struct cache *c;
   size_t first_page;
 
@@ -143,6 +182,7 @@ cache_new( size_t size, void ( *entry_init ) ( void * ) ) {
   }
 
   c->entry_init = entry_init;
+  c->entry_teardown = entry_teardown;
   c->entry_size = size;
   c->page_size = get_paged_size( size );
   c->page_count = 0;

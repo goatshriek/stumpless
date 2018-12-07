@@ -235,6 +235,8 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 
 void
 destroy_target( struct stumpless_target *target ) {
+  free_mem( target->default_app_name );
+  free_mem( target->default_msgid );
   free_mem( target->name );
   free_mem( target );
 }

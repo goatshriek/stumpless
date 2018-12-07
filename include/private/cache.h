@@ -23,6 +23,7 @@
 
 struct cache {
   void ( *entry_init ) ( void * );
+  void ( *entry_teardown ) ( void * );
   size_t entry_size;
   char **pages;
   int page_count;
@@ -33,9 +34,14 @@ void *
 cache_alloc( struct cache *c );
 
 void
+cache_destroy( struct cache *c );
+
+void
 cache_free( struct cache *c, void *entry );
 
 struct cache *
-cache_new( size_t size, void ( *entry_init ) ( void * ) );
+cache_new( size_t size,
+           void ( *entry_init ) ( void * ),
+           void ( *entry_destroy ) ( void * ) );
 
 #endif /* __STUMPLESS_PRIVATE_CACHE_H */

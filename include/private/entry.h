@@ -22,6 +22,9 @@
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
 #  define __STUMPLESS_PRIVATE_ENTRY_H
 
+void
+entry_free_all( void );
+
 int
 get_prival( int facility, int severity );
 
