@@ -1,8 +1,8 @@
 ExternalProject_Add(benchmark
-    URL https://github.com/google/benchmark/archive/master.zip
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
-    CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF
-    INSTALL_COMMAND ""
+  URL https://github.com/google/benchmark/archive/eee8b05c97d7b832bf67d6e000958d012ab30165.zip
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
+  CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  INSTALL_COMMAND ""
 )
 
 set_target_properties(benchmark

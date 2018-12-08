@@ -37,3 +37,4 @@ EXPORTS
   stumpless_open_stderr_target          @35
   stumpless_open_stdout_target          @36
   stumpless_open_stream_target          @37
+  stumpless_free_all                    @38

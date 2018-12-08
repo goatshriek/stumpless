@@ -148,7 +148,7 @@ stumpless_new_entry( int facility,
   clear_error(  );
 
   if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL );
+    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
 
     if( !entry_cache ) {
       goto fail;
@@ -255,6 +255,10 @@ stumpless_destroy_element( struct stumpless_element *element ) {
   for( i = 0; i < element->param_count; i++ ) {
     stumpless_destroy_param( element->params[i] );
   }
+
+  free_mem( element->params );
+  free_mem( element->name );
+  free_mem( element );
 }
 
 void
@@ -340,6 +344,11 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
 }
 
 /* private functions */
+
+void
+entry_free_all( void ) {
+  cache_destroy( entry_cache );
+}
 
 int
 get_prival( int facility, int severity ) {

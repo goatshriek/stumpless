@@ -20,8 +20,10 @@
 #include <stdlib.h>
 #include <stumpless/memory.h>
 #include "private/config/wrapper.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/strbuilder.h"
 
 typedef void ( *free_func_t ) ( void * );
 typedef void *( *malloc_func_t ) ( size_t );
@@ -30,6 +32,14 @@ typedef void *( *realloc_func_t ) ( void *, size_t );
 static free_func_t stumpless_free = free;
 static malloc_func_t stumpless_malloc = malloc;
 static realloc_func_t stumpless_realloc = realloc;
+
+void
+stumpless_free_all( void ) {
+  clear_error(  );
+
+  entry_free_all(  );
+  strbuilder_free_all(  );
+}
 
 malloc_func_t
 stumpless_set_malloc( malloc_func_t malloc_func ) {
