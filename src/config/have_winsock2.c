@@ -29,7 +29,7 @@
 #include "private/target/network.h"
 
 static char *tcp_send_buffer = NULL;
-size_t tcp_send_buffer_length = 0;
+static size_t tcp_send_buffer_length = 0;
 
 static
 SOCKET
