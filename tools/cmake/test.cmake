@@ -62,6 +62,7 @@ function(private_add_performance_test)
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
       libbenchmark
+      libbenchmarkmain
       Shlwapi.lib
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
@@ -69,6 +70,7 @@ function(private_add_performance_test)
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
       libbenchmark
+      libbenchmarkmain
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   endif(MSVC)

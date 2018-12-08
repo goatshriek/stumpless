@@ -127,5 +127,3 @@ BENCHMARK_F( Udp4Fixture, AddEntryToUdp4Target )( benchmark::State& state ) {
   state.counters["CallsToFree"] = ( double ) udp_memory_counter.free_count;
   state.counters["MemoryFreed"] = ( double ) udp_memory_counter.free_total;
 }
-
-BENCHMARK_MAIN();
