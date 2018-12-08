@@ -344,6 +344,10 @@ add_function_test(target
   SOURCES test/function/target.cpp
 )
 
+add_function_test(udp4_leak
+  SOURCES test/function/leak/udp4.cpp
+)
+
 add_function_test(version
   SOURCES test/function/version.cpp
 )
