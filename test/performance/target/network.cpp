@@ -16,104 +16,116 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <stdlib.h>
 #include <benchmark/benchmark.h>
+#include <stdlib.h>
 #include <stumpless.h>
+#include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
-static size_t tcp_malloc_count = 0;
-static size_t udp_malloc_count = 0;
-static size_t realloc_count = 0;
+NEW_MEMORY_COUNTER( tcp );
+NEW_MEMORY_COUNTER( udp );
 
-void *
-tcp_malloc_counter( size_t size ){
-  tcp_malloc_count += size;
-  return malloc( size );
-}
+class Tcp4Fixture : public ::benchmark::Fixture {
+  protected:
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
+    socket_handle_t handle = BAD_HANDLE;
+    socket_handle_t accepted = BAD_HANDLE;
 
-void *
-udp_malloc_counter( size_t size ){
-  udp_malloc_count += size;
-  return malloc( size );
-}
+  public:
+    void SetUp( const ::benchmark::State& state ) {
+      handle = open_tcp_server_socket( "127.0.0.1", "514" );
 
-void *
-realloc_counter( void *old_mem, size_t new_size ) {
-  realloc_count += new_size;
-  return realloc( old_mem, new_size );
-}
+      target = stumpless_open_tcp4_target( "tcp4-perf",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
 
-static void AddEntryToTcp4Target( benchmark::State& state ) {
-  struct stumpless_target *target;
-  struct stumpless_entry *entry;
-  socket_handle_t handle;
-  socket_handle_t accepted = BAD_HANDLE;
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "add-entry-performance-test",
+                                   "network-target",
+                                   "this entry is for performance testing" );
+      accepted = accept_tcp_connection( handle );
+
+      stumpless_set_malloc( tcp_memory_counter_malloc );
+      stumpless_set_realloc( tcp_memory_counter_realloc );
+      stumpless_set_free( tcp_memory_counter_free );
+    }
+
+    void TearDown( const ::benchmark::State& state ) {
+      stumpless_set_malloc( malloc );
+      stumpless_set_realloc( realloc );
+      stumpless_set_free( free );
+
+      close_server_socket( accepted );
+      close_server_socket( handle );
+      stumpless_destroy_entry( entry );
+      stumpless_close_network_target( target );
+    }
+};
+
+BENCHMARK_F( Tcp4Fixture, AddEntryToTcp4Target )( benchmark::State& state ) {
   char buffer[1024];
 
-  handle = open_tcp_server_socket( "127.0.0.1", "514" );
-
-  target = stumpless_open_tcp4_target( "tcp4-perf",
-                                       "127.0.0.1",
-                                       0,
-                                       STUMPLESS_FACILITY_USER );
-
-  entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                               STUMPLESS_SEVERITY_INFO,
-                               "add-entry-performance-test",
-                               "network-target",
-                               "this entry is for performance testing" );
-  accepted = accept_tcp_connection( handle );
-
-  stumpless_set_malloc( tcp_malloc_counter );
-  stumpless_set_realloc( realloc_counter );
-
   for(auto _ : state){
-    if( stumpless_add_entry( target, entry ) < 0 ) {
+    if( stumpless_add_entry( target, entry ) <= 0 ) {
       state.SkipWithError( "could not send an entry to the tcp target" );
     }
 
     recv_from_handle( accepted, buffer, 1024 );
   }
-  state.counters["MemoryAllocated"] = ( double ) tcp_malloc_count;
-  state.counters["MemoryReallocated"] = ( double ) realloc_count;
 
-  close_server_socket( accepted );
-  close_server_socket( handle );
-  stumpless_destroy_entry( entry );
-  stumpless_close_network_target( target );
-  stumpless_set_malloc( malloc );
-  stumpless_set_realloc( realloc );
+  state.counters["CallsToAlloc"] = ( double ) tcp_memory_counter.malloc_count;
+  state.counters["MemoryAllocated"] = ( double ) tcp_memory_counter.alloc_total;
+  state.counters["CallsToRealloc"] = ( double ) tcp_memory_counter.realloc_count;
+  state.counters["CallsToFree"] = ( double ) tcp_memory_counter.free_count;
+  state.counters["MemoryFreed"] = ( double ) tcp_memory_counter.free_total;
 }
 
-static void AddEntryToUdp4Target( benchmark::State& state ) {
-  struct stumpless_target *target;
-  struct stumpless_entry *entry;
+class Udp4Fixture : public ::benchmark::Fixture {
+  protected:
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
 
-  stumpless_set_malloc( udp_malloc_counter );
+  public:
+    void SetUp( const ::benchmark::State& state ) {
+      target = stumpless_open_udp4_target( "udp4-perf",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
 
-  target = stumpless_open_udp4_target( "udp4-perf",
-                                       "127.0.0.1",
-                                       0,
-                                       STUMPLESS_FACILITY_USER );
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "add-entry-performance-test",
+                                   "network-target",
+                                   "this entry is for performance testing" );
 
-  entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                               STUMPLESS_SEVERITY_INFO,
-                               "add-entry-performance-test",
-                               "network-target",
-                               "this entry is for performance testing" );
+      stumpless_set_malloc( udp_memory_counter_malloc );
+      stumpless_set_realloc( udp_memory_counter_realloc );
+      stumpless_set_free( udp_memory_counter_free );
+    }
 
+    void TearDown( const ::benchmark::State& state ) {
+      stumpless_set_malloc( malloc );
+      stumpless_set_realloc( realloc );
+      stumpless_set_free( free );
+
+      stumpless_destroy_entry( entry );
+      stumpless_close_network_target( target );
+    }
+};
+
+BENCHMARK_F( Udp4Fixture, AddEntryToUdp4Target )( benchmark::State& state ) {
   for(auto _ : state){
     stumpless_add_entry( target, entry );
   }
-  state.counters["MemoryAllocated"] = ( double ) udp_malloc_count;
 
-  stumpless_destroy_entry( entry );
-  stumpless_close_network_target( target );
-  stumpless_set_malloc( malloc );
+  state.counters["CallsToAlloc"] = ( double ) udp_memory_counter.malloc_count;
+  state.counters["MemoryAllocated"] = ( double ) udp_memory_counter.alloc_total;
+  state.counters["CallsToRealloc"] = ( double ) udp_memory_counter.realloc_count;
+  state.counters["CallsToFree"] = ( double ) udp_memory_counter.free_count;
+  state.counters["MemoryFreed"] = ( double ) udp_memory_counter.free_total;
 }
-
-BENCHMARK( AddEntryToTcp4Target );
-BENCHMARK( AddEntryToUdp4Target );
 
 BENCHMARK_MAIN();
