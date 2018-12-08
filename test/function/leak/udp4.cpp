@@ -20,6 +20,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/memory_counter.hpp"
+#include "test/helper/server.hpp"
 
 NEW_MEMORY_COUNTER( udp4_leak )
 
@@ -35,6 +36,13 @@ namespace {
     size_t i;
     int add_result;
     struct stumpless_error *error;
+    socket_handle_t handle;
+    bool fixture_enabled = true;
+
+    handle = open_udp_server_socket( "127.0.0.1", "514" );
+    if( handle == BAD_HANDLE ) {
+      fixture_enabled = false;
+    }
 
     stumpless_set_malloc( udp4_leak_memory_counter_malloc );
     stumpless_set_realloc( udp4_leak_memory_counter_realloc );
@@ -67,11 +75,11 @@ namespace {
 
     for( i = 0; i < 1000; i++ ) {
       add_result = stumpless_add_entry( target, entry );
-      ASSERT_GE( add_result, 0 );
+      if( fixture_enabled ) {
+        EXPECT_GE( add_result, 0 );
 
-      error = stumpless_get_error(  );
-      if( error ) {
-        printf( "%d\n", error->id );
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error == NULL );
       }
     }
 
@@ -82,5 +90,7 @@ namespace {
 
     ASSERT_EQ( udp4_leak_memory_counter.alloc_total,
                udp4_leak_memory_counter.free_total );
+
+    close_server_socket( handle );
   }
 }

@@ -132,7 +132,10 @@ else()
   )
 
   add_function_test(udp4_leak
-    SOURCES test/function/leak/udp4.cpp
+    SOURCES
+      test/function/leak/udp4.cpp
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
   )
 
   add_performance_test(network
