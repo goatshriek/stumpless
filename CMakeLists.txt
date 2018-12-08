@@ -316,6 +316,10 @@ add_function_test(buffer_leak
   SOURCES test/function/leak/buffer.cpp
 )
 
+add_function_test(buffer_leak
+  test/function/leak/buffer.cpp
+)
+
 add_function_test(entry
   SOURCES test/function/entry.cpp
 )
