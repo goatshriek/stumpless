@@ -34,6 +34,7 @@ namespace {
     struct stumpless_param *param;
     size_t i;
     int add_result;
+    struct stumpless_error *error;
 
     stumpless_set_malloc( udp4_leak_memory_counter_malloc );
     stumpless_set_realloc( udp4_leak_memory_counter_realloc );
@@ -67,6 +68,11 @@ namespace {
     for( i = 0; i < 1000; i++ ) {
       add_result = stumpless_add_entry( target, entry );
       ASSERT_GE( add_result, 0 );
+
+      error = stumpless_get_error(  );
+      if( error ) {
+        printf( "%d\n", error->id );
+      }
     }
 
     stumpless_destroy_entry( entry );
