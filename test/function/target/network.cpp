@@ -442,6 +442,23 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetOpenTest, BadHostname ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_network_target( "bad-hostname",
+                                            "this-doesnt-exist.net",
+                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
+                                            0,
+                                            STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    ASSERT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+  }
+
   TEST( NetworkTargetOpenTest, BadNetworkProtocol ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
