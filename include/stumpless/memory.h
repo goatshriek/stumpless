@@ -30,7 +30,8 @@ extern "C" {
 #  endif
 
 /**
- * Frees all memory allocated internally.
+ * Frees all memory allocated internally, and performs any other necessary
+ * cleanup.
  *
  * This function serves as a final exit function, which should be called when
  * an application using the library is preparing to exit or when the library is
@@ -42,6 +43,8 @@ extern "C" {
  * execution times may be longer than usual as memory used to cache objects may
  * need to be allocated. If other functions are called, this function should be
  * called again before exit to ensure a memory leak does not exist.
+ *
+ * In a windows environment, this function will call WSACleanup.
  */
 void
 stumpless_free_all( void );
