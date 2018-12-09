@@ -303,7 +303,8 @@ my %manifest = (
   "winsock2_sendto_udp4_target" => "private/config/have_winsock2.h",
   "winsock2_set_tcp4_port" => "private/config/have_winsock2.h",
   "winsock2_set_udp4_port" => "private/config/have_winsock2.h",
-  "WORD" => "windows.h"
+  "WORD" => "windows.h",
+  "WSACleanup" => "winsock2.h"
 );
 
 my %actual_includes;

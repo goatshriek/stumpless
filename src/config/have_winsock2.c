@@ -97,6 +97,8 @@ void
 winsock2_free_all( void ) {
   free_mem( tcp_send_buffer );
   tcp_send_buffer_length = 0;
+
+  WSACleanup(  );
 }
 
 int
