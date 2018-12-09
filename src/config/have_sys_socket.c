@@ -84,6 +84,12 @@ sys_socket_close_udp4_target( struct udp4_details *details ) {
   close( details->handle );
 }
 
+void
+sys_socket_free_all( void ) {
+  free_mem( tcp_send_buffer );
+  tcp_send_buffer_length = 0;
+}
+
 struct tcp4_details *
 sys_socket_open_tcp4_target( struct tcp4_details *details,
                              const char *destination,

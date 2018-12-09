@@ -93,6 +93,12 @@ winsock2_close_udp4_target( struct udp4_details *details ) {
   closesocket( details->handle );
 }
 
+void
+winsock2_free_all( void ) {
+  free_mem( tcp_send_buffer );
+  tcp_send_buffer_length = 0;
+}
+
 int
 winsock2_gethostname( char *buffer, size_t namelen ) {
   int capped_namelen;

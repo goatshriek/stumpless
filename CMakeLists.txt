@@ -131,6 +131,13 @@ else()
     LIBRARIES ${network_libraries}
   )
 
+  add_function_test(tcp4_leak
+    SOURCES
+      test/function/leak/tcp4.cpp
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
+  )
+
   add_function_test(udp4_leak
     SOURCES
       test/function/leak/udp4.cpp

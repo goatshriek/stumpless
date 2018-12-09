@@ -27,6 +27,9 @@ sys_socket_close_tcp4_target( struct tcp4_details *details );
 void
 sys_socket_close_udp4_target( struct udp4_details *details );
 
+void
+sys_socket_free_all( void );
+
 struct tcp4_details *
 sys_socket_open_tcp4_target( struct tcp4_details *details,
                              const char *destination,

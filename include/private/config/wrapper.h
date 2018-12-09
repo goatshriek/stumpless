@@ -19,17 +19,25 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 
-
+#  include <stumpless/config.h>
 #  include "private/config.h"
 
 
-/* definition of config_sendto_network_target */
+/* definition of config_sendto_network_target and config_network_free_all */
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include "private/target/network.h"
 #    define config_sendto_network_target sendto_network_target
+#    ifdef HAVE_SYS_SOCKET_H
+#      include "private/config/have_sys_socket.h"
+#      define config_network_free_all() sys_socket_free_all()
+#    elif HAVE_WINSOCK2_H
+#      include "private/config/have_winsock2.h"
+#      define config_network_free_all() winsock2_free_all()
+#    endif
 #  else
 #    include "private/target.h"
 #    define config_sendto_network_target sendto_unsupported_target
+#    define config_network_free_all() ( ( void ) 0 )
 #  endif
 
 
