@@ -38,46 +38,41 @@ namespace {
     struct stumpless_error *error;
     socket_handle_t handle;
     socket_handle_t accepted = BAD_HANDLE;
-    bool fixture_enabled = true;
     char buffer[1024];
 
     handle = open_tcp_server_socket( "127.0.0.1", "514" );
-    if( handle == BAD_HANDLE ) {
-      fixture_enabled = false;
-    }
+    if( handle != BAD_HANDLE ) {
+      stumpless_set_malloc( tcp4_leak_memory_counter_malloc );
+      stumpless_set_realloc( tcp4_leak_memory_counter_realloc );
+      stumpless_set_free( tcp4_leak_memory_counter_free );
 
-    stumpless_set_malloc( tcp4_leak_memory_counter_malloc );
-    stumpless_set_realloc( tcp4_leak_memory_counter_realloc );
-    stumpless_set_free( tcp4_leak_memory_counter_free );
+      target = stumpless_open_tcp4_target( "test-self",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
 
-    target = stumpless_open_tcp4_target( "test-self",
-                                         "127.0.0.1",
-                                         0,
-                                         STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "memory-leak-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      ASSERT_TRUE( entry != NULL );
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "memory-leak-test",
-                                 "basic-entry",
-                                 "basic test message" );
-    ASSERT_TRUE( entry != NULL );
+      element = stumpless_new_element( "basic-element" );
+      ASSERT_TRUE( element != NULL );
 
-    element = stumpless_new_element( "basic-element" );
-    ASSERT_TRUE( element != NULL );
+      result_entry = stumpless_add_element( entry, element );
+      ASSERT_TRUE( result_entry != NULL );
 
-    result_entry = stumpless_add_element( entry, element );
-    ASSERT_TRUE( result_entry != NULL );
+      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
+      ASSERT_TRUE( param != NULL );
 
-    param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-    ASSERT_TRUE( param != NULL );
+      result_element = stumpless_add_param( element, param );
+      ASSERT_TRUE( result_element != NULL );
 
-    result_element = stumpless_add_param( element, param );
-    ASSERT_TRUE( result_element != NULL );
-
-    for( i = 0; i < 1000; i++ ) {
-      add_result = stumpless_add_entry( target, entry );
-      if( fixture_enabled ) {
+      for( i = 0; i < 1000; i++ ) {
+        add_result = stumpless_add_entry( target, entry );
         EXPECT_GE( add_result, 0 );
 
         error = stumpless_get_error(  );
@@ -89,17 +84,17 @@ namespace {
 
         recv_from_handle( accepted, buffer, 1024 );
       }
+
+      stumpless_destroy_entry( entry );
+      stumpless_close_network_target( target );
+
+      stumpless_free_all(  );
+
+      ASSERT_EQ( tcp4_leak_memory_counter.alloc_total,
+                 tcp4_leak_memory_counter.free_total );
+
+      close_server_socket( handle );
+      close_server_socket( accepted );
     }
-
-    stumpless_destroy_entry( entry );
-    stumpless_close_network_target( target );
-
-    stumpless_free_all(  );
-
-    ASSERT_EQ( tcp4_leak_memory_counter.alloc_total,
-               tcp4_leak_memory_counter.free_total );
-
-    close_server_socket( handle );
-    close_server_socket( accepted );
   }
 }
