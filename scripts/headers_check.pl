@@ -106,6 +106,7 @@ my %manifest = (
   "memcpy" => "string.h",
   "memset" => "string.h",
   "MSG_SIMPLE" => "test/function/windows/events.h",
+  "name_resolves" => "test/helper/resolve.hpp",
   "new_buffer_target" => "private/target/buffer.h",
   "new_file_target" => "private/target/file.h",
   "NEW_MEMORY_COUNTER" => "test/helper/memory_counter.hpp",

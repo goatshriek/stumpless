@@ -33,6 +33,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/resolve.hpp"
 #include "test/helper/server.hpp"
 
 #define BINDING_DISABLED_WARNING "some network tests will not run without the" \
@@ -445,18 +446,26 @@ namespace {
   TEST( NetworkTargetOpenTest, BadHostname ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
+    const char *hostname = "this-doesnt-exist.net";
 
-    target = stumpless_open_network_target( "bad-hostname",
-                                            "this-doesnt-exist.net",
-                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            0,
-                                            STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target == NULL );
+    if( !name_resolves( hostname ) ) {
+      printf( "WARNING: the intended bad hostname resolved, so this test will be skipped\n" );
+      SUCCEED(  ) << "the intended bad hostname resolved, so this test will be skipped";
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+    } else {
+      target = stumpless_open_network_target( "bad-hostname",
+                                              hostname,
+                                              STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                              STUMPLESS_UDP_TRANSPORT_PROTOCOL,
+                                              0,
+                                              STUMPLESS_FACILITY_USER );
+      EXPECT_TRUE( target == NULL );
+
+      error = stumpless_get_error(  );
+      ASSERT_TRUE( error != NULL );
+      ASSERT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+
+    }
   }
 
   TEST( NetworkTargetOpenTest, BadNetworkProtocol ) {
