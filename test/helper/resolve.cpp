@@ -54,9 +54,13 @@ name_resolves( const char *name ) {
   int result;
 
   result = getaddrinfo( name, "514", NULL, &addr_result );
-  freeaddrinfo( addr_result );
 
-  return result == 0;
+  if( result != 0 ) {
+    return false;
+  }
+
+  freeaddrinfo( addr_result );
+  return true;
 
 #endif
 }
