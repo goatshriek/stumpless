@@ -139,7 +139,6 @@ sys_socket_sendto_tcp4_target( struct tcp4_details *details,
                                const char *msg,
                                size_t msg_length ) {
   int result;
-  char *buffer;
   size_t int_length;
   size_t required_length;
   char *new_buffer;
