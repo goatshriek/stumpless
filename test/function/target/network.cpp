@@ -448,9 +448,9 @@ namespace {
     struct stumpless_error *error;
     const char *hostname = "this-doesnt-exist.net";
 
-    if( !name_resolves( hostname ) ) {
-      printf( "WARNING: the intended bad hostname resolved, so this test will be skipped\n" );
-      SUCCEED(  ) << "the intended bad hostname resolved, so this test will be skipped";
+    if( name_resolves( hostname ) ) {
+      printf( "WARNING: the bad hostname resolved, so this test will be skipped\n" );
+      SUCCEED(  ) << "the bad hostname resolved, so this test will be skipped";
 
     } else {
       target = stumpless_open_network_target( "bad-hostname",

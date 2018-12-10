@@ -17,8 +17,47 @@
  */
 
 #include "test/helper/resolve.hpp"
+#include <stdio.h>
+#ifdef _WIN32
+#  include <winsock2.h>
+#  include <ws2tcpip.h>
+#else
+#  include <errno.h>
+#  include <netdb.h>
+#  include <sys/types.h>
+#  include <sys/socket.h>
+#  include <unistd.h>
+#endif
 
 bool
 name_resolves( const char *name ) {
-  return false;
+#ifdef _WIN32
+  int result;
+  PADDRINFOA addr_result;
+  WSADATA wsa_data;
+
+  result = getaddrinfo( name, "514", NULL, &addr_result );
+  if( result == WSANOTINITIALISED ) {
+    WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+    result = getaddrinfo( name, "514", NULL, &addr_result );
+  }
+
+  if( result != 0 ) {
+    return false;
+  }
+
+  printf("the name %s resolves\n", name);
+  freeaddrinfo( addr_result );
+  return true;
+
+#else
+  struct addrinfo *addr_result;
+  int result;
+
+  result = getaddrinfo( name, "514", NULL, &addr_result );
+  freeaddrinfo( addr_result );
+
+  return result == 0;
+
+#endif
 }
