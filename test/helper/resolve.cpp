@@ -46,7 +46,6 @@ name_resolves( const char *name ) {
     return false;
   }
 
-  printf("the name %s resolves\n", name);
   freeaddrinfo( addr_result );
   return true;
 
