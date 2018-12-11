@@ -504,6 +504,30 @@ namespace {
     ASSERT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
   }
 
+  TEST( NetworkTargetOpenTest, Hostname ) {
+    struct stumpless_target *target;
+    const char *hostname = "localhost";
+
+    if( !name_resolves( hostname ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", hostname );
+      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+
+    } else {
+      target = stumpless_open_network_target( "local-hostname",
+                                              hostname,
+                                              STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                              STUMPLESS_UDP_TRANSPORT_PROTOCOL,
+                                              0,
+                                              STUMPLESS_FACILITY_USER );
+      EXPECT_TRUE( target != NULL );
+
+      ASSERT_TRUE( stumpless_get_error(  ) == NULL );
+
+      stumpless_close_network_target( target );
+
+    }
+  }
+
   TEST( NetworkTargetOpenTest, MallocFailure ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
@@ -666,11 +690,14 @@ namespace {
                                          "127.0.0.1",
                                          0,
                                          STUMPLESS_FACILITY_USER );
-
-    ASSERT_TRUE( target != NULL );
+    EXPECT_TRUE( target != NULL );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
+    if( error ) {
+      printf( "error message: %s\n", error->message );
+      printf( "error code: %d\n", error->code );
+    }
 
     stumpless_close_network_target( target );
   }

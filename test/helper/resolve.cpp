@@ -33,10 +33,14 @@ bool
 name_resolves( const char *name ) {
 #ifdef _WIN32
   int result;
+  ADDRINFOA hints;
   PADDRINFOA addr_result;
+  PADDRINFOA next;
   WSADATA wsa_data;
 
-  result = getaddrinfo( name, "514", NULL, &addr_result );
+  hints.ai_family = AF_INET;
+
+  result = getaddrinfo( name, "514", &hints, &addr_result );
   if( result == WSANOTINITIALISED ) {
     WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
     result = getaddrinfo( name, "514", NULL, &addr_result );
@@ -44,6 +48,12 @@ name_resolves( const char *name ) {
 
   if( result != 0 ) {
     return false;
+  }
+
+  next = addr_result;
+  while( next != NULL ) {
+    printf("got a resolution\n");
+    next = next->ai_next;
   }
 
   freeaddrinfo( addr_result );

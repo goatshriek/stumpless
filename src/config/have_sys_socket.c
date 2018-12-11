@@ -41,12 +41,22 @@ sys_socket_open_socket( const char *destination,
                         int type,
                         int protocol ) {
   int handle;
+  struct addrinfo hints;
   struct addrinfo *addr_result;
   int result;
 
   handle = socket( domain, type, protocol );
 
-  result = getaddrinfo( destination, port, NULL, &addr_result );
+  hints.ai_flags = 0;
+  hints.ai_family = af;
+  hints.ai_socktype = type;
+  hints.ai_protocol = protocol;
+  hints.ai_addrlen = NULL;
+  hints.ai_canonname = NULL;
+  hints.ai_addr = NULL;
+  hints.ai_next = NULL;
+
+  result = getaddrinfo( destination, port, &hints, &addr_result );
   if( result != 0 ) {
     raise_address_failure( "getaddrinfo failed on name",
                            result,
