@@ -60,7 +60,7 @@ winsock_open_socket( const char *destination,
   hints.ai_family = af;
   hints.ai_socktype = type;
   hints.ai_protocol = protocol;
-  hints.ai_addrlen = NULL;
+  hints.ai_addrlen = 0;
   hints.ai_canonname = NULL;
   hints.ai_addr = NULL;
   hints.ai_next = NULL;

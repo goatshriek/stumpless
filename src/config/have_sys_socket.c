@@ -48,10 +48,10 @@ sys_socket_open_socket( const char *destination,
   handle = socket( domain, type, protocol );
 
   hints.ai_flags = 0;
-  hints.ai_family = af;
+  hints.ai_family = domain;
   hints.ai_socktype = type;
   hints.ai_protocol = protocol;
-  hints.ai_addrlen = NULL;
+  hints.ai_addrlen = 0;
   hints.ai_canonname = NULL;
   hints.ai_addr = NULL;
   hints.ai_next = NULL;
