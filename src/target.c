@@ -166,6 +166,18 @@ stumpless_get_current_target( void ) {
   return current_target;
 }
 
+struct stumpless_target *
+stumpless_open_target( struct stumpless_target *target ) {
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  return NULL;
+}
+
 void
 stumpless_set_current_target( struct stumpless_target *target ) {
   current_target = target;

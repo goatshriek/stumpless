@@ -27,44 +27,68 @@
 extern "C" {
 #  endif
 
-  enum stumpless_target_type {
-    STUMPLESS_BUFFER_TARGET,
-    STUMPLESS_FILE_TARGET,
-    STUMPLESS_NETWORK_TARGET,
-    STUMPLESS_SOCKET_TARGET,
-    STUMPLESS_STREAM_TARGET,
-    STUMPLESS_WINDOWS_EVENT_LOG_TARGET
-  };
+enum stumpless_target_type {
+  STUMPLESS_BUFFER_TARGET,
+  STUMPLESS_FILE_TARGET,
+  STUMPLESS_NETWORK_TARGET,
+  STUMPLESS_SOCKET_TARGET,
+  STUMPLESS_STREAM_TARGET,
+  STUMPLESS_WINDOWS_EVENT_LOG_TARGET
+};
 
-  struct stumpless_target {
-    stumpless_id_t id;
-    enum stumpless_target_type type;
-    char *name;
-    int options;
-    int default_prival;
-    char *default_app_name;
-    size_t default_app_name_length;
-    char *default_msgid;
-    size_t default_msgid_length;
-    int mask;
-  };
+struct stumpless_target {
+  stumpless_id_t id;
+  enum stumpless_target_type type;
+  char *name;
+  int options;
+  int default_prival;
+  char *default_app_name;
+  size_t default_app_name_length;
+  char *default_msgid;
+  size_t default_msgid_length;
+  int mask;
+};
 
-  int stumpless( const char *message );
+int
+stumpless( const char *message );
 
-  int stumpless_add_entry( struct stumpless_target *target,
-                           struct stumpless_entry *entry );
+int
+stumpless_add_entry( struct stumpless_target *target,
+                     struct stumpless_entry *entry );
 
-  struct stumpless_target *stumpless_get_current_target( void );
+struct stumpless_target *
+stumpless_get_current_target( void );
 
-  void stumpless_set_current_target( struct stumpless_target *target );
+/**
+ * Opens a target that has already been created and configured.
+ *
+ * Targets that have been created using the \c stumpless_new_*_target family of
+ * functions need to be opened once they have been configured with all of the
+ * desired parameters.
+ *
+ * If the provided target has not had all mandatory settings configured or some
+ * other error is encountered, then the operation will fail and the target will
+ * remain in a paused state.
+ *
+ * @param target The target to open.
+ *
+ * @return The opened target if it was opened successfully (which will be
+ * equal to the target argument). If an error was encountered, then NULL is
+ * returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_open_target( struct stumpless_target *target );
 
-  struct stumpless_target *
-  stumpless_set_target_default_app_name( struct stumpless_target *target,
-                                         const char *app_name );
+void
+stumpless_set_current_target( struct stumpless_target *target );
 
-  struct stumpless_target *
-  stumpless_set_target_default_msgid( struct stumpless_target *target,
-                                      const char *msgid );
+struct stumpless_target *
+stumpless_set_target_default_app_name( struct stumpless_target *target,
+                                       const char *app_name );
+
+struct stumpless_target *
+stumpless_set_target_default_msgid( struct stumpless_target *target,
+                                    const char *msgid );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

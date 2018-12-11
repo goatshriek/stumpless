@@ -243,6 +243,7 @@ my %manifest = (
   "stumpless_open_remote_wel_target" => "stumpless/target/wel.h",
   "stumpless_open_socket_target" => "stumpless/target/socket.h",
   "stumpless_open_stream_target" => "stumpless/target/stream.h",
+  "stumpless_open_target" => "stumpless/target.h",
   "stumpless_open_tcp4_target" => "stumpless/target/network.h",
   "stumpless_open_udp4_target" => "stumpless/target/network.h",
   "STUMPLESS_PATCH_VERSION" => "stumpless/config.h",

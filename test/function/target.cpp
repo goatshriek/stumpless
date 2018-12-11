@@ -17,8 +17,11 @@
  */
 
 #include <stddef.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+
+using::testing::HasSubstr;
 
 namespace {
 
@@ -99,6 +102,17 @@ namespace {
 
     stumpless_close_buffer_target( target );
     stumpless_destroy_entry( entry );
+  }
+
+  TEST( OpenTarget, NullTarget ) {
+    struct stumpless_error *error;
+
+    stumpless_open_target( NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( SetDefaultAppName, MemoryFailure ) {
