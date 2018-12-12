@@ -111,13 +111,27 @@ struct stumpless_target *
 stumpless_new_network_target( const char *name,
                               enum stumpless_network_protocol network,
                               enum stumpless_transport_protocol transport ) {
+  struct stumpless_target *target;
+
   clear_error(  );
 
   if( !name ) {
     raise_argument_empty( "name is NULL" );
-    return NULL;
+    goto fail;
   }
 
+  target = new_target( STUMPLESS_NETWORK_TARGET,
+                       name,
+                       strlen( name ),
+                       0,
+                       STUMPLESS_FACILITY_USER );
+  if( !target ) {
+    goto fail;
+  }
+
+  return target;
+
+fail:
   return NULL;
 }
 
