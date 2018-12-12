@@ -37,6 +37,14 @@ stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
+stumpless_new_network_target( const char *name,
+                              enum stumpless_network_protocol network,
+                              enum stumpless_transport_protocol transport ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+struct stumpless_target *
 stumpless_open_network_target( const char *name,
                                const char *destination,
                                enum stumpless_network_protocol network,
