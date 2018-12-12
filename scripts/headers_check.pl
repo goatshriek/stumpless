@@ -236,6 +236,7 @@ my %manifest = (
   "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED" => "stumpless/error.h",
   "STUMPLESS_NETWORK_TARGET" => "stumpless/target.h",
   "stumpless_new_entry" => "stumpless/entry.h",
+  "stumpless_new_network_target" => "stumpless/target/network.h",
   "stumpless_open_buffer_target" => "stumpless/target/buffer.h",
   "stumpless_open_file_target" => "stumpless/target/file.h",
   "stumpless_open_local_wel_target" => "stumpless/target/wel.h",

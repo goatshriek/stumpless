@@ -89,7 +89,33 @@ size_t
 stumpless_get_udp_max_message_size( struct stumpless_target *target );
 
 /**
- * Opens a network target for remote logging.
+ * Creates a network target, but does not open it.
+ *
+ * A network target can be created with this function if the target needs to be
+ * created without initiating a network session. This also allows parameters
+ * that are not available in the open function to be set before initiating the
+ * session, instead of restarting the session on each change.
+ *
+ * The target will stay in a paused state until it is opened using the
+ * stumpless_open_target function.
+ *
+ * @param name The name of the target to open. This is only used for
+ * identification of the target.
+ *
+ * @param network The network protocol to use.
+ *
+ * @param transport The transport protocol to use.
+ *
+ * @return The new target if no error is encountered. In the event of an error,
+ * NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_new_network_target( const char *name,
+                              enum stumpless_network_protocol network,
+                              enum stumpless_transport_protocol transport );
+
+/**
+ * Opens a network target.
  *
  * Network targets allow traditional syslog messages to be sent to a remote
  * server. This function allows the type of network target to be specified by

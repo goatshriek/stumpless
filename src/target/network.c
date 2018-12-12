@@ -108,6 +108,20 @@ fail:
 }
 
 struct stumpless_target *
+stumpless_new_network_target( const char *name,
+                              enum stumpless_network_protocol network,
+                              enum stumpless_transport_protocol transport ) {
+  clear_error(  );
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return NULL;
+  }
+
+  return NULL;
+}
+
+struct stumpless_target *
 stumpless_open_network_target( const char *name,
                                const char *destination,
                                enum stumpless_network_protocol network,

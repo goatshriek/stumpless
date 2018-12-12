@@ -105,9 +105,11 @@ namespace {
   }
 
   TEST( OpenTarget, NullTarget ) {
+    struct stumpless_target *target;
     struct stumpless_error *error;
 
-    stumpless_open_target( NULL );
+    target = stumpless_open_target( NULL );
+    EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
