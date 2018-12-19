@@ -222,6 +222,9 @@ stumpless_set_destination( struct stumpless_target *target,
   }
 
   return NULL;
+
+fail:
+  return NULL;
 }
 
 struct stumpless_target *
