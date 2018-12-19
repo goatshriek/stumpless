@@ -207,6 +207,24 @@ stumpless_open_udp4_target( const char *name,
 }
 
 struct stumpless_target *
+stumpless_set_destination( struct stumpless_target *target,
+                           const char *destination ) {
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    goto fail;
+  }
+
+  if( !destination ) {
+    raise_argument_empty( "destination is NULL" );
+    goto fail;
+  }
+
+  return NULL;
+}
+
+struct stumpless_target *
 stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
   struct network_target *net_target;

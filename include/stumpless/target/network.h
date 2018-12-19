@@ -203,6 +203,21 @@ stumpless_open_udp4_target( const char *name,
                             int default_facility );
 
 /**
+ * Sets the destination of a network target.
+ *
+ * @param target The target to be modified.
+ *
+ * @param destination The new destintion to send messages to. This could be a
+ * hostname or an IP address.,
+ *
+ * @return The modified target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_destination( struct stumpless_target *target,
+                           const char *destination );
+
+/**
  * Sets the transport port number of a network target.
  *
  * @param target The target to be modified.

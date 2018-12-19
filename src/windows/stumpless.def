@@ -46,5 +46,6 @@ EXPORTS
   stumpless_open_udp4_target            @44
   stumpless_get_transport_port          @45
   stumpless_get_udp_max_message_size    @46
-  stumpless_set_transport_port          @47
-  stumpless_set_udp_max_message_size    @48
+  stumpless_set_destination             @47
+  stumpless_set_transport_port          @48
+  stumpless_set_udp_max_message_size    @49

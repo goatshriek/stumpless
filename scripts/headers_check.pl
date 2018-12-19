@@ -249,6 +249,7 @@ my %manifest = (
   "stumpless_open_udp4_target" => "stumpless/target/network.h",
   "STUMPLESS_PATCH_VERSION" => "stumpless/config.h",
   "stumpless_set_current_target" => "stumpless/target.h",
+  "stumpless_set_destination" => "stumpless/target/network.h",
   "stumpless_set_entry_message" => "stumpless/entry.h",
   "stumpless_set_free" => "stumpless/memory.h",
   "stumpless_set_malloc" => "stumpless/memory.h",
