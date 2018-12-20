@@ -717,6 +717,31 @@ namespace {
     stumpless_close_network_target( target );
   }
 
+  TEST( NetworkTargetSetDestination, BadTargetType ) {
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( "not-a-udp-target",
+                                           buffer,
+                                           100,
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_set_destination( target, "localhost" );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( NetworkTargetSetDestination, NullDestination ) {
     struct stumpless_error *error;
     struct stumpless_target *target;

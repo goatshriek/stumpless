@@ -221,6 +221,12 @@ stumpless_set_destination( struct stumpless_target *target,
     goto fail;
   }
 
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( "transport port is only valid for network"
+                               " targets" );
+    goto fail;
+  }
+
   return NULL;
 
 fail:
