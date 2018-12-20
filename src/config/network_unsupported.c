@@ -74,6 +74,13 @@ stumpless_open_udp4_target( const char *name,
 }
 
 struct stumpless_target *
+stumpless_set_destination( struct stumpless_target *target,
+                           const char *destination ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+struct stumpless_target *
 stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
   raise_target_unsupported( "network targets are not supported by this build" );
