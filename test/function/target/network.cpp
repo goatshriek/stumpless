@@ -717,6 +717,45 @@ namespace {
     stumpless_close_network_target( target );
   }
 
+  TEST( NetworkTargetSetDestination, NullDestination ) {
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+
+    target = stumpless_open_udp4_target( "target-to-self",
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_set_destination( target, NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "destination" ) );
+    }
+
+    stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetSetDestination, NullTarget ) {
+    struct stumpless_error *error;
+    struct stumpless_target *result;
+
+    result = stumpless_set_destination( NULL, "localhost" );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
   TEST( NetworkTargetSetTransportPort, AfterTcpTargetOpen ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
