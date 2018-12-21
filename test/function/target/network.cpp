@@ -717,6 +717,105 @@ namespace {
     stumpless_close_network_target( target );
   }
 
+  TEST( NetworkTargetSetDestination, AfterTcpTargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *original_destination = "127.0.0.1";
+    const char *new_destination = "localhost";
+    bool could_bind = true;
+    char buffer[2048];
+    socket_handle_t accepted;
+    socket_handle_t port_handle;
+
+
+    if( !name_resolves( new_destination ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+
+    } else {
+      port_handle = open_tcp_server_socket( original_destination, "514" );
+
+      if( port_handle != BAD_HANDLE ) {
+        target = stumpless_open_tcp4_target( "target-to-self",
+                                             original_destination,
+                                             0,
+                                             STUMPLESS_FACILITY_USER );
+        ASSERT_TRUE( target != NULL );
+
+        result = stumpless_set_destination( target, new_destination );
+        EXPECT_TRUE( result != NULL );
+
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error == NULL );
+
+        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "stumpless-unit-test",
+                                     "basic-entry",
+                                     "basic test message" );
+        stumpless_add_entry( target, entry );
+        EXPECT_TRUE( result != NULL );
+
+        accepted = accept_tcp_connection( port_handle );
+        recv_from_handle( accepted, buffer, 2048 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+
+        close_server_socket( accepted );
+        close_server_socket( port_handle );
+        stumpless_close_network_target( target );
+      }
+    }
+  }
+
+  TEST( NetworkTargetSetDestination, AfterUdpTargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *original_destination = "127.0.0.1";
+    const char *new_destination = "localhost";
+    char buffer[2048];
+    socket_handle_t handle;
+
+    if( !name_resolves( new_destination ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+
+    } else {
+      handle = open_udp_server_socket( original_destination, "514" );
+
+      target = stumpless_open_udp4_target( "target-to-self",
+                                           original_destination,
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
+
+      result = stumpless_set_destination( target, new_destination );
+      EXPECT_TRUE( result != NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      if( handle != BAD_HANDLE ) {
+        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "stumpless-unit-test",
+                                     "basic-entry",
+                                     "basic test message" );
+        stumpless_add_entry( target, entry );
+        EXPECT_TRUE( result != NULL );
+
+        recv_from_handle( handle, buffer, 1024 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+      }
+
+      close_server_socket( handle );
+      stumpless_close_network_target( target );
+    }
+  }
+
   TEST( NetworkTargetSetDestination, BadTargetType ) {
     struct stumpless_error *error;
     struct stumpless_target *target;
@@ -936,7 +1035,11 @@ namespace {
                                            "127.0.0.1",
                                            0,
                                            STUMPLESS_FACILITY_USER );
-      ASSERT_TRUE( target != NULL );
+      EXPECT_TRUE( target != NULL );
+      error = stumpless_get_error(  );
+      if( error ) {
+        printf( "%s\n%d\n", error->message, error->code );
+      }
 
       default_port = stumpless_get_transport_port( target );
       ASSERT_TRUE( default_port != NULL );
