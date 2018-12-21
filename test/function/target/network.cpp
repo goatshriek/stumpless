@@ -742,6 +742,38 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( NetworkTargetSetDestination, MallocFailure ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    const char *original_destination = "127.0.0.1";
+    const char *new_destination = "localhost";
+    void * ( *set_malloc_result ) ( size_t );
+
+    target = stumpless_open_udp4_target( "target-to-self",
+                                         original_destination,
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_destination( target, new_destination );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+
+    stumpless_close_network_target( target );
+  }
+
   TEST( NetworkTargetSetDestination, NullDestination ) {
     struct stumpless_error *error;
     struct stumpless_target *target;

@@ -209,6 +209,8 @@ stumpless_open_udp4_target( const char *name,
 struct stumpless_target *
 stumpless_set_destination( struct stumpless_target *target,
                            const char *destination ) {
+  const char *new_destination;
+
   clear_error(  );
 
   if( !target ) {
@@ -224,6 +226,11 @@ stumpless_set_destination( struct stumpless_target *target,
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     raise_target_incompatible( "transport port is only valid for network"
                                " targets" );
+    goto fail;
+  }
+
+  new_destination = copy_cstring( destination );
+  if( !new_destination ) {
     goto fail;
   }
 
