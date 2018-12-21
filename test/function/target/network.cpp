@@ -737,7 +737,9 @@ namespace {
     } else {
       port_handle = open_tcp_server_socket( original_destination, "514" );
 
-      if( port_handle != BAD_HANDLE ) {
+      if( port_handle == BAD_HANDLE ) {
+        printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+      } else {
         target = stumpless_open_tcp4_target( "target-to-self",
                                              original_destination,
                                              0,
