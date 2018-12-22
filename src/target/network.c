@@ -267,7 +267,7 @@ stumpless_set_destination( struct stumpless_target *target,
   return target;
 
 fail_reopen:
-  free_mem( new_destination );
+  free_mem( ( void * ) new_destination );
 fail:
   return NULL;
 }

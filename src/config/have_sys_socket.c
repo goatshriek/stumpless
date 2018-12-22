@@ -87,6 +87,7 @@ fail:
 
 void
 sys_socket_close_tcp4_target( struct tcp4_details *details ) {
+  free_mem( ( void * ) details->port );
   close( details->handle );
 }
 
@@ -107,6 +108,13 @@ sys_socket_open_tcp4_target( struct tcp4_details *details,
                              const char *destination,
                              const char *port ) {
   int handle;
+  char *port_copy;
+
+  port_copy = copy_cstring( port );
+  if( !port_copy ) {
+    goto fail;
+  }
+
   handle = sys_socket_open_socket( destination,
                                    port,
                                    AF_INET,
@@ -115,13 +123,17 @@ sys_socket_open_tcp4_target( struct tcp4_details *details,
   details->handle = handle;
 
   if( handle == -1 ) {
-    details->port = NULL;
-    return NULL;
-
-  } else {
-    details->port = port;
-    return details;
+    goto fail_open;
   }
+
+  details->port = port_copy;
+  return details;
+
+fail_open:
+  free_mem( port_copy );
+fail:
+  details->port = NULL;
+  return NULL;
 }
 
 struct udp4_details *
