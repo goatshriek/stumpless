@@ -263,7 +263,7 @@ stumpless_set_destination( struct stumpless_target *target,
       goto fail_reopen;
   }
 
-  target->destination = new_destination;
+  net_target->destination = new_destination;
   return target;
 
 fail_reopen:
