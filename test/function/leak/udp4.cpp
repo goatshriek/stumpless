@@ -22,9 +22,37 @@
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
+NEW_MEMORY_COUNTER( set_port )
 NEW_MEMORY_COUNTER( udp4_leak )
 
 namespace {
+
+  TEST( Udp4TargetLeakTest, SetPort ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+
+    INIT_MEMORY_COUNTER( set_port );
+    stumpless_set_malloc( set_port_memory_counter_malloc );
+    stumpless_set_realloc( set_port_memory_counter_realloc );
+    stumpless_set_free( set_port_memory_counter_free );
+
+    target = stumpless_open_udp4_target( "set-port-leak",
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_set_transport_port( target, "6514" );
+    ASSERT_TRUE( result != NULL );
+
+    stumpless_close_network_target( target );
+
+    stumpless_free_all(  );
+
+    EXPECT_EQ( set_port_memory_counter.alloc_total,
+               set_port_memory_counter.free_total );
+
+  }
 
   TEST( Udp4TargetLeakTest, TypicalUse ) {
     struct stumpless_target *target;
@@ -88,7 +116,7 @@ namespace {
 
     stumpless_free_all(  );
 
-    ASSERT_EQ( udp4_leak_memory_counter.alloc_total,
+    EXPECT_EQ( udp4_leak_memory_counter.alloc_total,
                udp4_leak_memory_counter.free_total );
 
     close_server_socket( handle );

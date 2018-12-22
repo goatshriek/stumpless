@@ -244,7 +244,6 @@ struct stumpless_target *
 stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
   struct network_target *net_target;
-  const char *new_port;
   union {
     struct tcp4_details *tcp4;
     struct udp4_details *udp4;
@@ -268,17 +267,12 @@ stumpless_set_transport_port( struct stumpless_target *target,
     goto fail;
   }
 
-  new_port = copy_cstring( port );
-  if( !new_port ) {
-    goto fail;
-  }
-
   net_target = target->id;
   switch( net_target->transport ) {
     case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
       details.tcp4 = config_set_tcp4_port( &net_target->details.tcp4,
                                            net_target->destination,
-                                           new_port );
+                                           port );
       if( !details.tcp4) {
         goto fail;
       }
@@ -287,7 +281,7 @@ stumpless_set_transport_port( struct stumpless_target *target,
     case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
       details.udp4 = config_set_udp4_port( &net_target->details.udp4,
                                            net_target->destination,
-                                           new_port );
+                                           port );
       if( !details.udp4 ) {
         goto fail;
       }

@@ -28,6 +28,7 @@
 #include <unistd.h>
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/strhelper.h"
 #include "private/target/network.h"
 
 static char *tcp_send_buffer = NULL;
@@ -91,6 +92,7 @@ sys_socket_close_tcp4_target( struct tcp4_details *details ) {
 
 void
 sys_socket_close_udp4_target( struct udp4_details *details ) {
+  free_mem( ( void * ) details->port );
   close( details->handle );
 }
 
@@ -127,21 +129,32 @@ sys_socket_open_udp4_target( struct udp4_details *details,
                              const char *destination,
                              const char *port ) {
   int handle;
+  char *port_copy;
+
+  port_copy = copy_cstring( port );
+  if( !port_copy ) {
+    goto fail;
+  }
+
   handle = sys_socket_open_socket( destination,
                                    port,
                                    AF_INET,
                                    SOCK_DGRAM,
                                    0 );
   details->handle = handle;
-
   if( handle == -1 ) {
-    details->port = NULL;
-    return NULL;
+    goto fail_open;
 
-  } else {
-    details->port = port;
-    return details;
   }
+
+  details->port = port_copy;
+  return details;
+
+fail_open:
+  free_mem( port_copy );
+fail:
+  details->port = NULL;
+  return NULL;
 }
 
 int
