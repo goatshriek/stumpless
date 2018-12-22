@@ -719,13 +719,14 @@ namespace {
 
   TEST( NetworkTargetSetDestination, AfterTcpTargetOpen ) {
     struct stumpless_target *target;
-    struct stumpless_target *result;
+    struct stumpless_target *target_result;
     struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *original_destination = "127.0.0.1";
     const char *new_destination = "localhost";
     bool could_bind = true;
     char buffer[2048];
+    int add_result;
     socket_handle_t accepted;
     socket_handle_t port_handle;
 
@@ -758,19 +759,19 @@ namespace {
                                      "basic test message" );
         EXPECT_TRUE( entry != NULL );
 
-        stumpless_add_entry( target, entry );
-        EXPECT_TRUE( result != NULL );
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
 
         accepted = accept_tcp_connection( port_handle );
         recv_from_handle( accepted, buffer, 2048 );
         EXPECT_TRUE( buffer[0] != '\0' );
         close_server_socket( accepted );
 
-        result = stumpless_set_destination( target, new_destination );
-        EXPECT_TRUE( result != NULL );
+        target_result = stumpless_set_destination( target, new_destination );
+        EXPECT_TRUE( target_result != NULL );
 
-        stumpless_add_entry( target, entry );
-        EXPECT_TRUE( result != NULL );
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
 
         accepted = accept_tcp_connection( port_handle );
         recv_from_handle( accepted, buffer, 2048 );
@@ -779,18 +780,20 @@ namespace {
 
         close_server_socket( port_handle );
         stumpless_close_network_target( target );
+        stumpless_destroy_entry( entry );
       }
     }
   }
 
   TEST( NetworkTargetSetDestination, AfterUdpTargetOpen ) {
     struct stumpless_target *target;
-    struct stumpless_target *result;
+    struct stumpless_target *target_result;
     struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *original_destination = "127.0.0.1";
     const char *new_destination = "localhost";
     char buffer[2048];
+    int add_result;
     socket_handle_t handle;
 
     if( !name_resolves( new_destination ) ) {
@@ -806,8 +809,8 @@ namespace {
                                            STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( target != NULL );
 
-      result = stumpless_set_destination( target, new_destination );
-      EXPECT_TRUE( result != NULL );
+      target_result = stumpless_set_destination( target, new_destination );
+      EXPECT_TRUE( target_result != NULL );
 
       error = stumpless_get_error(  );
       EXPECT_TRUE( error == NULL );
@@ -818,11 +821,15 @@ namespace {
                                      "stumpless-unit-test",
                                      "basic-entry",
                                      "basic test message" );
-        stumpless_add_entry( target, entry );
-        EXPECT_TRUE( result != NULL );
+        EXPECT_TRUE( entry != NULL );
+
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
 
         recv_from_handle( handle, buffer, 1024 );
         EXPECT_TRUE( buffer[0] != '\0' );
+
+        stumpless_destroy_entry( entry );
       }
 
       close_server_socket( handle );
