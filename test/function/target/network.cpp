@@ -739,15 +739,14 @@ namespace {
 
       if( port_handle == BAD_HANDLE ) {
         printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+        SUCCEED(  ) <<  BINDING_DISABLED_WARNING;
+
       } else {
         target = stumpless_open_tcp4_target( "target-to-self",
                                              original_destination,
                                              0,
                                              STUMPLESS_FACILITY_USER );
         ASSERT_TRUE( target != NULL );
-
-        result = stumpless_set_destination( target, new_destination );
-        EXPECT_TRUE( result != NULL );
 
         error = stumpless_get_error(  );
         EXPECT_TRUE( error == NULL );
@@ -757,6 +756,17 @@ namespace {
                                      "stumpless-unit-test",
                                      "basic-entry",
                                      "basic test message" );
+        stumpless_add_entry( target, entry );
+        EXPECT_TRUE( result != NULL );
+
+        accepted = accept_tcp_connection( port_handle );
+        recv_from_handle( accepted, buffer, 2048 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+        close_server_socket( accepted );
+
+        result = stumpless_set_destination( target, new_destination );
+        EXPECT_TRUE( result != NULL );
+
         stumpless_add_entry( target, entry );
         EXPECT_TRUE( result != NULL );
 
