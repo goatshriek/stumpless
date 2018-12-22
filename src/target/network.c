@@ -210,6 +210,11 @@ struct stumpless_target *
 stumpless_set_destination( struct stumpless_target *target,
                            const char *destination ) {
   const char *new_destination;
+  struct network_target *net_target;
+  union {
+    struct tcp4_details *tcp4;
+    struct udp4_details *udp4;
+  } details;
 
   clear_error(  );
 
@@ -234,8 +239,35 @@ stumpless_set_destination( struct stumpless_target *target,
     goto fail;
   }
 
-  return NULL;
+  net_target = target->id;
+  switch( net_target->transport ) {
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      details.tcp4 = config_reopen_tcp4_target( &net_target->details.tcp4,
+                                                new_destination );
+      if( !details.tcp4) {
+        goto fail_reopen;
+      }
+      break;
 
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      details.udp4 = config_reopen_udp4_target( &net_target->details.udp4,
+                                                new_destination );
+      if( !details.udp4 ) {
+        goto fail_reopen;
+      }
+      break;
+
+    default:
+      raise_target_incompatible( "destination is not valid for this network"
+                                 " target" );
+      goto fail_reopen;
+  }
+
+  target->destination = new_destination;
+  return target;
+
+fail_reopen:
+  free_mem( new_destination );
 fail:
   return NULL;
 }

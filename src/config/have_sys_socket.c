@@ -157,6 +157,53 @@ fail:
   return NULL;
 }
 
+struct tcp4_details *
+sys_socket_reopen_tcp4_target( struct tcp4_details *details,
+                               const char *destination ) {
+  int handle;
+
+  close( details->handle );
+
+  handle = sys_socket_open_socket( destination,
+                                   details->port,
+                                   AF_INET,
+                                   SOCK_STREAM,
+                                   0 );
+  details->handle = handle;
+
+  if( handle == -1 ) {
+    return NULL;
+
+  } else {
+    return details;
+
+  }
+}
+
+struct udp4_details *
+sys_socket_reopen_udp4_target( struct udp4_details *details,
+                               const char *destination ) {
+  int handle;
+
+  close( details->handle );
+
+  handle = sys_socket_open_socket( destination,
+                                   details->port,
+                                   AF_INET,
+                                   SOCK_DGRAM,
+                                   0 );
+  details->handle = handle;
+
+  if( handle == -1 ) {
+    return NULL;
+
+  } else {
+    return details;
+
+  }
+  
+}
+
 int
 sys_socket_sendto_tcp4_target( struct tcp4_details *details,
                                const char *msg,
