@@ -756,6 +756,8 @@ namespace {
                                      "stumpless-unit-test",
                                      "basic-entry",
                                      "basic test message" );
+        EXPECT_TRUE( entry != NULL );
+
         stumpless_add_entry( target, entry );
         EXPECT_TRUE( result != NULL );
 
@@ -773,8 +775,8 @@ namespace {
         accepted = accept_tcp_connection( port_handle );
         recv_from_handle( accepted, buffer, 2048 );
         EXPECT_TRUE( buffer[0] != '\0' );
-
         close_server_socket( accepted );
+
         close_server_socket( port_handle );
         stumpless_close_network_target( target );
       }
