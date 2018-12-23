@@ -275,14 +275,30 @@ struct tcp4_details *
 sys_socket_set_tcp4_port( struct tcp4_details *details,
                           const char *destination,
                           const char *port ) {
-  sys_socket_close_tcp4_target( details );
-  return sys_socket_open_tcp4_target( details, destination, port );
+  const char *port_copy;
+
+  port_copy = copy_cstring( port );
+  if( !port_copy ) {
+    return NULL;
+  }
+
+  free_mem( ( void * ) details->port );
+  details->port = port-copy;
+  return sys_socket_reopen_tcp4_target( details, destination );
 }
 
 struct udp4_details *
 sys_socket_set_udp4_port( struct udp4_details *details,
                           const char *destination,
                           const char *port ) {
-  sys_socket_close_udp4_target( details );
-  return sys_socket_open_udp4_target( details, destination, port );
+  const char *port_copy;
+
+  port_copy = copy_cstring( port );
+  if( !port_copy ) {
+    return NULL;
+  }
+
+  free_mem( ( void * ) details->port );
+  details->port = port-copy;
+  return sys_socket_reopen_udp4_target( details, destination );
 }
