@@ -200,7 +200,7 @@ sys_socket_reopen_udp4_target( struct udp4_details *details,
                                             SOCK_DGRAM,
                                             0 );
 
-  if( handle == -1 ) {
+  if( details->handle == -1 ) {
     return NULL;
 
   } else {
