@@ -43,6 +43,14 @@ winsock2_open_udp4_target( struct udp4_details *details,
                            const char *destination,
                            const char *port );
 
+struct tcp4_details *
+winsock2_reopen_tcp4_target( struct tcp4_details *details,
+                             const char *destination );
+
+struct udp4_details *
+winsock2_reopen_udp4_target( struct udp4_details *details,
+                             const char *destination );
+
 int
 winsock2_sendto_tcp4_target( struct tcp4_details *details,
                              const char *msg,

@@ -172,18 +172,15 @@ fail:
 struct tcp4_details *
 sys_socket_reopen_tcp4_target( struct tcp4_details *details,
                                const char *destination ) {
-  int handle;
-
   close( details->handle );
 
-  handle = sys_socket_open_socket( destination,
-                                   details->port,
-                                   AF_INET,
-                                   SOCK_STREAM,
-                                   0 );
-  details->handle = handle;
+  details->handle = sys_socket_open_socket( destination,
+                                            details->port,
+                                            AF_INET,
+                                            SOCK_STREAM,
+                                            0 );
 
-  if( handle == -1 ) {
+  if( details->handle == -1 ) {
     return NULL;
 
   } else {
@@ -195,16 +192,13 @@ sys_socket_reopen_tcp4_target( struct tcp4_details *details,
 struct udp4_details *
 sys_socket_reopen_udp4_target( struct udp4_details *details,
                                const char *destination ) {
-  int handle;
-
   close( details->handle );
 
-  handle = sys_socket_open_socket( destination,
-                                   details->port,
-                                   AF_INET,
-                                   SOCK_DGRAM,
-                                   0 );
-  details->handle = handle;
+  details->handle = sys_socket_open_socket( destination,
+                                            details->port,
+                                            AF_INET,
+                                            SOCK_DGRAM,
+                                            0 );
 
   if( handle == -1 ) {
     return NULL;
