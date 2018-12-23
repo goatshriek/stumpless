@@ -283,7 +283,7 @@ sys_socket_set_tcp4_port( struct tcp4_details *details,
   }
 
   free_mem( ( void * ) details->port );
-  details->port = port-copy;
+  details->port = port_copy;
   return sys_socket_reopen_tcp4_target( details, destination );
 }
 
@@ -299,6 +299,6 @@ sys_socket_set_udp4_port( struct udp4_details *details,
   }
 
   free_mem( ( void * ) details->port );
-  details->port = port-copy;
+  details->port = port_copy;
   return sys_socket_reopen_udp4_target( details, destination );
 }
