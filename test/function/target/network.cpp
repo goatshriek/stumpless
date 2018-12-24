@@ -778,10 +778,11 @@ namespace {
         EXPECT_TRUE( buffer[0] != '\0' );
         close_server_socket( accepted );
 
-        close_server_socket( port_handle );
         stumpless_close_network_target( target );
         stumpless_destroy_entry( entry );
       }
+
+      close_server_socket( port_handle );
     }
   }
 
@@ -943,6 +944,7 @@ namespace {
     const char *current_port;
     bool could_bind = true;
     char buffer[2048];
+    int add_result;
     socket_handle_t accepted;
     socket_handle_t default_port_handle;
     socket_handle_t new_port_handle;
@@ -956,6 +958,21 @@ namespace {
                                            0,
                                            STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( target != NULL );
+
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      ASSERT_TRUE( entry != NULL );
+
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
+
+      accepted = accept_tcp_connection( default_port_handle );
+      recv_from_handle( accepted, buffer, 2048 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      close_server_socket( accepted );
 
       default_port = stumpless_get_transport_port( target );
       EXPECT_TRUE( default_port != NULL );
@@ -972,23 +989,19 @@ namespace {
       error = stumpless_get_error(  );
       EXPECT_TRUE( error == NULL );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
-      stumpless_add_entry( target, entry );
-      EXPECT_TRUE( result != NULL );
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
 
       accepted = accept_tcp_connection( new_port_handle );
       recv_from_handle( accepted, buffer, 2048 );
       EXPECT_TRUE( buffer[0] != '\0' );
-
       close_server_socket( accepted );
-      close_server_socket( default_port_handle );
-      close_server_socket( new_port_handle );
       stumpless_close_network_target( target );
+
     }
+
+    close_server_socket( default_port_handle );
+    close_server_socket( new_port_handle );
   }
 
   TEST( NetworkTargetSetTransportPort, AfterUdpTargetOpen ) {
@@ -1075,9 +1088,10 @@ namespace {
         EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
       }
 
-      close_server_socket( handle );
       stumpless_close_network_target( target );
     }
+
+    close_server_socket( handle );
   }
 
   TEST( NetworkTargetSetTransportPort, BadUdpPort ) {

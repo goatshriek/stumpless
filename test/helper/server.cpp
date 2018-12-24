@@ -106,9 +106,11 @@ close_server_socket( socket_handle_t handle ) {
 socket_handle_t
 open_tcp_server_socket( const char *dest, const char *port ) {
   int handle;
+  int reuse = 1;
   struct addrinfo *addr_result;
 
   handle = socket( AF_INET, SOCK_STREAM, 0 );
+  setsockopt( handle, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof( int ) );
   getaddrinfo( dest, port, NULL, &addr_result );
   if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
     return BAD_HANDLE;
