@@ -363,6 +363,46 @@ namespace {
     ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( NetworkTargetGetDestination, NullTarget ) {
+    const char *result;
+    struct stumpless_error *error;
+
+    result = stumpless_get_destination( NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
+  TEST( NetworkTargetGetDestination, BadTargetType ) {
+    const char *result;
+    struct stumpless_error *error;
+    struct stumpless_target *target;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( "not-a-network-target",
+                                           buffer,
+                                           100,
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_get_destination( target );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( NetworkTargetGetTransportPort, NullTarget ) {
     const char *result;
     struct stumpless_error *error;
