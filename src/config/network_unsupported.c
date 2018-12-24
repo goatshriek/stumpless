@@ -25,7 +25,13 @@ stumpless_close_network_target( struct stumpless_target *target ) {
 }
 
 const char *
-stumpless_get_transport_port( struct stumpless_target *target ) {
+stumpless_get_destination( const struct stumpless_target *target ) {
+  raise_target_unsupported( "network targets are not supported by this build" );
+  return NULL;
+}
+
+const char *
+stumpless_get_transport_port( const struct stumpless_target *target ) {
   raise_target_unsupported( "network targets are not supported by this build" );
   return NULL;
 }

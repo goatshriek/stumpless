@@ -65,16 +65,27 @@ void
 stumpless_close_network_target( struct stumpless_target *target );
 
 /**
+ * Gets the destination of a network target.
+ *
+ * @param target The target to get the destination from.
+ *
+ * @return The current destination of the network target. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+const char *
+stumpless_get_destination( const struct stumpless_target *target );
+
+/**
  * Gets the transport port number of a network target.
  *
  * @param target The target to get the port number from.
  *
  * @return The current port number of the network target, encoded as a string.
- * In the event of an error, NULL is return and an error code is set
+ * In the event of an error, NULL is returned and an error code is set
  * appropriately.
  */
 const char *
-stumpless_get_transport_port( struct stumpless_target *target );
+stumpless_get_transport_port( const struct stumpless_target *target );
 
 /**
  * Gets the current maximum message size of a UDP network target.
