@@ -764,6 +764,7 @@ namespace {
     struct stumpless_entry *entry;
     const char *original_destination = "127.0.0.1";
     const char *new_destination = "localhost";
+    const char *destination_result;
     bool could_bind = true;
     char buffer[2048];
     int add_result;
@@ -792,6 +793,10 @@ namespace {
         error = stumpless_get_error(  );
         EXPECT_TRUE( error == NULL );
 
+        destination_result = stumpless_get_destination( target );
+        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_STREQ( destination_result, original_destination );
+
         entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
                                      "stumpless-unit-test",
@@ -809,6 +814,10 @@ namespace {
 
         target_result = stumpless_set_destination( target, new_destination );
         EXPECT_TRUE( target_result != NULL );
+
+        destination_result = stumpless_get_destination( target );
+        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_STREQ( destination_result, new_destination );
 
         add_result = stumpless_add_entry( target, entry );
         EXPECT_GE( add_result, 0 );
@@ -833,6 +842,7 @@ namespace {
     struct stumpless_entry *entry;
     const char *original_destination = "127.0.0.1";
     const char *new_destination = "localhost";
+    const char *destination_result;
     char buffer[2048];
     int add_result;
     socket_handle_t handle;
@@ -850,11 +860,19 @@ namespace {
                                            STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( target != NULL );
 
+      destination_result = stumpless_get_destination( target );
+      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_STREQ( destination_result, original_destination );
+
       target_result = stumpless_set_destination( target, new_destination );
       EXPECT_TRUE( target_result != NULL );
 
       error = stumpless_get_error(  );
       EXPECT_TRUE( error == NULL );
+
+      destination_result = stumpless_get_destination( target );
+      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_STREQ( destination_result, new_destination );
 
       if( handle != BAD_HANDLE ) {
         entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
