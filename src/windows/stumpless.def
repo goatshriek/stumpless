@@ -1,5 +1,5 @@
 LIBRARY   STUMPLESS
-EXPORTS  
+EXPORTS
   stumpless                             @1
   stumpless_add_element                 @2
   stumpless_add_entry                   @3
@@ -50,3 +50,4 @@ EXPORTS
   stumpless_set_destination             @48
   stumpless_set_transport_port          @49
   stumpless_set_udp_max_message_size    @50
+  stumpless_target_is_open              @51
