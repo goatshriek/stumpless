@@ -30,9 +30,9 @@ namespace {
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
-                                "stumpless-unit-test",
-                                "basic-entry",
-                                "basic test message" );
+                                 "stumpless-unit-test",
+                                 "basic-entry",
+                                 "basic test message" );
 
     target.type = STUMPLESS_NETWORK_TARGET;
     target.id = &target;

@@ -483,6 +483,21 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetIsOpen, NullTarget ) {
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+
+    result = stumpless_target_is_open( NULL );
+    EXPECT_TRUE( !result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
   TEST( NetworkTargetNewTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
