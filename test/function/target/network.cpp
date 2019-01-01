@@ -122,6 +122,7 @@ namespace {
 
     } else {
       ASSERT_TRUE( target != NULL );
+      ASSERT_TRUE( stumpless_target_is_open( target ) );
       ASSERT_TRUE( basic_entry != NULL );
 
       result = stumpless_add_entry( target, basic_entry );
@@ -170,6 +171,7 @@ namespace {
 
     } else {
       ASSERT_TRUE( target != NULL );
+      ASSERT_TRUE( stumpless_target_is_open( target ) );
 
       result = stumpless_get_udp_max_message_size( target );
       EXPECT_EQ( result, 0 );
@@ -191,6 +193,7 @@ namespace {
 
     } else {
       ASSERT_TRUE( target != NULL );
+      ASSERT_TRUE( stumpless_target_is_open( target ) );
 
       result = stumpless_set_udp_max_message_size( target, 1500 );
       EXPECT_TRUE( result == NULL );
@@ -268,6 +271,7 @@ namespace {
 
     } else {
       ASSERT_TRUE( target != NULL );
+      ASSERT_TRUE( stumpless_target_is_open( target ) );
       ASSERT_TRUE( basic_entry != NULL );
 
       result = stumpless_add_entry( target, basic_entry );
@@ -311,6 +315,7 @@ namespace {
 
     } else {
       ASSERT_TRUE( target != NULL );
+      ASSERT_TRUE( stumpless_target_is_open( target ) );
 
       max_msg_size = stumpless_get_udp_max_message_size( target );
       ASSERT_NE( max_msg_size, 0 );
