@@ -243,8 +243,8 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   }
 }
 
-struct stumpless_target *
-stumpless_target_is_open( struct stumpless_target *target ) {
+const struct stumpless_target *
+stumpless_target_is_open( const struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {

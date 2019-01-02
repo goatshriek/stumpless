@@ -68,4 +68,10 @@ sys_socket_set_udp4_port( struct udp4_details *details,
                           const char *destination,
                           const char *port );
 
+int
+sys_socket_tcp4_is_open( const struct tcp4_details *details );
+
+int
+sys_socket_udp4_is_open( const struct udp4_details *details );
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_SYS_SOCKET_H */

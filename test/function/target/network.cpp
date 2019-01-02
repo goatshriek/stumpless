@@ -489,7 +489,7 @@ namespace {
   }
 
   TEST( NetworkTargetIsOpen, NullTarget ) {
-    struct stumpless_target *result;
+    const struct stumpless_target *result;
     struct stumpless_error *error;
 
     result = stumpless_target_is_open( NULL );

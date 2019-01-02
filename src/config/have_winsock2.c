@@ -333,3 +333,13 @@ winsock2_set_udp4_port( struct udp4_details *details,
   details->port = port_copy;
   return winsock2_reopen_udp4_target( details, destination );
 }
+
+int
+winsock2_tcp4_is_open( const struct tcp4_details *details ) {
+  return details->handle != SOCKET_ERROR;
+}
+
+int
+winsock2_udp4_is_open( const struct udp4_details *details ) {
+  return details->handle != INVALID_SOCKET;
+}

@@ -302,3 +302,13 @@ sys_socket_set_udp4_port( struct udp4_details *details,
   details->port = port_copy;
   return sys_socket_reopen_udp4_target( details, destination );
 }
+
+int
+sys_socket_tcp4_is_open( const struct tcp4_details *details ) {
+  return details->handle != -1;
+}
+
+int
+sys_socket_udp4_is_open( const struct udp4_details *details ) {
+  return details->handle != -1;
+}

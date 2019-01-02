@@ -71,4 +71,10 @@ winsock2_set_udp4_port( struct udp4_details *details,
                         const char *destination,
                         const char *port );
 
+int
+winsock2_tcp4_is_open( const struct tcp4_details *details );
+
+int
+winsock2_udp4_is_open( const struct udp4_details *details );
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H */

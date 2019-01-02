@@ -97,8 +97,8 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
  *
  * @return The target if it is currently open, and NULL if not.
  */
-struct stumpless_target *
-stumpless_target_is_open( struct stumpless_target *target );
+const struct stumpless_target *
+stumpless_target_is_open( const struct stumpless_target *target );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

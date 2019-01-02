@@ -68,6 +68,9 @@ struct network_target {
 void
 destroy_network_target( struct network_target *target );
 
+int
+network_target_is_open( const struct network_target *target );
+
 struct network_target *
 new_network_target( const char *destination,
                     enum stumpless_network_protocol network,

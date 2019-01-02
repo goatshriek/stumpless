@@ -405,6 +405,26 @@ destroy_network_target( struct network_target *target ) {
   free_mem( target );
 }
 
+int
+network_target_is_open( const struct network_target *target ) {
+  if( target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    raise_network_protocol_unsupported(  );
+    return 0;
+  }
+
+  switch( target->transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      return config_tcp4_is_open( &target->details.tcp4 );
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      return config_udp4_is_open( &target->details.udp4 );
+
+    default:
+      return 0;
+  }
+}
+
 struct network_target *
 new_network_target( const char *destination,
                     enum stumpless_network_protocol network,
