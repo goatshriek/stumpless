@@ -270,6 +270,7 @@ my %manifest = (
   "STUMPLESS_STREAM_WRITE_FAILURE" => "stumpless/error.h",
   "STUMPLESS_SYSLOG_H_COMPATIBLE" => "stumpless/config.h",
   "STUMPLESS_TARGET_INCOMPATIBLE" => "stumpless/error.h",
+  "stumpless_target_is_open" => "stumpless/target.h",
   "STUMPLESS_TARGET_UNSUPPORTED" => "stumpless/error.h",
   "STUMPLESS_TCP_TRANSPORT_PROTOCOL" => "stumpless/target/network.h",
   "stumpless_transport_protocol" => "stumpless/target/network.h",
