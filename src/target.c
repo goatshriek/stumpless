@@ -245,6 +245,8 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 
 const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target ) {
+  int is_open;
+
   clear_error(  );
 
   if( !target ) {
@@ -252,7 +254,21 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
     return NULL;
   }
 
-  return target;
+  switch( target->type ) {
+
+    case STUMPLESS_NETWORK_TARGET:
+      is_open = network_target_is_open( target->id );
+
+    default:
+      is_open = 1;
+
+  }
+
+  if( is_open ) {
+    return target;
+  } else {
+    return NULL;
+  }
 }
 
 /* private definitions */
