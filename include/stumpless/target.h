@@ -93,6 +93,15 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 /**
  * Checks to see if the given target is open.
  *
+ * For targets that are opened with a single \open function call, they will
+ * likely be open considered open as long as they are non-NULL, as the target
+ * creation would otherwise fail before it could be opened. Targets are
+ * be considered in a paused state if they were created but not opened yet, for
+ * example with \c stumpless_new_network_target as opposed to
+ * \c stumpless_open_network_target. Targets may also be paused if a settings
+ * change has been made that could not be validated, such as changing the port
+ * on a TCP network target to one that does not respond on the server.
+ *
  * @param target The target to check.
  *
  * @return The target if it is currently open, and NULL if not.
