@@ -254,13 +254,12 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
     return NULL;
   }
 
-  switch( target->type ) {
-
-    case STUMPLESS_NETWORK_TARGET:
+  if( target->type == STUMPLESS_NETWORK_TARGET ) {
       is_open = config_network_target_is_open( target );
 
-    default:
+  } else {
       is_open = 1;
+
 
   }
 
