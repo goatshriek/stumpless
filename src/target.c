@@ -257,7 +257,7 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
   switch( target->type ) {
 
     case STUMPLESS_NETWORK_TARGET:
-      is_open = network_target_is_open( target->id );
+      is_open = config_network_target_is_open( target );
 
     default:
       is_open = 1;
@@ -339,4 +339,12 @@ sendto_unsupported_target( const struct stumpless_target *target,
 
   raise_target_unsupported( "attempted to send a message to an unsupported target type" );
   return -1;
+}
+
+int
+unsupported_target_is_open( const struct stumpless_target *target ) {
+  ( void ) target;
+
+  raise_target_unsupported( "checked to see if an unsupported target type was empty" );
+  return 0;
 }

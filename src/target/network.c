@@ -406,19 +406,23 @@ destroy_network_target( struct network_target *target ) {
 }
 
 int
-network_target_is_open( const struct network_target *target ) {
-  if( target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+network_target_is_open( const struct stumpless_target *target ) {
+  const struct network_target *net_target;
+
+  net_target = ( const struct network_target * ) target->id;
+
+  if( net_target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
     raise_network_protocol_unsupported(  );
     return 0;
   }
 
-  switch( target->transport ) {
+  switch( net_target->transport ) {
 
     case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      return config_tcp4_is_open( &target->details.tcp4 );
+      return config_tcp4_is_open( &net_target->details.tcp4 );
 
     case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      return config_udp4_is_open( &target->details.udp4 );
+      return config_udp4_is_open( &net_target->details.udp4 );
 
     default:
       return 0;
