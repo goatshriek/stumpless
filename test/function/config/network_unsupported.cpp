@@ -22,7 +22,7 @@
 
 namespace {
 
-  TEST( NetworkTargetTest, Unsupported ) {
+  TEST( NetworkTargetTest, Add ) {
     struct stumpless_target target;
     struct stumpless_entry *entry;
     struct stumpless_error *error;
@@ -41,9 +41,30 @@ namespace {
     EXPECT_LT( result, 0 );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    }
 
     stumpless_destroy_entry( entry );
+  }
+
+  TEST( NetworkTargetTest, IsOpen ) {
+    struct stumpless_target target;
+    const struct stumpless_target *result;
+    struct stumpless_error *error;
+ 
+    target.type = STUMPLESS_NETWORK_TARGET;
+    target.id = &target;
+
+    result = stumpless_target_is_open( &target );
+
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    }
   }
 }
