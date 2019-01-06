@@ -577,6 +577,20 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetNewTest, Tcp4 ) {
+    struct stumpless_target *target;
+
+    target = stumpless_new_network_target( "my-udp4",
+                                           STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                           STUMPLESS_TCP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+    stumpless_close_network_target( target );
+  }
+
   TEST( NetworkTargetNewTest, Udp4 ) {
     struct stumpless_target *target;
 
