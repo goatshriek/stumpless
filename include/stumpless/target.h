@@ -60,6 +60,17 @@ struct stumpless_target *
 stumpless_get_current_target( void );
 
 /**
+ * Gets the default facility of a target.
+ *
+ * @param target The target to get the facility from..
+ *
+ * @return The default facility if no error is encountered. If an error is
+ * encountered, then -1 is returned and an error code is set appropriately.
+ */
+int
+stumpless_get_default_facility( const struct stumpless_target *target );
+
+/**
  * Opens a target that has already been created and configured.
  *
  * Targets that have been created using the \c stumpless_new_*_target family of
@@ -81,6 +92,20 @@ stumpless_open_target( struct stumpless_target *target );
 
 void
 stumpless_set_current_target( struct stumpless_target *target );
+
+/**
+ * Sets the default facility of a target.
+ *
+ * @param target The target to modify.
+ *
+ * @param default_facility The default facility to use on the target.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_default_facility( struct stumpless_target *target,
+                                int default_facility );
 
 struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,

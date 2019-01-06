@@ -178,6 +178,21 @@ namespace {
     }
   }
 
+  TEST( SetDefaultFacility, NullTarget ) {
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target_result = stumpless_set_default_facility( NULL, STUMPLESS_FACILITY_USER );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
   TEST( SetDefaultMsgId, MemoryFailure ) {
     char buffer[100];
     struct stumpless_target *target;

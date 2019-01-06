@@ -166,6 +166,11 @@ stumpless_get_current_target( void ) {
   return current_target;
 }
 
+int
+stumpless_get_default_facility( const struct stumpless_target *target ) {
+  return -1;
+}
+
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target ) {
   clear_error(  );
@@ -181,6 +186,19 @@ stumpless_open_target( struct stumpless_target *target ) {
 void
 stumpless_set_current_target( struct stumpless_target *target ) {
   current_target = target;
+}
+
+struct stumpless_target *
+stumpless_set_default_facility( struct stumpless_target *target,
+                                int default_facility ) {
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  return NULL;
 }
 
 struct stumpless_target *
