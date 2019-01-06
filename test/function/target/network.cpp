@@ -503,6 +503,20 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetNewTest, Udp4 ) {
+    struct stumpless_target *target;
+
+    target = stumpless_new_network_target( "my-udp4",
+                                           STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                           STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+    stumpless_close_network_target( target );
+  }
+
   TEST( NetworkTargetNewTest, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
@@ -513,9 +527,11 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "name" ) );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "name" ) );
+    }
   }
 
   TEST( NetworkTargetOpenTest, BadHostname ) {

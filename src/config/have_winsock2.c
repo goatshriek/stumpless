@@ -134,6 +134,18 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
   return result;
 }
 
+void
+winsock2_init_tcp4( struct tcp4_details *details ) {
+  details->port = NULL;
+  details->handle = INVALID_SOCKET;
+}
+
+void
+winsock2_init_udp4( struct udp4_details *details ) {
+  details->port = NULL;
+  details->handle = INVALID_SOCKET;
+}
+
 struct tcp4_details *
 winsock2_open_tcp4_target( struct tcp4_details *details,
                            const char *destination,

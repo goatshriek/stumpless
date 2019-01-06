@@ -103,6 +103,18 @@ sys_socket_free_all( void ) {
   tcp_send_buffer_length = 0;
 }
 
+void
+sys_socket_init_tcp4( struct tcp4_details *details ) {
+  details->port = NULL;
+  details->handle = -1;
+}
+
+void
+sys_socket_init_udp4( struct udp4_details *details ) {
+  details->port = NULL;
+  details->handle = -1;
+}
+
 struct tcp4_details *
 sys_socket_open_tcp4_target( struct tcp4_details *details,
                              const char *destination,

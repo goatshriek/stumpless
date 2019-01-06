@@ -125,6 +125,8 @@
 #    include "private/config/have_sys_socket.h"
 #    define config_close_tcp4_target sys_socket_close_tcp4_target
 #    define config_close_udp4_target sys_socket_close_udp4_target
+#    define config_init_tcp4 sys_socket_init_tcp4
+#    define config_init_udp4 sys_socket_init_udp4
 #    define config_open_tcp4_target sys_socket_open_tcp4_target
 #    define config_open_udp4_target sys_socket_open_udp4_target
 #    define config_reopen_tcp4_target sys_socket_reopen_tcp4_target
@@ -139,6 +141,8 @@
 #    include "private/config/have_winsock2.h"
 #    define config_close_tcp4_target winsock2_close_tcp4_target
 #    define config_close_udp4_target winsock2_close_udp4_target
+#    define config_init_tcp4 winsock2_init_tcp4
+#    define config_init_udp4 winsock2_init_udp4
 #    define config_open_tcp4_target winsock2_open_tcp4_target
 #    define config_open_udp4_target winsock2_open_udp4_target
 #    define config_reopen_tcp4_target winsock2_reopen_tcp4_target

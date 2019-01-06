@@ -153,8 +153,15 @@ stumpless_new_network_target( const char *name,
     goto fail;
   }
 
+  target->id = new_network_target( network, transport );
+  if( !target->id ) {
+    goto fail_id;
+  }
+
   return target;
 
+fail_id:
+  destroy_target( target );
 fail:
   return NULL;
 }
@@ -190,7 +197,7 @@ stumpless_open_network_target( const char *name,
     goto fail;
   }
 
-  target->id = new_network_target( destination, network, transport );
+  target->id = open_network_target( destination, network, transport );
   if( !target->id ) {
     goto fail_id;
   }
@@ -430,9 +437,52 @@ network_target_is_open( const struct stumpless_target *target ) {
 }
 
 struct network_target *
-new_network_target( const char *destination,
-                    enum stumpless_network_protocol network,
+new_network_target( enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport ) {
+  struct network_target *target;
+
+  if( network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    raise_network_protocol_unsupported(  );
+    goto fail;
+  }
+
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
+    goto fail;
+  }
+
+  switch( transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      config_init_tcp4( &target->details.tcp4 );
+      break;
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      config_init_udp4( &target->details.udp4 );
+      break;
+
+    default:
+      raise_transport_protocol_unsupported(  );
+      goto fail_transport;
+
+  }
+
+  target->destination = NULL;
+  target->network = network;
+  target->transport = transport;
+
+  return target;
+
+fail_transport:
+  free_mem( target );
+fail:
+  return NULL;
+}
+
+struct network_target *
+open_network_target( const char *destination,
+                     enum stumpless_network_protocol network,
+                     enum stumpless_transport_protocol transport ) {
   struct network_target *target;
   struct tcp4_details *tcp4_result;
   struct udp4_details *udp4_result;

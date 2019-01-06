@@ -30,6 +30,12 @@ sys_socket_close_udp4_target( struct udp4_details *details );
 void
 sys_socket_free_all( void );
 
+void
+sys_socket_init_tcp4( struct tcp4_details *details );
+
+void
+sys_socket_init_udp4( struct udp4_details *details );
+
 struct tcp4_details *
 sys_socket_open_tcp4_target( struct tcp4_details *details,
                              const char *destination,
