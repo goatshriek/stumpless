@@ -40,7 +40,11 @@ winsock_open_socket( const char *destination,
                      int type,
                      int protocol ) {
   SOCKET handle;
-  ADDRINFOA hints;
+  ADDRINFOA hints = { .ai_flags = 0,
+                      .ai_addrlen = 0,
+                      .ai_canonname = NULL,
+                      .ai_addr = NULL,
+                      .ai_next = NULL };
   PADDRINFOA addr_result;
   WSADATA wsa_data;
   int result;
@@ -57,14 +61,9 @@ winsock_open_socket( const char *destination,
     }
   }
 
-  hints.ai_flags = 0;
   hints.ai_family = af;
   hints.ai_socktype = type;
   hints.ai_protocol = protocol;
-  hints.ai_addrlen = 0;
-  hints.ai_canonname = NULL;
-  hints.ai_addr = NULL;
-  hints.ai_next = NULL;
 
   result = getaddrinfo( destination, port, &hints, &addr_result );
   if( result != 0 ) {
