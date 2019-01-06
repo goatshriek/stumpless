@@ -488,6 +488,40 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetNewTest, BadNetworkProtocol ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_new_network_target( "bad-network",
+                                           // assuming this isn't a valid protocol
+                                           ( enum stumpless_network_protocol ) -1,
+                                           STUMPLESS_TCP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
+    }
+  }
+
+  TEST( NetworkTargetNewTest, BadTransportProtocol ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_new_network_target( "bad-transport",
+                                           STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                           // assuming this isn't a valid protocol
+                                           ( enum stumpless_transport_protocol ) -1 );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    }
+  }
+
   TEST( NetworkTargetIsOpen, NullTarget ) {
     const struct stumpless_target *result;
     struct stumpless_error *error;
@@ -596,8 +630,10 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
+    }
   }
 
   TEST( NetworkTargetOpenTest, BadTransportProtocol ) {
@@ -614,8 +650,10 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    }
   }
 
   TEST( NetworkTargetOpenTest, Hostname ) {
