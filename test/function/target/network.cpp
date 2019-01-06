@@ -503,18 +503,27 @@ namespace {
     }
   }
 
-  TEST( NetworkTargetNewTest, Udp4 ) {
+  TEST( NetworkTargetNewTest, MallocFailure ) {
     struct stumpless_target *target;
+    struct stumpless_error *error;
+    void * ( *set_malloc_result ) ( size_t );
 
-    target = stumpless_new_network_target( "my-udp4",
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    target = stumpless_new_network_target( "malloc-failure-target",
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                           STUMPLESS_UDP_TRANSPORT_PROTOCOL );
-    EXPECT_TRUE( target != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+                                           STUMPLESS_TCP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target == NULL );
 
-    EXPECT_FALSE( stumpless_target_is_open( target ) );
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
 
-    stumpless_close_network_target( target );
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
   }
 
   TEST( NetworkTargetNewTest, NullName ) {
@@ -532,6 +541,20 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "name" ) );
     }
+  }
+
+  TEST( NetworkTargetNewTest, Udp4 ) {
+    struct stumpless_target *target;
+
+    target = stumpless_new_network_target( "my-udp4",
+                                           STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                           STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+    stumpless_close_network_target( target );
   }
 
   TEST( NetworkTargetOpenTest, BadHostname ) {
