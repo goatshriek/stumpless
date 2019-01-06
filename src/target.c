@@ -168,6 +168,13 @@ stumpless_get_current_target( void ) {
 
 int
 stumpless_get_default_facility( const struct stumpless_target *target ) {
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return -1;
+  }
+
   return -1;
 }
 

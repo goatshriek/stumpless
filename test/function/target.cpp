@@ -104,6 +104,21 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( GetDefaultFacility, NullTarget ) {
+    struct stumpless_error *error;
+    int facility;
+
+    facility = stumpless_get_default_facility( NULL );
+    EXPECT_EQ( -1, facility );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
   TEST( OpenTarget, NullTarget ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
