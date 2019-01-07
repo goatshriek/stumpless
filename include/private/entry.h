@@ -31,6 +31,9 @@ get_facility( int prival );
 int
 get_prival( int facility, int severity );
 
+int
+get_severity( int prival );
+
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry );

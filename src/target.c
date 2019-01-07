@@ -198,6 +198,8 @@ stumpless_set_current_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_set_default_facility( struct stumpless_target *target,
                                 int default_facility ) {
+  int old_severity;
+
   clear_error(  );
 
   if( !target ) {
@@ -205,6 +207,8 @@ stumpless_set_default_facility( struct stumpless_target *target,
     return NULL;
   }
 
+  old_severity = get_severity( target->default_prival );
+  target->default_prival = ( default_facility << 3 ) + old_severity;
   return target;
 }
 
