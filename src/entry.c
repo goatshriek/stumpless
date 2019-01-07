@@ -351,6 +351,11 @@ entry_free_all( void ) {
 }
 
 int
+get_facility( int prival ) {
+  return prival >> 3;
+}
+
+int
 get_prival( int facility, int severity ) {
   return facility | severity;
 }

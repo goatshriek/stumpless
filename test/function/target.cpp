@@ -193,6 +193,21 @@ namespace {
     }
   }
 
+  TEST( SetDefaultFacility, Local1 ) {
+    char buffer[100];
+    struct stumpless_target *target_result;
+    struct stumpless_target *target;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_default_facility( target, STUMPLESS_FACILITY_LOCAL1 );
+    EXPECT_EQ( target_result, target );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( SetDefaultFacility, NullTarget ) {
     struct stumpless_target *target_result;
     struct stumpless_error *error;

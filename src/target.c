@@ -175,7 +175,7 @@ stumpless_get_default_facility( const struct stumpless_target *target ) {
     return -1;
   }
 
-  return -1;
+  return get_facility( target->default_prival );
 }
 
 struct stumpless_target *
@@ -205,7 +205,7 @@ stumpless_set_default_facility( struct stumpless_target *target,
     return NULL;
   }
 
-  return NULL;
+  return target;
 }
 
 struct stumpless_target *

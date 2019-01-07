@@ -26,6 +26,9 @@ void
 entry_free_all( void );
 
 int
+get_facility( int prival );
+
+int
 get_prival( int facility, int severity );
 
 struct strbuilder *
