@@ -352,7 +352,7 @@ entry_free_all( void ) {
 
 int
 get_facility( int prival ) {
-  return prival >> 3;
+  return prival & 0xf8;
 }
 
 int

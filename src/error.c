@@ -85,6 +85,15 @@ raise_file_write_failure( void ) {
 }
 
 void
+raise_invalid_facility( void ) {
+  raise_error( STUMPLESS_INVALID_FACILITY,
+               "facility codes must be defined in accordance with RFC 5424, "
+               "after the multiplication by 8",
+               0,
+               NULL );
+}
+
+void
 raise_invalid_id( void ) {
   raise_error( STUMPLESS_INVALID_ID, NULL, 0, NULL );
 }

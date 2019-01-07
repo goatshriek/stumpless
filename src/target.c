@@ -204,12 +204,22 @@ stumpless_set_default_facility( struct stumpless_target *target,
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
-    return NULL;
+    goto fail;
+  }
+
+  if( default_facility < 0 ||
+      default_facility > ( 23 << 3 ) ||
+      default_facility % 8 != 0 ) {
+    raise_invalid_facility(  );
+    goto fail;
   }
 
   old_severity = get_severity( target->default_prival );
-  target->default_prival = ( default_facility << 3 ) + old_severity;
+  target->default_prival = default_facility + old_severity;
   return target;
+
+fail:
+  return NULL;
 }
 
 struct stumpless_target *

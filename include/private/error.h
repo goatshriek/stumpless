@@ -46,6 +46,9 @@ void
 raise_file_write_failure( void );
 
 void
+raise_invalid_facility( void );
+
+void
 raise_invalid_id( void );
 
 void

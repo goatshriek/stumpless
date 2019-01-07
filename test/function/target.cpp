@@ -212,6 +212,27 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( SetDefaultFacility, NotDivisibleBy8 ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_default_facility( target, 3 );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( SetDefaultFacility, NullTarget ) {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
@@ -225,6 +246,48 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
+  }
+
+  TEST( SetDefaultFacility, TooHigh ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_default_facility( target, 800 );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
+    }
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( SetDefaultFacility, TooLow ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_default_facility( target, -800 );
+    EXPECT_EQ( NULL, target_result );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
+    }
+
+    stumpless_close_buffer_target( target );
   }
 
   TEST( SetDefaultMsgId, MemoryFailure ) {
