@@ -56,4 +56,7 @@ struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );
 
+int
+facility_is_invalid( int facility );
+
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */

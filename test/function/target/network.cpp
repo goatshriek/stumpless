@@ -670,6 +670,63 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetOpenTest, FacilityNotDivisibleBy8 ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_network_target( "non-divisible-facility",
+                                            "127.0.0.1",
+                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
+                                            0,
+                                            3 );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
+    }
+  }
+
+  TEST( NetworkTargetOpenTest, FacilityTooHigh ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_network_target( "too-high-facility",
+                                            "127.0.0.1",
+                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
+                                            0,
+                                            800 );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
+    }
+  }
+
+  TEST( NetworkTargetOpenTest, FacilityTooLow ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_network_target( "too-low-facility",
+                                            "127.0.0.1",
+                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
+                                            0,
+                                            -800 );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
+    }
+  }
+
   TEST( NetworkTargetOpenTest, Hostname ) {
     struct stumpless_target *target;
     const char *hostname = "localhost";

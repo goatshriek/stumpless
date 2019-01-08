@@ -207,9 +207,7 @@ stumpless_set_default_facility( struct stumpless_target *target,
     goto fail;
   }
 
-  if( default_facility < 0 ||
-      default_facility > ( 23 << 3 ) ||
-      default_facility % 8 != 0 ) {
+  if( facility_is_invalid( default_facility ) ) {
     raise_invalid_facility(  );
     goto fail;
   }

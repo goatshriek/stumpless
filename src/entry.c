@@ -440,3 +440,8 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
   return builder;
 }
+
+int
+facility_is_invalid( int facility ) {
+  return facility < 0 || facility > ( 23 << 3 ) || facility % 8 != 0;
+}

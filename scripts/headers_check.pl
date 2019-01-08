@@ -75,6 +75,7 @@ my %manifest = (
   "EVENTLOG_WARNING_TYPE" => "windows.h",
   "EXIT_FAILURE" => "stdlib.h",
   "EXIT_SUCCESS" => "stdlib.h",
+  "facility_is_invalid" => "private/entry.h",
   "FAIL" => "gtest/gtest.h",
   "fclose" => "stdio.h",
   "FILE" => "stdio.h",

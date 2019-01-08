@@ -23,6 +23,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
 #include "private/config/wrapper.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
@@ -184,6 +185,11 @@ stumpless_open_network_target( const char *name,
 
   if( !destination ) {
     raise_argument_empty( "destination is NULL" );
+    goto fail;
+  }
+
+  if( facility_is_invalid( default_facility ) ) {
+    raise_invalid_facility(  );
     goto fail;
   }
 
