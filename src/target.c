@@ -185,7 +185,7 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
     return 0;
   }
 
-  return 0;
+  return target->options & option;
 }
 
 struct stumpless_target *
@@ -239,7 +239,9 @@ stumpless_set_option( struct stumpless_target *target, int option ) {
     return NULL;
   }
 
-  return NULL;
+  target->options |= option;
+
+  return target;
 }
 
 struct stumpless_target *

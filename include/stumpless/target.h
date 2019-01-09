@@ -73,6 +73,9 @@ stumpless_get_default_facility( const struct stumpless_target *target );
 /**
  * Gets a given option of a target.
  *
+ * While the returned value is the option if it is set, code can also simply
+ * check the truth value of the return to see if the provided option is set.
+ *
  * @param target The target to get the option from.
  *
  * @param option The option to check the target for.

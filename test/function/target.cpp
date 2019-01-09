@@ -380,4 +380,25 @@ namespace {
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
+
+  TEST( SetOption, Pid ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[100];
+    int option;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_FALSE( option );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_EQ( target_result, target );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_TRUE( option );
+
+    stumpless_close_buffer_target( target );
+  }
 }
