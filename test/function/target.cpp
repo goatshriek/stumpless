@@ -119,6 +119,21 @@ namespace {
     }
   }
 
+  TEST( GetOption, NullTarget ) {
+    struct stumpless_error *error;
+    int option;
+
+    option = stumpless_get_option( NULL, STUMPLESS_OPTION_PID );
+    EXPECT_EQ( option, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
   TEST( OpenTarget, NullTarget ) {
     struct stumpless_target *target;
     struct stumpless_error *error;

@@ -178,6 +178,13 @@ stumpless_get_default_facility( const struct stumpless_target *target ) {
 
 int
 stumpless_get_option( const struct stumpless_target *target, int option ) {
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return 0;
+  }
+
   return 0;
 }
 
@@ -225,6 +232,8 @@ fail:
 
 struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option ) {
+  clear_error(  );
+
   return NULL;
 }
 
