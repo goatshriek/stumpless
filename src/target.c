@@ -20,7 +20,6 @@
 #include <string.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
-#include <stumpless/target/socket.h>
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -31,7 +30,6 @@
 #include "private/target.h"
 #include "private/target/buffer.h"
 #include "private/target/file.h"
-#include "private/target/network.h"
 #include "private/target/stream.h"
 
 static struct stumpless_target *current_target = NULL;
@@ -178,6 +176,11 @@ stumpless_get_default_facility( const struct stumpless_target *target ) {
   return get_facility( target->default_prival );
 }
 
+int
+stumpless_get_option( const struct stumpless_target *target, int option ) {
+  return 0;
+}
+
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target ) {
   clear_error(  );
@@ -217,6 +220,11 @@ stumpless_set_default_facility( struct stumpless_target *target,
   return target;
 
 fail:
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_set_option( struct stumpless_target *target, int option ) {
   return NULL;
 }
 
