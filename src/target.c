@@ -331,6 +331,11 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
   }
 }
 
+struct stumpless_target *
+stumpless_unset_option( struct stumpless_target *target, int option ) {
+  return NULL;
+}
+
 /* private definitions */
 
 void

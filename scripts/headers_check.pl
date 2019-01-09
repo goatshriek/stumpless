@@ -286,6 +286,7 @@ my %manifest = (
   "stumpless_transport_protocol" => "stumpless/target/network.h",
   "STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED" => "stumpless/error.h",
   "STUMPLESS_UDP_TRANSPORT_PROTOCOL" => "stumpless/target/network.h",
+  "stumpless_unset_option" => "stumpless/target.h",
   "STUMPLESS_WINDOWS_EVENT_LOG_TARGET" => "stumpless/target.h",
   "STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE" => "stumpless/error.h",
   "STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE" => "stumpless/error.h",

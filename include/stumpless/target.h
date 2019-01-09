@@ -166,6 +166,20 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target );
 
+/**
+ * Unsets an option on a target.
+ *
+ * @param target The target to modify.
+ *
+ * @param option The option to unset on the target. This should be a
+ * STUMPLESS_OPTION value.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_unset_option( struct stumpless_target *target, int option );
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
