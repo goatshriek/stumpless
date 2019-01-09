@@ -401,4 +401,46 @@ namespace {
 
     stumpless_close_buffer_target( target );
   }
+
+  TEST( UnsetOption, NullTarget ) {
+    struct stumpless_error *error;
+    struct stumpless_target *result;
+
+    result = stumpless_unset_option( NULL, STUMPLESS_OPTION_PID );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
+  TEST( UnsetOption, Pid ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[100];
+    int option;
+
+    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_FALSE( option );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_EQ( target_result, target );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_TRUE( option );
+
+    target_result = stumpless_unset_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_EQ( target_result, target );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_FALSE( option );
+
+    stumpless_close_buffer_target( target );
+  }
 }

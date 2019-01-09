@@ -55,3 +55,4 @@ EXPORTS
   stumpless_set_transport_port          @53
   stumpless_set_udp_max_message_size    @54
   stumpless_target_is_open              @55
+  stumpless_unset_option                @56

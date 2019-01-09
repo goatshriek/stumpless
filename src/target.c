@@ -333,7 +333,16 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option ) {
-  return NULL;
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  target->options &= ~option;
+
+  return target;
 }
 
 /* private definitions */
