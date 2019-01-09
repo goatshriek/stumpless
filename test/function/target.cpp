@@ -365,4 +365,19 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
     }
   }
+
+  TEST( SetOption, NullTarget ) {
+    struct stumpless_error *error;
+    struct stumpless_target *result;
+
+    result = stumpless_set_option( NULL, STUMPLESS_OPTION_PID );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
 }

@@ -234,6 +234,11 @@ struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option ) {
   clear_error(  );
 
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
   return NULL;
 }
 
