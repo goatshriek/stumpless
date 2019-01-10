@@ -44,7 +44,27 @@ struct tcp4_details {
 #  endif
 };
 
+struct tcp6_details {
+  const char *port;
+
+#  ifdef HAVE_SYS_SOCKET_H
+  int handle;
+#  elif HAVE_WINSOCK2_H
+  SOCKET handle;
+#  endif
+};
+
 struct udp4_details {
+  const char *port;
+
+#  ifdef HAVE_SYS_SOCKET_H
+  int handle;
+#  elif HAVE_WINSOCK2_H
+  SOCKET handle;
+#  endif
+};
+
+struct udp6_details {
   const char *port;
 
 #  ifdef HAVE_SYS_SOCKET_H
@@ -61,7 +81,9 @@ struct network_target {
   size_t max_msg_size;
   union {
     struct tcp4_details tcp4;
+    struct tcp4_details tcp6;
     struct udp4_details udp4;
+    struct udp4_details udp6;
   } details;
 };
 
