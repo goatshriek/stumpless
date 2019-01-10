@@ -231,6 +231,19 @@ stumpless_open_tcp4_target( const char *name,
 }
 
 struct stumpless_target *
+stumpless_open_tcp6_target( const char *name,
+                            const char *destination,
+                            int options,
+                            int default_facility ) {
+  return stumpless_open_network_target( name,
+                                        destination,
+                                        STUMPLESS_IPV6_NETWORK_PROTOCOL,
+                                        STUMPLESS_TCP_TRANSPORT_PROTOCOL,
+                                        options,
+                                        default_facility );
+}
+
+struct stumpless_target *
 stumpless_open_udp4_target( const char *name,
                             const char *destination,
                             int options,
@@ -238,6 +251,19 @@ stumpless_open_udp4_target( const char *name,
   return stumpless_open_network_target( name,
                                         destination,
                                         STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                        STUMPLESS_UDP_TRANSPORT_PROTOCOL,
+                                        options,
+                                        default_facility );
+}
+
+struct stumpless_target *
+stumpless_open_udp6_target( const char *name,
+                            const char *destination,
+                            int options,
+                            int default_facility ) {
+  return stumpless_open_network_target( name,
+                                        destination,
+                                        STUMPLESS_IPV6_NETWORK_PROTOCOL,
                                         STUMPLESS_UDP_TRANSPORT_PROTOCOL,
                                         options,
                                         default_facility );
@@ -447,29 +473,52 @@ new_network_target( enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport ) {
   struct network_target *target;
 
-  if( network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-    raise_network_protocol_unsupported(  );
-    goto fail;
-  }
-
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
     goto fail;
   }
 
-  switch( transport ) {
+  switch( network ) {
 
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      config_init_tcp4( &target->details.tcp4 );
+    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+      switch( transport ) {
+
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          config_init_tcp4( &target->details.tcp4 );
+          break;
+
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          config_init_udp4( &target->details.udp4 );
+          break;
+
+        default:
+          raise_transport_protocol_unsupported(  );
+          goto fail_transport;
+
+      }
       break;
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      config_init_udp4( &target->details.udp4 );
+    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+      switch( transport ) {
+
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          config_init_tcp6( &target->details.tcp6 );
+          break;
+
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          config_init_udp6( &target->details.udp6 );
+          break;
+
+        default:
+          raise_transport_protocol_unsupported(  );
+          goto fail_transport;
+
+      }
       break;
 
     default:
-      raise_transport_protocol_unsupported(  );
-      goto fail_transport;
+      raise_network_protocol_unsupported(  );
+      break;
 
   }
 
@@ -490,8 +539,12 @@ open_network_target( const char *destination,
                      enum stumpless_network_protocol network,
                      enum stumpless_transport_protocol transport ) {
   struct network_target *target;
-  struct tcp4_details *tcp4_result;
-  struct udp4_details *udp4_result;
+  union {
+    struct tcp4_details *tcp4;
+    struct tcp6_details *tcp6;
+    struct udp4_details *udp4;
+    struct udp6_details *udp6;
+  } details;
   const char *destination_copy;
 
   target = alloc_mem( sizeof( *target ) );
@@ -504,33 +557,66 @@ open_network_target( const char *destination,
     goto fail_destination;
   }
 
-  if( network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-    raise_network_protocol_unsupported(  );
-    goto fail_protocol;
-  }
+  switch( network ) {
 
-  switch( transport ) {
+    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+      switch( transport ) {
 
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      tcp4_result = config_open_tcp4_target( &target->details.tcp4,
-                                             destination,
-                                             DEFAULT_TCP_PORT );
-      if( !tcp4_result ) {
-        goto fail_protocol;
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          details.tcp4 = config_open_tcp4_target( &target->details.tcp4,
+                                                  destination,
+                                                  DEFAULT_TCP_PORT );
+          if( !details.tcp4 ) {
+            goto fail_protocol;
+          }
+          break;
+
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          details.udp4 = config_open_udp4_target( &target->details.udp4,
+                                                  destination,
+                                                  DEFAULT_UDP_PORT );
+          if( !details.udp4 ) {
+            goto fail_protocol;
+          }
+          break;
+
+        default:
+          raise_transport_protocol_unsupported(  );
+          goto fail_protocol;
+
       }
       break;
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      udp4_result = config_open_udp4_target( &target->details.udp4,
-                                             destination,
-                                             DEFAULT_UDP_PORT );
-      if( !udp4_result ) {
-        goto fail_protocol;
+    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+      switch( transport ) {
+
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          details.tcp6 = config_open_tcp6_target( &target->details.tcp6,
+                                                  destination,
+                                                  DEFAULT_TCP_PORT );
+          if( !details.tcp6 ) {
+            goto fail_protocol;
+          }
+          break;
+
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          details.udp6 = config_open_udp6_target( &target->details.udp6,
+                                                  destination,
+                                                  DEFAULT_UDP_PORT );
+          if( !deatils.udp6 ) {
+            goto fail_protocol;
+          }
+          break;
+
+        default:
+          raise_transport_protocol_unsupported(  );
+          goto fail_protocol;
+
       }
       break;
 
     default:
-      raise_transport_protocol_unsupported(  );
+      raise_network_protocol_unsupported(  );
       goto fail_protocol;
 
   }

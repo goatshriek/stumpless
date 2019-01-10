@@ -41,7 +41,8 @@ extern "C" {
  * Network protocols used by a network target.
  */
 enum stumpless_network_protocol {
-  STUMPLESS_IPV4_NETWORK_PROTOCOL /**< Internet Protocol version 4, RFC 791 */
+  STUMPLESS_IPV4_NETWORK_PROTOCOL, /**< Internet Protocol version 4, RFC 791 */
+  STUMPLESS_IPV6_NETWORK_PROTOCOL /**< Internet Protocl version 6, RFC 8200 */
 };
 
 /**
@@ -188,6 +189,32 @@ stumpless_open_tcp4_target( const char *name,
                             int default_facility );
 
 /**
+ * Opens a network target for remote logging over IPv6 and TCP.
+ *
+ * A TCP6 target will use Syslog over TCP, as defined in RFC 6587.
+ *
+ * @param name The name of the target to open. This is only used for
+ * identification of the target.
+ *
+ * @param destination The destination to send the messages to. This could be a
+ * hostname or an IP address.
+ *
+ * @param options The options to use for the logging target. This is a bit-wise
+ * or of one or more \c STUMPLESS_OPTION values.
+ *
+ * @param default_facility The facility code to use for entries that do not have
+ * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
+ *
+ * @return The opened target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_open_tcp6_target( const char *name,
+                            const char *destination,
+                            int options,
+                            int default_facility );
+
+/**
  * Opens a network target for remote logging over IPv4 and UDP.
  *
  * A UDP4 target will use Syslog over UDP, as defined in RFC 5426.
@@ -209,6 +236,32 @@ stumpless_open_tcp4_target( const char *name,
  */
 struct stumpless_target *
 stumpless_open_udp4_target( const char *name,
+                            const char *destination,
+                            int options,
+                            int default_facility );
+
+/**
+ * Opens a network target for remote logging over IPv6 and UDP.
+ *
+ * A UDP6 target will use Syslog over UDP, as defined in RFC 5426.
+ *
+ * @param name The name of the target to open. This is only used for
+ * identification of the target.
+ *
+ * @param destination The destination to send the messages to. This could be a
+ * hostname or an IP address.
+ *
+ * @param options The options to use for the logging target. This is a bit-wise
+ * or of one or more \c STUMPLESS_OPTION values.
+ *
+ * @param default_facility The facility code to use for entries that do not have
+ * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
+ *
+ * @return The opened target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_open_udp6_target( const char *name,
                             const char *destination,
                             int options,
                             int default_facility );
