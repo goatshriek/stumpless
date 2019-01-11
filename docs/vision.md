@@ -8,10 +8,16 @@ The stumpless project aims to make logging more efficient and less of a hassle f
 
 Efficiency and performance are pillars of the design as well, so that logging statements are able to give troubleshooting information as often as possible. Faster execution, multi-thread and multi-process support, and strong compression are all tactics that will be brought to bear to keep logging overhead to an absolute minimum.
 
-# stumpless does one thing
+# Things this isn't
 
-The only thing this library aims to do is generate logs and send them on the beginning of their journey home.
+The only problem this library aims to solve is how to generate logs and send them on the beginning of their journey home. There are certainly other logging tasks that are important, but this project doesn't do them. Most notably:
 
-# What makes stumpless different?
+## Log Analysis
+Log parsing, indexing, storage, and analysis are huge tasks that already have several high profile solutions dedicated to them. While stumpless is built to be compatible with and enhance them, it certainly does not provide any of their features. Developers should instead look to projects like Splunk and Elasticsearch for this.
+
+## Log Forwarding and Collection
+While stumpless can send logs in a variety of ways, it does not necessarily manage end-to-end transport. There are plenty of log forwarding and collection solutions already available such as rsyslog, syslog-ng, and Splunk log forwarders.
+
+# What makes this any different?
 
 There are a number of other logging libraries for C, boasting a variety of features including header-only, various target selections, and structured data options. Stumpless aims to bring the most useful of these features together in a single performant library built with modern development practices including test driven development and continuous integration. We hope to create a viable option for developers needing a lightweight and standardized logging library.
