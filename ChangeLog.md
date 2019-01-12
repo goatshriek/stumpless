@@ -11,10 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Thread-safe operation.
  - Examples for file and socket targets.
 
-## [1.3.0] - 2018-12-08
+## [1.3.0] - 2019-01-12
 ### Added
  - Install target and documentation.
  - Memory leak controlled with stumpless_free_all function.
+ - Vision statement.
 
 ### Fixed
  - Various memory leaks.

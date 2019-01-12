@@ -48,9 +48,11 @@ While stumpless can send logs in a variety of ways, it does not necessarily
 manage end-to-end transport or the final storage location. There are plenty of
 log forwarding and collection solutions already available such as
 [rsyslog](https://www.rsyslog.com/), [syslog-ng](https://www.syslog-ng.com/),
-and [Splunk log forwarders](). If you find yourself looking for a way to manage
-log files, for example to receive and forward logs, then you should consider
-using a log management tools instead.
+and
+[Splunk log forwarders](https://www.splunk.com/en_us/download/universal-forwarder.html).
+If you find yourself looking for a way to manage log files, for example to
+receive and forward logs, then you should consider using something like these
+instead.
 
 # What makes this any different?
 
