@@ -37,7 +37,7 @@ The only problem this library aims to solve is how to create log messages and
 send them on their journey home. There are certainly other logging-related tasks
 that are important, but this project doesn't do them. Most notably:
 
-## Log Analysis
+### Log Analysis
 
 Log parsing, indexing, storage, and analysis are huge tasks that already have
 a number of high-profile solutions focused on them. While stumpless is built to
@@ -45,7 +45,7 @@ complement them, it certainly does not provide any of their features. You should
 instead look to projects like [Splunk](https://www.splunk.com/) or
 [ELK stack](https://www.elastic.co/elk-stack) for this.
 
-## Log Management
+### Log Management
 
 While stumpless can send logs in a variety of ways, it does not necessarily
 manage end-to-end transport or the final storage. There are plenty of log
