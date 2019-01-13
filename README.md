@@ -6,8 +6,8 @@
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=stumpless&metric=alert_status)](https://sonarcloud.io/dashboard?id=stumpless)
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A logging library built with the goals of a rich and intuitive interface,
-standards compliance, fast performance, and a small footprint.
+A logging library built with a [vision](docs/vision.md): a rich and intuitive
+interface, standards compliance, fast performance, and a small footprint.
 
 Currently stumpless offers [standardized](https://tools.ietf.org/html/rfc5424) logging to the following targets:
  * network servers ([UDP](https://tools.ietf.org/html/rfc5426) or
