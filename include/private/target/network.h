@@ -81,9 +81,9 @@ struct network_target {
   size_t max_msg_size;
   union {
     struct tcp4_details tcp4;
-    struct tcp4_details tcp6;
+    struct tcp6_details tcp6;
     struct udp4_details udp4;
-    struct udp4_details udp6;
+    struct udp6_details udp6;
   } details;
 };
 

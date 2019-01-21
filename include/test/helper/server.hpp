@@ -29,10 +29,10 @@ typedef int socket_handle_t;
 #  endif
 
 socket_handle_t
-open_tcp_server_socket( const char *dest, const char *port );
+open_tcp_server_socket( int af, const char *dest, const char *port );
 
 socket_handle_t
-open_udp_server_socket( const char *dest, const char *port );
+open_udp_server_socket( int af, const char *dest, const char *port );
 
 socket_handle_t
 accept_tcp_connection( socket_handle_t handle );

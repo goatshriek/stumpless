@@ -22,6 +22,12 @@
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
+#ifdef _WIN32
+#  include <winsock2.h>
+#else
+#  include <sys/socket.h>
+#endif
+
 NEW_MEMORY_COUNTER( tcp4_leak )
 
 namespace {
@@ -40,7 +46,7 @@ namespace {
     socket_handle_t accepted = BAD_HANDLE;
     char buffer[1024];
 
-    handle = open_tcp_server_socket( "127.0.0.1", "514" );
+    handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
     if( handle != BAD_HANDLE ) {
       stumpless_set_malloc( tcp4_leak_memory_counter_malloc );
       stumpless_set_realloc( tcp4_leak_memory_counter_realloc );

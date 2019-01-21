@@ -31,15 +31,15 @@
 
 #ifdef _WIN32
 socket_handle_t
-open_tcp_server_socket( const char *dest, const char *port ){
+open_tcp_server_socket( int af, const char *dest, const char *port ){
   SOCKET handle;
   PADDRINFOA addr_result;
   WSADATA wsa_data;
 
-  handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+  handle = socket( af, SOCK_STREAM, IPPROTO_TCP );
   if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
     WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-    handle = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+    handle = socket( af, SOCK_STREAM, IPPROTO_TCP );
     if( handle == INVALID_SOCKET ) {
       return INVALID_SOCKET;
     }
@@ -54,15 +54,15 @@ open_tcp_server_socket( const char *dest, const char *port ){
 }
 
 socket_handle_t
-open_udp_server_socket( const char *dest, const char *port ){
+open_udp_server_socket( int af, const char *dest, const char *port ){
   SOCKET handle;
   PADDRINFOA addr_result;
   WSADATA wsa_data;
 
-  handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+  handle = socket( af, SOCK_DGRAM, IPPROTO_UDP );
   if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
     WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-    handle = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+    handle = socket( af, SOCK_DGRAM, IPPROTO_UDP );
     if( handle == INVALID_SOCKET ) {
       return INVALID_SOCKET;
     }
@@ -104,7 +104,7 @@ close_server_socket( socket_handle_t handle ) {
 #else
 
 socket_handle_t
-open_tcp_server_socket( const char *dest, const char *port ) {
+open_tcp_server_socket( int domain, const char *dest, const char *port ) {
   int handle;
   int reuse = 1;
   struct addrinfo *addr_result;
@@ -123,7 +123,7 @@ open_tcp_server_socket( const char *dest, const char *port ) {
 }
 
 socket_handle_t
-open_udp_server_socket( const char *dest, const char *port ) {
+open_udp_server_socket( int domain, const char *dest, const char *port ) {
   int handle;
   struct addrinfo *addr_result;
 
