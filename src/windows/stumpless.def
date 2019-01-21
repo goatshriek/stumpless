@@ -43,16 +43,18 @@ EXPORTS
   stumpless_open_network_target         @41
   stumpless_open_target                 @42
   stumpless_open_tcp4_target            @43
-  stumpless_open_udp4_target            @44
-  stumpless_get_default_facility        @45
-  stumpless_get_destination             @46
-  stumpless_get_option                  @47
-  stumpless_get_transport_port          @48
-  stumpless_get_udp_max_message_size    @49
-  stumpless_set_default_facility        @50
-  stumpless_set_destination             @51
-  stumpless_set_option                  @52
-  stumpless_set_transport_port          @53
-  stumpless_set_udp_max_message_size    @54
-  stumpless_target_is_open              @55
-  stumpless_unset_option                @56
+  stumpless_open_tcp6_target            @44
+  stumpless_open_udp4_target            @45
+  stumpless_open_udp6_target            @46
+  stumpless_get_default_facility        @47
+  stumpless_get_destination             @48
+  stumpless_get_option                  @49
+  stumpless_get_transport_port          @50
+  stumpless_get_udp_max_message_size    @51
+  stumpless_set_default_facility        @52
+  stumpless_set_destination             @53
+  stumpless_set_option                  @54
+  stumpless_set_transport_port          @55
+  stumpless_set_udp_max_message_size    @56
+  stumpless_target_is_open              @57
+  stumpless_unset_option                @58
