@@ -518,7 +518,7 @@ new_network_target( enum stumpless_network_protocol network,
 
     default:
       raise_network_protocol_unsupported(  );
-      break;
+      goto fail_transport;
 
   }
 
@@ -603,7 +603,7 @@ open_network_target( const char *destination,
           details.udp6 = config_open_udp6_target( &target->details.udp6,
                                                   destination,
                                                   DEFAULT_UDP_PORT );
-          if( !deatils.udp6 ) {
+          if( !details.udp6 ) {
             goto fail_protocol;
           }
           break;
