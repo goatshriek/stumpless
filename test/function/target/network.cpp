@@ -1362,7 +1362,7 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
-    target = stumpless_open_udp4_target( "target-to-self",
+    target = stumpless_open_udp6_target( "target-to-self",
                                          "::1",
                                          0,
                                          STUMPLESS_FACILITY_USER );

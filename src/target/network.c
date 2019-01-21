@@ -86,17 +86,42 @@ stumpless_get_transport_port( const struct stumpless_target *target ) {
   }
 
   net_target = target->id;
-  switch( net_target->transport ) {
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      return net_target->details.tcp4.port;
+  switch( net_target->network ) {
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      return net_target->details.udp4.port;
+    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+      switch( net_target->transport ) {
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          return net_target->details.tcp4.port;
 
-    default:
-      raise_target_incompatible( "transport port is not valid for this network"
-                                 " target" );
-      goto fail;
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          return net_target->details.udp4.port;
+
+        default:
+          raise_target_incompatible( "transport port is not valid for this"
+                                     " network target" );
+          goto fail;
+      }
+      break;
+
+      case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+        switch( net_target->transport ) {
+          case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+            return net_target->details.tcp6.port;
+
+          case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+            return net_target->details.udp6.port;
+
+          default:
+            raise_target_incompatible( "transport port is not valid for this"
+                                       " network target" );
+            goto fail;
+        }
+        break;
+
+      default:
+        raise_target_incompatible( "transport port is not valid for this"
+                                   " network target" );
+        goto fail;
   }
 
 fail:
@@ -341,7 +366,9 @@ stumpless_set_transport_port( struct stumpless_target *target,
   struct network_target *net_target;
   union {
     struct tcp4_details *tcp4;
+    struct tcp6_details *tcp6;
     struct udp4_details *udp4;
+    struct udp6_details *udp6;
   } details;
 
   clear_error(  );
@@ -363,29 +390,67 @@ stumpless_set_transport_port( struct stumpless_target *target,
   }
 
   net_target = target->id;
-  switch( net_target->transport ) {
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      details.tcp4 = config_set_tcp4_port( &net_target->details.tcp4,
-                                           net_target->destination,
-                                           port );
-      if( !details.tcp4) {
-        goto fail;
+  switch( net_target->network ) {
+
+    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+      switch( net_target->transport ) {
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          details.tcp4 = config_set_tcp4_port( &net_target->details.tcp4,
+                                               net_target->destination,
+                                               port );
+          if( !details.tcp4) {
+            goto fail;
+          }
+          break;
+
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          details.udp4 = config_set_udp4_port( &net_target->details.udp4,
+                                               net_target->destination,
+                                               port );
+          if( !details.udp4 ) {
+            goto fail;
+          }
+          break;
+
+        default:
+          raise_target_incompatible( "transport port is not valid for this"
+                                     " network target" );
+          goto fail;
       }
       break;
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      details.udp4 = config_set_udp4_port( &net_target->details.udp4,
-                                           net_target->destination,
-                                           port );
-      if( !details.udp4 ) {
-        goto fail;
+    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+      switch( net_target->transport ) {
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          details.tcp6 = config_set_tcp6_port( &net_target->details.tcp6,
+                                               net_target->destination,
+                                               port );
+          if( !details.tcp6) {
+            goto fail;
+          }
+          break;
+
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          details.udp6 = config_set_udp6_port( &net_target->details.udp6,
+                                               net_target->destination,
+                                               port );
+          if( !details.udp6 ) {
+            goto fail;
+          }
+          break;
+
+        default:
+          raise_target_incompatible( "transport port is not valid for this"
+                                     " network target" );
+          goto fail;
       }
       break;
 
     default:
-      raise_target_incompatible( "transport port is not valid for this network"
-                                 " target" );
+      raise_target_incompatible( "transport port is not valid for this"
+                                 " network target" );
       goto fail;
+
   }
 
   return target;
