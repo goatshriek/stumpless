@@ -52,7 +52,6 @@ name_resolves( const char *name ) {
 
   next = addr_result;
   while( next != NULL ) {
-    printf("got a resolution\n");
     next = next->ai_next;
   }
 

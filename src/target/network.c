@@ -515,21 +515,40 @@ network_target_is_open( const struct stumpless_target *target ) {
 
   net_target = ( const struct network_target * ) target->id;
 
-  if( net_target->network != STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-    raise_network_protocol_unsupported(  );
-    return 0;
-  }
+  switch( net_target->network ) {
 
-  switch( net_target->transport ) {
+    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+      switch( net_target->transport ) {
 
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      return config_tcp4_is_open( &net_target->details.tcp4 );
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          return config_tcp4_is_open( &net_target->details.tcp4 );
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      return config_udp4_is_open( &net_target->details.udp4 );
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          return config_udp4_is_open( &net_target->details.udp4 );
+
+        default:
+          return 0;
+      }
+      break;
+
+    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+      switch( net_target->transport ) {
+
+        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+          return config_tcp6_is_open( &net_target->details.tcp6 );
+
+        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+          return config_udp6_is_open( &net_target->details.udp6 );
+
+        default:
+          return 0;
+      }
+      break;
 
     default:
+      raise_network_protocol_unsupported(  );
       return 0;
+      
   }
 }
 
