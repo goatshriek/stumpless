@@ -891,8 +891,22 @@ namespace {
   TEST( NetworkTargetNewTest, Tcp4 ) {
     struct stumpless_target *target;
 
-    target = stumpless_new_network_target( "my-udp4",
+    target = stumpless_new_network_target( "my-tcp4",
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                           STUMPLESS_TCP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+    stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetNewTest, Tcp6 ) {
+    struct stumpless_target *target;
+
+    target = stumpless_new_network_target( "my-tcp6",
+                                           STUMPLESS_IPV6_NETWORK_PROTOCOL,
                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target != NULL );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
@@ -907,6 +921,20 @@ namespace {
 
     target = stumpless_new_network_target( "my-udp4",
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                           STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+    stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetNewTest, Udp6 ) {
+    struct stumpless_target *target;
+
+    target = stumpless_new_network_target( "my-udp6",
+                                           STUMPLESS_IPV6_NETWORK_PROTOCOL,
                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target != NULL );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
@@ -1139,6 +1167,23 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetOpenTcp6Test, BadAddress ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp6_target( "bad-ipv6-address",
+                                         "ff:fe::43::30:1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+    }
+  }
+
   TEST( NetworkTargetOpenTcp4Test, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
@@ -1154,11 +1199,41 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( NetworkTargetOpenTcp6Test, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp6_target( NULL,
+                                         "::1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST( NetworkTargetOpenTcp4Test, NullDestination ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
     target = stumpless_open_tcp4_target( "no-destination-provided",
+                                         NULL,
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenTcp6Test, NullDestination ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp6_target( "no-destination-provided",
                                          NULL,
                                          0,
                                          STUMPLESS_FACILITY_USER );
@@ -1186,12 +1261,44 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetOpenUdp6Test, BadAddress ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_udp6_target( "bad-ipv6-address",
+                                         "ff:fe::43::30:1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+    }
+  }
+
   TEST( NetworkTargetOpenUdp4Test, NullName ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
     target = stumpless_open_udp4_target( NULL,
                                          "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenUdp6Test, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_udp6_target( NULL,
+                                         "::1",
                                          0,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
@@ -1216,12 +1323,47 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( NetworkTargetOpenUdp6Test, NullDestination ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_udp6_target( "no-name-provided",
+                                         NULL,
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST( NetworkTargetOpenUdp4Test, ToSelf ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target != NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+    if( error ) {
+      printf( "error message: %s\n", error->message );
+      printf( "error code: %d\n", error->code );
+    }
+
+    stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetOpenUdp6Test, ToSelf ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_udp4_target( "target-to-self",
+                                         "::1",
                                          0,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target != NULL );
