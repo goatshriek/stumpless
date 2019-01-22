@@ -497,11 +497,22 @@ fail:
 void
 destroy_network_target( struct network_target *target ) {
 
-  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
-    config_close_tcp4_target( &target->details.tcp4 );
+  if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
+      config_close_tcp4_target( &target->details.tcp4 );
 
+    } else {
+      config_close_udp4_target( &target->details.udp4 );
+
+    }
   } else {
-    config_close_udp4_target( &target->details.udp4 );
+    if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
+      config_close_tcp6_target( &target->details.tcp6 );
+
+    } else {
+      config_close_udp6_target( &target->details.udp6 );
+
+    }
 
   }
 
@@ -726,6 +737,7 @@ sendto_network_target( struct network_target *target,
   size_t effective_length;
 
   if( target->transport == STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
+
     if( msg_length > target->max_msg_size ) {
       effective_length = target->max_msg_size;
       raise_argument_too_big( "message is too large to be sent in a single datagram",
@@ -734,10 +746,20 @@ sendto_network_target( struct network_target *target,
     } else {
       effective_length = msg_length;
     }
-    return config_sendto_udp4_target( &target->details.udp4, msg, effective_length );
+
+    if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+      return config_sendto_udp4_target( &target->details.udp4, msg, effective_length );
+    } else {
+      return config_sendto_udp6_target( &target->details.udp6, msg, effective_length );
+    }
 
   } else {
-    return config_sendto_tcp4_target( &target->details.tcp4, msg, msg_length );
+
+    if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+      return config_sendto_tcp4_target( &target->details.tcp4, msg, msg_length );
+    } else {
+      return config_sendto_tcp6_target( &target->details.tcp6, msg, msg_length );
+    }
 
   }
 }
