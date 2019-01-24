@@ -1752,7 +1752,7 @@ namespace {
     }
   }
 
-  TEST( NetworkTargetSetTransportPort, AfterTcpTargetOpen ) {
+  TEST( NetworkTargetSetTransportPort, AfterTcp4TargetOpen ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
@@ -1822,7 +1822,77 @@ namespace {
     close_server_socket( new_port_handle );
   }
 
-  TEST( NetworkTargetSetTransportPort, AfterUdpTargetOpen ) {
+  TEST( NetworkTargetSetTransportPort, AfterTcp6TargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *new_port = "515";
+    const char *default_port;
+    const char *current_port;
+    bool could_bind = true;
+    char buffer[2048];
+    int add_result;
+    socket_handle_t accepted;
+    socket_handle_t default_port_handle;
+    socket_handle_t new_port_handle;
+
+    default_port_handle = open_tcp_server_socket( AF_INET6, "::1", "514" );
+    new_port_handle = open_tcp_server_socket( AF_INET6, "::1", new_port );
+
+    if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
+      target = stumpless_open_tcp6_target( "target-to-self",
+                                           "::1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
+
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      ASSERT_TRUE( entry != NULL );
+
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
+
+      accepted = accept_tcp_connection( default_port_handle );
+      recv_from_handle( accepted, buffer, 2048 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      close_server_socket( accepted );
+
+      default_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( default_port != NULL );
+      ASSERT_STRNE( default_port, new_port );
+
+      result = stumpless_set_transport_port( target, new_port );
+      EXPECT_TRUE( result != NULL );
+
+      current_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( current_port != NULL );
+      EXPECT_TRUE( current_port != new_port );
+      EXPECT_STREQ( new_port, current_port );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
+
+      accepted = accept_tcp_connection( new_port_handle );
+      recv_from_handle( accepted, buffer, 2048 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      close_server_socket( accepted );
+      stumpless_close_network_target( target );
+
+    }
+
+    close_server_socket( default_port_handle );
+    close_server_socket( new_port_handle );
+  }
+
+  TEST( NetworkTargetSetTransportPort, AfterUdp4TargetOpen ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_error *error;
@@ -1837,6 +1907,57 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    default_port = stumpless_get_transport_port( target );
+    EXPECT_TRUE( default_port != NULL );
+    ASSERT_STRNE( default_port, new_port );
+
+    result = stumpless_set_transport_port( target, new_port );
+    EXPECT_TRUE( result != NULL );
+
+    current_port = stumpless_get_transport_port( target );
+    EXPECT_TRUE( current_port != NULL );
+    EXPECT_TRUE( current_port != new_port );
+    EXPECT_STREQ( new_port, current_port );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    if( handle != BAD_HANDLE ) {
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      stumpless_add_entry( target, entry );
+      EXPECT_TRUE( result != NULL );
+
+      recv_from_handle( handle, buffer, 1024 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+    }
+
+    close_server_socket( handle );
+    stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetSetTransportPort, AfterUdp6TargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *new_port = "515";
+    const char *default_port;
+    const char *current_port;
+    char buffer[2048];
+    socket_handle_t handle;
+
+    handle = open_udp_server_socket( AF_INET6, "::1", new_port );
+
+    target = stumpless_open_udp6_target( "target-to-self",
+                                         "::1",
                                          0,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
