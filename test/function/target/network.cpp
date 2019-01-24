@@ -1378,7 +1378,7 @@ namespace {
     stumpless_close_network_target( target );
   }
 
-  TEST( NetworkTargetSetDestination, AfterTcpTargetOpen ) {
+  TEST( NetworkTargetSetDestination, AfterTcp4TargetOpen ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_error *error;
@@ -1456,7 +1456,85 @@ namespace {
     }
   }
 
-  TEST( NetworkTargetSetDestination, AfterUdpTargetOpen ) {
+  TEST( NetworkTargetSetDestination, AfterTcp6TargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *original_destination = "::1";
+    const char *new_destination = "localhost";
+    const char *destination_result;
+    bool could_bind = true;
+    char buffer[2048];
+    int add_result;
+    socket_handle_t accepted;
+    socket_handle_t port_handle;
+
+
+    if( !name_resolves( new_destination ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+
+    } else {
+      port_handle = open_tcp_server_socket( AF_INET6, original_destination, "514" );
+
+      if( port_handle == BAD_HANDLE ) {
+        printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+        SUCCEED(  ) <<  BINDING_DISABLED_WARNING;
+
+      } else {
+        target = stumpless_open_tcp6_target( "target-to-self",
+                                             original_destination,
+                                             0,
+                                             STUMPLESS_FACILITY_USER );
+        ASSERT_TRUE( target != NULL );
+
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error == NULL );
+
+        destination_result = stumpless_get_destination( target );
+        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_STREQ( destination_result, original_destination );
+
+        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "stumpless-unit-test",
+                                     "basic-entry",
+                                     "basic test message" );
+        EXPECT_TRUE( entry != NULL );
+
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
+
+        accepted = accept_tcp_connection( port_handle );
+        recv_from_handle( accepted, buffer, 2048 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+        close_server_socket( accepted );
+
+        target_result = stumpless_set_destination( target, new_destination );
+        EXPECT_TRUE( target_result != NULL );
+
+        destination_result = stumpless_get_destination( target );
+        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_STREQ( destination_result, new_destination );
+
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
+
+        accepted = accept_tcp_connection( port_handle );
+        recv_from_handle( accepted, buffer, 2048 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+        close_server_socket( accepted );
+
+        stumpless_close_network_target( target );
+        stumpless_destroy_entry( entry );
+      }
+
+      close_server_socket( port_handle );
+    }
+  }
+
+  TEST( NetworkTargetSetDestination, AfterUdp4TargetOpen ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_error *error;
@@ -1476,6 +1554,67 @@ namespace {
       handle = open_udp_server_socket( AF_INET, original_destination, "514" );
 
       target = stumpless_open_udp4_target( "target-to-self",
+                                           original_destination,
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
+
+      destination_result = stumpless_get_destination( target );
+      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_STREQ( destination_result, original_destination );
+
+      target_result = stumpless_set_destination( target, new_destination );
+      EXPECT_TRUE( target_result != NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      destination_result = stumpless_get_destination( target );
+      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_STREQ( destination_result, new_destination );
+
+      if( handle != BAD_HANDLE ) {
+        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "stumpless-unit-test",
+                                     "basic-entry",
+                                     "basic test message" );
+        EXPECT_TRUE( entry != NULL );
+
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
+
+        recv_from_handle( handle, buffer, 1024 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+
+        stumpless_destroy_entry( entry );
+      }
+
+      close_server_socket( handle );
+      stumpless_close_network_target( target );
+    }
+  }
+
+  TEST( NetworkTargetSetDestination, AfterUdp6TargetOpen ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *original_destination = "::1";
+    const char *new_destination = "localhost";
+    const char *destination_result;
+    char buffer[2048];
+    int add_result;
+    socket_handle_t handle;
+
+    if( !name_resolves( new_destination ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+
+    } else {
+      handle = open_udp_server_socket( AF_INET6, original_destination, "514" );
+
+      target = stumpless_open_udp6_target( "target-to-self",
                                            original_destination,
                                            0,
                                            STUMPLESS_FACILITY_USER );
