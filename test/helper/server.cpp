@@ -109,10 +109,12 @@ open_tcp_server_socket( int domain, const char *dest, const char *port ) {
   int reuse = 1;
   struct addrinfo *addr_result;
 
-  handle = socket( AF_INET, SOCK_STREAM, 0 );
+  handle = socket( domain, SOCK_STREAM, 0 );
+
   setsockopt( handle, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof( int ) );
   getaddrinfo( dest, port, NULL, &addr_result );
   if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+    perror("open failed");
     return BAD_HANDLE;
   }
 
@@ -127,7 +129,7 @@ open_udp_server_socket( int domain, const char *dest, const char *port ) {
   int handle;
   struct addrinfo *addr_result;
 
-  handle = socket( AF_INET, SOCK_DGRAM, 0 );
+  handle = socket( domain, SOCK_DGRAM, 0 );
   getaddrinfo( dest, port, NULL, &addr_result );
   if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
     return BAD_HANDLE;
