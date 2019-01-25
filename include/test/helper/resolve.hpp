@@ -20,6 +20,6 @@
 #  define __STUMPLESS_TEST_HELPER_RESOLVE_HPP
 
 bool
-name_resolves( const char *name );
+name_resolves( const char *name, int domain );
 
 #endif /* __STUMPLESS_TEST_HELPER_RESOLVE_HPP */

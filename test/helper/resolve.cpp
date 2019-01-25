@@ -30,15 +30,19 @@
 #endif
 
 bool
-name_resolves( const char *name ) {
+name_resolves( const char *name, int domain ) {
 #ifdef _WIN32
   int result;
-  ADDRINFOA hints;
+  ADDRINFOA hints = { .ai_flags = 0,
+                      .ai_addrlen = 0,
+                      .ai_canonname = NULL,
+                      .ai_addr = NULL,
+                      .ai_next = NULL };
   PADDRINFOA addr_result;
   PADDRINFOA next;
   WSADATA wsa_data;
 
-  hints.ai_family = AF_INET;
+  hints.ai_family = domain;
 
   result = getaddrinfo( name, "514", &hints, &addr_result );
   if( result == WSANOTINITIALISED ) {
@@ -60,9 +64,16 @@ name_resolves( const char *name ) {
 
 #else
   struct addrinfo *addr_result;
+  struct addrinfo hints;
   int result;
 
-  result = getaddrinfo( name, "514", NULL, &addr_result );
+  hints.ai_flags = 0;
+  hints.ai_addrlen = 0;
+  hints.ai_canonname = NULL;
+  hints.ai_addr = NULL;
+  hints.ai_next = NULL;
+  hints.ai_family = domain;
+  result = getaddrinfo( name, "514", &hints, &addr_result );
 
   if( result != 0 ) {
     return false;

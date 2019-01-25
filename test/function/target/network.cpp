@@ -949,7 +949,7 @@ namespace {
     struct stumpless_error *error;
     const char *hostname = "this-doesnt-exist.net";
 
-    if( name_resolves( hostname ) ) {
+    if( name_resolves( hostname, AF_INET ) ) {
       printf( "WARNING: the bad hostname resolved, so this test will be skipped\n" );
       SUCCEED(  ) << "the bad hostname resolved, so this test will be skipped";
 
@@ -1070,7 +1070,7 @@ namespace {
     struct stumpless_target *target;
     const char *hostname = "localhost";
 
-    if( !name_resolves( hostname ) ) {
+    if( !name_resolves( hostname, AF_INET ) ) {
       printf( "WARNING: %s did not resolve, so this test will be skipped\n", hostname );
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
@@ -1385,7 +1385,7 @@ namespace {
     socket_handle_t port_handle;
 
 
-    if( !name_resolves( new_destination ) ) {
+    if( !name_resolves( new_destination, AF_INET ) ) {
       printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
@@ -1463,8 +1463,8 @@ namespace {
     socket_handle_t port_handle;
 
 
-    if( !name_resolves( new_destination ) ) {
-      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+    if( !name_resolves( new_destination, AF_INET6 ) ) {
+      printf( "WARNING: %s did not resolve in ipv6, so this test will be skipped\n", new_destination );
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
     } else {
@@ -1541,7 +1541,7 @@ namespace {
     int add_result;
     socket_handle_t handle;
 
-    if( !name_resolves( new_destination ) ) {
+    if( !name_resolves( new_destination, AF_INET ) ) {
       printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
@@ -1602,7 +1602,7 @@ namespace {
     int add_result;
     socket_handle_t handle;
 
-    if( !name_resolves( new_destination ) ) {
+    if( !name_resolves( new_destination, AF_INET6 ) ) {
       printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
