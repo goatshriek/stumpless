@@ -1623,6 +1623,9 @@ namespace {
       EXPECT_TRUE( target_result != NULL );
 
       error = stumpless_get_error(  );
+      if( error ) {
+        printf("error message: %s\nerror code: %d\n", error->message, error->code );
+      }
       EXPECT_TRUE( error == NULL );
 
       destination_result = stumpless_get_destination( target );
