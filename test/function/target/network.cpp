@@ -1350,10 +1350,6 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
-    if( error ) {
-      printf( "error message: %s\n", error->message );
-      printf( "error code: %d\n", error->code );
-    }
 
     stumpless_close_network_target( target );
   }
@@ -1370,10 +1366,6 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
-    if( error ) {
-      printf( "error message: %s\n", error->message );
-      printf( "error code: %d\n", error->code );
-    }
 
     stumpless_close_network_target( target );
   }
@@ -1513,6 +1505,9 @@ namespace {
 
         target_result = stumpless_set_destination( target, new_destination );
         EXPECT_TRUE( target_result != NULL );
+
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error == NULL );
 
         destination_result = stumpless_get_destination( target );
         EXPECT_TRUE( destination_result != NULL );
