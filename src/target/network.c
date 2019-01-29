@@ -31,6 +31,94 @@
 #include "private/target.h"
 #include "private/target/network.h"
 
+static
+const char *
+get_ipv4_transport_port( const struct network_target *net_target ) {
+  switch( net_target->transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      return net_target->details.tcp4.port;
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      return net_target->details.udp4.port;
+
+    default:
+      raise_target_incompatible( "transport port is not valid for this"
+                                 " network target" );
+      return NULL;
+
+  }
+}
+
+static
+const char *
+get_ipv6_transport_port( const struct network_target *net_target ) {
+  switch( net_target->transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      return net_target->details.tcp6.port;
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      return net_target->details.udp6.port;
+
+    default:
+      raise_target_incompatible( "transport port is not valid for this"
+                                 " network target" );
+      return NULL;
+
+  }
+}
+
+static
+void *
+reopen_ipv4_target( struct network_target *net_target,
+                    const char *new_destination ) {
+
+  switch( net_target->transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      return config_reopen_tcp4_target( &net_target->details.tcp4,
+                                        new_destination );
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      return config_reopen_udp4_target( &net_target->details.udp4,
+                                        new_destination );
+
+    default:
+      raise_target_incompatible( "destination is not valid for this network"
+                                 " target" );
+      return NULL;
+
+  }
+
+}
+
+static
+void *
+reopen_ipv6_target( struct network_target *net_target,
+                    const char *new_destination ) {
+
+  switch( net_target->transport ) {
+
+    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+      return config_reopen_tcp6_target( &net_target->details.tcp6,
+                                        new_destination );
+
+    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+      return config_reopen_udp6_target( &net_target->details.udp6,
+                                        new_destination );
+
+    default:
+      raise_target_incompatible( "destination is not valid for this network"
+                                 " target" );
+      return NULL;
+
+  }
+
+}
+
+/* public definitions */
+
 void
 stumpless_close_network_target( struct stumpless_target *target ) {
   clear_error(  );
@@ -89,39 +177,15 @@ stumpless_get_transport_port( const struct stumpless_target *target ) {
   switch( net_target->network ) {
 
     case STUMPLESS_IPV4_NETWORK_PROTOCOL:
-      switch( net_target->transport ) {
-        case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-          return net_target->details.tcp4.port;
+      return get_ipv4_transport_port( net_target );
 
-        case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-          return net_target->details.udp4.port;
+    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+      return get_ipv6_transport_port( net_target );
 
-        default:
-          raise_target_incompatible( "transport port is not valid for this"
-                                     " network target" );
-          goto fail;
-      }
-      break;
+    default:
+      raise_network_protocol_unsupported(  );
+      goto fail;
 
-      case STUMPLESS_IPV6_NETWORK_PROTOCOL:
-        switch( net_target->transport ) {
-          case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-            return net_target->details.tcp6.port;
-
-          case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-            return net_target->details.udp6.port;
-
-          default:
-            raise_target_incompatible( "transport port is not valid for this"
-                                       " network target" );
-            goto fail;
-        }
-        break;
-
-      default:
-        raise_target_incompatible( "transport port is not valid for this"
-                                   " network target" );
-        goto fail;
   }
 
 fail:
@@ -299,12 +363,7 @@ stumpless_set_destination( struct stumpless_target *target,
                            const char *destination ) {
   const char *new_destination;
   struct network_target *net_target;
-  union {
-    struct tcp4_details *tcp4;
-    struct tcp6_details *tcp6;
-    struct udp4_details *udp4;
-    struct udp6_details *udp6;
-  } details;
+  void *result;
 
   clear_error(  );
 
@@ -330,55 +389,24 @@ stumpless_set_destination( struct stumpless_target *target,
   }
 
   net_target = target->id;
+  switch( net_target->network ) {
 
-  if( net_target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-    switch( net_target->transport ) {
-      case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-        details.tcp4 = config_reopen_tcp4_target( &net_target->details.tcp4,
-                                                  new_destination );
-        if( !details.tcp4 ) {
-          goto fail_reopen;
-        }
-        break;
+    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+      result = reopen_ipv4_target( net_target, new_destination );
+      break;
 
-      case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-        details.udp4 = config_reopen_udp4_target( &net_target->details.udp4,
-                                                  new_destination );
-        if( !details.udp4 ) {
-          goto fail_reopen;
-        }
-        break;
+    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+      result = reopen_ipv6_target( net_target, new_destination );
+      break;
 
-      default:
-        raise_target_incompatible( "destination is not valid for this network"
-                                   " target" );
-        goto fail_reopen;
+    default:
+      raise_network_protocol_unsupported(  );
+      goto fail_reopen;
 
-    }
-  } else {
-    switch( net_target->transport ) {
-      case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-        details.tcp6 = config_reopen_tcp6_target( &net_target->details.tcp6,
-                                                  new_destination );
-        if( !details.tcp6 ) {
-          goto fail_reopen;
-        }
-        break;
+  }
 
-      case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-        details.udp6 = config_reopen_udp6_target( &net_target->details.udp6,
-                                                  new_destination );
-        if( !details.udp6 ) {
-          goto fail_reopen;
-        }
-        break;
-
-      default:
-        raise_target_incompatible( "destination is not valid for this network"
-                                   " target" );
-        goto fail_reopen;
-
-    }
+  if( !result ) {
+    goto fail_reopen;
   }
 
   net_target->destination = new_destination;
