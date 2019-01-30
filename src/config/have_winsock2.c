@@ -94,26 +94,7 @@ fail:
 }
 
 void
-winsock2_close_tcp4_target( struct tcp4_details *details ) {
-  free_mem( ( void * ) details->port );
-  closesocket( details->handle );
-}
-
-void
-winsock2_close_tcp6_target( struct tcp6_details *details ) {
-  free_mem( ( void * ) details->port );
-  closesocket( details->handle );
-}
-
-void
-winsock2_close_udp4_target( struct udp4_details *details ) {
-  free_mem( ( void * ) details->port );
-  closesocket( details->handle );
-}
-
-void
-winsock2_close_udp6_target( struct udp6_details *details ) {
-  free_mem( ( void * ) details->port );
+winsock2_close_network_target( struct network_target *target ) {
   closesocket( details->handle );
 }
 
@@ -146,175 +127,84 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
 }
 
 void
-winsock2_init_tcp4( struct tcp4_details *details ) {
-  details->port = NULL;
-  details->handle = INVALID_SOCKET;
+winsock2_init_network_target( struct network_target *target );
+  target->handle = INVALID_SOCKET;
 }
 
-void
-winsock2_init_tcp6( struct tcp6_details *details ) {
-  details->port = NULL;
-  details->handle = INVALID_SOCKET;
-}
+struct network_target *
+winsock2_open_tcp4_target( struct network_target *target ) {
 
-void
-winsock2_init_udp4( struct udp4_details *details ) {
-  details->port = NULL;
-  details->handle = INVALID_SOCKET;
-}
+  target->handle = winsock_open_socket( target->destination,
+                                        target->port,
+                                        AF_INET,
+                                        SOCK_STREAM,
+                                        IPPROTO_TCP );
 
-void
-winsock2_init_udp6( struct udp6_details *details ) {
-  details->port = NULL;
-  details->handle = INVALID_SOCKET;
-}
-
-struct tcp4_details *
-winsock2_open_tcp4_target( struct tcp4_details *details,
-                           const char *destination,
-                           const char *port ) {
-  char *port_copy;
-
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    goto fail;
-  }
-
-  details->handle = winsock_open_socket( destination,
-                                         port,
-                                         AF_INET,
-                                         SOCK_STREAM,
-                                         IPPROTO_TCP );
-
-  if( details->handle == INVALID_SOCKET ) {
-    goto fail_open;
+  if( target->handle == INVALID_SOCKET ) {
+    return NULL;
 
   }
 
-  details->port = port_copy;
-  return details;
-
-fail_open:
-  free_mem( port_copy );
-fail:
-  details->port = NULL;
-  return NULL;
+  return target;
 }
 
-struct tcp6_details *
-winsock2_open_tcp6_target( struct tcp6_details *details,
-                           const char *destination,
-                           const char *port ) {
-  char *port_copy;
+struct network_target *
+winsock2_open_tcp6_target( struct network_target *target ) {
 
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    goto fail;
-  }
+  target->handle = winsock_open_socket( destination,
+                                        port,
+                                        AF_INET6,
+                                        SOCK_STREAM,
+                                        IPPROTO_TCP );
 
-  details->handle = winsock_open_socket( destination,
-                                         port,
-                                         AF_INET6,
-                                         SOCK_STREAM,
-                                         IPPROTO_TCP );
-
-  if( details->handle == INVALID_SOCKET ) {
-    goto fail_open;
+  if( target->handle == INVALID_SOCKET ) {
+    return NULL;
 
   }
 
-  details->port = port_copy;
-  return details;
-
-fail_open:
-  free_mem( port_copy );
-fail:
-  details->port = NULL;
-  return NULL;
+  return target;
 }
 
-struct udp4_details *
-winsock2_open_udp4_target( struct udp4_details *details,
-                           const char *destination,
-                           const char *port ) {
-  char *port_copy;
+struct network_target *
+winsock2_open_udp4_target( struct network_target *target ) {
 
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    goto fail;
-  }
-
-  details->handle = winsock_open_socket( destination,
+  target->handle = winsock_open_socket( destination,
                                          port,
                                          AF_INET,
                                          SOCK_DGRAM,
                                          IPPROTO_UDP );
-
-  if( details->handle == INVALID_SOCKET ) {
-    goto fail_open;
-
-  }
-
-  details->port = port_copy;
-  return details;
-
-fail_open:
-  free_mem( port_copy );
-fail:
-  details->port = NULL;
-  return NULL;
-}
-
-struct udp6_details *
-winsock2_open_udp6_target( struct udp6_details *details,
-                           const char *destination,
-                           const char *port ) {
-  char *port_copy;
-
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    goto fail;
-  }
-
-  details->handle = winsock_open_socket( destination,
-                                         port,
-                                         AF_INET6,
-                                         SOCK_DGRAM,
-                                         IPPROTO_UDP );
-
-  if( details->handle == INVALID_SOCKET ) {
-    goto fail_open;
-
-  }
-
-  details->port = port_copy;
-  return details;
-
-fail_open:
-  free_mem( port_copy );
-fail:
-  details->port = NULL;
-  return NULL;
-}
-
-struct tcp4_details *
-winsock2_reopen_tcp4_target( struct tcp4_details *details,
-                             const char *destination ) {
-  closesocket( details->handle );
-
-  details->handle = winsock_open_socket( destination,
-                                         details->port,
-                                         AF_INET,
-                                         SOCK_STREAM,
-                                         IPPROTO_TCP );
 
   if( details->handle == INVALID_SOCKET ) {
     return NULL;
 
-  } else {
-    return details;
+  }
+
+  return target;
+}
+
+struct network_target *
+winsock2_open_udp6_target( struct network_target *target ) {
+
+  target->handle = winsock_open_socket( destination,
+                                        port,
+                                        AF_INET6,
+                                        SOCK_DGRAM,
+                                        IPPROTO_UDP );
+
+  if( target->handle == INVALID_SOCKET ) {
+    return NULL;
 
   }
+
+  return target;
+}
+
+struct network_target *
+winsock2_reopen_tcp4_target( struct network_target *target ) {
+
+  winsock2_close_network_target( target );
+  return winsock2_open_tcp4_target( target );
+
 }
 
 struct tcp6_details *
@@ -570,21 +460,6 @@ winsock2_set_udp6_port( struct udp6_details *details,
 }
 
 int
-winsock2_tcp4_is_open( const struct tcp4_details *details ) {
-  return details->handle != SOCKET_ERROR;
-}
-
-int
-winsock2_tcp6_is_open( const struct tcp6_details *details ) {
-  return details->handle != SOCKET_ERROR;
-}
-
-int
-winsock2_udp4_is_open( const struct udp4_details *details ) {
-  return details->handle != INVALID_SOCKET;
-}
-
-int
-winsock2_udp6_is_open( const struct udp6_details *details ) {
-  return details->handle != INVALID_SOCKET;
+winsock2_network_target_is_open( const struct network_target *target ) {
+  return target->handle != SOCKET_ERROR;
 }

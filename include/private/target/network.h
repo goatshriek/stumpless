@@ -33,57 +33,18 @@
 
 #  define DEFAULT_PORT "514"
 
-struct tcp4_details {
-  const char *port;
-
-#  ifdef HAVE_SYS_SOCKET_H
-  int handle;
-#  elif HAVE_WINSOCK2_H
-  SOCKET handle;
-#  endif
-};
-
-struct tcp6_details {
-  const char *port;
-
-#  ifdef HAVE_SYS_SOCKET_H
-  int handle;
-#  elif HAVE_WINSOCK2_H
-  SOCKET handle;
-#  endif
-};
-
-struct udp4_details {
-  const char *port;
-
-#  ifdef HAVE_SYS_SOCKET_H
-  int handle;
-#  elif HAVE_WINSOCK2_H
-  SOCKET handle;
-#  endif
-};
-
-struct udp6_details {
-  const char *port;
-
-#  ifdef HAVE_SYS_SOCKET_H
-  int handle;
-#  elif HAVE_WINSOCK2_H
-  SOCKET handle;
-#  endif
-};
-
 struct network_target {
   const char *destination;
   enum stumpless_network_protocol network;
   enum stumpless_transport_protocol transport;
   size_t max_msg_size;
-  union {
-    struct tcp4_details tcp4;
-    struct tcp6_details tcp6;
-    struct udp4_details udp4;
-    struct udp6_details udp6;
-  } details;
+  const char *port;
+
+#  ifdef HAVE_SYS_SOCKET_H
+  int handle;
+#  elif HAVE_WINSOCK2_H
+  SOCKET handle;
+#  endif
 };
 
 void
