@@ -95,7 +95,7 @@ fail:
 
 void
 winsock2_close_network_target( struct network_target *target ) {
-  closesocket( details->handle );
+  closesocket( target->handle );
 }
 
 void
@@ -127,7 +127,7 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
 }
 
 void
-winsock2_init_network_target( struct network_target *target );
+winsock2_init_network_target( struct network_target *target ) {
   target->handle = INVALID_SOCKET;
 }
 
@@ -151,8 +151,8 @@ winsock2_open_tcp4_target( struct network_target *target ) {
 struct network_target *
 winsock2_open_tcp6_target( struct network_target *target ) {
 
-  target->handle = winsock_open_socket( destination,
-                                        port,
+  target->handle = winsock_open_socket( target->destination,
+                                        target->port,
                                         AF_INET6,
                                         SOCK_STREAM,
                                         IPPROTO_TCP );
@@ -168,13 +168,13 @@ winsock2_open_tcp6_target( struct network_target *target ) {
 struct network_target *
 winsock2_open_udp4_target( struct network_target *target ) {
 
-  target->handle = winsock_open_socket( destination,
-                                         port,
-                                         AF_INET,
-                                         SOCK_DGRAM,
-                                         IPPROTO_UDP );
+  target->handle = winsock_open_socket( target->destination,
+                                        target->port,
+                                        AF_INET,
+                                        SOCK_DGRAM,
+                                        IPPROTO_UDP );
 
-  if( details->handle == INVALID_SOCKET ) {
+  if( target->handle == INVALID_SOCKET ) {
     return NULL;
 
   }
@@ -185,8 +185,8 @@ winsock2_open_udp4_target( struct network_target *target ) {
 struct network_target *
 winsock2_open_udp6_target( struct network_target *target ) {
 
-  target->handle = winsock_open_socket( destination,
-                                        port,
+  target->handle = winsock_open_socket( target->destination,
+                                        target->port,
                                         AF_INET6,
                                         SOCK_DGRAM,
                                         IPPROTO_UDP );
@@ -207,70 +207,32 @@ winsock2_reopen_tcp4_target( struct network_target *target ) {
 
 }
 
-struct tcp6_details *
-winsock2_reopen_tcp6_target( struct tcp6_details *details,
-                             const char *destination ) {
-  closesocket( details->handle );
+struct network_target *
+winsock2_reopen_tcp6_target( struct network_target *target ) {
 
-  details->handle = winsock_open_socket( destination,
-                                         details->port,
-                                         AF_INET6,
-                                         SOCK_STREAM,
-                                         IPPROTO_TCP );
-
-  if( details->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  } else {
-    return details;
-
-  }
-}
-
-struct udp4_details *
-winsock2_reopen_udp4_target( struct udp4_details *details,
-                             const char *destination ) {
-  closesocket( details->handle );
-
-  details->handle = winsock_open_socket( destination,
-                                         details->port,
-                                         AF_INET,
-                                         SOCK_DGRAM,
-                                         IPPROTO_UDP );
-
-  if( details->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  } else {
-    return details;
-
-  }
+  winsock2_close_network_target( target );
+  return winsock2_open_tcp6_target( target );
 
 }
 
-struct udp6_details *
-winsock2_reopen_udp6_target( struct udp6_details *details,
-                             const char *destination ) {
-  closesocket( details->handle );
+struct network_target *
+winsock2_reopen_udp4_target( struct network_target *target ) {
 
-  details->handle = winsock_open_socket( destination,
-                                         details->port,
-                                         AF_INET6,
-                                         SOCK_DGRAM,
-                                         IPPROTO_UDP );
+  winsock2_close_network_target( target );
+  return winsock2_open_udp4_target( target );
 
-  if( details->handle == INVALID_SOCKET ) {
-    return NULL;
+}
 
-  } else {
-    return details;
+struct network_target *
+winsock2_reopen_udp6_target( struct network_target *target ) {
 
-  }
+  winsock2_close_network_target( target );
+  return winsock2_open_udp6_target( target );
 
 }
 
 int
-winsock2_sendto_tcp4_target( struct tcp4_details *details,
+winsock2_sendto_tcp_target( struct network_target *target,
                              const char *msg,
                              size_t msg_length ) {
   int result;
@@ -296,7 +258,7 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
   int_length = strlen( tcp_send_buffer );
   memcpy( tcp_send_buffer + int_length, msg, msg_length );
 
-  result = send( details->handle,
+  result = send( target->handle,
                  tcp_send_buffer,
                  cap_size_t_to_int( int_length + msg_length ),
                  0 );
@@ -312,54 +274,12 @@ winsock2_sendto_tcp4_target( struct tcp4_details *details,
 }
 
 int
-winsock2_sendto_tcp6_target( struct tcp6_details *details,
-                             const char *msg,
-                             size_t msg_length ) {
-  int result;
-  size_t int_length;
-  size_t required_length;
-  char *new_buffer;
-
-  required_length = msg_length + 50;
-  if( tcp_send_buffer_length < required_length ) {
-    new_buffer = realloc_mem( tcp_send_buffer, required_length );
-
-    if( !new_buffer ) {
-      return -1;
-
-    } else {
-      tcp_send_buffer = new_buffer;
-      tcp_send_buffer_length = required_length;
-
-    }
-  }
-
-  snprintf( tcp_send_buffer, 50, "%zd ", msg_length );
-  int_length = strlen( tcp_send_buffer );
-  memcpy( tcp_send_buffer + int_length, msg, msg_length );
-
-  result = send( details->handle,
-                 tcp_send_buffer,
-                 cap_size_t_to_int( int_length + msg_length ),
-                 0 );
-
-  if( result == SOCKET_ERROR ) {
-    raise_socket_send_failure( "send failed with IPv6/TCP socket",
-                               WSAGetLastError(  ),
-                               "WSAGetLastError after the failed call" );
-    return -1;
-  }
-
-  return result;
-}
-
-int
-winsock2_sendto_udp4_target( struct udp4_details *details,
+winsock2_sendto_udp_target( struct network_target *target,
                              const char *msg,
                              size_t msg_length ) {
   int result;
 
-  result = send( details->handle,
+  result = send( target->handle,
                  msg,
                  cap_size_t_to_int( msg_length ),
                  0 );
@@ -372,91 +292,6 @@ winsock2_sendto_udp4_target( struct udp4_details *details,
   }
 
   return result;
-}
-
-int
-winsock2_sendto_udp6_target( struct udp6_details *details,
-                             const char *msg,
-                             size_t msg_length ) {
-  int result;
-
-  result = send( details->handle,
-                 msg,
-                 cap_size_t_to_int( msg_length ),
-                 0 );
-
-  if( result == SOCKET_ERROR ) {
-    raise_socket_send_failure( "send failed with IPv6/UDP socket",
-                               WSAGetLastError(  ),
-                               "WSAGetLastError after the failed call" );
-    return -1;
-  }
-
-  return result;
-}
-
-struct tcp4_details *
-winsock2_set_tcp4_port( struct tcp4_details *details,
-                        const char *destination,
-                        const char *port ) {
-  char *port_copy;
-
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    return NULL;
-  }
-
-  free_mem( ( void * ) details->port );
-  details->port = port_copy;
-  return winsock2_reopen_tcp4_target( details, destination );
-}
-
-struct tcp6_details *
-winsock2_set_tcp6_port( struct tcp6_details *details,
-                        const char *destination,
-                        const char *port ) {
-  char *port_copy;
-
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    return NULL;
-  }
-
-  free_mem( ( void * ) details->port );
-  details->port = port_copy;
-  return winsock2_reopen_tcp6_target( details, destination );
-}
-
-struct udp4_details *
-winsock2_set_udp4_port( struct udp4_details *details,
-                        const char *destination,
-                        const char *port ) {
-  char *port_copy;
-
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    return NULL;
-  }
-
-  free_mem( ( void * ) details->port );
-  details->port = port_copy;
-  return winsock2_reopen_udp4_target( details, destination );
-}
-
-struct udp6_details *
-winsock2_set_udp6_port( struct udp6_details *details,
-                        const char *destination,
-                        const char *port ) {
-  char *port_copy;
-
-  port_copy = copy_cstring( port );
-  if( !port_copy ) {
-    return NULL;
-  }
-
-  free_mem( ( void * ) details->port );
-  details->port = port_copy;
-  return winsock2_reopen_udp6_target( details, destination );
 }
 
 int

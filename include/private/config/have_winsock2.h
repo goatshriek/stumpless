@@ -59,9 +59,14 @@ struct network_target *
 winsock2_reopen_udp6_target( struct network_target *target );
 
 int
-winsock2_sendto_network_target( struct network_target *target,
-                                const char *msg,
-                                size_t msg_length );
+winsock2_sendto_tcp_target( struct network_target *target,
+                            const char *msg,
+                            size_t msg_length );
+
+int
+winsock2_sendto_udp_target( struct network_target *target,
+                            const char *msg,
+                            size_t msg_length );
 
 struct network_target *
 winsock2_set_network_port( struct network_target *target, const char *port );
