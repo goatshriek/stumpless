@@ -33,7 +33,7 @@
 
 static
 void
-destroy_ipv4( struct network_target *target ) {
+destroy_ipv4_target( struct network_target *target ) {
 
   switch( target->transport ) {
 
@@ -53,7 +53,7 @@ destroy_ipv4( struct network_target *target ) {
 
 static
 void
-destroy_ipv6( struct network_target *target ) {
+destroy_ipv6_target( struct network_target *target ) {
 
   switch( target->transport ) {
 
@@ -134,7 +134,7 @@ init_network_target( struct network_target *target ) {
 
 static
 int
-ipv4_is_open( const struct network_target *target ) {
+ipv4_target_is_open( const struct network_target *target ) {
 
   switch( target->transport ) {
 
@@ -152,7 +152,7 @@ ipv4_is_open( const struct network_target *target ) {
 
 static
 int
-ipv6_is_open( const struct network_target *target ) {
+ipv6_target_is_open( const struct network_target *target ) {
 
   switch( target->transport ) {
 
@@ -635,11 +635,11 @@ destroy_network_target( struct network_target *target ) {
   switch( target->network ) {
 
     case STUMPLESS_IPV4_NETWORK_PROTOCOL:
-      destroy_ipv4( target );
+      destroy_ipv4_target( target );
       break;
 
     case STUMPLESS_IPV6_NETWORK_PROTOCOL:
-      destroy_ipv6( target );
+      destroy_ipv6_target( target );
       break;
 
   }
@@ -658,10 +658,10 @@ network_target_is_open( const struct stumpless_target *target ) {
   switch( net_target->network ) {
 
     case STUMPLESS_IPV4_NETWORK_PROTOCOL:
-      return ipv4_is_open( net_target );
+      return ipv4_target_is_open( net_target );
 
     case STUMPLESS_IPV6_NETWORK_PROTOCOL:
-      return ipv6_is_open( net_target );
+      return ipv6_target_is_open( net_target );
 
     default:
       raise_network_protocol_unsupported(  );
