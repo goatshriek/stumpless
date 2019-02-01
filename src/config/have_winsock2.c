@@ -233,8 +233,8 @@ winsock2_reopen_udp6_target( struct network_target *target ) {
 
 int
 winsock2_sendto_tcp_target( struct network_target *target,
-                             const char *msg,
-                             size_t msg_length ) {
+                            const char *msg,
+                            size_t msg_length ) {
   int result;
   size_t int_length;
   size_t required_length;
@@ -275,8 +275,8 @@ winsock2_sendto_tcp_target( struct network_target *target,
 
 int
 winsock2_sendto_udp_target( struct network_target *target,
-                             const char *msg,
-                             size_t msg_length ) {
+                            const char *msg,
+                            size_t msg_length ) {
   int result;
 
   result = send( target->handle,
