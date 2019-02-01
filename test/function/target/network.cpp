@@ -799,6 +799,40 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetNewTest, BadIpv4TransportProtocol ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_new_network_target( "bad-ipv4-transport",
+                                           STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                           // assuming this isn't a valid protocol
+                                           ( enum stumpless_transport_protocol ) -1 );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    }
+  }
+
+  TEST( NetworkTargetNewTest, BadIpv6TransportProtocol ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_new_network_target( "bad-ipv6-transport",
+                                           STUMPLESS_IPV6_NETWORK_PROTOCOL,
+                                           // assuming this isn't a valid protocol
+                                           ( enum stumpless_transport_protocol ) -1 );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    }
+  }
+
   TEST( NetworkTargetNewTest, BadNetworkProtocol ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
@@ -813,23 +847,6 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
-    }
-  }
-
-  TEST( NetworkTargetNewTest, BadTransportProtocol ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
-
-    target = stumpless_new_network_target( "bad-transport",
-                                           STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                           // assuming this isn't a valid protocol
-                                           ( enum stumpless_transport_protocol ) -1 );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
     }
   }
 
@@ -969,6 +986,46 @@ namespace {
     }
   }
 
+  TEST( NetworkTargetOpenTest, BadIpv4TransportProtocol ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_network_target( "bad-ipv4-transport",
+                                            "127.0.0.1",
+                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            // assuming this isn't a valid protocol
+                                            ( enum stumpless_transport_protocol ) -1,
+                                            0,
+                                            STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    }
+  }
+
+  TEST( NetworkTargetOpenTest, BadIpv6TransportProtocol ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_network_target( "bad-ipv6-transport",
+                                            "::1",
+                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            // assuming this isn't a valid protocol
+                                            ( enum stumpless_transport_protocol ) -1,
+                                            0,
+                                            STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    }
+  }
+
   TEST( NetworkTargetOpenTest, BadNetworkProtocol ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
@@ -986,26 +1043,6 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
-    }
-  }
-
-  TEST( NetworkTargetOpenTest, BadTransportProtocol ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
-
-    target = stumpless_open_network_target( "bad-network",
-                                            "127.0.0.1",
-                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            // assuming this isn't a valid protocol
-                                            ( enum stumpless_transport_protocol ) -1,
-                                            0,
-                                            STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
     }
   }
 

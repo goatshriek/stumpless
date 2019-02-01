@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,18 +35,11 @@ static
 void
 destroy_ipv4_target( struct network_target *target ) {
 
-  switch( target->transport ) {
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
+    config_close_tcp4_target( target );
 
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      config_close_tcp4_target( target );
-      break;
-
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      config_close_udp4_target( target );
-      break;
-
-    default:
-      return;
+  } else { // STUMPLESS_UDP_TRANSPORT_PROTOCOL
+    config_close_udp4_target( target );
 
   }
 }
@@ -55,18 +48,11 @@ static
 void
 destroy_ipv6_target( struct network_target *target ) {
 
-  switch( target->transport ) {
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
+    config_close_tcp6_target( target );
 
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
-      config_close_tcp6_target( target );
-      break;
-
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
-      config_close_udp6_target( target );
-      break;
-
-    default:
-      return;
+  } else { // STUMPLESS_UDP_TRANSPORT_PROTOCOL
+    config_close_udp6_target( target );
 
   }
 }
@@ -136,16 +122,11 @@ static
 int
 ipv4_target_is_open( const struct network_target *target ) {
 
-  switch( target->transport ) {
-
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
       return config_tcp4_is_open( target );
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+  } else { // STUMPLESS_UDP_TRANSPORT_PROTOCOL
       return config_udp4_is_open( target );
-
-    default:
-      return 0;
 
   }
 }
@@ -154,16 +135,11 @@ static
 int
 ipv6_target_is_open( const struct network_target *target ) {
 
-  switch( target->transport ) {
-
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
       return config_tcp6_is_open( target );
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+  } else { // STUMPLESS_UDP_TRANSPORT_PROTOCOL
       return config_udp6_is_open( target );
-
-    default:
-      return 0;
 
   }
 }
@@ -210,18 +186,11 @@ static
 void *
 reopen_ipv4_target( struct network_target *target ) {
 
-  switch( target->transport ) {
-
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
       return config_reopen_tcp4_target( target );
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+  } else { // STUMPLESS_UDP_TRANSPORT_PROTOCOL
       return config_reopen_udp4_target( target );
-
-    default:
-      raise_target_incompatible( "destination is not valid for this network"
-                                 " target" );
-      return NULL;
 
   }
 }
@@ -230,18 +199,11 @@ static
 void *
 reopen_ipv6_target( struct network_target *target ) {
 
-  switch( target->transport ) {
-
-    case STUMPLESS_TCP_TRANSPORT_PROTOCOL:
+  if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
       return config_reopen_tcp6_target( target );
 
-    case STUMPLESS_UDP_TRANSPORT_PROTOCOL:
+  } else { // STUMPLESS_UDP_TRANSPORT_PROTOCOL
       return config_reopen_udp6_target( target );
-
-    default:
-      raise_target_incompatible( "destination is not valid for this network"
-                                 " target" );
-      return NULL;
 
   }
 }
@@ -250,17 +212,11 @@ static
 void *
 reopen_network_target( struct network_target *target ) {
 
-  switch( target->network ) {
-
-    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+  if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
       return reopen_ipv4_target( target );
 
-    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+  } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
       return reopen_ipv6_target( target );
-
-    default:
-      raise_network_protocol_unsupported(  );
-      return NULL;
 
   }
 }
@@ -655,18 +611,12 @@ network_target_is_open( const struct stumpless_target *target ) {
 
   net_target = ( const struct network_target * ) target->id;
 
-  switch( net_target->network ) {
+  if( net_target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    return ipv4_target_is_open( net_target );
 
-    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
-      return ipv4_target_is_open( net_target );
+  } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
+    return ipv6_target_is_open( net_target );
 
-    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
-      return ipv6_target_is_open( net_target );
-
-    default:
-      raise_network_protocol_unsupported(  );
-      return 0;
-      
   }
 }
 
