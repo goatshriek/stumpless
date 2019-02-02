@@ -1012,7 +1012,7 @@ namespace {
 
     target = stumpless_open_network_target( "bad-ipv6-transport",
                                             "::1",
-                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                            STUMPLESS_IPV6_NETWORK_PROTOCOL,
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_transport_protocol ) -1,
                                             0,
