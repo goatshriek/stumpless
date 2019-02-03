@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-
 #include <stddef.h>
 #include <stumpless/entry.h>
 #include "private/config/wrapper.h"
