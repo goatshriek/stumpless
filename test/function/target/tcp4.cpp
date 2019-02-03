@@ -194,6 +194,9 @@ namespace {
       if( error ) {
         EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
       }
+
+      GetNextMessage(  );
+      TestRFC5424Compliance( buffer );
     }
   }
 
