@@ -26,6 +26,10 @@
 #include "test/function/rfc5424.hpp"
 #include "test/helper/server.hpp"
 
+#ifndef _WIN32
+#  include <sys/socket.h>
+#endif
+
 #define BINDING_DISABLED_WARNING "some network tests will not run without the" \
                                  " ability to listen on a local socket to"     \
                                  " receive messages."
@@ -184,5 +188,21 @@ namespace {
 
       free( message );
     }
+  }
+
+  /* non-fixture tests */
+
+  TEST( NetworkTargetNewTest, Udp6 ) {
+    struct stumpless_target *target;
+
+    target = stumpless_new_network_target( "my-udp6",
+                                           STUMPLESS_IPV6_NETWORK_PROTOCOL,
+                                           STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+    EXPECT_TRUE( target != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+    stumpless_close_network_target( target );
   }
 }

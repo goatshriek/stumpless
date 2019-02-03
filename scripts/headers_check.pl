@@ -9,6 +9,8 @@ open(SOURCE, $file) or die("could not open file: $file");
 
 my %manifest = (
   "accept_tcp_connection" => "test/helper/server.hpp",
+  "AF_INET" => "sys/socket.h",
+  "AF_INET6" => "sys/socket.h",
   "AF_UNIX" => "sys/socket.h",
   "alloc_mem" => "private/memory.h",
   "ASSERT_THAT" => "gmock/gmock.h",
