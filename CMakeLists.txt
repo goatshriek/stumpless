@@ -132,6 +132,38 @@ else()
     LIBRARIES ${network_libraries}
   )
 
+  add_function_test(tcp4
+    SOURCES
+      test/function/target/tcp4.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
+  )
+
+  add_function_test(tcp6
+    SOURCES
+      test/function/target/tcp6.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
+  )
+
+  add_function_test(udp4
+    SOURCES
+      test/function/target/udp4.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
+  )
+
+  add_function_test(udp6
+    SOURCES
+      test/function/target/udp6.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
+  )
+
   add_function_test(tcp4_leak
     SOURCES
       test/function/leak/tcp4.cpp
