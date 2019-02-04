@@ -23,6 +23,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/resolve.hpp"
 #include "test/helper/server.hpp"
 
 #ifndef _WIN32
@@ -194,18 +195,15 @@ namespace {
       if( error ) {
         EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
       }
-
-      GetNextMessage(  );
-      TestRFC5424Compliance( buffer );
     }
   }
 
   /* non-fixture tests */
 
-  TEST( NetworkTargetNewTest, Tcp4 ) {
+  TEST( NetworkTargetNewTest, Basic ) {
     struct stumpless_target *target;
 
-    target = stumpless_new_network_target( "my-tcp4",
+    target = stumpless_new_network_target( "my-tcp4-target",
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target != NULL );
@@ -214,5 +212,200 @@ namespace {
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
     stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetOpenTest, BadAddress ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp4_target( "bad-ipv4-address",
+                                         "256.256.256.256",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+    }
+  }
+
+  TEST( NetworkTargetOpenTest, NullDestination ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp4_target( "no-destination-provided",
+                                         NULL,
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetOpenTest, NullName ) {
+    struct stumpless_target *target;
+    struct stumpless_error *error;
+
+    target = stumpless_open_tcp4_target( NULL,
+                                         "127.0.0.1",
+                                         0,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target == NULL );
+
+    error = stumpless_get_error(  );
+    ASSERT_TRUE( error != NULL );
+    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NetworkTargetSetDestination, OpenTarget ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *original_destination = "127.0.0.1";
+    const char *new_destination = "localhost";
+    const char *destination_result;
+    bool could_bind = true;
+    char buffer[2048];
+    int add_result;
+    socket_handle_t accepted;
+    socket_handle_t port_handle;
+
+
+    if( !name_resolves( new_destination, AF_INET ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+
+    } else {
+      port_handle = open_tcp_server_socket( AF_INET, original_destination, "514" );
+
+      if( port_handle == BAD_HANDLE ) {
+        printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+        SUCCEED(  ) <<  BINDING_DISABLED_WARNING;
+
+      } else {
+        target = stumpless_open_tcp4_target( "target-to-self",
+                                             original_destination,
+                                             0,
+                                             STUMPLESS_FACILITY_USER );
+        ASSERT_TRUE( target != NULL );
+
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error == NULL );
+
+        destination_result = stumpless_get_destination( target );
+        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_STREQ( destination_result, original_destination );
+
+        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "stumpless-unit-test",
+                                     "basic-entry",
+                                     "basic test message" );
+        EXPECT_TRUE( entry != NULL );
+
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
+
+        accepted = accept_tcp_connection( port_handle );
+        recv_from_handle( accepted, buffer, 2048 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+        close_server_socket( accepted );
+
+        target_result = stumpless_set_destination( target, new_destination );
+        EXPECT_TRUE( target_result != NULL );
+
+        destination_result = stumpless_get_destination( target );
+        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_STREQ( destination_result, new_destination );
+
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
+
+        accepted = accept_tcp_connection( port_handle );
+        recv_from_handle( accepted, buffer, 2048 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+        close_server_socket( accepted );
+
+        stumpless_close_network_target( target );
+        stumpless_destroy_entry( entry );
+      }
+
+      close_server_socket( port_handle );
+    }
+  }
+
+  TEST( NetworkTargetSetTransportPort, OpenTarget ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *new_port = "515";
+    const char *default_port;
+    const char *current_port;
+    bool could_bind = true;
+    char buffer[2048];
+    int add_result;
+    socket_handle_t accepted;
+    socket_handle_t default_port_handle;
+    socket_handle_t new_port_handle;
+
+    default_port_handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
+    new_port_handle = open_tcp_server_socket( AF_INET, "127.0.0.1", new_port );
+
+    if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
+      target = stumpless_open_tcp4_target( "target-to-self",
+                                           "127.0.0.1",
+                                           0,
+                                           STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
+
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      ASSERT_TRUE( entry != NULL );
+
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
+
+      accepted = accept_tcp_connection( default_port_handle );
+      recv_from_handle( accepted, buffer, 2048 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      close_server_socket( accepted );
+
+      default_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( default_port != NULL );
+      ASSERT_STRNE( default_port, new_port );
+
+      result = stumpless_set_transport_port( target, new_port );
+      EXPECT_TRUE( result != NULL );
+
+      current_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( current_port != NULL );
+      EXPECT_TRUE( current_port != new_port );
+      EXPECT_STREQ( new_port, current_port );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
+
+      accepted = accept_tcp_connection( new_port_handle );
+      recv_from_handle( accepted, buffer, 2048 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      close_server_socket( accepted );
+      stumpless_close_network_target( target );
+
+    }
+
+    close_server_socket( default_port_handle );
+    close_server_socket( new_port_handle );
   }
 }
