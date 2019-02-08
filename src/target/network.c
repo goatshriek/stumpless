@@ -591,7 +591,7 @@ destroy_network_target( struct network_target *target ) {
   if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
     destroy_ipv4_target( target );
 
-  } else } // STUMPLESS_IPV6_NETWORK_PROTOCOL
+  } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
     destroy_ipv6_target( target );
 
   }
