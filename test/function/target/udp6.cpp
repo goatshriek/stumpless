@@ -132,7 +132,7 @@ namespace {
     } else {
       port_result = stumpless_get_transport_port( target );
 
-      ASSERT_TRUE( port_result != NULL );
+      EXPECT_TRUE( port_result != NULL );
       EXPECT_TRUE( port_result != port );
       EXPECT_STREQ( port_result, port );
     }
@@ -252,8 +252,11 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
   TEST( NetworkTargetOpenTest, NullName ) {
@@ -267,8 +270,11 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
   TEST( NetworkTargetSetDestination, OpenTarget ) {
