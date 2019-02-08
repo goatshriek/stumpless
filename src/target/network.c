@@ -718,17 +718,20 @@ sendto_network_target( struct network_target *target,
 
     if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
       return config_sendto_udp4_target( target, msg, effective_length );
-    } else {
+
+    } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
       return config_sendto_udp6_target( target, msg, effective_length );
+
     }
 
   } else {
 
     if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
       return config_sendto_tcp4_target( target, msg, msg_length );
-    } else {
-      return config_sendto_tcp6_target( target, msg, msg_length );
-    }
 
+    } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
+      return config_sendto_tcp6_target( target, msg, msg_length );
+
+    }
   }
 }
