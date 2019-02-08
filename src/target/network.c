@@ -588,15 +588,11 @@ fail:
 void
 destroy_network_target( struct network_target *target ) {
 
-  switch( target->network ) {
+  if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    destroy_ipv4_target( target );
 
-    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
-      destroy_ipv4_target( target );
-      break;
-
-    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
-      destroy_ipv6_target( target );
-      break;
+  } else } // STUMPLESS_IPV6_NETWORK_PROTOCOL
+    destroy_ipv6_target( target );
 
   }
 
