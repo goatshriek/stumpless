@@ -20,19 +20,15 @@
 #  include <winsock2.h>
 #  include <ws2tcpip.h>
 #else
-#  include <errno.h>
-#  include <netdb.h>
-#  include <sys/types.h>
 #  include <sys/socket.h>
-#  include <unistd.h>
 #endif
 
-#include <regex>
 #include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include "test/function/rfc5424.hpp"
 #include "test/helper/resolve.hpp"
 #include "test/helper/server.hpp"
 
