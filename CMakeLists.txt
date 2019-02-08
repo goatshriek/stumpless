@@ -126,7 +126,6 @@ else()
   add_function_test(network
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
       $<TARGET_OBJECTS:test_helper_resolve>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
