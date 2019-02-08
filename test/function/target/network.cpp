@@ -52,8 +52,11 @@ namespace {
     stumpless_close_network_target( NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
   TEST( NetworkTargetGetDestination, NullTarget ) {
@@ -65,6 +68,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
@@ -89,6 +93,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
     }
@@ -105,6 +110,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
@@ -170,6 +176,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
@@ -188,6 +195,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
     }
@@ -222,6 +230,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
     }
@@ -236,6 +245,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
@@ -276,6 +286,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "name" ) );
@@ -301,9 +312,11 @@ namespace {
       EXPECT_TRUE( target == NULL );
 
       error = stumpless_get_error(  );
-      ASSERT_TRUE( error != NULL );
-      ASSERT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+      EXPECT_TRUE( error != NULL );
 
+      if( error ) {
+        EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+      }
     }
   }
 
@@ -322,6 +335,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
     }
@@ -342,6 +356,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
     }
@@ -362,6 +377,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
     }
@@ -381,6 +397,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
     }
@@ -400,6 +417,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
     }
@@ -419,6 +437,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
     }
@@ -427,6 +446,7 @@ namespace {
   TEST( NetworkTargetOpenTest, Hostname ) {
     struct stumpless_target *target;
     const char *hostname = "localhost";
+    struct stumpless_error *error;
 
     if( !name_resolves( hostname, AF_INET ) ) {
       printf( "WARNING: %s did not resolve, so this test will be skipped\n", hostname );
@@ -441,7 +461,8 @@ namespace {
                                               STUMPLESS_FACILITY_USER );
       EXPECT_TRUE( target != NULL );
 
-      ASSERT_TRUE( stumpless_get_error(  ) == NULL );
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
 
       stumpless_close_network_target( target );
 
@@ -466,6 +487,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
@@ -488,7 +510,10 @@ namespace {
 
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
   TEST( NetworkTargetOpenTest, NullDestination ) {
@@ -504,8 +529,11 @@ namespace {
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
   TEST( NetworkTargetSetDestination, BadTargetType ) {
@@ -526,6 +554,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
     }
@@ -555,6 +584,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
@@ -581,6 +611,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "destination" ) );
@@ -598,6 +629,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
@@ -630,6 +662,7 @@ namespace {
 
       error = stumpless_get_error(  );
       EXPECT_TRUE( error != NULL );
+
       if( error ) {
         EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
       }
@@ -662,6 +695,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
     }
@@ -687,6 +721,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
     }
@@ -720,6 +755,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
@@ -746,6 +782,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "port" ) );
@@ -763,6 +800,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
@@ -787,6 +825,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
     }
@@ -803,6 +842,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
+
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
