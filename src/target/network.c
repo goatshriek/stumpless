@@ -349,6 +349,34 @@ fail:
 }
 
 struct stumpless_target *
+stumpless_new_tcp4_target( const char *name ) {
+  return stumpless_new_network_target( name,
+                                       STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                       STUMPLESS_TCP_TRANSPORT_PROTOCOL );
+}
+
+struct stumpless_target *
+stumpless_new_tcp6_target( const char *name ) {
+  return stumpless_new_network_target( name,
+                                       STUMPLESS_IPV6_NETWORK_PROTOCOL,
+                                       STUMPLESS_TCP_TRANSPORT_PROTOCOL );
+}
+
+struct stumpless_target *
+stumpless_new_udp4_target( const char *name ) {
+  return stumpless_new_network_target( name,
+                                       STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                       STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+}
+
+struct stumpless_target *
+stumpless_new_udp6_target( const char *name ) {
+  return stumpless_new_network_target( name,
+                                       STUMPLESS_IPV6_NETWORK_PROTOCOL,
+                                       STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+}
+
+struct stumpless_target *
 stumpless_open_network_target( const char *name,
                                const char *destination,
                                enum stumpless_network_protocol network,
