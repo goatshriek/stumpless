@@ -257,6 +257,7 @@ my %manifest = (
   "stumpless_open_target" => "stumpless/target.h",
   "stumpless_open_tcp4_target" => "stumpless/target/network.h",
   "stumpless_open_udp4_target" => "stumpless/target/network.h",
+  "STUMPLESS_OPTION_NONE" => "stumpless/entry.h",
   "STUMPLESS_PATCH_VERSION" => "stumpless/config.h",
   "stumpless_set_current_target" => "stumpless/target.h",
   "stumpless_set_default_facility" => "stumpless/target.h",
