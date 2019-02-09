@@ -145,7 +145,7 @@ ipv6_target_is_open( const struct network_target *target ) {
 }
 
 static
-void *
+struct network_target *
 open_ipv4_target( struct network_target *target ) {
 
   switch( target->transport ) {
@@ -160,11 +160,11 @@ open_ipv4_target( struct network_target *target ) {
       raise_transport_protocol_unsupported(  );
       return NULL;
 
-    }
+  }
 }
 
 static
-void *
+struct network_target *
 open_ipv6_target( struct network_target *target ) {
 
   switch( target->transport ) {
@@ -179,11 +179,30 @@ open_ipv6_target( struct network_target *target ) {
       raise_transport_protocol_unsupported(  );
       return NULL;
 
-    }
+  }
 }
 
 static
-void *
+struct network_target *
+open_private_network_target( struct network_target *target ) {
+
+  switch( target->network ) {
+
+    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
+      return open_ipv4_target( target );
+
+    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
+      return open_ipv6_target( target );
+
+    default:
+      raise_network_protocol_unsupported(  );
+      return NULL;
+
+  }
+}
+
+static
+struct network_target *
 reopen_ipv4_target( struct network_target *target ) {
 
   if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
@@ -196,7 +215,7 @@ reopen_ipv4_target( struct network_target *target ) {
 }
 
 static
-void *
+struct network_target *
 reopen_ipv6_target( struct network_target *target ) {
 
   if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
@@ -209,7 +228,7 @@ reopen_ipv6_target( struct network_target *target ) {
 }
 
 static
-void *
+struct network_target *
 reopen_network_target( struct network_target *target ) {
 
   if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
@@ -412,7 +431,7 @@ stumpless_open_network_target( const char *name,
     goto fail;
   }
 
-  target->id = open_network_target( destination, network, transport );
+  target->id = open_new_network_target( destination, network, transport );
   if( !target->id ) {
     goto fail_id;
   }
@@ -491,7 +510,7 @@ stumpless_set_destination( struct stumpless_target *target,
                            const char *destination ) {
   const char *destination_copy;
   struct network_target *net_target;
-  void *result;
+  struct network_target *result;
 
   clear_error(  );
 
@@ -521,9 +540,11 @@ stumpless_set_destination( struct stumpless_target *target,
   free_mem( ( void * ) net_target->destination );
   net_target->destination = destination_copy;
 
+  if( network_target_is_open( target ) ) {
   result = reopen_network_target( net_target );
-  if( !result ) {
-    goto fail;
+    if( !result ) {
+      goto fail;
+    }
   }
 
   return target;
@@ -648,31 +669,53 @@ struct network_target *
 new_network_target( enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport ) {
   struct network_target *target;
+  const char *port_copy;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
     goto fail;
   }
 
+  port_copy = copy_cstring( DEFAULT_PORT );
+  if( !port_copy ) {
+    goto fail_port;
+  }
+
   target->destination = NULL;
-  target->port = NULL;
+  target->port = port_copy;
   target->network = network;
   target->transport = transport;
 
   return init_network_target( target );
 
+fail_port:
+  free_mem( target );
 fail:
   return NULL;
 }
 
+struct stumpless_target *
+open_network_target( struct stumpless_target *target ) {
+  struct network_target *result;
+
+  result = open_private_network_target( target->id );
+  if( result ) {
+    return target;
+
+  } else {
+    return NULL;
+
+  }
+}
+
 struct network_target *
-open_network_target( const char *destination,
-                     enum stumpless_network_protocol network,
-                     enum stumpless_transport_protocol transport ) {
+open_new_network_target( const char *destination,
+                         enum stumpless_network_protocol network,
+                         enum stumpless_transport_protocol transport ) {
   struct network_target *target;
+  struct network_target *result;
   const char *destination_copy;
   const char *port_copy;
-  void *result;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
@@ -695,22 +738,7 @@ open_network_target( const char *destination,
   target->destination = destination_copy;
   target->port = port_copy;
 
-  switch( network ) {
-
-    case STUMPLESS_IPV4_NETWORK_PROTOCOL:
-      result = open_ipv4_target( target );
-      break;
-
-    case STUMPLESS_IPV6_NETWORK_PROTOCOL:
-      result = open_ipv6_target( target );
-      break;
-
-    default:
-      raise_network_protocol_unsupported(  );
-      goto fail_protocol;
-
-  }
-
+  result = open_private_network_target( target );
   if( !result ) {
     goto fail_protocol;
   }

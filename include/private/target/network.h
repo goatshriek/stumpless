@@ -57,10 +57,13 @@ struct network_target *
 new_network_target( enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport );
 
+struct stumpless_target *
+open_network_target( struct stumpless_target *target );
+
 struct network_target *
-open_network_target( const char *destination,
-                     enum stumpless_network_protocol network,
-                     enum stumpless_transport_protocol transport );
+open_new_network_target( const char *destination,
+                         enum stumpless_network_protocol network,
+                         enum stumpless_transport_protocol transport );
 
 int
 sendto_network_target( struct network_target *target,

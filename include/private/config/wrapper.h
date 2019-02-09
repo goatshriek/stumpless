@@ -27,6 +27,7 @@
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include "private/target/network.h"
 #    define config_network_target_is_open network_target_is_open
+#    define config_open_network_target open_network_target
 #    define config_sendto_network_target sendto_network_target
 #    ifdef HAVE_SYS_SOCKET_H
 #      include "private/config/have_sys_socket.h"
@@ -39,6 +40,7 @@
 #    include "private/target.h"
 #    define config_network_free_all() ( ( void ) 0 )
 #    define config_network_target_is_open unsupported_target_is_open
+#    define config_open_network_target open_unsupported_target
 #    define config_sendto_network_target sendto_unsupported_target
 #  endif
 

@@ -197,7 +197,13 @@ stumpless_open_target( struct stumpless_target *target ) {
     return NULL;
   }
 
-  return NULL;
+  if( target->type == STUMPLESS_NETWORK_TARGET ) {
+    return config_open_network_target( target );
+
+  } else {
+    return NULL;
+
+  }
 }
 
 void
@@ -316,18 +322,19 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
   }
 
   if( target->type == STUMPLESS_NETWORK_TARGET ) {
-      is_open = config_network_target_is_open( target );
+    is_open = config_network_target_is_open( target );
 
   } else {
-      is_open = 1;
-
+    is_open = 1;
 
   }
 
   if( is_open ) {
     return target;
+
   } else {
     return NULL;
+
   }
 }
 
@@ -390,6 +397,14 @@ new_target( enum stumpless_target_type type,
 fail_name:
   free_mem( target );
 fail:
+  return NULL;
+}
+
+struct stumpless_target *
+open_unsupported_target( struct stumpless_target *target ) {
+  ( void ) target;
+
+  raise_target_unsupported( "tried to open an unsupported target type" );
   return NULL;
 }
 

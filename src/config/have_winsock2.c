@@ -55,9 +55,13 @@ winsock_open_socket( const char *destination,
     if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
       WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
       handle = socket( af, type, protocol );
-      if( handle == INVALID_SOCKET ) {
-        goto fail;
-      }
+    }
+
+    if( handle == INVALID_SOCKET ) {
+      raise_socket_failure( "winsock2 failed to open a socket",
+                            WSAGetLastError(  ),
+                            "WSAGetLastError after the failed call" );
+      goto fail;
     }
   }
 
@@ -70,7 +74,7 @@ winsock_open_socket( const char *destination,
     raise_address_failure( "getaddrinfo failed on name",
                            result,
                            "Windows Socket error code" );
-    goto fail;
+    goto fail_addr;
   }
 
   result = connect( handle,
@@ -81,14 +85,16 @@ winsock_open_socket( const char *destination,
     raise_socket_connect_failure( "connect failed on winsock2 socket",
                                   WSAGetLastError(  ),
                                   "WSAGetLastError after the failed call" );
-    goto fail_socket;
+    goto fail_connect;
   }
 
   freeaddrinfo( addr_result );
   return handle;
 
-fail_socket:
+fail_connect:
   freeaddrinfo( addr_result );
+fail_addr:
+  closesocket( handle );
 fail:
   return INVALID_SOCKET;
 }

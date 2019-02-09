@@ -32,6 +32,9 @@ new_target( enum stumpless_target_type type,
             int options,
             int default_facility );
 
+struct stumpless_target *
+open_unsupported_target( struct stumpless_target *target );
+
 int
 send_entry_to_unsupported_target( const struct stumpless_target *target,
                                   const struct stumpless_entry *entry );

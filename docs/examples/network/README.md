@@ -35,10 +35,23 @@ If for some reason you want to open a target that isn't responding just yet, the
     new_target = stumpless_new_network_target( "new-udp4-target",
                                                STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                                STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+    stumpless_target_is_open( new_target ); // will return false
     stumpless_set_destination( new_target, "example.com" );
     stumpless_set_transport_port( new_target, "6514" );
     stumpless_open_target( new_target );
+    stumpless_target_is_open( new_target ); // will return true, assuming success
 
 And of course if you want to be more concise, there is a matching new function just like for the open functions:
 
     new_target = stumpless_new_udp4_target( "new-udp4-target" );
+
+The options of a network target can be set at any time, but it's important to know that some of them may re-open the target. For example, setting the maximum message size of a UDP target will be transparent to the network connection:
+
+    stumpless_set_udp_max_message_size( my_target, 1400 ); // this will have no effect on the session
+
+However, setting the destination will reset the connection, which could fail if the new target isn't listening. You can detect this by looking at the return value, the error code, or checking to see if the target is open.
+
+    stumpless_set_destination( my_target, "example2.com" );
+    stumpless_target_is_open( my_target ); // will be true if the new destination responds
+
+As a general rule, targets that are open when such an option is set will be re-opened if possible. If the target is not open (a state referred to as paused in the documentation), then it will be left as is.
