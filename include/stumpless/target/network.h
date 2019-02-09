@@ -127,6 +127,86 @@ stumpless_new_network_target( const char *name,
                               enum stumpless_transport_protocol transport );
 
 /**
+ * Creates a network target over IPv4 and TCP, but does not open it.
+ *
+ * A network target can be created with this function if the target needs to be
+ * created without initiating a network session. This also allows parameters
+ * that are not available in the open function to be set before initiating the
+ * session, instead of restarting the session on each change.
+ *
+ * The target will stay in a paused state until it is opened using the
+ * stumpless_open_target function.
+ *
+ * @param name The name of the target to open. This is only used for
+ * identification of the target.
+ *
+ * @return The new target if no error is encountered. In the event of an error,
+ * NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_new_tcp4_target( const char *name );
+
+/**
+ * Creates a network target over IPv6 and TCP, but does not open it.
+ *
+ * A network target can be created with this function if the target needs to be
+ * created without initiating a network session. This also allows parameters
+ * that are not available in the open function to be set before initiating the
+ * session, instead of restarting the session on each change.
+ *
+ * The target will stay in a paused state until it is opened using the
+ * stumpless_open_target function.
+ *
+ * @param name The name of the target to open. This is only used for
+ * identification of the target.
+ *
+ * @return The new target if no error is encountered. In the event of an error,
+ * NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_new_tcp6_target( const char *name );
+
+/**
+ * Creates a network target over IPv4 and UDP, but does not open it.
+ *
+ * A network target can be created with this function if the target needs to be
+ * created without initiating a network session. This also allows parameters
+ * that are not available in the open function to be set before initiating the
+ * session, instead of restarting the session on each change.
+ *
+ * The target will stay in a paused state until it is opened using the
+ * stumpless_open_target function.
+ *
+ * @param name The name of the target to open. This is only used for
+ * identification of the target.
+ *
+ * @return The new target if no error is encountered. In the event of an error,
+ * NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_new_udp4_target( const char *name );
+
+/**
+ * Creates a network target over IPv6 and UDP, but does not open it.
+ *
+ * A network target can be created with this function if the target needs to be
+ * created without initiating a network session. This also allows parameters
+ * that are not available in the open function to be set before initiating the
+ * session, instead of restarting the session on each change.
+ *
+ * The target will stay in a paused state until it is opened using the
+ * stumpless_open_target function.
+ *
+ * @param name The name of the target to open. This is only used for
+ * identification of the target.
+ *
+ * @return The new target if no error is encountered. In the event of an error,
+ * NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_new_udp6_target( const char *name );
+
+/**
  * Opens a network target.
  *
  * Network targets allow traditional syslog messages to be sent to a remote
@@ -272,7 +352,7 @@ stumpless_open_udp6_target( const char *name,
  * @param target The target to be modified.
  *
  * @param destination The new destintion to send messages to. This could be a
- * hostname or an IP address.,
+ * hostname or an IP address.
  *
  * @return The modified target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.

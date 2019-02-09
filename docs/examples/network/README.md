@@ -30,4 +30,15 @@ Both of these functions create a target pointing to the `example.com` server. UD
                                         // "connect failed with socket" might mean no TCP response
     }
 
-If for some reason you want to open a target that isn't responding just yet, then you can use the builder style of target creation instead of directly opening it.
+If for some reason you want to open a target that isn't responding just yet, then you can use the builder style of target creation instead of directly opening it. This will create a target with the given parameters, but won't try to open it right away. This allows you to create the target, set some necessary options, and then attempt to open it when the time is right.
+
+    new_target = stumpless_new_network_target( "new-udp4-target",
+                                               STUMPLESS_IPV4_NETWORK_PROTOCOL,
+                                               STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+    stumpless_set_destination( new_target, "example.com" );
+    stumpless_set_transport_port( new_target, "6514" );
+    stumpless_open_target( new_target );
+
+And of course if you want to be more concise, there is a matching new function just like for the open functions:
+
+    new_target = stumpless_new_udp4_target( "new-udp4-target" );
