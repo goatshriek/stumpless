@@ -125,6 +125,9 @@ extern "C" {
 #  define STUMPLESS_FACILITY_ALERT  (14<<3)
 #  define STUMPLESS_FACILITY_CRON2  (15<<3)
 
+/* custom option code */
+#  define STUMPLESS_OPTION_NONE 0
+
   struct stumpless_param {
     char *name;
     size_t name_length;
