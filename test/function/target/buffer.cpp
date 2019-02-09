@@ -44,8 +44,11 @@ namespace {
       struct stumpless_param *param;
 
       buffer[0] = '\0';
-      target = stumpless_open_buffer_target( "buffer target testing", buffer,
-                                             TEST_BUFFER_LENGTH, 0, 0 );
+      target = stumpless_open_buffer_target( "buffer target testing",
+                                             buffer,
+                                             TEST_BUFFER_LENGTH,
+                                             STUMPLESS_OPTION_NONE,
+                                             STUMPLESS_FACILITY_USER );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -187,7 +190,11 @@ namespace {
     struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "normal target", buffer, 100, 0, 0 );
+    target = stumpless_open_buffer_target( "normal target",
+                                           buffer,
+                                           100,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     EXPECT_EQ( target, stumpless_get_current_target(  ) );
@@ -199,7 +206,11 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "null-buffer", NULL, 100, 0, 0 );
+    target = stumpless_open_buffer_target( "null-buffer",
+                                           NULL,
+                                           100,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
@@ -212,7 +223,11 @@ namespace {
     struct stumpless_error *error;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( NULL, buffer, 100, 0, 0 );
+    target = stumpless_open_buffer_target( NULL,
+                                           buffer,
+                                           100,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
@@ -229,8 +244,8 @@ namespace {
       targets[i] = stumpless_open_buffer_target( "many target test",
                                                  buffer,
                                                  100,
-                                                 0,
-                                                 0 );
+                                                 STUMPLESS_OPTION_NONE,
+                                                 STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( targets[i] != NULL );
       ASSERT_EQ( NULL, stumpless_get_error(  ) );
     }
