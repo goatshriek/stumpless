@@ -70,7 +70,7 @@ main( int argc, char **argv ) {
   // opening the stream target with an open stream is straightforward:
   stream_target = stumpless_open_stream_target( "stream-example",
                                                 logfile,
-                                                0,
+                                                STUMPLESS_OPTION_NONE,
                                                 STUMPLESS_FACILITY_USER );
 
 

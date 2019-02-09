@@ -33,7 +33,8 @@ main( int argc, char **argv ) {
 
 
   // opening a Windows Event Log target in the "KidsAndTrees" log
-  wel_target = stumpless_open_local_wel_target( "KidsAndTrees", 0 );
+  wel_target = stumpless_open_local_wel_target( "KidsAndTrees",
+                                                STUMPLESS_OPTION_NONE );
   if( !wel_target ) {
     printf( "could not open the local Windows Event Log" );
     return EXIT_FAILURE;
