@@ -80,7 +80,7 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-network-target",
                                            buffer,
                                            100,
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -122,7 +122,7 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            100,
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -147,7 +147,7 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            100,
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -303,7 +303,7 @@ namespace {
                                               hostname,
                                               STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                               STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                              0,
+                                              STUMPLESS_OPTION_NONE,
                                               STUMPLESS_FACILITY_USER );
       EXPECT_TRUE( target == NULL );
 
@@ -325,7 +325,7 @@ namespace {
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_transport_protocol ) -1,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -346,7 +346,7 @@ namespace {
                                             STUMPLESS_IPV6_NETWORK_PROTOCOL,
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_transport_protocol ) -1,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -367,7 +367,7 @@ namespace {
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_network_protocol ) -1,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -387,7 +387,7 @@ namespace {
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             3 );
     EXPECT_TRUE( target == NULL );
 
@@ -407,7 +407,7 @@ namespace {
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             800 );
     EXPECT_TRUE( target == NULL );
 
@@ -427,7 +427,7 @@ namespace {
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             -800 );
     EXPECT_TRUE( target == NULL );
 
@@ -453,7 +453,7 @@ namespace {
                                               hostname,
                                               STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                               STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                              0,
+                                              STUMPLESS_OPTION_NONE,
                                               STUMPLESS_FACILITY_USER );
       EXPECT_TRUE( target != NULL );
 
@@ -477,7 +477,7 @@ namespace {
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -500,7 +500,7 @@ namespace {
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -520,7 +520,7 @@ namespace {
                                             NULL,
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            0,
+                                            STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -541,7 +541,7 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            100,
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -568,7 +568,7 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          original_destination,
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -598,7 +598,7 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -644,7 +644,7 @@ namespace {
     if( handle != BAD_HANDLE ) {
       target = stumpless_open_tcp4_target( "target-to-self",
                                            "127.0.0.1",
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
       EXPECT_TRUE( target != NULL );
       error = stumpless_get_error(  );
@@ -678,7 +678,7 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -708,7 +708,7 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            100,
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -735,7 +735,7 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -769,7 +769,7 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -812,7 +812,7 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            100,
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
