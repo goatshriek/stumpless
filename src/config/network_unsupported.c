@@ -51,25 +51,25 @@ stumpless_new_network_target( const char *name,
 }
 
 struct stumpless_target *
-stumpless_new_tcp4_target( const char *name );
+stumpless_new_tcp4_target( const char *name ) {
   raise_target_unsupported( "network targets are not supported by this build" );
   return NULL;
 }
 
 struct stumpless_target *
-stumpless_new_tcp6_target( const char *name );
+stumpless_new_tcp6_target( const char *name ) {
   raise_target_unsupported( "network targets are not supported by this build" );
   return NULL;
 }
 
 struct stumpless_target *
-stumpless_new_udp4_target( const char *name );
+stumpless_new_udp4_target( const char *name ) {
   raise_target_unsupported( "network targets are not supported by this build" );
   return NULL;
 }
 
 struct stumpless_target *
-stumpless_new_udp6_target( const char *name );
+stumpless_new_udp6_target( const char *name ) {
   raise_target_unsupported( "network targets are not supported by this build" );
   return NULL;
 }
