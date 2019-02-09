@@ -205,9 +205,7 @@ namespace {
   TEST( NetworkTargetNewTest, Basic ) {
     struct stumpless_target *target;
 
-    target = stumpless_new_network_target( "my-tcp4-target",
-                                           STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                           STUMPLESS_TCP_TRANSPORT_PROTOCOL );
+    target = stumpless_new_tcp4_target( "my-tcp4-target" );
     EXPECT_TRUE( target != NULL );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
