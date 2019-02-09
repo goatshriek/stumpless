@@ -191,6 +191,7 @@ my %manifest = (
   "stumpless_open_stream_target" => "stumpless/target/stream.h",
   "stumpless_open_local_wel_target" => "stumpless/target/wel.h",
   "stumpless_open_remote_wel_target" => "stumpless/target/wel.h",
+  "STUMPLESS_OPTION_NONE" => "stumpless/entry.h",
   "STUMPLESS_PATCH_VERSION" => "stumpless/config.h",
   "stumpless_set_current_target" => "stumpless/target.h",
   "stumpless_set_entry_message" => "stumpless/entry.h",
