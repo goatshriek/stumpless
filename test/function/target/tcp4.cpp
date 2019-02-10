@@ -482,6 +482,8 @@ namespace {
       accepted = accept_tcp_connection( new_port_handle );
       recv_from_handle( accepted, buffer, 2048 );
       EXPECT_TRUE( buffer[0] != '\0' );
+
+      stumpless_destroy_entry( entry );
       close_server_socket( accepted );
       stumpless_close_network_target( target );
 
@@ -556,6 +558,8 @@ namespace {
       accepted = accept_tcp_connection( new_port_handle );
       recv_from_handle( accepted, buffer, 2048 );
       EXPECT_TRUE( buffer[0] != '\0' );
+
+      stumpless_destroy_entry( entry );
       close_server_socket( accepted );
       stumpless_close_network_target( target );
 

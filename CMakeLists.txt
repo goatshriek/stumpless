@@ -201,6 +201,10 @@ else()
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
+
+  add_example(udp4
+    ${PROJECT_SOURCE_DIR}/docs/examples/network/udp4_example.c
+  )
 endif(NOT ENABLE_NETWORK_TARGETS)
 
 

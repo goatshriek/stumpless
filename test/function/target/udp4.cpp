@@ -468,6 +468,8 @@ namespace {
       recv_from_handle( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );
       TestRFC5424Compliance( buffer );
+
+      stumpless_destroy_entry( entry );
     }
 
     close_server_socket( handle );
@@ -543,6 +545,8 @@ namespace {
       recv_from_handle( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );
       TestRFC5424Compliance( buffer );
+
+      stumpless_destroy_entry( entry );
     }
 
     close_server_socket( handle );

@@ -1,5 +1,6 @@
 *.c~
 *.cpp~
+*.cpz~
 docs/html/*
 *.h~
 *.hpp~

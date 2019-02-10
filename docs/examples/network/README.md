@@ -54,4 +54,4 @@ However, setting the destination will reset the connection, which could fail if 
     stumpless_set_destination( my_target, "example2.com" );
     stumpless_target_is_open( my_target ); // will be true if the new destination responds
 
-As a general rule, targets that are open when such an option is set will be re-opened if possible. If the target is not open (a state referred to as paused in the documentation), then it will be left as is.
+As a general rule, targets that are open when such an option is set will be re-opened if possible. If the target is not open (a state referred to as paused in the documentation), then it will be left as is until an explicit call to `stumpless_target_open` is made.
