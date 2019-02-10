@@ -541,7 +541,7 @@ stumpless_set_destination( struct stumpless_target *target,
   net_target->destination = destination_copy;
 
   if( network_target_is_open( target ) ) {
-  result = reopen_network_target( net_target );
+    result = reopen_network_target( net_target );
     if( !result ) {
       goto fail;
     }
@@ -588,9 +588,11 @@ stumpless_set_transport_port( struct stumpless_target *target,
   free_mem( ( void * ) net_target->port );
   net_target->port = port_copy;
 
-  result = reopen_network_target( net_target );
-  if( !result ) {
-    goto fail;
+  if( network_target_is_open( target ) ) {
+    result = reopen_network_target( net_target );
+    if( !result ) {
+      goto fail;
+    }
   }
 
   return target;

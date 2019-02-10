@@ -387,12 +387,12 @@ namespace {
       EXPECT_STREQ( destination_result, destination );
 
       target_result = stumpless_open_target( target );
-      error = stumpless_get_error();
-      if( error ) {
-        printf( "%s\n%d\n", error->message, error->code );
-      }
       ASSERT_TRUE( target_result != NULL );
       EXPECT_TRUE( target_result == target );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
       EXPECT_TRUE( stumpless_target_is_open( target ) );
 
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -471,6 +471,73 @@ namespace {
 
       error = stumpless_get_error(  );
       EXPECT_TRUE( error == NULL );
+
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
+
+      accepted = accept_tcp_connection( new_port_handle );
+      recv_from_handle( accepted, buffer, 2048 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      close_server_socket( accepted );
+      stumpless_close_network_target( target );
+
+    }
+
+    close_server_socket( default_port_handle );
+    close_server_socket( new_port_handle );
+  }
+
+  TEST( NetworkTargetSetTransportPort, PausedTarget ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *new_port = "515";
+    const char *default_port;
+    const char *current_port;
+    bool could_bind = true;
+    char buffer[2048];
+    int add_result;
+    socket_handle_t accepted;
+    socket_handle_t default_port_handle;
+    socket_handle_t new_port_handle;
+
+    default_port_handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
+    new_port_handle = open_tcp_server_socket( AF_INET, "127.0.0.1", new_port );
+
+    if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
+      target = stumpless_new_tcp4_target( "target-to-self" );
+      ASSERT_TRUE( target != NULL );
+
+      default_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( default_port != NULL );
+      ASSERT_STRNE( default_port, new_port );
+
+      EXPECT_FALSE( stumpless_target_is_open( target ) );
+      result = stumpless_set_transport_port( target, new_port );
+      EXPECT_TRUE( result != NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+      current_port = stumpless_get_transport_port( target );
+      EXPECT_TRUE( current_port != NULL );
+      EXPECT_TRUE( current_port != new_port );
+      EXPECT_STREQ( new_port, current_port );
+
+      result = stumpless_open_target( target );
+      ASSERT_TRUE( result != NULL );
+      EXPECT_TRUE( result == target );
+      EXPECT_TRUE( stumpless_target_is_open( target ) );
+
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      ASSERT_TRUE( entry != NULL );
 
       add_result = stumpless_add_entry( target, entry );
       EXPECT_GE( add_result, 0 );
