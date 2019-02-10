@@ -496,6 +496,7 @@ namespace {
     struct stumpless_target *result;
     struct stumpless_error *error;
     struct stumpless_entry *entry;
+    const char *destination = "::1";
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
@@ -506,8 +507,8 @@ namespace {
     socket_handle_t default_port_handle;
     socket_handle_t new_port_handle;
 
-    default_port_handle = open_tcp_server_socket( AF_INET6, "::1", "514" );
-    new_port_handle = open_tcp_server_socket( AF_INET6, "::1", new_port );
+    default_port_handle = open_tcp_server_socket( AF_INET6, destination, "514" );
+    new_port_handle = open_tcp_server_socket( AF_INET6, destination, new_port );
 
     if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
       target = stumpless_new_tcp6_target( "target-to-self" );
@@ -530,6 +531,9 @@ namespace {
       EXPECT_TRUE( current_port != NULL );
       EXPECT_TRUE( current_port != new_port );
       EXPECT_STREQ( new_port, current_port );
+
+      result = stumpless_set_destination( target, destination );
+      EXPECT_TRUE( result != NULL );
 
       result = stumpless_open_target( target );
       ASSERT_TRUE( result != NULL );

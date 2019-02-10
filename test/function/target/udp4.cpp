@@ -479,13 +479,14 @@ namespace {
     struct stumpless_target *result;
     struct stumpless_error *error;
     struct stumpless_entry *entry;
+    const char *destination = "127.0.0.1";
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
     char buffer[2048];
     socket_handle_t handle;
 
-    handle = open_udp_server_socket( AF_INET, "127.0.0.1", new_port );
+    handle = open_udp_server_socket( AF_INET, destination, new_port );
 
     target = stumpless_new_udp4_target( "target-to-self" );
     ASSERT_TRUE( target != NULL );
@@ -513,6 +514,9 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
+
+    result = stumpless_set_destination( target, destination );
+    EXPECT_TRUE( result != NULL );
 
     result = stumpless_open_target( target );
     ASSERT_TRUE( result != NULL );
