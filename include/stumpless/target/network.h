@@ -402,6 +402,10 @@ stumpless_set_transport_port( struct stumpless_target *target,
  * smaller datagrams if needed, for example in the case of extra overhead in the
  * IP header beyond the typical 20 bytes.
  *
+ * Note that truncations due to the maximum size do not take UTF characters into
+ * account. If you have entries using multi-byte characters, then you need to
+ * be sure that these truncations do not cause parsing or security problems.
+ *
  * Without calling this function, UDP targets start with a maximum message size
  * set to \c STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE.
  *

@@ -22,9 +22,10 @@
 
 int
 main( int argc, char **argv ) {
-  const char *log_server = "192.168.1.9"; // change this if you want to test
+  const char *log_server = "example.com"; // change this if you want to test
                                           // with your own server
   struct stumpless_target *udp4_target;
+  struct stumpless_target *target_result;
   struct stumpless_entry *basic_entry;
   struct stumpless_element *element;
   struct stumpless_element *element_result;
@@ -73,7 +74,27 @@ main( int argc, char **argv ) {
   }
 
 
-  // sending the entry is just like normal:
+  // sending the entry is just like normal
+  log_result = stumpless_add_entry( udp4_target, basic_entry );
+  if( log_result < 0 ) {
+    printf( "could not log an entry" );
+    return EXIT_FAILURE;
+  }
+
+
+  // UDP messages will be truncated if they go over the maximum message size.
+  // This is set to 1472 by default, assuming an MTU of 1500 and a typical
+  // overhead of 28 bytes. However, you can tweak this setting if you need to.
+  // Messages that go over are simply truncated and sent.
+  target_result = stumpless_set_udp_max_message_size( udp4_target, 200 );
+  if( !target_result ) {
+    printf( "could not set the max message size of the target" );
+    return EXIT_FAILURE;
+  }
+
+
+  // this entry will be truncated to 200 bytes, meaning that the message will
+  // be cut off partways through
   log_result = stumpless_add_entry( udp4_target, basic_entry );
   if( log_result < 0 ) {
     printf( "could not log an entry" );
