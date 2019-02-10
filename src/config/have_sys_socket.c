@@ -51,7 +51,7 @@ sys_socket_open_socket( const char *destination,
   int result;
 
   handle = socket( domain, type, protocol );
-  if( handle ) {
+  if( handle == -1 ) {
     raise_socket_failure( "failed to open a socket",
                           errno,
                           "errno after the failed call" );
