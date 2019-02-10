@@ -37,9 +37,9 @@ main( int argc, char **argv ) {
   // building the entry is done as usual
   basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
-                                     "stumpless-unit-test",
-                                     "basic-entry",
-                                     "this is an example message, but it is"
+                                     "example-app-name",
+                                     "example-msgid",
+                                     "This is an example message, but it is"
                                      " pretty long. It'll be truncated if the"
                                      " maximum message size is set too low." );
   if( !basic_entry ) {
@@ -58,7 +58,7 @@ main( int argc, char **argv ) {
   param = stumpless_new_param( "basic-param-name", "basic-param-value" );
   element_result = stumpless_add_param( element, param );
   if( !element_result ) {
-    printf( "could not create and add a param to he element" );
+    printf( "could not create and add a param to the element" );
     return EXIT_FAILURE;
   }
 

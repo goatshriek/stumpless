@@ -202,6 +202,10 @@ else()
     LIBRARIES ${network_libraries}
   )
 
+  add_example(tcp4
+    ${PROJECT_SOURCE_DIR}/docs/examples/network/tcp4_example.c
+  )
+
   add_example(udp4
     ${PROJECT_SOURCE_DIR}/docs/examples/network/udp4_example.c
   )
