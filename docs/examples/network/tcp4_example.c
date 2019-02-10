@@ -22,7 +22,7 @@
 
 int
 main( int argc, char **argv ) {
-  const char *log_server = "192.168.1.9"; // change this if you want to test
+  const char *log_server = "example.com"; // change this if you want to test
                                           // with your own server
   const char *port = "5514"; // change this if your server is listening on a
                              // port other than 5514
