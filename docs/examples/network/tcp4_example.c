@@ -101,7 +101,9 @@ main( int argc, char **argv ) {
   target_result = stumpless_open_target( tcp4_target );
   if( !target_result ) {
     printf( "couldn't open the target. are you sure that the server is listening on the right port?\n" );
-    return EXIT_FAILURE;
+
+    // we exit with success here as this is likely a remote end issue
+    return EXIT_SUCCESS;
   }
 
 
