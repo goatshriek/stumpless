@@ -201,6 +201,7 @@ stumpless_open_target( struct stumpless_target *target ) {
     return config_open_network_target( target );
 
   } else {
+    raise_target_incompatible( "this target type cannot be paused" );
     return NULL;
 
   }

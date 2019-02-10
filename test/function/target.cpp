@@ -134,6 +134,30 @@ namespace {
     }
   }
 
+  TEST( OpenTarget, AlreadyOpenTarget ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           100,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_open_target( target );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
+    }
+  }
+
   TEST( OpenTarget, NullTarget ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
