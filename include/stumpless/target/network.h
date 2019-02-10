@@ -349,6 +349,11 @@ stumpless_open_udp6_target( const char *name,
 /**
  * Sets the destination of a network target.
  *
+ * If the target is already open when this function is called, then it will
+ * attempt to re-open the target after the destination is changed. If the target
+ * is in a paused state, then it will be left that way until an explicit call to
+ * stumpless_open_target is made.
+ *
  * @param target The target to be modified.
  *
  * @param destination The new destintion to send messages to. This could be a
@@ -363,6 +368,11 @@ stumpless_set_destination( struct stumpless_target *target,
 
 /**
  * Sets the transport port number of a network target.
+ *
+ * If the target is already open when this function is called, then it will
+ * attempt to re-open the target after the port is changed. If the target is in
+ * a paused state, then it will be left that way until an explicit call to
+ * stumpless_open_target is made.
  *
  * @param target The target to be modified.
  *
