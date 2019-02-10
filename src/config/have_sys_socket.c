@@ -51,6 +51,12 @@ sys_socket_open_socket( const char *destination,
   int result;
 
   handle = socket( domain, type, protocol );
+  if( handle ) {
+    raise_socket_failure( "failed to open a socket",
+                          errno,
+                          "errno after the failed call" );
+    goto fail;
+  }
 
   hints.ai_family = domain;
   hints.ai_socktype = type;
@@ -61,7 +67,7 @@ sys_socket_open_socket( const char *destination,
     raise_address_failure( "getaddrinfo failed on name",
                            result,
                            "return code from getaddrinfo" );
-    goto fail;
+    goto fail_addr;
   }
 
   result = connect( handle,
@@ -72,14 +78,15 @@ sys_socket_open_socket( const char *destination,
     raise_socket_connect_failure( "connect failed with socket",
                                   errno,
                                   "errno after the failed call" );
-    goto fail_socket;
+    goto fail_connect;
   }
 
   return handle;
 
-
-fail_socket:
+fail_connect:
   freeaddrinfo( addr_result );
+fail_addr:
+  close( handle );
 fail:
   return -1;
 }
