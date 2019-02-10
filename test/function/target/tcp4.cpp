@@ -326,6 +326,10 @@ namespace {
         EXPECT_TRUE( stumpless_target_is_open( target ) );
         target_result = stumpless_set_destination( target, new_destination );
         EXPECT_TRUE( target_result != NULL );
+
+        error = stumpless_get_error(  );
+        EXPECT_TRUE( error == NULL );
+
         EXPECT_TRUE( stumpless_target_is_open( target ) );
 
         destination_result = stumpless_get_destination( target );

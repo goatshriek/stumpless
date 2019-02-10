@@ -296,16 +296,25 @@ namespace {
 
       target = stumpless_open_udp6_target( "target-to-self",
                                            original_destination,
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( target != NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
 
       destination_result = stumpless_get_destination( target );
       EXPECT_TRUE( destination_result != NULL );
       EXPECT_STREQ( destination_result, original_destination );
 
+      EXPECT_TRUE( stumpless_target_is_open( target ) );
       target_result = stumpless_set_destination( target, new_destination );
       EXPECT_TRUE( target_result != NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      EXPECT_TRUE( stumpless_target_is_open( target ) );
 
       error = stumpless_get_error(  );
       EXPECT_TRUE( error == NULL );
@@ -327,6 +336,80 @@ namespace {
 
         recv_from_handle( handle, buffer, 1024 );
         EXPECT_TRUE( buffer[0] != '\0' );
+        TestRFC5424Compliance( buffer );
+
+        stumpless_destroy_entry( entry );
+      }
+
+      close_server_socket( handle );
+      stumpless_close_network_target( target );
+    }
+  }
+
+  TEST( NetworkTargetSetDestination, PausedTarget ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *original_destination = "::1";
+    const char *new_destination = "localhost";
+    const char *destination_result;
+    char buffer[2048];
+    int add_result;
+    socket_handle_t handle;
+
+    if( !name_resolves( new_destination, AF_INET6 ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+
+    } else {
+      handle = open_udp_server_socket( AF_INET, original_destination, "514" );
+
+      target = stumpless_new_udp4_target( "target-to-self" );
+      ASSERT_TRUE( target != NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      destination_result = stumpless_get_destination( target );
+      EXPECT_TRUE( destination_result == NULL );
+
+      EXPECT_FALSE( stumpless_target_is_open( target ) );
+      target_result = stumpless_set_destination( target, new_destination );
+      EXPECT_TRUE( target_result != NULL );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+      destination_result = stumpless_get_destination( target );
+      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_STREQ( destination_result, new_destination );
+
+      target_result = stumpless_open_target( target );
+      ASSERT_TRUE( target_result != NULL );
+      EXPECT_TRUE( target_result == target );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
+
+      EXPECT_TRUE( stumpless_target_is_open( target ) );
+
+      if( handle != BAD_HANDLE ) {
+        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "stumpless-unit-test",
+                                     "basic-entry",
+                                     "basic test message" );
+        EXPECT_TRUE( entry != NULL );
+
+        add_result = stumpless_add_entry( target, entry );
+        EXPECT_GE( add_result, 0 );
+
+        recv_from_handle( handle, buffer, 1024 );
+        EXPECT_TRUE( buffer[0] != '\0' );
+        TestRFC5424Compliance( buffer );
 
         stumpless_destroy_entry( entry );
       }
@@ -351,16 +434,25 @@ namespace {
 
     target = stumpless_open_udp6_target( "target-to-self",
                                          "::1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
 
     default_port = stumpless_get_transport_port( target );
     EXPECT_TRUE( default_port != NULL );
     ASSERT_STRNE( default_port, new_port );
 
+    EXPECT_TRUE( stumpless_target_is_open( target ) );
     result = stumpless_set_transport_port( target, new_port );
     EXPECT_TRUE( result != NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    EXPECT_TRUE( stumpless_target_is_open( target ) );
 
     current_port = stumpless_get_transport_port( target );
     EXPECT_TRUE( current_port != NULL );
@@ -381,6 +473,74 @@ namespace {
 
       recv_from_handle( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );
+      TestRFC5424Compliance( buffer );
+    }
+
+    close_server_socket( handle );
+    stumpless_close_network_target( target );
+  }
+
+  TEST( NetworkTargetSetTransportPort, PausedTarget ) {
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    struct stumpless_error *error;
+    struct stumpless_entry *entry;
+    const char *new_port = "515";
+    const char *default_port;
+    const char *current_port;
+    char buffer[2048];
+    socket_handle_t handle;
+
+    handle = open_udp_server_socket( AF_INET6, "::1", new_port );
+
+    target = stumpless_new_udp6_target( "target-to-self" );
+    ASSERT_TRUE( target != NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    default_port = stumpless_get_transport_port( target );
+    EXPECT_TRUE( default_port != NULL );
+    ASSERT_STRNE( default_port, new_port );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+    result = stumpless_set_transport_port( target, new_port );
+    EXPECT_TRUE( result != NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+
+    current_port = stumpless_get_transport_port( target );
+    EXPECT_TRUE( current_port != NULL );
+    EXPECT_TRUE( current_port != new_port );
+    EXPECT_STREQ( new_port, current_port );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    result = stumpless_open_target( target );
+    ASSERT_TRUE( result != NULL );
+    EXPECT_TRUE( result == target );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
+
+    EXPECT_TRUE( stumpless_target_is_open( target ) );
+
+    if( handle != BAD_HANDLE ) {
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      stumpless_add_entry( target, entry );
+      EXPECT_TRUE( result != NULL );
+
+      recv_from_handle( handle, buffer, 1024 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      TestRFC5424Compliance( buffer );
     }
 
     close_server_socket( handle );
