@@ -548,7 +548,10 @@ namespace {
       ASSERT_TRUE( entry != NULL );
 
       add_result = stumpless_add_entry( target, entry );
-      EXPECT_GE( add_result, 0 );
+      EXPECT_GT( add_result, 0 );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
 
       accepted = accept_tcp_connection( new_port_handle );
       recv_from_handle( accepted, buffer, 2048 );

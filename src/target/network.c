@@ -685,6 +685,7 @@ new_network_target( enum stumpless_network_protocol network,
 
   target->destination = NULL;
   target->port = port_copy;
+  target->max_msg_size = STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE;
   target->network = network;
   target->transport = transport;
 

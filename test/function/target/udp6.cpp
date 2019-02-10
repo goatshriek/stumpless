@@ -482,7 +482,7 @@ namespace {
 
   TEST( NetworkTargetSetTransportPort, PausedTarget ) {
     struct stumpless_target *target;
-    struct stumpless_target *result;
+    struct stumpless_target *target_result;
     struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *destination = "::1";
@@ -491,6 +491,7 @@ namespace {
     const char *current_port;
     char buffer[2048];
     socket_handle_t handle;
+    int add_result;
 
     handle = open_udp_server_socket( AF_INET6, destination, new_port );
 
@@ -505,8 +506,8 @@ namespace {
     ASSERT_STRNE( default_port, new_port );
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
-    result = stumpless_set_transport_port( target, new_port );
-    EXPECT_TRUE( result != NULL );
+    target_result = stumpless_set_transport_port( target, new_port );
+    EXPECT_TRUE( target_result != NULL );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
@@ -521,12 +522,12 @@ namespace {
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
 
-    result = stumpless_set_destination( target, destination );
-    EXPECT_TRUE( result != NULL );
+    target_result = stumpless_set_destination( target, destination );
+    EXPECT_TRUE( target_result != NULL );
 
-    result = stumpless_open_target( target );
-    ASSERT_TRUE( result != NULL );
-    EXPECT_TRUE( result == target );
+    target_result = stumpless_open_target( target );
+    ASSERT_TRUE( target_result != NULL );
+    EXPECT_TRUE( target_result == target );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error == NULL );
@@ -539,8 +540,11 @@ namespace {
                                    "stumpless-unit-test",
                                    "basic-entry",
                                    "basic test message" );
-      stumpless_add_entry( target, entry );
-      EXPECT_TRUE( result != NULL );
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GT( add_result, 0 );
+
+      error = stumpless_get_error(  );
+      EXPECT_TRUE( error == NULL );
 
       recv_from_handle( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );
