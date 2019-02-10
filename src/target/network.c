@@ -678,7 +678,7 @@ new_network_target( enum stumpless_network_protocol network,
     goto fail;
   }
 
-  port_copy = copy_cstring( DEFAULT_PORT );
+  port_copy = copy_cstring( STUMPLESS_DEFAULT_TRANSPORT_PORT );
   if( !port_copy ) {
     goto fail_port;
   }

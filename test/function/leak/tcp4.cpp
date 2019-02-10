@@ -54,7 +54,7 @@ namespace {
 
       target = stumpless_open_tcp4_target( "test-self",
                                            "127.0.0.1",
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( target != NULL );
 

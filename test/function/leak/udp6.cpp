@@ -44,7 +44,7 @@ namespace {
 
     target = stumpless_open_udp6_target( "set-port-leak",
                                          "::1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
@@ -84,7 +84,7 @@ namespace {
 
     target = stumpless_open_udp6_target( "test-self",
                                          "::1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 

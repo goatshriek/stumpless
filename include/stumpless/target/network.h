@@ -26,6 +26,11 @@
 #  include <stumpless/target.h>
 
 /**
+ * The default transport port for network targets.
+ */
+#define STUMPLESS_DEFAULT_TRANSPORT_PORT "514"
+
+/**
  * The default message size for UDP network targets. This is set to account for
  * an MTU of 1500 byes, a 20 byte IP header, and an 8 byte datagram header. If
  * you wish to change this value for a particular target, then you must use the

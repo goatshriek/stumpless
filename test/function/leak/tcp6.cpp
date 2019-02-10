@@ -54,7 +54,7 @@ namespace {
 
       target = stumpless_open_tcp6_target( "test-self",
                                            "::1",
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( target != NULL );
 

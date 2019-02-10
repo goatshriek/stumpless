@@ -31,8 +31,6 @@
 #    include <winsock2.h>
 #  endif
 
-#  define DEFAULT_PORT "514"
-
 struct network_target {
   const char *destination;
   enum stumpless_network_protocol network;
