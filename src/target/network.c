@@ -716,44 +716,27 @@ open_new_network_target( const char *destination,
                          enum stumpless_network_protocol network,
                          enum stumpless_transport_protocol transport ) {
   struct network_target *target;
-  struct network_target *result;
-  const char *destination_copy;
-  const char *port_copy;
+  struct network_target *open_result;
 
-  target = alloc_mem( sizeof( *target ) );
+  target = new_network_target( network, transport );
   if( !target ) {
     goto fail;
   }
 
-  destination_copy = copy_cstring( destination );
-  if( !destination_copy ) {
-    goto fail_destination;
+  target->destination = copy_cstring( destination );
+  if( !target->destination ) {
+    goto fail_open;
   }
 
-  port_copy = copy_cstring( DEFAULT_PORT );
-  if( !port_copy ) {
-    goto fail_port;
-  }
-
-  target->network = network;
-  target->transport = transport;
-  target->max_msg_size = STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE;
-  target->destination = destination_copy;
-  target->port = port_copy;
-
-  result = open_private_network_target( target );
-  if( !result ) {
-    goto fail_protocol;
+  open_result = open_private_network_target( target );
+  if( !open_result ) {
+    goto fail_open;
   }
 
   return target;
 
-fail_protocol:
-  free_mem( ( void * ) port_copy );
-fail_port:
-  free_mem( ( void * ) destination_copy );
-fail_destination:
-  free_mem( target );
+fail_open:
+  destroy_network_target( target );
 fail:
   return NULL;
 }
