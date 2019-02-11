@@ -56,21 +56,16 @@ stumpless_perror( const char *prefix ) {
   if( error_stream && error_valid ) {
 
     if( prefix ) {
-      fprintf( error_stream,
-               "%s: %s (%s: %d)\n",
-               prefix,
-               last_error->message,
-               last_error->code_type,
-               last_error->code );
-
-    } else {
-      fprintf( error_stream,
-               "%s (%s: %d)\n",
-               last_error->message,
-               last_error->code_type,
-               last_error->code );
-
+      fprintf( error_stream, "%s: ", prefix );
     }
+
+    fprintf( error_stream, "%s", last_error->message );
+
+    if( last_error->code_type ) {
+      fprintf( error_stream, " (%s: %d)", last_error->code_type, last_error->code );
+    }
+
+    fputc( '\n', error_stream );
   }
 }
 
