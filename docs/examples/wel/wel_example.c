@@ -17,8 +17,8 @@
  */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <stumpless.h>
+#include <windows.h>
 #include "docs/examples/wel/example_events.h"
 
 int
@@ -36,7 +36,7 @@ main( int argc, char **argv ) {
   wel_target = stumpless_open_local_wel_target( "KidsAndTrees",
                                                 STUMPLESS_OPTION_NONE );
   if( !wel_target ) {
-    printf( "could not open the local Windows Event Log" );
+    stumpless_perror( "could not open the local Windows Event Log" );
     return EXIT_FAILURE;
   }
 
@@ -50,7 +50,7 @@ main( int argc, char **argv ) {
     "a child found a tree!"      // will be unused by wel target
   );
   if( !basic_entry ) {
-    printf( "could not create the basic entry" );
+    stumpless_perror( "could not create the basic entry" );
     return EXIT_FAILURE;
   }
 
@@ -58,19 +58,19 @@ main( int argc, char **argv ) {
   // setting the three wel-specific fields on the entry
   result = stumpless_set_wel_category( basic_entry, CATEGORY_TREE );
   if( !result ) {
-    printf( "could not set the basic entry category" );
+    stumpless_perror( "could not set the basic entry category" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_event_id( basic_entry, MSG_TREE_IDENTIFIED_BY_CHILD );
   if( !result ) {
-    printf( "could not set the basic entry event id" );
+    stumpless_perror( "could not set the basic entry event id" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_type( basic_entry, EVENTLOG_SUCCESS );
   if( !result ) {
-    printf( "could not set the basic entry type" );
+    stumpless_perror( "could not set the basic entry type" );
     return EXIT_FAILURE;
   }
 
@@ -78,7 +78,7 @@ main( int argc, char **argv ) {
   // logging a basic entry
   log_result = stumpless_add_entry( wel_target, basic_entry );
   if( log_result < 0 ) {
-    printf( "could not log a basic entry" );
+    stumpless_perror( "could not log a basic entry" );
     return EXIT_FAILURE;
   }
 
@@ -86,13 +86,13 @@ main( int argc, char **argv ) {
   // setting the insertion strings on the entry
   result = stumpless_set_wel_insertion_string( basic_entry, 0, "cynthia" );
   if( !result ) {
-    printf( "could not set the first insertion string of a basic entry" );
+    stumpless_perror( "could not set the first insertion string of a basic entry" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_insertion_string( basic_entry, 1, "oak" );
   if( !result ) {
-    printf( "could not set the second insertion string of a basic entry" );
+    stumpless_perror( "could not set the second insertion string of a basic entry" );
     return EXIT_FAILURE;
   }
 
@@ -101,7 +101,7 @@ main( int argc, char **argv ) {
   // note that this is the same code as before
   log_result = stumpless_add_entry( wel_target, basic_entry );
   if( log_result < 0 ) {
-    printf( "could not log a basic entry" );
+    stumpless_perror( "could not log a basic entry" );
     return EXIT_FAILURE;
   }
 
@@ -115,7 +115,7 @@ main( int argc, char **argv ) {
     "a child found a tree!"      // will be unused by wel target
   );
   if( !entry_with_params ) {
-    printf( "could not create the second entry" );
+    stumpless_perror( "could not create the second entry" );
     return EXIT_FAILURE;
   }
 
@@ -123,19 +123,19 @@ main( int argc, char **argv ) {
   // setting the three wel-specific fields on the entry
   result = stumpless_set_wel_category( entry_with_params, CATEGORY_TREE );
   if( !result ) {
-    printf( "could not set the second entry category" );
+    stumpless_perror( "could not set the second entry category" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_event_id( entry_with_params, MSG_TREE_IDENTIFIED_BY_CHILD );
   if( !result ) {
-    printf( "could not set the second entry event id" );
+    stumpless_perror( "could not set the second entry event id" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_type( entry_with_params, EVENTLOG_SUCCESS );
   if( !result ) {
-    printf( "could not set the second entry type" );
+    stumpless_perror( "could not set the second entry type" );
     return EXIT_FAILURE;
   }
 
@@ -143,25 +143,25 @@ main( int argc, char **argv ) {
   // setting the insertion params on the entry
   child_name = stumpless_new_param( "child-name", "cynthia" );
   if( !child_name ) {
-    printf( "could not create the child name param" );
+    stumpless_perror( "could not create the child name param" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_insertion_param( basic_entry, 0, child_name );
   if( !result ) {
-    printf( "could not set the first insertion string of a basic entry" );
+    stumpless_perror( "could not set the first insertion string of a basic entry" );
     return EXIT_FAILURE;
   }
 
   tree_type = stumpless_new_param( "tree-type", "oak" );
   if( !tree_type ) {
-    printf( "could not create the child name param" );
+    stumpless_perror( "could not create the child name param" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_insertion_param( basic_entry, 1, tree_type );
   if( !result ) {
-    printf( "could not set the second insertion string of a basic entry" );
+    stumpless_perror( "could not set the second insertion string of a basic entry" );
     return EXIT_FAILURE;
   }
 
@@ -170,7 +170,7 @@ main( int argc, char **argv ) {
   // note that this is the same code as before once again
   log_result = stumpless_add_entry( wel_target, entry_with_params );
   if( log_result < 0 ) {
-    printf( "could not log a basic entry" );
+    stumpless_perror( "could not log a basic entry" );
     return EXIT_FAILURE;
   }
 
