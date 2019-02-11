@@ -82,6 +82,8 @@ stumpless_get_error_stream( void );
  * information. If it is not provided then the colon and space characters will
  * not be printed.
  *
+ * The message will end with a newline.
+ *
  * If there is not currently an active error message, then nothing will be
  * printed (not even the prefix).
  *

@@ -17,10 +17,13 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stumpless/error.h>
 #include "private/error.h"
 
+static FILE *error_stream = NULL;
+static int error_stream_valid = 0;
 static struct stumpless_error *last_error = NULL;
 static short error_valid = 0;
 
@@ -30,6 +33,51 @@ stumpless_get_error( void ) {
     return last_error;
   else
     return NULL;
+}
+
+FILE *
+stumpless_get_error_stream( void ) {
+  if( !error_stream_valid ) {
+    error_stream = stderr;
+    error_stream_valid = 1;
+  }
+
+  return error_stream;
+}
+
+void
+stumpless_perror( const char *prefix ) {
+
+  if( !error_stream_valid ) {
+    error_stream = stderr;
+    error_stream_valid = 1;
+  }
+
+  if( error_stream && error_valid ) {
+
+    if( prefix ) {
+      fprintf( error_stream,
+               "%s: %s (%s: %d)\n",
+               prefix,
+               last_error->message,
+               last_error->code_type,
+               last_error->code );
+
+    } else {
+      fprintf( error_stream,
+               "%s (%s: %d)\n",
+               last_error->message,
+               last_error->code_type,
+               last_error->code );
+
+    }
+  }
+}
+
+void
+stumpless_set_error_stream( FILE *stream ) {
+  error_stream = stream;
+  error_stream_valid = 1;
 }
 
 /* private functions */
