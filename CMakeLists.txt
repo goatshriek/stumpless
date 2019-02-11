@@ -252,6 +252,10 @@ add_function_test(entry_memory_failure
   test/function/startup/entry_memory_failure.cpp
 )
 
+add_function_test(error
+  test/function/error.cpp
+)
+
 add_function_test(file
   test/function/target/file.cpp
   $<TARGET_OBJECTS:rfc5424_checker>
