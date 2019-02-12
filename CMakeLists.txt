@@ -261,8 +261,16 @@ add_function_test(file
   $<TARGET_OBJECTS:rfc5424_checker>
 )
 
+add_function_test(get_error_stream
+  test/function/startup/get_error_stream.cpp
+)
+
 add_function_test(memory
   test/function/memory.cpp
+)
+
+add_function_test(perror
+  test/function/startup/perror.cpp
 )
 
 add_function_test(stream

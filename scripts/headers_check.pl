@@ -145,6 +145,7 @@ my %manifest = (
   "std::cout" => "iostream",
   "std::ifstream" => "fstream",
   "std::regex" => "regex",
+  "stderr" => "stdio.h",
   "strbuilder_append_app_name" => "private/entry.h",
   "strbuilder_get_buffer" => "private/strbuilder.h",
   "strbuilder_free_all" => "private/strbuilder.h",
