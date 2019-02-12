@@ -397,7 +397,7 @@ add_function_test(entry_memory_failure
 )
 
 add_function_test(error
-  test/function/error.cpp
+  SOURCES test/function/error.cpp
 )
 
 add_function_test(file
@@ -407,7 +407,7 @@ add_function_test(file
 )
 
 add_function_test(get_error_stream
-  test/function/startup/get_error_stream.cpp
+  SOURCES test/function/startup/get_error_stream.cpp
 )
 
 add_function_test(memory
@@ -415,7 +415,7 @@ add_function_test(memory
 )
 
 add_function_test(perror
-  test/function/startup/perror.cpp
+  SOURCES test/function/startup/perror.cpp
 )
 
 add_function_test(stream
