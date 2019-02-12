@@ -396,14 +396,26 @@ add_function_test(entry_memory_failure
   SOURCES test/function/startup/entry_memory_failure.cpp
 )
 
+add_function_test(error
+  test/function/error.cpp
+)
+
 add_function_test(file
   SOURCES
     test/function/target/file.cpp
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 
+add_function_test(get_error_stream
+  test/function/startup/get_error_stream.cpp
+)
+
 add_function_test(memory
   SOURCES test/function/memory.cpp
+)
+
+add_function_test(perror
+  test/function/startup/perror.cpp
 )
 
 add_function_test(stream
