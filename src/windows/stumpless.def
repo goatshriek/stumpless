@@ -38,3 +38,6 @@ EXPORTS
   stumpless_open_stdout_target          @36
   stumpless_open_stream_target          @37
   stumpless_free_all                    @38
+  stumpless_get_error_stream            @39
+  stumpless_perror                      @40
+  stumpless_set_error_stream            @41

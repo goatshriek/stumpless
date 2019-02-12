@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
- * 
+ * Copyright 2018-2019 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,10 +17,13 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stumpless/error.h>
 #include "private/error.h"
 
+static FILE *error_stream = NULL;
+static int error_stream_valid = 0;
 static struct stumpless_error *last_error = NULL;
 static short error_valid = 0;
 
@@ -30,6 +33,46 @@ stumpless_get_error( void ) {
     return last_error;
   else
     return NULL;
+}
+
+FILE *
+stumpless_get_error_stream( void ) {
+  if( !error_stream_valid ) {
+    error_stream = stderr;
+    error_stream_valid = 1;
+  }
+
+  return error_stream;
+}
+
+void
+stumpless_perror( const char *prefix ) {
+
+  if( !error_stream_valid ) {
+    error_stream = stderr;
+    error_stream_valid = 1;
+  }
+
+  if( error_stream && error_valid ) {
+
+    if( prefix ) {
+      fprintf( error_stream, "%s: ", prefix );
+    }
+
+    fprintf( error_stream, "%s", last_error->message );
+
+    if( last_error->code_type ) {
+      fprintf( error_stream, " (%s: %d)", last_error->code_type, last_error->code );
+    }
+
+    fputc( '\n', error_stream );
+  }
+}
+
+void
+stumpless_set_error_stream( FILE *stream ) {
+  error_stream = stream;
+  error_stream_valid = 1;
 }
 
 /* private functions */
