@@ -67,17 +67,19 @@ main( int argc, char **argv ) {
                                             log_server,
                                             STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
-  if( !udp_target ) {
-    stumpless_perror( "couldn't open up the udp4 target" );
-    return EXIT_FAILURE;
-  }
 
 
-  // if you wanted to use ipv6 instead, yo uwould do this:
+  // if you wanted to use ipv6 instead, you would do this:
   //udp_target = stumpless_open_udp6_target( "udp6-example",
   //                                          log_server,
   //                                          STUMPLESS_OPTION_NONE,
   //                                          STUMPLESS_FACILITY_USER );
+
+
+  if( !udp_target ) {
+    stumpless_perror( "couldn't open up the udp4 target" );
+    return EXIT_FAILURE;
+  }
 
 
   // sending the entry is just like normal

@@ -64,14 +64,16 @@ main( int argc, char **argv ) {
 
   // to use the builder style, first we create a new target
   tcp_target = stumpless_new_tcp4_target( "tcp4-example" );
-  if( !tcp_target ) {
-    stumpless_perror( "couldn't create a new tcp4 target" );
-    return EXIT_FAILURE;
-  }
 
 
   // if you wanted to use ipv6 instead, then you would do this:
   //tcp_target = stumpless_new_tcp6_target( "tcp6-example" );
+
+
+  if( !tcp_target ) {
+    stumpless_perror( "couldn't create a new tcp4 target" );
+    return EXIT_FAILURE;
+  }
 
 
   // next we set the destination
