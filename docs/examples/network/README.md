@@ -1,8 +1,14 @@
 # Network Targets
 
-Network targets allow logs to be sent over a network to some remote log collector or relay. There are a number of popular options for the remote end including Splunk, rsyslog, and syslog-ng. Stumpless can send messages to these and others, provided they adhere to some basic standards or common practices.
+Network targets allow logs to be sent over a network to a remote log collector
+or relay. There are a number of popular options for the remote end including
+Splunk, rsyslog, and syslog-ng. Stumpless can send messages to these and others,
+provided they adhere to some basic standards or at least common practices.
 
-You'll need to decide what network and transport protocols that you want to use. There are enums for the supported options, though IPv4 and IPv6 are the most likely network protocols, and UDP and TCP are the most likely transport ones. The code below opens up a simple target to a UDP target over IPv4:
+You'll need to decide what network and transport protocols that you want to use.
+There are enums listing all supported options, though IPv4 and IPv6 are the most
+common network protocols, and UDP and TCP the most common transport ones. The
+code below opens up a simple target to a UDP target over IPv4:
 
     new_target = stumpless_open_network_target( "new-udp4-target",
                                                 "example.com",
@@ -11,14 +17,19 @@ You'll need to decide what network and transport protocols that you want to use.
                                                 STUMPLESS_OPTION_NONE,
                                                 STUMPLESS_FACILITY_USER );
 
-If you want to be a little more concise, then you can use the open function for the network and transport protocol you've chosen. This is the approach that the UDP over IPv4 example uses.
+If you want to be a little more concise, then you can use the open function for
+the network and transport protocol you've chosen. This is the approach that the
+UDP over IPv4 example uses.
 
     new_target = stumpless_open_udp4_target( "new-udp4-target",
                                              "example.com",
                                              STUMPLESS_OPTION_NONE,
                                              STUMPLESS_FACILITY_USER );
 
-Both of these functions create a target pointing to the `example.com` server. UDP targets don't necessarily need a response to be opened due to the nature of the UDP, but TCP targets do. If you try to open a TCP target to a destination that isn't responding or isn't in DNS, for example, it will fail.
+Both of these functions create a target pointing to the `example.com` server.
+UDP targets don't necessarily need a response to be opened due to the nature of
+the UDP, but TCP targets do. If you try to open a TCP target to a destination
+that isn't responding or isn't in DNS, for example, it will fail.
 
     new_target= stumpless_open_tcp4_target( "new-tcp4-target",
                                             "example.com",
@@ -30,7 +41,12 @@ Both of these functions create a target pointing to the `example.com` server. UD
                                         // "connect failed with socket" might mean no TCP response
     }
 
-If for some reason you want to open a target that isn't responding just yet, then you can use the builder style of target creation instead of directly opening it. This will create a target with the given parameters, but won't try to open it right away. This allows you to create the target, set some necessary options, and then attempt to open it when the time is right. The TCP over IPv4 example uses this approach.
+If for some reason you want to open a target that isn't responding just yet,
+then you can use the builder style of target creation instead of directly
+opening it. This will create a target with the given parameters, but won't try
+to open it right away. This allows you to create the target, set any necessary
+options, and then attempt to open it when the time is right. The TCP over IPv4
+example uses this approach.
 
     new_target = stumpless_new_network_target( "new-udp4-target",
                                                STUMPLESS_IPV4_NETWORK_PROTOCOL,
@@ -41,17 +57,30 @@ If for some reason you want to open a target that isn't responding just yet, the
     stumpless_open_target( new_target );
     stumpless_target_is_open( new_target ); // will return true, assuming success
 
-And of course if you want to be more concise, there is a matching new function just like for the open functions:
+And of course if you want to be more concise, there is a matching new function
+just like for the open functions:
 
     new_target = stumpless_new_udp4_target( "new-udp4-target" );
 
-The options of a network target can be set at any time, but it's important to know that some of them may re-open the target. For example, setting the maximum message size of a UDP target will be transparent to the network connection:
+The options of a network target can be set at any time, but it's important to
+know that some of them may re-open the target. For example, setting the maximum
+message size of a UDP target will be transparent to the network connection:
 
     stumpless_set_udp_max_message_size( my_target, 1400 ); // this will have no effect on the session
 
-However, setting the destination will reset the connection, which could fail if the new target isn't listening. You can detect this by looking at the return value, the error code, or checking to see if the target is open.
+However, setting the destination will reset the connection, which could fail if
+the new target isn't listening. You can detect this by looking at the return
+value, the error code, or checking to see if the target is open.
 
     stumpless_set_destination( my_target, "example2.com" );
     stumpless_target_is_open( my_target ); // will be true if the new destination responds
 
-As a general rule, targets that are open when such an option is set will be re-opened if possible. If the target is not open (a state referred to as paused in the documentation), then it will be left as is until an explicit call to `stumpless_target_open` is made.
+As a general rule, targets that are open when such an option is set will be
+re-opened if possible. If the target is not open (a state referred to as paused
+in the documentation), then it will be left as is until an explicit call to
+`stumpless_target_open` is made.
+
+Targets opened throuth either the open or new families of functions are closed
+using the standard close function:
+
+    stumpless_close_network_target( my_target );
