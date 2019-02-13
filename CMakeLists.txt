@@ -202,12 +202,12 @@ else()
     LIBRARIES ${network_libraries}
   )
 
-  add_example(tcp4
-    ${PROJECT_SOURCE_DIR}/docs/examples/network/tcp4_example.c
+  add_example(tcp
+    ${PROJECT_SOURCE_DIR}/docs/examples/network/tcp_example.c
   )
 
-  add_example(udp4
-    ${PROJECT_SOURCE_DIR}/docs/examples/network/udp4_example.c
+  add_example(udp
+    ${PROJECT_SOURCE_DIR}/docs/examples/network/udp_example.c
   )
 endif(NOT ENABLE_NETWORK_TARGETS)
 

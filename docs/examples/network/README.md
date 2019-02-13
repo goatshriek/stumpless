@@ -19,7 +19,7 @@ code below opens up a simple target to a UDP target over IPv4:
 
 If you want to be a little more concise, then you can use the open function for
 the network and transport protocol you've chosen. This is the approach that the
-UDP over IPv4 example uses.
+UDP example uses.
 
     new_target = stumpless_open_udp4_target( "new-udp4-target",
                                              "example.com",
@@ -45,8 +45,8 @@ If for some reason you want to open a target that isn't responding just yet,
 then you can use the builder style of target creation instead of directly
 opening it. This will create a target with the given parameters, but won't try
 to open it right away. This allows you to create the target, set any necessary
-options, and then attempt to open it when the time is right. The TCP over IPv4
-example uses this approach.
+options, and then attempt to open it when the time is right. The TCP example
+uses this approach.
 
     new_target = stumpless_new_network_target( "new-udp4-target",
                                                STUMPLESS_IPV4_NETWORK_PROTOCOL,
