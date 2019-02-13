@@ -9,9 +9,10 @@
 A logging library built with a [vision](docs/vision.md): a rich and intuitive
 interface, standards compliance, fast performance, and a small footprint.
 
-Currently stumpless offers [standardized](https://tools.ietf.org/html/rfc5424) logging to the following targets:
+Currently stumpless offers [standardized](https://tools.ietf.org/html/rfc5424)
+logging to the following targets:
  * network servers ([UDP](https://tools.ietf.org/html/rfc5426) or
-   [TCP](https://tools.ietf.org/html/rfc6587) over IPv4)
+   [TCP](https://tools.ietf.org/html/rfc6587) over IPv4 or IPv6)
  * files
  * streams
  * character buffers
