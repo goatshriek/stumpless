@@ -42,14 +42,14 @@ main( int argc, char **argv ) {
                                      " pretty long. It'll be truncated if the"
                                      " maximum message size is set too low." );
   if( !basic_entry ) {
-    stumpless_perror( "could not create a basic entry\n" );
+    stumpless_perror( "could not create a basic entry" );
     return EXIT_FAILURE;
   }
 
   element = stumpless_new_element( "basic-element" );
   result = stumpless_add_element( basic_entry, element );
   if( !result ) {
-    stumpless_perror( "could not create and add an element to the entry\n" );
+    stumpless_perror( "could not create and add an element to the entry" );
     return EXIT_FAILURE;
   }
 
@@ -57,7 +57,7 @@ main( int argc, char **argv ) {
   param = stumpless_new_param( "basic-param-name", "basic-param-value" );
   element_result = stumpless_add_param( element, param );
   if( !element_result ) {
-    stumpless_perror( "could not create and add a param to the element\n" );
+    stumpless_perror( "could not create and add a param to the element" );
     return EXIT_FAILURE;
   }
 
@@ -68,7 +68,7 @@ main( int argc, char **argv ) {
                                             STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
   if( !udp4_target ) {
-    stumpless_perror( "couldn't open up the udp4 target\n" );
+    stumpless_perror( "couldn't open up the udp4 target" );
     return EXIT_FAILURE;
   }
 
@@ -76,7 +76,7 @@ main( int argc, char **argv ) {
   // sending the entry is just like normal
   log_result = stumpless_add_entry( udp4_target, basic_entry );
   if( log_result < 0 ) {
-    stumpless_perror( "could not log an entry\n" );
+    stumpless_perror( "could not log an entry" );
     return EXIT_FAILURE;
   }
 
@@ -87,7 +87,7 @@ main( int argc, char **argv ) {
   // Messages that go over are simply truncated and sent.
   target_result = stumpless_set_udp_max_message_size( udp4_target, 200 );
   if( !target_result ) {
-    stumpless_perror( "could not set the max message size of the target\n" );
+    stumpless_perror( "could not set the max message size of the target" );
     return EXIT_FAILURE;
   }
 
@@ -96,7 +96,7 @@ main( int argc, char **argv ) {
   // be cut off partways through
   log_result = stumpless_add_entry( udp4_target, basic_entry );
   if( log_result < 0 ) {
-    stumpless_perror( "could not log an entry\n" );
+    stumpless_perror( "could not log an entry" );
     return EXIT_FAILURE;
   }
 

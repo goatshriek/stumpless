@@ -42,14 +42,14 @@ main( int argc, char **argv ) {
                                      "example-msgid",
                                      "This is an example message." );
   if( !basic_entry ) {
-    stumpless_perror( "could not create a basic entry\n" );
+    stumpless_perror( "could not create a basic entry" );
     return EXIT_FAILURE;
   }
 
   element = stumpless_new_element( "basic-element" );
   result = stumpless_add_element( basic_entry, element );
   if( !result ) {
-    stumpless_perror( "could not create and add an element to the entry\n" );
+    stumpless_perror( "could not create and add an element to the entry" );
     return EXIT_FAILURE;
   }
 
@@ -57,7 +57,7 @@ main( int argc, char **argv ) {
   param = stumpless_new_param( "basic-param-name", "basic-param-value" );
   element_result = stumpless_add_param( element, param );
   if( !element_result ) {
-    stumpless_perror( "could not create and add a param to the element\n" );
+    stumpless_perror( "could not create and add a param to the element" );
     return EXIT_FAILURE;
   }
 
@@ -65,7 +65,7 @@ main( int argc, char **argv ) {
   // to use the builder style, first we create a new target
   tcp4_target = stumpless_new_tcp4_target( "tcp4-example" );
   if( !tcp4_target ) {
-    stumpless_perror( "couldn't create a new tcp4 target\n" );
+    stumpless_perror( "couldn't create a new tcp4 target" );
     return EXIT_FAILURE;
   }
 
@@ -73,7 +73,7 @@ main( int argc, char **argv ) {
   // next we set the destination
   target_result = stumpless_set_destination( tcp4_target, log_server );
   if( !target_result ) {
-    stumpless_perror( "couldn't set the destination for the target\n" );
+    stumpless_perror( "couldn't set the destination for the target" );
     return EXIT_FAILURE;
   }
 
@@ -81,7 +81,7 @@ main( int argc, char **argv ) {
   // and the transport port
   target_result = stumpless_set_transport_port( tcp4_target, port );
   if( !target_result ) {
-    stumpless_perror( "couldn't set the port for the target\n" );
+    stumpless_perror( "couldn't set the port for the target" );
     return EXIT_FAILURE;
   }
 
@@ -90,7 +90,7 @@ main( int argc, char **argv ) {
   target_result = stumpless_set_default_facility( tcp4_target,
                                                   STUMPLESS_FACILITY_LOCAL0 );
   if( !target_result ) {
-    stumpless_perror( "couldn't set the default facility of the target\n" );
+    stumpless_perror( "couldn't set the default facility of the target" );
     return EXIT_FAILURE;
   }
 
@@ -99,7 +99,7 @@ main( int argc, char **argv ) {
   // this won't work if the server isn't listening and responding
   target_result = stumpless_open_target( tcp4_target );
   if( !target_result ) {
-    stumpless_perror( "couldn't open the target. are you sure that the server is listening on the right port?\n" );
+    stumpless_perror( "couldn't open the target. are you sure that the server is listening on the right port?" );
 
     // we exit with success here as this is likely a remote end issue
     return EXIT_SUCCESS;
@@ -109,7 +109,7 @@ main( int argc, char **argv ) {
   // sending the entry is just like normal
   log_result = stumpless_add_entry( tcp4_target, basic_entry );
   if( log_result < 0 ) {
-    stumpless_perror( "could not log an entry\n" );
+    stumpless_perror( "could not log an entry" );
     return EXIT_FAILURE;
   }
 
