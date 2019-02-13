@@ -9,7 +9,7 @@ else()
 endif(WIN32)
 
 ExternalProject_Add(benchmark
-  URL https://github.com/google/benchmark/archive/master.zip
+  URL https://github.com/google/benchmark/archive/b8ca0c42179b7b5d656494e61dda8b861057122f.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
   CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   INSTALL_COMMAND ""
