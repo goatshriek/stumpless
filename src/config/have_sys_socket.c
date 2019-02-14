@@ -31,9 +31,6 @@
 #include "private/strhelper.h"
 #include "private/target/network.h"
 
-static char *tcp_send_buffer = NULL;
-static size_t tcp_send_buffer_length = 0;
-
 static
 int
 sys_socket_open_socket( const char *destination,
@@ -94,12 +91,6 @@ fail:
 void
 sys_socket_close_network_target( struct network_target *target ) {
   close( target->handle );
-}
-
-void
-sys_socket_free_all( void ) {
-  free_mem( tcp_send_buffer );
-  tcp_send_buffer_length = 0;
 }
 
 void
@@ -208,50 +199,9 @@ sys_socket_reopen_udp6_target( struct network_target *target ) {
 }
 
 int
-sys_socket_sendto_tcp_target( struct network_target *target,
-                              const char *msg,
-                              size_t msg_length ) {
-  int result;
-  size_t int_length;
-  size_t required_length;
-  char *new_buffer;
-
-  required_length = msg_length + 50;
-  if( tcp_send_buffer_length < required_length ) {
-    new_buffer = realloc_mem( tcp_send_buffer, required_length );
-
-    if( !new_buffer ) {
-      return -1;
-
-    } else {
-      tcp_send_buffer = new_buffer;
-      tcp_send_buffer_length = required_length;
-
-    }
-  }
-
-  snprintf( tcp_send_buffer, 50, "%zd ", msg_length );
-  int_length = strlen( tcp_send_buffer );
-  memcpy( tcp_send_buffer + int_length, msg, msg_length );
-
-  result = send( target->handle,
-                 tcp_send_buffer,
-                 int_length + msg_length,
-                 0 );
-
-  if( result == -1 ){
-    raise_socket_send_failure( "send failed with IPv4/TCP socket",
-                               errno,
-                               "errno after the failed call");
-  }
-
-  return result;
-}
-
-int
-sys_socket_sendto_udp_target( struct network_target *target,
-                              const char *msg,
-                              size_t msg_length ) {
+sys_socket_sendto_target( struct network_target *target,
+                          const char *msg,
+                          size_t msg_length ) {
   int result;
 
   result = send( target->handle,
@@ -260,9 +210,9 @@ sys_socket_sendto_udp_target( struct network_target *target,
                  0 );
 
   if( result == -1 ){
-    raise_socket_send_failure( "send failed with IPv4/UDP socket",
+    raise_socket_send_failure( "send failed with linux socket",
                                errno,
-                               "errno after the failed call to send");
+                               "errno after the failed call");
   }
 
   return result;
