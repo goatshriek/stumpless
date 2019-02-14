@@ -31,7 +31,7 @@ main( int argc, char **argv ) {
   struct stumpless_param *param;
   struct stumpless_entry *result;
   int log_result;
-  
+
 
   // building the entry is done as usual
   basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,

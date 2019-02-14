@@ -79,7 +79,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-network-target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
@@ -121,7 +121,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
@@ -146,7 +146,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
@@ -540,7 +540,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
@@ -707,7 +707,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
@@ -811,7 +811,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );

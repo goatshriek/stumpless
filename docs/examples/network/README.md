@@ -6,9 +6,9 @@ Splunk, rsyslog, and syslog-ng. Stumpless can send messages to these and others,
 provided they adhere to some basic standards or at least common practices.
 
 You'll need to decide what network and transport protocols that you want to use.
-There are enums listing all supported options, though IPv4 and IPv6 are the most
+There are enums listing all supported options, but IPv4 and IPv6 are the most
 common network protocols, and UDP and TCP the most common transport ones. The
-code below opens up a simple target to a UDP target over IPv4:
+code below opens up a simple target to a UDP collector over IPv4:
 
     new_target = stumpless_open_network_target( "new-udp4-target",
                                                 "example.com",
@@ -29,7 +29,7 @@ UDP example uses.
 Both of these functions create a target pointing to the `example.com` server.
 UDP targets don't necessarily need a response to be opened due to the nature of
 the UDP, but TCP targets do. If you try to open a TCP target to a destination
-that isn't responding or isn't in DNS, for example, it will fail.
+that isn't responding, it will fail.
 
     new_target= stumpless_open_tcp4_target( "new-tcp4-target",
                                             "example.com",
@@ -41,16 +41,16 @@ that isn't responding or isn't in DNS, for example, it will fail.
                                         // "connect failed with socket" might mean no TCP response
     }
 
-If for some reason you want to open a target that isn't responding just yet,
-then you can use the builder style of target creation instead of directly
-opening it. This will create a target with the given parameters, but won't try
-to open it right away. This allows you to create the target, set any necessary
-options, and then attempt to open it when the time is right. The TCP example
-uses this approach.
+If for some reason you want to open a target to a server that isn't responding
+just yet, then you can use the builder style of target creation instead of
+directly opening it. This will create a target with the given parameters, but
+won't try to open it right away. This allows you to create the target, set any
+necessary options, and then attempt to open it when the time is right. The TCP
+example uses this approach.
 
-    new_target = stumpless_new_network_target( "new-udp4-target",
+    new_target = stumpless_new_network_target( "new-tcp4-target",
                                                STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                               STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+                                               STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     stumpless_target_is_open( new_target ); // will return false
     stumpless_set_destination( new_target, "example.com" );
     stumpless_set_transport_port( new_target, "6514" );
@@ -60,7 +60,7 @@ uses this approach.
 And of course if you want to be more concise, there is a matching new function
 just like for the open functions:
 
-    new_target = stumpless_new_udp4_target( "new-udp4-target" );
+    new_target = stumpless_new_tcp4_target( "new-tcp4-target" );
 
 The options of a network target can be set at any time, but it's important to
 know that some of them may re-open the target. For example, setting the maximum
@@ -80,7 +80,7 @@ re-opened if possible. If the target is not open (a state referred to as paused
 in the documentation), then it will be left as is until an explicit call to
 `stumpless_target_open` is made.
 
-Targets opened throuth either the open or new families of functions are closed
+Targets opened throuth both the open and new families of functions are closed
 using the standard close function:
 
     stumpless_close_network_target( my_target );

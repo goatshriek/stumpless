@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,7 +129,7 @@ stumpless_set_default_facility( struct stumpless_target *target,
  * Sets an option on a target.
  *
  * @param target The target to modify.
- * 
+ *
  * @param option The option to set on the target. This should be a
  * STUMPLESS_OPTION value.
  *

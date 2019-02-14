@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,9 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      target = stumpless_open_file_target( filename, 0, 0 );
+      target = stumpless_open_file_target( filename,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -149,7 +151,9 @@ namespace {
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( set_malloc_result != NULL );
    
-    target = stumpless_open_file_target( filename, 0, 0 );
+    target = stumpless_open_file_target( filename,
+                                         STUMPLESS_OPTION_NONE,
+                                         STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );

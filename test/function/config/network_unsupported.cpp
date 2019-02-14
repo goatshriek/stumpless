@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ namespace {
     struct stumpless_target target;
     const struct stumpless_target *result;
     struct stumpless_error *error;
- 
+
     target.type = STUMPLESS_NETWORK_TARGET;
     target.id = &target;
 

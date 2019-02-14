@@ -61,7 +61,7 @@ namespace {
 
       target = stumpless_open_tcp6_target( "test-self",
                                            "::1",
-                                           0,
+                                           STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
 
       stumpless_set_target_default_app_name( target, "network-target-test" );
@@ -220,7 +220,7 @@ namespace {
 
     target = stumpless_open_tcp6_target( "bad-ipv6-address",
                                          "ff:fe::43::30:1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -238,7 +238,7 @@ namespace {
 
     target = stumpless_open_tcp6_target( "no-destination-provided",
                                          NULL,
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
@@ -256,7 +256,7 @@ namespace {
 
     target = stumpless_open_tcp6_target( NULL,
                                          "::1",
-                                         0,
+                                         STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 

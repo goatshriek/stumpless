@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -178,7 +178,11 @@ namespace {
     struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
    
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
@@ -238,7 +242,11 @@ namespace {
     struct stumpless_target *target;
     int current_facility;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     target_result = stumpless_set_default_facility( target, STUMPLESS_FACILITY_LOCAL1 );
@@ -257,7 +265,11 @@ namespace {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     target_result = stumpless_set_default_facility( target, 3 );
@@ -293,7 +305,11 @@ namespace {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     target_result = stumpless_set_default_facility( target, 800 );
@@ -314,7 +330,11 @@ namespace {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     target_result = stumpless_set_default_facility( target, -800 );
@@ -336,7 +356,11 @@ namespace {
     struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
    
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
@@ -361,7 +385,11 @@ namespace {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     target_result = stumpless_set_target_default_msgid( target, NULL );
