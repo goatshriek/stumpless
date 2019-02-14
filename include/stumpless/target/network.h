@@ -17,7 +17,10 @@
  */
 
 /** @file
- * Functions for working with network targets.
+ * Network targets allow logs to be sent over a network to a remote log
+ * collector or relay. There are a number of popular options for the remote
+ * end including Splunk, rsyslog, and syslog-ng. Network targets can send
+ * messages to these and others, over both IPv4 and IPv6, TCP and UDP.
  */
 
 #ifndef __STUMPLESS_TARGET_NETWORK_H
@@ -34,7 +37,7 @@
  * The default message size for UDP network targets. This is set to account for
  * an MTU of 1500 byes, a 20 byte IP header, and an 8 byte datagram header. If
  * you wish to change this value for a particular target, then you must use the
- * stumpless_set_udp_max_message_size function on the target.
+ * \c stumpless_set_udp_max_message_size function on the target.
  */
 #define STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE 1472
 
@@ -61,11 +64,11 @@ enum stumpless_transport_protocol {
 /**
  * Closes a network target.
  *
- * This function does NOT close the stream associated with the target. It does
- * destroy all memory allocated for the target, including the target struct
- * itself.
+ * This function closes the network connection associated with the target before
+ * destruction. It also destroys all memory allocated for the target, including
+ * the target struct itself.
  *
- * @param target The stream target to close.
+ * @param target The network target to close.
  */
 void
 stumpless_close_network_target( struct stumpless_target *target );
@@ -86,9 +89,9 @@ stumpless_get_destination( const struct stumpless_target *target );
  *
  * @param target The target to get the port number from.
  *
- * @return The current port number of the network target, encoded as a string.
- * In the event of an error, NULL is returned and an error code is set
- * appropriately.
+ * @return The current port number of the network target, encoded as a
+ * NULL-terminated string. In the event of an error, NULL is returned and an
+ * error code is set appropriately.
  */
 const char *
 stumpless_get_transport_port( const struct stumpless_target *target );
@@ -96,7 +99,7 @@ stumpless_get_transport_port( const struct stumpless_target *target );
 /**
  * Gets the current maximum message size of a UDP network target.
  *
- * @param target The target to be get the message size from.
+ * @param target The target to get the message size from.
  *
  * @return The current maximum message size of the supplied target if no error
  * is encountered. In the event of an error, 0 is returned and an error code is
@@ -114,7 +117,7 @@ stumpless_get_udp_max_message_size( struct stumpless_target *target );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * stumpless_open_target function.
+ * \c stumpless_open_target function.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -132,7 +135,7 @@ stumpless_new_network_target( const char *name,
                               enum stumpless_transport_protocol transport );
 
 /**
- * Creates a network target over IPv4 and TCP, but does not open it.
+ * Creates a network target for logging over IPv4 and TCP, but does not open it.
  *
  * A network target can be created with this function if the target needs to be
  * created without initiating a network session. This also allows parameters
@@ -140,7 +143,7 @@ stumpless_new_network_target( const char *name,
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * stumpless_open_target function.
+ * \c stumpless_open_target function.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -152,7 +155,7 @@ struct stumpless_target *
 stumpless_new_tcp4_target( const char *name );
 
 /**
- * Creates a network target over IPv6 and TCP, but does not open it.
+ * Creates a network target for logging over IPv6 and TCP, but does not open it.
  *
  * A network target can be created with this function if the target needs to be
  * created without initiating a network session. This also allows parameters
@@ -160,7 +163,7 @@ stumpless_new_tcp4_target( const char *name );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * stumpless_open_target function.
+ * \c stumpless_open_target function.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -172,7 +175,7 @@ struct stumpless_target *
 stumpless_new_tcp6_target( const char *name );
 
 /**
- * Creates a network target over IPv4 and UDP, but does not open it.
+ * Creates a network target for logging over IPv4 and UDP, but does not open it.
  *
  * A network target can be created with this function if the target needs to be
  * created without initiating a network session. This also allows parameters
@@ -180,7 +183,7 @@ stumpless_new_tcp6_target( const char *name );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * stumpless_open_target function.
+ * \c stumpless_open_target function.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -192,7 +195,7 @@ struct stumpless_target *
 stumpless_new_udp4_target( const char *name );
 
 /**
- * Creates a network target over IPv6 and UDP, but does not open it.
+ * Creates a network target for logging over IPv6 and UDP, but does not open it.
  *
  * A network target can be created with this function if the target needs to be
  * created without initiating a network session. This also allows parameters
@@ -200,7 +203,7 @@ stumpless_new_udp4_target( const char *name );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * stumpless_open_target function.
+ * \c stumpless_open_target function.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -218,7 +221,7 @@ stumpless_new_udp6_target( const char *name );
  * server. This function allows the type of network target to be specified by
  * parameters, but if you know that you want a specific type then it is easier
  * to use the simplified functions that specify the type by name, such as the
- * stumpless_open_udp4_target function.
+ * \c stumpless_open_udp4_target function.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -250,7 +253,9 @@ stumpless_open_network_target( const char *name,
 /**
  * Opens a network target for remote logging over IPv4 and TCP.
  *
- * A TCP4 target will use Syslog over TCP, as defined in RFC 6587.
+ * A TCP4 target will use Syslog over TCP, as defined in RFC 6587. Note that
+ * this includes the use of octet counting for transmission of messages, instead
+ * of a delimiter such as a newline character.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -276,7 +281,9 @@ stumpless_open_tcp4_target( const char *name,
 /**
  * Opens a network target for remote logging over IPv6 and TCP.
  *
- * A TCP6 target will use Syslog over TCP, as defined in RFC 6587.
+ * A TCP6 target will use Syslog over TCP, as defined in RFC 6587. Note that
+ * this includes the use of octet counting for transmission of messages, instead
+ * of a delimiter such as a newline character.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -357,7 +364,7 @@ stumpless_open_udp6_target( const char *name,
  * If the target is already open when this function is called, then it will
  * attempt to re-open the target after the destination is changed. If the target
  * is in a paused state, then it will be left that way until an explicit call to
- * stumpless_open_target is made.
+ * \c stumpless_open_target is made.
  *
  * @param target The target to be modified.
  *
@@ -377,7 +384,7 @@ stumpless_set_destination( struct stumpless_target *target,
  * If the target is already open when this function is called, then it will
  * attempt to re-open the target after the port is changed. If the target is in
  * a paused state, then it will be left that way until an explicit call to
- * stumpless_open_target is made.
+ * \c stumpless_open_target is made.
  *
  * @param target The target to be modified.
  *
