@@ -40,6 +40,10 @@ strbuilder_append_int( struct strbuilder *builder, int i );
 struct strbuilder *
 strbuilder_append_string( struct strbuilder *builder,
                           const char *str );
+
+void
+strbuilder_free_all( void );
+
 char *
 strbuilder_get_buffer( struct strbuilder *builder, size_t *length );
 

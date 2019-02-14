@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_CONFIG_H
 #define __STUMPLESS_CONFIG_H
 
+#cmakedefine STUMPLESS_NETWORK_TARGETS_SUPPORTED 1
 #cmakedefine STUMPLESS_SOCKET_TARGETS_SUPPORTED 1
 #cmakedefine STUMPLESS_SYSLOG_H_COMPATIBLE 1
 #cmakedefine STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED 1
@@ -26,5 +27,18 @@
 #define STUMPLESS_MAJOR_VERSION @PROJECT_VERSION_MAJOR@
 #define STUMPLESS_MINOR_VERSION @PROJECT_VERSION_MINOR@
 #define STUMPLESS_PATCH_VERSION @PROJECT_VERSION_PATCH@
+
+/*
+ * According to Microsoft, windows.h should be included first in any sources, as
+ * it sets up definitions that need to be first. However, if our user has not
+ * done this before including stumpless, we'll go ahead and include it here to
+ * shield them from the responsibility.
+ */
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    ifndef _WINDOWS_
+#      define WIN32_LEAN_AND_MEAN
+#      include <windows.h>
+#    endif
+#  endif
 
 #endif /* __STUMPLESS_CONFIG_H */

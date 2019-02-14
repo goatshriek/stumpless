@@ -1,10 +1,12 @@
 *.c~
 *.cpp~
+*.cpz~
 docs/html/*
 *.h~
 *.hpp~
 *.o
 *.log
 *.so
+*.swp
 .vs/*
 CMakeSettings.json

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,14 +39,14 @@ main( int argc, char **argv ) {
                                      "basic-entry",
                                      "basic test message" );
   if( !basic_entry ) {
-    printf( "could not create a basic entry" );
+    stumpless_perror( "could not create a basic entry" );
     return EXIT_FAILURE;
   }
 
   element = stumpless_new_element( "basic-element" );
   result = stumpless_add_element( basic_entry, element );
   if( !result ) {
-    printf( "could not create and add an element to the entry" );
+    stumpless_perror( "could not create and add an element to the entry" );
     return EXIT_FAILURE;
   }
 
@@ -54,7 +54,7 @@ main( int argc, char **argv ) {
   param = stumpless_new_param( "basic-param-name", "basic-param-value" );
   element_result = stumpless_add_param( element, param );
   if( !element_result ) {
-    printf( "could not create and add a param to he element" );
+    stumpless_perror( "could not create and add a param to he element" );
     return EXIT_FAILURE;
   }
 
@@ -62,7 +62,7 @@ main( int argc, char **argv ) {
   // if you want to log to a file, then the log file must be opened first
   logfile = tmpfile();
   if( !logfile ) {
-    printf( "could not open a log file" );
+    stumpless_perror( "could not open a log file" );
     return EXIT_FAILURE;
   }
 
@@ -70,14 +70,14 @@ main( int argc, char **argv ) {
   // opening the stream target with an open stream is straightforward:
   stream_target = stumpless_open_stream_target( "stream-example",
                                                 logfile,
-                                                0,
+                                                STUMPLESS_OPTION_NONE,
                                                 STUMPLESS_FACILITY_USER );
 
 
   // logging an entry is just like with any target
   log_result = stumpless_add_entry( stream_target, basic_entry );
   if( log_result < 0 ) {
-    printf( "could not log an entry" );
+    stumpless_perror( "could not log an entry" );
     return EXIT_FAILURE;
   }
 

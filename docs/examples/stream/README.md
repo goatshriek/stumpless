@@ -10,7 +10,7 @@ If you already have a `FILE` pointer, then you can open a stream target using it
 with the `stumpless_open_stream_target` function call, like this:
 
     my_file = fopen( "myfile.log", "w+" );
-    myfile_target = stumpless_open_stream_target( "myfile", my_file, 0, STUMPLESS_FACILITY_USER );
+    myfile_target = stumpless_open_stream_target( "myfile", my_file, STUMPLESS_OPTION_NONE, STUMPLESS_FACILITY_USER );
 
 Note that the file will need to be opened in write or append mode. If it is not,
 then any attempts to send entries to it will fail with a write error.

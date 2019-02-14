@@ -5,13 +5,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
- - Network target capability.
  - Compile-time log level filtering.
  - Format-string style logging from `stumpless` call.
  - Thread-safe operation.
  - Examples for file and socket targets.
 
-## [1.2.0] - 2018-11-9
+## [1.3.0] - 2019-02-14
+### Added
+ - Install target and documentation.
+ - Memory leak controlled with stumpless_free_all function.
+ - Vision statement.
+ - STUMPLESS_OPTION_NONE for code readability.
+ - stumpless_perror function.
+ - Network target capability.
+
+### Fixed
+ - Various memory leaks.
+
+## [1.2.0] - 2018-11-09
 ### Added
  - Increased coverage on object cache.
  - Support for fractional timestamps.

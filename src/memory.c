@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,10 @@
 #include <stdlib.h>
 #include <stumpless/memory.h>
 #include "private/config/wrapper.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/strbuilder.h"
 
 typedef void ( *free_func_t ) ( void * );
 typedef void *( *malloc_func_t ) ( size_t );
@@ -31,12 +33,21 @@ static free_func_t stumpless_free = free;
 static malloc_func_t stumpless_malloc = malloc;
 static realloc_func_t stumpless_realloc = realloc;
 
+void
+stumpless_free_all( void ) {
+  clear_error(  );
+
+  entry_free_all(  );
+  strbuilder_free_all(  );
+  config_network_free_all(  );
+}
+
 malloc_func_t
 stumpless_set_malloc( malloc_func_t malloc_func ) {
   clear_error(  );
 
   if( !malloc_func ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "malloc_func is NULL" );
     return NULL;
   } else {
     stumpless_malloc = malloc_func;
@@ -49,7 +60,7 @@ stumpless_set_free( free_func_t free_func ) {
   clear_error(  );
 
   if( !free_func ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "free_func is NULL" );
     return NULL;
   } else {
     stumpless_free = free_func;
@@ -62,7 +73,7 @@ stumpless_set_realloc( realloc_func_t realloc_func ) {
   clear_error(  );
 
   if( !realloc_func ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "realloc_func is NULL" );
     return NULL;
   } else {
     stumpless_realloc = realloc_func;

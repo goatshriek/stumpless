@@ -28,10 +28,10 @@ calls. The first opens an Event Log on the local machine with the given name,
 while the second attempts to open an Event Log on a remote server with a
 provided name.
 
-    local_wel_target = stumpless_open_local_wel_target( "Stumpless Example", 0 );
+    local_wel_target = stumpless_open_local_wel_target( "Stumpless Example", STUMPLESS_OPTION_NONE );
     remote_wel_target = stumpless_open_remote_wel_target( "\\RemoteServerName",
                                                           "Stumpless Example",
-                                                          0 );
+                                                          STUMPLESS_OPTION_NONE );
 
 Windows Event Log-compatible entries have three extra properties that standard
 entries do not. These are the event category, ID, and type. If you would like to

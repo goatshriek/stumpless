@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,13 @@ stumpless_add_element( struct stumpless_entry *entry,
 
   clear_error(  );
 
-  if( !entry || !element ) {
-    raise_argument_empty(  );
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
     return NULL;
   }
   // todo need to check for duplicates first
@@ -72,8 +77,13 @@ stumpless_add_param( struct stumpless_element *element,
 
   clear_error(  );
 
-  if( !element || !param ) {
-    raise_argument_empty(  );
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( !param ) {
+    raise_argument_empty( "param is NULL" );
     return NULL;
   }
 
@@ -99,7 +109,7 @@ stumpless_new_element( const char *name ) {
   clear_error(  );
 
   if( !name ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "name is NULL" );
     goto fail;
   }
 
@@ -138,7 +148,7 @@ stumpless_new_entry( int facility,
   clear_error(  );
 
   if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL );
+    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
 
     if( !entry_cache ) {
       goto fail;
@@ -193,8 +203,13 @@ stumpless_new_param( const char *name, const char *value ) {
 
   clear_error(  );
 
-  if( !name || !value ) {
-    raise_argument_empty(  );
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    goto fail;
+  }
+
+  if( !value ) {
+    raise_argument_empty( "value is NULL" );
     goto fail;
   }
 
@@ -240,6 +255,10 @@ stumpless_destroy_element( struct stumpless_element *element ) {
   for( i = 0; i < element->param_count; i++ ) {
     stumpless_destroy_param( element->params[i] );
   }
+
+  free_mem( element->params );
+  free_mem( element->name );
+  free_mem( element );
 }
 
 void
@@ -287,7 +306,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   clear_error(  );
 
   if( !entry ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
@@ -309,7 +328,7 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
   clear_error(  );
 
   if( !entry ) {
-    raise_argument_empty(  );
+    raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
@@ -326,9 +345,24 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
 
 /* private functions */
 
+void
+entry_free_all( void ) {
+  cache_destroy( entry_cache );
+}
+
+int
+get_facility( int prival ) {
+  return prival & 0xf8;
+}
+
 int
 get_prival( int facility, int severity ) {
   return facility | severity;
+}
+
+int
+get_severity( int prival ) {
+  return prival & 0x7;
 }
 
 struct strbuilder *
@@ -405,4 +439,9 @@ strbuilder_append_structured_data( struct strbuilder *builder,
   }
 
   return builder;
+}
+
+int
+facility_is_invalid( int facility ) {
+  return facility < 0 || facility > ( 23 << 3 ) || facility % 8 != 0;
 }

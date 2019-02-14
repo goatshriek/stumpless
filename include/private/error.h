@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,19 @@ void
 clear_error( void );
 
 void
-raise_argument_empty( void );
+raise_address_failure( const char *message, int code, const char *code_type );
 
 void
-raise_argument_too_big( void );
+raise_argument_empty( const char *message );
 
 void
-raise_error( enum stumpless_error_id id );
+raise_argument_too_big( const char *message, int code, const char *code_type );
+
+void
+raise_error( enum stumpless_error_id id,
+             const char *message,
+             int code,
+             const char *code_type );
 
 void
 raise_file_open_failure( void );
@@ -40,19 +46,44 @@ void
 raise_file_write_failure( void );
 
 void
+raise_invalid_facility( void );
+
+void
 raise_invalid_id( void );
 
 void
 raise_memory_allocation_failure( void );
 
 void
+raise_network_protocol_unsupported( void );
+
+void
 raise_socket_bind_failure( void );
+
+void
+raise_socket_connect_failure( const char *message,
+                              int code,
+                              const char *code_type );
+
+void
+raise_socket_failure( const char *message, int code, const char *code_type );
+
+void
+raise_socket_send_failure( const char *message,
+                           int code,
+                           const char *code_type );
 
 void
 raise_stream_write_failure( void );
 
 void
-raise_target_unsupported( void );
+raise_target_incompatible( const char *message );
+
+void
+raise_target_unsupported( const char *message );
+
+void
+raise_transport_protocol_unsupported( void );
 
 void
 raise_wel_close_failure( void );

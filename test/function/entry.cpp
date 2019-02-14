@@ -16,11 +16,14 @@
  * limitations under the License.
  */
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stumpless.h>
+
+using::testing::HasSubstr;
 
 namespace {
 
@@ -252,6 +255,28 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_element( element );
+  }
+
+  TEST( AddParamTest, NullElement ) {
+    struct stumpless_param *param;
+    struct stumpless_element *element;
+    struct stumpless_error *error;
+
+    param = stumpless_new_param( "test-name", "test-value" );
+    ASSERT_TRUE( param != NULL );
+
+    element = stumpless_add_param( NULL, param );
+    EXPECT_TRUE( element == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "element" ) );
+      EXPECT_THAT( error->message, HasSubstr( "NULL" ) );
+    }
+
+    stumpless_destroy_param( param );
   }
 
   TEST( DestroyElementTest, NullElement ) {

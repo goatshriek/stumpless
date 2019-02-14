@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@
 void TestRFC5424Compliance(const char *syslog_msg){
   std::cmatch matches;
   std::regex rfcRegex(RFC_5424_REGEX_STRING);
-  ASSERT_TRUE(std::regex_match(syslog_msg, matches, rfcRegex));
+  if( !std::regex_match(syslog_msg, matches, rfcRegex) ) {
+    FAIL(  ) << "message does not match RFC 5424 regex: " << syslog_msg;
+  }
 
-  int prival = std::stoi(matches[1]);
+  int prival = std::stoi(matches[RFC_5424_PRIVAL_MATCH_INDEX]);
   EXPECT_GE(prival, RFC_5424_PRIVAL_MIN);
   EXPECT_LE(prival, RFC_5424_PRIVAL_MAX);
  

@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-#include <stdlib.h>
 #include <benchmark/benchmark.h>
 #include <stumpless.h>
+#include "test/helper/memory_counter.hpp"
 
-static size_t alloc_count=0;
-
-void *malloc_counter(size_t size){
-  alloc_count += size;
-  return malloc(size);
-}
+NEW_MEMORY_COUNTER( stumpless )
 
 static void Stumpless(benchmark::State& state){
   char buffer[1000];
   struct stumpless_target *target;
 
-  alloc_count = 0;
-  stumpless_set_malloc( malloc_counter );
+  INIT_MEMORY_COUNTER( stumpless );
+  stumpless_set_malloc( stumpless_memory_counter_malloc );
+  stumpless_set_realloc( stumpless_memory_counter_realloc );
+  stumpless_set_free( stumpless_memory_counter_free );
 
   target = stumpless_open_buffer_target( "stumpless-perf", buffer, 1000, 0, 0 );
   stumpless_set_current_target( target );
@@ -40,11 +37,12 @@ static void Stumpless(benchmark::State& state){
   }
 
   stumpless_close_buffer_target( target );
-  stumpless_set_malloc( malloc );
 
-  state.counters["MemoryAllocated"] = alloc_count;
+  state.counters["CallsToAlloc"] = ( double ) stumpless_memory_counter.malloc_count;
+  state.counters["MemoryAllocated"] = ( double ) stumpless_memory_counter.alloc_total;
+  state.counters["CallsToRealloc"] = ( double ) stumpless_memory_counter.realloc_count;
+  state.counters["CallsToFree"] = ( double ) stumpless_memory_counter.free_count;
+  state.counters["MemoryFreed"] = ( double ) stumpless_memory_counter.free_total;
 }
 
 BENCHMARK(Stumpless);
-
-BENCHMARK_MAIN();

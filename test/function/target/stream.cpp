@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,9 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_stream_target( target );
+
       fclose( stream );
+      remove( filename );
     }
   };
 
@@ -95,8 +97,6 @@ namespace {
     FILE *stream;
     size_t line_count = 3;
     size_t i;
-
-    remove( filename );
 
     stream = fopen( filename, "w+" );
     ASSERT_TRUE( stream != NULL );
@@ -136,6 +136,8 @@ namespace {
     }
 
     EXPECT_EQ( i, line_count );
+
+    remove( filename );
   }
 
   TEST( StreamTargetOpenTest, MallocFailure ) {
@@ -161,6 +163,7 @@ namespace {
     }
 
     fclose( stream );
+    remove( filename );
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
@@ -183,6 +186,8 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+
+    remove( filename );
   }
 
   TEST( StreamTargetOpenTest, NullStream ) {
@@ -236,6 +241,9 @@ namespace {
                                       "basic test message" );
     ASSERT_TRUE( basic_entry != NULL );
 
+    stream = fopen( filename, "w+" );
+    fclose( stream );
+
     stream = fopen( filename, "r" );
     ASSERT_TRUE( stream != NULL );
 
@@ -252,5 +260,7 @@ namespace {
     stumpless_destroy_entry( basic_entry );
     fclose( stream );
     stumpless_close_stream_target( target );
+
+    remove( filename );
   }
 }
