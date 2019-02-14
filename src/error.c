@@ -83,6 +83,11 @@ clear_error( void ) {
 }
 
 void
+raise_address_failure( const char *message, int code, const char *code_type ) {
+  raise_error( STUMPLESS_ADDRESS_FAILURE, message, code, code_type );
+}
+
+void
 raise_argument_empty( const char *message ) {
   raise_error( STUMPLESS_ARGUMENT_EMPTY, message, 0, NULL );
 }
@@ -123,6 +128,15 @@ raise_file_write_failure( void ) {
 }
 
 void
+raise_invalid_facility( void ) {
+  raise_error( STUMPLESS_INVALID_FACILITY,
+               "facility codes must be defined in accordance with RFC 5424, "
+               "after the multiplication by 8",
+               0,
+               NULL );
+}
+
+void
 raise_invalid_id( void ) {
   raise_error( STUMPLESS_INVALID_ID, NULL, 0, NULL );
 }
@@ -133,8 +147,32 @@ raise_memory_allocation_failure( void ) {
 }
 
 void
+raise_network_protocol_unsupported( void ) {
+  raise_error( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED, NULL, 0, NULL );
+}
+
+void
 raise_socket_bind_failure( void ) {
   raise_error( STUMPLESS_SOCKET_BIND_FAILURE, NULL, 0, NULL );
+}
+
+void
+raise_socket_connect_failure( const char *message,
+                              int code,
+                              const char *code_type ) {
+  raise_error( STUMPLESS_SOCKET_CONNECT_FAILURE, message, code, code_type );
+}
+
+void
+raise_socket_failure( const char *message, int code, const char *code_type ) {
+  raise_error( STUMPLESS_SOCKET_FAILURE, message, code, code_type );
+}
+
+void
+raise_socket_send_failure( const char *message,
+                           int code,
+                           const char *code_type ) {
+  raise_error( STUMPLESS_SOCKET_SEND_FAILURE, message, code, code_type );
 }
 
 void
@@ -143,8 +181,18 @@ raise_stream_write_failure( void ) {
 }
 
 void
-raise_target_unsupported( void ) {
-  raise_error( STUMPLESS_TARGET_UNSUPPORTED, NULL, 0, NULL );
+raise_target_incompatible( const char *message ) {
+  raise_error( STUMPLESS_TARGET_INCOMPATIBLE, message, 0, NULL );
+}
+
+void
+raise_target_unsupported( const char *message ) {
+  raise_error( STUMPLESS_TARGET_UNSUPPORTED, message, 0, NULL );
+}
+
+void
+raise_transport_protocol_unsupported( void ) {
+  raise_error( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED, NULL, 0, NULL );
 }
 
 void

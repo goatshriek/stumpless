@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,9 @@ new_target( enum stumpless_target_type type,
             int options,
             int default_facility );
 
+struct stumpless_target *
+open_unsupported_target( struct stumpless_target *target );
+
 int
 send_entry_to_unsupported_target( const struct stumpless_target *target,
                                   const struct stumpless_entry *entry );
@@ -40,5 +43,8 @@ int
 sendto_unsupported_target( const struct stumpless_target *target,
                            const char *msg,
                            size_t msg_length );
+
+int
+unsupported_target_is_open( const struct stumpless_target *target );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_H */

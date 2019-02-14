@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,10 @@
 #ifndef __STUMPLESS_ENTRY_H
 #  define __STUMPLESS_ENTRY_H
 
-#  include <stddef.h>
 #  include <stumpless/config.h>
-#  include <stumpless/id.h>
 
-#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-#    include <windows.h>
-#  endif
+#  include <stddef.h>
+#  include <stumpless/id.h>
 
 #  ifdef __cplusplus
 extern "C" {

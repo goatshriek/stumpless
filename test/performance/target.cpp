@@ -46,5 +46,3 @@ static void Stumpless(benchmark::State& state){
 }
 
 BENCHMARK(Stumpless);
-
-BENCHMARK_MAIN();

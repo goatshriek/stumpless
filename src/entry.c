@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -351,8 +351,18 @@ entry_free_all( void ) {
 }
 
 int
+get_facility( int prival ) {
+  return prival & 0xf8;
+}
+
+int
 get_prival( int facility, int severity ) {
   return facility | severity;
+}
+
+int
+get_severity( int prival ) {
+  return prival & 0x7;
 }
 
 struct strbuilder *
@@ -429,4 +439,9 @@ strbuilder_append_structured_data( struct strbuilder *builder,
   }
 
   return builder;
+}
+
+int
+facility_is_invalid( int facility ) {
+  return facility < 0 || facility > ( 23 << 3 ) || facility % 8 != 0;
 }

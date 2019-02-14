@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,13 @@ void
 entry_free_all( void );
 
 int
+get_facility( int prival );
+
+int
 get_prival( int facility, int severity );
+
+int
+get_severity( int prival );
 
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
@@ -49,5 +55,8 @@ strbuilder_append_procid( struct strbuilder *builder );
 struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );
+
+int
+facility_is_invalid( int facility );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */

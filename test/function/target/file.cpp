@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 namespace {
   class FileTargetTest : public::testing::Test {
     protected:
-      const char *filename;
+      const char *filename = "testfile.log";
       struct stumpless_target *target;
       struct stumpless_entry *basic_entry;
 
@@ -35,7 +35,9 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      target = stumpless_open_file_target( "testfile.log", 0, 0 );
+      target = stumpless_open_file_target( filename,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -57,6 +59,7 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry( basic_entry );
       stumpless_close_file_target( target );
+      remove( filename );
     }
   };
 
@@ -122,6 +125,7 @@ namespace {
     }
 
     EXPECT_EQ( i, line_count );
+    remove( filename );
   }
 
   TEST( FileTargetOpenTest, Directory ) {
@@ -139,6 +143,7 @@ namespace {
   }
 
   TEST( FileTargetOpenTest, MallocFailure ) {
+    const char *filename = "open-malloc-fail.log";
     struct stumpless_target *target;
     struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
@@ -146,7 +151,9 @@ namespace {
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( set_malloc_result != NULL );
    
-    target = stumpless_open_file_target( "open-malloc-fail.log", 0, 0 );
+    target = stumpless_open_file_target( filename,
+                                         STUMPLESS_OPTION_NONE,
+                                         STUMPLESS_FACILITY_USER );
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
@@ -157,6 +164,7 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
+    remove( filename );
   }
 
   TEST( FileTargetOpenTest, NullName ) {

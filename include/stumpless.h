@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@
  */
 
 #ifndef __STUMPLESS_H
-#define __STUMPLESS_H
+#  define __STUMPLESS_H
 
+/* the config includes should always be first, thanks to windows.h */
 #  include <stumpless/config.h>
+
 #  include <stumpless/entry.h>
 #  include <stumpless/error.h>
 #  include <stumpless/id.h>
@@ -29,6 +31,10 @@
 #  include <stumpless/target/file.h>
 #  include <stumpless/target/stream.h>
 #  include <stumpless/version.h>
+
+#  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
+#    include <stumpless/target/network.h>
+#  endif
 
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
 #    include <stumpless/target/socket.h>
