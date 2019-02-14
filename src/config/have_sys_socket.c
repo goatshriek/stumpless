@@ -212,7 +212,7 @@ sys_socket_sendto_target( struct network_target *target,
   if( result == -1 ){
     raise_socket_send_failure( "send failed with linux socket",
                                errno,
-                               "errno after the failed call");
+                               "errno after the failed call to send");
   }
 
   return result;
