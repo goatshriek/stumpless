@@ -36,9 +36,8 @@ that isn't responding, it will fail.
                                             STUMPLESS_OPTION_NONE,
                                             STUMPLESS_FACILITY_USER );
     if( !new_target ) {
-      error = stumpless_get_error(  );
-      printf( "%s\n", error->message ); // "getaddrinfo failed on name" might mean a DNS failure
-                                        // "connect failed with socket" might mean no TCP response
+      stumpless_perror( "dangit" ); // "getaddrinfo failed on name" might mean a DNS failure
+                                    // "connect failed with socket" might mean no TCP response
     }
 
 If for some reason you want to open a target to a server that isn't responding

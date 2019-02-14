@@ -75,11 +75,11 @@ namespace {
     int result;
     char buffer[10];
 
-    target = stumpless_open_buffer_target( "null entry testing",
+    target = stumpless_open_buffer_target( "unsupported type testing",
                                            buffer,
-                                           10,
-                                           0,
-                                           0 );
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
     // assuming this isn't a valid type
     target->type = ( enum stumpless_target_type ) -1;
@@ -142,7 +142,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
@@ -207,7 +207,11 @@ namespace {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, 0 );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     target_result = stumpless_set_target_default_app_name( target, NULL );
@@ -439,7 +443,11 @@ namespace {
     char buffer[100];
     int option;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
@@ -475,7 +483,11 @@ namespace {
     char buffer[100];
     int option;
 
-    target = stumpless_open_buffer_target( "test target", buffer, 100, 0, STUMPLESS_FACILITY_USER );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
