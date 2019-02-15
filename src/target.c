@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
@@ -36,7 +37,19 @@ static struct stumpless_target *current_target = NULL;
 static struct stumpless_entry *cached_entry = NULL;
 
 int
-stumpless( const char *message ) {
+stumpless( const char *message, ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstumpless( message, subs );
+  va_end( subs );
+
+  return result;
+}
+
+int
+vstumpless( const char *message, va_list subs ) {
   struct stumpless_target *target;
   int result;
 
@@ -48,7 +61,11 @@ stumpless( const char *message ) {
   }
 
   if( !cached_entry ) {
-    cached_entry = stumpless_new_entry( 0, 0, "-", "-", message );
+    cached_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        "-",
+                                        "-",
+                                        message );
     if( !cached_entry ) {
       return -1;
     }

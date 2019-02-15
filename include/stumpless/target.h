@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_TARGET_H
 #  define __STUMPLESS_TARGET_H
 
+#  include <stdarg.h>
 #  include <stddef.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
@@ -49,8 +50,39 @@ struct stumpless_target {
   int mask;
 };
 
+/**
+ * Logs a message to the default target.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
 int
-stumpless( const char *message );
+stumpless( const char *message, ... );
+
+/**
+ * Logs a message to the default target.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+vstumpless( const char *message, va_list subs );
 
 int
 stumpless_add_entry( struct stumpless_target *target,
