@@ -212,8 +212,8 @@ stumpless_new_element( const char *name );
  * entry (no characters).
  *
  * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
+ * number of substitutions provided must exactly match the number of specifiers
+ * given.
  *
  * @return The created entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -234,9 +234,26 @@ struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name );
 
+/**
+ * Sets the message of a given entry.
+ *
+ * @param entry The entry to modify.
+ *
+ * @param message The new message to set on the entry. This message may contain
+ * any format specifiers valid in \c printf. If this is NULL, then it will be
+ * blank in the entry (no characters).
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of specifiers
+ * given.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_entry_message( struct stumpless_entry *entry,
-                             const char *message );
+                             const char *message,
+                             ... );
 
 /**
  * Creates a new entry with the given parameters.
@@ -273,6 +290,29 @@ vstumpless_new_entry( int facility,
                       const char *msgid,
                       const char *message,
                       va_list subs );
+
+/**
+ * Sets the message of a given entry.
+ *
+ * @param entry The entry to modify.
+ *
+ * @param message The new message to set on the entry. This message may contain
+ * any format specifiers valid in \c printf. If this is NULL, then it will be
+ * blank in the entry (no characters).
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+vstumpless_set_entry_message( struct stumpless_entry *entry,
+                              const char *message,
+                              va_list subs );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

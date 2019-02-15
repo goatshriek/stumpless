@@ -670,4 +670,24 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( SetMessageTest, NullMessage ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "test-app-name",
+                                 "test-msgid",
+                                 "test-message" );
+    EXPECT_TRUE( entry != NULL );
+
+    result = stumpless_set_entry_message( entry, NULL );
+    EXPECT_EQ( entry, result );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_TRUE( entry->message == NULL );
+    EXPECT_EQ( 0, entry->message_length );
+
+    stumpless_destroy_entry( entry );
+  }
 }
