@@ -34,6 +34,7 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
 check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
+check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 
 
 # standard source files
@@ -70,6 +71,10 @@ endif(HAVE_SYS_SOCKET_H)
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
+
+if(HAVE_VSNPRINTF_S)
+  list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
+endif(HAVE_VSNPRINTF_S)
 
 if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)

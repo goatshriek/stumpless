@@ -349,6 +349,7 @@ vstumpless_new_entry( int facility,
   }
 
   if( !message ) {
+    entry->message = NULL;
     entry->message_length = 0;
   } else {
     message_length = &( entry->message_length );
