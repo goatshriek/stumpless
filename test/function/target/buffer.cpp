@@ -130,6 +130,10 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST_F( BufferTargetTest, IsOpen ) {
+    EXPECT_TRUE( stumpless_target_is_open( target ) );
+  }
+
   TEST_F( BufferTargetTest, OverFill ) {
     char test_string[TEST_BUFFER_LENGTH + 1];
     struct stumpless_error *error;
