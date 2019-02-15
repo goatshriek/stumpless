@@ -39,19 +39,19 @@ no_vsnprintf_s_format_string( const char *format, va_list subs, size_t *length )
     goto fail_buffer;
   }
   
-  if( result <= buffer_size ) {
-    return buffer;
-  }
+  if( result > buffer_size ) {
 
-  new_buffer = realloc_mem( buffer, result );
-  if( !new_buffer ) {
-    goto fail_buffer;
-  }
-  buffer = new_buffer;
+    new_buffer = realloc_mem( buffer, result );
+    if( !new_buffer ) {
+      goto fail_buffer;
+    }
+    buffer = new_buffer;
 
-  result = vsnprintf( buffer, buffer_size, format, subs );
-  if( result < 0 ) {
-    goto fail_buffer;
+    result = vsnprintf( buffer, buffer_size, format, subs );
+    if( result < 0 ) {
+      goto fail_buffer;
+    }
+
   }
 
   *length = result;
