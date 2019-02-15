@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2.3)
 
-project(stumpless VERSION 1.3.0)
+project(stumpless VERSION 1.4.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
