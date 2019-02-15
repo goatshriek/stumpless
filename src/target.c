@@ -348,6 +348,11 @@ int
 vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
                         va_list subs ) {
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return -1;
+  }
+
   if( !cached_entry ) {
     cached_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                         STUMPLESS_SEVERITY_INFO,
