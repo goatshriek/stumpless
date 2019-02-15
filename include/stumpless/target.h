@@ -67,13 +67,19 @@ struct stumpless_target {
 int
 stumpless( const char *message, ... );
 
+int
+stumpless_add_entry( struct stumpless_target *target,
+                     struct stumpless_entry *entry );
+
 /**
- * Logs a message to the default target.
+ * Adds a message to a given target.
+ *
+ * @param target The target to send the message to.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
  *
- * @param subs Substitutions for any format specifiers provided in message. The
+ * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
  * specifiers given.
  *
@@ -82,11 +88,9 @@ stumpless( const char *message, ... );
  * appropriately.
  */
 int
-vstumpless( const char *message, va_list subs );
-
-int
-stumpless_add_entry( struct stumpless_target *target,
-                     struct stumpless_entry *entry );
+stumpless_add_message( struct stumpless_target *target,
+                       const char *message,
+                       ... );
 
 struct stumpless_target *
 stumpless_get_current_target( void );
@@ -211,6 +215,48 @@ stumpless_target_is_open( const struct stumpless_target *target );
  */
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option );
+
+/**
+ * Logs a message to the default target.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+vstumpless( const char *message, va_list subs );
+
+/**
+ * Adds a message to a given target.
+ *
+ * @param target The target to send the message to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+vstumpless_add_message( struct stumpless_target *target,
+                        const char *message,
+                        va_list subs );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

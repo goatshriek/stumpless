@@ -49,60 +49,6 @@ stumpless( const char *message, ... ) {
 }
 
 int
-vstumpless( const char *message, va_list subs ) {
-  struct stumpless_target *target;
-  int result;
-
-  clear_error(  );
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  if( !cached_entry ) {
-    cached_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                        STUMPLESS_SEVERITY_INFO,
-                                        "-",
-                                        "-",
-                                        message );
-    if( !cached_entry ) {
-      return -1;
-    }
-
-    cached_entry->prival = current_target->default_prival;
-
-    if( target->default_app_name ) {
-      cached_entry->app_name = alloc_mem( target->default_app_name_length );
-      if( !cached_entry->app_name ) {
-        return -1;
-      }
-
-      memcpy( cached_entry->app_name, target->default_app_name,
-              target->default_app_name_length );
-      cached_entry->app_name_length = target->default_app_name_length;
-    }
-
-    if( target->default_msgid ) {
-      cached_entry->msgid = alloc_mem( target->default_msgid_length );
-      if( !cached_entry->msgid ) {
-        return -1;
-      }
-
-      memcpy( cached_entry->msgid, target->default_msgid,
-              target->default_msgid_length );
-      cached_entry->msgid_length = target->default_msgid_length;
-    }
-
-  }
-
-  stumpless_set_entry_message( cached_entry, message );
-
-  result = stumpless_add_entry( target, cached_entry );
-  return result;
-}
-
-int
 stumpless_add_entry( struct stumpless_target *target,
                      struct stumpless_entry *entry ) {
   struct strbuilder *builder;
@@ -171,6 +117,20 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   strbuilder_destroy( builder );
+  return result;
+}
+
+int
+stumpless_add_message( struct stumpless_target *target,
+                       const char *message,
+                       ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstumpless_add_message( target, message, subs );
+  va_end( subs );
+
   return result;
 }
 
@@ -368,6 +328,66 @@ stumpless_unset_option( struct stumpless_target *target, int option ) {
   target->options &= ~option;
 
   return target;
+}
+
+int
+vstumpless( const char *message, va_list subs ) {
+  struct stumpless_target *target;
+
+  clear_error(  );
+
+  target = stumpless_get_current_target(  );
+  if( !target ) {
+    return -1;
+  }
+
+  return vstumpless_add_message( target, message, subs );
+}
+
+int
+vstumpless_add_message( struct stumpless_target *target,
+                        const char *message,
+                        va_list subs ) {
+  if( !cached_entry ) {
+    cached_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        "-",
+                                        "-",
+                                        message );
+    if( !cached_entry ) {
+      return -1;
+    }
+
+  } else {
+    stumpless_set_entry_message( cached_entry, message );
+
+  }
+
+  cached_entry->prival = target->default_prival;
+
+  if( target->default_app_name ) {
+    cached_entry->app_name = alloc_mem( target->default_app_name_length );
+    if( !cached_entry->app_name ) {
+      return -1;
+    }
+
+    memcpy( cached_entry->app_name, target->default_app_name,
+            target->default_app_name_length );
+    cached_entry->app_name_length = target->default_app_name_length;
+  }
+
+  if( target->default_msgid ) {
+    cached_entry->msgid = alloc_mem( target->default_msgid_length );
+    if( !cached_entry->msgid ) {
+      return -1;
+    }
+
+    memcpy( cached_entry->msgid, target->default_msgid,
+            target->default_msgid_length );
+    cached_entry->msgid_length = target->default_msgid_length;
+  }
+
+  return stumpless_add_entry( target, cached_entry );
 }
 
 /* private definitions */
