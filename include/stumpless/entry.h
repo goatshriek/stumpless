@@ -21,8 +21,13 @@
 
 #  include <stumpless/config.h>
 
+#  include <stdarg.h>
 #  include <stddef.h>
 #  include <stumpless/id.h>
+
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include <windows.h>
+#  endif
 
 #  ifdef __cplusplus
 extern "C" {

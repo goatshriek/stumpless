@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
