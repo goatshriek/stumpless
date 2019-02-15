@@ -26,7 +26,7 @@ void
 winsock2_close_network_target( struct network_target *target );
 
 void
-winsock2_free_all( void );
+winsock2_cleanup( void );
 
 int
 winsock2_gethostname( char *buffer, size_t namelen );
@@ -59,14 +59,9 @@ struct network_target *
 winsock2_reopen_udp6_target( struct network_target *target );
 
 int
-winsock2_sendto_tcp_target( struct network_target *target,
-                            const char *msg,
-                            size_t msg_length );
-
-int
-winsock2_sendto_udp_target( struct network_target *target,
-                            const char *msg,
-                            size_t msg_length );
+winsock2_sendto_target( struct network_target *target,
+                        const char *msg,
+                        size_t msg_length );
 
 struct network_target *
 winsock2_set_network_port( struct network_target *target, const char *port );

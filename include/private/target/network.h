@@ -48,6 +48,9 @@ struct network_target {
 void
 destroy_network_target( struct network_target *target );
 
+void
+network_free_all( void );
+
 int
 network_target_is_open( const struct stumpless_target *target );
 

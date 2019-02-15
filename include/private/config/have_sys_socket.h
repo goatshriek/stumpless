@@ -25,9 +25,6 @@ void
 sys_socket_close_network_target( struct network_target *target );
 
 void
-sys_socket_free_all( void );
-
-void
 sys_socket_init_network_target( struct network_target *target );
 
 struct network_target *
@@ -55,14 +52,9 @@ struct network_target *
 sys_socket_reopen_udp6_target( struct network_target *target );
 
 int
-sys_socket_sendto_tcp_target( struct network_target *target,
-                              const char *msg,
-                              size_t msg_length );
-
-int
-sys_socket_sendto_udp_target( struct network_target *target,
-                              const char *msg,
-                              size_t msg_length );
+sys_socket_sendto_target( struct network_target *target,
+                          const char *msg,
+                          size_t msg_length );
 
 int
 sys_socket_network_target_is_open( const struct network_target *target );

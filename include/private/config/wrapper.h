@@ -26,16 +26,10 @@
 /* definition of config_sendto_network_target and config_network_free_all */
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include "private/target/network.h"
+#    define config_network_free_all network_free_all
 #    define config_network_target_is_open network_target_is_open
 #    define config_open_network_target open_network_target
 #    define config_sendto_network_target sendto_network_target
-#    ifdef HAVE_SYS_SOCKET_H
-#      include "private/config/have_sys_socket.h"
-#      define config_network_free_all() sys_socket_free_all()
-#    elif HAVE_WINSOCK2_H
-#      include "private/config/have_winsock2.h"
-#      define config_network_free_all() winsock2_free_all()
-#    endif
 #  else
 #    include "private/target.h"
 #    define config_network_free_all() ( ( void ) 0 )
@@ -133,6 +127,7 @@
 #    define config_init_tcp6 sys_socket_init_network_target
 #    define config_init_udp4 sys_socket_init_network_target
 #    define config_init_udp6 sys_socket_init_network_target
+#    define config_network_cleanup() ( ( void ) 0 )
 #    define config_open_tcp4_target sys_socket_open_tcp4_target
 #    define config_open_tcp6_target sys_socket_open_tcp6_target
 #    define config_open_udp4_target sys_socket_open_udp4_target
@@ -141,10 +136,10 @@
 #    define config_reopen_tcp6_target sys_socket_reopen_tcp6_target
 #    define config_reopen_udp4_target sys_socket_reopen_udp4_target
 #    define config_reopen_udp6_target sys_socket_reopen_udp6_target
-#    define config_sendto_tcp4_target sys_socket_sendto_tcp_target
-#    define config_sendto_tcp6_target sys_socket_sendto_tcp_target
-#    define config_sendto_udp4_target sys_socket_sendto_udp_target
-#    define config_sendto_udp6_target sys_socket_sendto_udp_target
+#    define config_sendto_tcp4_target sys_socket_sendto_target
+#    define config_sendto_tcp6_target sys_socket_sendto_target
+#    define config_sendto_udp4_target sys_socket_sendto_target
+#    define config_sendto_udp6_target sys_socket_sendto_target
 #    define config_tcp4_is_open sys_socket_network_target_is_open
 #    define config_tcp6_is_open sys_socket_network_target_is_open
 #    define config_udp4_is_open sys_socket_network_target_is_open
@@ -159,6 +154,7 @@
 #    define config_init_tcp6 winsock2_init_network_target
 #    define config_init_udp4 winsock2_init_network_target
 #    define config_init_udp6 winsock2_init_network_target
+#    define config_network_cleanup() winsock2_cleanup()
 #    define config_open_tcp4_target winsock2_open_tcp4_target
 #    define config_open_tcp6_target winsock2_open_tcp6_target
 #    define config_open_udp4_target winsock2_open_udp4_target
@@ -167,10 +163,10 @@
 #    define config_reopen_tcp6_target winsock2_reopen_tcp6_target
 #    define config_reopen_udp4_target winsock2_reopen_udp4_target
 #    define config_reopen_udp6_target winsock2_reopen_udp6_target
-#    define config_sendto_tcp4_target winsock2_sendto_tcp_target
-#    define config_sendto_tcp6_target winsock2_sendto_tcp_target
-#    define config_sendto_udp4_target winsock2_sendto_udp_target
-#    define config_sendto_udp6_target winsock2_sendto_udp_target
+#    define config_sendto_tcp4_target winsock2_sendto_target
+#    define config_sendto_tcp6_target winsock2_sendto_target
+#    define config_sendto_udp4_target winsock2_sendto_target
+#    define config_sendto_udp6_target winsock2_sendto_target
 #    define config_tcp4_is_open winsock2_network_target_is_open
 #    define config_tcp6_is_open winsock2_network_target_is_open
 #    define config_udp4_is_open winsock2_network_target_is_open

@@ -31,6 +31,9 @@
 #include "private/target.h"
 #include "private/target/network.h"
 
+static char *tcp_send_buffer = NULL;
+static size_t tcp_send_buffer_length = 0;
+
 static
 void
 destroy_ipv4_target( struct network_target *target ) {
@@ -236,6 +239,71 @@ reopen_network_target( struct network_target *target ) {
 
   } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
       return reopen_ipv6_target( target );
+
+  }
+}
+
+static
+int
+sendto_tcp_target( struct network_target *target,
+                   const char *msg,
+                   size_t msg_length ) {
+  size_t int_length;
+  size_t required_length;
+  char *new_buffer;
+
+  required_length = msg_length + 50;
+  if( tcp_send_buffer_length < required_length ) {
+    new_buffer = realloc_mem( tcp_send_buffer, required_length );
+
+    if( !new_buffer ) {
+      return -1;
+
+    } else {
+      tcp_send_buffer = new_buffer;
+      tcp_send_buffer_length = required_length;
+
+    }
+  }
+
+  snprintf( tcp_send_buffer, 50, "%zd ", msg_length );
+  int_length = strlen( tcp_send_buffer );
+  memcpy( tcp_send_buffer + int_length, msg, msg_length );
+
+  if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    return config_sendto_tcp4_target( target,
+                                      tcp_send_buffer,
+                                      int_length + msg_length );
+
+  } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
+    return config_sendto_tcp6_target( target,
+                                      tcp_send_buffer,
+                                      int_length + msg_length );
+
+  }
+}
+
+static
+int
+sendto_udp_target( struct network_target *target,
+                   const char *msg,
+                   size_t msg_length ) {
+  size_t effective_length;
+
+  if( msg_length > target->max_msg_size ) {
+    effective_length = target->max_msg_size;
+    raise_argument_too_big( "message is too large to be sent in a single datagram",
+                            cap_size_t_to_int( msg_length ),
+                            "size of the message that is too large" );
+  } else {
+    effective_length = msg_length;
+  }
+
+  if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
+    return config_sendto_udp4_target( target, msg, effective_length );
+
+  } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
+    return config_sendto_udp6_target( target, msg, effective_length );
 
   }
 }
@@ -652,6 +720,13 @@ destroy_network_target( struct network_target *target ) {
   free_mem( target );
 }
 
+void
+network_free_all( void ) {
+  free_mem( tcp_send_buffer );
+  tcp_send_buffer_length = 0;
+  config_network_cleanup(  );
+}
+
 int
 network_target_is_open( const struct stumpless_target *target ) {
   const struct network_target *net_target;
@@ -745,35 +820,12 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length ) {
-  size_t effective_length;
 
   if( target->transport == STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
-
-    if( msg_length > target->max_msg_size ) {
-      effective_length = target->max_msg_size;
-      raise_argument_too_big( "message is too large to be sent in a single datagram",
-                              cap_size_t_to_int( msg_length ),
-                              "size of the message that is too large" );
-    } else {
-      effective_length = msg_length;
-    }
-
-    if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-      return config_sendto_udp4_target( target, msg, effective_length );
-
-    } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
-      return config_sendto_udp6_target( target, msg, effective_length );
-
-    }
+     return sendto_udp_target( target, msg, msg_length );
 
   } else {
+     return sendto_tcp_target( target, msg, msg_length );
 
-    if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
-      return config_sendto_tcp4_target( target, msg, msg_length );
-
-    } else { // STUMPLESS_IPV6_NETWORK_PROTOCOL
-      return config_sendto_tcp6_target( target, msg, msg_length );
-
-    }
   }
 }

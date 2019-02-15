@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Thread-safe operation.
  - Examples for file and socket targets.
 
+## [1.3.1] - 2019-02-15
+### Fixed
+ - Code duplication in network target code.
+
 ## [1.3.0] - 2019-02-14
 ### Added
  - Install target and documentation.
