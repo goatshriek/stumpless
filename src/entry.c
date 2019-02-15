@@ -139,62 +139,22 @@ struct stumpless_entry *
 stumpless_new_entry( int facility,
                      int severity,
                      const char *app_name,
-                     const char *msgid, const char *message ) {
+                     const char *msgid,
+                     const char *message,
+                     ... ) {
+  va_list subs;
   struct stumpless_entry *entry;
-  size_t *app_name_length;
-  size_t *msgid_length;
-  size_t *message_length;
 
-  clear_error(  );
-
-  if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
-
-    if( !entry_cache ) {
-      goto fail;
-    }
-  }
-
-  entry = cache_alloc( entry_cache );
-  if( !entry ) {
-    goto fail;
-  }
-
-  app_name_length = &( entry->app_name_length );
-  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
-  if( !entry->app_name ) {
-    goto fail_app_name;
-  }
-
-  msgid_length = &( entry->msgid_length );
-  entry->msgid = cstring_to_sized_string( msgid, msgid_length );
-  if( !entry->msgid ) {
-    goto fail_msgid;
-  }
-
-  message_length = &( entry->message_length );
-  entry->message = cstring_to_sized_string( message, message_length );
-  if( !entry->message ) {
-    goto fail_message;
-  }
-
-  config_initialize_insertion_params( entry );
-  config_set_entry_wel_type( entry, severity );
-
-  entry->prival = get_prival( facility, severity );
-  entry->elements = NULL;
-  entry->element_count = 0;
+  va_start( subs, message );
+  entry = vstumpless_new_entry( facility,
+                                severity,
+                                app_name,
+                                msgid,
+                                message,
+                                subs );
+  va_end( subs );
 
   return entry;
-
-fail_message:
-  free_mem( entry->msgid );
-fail_msgid:
-  free_mem( entry->app_name );
-fail_app_name:
-  cache_free( entry_cache, entry );
-fail:
-  return NULL;
 }
 
 struct stumpless_param *
@@ -341,6 +301,70 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
     entry->message_length = message_length;
     return entry;
   }
+}
+
+struct stumpless_entry *
+vstumpless_new_entry( int facility,
+                      int severity,
+                      const char *app_name,
+                      const char *msgid,
+                      const char *message,
+                      va_list subs ) {
+  struct stumpless_entry *entry;
+  size_t *app_name_length;
+  size_t *msgid_length;
+  size_t *message_length;
+
+  clear_error(  );
+
+  if( !entry_cache ) {
+    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
+
+    if( !entry_cache ) {
+      goto fail;
+    }
+  }
+
+  entry = cache_alloc( entry_cache );
+  if( !entry ) {
+    goto fail;
+  }
+
+  app_name_length = &( entry->app_name_length );
+  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
+  if( !entry->app_name ) {
+    goto fail_app_name;
+  }
+
+  msgid_length = &( entry->msgid_length );
+  entry->msgid = cstring_to_sized_string( msgid, msgid_length );
+  if( !entry->msgid ) {
+    goto fail_msgid;
+  }
+
+  message_length = &( entry->message_length );
+  entry->message = cstring_to_sized_string( message, message_length );
+  if( !entry->message ) {
+    goto fail_message;
+  }
+
+  config_initialize_insertion_params( entry );
+  config_set_entry_wel_type( entry, severity );
+
+  entry->prival = get_prival( facility, severity );
+  entry->elements = NULL;
+  entry->element_count = 0;
+
+  return entry;
+
+fail_message:
+  free_mem( entry->msgid );
+fail_msgid:
+  free_mem( entry->app_name );
+fail_app_name:
+  cache_free( entry_cache, entry );
+fail:
+  return NULL;
 }
 
 /* private functions */

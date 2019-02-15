@@ -125,86 +125,149 @@ extern "C" {
 /* custom option code */
 #  define STUMPLESS_OPTION_NONE 0
 
-  struct stumpless_param {
-    char *name;
-    size_t name_length;
-    char *value;         /**< NULL-terminated string to support wel insertion strings */
-    size_t value_length;
-  };
+struct stumpless_param {
+  char *name;
+  size_t name_length;
+  char *value;         /**< NULL-terminated string to support wel insertion strings */
+  size_t value_length;
+};
 
-  struct stumpless_element {
-    char *name;
-    size_t name_length;
-    struct stumpless_param **params;
-    size_t param_count;
-  };
+struct stumpless_element {
+  char *name;
+  size_t name_length;
+  struct stumpless_param **params;
+  size_t param_count;
+};
 
-  struct stumpless_entry {
-    stumpless_id_t id;
-    int prival;
-    char *app_name;
-    size_t app_name_length;
-    char *message;
-    size_t message_length;
-    char *msgid;
-    size_t msgid_length;
-    struct stumpless_element **elements;
-    size_t element_count;
+struct stumpless_entry {
+  stumpless_id_t id;
+  int prival;
+  char *app_name;
+  size_t app_name_length;
+  char *message;
+  size_t message_length;
+  char *msgid;
+  size_t msgid_length;
+  struct stumpless_element **elements;
+  size_t element_count;
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-    WORD wel_type;
-    WORD wel_category;
-    DWORD wel_event_id;
-    WORD wel_insertion_count;
-    LPCSTR *wel_insertion_strings;
-    struct stumpless_param **wel_insertion_params;
+  WORD wel_type;
+  WORD wel_category;
+  DWORD wel_event_id;
+  WORD wel_insertion_count;
+  LPCSTR *wel_insertion_strings;
+  struct stumpless_param **wel_insertion_params;
 #  endif
-  };
+};
 
-  /*
-   * While the functions provided right now offer basic creation and deletion
-   * capabilities, there will need to be many more added to make working with
-   * the messages, elements, and params easier. For example, hash-style accessors
-   * and assignments, as well as a clear memory management strategy.
-   */
+/*
+ * While the functions provided right now offer basic creation and deletion
+ * capabilities, there will need to be many more added to make working with
+ * the messages, elements, and params easier. For example, hash-style accessors
+ * and assignments, as well as a clear memory management strategy.
+ */
 
-  struct stumpless_entry *
-  stumpless_add_element( struct stumpless_entry *entry,
-                         struct stumpless_element *element );
+struct stumpless_entry *
+stumpless_add_element( struct stumpless_entry *entry,
+                       struct stumpless_element *element );
 
-  struct stumpless_element *
-  stumpless_add_param( struct stumpless_element *element,
-                       struct stumpless_param *param );
+struct stumpless_element *
+stumpless_add_param( struct stumpless_element *element,
+                     struct stumpless_param *param );
 
-  void
-  stumpless_destroy_element( struct stumpless_element *element );
+void
+stumpless_destroy_element( struct stumpless_element *element );
 
-  void
-  stumpless_destroy_entry( struct stumpless_entry *entry );
+void
+stumpless_destroy_entry( struct stumpless_entry *entry );
 
-  void
-  stumpless_destroy_param( struct stumpless_param *param );
+void
+stumpless_destroy_param( struct stumpless_param *param );
 
-  struct stumpless_element *
-  stumpless_new_element( const char *name );
+struct stumpless_element *
+stumpless_new_element( const char *name );
 
-  struct stumpless_entry *
-  stumpless_new_entry( int facility,
-                       int severity,
-                       const char *app_name,
-                       const char *msgid,
-                       const char *message );
+/**
+ * Creates a new entry with the given parameters.
+ *
+ * @param facility The facility code of the entry. This should be a
+ * \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the entry. This should be a
+ * \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param message The message in the entry. This message may contain any format
+ * specifiers valid in \c printf. If this is NULL, then it will be blank in the
+ * entry (no characters).
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return The created entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_new_entry( int facility,
+                     int severity,
+                     const char *app_name,
+                     const char *msgid,
+                     const char *message,
+                     ... );
 
-  struct stumpless_param *
-  stumpless_new_param( const char *name,
-                       const char *value );
+struct stumpless_param *
+stumpless_new_param( const char *name,
+                     const char *value );
 
-  struct stumpless_entry *
-  stumpless_set_entry_app_name( struct stumpless_entry *entry,
-                                const char *app_name );
+struct stumpless_entry *
+stumpless_set_entry_app_name( struct stumpless_entry *entry,
+                              const char *app_name );
 
-  struct stumpless_entry *
-  stumpless_set_entry_message( struct stumpless_entry *entry,
-                               const char *message );
+struct stumpless_entry *
+stumpless_set_entry_message( struct stumpless_entry *entry,
+                             const char *message );
+
+/**
+ * Creates a new entry with the given parameters.
+ *
+ * @param facility The facility code of the entry. This should be a
+ * \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the entry. This should be a
+ * \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param message The message in the entry. This message may contain any format
+ * specifiers valid in \c printf. If this is NULL, then it will be blank in the
+ * entry (no characters).
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ *
+ * @return The created entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+vstumpless_new_entry( int facility,
+                      int severity,
+                      const char *app_name,
+                      const char *msgid,
+                      const char *message,
+                      va_list subs );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */
