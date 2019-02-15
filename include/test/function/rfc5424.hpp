@@ -78,11 +78,11 @@
                                 " "                                   /* SP */ \
                                 "(-|("                         /* TIMESTAMP */ \
                                 "(\\d{4})-(\\d{2})-(\\d{2})"   /* FULL-DATE */ \
-          		      "T"                                    /* "T" */ \
+                                "T"                                  /* "T" */ \
                                 "\\d{2}:\\d{2}:\\d{2}"      /* PARTIAL-TIME */ \
-          		      "(\\.\\d{1,6})?"              /* TIME-SECFRAC */ \
+                                "(\\.\\d{1,6})?"            /* TIME-SECFRAC */ \
                                 "(Z|("                       /* TIME-OFFSET */ \
-          		      "(\\+|-)\\d{2}:\\d{2}"      /* TIME-NUMOFFSET */ \
+                                "(\\+|-)\\d{2}:\\d{2}"    /* TIME-NUMOFFSET */ \
                                 "))"                         /* TIME-OFFSET */ \
                                 "))"                           /* TIMESTAMP */ \
                                 " "                                   /* SP */ \
@@ -97,12 +97,12 @@
                                 "(-|(("                  /* STRUCTURED-DATA */ \
                                 "\\["                         /* SD-ELEMENT */ \
                                 "([!#-<>-\\\\\\^-~]{1,32})"        /* SD-ID */ \
-          		      "( [!#-<>-\\\\\\^-~]{1,32}"     /* PARAM-NAME */ \
+                                "( [!#-<>-\\\\\\^-~]{1,32}"   /* PARAM-NAME */ \
                                 "=\".*\")*"                  /* PARAM-VALUE */ \
-          		      "\\]"                           /* SD-ELEMENT */ \
+                                "\\]"                         /* SD-ELEMENT */ \
                                 ")+))"                   /* STRUCTURED-DATA */ \
-                                " "                                   /* SP */ \
-                                "(.*)$" /* MSG */
+                                "( "                                   /* SP */ \
+                                "(.*))?$" /* MSG */
 
 #  define RFC_5424_SYSLOG_MSG_MATCH_INDEX 0
 #  define RFC_5424_PRIVAL_MATCH_INDEX 1

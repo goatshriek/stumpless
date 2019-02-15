@@ -312,7 +312,9 @@ vstumpless_new_entry( int facility,
                       const char *message,
                       va_list subs ) {
   struct stumpless_entry *entry;
+  const char *effective_app_name;
   size_t *app_name_length;
+  const char *effective_msgid;
   size_t *msgid_length;
   size_t *message_length;
 
@@ -331,22 +333,29 @@ vstumpless_new_entry( int facility,
     goto fail;
   }
 
+  effective_app_name = app_name ? app_name : "-";
   app_name_length = &( entry->app_name_length );
-  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
+  entry->app_name = cstring_to_sized_string( effective_app_name,
+                                             app_name_length );
   if( !entry->app_name ) {
     goto fail_app_name;
   }
 
+  effective_msgid = msgid ? msgid : "-";
   msgid_length = &( entry->msgid_length );
-  entry->msgid = cstring_to_sized_string( msgid, msgid_length );
+  entry->msgid = cstring_to_sized_string( effective_msgid, msgid_length );
   if( !entry->msgid ) {
     goto fail_msgid;
   }
 
-  message_length = &( entry->message_length );
-  entry->message = cstring_to_sized_string( message, message_length );
-  if( !entry->message ) {
-    goto fail_message;
+  if( !message ) {
+    entry->message_length = 0;
+  } else {
+    message_length = &( entry->message_length );
+    entry->message = cstring_to_sized_string( message, message_length );
+    if( !entry->message ) {
+      goto fail_message;
+    }
   }
 
   config_initialize_insertion_params( entry );

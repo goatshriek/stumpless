@@ -433,6 +433,65 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( NewEntryTest, NullAppName ) {
+    struct stumpless_entry *entry;
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 NULL,
+                                 msgid,
+                                 message );
+
+    EXPECT_TRUE( entry != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    if( entry ) {
+      EXPECT_EQ( entry->app_name[0], '-' );
+      EXPECT_EQ( entry->app_name_length, 1 );
+    }
+  }
+
+  TEST( NewEntryTest, NullMesssage ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 NULL );
+
+    EXPECT_TRUE( entry != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    if( entry ) {
+      EXPECT_EQ( entry->message_length, 0 );
+    }
+  }
+
+  TEST( NewEntryTest, NullMessageId ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 NULL,
+                                 message );
+
+    EXPECT_TRUE( entry != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    if( entry ) {
+      EXPECT_EQ( entry->msgid[0], '-' );
+      EXPECT_EQ( entry->msgid_length, 1 );
+    }
+  }
+
   TEST( NewEntryTest, ReallocFailureOnSecond ) {
     struct stumpless_entry *entries[2000];
     struct stumpless_error *error;

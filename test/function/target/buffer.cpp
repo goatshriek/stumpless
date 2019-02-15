@@ -108,6 +108,28 @@ namespace {
     TestRFC5424Compliance( buffer );
   }
 
+  TEST_F( BufferTargetTest, EmptyMessage ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    int result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 NULL );
+    ASSERT_TRUE( entry != NULL );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_NE( buffer[result-1], ' ' );
+
+    stumpless_destroy_entry( entry );
+  }
+
   TEST_F( BufferTargetTest, LargeReallocFailure ) {
     char test_string[4096];
     void * (*realloc_result)(void *, size_t);
