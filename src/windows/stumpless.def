@@ -68,3 +68,4 @@ EXPORTS
   stumpless_add_message                 @66
   vstumpless                            @67
   vstumpless_add_message                @68
+  vstumpless_new_entry                  @69

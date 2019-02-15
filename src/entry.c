@@ -353,7 +353,7 @@ vstumpless_new_entry( int facility,
     entry->message_length = 0;
   } else {
     message_length = &( entry->message_length );
-    entry->message = cstring_to_sized_string( message, message_length );
+    entry->message = config_format_string( message, subs, message_length );
     if( !entry->message ) {
       goto fail_message;
     }

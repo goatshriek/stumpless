@@ -76,6 +76,16 @@
 #  endif
 
 
+/* definition of config_format_string */
+#  ifdef HAVE_VSNPRINTF_S
+#    include "private/config/have_vsnprintf_s.h"
+#    define config_format_string vsnprintf_s_format_string
+#  else
+#    include "private/config/no_vsnprintf_s.h"
+#    define config_format_string no_vsnprintf_s_format_string
+#  endif
+
+
 /* definition of config_get_now */
 #  ifdef HAVE_GMTIME_R
 #    include "private/config/have_gmtime_r.h"

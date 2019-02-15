@@ -74,6 +74,8 @@ endif(HAVE_UNISTD_H)
 
 if(HAVE_VSNPRINTF_S)
   list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
+else()
+  list(APPEND STUMPLESS_SOURCES src/config/no_vsnprintf_s.c)
 endif(HAVE_VSNPRINTF_S)
 
 if(HAVE_WINDOWS_H)
