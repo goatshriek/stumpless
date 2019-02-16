@@ -435,6 +435,10 @@ add_function_test(target
   SOURCES test/function/target.cpp
 )
 
+add_function_test(target_leak
+  SOURCES test/function/leak/target.cpp
+)
+
 add_function_test(version
   SOURCES test/function/version.cpp
 )

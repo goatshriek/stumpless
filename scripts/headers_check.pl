@@ -320,6 +320,7 @@ my %manifest = (
   "sys_socket_network_target_is_open" => "private/config/have_sys_socket.h",
   "syslog" => "syslog.h",
   "SYSTEMTIME" => "windows.h",
+  "target_free_all" => "private/target.h",
   "TestRFC5424Compliance" => "test/function/rfc5424.hpp",
   "TestUTF8Compliance" => "test/function/utf8.hpp",
   "time" => "time.h",

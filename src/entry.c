@@ -373,7 +373,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
                               const char *message,
                               va_list subs ) {
   char *formatted_message;
-  size_t *message_length;
+  size_t message_length;
 
   clear_error(  );
 
@@ -388,14 +388,14 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
     entry->message_length = 0;
 
   } else {
-    message_length = &( entry->message_length );
-    formatted_message = config_format_string( message, subs, message_length );
+    formatted_message = config_format_string( message, subs, &message_length );
     if( !formatted_message ) {
       return NULL;
 
     } else {
       free_mem( entry->message );
       entry->message = formatted_message;
+      entry->message_length = message_length;
 
     }
   }
