@@ -33,6 +33,21 @@ extern "C" {
 #  endif
 
 /**
+ * Gets an insertion string from a Windows Event Log entry.
+ *
+ * @param entry The entry to retrieve the insertion string from.
+ *
+ * @param index The index of the insertion string to retrieve.
+ *
+ * @return The specified insertion string if no error is encountered. In the
+ * event of an error, then NULL will be returned and an error code is set
+ * appropriately.
+ */
+LPCSTR
+stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
+                                    WORD index );
+
+/**
  * Sets the category of an entry for use with a Windows Event Log target.
  *
  * The category is used by a Windows Event Log target. Entries that are going to

@@ -209,7 +209,8 @@ stumpless_new_element( const char *name );
  *
  * @param message The message in the entry. This message may contain any format
  * specifiers valid in \c printf. If this is NULL, then it will be blank in the
- * entry (no characters).
+ * entry (no characters). This also means that characters such as % need to be
+ * escaped as they would be in printf.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of specifiers
@@ -241,7 +242,8 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
  *
  * @param message The new message to set on the entry. This message may contain
  * any format specifiers valid in \c printf. If this is NULL, then it will be
- * blank in the entry (no characters).
+ * blank in the entry (no characters). This also means that characters such as %
+ * need to be escaped as they would be in printf.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of specifiers
@@ -272,7 +274,8 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
  *
  * @param message The message in the entry. This message may contain any format
  * specifiers valid in \c printf. If this is NULL, then it will be blank in the
- * entry (no characters).
+ * entry (no characters). This also means that characters such as % need to be
+ * escaped as they would be in printf.
  *
  * @param subs Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
@@ -298,7 +301,8 @@ vstumpless_new_entry( int facility,
  *
  * @param message The new message to set on the entry. This message may contain
  * any format specifiers valid in \c printf. If this is NULL, then it will be
- * blank in the entry (no characters).
+ * blank in the entry (no characters). Characters such as % need to be escaped
+ * as they would be in printf.
  *
  * @param subs Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of

@@ -25,6 +25,27 @@
 #include "private/error.h"
 #include "private/memory.h"
 
+LPCSTR
+stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
+                                    WORD index ) {
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  if( index < 0 || index >= entry->wel_insertion_count ) {
+    raise_index_out_of_bounds( "invalid insertion string index", index );
+    goto fail;
+  }
+
+  return entry->wel_insertion_params[index]->value;
+
+fail:
+  return NULL;
+}
+
 struct stumpless_entry *
 stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
   clear_error(  );
@@ -121,6 +142,7 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
 
   memcpy( str_copy, str, str_length );
   str_copy[str_length] = '\0';
+  param->name = NULL;
   param->value = str_copy;
   param->value_length = str_length;
   entry->wel_insertion_params[index] = param;

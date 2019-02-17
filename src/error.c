@@ -128,6 +128,11 @@ raise_file_write_failure( void ) {
 }
 
 void
+raise_index_out_of_bounds( const char *message, int code ) {
+  raise_error( STUMPLESS_INDEX_OUT_OF_BOUNDS, message, code, "the invalid index" );
+}
+
+void
 raise_invalid_facility( void ) {
   raise_error( STUMPLESS_INVALID_FACILITY,
                "facility codes must be defined in accordance with RFC 5424, "
