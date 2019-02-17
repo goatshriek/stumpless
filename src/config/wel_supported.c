@@ -35,7 +35,7 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
     goto fail;
   }
 
-  if( index < 0 || index >= entry->wel_insertion_count ) {
+  if( index >= entry->wel_insertion_count ) {
     raise_index_out_of_bounds( "invalid insertion string index", index );
     goto fail;
   }
@@ -117,7 +117,7 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
   }
 
   if( !str ) {
-    raise_argument_empty( "str is NULL" );
+    raise_argument_empty( "insertion string is NULL" );
     goto fail;
   }
 
@@ -194,12 +194,25 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
   WORD i = 0;
   const char *arg;
 
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
     result = stumpless_set_wel_insertion_string( entry, i, arg );
+    if( !result ) {
+      goto fail;
+    }
   }
 
   return entry;
+
+fail:
+  return NULL;
 }
 
 /* private definitions */
