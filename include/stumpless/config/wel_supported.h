@@ -24,6 +24,7 @@
 #ifndef __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 #  define __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 
+#  include <stdarg.h>
 #  include <stumpless/entry.h>
 #  include <windows.h>
 
@@ -103,12 +104,12 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
 /**
  * Sets a string to use for string insertion in a Windows Event Log entry.
  *
- * Windows Events may include insertion strings that are replaced with a
- * specific value provided when logged. This function maps a specific insertion
- * string to a given string. The string will then be substituted for that
- * insertion string when an event is logged. If the windows event does not have
- * an insertion string correlating to the given index, it will simply be
- * ignored.
+ * Windows Events may include insertion strings such as %1 or %3 that are
+ * replaced with a specific value provided when logged. This function maps a
+ * specific insertion string to a given string. The string will then be
+ * substituted for that insertion string when an event is logged. If the windows
+ * event does not have an insertion string correlating to the given index, it
+ * will simply be ignored.
  *
  * Note that the provided string is copied by the library, and therefore will
  * always hold the value that was in str when this function was called, even
@@ -131,6 +132,28 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     LPCSTR str );
 
 /**
+ * Sets the insertion strings of a Windows Even Log entry.
+ *
+ * Instead of setting each insertion string separately via
+ * \c stumpless_set_wel_insertion_string this function can set the insertion
+ * strings all at the same time.
+ *
+ * @param entry The entry to modify.
+ *
+ * @param count The number of insertion strings that will be provided.
+ *
+ * @param ... The insertion strings to set on the entry. These must be
+ * NULL-terminated strings in the same order as they appear in the message.
+ *
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
+                                     WORD count,
+                                     ... );
+
+/**
  * Sets the type of an entry for use with a Windows Event Log target.
  *
  * The type is used by a Windows Event Log target. Entries that are going to be
@@ -147,6 +170,30 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
  */
 struct stumpless_entry *
 stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
+
+/**
+ * Sets the insertion strings of a Windows Even Log entry.
+ *
+ * Instead of setting the each insertion string separately via
+ * \c stumpless_set_wel_insertion_string this function can set the insertion
+ * strings all at the same time.
+ *
+ * @param entry The entry to modify.
+ *
+ * @param count The number of insertion strings that will be provided.
+ *
+ * @param insertions The insertion strings to set on the entry. These must be
+ * NULL-terminated strings in the same order as they appear in the message. This
+ * list must be started via \c va_start before being used, and \c va_end should
+ * be called afterwards, as this function does not call them.
+ *
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
+                                      WORD count,
+                                      va_list insertions );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

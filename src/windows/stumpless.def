@@ -66,6 +66,8 @@ EXPORTS
   stumpless_target_is_open              @64
   stumpless_unset_option                @65
   stumpless_add_message                 @66
-  vstumpless                            @67
-  vstumpless_add_message                @68
-  vstumpless_new_entry                  @69
+  stumpless_set_wel_insertion_strings   @67
+  vstumpless                            @68
+  vstumpless_add_message                @69
+  vstumpless_new_entry                  @70
+  vstumpless_set_wel_insertion_strings  @71

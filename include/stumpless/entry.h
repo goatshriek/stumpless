@@ -278,7 +278,7 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
  * number of substitutions provided must exactly match the number of
  * specifiers given. This list must be started via \c va_start before being
  * used, and \c va_end should be called afterwards, as this function does not
- * call it.
+ * call them.
  *
  * @return The created entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -304,7 +304,7 @@ vstumpless_new_entry( int facility,
  * number of substitutions provided must exactly match the number of
  * specifiers given. This list must be started via \c va_start before being
  * used, and \c va_end should be called afterwards, as this function does not
- * call it.
+ * call them.
  *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.

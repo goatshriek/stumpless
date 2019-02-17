@@ -137,6 +137,20 @@ fail:
 }
 
 struct stumpless_entry *
+stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
+                                     WORD count,
+                                     ... ) {
+  va_list insertions;
+  struct stumpless_entry *result;
+
+  va_start( insertions, count );
+  result = vstumpless_set_wel_insertion_strings( entry, count, insertions );
+  va_end( insertions );
+
+  return result;
+}
+
+struct stumpless_entry *
 stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   clear_error(  );
 
@@ -146,6 +160,22 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   }
 
   entry->wel_type = type;
+
+  return entry;
+}
+
+struct stumpless_entry *
+vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
+                                      WORD count,
+                                      va_list insertions ) {
+  struct stumpless_entry *result;
+  WORD i = 0;
+  const char *arg;
+
+  for( i = 0; i < count; i++ ) {
+    arg = va_arg( insertions, char * );
+    result = stumpless_set_wel_insertion_string( entry, i, arg );
+  }
 
   return entry;
 }
