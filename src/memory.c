@@ -37,6 +37,7 @@ void
 stumpless_free_all( void ) {
   clear_error(  );
 
+  target_free_all(  ); // comes before entry_free_all due to cached entry
   entry_free_all(  );
   strbuilder_free_all(  );
   config_network_free_all(  );

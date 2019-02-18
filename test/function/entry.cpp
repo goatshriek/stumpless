@@ -324,6 +324,35 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( NewEntryTest, FormatSpecifiers ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *format = "string: %s\nint: %d";
+    const char *string_sub = "added to the string";
+    int int_sub = 2234;
+    const char *expected_message = "string: added to the string\nint: 2234";
+    size_t expected_message_length;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 format,
+                                 string_sub,
+                                 int_sub );
+
+    EXPECT_TRUE( entry != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_TRUE( entry->message != NULL );
+
+    expected_message_length = strlen( expected_message );
+    EXPECT_EQ( entry->message_length, expected_message_length );
+    EXPECT_EQ( 0, memcmp( entry->message, expected_message, entry->message_length ) );
+
+    stumpless_destroy_entry( entry );
+  }
+
   TEST( NewEntryTest, MallocFailureOnSecond ) {
     struct stumpless_entry *first_entry;
     struct stumpless_entry *second_entry;
@@ -429,6 +458,71 @@ namespace {
     ASSERT_EQ( message_length, entry->message_length );
     ASSERT_TRUE( entry->message != NULL );
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
+
+    stumpless_destroy_entry( entry );
+  }
+
+  TEST( NewEntryTest, NullAppName ) {
+    struct stumpless_entry *entry;
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 NULL,
+                                 msgid,
+                                 message );
+
+    EXPECT_TRUE( entry != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    if( entry ) {
+      EXPECT_EQ( entry->app_name[0], '-' );
+      EXPECT_EQ( entry->app_name_length, 1 );
+    }
+
+    stumpless_destroy_entry( entry );
+  }
+
+  TEST( NewEntryTest, NullMesssage ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 NULL );
+
+    EXPECT_TRUE( entry != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    if( entry ) {
+      EXPECT_EQ( entry->message_length, 0 );
+    }
+
+    stumpless_destroy_entry( entry );
+  }
+
+  TEST( NewEntryTest, NullMessageId ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 NULL,
+                                 message );
+
+    EXPECT_TRUE( entry != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    if( entry ) {
+      EXPECT_EQ( entry->msgid[0], '-' );
+      EXPECT_EQ( entry->msgid_length, 1 );
+    }
 
     stumpless_destroy_entry( entry );
   }
@@ -576,4 +670,24 @@ namespace {
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( SetMessageTest, NullMessage ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "test-app-name",
+                                 "test-msgid",
+                                 "test-message" );
+    EXPECT_TRUE( entry != NULL );
+
+    result = stumpless_set_entry_message( entry, NULL );
+    EXPECT_EQ( entry, result );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_TRUE( entry->message == NULL );
+    EXPECT_EQ( 0, entry->message_length );
+
+    stumpless_destroy_entry( entry );
+  }
 }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2.3)
 
-project(stumpless VERSION 1.3.1)
+project(stumpless VERSION 1.4.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
@@ -34,6 +34,7 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
 check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
+check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 
 
 # standard source files
@@ -70,6 +71,12 @@ endif(HAVE_SYS_SOCKET_H)
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
+
+if(HAVE_VSNPRINTF_S)
+  list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
+else()
+  list(APPEND STUMPLESS_SOURCES src/config/no_vsnprintf_s.c)
+endif(HAVE_VSNPRINTF_S)
 
 if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
@@ -428,6 +435,10 @@ add_function_test(target
   SOURCES test/function/target.cpp
 )
 
+add_function_test(target_leak
+  SOURCES test/function/leak/target.cpp
+)
+
 add_function_test(version
   SOURCES test/function/version.cpp
 )
@@ -439,6 +450,14 @@ add_custom_target(check
 
 
 # examples
+add_example(basic
+  ${PROJECT_SOURCE_DIR}/docs/examples/basic/basic_example.c
+)
+
+add_example(entry
+  ${PROJECT_SOURCE_DIR}/docs/examples/entry/entry_example.c
+)
+
 add_example(stream
   ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
 )
@@ -449,6 +468,10 @@ add_custom_target(examples
 
 
 # performance tests
+add_performance_test(entry
+  SOURCES test/performance/entry.cpp
+)
+
 add_performance_test(target
   SOURCES test/performance/target.cpp
 )

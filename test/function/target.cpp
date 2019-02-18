@@ -33,9 +33,9 @@ namespace {
 
     target = stumpless_open_buffer_target( "null entry testing",
                                            buffer,
-                                           10,
-                                           0,
-                                           0 );
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
 
     result = stumpless_add_entry( target, NULL );
     EXPECT_LT( result, 0 );
@@ -108,6 +108,22 @@ namespace {
     struct stumpless_error *error;
 
     stumpless_close_target( NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
+  TEST( AddMessageTest, NullTarget ) {
+    int result;
+    struct stumpless_error *error;
+
+    result = stumpless_add_message( NULL, "test-message" );
+    EXPECT_LT( result, 0 );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );

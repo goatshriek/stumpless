@@ -16,15 +16,21 @@
  * limitations under the License.
  */
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stddef.h>
 #include <stumpless.h>
 #include "test/function/windows/events.h"
 
+using::testing::HasSubstr;
+
 namespace {
   class WelSupportedTest : public::testing::Test {
     protected:
       struct stumpless_entry *simple_entry;
+      struct stumpless_entry *insertion_entry;
+      LPCSTR first_insertion = "message #1";
+      LPCSTR second_insertion = "message #2";
 
     virtual void
     SetUp( void ) {
@@ -37,13 +43,79 @@ namespace {
       stumpless_set_wel_category( simple_entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( simple_entry, MSG_SIMPLE );
       stumpless_set_wel_type( simple_entry, EVENTLOG_SUCCESS );
+
+      insertion_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                             STUMPLESS_SEVERITY_INFO,
+                                             "stumpless-wel-unit-test",
+                                             "insertion-entry",
+                                             "string 1: %%1\nstring 2: %%2" );
+
+      stumpless_set_wel_category( insertion_entry, CATEGORY_TEST );
+      stumpless_set_wel_event_id( insertion_entry, MSG_TWO_INSERTIONS );
+      stumpless_set_wel_type( insertion_entry, EVENTLOG_SUCCESS );
+
+      stumpless_set_wel_insertion_strings( insertion_entry,
+                                           2,
+                                           first_insertion,
+                                           second_insertion );
     }
 
     virtual void
     TearDown( void ) {
       stumpless_destroy_entry( simple_entry );
+      stumpless_destroy_entry( insertion_entry );
     }
   };
+
+  TEST_F( WelSupportedTest, GetInsertionStringIndexTooHigh ) {
+    const char *result;
+    WORD index = 4;
+    struct stumpless_error *error;
+
+    ASSERT_TRUE( insertion_entry != NULL );
+
+    result = stumpless_get_wel_insertion_string( insertion_entry, index );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_INDEX_OUT_OF_BOUNDS );
+      EXPECT_EQ( error->code, index );
+    }
+  }
+
+  TEST_F( WelSupportedTest, GetInsertionStringLastString ) {
+    const char *result;
+
+    ASSERT_TRUE( insertion_entry != NULL );
+
+    result = stumpless_get_wel_insertion_string( insertion_entry, 1 );
+    EXPECT_TRUE( result != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_TRUE( result != second_insertion );
+    EXPECT_STREQ( result, second_insertion );
+  }
+
+  TEST_F( WelSupportedTest, GetInsertionStringNullEntry ) {
+    const char *result;
+    struct stumpless_error *error;
+
+    ASSERT_TRUE( insertion_entry != NULL );
+
+    result = stumpless_get_wel_insertion_string( NULL, 1 );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "entry" ) );
+    }
+  }
 
   TEST_F( WelSupportedTest, SetNullInsertionParam ) {
     struct stumpless_error *error;
@@ -284,6 +356,79 @@ namespace {
     entry_result = stumpless_set_wel_insertion_string( entry, 0, "first string" );
     EXPECT_EQ( entry_result, entry );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    stumpless_destroy_entry( entry );
+  }
+
+  TEST( WelSetInsertionStringsTest, NullEntry ) {
+    struct stumpless_entry *result;
+    struct stumpless_error *error;
+
+    result = stumpless_set_wel_insertion_strings( NULL, 1, "add me!" );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "entry" ) );
+    }
+  }
+
+  TEST( WelSetInsertionStringsTest, NullString ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    struct stumpless_error *error;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );
+    ASSERT_TRUE( entry != NULL );
+
+    result = stumpless_set_wel_insertion_strings( entry, 1, NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "insertion string" ) );
+    }
+
+    stumpless_destroy_entry( entry );
+  }
+
+  TEST( WelSetInsertionStringsTest, TwoStrings ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    LPCSTR first = "tik";
+    LPCSTR second = "tok";
+    LPCSTR insertion;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "stumpless-wel-unit-test",
+                                 "simple-entry",
+                                 "simple test message" );
+    ASSERT_TRUE( entry != NULL );
+
+    result = stumpless_set_wel_insertion_strings( entry, 2, first, second );
+    EXPECT_TRUE( result != NULL );
+    EXPECT_TRUE( result == entry );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    insertion = stumpless_get_wel_insertion_string( entry, 0 );
+    EXPECT_TRUE( insertion != first );
+    EXPECT_STREQ( insertion, first );
+
+    insertion = stumpless_get_wel_insertion_string( entry, 1 );
+    EXPECT_TRUE( insertion != second );
+    EXPECT_STREQ( insertion, second );
 
     stumpless_destroy_entry( entry );
   }

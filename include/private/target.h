@@ -28,7 +28,6 @@ destroy_target( struct stumpless_target *target );
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,
-            size_t name_len,
             int options,
             int default_facility );
 
@@ -43,6 +42,9 @@ int
 sendto_unsupported_target( const struct stumpless_target *target,
                            const char *msg,
                            size_t msg_length );
+
+void
+target_free_all( void );
 
 int
 unsupported_target_is_open( const struct stumpless_target *target );

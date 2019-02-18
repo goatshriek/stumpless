@@ -108,31 +108,30 @@ namespace {
     TestRFC5424Compliance( buffer );
   }
 
-  TEST_F( BufferTargetTest, LargeReallocFailure ) {
-    char test_string[4096];
-    void * (*realloc_result)(void *, size_t);
+  TEST_F( BufferTargetTest, EmptyMessage ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
     int result;
-    struct stumpless_error *error;
 
-    ASSERT_EQ( target, stumpless_get_current_target(  ) );
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 NULL );
+    ASSERT_TRUE( entry != NULL );
 
-    realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
-    EXPECT_TRUE( realloc_result != NULL );
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
 
-    memset( test_string, 'h', 4095 );
-    test_string[4095] = '\0';
-    result = stumpless( test_string );
+    TestRFC5424Compliance( buffer );
+    EXPECT_NE( buffer[result-1], ' ' );
 
-    EXPECT_LT( result, 0 );
+    stumpless_destroy_entry( entry );
+  }
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
-
-    realloc_result = stumpless_set_realloc( realloc );
-    ASSERT_TRUE( realloc == realloc_result );
+  TEST_F( BufferTargetTest, IsOpen ) {
+    EXPECT_TRUE( stumpless_target_is_open( target ) );
   }
 
   TEST_F( BufferTargetTest, OverFill ) {

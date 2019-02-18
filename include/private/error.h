@@ -46,6 +46,9 @@ void
 raise_file_write_failure( void );
 
 void
+raise_index_out_of_bounds( const char *message, int code );
+
+void
 raise_invalid_facility( void );
 
 void

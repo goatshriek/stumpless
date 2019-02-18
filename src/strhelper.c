@@ -39,6 +39,23 @@ copy_cstring( const char *str ) {
 }
 
 char *
+copy_cstring_with_length( const char *str, size_t *length ) {
+  char *new_string;
+
+  *length = strlen( str );
+
+  new_string = alloc_mem( *length + 1 );
+  if( !new_string ) {
+    return NULL;
+  }
+
+  memcpy( new_string, str, *length );
+  new_string[*length] = '\0';
+
+  return new_string;
+}
+
+char *
 cstring_to_sized_string( const char *str, size_t *length ){
   char *sized_string;
 
