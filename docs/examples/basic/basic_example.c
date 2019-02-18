@@ -40,6 +40,7 @@ main( int argc, char **argv ) {
   stumpless( "Login failed for username %s", username );
 
 
+#ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
   // opens a network target to example.com using UDP over IPv4
   net_target = stumpless_open_udp4_target( "network-target",
                                            "example.com",
@@ -49,11 +50,14 @@ main( int argc, char **argv ) {
 
   // sends a message to the network target
   stumpless_add_message( net_target, "Login failed for username %s", username );
+#endif
 
 
   // destroying all the resources before finishing up
   stumpless_close_file_target( file_target );
+#ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
   stumpless_close_network_target( net_target );
+#endif
   stumpless_free_all(  );
 
 
