@@ -26,6 +26,48 @@
 #include "private/memory.h"
 #include "private/strhelper.h"
 
+static
+struct stumpless_entry *
+set_wel_insertion_string( struct stumpless_entry *entry,
+                          WORD index,
+                          LPCSTR str ) {
+  size_t *str_length;
+  struct stumpless_param *param;
+
+  param = alloc_mem( sizeof( *param ) );
+  if( !param ) {
+    goto fail;
+  }
+
+  str_length = &( param->value_length ); 
+  param->value = copy_cstring_with_length( str, str_length );
+  if( !param->value ) {
+    goto fail_str;
+  }
+
+  if( index >= entry->wel_insertion_count ) {
+    if( !resize_insertion_params( entry, index ) ) {
+      goto fail_resize;
+    }
+  }
+
+  destroy_insertion_string_param( entry->wel_insertion_params[index] );
+
+  param->name = NULL;
+  param->name_length = 0;
+  entry->wel_insertion_params[index] = param;
+
+  return entry;
+
+
+fail_resize:
+  free_mem( param->value );
+fail_str:
+  free_mem( param );
+fail:
+  return NULL;
+}
+
 LPCSTR
 stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index ) {
@@ -106,9 +148,6 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
-  size_t *str_length;
-  struct stumpless_param *param;
-
   clear_error(  );
 
   if( !entry ) {
@@ -121,36 +160,8 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
     goto fail;
   }
 
-  param = alloc_mem( sizeof( *param ) );
-  if( !param ) {
-    goto fail;
-  }
+  return set_wel_insertion_string( entry, index, str );
 
-  str_length = &( param->value_length ); 
-  param->value = copy_cstring_with_length( str, str_length );
-  if( !param->value ) {
-    goto fail_str;
-  }
-
-  if( index >= entry->wel_insertion_count ) {
-    if( !resize_insertion_params( entry, index ) ) {
-      goto fail_resize;
-    }
-  }
-
-  destroy_insertion_string_param( entry->wel_insertion_params[index] );
-
-  param->name = NULL;
-  param->name_length = 0;
-  entry->wel_insertion_params[index] = param;
-
-  return entry;
-
-
-fail_resize:
-  free_mem( param->value );
-fail_str:
-  free_mem( param );
 fail:
   return NULL;
 }
@@ -200,6 +211,12 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
 
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
+
+    if( !arg ) {
+      raise_argument_empty( "insertion string is NULL" );
+      goto fail;
+    }
+
     result = stumpless_set_wel_insertion_string( entry, i, arg );
     if( !result ) {
       goto fail;
