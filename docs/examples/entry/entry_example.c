@@ -60,5 +60,6 @@ main( int argc, char **argv ) {
   stumpless_destroy_entry( formatted_entry );
   stumpless_free_all(  );
 
+
   return EXIT_SUCCESS;
 }
