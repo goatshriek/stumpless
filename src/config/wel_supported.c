@@ -24,6 +24,7 @@
 #include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/strhelper.h"
 
 LPCSTR
 stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
@@ -105,8 +106,7 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
-  LPSTR str_copy;
-  size_t str_length;
+  size_t *str_length;
   struct stumpless_param *param;
 
   clear_error(  );
@@ -126,9 +126,9 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
     goto fail;
   }
 
-  str_length = strlen( str );
-  str_copy = alloc_mem( str_length + 1 );
-  if( !str_copy ) {
+  str_length = &( param->value_length ); 
+  param->value = copy_cstring_with_length( str, str_length );
+  if( !param->value ) {
     goto fail_str;
   }
 
@@ -140,18 +140,15 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
 
   destroy_insertion_string_param( entry->wel_insertion_params[index] );
 
-  memcpy( str_copy, str, str_length );
-  str_copy[str_length] = '\0';
   param->name = NULL;
-  param->value = str_copy;
-  param->value_length = str_length;
+  param->name_length = 0;
   entry->wel_insertion_params[index] = param;
 
   return entry;
 
 
 fail_resize:
-  free_mem( str_copy );
+  free_mem( param->value );
 fail_str:
   free_mem( param );
 fail:

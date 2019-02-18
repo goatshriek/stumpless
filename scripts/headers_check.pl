@@ -59,6 +59,7 @@ my %manifest = (
   "config_tcp4_is_open" => "private/config/wrapper.h",
   "config_udp4_is_open" => "private/config/wrapper.h",
   "copy_cstring" => "private/strhelper.h",
+  "copy_cstring_with_length" => "private/strhelper.h",
   "cstring_to_sized_string" => "private/strhelper.h",
   "destroy_buffer_target" => "private/target/buffer.h",
   "destroy_file_target" => "private/target/file.h",
