@@ -15,9 +15,38 @@ logging to the following targets:
    [TCP](https://tools.ietf.org/html/rfc6587) over IPv4 or IPv6)
  * files
  * streams
- * character buffers
  * Linux sockets
  * the Windows Event Log
+ * character buffers
+
+## Basic Usage
+Logging basic messages is very simple: just open the target that you want and
+start sending messages. For example, to log to a file:
+
+    target = stumpless_open_file_target( "example.log",
+                                         STUMPLESS_OPTION_NONE,
+                                         STUMPLESS_FACILITY_USER );
+    // uses the last opened target by default
+    stumpless( "Login attempt failure #%d for user %s", count, username );
+
+Sending messages over the network to something like Splunk or rsyslog is just
+as easy:
+
+    target = stumpless_open_udp4_target( "send-to-splunk-example",
+                                         "mylogserver.com", // or use an IP
+                                         STUMPLESS_OPTION_NONE,
+                                         STUMPLESS_FACILITY_USER );
+    stumpless( "Login attempt failure #%d for user %s", count, username );
+
+If you have multiple targets, you can send messages to a chosen target:
+
+    stumpless_add_message( target,
+                           "Login attempt failure #%d for user %s",
+                           count,
+                           username );
+
+It's as easy as that! For more detailed examples of different targets and more
+complicated message structures, check out the [examples](docs/examples)!
 
 ## Documentation
 If you're curious about how something in stumpless works, you can check the
