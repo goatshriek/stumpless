@@ -38,7 +38,7 @@ no_vsnprintf_s_format_string( const char *format, va_list subs, size_t *length )
   if( result < 0 ) {
     goto fail_buffer;
   }
-  
+
   if( result > buffer_size ) {
 
     new_buffer = realloc_mem( buffer, result );

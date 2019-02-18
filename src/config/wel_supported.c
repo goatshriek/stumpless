@@ -39,7 +39,7 @@ set_wel_insertion_string( struct stumpless_entry *entry,
     goto fail;
   }
 
-  str_length = &( param->value_length ); 
+  str_length = &( param->value_length );
   param->value = copy_cstring_with_length( str, str_length );
   if( !param->value ) {
     goto fail_str;

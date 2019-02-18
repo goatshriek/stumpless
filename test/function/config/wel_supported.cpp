@@ -429,7 +429,7 @@ namespace {
     insertion = stumpless_get_wel_insertion_string( entry, 1 );
     EXPECT_TRUE( insertion != second );
     EXPECT_STREQ( insertion, second );
-    
+
     stumpless_destroy_entry( entry );
   }
 }
