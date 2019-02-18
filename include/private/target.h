@@ -28,7 +28,6 @@ destroy_target( struct stumpless_target *target );
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,
-            size_t name_len,
             int options,
             int default_facility );
 

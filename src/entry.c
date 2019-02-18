@@ -184,13 +184,11 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail_name;
   }
 
-  param->value_length = strlen( value );
-  param->value = alloc_mem( param->value_length + 1 );
+  param->value = cstring_to_sized_string( value, &( param->value_length ) );
   if( !param->value ) {
     goto fail_value;
   }
-  memcpy( param->value, value, param->value_length );
-  param->value[param->value_length] = '\0';
+
   return param;
 
 fail_value:

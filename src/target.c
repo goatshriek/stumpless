@@ -418,7 +418,6 @@ destroy_target( struct stumpless_target *target ) {
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,
-            size_t name_len,
             int options,
             int default_facility ) {
   struct stumpless_target *target;
@@ -429,13 +428,11 @@ new_target( enum stumpless_target_type type,
     goto fail;
   }
 
-  target->name = alloc_mem( name_len + 1 );
+  target->name = copy_cstring( name );
   if( !target->name ) {
     goto fail_name;
   }
 
-  memcpy( target->name, name, name_len );
-  target->name[name_len] = '\0';
   target->type = type;
   target->options = options;
   default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );

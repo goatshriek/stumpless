@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,6 @@ stumpless_open_buffer_target( const char *name,
   target = new_target(
     STUMPLESS_BUFFER_TARGET,
     name,
-    strlen( name ),
     options,
     default_facility
   );
