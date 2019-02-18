@@ -110,3 +110,7 @@ that this function destroys any memory associated with the target, so the
 structure should not be referenced after calling this function.
 
     stumpless_close_wel_target( wel_target );
+
+And of course if you'd like to type a little less:
+
+    stumpless_close_target( wel_target );
