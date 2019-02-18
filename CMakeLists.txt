@@ -450,6 +450,10 @@ add_custom_target(check
 
 
 # examples
+add_example(entry
+  ${PROJECT_SOURCE_DIR}/docs/examples/entry/entry_example.c
+)
+
 add_example(stream
   ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
 )
