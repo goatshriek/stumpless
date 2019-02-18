@@ -46,7 +46,7 @@ If you have multiple targets, you can send messages to a chosen target:
                            username );
 
 It's as easy as that! For more detailed examples of different targets and more
-complicated message structures, check out the [examples](docs/examples)!
+complicated message structures, check out the [examples](docs/examples).
 
 ## Documentation
 If you're curious about how something in stumpless works, you can check the
