@@ -460,6 +460,10 @@ add_custom_target(examples
 
 
 # performance tests
+add_performance_test(entry
+  SOURCES test/performance/entry.cpp
+)
+
 add_performance_test(target
   SOURCES test/performance/target.cpp
 )
