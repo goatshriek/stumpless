@@ -16,6 +16,13 @@
  * limitations under the License.
  */
 
+/** @file
+ * Types and functions for creating and modifying entries. Facilities,
+ * severities, and options are created to be compatible with the syslog.h
+ * header if it is found on the system, otherwise they are defined as closely
+ * as possible to the standards in RFC 5424.
+ */
+
 #ifndef __STUMPLESS_ENTRY_H
 #  define __STUMPLESS_ENTRY_H
 

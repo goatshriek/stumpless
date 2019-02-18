@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+/** @file
+ * General types and functions for working with all targets.
+ */
+
 #ifndef __STUMPLESS_TARGET_H
 #  define __STUMPLESS_TARGET_H
 
