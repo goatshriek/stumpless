@@ -65,3 +65,10 @@ EXPORTS
   stumpless_set_udp_max_message_size    @63
   stumpless_target_is_open              @64
   stumpless_unset_option                @65
+  stumpless_add_message                 @66
+  stumpless_get_wel_insertion_string    @67
+  stumpless_set_wel_insertion_strings   @68
+  vstumpless                            @69
+  vstumpless_add_message                @70
+  vstumpless_new_entry                  @71
+  vstumpless_set_wel_insertion_strings  @72

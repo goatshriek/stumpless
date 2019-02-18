@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,70 @@
 #include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/strhelper.h"
+
+static
+struct stumpless_entry *
+set_wel_insertion_string( struct stumpless_entry *entry,
+                          WORD index,
+                          LPCSTR str ) {
+  size_t *str_length;
+  struct stumpless_param *param;
+
+  param = alloc_mem( sizeof( *param ) );
+  if( !param ) {
+    goto fail;
+  }
+
+  str_length = &( param->value_length );
+  param->value = copy_cstring_with_length( str, str_length );
+  if( !param->value ) {
+    goto fail_str;
+  }
+
+  if( index >= entry->wel_insertion_count ) {
+    if( !resize_insertion_params( entry, index ) ) {
+      goto fail_resize;
+    }
+  }
+
+  destroy_insertion_string_param( entry->wel_insertion_params[index] );
+
+  param->name = NULL;
+  param->name_length = 0;
+  entry->wel_insertion_params[index] = param;
+
+  return entry;
+
+
+fail_resize:
+  free_mem( param->value );
+fail_str:
+  free_mem( param );
+fail:
+  return NULL;
+}
+
+LPCSTR
+stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
+                                    WORD index ) {
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  if( index >= entry->wel_insertion_count ) {
+    raise_index_out_of_bounds( "invalid insertion string index", index );
+    goto fail;
+  }
+
+  return entry->wel_insertion_params[index]->value;
+
+fail:
+  return NULL;
+}
 
 struct stumpless_entry *
 stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
@@ -84,10 +148,6 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
-  LPSTR str_copy;
-  size_t str_length;
-  struct stumpless_param *param;
-
   clear_error(  );
 
   if( !entry ) {
@@ -96,44 +156,28 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
   }
 
   if( !str ) {
-    raise_argument_empty( "str is NULL" );
+    raise_argument_empty( "insertion string is NULL" );
     goto fail;
   }
 
-  param = alloc_mem( sizeof( *param ) );
-  if( !param ) {
-    goto fail;
-  }
+  return set_wel_insertion_string( entry, index, str );
 
-  str_length = strlen( str );
-  str_copy = alloc_mem( str_length + 1 );
-  if( !str_copy ) {
-    goto fail_str;
-  }
-
-  if( index >= entry->wel_insertion_count ) {
-    if( !resize_insertion_params( entry, index ) ) {
-      goto fail_resize;
-    }
-  }
-
-  destroy_insertion_string_param( entry->wel_insertion_params[index] );
-
-  memcpy( str_copy, str, str_length );
-  str_copy[str_length] = '\0';
-  param->value = str_copy;
-  param->value_length = str_length;
-  entry->wel_insertion_params[index] = param;
-
-  return entry;
-
-
-fail_resize:
-  free_mem( str_copy );
-fail_str:
-  free_mem( param );
 fail:
   return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
+                                     WORD count,
+                                     ... ) {
+  va_list insertions;
+  struct stumpless_entry *result;
+
+  va_start( insertions, count );
+  result = vstumpless_set_wel_insertion_strings( entry, count, insertions );
+  va_end( insertions );
+
+  return result;
 }
 
 struct stumpless_entry *
@@ -148,6 +192,41 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   entry->wel_type = type;
 
   return entry;
+}
+
+struct stumpless_entry *
+vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
+                                      WORD count,
+                                      va_list insertions ) {
+  struct stumpless_entry *result;
+  WORD i = 0;
+  const char *arg;
+
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  for( i = 0; i < count; i++ ) {
+    arg = va_arg( insertions, char * );
+
+    if( !arg ) {
+      raise_argument_empty( "insertion string is NULL" );
+      goto fail;
+    }
+
+    result = stumpless_set_wel_insertion_string( entry, i, arg );
+    if( !result ) {
+      goto fail;
+    }
+  }
+
+  return entry;
+
+fail:
+  return NULL;
 }
 
 /* private definitions */

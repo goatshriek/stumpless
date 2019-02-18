@@ -28,7 +28,8 @@ calls. The first opens an Event Log on the local machine with the given name,
 while the second attempts to open an Event Log on a remote server with a
 provided name.
 
-    local_wel_target = stumpless_open_local_wel_target( "Stumpless Example", STUMPLESS_OPTION_NONE );
+    local_wel_target = stumpless_open_local_wel_target( "Stumpless Example",
+                                                        STUMPLESS_OPTION_NONE );
     remote_wel_target = stumpless_open_remote_wel_target( "\\RemoteServerName",
                                                           "Stumpless Example",
                                                           STUMPLESS_OPTION_NONE );
@@ -79,6 +80,13 @@ following:
 
     stumpless_set_wel_insertion_string( entry, 0, "cynthia" );
     stumpless_set_wel_insertion_string( entry, 1, "oak" );
+
+A potentially faster approach is to use the plural version of this function to
+set multiple insertion strings at once. It takes a variable number of arguments
+preceded by the count of strings that will be provided. The following function
+call has identical results to the previous two:
+
+    stumpless_set_wel_insertion_strings( entry, 2, "cynthia", "oak" );
 
 In the case where you would like to send a single entry through multiple
 targets, you may have already done the work to put the value into a param

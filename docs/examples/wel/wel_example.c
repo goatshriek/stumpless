@@ -96,6 +96,9 @@ main( int argc, char **argv ) {
     return EXIT_FAILURE;
   }
 
+  // the previous two strings could have been set with the following single call:
+  // result = stumpless_set_wel_insertion_strings( basic_entry, 2, "cynthia", "oak" );
+
 
   // logging the entry with insertion strings set
   // note that this is the same code as before

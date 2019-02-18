@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
@@ -36,52 +37,14 @@ static struct stumpless_target *current_target = NULL;
 static struct stumpless_entry *cached_entry = NULL;
 
 int
-stumpless( const char *message ) {
-  struct stumpless_target *target;
+stumpless( const char *message, ... ) {
   int result;
+  va_list subs;
 
-  clear_error(  );
+  va_start( subs, message );
+  result = vstumpless( message, subs );
+  va_end( subs );
 
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  if( !cached_entry ) {
-    cached_entry = stumpless_new_entry( 0, 0, "-", "-", message );
-    if( !cached_entry ) {
-      return -1;
-    }
-
-    cached_entry->prival = current_target->default_prival;
-
-    if( target->default_app_name ) {
-      cached_entry->app_name = alloc_mem( target->default_app_name_length );
-      if( !cached_entry->app_name ) {
-        return -1;
-      }
-
-      memcpy( cached_entry->app_name, target->default_app_name,
-              target->default_app_name_length );
-      cached_entry->app_name_length = target->default_app_name_length;
-    }
-
-    if( target->default_msgid ) {
-      cached_entry->msgid = alloc_mem( target->default_msgid_length );
-      if( !cached_entry->msgid ) {
-        return -1;
-      }
-
-      memcpy( cached_entry->msgid, target->default_msgid,
-              target->default_msgid_length );
-      cached_entry->msgid_length = target->default_msgid_length;
-    }
-
-  }
-
-  stumpless_set_entry_message( cached_entry, message );
-
-  result = stumpless_add_entry( target, cached_entry );
   return result;
 }
 
@@ -154,6 +117,20 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   strbuilder_destroy( builder );
+  return result;
+}
+
+int
+stumpless_add_message( struct stumpless_target *target,
+                       const char *message,
+                       ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstumpless_add_message( target, message, subs );
+  va_end( subs );
+
   return result;
 }
 
@@ -353,6 +330,81 @@ stumpless_unset_option( struct stumpless_target *target, int option ) {
   return target;
 }
 
+int
+vstumpless( const char *message, va_list subs ) {
+  struct stumpless_target *target;
+
+  clear_error(  );
+
+  target = stumpless_get_current_target(  );
+  if( !target ) {
+    return -1;
+  }
+
+  return vstumpless_add_message( target, message, subs );
+}
+
+int
+vstumpless_add_message( struct stumpless_target *target,
+                        const char *message,
+                        va_list subs ) {
+  char *app_name;
+  char *msgid;
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return -1;
+  }
+
+  if( !cached_entry ) {
+    cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                         "-",
+                                         "-",
+                                         message,
+                                         subs );
+    if( !cached_entry ) {
+      return -1;
+    }
+
+  } else {
+    vstumpless_set_entry_message( cached_entry, message, subs );
+
+  }
+
+  cached_entry->prival = target->default_prival;
+
+  if( target->default_app_name ) {
+    app_name = alloc_mem( target->default_app_name_length );
+    if( !app_name ) {
+      return -1;
+    }
+
+    free_mem( cached_entry->app_name );
+    memcpy( app_name,
+            target->default_app_name,
+            target->default_app_name_length );
+    cached_entry->app_name = app_name;
+    cached_entry->app_name_length = target->default_app_name_length;
+  }
+
+  if( target->default_msgid ) {
+    msgid = alloc_mem( target->default_msgid_length );
+    if( !msgid ) {
+      return -1;
+    }
+
+    free_mem( cached_entry->msgid );
+    memcpy( msgid,
+            target->default_msgid,
+            target->default_msgid_length );
+    cached_entry->msgid = msgid;
+    cached_entry->msgid_length = target->default_msgid_length;
+  }
+
+  return stumpless_add_entry( target, cached_entry );
+}
+
 /* private definitions */
 
 void
@@ -366,7 +418,6 @@ destroy_target( struct stumpless_target *target ) {
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,
-            size_t name_len,
             int options,
             int default_facility ) {
   struct stumpless_target *target;
@@ -377,13 +428,11 @@ new_target( enum stumpless_target_type type,
     goto fail;
   }
 
-  target->name = alloc_mem( name_len + 1 );
+  target->name = copy_cstring( name );
   if( !target->name ) {
     goto fail_name;
   }
 
-  memcpy( target->name, name, name_len );
-  target->name[name_len] = '\0';
   target->type = type;
   target->options = options;
   default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
@@ -429,6 +478,11 @@ sendto_unsupported_target( const struct stumpless_target *target,
 
   raise_target_unsupported( "attempted to send a message to an unsupported target type" );
   return -1;
+}
+
+void
+target_free_all( void ) {
+  stumpless_destroy_entry( cached_entry );
 }
 
 int
