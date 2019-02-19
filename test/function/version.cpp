@@ -53,6 +53,9 @@ namespace {
     struct stumpless_version *version;
     struct stumpless_error *error;
     void *(*result)(size_t);
+
+    // cause a failure so that the error struct can be created
+    stumpless_new_param( NULL, NULL );
    
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( result != NULL );
