@@ -44,5 +44,4 @@ namespace {
     EXPECT_EQ( free_all_memory_counter.alloc_total,
                free_all_memory_counter.free_total );
   }
-
 }
