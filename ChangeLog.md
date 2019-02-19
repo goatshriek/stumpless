@@ -10,9 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Examples for file and socket targets.
  - Platform-specific default behavior.
 
-## [1.4.0] - 2019-02-18
+## [1.4.0] - 2019-02-19
 ### Added
  - Format specifier support for messages and entries.
+ - Generic stumpless_close_target function.
 
 ## [1.3.1] - 2019-02-15
 ### Fixed
