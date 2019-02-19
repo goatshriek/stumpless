@@ -154,6 +154,10 @@ raise_invalid_id( void ) {
 
 void
 raise_memory_allocation_failure( void ) {
+  if( !last_error ) {
+    return;
+  }
+
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE, NULL, 0, NULL );
 }
 
