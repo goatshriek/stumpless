@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Thread-safe operation.
  - Examples for file and socket targets.
  - Platform-specific default behavior.
+ - Simpler socket functions (will break existing usage).
 
 ## [1.4.0] - 2019-02-20
 ### Added
