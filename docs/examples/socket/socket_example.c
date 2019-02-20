@@ -68,8 +68,9 @@ main( int argc, char **argv ) {
                                                 STUMPLESS_OPTION_NONE,
                                                 STUMPLESS_FACILITY_USER );
   if( !socket_target ) {
-    stumpless_perror( "couldn't create a new socket target" );
-    return EXIT_FAILURE;
+    stumpless_perror( "couldn't create a new socket target, maybe /dev/log"
+                      " doesn't exist" );
+    return EXIT_SUCCESS;
   }
 
 
@@ -81,8 +82,8 @@ main( int argc, char **argv ) {
                                                 STUMPLESS_FACILITY_USER );
   if( !manual_target ) {
     stumpless_perror( "couldn't create a new socket target with a manual local"
-                      " socket" );
-    return EXIT_FAILURE;
+                      " socket, maybe /dev/log doesn't exist" );
+    return EXIT_SUCCESS;
   }
 
 
