@@ -7,12 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
  - Compile-time log level filtering.
  - Thread-safe operation.
- - Examples for file and socket targets.
+ - Examples for socket targets.
  - Platform-specific default behavior.
 
 ## [1.4.0] - 2019-02-20
 ### Added
  - Format specifier support for messages and entries.
+ - Example and documentation of file targets.
 
 ### Fixed
  - Memory leak where error structures are not freed by stumpless_free_all.
