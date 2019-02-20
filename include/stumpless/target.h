@@ -76,6 +76,20 @@ stumpless_add_entry( struct stumpless_target *target,
                      struct stumpless_entry *entry );
 
 /**
+ * Closes a target.
+ *
+ * This function can be used when you'd like to avoid checking the type of the
+ * target and then calling the appropriate close function. Note that use of this
+ * doesn't actually avoid the check - it just does the check on your behalf. It
+ * is more efficient to call the specific close function if you know the type of
+ * the target.
+ *
+ * @param target The target to close.
+ */
+void
+stumpless_close_target( struct stumpless_target *target );
+
+/**
  * Adds a message to a given target.
  *
  * @param target The target to send the message to.
