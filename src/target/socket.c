@@ -177,7 +177,20 @@ fail:
 int
 sendto_socket_target( const struct socket_target *target,
                       const char *msg, size_t msg_length ) {
-  return sendto( target->local_socket, msg, msg_length, 0,
-                 ( struct sockaddr * ) &target->target_addr,
-                 target->target_addr_len );
+  int result;
+
+ result = sendto( target->local_socket,
+                  msg,
+                  msg_length,
+                  0,
+                  ( struct sockaddr * ) &target->target_addr,
+                  target->target_addr_len );
+
+  if( result == -1 ) {
+    raise_socket_send_failure( "sendto failed with unix socket",
+                               errno,
+                               "errno after the failed call to sendto" );
+  }
+
+  return result;
 }
