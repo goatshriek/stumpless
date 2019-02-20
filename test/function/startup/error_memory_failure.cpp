@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
- * 
+ * Copyright 2019 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,39 +18,27 @@
 
 #include <stddef.h>
 #include <stdlib.h>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 
-using::testing::HasSubstr;
-
 namespace {
 
-  TEST( EntryStartupTest, MemoryFailure ) {
-    struct stumpless_entry *entry;
-    struct stumpless_error *error;
+  TEST( ErrorMemoryAllocationFailureTest, Initialization ) {
     void *(*result)(size_t);
+    struct stumpless_param *param;
 
-    // cause a failure so that the error struct can be created
-    stumpless_new_param( NULL, NULL );
-   
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( result != NULL );
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "app-name",
-                                 "msgid",
-                                 "message" );
-    EXPECT_EQ( NULL, entry );
+    // this will create an immediate failure
+    param = stumpless_new_param( NULL, NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
+    EXPECT_TRUE( param == NULL );
 
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    // this is fine - really we just want to ensure this doesn't crash
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     stumpless_set_malloc( malloc );
   }
+
 }

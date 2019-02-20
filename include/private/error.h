@@ -25,6 +25,9 @@ void
 clear_error( void );
 
 void
+error_free_all( void );
+
+void
 raise_address_failure( const char *message, int code, const char *code_type );
 
 void
