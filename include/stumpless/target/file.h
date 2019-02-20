@@ -16,6 +16,11 @@
  * limitations under the License.
  */
 
+/** @file
+ * File targets allow logs to be sent to a specified file. Files are created
+ * as needed, and logs are appended to any existing contents.
+ */
+
 #ifndef __STUMPLESS_TARGET_FILE_H
 #  define __STUMPLESS_TARGET_FILE_H
 
