@@ -18,9 +18,9 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <stumpless/error.h>
 #include "private/error.h"
+#include "private/memory.h"
 
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
@@ -83,6 +83,12 @@ clear_error( void ) {
 }
 
 void
+error_free_all( void ) {
+  free_mem( last_error );
+  last_error = NULL;
+}
+
+void
 raise_address_failure( const char *message, int code, const char *code_type ) {
   raise_error( STUMPLESS_ADDRESS_FAILURE, message, code, code_type );
 }
@@ -103,7 +109,7 @@ raise_error( enum stumpless_error_id id,
              int code,
              const char *code_type ) {
   if( !last_error ) {
-    last_error = malloc( sizeof( struct stumpless_error ) );
+    last_error = alloc_mem( sizeof( struct stumpless_error ) );
     if( !last_error ) {
       error_valid = 0;
       return;
@@ -148,6 +154,10 @@ raise_invalid_id( void ) {
 
 void
 raise_memory_allocation_failure( void ) {
+  if( !last_error ) {
+    return;
+  }
+
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE, NULL, 0, NULL );
 }
 
