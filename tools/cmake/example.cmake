@@ -4,7 +4,7 @@ else()
   set(function_test_compile_flags "")
 endif(MSVC)
 
-macro(add_example name)
+function(add_no_run_example name)
   add_executable(example-${name}
     EXCLUDE_FROM_ALL
     ${ARGN}
@@ -24,6 +24,10 @@ macro(add_example name)
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
   )
+endfunction(add_no_run_example)
+
+macro(add_example name)
+  add_no_run_example(${name} ${ARGN})
 
   list(APPEND STUMPLESS_EXAMPLE_RUNNERS run-example-${name})
   add_custom_target(run-example-${name}
