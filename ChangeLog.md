@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Examples for file and socket targets.
  - Platform-specific default behavior.
 
-## [1.4.0] - 2019-02-19
+## [1.4.0] - 2019-02-20
 ### Added
  - Format specifier support for messages and entries.
 

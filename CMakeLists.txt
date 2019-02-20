@@ -411,6 +411,10 @@ add_function_test(error_leak
   SOURCES test/function/leak/error.cpp
 )
 
+add_function_test(error_memory_failure
+  SOURCES test/function/startup/error_memory_failure.cpp
+)
+
 add_function_test(file
   SOURCES
     test/function/target/file.cpp
