@@ -26,7 +26,7 @@ namespace {
   TEST( ErrorMemoryAllocationFailureTest, Initialization ) {
     void *(*result)(size_t);
     struct stumpless_param *param;
-   
+
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( result != NULL );
 
