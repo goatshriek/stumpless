@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
  - Memory leak where error structures are not freed by stumpless_free_all.
+ - Missing error generation for socket logging.
 
 ## [1.3.1] - 2019-02-15
 ### Fixed

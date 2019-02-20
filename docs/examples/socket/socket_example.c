@@ -39,7 +39,6 @@ main( int argc, char **argv ) {
                                "example-msgid",
                                "This is an example message." );
   if( !entry ) {
-    printf("hit 1\n");
     stumpless_perror( "could not create a basic entry" );
     return EXIT_FAILURE;
   }
@@ -47,7 +46,6 @@ main( int argc, char **argv ) {
   element = stumpless_new_element( "basic-element" );
   entry_result = stumpless_add_element( entry, element );
   if( !entry_result ) {
-    printf("hit 2\n");
     stumpless_perror( "could not create and add an element to the entry" );
     return EXIT_FAILURE;
   }
@@ -56,7 +54,6 @@ main( int argc, char **argv ) {
   param = stumpless_new_param( "basic-param-name", "basic-param-value" );
   element_result = stumpless_add_param( element, param );
   if( !element_result ) {
-    printf("hit 3\n");
     stumpless_perror( "could not create and add a param to the element" );
     return EXIT_FAILURE;
   }
@@ -71,10 +68,8 @@ main( int argc, char **argv ) {
                                                 STUMPLESS_OPTION_NONE,
                                                 STUMPLESS_FACILITY_USER );
   if( !socket_target ) {
-    printf("hit 4\n");
-    stumpless_perror( "couldn't create a new socket target, maybe /dev/log"
-                      " doesn't exist" );
-    return EXIT_SUCCESS;
+    stumpless_perror( "couldn't create a new socket target" );
+    return EXIT_FAILURE;
   }
 
 
@@ -85,26 +80,23 @@ main( int argc, char **argv ) {
                                                 STUMPLESS_OPTION_NONE,
                                                 STUMPLESS_FACILITY_USER );
   if( !manual_target ) {
-    printf("hit 5\n");
     stumpless_perror( "couldn't create a new socket target with a manual local"
-                      " socket, maybe /dev/log doesn't exist" );
-    return EXIT_SUCCESS;
+                      " socket" );
+    return EXIT_FAILURE;
   }
 
 
   // sending the entry is just like normal
   log_result = stumpless_add_entry( socket_target, entry );
   if( log_result < 0 ) {
-    printf("hit 6\n");
-    stumpless_perror( "could not log an entry to a simple target" );
-    return EXIT_FAILURE;
+    stumpless_perror( "could not log an entry to a simple target, maybe"
+                      " /dev/log doesn't exist" );
   }
 
   log_result = stumpless_add_entry( manual_target, entry );
   if( log_result < 0 ) {
-    printf("hit 7\n");
-    stumpless_perror( "could not log an entry to a manual local socket" );
-    return EXIT_FAILURE;
+    stumpless_perror( "could not log an entry to a manual local socket, maybe"
+                      " /dev/log doesn't exist" );
   }
 
 
