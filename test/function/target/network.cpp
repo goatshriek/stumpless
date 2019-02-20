@@ -42,6 +42,20 @@ using::testing::Not;
 
 namespace {
 
+  TEST( NetworkTargetCloseTest, Generic ) {
+    struct stumpless_target *target;
+
+    target = stumpless_open_udp4_target( "generic-close-test",
+                                         "127.0.0.1",
+                                         STUMPLESS_OPTION_NONE,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target != NULL );
+
+    stumpless_close_target( target );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+  }
+
   TEST( NetworkTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
 
