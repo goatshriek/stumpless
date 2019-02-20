@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Platform-specific default behavior.
  - Simpler socket functions (will break existing usage).
 
-## [1.4.0] - 2019-02-20
+## [1.4.0] - 2019-02-21
 ### Added
  - Format specifier support for messages and entries.
  - Generic stumpless_close_target function.
