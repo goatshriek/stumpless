@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.0] - 2019-02-20
 ### Added
  - Format specifier support for messages and entries.
+ - Generic stumpless_close_target function.
 
 ### Fixed
  - Memory leak where error structures are not freed by stumpless_free_all.

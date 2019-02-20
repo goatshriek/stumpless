@@ -79,7 +79,11 @@ re-opened if possible. If the target is not open (a state referred to as paused
 in the documentation), then it will be left as is until an explicit call to
 `stumpless_target_open` is made.
 
-Targets opened throuth both the open and new families of functions are closed
+Targets opened through both the open and new families of functions are closed
 using the standard close function:
 
     stumpless_close_network_target( my_target );
+
+Or if you want to type a little less:
+
+    stumpless_close_target( my_target );

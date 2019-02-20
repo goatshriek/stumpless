@@ -78,6 +78,25 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( StreamTargetCloseTest, Generic ) {
+    const char *filename = "genericclosetest.log";
+    FILE *stream;
+    struct stumpless_target *target;
+
+    stream = fopen( filename, "w+" );
+    ASSERT_TRUE( stream != NULL );
+
+    target = stumpless_open_stream_target( filename,
+                                           stream,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target != NULL );
+
+    stumpless_close_target( target );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+  }
+
   TEST( StreamTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
 

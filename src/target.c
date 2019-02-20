@@ -21,6 +21,9 @@
 #include <string.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
+#include <stumpless/target/buffer.h>
+#include <stumpless/target/file.h>
+#include <stumpless/target/stream.h>
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -35,6 +38,14 @@
 
 static struct stumpless_target *current_target = NULL;
 static struct stumpless_entry *cached_entry = NULL;
+
+static
+void
+close_unsupported_target( struct stumpless_target *target ) {
+  ( void ) target;
+
+  raise_target_unsupported( "attempted to close an unsupported target type" );
+}
 
 int
 stumpless( const char *message, ... ) {
@@ -118,6 +129,47 @@ stumpless_add_entry( struct stumpless_target *target,
 
   strbuilder_destroy( builder );
   return result;
+}
+
+void
+stumpless_close_target( struct stumpless_target *target ) {
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target was NULL" );
+    return;
+  }
+
+  switch( target->type ) {
+    case STUMPLESS_BUFFER_TARGET:
+      stumpless_close_buffer_target( target );
+      break;
+
+    case STUMPLESS_FILE_TARGET:
+      stumpless_close_file_target( target );
+      break;
+
+    case STUMPLESS_NETWORK_TARGET:
+      config_close_network_target( target );
+      break;
+
+    case STUMPLESS_SOCKET_TARGET:
+      config_close_socket_target( target );
+      break;
+
+    case STUMPLESS_STREAM_TARGET:
+      stumpless_close_stream_target( target );
+      break;
+
+    case STUMPLESS_WINDOWS_EVENT_LOG_TARGET:
+      config_close_wel_target( target );
+      break;
+
+    default:
+      raise_target_unsupported( "attempted to close an unsupported target"
+                                " type" );
+
+  }
 }
 
 int

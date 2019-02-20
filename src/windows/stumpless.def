@@ -72,3 +72,4 @@ EXPORTS
   vstumpless_add_message                @70
   vstumpless_new_entry                  @71
   vstumpless_set_wel_insertion_strings  @72
+  stumpless_close_target                @73

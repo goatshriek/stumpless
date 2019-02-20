@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -205,6 +205,18 @@ namespace {
   }
 
   /* non-fixture tests */
+
+  TEST( WelTargetCloseTest, Generic ) {
+    struct stumpless_target *target;
+
+    target = stumpless_open_local_wel_target( "wel-target-test",
+                                              STUMPLESS_OPTION_NONE );
+    EXPECT_TRUE( target != NULL );
+
+    stumpless_close_target( target );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+  }
 
   TEST( WelTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;

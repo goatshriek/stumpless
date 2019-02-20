@@ -75,6 +75,21 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( FileTargetCloseTest, Generic ) {
+    const char *filename = "genericclosetest.log";
+    struct stumpless_target *target;
+
+    remove( filename );
+    target = stumpless_open_file_target( filename,
+                                         STUMPLESS_OPTION_NONE,
+                                         STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target != NULL );
+
+    stumpless_close_target( target );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+  }
+
   TEST( FileTargetCloseTest, NullTarget ) {
     struct stumpless_error *error;
 
