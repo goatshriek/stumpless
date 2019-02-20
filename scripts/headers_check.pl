@@ -72,6 +72,7 @@ my %manifest = (
   "DWORD" => "windows.h",
   "entry_free_all" => "private/entry.h",
   "errno" => "errno.h",
+  "error_free_all" => "private/error.h",
   "EVENTLOG_ERROR_TYPE" => "windows.h",
   "EVENTLOG_INFORMATION_TYPE" => "windows.h",
   "EVENTLOG_SUCCESS" => "windows.h",

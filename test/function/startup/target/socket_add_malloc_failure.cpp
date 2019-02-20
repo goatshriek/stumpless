@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,9 @@ namespace {
     char buffer[1024];
     struct stumpless_entry *basic_entry;
 
+    // cause a failure so that the error struct can be created
+    stumpless_new_param( NULL, NULL );
+
     test_socket_addr.sun_family = AF_UNIX;
     memcpy(&test_socket_addr.sun_path, socket_name, strlen(socket_name)+1);
    
@@ -58,6 +61,7 @@ namespace {
     bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr));
 
     target = stumpless_open_socket_target( socket_name, "test-function-target-socket", 0, 0 );
+    ASSERT_TRUE( target != NULL );
 
     basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                        STUMPLESS_SEVERITY_INFO,
