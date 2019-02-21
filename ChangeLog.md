@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Examples for socket targets.
  - Platform-specific default behavior.
 
-## [1.4.0] - 2019-02-20
+## [1.4.0] - 2019-02-21
 ### Added
  - Format specifier support for messages and entries.
  - Generic stumpless_close_target function.
@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
  - Memory leak where error structures are not freed by stumpless_free_all.
+
+### Changed
+ - Network examples are no longer run by the examples build target.
 
 ## [1.3.1] - 2019-02-15
 ### Fixed

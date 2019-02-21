@@ -209,11 +209,11 @@ else()
     LIBRARIES ${network_libraries}
   )
 
-  add_example(tcp
+  add_no_run_example(tcp
     ${PROJECT_SOURCE_DIR}/docs/examples/network/tcp_example.c
   )
 
-  add_example(udp
+  add_no_run_example(udp
     ${PROJECT_SOURCE_DIR}/docs/examples/network/udp_example.c
   )
 endif(NOT ENABLE_NETWORK_TARGETS)
