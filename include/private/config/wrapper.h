@@ -43,6 +43,7 @@
 
 /* definition of config_sendto_socket_target */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    include <stumpless/target/socket.h>
 #    include "private/target/socket.h"
 #    define config_close_socket_target stumpless_close_socket_target
 #    define config_sendto_socket_target sendto_socket_target

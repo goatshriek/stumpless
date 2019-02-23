@@ -253,6 +253,10 @@ else()
   add_function_test(socket_add_malloc_failure
     SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
   )
+
+  add_example(socket
+    ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
+  )
 endif(NOT ENABLE_SOCKET_TARGETS)
 
 

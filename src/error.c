@@ -56,10 +56,12 @@ stumpless_perror( const char *prefix ) {
   if( error_stream && error_valid ) {
 
     if( prefix ) {
-      fprintf( error_stream, "%s: ", prefix );
+      fputs( prefix, error_stream );
+      fputc( ':', error_stream );
+      fputc( ' ', error_stream );
     }
 
-    fprintf( error_stream, "%s", last_error->message );
+    fputs( last_error->message, error_stream );
 
     if( last_error->code_type ) {
       fprintf( error_stream, " (%s: %d)", last_error->code_type, last_error->code );
@@ -167,8 +169,8 @@ raise_network_protocol_unsupported( void ) {
 }
 
 void
-raise_socket_bind_failure( void ) {
-  raise_error( STUMPLESS_SOCKET_BIND_FAILURE, NULL, 0, NULL );
+raise_socket_bind_failure( const char *message, int code, const char *code_type ) {
+  raise_error( STUMPLESS_SOCKET_BIND_FAILURE, message, code, code_type );
 }
 
 void

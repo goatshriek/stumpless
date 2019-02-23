@@ -64,7 +64,9 @@ void
 raise_network_protocol_unsupported( void );
 
 void
-raise_socket_bind_failure( void );
+raise_socket_bind_failure( const char *message,
+                           int code,
+                           const char *code_type );
 
 void
 raise_socket_connect_failure( const char *message,
