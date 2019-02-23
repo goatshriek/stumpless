@@ -59,6 +59,15 @@ stumpless( const char *message, ... ) {
   return result;
 }
 
+void
+stumplog( int priority, const char *message, ... ) {
+  va_list subs;
+
+  va_start( subs, message );
+  vstumplog( priority, message, subs );
+  va_end( subs );
+}
+
 int
 stumpless_add_entry( struct stumpless_target *target,
                      struct stumpless_entry *entry ) {
@@ -131,6 +140,35 @@ stumpless_add_entry( struct stumpless_target *target,
   return result;
 }
 
+int
+stumpless_add_log( struct stumpless_target *target,
+                   int priority,
+                   const char *message,
+                   ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstumpless_add_log( target, priority, message, subs );
+  va_end( subs );
+
+  return result;
+}
+
+int
+stumpless_add_message( struct stumpless_target *target,
+                       const char *message,
+                       ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstumpless_add_message( target, message, subs );
+  va_end( subs );
+
+  return result;
+}
+
 void
 stumpless_close_target( struct stumpless_target *target ) {
   clear_error(  );
@@ -170,20 +208,6 @@ stumpless_close_target( struct stumpless_target *target ) {
                                 " type" );
 
   }
-}
-
-int
-stumpless_add_message( struct stumpless_target *target,
-                       const char *message,
-                       ... ) {
-  int result;
-  va_list subs;
-
-  va_start( subs, message );
-  result = vstumpless_add_message( target, message, subs );
-  va_end( subs );
-
-  return result;
 }
 
 struct stumpless_target *
@@ -396,12 +420,29 @@ vstumpless( const char *message, va_list subs ) {
   return vstumpless_add_message( target, message, subs );
 }
 
+void
+vstumplog( int priority, const char *message, va_list subs ) {
+  struct stumpless_target *target;
+
+  clear_error(  );
+
+  target = stumpless_get_current_target(  );
+  if( !target ) {
+    return;
+  }
+
+  vstumpless_add_log( target, priority, message, subs );
+}
+
 int
-vstumpless_add_message( struct stumpless_target *target,
-                        const char *message,
-                        va_list subs ) {
+vstumpless_add_log( struct stumpless_target *target,
+                    int priority,
+                    const char *message,
+                    va_list subs ) {
   char *app_name;
   char *msgid;
+
+  clear_error(  );
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -424,7 +465,7 @@ vstumpless_add_message( struct stumpless_target *target,
 
   }
 
-  cached_entry->prival = target->default_prival;
+  cached_entry->prival = priority;
 
   if( target->default_app_name ) {
     app_name = alloc_mem( target->default_app_name_length );
@@ -455,6 +496,20 @@ vstumpless_add_message( struct stumpless_target *target,
   }
 
   return stumpless_add_entry( target, cached_entry );
+}
+
+int
+vstumpless_add_message( struct stumpless_target *target,
+                        const char *message,
+                        va_list subs ) {
+  clear_error(  );
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return -1;
+  }
+
+  return vstumpless_add_log( target, target->default_prival, message, subs );
 }
 
 /* private definitions */
