@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <errno.h>
 #include <stddef.h>
 #include <string.h>
 #include <unistd.h>
@@ -45,7 +46,8 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_socket_target( const char *name,
                               const char *local_socket,
-                              int options, int default_facility ) {
+                              int options,
+                              int default_facility ) {
   struct stumpless_target *target;
   size_t name_len;
   size_t local_socket_len;
@@ -123,46 +125,72 @@ destroy_socket_target( struct socket_target *trgt ) {
 }
 
 struct socket_target *
-new_socket_target( const char *dest, size_t dest_len,
-                   const char *source, size_t source_len ) {
-  struct socket_target *trgt;
+new_socket_target( const char *dest,
+                   size_t dest_len,
+                   const char *source,
+                   size_t source_len ) {
+  struct socket_target *target;
+  int bind_result;
 
-  trgt = alloc_mem( sizeof( *trgt ) );
-  if( !trgt ) {
-    return NULL;
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
+    goto fail;
   }
 
-  trgt->target_addr.sun_family = AF_UNIX;
-  memcpy( &trgt->target_addr.sun_path, dest, dest_len );
-  trgt->target_addr.sun_path[dest_len] = '\0';
+  target->target_addr.sun_family = AF_UNIX;
+  memcpy( &target->target_addr.sun_path, dest, dest_len );
+  target->target_addr.sun_path[dest_len] = '\0';
 
-  trgt->local_addr.sun_family = AF_UNIX;
-  memcpy( &trgt->local_addr.sun_path, source, source_len );
-  trgt->local_addr.sun_path[source_len] = '\0';
+  target->local_addr.sun_family = AF_UNIX;
+  memcpy( &target->local_addr.sun_path, source, source_len );
+  target->local_addr.sun_path[source_len] = '\0';
 
-  trgt->local_socket = socket( trgt->local_addr.sun_family, SOCK_DGRAM, 0 );
-  if( trgt->local_socket < 0 ) {
-    free_mem( trgt );
-    return NULL;
+  target->local_socket = socket( target->local_addr.sun_family, SOCK_DGRAM, 0 );
+  if( target->local_socket < 0 ) {
+    raise_socket_failure( "could not create a local unix socket",
+                          errno,
+                          "errno after the failed call to socket" );
+    goto fail_socket;
   }
 
-  if( bind
-      ( trgt->local_socket, ( struct sockaddr * ) &trgt->local_addr,
-        sizeof( trgt->local_addr ) ) < 0 ) {
-    free_mem( trgt );
-    raise_socket_bind_failure(  );
-    return NULL;
+  bind_result= bind( target->local_socket,
+                     ( struct sockaddr * ) &target->local_addr,
+                     sizeof( target->local_addr ) );
+
+  if( bind_result < 0 ) {
+    raise_socket_bind_failure( "could not bind to the local unix socket",
+                               errno,
+                               "errno after the failed called to bind" );
+    goto fail_socket;
   }
 
-  trgt->target_addr_len = sizeof( trgt->target_addr );
+  target->target_addr_len = sizeof( target->target_addr );
 
-  return trgt;
+  return target;
+
+fail_socket:
+  free_mem( target );
+fail:
+  return NULL;
 }
 
 int
 sendto_socket_target( const struct socket_target *target,
                       const char *msg, size_t msg_length ) {
-  return sendto( target->local_socket, msg, msg_length, 0,
-                 ( struct sockaddr * ) &target->target_addr,
-                 target->target_addr_len );
+  int result;
+
+ result = sendto( target->local_socket,
+                  msg,
+                  msg_length,
+                  0,
+                  ( struct sockaddr * ) &target->target_addr,
+                  target->target_addr_len );
+
+  if( result == -1 ) {
+    raise_socket_send_failure( "sendto failed with unix socket",
+                               errno,
+                               "errno after the failed call to sendto" );
+  }
+
+  return result;
 }
