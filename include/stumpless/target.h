@@ -71,6 +71,23 @@ struct stumpless_target {
 int
 stumpless( const char *message, ... );
 
+/**
+ * Logs a message to the default target with the given priority. Can serve as
+ * a replacement for the traditional \c syslog function.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of specifiers
+ * given.
+ */
+void
+stumplog( int priority, const char *message, ... );
+
 int
 stumpless_add_entry( struct stumpless_target *target,
                      struct stumpless_entry *entry );

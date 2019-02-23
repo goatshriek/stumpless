@@ -314,6 +314,7 @@ my %manifest = (
   "STUMPLESS_WINDOWS_EVENT_LOG_TARGET" => "stumpless/target.h",
   "STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE" => "stumpless/error.h",
   "STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE" => "stumpless/error.h",
+  "stumplog" => "stumpless/target.h",
   "sys_socket_close_network_target" => "private/config/have_sys_socket.h",
   "sys_socket_init_network_target" => "private/config/have_sys_socket.h",
   "sys_socket_network_free_all" => "private/config/have_sys_socket.h",
