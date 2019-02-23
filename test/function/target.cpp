@@ -528,7 +528,7 @@ namespace {
   }
 
   TEST( Stumplog, Basic ) {
-    char buffer[100];
+    char buffer[1000];
     struct stumpless_target *target;
     int priority;
 
@@ -546,7 +546,6 @@ namespace {
     stumplog( priority, "test message" );
 
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
-    stumpless_perror( "stumplog failed" );
 
     TestRFC5424Compliance( buffer );
 
