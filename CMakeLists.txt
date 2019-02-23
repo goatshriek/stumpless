@@ -444,7 +444,9 @@ add_function_test(stream
 )
 
 add_function_test(target
-  SOURCES test/function/target.cpp
+  SOURCES
+    test/function/target.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(target_leak

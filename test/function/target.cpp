@@ -20,6 +20,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/function/rfc5424.hpp"
 
 using::testing::HasSubstr;
 
@@ -104,6 +105,40 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( AddLogTest, NullTarget ) {
+    int priority;
+    int result;
+    struct stumpless_error *error;
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    result = stumpless_add_log( NULL, priority , "test-message" );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
+  TEST( AddMessageTest, NullTarget ) {
+    int result;
+    struct stumpless_error *error;
+
+    result = stumpless_add_message( NULL, "test-message" );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_THAT( error->message, HasSubstr( "target" ) );
+    }
+  }
+
   TEST( CloseTarget, BadTargetType ) {
     struct stumpless_target target;
     struct stumpless_error *error;
@@ -124,22 +159,6 @@ namespace {
     struct stumpless_error *error;
 
     stumpless_close_target( NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
-  }
-
-  TEST( AddMessageTest, NullTarget ) {
-    int result;
-    struct stumpless_error *error;
-
-    result = stumpless_add_message( NULL, "test-message" );
-    EXPECT_LT( result, 0 );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
@@ -504,6 +523,30 @@ namespace {
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
     EXPECT_TRUE( option );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( Stumplog, Basic ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    int priority;
+
+    buffer[0] = '\0';
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    stumplog( priority, "test message" );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    EXPECT_NE( buffer[0], '\0' );
+    TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
   }
