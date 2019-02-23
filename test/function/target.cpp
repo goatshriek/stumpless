@@ -540,12 +540,14 @@ namespace {
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     stumplog( priority, "test message" );
 
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    stumpless_perror( "stumplog failed" );
 
-    EXPECT_NE( buffer[0], '\0' );
     TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
