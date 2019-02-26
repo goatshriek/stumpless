@@ -152,8 +152,41 @@ stumpless_add_message( struct stumpless_target *target,
 void
 stumpless_close_target( struct stumpless_target *target );
 
+/**
+ * Gets the current target.
+ *
+ * The current target is either the last target that was opened, set by a call
+ * to stumpless_set_current_target, or the default target if neither of the
+ * former exists.
+ *
+ * Be careful not to confuse this target with the default target, which is the
+ * target used when no suitable current target exists. While these may be the
+ * same in some cases, they will not always be.
+ *
+ * @return The current target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_target *
 stumpless_get_current_target( void );
+
+/**
+ * Gets the default target.
+ *
+ * The default target is opened when a logging call is made with no target
+ * open. It will not be opened until either this happens or a call to this
+ * function is made. It will not be closed until a call to stumpless_free_all
+ * is made.
+ *
+ * Be careful not to confuse this target with the current target, which is the
+ * last target opened or set via stumpless_set_current_target. While these will
+ * return the same target in some cases, such as if they are called before
+ * opening any targets, they are not equivalent.
+ *
+ * @return The default target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_get_default_target( void );
 
 /**
  * Gets the default facility of a target.
