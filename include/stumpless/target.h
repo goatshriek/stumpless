@@ -73,7 +73,7 @@ stumpless( const char *message, ... );
 
 /**
  * Logs a message to the default target with the given priority. Can serve as
- * a replacement for the traditional syslog() function.
+ * a replacement for the traditional \c syslog function.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
@@ -178,8 +178,8 @@ stumpless_get_current_target( void );
  * is made.
  *
  * Be careful not to confuse this target with the current target, which is the
- * last target opened or set via stumpless_set_current_target. While these will
- * return the same target in some cases, such as if they are called before
+ * last target opened or set via stumpless_set_current_target(). While these
+ * will return the same target in some cases, such as if they are called before
  * opening any targets, they are not equivalent.
  *
  * @return The default target if no error is encountered. If an error is
@@ -330,7 +330,7 @@ vstumpless( const char *message, va_list subs );
 
 /**
  * Logs a message to the default target with the given priority. Can serve as
- * a replacement for the traditional vsyslog() function.
+ * a replacement for the traditional \c vsyslog function.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
