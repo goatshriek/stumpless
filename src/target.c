@@ -38,6 +38,7 @@
 
 static struct stumpless_target *current_target = NULL;
 static struct stumpless_entry *cached_entry = NULL;
+static struct stumpless_target *default_target = NULL;
 
 static
 void
@@ -227,6 +228,17 @@ stumpless_get_default_facility( const struct stumpless_target *target ) {
   }
 
   return get_facility( target->default_prival );
+}
+
+struct stumpless_target *
+stumpless_get_default_target( void ) {
+  clear_error(  );
+
+  if( !default_target ) {
+    default_target = config_open_default_target(  );
+  }
+
+  return default_target;
 }
 
 int

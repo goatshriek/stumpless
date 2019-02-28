@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018 Joel E. Anderson
+* Copyright 2018-2019 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 
+#  include <stddef.h>
+#  include <stumpless/target.h>
+
 size_t
 windows_get_now( char *buffer );
 
@@ -27,5 +30,8 @@ windows_getpagesize( void );
 
 int
 windows_getpid( void );
+
+struct stumpless_target *
+windows_open_default_target( void );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H */

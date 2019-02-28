@@ -23,6 +23,13 @@
 #  include "private/config.h"
 
 
+/* definition of config_open_default_target */
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    define config_open_default_target windows_open_default_target
+#  else
+#    define config_open_default_target() ( ( void ) 0 )
+#  endif
+
 /* definition of config_sendto_network_target and config_network_free_all */
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include "private/target/network.h"

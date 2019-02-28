@@ -170,6 +170,17 @@ struct stumpless_target *
 stumpless_get_current_target( void );
 
 /**
+ * Gets the default facility of a target.
+ *
+ * @param target The target to get the facility from..
+ *
+ * @return The default facility if no error is encountered. If an error is
+ * encountered, then -1 is returned and an error code is set appropriately.
+ */
+int
+stumpless_get_default_facility( const struct stumpless_target *target );
+
+/**
  * Gets the default target.
  *
  * The default target is opened when a logging call is made with no target
@@ -187,17 +198,6 @@ stumpless_get_current_target( void );
  */
 struct stumpless_target *
 stumpless_get_default_target( void );
-
-/**
- * Gets the default facility of a target.
- *
- * @param target The target to get the facility from..
- *
- * @return The default facility if no error is encountered. If an error is
- * encountered, then -1 is returned and an error code is set appropriately.
- */
-int
-stumpless_get_default_facility( const struct stumpless_target *target );
 
 /**
  * Gets a given option of a target.
