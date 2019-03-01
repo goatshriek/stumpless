@@ -27,7 +27,7 @@
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    define config_open_default_target windows_open_default_target
 #  else
-#    define config_open_default_target() ( ( void ) 0 )
+#    define config_open_default_target() ( NULL )
 #  endif
 
 /* definition of config_sendto_network_target and config_network_free_all */

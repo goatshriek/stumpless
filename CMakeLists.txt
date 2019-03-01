@@ -36,6 +36,11 @@ check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
 check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 
+if(EXISTS "/var/run/syslog")
+  set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
+else()
+  set(STUMPLESS_DEFAULT_SOCKET "/dev/log")
+endif()
 
 # standard source files
 set(STUMPLESS_SOURCES
