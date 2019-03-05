@@ -25,7 +25,9 @@
 
 /* definition of config_open_default_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-#    define config_open_default_target windows_open_default_target
+#    define config_open_default_target wel_open_default_target
+#  elif STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    define config_open_default_target socket_open_default_target
 #  else
 #    define config_open_default_target() ( NULL )
 #  endif

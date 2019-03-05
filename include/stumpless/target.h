@@ -28,6 +28,9 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
+/** The name of the default target. */
+#  define STUMPLESS_DEFAULT_TARGET_NAME "stumpless-default"
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif

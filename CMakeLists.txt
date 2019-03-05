@@ -242,7 +242,9 @@ elseif(NOT HAVE_SYS_SOCKET_H)
 
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
-  list(APPEND STUMPLESS_SOURCES src/target/socket.c)
+
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/socket.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.c)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h

@@ -16,10 +16,12 @@
  * limitations under the License.
  */
 
+#include <stdarg.h>
 #include <stddef.h>
-#include <string.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
+#include <stumpless/target.h>
+#include <stumpless/target/wel.h>
 #include <windows.h>
 #include "private/config/wel_supported.h"
 #include "private/error.h"
@@ -314,4 +316,10 @@ set_entry_wel_type( struct stumpless_entry *entry, int severity ) {
     default:
       entry->wel_type = EVENTLOG_SUCCESS;
   }
+}
+
+struct stumpless_target *
+wel_open_default_target( void ) {
+  return stumpless_open_local_wel_target( STUMPLESS_DEFAULT_TARGET_NAME,
+                                          STUMPLESS_OPTION_NONE );
 }

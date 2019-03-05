@@ -96,8 +96,3 @@ int
 windows_getpid( void ) {
   return ( int ) ( GetCurrentProcessId(  ) );
 }
-
-struct stumpless_target *
-windows_open_default_target( void ) {
-  return NULL;
-}
