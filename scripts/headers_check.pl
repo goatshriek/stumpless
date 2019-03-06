@@ -30,6 +30,7 @@ my %manifest = (
   "CLOCKS_PER_SEC" => "time.h",
   "close" => "unistd.h",
   "close_server_socket" => "test/helper/server.hpp",
+  "config_close_default_target" => "private/config/wrapper.h",
   "config_close_network_target" => "private/config/wrapper.h",
   "config_close_tcp4_target" => "private/config/wrapper.h",
   "config_close_socket_target" => "private/config/wrapper.h",

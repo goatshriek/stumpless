@@ -604,7 +604,7 @@ target_free_all( void ) {
   stumpless_destroy_entry( cached_entry );
   cached_entry = NULL;
 
-  stumpless_close_target( default_target );
+  config_close_default_target( default_target );
   default_target = NULL;
 }
 
