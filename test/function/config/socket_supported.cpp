@@ -33,5 +33,7 @@ namespace {
       EXPECT_EQ( target->type, STUMPLESS_SOCKET_TARGET );
       EXPECT_STREQ( target->name, STUMPLESS_DEFAULT_SOCKET );
     }
+
+    stumpless_free_all(  );
   }
 }

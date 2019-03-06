@@ -602,6 +602,10 @@ sendto_unsupported_target( const struct stumpless_target *target,
 void
 target_free_all( void ) {
   stumpless_destroy_entry( cached_entry );
+  cached_entry = NULL;
+
+  stumpless_close_target( default_target );
+  default_target = NULL;
 }
 
 int

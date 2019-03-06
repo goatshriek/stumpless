@@ -154,6 +154,8 @@ namespace {
       EXPECT_EQ( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
       EXPECT_STREQ( target->name, STUMPLESS_DEFAULT_TARGET_NAME );
     }
+
+    stumpless_free_all(  );
   }
 
   TEST( WelEntryCategoryTest, NullEntry ) {
