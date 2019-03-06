@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,6 +142,19 @@ namespace {
   }
 
   /* non-fixture tests */
+
+  TEST( GetDefaultTarget, WelSupported ) {
+    struct stumpless_target *target;
+
+    target = stumpless_get_default_target(  );
+
+    EXPECT_TRUE( target != NULL );
+
+    if( target ) {
+      EXPECT_EQ( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
+      EXPECT_STREQ( target->name, STUMPLESS_DEFAULT_TARGET_NAME );
+    }
+  }
 
   TEST( WelEntryCategoryTest, NullEntry ) {
     struct stumpless_error *error;

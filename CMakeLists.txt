@@ -261,6 +261,10 @@ else()
     SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
   )
 
+  add_function_test(socket_supported
+    SOURCES test/function/config/socket_supported.cpp
+  )
+
   add_example(socket
     ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
   )
