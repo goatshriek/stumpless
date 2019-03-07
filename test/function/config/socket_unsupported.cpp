@@ -31,6 +31,8 @@ namespace {
     if( target ) {
       EXPECT_NE( target->type, STUMPLESS_SOCKET_TARGET );
     }
+
+    stumpless_free_all(  );
   }
 
   TEST( SocketTargetTest, GenericClose ) {

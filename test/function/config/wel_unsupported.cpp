@@ -31,6 +31,8 @@ namespace {
     if( target ) {
       EXPECT_NE( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
     }
+
+    stumpless_free_all(  );
   }
 
   TEST( WelTargetTest, GenericClose ) {
