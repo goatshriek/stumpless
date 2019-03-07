@@ -28,6 +28,9 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
+/** The file opened if the default target is to a file. */
+#  define STUMPLESS_DEFAULT_FILE "stumpless-default.log"
+
 /** The name of the default target. */
 #  define STUMPLESS_DEFAULT_TARGET_NAME "stumpless-default"
 
@@ -77,6 +80,9 @@ stumpless( const char *message, ... );
 /**
  * Logs a message to the default target with the given priority. Can serve as
  * a replacement for the traditional \c syslog function.
+ *
+ * For detailed information on what the default target will be for a given
+ * system, check the stumpless_get_default_target() function documentation.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
@@ -195,6 +201,21 @@ stumpless_get_default_facility( const struct stumpless_target *target );
  * last target opened or set via stumpless_set_current_target(). While these
  * will return the same target in some cases, such as if they are called before
  * opening any targets, they are not equivalent.
+ *
+ * The default target type will change depending on the configuration of the
+ * system configuration. If Windows Event Log targets are supported, then the
+ * default target will log to an event log named
+ * \c STUMPLESS_DEFAULT_TARGET_NAME. If Windows Event Log targets are not
+ * supported and socket targets are, then the default target will point at the
+ * socket named in STUMPLESS_DEFAULT_SOCKET, which will be /var/run/syslog if
+ * it existed at build time, or else /dev/log. If neither of these target types
+ * are supported then a file target is opened to log to the file named in
+ * \c STUMPLESS_DEFAULT_FILE.
+ *
+ * The default target will not have any options set, and will have a default
+ * facility of \c STUMPLESS_FACILITY_USER. These settings may be modified by
+ * calling the appropriate modifiers on the target after retrieving it with this
+ * function.
  *
  * @return The default target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -334,6 +355,9 @@ vstumpless( const char *message, va_list subs );
 /**
  * Logs a message to the default target with the given priority. Can serve as
  * a replacement for the traditional \c vsyslog function.
+ *
+ * For detailed information on what the default target will be for a given
+ * system, check the stumpless_get_default_target() function documentation.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.

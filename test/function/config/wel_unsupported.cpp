@@ -22,6 +22,17 @@
 
 namespace {
 
+  TEST( GetDefaultTarget, WelUnsupported ) {
+    struct stumpless_target *target;
+
+    target = stumpless_get_default_target(  );
+    EXPECT_TRUE( target != NULL );
+
+    if( target ) {
+      EXPECT_NE( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
+    }
+  }
+
   TEST( WelTargetTest, GenericClose ) {
     struct stumpless_target target;
     struct stumpless_error *error;

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,9 @@ struct file_target {
 
 void
 destroy_file_target( struct file_target *target );
+
+struct stumpless_target *
+file_open_default_target( void );
 
 struct file_target *
 new_file_target( const char *filename );

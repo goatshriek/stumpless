@@ -85,6 +85,13 @@ destroy_file_target( struct file_target *target ) {
   free_mem( target );
 }
 
+struct stumpless_target *
+file_open_default_target( void ) {
+  return stumpless_open_file_target( STUMPLESS_DEFAULT_FILE,
+                                     STUMPLESS_OPTION_NONE,
+                                     STUMPLESS_FACILITY_USER );
+}
+
 struct file_target *
 new_file_target( const char *filename ) {
   struct file_target *target;
