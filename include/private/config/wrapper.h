@@ -35,7 +35,7 @@
 #  else
 #    include <stumpless/target/file.h>
 #    include "private/target/file.h"
-#    define config_open_default_target() file_open_default_target
+#    define config_open_default_target file_open_default_target
 #    define config_close_default_target stumpless_close_file_target
 #  endif
 
