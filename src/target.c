@@ -215,6 +215,10 @@ struct stumpless_target *
 stumpless_get_current_target( void ) {
   clear_error(  );
 
+  if( !current_target ) {
+    current_target = stumpless_get_default_target(  );
+  }
+
   return current_target;
 }
 

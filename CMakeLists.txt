@@ -410,6 +410,10 @@ add_function_test(buffer_leak
   SOURCES test/function/leak/buffer.cpp
 )
 
+add_function_test(current_target
+  SOURCES test/function/startup/current_target.cpp
+)
+
 add_function_test(entry
   SOURCES test/function/entry.cpp
 )
