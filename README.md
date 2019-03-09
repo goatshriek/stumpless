@@ -61,16 +61,12 @@ If you have multiple targets, you can send messages to a chosen target:
 It's as easy as that! For more detailed examples of different targets and more
 complicated message structures, check out the [examples](docs/examples).
 
-## Documentation
-If you're curious about how something in stumpless works, you can check the
-appropriate section of the documentation, stored in the `docs` folder. You can
-also look in the `docs/examples` folder for in-depth walkthroughs and annotated
-example code for using various features of the library.
+## Further Documentation
+If you're curious about how something in stumpless works that isn't explained
+here, you can check the appropriate section of the documentation, stored in the
+[docs](docs) folder. You can also look in the [examples](docs/examples) folder
+for detailed walkthroughs and annotated example code for using various features
+of the library.
 
-## scripts
-The `scripts` directory contains single-file tools useful for the development
-of the project, such as file formatting scripts and header inclusion checks.
-
-## tools
-The `tools` directory contains files to support third-party tools used by
-stumpless, such as cmake.
+Folders in the repository contain their own README files that detail what they
+contain and any other relevant information.
