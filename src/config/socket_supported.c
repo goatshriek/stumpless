@@ -1,7 +1,7 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+// SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,16 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_TARGET_FILE_H
-#  define __STUMPLESS_PRIVATE_TARGET_FILE_H
-
-#  include <stddef.h>
-#  include <stdio.h>
-
-struct file_target {
-  FILE *stream;
-};
-
-void
-destroy_file_target( struct file_target *target );
+#include <stddef.h>
+#include <stumpless/entry.h>
+#include <stumpless/target.h>
+#include <stumpless/target/socket.h>
+#include "private/config/socket_supported.h"
 
 struct stumpless_target *
-file_open_default_target( void );
-
-struct file_target *
-new_file_target( const char *filename );
-
-int
-sendto_file_target( struct file_target *target,
-                    const char *msg,
-                    size_t msg_length );
-
-#endif /* __STUMPLESS_PRIVATE_TARGET_FILE_H */
+socket_open_default_target( void ) {
+  return stumpless_open_socket_target( STUMPLESS_DEFAULT_SOCKET,
+                                       NULL,
+                                       STUMPLESS_OPTION_NONE,
+                                       STUMPLESS_FACILITY_USER );
+}

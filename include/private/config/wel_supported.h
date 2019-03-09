@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018 Joel E. Anderson
+* Copyright 2018-2019 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,5 +36,8 @@ resize_insertion_params( struct stumpless_entry *entry, WORD max_index );
 
 void
 set_entry_wel_type( struct stumpless_entry *entry, int severity );
+
+struct stumpless_target *
+wel_open_default_target( void );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H */

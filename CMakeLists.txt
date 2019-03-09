@@ -36,6 +36,11 @@ check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
 check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 
+if(EXISTS "/var/run/syslog")
+  set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
+else()
+  set(STUMPLESS_DEFAULT_SOCKET "/dev/log")
+endif()
 
 # standard source files
 set(STUMPLESS_SOURCES
@@ -237,7 +242,9 @@ elseif(NOT HAVE_SYS_SOCKET_H)
 
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
-  list(APPEND STUMPLESS_SOURCES src/target/socket.c)
+
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/socket.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.c)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
@@ -252,6 +259,10 @@ else()
 
   add_function_test(socket_add_malloc_failure
     SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
+  )
+
+  add_function_test(socket_supported
+    SOURCES test/function/config/socket_supported.cpp
   )
 
   add_example(socket
@@ -399,6 +410,10 @@ add_function_test(buffer_leak
   SOURCES test/function/leak/buffer.cpp
 )
 
+add_function_test(current_target
+  SOURCES test/function/startup/current_target.cpp
+)
+
 add_function_test(entry
   SOURCES test/function/entry.cpp
 )
@@ -444,7 +459,9 @@ add_function_test(stream
 )
 
 add_function_test(target
-  SOURCES test/function/target.cpp
+  SOURCES
+    test/function/target.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_function_test(target_leak

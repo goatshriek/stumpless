@@ -406,6 +406,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
 void
 entry_free_all( void ) {
   cache_destroy( entry_cache );
+  entry_cache = NULL;
 }
 
 int

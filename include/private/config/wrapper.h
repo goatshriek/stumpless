@@ -23,6 +23,22 @@
 #  include "private/config.h"
 
 
+/* definition of config_open_default_target */
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include "private/config/wel_supported.h"
+#    define config_open_default_target wel_open_default_target
+#    define config_close_default_target stumpless_close_wel_target
+#  elif STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    include "private/config/socket_supported.h"
+#    define config_open_default_target socket_open_default_target
+#    define config_close_default_target stumpless_close_socket_target
+#  else
+#    include <stumpless/target/file.h>
+#    include "private/target/file.h"
+#    define config_open_default_target file_open_default_target
+#    define config_close_default_target stumpless_close_file_target
+#  endif
+
 /* definition of config_sendto_network_target and config_network_free_all */
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include "private/target/network.h"

@@ -73,3 +73,8 @@ EXPORTS
   vstumpless_new_entry                  @71
   vstumpless_set_wel_insertion_strings  @72
   stumpless_close_target                @73
+  stumpless_add_log                     @74
+  stumpless_get_default_target          @75
+  stumplog                              @76
+  vstumpless_add_log                    @77
+  vstumplog                             @78

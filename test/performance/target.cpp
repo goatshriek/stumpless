@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include "test/helper/memory_counter.hpp"
 
 NEW_MEMORY_COUNTER( stumpless )
+NEW_MEMORY_COUNTER( stumplog )
 
 static void Stumpless(benchmark::State& state){
   char buffer[1000];
@@ -47,4 +48,29 @@ static void Stumpless(benchmark::State& state){
   state.counters["MemoryFreed"] = ( double ) stumpless_memory_counter.free_total;
 }
 
+static void Stumplog( benchmark::State& state ) {
+  int i = 0;
+
+  INIT_MEMORY_COUNTER( stumplog );
+  stumpless_set_malloc( stumplog_memory_counter_malloc );
+  stumpless_set_realloc( stumplog_memory_counter_realloc );
+  stumpless_set_free( stumplog_memory_counter_free );
+
+  // ensure that the current target is the default target
+  stumpless_set_current_target( stumpless_get_default_target(  ) );
+
+  for(auto _ : state){
+    stumplog( STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER,
+              "testing message %d\n",
+              i++ );
+  }
+
+  state.counters["CallsToAlloc"] = ( double ) stumplog_memory_counter.malloc_count;
+  state.counters["MemoryAllocated"] = ( double ) stumplog_memory_counter.alloc_total;
+  state.counters["CallsToRealloc"] = ( double ) stumplog_memory_counter.realloc_count;
+  state.counters["CallsToFree"] = ( double ) stumplog_memory_counter.free_count;
+  state.counters["MemoryFreed"] = ( double ) stumplog_memory_counter.free_total;
+}
+
 BENCHMARK(Stumpless);
+BENCHMARK(Stumplog);
