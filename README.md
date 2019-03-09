@@ -21,14 +21,14 @@ logging to the following targets:
 
 ## Basic Usage
 If you want to start off slow, then you can use the `stumplog` function as a
-direct replacement:
+direct replacement for the syslog function:
 
     syslog( LOG_INFO | LOG_USER, "My message" );
     // can be directly replaced with:
     stumplog( LOG_INFO | LOG_USER, "My message" );
 
-If you don't open a target, this will log messages to the default target for the
-platform: on a Linux this is `/dev/log`, on a Mac system this will be
+If you haven't opened a target, this will log messages to the default target for
+the platform: on a Linux this is `/dev/log`, on a Mac system this will be
 `/var/run/syslog`, and on a Windows machine it is the Windows Event Log. If you
 open a target or a few before calling `stumplog`, then logs will be sent to the
 most recently opened target.
