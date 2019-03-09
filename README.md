@@ -20,8 +20,21 @@ logging to the following targets:
  * character buffers
 
 ## Basic Usage
-Logging basic messages is very simple: just open the target that you want and
-start sending messages. For example, to log to a file:
+If you want to start off slow, then you can use the `stumplog` function as a
+direct replacement:
+
+    syslog( LOG_INFO | LOG_USER, "My message" );
+    // can be directly replaced with:
+    stumplog( LOG_INFO | LOG_USER, "My message" );
+
+If you don't open a target, this will log messages to the default target for the
+platform: on a Linux this is `/dev/log`, on a Mac system this will be
+`/var/run/syslog`, and on a Windows machine it is the Windows Event Log. If you
+open a target or a few before calling `stumplog`, then logs will be sent to the
+most recently opened target.
+
+If you want to open your own target, then you simply open the target that you
+want and start sending messages. For example, to log to a file:
 
     target = stumpless_open_file_target( "example.log",
                                          STUMPLESS_OPTION_NONE,
