@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Simpler socket functions (will break existing usage).
  - Non-blocking network logging (may change existing usage).
 
-## [1.4.0] - 2019-03-07
+## [1.4.0] - 2019-03-09
 ### Added
  - Format specifier support for messages and entries.
  - Generic stumpless_close_target function.
