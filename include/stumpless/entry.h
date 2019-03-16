@@ -137,10 +137,31 @@ extern "C" {
 /* custom option code */
 #  define STUMPLESS_OPTION_NONE 0
 
+/**
+ * A parameter within a structured data element. Each parameter must have both a
+ * name and a value, in compliance with RFC 5424.
+ * 
+ */
 struct stumpless_param {
+/**
+ * The name must be between 1 and 32 characters long and consist only of ASCII
+ * characters between '!' and '~', inclusive, with the exception of the '='
+ * character which is not allowed. Note that this field will NOT be
+ * NULL-terminated.
+ */
   char *name;
+/** The number of characters in name. */
   size_t name_length;
-  char *value;         /**< NULL-terminated string to support wel insertion strings */
+/**
+ * The value may be any UTF-8 string. As specified in RFC 5424, the characters 
+ * '"' (ABNF %d34), '\' (ABNF %d92), and ']' (ABNF %d93) MUST be escaped by
+ * placing a backspace character '\' directly before them.
+ *
+ * Unlike the name field, value will be NULL-terminated. This is done to support
+ * their use for wel insertion strings.
+ */
+  char *value;
+/** The number of characters in value. */
   size_t value_length;
 };
 
