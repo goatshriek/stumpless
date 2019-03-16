@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+/** @dir target
+ * Header files for target types provided by the library.
+ */
+
 /** @file
  * General types and functions for working with all targets.
  */
