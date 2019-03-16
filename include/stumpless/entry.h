@@ -140,7 +140,6 @@ extern "C" {
 /**
  * A parameter within a structured data element. Each parameter must have both a
  * name and a value, in compliance with RFC 5424.
- * 
  */
 struct stumpless_param {
 /**

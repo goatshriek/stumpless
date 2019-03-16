@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** @file 
+/** @file
  * Buffer targets provide an extremely simple capability to write logs into a
  * plain character buffer. They must be completely synchronized with the code
  * reading from the buffer, leading to usage limited to extremely simple
