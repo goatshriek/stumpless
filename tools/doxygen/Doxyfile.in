@@ -9,6 +9,7 @@ OUTPUT_LANGUAGE        = English
 FILE_PATTERNS          = *.h
 FULL_PATH_NAMES        = YES
 STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/include/stumpless @PROJECT_BINARY_DIR@/include/stumpless
+USE_MDFILE_AS_MAINPAGE = @PROJECT_SOURCE_DIR@/README.md
 
 # default generated settings
 BRIEF_MEMBER_DESC      = YES
