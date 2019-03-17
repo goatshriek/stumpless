@@ -30,10 +30,14 @@ extern "C" {
 #  endif
 
 /**
- * An identifier of the types of errors that might be encountered. Note that
- * the same error may be encountered in different contexts.
+ * An identifier of the types of errors that might be encountered.
+ *
+ * Note that the same error may be encountered in different contexts with a
+ * different ultimate cause. To completely diagnose a problem, you will need
+ * to look at more than just the error id.
  */
 enum stumpless_error_id {
+/** A provided network address was not valid. */
   STUMPLESS_ADDRESS_FAILURE,
   STUMPLESS_ARGUMENT_EMPTY,
   STUMPLESS_ARGUMENT_TOO_BIG,
@@ -56,9 +60,7 @@ enum stumpless_error_id {
   STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE
 };
 
-/**
- * Information describing an error encountered by the library.
- */
+/** Information describing an error encountered by the library. */
 struct stumpless_error {
   enum stumpless_error_id id; /**< error family */
   const char *message; /**< specific details of the failure */
