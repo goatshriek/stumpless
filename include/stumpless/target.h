@@ -58,15 +58,46 @@ enum stumpless_target_type {
  * A target that log entries can be sent to.
  */
 struct stumpless_target {
+/** A unique identifier of this target. */
   stumpless_id_t id;
+/** The type of this target. */
   enum stumpless_target_type type;
+/**
+ * The name of this target.
+ *
+ * For some target types, the name may have more significcance than a simple
+ * identifier. For example, the name of a file target will be the file that the
+ * target writes to.
+ *
+ * The name of the target will be NULL-terminated.
+ */
   char *name;
+/** A bitwise or of all options set on the target. */
   int options;
+/** The prival used for messages without a severity or facility provided. */
   int default_prival;
+/**
+ * The app name used for messages without one provided.
+ *
+ * The default app name will not be NULL-terminated.
+ */
   char *default_app_name;
+/** The number of characters in the default app name. */
   size_t default_app_name_length;
+/**
+ * The msgid used for messages without one provided.
+ *
+ * The default msgid will not be NULL-terminated.
+ */
   char *default_msgid;
+/** The number of characters in the default msgid. */
   size_t default_msgid_length;
+/**
+ * The log mask used by the target.
+ *
+ * This member is currently not used. In the future it may be used in a similar
+ * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
+ */
   int mask;
 };
 
@@ -88,8 +119,10 @@ int
 stumpless( const char *message, ... );
 
 /**
- * Logs a message to the default target with the given priority. Can serve as
- * a replacement for the traditional \c syslog function.
+ * Logs a message to the default target with the given priority.
+ *
+ * This function can serve as a replacement for the traditional \c syslog
+ * function.
  *
  * For detailed information on what the default target will be for a given
  * system, check the stumpless_get_default_target() function documentation.
@@ -107,6 +140,17 @@ stumpless( const char *message, ... );
 void
 stumplog( int priority, const char *message, ... );
 
+/**
+ * Adds an entry into a given target.
+ *
+ * @param target The target to send the message to.
+ *
+ * @param entry The entry to send to the target.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
 int
 stumpless_add_entry( struct stumpless_target *target,
                      struct stumpless_entry *entry );
@@ -270,6 +314,16 @@ stumpless_get_option( const struct stumpless_target *target, int option );
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target );
 
+/**
+ * Sets the target used when one is not provided.
+ *
+ * Without being set, the current target will be the last one opened, or the
+ * default target if a target has not yet been opened. The current target is
+ * used by functions like stumplog() and stumpless() where a target is not
+ * explicitly provided to the call.
+ *
+ * @param target The target to use as the current target.
+ */
 void
 stumpless_set_current_target( struct stumpless_target *target );
 
@@ -302,9 +356,30 @@ stumpless_set_default_facility( struct stumpless_target *target,
 struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option );
 
+/**
+ * Sets the default app name for a given target.
+ *
+ * @param target The target to modify.
+ *
+ * @param app_name The new default app name, as a NULL-terminated string.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name );
+
+/**
+ * Sets the default msgid for a given target.
+ *
+ * @param target The target to modify.
+ *
+ * @param msgid The new default msgid, as a NULL-terminated string.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
