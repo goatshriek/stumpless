@@ -1,7 +1,6 @@
 # deliberate settings
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "stumpless"
-PROJECT_BRIEF          = "a simple logging library"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
 INPUT                  = @PROJECT_SOURCE_DIR@/include/stumpless.h @PROJECT_SOURCE_DIR@/include/stumpless @PROJECT_BINARY_DIR@/include/stumpless
 OUTPUT_DIRECTORY       = ./docs
