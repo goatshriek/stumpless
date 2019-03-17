@@ -42,6 +42,9 @@
 extern "C" {
 #  endif
 
+/**
+ * Types of targets that may be created.
+ */
 enum stumpless_target_type {
   STUMPLESS_BUFFER_TARGET,
   STUMPLESS_FILE_TARGET,
@@ -51,6 +54,9 @@ enum stumpless_target_type {
   STUMPLESS_WINDOWS_EVENT_LOG_TARGET
 };
 
+/**
+ * A target that log entries can be sent to.
+ */
 struct stumpless_target {
   stumpless_id_t id;
   enum stumpless_target_type type;

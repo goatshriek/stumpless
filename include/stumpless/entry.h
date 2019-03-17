@@ -19,8 +19,8 @@
 /** @file
  * Types and functions for creating and modifying entries. Facilities,
  * severities, and options are created to be compatible with the syslog.h
- * header if it is found on the system, otherwise they are defined as closely
- * as possible to the standards in RFC 5424.
+ * header if it is found on the system. Otherwise, they are defined as closely
+ * as possible to the RFC 5424 standard.
  */
 
 #ifndef __STUMPLESS_ENTRY_H
@@ -138,23 +138,29 @@ extern "C" {
 #  define STUMPLESS_OPTION_NONE 0
 
 /**
- * A parameter within a structured data element. Each parameter must have both a
- * name and a value, in compliance with RFC 5424.
+ * A parameter within a structured data element.
+ *
+ * A parameter must have both a name and a value in compliance with RFC 5424.
  */
 struct stumpless_param {
 /**
+ * The name of the parameter.
+ *
  * The name must be between 1 and 32 characters long and consist only of ASCII
- * characters between '!' and '~', inclusive, with the exception of the '='
- * character which is not allowed. Note that this field will NOT be
- * NULL-terminated.
+ * characters between '!' and '~', inclusive, with the exception of the '=',
+ * ' ', ']', and '"' characters, which are not allowed.
+ *
+ * Note that the name will _not_ be NULL-terminated.
  */
   char *name;
 /** The number of characters in name. */
   size_t name_length;
 /**
- * The value may be any UTF-8 string. As specified in RFC 5424, the characters 
- * '"' (ABNF %d34), '\' (ABNF %d92), and ']' (ABNF %d93) MUST be escaped by
- * placing a backspace character '\' directly before them.
+ * The value may be any UTF-8 string.
+ *
+ * As specified in RFC 5424, the characters '"' (ABNF %d34), '\' (ABNF %d92),
+ * and ']' (ABNF %d93) MUST be escaped by placing a backslash character '\'
+ * directly before them.
  *
  * Unlike the name field, value will be NULL-terminated. This is done to support
  * their use for wel insertion strings.
@@ -164,14 +170,53 @@ struct stumpless_param {
   size_t value_length;
 };
 
+/**
+ * An element of structured data.
+ *
+ * Elements must have a name, but may not have any parameters. Their compoments
+ * must comply with RFC 5424.
+ */
 struct stumpless_element {
+/**
+ * The name of the element.
+ *
+ * As specified in RFC 5424, the '=', ']', '"' characters are not allowed in
+ * element names. In addition, the '@' character is only allowed in names that
+ * are private. All other characters between '!' and '~', inclusive, are
+ * allowed.
+ *
+ * According to the standard names must either be private (of the form
+ * name@<private enterprise number>) or registered with the IANA. This library
+ * assumes that you have done your due diligence and does not enforce the
+ * registration requirement.
+ *
+ * Note that the name will _not_ be NULL-terminated.
+ */
   char *name;
+/** The number of characters in name. */
   size_t name_length;
+/**
+ * The parameters this element contains.
+ *
+ * This is an array of pointers to param structures. Use the param_count member
+ * to iterate through the array if needed. This may be NULL if there are no
+ * params in the element, but not necessarily - the param_count is the only way
+ * to tell for sure.
+ */
   struct stumpless_param **params;
+/** The number of params in the array. */
   size_t param_count;
 };
 
+/**
+ * A log entry.
+ *
+ * Entries are the basic element of logging within the library. Note that
+ * although many of the members are character strings, they are not NULL
+ * terminated and should not be used with standard string functions.
+ */
 struct stumpless_entry {
+/** A unique identifier of this entry. */
   stumpless_id_t id;
   int prival;
   char *app_name;
