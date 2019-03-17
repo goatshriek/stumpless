@@ -42,16 +42,14 @@
 extern "C" {
 #  endif
 
-/**
- * Types of targets that may be created.
- */
+/** Types of targets that may be created. */
 enum stumpless_target_type {
-  STUMPLESS_BUFFER_TARGET,
-  STUMPLESS_FILE_TARGET,
-  STUMPLESS_NETWORK_TARGET,
-  STUMPLESS_SOCKET_TARGET,
-  STUMPLESS_STREAM_TARGET,
-  STUMPLESS_WINDOWS_EVENT_LOG_TARGET
+  STUMPLESS_BUFFER_TARGET, /**< write to a character buffer */
+  STUMPLESS_FILE_TARGET, /**< write to a file */
+  STUMPLESS_NETWORK_TARGET, /**< send to a network endpoint */
+  STUMPLESS_SOCKET_TARGET, /**< write to a Unix socket */
+  STUMPLESS_STREAM_TARGET, /**< write to a FILE stream */
+  STUMPLESS_WINDOWS_EVENT_LOG_TARGET /**< add to the Windows Event Log */
 };
 
 /**
