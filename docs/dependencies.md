@@ -6,9 +6,9 @@ below:
  * a toolchain that can be used by cmake (gcc, for example)
 
 ## Testing
-The test suite for the project is written using the Google Test suite. The
-headers and library must be installed on the system in order for the test suites
-to build and execute successfully.
+The test suite for the project is written using the Google Test suite. It will
+be downloaded and built on the system automatically if the test suites are run,
+but if the build fails for some reason then test suites will not be available.
 
 More information on the Google Test framework may be found on the project
 [Github page](https://github.com/google/googletest).
@@ -17,9 +17,9 @@ Of course if you would like to test the generated wrappers for languages other
 than C then you will need the language environment installed in order to run the
 tests.
 
-The performance test suite for the project uses the Google Benchmark suite. The
-headers and library must be installed on the system in order for the benchmarks
-to build and run.
+The performance test suite for the project uses the Google Benchmark suite. Like
+the Google Test suite, build targets will automatically download and build the
+library if it is needed.
 
 More information on the Google Benchmark framework may be found on the project
 [Github page](https://github.com/google/benchmark).
@@ -27,7 +27,13 @@ More information on the Google Benchmark framework may be found on the project
 ## Documentation
 General documentation of how functions behave is included as block comments in
 the public header files. Documentation can also be generated using `doxygen`.
-This can be done by using the cmake target `docs`.
+This is done using the `docs` build target, which will only be available if
+doxygen is detected on the build system.
+
+The documentation published on the Github Pages website for the project
+(available in the `gh-pages` branch of the repository) uses `m.css` to generate
+the themed doxygen output. More information on the project can be found on the
+[m.css project page](https://mcss.mosra.cz/).
 
 ## Development
 If you wish to develop within the stumpless project itself, you will need a few
