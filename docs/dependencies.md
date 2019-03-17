@@ -30,10 +30,12 @@ the public header files. Documentation can also be generated using `doxygen`.
 This is done using the `docs` build target, which will only be available if
 doxygen is detected on the build system.
 
-The documentation published on the Github Pages website for the project
-(available in the `gh-pages` branch of the repository) uses `m.css` to generate
-the themed doxygen output. More information on the project can be found on the
-[m.css project page](https://mcss.mosra.cz/).
+You can avoid downloading the repo and building the documentation by visiting
+the project Github Pages website, (code is in the `gh-pages` branch of the
+repository). This contains several of the documents in the `docs` folder of the
+repository in a prettier format, and also uses `m.css` to generate a more
+appealing and mobile-friendly doxygen page. More information on `m.css` can be
+found on the [m.css project page](https://mcss.mosra.cz/).
 
 ## Development
 If you wish to develop within the stumpless project itself, you will need a few
