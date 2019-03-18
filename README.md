@@ -6,8 +6,10 @@
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=stumpless&metric=alert_status)](https://sonarcloud.io/dashboard?id=stumpless)
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A logging library built with a [vision](docs/vision.md): a rich and intuitive
-interface, standards compliance, fast performance, and a small footprint.
+A logging library built with a
+[vision](https://github.com/goatshriek/stumpless/blob/master/docs/vision.md):
+a rich and intuitive interface, standards compliance, fast performance, and a
+small footprint.
 
 Currently stumpless offers [standardized](https://tools.ietf.org/html/rfc5424)
 logging to the following targets:
@@ -59,14 +61,14 @@ If you have multiple targets, you can send messages to a chosen target:
                            username );
 
 It's as easy as that! For more detailed examples of different targets and more
-complicated message structures, check out the [examples](docs/examples).
+complicated message structures, check out the [examples](docs/examples/).
 
 ## Further Documentation
 If you're curious about how something in stumpless works that isn't explained
 here, you can check the appropriate section of the documentation, stored in the
-[docs](docs) folder. You can also look in the [examples](docs/examples) folder
-for detailed walkthroughs and annotated example code for using various features
-of the library.
+docs folder of the repository. You can also look at the
+[examples](docs/examples/) for detailed walkthroughs and annotated example code
+for using various features of the library.
 
 Folders in the repository contain their own README files that detail what they
 contain and any other relevant information.
