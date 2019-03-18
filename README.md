@@ -61,14 +61,13 @@ If you have multiple targets, you can send messages to a chosen target:
                            username );
 
 It's as easy as that! For more detailed examples of different targets and more
-complicated message structures, check out the [examples](docs/examples/).
+complicated message structures, check out the
+[examples](https://github.com/goatshriek/stumpless/tree/master/docs/examples).
+for detailed walkthroughs and annotated example code for using various features
+of the library.
 
 ## Further Documentation
 If you're curious about how something in stumpless works that isn't explained
 here, you can check the appropriate section of the documentation, stored in the
-docs folder of the repository. You can also look at the
-[examples](docs/examples/) for detailed walkthroughs and annotated example code
-for using various features of the library.
-
-Folders in the repository contain their own README files that detail what they
-contain and any other relevant information.
+docs folder of the repository. Folders in the repository contain their own
+README files that detail what they contain and any other relevant information.
