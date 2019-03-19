@@ -32,6 +32,23 @@ stumpless_add_message( net_target,
                        "example-username" );
 ```
 
+If you're currently using the standard library `syslog` function, then you can
+ease your transition by using `stumplog` function, which has an identical
+signature and the same principles of operation:
+
+```c
+syslog( LOG_INFO | LOG_USER, "Failed login for %s", username );
+
+// the above can be directly replaced with:
+stumplog( LOG_INFO | LOG_USER, "Failed login for %s", username );
+```
+
+Note that the standard library symbols `LOG_INFO` and `LOG_USER` still work. You
+can freely interchange these and the `STUMPLESS_SEVERITY_<level>` and
+`STUMPLESS_FACILITY_<level>` symbols. The `STUMPLESS_*` symbols are declared as
+an alias of the standard library symbols when the `syslog.h` header is found on
+the build system.
+
 It's important to close the targets after you're finished with them to free up
 resources they are using.
 

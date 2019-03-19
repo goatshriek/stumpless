@@ -27,7 +27,8 @@ direct replacement for the syslog function:
 
 ```c
 syslog( LOG_INFO | LOG_USER, "My message" );
-// can be directly replaced with:
+
+// the above can be directly replaced with:
 stumplog( LOG_INFO | LOG_USER, "My message" );
 ```
 
