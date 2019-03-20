@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+/** @file
+ * Runtime information about the library.
+ */
+
 #ifndef __STUMPLESS_VERSION_H
 #  define __STUMPLESS_VERSION_H
 
@@ -23,13 +27,22 @@
 extern "C" {
 #  endif
 
-  struct stumpless_version {
-    int major;
-    int minor;
-    int patch;
-  };
+/**
+ * A description of a library version. This project follows semantic versioning.
+ */
+struct stumpless_version {
+  int major; /**< The major version. */
+  int minor; /**< The minor version. */
+  int patch; /**< The patch version. */
+};
 
-  struct stumpless_version *stumpless_get_version( void );
+/**
+ * Gets the version of code the library was built with.
+ *
+ * @return The version of code used by the library build.
+ */
+struct stumpless_version *
+stumpless_get_version( void );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

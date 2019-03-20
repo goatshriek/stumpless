@@ -2,22 +2,30 @@
 
 /*
  * Copyright 2018-2019 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+/** @dir config
+ * Configuration-specific header files.
+ */
+
+/** @file
+ * Configuration information to provide to code built with the library.
+ */
+
 #ifndef __STUMPLESS_CONFIG_H
-#define __STUMPLESS_CONFIG_H
+#  define __STUMPLESS_CONFIG_H
 
 #cmakedefine STUMPLESS_DEFAULT_SOCKET "@STUMPLESS_DEFAULT_SOCKET@"
 #cmakedefine STUMPLESS_NETWORK_TARGETS_SUPPORTED 1
@@ -25,9 +33,9 @@
 #cmakedefine STUMPLESS_SYSLOG_H_COMPATIBLE 1
 #cmakedefine STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED 1
 
-#define STUMPLESS_MAJOR_VERSION @PROJECT_VERSION_MAJOR@
-#define STUMPLESS_MINOR_VERSION @PROJECT_VERSION_MINOR@
-#define STUMPLESS_PATCH_VERSION @PROJECT_VERSION_PATCH@
+#  define STUMPLESS_MAJOR_VERSION @PROJECT_VERSION_MAJOR@
+#  define STUMPLESS_MINOR_VERSION @PROJECT_VERSION_MINOR@
+#  define STUMPLESS_PATCH_VERSION @PROJECT_VERSION_PATCH@
 
 /*
  * According to Microsoft, windows.h should be included first in any sources, as

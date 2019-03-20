@@ -18,6 +18,13 @@
 
 /** @file
  * Functions for controlling memory allocation during execution.
+ *
+ * Some of these functions allow memory allcoation to use custom functions. This
+ * might be useful if you have your own memory allocation routines or want to
+ * lay down your own controls over memory used by the library. For example,
+ * this capability is used extensively to test for error handling in memory
+ * allocation failure scenarios, as well as to ensure that the same amount of
+ * memory is freed as is allocated.
  */
 
 #ifndef __STUMPLESS_MEMORY_H
@@ -49,14 +56,41 @@ extern "C" {
 void
 stumpless_free_all( void );
 
+/**
+ * Sets the function used by the library to allocate memory.
+ *
+ * @param malloc_func A pointer to the allocation function that is desired. This
+ * function must have the same signature as the standard library \c malloc
+ * function (which is the default if this is not called).
+ *
+ * @return The new allocation function.
+ */
 void *
 ( *stumpless_set_malloc( void * ( *malloc_func )( size_t ) ) )
 ( size_t );
 
+/**
+ * Sets the function used by the library to free memory.
+ *
+ * @param free_func A pointer to the memory deallocation function that is
+ * desired. This function must have the same signature as the standard library
+ * \c free function (which is the default if this is not called).
+ *
+ * @return The new deallocation function.
+ */
 void
 ( *stumpless_set_free( void ( *free_func )( void *) ) )
 ( void * );
 
+/**
+ * Sets the function used by the library to reallocate memory.
+ *
+ * @param realloc_func A pointer to the memory reallocation function that is
+ * desired. This function must have the same signature as the standard library
+ * \c realloc function (which is the default if this is not called.
+ *
+ * @return The new reallocation function.
+ */
 void *
 ( *stumpless_set_realloc( void * ( *realloc_func ) ( void *, size_t) ) )
 ( void *, size_t );

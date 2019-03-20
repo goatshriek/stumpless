@@ -19,8 +19,8 @@
 /** @file
  * Types and functions for creating and modifying entries. Facilities,
  * severities, and options are created to be compatible with the syslog.h
- * header if it is found on the system, otherwise they are defined as closely
- * as possible to the standards in RFC 5424.
+ * header if it is found on the system. Otherwise, they are defined as closely
+ * as possible to the RFC 5424 standard.
  */
 
 #ifndef __STUMPLESS_ENTRY_H
@@ -43,39 +43,73 @@ extern "C" {
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    include <syslog.h>
 
+
 /* severity codes as set by syslog.h */
+
+/** Emergency: system is unusable. */
 #    define STUMPLESS_SEVERITY_EMERG  LOG_EMERG
+/** Alert: action must be taken immediately. */
 #    define STUMPLESS_SEVERITY_ALERT  LOG_ALERT
+/** Critical: critical conditions. */
 #    define STUMPLESS_SEVERITY_CRIT   LOG_CRIT
+/** Error: error conditions. */
 #    define STUMPLESS_SEVERITY_ERR    LOG_ERR
+/** Warning: warning conditions. */
 #    define STUMPLESS_SEVERITY_WARN   LOG_WARN
+/** Notice: normal but significant condition. */
 #    define STUMPLESS_SEVERITY_NOTICE LOG_NOTICE
+/** Informational: informational messages. */
 #    define STUMPLESS_SEVERITY_INFO   LOG_INFO
+/** Debug: debug-level messages. */
 #    define STUMPLESS_SEVERITY_DEBUG  LOG_DEBUG
 
+/** Creates a severity mask for the provided severity. */
 #    define STUMPLESS_SEVERITY_MASK(severity) (LOG_MASK(severity))
+/** Creates a severity mask from EMERG up to the provided severity. */
 #    define STUMPLESS_SEVERITY_MASK_UPTO(severity) (LOG_UPTO(severity))
 
+
 /* facility codes as set by syslog.h */
+
+/** Kernel messages. */
 #    define STUMPLESS_FACILITY_KERN   LOG_KERN
+/** User-level messages. */
 #    define STUMPLESS_FACILITY_USER   LOG_USER
+/** Mail system. */
 #    define STUMPLESS_FACILITY_MAIL   LOG_MAIL
+/** Network news subsystem. */
 #    define STUMPLESS_FACILITY_NEWS   LOG_NEWS
+/** UUCP subsystem. */
 #    define STUMPLESS_FACILITY_UUCP   LOG_UUCP
+/** System daemons. */
 #    define STUMPLESS_FACILITY_DAEMON LOG_DAEMON
+/** Security/authorization messages. */
 #    define STUMPLESS_FACILITY_AUTH   LOG_AUTH
+/** Clock daemon. */
 #    define STUMPLESS_FACILITY_CRON   LOG_CRON
+/** Line printer subsystem. */
 #    define STUMPLESS_FACILITY_LPR    LOG_LPR
+/** Local use 0. */
 #    define STUMPLESS_FACILITY_LOCAL0 LOG_LOCAL0
+/** Local use 1. */
 #    define STUMPLESS_FACILITY_LOCAL1 LOG_LOCAL1
+/** Local use 2. */
 #    define STUMPLESS_FACILITY_LOCAL2 LOG_LOCAL2
+/** Local use 3. */
 #    define STUMPLESS_FACILITY_LOCAL3 LOG_LOCAL3
+/** Local use 4. */
 #    define STUMPLESS_FACILITY_LOCAL4 LOG_LOCAL4
+/** Local use 5. */
 #    define STUMPLESS_FACILITY_LOCAL5 LOG_LOCAL5
+/** Local use 6. */
 #    define STUMPLESS_FACILITY_LOCAL6 LOG_LOCAL6
+/** Local use 7. */
 #    define STUMPLESS_FACILITY_LOCAL7 LOG_LOCAL7
 
+
 /* options defined in syslog.h */
+/* these don't have doxygen documentation as they are currently not supported
+ * by the implementation */
 #    define STUMPLESS_OPTION_PID    LOG_PID
 #    define STUMPLESS_OPTION_CONS   LOG_CONS
 #    define STUMPLESS_OPTION_NDELAY LOG_NDELAY
@@ -126,32 +160,105 @@ extern "C" {
 #  endif
 
 /* remaining facility codes specified in RFC 5424 */
+
+/** Messages generated internally by logging daemon. */
 #  define STUMPLESS_FACILITY_SYSLOG (5<<3)
+/** Security/authorization messages. */
 #  define STUMPLESS_FACILITY_AUTH2  (10<<3)
+/** FTP daemon. */
 #  define STUMPLESS_FACILITY_FTP    (11<<3)
+/** NTP subsystem. */
 #  define STUMPLESS_FACILITY_NTP    (12<<3)
+/** Log audit. */
 #  define STUMPLESS_FACILITY_AUDIT  (13<<3)
+/** Log alert. */
 #  define STUMPLESS_FACILITY_ALERT  (14<<3)
+/** Clock daemon. */
 #  define STUMPLESS_FACILITY_CRON2  (15<<3)
 
-/* custom option code */
+/** Empty option mask for explicit 'no option' use. */
 #  define STUMPLESS_OPTION_NONE 0
 
+/**
+ * A parameter within a structured data element.
+ *
+ * A parameter must have both a name and a value in compliance with RFC 5424.
+ */
 struct stumpless_param {
+/**
+ * The name of the parameter.
+ *
+ * The name must be between 1 and 32 characters long and consist only of ASCII
+ * characters between '!' and '~', inclusive, with the exception of the '=',
+ * ' ', ']', and '"' characters, which are not allowed.
+ *
+ * Note that the name will _not_ be NULL-terminated.
+ */
   char *name;
+/** The number of characters in name. */
   size_t name_length;
-  char *value;         /**< NULL-terminated string to support wel insertion strings */
+/**
+ * The value may be any UTF-8 string.
+ *
+ * As specified in RFC 5424, the characters '"' (ABNF %d34), '\' (ABNF %d92),
+ * and ']' (ABNF %d93) MUST be escaped by placing a backslash character '\'
+ * directly before them.
+ *
+ * Unlike the name field, value will be NULL-terminated. This is done to support
+ * their use for wel insertion strings.
+ */
+  char *value;
+/** The number of characters in value. */
   size_t value_length;
 };
 
+/**
+ * An element of structured data.
+ *
+ * Elements must have a name, but may not have any parameters. Their compoments
+ * must comply with RFC 5424.
+ */
 struct stumpless_element {
+/**
+ * The name of the element.
+ *
+ * As specified in RFC 5424, the '=', ']', '"' characters are not allowed in
+ * element names. In addition, the '@' character is only allowed in names that
+ * are private. All other characters between '!' and '~', inclusive, are
+ * allowed.
+ *
+ * According to the standard names must either be private (of the form
+ * name@<private enterprise number>) or registered with the IANA. This library
+ * assumes that you have done your due diligence and does not enforce the
+ * registration requirement.
+ *
+ * Note that the name will _not_ be NULL-terminated.
+ */
   char *name;
+/** The number of characters in name. */
   size_t name_length;
+/**
+ * The parameters this element contains.
+ *
+ * This is an array of pointers to param structures. Use the param_count member
+ * to iterate through the array if needed. This may be NULL if there are no
+ * params in the element, but not necessarily - the param_count is the only way
+ * to tell for sure.
+ */
   struct stumpless_param **params;
+/** The number of params in the array. */
   size_t param_count;
 };
 
+/**
+ * A log entry.
+ *
+ * Entries are the basic element of logging within the library. Note that
+ * although many of the members are character strings, they are not NULL
+ * terminated and should not be used with standard string functions.
+ */
 struct stumpless_entry {
+/** A unique identifier of this entry. */
   stumpless_id_t id;
   int prival;
   char *app_name;

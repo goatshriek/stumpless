@@ -17,9 +17,10 @@
  */
 
 /** @file
- * Socket targets allow logs to be sent to a Unix domain socket. The most common
- * use for this would be to send logs to the /dev/log socket where the syslog
- * daemon is listening.
+ * Socket targets allow logs to be sent to a Unix domain socket.
+ *
+ * The most common use for socket targets is to send logs to the /dev/log socket
+ * or the /var/run/syslog where the syslog daemon is listening.
  */
 
 #ifndef __STUMPLESS_TARGET_SOCKET_H

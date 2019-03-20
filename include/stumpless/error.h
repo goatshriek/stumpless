@@ -2,18 +2,22 @@
 
 /*
  * Copyright 2018-2019 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ */
+
+/** @file
+ * Error codes and functions for detecting and assessing them.
  */
 
 #ifndef __STUMPLESS_ERROR_H
@@ -26,35 +30,60 @@ extern "C" {
 #  endif
 
 /**
- * An identifier of the types of errors that might be encountered. Note that
- * the same error may be encountered in different contexts.
+ * An identifier of the types of errors that might be encountered.
+ *
+ * Note that the same error may be encountered in different contexts with a
+ * different ultimate cause. To completely diagnose a problem, you will need
+ * to look at more than just the error id.
  */
 enum stumpless_error_id {
+/**
+ * A provided network address was not valid.
+ *
+ * This might be formatting problem, or it might mean that a DNS lookup failed.
+ */
   STUMPLESS_ADDRESS_FAILURE,
+/** A required function parameter was NULL or empty. */
   STUMPLESS_ARGUMENT_EMPTY,
+/** A provided argument was too big, for example to fit into a buffer target. */
   STUMPLESS_ARGUMENT_TOO_BIG,
+/** Could not open a file. */
   STUMPLESS_FILE_OPEN_FAILURE,
+/** Could not write to a file. */
   STUMPLESS_FILE_WRITE_FAILURE,
+/** A provided index was not in a valid range. */
   STUMPLESS_INDEX_OUT_OF_BOUNDS,
+/** A provided facility code did not conform to RFC 5424. */
   STUMPLESS_INVALID_FACILITY,
+/** A target or entry ID was not valid. */
   STUMPLESS_INVALID_ID,
+/** A memory allocation or reallocation failed. */
   STUMPLESS_MEMORY_ALLOCATION_FAILURE,
+/** The given layer 3 protocol is not supported by this implementation. */
   STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED,
+/** Could not bind to a socket. */
   STUMPLESS_SOCKET_BIND_FAILURE,
+/** Could not connect to a socket. */
   STUMPLESS_SOCKET_CONNECT_FAILURE,
+/** Could not create a socket. */
   STUMPLESS_SOCKET_FAILURE,
+/** Could not send to a socket. */
   STUMPLESS_SOCKET_SEND_FAILURE,
+/** Could not write to a stream. */
   STUMPLESS_STREAM_WRITE_FAILURE,
+/** The requested operation is not valid on the given target type. */
   STUMPLESS_TARGET_INCOMPATIBLE,
+/** The target type provided is unsupported by this implementation. */
   STUMPLESS_TARGET_UNSUPPORTED,
+/** The given layer 4 protocol is not supported by this implementation. */
   STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED,
+/** Could not close the Windows Event Log. */
   STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE,
+/** Could not open the Windows Event Log. */
   STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE
 };
 
-/**
- * Information describing an error encountered by the library.
- */
+/** Information describing an error encountered by the library. */
 struct stumpless_error {
   enum stumpless_error_id id; /**< error family */
   const char *message; /**< specific details of the failure */
