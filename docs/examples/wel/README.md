@@ -28,10 +28,13 @@ calls. The first opens an Event Log on the local machine with the given name,
 while the second attempts to open an Event Log on a remote server with a
 provided name.
 
-    local_wel_target = stumpless_open_local_wel_target( "Stumpless Example", STUMPLESS_OPTION_NONE );
-    remote_wel_target = stumpless_open_remote_wel_target( "\\RemoteServerName",
-                                                          "Stumpless Example",
-                                                          STUMPLESS_OPTION_NONE );
+```c
+local_wel_target = stumpless_open_local_wel_target( "Stumpless Example",
+                                                    STUMPLESS_OPTION_NONE );
+remote_wel_target = stumpless_open_remote_wel_target( "\\RemoteServerName",
+                                                      "Stumpless Example",
+                                                      STUMPLESS_OPTION_NONE );
+```
 
 Windows Event Log-compatible entries have three extra properties that standard
 entries do not. These are the event category, ID, and type. If you would like to
@@ -53,9 +56,11 @@ So, with an already created entry, we could make it ready for a Windows Event
 Log target like this (assuming the symbols used are defined in an included
 message header):
 
-    stumpless_set_wel_category( entry, CATEGORY_TREE );
-    stumpless_set_wel_event_id( entry, MSG_TREE_IDENTIFIED_BY_CHILD );
-    stumpless_set_wel_type( entry, EVENTLOG_SUCCESS );
+```c
+stumpless_set_wel_category( entry, CATEGORY_TREE );
+stumpless_set_wel_event_id( entry, MSG_TREE_IDENTIFIED_BY_CHILD );
+stumpless_set_wel_type( entry, EVENTLOG_SUCCESS );
+```
 
 These three fields are all that are required for success with a Windows Event
 Log target. Note that this means that fields used by other targets (such as the
@@ -77,8 +82,19 @@ accepts the entry to be modified, the index of the placeholder to replace
 set the two placeholders with the name and tree type, you would write the
 following:
 
-    stumpless_set_wel_insertion_string( entry, 0, "cynthia" );
-    stumpless_set_wel_insertion_string( entry, 1, "oak" );
+```c
+stumpless_set_wel_insertion_string( entry, 0, "cynthia" );
+stumpless_set_wel_insertion_string( entry, 1, "oak" );
+```
+
+A potentially faster approach is to use the plural version of this function to
+set multiple insertion strings at once. It takes a variable number of arguments
+preceded by the count of strings that will be provided. The following function
+call has identical results to the previous two:
+
+```c
+stumpless_set_wel_insertion_strings( entry, 2, "cynthia", "oak" );
+```
 
 In the case where you would like to send a single entry through multiple
 targets, you may have already done the work to put the value into a param
@@ -88,10 +104,11 @@ string as well. This is accomplished by using the
 takes a param. The value of this param is then used for the substitution when
 the logging occurs. So, to accomplish the same as the previous example:
 
-    // assuming the value of param_1 and param_2 is "cynthia" and "oak",
-    // respectively
-    stumpless_set_wel_insertion_param( entry, 0, param_1 );
-    stumpless_set_wel_insertion_param( entry, 1, param_2 );
+```c
+// assuming the values of param_1 and param_2 are "cynthia" and "oak"
+stumpless_set_wel_insertion_param( entry, 0, param_1 );
+stumpless_set_wel_insertion_param( entry, 1, param_2 );
+```
 
 This approach is more flexible, because updates to the value of param will be
 reflected in subsequent logs. This allows an entry and supporting params to be
@@ -102,11 +119,21 @@ change the insertion string value as needed.
 Entries can be logged as with any other target once the category, id, and type
 are set as well as any insertion strings desired.
 
-    stumpless_add_entry( wel_target, entry );
+```c
+stumpless_add_entry( wel_target, entry );
+```
 
 When the target is no longer needed, it can be closed via the
 `stumpless_close_wel_target` for both local and remote targets. Keep in mind
 that this function destroys any memory associated with the target, so the
 structure should not be referenced after calling this function.
 
-    stumpless_close_wel_target( wel_target );
+```c
+stumpless_close_wel_target( wel_target );
+```
+
+And of course if you'd like to type a little less:
+
+```c
+stumpless_close_target( wel_target );
+```

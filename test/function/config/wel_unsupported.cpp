@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,35 @@
 #include <stumpless.h>
 
 namespace {
+
+  TEST( GetDefaultTarget, WelUnsupported ) {
+    struct stumpless_target *target;
+
+    target = stumpless_get_default_target(  );
+    EXPECT_TRUE( target != NULL );
+
+    if( target ) {
+      EXPECT_NE( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
+    }
+
+    stumpless_free_all(  );
+  }
+
+  TEST( WelTargetTest, GenericClose ) {
+    struct stumpless_target target;
+    struct stumpless_error *error;
+
+    target.type = STUMPLESS_WINDOWS_EVENT_LOG_TARGET;
+
+    stumpless_close_target( &target );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    }
+  }
 
   TEST( WelTargetTest, Unsupported ) {
     struct stumpless_target target;

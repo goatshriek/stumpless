@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,6 +129,30 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( SocketTargetAddTest, DestinationMissing ) {
+    struct stumpless_target *target;
+    int result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_socket_target( "/dev/not/there",
+                                           NULL,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_add_message( target, "test message" );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_SOCKET_SEND_FAILURE );
+    }
+
+    stumpless_close_socket_target( target );
+  }
+
   TEST( SocketTargetAddTest, Uninitialized ) {
     struct stumpless_target target;
     struct stumpless_entry *entry;
@@ -165,6 +189,20 @@ namespace {
     target->id = NULL;
 
     stumpless_close_socket_target( target );
+  }
+
+  TEST( SocketTargetCloseTest, Generic ) {
+    struct stumpless_target *target;
+
+    target = stumpless_open_socket_target( "generic-close-test",
+                                           NULL,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_TRUE( target != NULL );
+
+    stumpless_close_target( target );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {

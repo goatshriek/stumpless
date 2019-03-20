@@ -18,9 +18,9 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <stumpless/error.h>
 #include "private/error.h"
+#include "private/memory.h"
 
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
@@ -56,10 +56,12 @@ stumpless_perror( const char *prefix ) {
   if( error_stream && error_valid ) {
 
     if( prefix ) {
-      fprintf( error_stream, "%s: ", prefix );
+      fputs( prefix, error_stream );
+      fputc( ':', error_stream );
+      fputc( ' ', error_stream );
     }
 
-    fprintf( error_stream, "%s", last_error->message );
+    fputs( last_error->message, error_stream );
 
     if( last_error->code_type ) {
       fprintf( error_stream, " (%s: %d)", last_error->code_type, last_error->code );
@@ -83,6 +85,12 @@ clear_error( void ) {
 }
 
 void
+error_free_all( void ) {
+  free_mem( last_error );
+  last_error = NULL;
+}
+
+void
 raise_address_failure( const char *message, int code, const char *code_type ) {
   raise_error( STUMPLESS_ADDRESS_FAILURE, message, code, code_type );
 }
@@ -103,7 +111,7 @@ raise_error( enum stumpless_error_id id,
              int code,
              const char *code_type ) {
   if( !last_error ) {
-    last_error = malloc( sizeof( struct stumpless_error ) );
+    last_error = alloc_mem( sizeof( struct stumpless_error ) );
     if( !last_error ) {
       error_valid = 0;
       return;
@@ -128,6 +136,11 @@ raise_file_write_failure( void ) {
 }
 
 void
+raise_index_out_of_bounds( const char *message, int code ) {
+  raise_error( STUMPLESS_INDEX_OUT_OF_BOUNDS, message, code, "the invalid index" );
+}
+
+void
 raise_invalid_facility( void ) {
   raise_error( STUMPLESS_INVALID_FACILITY,
                "facility codes must be defined in accordance with RFC 5424, "
@@ -143,6 +156,10 @@ raise_invalid_id( void ) {
 
 void
 raise_memory_allocation_failure( void ) {
+  if( !last_error ) {
+    return;
+  }
+
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE, NULL, 0, NULL );
 }
 
@@ -152,8 +169,8 @@ raise_network_protocol_unsupported( void ) {
 }
 
 void
-raise_socket_bind_failure( void ) {
-  raise_error( STUMPLESS_SOCKET_BIND_FAILURE, NULL, 0, NULL );
+raise_socket_bind_failure( const char *message, int code, const char *code_type ) {
+  raise_error( STUMPLESS_SOCKET_BIND_FAILURE, message, code, code_type );
 }
 
 void

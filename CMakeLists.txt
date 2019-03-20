@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2.3)
 
-project(stumpless VERSION 1.3.1)
+project(stumpless VERSION 1.4.0)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
@@ -34,7 +34,13 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
 check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
+check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 
+if(EXISTS "/var/run/syslog")
+  set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
+else()
+  set(STUMPLESS_DEFAULT_SOCKET "/dev/log")
+endif()
 
 # standard source files
 set(STUMPLESS_SOURCES
@@ -70,6 +76,12 @@ endif(HAVE_SYS_SOCKET_H)
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
+
+if(HAVE_VSNPRINTF_S)
+  list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
+else()
+  list(APPEND STUMPLESS_SOURCES src/config/no_vsnprintf_s.c)
+endif(HAVE_VSNPRINTF_S)
 
 if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
@@ -202,11 +214,11 @@ else()
     LIBRARIES ${network_libraries}
   )
 
-  add_example(tcp
+  add_no_run_example(tcp
     ${PROJECT_SOURCE_DIR}/docs/examples/network/tcp_example.c
   )
 
-  add_example(udp
+  add_no_run_example(udp
     ${PROJECT_SOURCE_DIR}/docs/examples/network/udp_example.c
   )
 endif(NOT ENABLE_NETWORK_TARGETS)
@@ -230,7 +242,9 @@ elseif(NOT HAVE_SYS_SOCKET_H)
 
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
-  list(APPEND STUMPLESS_SOURCES src/target/socket.c)
+
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/socket.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.c)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
@@ -245,6 +259,14 @@ else()
 
   add_function_test(socket_add_malloc_failure
     SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
+  )
+
+  add_function_test(socket_supported
+    SOURCES test/function/config/socket_supported.cpp
+  )
+
+  add_example(socket
+    ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
   )
 endif(NOT ENABLE_SOCKET_TARGETS)
 
@@ -388,6 +410,10 @@ add_function_test(buffer_leak
   SOURCES test/function/leak/buffer.cpp
 )
 
+add_function_test(current_target
+  SOURCES test/function/startup/current_target.cpp
+)
+
 add_function_test(entry
   SOURCES test/function/entry.cpp
 )
@@ -398,6 +424,14 @@ add_function_test(entry_memory_failure
 
 add_function_test(error
   SOURCES test/function/error.cpp
+)
+
+add_function_test(error_leak
+  SOURCES test/function/leak/error.cpp
+)
+
+add_function_test(error_memory_failure
+  SOURCES test/function/startup/error_memory_failure.cpp
 )
 
 add_function_test(file
@@ -425,7 +459,13 @@ add_function_test(stream
 )
 
 add_function_test(target
-  SOURCES test/function/target.cpp
+  SOURCES
+    test/function/target.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_function_test(target_leak
+  SOURCES test/function/leak/target.cpp
 )
 
 add_function_test(version
@@ -439,6 +479,18 @@ add_custom_target(check
 
 
 # examples
+add_example(basic
+  ${PROJECT_SOURCE_DIR}/docs/examples/basic/basic_example.c
+)
+
+add_example(entry
+  ${PROJECT_SOURCE_DIR}/docs/examples/entry/entry_example.c
+)
+
+add_example(file
+  ${PROJECT_SOURCE_DIR}/docs/examples/file/file_example.c
+)
+
 add_example(stream
   ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
 )
@@ -449,6 +501,10 @@ add_custom_target(examples
 
 
 # performance tests
+add_performance_test(entry
+  SOURCES test/performance/entry.cpp
+)
+
 add_performance_test(target
   SOURCES test/performance/target.cpp
 )

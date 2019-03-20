@@ -49,6 +49,22 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( NetworkTargetTest, GenericClose ) {
+    struct stumpless_target target;
+    struct stumpless_error *error;
+
+    target.type = STUMPLESS_NETWORK_TARGET;
+
+    stumpless_close_target( &target );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    }
+  }
+
   TEST( NetworkTargetTest, IsOpen ) {
     struct stumpless_target target;
     const struct stumpless_target *result;
@@ -58,6 +74,25 @@ namespace {
     target.id = &target;
 
     result = stumpless_target_is_open( &target );
+
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    }
+  }
+
+  TEST( NetworkTargetTest, Open ) {
+    struct stumpless_target target;
+    const struct stumpless_target *result;
+    struct stumpless_error *error;
+
+    target.type = STUMPLESS_NETWORK_TARGET;
+    target.id = &target;
+
+    result = stumpless_open_target( &target );
 
     EXPECT_TRUE( result == NULL );
 

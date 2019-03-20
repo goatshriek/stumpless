@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
 #include "private/config/wrapper.h"
@@ -56,7 +55,6 @@ stumpless_open_file_target( const char *name,
   target = new_target(
     STUMPLESS_FILE_TARGET,
     name,
-    strlen( name ),
     options,
     default_facility
   );
@@ -85,6 +83,13 @@ void
 destroy_file_target( struct file_target *target ) {
   fclose( target->stream );
   free_mem( target );
+}
+
+struct stumpless_target *
+file_open_default_target( void ) {
+  return stumpless_open_file_target( STUMPLESS_DEFAULT_FILE,
+                                     STUMPLESS_OPTION_NONE,
+                                     STUMPLESS_FACILITY_USER );
 }
 
 struct file_target *

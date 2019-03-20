@@ -30,14 +30,20 @@
 
 /**
  * The default transport port for network targets.
+ *
+ * This is based largely on tradition, but some applications may expect a
+ * different port (for example 1514 and 6514 are sometimes used). If a different
+ * port is needed on a target, use stumpless_set_transport_port() to change it.
  */
 #define STUMPLESS_DEFAULT_TRANSPORT_PORT "514"
 
 /**
- * The default message size for UDP network targets. This is set to account for
- * an MTU of 1500 byes, a 20 byte IP header, and an 8 byte datagram header. If
- * you wish to change this value for a particular target, then you must use the
- * \c stumpless_set_udp_max_message_size function on the target.
+ * The default message size for UDP network targets.
+ *
+ * This is set to account for an MTU of 1500 byes, a 20 byte IP header, and an
+ * 8 byte datagram header. If you wish to change this value for a particular
+ * target, then you must use the stumpless_set_udp_max_message_size() function
+ * on the target.
  */
 #define STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE 1472
 

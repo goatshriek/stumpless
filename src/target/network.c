@@ -415,8 +415,7 @@ stumpless_new_network_target( const char *name,
 
   target = new_target( STUMPLESS_NETWORK_TARGET,
                        name,
-                       strlen( name ),
-                       0,
+                       STUMPLESS_OPTION_NONE,
                        STUMPLESS_FACILITY_USER );
   if( !target ) {
     goto fail;
@@ -491,7 +490,6 @@ stumpless_open_network_target( const char *name,
 
   target = new_target( STUMPLESS_NETWORK_TARGET,
                        name,
-                       strlen( name ),
                        options,
                        default_facility );
 

@@ -47,8 +47,11 @@ format_entry( struct stumpless_entry *entry ) {
   builder = strbuilder_append_msgid( builder, entry );
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_structured_data( builder, entry );
-  builder = strbuilder_append_char( builder, ' ' );
-  builder = strbuilder_append_message( builder, entry );
+
+  if( entry->message_length > 0 ) {
+    builder = strbuilder_append_char( builder, ' ' );
+    builder = strbuilder_append_message( builder, entry );
+  }
 
   return builder;
 }

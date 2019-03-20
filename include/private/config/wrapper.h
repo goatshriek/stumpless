@@ -23,15 +23,33 @@
 #  include "private/config.h"
 
 
+/* definition of config_open_default_target */
+#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include "private/config/wel_supported.h"
+#    define config_open_default_target wel_open_default_target
+#    define config_close_default_target stumpless_close_wel_target
+#  elif STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    include "private/config/socket_supported.h"
+#    define config_open_default_target socket_open_default_target
+#    define config_close_default_target stumpless_close_socket_target
+#  else
+#    include <stumpless/target/file.h>
+#    include "private/target/file.h"
+#    define config_open_default_target file_open_default_target
+#    define config_close_default_target stumpless_close_file_target
+#  endif
+
 /* definition of config_sendto_network_target and config_network_free_all */
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include "private/target/network.h"
+#    define config_close_network_target stumpless_close_network_target
 #    define config_network_free_all network_free_all
 #    define config_network_target_is_open network_target_is_open
 #    define config_open_network_target open_network_target
 #    define config_sendto_network_target sendto_network_target
 #  else
 #    include "private/target.h"
+#    define config_close_network_target close_unsupported_target
 #    define config_network_free_all() ( ( void ) 0 )
 #    define config_network_target_is_open unsupported_target_is_open
 #    define config_open_network_target open_unsupported_target
@@ -41,24 +59,30 @@
 
 /* definition of config_sendto_socket_target */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    include <stumpless/target/socket.h>
 #    include "private/target/socket.h"
+#    define config_close_socket_target stumpless_close_socket_target
 #    define config_sendto_socket_target sendto_socket_target
 #  else
 #    include "private/target.h"
+#    define config_close_socket_target close_unsupported_target
 #    define config_sendto_socket_target sendto_unsupported_target
 #  endif
 
 
 /* definition of config_sendto_wel_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include <stumpless/target/wel.h>
 #    include "private/config/wel_supported.h"
 #    include "private/target/wel.h"
+#    define config_close_wel_target stumpless_close_wel_target
 #    define config_send_entry_to_wel_target send_entry_to_wel_target
 #    define config_destroy_insertion_params destroy_insertion_params
 #    define config_initialize_insertion_params initialize_insertion_params
 #    define config_set_entry_wel_type set_entry_wel_type
 #  else
 #    include "private/target.h"
+#    define config_close_wel_target close_unsupported_target
 #    define config_send_entry_to_wel_target send_entry_to_unsupported_target
 #    define config_destroy_insertion_params( ENTRY ) ( ( void ) 0 )
 #    define config_initialize_insertion_params( ENTRY ) ( ( void ) 0 )
@@ -73,6 +97,16 @@
 #  else
 #    include <stdio.h>
 #    define config_fopen fopen
+#  endif
+
+
+/* definition of config_format_string */
+#  ifdef HAVE_VSNPRINTF_S
+#    include "private/config/have_vsnprintf_s.h"
+#    define config_format_string vsnprintf_s_format_string
+#  else
+#    include "private/config/no_vsnprintf_s.h"
+#    define config_format_string no_vsnprintf_s_format_string
 #  endif
 
 

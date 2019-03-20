@@ -30,6 +30,7 @@
 /* symbol checks */
 #cmakedefine HAVE_FOPEN_S 1
 #cmakedefine HAVE_GMTIME_R 1
+#cmakedefine HAVE_VSNPRINTF_S 1
 
 
 /* to fix the winsock2 ordering errors with windows.h */

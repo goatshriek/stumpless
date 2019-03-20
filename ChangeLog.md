@@ -6,9 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
  - Compile-time log level filtering.
- - Format-string style logging from `stumpless` call.
  - Thread-safe operation.
- - Examples for file and socket targets.
+ - Simpler socket functions (will break existing usage).
+ - Non-blocking network logging (may change existing usage).
+
+## [1.4.0] - 2019-03-09
+### Added
+ - Format specifier support for messages and entries.
+ - Generic stumpless_close_target function.
+ - Example and documentation of file targets.
+ - Example and documentation of socket targets.
+ - Functions that can replace syslog and vsyslog (stumplog and vstumplog).
+ - Default targets specific to the platform.
+
+### Fixed
+ - Memory leak where error structures are not freed by stumpless_free_all.
+ - Missing error generation for socket logging.
+
+### Changed
+ - Network examples are no longer run by the examples build target.
 
 ## [1.3.1] - 2019-02-15
 ### Fixed

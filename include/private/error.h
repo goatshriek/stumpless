@@ -25,6 +25,9 @@ void
 clear_error( void );
 
 void
+error_free_all( void );
+
+void
 raise_address_failure( const char *message, int code, const char *code_type );
 
 void
@@ -46,6 +49,9 @@ void
 raise_file_write_failure( void );
 
 void
+raise_index_out_of_bounds( const char *message, int code );
+
+void
 raise_invalid_facility( void );
 
 void
@@ -58,7 +64,9 @@ void
 raise_network_protocol_unsupported( void );
 
 void
-raise_socket_bind_failure( void );
+raise_socket_bind_failure( const char *message,
+                           int code,
+                           const char *code_type );
 
 void
 raise_socket_connect_failure( const char *message,
