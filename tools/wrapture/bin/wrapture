@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+#require 'wrapture'
+
+def cpp_build_parameters(parameters_spec)
+  cpp_templates = YAML::load_file('/home/angel/code/stumpless/tools/wrapture/data/cpp.yml')
+  parameters = Array.new
+
+  parameter_template = cpp_templates['parameter-template']
+  parameters_spec.each do |param|
+    parameter_template.sub! '#{name}' param['name']
+    parameter_template.sub! '#{type}' param['type']
+
+    parameters << parameter_template
+  end
+
+  return parameters.join(', ')
+end
+
+def cpp_build_function_declaration(function_spec)
+  cpp_templates = YAML::load_file('/home/angel/code/stumpless/tools/wrapture/data/cpp.yml')
+
+  
+end
+
+def cpp_build_function_definition(function_spec)
+  cpp_templates = YAML::load_file('/home/angel/code/stumpless/tools/wrapture/data/cpp.yml')
+
+end
+
+def cpp_wrap_class(class_spec)
+  output_filename = class_spec['name'] + '.cpp'
+
+  cpp_templates = YAML::load_file('/home/angel/code/stumpless/tools/wrapture/data/cpp.yml')
+
+  File.open( class_spec['name'] + '.cpp', 'w' ) do |class_file|
+    class_string = cpp_templates['class-template']
+
+    class_string.sub! '#{namespace}' class_spec['namespace']
+    class_string.sub! '#{name}' class_spec['name']
+  end
+end
+
+spec = YAML::load_file ARGV[0]
+
+spec['classes'].each do |class_spec|
+  class_spec['languages'].each do |language|
+    if language == 'c++' do
+      cpp_wrap_class class_spec
+    end
+  end
+end

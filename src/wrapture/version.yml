@@ -1,0 +1,13 @@
+classes:
+  - name: "Version"
+    namespace: "stumpless"
+    equivalent: "struct stumpless_version"
+    languages:
+      - "c++"
+    functions:
+      - name: "current"
+        modifiers:
+          - "static"
+        return: "Version"
+        wraps:
+          name: "stumpless_get_version"
