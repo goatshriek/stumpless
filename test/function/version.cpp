@@ -29,6 +29,8 @@ namespace {
   class VersionTest : public ::testing::Test {};
   
   TEST(GetVersion, Defines){
+    std::ostringstream current_version;
+
     #ifndef STUMPLESS_MAJOR_VERSION
       FAIL();
     #endif
@@ -40,6 +42,13 @@ namespace {
     #ifndef STUMPLESS_PATCH_VERSION
       FAIL();
     #endif
+
+    #ifndef STUMPLESS_VERSION
+      FAIL();
+    #endif
+
+    current_version << STUMPLESS_MAJOR_VERSION << "." << STUMPLESS_MINOR_VERSION << "." << STUMPLESS_PATCH_VERSION;
+    EXPECT_STREQ( STUMPLESS_VERSION, current_version.str(  ).c_str(  ) );
   }
 
   TEST( GetVersion, Function ) {

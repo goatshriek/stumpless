@@ -320,6 +320,7 @@ my %manifest = (
   "STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED" => "stumpless/error.h",
   "STUMPLESS_UDP_TRANSPORT_PROTOCOL" => "stumpless/target/network.h",
   "stumpless_unset_option" => "stumpless/target.h",
+  "STUMPLESS_VERSION" => "stumpless/config.h",
   "stumpless_version_to_string" => "stumpless/version.h",
   "STUMPLESS_WINDOWS_EVENT_LOG_TARGET" => "stumpless/target.h",
   "STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE" => "stumpless/error.h",
