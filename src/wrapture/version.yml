@@ -15,8 +15,20 @@ classes:
     functions:
       - name: "GetCurrent"
         static: true
-        return: "Version"
+        return:
+          type: "Version"
         wrapped_function:
           name: "stumpless_get_version"
+          includes:
+            - "stumpless/version.h"
+      - name: "ToString"
+        return:
+          type: "std::string"
+          includes:
+            - "string"
+        wrapped_function:
+          name: "stumpless_version_to_string"
+          params:
+            - "equivalent-struct-pointer"
           includes:
             - "stumpless/version.h"
