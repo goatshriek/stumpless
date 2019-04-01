@@ -33,4 +33,8 @@ classes:
           includes:
             - "stumpless/version.h"
     constants:
-      - name: ""
+      - name: "CURRENT_VERSION"
+        type: "char *"
+        value: "STUMPLESS_VERSION"
+        includes:
+          - "stumpless/config.h"
