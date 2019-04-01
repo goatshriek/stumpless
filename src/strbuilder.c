@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include <string.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"
 
@@ -111,13 +112,13 @@ strbuilder_append_char( struct strbuilder *builder, char c ) {
 
 struct strbuilder *
 strbuilder_append_int( struct strbuilder *builder, int i ) {
-  char buffer[100];             // todo need to make more precise
+  char buffer[MAX_INT_SIZE];
 
   if( !builder ) {
     return NULL;
   }
 
-  snprintf( buffer, 100, "%d", i );
+  snprintf( buffer, MAX_INT_SIZE, "%d", i );
   return strbuilder_append_string( builder, buffer );
 }
 
@@ -200,6 +201,30 @@ strbuilder_new( void ) {
 
 fail_buffer:
   cache_free( strbuilder_cache, builder );
+fail:
+  return NULL;
+}
+
+char *
+strbuilder_to_string( const struct strbuilder *builder ) {
+  size_t string_length;
+  char *string;
+
+  if( !builder ) {
+    goto fail;
+  }
+
+  string_length = builder->position - builder->buffer;
+  string = alloc_mem( string_length + 1 );
+  if( !string ) {
+    goto fail;
+  }
+
+  memcpy( string, builder->buffer, string_length );
+  string[string_length] = '\0';
+
+  return string;
+
 fail:
   return NULL;
 }

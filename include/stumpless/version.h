@@ -44,6 +44,22 @@ struct stumpless_version {
 struct stumpless_version *
 stumpless_get_version( void );
 
+/**
+ * Creates a string representation of the given version.
+ *
+ * This string will be NULL-terminated, and will appear in the standard
+ * semantic versioning format of '<major>.<minor>.<patch>'.
+ *
+ * @param version The version to convert to a string.
+ *
+ * @return A string representation of the provided version. This should be
+ * destroyed via the memory deallocation function currently configured via
+ * stumpless_set_free(). If an error is encountered, then NULL is returned
+ * and an error code is set appropriately.
+ */
+char *
+stumpless_version_to_string( const struct stumpless_version *version );
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
