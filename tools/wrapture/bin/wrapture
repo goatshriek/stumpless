@@ -19,13 +19,19 @@ spec['classes'].each do |class_spec|
 
   # generate the header file
   File.open("#{class_name}.hpp", 'w') do |file|
-    class_spec['equivalent-struct']['includes'].each do |include|
-      file.puts "#include <#{include}>"
+    # header guard
+    file.puts "#ifndef __#{class_name.upcase}_HPP"
+    file.puts "#define __#{class_name.upcase}_HPP"
+
+    file.puts # line between header guard and includes
+
+    class_spec['equivalent-struct']['includes'].each do |include_file|
+      file.puts "#include <#{include_file}>"
     end
 
     file.puts # line between includes and namespace
 
-    file.puts "namespace #{class_name} {"
+    file.puts "namespace #{class_spec['namespace']} {"
     file.puts "  class #{class_name} {"
     file.puts "    private:"
     file.puts "      struct #{struct_name} equivalent;"
@@ -49,26 +55,26 @@ spec['classes'].each do |class_spec|
 
     file.puts '  };' # end of class
     file.puts '}' # end of namespace
+    file.puts '#endif' # end of header guard
   end
   
   # get the complete list of includes for definitions
   definition_includes = Array.new
   definition_includes << "#{class_name}.hpp"
   class_spec['functions'].each do |function_spec|
-    definition_includes.concat function_spec['wrapped_function'][includes]
+    definition_includes.concat function_spec['wrapped_function']['includes']
   end
   definition_includes.uniq!
 
   # generate the definition file
   File.open("#{class_name}.cpp", 'w') do |file|
-    file.puts "#include <#{class_name}.hpp>"
     definition_includes.each do |include_file|
-      "#include <#{include_file}>"
+      file.puts "#include <#{include_file}>"
     end
 
     file.puts # line between includes and namespace
 
-    file.puts "namespace #{class_name} {"
+    file.puts "namespace #{class_spec['namespace']} {"
 
     file.puts "  #{class_name}::#{constructor_signature} {"
     class_spec['equivalent-struct']['members'].each do |member|
@@ -106,7 +112,7 @@ spec['classes'].each do |class_spec|
     class_spec['functions'].each do |function_spec|
       file.puts # line to separate from previous functions
       static_modifier = if function_spec['static'] then 'static ' else '' end
-      file.puts "  #{static_modifier}#{function_spec['return']} #{function_spec['name']}( void );"
+      file.puts "  #{static_modifier}#{function_spec['return']} #{function_spec['name']}( void ) {"
       if function_spec['return'] == class_name
         file.puts "    return #{class_name}( #{function_spec['wrapped_function']['name']}(  ) );"
       else
