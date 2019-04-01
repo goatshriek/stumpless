@@ -48,7 +48,7 @@ stumpless_get_version( void );
  * Creates a string representation of the given version.
  *
  * This string will be NULL-terminated, and will appear in the standard
- * semantic versioning format of '<major>.<minor>.<patch>'.
+ * semantic versioning format of 'major.minor.patch'.
  *
  * @param version The version to convert to a string.
  *
