@@ -1,19 +1,13 @@
-module CppWrapper
-  def wrap_class(class_description)
-    output_filename = class_description["name"] + ".cpp"
+require 'wrapture/wrapper'
 
-    cpp_templates = YAML::load_file("/home/angel/code/stumpless/tools/wrapture/data/cpp.yml")
+module Wrapture
 
-    # open file
+  class CppWrapper < Wrapper
 
-    # build parameter
+    def self.wrap_class(class_spec)
+      # generates the wrapper for a provided class specification
+    end
 
-    # build function
-
-    # build class
-
-    # print to file
-
-    # close file
   end
+
 end
