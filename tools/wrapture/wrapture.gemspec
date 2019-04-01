@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description =  'Wraps C code in C++.'
   s.authors     =  ['Joel Anderson']
   s.email       =  'joelanderson333@gmail.com'
-  s.files       =  ['lib/wrapture.rb', 'lib/wrapture/cpp_wrapper.rb', 'data/cpp.yml']
+  s.files       =  ['lib/wrapture.rb', 'lib/wrapture/cpp_wrapper.rb']
   s.executables << 'wrapture'
   s.homepage    =  'http://rubygems.org/gems/wrapture'
   s.license     =  'Apache-2.0'
