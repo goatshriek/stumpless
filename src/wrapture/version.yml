@@ -32,3 +32,5 @@ classes:
             - "equivalent-struct-pointer"
           includes:
             - "stumpless/version.h"
+    constants:
+      - name: ""

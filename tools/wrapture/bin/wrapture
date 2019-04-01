@@ -42,24 +42,24 @@ spec['classes'].each do |class_spec|
 
     file.puts "namespace #{class_spec['namespace']} {"
     file.puts "  class #{class_name} {"
-    file.puts "    private:"
-    file.puts "      struct #{struct_name} equivalent;"
+    file.puts "  private:"
+    file.puts "    struct #{struct_name} equivalent;"
 
     file.puts # line between private and public
 
-    file.puts "    public:"
-    file.puts "      #{constructor_signature};"
-    file.puts "      #{class_name}( struct #{struct_name} equivalent );"
-    file.puts "      #{class_name}( const struct #{struct_name} *equivalent );"
+    file.puts "  public:"
+    file.puts "    #{constructor_signature};"
+    file.puts "    #{class_name}( struct #{struct_name} equivalent );"
+    file.puts "    #{class_name}( const struct #{struct_name} *equivalent );"
 
     class_spec['equivalent-struct']['members'].each do |member|
-      file.puts "      #{member['type']} Get#{member['name'].capitalize}( void ) const;"
-      file.puts "      void Set#{member['name'].capitalize}( #{member['type']} #{member['name']} );"
+      file.puts "    #{member['type']} Get#{member['name'].capitalize}( void ) const;"
+      file.puts "    void Set#{member['name'].capitalize}( #{member['type']} #{member['name']} );"
     end
 
     class_spec['functions'].each do |function_spec|
       static_modifier = if function_spec['static'] then 'static ' else '' end
-      file.puts "      #{static_modifier}#{function_spec['return']['type']} #{function_spec['name']}( void );"
+      file.puts "    #{static_modifier}#{function_spec['return']['type']} #{function_spec['name']}( void );"
     end
 
     file.puts '  };' # end of class
