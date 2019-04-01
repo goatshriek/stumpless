@@ -78,3 +78,4 @@ EXPORTS
   stumplog                              @76
   vstumpless_add_log                    @77
   vstumplog                             @78
+  stumpless_version_to_string           @79
