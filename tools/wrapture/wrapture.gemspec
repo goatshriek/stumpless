@@ -1,6 +1,8 @@
+require File.expand_path('../lib/wrapture/version', __FILE__)
+
 Gem::Specification.new do |s|
   s.name        =  'wrapture'
-  s.version     =  '0.1.0'
+  s.version     =  Wrapture::VERSION
   s.date        =  '2019-04-01'
   s.summary     =  'wrap C in C++'
   s.description =  'Wraps C code in C++.'
