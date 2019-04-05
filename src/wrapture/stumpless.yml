@@ -1,4 +1,26 @@
 classes:
+  - name: "Entry"
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_entry"
+      includes:
+        - "stumpless/entry.h"
+    constructors:
+      - wrapped_function:
+          name: "stumpless_new_entry"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "facility"
+              type: "int"
+            - name: "severity"
+              type: "int"
+            - name: "app_name"
+              type: "const char *"
+            - name: "msgid"
+              type: "const char *"
+            - name: "message"
+              type: "const char *"
   - name: "Version"
     namespace: "stumpless"
     equivalent-struct:
@@ -29,7 +51,7 @@ classes:
         wrapped_function:
           name: "stumpless_version_to_string"
           params:
-            - "equivalent-struct-pointer"
+            - name: "equivalent-struct-pointer"
           includes:
             - "stumpless/version.h"
     constants:
