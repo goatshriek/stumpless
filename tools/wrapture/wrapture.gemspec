@@ -1,15 +1,15 @@
 require File.expand_path('../lib/wrapture/version', __FILE__)
 
-Gem::Specification.new do |s|
-  s.name        =  'wrapture'
-  s.version     =  Wrapture::VERSION
-  s.date        =  '2019-04-01'
-  s.summary     =  'wrap C in C++'
-  s.description =  'Wraps C code in C++.'
-  s.authors     =  ['Joel Anderson']
-  s.email       =  'joelanderson333@gmail.com'
-  s.files       =  ['lib/wrapture.rb', 'lib/wrapture/cpp_wrapper.rb', 'lib/wrapture/version.rb', 'lib/wrapture/wrapper.rb']
-  s.executables << 'wrapture'
-  s.homepage    =  'http://rubygems.org/gems/wrapture'
-  s.license     =  'Apache-2.0'
+Gem::Specification.new do |spec|
+  spec.name        =  'wrapture'
+  spec.version     =  Wrapture::VERSION
+  spec.date        =  '2019-04-01'
+  spec.summary     =  'wrap C in C++'
+  spec.description =  'Wraps C code in C++.'
+  spec.authors     =  ['Joel Anderson']
+  spec.email       =  'joelanderson333@gmail.com'
+  spec.files       =  Dir.glob("{lib,bin}/**/*").reject{|f| File.directory?(f) }
+  spec.executables << 'wrapture'
+  spec.homepage    =  'http://rubygems.org/gems/wrapture'
+  spec.license     =  'Apache-2.0'
 end
