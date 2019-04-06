@@ -6,5 +6,5 @@ require 'wrapture'
 spec = YAML::load_file ARGV[0]
 
 spec['classes'].each do |class_spec|
-  Wrapture::Wrapper.wrap_class class_spec
+  Wrapture::wrap_class class_spec
 end
