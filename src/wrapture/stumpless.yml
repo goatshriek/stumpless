@@ -21,6 +21,8 @@ classes:
               type: "const char *"
             - name: "message"
               type: "const char *"
+          return:
+            type: "equivalent-struct-pointer"
   - name: "Version"
     namespace: "stumpless"
     equivalent-struct:
