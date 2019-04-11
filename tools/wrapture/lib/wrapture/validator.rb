@@ -8,6 +8,10 @@ module Wrapture
 
     spec['classes'].each do |class_spec|
 
+      if class_spec['constructors'].nil?
+        class_spec['constructors'] = Array::new
+      end
+
       if class_spec['equivalent-struct']['members'].nil?
         class_spec['equivalent-struct']['members'] = Array::new
       end

@@ -12,7 +12,7 @@ module Wrapture
     member_operator = '.'
 
     class_spec['constructors'].each do |constructor_spec|
-      if constructor_spec['return']['type'] == 'equivalent-struct-pointer'
+      if constructor_spec['wrapped-function']['return']['type'] == 'equivalent-struct-pointer'
         equivalent_name = '*equivalent'
         equivalent_struct = '*(this->equivalent)'
         equivalent_struct_pointer = 'this->equivalent'
@@ -111,7 +111,7 @@ module Wrapture
       # the basic construtor
       file.puts "  #{class_name}::#{constructor_signature} {"
       class_spec['equivalent-struct']['members'].each do |member|
-        file.puts "    #{equivalent_struct}#{member_operator}#{member['name']} = #{member['name']};"
+        file.puts "    this->equivalent#{member_operator}#{member['name']} = #{member['name']};"
       end
       file.puts '  }' # end of the constructor
 
@@ -119,7 +119,7 @@ module Wrapture
 
       file.puts "  #{class_name}::#{class_name}( struct #{struct_name} equivalent ) {"
       class_spec['equivalent-struct']['members'].each do |member|
-        file.puts "    #{equivalent_struct}#{member_operator}#{member['name']} = equivalent.#{member['name']};"
+        file.puts "    this->equivalent#{member_operator}#{member['name']} = equivalent.#{member['name']};"
       end
       file.puts '  }' # end of struct conversion
 
@@ -127,18 +127,18 @@ module Wrapture
 
       file.puts "  #{class_name}::#{class_name}( const struct #{struct_name} *equivalent ) {"
       class_spec['equivalent-struct']['members'].each do |member|
-        file.puts "    #{equivalent_struct}#{member_operator}#{member['name']} = equivalent->#{member['name']};"
+        file.puts "    this->equivalent#{member_operator}#{member['name']} = equivalent->#{member['name']};"
       end
       file.puts '  }' # end of pointer conversion
 
       class_spec['equivalent-struct']['members'].each do |member|
         file.puts # line to separate from previous functions
         file.puts "  #{member['type']} #{class_name}::Get#{member['name'].capitalize}( void ) const {"
-        file.puts "    return #{equivalent_struct}#{member_operator}#{member['name']};"
+        file.puts "    return this->equivalent#{member_operator}#{member['name']};"
         file.puts '  }'
         file.puts
         file.puts "  void #{class_name}::Set#{member['name'].capitalize}( #{member['type']} #{member['name']} ) {"
-        file.puts "    #{equivalent_struct}#{member_operator}#{member['name']} = #{member['name']};"
+        file.puts "    this->equivalent#{member_operator}#{member['name']} = #{member['name']};"
         file.puts '  }'
       end
 

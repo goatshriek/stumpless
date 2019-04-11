@@ -6,7 +6,7 @@ classes:
       includes:
         - "stumpless/entry.h"
     constructors:
-      - wrapped_function:
+      - wrapped-function:
           name: "stumpless_new_entry"
           includes:
             - "stumpless/entry.h"
