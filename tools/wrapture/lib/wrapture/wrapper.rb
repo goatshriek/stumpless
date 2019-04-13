@@ -6,6 +6,7 @@ module Wrapture
     struct_name = class_spec['equivalent-struct']['name']
 
     # generating constructor signatures
+    constructor_signatures = Array::new
     equivalent_name = 'equivalent'
     equivalent_struct = 'this->equivalent'
     equivalent_struct_pointer = '&this->equivalent'
@@ -18,13 +19,23 @@ module Wrapture
         equivalent_struct_pointer = 'this->equivalent'
         member_operator = '->'
       end
+
+      params = Array::new
+      constructor_spec['wrapped-function']['params'].each do |param|
+        params << "#{param['type']} #{param['name']}"
+      end
+
+      constructor_signatures << "#{class_name}( #{params.join ', '} )"
     end
 
     members = Array.new
     class_spec['equivalent-struct']['members'].each do |member|
       members << "#{member['type']} #{member['name']}"
     end
-    constructor_signature = "#{class_name}( #{members.join ', '} )"
+
+    member_constructor_signature = "#{class_name}( #{members.join ', '} )"
+    struct_constructor_signature = "#{class_name}( struct #{struct_name} equivalent )"
+    pointer_constructor_signature = "#{class_name}( const struct #{struct_name} *equivalent )"
 
     # get the list of includes for declarations
     declaration_includes = class_spec['equivalent-struct']['includes'].dup
@@ -55,9 +66,13 @@ module Wrapture
       file.puts
 
       file.puts "  public:"
-      file.puts "    #{constructor_signature};"
-      file.puts "    #{class_name}( struct #{struct_name} equivalent );"
-      file.puts "    #{class_name}( const struct #{struct_name} *equivalent );"
+      constructor_signatures.each do |signature|
+        file.puts "    #{signature};"
+      end
+
+      file.puts "    #{member_constructor_signature};"
+      file.puts "    #{struct_constructor_signature};"
+      file.puts "    #{pointer_constructor_signature};"
 
       class_spec['equivalent-struct']['members'].each do |member|
         file.puts "    #{member['type']} Get#{member['name'].capitalize}( void ) const;"
@@ -101,15 +116,31 @@ module Wrapture
 
       file.puts
       file.puts "namespace #{class_spec['namespace']} {"
-      file.puts 
 
       # constants
       class_spec['constants'].each do |constant_spec|
+        file.puts
         file.puts "  const #{constant_spec['type']} #{class_name}::#{constant_spec['name']} = #{constant_spec['value']};"
       end
 
-      # the basic construtor
-      file.puts "  #{class_name}::#{constructor_signature} {"
+      # construtors
+
+      class_spec['constructors'].each_index do |i|
+        wrapped_function = class_spec['constructors'][i]['wrapped-function']
+        function_params = Array::new
+        wrapped_function['params'].each do |param|
+          function_params << param['name']
+        end
+
+        file.puts
+        file.puts "  #{class_name}::#{constructor_signatures[i]} {"
+        file.puts "    #{wrapped_function['name']}( #{function_params.join ', '} );"
+        file.puts '  }'
+      end
+
+      file.puts
+
+      file.puts "  #{class_name}::#{member_constructor_signature} {"
       class_spec['equivalent-struct']['members'].each do |member|
         file.puts "    this->equivalent#{member_operator}#{member['name']} = #{member['name']};"
       end
@@ -117,7 +148,7 @@ module Wrapture
 
       file.puts
 
-      file.puts "  #{class_name}::#{class_name}( struct #{struct_name} equivalent ) {"
+      file.puts "  #{class_name}::#{struct_constructor_signature} {"
       class_spec['equivalent-struct']['members'].each do |member|
         file.puts "    this->equivalent#{member_operator}#{member['name']} = equivalent.#{member['name']};"
       end
@@ -125,7 +156,7 @@ module Wrapture
 
       file.puts
 
-      file.puts "  #{class_name}::#{class_name}( const struct #{struct_name} *equivalent ) {"
+      file.puts "  #{class_name}::#{pointer_constructor_signature} {"
       class_spec['equivalent-struct']['members'].each do |member|
         file.puts "    this->equivalent#{member_operator}#{member['name']} = equivalent->#{member['name']};"
       end
