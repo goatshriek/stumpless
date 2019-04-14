@@ -23,6 +23,25 @@ classes:
               type: "const char *"
           return:
             type: "equivalent-struct-pointer"
+    destructor:
+      wrapped-function:
+        name: "stumpless_destroy_entry"
+        includes:
+          - "stumpless/entry.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - name: "SetAppName"
+        params:
+          - name: "app_name"
+            type: "const char *"
+        wrapped-function:
+          name: "stumpless_set_entry_app_name"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "equivalent-struct-pointer"
+            - name: "app_name"
   - name: "Version"
     namespace: "stumpless"
     equivalent-struct:
@@ -41,7 +60,7 @@ classes:
         static: true
         return:
           type: "Version"
-        wrapped_function:
+        wrapped-function:
           name: "stumpless_get_version"
           includes:
             - "stumpless/version.h"
@@ -50,7 +69,7 @@ classes:
           type: "std::string"
           includes:
             - "string"
-        wrapped_function:
+        wrapped-function:
           name: "stumpless_version_to_string"
           params:
             - name: "equivalent-struct-pointer"

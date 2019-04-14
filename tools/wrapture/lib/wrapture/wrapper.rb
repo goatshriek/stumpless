@@ -6,7 +6,7 @@ module Wrapture
     struct_name = class_spec['equivalent-struct']['name']
 
     # generating constructor signatures
-    constructor_signatures = Array::new
+    constructor_signatures = Array.new
     equivalent_name = 'equivalent'
     equivalent_struct = 'this->equivalent'
     equivalent_struct_pointer = '&this->equivalent'
@@ -20,7 +20,7 @@ module Wrapture
         member_operator = '->'
       end
 
-      params = Array::new
+      params = Array.new
       constructor_spec['wrapped-function']['params'].each do |param|
         params << "#{param['type']} #{param['name']}"
       end
@@ -66,11 +66,20 @@ module Wrapture
       file.puts
 
       file.puts "  public:"
+
+      class_spec['constants'].each do |constant_spec|
+        file.puts "    static const #{constant_spec['type']} #{constant_spec['name']};"
+      end
+      file.puts unless class_spec['constants'].empty?
+
       constructor_signatures.each do |signature|
         file.puts "    #{signature};"
       end
 
-      file.puts "    #{member_constructor_signature};"
+      unless members.empty?
+        file.puts "    #{member_constructor_signature};"
+      end
+
       file.puts "    #{struct_constructor_signature};"
       file.puts "    #{pointer_constructor_signature};"
 
@@ -81,13 +90,20 @@ module Wrapture
 
       class_spec['functions'].each do |function_spec|
         static_modifier = if function_spec['static'] then 'static ' else '' end
-        file.puts "    #{static_modifier}#{function_spec['return']['type']} #{function_spec['name']}( void );"
+        file.write "    #{static_modifier}#{function_spec['return']['type']} #{function_spec['name']}( "
+
+        wrapped_params = Array.new
+        function_spec['params'].each do |param|
+          wrapped_params << "#{param['type']} #{param['name']}"
+        end
+        file.write(wrapped_params.join ', ')
+
+        file.puts ' );'
       end
 
-      file.puts
-
-      class_spec['constants'].each do |constant_spec|
-        file.puts "    static const #{constant_spec['type']} #{constant_spec['name']};"
+      # destructor
+      unless class_spec['destructor'].nil?
+        file.puts "    ~#{class_name}( void );"
       end
 
       file.puts '  };' # end of class
@@ -100,7 +116,7 @@ module Wrapture
     definition_includes << "#{class_name}.hpp"
     class_spec['functions'].each do |function_spec|
       definition_includes.concat function_spec['return']['includes']
-      definition_includes.concat function_spec['wrapped_function']['includes']
+      definition_includes.concat function_spec['wrapped-function']['includes']
     end
 
     class_spec['constants'].each do |constant_spec|
@@ -123,31 +139,37 @@ module Wrapture
         file.puts "  const #{constant_spec['type']} #{class_name}::#{constant_spec['name']} = #{constant_spec['value']};"
       end
 
-      # construtors
-
+      # constructors
       class_spec['constructors'].each_index do |i|
         wrapped_function = class_spec['constructors'][i]['wrapped-function']
-        function_params = Array::new
+        function_params = Array.new
         wrapped_function['params'].each do |param|
           function_params << param['name']
         end
 
         file.puts
         file.puts "  #{class_name}::#{constructor_signatures[i]} {"
-        file.puts "    #{wrapped_function['name']}( #{function_params.join ', '} );"
+        file.write('    ')
+        case wrapped_function['return']['type']
+        when 'equivalent-struct'
+          file.write(equivalent_struct)
+        when 'equivalent-struct-pointer'
+          file.write(equivalent_struct_pointer)
+        end
+        file.puts " = #{wrapped_function['name']}( #{function_params.join ', '} );"
         file.puts '  }'
       end
 
-      file.puts
-
-      file.puts "  #{class_name}::#{member_constructor_signature} {"
-      class_spec['equivalent-struct']['members'].each do |member|
-        file.puts "    this->equivalent#{member_operator}#{member['name']} = #{member['name']};"
+      unless members.empty?
+        file.puts
+        file.puts "  #{class_name}::#{member_constructor_signature} {"
+        class_spec['equivalent-struct']['members'].each do |member|
+          file.puts "    this->equivalent#{member_operator}#{member['name']} = #{member['name']};"
+        end
+        file.puts '  }' # end of the member constructor
       end
-      file.puts '  }' # end of the constructor
 
       file.puts
-
       file.puts "  #{class_name}::#{struct_constructor_signature} {"
       class_spec['equivalent-struct']['members'].each do |member|
         file.puts "    this->equivalent#{member_operator}#{member['name']} = equivalent.#{member['name']};"
@@ -155,7 +177,6 @@ module Wrapture
       file.puts '  }' # end of struct conversion
 
       file.puts
-
       file.puts "  #{class_name}::#{pointer_constructor_signature} {"
       class_spec['equivalent-struct']['members'].each do |member|
         file.puts "    this->equivalent#{member_operator}#{member['name']} = equivalent->#{member['name']};"
@@ -175,18 +196,30 @@ module Wrapture
 
       class_spec['functions'].each do |function_spec|
         file.puts
-        file.puts "  #{function_spec['return']['type']} #{class_name}::#{function_spec['name']}( void ) {"
+        file.write "  #{function_spec['return']['type']} #{class_name}::#{function_spec['name']}( "
+
+        wrapped_params = Array.new
+        function_spec['params'].each do |param|
+          wrapped_params << "#{param['type']} #{param['name']}"
+        end
+        file.write(wrapped_params.join ', ')
+
+        file.puts ' ) {'
 
         # the function body
-        file.write "    return #{function_spec['return']['type']}( #{function_spec['wrapped_function']['name']}( "
+        if function_spec['return']['type'] == 'void'
+          file.write "    #{function_spec['wrapped-function']['name']}( "
+        else
+          file.write "    return #{function_spec['return']['type']}( #{function_spec['wrapped-function']['name']}( "
+        end
 
         # building the parameters
         wrapped_params = Array.new
-        function_spec['wrapped_function']['params'].each do |param|
+        function_spec['wrapped-function']['params'].each do |param|
           case param['name']
-          when "equivalent-struct"
+          when 'equivalent-struct'
             wrapped_params << equivalent_struct
-          when "equivalent-struct-pointer"
+          when 'equivalent-struct-pointer'
             wrapped_params << equivalent_struct_pointer
           else
             wrapped_params << param['name']
@@ -194,7 +227,32 @@ module Wrapture
         end
         file.write(wrapped_params.join ', ')
 
-        file.puts ' ) );'
+        if function_spec['return']['type'] == 'void'
+          file.puts ' );'
+        else
+          file.puts ' ) );'
+        end
+        file.puts '  }'
+      end
+
+      # destructor
+      unless class_spec['destructor'].nil?
+        file.puts
+        file.puts "  #{class_name}::~#{class_name}( void ) {"
+        file.write("    #{class_spec['destructor']['wrapped-function']['name']}( ")
+        wrapped_params = Array.new
+        class_spec['destructor']['wrapped-function']['params'].each do |param|
+          case param['name']
+          when 'equivalent-struct'
+            wrapped_params << equivalent_struct
+          when 'equivalent-struct-pointer'
+            wrapped_params << equivalent_struct_pointer
+          else
+            wrapped_params << param['name']
+          end
+        end
+        file.write(wrapped_params.join ', ')
+        file.puts ' );'
         file.puts '  }'
       end
 

@@ -9,33 +9,42 @@ module Wrapture
     spec['classes'].each do |class_spec|
 
       if class_spec['constructors'].nil?
-        class_spec['constructors'] = Array::new
+        class_spec['constructors'] = Array.new
       end
 
       if class_spec['equivalent-struct']['members'].nil?
-        class_spec['equivalent-struct']['members'] = Array::new
+        class_spec['equivalent-struct']['members'] = Array.new
       end
 
       if class_spec['functions'].nil?
-        class_spec['functions'] = Array::new
+        class_spec['functions'] = Array.new
       else
         class_spec['functions'].each do |function_spec|
-          if function_spec['wrapped_function']['params'].nil?
-            function_spec['wrapped_function']['params'] = Array::new
+          if function_spec['params'].nil?
+            function_spec['params'] = Array.new
+          end
+
+          if function_spec['wrapped-function']['params'].nil?
+            function_spec['wrapped-function']['params'] = Array.new
+          end
+
+          if function_spec['return'].nil?
+            function_spec['return'] = Hash.new
+            function_spec['return']['type'] = 'void'
           end
 
           if function_spec['return']['includes'].nil?
-            function_spec['return']['includes'] = Array::new
+            function_spec['return']['includes'] = Array.new
           end
         end
       end
 
       if class_spec['constants'].nil?
-        class_spec['constants'] = Array::new
+        class_spec['constants'] = Array.new
       else
         class_spec['constants'].each do |constant_spec|
           if constant_spec['includes'].nil?
-            constant_spec['includes'] = Array::new
+            constant_spec['includes'] = Array.new
           end
         end
       end
