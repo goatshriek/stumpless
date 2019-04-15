@@ -1,4 +1,27 @@
 classes:
+  - name: "Element"
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_element"
+      includes:
+        - "stumpless/entry.h"
+    constructors:
+      - wrapped-function:
+          name: "stumpless_new_element"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "name"
+              type: "const char *"
+          return:
+            type: "equivalent-struct-pointer"
+    destructor:
+      wrapped-function:
+        name: "stumpless_destroy_element"
+        includes:
+          - "stumpless/entry.h"
+        params:
+          - name: "equivalent-struct-pointer"
   - name: "Entry"
     namespace: "stumpless"
     equivalent-struct:
@@ -42,6 +65,17 @@ classes:
           params:
             - name: "equivalent-struct-pointer"
             - name: "app_name"
+      - name: "AddElement"
+        params:
+          - name: "element"
+            type: "Element"
+        wrapped-function:
+          name: "stumpless_add_element"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "equivalent-struct-pointer"
+            - name: "element-pointer"
   - name: "Version"
     namespace: "stumpless"
     equivalent-struct:

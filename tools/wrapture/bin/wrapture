@@ -3,10 +3,10 @@
 require 'yaml'
 require 'wrapture'
 
-spec = YAML::load_file ARGV[0]
+spec = YAML.load_file ARGV[0]
 
-Wrapture::normalize_spec! spec
+normalized_spec = Wrapture.normalize_spec spec
 
-spec['classes'].each do |class_spec|
-  Wrapture::wrap_class class_spec
+normalized_spec['classes'].each do |class_spec|
+  Wrapture.wrap_class class_spec
 end

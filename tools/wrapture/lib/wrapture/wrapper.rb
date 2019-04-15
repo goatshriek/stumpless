@@ -1,6 +1,9 @@
 module Wrapture
 
-  def self.wrap_class(class_spec)
+  def self.wrap_class( class_spec )
+
+    spec = ClassSpec.new class_spec
+    spec.generate_wrappers
 
     class_name = class_spec['name']
     struct_name = class_spec['equivalent-struct']['name']
@@ -56,21 +59,19 @@ module Wrapture
         file.puts "#include <#{include_file}>"
       end
 
-      file.puts
+      file.puts unless declaration_includes.empty?
 
       file.puts "namespace #{class_spec['namespace']} {"
       file.puts "  class #{class_name} {"
-      file.puts "  private:"
-      file.puts "    struct #{struct_name} #{equivalent_name};"
-
-      file.puts
-
-      file.puts "  public:"
+      file.puts '  public:'
 
       class_spec['constants'].each do |constant_spec|
         file.puts "    static const #{constant_spec['type']} #{constant_spec['name']};"
       end
       file.puts unless class_spec['constants'].empty?
+
+      file.puts "    struct #{struct_name} #{equivalent_name};"
+      file.puts
 
       constructor_signatures.each do |signature|
         file.puts "    #{signature};"
