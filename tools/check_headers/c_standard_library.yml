@@ -1,0 +1,5 @@
+"clock": "time.h"
+"close": "unistd.h"
+"getaddrinfo":
+  - "netdb.h"
+  - "ws2tcpip.h"

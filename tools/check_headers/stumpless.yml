@@ -1,0 +1,3 @@
+"destroy_network_target": "private/target/network.h"
+"stumpless_close_network_target": "stumpless/target/network.h"
+"stumpless_free_all": "stumpless/memory.h"
