@@ -19,6 +19,7 @@
 #include "private/config/wrapper.h"
 
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>

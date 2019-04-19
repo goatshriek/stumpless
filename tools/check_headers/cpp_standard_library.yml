@@ -1,0 +1,3 @@
+"std::cout": "iostream"
+"std::ifstream": "fstream"
+"std::regex": "regex"
