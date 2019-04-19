@@ -13,7 +13,7 @@ require 'yaml'
 
 known_terms = Hash.new
 
-default_manifests = ["c_standard_library.yml", "cpp_standard_library.yml", "stumpless.yml"]
+default_manifests = ["c_standard_library.yml", "cpp_standard_library.yml", "gtest.yml", "stumpless.yml"]
 default_manifests.each do |filename|
   file_path = File.join(__dir__, filename)
   manifest_terms = YAML.load_file file_path
