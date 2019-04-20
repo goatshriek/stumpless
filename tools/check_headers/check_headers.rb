@@ -35,34 +35,34 @@ ARGV.each do |source_glob|
       if line.include? '/*'
         skipping = true
       end
-  
+
       if line.include? '*/'
         skipping = false
         next
       end
-  
+
       if skipping or line.match?(/\s*\\\\.*/)
         # skip if skippint or only a single-line comment
         next
       end
-  
+
       if m = line.match(/#\s*include\s*["<](.*)[">]/)
         included_files << m[1]
         next # don't parse include filepaths for terms
       end
-  
+
       line.split(/\W/).each do |word|
         if known_terms.has_key?(word)
           used_terms << word
         end
       end
     end
-  
+
     included_files.uniq!
-   
+
     used_terms.uniq.each do |term|
       requirement = known_terms[term]
-    
+
       if requirement.is_a? Array
         met_requirements = requirement & included_files
         if met_requirements.empty?
@@ -80,7 +80,7 @@ ARGV.each do |source_glob|
         end
       end
     end
-  
+
     unused_includes = included_files - used_includes
     unused_includes.each do |include_file|
       puts "#{source_filename}: unused include #{include_file}"
