@@ -21,7 +21,7 @@
 #  - any line containing '/*' starts a comment
 #  - any line containing '*/' ends a comment
 #  - include statements are on their own lines
-#  - terms do not contain spaces, unless they are prefixed with 'struct '
+#  - terms do not contain spaces, unless they are prefixed with 'struct ' or 'enum '
 #  - string literals do not have escaped double quotes
 #  - the manifest files are in the same directory as this script
 #  - for terms that may exist in more than one header, only one of those headers
@@ -73,7 +73,7 @@ ARGV.each do |source_glob|
         next # don't parse include filepaths for terms
       end
 
-      line.gsub(/"[^"]*"/, '*').split(/\W|(struct \w+)/).each do |word|
+      line.gsub(/"[^"]*"/, '*').split(/\W|(struct \w+)|(enum \w+)/).each do |word|
         if known_terms.has_key?(word)
           used_terms << word
         end

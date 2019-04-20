@@ -53,6 +53,7 @@
 "destroy_target": "private/target.h"
 "destroy_wel_target": "private/target/wel.h"
 "entry_free_all": "private/entry.h"
+"enum stumpless_error_id": "stumpless/error.h"
 "error_free_all": "private/error.h"
 "facility_is_invalid": "private/entry.h"
 "file_open_default_target": "private/target/file.h"

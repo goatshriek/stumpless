@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-#include <sys/types.h>
-#include <stumpless/entry.h>
-
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
 #  define __STUMPLESS_PRIVATE_ENTRY_H
+
+#  include <stumpless/entry.h>
+#  include "private/strbuilder.h"
 
 void
 entry_free_all( void );
