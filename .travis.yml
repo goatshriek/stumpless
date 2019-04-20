@@ -40,6 +40,7 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
+  - tools/check_headers/check_headers.rb src/*.c src/**/*.c
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
