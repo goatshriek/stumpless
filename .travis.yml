@@ -40,7 +40,6 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-  - tools/check_headers/check_headers.rb src/*.c src/**/*.c
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
@@ -48,6 +47,7 @@ before_script:
   - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
       sudo sh -c 'echo 0 > /proc/sys/net/ipv6/conf/all/disable_ipv6';
     fi
+  - tools/check_headers/check_headers.rb src/*.c src/**/*.c
   - mkdir build
   - cd build
   - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..
