@@ -81,6 +81,7 @@
 "va_end": "stdarg.h"
 "va_list": "stdarg.h"
 "va_start": "stdarg.h"
+"vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
 "WORD": "windows.h"
 "WSACleanup": "winsock2.h"
