@@ -41,12 +41,17 @@ end
 return_code = 0
 
 ARGV.each do |source_glob|
-  included_files = Array.new
-  used_includes = Array.new
-  used_terms = Array.new
-  skipping = false
-
   Dir.glob(source_glob) do |source_filename|
+
+    used_includes = []
+    used_terms = []
+    skipping = false
+
+    included_files = []
+    source_filename.match(/include\/(.*\.h)/) do |this_include|
+      included_files << this_include[1]
+    end
+
     File.open(source_filename).each do |line|
       # we don't immediately start skipping lines in case this is a one-line comment
       if line.include? '/*'
