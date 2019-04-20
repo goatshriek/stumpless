@@ -1,5 +1,9 @@
-"AF_INET": "sys/socket.h"
-"AF_INET6": "sys/socket.h"
+"AF_INET":
+  - "sys/socket.h"
+  - "winsock2.h"
+"AF_INET6":
+  - "sys/socket.h"
+  - "winsock2.h"
 "AF_UNIX": "sys/socket.h"
 "BOOL": "windows.h"
 "clock": "time.h"
