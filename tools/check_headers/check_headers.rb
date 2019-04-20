@@ -5,6 +5,7 @@
 #  - ruby 2.0 is required due to use of the __dir__ variable
 #  - any line containing '/*' starts a comment
 #  - any line containing '*/' ends a comment
+#  - include statements are on their own lines
 #  - the manifest files are in the same directory as this script
 #  - for terms that may exist in more than one header, only one of those headers
 #    will be included
@@ -40,12 +41,14 @@ ARGV.each do |source_glob|
         next
       end
   
-      if skipping
+      if skipping or line.match?(/\s*\\\\.*/)
+        # skip if skippint or only a single-line comment
         next
       end
   
-      line.match(/#\s*include\s*["<](.*)[">]/) do |include_match|
-        included_files << include_match[1]
+      if m = line.match(/#\s*include\s*["<](.*)[">]/)
+        included_files << m[1]
+        next # don't parse include filepaths for terms
       end
   
       line.split(/\W/).each do |word|
