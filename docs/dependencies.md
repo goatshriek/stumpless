@@ -40,7 +40,7 @@ found on the [m.css project page](https://mcss.mosra.cz/).
 ## Development
 If you wish to develop within the stumpless project itself, you will need a few
 additional tools:
- * `perl` for some of the development scripts
+ * `ruby` for some of the development scripts
  * `indent` to format sources according to the project standard
 
 ## Simplified Wrapper Interface Generator (SWIG)
