@@ -1,3 +1,8 @@
+# options
+"header-alternates":
+  "stumpless/.*\\.h": "stumpless.h"
+
+# terms
 "accept_tcp_connection": "test/helper/server.hpp"
 "alloc_mem": "private/memory.h"
 "cache_alloc": "private/cache.h"

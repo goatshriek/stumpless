@@ -29,12 +29,19 @@
 
 require 'yaml'
 
+header_alternates = {}
 known_terms = {}
 
 default_manifests = ["c_standard_library.yml", "cpp_standard_library.yml", "gtest.yml", "stumpless.yml"]
 default_manifests.each do |filename|
   file_path = File.join(__dir__, filename)
   manifest_terms = YAML.load_file file_path
+
+  if manifest_terms.key? 'header-alternates'
+    header_alternates.merge! manifest_terms['header-alternates']
+    manifest_terms.delete 'header-alternates'
+  end
+
   known_terms.merge! manifest_terms
 end
 
@@ -81,23 +88,31 @@ ARGV.each do |source_glob|
     included_files.uniq!
 
     used_terms.uniq.each do |term|
-      requirement = known_terms[term]
+      possible_includes = [known_terms[term]]
+      possible_includes.flatten!
 
-      if requirement.is_a? Array
-        met_requirements = requirement & included_files
-        if met_requirements.empty?
-          puts "#{source_filename}: use of '#{term}' requires inclusion of at least one of #{requirement.join(', ')}"
-          return_code = 1
-        else
-          used_includes.concat met_requirements
+      alternates = []
+      header_alternates.each_pair do |pattern, alternate|
+        possible_includes.each do |include_file|
+          alternates << alternate if include_file.match?(pattern)
         end
+      end
+      possible_includes.concat alternates
+
+      actual_includes = possible_includes & included_files
+      if actual_includes.empty?
+        if possible_includes.count > 1
+          missing = "at least one of #{possible_includes.join(', ')}"
+        else
+          missing = possible_includes[0]
+        end
+
+        puts "#{source_filename}: use of '#{term}' requires inclusion of #{missing}"
+        return_code = 1
+
       else
-        unless included_files.include? requirement
-          puts "#{source_filename}: use of '#{term}' requires inclusion of '#{requirement}'"
-          return_code = 1
-        else
-          used_includes << requirement
-        end
+        used_includes.concat actual_includes
+
       end
     end
 
