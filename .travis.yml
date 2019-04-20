@@ -52,6 +52,7 @@ before_script:
   - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..
 
 script:
+  - ../tools/check_headers/check_headers.rb ../include/**/*.h
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
   - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
   - make CTEST_OUTPUT_ON_FAILURE=1 check
