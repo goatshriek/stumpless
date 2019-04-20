@@ -22,7 +22,9 @@
 "FILE": "stdio.h"
 "fopen": "stdio.h"
 "fprintf": "stdio.h"
-"free": "stdlib.h"
+"free":
+  - "cstdlib"
+  - "stdlib.h"
 "freeaddrinfo":
   - "netdb.h"
   - "ws2tcpip.h"
@@ -37,18 +39,22 @@
 "gmtime": "time.h"
 "HANDLE": "windows.h"
 "htons": "arpa/inet.h"
+"ifstream": "fstream"
 "inet_pton":
   - "arpa/inet.h"
   - "ws2tcpip.h"
 "INT_MAX": "limits.h"
 "LPCSTR": "windows.h"
 "LOG_INFO": "syslog.h"
-"malloc": "stdlib.h"
+"malloc":
+  - "cstdlib"
+  - "stdlib.h"
 "memcpy": "string.h"
 "memset": "string.h"
 "NULL":
   - "cstddef"
   - "stddef.h"
+"ostringstream": "sstream"
 "perror": "stdio.h"
 "pid_t": "sys/types.h"
 "printf": "stdio.h"
@@ -56,6 +62,7 @@
 "PSOCKADDR_IN": "winsock2.h"
 "realloc": "stdlib.h"
 "recvfrom": "sys/socket.h"
+"regex_match": "regex"
 "RegisterEventSource": "windows.h"
 "ReportEvent": "windows.h"
 "sendto":
@@ -64,7 +71,9 @@
 "SIG_ERR": "signal.h"
 "SIGINT": "signal.h"
 "signal": "signal.h"
-"size_t": "stddef.h"
+"size_t":
+  - "cstddef"
+  - "stddef.h"
 "snprintf": "stdio.h"
 "SOCKET": "winsock2.h"
 "SOCKADDR_STORAGE": "winsock2.h"
