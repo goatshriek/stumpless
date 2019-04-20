@@ -54,6 +54,7 @@ before_script:
 script:
   - ../tools/check_headers/check_headers.rb ../include/**/*.h
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
+  - ../tools/check_headers/check_headers.rb ../test/**.cpp
   - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
   - make CTEST_OUTPUT_ON_FAILURE=1 check
   - sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
