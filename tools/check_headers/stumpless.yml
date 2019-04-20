@@ -56,6 +56,7 @@
 "error_free_all": "private/error.h"
 "facility_is_invalid": "private/entry.h"
 "file_open_default_target": "private/target/file.h"
+"fopen_s_fopen": "private/config/have_fopen_s.h"
 "format_entry": "private/formatter.h"
 "free_mem": "private/memory.h"
 "get_facility": "private/entry.h"
