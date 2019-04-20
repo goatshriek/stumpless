@@ -29,7 +29,7 @@
 
 require 'yaml'
 
-known_terms = Hash.new
+known_terms = {}
 
 default_manifests = ["c_standard_library.yml", "cpp_standard_library.yml", "gtest.yml", "stumpless.yml"]
 default_manifests.each do |filename|
@@ -54,9 +54,7 @@ ARGV.each do |source_glob|
 
     File.open(source_filename).each do |line|
       # we don't immediately start skipping lines in case this is a one-line comment
-      if line.include? '/*'
-        skipping = true
-      end
+      skipping = true if line.include? '/*'
 
       if line.include? '*/'
         skipping = false
@@ -64,7 +62,7 @@ ARGV.each do |source_glob|
       end
 
       if skipping or line.match?(/\s*\\\\.*/)
-        # skip if skippint or only a single-line comment
+        # skip if in skipping mode or only a single-line comment
         next
       end
 
