@@ -17,8 +17,8 @@
  */
 
 #include <cstddef>
+#include <cstdio>
 #include <fstream>
-#include <stdio.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
