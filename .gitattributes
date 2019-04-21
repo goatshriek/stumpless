@@ -4,7 +4,7 @@
 *.cpp   text eol=lf
 *.cmake text eol=lf
 *.def   text eol=crlf
-*.h     text eol=lf
+*.h     text eol=lf linguist-language=C
 *.i     text eol=lf
 *.mc    text eol=crlf
 *.pl    text eol=lf

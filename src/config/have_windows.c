@@ -19,7 +19,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <windows.h>
-#include <stumpless/target.h>
 #include "private/config/have_windows.h"
 #include "private/formatter.h"
 

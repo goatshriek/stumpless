@@ -16,17 +16,12 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include "test/helper/resolve.hpp"
-#include <stdio.h>
 #ifdef _WIN32
-#  include <winsock2.h>
 #  include <ws2tcpip.h>
 #else
-#  include <errno.h>
 #  include <netdb.h>
-#  include <sys/types.h>
-#  include <sys/socket.h>
-#  include <unistd.h>
 #endif
 
 bool

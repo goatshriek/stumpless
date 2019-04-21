@@ -19,14 +19,10 @@
 #include "private/config/have_winsock2.h"
 
 #include <stddef.h>
-#include <stdio.h>
-#include <string.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "private/error.h"
 #include "private/inthelper.h"
-#include "private/memory.h"
-#include "private/strhelper.h"
 #include "private/target/network.h"
 
 static
