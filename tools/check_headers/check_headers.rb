@@ -55,7 +55,7 @@ ARGV.each do |source_glob|
     skipping = false
 
     included_files = []
-    source_filename.match(/include\/(.*\.h)/) do |this_include|
+    source_filename.match(/include\/(.*\.h(pp)?)/) do |this_include|
       included_files << this_include[1]
     end
 
