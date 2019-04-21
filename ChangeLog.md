@@ -10,9 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Simpler socket functions (will break existing usage).
  - Non-blocking network logging (may change existing usage).
 
-## [1.5.0] - 2019-04-01
+## [1.5.0] - 2019-04-20
 ### Added
  - `stumpless_version_to_string` function.
+ - Header check enforcement in CI pipeline.
 
 ## [1.4.0] - 2019-03-09
 ### Added
