@@ -75,23 +75,50 @@ module Wrapture
       includes.uniq!
     end
 
-    def generate_declaration_file
-      File.open("#{@spec['name']}.hpp", 'w') do |file|
-        file.puts "#ifndef #{header_guard}"
-        file.puts "#define #{header_guard}"
-        file.puts
-
-        declaration_includes.each do |include_file|
-          file.puts "#include <#{include_file}"
+    def pointer_wrapper?
+      @spec['constructors'].each do |constructor_spec|
+        if constructor_spec['wrapped-function']['return']['type'] == 'equivalent-struct-pointer'
+          return true
         end
-        file.puts unless declaration_includes.empty?
-
-        file.puts "namespace #{@spec['namespace']} {"
-        file.puts "  class #{@spec['name']} {"
-
-        file.puts '  };' # end of class
-        file.puts '}' # end of namespace
       end
+
+      return false
+    end
+
+    def equivalent_name
+      if pointer_wrapper?
+        '*equivalent'
+      else
+        'equivalent'
+    end
+
+    def generate_declaration_file
+      file = File.open("#{@spec['name']}.hpp", 'w')
+
+      file.puts "#ifndef #{header_guard}"
+      file.puts "#define #{header_guard}"
+
+      file.puts unless declaration_includes.empty?
+      declaration_includes.each do |include_file|
+        file.puts "#include <#{include_file}"
+      end
+
+      file.puts "namespace #{@spec['namespace']} {"
+      file.puts "  class #{@spec['name']} {"
+      file.puts '  public:'
+
+      file.puts unless @spec['constants'].empty?
+      @spec['constants'].each do |constant_spec|
+        file.puts "    static sont #{constant['type']} #{constant['name']}"
+      end
+
+      file.puts
+      file.puts "    struct #{@spec['equivalent-struct']['name']} #{equivalent_name}"
+
+      file.puts '  };' # end of class
+      file.puts '}' # end of namespace
+
+      file.close
     end
 
     def generate_definition_file
