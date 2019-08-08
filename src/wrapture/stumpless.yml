@@ -75,7 +75,8 @@ classes:
             - "stumpless/entry.h"
           params:
             - name: "equivalent-struct-pointer"
-            - name: "element-pointer"
+            - name: "element"
+              type: "struct stumpless_element *"
   - name: "Version"
     namespace: "stumpless"
     equivalent-struct:
