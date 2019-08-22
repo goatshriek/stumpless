@@ -1,0 +1,57 @@
+classes:
+  - name: "Entry"
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_entry"
+      includes:
+        - "stumpless/entry.h"
+    constructors:
+      - wrapped-function:
+          name: "stumpless_new_entry"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "facility"
+              type: "int"
+            - name: "severity"
+              type: "int"
+            - name: "app_name"
+              type: "const char *"
+            - name: "msgid"
+              type: "const char *"
+            - name: "message"
+              type: "const char *"
+          return:
+            type: "equivalent-struct-pointer"
+    destructor:
+      wrapped-function:
+        name: "stumpless_destroy_entry"
+        includes:
+          - "stumpless/entry.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - name: "SetAppName"
+        params:
+          - name: "app_name"
+            type: "const char *"
+        wrapped-function:
+          name: "stumpless_set_entry_app_name"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "equivalent-struct-pointer"
+            - name: "app_name"
+      - name: "AddElement"
+        params:
+          - name: "element"
+            type: "Element"
+            includes: "Element.hpp"
+        wrapped-function:
+          name: "stumpless_add_element"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "equivalent-struct-pointer"
+            - name: "element"
+              type: "struct stumpless_element *"

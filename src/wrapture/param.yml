@@ -1,0 +1,23 @@
+classes:
+  - name: "Param"
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_param"
+      includes: "stumpless/entry.h"
+    constructors:
+      - wrapped-function:
+          name: "stumpless_new_param"
+          includes: "stumpless/entry.h"
+          params:
+            - name: "name"
+              type: "const char *"
+            - name: "value"
+              type: "const char *"
+          return:
+            type: "equivalent-struct-pointer"
+    destructor:
+      wrapped-function:
+        name: "stumpless_destroy_param"
+        includes: "stumpless/entry.h"
+        params:
+          - name: "equivalent-struct-pointer"
