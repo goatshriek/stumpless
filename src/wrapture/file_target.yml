@@ -1,0 +1,27 @@
+version: "0.3.0"
+classes:
+  - name: "FileTarget"
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_target"
+      includes: "stumpless/target.h"
+    constructors:
+      - wrapped-function:
+          name: 
+          includes:
+          params:
+            - name:
+              type:
+          return:
+            type: "equivalent-struct-pointer"
+    destructor:
+      wrapped-function:
+        name:
+        includes:
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - name: "Log"
+        params:
+          - name: "entry"
+            type: "Entry"
