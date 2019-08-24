@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 1.5.0)
 
+option(BUILD_CPP "include the c++ library" OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -57,6 +58,18 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/file.c
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
+)
+
+
+# wrapture support
+find_program(HAVE_WRAPTURE NAMES wrapture)
+
+set(WRAPTURE_SPECS
+  ${PROJECT_SOURCE_DIR}/src/wrapture/element.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/entry.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/file_target.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/param.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/version.yml
 )
 
 
@@ -512,6 +525,21 @@ add_performance_test(target
 add_custom_target(bench
   DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
 )
+
+
+# c++ support
+if(BUILD_CPP)
+  if(HAVE_WRAPTURE)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cpp-lib)
+
+    add_custom_target(cpp-lib
+      COMMAND wrapture ${WRAPTURE_SPECS}
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/cpp-lib
+    )
+  else()
+    message("C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
+  endif(HAVE_WRAPTURE)
+endif(BUILD_CPP)
 
 
 # python support

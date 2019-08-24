@@ -7,17 +7,21 @@ classes:
       includes: "stumpless/target.h"
     constructors:
       - wrapped-function:
-          name: 
-          includes:
+          name: "stumpless_open_file_target"
+          includes: "stumpless/target/file.h"
           params:
-            - name:
-              type:
+            - name: "filename"
+              type: "const char *"
+            - name: "options"
+              type: "int"
+            - name: "default_facility"
+              type: "int"
           return:
             type: "equivalent-struct-pointer"
     destructor:
       wrapped-function:
-        name:
-        includes:
+        name: "stumpless_close_file_target"
+        includes: "stumpless/target/file.h"
         params:
           - name: "equivalent-struct-pointer"
     functions:
@@ -25,3 +29,10 @@ classes:
         params:
           - name: "entry"
             type: "Entry"
+        wrapped-function:
+          name: "stumpless_add_entry"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "entry"
+              type: "struct stumpless_entry *"
