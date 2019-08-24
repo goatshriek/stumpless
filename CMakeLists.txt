@@ -530,11 +530,42 @@ add_custom_target(bench
 # c++ support
 if(BUILD_CPP)
   if(HAVE_WRAPTURE)
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cpp-lib)
+    set(CPP_LIB_BUILD_DIR ${CMAKE_BINARY_DIR}/cpp-lib)
+    set(GENERATED_CPP_LIB_SOURCES
+      ${CPP_LIB_BUILD_DIR}/Element.cpp
+      ${CPP_LIB_BUILD_DIR}/Entry.cpp
+      ${CPP_LIB_BUILD_DIR}/FileTarget.cpp
+      ${CPP_LIB_BUILD_DIR}/Param.cpp
+      ${CPP_LIB_BUILD_DIR}/Version.cpp
+    )
+
+    file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
     add_custom_target(cpp-lib
       COMMAND wrapture ${WRAPTURE_SPECS}
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/cpp-lib
+      BYPRODUCTS ${GENERATED_CPP_LIB_SOURCES}
+      WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
+    )
+
+    add_library(stumplesscpp SHARED
+      ${GENERATED_CPP_LIB_SOURCES}
+    )
+
+    target_link_libraries(stumplesscpp
+      optimized stumpless
+    )
+
+    target_include_directories(stumplesscpp
+      PRIVATE
+      ${PROJECT_SOURCE_DIR}/include
+      ${CMAKE_BINARY_DIR}/include
+      ${CPP_LIB_BUILD_DIR}
+    )
+
+    set_target_properties(stumplesscpp
+      PROPERTIES
+      PREFIX "_"
+      OUTPUT_NAME stumpless
     )
   else()
     message("C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
