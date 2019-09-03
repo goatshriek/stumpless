@@ -1,7 +1,7 @@
 version: "0.3.0"
 classes:
   - name: "FileTarget"
-    namespace: "stumpless"
+    namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"
@@ -29,6 +29,7 @@ classes:
         params:
           - name: "entry"
             type: "Entry"
+            includes: "Entry.hpp"
         wrapped-function:
           name: "stumpless_add_entry"
           includes: "stumpless/target.h"

@@ -562,11 +562,11 @@ if(BUILD_CPP)
       ${CPP_LIB_BUILD_DIR}
     )
 
-    set_target_properties(stumplesscpp
-      PROPERTIES
-      PREFIX "_"
-      OUTPUT_NAME stumpless
-    )
+    #set_target_properties(stumplesscpp
+    #  PROPERTIES
+    #  PREFIX "_"
+    #  OUTPUT_NAME stumpless
+    #)
   else()
     message("C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
   endif(HAVE_WRAPTURE)
