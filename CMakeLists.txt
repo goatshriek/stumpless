@@ -530,6 +530,8 @@ add_custom_target(bench
 # c++ support
 if(BUILD_CPP)
   if(HAVE_WRAPTURE)
+    include(tools/cmake/cpp_test.cmake)
+
     set(CPP_LIB_BUILD_DIR ${CMAKE_BINARY_DIR}/cpp-lib)
     set(GENERATED_CPP_LIB_SOURCES
       ${CPP_LIB_BUILD_DIR}/Element.cpp
@@ -548,6 +550,7 @@ if(BUILD_CPP)
     )
 
     add_library(stumplesscpp SHARED
+      EXCLUDE_FROM_ALL
       ${GENERATED_CPP_LIB_SOURCES}
     )
 
@@ -562,11 +565,13 @@ if(BUILD_CPP)
       ${CPP_LIB_BUILD_DIR}
     )
 
-    #set_target_properties(stumplesscpp
-    #  PROPERTIES
-    #  PREFIX "_"
-    #  OUTPUT_NAME stumpless
-    #)
+    add_cpp_test(version
+      SOURCES test/function/cpp/version.cpp
+    )
+
+    add_custom_target(check-cpp
+      DEPENDS ${STUMPLESS_CPP_TEST_RUNNERS}
+    )
   else()
     message("C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
   endif(HAVE_WRAPTURE)
