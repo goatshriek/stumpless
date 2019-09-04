@@ -59,6 +59,7 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
+  - gem install wrapture
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
@@ -77,6 +78,7 @@ script:
   - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
   - make CTEST_OUTPUT_ON_FAILURE=1 check
   - sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
+  - if [[ $BUILD_ARGS =~ "BUILD_CPP=ON" ]]; then make check-cpp; fi
   - make examples
 
 after_success:
