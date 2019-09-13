@@ -61,18 +61,6 @@ set(STUMPLESS_SOURCES
 )
 
 
-# wrapture support
-find_program(HAVE_WRAPTURE NAMES wrapture)
-
-set(WRAPTURE_SPECS
-  ${PROJECT_SOURCE_DIR}/src/wrapture/element.yml
-  ${PROJECT_SOURCE_DIR}/src/wrapture/entry.yml
-  ${PROJECT_SOURCE_DIR}/src/wrapture/file_target.yml
-  ${PROJECT_SOURCE_DIR}/src/wrapture/param.yml
-  ${PROJECT_SOURCE_DIR}/src/wrapture/version.yml
-)
-
-
 # configuration-specific source files
 if(HAVE_FOPEN_S)
   list(APPEND STUMPLESS_SOURCES src/config/have_fopen_s.c)
@@ -527,6 +515,18 @@ add_custom_target(bench
 )
 
 
+# wrapture support
+find_program(HAVE_WRAPTURE NAMES wrapture)
+
+set(WRAPTURE_SPECS
+  ${PROJECT_SOURCE_DIR}/src/wrapture/element.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/entry.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/file_target.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/param.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/version.yml
+)
+
+
 # c++ support
 if(BUILD_CPP)
   if(HAVE_WRAPTURE)
@@ -543,9 +543,9 @@ if(BUILD_CPP)
 
     file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
-    add_custom_target(cpp-lib
+    add_custom_command(
+      OUTPUT ${GENERATED_CPP_LIB_SOURCES}
       COMMAND wrapture ${WRAPTURE_SPECS}
-      BYPRODUCTS ${GENERATED_CPP_LIB_SOURCES}
       WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
     )
 
