@@ -59,7 +59,8 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-  - gem install wrapture
+  - bundle config https://rubygems.pkg.github.com/goatshriek goatshriek:$GH_TOKEN
+  - bundle install
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
