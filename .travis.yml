@@ -49,7 +49,7 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
         - BUILD_ARGS="-DBUILD_CPP=ON"
-    - name: "os x"
+    - name: "os x, clang"
       os: osx
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
