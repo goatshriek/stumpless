@@ -565,6 +565,10 @@ if(BUILD_CPP)
       ${CPP_LIB_BUILD_DIR}
     )
 
+    add_cpp_test(file
+      SOURCES test/function/cpp/target/file.cpp
+    )
+
     add_cpp_test(version
       SOURCES test/function/cpp/version.cpp
     )
