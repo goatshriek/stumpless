@@ -16,9 +16,11 @@
  * limitations under the License.
  */
 
+#include <fstream>
 #include <gtest/gtest.h>
 #include <Entry.hpp>
 #include <FileTarget.hpp>
+#include "test/function/rfc5424.hpp"
 
 using namespace stumplesscpp;
 
@@ -31,20 +33,32 @@ namespace {
     virtual void
     SetUp( void ) {
       basic_entry = new Entry( STUMPLESS_FACILITY_USER,
-                           STUMPLESS_SEVERITY_INFO,
-                           "stumpless-cpp-testing",
-                           "basic-msg",
-                           "This is a basic entry." );
+                               STUMPLESS_SEVERITY_INFO,
+                               "stumpless-cpp-testing",
+                               "basic-msg",
+                               "This is a basic entry." );
     }
   };
 
   TEST_F( CppFileTargetTest, BasicLog ) {
     const char *filename = "cppbasictest.log";
+    int i;
 
+    remove( filename );
     FileTarget test( filename,
                      STUMPLESS_OPTION_NONE,
                      STUMPLESS_FACILITY_USER );
 
     test.Log( *basic_entry );
+
+    std::ifstream infile( filename );
+    std::string line;
+    i = 0;
+    while( std::getline( infile, line ) ) {
+      TestRFC5424Compliance( line.c_str() );
+      i++;
+    }
+
+    remove( filename );
   }
 }

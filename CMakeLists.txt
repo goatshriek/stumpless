@@ -566,7 +566,9 @@ if(BUILD_CPP)
     )
 
     add_cpp_test(file
-      SOURCES test/function/cpp/target/file.cpp
+      SOURCES
+        test/function/cpp/target/file.cpp
+        $<TARGET_OBJECTS:rfc5424_checker>
     )
 
     add_cpp_test(version
