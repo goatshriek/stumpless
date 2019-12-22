@@ -1,0 +1,8 @@
+version: "0.3.0"
+classes:
+  - name: "StumplessException"
+    namespace: "stumplesscpp"
+    parent: "std::exception"
+    equivalent-struct:
+      - name: "stumpless_error"
+        includes: "stumpless/error.h"
