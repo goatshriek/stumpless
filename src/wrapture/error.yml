@@ -6,3 +6,13 @@ classes:
     equivalent-struct:
       - name: "stumpless_error"
         includes: "stumpless/error.h"
+  - name: "StumplessAddressFailure"
+    namespace: "stumplesscpp"
+    parent: "StumplessException"
+    equivalent-struct:
+      - name: "stumpless_error"
+        includes: "stumpless/error.h"
+        rules:
+          - member-name: "id"
+            condition: "equals"
+            value: "STUMPLESS_ADDRESS_FAILURE"
