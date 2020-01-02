@@ -2,13 +2,17 @@ version: "0.3.0"
 classes:
   - name: "StumplessException"
     namespace: "stumplesscpp"
-    parent: "std::exception"
+    parent:
+      name: "std::exception"
+      includes: "exception"
     equivalent-struct:
       name: "stumpless_error"
       includes: "stumpless/error.h"
   - name: "StumplessAddressFailure"
     namespace: "stumplesscpp"
-    parent: "StumplessException"
+    parent:
+      name: "StumplessException"
+      includes: "StumplessException.hpp"
     equivalent-struct:
       name: "stumpless_error"
       includes: "stumpless/error.h"
