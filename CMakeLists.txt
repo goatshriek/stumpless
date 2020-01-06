@@ -536,6 +536,7 @@ if(BUILD_CPP)
     set(GENERATED_CPP_LIB_SOURCES
       ${CPP_LIB_BUILD_DIR}/Element.cpp
       ${CPP_LIB_BUILD_DIR}/Entry.cpp
+      ${CPP_LIB_BUILD_DIR}/Error.cpp
       ${CPP_LIB_BUILD_DIR}/FileTarget.cpp
       ${CPP_LIB_BUILD_DIR}/Param.cpp
       ${CPP_LIB_BUILD_DIR}/Version.cpp
