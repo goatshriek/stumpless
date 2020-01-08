@@ -521,6 +521,7 @@ find_program(HAVE_WRAPTURE NAMES wrapture)
 set(WRAPTURE_SPECS
   ${PROJECT_SOURCE_DIR}/src/wrapture/element.yml
   ${PROJECT_SOURCE_DIR}/src/wrapture/entry.yml
+  ${PROJECT_SOURCE_DIR}/src/wrapture/error.yml
   ${PROJECT_SOURCE_DIR}/src/wrapture/file_target.yml
   ${PROJECT_SOURCE_DIR}/src/wrapture/param.yml
   ${PROJECT_SOURCE_DIR}/src/wrapture/version.yml
@@ -534,11 +535,12 @@ if(BUILD_CPP)
 
     set(CPP_LIB_BUILD_DIR ${CMAKE_BINARY_DIR}/cpp-lib)
     set(GENERATED_CPP_LIB_SOURCES
+      ${CPP_LIB_BUILD_DIR}/AddressFailure.cpp
       ${CPP_LIB_BUILD_DIR}/Element.cpp
       ${CPP_LIB_BUILD_DIR}/Entry.cpp
-      ${CPP_LIB_BUILD_DIR}/Error.cpp
       ${CPP_LIB_BUILD_DIR}/FileTarget.cpp
       ${CPP_LIB_BUILD_DIR}/Param.cpp
+      ${CPP_LIB_BUILD_DIR}/StumplessException.cpp
       ${CPP_LIB_BUILD_DIR}/Version.cpp
     )
 
