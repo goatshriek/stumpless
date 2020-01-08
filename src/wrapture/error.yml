@@ -5,15 +5,16 @@ classes:
     parent:
       name: "std::exception"
       includes: "exception"
+    type: "pointer"
     equivalent-struct:
       name: "stumpless_error"
       includes: "stumpless/error.h"
-    type: "pointer"
   - name: "AddressFailure"
     namespace: "stumplesscpp"
     parent:
       name: "StumplessException"
       includes: "StumplessException.hpp"
+    type: "pointer"
     equivalent-struct:
       name: "stumpless_error"
       includes: "stumpless/error.h"

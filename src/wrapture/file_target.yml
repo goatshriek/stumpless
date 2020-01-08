@@ -47,7 +47,7 @@ classes:
             error-action:
               name: "throw-exception"
               constructor:
-                name: "newStumplessException"
+                name: "StumplessException::newStumplessException"
                 includes:
                   - "StumplessException.hpp"
                   - "stumpless/error.h"
