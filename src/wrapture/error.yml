@@ -1,4 +1,21 @@
-version: "0.3.0"
+version: "0.4.0"
+templates:
+  - name: "error-class"
+    value:
+      namespace: "stumplesscpp"
+      parent:
+        name: "StumplessException"
+        includes: "StumplessException.hpp"
+      type: "pointer"
+      equivalent-struct:
+        name: "stumpless_error"
+        includes: "stumpless/error.h"
+        rules:
+          - member-name: "id"
+            condition: "equals"
+            value:
+              is-param: true
+              name: "error-id"
 classes:
   - name: "StumplessException"
     namespace: "stumplesscpp"
@@ -10,15 +27,8 @@ classes:
       name: "stumpless_error"
       includes: "stumpless/error.h"
   - name: "AddressFailure"
-    namespace: "stumplesscpp"
-    parent:
-      name: "StumplessException"
-      includes: "StumplessException.hpp"
-    type: "pointer"
-    equivalent-struct:
-      name: "stumpless_error"
-      includes: "stumpless/error.h"
-      rules:
-        - member-name: "id"
-          condition: "equals"
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
           value: "STUMPLESS_ADDRESS_FAILURE"
