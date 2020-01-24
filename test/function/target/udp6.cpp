@@ -357,11 +357,6 @@ namespace {
     int add_result;
     socket_handle_t handle;
 
-    if( !name_resolves( destination, AF_INET6 ) ) {
-      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
-      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
-
-    } else {
       handle = open_udp_server_socket( AF_INET6, destination, "514" );
 
       target = stumpless_new_udp6_target( "target-to-self" );
@@ -415,7 +410,6 @@ namespace {
 
       close_server_socket( handle );
       stumpless_close_network_target( target );
-    }
   }
 
   TEST( NetworkTargetSetTransportPort, OpenTarget ) {

@@ -348,19 +348,13 @@ namespace {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
     struct stumpless_entry *entry;
-    const char *original_destination = "127.0.0.1";
-    const char *new_destination = "localhost";
+    const char *destination = "127.0.0.1";
     const char *destination_result;
     char buffer[2048];
     int add_result;
     socket_handle_t handle;
 
-    if( !name_resolves( new_destination, AF_INET ) ) {
-      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
-      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
-
-    } else {
-      handle = open_udp_server_socket( AF_INET, original_destination, "514" );
+      handle = open_udp_server_socket( AF_INET, destination, "514" );
 
       target = stumpless_new_udp4_target( "target-to-self" );
       ASSERT_TRUE( target != NULL );
@@ -372,7 +366,7 @@ namespace {
       EXPECT_TRUE( destination_result == NULL );
 
       EXPECT_FALSE( stumpless_target_is_open( target ) );
-      target_result = stumpless_set_destination( target, new_destination );
+      target_result = stumpless_set_destination( target, destination );
       EXPECT_TRUE( target_result != NULL );
 
       error = stumpless_get_error(  );
@@ -382,7 +376,7 @@ namespace {
 
       destination_result = stumpless_get_destination( target );
       EXPECT_TRUE( destination_result != NULL );
-      EXPECT_STREQ( destination_result, new_destination );
+      EXPECT_STREQ( destination_result, destination );
 
       target_result = stumpless_open_target( target );
       ASSERT_TRUE( target_result != NULL );
@@ -413,7 +407,6 @@ namespace {
 
       close_server_socket( handle );
       stumpless_close_network_target( target );
-    }
   }
 
   TEST( NetworkTargetSetTransportPort, OpenTarget ) {
