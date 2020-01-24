@@ -363,7 +363,7 @@ namespace {
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
     } else {
-      handle = open_udp_server_socket( AF_INET, original_destination, "514" );
+      handle = open_udp_server_socket( AF_INET6, original_destination, "514" );
 
       target = stumpless_new_udp4_target( "target-to-self" );
       ASSERT_TRUE( target != NULL );
