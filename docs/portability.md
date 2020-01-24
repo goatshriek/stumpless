@@ -34,3 +34,7 @@ _describe the include/private/config and include/stumpless/config headers_
 ## Wrapper Headers and `#define`s
 
 _describe the family of config functions and source files_
+
+## Fallback Behavior
+
+_describe the fallback convention_
