@@ -162,6 +162,7 @@
 /* definition of network target functions */
 #  ifdef HAVE_SYS_SOCKET_H
 #    include "private/config/have_sys_socket.h"
+#    define config_socket_handle_t int
 #    define config_close_tcp4_target sys_socket_close_network_target
 #    define config_close_tcp6_target sys_socket_close_network_target
 #    define config_close_udp4_target sys_socket_close_network_target
@@ -189,6 +190,7 @@
 #    define config_udp6_is_open sys_socket_network_target_is_open
 #  elif HAVE_WINSOCK2_H
 #    include "private/config/have_winsock2.h"
+#    define config_socket_handle_t SOCKET
 #    define config_close_tcp4_target winsock2_close_network_target
 #    define config_close_tcp6_target winsock2_close_network_target
 #    define config_close_udp4_target winsock2_close_network_target

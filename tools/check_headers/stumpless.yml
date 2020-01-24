@@ -44,6 +44,7 @@
 "config_set_entry_wel_type": "private/config/wrapper.h"
 "config_set_tcp4_port": "private/config/wrapper.h"
 "config_set_udp4_port": "private/config/wrapper.h"
+"config_socket_handle_t": "private/config/wrapper.h"
 "config_tcp4_is_open": "private/config/wrapper.h"
 "config_udp4_is_open": "private/config/wrapper.h"
 "copy_cstring": "private/strhelper.h"
