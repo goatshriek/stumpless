@@ -19,7 +19,7 @@ and easy to maintain while remaining as portable as possible:
    This doesn't mean that you need to re-implement other libraries, but you
    should provide some sane fallback behavior that will function in their
    absence. This can be as simple as raising a target unsupported error or
-   filling in a value with the best guess.
+   filling in an unknown value with a reasonable guess.
 
 # Conventions
 

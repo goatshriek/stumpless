@@ -96,6 +96,10 @@ if(WIN32)
   list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
 endif(WIN32)
 
+if(NOT HAVE_UNISTD_H AND (NOT HAVE_WINDOWS_H OR NOT HAVE_WINSOCK2_H))
+  list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
+endif()
+
 
 # network target support
 if(NOT ENABLE_NETWORK_TARGETS)

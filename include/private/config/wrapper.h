@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018-2019 Joel E. Anderson
+* Copyright 2018-2020 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -127,6 +127,9 @@
 #  elif HAVE_WINSOCK2_H
 #    include "private/config/have_winsock2.h"
 #    define config_gethostname(buffer, namelen) winsock2_gethostname((buffer), (namelen))
+#  else
+#    include "private/config/fallback.h"
+#    define config_gethostname(buffer, namelen) fallback_gethostname((buffer), (namelen))
 #  endif
 
 
@@ -137,6 +140,9 @@
 #  elif HAVE_WINDOWS_H
 #    include "private/config/have_windows.h"
 #    define config_getpagesize windows_getpagesize
+#  else
+#    include "private/config/fallback.h"
+#    define config_getpagesize fallback_getpagesize
 #  endif
 
 
@@ -147,6 +153,9 @@
 #  elif HAVE_WINDOWS_H
 #    include "private/config/have_windows.h"
 #    define config_getpid windows_getpid
+#  else
+#    include "private/config/fallback.h"
+#    define config_getpid fallback_getpid
 #  endif
 
 
