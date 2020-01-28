@@ -39,23 +39,6 @@
 #    define config_close_default_target stumpless_close_file_target
 #  endif
 
-/* definition of config_sendto_network_target and config_network_free_all */
-#  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
-#    include "private/target/network.h"
-#    define config_close_network_target stumpless_close_network_target
-#    define config_network_free_all network_free_all
-#    define config_network_target_is_open network_target_is_open
-#    define config_open_network_target open_network_target
-#    define config_sendto_network_target sendto_network_target
-#  else
-#    include "private/target.h"
-#    define config_close_network_target close_unsupported_target
-#    define config_network_free_all() ( ( void ) 0 )
-#    define config_network_target_is_open unsupported_target_is_open
-#    define config_open_network_target open_unsupported_target
-#    define config_sendto_network_target sendto_unsupported_target
-#  endif
-
 
 /* definition of config_sendto_socket_target */
 #  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
@@ -161,8 +144,8 @@
 
 /* definition of network target functions */
 #  ifdef HAVE_SYS_SOCKET_H
-#    include "private/config/have_sys_socket.h"
 #    define config_socket_handle_t int
+#    include "private/config/have_sys_socket.h"
 #    define config_close_tcp4_target sys_socket_close_network_target
 #    define config_close_tcp6_target sys_socket_close_network_target
 #    define config_close_udp4_target sys_socket_close_network_target
@@ -189,8 +172,8 @@
 #    define config_udp4_is_open sys_socket_network_target_is_open
 #    define config_udp6_is_open sys_socket_network_target_is_open
 #  elif HAVE_WINSOCK2_H
-#    include "private/config/have_winsock2.h"
 #    define config_socket_handle_t SOCKET
+#    include "private/config/have_winsock2.h"
 #    define config_close_tcp4_target winsock2_close_network_target
 #    define config_close_tcp6_target winsock2_close_network_target
 #    define config_close_udp4_target winsock2_close_network_target
@@ -216,6 +199,24 @@
 #    define config_tcp6_is_open winsock2_network_target_is_open
 #    define config_udp4_is_open winsock2_network_target_is_open
 #    define config_udp6_is_open winsock2_network_target_is_open
+#  endif
+
+
+/* definition of network target support */
+#  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
+#    include "private/target/network.h"
+#    define config_close_network_target stumpless_close_network_target
+#    define config_network_free_all network_free_all
+#    define config_network_target_is_open network_target_is_open
+#    define config_open_network_target open_network_target
+#    define config_sendto_network_target sendto_network_target
+#  else
+#    include "private/target.h"
+#    define config_close_network_target close_unsupported_target
+#    define config_network_free_all() ( ( void ) 0 )
+#    define config_network_target_is_open unsupported_target_is_open
+#    define config_open_network_target open_unsupported_target
+#    define config_sendto_network_target sendto_unsupported_target
 #  endif
 
 

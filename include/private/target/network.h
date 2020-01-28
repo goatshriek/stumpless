@@ -19,10 +19,10 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_NETWORK_H
 #  define __STUMPLESS_PRIVATE_TARGET_NETWORK_H
 
-#  include "private/config.h"
 
 #  include <stddef.h>
 #  include <stumpless/target/network.h>
+#  include "private/config.h"
 #  include "private/config/wrapper.h"
 
 struct network_target {
