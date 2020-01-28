@@ -76,6 +76,7 @@
 "get_severity": "private/entry.h"
 "gmtime_r_get_now": "private/config/have_gmtime_r.h"
 "HAVE_GMTIME_R": "private/config.h"
+"HAVE_LOCALE_NAME_INVARIANT": "private/config.h"
 "HAVE_SYS_SOCKET_H": "private/config.h"
 "HAVE_UNISTD_H": "private/config.h"
 "HAVE_WINDOWS_H": "private/config.h"
