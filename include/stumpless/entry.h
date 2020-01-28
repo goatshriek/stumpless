@@ -55,6 +55,7 @@ extern "C" {
 /** Error: error conditions. */
 #    define STUMPLESS_SEVERITY_ERR      LOG_ERR
 /** Warning: warning conditions. */
+#    define STUMPLESS_SEVERITY_WARN     LOG_WARNING
 #    define STUMPLESS_SEVERITY_WARNING  LOG_WARNING
 /** Notice: normal but significant condition. */
 #    define STUMPLESS_SEVERITY_NOTICE   LOG_NOTICE
@@ -119,14 +120,15 @@ extern "C" {
 #  else
 
 /* severity codes as specified in RFC 5424 */
-#    define STUMPLESS_SEVERITY_EMERG  0
-#    define STUMPLESS_SEVERITY_ALERT  1
-#    define STUMPLESS_SEVERITY_CRIT   2
-#    define STUMPLESS_SEVERITY_ERR    3
-#    define STUMPLESS_SEVERITY_WARN   4
-#    define STUMPLESS_SEVERITY_NOTICE 5
-#    define STUMPLESS_SEVERITY_INFO   6
-#    define STUMPLESS_SEVERITY_DEBUG  7
+#    define STUMPLESS_SEVERITY_EMERG   0
+#    define STUMPLESS_SEVERITY_ALERT   1
+#    define STUMPLESS_SEVERITY_CRIT    2
+#    define STUMPLESS_SEVERITY_ERR     3
+#    define STUMPLESS_SEVERITY_WARN    4
+#    define STUMPLESS_SEVERITY_WARNING 4
+#    define STUMPLESS_SEVERITY_NOTICE  5
+#    define STUMPLESS_SEVERITY_INFO    6
+#    define STUMPLESS_SEVERITY_DEBUG   7
 
 #    define STUMPLESS_SEVERITY_MASK(severity) (1<<(severity))
 #    define STUMPLESS_SEVERITY_MASK_UPTO(severity) ((1<<(severity+1))-1)
