@@ -47,21 +47,21 @@ extern "C" {
 /* severity codes as set by syslog.h */
 
 /** Emergency: system is unusable. */
-#    define STUMPLESS_SEVERITY_EMERG  LOG_EMERG
+#    define STUMPLESS_SEVERITY_EMERG    LOG_EMERG
 /** Alert: action must be taken immediately. */
-#    define STUMPLESS_SEVERITY_ALERT  LOG_ALERT
+#    define STUMPLESS_SEVERITY_ALERT    LOG_ALERT
 /** Critical: critical conditions. */
-#    define STUMPLESS_SEVERITY_CRIT   LOG_CRIT
+#    define STUMPLESS_SEVERITY_CRIT     LOG_CRIT
 /** Error: error conditions. */
-#    define STUMPLESS_SEVERITY_ERR    LOG_ERR
+#    define STUMPLESS_SEVERITY_ERR      LOG_ERR
 /** Warning: warning conditions. */
-#    define STUMPLESS_SEVERITY_WARN   LOG_WARN
+#    define STUMPLESS_SEVERITY_WARNING  LOG_WARNING
 /** Notice: normal but significant condition. */
-#    define STUMPLESS_SEVERITY_NOTICE LOG_NOTICE
+#    define STUMPLESS_SEVERITY_NOTICE   LOG_NOTICE
 /** Informational: informational messages. */
-#    define STUMPLESS_SEVERITY_INFO   LOG_INFO
+#    define STUMPLESS_SEVERITY_INFO     LOG_INFO
 /** Debug: debug-level messages. */
-#    define STUMPLESS_SEVERITY_DEBUG  LOG_DEBUG
+#    define STUMPLESS_SEVERITY_DEBUG    LOG_DEBUG
 
 /** Creates a severity mask for the provided severity. */
 #    define STUMPLESS_SEVERITY_MASK(severity) (LOG_MASK(severity))

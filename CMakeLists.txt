@@ -34,6 +34,7 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
 check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
+check_symbol_exists(LOCALE_NAME_INVARIANT windows.h HAVE_LOCALE_NAME_INVARIANT)
 check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 
 if(EXISTS "/var/run/syslog")
@@ -69,10 +70,6 @@ if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
 endif(HAVE_GMTIME_R)
 
-if(HAVE_SYS_SOCKET_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
-endif(HAVE_SYS_SOCKET_H)
-
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
@@ -87,10 +84,13 @@ if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
 endif(HAVE_WINDOWS_H)
 
-if(HAVE_WINSOCK2_H)
+if(HAVE_SYS_SOCKET_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
+  set(HAVE_WINSOCK2_H FALSE)
+elseif(HAVE_WINSOCK2_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
   find_library(WINSOCK2 NAMES Ws2_32)
-endif(HAVE_WINSOCK2_H)
+endif()
 
 if(WIN32)
   list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
@@ -299,11 +299,19 @@ else()
     DESTINATION "include/stumpless/target"
   )
 
+  find_program(MESSAGE_COMPILER_EXE
+    NAMES
+      mc
+      windmc
+  )
+
+  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
+
   ADD_CUSTOM_COMMAND(
      OUTPUT
       "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
       "${PROJECT_BINARY_DIR}/events.rc"
-     COMMAND mc -c
+      COMMAND ${MESSAGE_COMPILER_EXE} -c
         -U "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
         -r "${PROJECT_BINARY_DIR}"
         -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
@@ -313,7 +321,7 @@ else()
 
   add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
   set_target_properties(events PROPERTIES LINKER_LANGUAGE "CXX" )
-  set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
+  #  set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
   set_target_properties(events PROPERTIES VERSION ${PROJECT_VERSION})
   set_target_properties(events PROPERTIES SOVERSION 0)
   set_target_properties(events PROPERTIES PUBLIC_HEADER "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h")

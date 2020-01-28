@@ -5,7 +5,7 @@ if(MSVC)
   # platform-dependent code, such as the _s functions, just for tests
   set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
 else()
-  set(function_test_compile_flags "-std=c++11")
+  set(function_test_compile_flags "-std=gnu++11")
 endif(MSVC)
 
 function(private_add_function_test)

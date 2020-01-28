@@ -22,6 +22,7 @@
 #include "private/config/have_windows.h"
 #include "private/formatter.h"
 
+#ifdef HAVE_LOCALE_NAME_INVARIANT
 size_t
 windows_get_now( char *buffer ) {
   SYSTEMTIME now_st;
@@ -81,6 +82,7 @@ windows_get_now( char *buffer ) {
 
   return date_result + time_result + snprintf_result;
 }
+#endif
 
 size_t
 windows_getpagesize( void ) {
