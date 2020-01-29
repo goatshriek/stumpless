@@ -320,9 +320,11 @@ else()
 
   add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
   set_target_properties(events PROPERTIES LINKER_LANGUAGE "CXX" )
-  #  set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
   set_target_properties(events PROPERTIES VERSION ${PROJECT_VERSION})
   set_target_properties(events PROPERTIES SOVERSION 0)
+  if(MSVC)
+    set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
+  endif()
 
   add_function_test(wel
     SOURCES
