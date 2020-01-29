@@ -319,13 +319,23 @@ namespace {
                                               STUMPLESS_UDP_TRANSPORT_PROTOCOL,
                                               STUMPLESS_OPTION_NONE,
                                               STUMPLESS_FACILITY_USER );
-      EXPECT_TRUE( target == NULL );
 
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error != NULL );
+      // this second check, while technically redundant, is necessary in some
+      // cases where a 'helpful' ISP will return a "DNS Error" page as a
+      // response to an unknown host rather than letting it fail
+      if (name_resolves(hostname, AF_INET)) {
+        printf( "WARNING: the bad hostname started resolving, ending test\n" );
+        SUCCEED() << "the bad hostname now resolves";
+      }
+      else {
+        EXPECT_TRUE(target == NULL);
 
-      if( error ) {
-        EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+        error = stumpless_get_error();
+        EXPECT_TRUE(error != NULL);
+
+        if (error) {
+          EXPECT_EQ(error->id, STUMPLESS_ADDRESS_FAILURE);
+        }
       }
     }
   }
