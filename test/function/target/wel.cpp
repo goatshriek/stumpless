@@ -128,7 +128,7 @@ namespace {
     EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
     EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
 
-    resource_dll = LoadLibraryEx( "events.dll", NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE );
+    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME, NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE );
     EXPECT_TRUE( resource_dll != NULL );
 
     insertion_strings[0] = ( LPTSTR ) ( buffer + record->StringOffset );
@@ -187,7 +187,7 @@ namespace {
     EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
     EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
 
-    resource_dll = LoadLibraryEx("events.dll", NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
+    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME, NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
     EXPECT_TRUE( resource_dll != NULL );
 
     format_result = FormatMessage(

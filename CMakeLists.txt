@@ -306,17 +306,16 @@ else()
   )
 
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
-
   ADD_CUSTOM_COMMAND(
      OUTPUT
       "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
       "${PROJECT_BINARY_DIR}/events.rc"
-      COMMAND ${MESSAGE_COMPILER_EXE} -c
-        -U "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
+      COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+        "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
         -r "${PROJECT_BINARY_DIR}"
         -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
      DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
-     COMMENT "Generating test event resources"
+     COMMENT "Generating test events"
   )
 
   add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
@@ -324,7 +323,6 @@ else()
   #  set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
   set_target_properties(events PROPERTIES VERSION ${PROJECT_VERSION})
   set_target_properties(events PROPERTIES SOVERSION 0)
-  set_target_properties(events PROPERTIES PUBLIC_HEADER "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h")
 
   add_function_test(wel
     SOURCES
@@ -332,6 +330,9 @@ else()
       ${PROJECT_BINARY_DIR}/events.rc
   )
   add_dependencies(function-test-wel events)
+  target_compile_definitions(function-test-wel
+    PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
+  )
 
   add_function_test(wel_supported
     SOURCES
@@ -339,12 +340,14 @@ else()
       ${PROJECT_BINARY_DIR}/events.rc
   )
 
+  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
+  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
   ADD_CUSTOM_COMMAND(
      OUTPUT
       "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
       "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
-     COMMAND mc -c
-        -U "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
+      COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+        "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
         -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
         -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
      DEPENDS "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
@@ -382,6 +385,7 @@ target_include_directories(stumpless
 # generating configuration files
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${PROJECT_BINARY_DIR}/include/private/config.h)
+
 
 
 # installation of the library
