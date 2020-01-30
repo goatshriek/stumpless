@@ -310,7 +310,7 @@ else()
      OUTPUT
        "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
        "${PROJECT_BINARY_DIR}/events.rc"
-     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+     COMMAND mc -U -b
        "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
        -r "${PROJECT_BINARY_DIR}"
        -h "${PROJECT_BINARY_DIR}/include/test/function/windows"

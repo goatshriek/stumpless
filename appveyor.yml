@@ -1,4 +1,4 @@
-version: 1.0.{build}-{branch}
+version: 1.5.{build}-{branch}
 
 clone_folder: c:\project\stumpless
 
@@ -30,7 +30,6 @@ init:
 
 before_build:
 - cmd: |-
-    echo %PATH%
     mkdir build
     cd build
     cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration% -DENABLE_NETWORK_TARGETS=%network_targets_enabled%
@@ -39,7 +38,6 @@ build:
   project: c:\project\stumpless\build\stumpless.vcxproj
 
 test_script:
-  - MC.exe
   - set CTEST_OUTPUT_ON_FAILURE=1
   - msbuild c:\project\stumpless\build\check.vcxproj
   - msbuild c:\project\stumpless\build\examples.vcxproj
