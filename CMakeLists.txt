@@ -305,7 +305,7 @@ else()
       windmc
   )
   if(MESSAGE_COMPILER_EXE STREQUAL "MESSAGE_COMPILER_EXE-NOTFOUND")
-    set(MESSAGE_COMPILRE_EXE mc)
+    set(MESSAGE_COMPILER_EXE mc)
   endif()
 
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
