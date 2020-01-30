@@ -304,13 +304,16 @@ else()
       mc
       windmc
   )
+  if(MESSAGE_COMPILER_EXE STREQUAL "MESSAGE_COMPILER_EXE-NOTFOUND")
+    set(MESSAGE_COMPILRE_EXE mc)
+  endif()
 
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
   ADD_CUSTOM_COMMAND(
      OUTPUT
        "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
        "${PROJECT_BINARY_DIR}/events.rc"
-     COMMAND mc -U -b
+     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
        "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
        -r "${PROJECT_BINARY_DIR}"
        -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
