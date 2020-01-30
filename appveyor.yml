@@ -30,6 +30,8 @@ init:
 
 before_build:
 - cmd: |-
+    echo %PATH%
+    where mc
     mkdir build
     cd build
     cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration% -DENABLE_NETWORK_TARGETS=%network_targets_enabled%
