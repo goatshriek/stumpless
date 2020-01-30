@@ -306,7 +306,7 @@ namespace {
   TEST( NetworkTargetOpenTest, BadHostname ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
-    const char *hostname = "this-doesnt-exist.net";
+    const char *hostname = "this doesn't exist.net";
 
     if( name_resolves( hostname, AF_INET ) ) {
       printf( "WARNING: the bad hostname resolved, so this test will be skipped\n" );
@@ -320,22 +320,13 @@ namespace {
                                               STUMPLESS_OPTION_NONE,
                                               STUMPLESS_FACILITY_USER );
 
-      // this second check, while technically redundant, is necessary in some
-      // cases where a 'helpful' ISP will return a "DNS Error" page as a
-      // response to an unknown host rather than letting it fail
-      if (name_resolves(hostname, AF_INET)) {
-        printf( "WARNING: the bad hostname started resolving, ending test\n" );
-        SUCCEED() << "the bad hostname now resolves";
-      }
-      else {
-        EXPECT_TRUE(target == NULL);
+      EXPECT_TRUE(target == NULL);
 
-        error = stumpless_get_error();
-        EXPECT_TRUE(error != NULL);
+      error = stumpless_get_error();
+      EXPECT_TRUE(error != NULL);
 
-        if (error) {
-          EXPECT_EQ(error->id, STUMPLESS_ADDRESS_FAILURE);
-        }
+      if (error) {
+        EXPECT_EQ(error->id, STUMPLESS_ADDRESS_FAILURE);
       }
     }
   }
