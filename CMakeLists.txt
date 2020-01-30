@@ -308,12 +308,12 @@ else()
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
   ADD_CUSTOM_COMMAND(
      OUTPUT
-      "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
-      "${PROJECT_BINARY_DIR}/events.rc"
-      COMMAND ${MESSAGE_COMPILER_EXE} -U -b
-        "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
-        -r "${PROJECT_BINARY_DIR}"
-        -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
+       "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
+       "${PROJECT_BINARY_DIR}/events.rc"
+     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+       "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
+       -r "${PROJECT_BINARY_DIR}"
+       -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
      DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
      COMMENT "Generating test events"
   )
@@ -346,12 +346,12 @@ else()
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
   ADD_CUSTOM_COMMAND(
      OUTPUT
-      "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
-      "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
-      COMMAND ${MESSAGE_COMPILER_EXE} -U -b
-        "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
-        -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
-        -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
+       "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
+       "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
+     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+       "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
+       -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
+       -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
      DEPENDS "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
      COMMENT "Generating wel example event resources"
   )
