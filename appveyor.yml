@@ -39,7 +39,8 @@ build:
   project: c:\project\stumpless\build\stumpless.vcxproj
 
 test_script:
-  - where mc
+  - mc
+  - where mc.exe
   - set CTEST_OUTPUT_ON_FAILURE=1
   - msbuild c:\project\stumpless\build\check.vcxproj
   - msbuild c:\project\stumpless\build\examples.vcxproj
