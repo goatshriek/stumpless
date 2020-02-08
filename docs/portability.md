@@ -15,7 +15,7 @@ and easy to maintain while remaining as portable as possible:
    understand program flow. These snippets should instead be factored into
    separate config source modules that keep portability handling code away from
    other logic and easy to find, understand, and modify.
- * **have default behavior that handle missing dependencies**
+ * **have default behavior that handles missing dependencies**
    This doesn't mean that you need to re-implement other libraries, but you
    should provide some sane fallback behavior that will function in their
    absence. This can be as simple as raising a target unsupported error or
@@ -29,11 +29,69 @@ based on the `config` family of headers, sources, and symbols.
 
 ## Config Headers and Wrappers
 
-_describe the include/private/config and include/stumpless/config headers_
+Great care is taken to keep configuration information separate from other
+functionality within the library. There are two headers where information on
+the build environment is located: one for the information that describes
+features and other variables that affect functionality, and another for factors
+that only affect internal code.
 
-## Wrapper Headers and `#define`s
+The `stumpless/config.h` header is installed along with the library, and can
+be referenced from any code that uses the library. For example, the version of
+the library is found in this header, `STUMPLESS_VERSION` for a string literal
+and `STUMPLESS_MAJOR_VERSION`, `STUMPLESS_MINOR_VERSION`, and
+`STUMPLESS_PATCH_VERSION` with integer values for each portion. Whether or not
+certain target types are support is also available, for example if the
+`STUMPLESS_SOCKET_TARGETS_SUPPORTED` symbol is defined, then Unix sockets are
+available in this build.
 
-_describe the family of config functions and source files_
+However, this header does not include information needed to make some internal
+code decisions. For example, the public header will not indicate whether a
+particular header was available during the system build. For this type of
+information there is a second configuration file, `private/config.h`, which
+gives details about headers and symbols that are available in the build
+environment. For example, the `HAVE_WINSOCK2_H` symbol is defined when the
+build system has `winsock2.h` available on it.
+
+These two headers can be used whenever this information is needed in the source
+code of Stumpless itself. But, to adhere to the first principle outlined above,
+they are only used in header files to conditionally define other symbols that
+can then be referenced in source code without needing to worry about `#ifdef`
+symbols or use other preprocessor directives. In fact, there is another
+established convention for how to do this: the wrapper headers and `config`
+family of functions.
+
+## The Wrapper Header and `config` Functions
+
+One header in particular in the private include file list deserves special
+mention: `private/config/wrapper.h`. This file contains definitions of a number
+of functions and symbols all starting with `config_` that wrap configuration
+specific functionality. This header is then all that library code needs to
+include in order to use this functionality, without needing to check all
+possible configuration combinations.
+
+This is easier to understand with an example. Let's look at the code used to
+determine whether Microsoft's "safe" version of the `fopen` library call should
+be used, or just the regular `fopen` call provided by Linux systems. The snippet
+of the wrapper header that handles this looks like this:
+
+```c
+#ifdef HAVE_FOPEN_S
+#  include "private/config/have_fopen_s.h"
+#  define config_fopen fopen_s_fopen
+#else
+#  include <stdio.h>
+#  define config_fopen fopen
+#endif
+```
+
+The `HAVE_FOPEN_S` symbol is defined in the `private/config.h` header, and is
+defined on systems where the symbol is detected during CMake's execution. If the
+symbol is found, the configuration header with the declaration of the function
+that will use the `fopen_s` function is included, and `config_fopen` is defined
+to be an alias for this function. If it isn't, `config_fopen` is instead simply
+defined as an alias for the `fopen` library call. Any library code that needs
+`fopen` functionality will then simply use `config_fopen` without needing to
+know which underlying call is being provided.
 
 ## Fallback Behavior
 
