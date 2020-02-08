@@ -81,6 +81,7 @@
 "HAVE_LOCALE_NAME_INVARIANT": "private/config.h"
 "HAVE_SYS_SOCKET_H": "private/config.h"
 "HAVE_UNISTD_H": "private/config.h"
+"HAVE_WCSTOMBS_S": "private/config.h"
 "HAVE_WINDOWS_H": "private/config.h"
 "HAVE_WINSOCK2_H": "private/config.h"
 "INIT_MEMORY_COUNTER": "test/helper/memory_counter.hpp"
