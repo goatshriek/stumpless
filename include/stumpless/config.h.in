@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,22 +25,31 @@
  */
 
 #ifndef __STUMPLESS_CONFIG_H
-#  define __STUMPLESS_CONFIG_H
+#define __STUMPLESS_CONFIG_H
 
+/** A string literal with the default socket logged to. */
 #cmakedefine STUMPLESS_DEFAULT_SOCKET "@STUMPLESS_DEFAULT_SOCKET@"
+
+/** Defined if network targets are supported by this build. */
 #cmakedefine STUMPLESS_NETWORK_TARGETS_SUPPORTED 1
+
+/** Defined if socket targets are supported by this build. */
 #cmakedefine STUMPLESS_SOCKET_TARGETS_SUPPORTED 1
+
+/** Defined if this build can directly replace syslog.h usage. */
 #cmakedefine STUMPLESS_SYSLOG_H_COMPATIBLE 1
+
+/** Defined if Windows Event Log targets are supported by this build. */
 #cmakedefine STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED 1
 
 /** The major version of this stumpless build. */
-#  define STUMPLESS_MAJOR_VERSION @PROJECT_VERSION_MAJOR@
+#define STUMPLESS_MAJOR_VERSION @PROJECT_VERSION_MAJOR@
 
 /** The minor version of this stumpless build. */
-#  define STUMPLESS_MINOR_VERSION @PROJECT_VERSION_MINOR@
+#define STUMPLESS_MINOR_VERSION @PROJECT_VERSION_MINOR@
 
 /** The patch version of this stumpless build. */
-#  define STUMPLESS_PATCH_VERSION @PROJECT_VERSION_PATCH@
+#define STUMPLESS_PATCH_VERSION @PROJECT_VERSION_PATCH@
 
 /**
  * The version of stumpless this library was built with.
@@ -55,11 +64,11 @@
  * done this before including stumpless, we'll go ahead and include it here to
  * shield them from the responsibility.
  */
-#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-#    ifndef _WINDOWS_
-#      define WIN32_LEAN_AND_MEAN
-#      include <windows.h>
-#    endif
+#ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#  ifndef _WINDOWS_
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #  endif
+#endif
 
 #endif /* __STUMPLESS_CONFIG_H */
