@@ -41,7 +41,9 @@ and `STUMPLESS_MAJOR_VERSION`, `STUMPLESS_MINOR_VERSION`, and
 `STUMPLESS_PATCH_VERSION` with integer values for each portion. Whether or not
 certain target types are support is also available, for example if the
 `STUMPLESS_SOCKET_TARGETS_SUPPORTED` symbol is defined, then Unix sockets are
-available in this build.
+available in this build. A complete list of the symbols in this header can be
+found in the
+[documentation](https://goatshriek.github.io/stumpless/doxygen/config_8h.html).
 
 However, this header does not include information needed to make some internal
 code decisions. For example, the public header will not indicate whether a
@@ -126,7 +128,7 @@ header as described above, like this:
 Most systems will have either `unistd.h` or `windows.h` available, so the
 fallback function will not be needed. However it is possible that neither is
 available, as has been seen on some Cygwin builds (see Github issue
-(#60)[https://github.com/goatshriek/stumpless/issues/60] for more info). For
+[#60](https://github.com/goatshriek/stumpless/issues/60) for more info). For
 cases like these, the fallback function is used, which has a simple and
 configuration-independent implementation:
 
