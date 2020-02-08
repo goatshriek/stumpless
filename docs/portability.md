@@ -1,21 +1,20 @@
 # Portability in Stumpless
 
-Stumpless is built to be compact and efficient, which makes it an excellent
-option in embedded scenarios. However, this means that portability is equally
-important to the design, as in order to work in constrained environments it must
-be able to handle a variety of situations that don't arise in standard desktop
-or server environments.
+Stumpless is built to be compact and efficient, making it an excellent option in
+embedded scenarios. This means that portability is a key factor of the design:
+in order to work in constrained environments it must be able to handle a variety
+of situations that don't arise in standard desktop or server environments.
 
 Stumpless follows a few key principles in its design in order to be feature-rich
 and easy to maintain while remaining as portable as possible:
- * **no `#ifdef` directives in source files**
+ * **No `#ifdef` directives are allowed in source files.**
    Source code with preprocesor directives that add, alter, or remove
-   functionality are easy to add, but hide configuration-specific behavior and
-   build environment dependencies across source code, and can make it harder to
+   functionality are easy to add, but scatter configuration-specific behavior
+   and build environment dependencies across source files, and make it harder to
    understand program flow. These snippets should instead be factored into
    separate config source modules that keep portability handling code away from
    other logic and easy to find, understand, and modify.
- * **have default behavior that handles missing dependencies**
+ * **Have default behavior that handles missing dependencies.**
    This doesn't mean that you need to re-implement other libraries, but you
    should provide some sane fallback behavior that will function in their
    absence. This can be as simple as raising a target unsupported error or
@@ -126,9 +125,10 @@ header as described above, like this:
 
 Most systems will have either `unistd.h` or `windows.h` available, so the
 fallback function will not be needed. However it is possible that neither is
-available, as has been seen on some Cygwin builds (see Github issue #60 for
-more info). For cases like these, the fallback function is used, which has a
-very simple and configuration-independent implementation:
+available, as has been seen on some Cygwin builds (see Github issue
+(#60)[https://github.com/goatshriek/stumpless/issues/60] for more info). For
+cases like these, the fallback function is used, which has a simple and
+configuration-independent implementation:
 
 ```c
 size_t
