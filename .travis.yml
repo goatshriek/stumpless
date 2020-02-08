@@ -2,7 +2,8 @@ language: c
 
 matrix:
   include:
-    - os: linux
+    - name: "linux, gcc 6"
+      os: linux
       addons:
         apt:
           sources:
@@ -61,7 +62,8 @@ matrix:
             - g++-7
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-    - os: linux
+    - name: "linux, all options off"
+      os: linux
       dist: trusty
       addons:
         apt:
@@ -84,9 +86,15 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
         - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
-    - os: osx
+    - name: "os x, clang"
+      os: osx
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - name: "os x, all options off"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
 
 before_install:
   - eval "${MATRIX_EVAL}"
