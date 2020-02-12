@@ -77,6 +77,14 @@ if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
 
+if(HAVE_UNISTD_GETHOSTNAME)
+  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_gethostname.c)
+endif()
+
+if(HAVE_UNISTD_GETPAGESIZE)
+  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
+endif()
+
 if(HAVE_VSNPRINTF_S)
   list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
 else()

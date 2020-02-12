@@ -183,8 +183,8 @@
 
 
 /* definition of config_gethostname */
-#  ifdef HAVE_UNISTD_H
-#    include "private/config/have_unistd.h"
+#  ifdef HAVE_UNISTD_GETHOSTNAME
+#    include "private/config/have_unistd_gethostname.h"
 #    define config_gethostname(buffer, namelen) unistd_gethostname((buffer), (namelen))
 #  elif HAVE_WINSOCK2_H
 #    include "private/config/have_winsock2.h"
@@ -196,8 +196,8 @@
 
 
 /* definition of config_getpagesize */
-#  ifdef HAVE_UNISTD_H
-#    include "private/config/have_unistd.h"
+#  ifdef HAVE_UNISTD_GETPAGESIZE
+#    include "private/config/have_unistd_getpagesize.h"
 #    define config_getpagesize unistd_getpagesize
 #  elif HAVE_WINDOWS_H
 #    include "private/config/have_windows.h"
