@@ -30,7 +30,7 @@
 /* symbol checks */
 #cmakedefine HAVE_FOPEN_S 1
 #cmakedefine HAVE_GMTIME_R 1
-#cmakedefine HAVE_LOCALE_SYSTEM_DEFAULT 1
+#cmakedefine HAVE_LOCALE_NAME_SYSTEM_DEFAULT 1
 #cmakedefine HAVE_UNISTD_GETHOSTNAME 1
 #cmakedefine HAVE_UNISTD_GETPAGESIZE 1
 #cmakedefine HAVE_VSNPRINTF_S 1
