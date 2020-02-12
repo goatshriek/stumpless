@@ -37,7 +37,20 @@ windows_get_now( char *buffer ) {
   GetUserDefaultLocaleName(locale_name, LOCALE_NAME_MAX_LENGTH);
   GetSystemTime( &now_st );
 
-  date_result = GetDateFormatEx( locale_name,
+  snprintf_result = sprintf_s(buffer,
+     RFC_5424_TIMESTAMP_BUFFER_SIZE,
+      "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
+      now_st.wYear,
+      now_st.wMonth,
+      now_st.wDay,
+      now_st.wHour,
+      now_st.wMinute,
+      now_st.wSecond,
+      now_st.wMilliseconds);
+
+  return snprintf_result;
+
+  /*date_result = GetDateFormatEx( locale_name,
                                  0,
                                  &now_st,
                                  L"yyyy'-'MM'-'dd",
@@ -82,4 +95,5 @@ windows_get_now( char *buffer ) {
   }
 
   return date_result + time_result + snprintf_result;
+  */
 }
