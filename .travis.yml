@@ -102,6 +102,7 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
+  - choco install make
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
