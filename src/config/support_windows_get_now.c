@@ -34,7 +34,6 @@ windows_get_now( char *buffer ) {
   size_t conversion_count;
   errno_t error;
 
-  GetUserDefaultLocaleName(locale_name, LOCALE_NAME_MAX_LENGTH);
   GetSystemTime( &now_st );
 
   snprintf_result = sprintf_s(buffer,
