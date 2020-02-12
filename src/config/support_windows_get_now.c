@@ -24,6 +24,7 @@
 
 size_t
 windows_get_now( char *buffer ) {
+  wchar_t locale_name[LOCALE_NAME_MAX_LENGTH];
   SYSTEMTIME now_st;
   int date_result;
   int time_result;
@@ -33,9 +34,10 @@ windows_get_now( char *buffer ) {
   size_t conversion_count;
   errno_t error;
 
+  GetUserDefaultLocaleName(locale_name, LOCALE_NAME_MAX_LENGTH);
   GetSystemTime( &now_st );
 
-  date_result = GetDateFormatEx( LOCALE_SNAME,
+  date_result = GetDateFormatEx( locale_name,
                                  0,
                                  &now_st,
                                  L"yyyy'-'MM'-'dd",
@@ -54,7 +56,7 @@ windows_get_now( char *buffer ) {
     return 0;
   }
 
-  time_result = GetTimeFormatEx( LOCALE_SNAME,
+  time_result = GetTimeFormatEx( locale_name,
                                  0,
                                  &now_st,
                                  L"'T'HH':'mm':'ss",
