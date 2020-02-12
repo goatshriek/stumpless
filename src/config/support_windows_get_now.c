@@ -35,7 +35,7 @@ windows_get_now( char *buffer ) {
 
   GetSystemTime( &now_st );
 
-  date_result = GetDateFormatEx( LOCALE_NAME_INVARIANT,
+  date_result = GetDateFormatEx( LOCALE_SYSTEM_DEFAULT,
                                  0,
                                  &now_st,
                                  L"yyyy'-'MM'-'dd",
