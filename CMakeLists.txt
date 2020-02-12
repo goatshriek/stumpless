@@ -33,6 +33,8 @@ check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
 check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
+check_symbol_exists(gethostname unistd.h HAVE_GETHOSTNAME)
+check_symbol_exists(getpagesize unistd.h HAVE_GETPAGESIZE)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
 check_symbol_exists(LOCALE_NAME_INVARIANT windows.h HAVE_LOCALE_NAME_INVARIANT)
 check_symbol_exists(LOCALE_SYSTEM_DEFAULT windows.h HAVE_LOCALE_SYSTEM_DEFAULT)

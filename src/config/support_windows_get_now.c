@@ -54,7 +54,7 @@ windows_get_now( char *buffer ) {
     return 0;
   }
 
-  time_result = GetTimeFormatEx( LOCALE_NAME_INVARIANT,
+  time_result = GetTimeFormatEx( LOCALE_SYSTEM_DEFAULT,
                                  0,
                                  &now_st,
                                  L"'T'HH':'mm':'ss",
