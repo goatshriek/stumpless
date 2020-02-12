@@ -81,6 +81,7 @@
 "SOCKET": "winsock2.h"
 "SOCKADDR_STORAGE": "winsock2.h"
 "socklen_t": "sys/socket.h"
+"sprintf_s": "stdio.h"
 "ssize_t": "sys/types.h"
 "std::cout": "iostream"
 "std::ifstream": "fstream"
