@@ -1,6 +1,6 @@
 set(my_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
 
-if(WIN32)
+if(NOT WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib")
     set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
