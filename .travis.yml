@@ -99,7 +99,7 @@ matrix:
       os: windows
       env:
         - MATRIX_EVAL="CC=gcc && CXX=g++"
-        - BUILD_ARGS="-G \"Unix Makefiles\""
+        - BUILD_ARGS="-G Unix\ Makefiles"
 
 before_install:
   - eval "${MATRIX_EVAL}"
@@ -116,7 +116,6 @@ before_script:
   - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..
 
 script:
-  - ls /C/ProgramData/chocolatey/bin/
   - ../tools/check_headers/check_headers.rb ../include/**/*.h ../include/**/*.hpp
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
   - ../tools/check_headers/check_headers.rb ../test/**.cpp
