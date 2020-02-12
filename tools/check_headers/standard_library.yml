@@ -35,6 +35,9 @@
 "gethostname":
   - "unistd.h"
   - "winsock2.h"
+"getpagesize":
+  - "unistd.h"
+  - "windows.h"
 "getpid": "unistd.h"
 "gmtime": "time.h"
 "HANDLE": "windows.h"
