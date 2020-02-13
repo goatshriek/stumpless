@@ -2,24 +2,24 @@ set(my_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
 
 if(WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib")
-    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
-    set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmockd.lib")
+    set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtestd.dll")
+    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtest_maind.dll")
+    set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gmockd.dll")
   else()
-    set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib")
-    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_main.lib")
-    set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmock.lib")
+    set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtest.dll")
+    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtest_main.dll")
+    set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gmock.dll")
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
-  set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/libgtest.a")
-  set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/libgtest_main.a")
-  set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/libgmock.a")
+  set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/libgtest.so")
+  set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/libgtest_main.so")
+  set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/libgmock.so")
 endif()
 
 ExternalProject_Add(gtest
   URL https://github.com/abseil/googletest/archive/8b6d3f9c4a774bef3081195d422993323b6bb2e0.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_SHARED_LIBS=ON
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BINARY_DIR "${my_gtest_binary_dir}"
@@ -31,15 +31,15 @@ set_target_properties(gtest
   EXCLUDE_FROM_ALL TRUE
 )
 
-add_library(libgtest IMPORTED STATIC GLOBAL)
+add_library(libgtest SHARED IMPORTED GLOBAL)
 add_dependencies(libgtest gtest)
 set(gtest_imported_location "${my_gtest_imported_location}")
 
-add_library(libgtestmain IMPORTED STATIC GLOBAL)
+add_library(libgtestmain SHARED IMPORTED GLOBAL)
 add_dependencies(libgtestmain gtest)
 set(gtest_main_imported_location "${my_gtest_main_imported_location}")
 
-add_library(libgmock IMPORTED STATIC GLOBAL)
+add_library(libgmock SHARED IMPORTED GLOBAL)
 add_dependencies(libgmock gtest)
 set(gmock_imported_location "${my_gmock_imported_location}")
 
