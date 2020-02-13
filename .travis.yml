@@ -114,7 +114,7 @@ before_install:
           export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
           export msys2+=" -msys2 -c "\"\$@"\" --"
           $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-          $msys2 pacman -S make
+          $msys2 pacman -S --noconfirm make
           taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
           export PATH=/C/tools/msys64/mingw64/bin:$PATH
           export MAKE=mingw32-make  # so that Autotools can find it
