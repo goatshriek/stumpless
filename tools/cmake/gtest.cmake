@@ -3,12 +3,18 @@ set(my_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
 if(WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtestd.dll")
+    set(my_gtest_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib")
     set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtest_maind.dll")
+    set(my_gtest_main_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
     set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gmockd.dll")
+    set(my_gmock_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmockd.lib")
   else()
     set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtest.dll")
+    set(my_gtest_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib")
     set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gtest_main.dll")
+    set(my_gtest_main_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_main.lib")
     set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gmock.dll")
+    set(my_gmock_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmock.lib")
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
   set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/libgtest.so")
@@ -21,9 +27,10 @@ ExternalProject_Add(gtest
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
   CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_SHARED_LIBS=ON
   UPDATE_COMMAND ""
-  INSTALL_COMMAND ""
-  BINARY_DIR "${my_gtest_binary_dir}"
-  BUILD_BYPRODUCTS "${my_gtest_imported_location}" "${my_gtest_main_imported_location}" "${my_gmock_imported_location}"
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_main_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy ${my_gmock_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
+  BUILD_BYPRODUCTS "${my_gtest_imported_location}" "${my_gtest_main_imported_location}" "${my_gmock_imported_location}" "${my_gtest_imported_implib}" "${my_gtest_main_imported_implib}" "${my_gmock_imported_implib}"
 )
 
 set_target_properties(gtest
@@ -45,19 +52,19 @@ set(gmock_imported_location "${my_gmock_imported_location}")
 
 set_target_properties(libgtest PROPERTIES
   IMPORTED_LOCATION "${gtest_imported_location}"
-  IMPORTED_IMPLIB "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib"
+  IMPORTED_IMPLIB "${my_gtest_imported_implib}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgtestmain PROPERTIES
   IMPORTED_LOCATION "${gtest_main_imported_location}"
-  IMPORTED_IMPLIB "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_main.lib"
+  IMPORTED_IMPLIB "${my_gtest_main_imported_implib}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgmock PROPERTIES
   IMPORTED_LOCATION "${gmock_imported_location}"
-  IMPORTED_IMPLIB "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmock.lib"
+  IMPORTED_IMPLIB "${my_gmock_imported_implib}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
