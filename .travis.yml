@@ -97,8 +97,8 @@ matrix:
 #        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
     - name: "windows"
       os: windows
-      env:
-        - MATRIX_EVAL="CC=gcc && CXX=g++"
+#      env:
+#        - MATRIX_EVAL="CC=gcc && CXX=g++"
 
 before_install:
   - eval "${MATRIX_EVAL}"
