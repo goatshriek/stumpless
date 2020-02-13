@@ -139,6 +139,8 @@ script:
   - ../tools/check_headers/check_headers.rb ../include/**/*.h ../include/**/*.hpp
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
   - ../tools/check_headers/check_headers.rb ../test/**.cpp
+  - echo `which gcc`
+  - echo `which g++`
   - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || $mingw64 make all
   - $mingw64 make CTEST_OUTPUT_ON_FAILURE=1 check
 #  - $msys2 sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
