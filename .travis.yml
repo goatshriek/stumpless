@@ -130,7 +130,7 @@ before_script:
   - mkdir build
   - cd build
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
-      $msys2 cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
+      cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
     else
       cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
     fi
