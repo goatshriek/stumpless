@@ -20,7 +20,7 @@ ExternalProject_Add(gtest
   URL https://github.com/abseil/googletest/archive/8b6d3f9c4a774bef3081195d422993323b6bb2e0.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
   CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  CMAKE_GENERATOR "MinGW Makefiles"
+  CMAKE_GENERATOR "MSYS Makefiles"
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BINARY_DIR "${my_gtest_binary_dir}"
