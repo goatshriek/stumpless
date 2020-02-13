@@ -45,16 +45,19 @@ set(gmock_imported_location "${my_gmock_imported_location}")
 
 set_target_properties(libgtest PROPERTIES
   IMPORTED_LOCATION "${gtest_imported_location}"
+  IMPORTED_IMPLIB "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgtestmain PROPERTIES
   IMPORTED_LOCATION "${gtest_main_imported_location}"
+  IMPORTED_IMPLIB "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_main.lib"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgmock PROPERTIES
   IMPORTED_LOCATION "${gmock_imported_location}"
+  IMPORTED_IMPLIB "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmock.lib"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
