@@ -139,12 +139,13 @@ script:
   - ../tools/check_headers/check_headers.rb ../include/**/*.h ../include/**/*.hpp
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
   - ../tools/check_headers/check_headers.rb ../test/**.cpp
-  - echo `which gcc`
-  - echo `which g++`
-  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || $mingw64 make all
-  - $mingw64 make CTEST_OUTPUT_ON_FAILURE=1 check
-#  - $msys2 sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
-#  - $msys2 make examples
+  - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
+      $mingw64 source ../tools/travis-ci/windows_script.sh;
+    fi
+  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
+  - make CTEST_OUTPUT_ON_FAILURE=1 check
+  - sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
+  - make examples
 
 after_success:
   - cd ..
