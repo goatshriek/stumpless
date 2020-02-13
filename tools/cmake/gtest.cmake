@@ -11,9 +11,9 @@ if(WIN32)
     set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/gmock.dll")
   endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
-  set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/libgtest.so")
-  set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/libgtest_main.so")
-  set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/libgmock.so")
+  set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/libgtest.so")
+  set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/libgtest_main.so")
+  set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/libgmock.so")
 endif()
 
 ExternalProject_Add(gtest
