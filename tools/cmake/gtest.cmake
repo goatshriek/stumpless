@@ -1,6 +1,6 @@
 set(my_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
 
-if(WIN32)
+if(NOT WIN32)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib")
     set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
@@ -20,7 +20,6 @@ ExternalProject_Add(gtest
   URL https://github.com/abseil/googletest/archive/8b6d3f9c4a774bef3081195d422993323b6bb2e0.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
   CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  CMAKE_GENERATOR "MSYS Makefiles"
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BINARY_DIR "${my_gtest_binary_dir}"
