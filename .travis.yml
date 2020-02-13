@@ -114,7 +114,7 @@ before_install:
           export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
           export msys2+=" -msys2 -c "\"\$@"\" --"
           $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-          $msys2 pacman --sync --noconfirm mingw-w64-make
+          $msys2 pacman --sync --noconfirm make
           taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
           export PATH=/C/tools/msys64/mingw64/bin:$PATH
           export MAKE=mingw32-make  # so that Autotools can find it
@@ -130,7 +130,7 @@ before_script:
   - mkdir build
   - cd build
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
-      $mingw64 cmake -G "MinGW Makefiles" -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
+      $msys2 cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
     else
       cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
     fi
@@ -139,10 +139,10 @@ script:
   - ../tools/check_headers/check_headers.rb ../include/**/*.h ../include/**/*.hpp
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
   - ../tools/check_headers/check_headers.rb ../test/**.cpp
-  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || $mingw64 make all
-  - $mingw64 make CTEST_OUTPUT_ON_FAILURE=1 check
-#  - sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
-  - $mingw64 make examples
+  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || $msys2 make all
+  - $msys2 make CTEST_OUTPUT_ON_FAILURE=1 check
+#  - $msys2 sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
+#  - $msys2 make examples
 
 after_success:
   - cd ..
