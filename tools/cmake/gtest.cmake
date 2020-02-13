@@ -1,6 +1,6 @@
 set(my_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
 
-if(NOT WIN32)
+if(MSVC)
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib")
     set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
@@ -14,7 +14,7 @@ else()
   set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/libgtest.a")
   set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/libgtest_main.a")
   set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/libgmock.a")
-endif(WIN32)
+endif()
 
 ExternalProject_Add(gtest
   URL https://github.com/abseil/googletest/archive/8b6d3f9c4a774bef3081195d422993323b6bb2e0.zip
