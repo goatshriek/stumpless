@@ -141,11 +141,9 @@ script:
   - ../tools/check_headers/check_headers.rb ../test/**.cpp
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
       source ../tools/travis-ci/windows_script.sh;
+    else
+      source ../tools/travis-ci/linux_script.sh;
     fi
-  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
-  - make CTEST_OUTPUT_ON_FAILURE=1 check
-  - sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
-  - make examples
 
 after_success:
   - cd ..
