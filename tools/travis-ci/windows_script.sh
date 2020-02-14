@@ -1,5 +1,7 @@
-mingw-make all VERBOSE=1 2>&1
+ls /c/ProgramData/chocolatey/bin
+ls C:/ProgramData/chocolatey/bin
+make all VERBOSE=1 2>&1
 ls
-#mingw-make CTEST_OUTPUT_ON_FAILURE=1 VERBOSE=1 check 2>&1
+#make CTEST_OUTPUT_ON_FAILURE=1 VERBOSE=1 check 2>&1
 ls
-mingw-make examples 2>&1
+make examples 2>&1
