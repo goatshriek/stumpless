@@ -48,9 +48,6 @@ ExternalProject_Add(gtest
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_main_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy ${my_gmock_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_imported_implib} ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_main_imported_implib} ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${my_gmock_imported_implib} ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND echo "lib dir"
     COMMAND ls "${my_gtest_binary_dir}/lib"
     COMMAND echo "bin dir"
