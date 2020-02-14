@@ -12,20 +12,20 @@ matrix:
             - g++-6
       env:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-    - name: "linux, gcc 7, amd64"
-      os: linux
-      arch: amd64
-      dist: trusty
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-        sonarcloud:
-          organization: "goatshriek-github"
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+#    - name: "linux, gcc 7, amd64"
+#      os: linux
+#      arch: amd64
+#      dist: trusty
+#      addons:
+#        apt:
+#          sources:
+#            - ubuntu-toolchain-r-test
+#          packages:
+#            - g++-7
+#        sonarcloud:
+#          organization: "goatshriek-github"
+#      env:
+#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 #    - name: "linux, gcc 7, ppc64le"
 #      os: linux
 #      arch: ppc64le
