@@ -102,24 +102,25 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-  - |-
-      case $TRAVIS_OS_NAME in
-        windows)
-          [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
-          choco uninstall -y mingw
-          choco upgrade --no-progress -y msys2
-          export msys2='cmd //C RefreshEnv.cmd '
-          export msys2+='& set MSYS=winsymlinks:nativestrict '
-          export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
-          export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
-          export msys2+=" -msys2 -c "\"\$@"\" --"
-          $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-          $msys2 pacman --sync --noconfirm -needed mingw-w64-x86_64-cmake
-          taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
-          export PATH=/C/tools/msys64/mingw64/bin:$PATH
-          export MAKE=mingw32-make  # so that Autotools can find it
-          ;;
-      esac
+  - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then choc install make; fi
+#  - |-
+#      case $TRAVIS_OS_NAME in
+#        windows)
+#          [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
+#          choco uninstall -y mingw
+#          choco upgrade --no-progress -y msys2
+#          export msys2='cmd //C RefreshEnv.cmd '
+#          export msys2+='& set MSYS=winsymlinks:nativestrict '
+#          export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
+#          export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
+#          export msys2+=" -msys2 -c "\"\$@"\" --"
+#          $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
+#          $msys2 pacman --sync --noconfirm -needed mingw-w64-x86_64-cmake
+#          taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
+#          export PATH=/C/tools/msys64/mingw64/bin:$PATH
+#          export MAKE=mingw32-make  # so that Autotools can find it
+#          ;;
+#      esac
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
@@ -130,7 +131,7 @@ before_script:
   - mkdir build
   - cd build
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
-      $mingw64 source ../tools/travis-ci/windows_before_script.sh;
+      source ../tools/travis-ci/windows_before_script.sh;
     else
       cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
     fi
@@ -140,7 +141,7 @@ script:
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
   - ../tools/check_headers/check_headers.rb ../test/**.cpp
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
-      $mingw64 source ../tools/travis-ci/windows_script.sh;
+      source ../tools/travis-ci/windows_script.sh;
     fi
   - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
   - make CTEST_OUTPUT_ON_FAILURE=1 check
@@ -152,16 +153,16 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
   - sonar-scanner
 
-before_cache:
-  - |-
-    case $TRAVIS_OS_NAME in
-      windows)
-        # https://unix.stackexchange.com/a/137322/107554
-        $msys2 pacman --sync --clean --noconfirm
-        ;;
-    esac
-
-cache:
-    directories:
-    - $HOME/AppData/Local/Temp/chocolatey
-    - /C/tools/msys64
+# before_cache:
+#   - |-
+#     case $TRAVIS_OS_NAME in
+#       windows)
+#         # https://unix.stackexchange.com/a/137322/107554
+#         $msys2 pacman --sync --clean --noconfirm
+#         ;;
+#     esac
+# 
+# cache:
+#     directories:
+#     - $HOME/AppData/Local/Temp/chocolatey
+#     - /C/tools/msys64
