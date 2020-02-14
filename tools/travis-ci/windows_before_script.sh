@@ -1,1 +1,1 @@
-cmake -G "MinGW Makefiles" -DCMAKE_SH=SH-NOTFOUND -DCMAKE_C_COMPILER="gcc" -DCMAKE_CXX_COMPILER="g++" -DCOVERAGE=ON ${BUILD_ARGS} ..
+cmake -G "MinGW Makefiles" -DCMAKE_SH=cmd -DCOVERAGE=ON ${BUILD_ARGS} ..
