@@ -74,19 +74,19 @@ set(gmock_imported_location "${my_gmock_imported_location}")
 
 set_target_properties(libgtest PROPERTIES
   IMPORTED_LOCATION "${gtest_imported_location}"
-  IMPORTED_IMPLIB "${my_gtest_imported_implib}"
+#  IMPORTED_IMPLIB "${my_gtest_imported_implib}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgtestmain PROPERTIES
   IMPORTED_LOCATION "${gtest_main_imported_location}"
-  IMPORTED_IMPLIB "${my_gtest_main_imported_implib}"
+#  IMPORTED_IMPLIB "${my_gtest_main_imported_implib}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgmock PROPERTIES
   IMPORTED_LOCATION "${gmock_imported_location}"
-  IMPORTED_IMPLIB "${my_gmock_imported_implib}"
+#  IMPORTED_IMPLIB "${my_gmock_imported_implib}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
