@@ -102,7 +102,6 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-  - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then choco install make; fi
 #  - |-
 #      case $TRAVIS_OS_NAME in
 #        windows)
