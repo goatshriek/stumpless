@@ -388,6 +388,7 @@ add_library(stumpless SHARED ${STUMPLESS_SOURCES})
 set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 if(MINGW)
+  target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
   set_target_properties(stumpless PROPERTIES PREFIX "")
 endif()
 
