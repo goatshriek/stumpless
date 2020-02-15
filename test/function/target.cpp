@@ -124,40 +124,6 @@ namespace {
     }
   }
 
-  TEST( AddMessageTest, MallocFailure ) {
-    char buffer[1000];
-    struct stumpless_target *target;
-    void *(*set_malloc_result)(size_t);
-    int result;
-    struct stumpless_error *error;
-
-    target = stumpless_open_buffer_target( "test target",
-                                           buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
-
-    result = stumpless_add_message( target, "test message" );
-    EXPECT_GE( result, 0 );
-
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    EXPECT_TRUE( set_malloc_result != NULL );
-
-    result = stumpless_add_message( target, "second test message" );
-    EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
-
-    stumpless_set_malloc( malloc );
-    stumpless_close_buffer_target( target );
-  }
-
   TEST( AddMessageTest, NullTarget ) {
     int result;
     struct stumpless_error *error;
@@ -208,6 +174,45 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
 
+    stumpless_set_realloc( realloc );
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( AddMessageTest, SecondMemoryFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_malloc_result)(size_t);
+    void *(*set_realloc_result)(void *, size_t);
+    int result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_add_message( target, "test message" );
+    EXPECT_GE( result, 0 );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( set_malloc_result != NULL );
+
+    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( set_realloc_result != NULL );
+
+    result = stumpless_add_message( target, "second test message" );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
   }
