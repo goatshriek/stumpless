@@ -26,17 +26,21 @@ elseif(WIN32)
 else()
   set(local_gtest_shared_prefix "lib")
   set(local_gtest_shared_suffix "so")
-  set(local_gtest_static_prefix "lib")
-  set(local_gtest_static_suffix "a")
 endif()
 
 set(local_gtest_shared "${local_gtest_shared_dir}/${local_gtest_shared_prefix}gtest${local_gtest_debug_suffix}.${local_gtest_shared_suffix}")
 set(local_gtest_main_shared "${local_gtest_shared_dir}/${local_gtest_shared_prefix}gtest_main${local_gtest_debug_suffix}.${local_gtest_shared_suffix}")
 set(local_gmock_shared "${local_gtest_shared_dir}/${local_gtest_shared_prefix}gmock${local_gtest_debug_suffix}.${local_gtest_shared_suffix}")
 
-set(local_gtest_static "${local_gtest_static_dir}/${local_gtest_static_prefix}gtest${local_gtest_debug_suffix}.${local_gtest_static_suffix}")
-set(local_gtest_main_static "${local_gtest_static_dir}/${local_gtest_static_prefix}gtest_main${local_gtest_debug_suffix}.${local_gtest_static_suffix}")
-set(local_gmock_static "${local_gtest_static_dir}/${local_gtest_static_prefix}gmock${local_gtest_debug_suffix}.${local_gtest_static_suffix}")
+if(CYGWIN OR MINGW OR WIN32)
+  set(local_gtest_static "${local_gtest_static_dir}/${local_gtest_static_prefix}gtest${local_gtest_debug_suffix}.${local_gtest_static_suffix}")
+  set(local_gtest_main_static "${local_gtest_static_dir}/${local_gtest_static_prefix}gtest_main${local_gtest_debug_suffix}.${local_gtest_static_suffix}")
+  set(local_gmock_static "${local_gtest_static_dir}/${local_gtest_static_prefix}gmock${local_gtest_debug_suffix}.${local_gtest_static_suffix}")
+else()
+  set(local_gtest_static "")
+  set(local_gtest_main_static "")
+  set(local_gmock_static "")
+endif()
 
 set(local_gtest_byproducts
   ${local_gtest_shared}
