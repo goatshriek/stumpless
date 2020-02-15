@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    - Building on MinGW and Cygwin environments
    - Conflicting header inclusions
    - Missing headers
+   - Missed code in configuration-specific source files.
 
 ## [1.4.0] - 2019-03-09
 ### Added
