@@ -24,75 +24,21 @@
 
 size_t
 windows_get_now( char *buffer ) {
-  wchar_t locale_name[LOCALE_NAME_MAX_LENGTH];
   SYSTEMTIME now_st;
-  int date_result;
-  int time_result;
-  int snprintf_result;
-  wchar_t full_date[RFC_5424_FULL_DATE_BUFFER_SIZE];
-  wchar_t full_time[RFC_5424_FULL_TIME_BUFFER_SIZE];
-  size_t conversion_count;
-  errno_t error;
+  int sprintf_result;
 
   GetSystemTime( &now_st );
 
-  snprintf_result = sprintf_s(buffer,
-     RFC_5424_TIMESTAMP_BUFFER_SIZE,
-      "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
-      now_st.wYear,
-      now_st.wMonth,
-      now_st.wDay,
-      now_st.wHour,
-      now_st.wMinute,
-      now_st.wSecond,
-      now_st.wMilliseconds);
+  sprintf_result = sprintf_s( buffer,
+                              RFC_5424_TIMESTAMP_BUFFER_SIZE,
+                              "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
+                              now_st.wYear,
+                              now_st.wMonth,
+                              now_st.wDay,
+                              now_st.wHour,
+                              now_st.wMinute,
+                              now_st.wSecond,
+                              now_st.wMilliseconds );
 
-  return snprintf_result;
-
-  /*date_result = GetDateFormatEx( locale_name,
-                                 0,
-                                 &now_st,
-                                 L"yyyy'-'MM'-'dd",
-                                 full_date,
-                                 RFC_5424_FULL_DATE_BUFFER_SIZE, NULL );
-  if( date_result == 0 ) {
-    return 0;
-  }
-  date_result--;                // drop off the NULL character
-
-  error = wcstombs_s( &conversion_count,
-                      buffer,
-                      RFC_5424_FULL_DATE_BUFFER_SIZE,
-                      full_date, RFC_5424_FULL_DATE_BUFFER_SIZE - 1 );
-  if( error != 0 ) {
-    return 0;
-  }
-
-  time_result = GetTimeFormatEx( locale_name,
-                                 0,
-                                 &now_st,
-                                 L"'T'HH':'mm':'ss",
-                                 full_time, RFC_5424_FULL_TIME_BUFFER_SIZE );
-  if( time_result == 0 ) {
-    return 0;
-  }
-  time_result--;                // drop off the NULL character
-
-  error = wcstombs_s( &conversion_count,
-                      buffer + date_result,
-                      RFC_5424_FULL_TIME_BUFFER_SIZE,
-                      full_time, RFC_5424_FULL_TIME_BUFFER_SIZE - 1 );
-  if( error != 0 ) {
-    return 0;
-  }
-
-  snprintf_result = snprintf( buffer + date_result + time_result,
-                              RFC_5424_TIME_SECFRAC_BUFFER_SIZE + 2,
-                              ".%03dZ", now_st.wMilliseconds );
-  if( snprintf_result < 0 ) {
-    return 0;
-  }
-
-  return date_result + time_result + snprintf_result;
-  */
+  return sprintf_result < 0 ? 0 : sprintf_result;
 }
