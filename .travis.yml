@@ -12,114 +12,94 @@ matrix:
             - g++-6
       env:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-#    - name: "linux, gcc 7, amd64"
-#      os: linux
-#      arch: amd64
-#      dist: trusty
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-#    - name: "linux, gcc 7, ppc64le"
-#      os: linux
-#      arch: ppc64le
-#      dist: trusty
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-#    - name: "linux, gcc 7, s390x"
-#      os: linux
-#      arch: s390x
-#      dist: trusty
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-#    - name: "linux, gcc 7, arm64"
-#      os: linux
-#      arch: arm64
-#      dist: trusty
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-#    - name: "linux, all options off"
-#      os: linux
-#      dist: trusty
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-#        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
-#    - name: "linux, no unistd.h"
-#      os: linux
-#      dist: trusty
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-#        - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
-#    - name: "os x, clang"
-#      os: osx
-#      env:
-#        - MATRIX_EVAL="CC=clang && CXX=clang++"
-#    - name: "os x, all options off"
-#      os: osx
-#      env:
-#        - MATRIX_EVAL="CC=clang && CXX=clang++"
-#        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
+    - name: "linux, gcc 7, amd64"
+      os: linux
+      arch: amd64
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, gcc 7, ppc64le"
+      os: linux
+      arch: ppc64le
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, gcc 7, s390x"
+      os: linux
+      arch: s390x
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, gcc 7, arm64"
+      os: linux
+      arch: arm64
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, all options off"
+      os: linux
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
+    - name: "linux, no unistd.h"
+      os: linux
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
+    - name: "os x, clang"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - name: "os x, all options off"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
     - name: "windows"
       os: windows
-      env:
-        - MATRIX_EVAL="CC=gcc && CXX=g++"
 
 before_install:
-  - eval "${MATRIX_EVAL}"
-#  - |-
-#      case $TRAVIS_OS_NAME in
-#        windows)
-#          [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
-#          choco uninstall -y mingw
-#          choco upgrade --no-progress -y msys2
-#          export msys2='cmd //C RefreshEnv.cmd '
-#          export msys2+='& set MSYS=winsymlinks:nativestrict '
-#          export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
-#          export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
-#          export msys2+=" -msys2 -c "\"\$@"\" --"
-#          $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-#          $msys2 pacman --sync --noconfirm -needed mingw-w64-x86_64-cmake
-#          taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
-#          export PATH=/C/tools/msys64/mingw64/bin:$PATH
-#          export MAKE=mingw32-make  # so that Autotools can find it
-#          ;;
-#      esac
+  - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "${MATRIX_EVAL}"; fi
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
@@ -149,17 +129,3 @@ after_success:
   - cd ..
   - bash <(curl -s https://codecov.io/bash)
   - sonar-scanner
-
-# before_cache:
-#   - |-
-#     case $TRAVIS_OS_NAME in
-#       windows)
-#         # https://unix.stackexchange.com/a/137322/107554
-#         $msys2 pacman --sync --clean --noconfirm
-#         ;;
-#     esac
-# 
-# cache:
-#     directories:
-#     - $HOME/AppData/Local/Temp/chocolatey
-#     - /C/tools/msys64
