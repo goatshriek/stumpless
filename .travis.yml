@@ -2,6 +2,8 @@ language: c
 
 matrix:
   include:
+    - name: "windows"
+      os: windows
     - name: "linux, gcc 6"
       os: linux
       addons:
@@ -95,8 +97,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
-    - name: "windows"
-      os: windows
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
