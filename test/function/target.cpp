@@ -124,6 +124,38 @@ namespace {
     }
   }
 
+  TEST( AddMessageTest, MallocFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_malloc_result)(size_t);
+    int result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_add_message( target, "test message" );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( AddMessageTest, NullTarget ) {
     int result;
     struct stumpless_error *error;
@@ -144,7 +176,6 @@ namespace {
     char buffer[1000];
     struct stumpless_target *target;
     void *(*set_realloc_result)(void *, size_t);
-    struct stumpless_error *error;
     const char *long_message = "This message is longer than 128 characters, "
                                "which is the starting buffer size in the "
                                "format string function. If the call to realloc "
@@ -152,6 +183,7 @@ namespace {
                                "size, then a memory allocation failure will be "
                                "raised.";
     int result;
+    struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
