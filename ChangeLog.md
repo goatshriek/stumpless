@@ -16,11 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Header check enforcement in CI pipeline.
 
 ### Fixed
- - Several portability issues to address:
-   - Building on MinGW and Cygwin environments
+ - Several portability issues:
+   - Build failure in MinGW and Cygwin
    - Conflicting header inclusions
    - Missing headers
-   - Missed code in configuration-specific source files.
+   - Missed code in configuration-specific source files
+   - Missing error checks
 
 ## [1.4.0] - 2019-03-09
 ### Added
