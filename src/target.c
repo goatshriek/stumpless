@@ -455,7 +455,7 @@ vstumpless_add_log( struct stumpless_target *target,
                     int priority,
                     const char *message,
                     va_list subs ) {
-  struct stumpless_entry *set_result;
+  const struct stumpless_entry *set_result;
   char *app_name;
   char *msgid;
 
