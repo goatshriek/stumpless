@@ -99,7 +99,7 @@ matrix:
       os: windows
 
 before_install:
-  - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "${MATRIX_EVAL}"; fi
+  - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
