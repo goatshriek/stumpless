@@ -1,6 +1,22 @@
 set(my_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
 
-if(WIN32)
+if(CYGWIN)
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/cyggtestd.dll")
+    set(my_gtest_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/libgtestd.dll.a")
+    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/cyggtest_maind.dll")
+    set(my_gtest_main_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/libgtest_maind.dll.a")
+    set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/cyggmockd.dll")
+    set(my_gmock_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/libgmockd.dll.a")
+  else()
+    set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/cyggtest.dll")
+    set(my_gtest_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/libgtest.dll.a")
+    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/cyggtest_main.dll")
+    set(my_gtest_main_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/libgtest_main.dll.a")
+    set(my_gmock_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/cyggmock.dll")
+    set(my_gmock_imported_implib "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/libgmock.dll.a")
+  endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+elseif(WIN32)
   if(MINGW)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
       set(my_gtest_imported_location "${my_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}/libgtestd.dll")
@@ -46,12 +62,8 @@ ExternalProject_Add(gtest
   CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_SH=${CMAKE_SH} -DBUILD_SHARED_LIBS=ON
   UPDATE_COMMAND ""
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_main_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${my_gmock_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND echo "lib dir"
-    COMMAND ls "${my_gtest_binary_dir}/lib"
-    COMMAND echo "bin dir"
-    COMMAND ls "${my_gtest_binary_dir}/bin"
+  COMMAND ${CMAKE_COMMAND} -E copy ${my_gtest_main_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${my_gmock_imported_location} ${CMAKE_CURRENT_BINARY_DIR}
   BUILD_BYPRODUCTS "${my_gtest_imported_location}" "${my_gtest_main_imported_location}" "${my_gmock_imported_location}" "${my_gtest_imported_implib}" "${my_gtest_main_imported_implib}" "${my_gmock_imported_implib}"
 )
 
