@@ -138,13 +138,15 @@ namespace {
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
-
     result = stumpless_add_message( target, "test message" );
+    EXPECT_GE( result, 0 );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_add_message( target, "second test message" );
     EXPECT_LT( result, 0 );
 
-    error = stumpless_get_error(  );
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
 
@@ -193,7 +195,7 @@ namespace {
     ASSERT_TRUE( target != NULL );
 
     set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_realloc_result != NULL );
+    EXPECT_TRUE( set_realloc_result != NULL );
 
     result = stumpless_add_message( target, long_message );
     EXPECT_LT( result, 0 );

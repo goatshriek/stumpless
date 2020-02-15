@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -455,6 +455,7 @@ vstumpless_add_log( struct stumpless_target *target,
                     int priority,
                     const char *message,
                     va_list subs ) {
+  struct stumpless_entry *set_result;
   char *app_name;
   char *msgid;
 
@@ -477,7 +478,10 @@ vstumpless_add_log( struct stumpless_target *target,
     }
 
   } else {
-    vstumpless_set_entry_message( cached_entry, message, subs );
+    set_result = vstumpless_set_entry_message( cached_entry, message, subs );
+    if( !set_result ) {
+      return -1;
+    }
 
   }
 
