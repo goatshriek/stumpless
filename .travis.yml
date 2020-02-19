@@ -136,7 +136,7 @@ before_script:
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
       source ../tools/travis-ci/windows_before_script.sh;
     else
-      cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..;
+      source ../tools/travis-ci/linux_before_script.sh;
     fi
 
 script:
