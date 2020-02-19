@@ -1,8 +1,13 @@
 set(local_benchmark_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/benchmark/src/benchmark-build")
 set(local_benchmark_static_dir "${local_benchmark_binary_dir}/src")
 
-set(local_benchmark_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark.${google_libs_static_suffix}")
-set(local_benchmark_main_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark_main.${google_libs_static_suffix}")
+if(MINGW OR CYGWIN OR NOT WIN32)
+  set(local_benchmark_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark.a")
+  set(local_benchmark_main_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark_main.a")
+else()
+  set(local_benchmark_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark.lib")
+  set(local_benchmark_main_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark_main.lib")
+endif()
 
 set(local_benchmark_byproducts
   ${local_benchmark_static}
