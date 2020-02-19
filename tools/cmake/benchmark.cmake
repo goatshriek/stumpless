@@ -2,11 +2,11 @@ set(local_benchmark_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/benchmark/src/benchm
 set(local_benchmark_static_dir "${local_benchmark_binary_dir}/src")
 
 if(MINGW OR CYGWIN OR NOT WIN32)
-  set(local_benchmark_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark.a")
-  set(local_benchmark_main_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark_main.a")
+  set(local_benchmark_static "${local_benchmark_static_dir}/libbenchmark.a")
+  set(local_benchmark_main_static "${local_benchmark_static_dir}/libbenchmark_main.a")
 else()
-  set(local_benchmark_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark.lib")
-  set(local_benchmark_main_static "${local_benchmark_static_dir}/${google_libs_shared_prefix}benchmark_main.lib")
+  set(local_benchmark_static "${local_benchmark_static_dir}/benchmark.lib")
+  set(local_benchmark_main_static "${local_benchmark_static_dir}/benchmark_main.lib")
 endif()
 
 set(local_benchmark_byproducts
