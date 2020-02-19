@@ -58,7 +58,7 @@ function(private_add_performance_test)
     ${FUNCTION_PERF_ARG_SOURCES}
   )
 
-  if(MSVC)
+  if(MSVC OR MINGW)
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
       libbenchmark
@@ -73,7 +73,7 @@ function(private_add_performance_test)
       libbenchmarkmain
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
-  endif(MSVC)
+  endif()
 
   set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
     PROPERTIES
