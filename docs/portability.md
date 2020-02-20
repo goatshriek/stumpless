@@ -5,8 +5,8 @@ embedded scenarios. This means that portability is a key factor of the design:
 in order to work in constrained environments it must be able to handle a variety
 of situations that don't arise in standard desktop or server environments.
 
-Stumpless follows a few key principles in its design in order to be feature-rich
-and easy to maintain while remaining as portable as possible:
+Stumpless follows a few key design principles in order to be feature-rich and
+easy to maintain while remaining as portable as possible:
  * **No `#ifdef` directives are allowed in source files.**
    Source code with preprocesor directives that add, alter, or remove
    functionality are easy to add, but scatter configuration-specific behavior
@@ -14,7 +14,7 @@ and easy to maintain while remaining as portable as possible:
    understand program flow. These snippets should instead be factored into
    separate config source modules that keep portability handling code away from
    other logic and easy to find, understand, and modify.
- * **Have default behavior that handles missing dependencies.**
+ * **Have default behavior to handle missing dependencies.**
    This doesn't mean that you need to re-implement other libraries, but you
    should provide some sane fallback behavior that will function in their
    absence. This can be as simple as raising a target unsupported error or
@@ -28,16 +28,16 @@ based on the `config` family of headers, sources, and symbols.
 
 ## Config Headers and Wrappers
 
-Great care is taken to keep configuration information separate from other
+Great care is taken to keep the impacts of configuration separate from other
 functionality within the library. There are two headers where information on
-the build environment is located: one for the information that describes
-features and other variables that affect functionality, and another for factors
-that only affect internal code.
+the build is located: one for the information that describes features and other
+variables that affect functionality, and another for factors that only affect
+internal code.
 
 The `stumpless/config.h` header is installed along with the library, and can
-be referenced from any code that uses the library. For example, the version of
-the library is found in this header, `STUMPLESS_VERSION` for a string literal
-and `STUMPLESS_MAJOR_VERSION`, `STUMPLESS_MINOR_VERSION`, and
+be referenced from code that includes it or `stumpless.h`. For example, the
+version of stumpless is found in this header, `STUMPLESS_VERSION` for a string
+literal and `STUMPLESS_MAJOR_VERSION`, `STUMPLESS_MINOR_VERSION`, and
 `STUMPLESS_PATCH_VERSION` with integer values for each portion. Whether or not
 certain target types are support is also available, for example if the
 `STUMPLESS_SOCKET_TARGETS_SUPPORTED` symbol is defined, then Unix sockets are
@@ -50,8 +50,8 @@ code decisions. For example, the public header will not indicate whether a
 particular header was available during the system build. For this type of
 information there is a second configuration file, `private/config.h`, which
 gives details about headers and symbols that are available in the build
-environment. For example, the `HAVE_WINSOCK2_H` symbol is defined when the
-build system has `winsock2.h` available on it.
+environment. One such case is the `HAVE_WINSOCK2_H` symbol, which is defined
+when the build system has `winsock2.h` available.
 
 These two headers can be used whenever this information is needed in the source
 code of Stumpless itself. But, to adhere to the first principle outlined above,
@@ -101,11 +101,11 @@ find a way to accomplish what it needs to if there is a possibility. However,
 in some environments the necessary capabilities are simply missing, and the
 library must fail in the most friendly way possible.
 
-In these scenarios, the `fallback` family of config functions should be used.
+In these scenarios, the `fallback` family of config functions comes into play.
 These should be defined whenever there is a possibility that some configuration
-option is not available. This keeps configuration-specific behavior in easy to
-find locations instead of requiring the platform independent library cod to
-implement its own fallback code.
+option is not available, but stumpless should still operate. This keeps
+configuration-specific behavior in easy to find locations instead of requiring
+the platform independent library code to implement its own fallback code.
 
 A good example of this convention can be found in the call to get the memory
 page size of the system, which is used to make the slab caches used for some of
@@ -126,10 +126,10 @@ header as described above, like this:
 ```
 
 Most systems will have either `unistd.h` or `windows.h` available, so the
-fallback function will not be needed. However it is possible that neither is
-available, as has been seen on some Cygwin builds (see Github issue
-[#60](https://github.com/goatshriek/stumpless/issues/60) for more info). For
-cases like these, the fallback function is used, which has a simple and
+fallback function will not be needed most of the time. However it is possible
+that neither is available, as has been seen on some Cygwin builds (see Github
+issue [#60](https://github.com/goatshriek/stumpless/issues/60) for more info).
+For cases like these, the fallback function is used, which has a simple and
 configuration-independent implementation:
 
 ```c
@@ -142,9 +142,10 @@ fallback_getpagesize( void ) {
 
 Fallback functions must be completely independent of any configuration-based
 assumptions, and should make sense in the context they intend to be used. This
-example uses a page size of 4 KiB, a common page size.
+example uses a fallback memory page size of 4 KiB, a common size and reasonable
+guess.
 
-Fallback functions can throw errors if there is no natural "default" behavior,
-but this should only be done in cases where the other configuration options are
-also able to raise errors. Extra error handling should not be introduced simply
-for the sake of avoiding extra work in the fallback option.
+Fallback functions are free to rais errors if there is no natural "default"
+behavior, but this should only be done in cases where the other configuration
+options might also raise errors. Extra error handling should not be introduced
+solely for the sake of avoiding extra work in the fallback option.
