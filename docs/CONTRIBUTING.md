@@ -77,6 +77,17 @@ your development environment has all of the necessary tools. More specifically,
 make sure that you are able to run the tests and development tools before you
 make extensive changes, so that you can test iteratively as you go.
 
+A detailed tutorial on the traditional git flow style of development is beyond
+the scope of the project documentation, but the following guides serve as good
+starting material:
+ * [GitHub Guides](https://guides.github.com/introduction/flow/)
+ * [Creating a Pull Request from a Fork](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork)
+
+To recap, your basic steps will be to fork the repository, create a new branch
+based on the latest version (or perhaps the master branch if you are special as
+described above), and when you are finished adding commits to it create a pull
+request back to this repository.
+
 And thanks for giving back to the community!
 
 Stumpless Team
