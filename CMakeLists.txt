@@ -8,6 +8,10 @@ option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
+set(FALLBACK_PAGESIZE 4096
+  CACHE STRING "the memory page size to use if it cannot be detected at runtime"
+)
+
 find_package(Threads REQUIRED)
 
 
@@ -117,8 +121,6 @@ endif()
 if(HAVE_UNISTD_SYSCONF AND HAVE_UNISTD_SC_PAGESIZE)
   set(SUPPORT_UNISTD_SYSCONF_GETPAGESIZE TRUE)
   list(APPEND STUMPLESS_SOURCES src/config/support_unistd_sysconf_getpagesize.c)
-  # need the fallback getpagesize to handle the error scenario
-  set(NEED_FALLBACK TRUE)
 elseif(HAVE_UNISTD_GETPAGESIZE)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
 elseif(NOT HAVE_WINDOWS_H)

@@ -17,8 +17,8 @@
  */
 
 #include <stddef.h>
+#include <stumpless/config.h>
 #include <unistd.h>
-#include "private/config/fallback.h"
 #include "private/config/support_unistd_sysconf_getpagesize.h"
 
 size_t
@@ -28,7 +28,7 @@ unistd_sysconf_getpagesize( void ) {
   result = sysconf( _SC_PAGESIZE );
 
   if( result < 0 ){
-    return fallback_getpagesize(  );
+    return STUMPLESS_FALLBACK_PAGESIZE;
   } else {
     return ( size_t ) result;
   }

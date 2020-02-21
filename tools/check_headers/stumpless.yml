@@ -182,6 +182,7 @@
 "STUMPLESS_DEFAULT_TRANSPORT_PORT": "stumpless/target/network.h"
 "STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE": "stumpless/target/network.h"
 "stumpless_error_id_t": "stumpless/error.h"
+"STUMPLESS_FALLBACK_PAGESIZE": "stumpless/config.h"
 "STUMPLESS_FILE_OPEN_FAILURE": "stumpless/error.h"
 "STUMPLESS_FILE_TARGET": "stumpless/target.h"
 "STUMPLESS_FILE_WRITE_FAILURE": "stumpless/error.h"

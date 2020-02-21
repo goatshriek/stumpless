@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <stumpless/config.h>
 #include "private/config/fallback.h"
 
 int
@@ -32,7 +33,7 @@ fallback_gethostname( char *buffer, size_t namelen ) {
 
 size_t
 fallback_getpagesize( void ) {
-  return 4096;
+  return STUMPLESS_FALLBACK_PAGESIZE;
 }
 
 int
