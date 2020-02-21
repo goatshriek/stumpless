@@ -196,7 +196,10 @@
 
 
 /* definition of config_getpagesize */
-#  ifdef HAVE_UNISTD_GETPAGESIZE
+#  ifdef SUPPORT_UNISTD_SYSCONF_GETPAGESIZE
+#    include "private/config/support_unistd_sysconf_getpagesize.h"
+#    define config_getpagesize unistd_sysconf_getpagesize
+#  elif HAVE_UNISTD_GETPAGESIZE
 #    include "private/config/have_unistd_getpagesize.h"
 #    define config_getpagesize unistd_getpagesize
 #  elif HAVE_WINDOWS_H

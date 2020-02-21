@@ -39,6 +39,8 @@ check_symbol_exists(sprintf_s stdio.h HAVE_SPRINTF_S)
 check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 check_symbol_exists(gethostname unistd.h HAVE_UNISTD_GETHOSTNAME)
 check_symbol_exists(getpagesize unistd.h HAVE_UNISTD_GETPAGESIZE)
+check_symbol_exists(_SC_PAGESIZE unistd.h HAVE_UNISTD_SC_PAGESIZE)
+check_symbol_exists(sysconf unistd.h HAVE_UNISTD_SYSCONF)
 check_symbol_exists(wcstombs_s windows.h HAVE_WCSTOMBS_S)
 
 if(EXISTS "/var/run/syslog")
@@ -78,14 +80,6 @@ if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
 
-if(HAVE_UNISTD_GETHOSTNAME)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_gethostname.c)
-endif()
-
-if(HAVE_UNISTD_GETPAGESIZE)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
-endif()
-
 if(HAVE_VSNPRINTF_S)
   list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
 else()
@@ -113,7 +107,31 @@ if(HAVE_WINDOWS_H AND HAVE_SPRINTF_S)
   list(APPEND STUMPLESS_SOURCES src/config/support_windows_get_now.c)
 endif()
 
-if(NOT HAVE_UNISTD_H AND (NOT HAVE_WINDOWS_H OR NOT HAVE_WINSOCK2_H))
+if(HAVE_UNISTD_GETHOSTNAME)
+  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_gethostname.c)
+elseif(NOT HAVE_WINSOCK2_H)
+  # need the fallback gethostname definition in this case
+  set(NEED_FALLBACK TRUE)
+endif()
+
+if(HAVE_UNISTD_SYSCONF AND HAVE_UNISTD_SC_PAGESIZE)
+  set(SUPPORT_UNISTD_SYSCONF_GETPAGESIZE TRUE)
+  list(APPEND STUMPLESS_SOURCES src/config/support_unistd_sysconf_getpagesize.c)
+  # need the fallback getpagesize to handle the error scenario
+  set(NEED_FALLBACK TRUE)
+elseif(HAVE_UNISTD_GETPAGESIZE)
+  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
+elseif(NOT HAVE_WINDOWS_H)
+  # need the fallback getpagesize definition in this case
+  set(NEED_FALLBACK TRUE)
+endif()
+
+if(NOT HAVE_UNISTD_H AND NOT HAVE_WINDOWS_H)
+  # need the fallback getpid definition in this case
+  set(NEED_FALLBACK TRUE)
+endif()
+
+if(NEED_FALLBACK)
   list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
 endif()
 

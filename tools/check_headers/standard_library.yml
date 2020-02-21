@@ -68,6 +68,7 @@
 "regex_match": "regex"
 "RegisterEventSource": "windows.h"
 "ReportEvent": "windows.h"
+"_SC_PAGESIZE": "unistd.h"
 "sendto":
   - "sys/socket.h"
   - "winsock2.h"
@@ -95,6 +96,7 @@
 "struct tm": "time.h"
 "struct sockaddr": "sys/socket.h"
 "struct sockaddr_un": "sys/un.h"
+"sysconf": "unistd.h"
 "syslog": "syslog.h"
 "SYSTEMTIME": "windows.h"
 "time": "time.h"
