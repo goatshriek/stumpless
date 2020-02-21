@@ -15,7 +15,7 @@ set(local_benchmark_byproducts
 )
 
 ExternalProject_Add(benchmark
-  URL https://github.com/google/benchmark/archive/df7c7ee1d37dda0fb597586b4624515166a778d0.zip
+  URL https://github.com/google/benchmark/archive/c078337494086f9372a46b4ed31a3ae7b3f1a6a2.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
   CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_SH=${CMAKE_SH} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   INSTALL_COMMAND ""
