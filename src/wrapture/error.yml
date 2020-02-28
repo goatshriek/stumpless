@@ -16,6 +16,22 @@ templates:
             value:
               is-param: true
               name: "error-id"
+  - name: "int-return-error-check"
+    value:
+      error-check:
+        rules:
+          - left-expression: "return-value"
+            condition: "less-than"
+            right-expression: 0
+        error-action:
+          name: "throw-exception"
+          constructor:
+            name: "StumplessException::newStumplessException"
+            includes:
+              - "StumplessException.hpp"
+              - "stumpless/error.h"
+            params:
+              - value: "stumpless_get_error()"
 classes:
   - name: "StumplessException"
     namespace: "stumplesscpp"
