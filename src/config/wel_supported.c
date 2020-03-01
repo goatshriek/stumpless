@@ -309,7 +309,7 @@ set_entry_wel_type( struct stumpless_entry *entry, int severity ) {
       entry->wel_type = EVENTLOG_INFORMATION_TYPE;
       break;
 
-    case STUMPLESS_SEVERITY_WARN:
+    case STUMPLESS_SEVERITY_WARNING:
       entry->wel_type = EVENTLOG_WARNING_TYPE;
       break;
 

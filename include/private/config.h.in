@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,15 @@
 /* symbol checks */
 #cmakedefine HAVE_FOPEN_S 1
 #cmakedefine HAVE_GMTIME_R 1
+#cmakedefine HAVE_UNISTD_SC_PAGESIZE 1
+#cmakedefine HAVE_UNISTD_GETHOSTNAME 1
+#cmakedefine HAVE_UNISTD_GETPAGESIZE 1
+#cmakedefine HAVE_UNISTD_SYSCONF 1
 #cmakedefine HAVE_VSNPRINTF_S 1
+#cmakedefine HAVE_WCSTOMBS_S 1
 
-
-/* to fix the winsock2 ordering errors with windows.h */
-#  ifdef HAVE_WINSOCK2_H
-#    include <winsock2.h>
-#  endif
-
+/* function support checks */
+#cmakedefine SUPPORT_UNISTD_SYSCONF_GETPAGESIZE 1
+#cmakedefine SUPPORT_WINDOWS_GET_NOW 1
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */

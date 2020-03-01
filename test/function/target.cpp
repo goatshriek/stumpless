@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,6 +138,83 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
       EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
+  }
+
+  TEST( AddMessageTest, ReallocFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_realloc_result)(void *, size_t);
+    const char *long_message = "This message is longer than 128 characters, "
+                               "which is the starting buffer size in the "
+                               "format string function. If the call to realloc "
+                               "fails when it tries to increase the buffer "
+                               "size, then a memory allocation failure will be "
+                               "raised.";
+    int result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( set_realloc_result != NULL );
+
+    result = stumpless_add_message( target, long_message );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_realloc( realloc );
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( AddMessageTest, SecondMemoryFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_malloc_result)(size_t);
+    void *(*set_realloc_result)(void *, size_t);
+    int result;
+    struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+    result = stumpless_add_message( target, "test message" );
+    EXPECT_GE( result, 0 );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( set_malloc_result != NULL );
+
+    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
+    EXPECT_TRUE( set_realloc_result != NULL );
+
+    result = stumpless_add_message( target, "second test message" );
+    EXPECT_LT( result, 0 );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    stumpless_set_malloc( malloc );
+    stumpless_set_realloc( realloc );
+    stumpless_close_buffer_target( target );
   }
 
   TEST( CloseTarget, BadTargetType ) {
