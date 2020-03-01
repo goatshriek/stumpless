@@ -35,6 +35,9 @@
 "gethostname":
   - "unistd.h"
   - "winsock2.h"
+"getpagesize":
+  - "unistd.h"
+  - "windows.h"
 "getpid": "unistd.h"
 "gmtime": "time.h"
 "HANDLE": "windows.h"
@@ -65,6 +68,7 @@
 "regex_match": "regex"
 "RegisterEventSource": "windows.h"
 "ReportEvent": "windows.h"
+"_SC_PAGESIZE": "unistd.h"
 "sendto":
   - "sys/socket.h"
   - "winsock2.h"
@@ -78,6 +82,7 @@
 "SOCKET": "winsock2.h"
 "SOCKADDR_STORAGE": "winsock2.h"
 "socklen_t": "sys/socket.h"
+"sprintf_s": "stdio.h"
 "ssize_t": "sys/types.h"
 "std::cout": "iostream"
 "std::ifstream": "fstream"
@@ -91,6 +96,7 @@
 "struct tm": "time.h"
 "struct sockaddr": "sys/socket.h"
 "struct sockaddr_un": "sys/un.h"
+"sysconf": "unistd.h"
 "syslog": "syslog.h"
 "SYSTEMTIME": "windows.h"
 "time": "time.h"

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
- * 
+ * Copyright 2020 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +16,20 @@
  * limitations under the License.
  */
 
+#include <stddef.h>
+#include <stumpless/config.h>
 #include <unistd.h>
-#include "private/config/have_unistd.h"
+#include "private/config/support_unistd_sysconf_getpagesize.h"
 
-int
-unistd_getpid( void ) {
-  return ( int ) ( getpid(  ) );
+size_t
+unistd_sysconf_getpagesize( void ) {
+  long result;
+
+  result = sysconf( _SC_PAGESIZE );
+
+  if( result < 0 ){
+    return STUMPLESS_FALLBACK_PAGESIZE;
+  } else {
+    return ( size_t ) result;
+  }
 }

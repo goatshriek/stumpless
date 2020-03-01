@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018-2020 Joel E. Anderson
+* Copyright 2020 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 * limitations under the License.
 */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H
-#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_GETHOSTNAME_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_GETHOSTNAME_H
 
-int unistd_getpid( void );
+#  include <stddef.h>
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_H */
+int unistd_gethostname( char *buffer, size_t namelen );
+
+#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_UNISTD_GETHOSTNAME_H */

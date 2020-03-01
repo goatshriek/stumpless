@@ -2,7 +2,10 @@ language: c
 
 matrix:
   include:
-    - os: linux
+    - name: "windows"
+      os: windows
+    - name: "linux, gcc 6"
+      os: linux
       addons:
         apt:
           sources:
@@ -11,7 +14,9 @@ matrix:
             - g++-6
       env:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-    - os: linux
+    - name: "linux, gcc 7, amd64"
+      os: linux
+      arch: amd64
       dist: trusty
       addons:
         apt:
@@ -23,7 +28,68 @@ matrix:
           organization: "goatshriek-github"
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-    - os: linux
+    - name: "linux, gcc 7, ppc64le"
+      os: linux
+      arch: ppc64le
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, gcc 7, s390x"
+      os: linux
+      arch: s390x
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, gcc 7, arm64"
+      os: linux
+      arch: arm64
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, debug"
+      os: linux
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
+    - name: "linux, release"
+      os: linux
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Release"
+    - name: "linux, all options off"
+      os: linux
       dist: trusty
       addons:
         apt:
@@ -34,12 +100,30 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
         - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
-    - os: osx
+    - name: "linux, no unistd.h"
+      os: linux
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
+    - name: "os x, clang"
+      os: osx
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - name: "os x, all options off"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
 
 before_install:
-  - eval "${MATRIX_EVAL}"
+  - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
@@ -49,16 +133,21 @@ before_script:
     fi
   - mkdir build
   - cd build
-  - cmake -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" -DCOVERAGE=ON ${BUILD_ARGS} ..
+  - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
+      source ../tools/travis-ci/windows_before_script.sh;
+    else
+      source ../tools/travis-ci/linux_before_script.sh;
+    fi
 
 script:
   - ../tools/check_headers/check_headers.rb ../include/**/*.h ../include/**/*.hpp
   - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
   - ../tools/check_headers/check_headers.rb ../test/**.cpp
-  - build-wrapper-linux-x86-64 --out-dir ../bw-output make all || make all
-  - make CTEST_OUTPUT_ON_FAILURE=1 check
-  - sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 check
-  - make examples
+  - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
+      source ../tools/travis-ci/windows_script.sh;
+    else
+      source ../tools/travis-ci/linux_script.sh;
+    fi
 
 after_success:
   - cd ..

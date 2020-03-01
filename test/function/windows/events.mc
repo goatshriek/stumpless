@@ -1,5 +1,3 @@
-MessageIdTypedef=DWORD
-
 SeverityNames=(
   Success=0x0:CUSTOM_SEVERITY_SUCCESS
   Informational=0x1:CUSTOM_SEVERITY_INFORMATIONAL

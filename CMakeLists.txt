@@ -8,6 +8,10 @@ option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
+set(FALLBACK_PAGESIZE 4096
+  CACHE STRING "the memory page size to use if it cannot be detected at runtime"
+)
+
 find_package(Threads REQUIRED)
 
 
@@ -18,6 +22,7 @@ include(ExternalProject)
 
 
 # load utilities
+include(tools/cmake/google_libs.cmake) # needs to be before benchmark and gtest
 include(tools/cmake/benchmark.cmake)
 include(tools/cmake/example.cmake)
 include(tools/cmake/gtest.cmake)
@@ -34,7 +39,13 @@ check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
 check_symbol_exists(fopen_s stdio.h HAVE_FOPEN_S)
 check_symbol_exists(gmtime_r time.h HAVE_GMTIME_R)
+check_symbol_exists(sprintf_s stdio.h HAVE_SPRINTF_S)
 check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
+check_symbol_exists(gethostname unistd.h HAVE_UNISTD_GETHOSTNAME)
+check_symbol_exists(getpagesize unistd.h HAVE_UNISTD_GETPAGESIZE)
+check_symbol_exists(_SC_PAGESIZE unistd.h HAVE_UNISTD_SC_PAGESIZE)
+check_symbol_exists(sysconf unistd.h HAVE_UNISTD_SYSCONF)
+check_symbol_exists(wcstombs_s windows.h HAVE_WCSTOMBS_S)
 
 if(EXISTS "/var/run/syslog")
   set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
@@ -69,10 +80,6 @@ if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
 endif(HAVE_GMTIME_R)
 
-if(HAVE_SYS_SOCKET_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
-endif(HAVE_SYS_SOCKET_H)
-
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
@@ -87,14 +94,48 @@ if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
 endif(HAVE_WINDOWS_H)
 
-if(HAVE_WINSOCK2_H)
+if(HAVE_SYS_SOCKET_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
+  set(HAVE_WINSOCK2_H FALSE)
+elseif(HAVE_WINSOCK2_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
   find_library(WINSOCK2 NAMES Ws2_32)
-endif(HAVE_WINSOCK2_H)
+endif()
 
 if(WIN32)
   list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
 endif(WIN32)
+
+if(HAVE_WINDOWS_H AND HAVE_SPRINTF_S)
+  set(SUPPORT_WINDOWS_GET_NOW TRUE)
+  list(APPEND STUMPLESS_SOURCES src/config/support_windows_get_now.c)
+endif()
+
+if(HAVE_UNISTD_GETHOSTNAME)
+  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_gethostname.c)
+elseif(NOT HAVE_WINSOCK2_H)
+  # need the fallback gethostname definition in this case
+  set(NEED_FALLBACK TRUE)
+endif()
+
+if(HAVE_UNISTD_SYSCONF AND HAVE_UNISTD_SC_PAGESIZE)
+  set(SUPPORT_UNISTD_SYSCONF_GETPAGESIZE TRUE)
+  list(APPEND STUMPLESS_SOURCES src/config/support_unistd_sysconf_getpagesize.c)
+elseif(HAVE_UNISTD_GETPAGESIZE)
+  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
+elseif(NOT HAVE_WINDOWS_H)
+  # need the fallback getpagesize definition in this case
+  set(NEED_FALLBACK TRUE)
+endif()
+
+if(NOT HAVE_UNISTD_H AND NOT HAVE_WINDOWS_H)
+  # need the fallback getpid definition in this case
+  set(NEED_FALLBACK TRUE)
+endif()
+
+if(NEED_FALLBACK)
+  list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
+endif()
 
 
 # network target support
@@ -295,24 +336,35 @@ else()
     DESTINATION "include/stumpless/target"
   )
 
+  find_program(MESSAGE_COMPILER_EXE
+    NAMES
+      mc
+      windmc
+  )
+  if(MESSAGE_COMPILER_EXE STREQUAL "MESSAGE_COMPILER_EXE-NOTFOUND")
+    set(MESSAGE_COMPILER_EXE mc)
+  endif()
+
+  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
   ADD_CUSTOM_COMMAND(
      OUTPUT
-      "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
-      "${PROJECT_BINARY_DIR}/events.rc"
-     COMMAND mc -c
-        -U "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
-        -r "${PROJECT_BINARY_DIR}"
-        -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
+       "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
+       "${PROJECT_BINARY_DIR}/events.rc"
+     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+       -r "${PROJECT_BINARY_DIR}"
+       -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
+       "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
      DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
-     COMMENT "Generating test event resources"
+     COMMENT "Generating test events"
   )
 
   add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
   set_target_properties(events PROPERTIES LINKER_LANGUAGE "CXX" )
-  set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
   set_target_properties(events PROPERTIES VERSION ${PROJECT_VERSION})
   set_target_properties(events PROPERTIES SOVERSION 0)
-  set_target_properties(events PROPERTIES PUBLIC_HEADER "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h")
+  if(MSVC)
+    set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
+  endif()
 
   add_function_test(wel
     SOURCES
@@ -320,6 +372,9 @@ else()
       ${PROJECT_BINARY_DIR}/events.rc
   )
   add_dependencies(function-test-wel events)
+  target_compile_definitions(function-test-wel
+    PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
+  )
 
   add_function_test(wel_supported
     SOURCES
@@ -327,14 +382,16 @@ else()
       ${PROJECT_BINARY_DIR}/events.rc
   )
 
+  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
+  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
   ADD_CUSTOM_COMMAND(
      OUTPUT
-      "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
-      "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
-     COMMAND mc -c
-        -U "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
-        -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
-        -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
+       "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
+       "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
+     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+       -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
+       -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
+       "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
      DEPENDS "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
      COMMENT "Generating wel example event resources"
   )
@@ -350,6 +407,10 @@ endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
 add_library(stumpless SHARED ${STUMPLESS_SOURCES})
 set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
+if(MINGW)
+  target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
+  set_target_properties(stumpless PROPERTIES PREFIX "")
+endif()
 
 if(HAVE_WINSOCK2_H)
   target_link_libraries(stumpless PRIVATE Ws2_32)
@@ -370,6 +431,7 @@ target_include_directories(stumpless
 # generating configuration files
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${PROJECT_BINARY_DIR}/include/private/config.h)
+
 
 
 # installation of the library

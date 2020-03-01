@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-#include "private/config/have_winsock2.h"
+/* this must be included first to avoid errors */
+#include <winsock2.h>
 
 #include <stddef.h>
-#include <winsock2.h>
 #include <ws2tcpip.h>
+#include "private/config/have_winsock2.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"

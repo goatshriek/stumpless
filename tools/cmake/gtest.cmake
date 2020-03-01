@@ -1,29 +1,38 @@
-set(my_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
+set(local_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
+set(local_gtest_static_dir "${local_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}")
 
-if(WIN32)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtestd.lib")
-    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_maind.lib")
-    set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmockd.lib")
-  else()
-    set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest.lib")
-    set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gtest_main.lib")
-    set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}/gmock.lib")
-  endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(CYGWIN OR MINGW OR WIN32)
+  set(local_gtest_shared_dir "${local_gtest_binary_dir}/bin/${CMAKE_CFG_INTDIR}")
 else()
-  set(my_gtest_imported_location "${my_gtest_binary_dir}/lib/libgtest.a")
-  set(my_gtest_main_imported_location "${my_gtest_binary_dir}/lib/libgtest_main.a")
-  set(my_gmock_imported_location "${my_gtest_binary_dir}/lib/libgmock.a")
-endif(WIN32)
+  set(local_gtest_shared_dir "${local_gtest_static_dir}")
+endif()
+
+set(local_gtest_shared "${local_gtest_shared_dir}/${google_libs_shared_prefix}gtest${google_libs_debug_suffix}.${google_libs_shared_suffix}")
+set(local_gtest_main_shared "${local_gtest_shared_dir}/${google_libs_shared_prefix}gtest_main${google_libs_debug_suffix}.${google_libs_shared_suffix}")
+set(local_gmock_shared "${local_gtest_shared_dir}/${google_libs_shared_prefix}gmock${google_libs_debug_suffix}.${google_libs_shared_suffix}")
+
+set(local_gtest_static "${local_gtest_static_dir}/${google_libs_static_prefix}gtest${google_libs_debug_suffix}.${google_libs_static_suffix}")
+set(local_gtest_main_static "${local_gtest_static_dir}/${google_libs_static_prefix}gtest_main${google_libs_debug_suffix}.${google_libs_static_suffix}")
+set(local_gmock_static "${local_gtest_static_dir}/${google_libs_static_prefix}gmock${google_libs_debug_suffix}.${google_libs_static_suffix}")
+
+set(local_gtest_byproducts
+  ${local_gtest_shared}
+  ${local_gtest_main_shared}
+  ${local_gmock_shared}
+  ${local_gtest_static}
+  ${local_gtest_main_static}
+  ${local_mock_static}
+)
 
 ExternalProject_Add(gtest
-  URL https://github.com/abseil/googletest/archive/8b6d3f9c4a774bef3081195d422993323b6bb2e0.zip
+  URL https://github.com/google/googletest/archive/6f5fd0d7199b9a19faa9f499ecc266e6ae0329e7.zip
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_SH=${CMAKE_SH} -DBUILD_SHARED_LIBS=ON
   UPDATE_COMMAND ""
-  INSTALL_COMMAND ""
-  BINARY_DIR "${my_gtest_binary_dir}"
-  BUILD_BYPRODUCTS "${my_gtest_imported_location}" "${my_gtest_main_imported_location}" "${my_gmock_imported_location}"
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${local_gtest_shared} ${CMAKE_CURRENT_BINARY_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${local_gtest_main_shared} ${CMAKE_CURRENT_BINARY_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${local_gmock_shared} ${CMAKE_CURRENT_BINARY_DIR}
+  BUILD_BYPRODUCTS ${local_gtest_byproducts}
 )
 
 set_target_properties(gtest
@@ -31,30 +40,30 @@ set_target_properties(gtest
   EXCLUDE_FROM_ALL TRUE
 )
 
-add_library(libgtest IMPORTED STATIC GLOBAL)
+add_library(libgtest SHARED IMPORTED GLOBAL)
 add_dependencies(libgtest gtest)
-set(gtest_imported_location "${my_gtest_imported_location}")
 
-add_library(libgtestmain IMPORTED STATIC GLOBAL)
+add_library(libgtestmain SHARED IMPORTED GLOBAL)
 add_dependencies(libgtestmain gtest)
-set(gtest_main_imported_location "${my_gtest_main_imported_location}")
 
-add_library(libgmock IMPORTED STATIC GLOBAL)
+add_library(libgmock SHARED IMPORTED GLOBAL)
 add_dependencies(libgmock gtest)
-set(gmock_imported_location "${my_gmock_imported_location}")
 
 set_target_properties(libgtest PROPERTIES
-  IMPORTED_LOCATION "${gtest_imported_location}"
+  IMPORTED_LOCATION "${local_gtest_shared}"
+  IMPORTED_IMPLIB "${local_gtest_static}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgtestmain PROPERTIES
-  IMPORTED_LOCATION "${gtest_main_imported_location}"
+  IMPORTED_LOCATION "${local_gtest_main_shared}"
+  IMPORTED_IMPLIB "${local_gtest_main_static}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 
 set_target_properties(libgmock PROPERTIES
-  IMPORTED_LOCATION "${gmock_imported_location}"
+  IMPORTED_LOCATION "${local_gmock_shared}"
+  IMPORTED_IMPLIB "${local_gmock_static}"
   IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 )
 

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
- * 
+ * Copyright 2020 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +16,27 @@
  * limitations under the License.
  */
 
-#include <unistd.h>
-#include "private/config/have_unistd.h"
+#include <stddef.h>
+#include <stumpless/config.h>
+#include "private/config/fallback.h"
 
 int
-unistd_getpid( void ) {
-  return ( int ) ( getpid(  ) );
+fallback_gethostname( char *buffer, size_t namelen ) {
+  if( namelen < 2 ) {
+    return -1;
+  } else {
+    buffer[0] = '-';
+    buffer[1] = '\0';
+    return 0;
+  }
+}
+
+size_t
+fallback_getpagesize( void ) {
+  return STUMPLESS_FALLBACK_PAGESIZE;
+}
+
+int
+fallback_getpid( void ) {
+  return 0;
 }

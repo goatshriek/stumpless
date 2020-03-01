@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ namespace {
   TEST( AddMessageLeakTest, TypicalUse ) {
     struct stumpless_target *target;
     char buffer[TEST_BUFFER_LENGTH];
-    size_t i;
+    int i;
     int add_result;
 
     INIT_MEMORY_COUNTER( add_message_leak );
@@ -46,7 +46,7 @@ namespace {
     ASSERT_TRUE( target != NULL );
 
     for( i = 0; i < 1000; i++ ) {
-      add_result = stumpless_add_message( target, "temp message %zd", i );
+      add_result = stumpless_add_message( target, "temp message %d", i );
       ASSERT_GE( add_result, 0 );
     }
 
