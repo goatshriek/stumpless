@@ -591,7 +591,7 @@ set(WRAPTURE_SPECS
 
 
 # c++ support
-if(BUILD_CPP)
+if(ENABLE_CPP)
   if(HAVE_WRAPTURE)
     include(tools/cmake/cpp_test.cmake)
 
@@ -646,7 +646,7 @@ if(BUILD_CPP)
   else()
     message("C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
   endif(HAVE_WRAPTURE)
-endif(BUILD_CPP)
+endif()
 
 
 # python support
