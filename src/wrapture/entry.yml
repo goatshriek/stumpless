@@ -58,8 +58,13 @@ classes:
           - name: "equivalent-struct-pointer"
     functions:
       - name: "SetAppName"
+        doc: "Sets the app name for an entry."
         params:
           - name: "app_name"
+            doc: |
+              The new app_name for the entry as a NULL-terminated string. This
+              will be copied in to the entry, and therefore may be modified or
+              freed after this call without affecting the entry.
             type: "const char *"
         wrapped-function:
           name: "stumpless_set_entry_app_name"
@@ -69,8 +74,10 @@ classes:
             - name: "equivalent-struct-pointer"
             - name: "app_name"
       - name: "AddElement"
+        doc: "Adds an element to an entry."
         params:
           - name: "element"
+            doc: "The element to add."
             type: "Element"
             includes: "Element.hpp"
         wrapped-function:
