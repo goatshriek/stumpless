@@ -13,7 +13,20 @@ set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
 
+
+# looking for packages and programs
 find_package(Threads REQUIRED)
+
+# documentation and doxygen setup
+set(PROJECT_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
+find_program(HAVE_DOXYGEN NAMES doxygen)
+if(HAVE_DOXYGEN)
+  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile)
+
+  add_custom_target(docs
+    COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
+  )
+endif(HAVE_DOXYGEN)
 
 
 # load modules
@@ -593,56 +606,7 @@ set(WRAPTURE_SPECS
 # c++ support
 if(ENABLE_CPP)
   if(HAVE_WRAPTURE)
-    include(tools/cmake/cpp_test.cmake)
-
-    set(CPP_LIB_BUILD_DIR ${CMAKE_BINARY_DIR}/cpp-lib)
-    set(GENERATED_CPP_LIB_SOURCES
-      ${CPP_LIB_BUILD_DIR}/AddressFailure.cpp
-      ${CPP_LIB_BUILD_DIR}/Element.cpp
-      ${CPP_LIB_BUILD_DIR}/Entry.cpp
-      ${CPP_LIB_BUILD_DIR}/FileTarget.cpp
-      ${CPP_LIB_BUILD_DIR}/Param.cpp
-      ${CPP_LIB_BUILD_DIR}/StumplessException.cpp
-      ${CPP_LIB_BUILD_DIR}/Version.cpp
-    )
-
-    file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
-
-    add_custom_command(
-      OUTPUT ${GENERATED_CPP_LIB_SOURCES}
-      COMMAND wrapture ${WRAPTURE_SPECS}
-      WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
-    )
-
-    add_library(stumplesscpp SHARED
-      EXCLUDE_FROM_ALL
-      ${GENERATED_CPP_LIB_SOURCES}
-    )
-
-    target_link_libraries(stumplesscpp
-      optimized stumpless
-    )
-
-    target_include_directories(stumplesscpp
-      PRIVATE
-      ${PROJECT_SOURCE_DIR}/include
-      ${CMAKE_BINARY_DIR}/include
-      ${CPP_LIB_BUILD_DIR}
-    )
-
-    add_cpp_test(file
-      SOURCES
-        test/function/cpp/target/file.cpp
-        $<TARGET_OBJECTS:rfc5424_checker>
-    )
-
-    add_cpp_test(version
-      SOURCES test/function/cpp/version.cpp
-    )
-
-    add_custom_target(check-cpp
-      DEPENDS ${STUMPLESS_CPP_TEST_RUNNERS}
-    )
+    include(tools/cmake/cpp.cmake)
   else()
     message("C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
   endif(HAVE_WRAPTURE)
@@ -694,14 +658,3 @@ if(BUILD_PYTHON)
 
 endif()
 
-
-# documentation generation
-find_program(HAVE_DOXYGEN NAMES doxygen)
-
-if(HAVE_DOXYGEN)
-  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile)
-
-  add_custom_target(docs
-    COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
-  )
-endif(HAVE_DOXYGEN)
