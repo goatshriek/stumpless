@@ -34,6 +34,7 @@ templates:
               - value: "stumpless_get_error()"
 classes:
   - name: "StumplessException"
+    doc: "A general problem has been encountered by the library."
     namespace: "stumplesscpp"
     parent:
       name: "std::exception"
@@ -43,8 +44,28 @@ classes:
       name: "stumpless_error"
       includes: "stumpless/error.h"
   - name: "AddressFailure"
+    doc: |
+      A provided network address was not valid.
+
+      This might be formatting problem, or it might mean that a DNS lookup
+      failed.
     use-template:
       name: "error-class"
       params:
         - name: "error-id"
           value: "STUMPLESS_ADDRESS_FAILURE"
+  - name: "ArgumentEmpty"
+    doc: "A required function parameter was NULL or empty."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_ARGUMENT_EMPTY"
+  - name: "ArgumentTooBig"
+    doc: >
+      A provided argument was too big, for example to fit into a buffer target.
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_ARGUMENT_TOO_BIG"
