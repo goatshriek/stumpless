@@ -66,6 +66,9 @@ classes:
               will be copied in to the entry, and therefore may be modified or
               freed after this call without affecting the entry.
             type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "Entry"
         wrapped-function:
           name: "stumpless_set_entry_app_name"
           includes:
@@ -80,6 +83,9 @@ classes:
             doc: "The element to add."
             type: "Element"
             includes: "Element.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "Entry"
         wrapped-function:
           name: "stumpless_add_element"
           includes:
