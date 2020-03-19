@@ -1,30 +1,55 @@
 version: "0.3.0"
 classes:
   - name: "Entry"
+    doc: |
+      A log entry.
+
+      Entries are the basic element of logging in Stumpless.
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_entry"
       includes:
         - "stumpless/entry.h"
     constructors:
-      - wrapped-function:
+      - doc: "Creates an Entry with the given properties."
+        wrapped-function:
           name: "stumpless_new_entry"
           includes:
             - "stumpless/entry.h"
           params:
             - name: "facility"
+              doc: |
+                The facility code of the entry. This should be a
+                STUMPLESS_FACILITY value.
               type: "int"
             - name: "severity"
+              doc: |
+                The severity code of the entry. This should be a
+                STUMPLESS_SEVERITY value.
               type: "int"
             - name: "app_name"
+              doc: |
+                The app_name of the entry. If this is NULL, then it will be
+                blank in the entry (a single '-' character).
               type: "const char *"
             - name: "msgid"
+              doc: |
+                The msgid of the entry. If this is NULL, then it will be
+                blank in the entry (a single '-' character).
               type: "const char *"
             - name: "message"
+              doc: |
+                The message in the entry. This message may contain any format
+                specifiers valid in printf. If this is NULL, then it will be
+                blank in the entry (no characters). This also means that
+                characters such as % need to be escaped as they would be in
+                printf.
               type: "const char *"
           return:
             type: "equivalent-struct-pointer"
     destructor:
+      doc: |
+        Destroys the Entry and frees any memory allocated for it.
       wrapped-function:
         name: "stumpless_destroy_entry"
         includes:
