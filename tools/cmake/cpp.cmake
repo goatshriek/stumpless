@@ -63,6 +63,7 @@ add_custom_target(check-cpp
 #documentation generation
 if(HAVE_DOXYGEN)
   file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR}/cpp)
+  file(MAKE_DIRECTORY ${PROJECT_DOCS_DIR})
 
   set(CPP_DOCS_DIR ${PROJECT_DOCS_DIR}/cpp)
 
