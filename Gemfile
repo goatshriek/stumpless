@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'wrapture', '~>0.3'
+gem 'wrapture', '~>0.4'

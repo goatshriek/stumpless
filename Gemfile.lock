@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    wrapture (0.4.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  wrapture (~> 0.4)
+
+BUNDLED WITH
+   2.1.4
