@@ -288,6 +288,16 @@ struct stumpless_entry {
  * and assignments, as well as a clear memory management strategy.
  */
 
+/**
+ * Adds an element to an entry.
+ *
+ * @param entry The entry to add the element to.
+ *
+ * @param element The element to add to the entry.
+ *
+ * @return The created entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element );
@@ -299,6 +309,11 @@ stumpless_add_param( struct stumpless_element *element,
 void
 stumpless_destroy_element( struct stumpless_element *element );
 
+/**
+ * Destroys an entry and all elements it contains.
+ *
+ * @param entry The entry to destroy.
+ */
 void
 stumpless_destroy_entry( struct stumpless_entry *entry );
 
@@ -347,6 +362,18 @@ struct stumpless_param *
 stumpless_new_param( const char *name,
                      const char *value );
 
+/**
+ * Sets the app name for an entry.
+ *
+ * @param entry The entry for which the app name will be set.
+ *
+ * @param app_name A NULL-terminated string holding the new app_name for the
+ * entry. This will be copied in to the entry, and therefore may be modified
+ * or freed after this call without affecting the entry.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name );
