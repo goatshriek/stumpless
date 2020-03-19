@@ -69,3 +69,122 @@ classes:
       params:
         - name: "error-id"
           value: "STUMPLESS_ARGUMENT_TOO_BIG"
+  - name: "FileOpenFailure"
+    doc: "Could not open a file."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_FILE_OPEN_FAILURE"
+  - name: "FileWriteFailure"
+    doc: "Could not write to a file."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_FILE_WRITE_FAILURE"
+  - name: "IndexOutOfBounds"
+    doc: "A provided index was not in a valid range."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_INDEX_OUT_OF_BOUNDS"
+  - name: "InvalidFacility"
+    doc: "A provided facility code did not conform to RFC 5424."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_INVALID_FACILITY"
+  - name: "InvalidId"
+    doc: "A target or entry ID was not valid."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_INVALID_ID"
+  - name: "MemoryAllocationFailure"
+    doc: "A memory allocation or reallocation failed."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_MEMORY_ALLOCATION_FAILURE"
+  - name: "NetworkProtocolUnsupported"
+    doc: "The given layer 3 protocol is not supported by this implementation."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED"
+  - name: "SocketBindFailure"
+    doc: "Could not bind to a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_BIND_FAILURE"
+  - name: "SocketConnectFailure"
+    doc: "Could not connect to a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_CONNECT_FAILURE"
+  - name: "SocketFailure"
+    doc: "Could not create a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_FAILURE"
+  - name: "SocketSendFailure"
+    doc: "Could not send to a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_SEND_FAILURE"
+  - name: "StreamWriteFailure"
+    doc: "Could not write to a stream."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_STREAM_WRITE_FAILURE"
+  - name: "TargetIncompatible"
+    doc: "The requested operation is not valid on the given target type."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_TARGET_INCOMPATIBLE"
+  - name: "TargetUnsupported"
+    doc: "The target type provided is unsupported by this implementation."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_TARGET_UNSUPPORTED"
+  - name: "TransportProtocolUnsupported"
+    doc: "The given layer 4 protocol is not supported by this implementation."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED"
+  - name: "WindowsEventLogCloseFailure"
+    doc: "Could not close the Windows Event Log."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE"
+  - name: "WindowsEventLogOpenFailure"
+    doc: "Could not open the Windows Event Log."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE"
