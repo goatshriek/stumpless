@@ -1,6 +1,9 @@
-version: "0.3.0"
+version: "0.4.0"
 classes:
   - name: "FileTarget"
+    doc: >
+      A target allowing logs to be written to a given file. Files are created
+      as needed, and logs are appended to any existing contents.
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_target"
@@ -26,9 +29,11 @@ classes:
           - name: "equivalent-struct-pointer"
     functions:
       - name: "Log"
+        doc: "Writes a log entry to this target."
         params:
           - name: "entry"
             type: "Entry"
+            doc: "the entry to write"
             includes: "Entry.hpp"
         wrapped-function:
           name: "stumpless_add_entry"
