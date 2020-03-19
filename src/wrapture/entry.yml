@@ -67,8 +67,8 @@ classes:
               freed after this call without affecting the entry.
             type: "const char *"
         return:
-          doc: "The modified Entry."
-          type: "Entry"
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
         wrapped-function:
           name: "stumpless_set_entry_app_name"
           includes:
@@ -84,8 +84,8 @@ classes:
             type: "Element"
             includes: "Element.hpp"
         return:
-          doc: "The modified Entry."
-          type: "Entry"
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
         wrapped-function:
           name: "stumpless_add_element"
           includes:
