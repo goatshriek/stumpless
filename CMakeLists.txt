@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 1.5.0)
 
-option(BUILD_CPP "include the c++ library" OFF)
+option(ENABLE_CPP "include the c++ library" OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
