@@ -1,4 +1,4 @@
-version: "0.3.0"
+version: "0.4.0"
 classes:
   - name: "Entry"
     doc: |
@@ -10,6 +10,7 @@ classes:
       name: "stumpless_entry"
       includes:
         - "stumpless/entry.h"
+    type: "pointer"
     constructors:
       - doc: "Creates an Entry with the given properties."
         wrapped-function:
@@ -74,8 +75,8 @@ classes:
           includes:
             - "stumpless/entry.h"
           params:
-            - name: "equivalent-struct-pointer"
-            - name: "app_name"
+            - value: "equivalent-struct-pointer"
+            - value: "app_name"
       - name: "AddElement"
         doc: "Adds an element to an entry."
         params:
@@ -91,6 +92,6 @@ classes:
           includes:
             - "stumpless/entry.h"
           params:
-            - name: "equivalent-struct-pointer"
-            - name: "element"
+            - value: "equivalent-struct-pointer"
+            - value: "element"
               type: "struct stumpless_element *"
