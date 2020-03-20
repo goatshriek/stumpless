@@ -99,7 +99,7 @@ classes:
         doc: "Adds an element to an entry."
         params:
           - name: "element"
-            doc: "The element to add."
+            doc: "A pointer to the element to add."
             type: "Element *"
             includes: "Element.hpp"
         return:
