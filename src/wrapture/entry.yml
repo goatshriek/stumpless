@@ -81,7 +81,7 @@ classes:
         params:
           - name: "element"
             doc: "The element to add."
-            type: "Element"
+            type: "Element&"
             includes: "Element.hpp"
         return:
           doc: "The modified Entry, to support method chaining."
