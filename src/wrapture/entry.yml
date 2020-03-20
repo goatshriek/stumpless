@@ -95,3 +95,21 @@ classes:
             - value: "equivalent-struct-pointer"
             - value: "element"
               type: "struct stumpless_element *"
+      - name: "AddElement"
+        doc: "Adds an element to an entry."
+        params:
+          - name: "element"
+            doc: "The element to add."
+            type: "Element *"
+            includes: "Element.hpp"
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_element"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element"
+              type: "struct stumpless_element *"
