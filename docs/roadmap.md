@@ -74,9 +74,28 @@ takes longer than expected.
    open, as they will attempt to bind to the same socket name and will fail as
    it already exists. For details on the progress of this bug, see
    [issue #54](https://github.com/goatshriek/stumpless/issues/54).
+ * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
+   The [Wrapture](https://github.com/goatshriek/wrapture) project is being
+   built to provide clean, readable, and explicit language binding functionality
+   from C to other target languages, specifically to support Stumpless. Once
+   Python is added as a target language, this will be utilized to create the
+   associated library bindings, replacing SWIG and removing the dependency. In
+   the future, other language bindings will be added using Wrapture as they are
+   added to the tool.
 
 ## Unallocated to a release
- * [ADD] **Python language bindings**
+ * [ADD] **Ruby language bindings**
+ * [ADD] **C# language bindings**
+ * [ADD] **TCL language bindings**
+ * [ADD] **Java language bindings**
+ * [ADD] **Powershell language bindings**
+ * [ADD] **Perl language bindings**
+ * [ADD] **journald logging target**
+ * [ADD] **Target chaining**
+   In some cases a log message needs to be sent to multiple destinations, such
+   as to a local file as well as a network server. Target chains will allow this
+   stream to be defined as a logging target, and a logging call only made to
+   this instead of manually logging to each target.
 
 ## A Note about Github issues and projects
 
