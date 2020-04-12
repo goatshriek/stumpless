@@ -14,7 +14,7 @@ classes:
     constructors:
       - doc: "Creates an Entry with the given properties."
         wrapped-function:
-          name: "stumpless_new_entry"
+          name: "vstumpless_new_entry"
           includes:
             - "stumpless/entry.h"
           params:
@@ -46,6 +46,11 @@ classes:
                 characters such as % need to be escaped as they would be in
                 printf.
               type: "const char *"
+            - name: "..."
+              doc: |
+                Substitutions for any format specifiers provided in message. The
+                number of substitutions provided must exactly match the number
+                of specifiers given.
           return:
             type: "equivalent-struct-pointer"
     destructor:
@@ -113,3 +118,31 @@ classes:
             - value: "equivalent-struct-pointer"
             - value: "element"
               type: "struct stumpless_element *"
+      - name: "SetMessage"
+        doc: "Sets the message of an Entry."
+        params:
+          - name: "message"
+            doc: |
+              The new message to set on the entry. The message may contain any
+              format specifiers valid in printf. If this is NULL, then it will
+              be blank in the entry (no characters). This also means that
+              characters such as % need to be escaped as they would be in
+              printf.
+            type: "const char *"
+          - name: "..."
+            doc: |
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "vstumpless_set_entry_message"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "message"
+              type: "const char *"
+            - value: "..."
