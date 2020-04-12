@@ -40,6 +40,40 @@ takes longer than expected.
    user experience to have a native, object-oriented interface to use. This
    would allow higher-level language features like operator overloading and
    runtime polymorphism to be used to create a cleaner API.
+ * [ADD] **Logging functions that can be compiled out**
+   A common logging idiom is to log at different verbosity levels, and use
+   different levels in different contexts, for example debug during development,
+   and then only informational in production workloads. This feature will add
+   function calls that will be removed when the code is compiled with specific
+   flags, allowing builds that do not need lower-level logs to stay fast and
+   efficient without requiring code changes or modification tools in the build
+   pipeline.
+
+## 2.0.0 (next major release)
+ * [ADD] **Thread safety for all library calls and structures**
+   This is a critical feature for a logging library that needs to be run in a
+   huge variety of contexts with minimal overhead work to implement it. Adding
+   this feature will likely change how structures are interacted with in the
+   library, as things like direct struct access will need to have a thread-safe
+   alternative. This implementation will be done as granularly as possible, and
+   will not use any static library-wide locks in order to avoid throughput
+   issues in the future.
+ * [FIX] **Current target is invalid after closure**
+   The current target is set to to the last opened target, or it can be manually
+   set by the user using the `stumpless_set_current_target` function. However,
+   if this target is closed the current target pointer is not changed, and will
+   still point to the invalid memory. See
+   [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
+   the progress of this bug.
+ * [FIX] **Socket targets may fail to bind to a local socket**
+   Socket targets can be opened with a local socket name provided, but this may
+   also be set to `NULL`, in which case a local socket is generated (see the
+   documentation of `stumpless_open_socket_target` for details). However, this
+   socket is always the same, which means that if a target is not properly
+   closed the local socket will remain. Successive targets will be unable to
+   open, as they will attempt to bind to the same socket name and will fail as
+   it already exists. For details on the progress of this bug, see
+   [issue #54](https://github.com/goatshriek/stumpless/issues/54).
 
 ## A Note about Github issues and projects
 
