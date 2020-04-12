@@ -75,6 +75,9 @@ takes longer than expected.
    it already exists. For details on the progress of this bug, see
    [issue #54](https://github.com/goatshriek/stumpless/issues/54).
 
+## Unallocated to a release
+ * [ADD] **Python language bindings**
+
 ## A Note about Github issues and projects
 
 A fair question to ask is why the roadmap is not being managed within the issue
