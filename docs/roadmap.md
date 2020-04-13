@@ -95,6 +95,7 @@ takes longer than expected.
  * [ADD] **AWS/S3 logging target**
  * [ADD] **Database logging target**
  * [ADD] **REST endpoint logging target**
+ * [CHANGE] **Make network logging non-blocking**
  * [ADD] **Target chaining**
    In some cases a log message needs to be sent to multiple destinations, such
    as to a local file as well as a network server. Target chains will allow this
