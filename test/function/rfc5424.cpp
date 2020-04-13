@@ -58,7 +58,7 @@ void TestRFC5424Compliance(const char *syslog_msg){
       EXPECT_LE(day, 30);
       break;
     case 2:
-      if(month % 4 == 0){
+      if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0){
         EXPECT_LE(day, 29);
       } else {
         EXPECT_LE(day, 28);

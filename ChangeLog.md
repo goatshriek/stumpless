@@ -5,10 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
- - Compile-time log level filtering.
- - Thread-safe operation.
- - Simpler socket functions (will break existing usage).
- - Non-blocking network logging (may change existing usage).
+For a detailed look at the project's future, including planned features and bug
+fixes, check out the
+[roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 ## [1.5.0] - 2020-03-19
 ### Added
