@@ -91,11 +91,17 @@ takes longer than expected.
  * [ADD] **Powershell language bindings**
  * [ADD] **Perl language bindings**
  * [ADD] **journald logging target**
+ * [ADD] **Function callback logging target**
  * [ADD] **Target chaining**
    In some cases a log message needs to be sent to multiple destinations, such
    as to a local file as well as a network server. Target chains will allow this
    stream to be defined as a logging target, and a logging call only made to
    this instead of manually logging to each target.
+ * [ADD] **Filters**
+   While message severity codes can be used to filter which log messages make
+   it through a target at runtime, this is limited and inflexible. Instead, a
+   generic filter structure that can filter on a wide variety of properties of
+   each log entry and even use custom functions to filter messages.
 
 ## A Note about Github issues and projects
 
