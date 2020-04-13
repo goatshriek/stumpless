@@ -92,6 +92,9 @@ takes longer than expected.
  * [ADD] **Perl language bindings**
  * [ADD] **journald logging target**
  * [ADD] **Function callback logging target**
+ * [ADD] **AWS/S3 logging target**
+ * [ADD] **Database logging target**
+ * [ADD] **REST endpoint logging target**
  * [ADD] **Target chaining**
    In some cases a log message needs to be sent to multiple destinations, such
    as to a local file as well as a network server. Target chains will allow this
