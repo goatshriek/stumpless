@@ -1,0 +1,12 @@
+enums:
+  - name: "TargetType"
+    doc: "types of targets"
+    namespace: "stumplesscpp"
+    includes: "stumpless/target.h"
+    elements:
+      - name: "BUFFER"
+        doc: "writes to a character buffer"
+        value: "STUMPLESS_BUFFER_TARGET"
+      - name: "FILE"
+        doc: "writes to a file"
+        value: "STUMPLESS_FILE_TARGET"

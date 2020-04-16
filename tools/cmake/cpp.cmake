@@ -24,6 +24,7 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/StreamWriteFailure.hpp
   ${CPP_LIB_BUILD_DIR}/StumplessException.hpp
   ${CPP_LIB_BUILD_DIR}/TargetIncompatible.hpp
+  ${CPP_LIB_BUILD_DIR}/TargetType.hpp
   ${CPP_LIB_BUILD_DIR}/TargetUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/TransportProtocolUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/Version.hpp
