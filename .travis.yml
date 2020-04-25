@@ -141,7 +141,6 @@ matrix:
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
-  - bundle config https://rubygems.pkg.github.com/goatshriek goatshriek:$GH_TOKEN
   - bundle install
 
 before_script:
