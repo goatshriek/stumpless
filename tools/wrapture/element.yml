@@ -7,13 +7,17 @@ classes:
       includes:
         - "stumpless/entry.h"
     constructors:
-      - wrapped-function:
+      - doc: "Creates a new Element with the given name."
+        params:
+          - name: "name"
+            doc: "The name of the element."
+            type: "const char *"
+        wrapped-function:
           name: "stumpless_new_element"
           includes:
             - "stumpless/entry.h"
           params:
-            - name: "name"
-              type: "const char *"
+            - value: "name"
           return:
             type: "equivalent-struct-pointer"
     destructor:
@@ -25,8 +29,10 @@ classes:
           - name: "equivalent-struct-pointer"
     functions:
       - name: "AddParam"
+        doc: "Adds a Param to this Element."
         params:
           - name: "new_param"
+            doc: "The Param to add to the Element."
             type: "Param"
             includes: "Param.hpp"
         wrapped-function:
