@@ -1,4 +1,4 @@
-version: "0.3.0"
+version: "0.4.0"
 classes:
   - name: "Element"
     namespace: "stumplesscpp"
@@ -17,7 +17,9 @@ classes:
           includes:
             - "stumpless/entry.h"
           params:
-            - value: "name"
+            - name: "name"
+              doc: "The name of the element."
+              type: "const char *"
           return:
             type: "equivalent-struct-pointer"
     destructor:
@@ -39,6 +41,6 @@ classes:
           name: "stumpless_add_param"
           includes: "stumpless/entry.h"
           params:
-            - name: "equivalent-struct-pointer"
-            - name: "new_param"
+            - value: "equivalent-struct-pointer"
+            - value: "new_param"
               type: "struct stumpless_param *"
