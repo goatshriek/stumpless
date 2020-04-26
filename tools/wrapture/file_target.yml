@@ -50,12 +50,42 @@ classes:
             - value: "equivalent-struct-pointer"
             - value: "message"
             - value: "..."
+      - name: "GetDefaultFacility"
+        doc: "Gets the default facility of this target."
+        return:
+          doc: "The default facility of this target."
+        wrapped-function:
+          name: "stumpless_get_default_facility"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+      - name: "GetOption"
+        doc: >
+          Gets the given option for this target.
+
+          While the returned value is the option if it is set, callers can also
+          simply use the truth value of the return to see if the provided option
+          is set.
+        params:
+          - name: "option"
+            doc: "The option to check this target for."
+            type: "int"
+        return:
+          doc: >
+            The option if it is set on the target. If the option is not set,
+            then zero is returned.
+        wrapped-function:
+          name: "stumpless_get_option"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "option"
       - name: "Log"
         doc: "Writes a log entry to this target."
         params:
           - name: "entry"
-            type: "Entry"
             doc: "the entry to write"
+            type: "Entry"
             includes: "Entry.hpp"
         wrapped-function:
           name: "stumpless_add_entry"
@@ -67,3 +97,33 @@ classes:
           return:
             type: "int"
           use-template: "int-return-error-check"
+      - name: "Open"
+        doc: "Opens this target if it has been paused."
+        wrapped-function:
+          name: "stumpless_open_target"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+      - name: "SetDefaultFacility"
+        doc: "Sets the default facility of the target."
+        params:
+          - name: "facility"
+            doc: >
+              The default facility for the target to use. This should be a
+              STUMPLESS_FACILITY value.
+            type: "int"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_default_facility"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "facility"
+# remaining functions to wrap:
+# stumpless_set_option
+# stumpless_set_target_default_app_name
+# stumpless_set_target_default_msgid
+# stumpless_target_is_open
+# stumpless_unset_option
