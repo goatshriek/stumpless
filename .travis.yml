@@ -123,7 +123,7 @@ matrix:
             - g++-7
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-        - BUILD_ARGS="-DBUILD_CPP=ON"
+        - BUILD_ARGS="-DENABLE_CPP=ON"
     - name: "os x, clang"
       os: osx
       env:
