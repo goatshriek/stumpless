@@ -116,6 +116,11 @@ matrix:
       os: osx
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - name: "os x, debug"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
     - name: "os x, all options off"
       os: osx
       env:
