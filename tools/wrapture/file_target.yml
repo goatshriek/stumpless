@@ -5,6 +5,9 @@ classes:
       A target allowing logs to be written to a given file. Files are created
       as needed, and logs are appended to any existing contents.
     namespace: "stumplesscpp"
+#    parent:
+#      name: "Target"
+#      includes: "Target.hpp"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"
@@ -28,6 +31,25 @@ classes:
         params:
           - name: "equivalent-struct-pointer"
     functions:
+      - name: "AddMessage"
+        doc: "Writes a message to this target."
+        params:
+          - name: "message"
+            doc: >
+              The message to log, optionally containing any format specifiers
+              valid in printf.
+            type: "const char *"
+          - name: "..."
+            doc: >
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        wrapped-function:
+          name: "stumpless_add_message"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "message"
+            - value: "..."
       - name: "Log"
         doc: "Writes a log entry to this target."
         params:

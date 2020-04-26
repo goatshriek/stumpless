@@ -24,6 +24,7 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/StreamWriteFailure.hpp
   ${CPP_LIB_BUILD_DIR}/StumplessException.hpp
   ${CPP_LIB_BUILD_DIR}/TargetIncompatible.hpp
+#  ${CPP_LIB_BUILD_DIR}/Target.hpp
   ${CPP_LIB_BUILD_DIR}/TargetType.hpp
   ${CPP_LIB_BUILD_DIR}/TargetUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/TransportProtocolUnsupported.hpp
@@ -53,6 +54,7 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/SocketSendFailure.cpp
   ${CPP_LIB_BUILD_DIR}/StreamWriteFailure.cpp
   ${CPP_LIB_BUILD_DIR}/StumplessException.cpp
+#  ${CPP_LIB_BUILD_DIR}/Target.cpp
   ${CPP_LIB_BUILD_DIR}/TargetIncompatible.cpp
   ${CPP_LIB_BUILD_DIR}/TargetUnsupported.cpp
   ${CPP_LIB_BUILD_DIR}/TransportProtocolUnsupported.cpp

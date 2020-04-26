@@ -1,3 +1,4 @@
+version: "0.4.0"
 enums:
   - name: "TargetType"
     doc: "types of targets"
@@ -10,3 +11,28 @@ enums:
       - name: "FILE"
         doc: "writes to a file"
         value: "STUMPLESS_FILE_TARGET"
+      - name: "NETWORK"
+        doc: "writes to a network endpoint"
+        value: "STUMPLESS_NETWORK_TARGET"
+      - name: "SOCKET"
+        doc: "writes to a Unix socket"
+        value: "STUMPLESS_SOCKET_TARGET"
+      - name: "STREAM"
+        doc: "writes to a FILE stream"
+        value: "STUMPLESS_SOCKET_TARGET"
+      - name: "WINDOWS"
+        doc: "writes to the Windows Event Log"
+        value: "STUMPLESS_WINDOWS_EVENT_LOG"
+#classes:
+#  - name: "Target"
+#    namespace: "stumplesscpp"
+#    equivalent-struct:
+#      name: "stumpless_target"
+#      includes: "stumpless/target.h"
+#    functions:
+#      - name: "Close"
+#        virtual: true
+#        wrapped-function:
+#          name: "stumpless_close_target"
+#          params:
+#            - value: "equivalent-struct-pointer"

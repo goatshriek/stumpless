@@ -1,7 +1,8 @@
-version: "0.3.0"
+version: "0.4.0"
 classes:
   - name: "Param"
     namespace: "stumplesscpp"
+    type: "pointer"
     equivalent-struct:
       name: "stumpless_param"
       includes: "stumpless/entry.h"
@@ -11,8 +12,10 @@ classes:
           includes: "stumpless/entry.h"
           params:
             - name: "name"
+              doc: "The name of the parameter."
               type: "const char *"
             - name: "value"
+              doc: "The value of the parameter"
               type: "const char *"
           return:
             type: "equivalent-struct-pointer"
