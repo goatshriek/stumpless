@@ -4,6 +4,8 @@ classes:
     doc: >
       A target allowing logs to be written to a given file. Files are created
       as needed, and logs are appended to any existing contents.
+
+      Events logged to the file will be separated by a newline character.
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_target"
@@ -23,8 +25,7 @@ classes:
           params:
             - name: "filename"
               doc: >
-                The path to the file to write logs to. The file will be created
-                if it does not already exist.
+                The path to the file to write logs to.
               type: "const char *"
             - name: "options"
               doc: >
@@ -50,5 +51,4 @@ classes:
         params:
           - name: "equivalent-struct-pointer"
     functions:
-      - use-template:
-          name: "common-target-functions"
+      - use-template: "common-target-functions"
