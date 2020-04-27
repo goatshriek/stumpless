@@ -594,6 +594,9 @@ add_custom_target(bench
 find_program(HAVE_WRAPTURE NAMES wrapture)
 
 set(WRAPTURE_SPECS
+  # template files must be first
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/error_templates.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/target_templates.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/element.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/entry.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/error.yml

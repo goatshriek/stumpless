@@ -5,189 +5,50 @@ classes:
       A target allowing logs to be written to a given file. Files are created
       as needed, and logs are appended to any existing contents.
     namespace: "stumplesscpp"
-# this can be done once abstract classes are supported by Wrapture
-#    parent:
-#      name: "Target"
-#      includes: "Target.hpp"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"
     constructors:
-      - wrapped-function:
+      - doc: >
+          Creates a new file target with the given options and default facility
+          code which will log messages to the given
+          filename.
+
+          Note that this will open the specified file, and it will remain open
+          while this target is open. If you need to control the stream yourself,
+          then you should use a StreamTarget instead.
+        wrapped-function:
           name: "stumpless_open_file_target"
           includes: "stumpless/target/file.h"
           params:
             - name: "filename"
+              doc: >
+                The path to the file to write logs to. The file will be created
+                if it does not already exist.
               type: "const char *"
             - name: "options"
+              doc: >
+                The options to use for this target. This should be a bit-wise or
+                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
+                not need any options.
               type: "int"
             - name: "default_facility"
+              doc: >
+                The default facility to use on messages logged to this target
+                without a facility code of their own. This should be a
+                STUMPLESS_FACILITY value.
               type: "int"
           return:
             type: "equivalent-struct-pointer"
     destructor:
+      doc: >
+        Closes this target and releases all memory and other resources held by
+        it.
       wrapped-function:
         name: "stumpless_close_file_target"
         includes: "stumpless/target/file.h"
         params:
           - name: "equivalent-struct-pointer"
     functions:
-      - name: "AddMessage"
-        doc: "Writes a message to this target."
-        params:
-          - name: "message"
-            doc: >
-              The message to log, optionally containing any format specifiers
-              valid in printf.
-            type: "const char *"
-          - name: "..."
-            doc: >
-              Substitutions for any format specifiers provided in message. The
-              number of substitutions provided must exactly match the number of
-              specifiers given.
-        wrapped-function:
-          name: "stumpless_add_message"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "message"
-            - value: "..."
-      - name: "GetDefaultFacility"
-        doc: "Gets the default facility of this target."
-        return:
-          doc: "The default facility of this target."
-        wrapped-function:
-          name: "stumpless_get_default_facility"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-      - name: "GetOption"
-        doc: >
-          Gets the given option for this target.
-
-          While the returned value is the option if it is set, callers can also
-          simply use the truth value of the return to see if the provided option
-          is set.
-        params:
-          - name: "option"
-            doc: "The option to check this target for."
-            type: "int"
-        return:
-          doc: >
-            The option if it is set on the target. If the option is not set,
-            then zero is returned.
-        wrapped-function:
-          name: "stumpless_get_option"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "option"
-      - name: "IsOpen"
-        doc: >
-          Checks to see if this target is open. File targets are always open,
-          as the are opened on creation and closed on destruction.
-        return:
-          doc: "True if the target is open, false otherwise."
-          type: "bool"
-        wrapped-function:
-          name: "stumpless_target_is_open"
-          params:
-            - value: "equivalent-struct-pointer"
-      - name: "Log"
-        doc: "Writes a log entry to this target."
-        params:
-          - name: "entry"
-            doc: "the entry to write"
-            type: "Entry"
-            includes: "Entry.hpp"
-        wrapped-function:
-          name: "stumpless_add_entry"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "entry"
-              type: "struct stumpless_entry *"
-          return:
-            type: "int"
-          use-template: "int-return-error-check"
-      - name: "Open"
-        doc: "Opens this target if it has been paused."
-        wrapped-function:
-          name: "stumpless_open_target"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-      - name: "SetDefaultAppName"
-        doc: "Sets the default app name for this target."
-        params:
-          - name: "app_name"
-            doc: "The new default app name, as a NULL-terminated string."
-            type: "const char *"
-        return:
-          doc: "The modified target."
-          type: "self-reference"
-        wrapped-function:
-          name: "stumpless_set_target_default_app_name"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "app_name"
-      - name: "SetDefaultFacility"
-        doc: "Sets the default facility of the target."
-        params:
-          - name: "facility"
-            doc: >
-              The default facility for the target to use. This should be a
-              STUMPLESS_FACILITY value.
-            type: "int"
-        return:
-          doc: "The modified target."
-          type: "self-reference"
-        wrapped-function:
-          name: "stumpless_set_default_facility"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "facility"
-      - name: "SetDefaultMsgid"
-        doc: "Sets the default message id for this target."
-        params:
-          - name: "msgid"
-            doc: "The new default message id, as a NULL-terminated string."
-            type: "const char *"
-        return:
-          doc: "The modified target."
-          type: "self-reference"
-        wrapped-function:
-          name: "stumpless_set_target_default_msgid"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "msgid"
-      - name: "SetOption"
-        doc: "Sets an option on a target."
-        params:
-          - name: "option"
-            doc: >
-              The option to set. This should be a STUMPLESS_OPTION value.
-            type: "int"
-        return:
-          doc: "The modified target."
-          type: "self-reference"
-        wrapped-function:
-          name: "stumpless_set_option"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "option"
-      - name: "UnsetOption"
-        doc: "Unsets an option on a target."
-        params:
-          - name: "option"
-            doc: >
-              The option to unset. This should be a STUMPLESS_OPTION value.
-            type: "int"
-        return:
-          doc: "The modified target."
-          type: "self-reference"
-        wrapped-function:
-          name: "stumpless_unset_option"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "option"
+      - use-template:
+          name: "common-target-functions"
