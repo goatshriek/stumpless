@@ -6,6 +6,7 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/AddressFailure.hpp
   ${CPP_LIB_BUILD_DIR}/ArgumentEmpty.hpp
   ${CPP_LIB_BUILD_DIR}/ArgumentTooBig.hpp
+  ${CPP_LIB_BUILD_DIR}/BufferTarget.hpp
   ${CPP_LIB_BUILD_DIR}/Element.hpp
   ${CPP_LIB_BUILD_DIR}/Entry.hpp
   ${CPP_LIB_BUILD_DIR}/FileOpenFailure.hpp
@@ -37,6 +38,7 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/AddressFailure.cpp
   ${CPP_LIB_BUILD_DIR}/ArgumentEmpty.cpp
   ${CPP_LIB_BUILD_DIR}/ArgumentTooBig.cpp
+  ${CPP_LIB_BUILD_DIR}/BufferTarget.cpp
   ${CPP_LIB_BUILD_DIR}/Element.cpp
   ${CPP_LIB_BUILD_DIR}/Entry.cpp
   ${CPP_LIB_BUILD_DIR}/FileOpenFailure.cpp

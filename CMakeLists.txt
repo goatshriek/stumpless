@@ -61,6 +61,8 @@ check_symbol_exists(_SC_PAGESIZE unistd.h HAVE_UNISTD_SC_PAGESIZE)
 check_symbol_exists(sysconf unistd.h HAVE_UNISTD_SYSCONF)
 check_symbol_exists(wcstombs_s windows.h HAVE_WCSTOMBS_S)
 
+find_program(HAVE_WRAPTURE NAMES wrapture)
+
 if(EXISTS "/var/run/syslog")
   set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
 else()
@@ -82,6 +84,24 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/file.c
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
+)
+
+
+# wrapture support
+set(WRAPTURE_SPECS
+  # template files must be first
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/error_templates.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/target_templates.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/buffer_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/element.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/entry.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/error.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/file_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/memory.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/param.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/stream_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/version.yml
 )
 
 
@@ -587,25 +607,6 @@ add_performance_test(target
 
 add_custom_target(bench
   DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
-)
-
-
-# wrapture support
-find_program(HAVE_WRAPTURE NAMES wrapture)
-
-set(WRAPTURE_SPECS
-  # template files must be first
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/error_templates.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/target_templates.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/element.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/entry.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/error.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/file_target.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/memory.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/param.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/stream_target.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/target.yml
-  ${PROJECT_SOURCE_DIR}/tools/wrapture/version.yml
 )
 
 
