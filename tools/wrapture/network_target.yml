@@ -1,0 +1,70 @@
+version: "0.4.0"
+enums:
+  - name: "NetworkProtocol"
+    doc: "Network protocols used by network targets."
+    namespace: "stumplesscpp"
+    includes: "stumpless/target/network.h"
+    elements:
+      - name: "IPV4"
+        doc: "Internet Protocol version 4, RFC 791"
+        value: "STUMPLESS_IPV4_NETWORK_PROTOCOL"
+      - name: "IPV6"
+        doc: "Internet Protocl version 6, RFC 8200"
+        value: "STUMPLESS_IPV6_NETWORK_PROTOCOL"
+  - name: "TransportProtocol"
+    doc: "Transport protocols used by network targets."
+    namespace: "stumplesscpp"
+    includes: "stumpless/target/network.h"
+    elements:
+      - name: "TCP"
+        doc: "TCP, RFC 793"
+        value: "STUMPLESS_TCP_TRANSPORT_PROTOCOL"
+      - name: "UDP"
+        doc: "UDP, RFC 768"
+        value: "STUMPLESS_UDP_TRANSPORT_PROTOCOL"
+classes:
+  - name: "NetworkTarget"
+    doc: >
+      Network targets allow traditional syslog messages to be sent to a remote
+      server. These can use either UDP or TCP over either IPv4 or IPv6.
+    namespace: "stumplesscpp"
+    equivalent-struct:
+      name: "stumpless_target"
+      includes: "stumpless/target.h"
+    constructors:
+      - doc: >
+          Creates a new network target with the given parameters. The target
+          will need to be opened before messages can be sent.
+        wrapped-function:
+          name: "stumpless_new_network_target"
+          includes: "stumpless/target/network.h"
+          params:
+            - name: "name"
+              doc: >
+                The name of this network target.
+              type: "const char *"
+            - name: "network_protocol"
+              doc: "The network protocol to use."
+              type:
+                name: "NetworkProtocol"
+                includes: "NetworkProtocol.hpp"
+              value: "static_cast<stumpless_network_protocol>(network_protocol)"
+            - name: "transport_protocol"
+              doc: "The transport protocol to use."
+              type:
+                name: "TransportProtocol"
+                includes: "TransportProtocol.hpp"
+              value: "static_cast<stumpless_transport_protocol>(transport_protocol)"
+          return:
+            type: "equivalent-struct-pointer"
+    destructor:
+      doc: >
+        Closes this target and releases all memory and other resources held by
+        it.
+      wrapped-function:
+        name: "stumpless_close_network_target"
+        includes: "stumpless/target/network.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - use-template: "common-target-functions"

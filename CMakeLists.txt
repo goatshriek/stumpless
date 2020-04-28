@@ -200,6 +200,7 @@ else()
   set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)
 
   list(APPEND STUMPLESS_SOURCES src/target/network.c)
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/network_target.yml)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
