@@ -4,6 +4,10 @@ matrix:
   include:
     - name: "windows"
       os: windows
+    - name: "windows, with c++"
+      os: windows
+      env:
+        - BUILD_ARGS="-DENABLE_CPP=ON"
     - name: "linux, gcc 6"
       os: linux
       addons:
