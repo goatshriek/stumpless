@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <cstdio>
 #include <gtest/gtest.h>
 #include <StreamTarget.hpp>
 
@@ -24,12 +25,25 @@ using namespace stumplesscpp;
 namespace {
 
   class CppStreamTargetTest : public::testing::Test {
+    protected:
+      const char *filename = "cpptestfile.log";
+      FILE *stream;
 
+    virtual void
+    SetUp( void ) {
+      stream = fopen( filename, "w+" );
+    }
+
+    virtual void
+    TearDown( void ) {
+      fclose( stream );
+      remove( filename );
+    }
   };
 
-  TEST_F( CppStreamTargetTest, Stderr ) {
-    StreamTarget target = StreamTarget::OpenStderr("testing", STUMPLESS_OPTION_NONE, STUMPLESS_FACILITY_USER);
+  TEST_F( CppStreamTargetTest, AddMessage ) {
+    StreamTarget target( "test-stream", stream, STUMPLESS_OPTION_NONE, STUMPLESS_FACILITY_USER);
 
-    target.AddMessage("this is a test of the error target");
+    target.AddMessage("this is a basic test of the stream target");
   }
 }
