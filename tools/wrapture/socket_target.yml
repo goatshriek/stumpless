@@ -1,30 +1,29 @@
 version: "0.4.0"
 classes:
-  - name: "FileTarget"
+  - name: "SocketTarget"
     doc: >
-      A target allowing logs to be written to a given file. Files are created
-      as needed, and logs are appended to any existing contents.
-
-      Events logged to the file will be separated by a newline character.
+      Socket targets allow logs to be sent to a Unix domain socket, like the
+      frequently used /dev/log or /var/run/syslog sockets associated with syslog
+      daemons.
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"
     constructors:
       - doc: >
-          Creates a new file target with the given options and default facility
-          code which will log messages to the given filename.
-
-          Note that this will open the specified file, and it will remain open
-          while this target is open. If you need to control the stream yourself,
-          then you should use a StreamTarget instead.
+          Opens a socket target.
         wrapped-function:
-          name: "stumpless_open_file_target"
-          includes: "stumpless/target/file.h"
+          name: "stumpless_open_socket_target"
+          includes: "stumpless/target/socket.h"
           params:
-            - name: "filename"
+            - name: "name"
               doc: >
-                The path to the file to write logs to.
+                The name of the socket to send logs to.
+              type: "const char *"
+            - name: "local_socket"
+              doc: >
+                The name of the Unix domain socket to connect from. This can be
+                set to NULL if you'd like to simply let the target generate one.
               type: "const char *"
             - name: "options"
               doc: >
@@ -43,10 +42,11 @@ classes:
     destructor:
       doc: >
         Closes this target and releases all memory and other resources held by
-        it.
+        it. Notably, the connection to the socket is closed, and the local
+        socket is cleaned up.
       wrapped-function:
-        name: "stumpless_close_file_target"
-        includes: "stumpless/target/file.h"
+        name: "stumpless_close_socket_target"
+        includes: "stumpless/target/socket.h"
         params:
           - name: "equivalent-struct-pointer"
     functions:

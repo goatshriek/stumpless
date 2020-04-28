@@ -17,7 +17,6 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/InvalidId.hpp
   ${CPP_LIB_BUILD_DIR}/MemoryAllocationFailure.hpp
   ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.hpp
-  ${CPP_LIB_BUILD_DIR}/NetworkTarget.hpp
   ${CPP_LIB_BUILD_DIR}/Param.hpp
   ${CPP_LIB_BUILD_DIR}/SocketBindFailure.hpp
   ${CPP_LIB_BUILD_DIR}/SocketConnectFailure.hpp
@@ -50,7 +49,6 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/InvalidId.cpp
   ${CPP_LIB_BUILD_DIR}/MemoryAllocationFailure.cpp
   ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.cpp
-  ${CPP_LIB_BUILD_DIR}/NetworkTarget.cpp
   ${CPP_LIB_BUILD_DIR}/Param.cpp
   ${CPP_LIB_BUILD_DIR}/SocketBindFailure.cpp
   ${CPP_LIB_BUILD_DIR}/SocketConnectFailure.cpp
@@ -66,6 +64,21 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/WindowsEventLogCloseFailure.cpp
   ${CPP_LIB_BUILD_DIR}/WindowsEventLogOpenFailure.cpp
 )
+
+if(STUMPLESS_NETWORK_TARGETS_SUPPORTED)
+  list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/NetworkTarget.hpp)
+  list(APPEND GENERATED_CPP_LIB_SOURCES ${CPP_LIB_BUILD_DIR}/NetworkTarget.cpp)
+endif()
+
+if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
+  list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/SocketTarget.hpp)
+  list(APPEND GENERATED_CPP_LIB_SOURCES ${CPP_LIB_BUILD_DIR}/SocketTarget.cpp)
+endif()
+
+if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+  list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/WelTarget.hpp)
+  list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/WelTarget.cpp)
+endif()
 
 file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 

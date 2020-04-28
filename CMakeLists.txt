@@ -322,6 +322,8 @@ else()
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/socket.c)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.c)
 
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/socket_target.yml)
+
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
     DESTINATION "include/stumpless/target"
@@ -360,6 +362,8 @@ else()
 
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
+
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/wel_target.yml)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h
