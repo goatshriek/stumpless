@@ -111,6 +111,11 @@ add_cpp_test(file
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 
+add_cpp_test(stream
+  SOURCES
+    test/function/cpp/target/stream.cpp
+)
+
 add_cpp_test(version
   SOURCES test/function/cpp/version.cpp
 )
