@@ -58,15 +58,18 @@ classes:
           - "stumpless/target/network.h"
     constructors:
       - doc: >
-          Creates a new network target with the given parameters. The target
-          will need to be opened before messages can be sent.
+          Creates a new network target with the given parameters and opens it.
         wrapped-function:
-          name: "stumpless_new_network_target"
+          name: "stumpless_open_network_target"
           includes: "stumpless/target/network.h"
           params:
             - name: "name"
+              doc: "The name of this network target."
+              type: "const char *"
+            - name: "destination"
               doc: >
-                The name of this network target.
+                The destination to send messages to. This could be a hostname or
+                an IP address.
               type: "const char *"
             - name: "network_protocol"
               doc: "The network protocol to use."
@@ -80,6 +83,18 @@ classes:
                 name: "TransportProtocol"
                 includes: "TransportProtocol.hpp"
               value: "static_cast<stumpless_transport_protocol>(transport_protocol)"
+            - name: "options"
+              doc: >
+                The options to use for this target. This should be a bit-wise or
+                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
+                not need any options.
+              type: "int"
+            - name: "default_facility"
+              doc: >
+                The default facility to use on messages logged to this target
+                without a facility code of their own. This should be a
+                STUMPLESS_FACILITY value.
+              type: "int"
           return:
             type: "equivalent-struct-pointer"
     destructor:
@@ -93,3 +108,35 @@ classes:
           - name: "equivalent-struct-pointer"
     functions:
       - use-template: "common-target-functions"
+      - name: "NewPausedTarget"
+        doc: >
+          Creates a new network target with the given parameters but does not
+          open it.
+
+          This function is useful if additional settings need to be set before
+          initiating a network connection, such as the transport port or the
+          maximum UDP message size.
+        static: true
+        params:
+          - name: "name"
+            doc: "The name of this network target."
+            type: "const char *"
+          - name: "network_protocol"
+            doc: "The network protocol to use."
+            type:
+              name: "NetworkProtocol"
+              includes: "NetworkProtocol.hpp"
+          - name: "transport_protocol"
+            doc: "The transport protocol to use."
+            type:
+              name: "TransportProtocol"
+              includes: "TransportProtocol.hpp"
+        return:
+          doc: "The newly created NetworkTarget."
+          type: "NetworkTarget"
+        wrapped-function:
+          name: "stumpless_new_network_target"
+          params:
+            - value: "name"
+            - value: "static_cast<stumpless_network_protocol>(network_protocol)"
+            - value: "static_cast<stumpless_transport_protocol>(transport_protocol)"

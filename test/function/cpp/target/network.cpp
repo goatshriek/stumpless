@@ -24,6 +24,13 @@ using namespace stumplesscpp;
 
 namespace {
   TEST( CppDefaultTransportPortTest, EqualToStumpless ) {
-    EXPECT_STREQ(NetworkTarget::DEFAULT_TRANSPORT_PORT, STUMPLESS_DEFAULT_TRANSPORT_PORT);
+    EXPECT_STREQ(NetworkTarget::DEFAULT_TRANSPORT_PORT,
+                 STUMPLESS_DEFAULT_TRANSPORT_PORT);
+  }
+
+  TEST( CppNewPausedTargetTest, Udp4Target ) {
+    NetworkTarget trgt = NetworkTarget::NewPausedTarget("test-name",
+                                                        NetworkProtocol::IPV4,
+                                                        TransportProtocol::UDP);
   }
 }
