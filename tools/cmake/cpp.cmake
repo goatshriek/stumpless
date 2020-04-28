@@ -68,6 +68,11 @@ set(GENERATED_CPP_LIB_SOURCES
 if(STUMPLESS_NETWORK_TARGETS_SUPPORTED)
   list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/NetworkTarget.hpp)
   list(APPEND GENERATED_CPP_LIB_SOURCES ${CPP_LIB_BUILD_DIR}/NetworkTarget.cpp)
+
+  add_cpp_test(network
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/cpp/target/network.cpp
+  )
 endif()
 
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)

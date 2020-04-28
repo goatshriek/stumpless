@@ -31,6 +31,31 @@ classes:
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"
+    constants:
+      - name: "DEFAULT_TRANSPORT_PORT"
+        doc: >
+          The default transport port for network targets.
+
+          This is based largely on tradition, but some applications may expect a
+          different port (for example 1514 and 6514 are sometimes used). If a
+          different port is needed on a target, use SetTransportPort to change
+          it.
+        type: "char *"
+        value: "STUMPLESS_DEFAULT_TRANSPORT_PORT"
+        includes: "stumpless/target/network.h"
+      - name: "DEFAULT_UDP_MAX_MESSAGE_SIZE"
+        doc: >
+          The default message size for UDP network targets.
+
+          This is set to account for an MTU of 1500 bytes, a 20 byte IP header,
+          and an 8 byte datagram header. If you wish to change this value for a
+          particular target, then you must use SetUdpMaxMessageSize to change
+          it.
+        type: "size_t"
+        value: "STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE"
+        includes:
+          - "stddef.h"
+          - "stumpless/target/network.h"
     constructors:
       - doc: >
           Creates a new network target with the given parameters. The target
