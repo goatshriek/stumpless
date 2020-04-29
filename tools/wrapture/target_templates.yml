@@ -2,6 +2,32 @@ version: "0.4.0"
 templates:
   - name: "common-target-functions"
     value:
+      - name: "AddLog"
+        doc: "Writes a log message with a set priority to this target."
+        params:
+          - name: "priority"
+            doc: >
+              The priority of the message. This should be the bitwise or of a
+              single STUMPLESS_SEVERITY value and a single STUMPLESS_FACILITY
+              value.
+            type: "int"
+          - name: "message"
+            doc: >
+              The message to log, optionally containing any format specifiers
+              valid in printf.
+            type: "const char *"
+          - name: "..."
+            doc: >
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        wrapped-function:
+          name: "vstumpless_add_log"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "priority"
+            - value: "message"
+            - value: "..."
       - name: "AddMessage"
         doc: "Writes a message to this target."
         params:
@@ -16,7 +42,7 @@ templates:
               number of substitutions provided must exactly match the number of
               specifiers given.
         wrapped-function:
-          name: "stumpless_add_message"
+          name: "vstumpless_add_message"
           params:
             - value: "equivalent-struct-pointer"
             - value: "message"
