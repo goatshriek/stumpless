@@ -219,6 +219,7 @@ classes:
 
           This is equivalent to calling the constructor with
           NetworkProtocol::IPV4 and TransportProtocol::TCP as parameters.
+        static: true
         params:
           - name: "name"
             doc: "The name of this network target."
@@ -258,6 +259,7 @@ classes:
 
           This is equivalent to calling the constructor with
           NetworkProtocol::IPV6 and TransportProtocol::TCP as parameters.
+        static: true
         params:
           - name: "name"
             doc: "The name of this network target."
@@ -297,6 +299,7 @@ classes:
 
           This is equivalent to calling the constructor with
           NetworkProtocol::IPV4 and TransportProtocol::UDP as parameters.
+        static: true
         params:
           - name: "name"
             doc: "The name of this network target."
@@ -336,6 +339,7 @@ classes:
 
           This is equivalent to calling the constructor with
           NetworkProtocol::IPV6 and TransportProtocol::UDP as parameters.
+        static: true
         params:
           - name: "name"
             doc: "The name of this network target."
