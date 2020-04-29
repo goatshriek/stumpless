@@ -108,6 +108,32 @@ classes:
           - name: "equivalent-struct-pointer"
     functions:
       - use-template: "common-target-functions"
+      - name: "GetDestination"
+        doc: "Gets the destination of the target."
+        return:
+          doc: "The current destination of the target."
+        wrapped-function:
+          name: "stumpless_get_destination"
+          params:
+            - value: "equivalent-struct-pointer"
+      - name: "GetTransportPort"
+        doc: "Gets the transport port number of the target."
+        return:
+          doc: >
+            The current port number of the network taret, encoded as a
+            NULL-terminated string.
+        wrapped-function:
+          name: "stumpless_get_transport_port"
+          params:
+            - value: "equivalent-struct-pointer"
+      - name: "GetUdpMaxMessageSize"
+        doc: "Gets the current maximum message size of a UDP network target"
+        return:
+          doc: "The current maximum message size of the target."
+        wrapped-function:
+          name: "stumpless_get_udp_max_message_size"
+          params:
+            - value: "equivalent-struct-pointer"
       - name: "NewPausedTarget"
         doc: >
           Creates a new network target with the given parameters but does not
@@ -372,3 +398,75 @@ classes:
             - value: "destination"
             - value: "options"
             - value: "default_facility"
+      - name: "SetDestination"
+        doc: >
+          Sets the destination of the target.
+
+          If the target is already open when this function is called, then it
+          will attempt to re-open the target after the destination is changed.
+          If the target is in a paused state, then it will be left that way
+          until an explicit call to Open is made.
+        params:
+          - name: "destination"
+            doc: "The new destination to use."
+            type: "const char *"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_destination"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "destination"
+      - name: "SetTransportPort"
+        doc: >
+          Sets the transport port of the target.
+
+          If the target is already open when this function is called, then it
+          will attempt to re-open the target after the port is changed. If the
+          target is in a paused state, then it will be left that way until an
+          explicit call to Open is made.
+        params:
+          - name: "port"
+            doc: "The new port to use. as a NULL-terminated string."
+            type: "const char *"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_transport_port"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "port"
+      - name: "SetUdpMaxMessageSize"
+        doc: >
+          Sets the maximum message size of a UDP network target.
+
+          Messages that are longer than the maximum size are truncated to this
+          length. If the underlying transport for a network target can support a
+          larger datagram and you need support for longer messages, then you can
+          use this option to increase the size. Likewise, the option can be used
+          to force smaller datagrams if needed, for example in the case of extra
+          overhead in the IP header beyond the typical 20 bytes.
+
+          Note that truncations due to the maximum size do not take UTF
+          characters into account. If you have entries using multi-byte
+          characters, then you need to be sure that these truncations do not
+          cause parsing or security problems.
+
+          Without calling this function, UDP targets start with a maximum
+          message size set to DEFAULT_UDP_MAX_MESSAGE_SIZE.
+        params:
+          - name: "max_msg_size"
+            doc: "The new maximum message size for this target."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_udp_max_message_size"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "max_msg_size"
