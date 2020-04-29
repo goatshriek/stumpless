@@ -35,11 +35,6 @@ timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
 ## 1.5.0 (next minor release)
- * [ADD] **C++ language bindings**
-   While it is possible to use C code directly from C++, it would be a better
-   user experience to have a native, object-oriented interface to use. This
-   would allow higher-level language features like operator overloading and
-   runtime polymorphism to be used to create a cleaner API.
  * [ADD] **Logging functions that can be compiled out**
    A common logging idiom is to log at different verbosity levels, and use
    different levels in different contexts, for example debug during development,

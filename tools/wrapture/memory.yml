@@ -1,1 +1,104 @@
 version: "0.4.0"
+#classes:
+#  - name: "MemoryManager"
+#    doc: "Container for memory management functions in Stumpless."
+#    namespace: "stumplesscpp"
+#    equivalent-struct:
+#      # this is a dummy struct simply to get wrapture to work
+#      name: "stumpless_version"
+#      includes: "stumpless/version.h"
+#    functions:
+#      - name: "SetMalloc"
+#        doc: "Sets the function used by Stumpless to allocate memory."
+#        static: true
+#        params:
+#          - name: "malloc_func"
+#            doc: >
+#              A pointer to the allocation function that is desired. This
+#              function must have the same signature as the standard library
+#              malloc function, which is the default allocation function.
+#            type:
+#              function:
+#                params:
+#                  - type:
+#                      name: "size_t"
+#                      includes: "stddef.h"
+#                return:
+#                  type: "void *"
+#        return:
+#          doc: "The new allocation function."
+#          type:
+#            function:
+#              params:
+#                - type:
+#                    name: "size_t"
+#                    includes: "stddef.h"
+#              return:
+#                type: "void *"
+#        wrapped-function:
+#          name: "stumpless_set_malloc"
+#          includes: "stumpless/memory.h"
+#          params:
+#            - value: "malloc_func"
+#      - name: "SetFree"
+#        doc: "Sets the function used by Stumpless to free memory."
+#        static: true
+#        params:
+#          - name: "free_func"
+#            doc: >
+#              A pointer to the memory deallocation function that is desired.
+#              This function must have the same signature as the standard library
+#              free function, which is the default deallocation function.
+#            type:
+#              function:
+#                params:
+#                  - type: "void *"
+#                return:
+#                  type: "void"
+#        return:
+#          doc: "The new deallocation function."
+#          type:
+#            function:
+#              params:
+#                - type: "void *"
+#              return:
+#                type: "void"
+#        wrapped-function:
+#          name: "stumpless_set_free"
+#          includes: "stumpless/memory.h"
+#          params:
+#            - value: "free_func"
+#      - name: "SetRealloc"
+#        doc: "Sets the function used by Stumpless to reallocate memory."
+#        static: true
+#        params:
+#          - name: "realloc_func"
+#            doc: >
+#              A pointer to the memory reallocation function that is desired.
+#              This function must have the same signature as the standard library
+#              realloc function, which is the default reallocation function.
+#            type:
+#              function:
+#                params:
+#                  - type: "void *"
+#                  - type:
+#                      name: "size_t"
+#                      includes: "stddef.h"
+#                return:
+#                  type: "void *"
+#        return:
+#          doc: "The new reallocation function."
+#          type:
+#            function:
+#              params:
+#                - type: "void *"
+#                - type:
+#                    name: "size_t"
+#                    includes: "stddef.h"
+#              return:
+#                type: "void *"
+#        wrapped-function:
+#          name: "stumpless_set_realloc"
+#          includes: "stumpless/memory.h"
+#          params:
+#            - value: "realloc_func"
