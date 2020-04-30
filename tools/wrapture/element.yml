@@ -1,6 +1,11 @@
 version: "0.4.0"
 classes:
   - name: "Element"
+    docs: >
+      An element of structured data.
+
+      Elements must have a name, but may not have any parameters. Their
+      components must comply with RFC 5424.
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_element"

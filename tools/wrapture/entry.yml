@@ -158,3 +158,4 @@ classes:
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
+      - use-template: "wel-functions"
