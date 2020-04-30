@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+#include <ArgumentEmpty.hpp>
+#include <exception>
 #include <fstream>
 #include <gtest/gtest.h>
 #include <Entry.hpp>
@@ -58,6 +60,22 @@ namespace {
       TestRFC5424Compliance( line.c_str() );
       i++;
     }
+
+    remove( filename );
+  }
+
+  /* non-fixture tests */
+
+  TEST( CppSetDefaultAppName, NullName ) {
+    const char *filename = "cppbasictest.log";
+
+    remove( filename );
+
+    FileTarget test( filename,
+                     STUMPLESS_OPTION_NONE,
+                     STUMPLESS_FACILITY_USER );
+
+    EXPECT_THROW( test.SetDefaultAppName( NULL ), StumplessException * );
 
     remove( filename );
   }

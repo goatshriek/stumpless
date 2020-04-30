@@ -125,6 +125,9 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
             - value: "app_name"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
       - name: "SetDefaultFacility"
         doc: "Sets the default facility of the target."
         params:
