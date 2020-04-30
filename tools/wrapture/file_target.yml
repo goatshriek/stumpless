@@ -7,6 +7,11 @@ classes:
 
       Events logged to the file will be separated by a newline character.
     namespace: "stumplesscpp"
+    constants:
+      - name: "DEFAULT_FILE"
+        type: "char *"
+        value: "STUMPLESS_DEFAULT_FILE"
+        includes: "stumpless/target.h"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"

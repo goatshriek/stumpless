@@ -66,6 +66,10 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( CppDefaultFileConstant, EqualToOriginal ) {
+    EXPECT_STREQ( FileTarget::DEFAULT_FILE, STUMPLESS_DEFAULT_FILE );
+  }
+
   TEST( CppSetDefaultAppName, NullName ) {
     const char *filename = "cppbasictest.log";
 
