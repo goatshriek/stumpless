@@ -145,6 +145,9 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
             - value: "facility"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
       - name: "SetDefaultMsgid"
         doc: "Sets the default message id for this target."
         params:
@@ -159,6 +162,9 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
             - value: "msgid"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
       - name: "SetOption"
         doc: "Sets an option on a target."
         params:
@@ -174,6 +180,9 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
             - value: "option"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
       - name: "UnsetOption"
         doc: "Unsets an option on a target."
         params:
@@ -189,3 +198,6 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
             - value: "option"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"

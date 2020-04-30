@@ -418,6 +418,9 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "destination"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
       - name: "SetTransportPort"
         doc: >
           Sets the transport port of the target.
@@ -438,6 +441,9 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "port"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
       - name: "SetUdpMaxMessageSize"
         doc: >
           Sets the maximum message size of a UDP network target.
@@ -470,3 +476,6 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "max_msg_size"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"

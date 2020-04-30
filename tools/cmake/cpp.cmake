@@ -114,17 +114,23 @@ target_include_directories(stumplesscpp
 
 add_cpp_test(file
   SOURCES
-    test/function/cpp/target/file.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/target/file.cpp
     $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_cpp_test(param
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/param.cpp
 )
 
 add_cpp_test(stream
   SOURCES
-    test/function/cpp/target/stream.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/target/stream.cpp
 )
 
 add_cpp_test(version
-  SOURCES test/function/cpp/version.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/version.cpp
 )
 
 add_custom_target(check-cpp

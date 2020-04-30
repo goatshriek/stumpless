@@ -21,6 +21,7 @@ classes:
               type: "const char *"
           return:
             type: "equivalent-struct-pointer"
+#          use-template: "pointer-return-error-check"
     destructor:
       doc: "Destroys this parameter and releases all memory allocated for it."
       wrapped-function:

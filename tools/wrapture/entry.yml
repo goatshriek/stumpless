@@ -82,6 +82,9 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "app_name"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
       - name: "AddElement"
         doc: "Adds an element to an entry."
         params:
@@ -100,6 +103,9 @@ classes:
             - value: "equivalent-struct-pointer"
             - value: "element"
               type: "struct stumpless_element *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
       - name: "AddElement"
         doc: "Adds an element to an entry."
         params:
@@ -118,6 +124,9 @@ classes:
             - value: "equivalent-struct-pointer"
             - value: "element"
               type: "struct stumpless_element *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
       - name: "SetMessage"
         doc: "Sets the message of an Entry."
         params:
@@ -146,3 +155,6 @@ classes:
             - value: "message"
               type: "const char *"
             - value: "..."
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
