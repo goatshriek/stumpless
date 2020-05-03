@@ -9,6 +9,11 @@ classes:
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"
+    constants:
+      - name: "DEFAULT_SOCKET"
+        doc: "A string literal with the default socket logged to."
+        type: "char *"
+        value: "STUMPLESS_DEFAULT_SOCKET"
     constructors:
       - doc: >
           Opens a socket target.

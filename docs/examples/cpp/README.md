@@ -13,7 +13,7 @@ some useful advantages over the simple functional capabilities of C.
 The C++ bindings are created using
 (Wrapture)[https://goatshriek.github.io/wrapture/].
 
-## Target Classes
+## Stumpless Classes
 
 Targets can be created and logged to using the various target classes that match
 target types from the C library. The constructors take the same parameters as
@@ -44,16 +44,47 @@ entry.AddElement( element );
 file_logger.Log( entry );
 ```
 
-Error checking is not as cumbersome as it is in the C library; an exceptions is
-thrown whenever an error is detected in the underlying function. This allows
-code to simply use try/catch blocks rather than check each return value.
+If you would like to get the struct associated with one of these classes, you
+can use the `equivalent` member of the class to get and use it as you would
+with the underlying C library.
+
+```cpp
+struct stumpless_target *underlying = file_logger.equivalent;
+std::cout << "using target: " << underlying->name << std::endl;
+```
+
+## Error Checking
+
+Error checking is not as cumbersome as in the C library; an exception is thrown
+whenever an error is detected in the underlying function. This allows code to
+use try/catch blocks rather than check each return value.
 
 ```cpp
 try {
   file_logger.AddMessage( NULL );
 } catch( StumplessException *e ) {
-  // will catch an exception (ArgumentEmpty)
+  // will catch the exception (ArgumentEmpty)
 }
 ```
 
+## Constants and Configuration
 
+If you need to check information about the configuration of your build of the
+library, you can check the same constants as before for them, though you will
+need to include the C header to do so.
+
+```cpp
+if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
+  std::stdout << "logging to " << STUMPLESS_DEFAULT_SOCKET << " by default" << std::endl;
+}
+```
+
+However, for some (but not all) constants there is a matching constant added
+that puts these constants into a namespace:
+
+```cpp
+// this check still has to use the C #define
+if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
+  std::stdout << "logging to " << SocketTarget::DEFAULT_SOCKET << " by default" << std::endl;
+}
+```

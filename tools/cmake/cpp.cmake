@@ -85,6 +85,11 @@ endif()
 if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/WelTarget.hpp)
   list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/WelTarget.cpp)
+
+  add_cpp_test(wel
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/cpp/target/wel.cpp
+  )
 endif()
 
 file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})

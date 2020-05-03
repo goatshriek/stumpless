@@ -69,6 +69,11 @@ takes longer than expected.
    open, as they will attempt to bind to the same socket name and will fail as
    it already exists. For details on the progress of this bug, see
    [issue #54](https://github.com/goatshriek/stumpless/issues/54).
+ * [CHANGE] **`stumpless` function will be renamed**
+   As currently named, the function makes it impossible to create a C++
+   namespace named after the library itself. Renaming this function will give it
+   a more meaningful name and also allow a cleaner namespace in the C++
+   bindings.
  * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
    The [Wrapture](https://github.com/goatshriek/wrapture) project is being
    built to provide clean, readable, and explicit language binding functionality
