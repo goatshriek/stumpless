@@ -31,8 +31,8 @@ namespace {
                        "my message" );
 
     // use dummy values as this won't actually be logged
-    basic_entry.SetCategory( 12 );
-    basic_entry.SetEventId( 13 );
-    basic_entry.SetType( 14 );
+    basic_entry.SetWelCategory( 12 );
+    basic_entry.SetWelEventId( 13 );
+    basic_entry.SetWelType( 14 );
   }
 }
