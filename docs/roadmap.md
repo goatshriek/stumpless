@@ -44,6 +44,11 @@ takes longer than expected.
    efficient without requiring code changes or modification tools in the build
    pipeline.
 
+## 1.6.0
+ * [ADD] **Roll-up header for C++ bindings**
+   Instead of including each class header in the calling code, it would be more
+   convenient to simply include a single header.
+
 ## 2.0.0 (next major release)
  * [ADD] **Thread safety for all library calls and structures**
    This is a critical feature for a logging library that needs to be run in a

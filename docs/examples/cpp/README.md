@@ -6,12 +6,12 @@ level language with the same performance benefits.
 
 These bindings go beyond simply calling C code from C++, however; the entire
 library is exposed via an object-oriented API documented in full
-(here)[https://goatshriek.github.io/stumpless/cpp/]. While the concepts of the
+[here](https://goatshriek.github.io/stumpless/cpp/). While the concepts of the
 library are the same in this extension, the object oriented extensions offer
 some useful advantages over the simple functional capabilities of C.
 
 The C++ bindings are created using
-(Wrapture)[https://goatshriek.github.io/wrapture/].
+[Wrapture](https://goatshriek.github.io/wrapture/).
 
 ## Stumpless Classes
 
@@ -20,7 +20,15 @@ target types from the C library. The constructors take the same parameters as
 the matching open target function in the C library. This example shows how to
 open a file target.
 
+Note that you will need to include the header for the class in order to use it.
+There is currently no roll-up header for the entire C++ library, though this is
+planned in an upcoming release in the project roadmap (see `docs/roadmap.md`).
+
 ```cpp
+#include <FileTarget.hpp>
+
+// ...
+
 FileTarget file_logger( "logfile.log",
                         STUMPLESS_OPTION_NONE,
                         STUMPLESS_FACILITY_USER );
@@ -79,8 +87,8 @@ if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
 }
 ```
 
-However, for some (but not all) constants there is a matching constant added
-that puts these constants into a namespace:
+However, for some (but not all) constants there is a matching constant that puts
+these constants into a namespace:
 
 ```cpp
 // this check still has to use the C #define

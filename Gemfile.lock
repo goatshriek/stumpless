@@ -7,7 +7,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  wrapture (>= 0.4.1)
+  wrapture (~> 0.4.1)
 
 BUNDLED WITH
    2.1.4
