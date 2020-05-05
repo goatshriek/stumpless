@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <Entry.hpp>
 #include <FileTarget.hpp>
+#include <Severity.hpp>
 #include "test/function/rfc5424.hpp"
 
 using namespace stumplesscpp;
@@ -35,7 +36,7 @@ namespace {
     virtual void
     SetUp( void ) {
       basic_entry = new Entry( STUMPLESS_FACILITY_USER,
-                               STUMPLESS_SEVERITY_INFO,
+                               Severity::INFO,
                                "stumpless-cpp-testing",
                                "basic-msg",
                                "This is a basic entry." );

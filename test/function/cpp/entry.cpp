@@ -28,7 +28,7 @@ using namespace stumplesscpp;
 namespace {
   TEST( BuildEntry, WithElement ) {
     Entry my_entry( STUMPLESS_FACILITY_USER,
-                    STUMPLESS_SEVERITY_INFO,
+                    Severity::INFO,
                     "my-app-name",
                     "my-msgid",
                     "my message" );
@@ -38,7 +38,7 @@ namespace {
   }
   TEST( BuildEntry, WithElementAndParams ) {
     Entry my_entry( STUMPLESS_FACILITY_USER,
-                    STUMPLESS_SEVERITY_INFO,
+                    Severity::INFO,
                     "my-app-name",
                     "my-msgid",
                     "my message" );
@@ -53,7 +53,7 @@ namespace {
 
   TEST( Constructor, BasicEntry ) {
     Entry my_entry( STUMPLESS_FACILITY_USER,
-                    STUMPLESS_SEVERITY_INFO,
+                    Severity::INFO,
                     "my-app-name",
                     "my-msgid",
                     "my message" );

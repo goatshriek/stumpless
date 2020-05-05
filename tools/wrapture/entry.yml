@@ -27,7 +27,10 @@ classes:
               doc: |
                 The severity code of the entry. This should be a
                 STUMPLESS_SEVERITY value.
-              type: "int"
+              type:
+                name: "Severity"
+                includes: "Severity.hpp"
+              value: "static_cast<int>(severity)"
             - name: "app_name"
               doc: |
                 The app_name of the entry. If this is NULL, then it will be

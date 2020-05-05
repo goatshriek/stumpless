@@ -19,6 +19,7 @@ set(GENERATED_CPP_LIB_HEADERS
 #  ${CPP_LIB_BUILD_DIR}/MemoryManager.hpp
   ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/Param.hpp
+  ${CPP_LIB_BUILD_DIR}/Severity.hpp
   ${CPP_LIB_BUILD_DIR}/SocketBindFailure.hpp
   ${CPP_LIB_BUILD_DIR}/SocketConnectFailure.hpp
   ${CPP_LIB_BUILD_DIR}/SocketFailure.hpp
