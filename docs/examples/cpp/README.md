@@ -39,17 +39,30 @@ using the class constructors instead of the raw functions. The following snippet
 has the same effect as the snippets in the entry example:
 
 ```cpp
-Entry entry( STUMPLESS_FACILITY_USER,
-             STUMPLESS_SEVERITY_INFO,
-             "my-app-name",
-             "my-msgid",
-             "user has logged a message");
+Entry up_to_code( STUMPLESS_FACILITY_USER,
+                  STUMPLESS_SEVERITY_INFO,
+                  "cpp-demo-app",
+                  "up-to-code",
+                  "is it up to code?" );
 
-Element element( "user" );
-Param param( "username", username );
-element.AddParam( param );
-entry.AddElement( element );
-file_logger.Log( entry );
+// makes an element named 'subject' and adds it to the entry
+Element item( "subject" );
+up_to_code.AddElement(item);
+
+// adds a few parameters to the element
+Param name("name", "baked alaska");
+Param result("result", "not-up-to-code");
+
+// most `Add` and `Set` methods can be chained together
+item.AddParam(name).AddParam(result);
+
+// writing an entry to the log file
+file_logger.Log( up_to_code );
+
+// the resulting entry looks like this:
+// 'Angus' is the name of the system this was logged on
+// '10078' was the PID of the process that logged it
+// <14>1 2020-05-05T19:55:48.368156Z Angus cpp-demo-app 10078 up-to-code [subject name="baked alaska" result="not-up-to-code"] is it up to code?
 ```
 
 If you would like to get the struct associated with one of these classes, you
@@ -69,7 +82,7 @@ use try/catch blocks rather than check each return value.
 
 ```cpp
 try {
-  file_logger.AddMessage( NULL );
+  file_logger.Log( NULL );
 } catch( StumplessException *e ) {
   // will catch the exception (ArgumentEmpty)
 }
@@ -95,4 +108,16 @@ these constants into a namespace:
 if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
   std::stdout << "logging to " << SocketTarget::DEFAULT_SOCKET << " by default" << std::endl;
 }
+```
+
+## Running this Example
+
+If you want to compile and run the example code here, then you'll need to
+compile it with the correct include paths and library load paths. Or you can
+simply compile it with the library specified if the C++ library has already
+been installed.
+
+```sh
+g++ cpp_usage.cpp -lstumplesscpp -o cpp_usage
+./cpp_usage
 ```

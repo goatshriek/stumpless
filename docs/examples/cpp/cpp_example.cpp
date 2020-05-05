@@ -2,8 +2,9 @@
 #include <Entry.hpp>
 #include <Param.hpp>
 #include <FileTarget.hpp>
+#include <SocketTarget.hpp>
 #include <stumpless.h>
-
+#include <StumplessException.hpp>
 #include <iostream>
 
 using namespace stumplesscpp;
@@ -27,9 +28,12 @@ main( int argc, char **argv ) {
                     "cpp-demo-app",
                     "up-to-code",
                     "is it up to code?" );
+
+  // makes an element named 'subject' and adds it to the entry
   Element item( "subject" );
   up_to_code.AddElement(item);
 
+  // adds a few parameters to the element
   Param name("name", "baked alaska");
   Param result("result", "not-up-to-code");
 
@@ -40,7 +44,23 @@ main( int argc, char **argv ) {
   file_logger.Log( up_to_code );
   // the entry will look like this:
 
-  stumpless_perror( "fail!" );
+  // error checking can be done using standard try/catch blocks
+  try {
+    file_logger.Log( NULL );
+
+  // you MUST catch a pointer to StumplessException, like this
+  } catch( StumplessException *e ) {
+    std::cout << "there was an empty argument in that call!" << std::endl;
+  }
+
+  // use the same headers and values for support checks:
+  if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
+    // constants are added to relevant classes
+    // this gives them type safety and namespace scoping!
+    std::cout << "logging to " << SocketTarget::DEFAULT_SOCKET << " by default" << std::endl;
+  } else {
+    std::cout << "socket targets aren't supported by this build" << std::endl;
+  }
 
   return EXIT_SUCCESS;
 }
