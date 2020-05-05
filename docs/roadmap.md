@@ -79,6 +79,19 @@ takes longer than expected.
    namespace named after the library itself. Renaming this function will give it
    a more meaningful name and also allow a cleaner namespace in the C++
    bindings.
+ * [DEPRECATE] **entry and element destructor synonyms**
+   Currently, there are two forms of the destructors for these two structures:
+   one that destroys the object itself, and one that destroys the object and all
+   of the ones that it contains. The former is named `destroy_..._only` while
+   the latter is named `destroy_..._and_contents`. The latter has a synonym
+   named simply `destroy`, which does not convey its behavior well. This alias
+   will be deprecated, and removed in the next major release in order to prevent
+   confusion and misuse of the two forms.
+ * [CHANGE] **Destructors no longer clear errors**
+   As destruction functions do not throw any errors by design, they should not
+   clear the error flags. Clearing them can especially cause confusion in other
+   language bindings, where the calling of the destructor is not explicit and
+   may be difficult to track down.
  * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
    The [Wrapture](https://github.com/goatshriek/wrapture) project is being
    built to provide clean, readable, and explicit language binding functionality
@@ -87,6 +100,10 @@ takes longer than expected.
    associated library bindings, replacing SWIG and removing the dependency. In
    the future, other language bindings will be added using Wrapture as they are
    added to the tool.
+
+## 3.0.0
+ * [REMOVE] **entry and element destructor synonyms**
+   Removing previously deprecated feature.
 
 ## Unallocated to a release
  * [ADD] **Ruby language bindings**

@@ -117,6 +117,16 @@ target_include_directories(stumplesscpp
   ${CPP_LIB_BUILD_DIR}
 )
 
+set_target_properties(stumplesscpp
+  PROPERTIES
+    VERSION ${PROJECT_VERSION}
+)
+
+add_cpp_test(entry
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/entry.cpp
+)
+
 add_cpp_test(file
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/cpp/target/file.cpp

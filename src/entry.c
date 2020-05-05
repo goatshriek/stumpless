@@ -202,6 +202,11 @@ fail:
 
 void
 stumpless_destroy_element( struct stumpless_element *element ) {
+  stumpless_destroy_element_and_contents( element );
+}
+
+void
+stumpless_destroy_element_and_contents( struct stumpless_element *element ) {
   size_t i;
 
   clear_error(  );
@@ -214,6 +219,15 @@ stumpless_destroy_element( struct stumpless_element *element ) {
     stumpless_destroy_param( element->params[i] );
   }
 
+  stumpless_destroy_element_only( element );
+}
+
+void
+stumpless_destroy_element_only( struct stumpless_element *element ) {
+  if( !element ) {
+    return;
+  }
+
   free_mem( element->params );
   free_mem( element->name );
   free_mem( element );
@@ -221,6 +235,28 @@ stumpless_destroy_element( struct stumpless_element *element ) {
 
 void
 stumpless_destroy_entry( struct stumpless_entry *entry ) {
+  stumpless_destroy_entry_and_contents( entry );
+}
+
+void
+stumpless_destroy_entry_and_contents( struct stumpless_entry *entry ) {
+  size_t i;
+
+  clear_error(  );
+
+  if( !entry ) {
+    return;
+  }
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    stumpless_destroy_element( entry->elements[i] );
+  }
+
+  stumpless_destroy_entry_only( entry );
+}
+
+void
+stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
   size_t i;
 
   clear_error(  );
@@ -230,10 +266,6 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
   }
 
   config_destroy_insertion_params( entry );
-
-  for( i = 0; i < entry->element_count; i++ ) {
-    stumpless_destroy_element( entry->elements[i] );
-  }
 
   free_mem( entry->elements );
   free_mem( entry->msgid );

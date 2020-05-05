@@ -57,7 +57,7 @@ classes:
       doc: |
         Destroys the Entry and frees any memory allocated for it.
       wrapped-function:
-        name: "stumpless_destroy_entry"
+        name: "stumpless_destroy_entry_only"
         includes:
           - "stumpless/entry.h"
         params:

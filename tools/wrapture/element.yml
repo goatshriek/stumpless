@@ -29,7 +29,7 @@ classes:
             type: "equivalent-struct-pointer"
     destructor:
       wrapped-function:
-        name: "stumpless_destroy_element"
+        name: "stumpless_destroy_element_only"
         includes:
           - "stumpless/entry.h"
         params:
@@ -40,8 +40,28 @@ classes:
         params:
           - name: "new_param"
             doc: "The Param to add to the Element."
-            type: "Param"
+            type: "Param &"
             includes: "Param.hpp"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_param"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "new_param"
+              type: "struct stumpless_param *"
+      - name: "AddParam"
+        doc: "Adds a Param to this Element."
+        params:
+          - name: "new_param"
+            doc: "The Param to add to the Element."
+            type: "Param *"
+            includes: "Param.hpp"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
         wrapped-function:
           name: "stumpless_add_param"
           includes: "stumpless/entry.h"
