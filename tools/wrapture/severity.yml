@@ -20,7 +20,7 @@ enums:
       - name: "CRITICAL"
         doc: "Critical conditions."
         value: "STUMPLESS_SEVERITY_CRIT"
-      - name: "ERROR"
+      - name: "ERR"
         doc: "Error conditions."
         value: "STUMPLESS_SEVERITY_ERR"
       - name: "WARNING"
