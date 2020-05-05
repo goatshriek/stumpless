@@ -21,6 +21,7 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include <Entry.hpp>
+#include <Facility.hpp>
 #include <FileTarget.hpp>
 #include <Severity.hpp>
 #include "test/function/rfc5424.hpp"
@@ -35,7 +36,7 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      basic_entry = new Entry( STUMPLESS_FACILITY_USER,
+      basic_entry = new Entry( Facility::USER,
                                Severity::INFO,
                                "stumpless-cpp-testing",
                                "basic-msg",
@@ -50,7 +51,7 @@ namespace {
     remove( filename );
     FileTarget test( filename,
                      STUMPLESS_OPTION_NONE,
-                     STUMPLESS_FACILITY_USER );
+                     Facility::USER );
 
     test.Log( *basic_entry );
 
@@ -78,7 +79,7 @@ namespace {
 
     FileTarget test( filename,
                      STUMPLESS_OPTION_NONE,
-                     STUMPLESS_FACILITY_USER );
+                     Facility::USER );
 
     EXPECT_THROW( test.SetDefaultAppName( NULL ), StumplessException * );
 

@@ -20,13 +20,14 @@ classes:
           params:
             - name: "facility"
               doc: |
-                The facility code of the entry. This should be a
-                STUMPLESS_FACILITY value.
-              type: "int"
+                The facility code of the event this entry describes.
+              type:
+                name: "Facility"
+                includes: "Facility.hpp"
+              value: "static_cast<int>(facility)"
             - name: "severity"
               doc: |
-                The severity code of the entry. This should be a
-                STUMPLESS_SEVERITY value.
+                The severity of the event this entry describes.
               type:
                 name: "Severity"
                 includes: "Severity.hpp"

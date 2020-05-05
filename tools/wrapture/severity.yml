@@ -7,7 +7,7 @@ enums:
 
       The underlying values of this enumeration will match those provided in
       syslog.h if it was available during build. Check for the definition of
-      STUMPLESS_SYSLOG_H_COMPATIBLE to see if you can rely on this.
+      STUMPLESS_SYSLOG_H_COMPATIBLE to see if you can rely on this behavior.
     namespace: "stumplesscpp"
     includes: "stumpless/entry.h"
     elements:

@@ -96,6 +96,7 @@ set(WRAPTURE_SPECS
   ${PROJECT_SOURCE_DIR}/tools/wrapture/element.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/entry.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/error.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/facility.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/file_target.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/memory.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/param.yml

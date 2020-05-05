@@ -42,7 +42,10 @@ classes:
                 The default facility to use on messages logged to this target
                 without a facility code of their own. This should be a
                 STUMPLESS_FACILITY value.
-              type: "int"
+              type:
+                name: "Facility"
+                includes: "Facility.hpp"
+              value: "static_cast<int>(default_facility)"
           return:
             type: "equivalent-struct-pointer"
     destructor:

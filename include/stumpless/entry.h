@@ -357,11 +357,11 @@ stumpless_new_element( const char *name );
 /**
  * Creates a new entry with the given parameters.
  *
- * @param facility The facility code of the entry. This should be a
- * \c STUMPLESS_FACILITY value.
+ * @param facility The facility code of the event this entry describes. This
+ * should be a \c STUMPLESS_FACILITY value.
  *
- * @param severity The severity code of the entry. This should be a
- * \c STUMPLESS_SEVERITY value.
+ * @param severity The severity code of the event this entry describes. This
+ * should be a \c STUMPLESS_SEVERITY value.
  *
  * @param app_name The app_name of the entry. If this is NULL, then it will be
  * blank in the entry (a single '-' character).

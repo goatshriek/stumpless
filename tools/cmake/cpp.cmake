@@ -9,6 +9,7 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/BufferTarget.hpp
   ${CPP_LIB_BUILD_DIR}/Element.hpp
   ${CPP_LIB_BUILD_DIR}/Entry.hpp
+  ${CPP_LIB_BUILD_DIR}/Facility.hpp
   ${CPP_LIB_BUILD_DIR}/FileOpenFailure.hpp
   ${CPP_LIB_BUILD_DIR}/FileTarget.hpp
   ${CPP_LIB_BUILD_DIR}/FileWriteFailure.hpp

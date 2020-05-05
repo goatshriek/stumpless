@@ -20,6 +20,7 @@
 #include <gtest/gtest.h>
 #include <Element.hpp>
 #include <Entry.hpp>
+#include <Facility.hpp>
 #include <sstream>
 #include <StumplessException.hpp>
 
@@ -27,7 +28,7 @@ using namespace stumplesscpp;
 
 namespace {
   TEST( BuildEntry, WithElement ) {
-    Entry my_entry( STUMPLESS_FACILITY_USER,
+    Entry my_entry( Facility::USER,
                     Severity::INFO,
                     "my-app-name",
                     "my-msgid",
@@ -37,7 +38,7 @@ namespace {
     my_entry.AddElement( my_element );
   }
   TEST( BuildEntry, WithElementAndParams ) {
-    Entry my_entry( STUMPLESS_FACILITY_USER,
+    Entry my_entry( Facility::USER,
                     Severity::INFO,
                     "my-app-name",
                     "my-msgid",
@@ -52,7 +53,7 @@ namespace {
   }
 
   TEST( Constructor, BasicEntry ) {
-    Entry my_entry( STUMPLESS_FACILITY_USER,
+    Entry my_entry( Facility::USER,
                     Severity::INFO,
                     "my-app-name",
                     "my-msgid",
