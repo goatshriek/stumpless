@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -219,7 +219,7 @@ stumpless_destroy_element_and_contents( struct stumpless_element *element ) {
     stumpless_destroy_param( element->params[i] );
   }
 
-  stumpless_destroy_element_only( element );
+  unchecked_destroy_element( element );
 }
 
 void
@@ -228,9 +228,7 @@ stumpless_destroy_element_only( struct stumpless_element *element ) {
     return;
   }
 
-  free_mem( element->params );
-  free_mem( element->name );
-  free_mem( element );
+  unchecked_destroy_element( element );
 }
 
 void
@@ -252,27 +250,18 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry ) {
     stumpless_destroy_element( entry->elements[i] );
   }
 
-  stumpless_destroy_entry_only( entry );
+  unchecked_destroy_entry( entry );
 }
 
 void
 stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
-  size_t i;
-
   clear_error(  );
 
   if( !entry ) {
     return;
   }
 
-  config_destroy_insertion_params( entry );
-
-  free_mem( entry->elements );
-  free_mem( entry->msgid );
-  free_mem( entry->app_name );
-  free_mem( entry->message );
-
-  cache_free( entry_cache, entry );
+  unchecked_destroy_entry( entry );
 }
 
 void
@@ -529,6 +518,25 @@ strbuilder_append_structured_data( struct strbuilder *builder,
   }
 
   return builder;
+}
+
+void
+unchecked_destroy_element( struct stumpless_element *element ) {
+  free_mem( element->params );
+  free_mem( element->name );
+  free_mem( element );
+}
+
+void
+unchecked_destroy_entry( struct stumpless_entry *entry ) {
+  config_destroy_insertion_params( entry );
+
+  free_mem( entry->elements );
+  free_mem( entry->msgid );
+  free_mem( entry->app_name );
+  free_mem( entry->message );
+
+  cache_free( entry_cache, entry );
 }
 
 int

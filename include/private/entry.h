@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,12 @@ strbuilder_append_procid( struct strbuilder *builder );
 struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );
+
+void
+unchecked_destroy_element( struct stumpless_element *element );
+
+void
+unchecked_destroy_entry( struct stumpless_entry *entry );
 
 int
 facility_is_invalid( int facility );

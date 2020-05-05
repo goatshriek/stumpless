@@ -283,6 +283,8 @@
 "target_free_all": "private/target.h"
 "TestRFC5424Compliance": "test/function/rfc5424.hpp"
 "TestUTF8Compliance": "test/function/utf8.hpp"
+"unchecked_destroy_element": "private/entry.h"
+"unchecked_destroy_entry": "private/entry.h"
 "unistd_gethostname": "private/config/have_unistd_gethostname.h"
 "unistd_getpagesize": "private/config/have_unistd_getpagesize.h"
 "unistd_getpid": "private/config/have_unistd.h"
