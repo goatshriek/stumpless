@@ -24,8 +24,8 @@ using namespace stumplesscpp;
 
 namespace {
   TEST( CppSetEntryCategories, Basics ) {
-    Entry basic_entry( STUMPLESS_FACILITY_USER,
-                       STUMPLESS_SEVERITY_INFO,
+    Entry basic_entry( Facility::USER,
+                       Severity::INFO,
                        "cpp-wel-test",
                        "simple-entry",
                        "my message" );
