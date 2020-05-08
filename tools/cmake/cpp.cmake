@@ -135,6 +135,11 @@ add_cpp_test(file
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 
+add_cpp_test(memory
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/memory.cpp
+)
+
 add_cpp_test(param
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/cpp/param.cpp

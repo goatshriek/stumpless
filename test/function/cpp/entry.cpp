@@ -37,6 +37,7 @@ namespace {
     Element my_element( "my-element" );
     my_entry.AddElement( my_element );
   }
+
   TEST( BuildEntry, WithElementAndParams ) {
     Entry my_entry( Facility::USER,
                     Severity::INFO,
