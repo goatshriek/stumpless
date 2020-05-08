@@ -17,7 +17,7 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/InvalidFacility.hpp
   ${CPP_LIB_BUILD_DIR}/InvalidId.hpp
   ${CPP_LIB_BUILD_DIR}/MemoryAllocationFailure.hpp
-#  ${CPP_LIB_BUILD_DIR}/MemoryManager.hpp
+  ${CPP_LIB_BUILD_DIR}/MemoryManager.hpp
   ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/Param.hpp
   ${CPP_LIB_BUILD_DIR}/Severity.hpp
@@ -51,7 +51,7 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/InvalidFacility.cpp
   ${CPP_LIB_BUILD_DIR}/InvalidId.cpp
   ${CPP_LIB_BUILD_DIR}/MemoryAllocationFailure.cpp
-#  ${CPP_LIB_BUILD_DIR}/MemoryManager.cpp
+  ${CPP_LIB_BUILD_DIR}/MemoryManager.cpp
   ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.cpp
   ${CPP_LIB_BUILD_DIR}/Param.cpp
   ${CPP_LIB_BUILD_DIR}/SocketBindFailure.cpp
