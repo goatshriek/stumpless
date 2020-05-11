@@ -1,4 +1,4 @@
-version: "0.4.0"
+version: "0.4.2"
 classes:
   - name: "Element"
     doc: >
@@ -27,6 +27,7 @@ classes:
               type: "const char *"
           return:
             type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       wrapped-function:
         name: "stumpless_destroy_element_only"

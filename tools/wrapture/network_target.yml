@@ -1,4 +1,4 @@
-version: "0.4.0"
+version: "0.4.2"
 enums:
   - name: "NetworkProtocol"
     doc: "Network protocols used by network targets."
@@ -97,6 +97,7 @@ classes:
               type: "int"
           return:
             type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       doc: >
         Closes this target and releases all memory and other resources held by

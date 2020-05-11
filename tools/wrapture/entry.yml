@@ -1,4 +1,4 @@
-version: "0.4.0"
+version: "0.4.2"
 classes:
   - name: "Entry"
     doc: |
@@ -57,6 +57,7 @@ classes:
                 of specifiers given.
           return:
             type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       doc: |
         Destroys the Entry and frees any memory allocated for it.
