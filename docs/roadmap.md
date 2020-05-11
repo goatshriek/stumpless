@@ -101,8 +101,8 @@ takes longer than expected.
    the future, other language bindings will be added using Wrapture as they are
    added to the tool.
  - [CHANGE] **Error codes will be guaranteed to be a consistent value**
-   Error codes are currently defined by an enumeration without any values
-   specified, which means that they could change across builds. Setting thes to
+   Error ids are currently defined by an enumeration without any values
+   specified, which means that they could change across builds. Setting these to
    specific values will make them consistent across all builds, increasing
    interoperability.
 
