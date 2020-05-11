@@ -100,6 +100,11 @@ takes longer than expected.
    associated library bindings, replacing SWIG and removing the dependency. In
    the future, other language bindings will be added using Wrapture as they are
    added to the tool.
+ - [CHANGE] **Error codes will be guaranteed to be a consistent value**
+   Error codes are currently defined by an enumeration without any values
+   specified, which means that they could change across builds. Setting thes to
+   specific values will make them consistent across all builds, increasing
+   interoperability.
 
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**
