@@ -48,6 +48,7 @@ classes:
               value: "static_cast<int>(default_facility)"
           return:
             type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       doc: >
         Closes this target and releases all memory and other resources held by
