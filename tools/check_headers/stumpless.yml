@@ -196,6 +196,7 @@
 "stumpless_get_default_facility": "stumpless/target.h"
 "stumpless_get_default_target": "stumpless/target.h"
 "stumpless_get_error": "stumpless/error.h"
+"stumpless_get_error_id": "stumpless/error.h"
 "stumpless_get_error_stream": "stumpless/error.h"
 "stumpless_get_option": "stumpless/target.h"
 "stumpless_get_transport_port": "stumpless/target/network.h"
