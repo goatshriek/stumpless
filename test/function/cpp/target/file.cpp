@@ -68,11 +68,18 @@ namespace {
 
   /* non-fixture tests */
 
-  TEST( CppDefaultFileConstant, EqualToOriginal ) {
+  TEST( Constructor, NullName ) {
+    EXPECT_THROW( FileTarget test( NULL,
+                                   STUMPLESS_OPTION_NONE,
+                                   Facility::USER ),
+                  StumplessException * );
+  }
+
+  TEST( DefaultFileConstant, EqualToOriginal ) {
     EXPECT_STREQ( FileTarget::DEFAULT_FILE, STUMPLESS_DEFAULT_FILE );
   }
 
-  TEST( CppSetDefaultAppName, NullName ) {
+  TEST( SetDefaultAppName, NullName ) {
     const char *filename = "cppbasictest.log";
 
     remove( filename );
