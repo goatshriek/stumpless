@@ -61,6 +61,11 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
   include_directories("${source_dir}/googletest/include"
                       "${source_dir}/googlemock/include"
   )
+else()
+  include_directories(
+    "${GTEST_PATH}/googletest/include"
+    "${GTEST_PATH}/googlemock/include"
+  )
 endif()
 
 if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND")
@@ -73,7 +78,12 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND")
     IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
+  add_library(libgtest SHARED IMPORTED GLOBAL)
 
+  set_target_properties(libgtest PROPERTIES
+    IMPORTED_LOCATION ${gtest_lib}
+    IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+  )
 endif()
 
 if(${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND")
@@ -86,6 +96,12 @@ if(${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND")
     IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
+  add_library(libgtestmain SHARED IMPORTED GLOBAL)
+
+  set_target_properties(libgtestmain PROPERTIES
+    IMPORTED_LOCATION ${gtest_main_lib}
+    IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+  )
 
 endif()
 
@@ -99,5 +115,10 @@ if(${gmock_lib} STREQUAL "gmock_lib-NOTFOUND")
     IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
+  add_library(libgmock SHARED IMPORTED GLOBAL)
 
+  set_target_properties(libgmock PROPERTIES
+    IMPORTED_LOCATION ${gmock_lib}
+    IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+  )
 endif()
