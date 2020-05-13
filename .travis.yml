@@ -17,7 +17,7 @@ matrix:
     - name: "linux, gcc 7, amd64"
       os: linux
       arch: amd64
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -31,7 +31,7 @@ matrix:
     - name: "linux, gcc 7, ppc64le"
       os: linux
       arch: ppc64le
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -43,7 +43,7 @@ matrix:
     - name: "linux, gcc 7, s390x"
       os: linux
       arch: s390x
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -55,7 +55,7 @@ matrix:
     - name: "linux, gcc 7, arm64"
       os: linux
       arch: arm64
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -66,7 +66,7 @@ matrix:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - name: "linux, debug"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -78,7 +78,7 @@ matrix:
         - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
     - name: "linux, release"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -90,7 +90,7 @@ matrix:
         - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Release"
     - name: "linux, all options off"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -102,7 +102,7 @@ matrix:
         - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
     - name: "linux, no unistd.h"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
