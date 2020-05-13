@@ -1,3 +1,8 @@
+find_library(gtest_lib
+  NAMES gtest
+  PATHS ${GTEST_PATH}
+)
+
 set(local_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
 set(local_gtest_static_dir "${local_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}")
 
