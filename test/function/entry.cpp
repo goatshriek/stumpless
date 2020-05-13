@@ -279,8 +279,16 @@ namespace {
     stumpless_destroy_param( param );
   }
 
+  TEST( DestroyElementOnlyTest, NullElement ) {
+    stumpless_destroy_element_only( NULL );
+  }
+
   TEST( DestroyElementTest, NullElement ) {
     stumpless_destroy_element( NULL );
+  }
+
+  TEST( DestroyEntryOnlyTest, NullEntry ) {
+    stumpless_destroy_entry_only( NULL );
   }
 
   TEST( DestroyEntryTest, NullEntry ) {
