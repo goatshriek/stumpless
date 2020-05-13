@@ -12,6 +12,10 @@ set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
 
+set(GTEST_DIR ${PROJECT_BINARY_DIR}
+  CACHE PATH "a directory with a build of gtest to use instead of downloading and building one"
+)
+
 find_package(Threads REQUIRED)
 
 
