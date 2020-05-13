@@ -3,6 +3,9 @@ find_library(gtest_lib
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
 
+message("gtest set to ${gtest_lib}")
+
+
 find_library(gtest_main_lib
   NAMES gtest_main
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
