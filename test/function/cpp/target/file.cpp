@@ -90,6 +90,12 @@ namespace {
 
     EXPECT_THROW( test.SetDefaultAppName( NULL ), StumplessException * );
 
+    try {
+      test.SetDefaultAppName( NULL );
+    } catch( StumplessException *e ) {
+      EXPECT_EQ( e->GetErrorId(), ErrorId::ARGUMENT_EMPTY );
+    }
+
     remove( filename );
   }
 }
