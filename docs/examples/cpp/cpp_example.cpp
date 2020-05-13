@@ -16,15 +16,15 @@ main( int argc, char **argv ) {
   // the file will be created if it does not exist
   FileTarget file_logger( "cpp_example.log",
                           STUMPLESS_OPTION_NONE,
-                          STUMPLESS_FACILITY_USER );
+                          Facility::USER );
 
   // creates an entry with the given message and adds it to the file
   file_logger.AddMessage( "she just drank ANOTHER bloody mary" );
   // the entry will look like this:
 
   // creates an Entry for a common event
-  Entry up_to_code( STUMPLESS_FACILITY_USER,
-                    STUMPLESS_SEVERITY_INFO,
+  Entry up_to_code( Facility::USER,
+                    Severity::INFO,
                     "cpp-demo-app",
                     "up-to-code",
                     "is it up to code?" );
@@ -50,7 +50,12 @@ main( int argc, char **argv ) {
 
   // you MUST catch a pointer to StumplessException, like this
   } catch( StumplessException *e ) {
-    std::cout << "there was an empty argument in that call!" << std::endl;
+
+    // you can check the error id of the exception to see what the actual
+    // problem was
+    if( e->GetErrorId() == ErrorId::ARGUMENT_EMPTY ) {
+      std::cout << "the message was NULL!" << std::endl;
+    }
   }
 
   // use the same headers and values for support checks:

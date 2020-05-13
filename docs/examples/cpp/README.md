@@ -31,7 +31,7 @@ planned in an upcoming release in the project roadmap (see `docs/roadmap.md`).
 
 FileTarget file_logger( "logfile.log",
                         STUMPLESS_OPTION_NONE,
-                        STUMPLESS_FACILITY_USER );
+                        Facility::USER );
 ```
 
 Entries, elements, and parameters are still created much the same way, again
@@ -39,8 +39,8 @@ using the class constructors instead of the raw functions. The following snippet
 has the same effect as the snippets in the entry example:
 
 ```cpp
-Entry up_to_code( STUMPLESS_FACILITY_USER,
-                  STUMPLESS_SEVERITY_INFO,
+Entry up_to_code( Facility::USER,
+                  Severity::INFO,
                   "cpp-demo-app",
                   "up-to-code",
                   "is it up to code?" );
@@ -78,13 +78,17 @@ std::cout << "using target: " << underlying->name << std::endl;
 
 Error checking is not as cumbersome as in the C library; an exception is thrown
 whenever an error is detected in the underlying function. This allows code to
-use try/catch blocks rather than check each return value.
+use try/catch blocks rather than check each return value. You can also check the
+error id to see what the specific nature of the error was.
 
 ```cpp
 try {
   file_logger.Log( NULL );
 } catch( StumplessException *e ) {
-  // will catch the exception (ArgumentEmpty)
+  // will catch the exception
+  if( e->GetErrorId() == ErrorId::ARGUMENT_EMPTY ) {
+    std::cout << "the message was NULL!" << std::endl;
+  }
 }
 ```
 
