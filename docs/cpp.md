@@ -37,7 +37,7 @@ myLogFile.Log( processStarting );
 The C++ library also puts functions and constants into a namespace and raises
 exceptions when errors are encountered. For more information and examples on
 what is possible, check out the
-[documentation](https://goatshriek.github.io/stumpless/cpp/) for the C++
+[documentation](https://goatshriek.github.io/stumpless/docs/cpp/latest) for the C++
 bindings and the
 [example code](https://goatshriek.github.io/stumpless/examples/cpp.html) in
 `docs/examples/cpp`.
