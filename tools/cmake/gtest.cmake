@@ -2,18 +2,36 @@ find_library(gtest_lib
   NAMES gtest
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
+message("gtest_lib is set to ${gtest_lib}")
 
 find_library(gtest_main_lib
   NAMES gtest_main
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
+message("gtest_main_lib is set to ${gtest_main_lib}")
 
 find_library(gmock_lib
   NAMES gmock
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
+message("gmock_lib is set to ${gmock_lib}")
 
-if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND" OR ${gmock_lib} STREQUAL "gmock_lib-NOTFOUND")
+find_path(gtest_header_path
+  NAMES "gtest/gtest.h"
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/googletest/include"
+)
+message("gtest_header_path is set to ${gtest_header_path}")
+
+find_path(gmock_header_path
+  NAMES "gmock/gmock.h"
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/googlemock/include"
+)
+message("gmock_header_path is set to ${gmock_header_path}")
+
+message("shared library suffix is: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
+message("cmake thread libs init: ${CMAKE_THREAD_LIBS_INIT}")
+
+if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND" OR ${gmock_lib} STREQUAL "gmock_lib-NOTFOUND" OR ${gtest_header_path} STREQUAL "gtest_header_path-NOTFOUND" OR ${gmock_header_path} STREQUAL "gmock_header_path-NOTFOUND")
   set(local_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
   set(local_gtest_static_dir "${local_gtest_binary_dir}/lib/${CMAKE_CFG_INTDIR}")
 
@@ -56,22 +74,6 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
     EXCLUDE_FROM_ALL TRUE
   )
 
-  ExternalProject_Get_Property(gtest source_dir)
-
-  include_directories("${source_dir}/googletest/include"
-                      "${source_dir}/googlemock/include"
-  )
-else()
-  include_directories(
-    "${GTEST_PATH}/googletest/include"
-    "${GTEST_PATH}/googlemock/include"
-  )
-endif()
-
-message("gtest_lib set to ${gtest_lib}")
-message("shared library suffix is: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
-message("cmake thread libs init: ${CMAKE_THREAD_LIBS_INIT}")
-if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND")
   add_library(libgtest SHARED IMPORTED GLOBAL)
   add_dependencies(libgtest gtest)
 
@@ -79,6 +81,30 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND")
     IMPORTED_LOCATION "${local_gtest_shared}"
     IMPORTED_IMPLIB "${local_gtest_static}"
     IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
+  )
+
+  add_library(libgtestmain SHARED IMPORTED GLOBAL)
+  add_dependencies(libgtestmain gtest)
+
+  set_target_properties(libgtestmain PROPERTIES
+    IMPORTED_LOCATION "${local_gtest_main_shared}"
+    IMPORTED_IMPLIB "${local_gtest_main_static}"
+    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
+  )
+
+  add_library(libgmock SHARED IMPORTED GLOBAL)
+  add_dependencies(libgmock gtest)
+
+  set_target_properties(libgmock PROPERTIES
+    IMPORTED_LOCATION "${local_gmock_shared}"
+    IMPORTED_IMPLIB "${local_gmock_static}"
+    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
+  )
+
+  ExternalProject_Get_Property(gtest source_dir)
+
+  include_directories("${source_dir}/googletest/include"
+                      "${source_dir}/googlemock/include"
   )
 else()
   if(${gtest_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
@@ -96,18 +122,7 @@ else()
   set_target_properties(libgtest PROPERTIES
     IMPORTED_LOCATION ${gtest_lib}
   )
-endif()
 
-if(${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND")
-  add_library(libgtestmain SHARED IMPORTED GLOBAL)
-  add_dependencies(libgtestmain gtest)
-
-  set_target_properties(libgtestmain PROPERTIES
-    IMPORTED_LOCATION "${local_gtest_main_shared}"
-    IMPORTED_IMPLIB "${local_gtest_main_static}"
-    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
-  )
-else()
   if(${gtest_main_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
     add_library(libgtestmain SHARED IMPORTED GLOBAL)
 
@@ -122,26 +137,19 @@ else()
     IMPORTED_LOCATION ${gtest_main_lib}
   )
 
-endif()
-
-if(${gmock_lib} STREQUAL "gmock_lib-NOTFOUND")
-  add_library(libgmock SHARED IMPORTED GLOBAL)
-  add_dependencies(libgmock gtest)
-
-  set_target_properties(libgmock PROPERTIES
-    IMPORTED_LOCATION "${local_gmock_shared}"
-    IMPORTED_IMPLIB "${local_gmock_static}"
-    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
-  )
-else()
   if(${gmock_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
     add_library(libgmock SHARED IMPORTED GLOBAL)
+
+    set_target_properties(libgmock PROPERTIES
+      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+    )
   else()
     add_library(libgmock STATIC IMPORTED GLOBAL)
   endif()
 
   set_target_properties(libgmock PROPERTIES
     IMPORTED_LOCATION ${gmock_lib}
-    IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
   )
+
+  include_directories(${gtest_header_path} ${gmock_header_path})
 endif()
