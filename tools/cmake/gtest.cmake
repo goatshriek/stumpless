@@ -86,18 +86,16 @@ else()
     add_library(libgtest SHARED IMPORTED GLOBAL)
 
     set_target_properties(libgtest PROPERTIES
-      IMPORTED_LOCATION ${gtest_lib}
       IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
     )
   else()
     message("found gtest as static library")
     add_library(libgtest STATIC IMPORTED GLOBAL)
-
-    set_target_properties(libgtest PROPERTIES
-      IMPORTED_LOCATION ${gtest_lib}
-      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
-    )
   endif()
+
+  set_target_properties(libgtest PROPERTIES
+    IMPORTED_LOCATION ${gtest_lib}
+  )
 endif()
 
 if(${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND")
