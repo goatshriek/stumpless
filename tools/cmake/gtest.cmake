@@ -100,14 +100,12 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
   )
 else()
   if(${gtest_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
-    message("found gtest as shared library")
     add_library(libgtest SHARED IMPORTED GLOBAL)
 
     set_target_properties(libgtest PROPERTIES
       IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
     )
   else()
-    message("found gtest as static library")
     add_library(libgtest STATIC IMPORTED GLOBAL)
   endif()
 
