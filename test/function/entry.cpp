@@ -286,7 +286,7 @@ namespace {
   TEST( DestroyElementOnlyTest, OneParam ) {
     struct stumpless_element *element;
     struct stumpless_param *param;
-    const char *param_name;
+    const char *param_name = "test-param-name";
 
     element = stumpless_new_element( "test-element" );
     ASSERT_TRUE( element != NULL );
@@ -313,7 +313,7 @@ namespace {
   TEST( DestroyEntryOnlyTest, OneElement ) {
     struct stumpless_entry *entry;
     struct stumpless_element *element;
-    const char *element_name;
+    const char *element_name = "test-element-name";
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
