@@ -68,8 +68,9 @@ else()
   )
 endif()
 
-message("gtest set to ${gtest_lib}")
+message("gtest_lib set to ${gtest_lib}")
 message("shared library suffix is: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
+message("cmake thread libs init: ${CMAKE_THREAD_LIBS_INIT}")
 if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND")
   add_library(libgtest SHARED IMPORTED GLOBAL)
   add_dependencies(libgtest gtest)
@@ -111,13 +112,16 @@ if(${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND")
 else()
   if(${gtest_main_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
     add_library(libgtestmain SHARED IMPORTED GLOBAL)
+
+    set_target_properties(libgtestmain PROPERTIES
+      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+    )
   else()
     add_library(libgtestmain STATIC IMPORTED GLOBAL)
   endif()
 
   set_target_properties(libgtestmain PROPERTIES
     IMPORTED_LOCATION ${gtest_main_lib}
-    IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
   )
 
 endif()
