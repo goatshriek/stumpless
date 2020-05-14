@@ -35,7 +35,8 @@ the repository if you want to actually compile and run them.
 
 Detailed documentation of each function is included in the header files, and is
 written using standard Doxygen syntax. You can generate the documentation
-yourself with the `docs` build target, or you can look at the current stable
-version here:
+yourself with the `docs` build target, or you can look at one of the online
+lists below:
 
-[Doxygen Documentation](./doxygen)
+[C Doxygen Documentation](./docs/c/latest)
+[CPP Doxygen Documentation](./docs/cpp/latest)
