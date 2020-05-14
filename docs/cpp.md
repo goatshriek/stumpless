@@ -19,10 +19,10 @@ as you might expect:
 ```cpp
 FileTarget myLogFile( "logfile.log",
                       STUMPLESS_OPTION_NONE,
-                      STUMPLESS_FACILITY_USER );
+                      Facility::USER );
 
-Entry processStarting( STUMPLESS_FACILITY_USER,
-                       STUMPLESS_SEVERITY_INFO,
+Entry processStarting( Facility::USER,
+                       Severity::INFO,
                        "my-application",
                        "process-start-msgid",
                        "A new process is starting." );

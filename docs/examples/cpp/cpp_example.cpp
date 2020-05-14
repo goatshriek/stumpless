@@ -31,14 +31,14 @@ main( int argc, char **argv ) {
 
   // makes an element named 'subject' and adds it to the entry
   Element item( "subject" );
-  up_to_code.AddElement(item);
+  up_to_code.AddElement( item );
 
   // adds a few parameters to the element
-  Param name("name", "baked alaska");
-  Param result("result", "not-up-to-code");
+  Param name( "name", "baked alaska" );
+  Param result( "result", "not-up-to-code" );
 
   // most `Add` and `Set` methods can be chained together
-  item.AddParam(name).AddParam(result);
+  item.AddParam( name ).AddParam( result );
 
   // writing an entry to the log file
   file_logger.Log( up_to_code );
