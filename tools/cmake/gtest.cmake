@@ -3,9 +3,6 @@ find_library(gtest_lib
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
 
-message("gtest set to ${gtest_lib}")
-
-
 find_library(gtest_main_lib
   NAMES gtest_main
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
@@ -71,6 +68,8 @@ else()
   )
 endif()
 
+message("gtest set to ${gtest_lib}")
+message("shared library suffix is: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
 if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND")
   add_library(libgtest SHARED IMPORTED GLOBAL)
   add_dependencies(libgtest gtest)
@@ -81,12 +80,23 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND")
     IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
-  add_library(libgtest SHARED IMPORTED GLOBAL)
+  if(${gtest_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
+    message("found gtest as shared library")
+    add_library(libgtest SHARED IMPORTED GLOBAL)
 
-  set_target_properties(libgtest PROPERTIES
-    IMPORTED_LOCATION ${gtest_lib}
-    IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
-  )
+    set_target_properties(libgtest PROPERTIES
+      IMPORTED_LOCATION ${gtest_lib}
+      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+    )
+  else()
+    message("found gtest as static library")
+    add_library(libgtest STATIC IMPORTED GLOBAL)
+
+    set_target_properties(libgtest PROPERTIES
+      IMPORTED_LOCATION ${gtest_lib}
+      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+    )
+  endif()
 endif()
 
 if(${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND")
@@ -99,7 +109,11 @@ if(${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND")
     IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
-  add_library(libgtestmain SHARED IMPORTED GLOBAL)
+  if(${gtest_main_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
+    add_library(libgtestmain SHARED IMPORTED GLOBAL)
+  else()
+    add_library(libgtestmain STATIC IMPORTED GLOBAL)
+  endif()
 
   set_target_properties(libgtestmain PROPERTIES
     IMPORTED_LOCATION ${gtest_main_lib}
@@ -118,7 +132,11 @@ if(${gmock_lib} STREQUAL "gmock_lib-NOTFOUND")
     IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 else()
-  add_library(libgmock SHARED IMPORTED GLOBAL)
+  if(${gmock_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
+    add_library(libgmock SHARED IMPORTED GLOBAL)
+  else()
+    add_library(libgmock STATIC IMPORTED GLOBAL)
+  endif()
 
   set_target_properties(libgmock PROPERTIES
     IMPORTED_LOCATION ${gmock_lib}
