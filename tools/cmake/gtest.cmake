@@ -2,34 +2,26 @@ find_library(gtest_lib
   NAMES gtest
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
-message("gtest_lib is set to ${gtest_lib}")
 
 find_library(gtest_main_lib
   NAMES gtest_main
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
-message("gtest_main_lib is set to ${gtest_main_lib}")
 
 find_library(gmock_lib
   NAMES gmock
   PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
 )
-message("gmock_lib is set to ${gmock_lib}")
 
 find_path(gtest_header_path
   NAMES "gtest/gtest.h"
   PATHS ${GTEST_PATH} "${GTEST_PATH}/googletest/include"
 )
-message("gtest_header_path is set to ${gtest_header_path}")
 
 find_path(gmock_header_path
   NAMES "gmock/gmock.h"
   PATHS ${GTEST_PATH} "${GTEST_PATH}/googlemock/include"
 )
-message("gmock_header_path is set to ${gmock_header_path}")
-
-message("shared library suffix is: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
-message("cmake thread libs init: ${CMAKE_THREAD_LIBS_INIT}")
 
 if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND" OR ${gmock_lib} STREQUAL "gmock_lib-NOTFOUND" OR ${gtest_header_path} STREQUAL "gtest_header_path-NOTFOUND" OR ${gmock_header_path} STREQUAL "gmock_header_path-NOTFOUND")
   set(local_gtest_binary_dir "${CMAKE_CURRENT_BINARY_DIR}/gtest/src/gtest-build")
