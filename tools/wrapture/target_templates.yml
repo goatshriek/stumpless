@@ -2,7 +2,53 @@ version: "0.4.0"
 templates:
   - name: "common-target-functions"
     value:
-      - name: "AddLog"
+      - name: "GetDefaultFacility"
+        doc: "Gets the default facility of this target."
+        return:
+          doc: "The default facility of this target."
+          type: "Facility"
+        wrapped-function:
+          name: "stumpless_get_default_facility"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
+      - name: "GetOption"
+        doc: >
+          Gets the given option for this target.
+
+          While the returned value is the option if it is set, callers can also
+          simply use the truth value of the return to see if the provided option
+          is set.
+        params:
+          - name: "option"
+            doc: "The option to check this target for."
+            type: "int"
+        return:
+          doc: >
+            The option if it is set on the target. If the option is not set,
+            then zero is returned.
+          type: "int"
+        wrapped-function:
+          name: "stumpless_get_option"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "option"
+          return:
+            type: "int"
+      - name: "IsOpen"
+        doc: >
+          Checks to see if this target is open.
+        return:
+          doc: "True if the target is open, false otherwise."
+          type: "bool"
+        wrapped-function:
+          name: "stumpless_target_is_open"
+          params:
+            - value: "equivalent-struct-pointer"
+      - name: "Log"
         doc: "Writes a log message with a set priority to this target."
         params:
           - name: "priority"
@@ -21,6 +67,9 @@ templates:
               Substitutions for any format specifiers provided in message. The
               number of substitutions provided must exactly match the number of
               specifiers given.
+        return:
+          doc: "The modified target."
+          type: "self-reference"
         wrapped-function:
           name: "vstumpless_add_log"
           params:
@@ -28,8 +77,8 @@ templates:
             - value: "priority"
             - value: "message"
             - value: "..."
-      - name: "AddMessage"
-        doc: "Writes a message to this target."
+      - name: "Log"
+        doc: "Writes a string message to this target."
         params:
           - name: "message"
             doc: >
@@ -41,52 +90,15 @@ templates:
               Substitutions for any format specifiers provided in message. The
               number of substitutions provided must exactly match the number of
               specifiers given.
+        return:
+          doc: "The modified target."
+          type: "self-reference"
         wrapped-function:
           name: "vstumpless_add_message"
           params:
             - value: "equivalent-struct-pointer"
             - value: "message"
             - value: "..."
-      - name: "GetDefaultFacility"
-        doc: "Gets the default facility of this target."
-        return:
-          doc: "The default facility of this target."
-        wrapped-function:
-          name: "stumpless_get_default_facility"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-      - name: "GetOption"
-        doc: >
-          Gets the given option for this target.
-
-          While the returned value is the option if it is set, callers can also
-          simply use the truth value of the return to see if the provided option
-          is set.
-        params:
-          - name: "option"
-            doc: "The option to check this target for."
-            type: "int"
-        return:
-          doc: >
-            The option if it is set on the target. If the option is not set,
-            then zero is returned.
-        wrapped-function:
-          name: "stumpless_get_option"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "option"
-      - name: "IsOpen"
-        doc: >
-          Checks to see if this target is open.
-        return:
-          doc: "True if the target is open, false otherwise."
-          type: "bool"
-        wrapped-function:
-          name: "stumpless_target_is_open"
-          params:
-            - value: "equivalent-struct-pointer"
       - name: "Log"
         doc: "Writes a log entry to this target."
         params:
@@ -94,6 +106,9 @@ templates:
             doc: "the entry to write"
             type: "Entry"
             includes: "Entry.hpp"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
         wrapped-function:
           name: "stumpless_add_entry"
           includes: "stumpless/target.h"

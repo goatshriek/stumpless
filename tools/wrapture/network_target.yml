@@ -113,28 +113,38 @@ classes:
         doc: "Gets the destination of the target."
         return:
           doc: "The current destination of the target."
+          type: "const char *"
         wrapped-function:
           name: "stumpless_get_destination"
           params:
             - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
       - name: "GetTransportPort"
         doc: "Gets the transport port number of the target."
         return:
           doc: >
             The current port number of the network taret, encoded as a
             NULL-terminated string.
+          type: "const char *"
         wrapped-function:
           name: "stumpless_get_transport_port"
           params:
             - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
       - name: "GetUdpMaxMessageSize"
         doc: "Gets the current maximum message size of a UDP network target"
         return:
           doc: "The current maximum message size of the target."
+          type: "size_t"
+          includes: "stddef.h"
         wrapped-function:
           name: "stumpless_get_udp_max_message_size"
           params:
             - value: "equivalent-struct-pointer"
+          return:
+            type: "size_t"
       - name: "NewPausedTarget"
         doc: >
           Creates a new network target with the given parameters but does not
