@@ -184,7 +184,8 @@ stumpless_add_log( struct stumpless_target *target,
  * @param target The target to send the message to.
  *
  * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
+ * specifiers valid in \c printf. This may be NULL, in which case an event with
+ * no message is logged.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of

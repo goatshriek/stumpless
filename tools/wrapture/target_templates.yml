@@ -49,13 +49,36 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
       - name: "Log"
-        doc: "Writes a log message with a set priority to this target."
+        doc: "Writes a string message to this target."
+        params:
+          - name: "message"
+            doc: >
+              The message to log, optionally containing any format specifiers
+              valid in printf. This may be NULL, in which case an event with no
+              message is logged.
+            type: "const char *"
+          - name: "..."
+            doc: >
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "vstumpless_add_message"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "message"
+            - value: "..."
+      - name: "Log"
+        doc: "Writes a log message with the given priority to this target."
         params:
           - name: "priority"
             doc: >
-              The priority of the message. This should be the bitwise or of a
-              single STUMPLESS_SEVERITY value and a single STUMPLESS_FACILITY
-              value.
+              The priority of the message, described in RFC 5424 as the PRIVAL.
+              This should be the bitwise or of the integer values of a Facility
+              and a Severity.
             type: "int"
           - name: "message"
             doc: >
@@ -78,8 +101,18 @@ templates:
             - value: "message"
             - value: "..."
       - name: "Log"
-        doc: "Writes a string message to this target."
+        doc: >
+          Writes a log message with the given facility and severity to this
+          target.
         params:
+          - name: "facility"
+            doc: >
+              The facility code of the message.
+            type: "Facility"
+          - name: "severity"
+            doc: >
+              The severity code of the message.
+            type: "Severity"
           - name: "message"
             doc: >
               The message to log, optionally containing any format specifiers
@@ -94,13 +127,14 @@ templates:
           doc: "The modified target."
           type: "self-reference"
         wrapped-function:
-          name: "vstumpless_add_message"
+          name: "vstumpless_add_log"
           params:
             - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>(facility) | static_cast<int>(severity)"
             - value: "message"
             - value: "..."
       - name: "Log"
-        doc: "Writes a log entry to this target."
+        doc: "Writes an Entry to this target."
         params:
           - name: "entry"
             doc: "the entry to write"

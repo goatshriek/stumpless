@@ -18,9 +18,26 @@ main( int argc, char **argv ) {
                           STUMPLESS_OPTION_NONE,
                           Facility::USER );
 
-  // creates an entry with the given message and adds it to the file
-  file_logger.AddMessage( "she just drank ANOTHER bloody mary" );
+  // logs the given message to the file
+  file_logger.Log( "she just drank ANOTHER bloody mary" );
   // the entry will look like this:
+  // <14>1 2020-05-15T16:28:56.266031Z Angus - 4484 - - she just drank ANOTHER bloody mary
+  // 'Angus' is the name of the system this was logged on
+  // the three '-' are the app name, the message id, and the structured data,
+  // which were all empty here
+  // '4484' is PID of the process that logged this message
+
+  // logs the given message to the file at the given priority
+  file_logger.Log( Facility::NEWS, Severity::EMERGENCY,
+                   "Helen's drrunnk agaaaiiiin!!!" );
+  // the entry will look like this:
+  // <56>1 2020-05-15T16:28:56.267113Z Angus - 4484 - - Helen's drrunnk agaaaiiiin!!!
+
+  // logs the given message and format strings to the file
+  // you can use format strings with the previous forms as well if you want to
+  file_logger.Log( "she has had %d drinks in the last %d days", 25, 3 );
+  // the entry will look like this:
+  // <14>1 2020-05-15T16:28:56.267128Z Angus - 4484 - - she has had 25 drinks in the last 3 days
 
   // creates an Entry for a common event
   Entry up_to_code( Facility::USER,
@@ -42,11 +59,11 @@ main( int argc, char **argv ) {
 
   // writing an entry to the log file
   file_logger.Log( up_to_code );
-  // the entry will look like this:
+  // <14>1 2020-05-05T19:55:48.368156Z Angus cpp-demo-app 4484 up-to-code [subject name="baked alaska" result="not-up-to-code"] is it up to code?
 
   // error checking can be done using standard try/catch blocks
   try {
-    file_logger.Log( NULL );
+    file_logger.SetDefaultAppName( NULL );
 
   // you MUST catch a pointer to StumplessException, like this
   } catch( StumplessException *e ) {
@@ -54,7 +71,7 @@ main( int argc, char **argv ) {
     // you can check the error id of the exception to see what the actual
     // problem was
     if( e->GetErrorId() == ErrorId::ARGUMENT_EMPTY ) {
-      std::cout << "the message was NULL!" << std::endl;
+      std::cout << "the app name was NULL!" << std::endl;
     }
   }
 

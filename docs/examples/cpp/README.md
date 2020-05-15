@@ -22,7 +22,7 @@ open a file target.
 
 Note that you will need to include the header for the class in order to use it.
 There is currently no roll-up header for the entire C++ library, though this is
-planned in an upcoming release in the project roadmap (see `docs/roadmap.md`).
+planned for an upcoming release in the project roadmap (see `docs/roadmap.md`).
 
 ```cpp
 #include <FileTarget.hpp>
@@ -32,6 +32,32 @@ planned in an upcoming release in the project roadmap (see `docs/roadmap.md`).
 FileTarget file_logger( "logfile.log",
                         STUMPLESS_OPTION_NONE,
                         Facility::USER );
+```
+
+Logging to the target is done with the `Log` function, which has a few forms
+depending on how much information you provide:
+
+```cpp
+// logs the given message to the file
+file_logger.Log( "she just drank ANOTHER bloody mary" );
+// the entry will look like this:
+// <14>1 2020-05-15T16:28:56.266031Z Angus - 4484 - - she just drank ANOTHER bloody mary
+// 'Angus' is the name of the system this was logged on
+// the three '-' are the app name, the message id, and the structured data,
+// which were all empty here
+// '4484' is PID of the process that logged this message
+
+// logs the given message to the file at the given priority
+file_logger.Log( Facility::NEWS, Severity::EMERGENCY,
+                 "Helen's drrunnk agaaaiiiin!!!" );
+// the entry will look like this:
+// <56>1 2020-05-15T16:28:56.267113Z Angus - 4484 - - Helen's drrunnk agaaaiiiin!!!
+
+// logs the given message and format strings to the file
+// you can use format strings with the previous forms as well if you want to
+file_logger.Log( "she has had %d drinks in the last %d days", 25, 3 );
+// the entry will look like this:
+// <14>1 2020-05-15T16:28:56.267128Z Angus - 4484 - - she has had 25 drinks in the last 3 days
 ```
 
 Entries, elements, and parameters are still created much the same way, again
@@ -60,9 +86,7 @@ item.AddParam( name ).AddParam( result );
 file_logger.Log( up_to_code );
 
 // the resulting entry looks like this:
-// 'Angus' is the name of the system this was logged on
-// '10078' was the PID of the process that logged it
-// <14>1 2020-05-05T19:55:48.368156Z Angus cpp-demo-app 10078 up-to-code [subject name="baked alaska" result="not-up-to-code"] is it up to code?
+// <14>1 2020-05-05T19:55:48.368156Z Angus cpp-demo-app 4484 up-to-code [subject name="baked alaska" result="not-up-to-code"] is it up to code?
 ```
 
 If you would like to get the struct associated with one of these classes, you
@@ -83,11 +107,11 @@ error id to see what the specific nature of the error was.
 
 ```cpp
 try {
-  file_logger.Log( NULL );
+  file_logger.SetDefaultAppName( NULL );
 } catch( StumplessException *e ) {
   // will catch the exception
   if( e->GetErrorId() == ErrorId::ARGUMENT_EMPTY ) {
-    std::cout << "the message was NULL!" << std::endl;
+    std::cout << "the app name was NULL!" << std::endl;
   }
 }
 ```
