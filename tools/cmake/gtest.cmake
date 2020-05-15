@@ -1,16 +1,16 @@
 find_library(gtest_lib
-  NAMES gtest
-  PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
+  NAMES gtest gtestd
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}" "${GTEST_PATH}/bin" "${GTEST_PATH}/bin/${CMAKE_CFG_INTDIR}"
 )
 
 find_library(gtest_main_lib
-  NAMES gtest_main
-  PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
+  NAMES gtest_main gtest_maind
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}" "${GTEST_PATH}/bin" "${GTEST_PATH}/bin/${CMAKE_CFG_INTDIR}"
 )
 
 find_library(gmock_lib
-  NAMES gmock
-  PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}"
+  NAMES gmock gmockd
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/lib" "${GTEST_PATH}/lib/${CMAKE_CFG_INTDIR}" "${GTEST_PATH}/bin" "${GTEST_PATH}/bin/${CMAKE_CFG_INTDIR}"
 )
 
 find_path(gtest_header_path
@@ -21,6 +21,21 @@ find_path(gtest_header_path
 find_path(gmock_header_path
   NAMES "gmock/gmock.h"
   PATHS ${GTEST_PATH} "${GTEST_PATH}/googlemock/include"
+)
+
+find_file(gtest_dll
+  NAMES "gtest${CMAKE_SHARED_LIBRARY_SUFFIX}" "gtestd${CMAKE_SHARED_LIBRARY_SUFFIX}"
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/bin" "${GTEST_PATH}/bin/${CMAKE_CFG_INTDIR}"
+)
+
+find_file(gtest_main_dll
+  NAMES "gtest_main${CMAKE_SHARED_LIBRARY_SUFFIX}" "gtest_maind${CMAKE_SHARED_LIBRARY_SUFFIX}"
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/bin" "${GTEST_PATH}/bin/${CMAKE_CFG_INTDIR}"
+)
+
+find_file(gmock_dll
+  NAMES "gmock${CMAKE_SHARED_LIBRARY_SUFFIX}" "gmockd${CMAKE_SHARED_LIBRARY_SUFFIX}"
+  PATHS ${GTEST_PATH} "${GTEST_PATH}/bin" "${GTEST_PATH}/bin/${CMAKE_CFG_INTDIR}"
 )
 
 if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gtest_main_lib-NOTFOUND" OR ${gmock_lib} STREQUAL "gmock_lib-NOTFOUND" OR ${gtest_header_path} STREQUAL "gtest_header_path-NOTFOUND" OR ${gmock_header_path} STREQUAL "gmock_header_path-NOTFOUND")
@@ -99,6 +114,12 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
                       "${source_dir}/googlemock/include"
   )
 else()
+  if(NOT ${gtest_dll} STREQUAL "gtest_dll-NOTFOUND")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy ${gtest_dll} ${CMAKE_CURRENT_BINARY_DIR}
+    )
+  endif()
+
   if(${gtest_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
     add_library(libgtest SHARED IMPORTED GLOBAL)
 
@@ -113,6 +134,12 @@ else()
     IMPORTED_LOCATION ${gtest_lib}
   )
 
+  if(NOT ${gtest_main_dll} STREQUAL "gtest_main_dll-NOTFOUND")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy ${gtest_main_dll} ${CMAKE_CURRENT_BINARY_DIR}
+    )
+  endif()
+
   if(${gtest_main_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
     add_library(libgtestmain SHARED IMPORTED GLOBAL)
 
@@ -126,6 +153,12 @@ else()
   set_target_properties(libgtestmain PROPERTIES
     IMPORTED_LOCATION ${gtest_main_lib}
   )
+
+  if(NOT ${gmock_dll} STREQUAL "gmock_dll-NOTFOUND")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy ${gmock_dll} ${CMAKE_CURRENT_BINARY_DIR}
+    )
+  endif()
 
   if(${gmock_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
     add_library(libgmock SHARED IMPORTED GLOBAL)
