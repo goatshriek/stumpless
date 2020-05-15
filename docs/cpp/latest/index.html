@@ -68,11 +68,11 @@ $(function() {
 <p>The following snippets show some usage patterns specific to C++. If you're looking for basic usage of the C library, check out the main project https://github.com/goatshriek/stumpless/blob/master/README.md "readme" for a quick rundown of what you can do.</p>
 <p>Targets and entries can be created by instantiating the appropriate class, just as you might expect:</p>
 <div class="fragment"><div class="line">FileTarget myLogFile( <span class="stringliteral">&quot;logfile.log&quot;</span>,</div><div class="line">                      STUMPLESS_OPTION_NONE,</div><div class="line">                      Facility::USER );</div><div class="line"></div><div class="line">Entry processStarting( Facility::USER,</div><div class="line">                       Severity::INFO,</div><div class="line">                       <span class="stringliteral">&quot;my-application&quot;</span>,</div><div class="line">                       <span class="stringliteral">&quot;process-start-msgid&quot;</span>,</div><div class="line">                       <span class="stringliteral">&quot;A new process is starting.&quot;</span> );</div></div><!-- fragment --><p>And then logged to by using the <code>Log</code> function of the target:</p>
-<div class="fragment"><div class="line">myLogFile.Log( processStarting );</div></div><!-- fragment --><p>The C++ library also puts functions and constants into a namespace and raises exceptions when errors are encountered. For more information and examples on what is possible, check out the <a href="https://goatshriek.github.io/stumpless/cpp/">documentation</a> for the C++ bindings and the <a href="https://goatshriek.github.io/stumpless/examples/cpp.html">example code</a> in <code>docs/examples/cpp</code>. </p>
+<div class="fragment"><div class="line">myLogFile.Log( processStarting );</div></div><!-- fragment --><p>The C++ library also puts functions and constants into a namespace and raises exceptions when errors are encountered. For more information and examples on what is possible, check out the <a href="https://goatshriek.github.io/stumpless/docs/cpp/latest">documentation</a> for the C++ bindings and the <a href="https://goatshriek.github.io/stumpless/examples/cpp.html">example code</a> in <code>docs/examples/cpp</code>. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 13 2020 20:37:59 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri May 15 2020 14:15:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
