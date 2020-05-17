@@ -118,18 +118,21 @@ else()
     LIB_NAME "libgtest"
     LIB_PATH ${gtest_lib}
     DLL_PATH ${gtest_dll}
+    INTERFACE_LINK_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 
   add_found_library(
     LIB_NAME "libgtestmain"
     LIB_PATH ${gtest_main_lib}
     DLL_PATH ${gtest_main_dll}
+    INTERFACE_LINK_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 
   add_found_library(
     LIB_NAME "libgmock"
     LIB_PATH ${gmock_lib}
     DLL_PATH ${gmock_dll}
+    INTERFACE_LINK_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 
   include_directories(${gtest_header_path} ${gmock_header_path})
