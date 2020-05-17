@@ -30,7 +30,10 @@ include(ExternalProject)
 
 
 # load utilities
-include(tools/cmake/google_libs.cmake) # needs to be before benchmark and gtest
+include(tools/cmake/google_libs.cmake)
+include(tools/cmake/add_found_library.cmake)
+# the above two need to be before benchmark and gtest
+
 include(tools/cmake/benchmark.cmake)
 include(tools/cmake/example.cmake)
 include(tools/cmake/gtest.cmake)

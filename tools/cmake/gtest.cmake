@@ -114,64 +114,22 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
                       "${source_dir}/googlemock/include"
   )
 else()
-  if(NOT ${gtest_dll} STREQUAL "gtest_dll-NOTFOUND")
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -E copy ${gtest_dll} ${CMAKE_CURRENT_BINARY_DIR}
-    )
-  endif()
-
-  if(${gtest_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
-    add_library(libgtest SHARED IMPORTED GLOBAL)
-
-    set_target_properties(libgtest PROPERTIES
-      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
-    )
-  else()
-    add_library(libgtest STATIC IMPORTED GLOBAL)
-  endif()
-
-  set_target_properties(libgtest PROPERTIES
-    IMPORTED_LOCATION ${gtest_lib}
+  add_found_library(
+    LIB_NAME "libgtest"
+    LIB_PATH ${gtest_lib}
+    DLL_PATH ${gtest_dll}
   )
 
-  if(NOT ${gtest_main_dll} STREQUAL "gtest_main_dll-NOTFOUND")
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -E copy ${gtest_main_dll} ${CMAKE_CURRENT_BINARY_DIR}
-    )
-  endif()
-
-  if(${gtest_main_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
-    add_library(libgtestmain SHARED IMPORTED GLOBAL)
-
-    set_target_properties(libgtestmain PROPERTIES
-      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
-    )
-  else()
-    add_library(libgtestmain STATIC IMPORTED GLOBAL)
-  endif()
-
-  set_target_properties(libgtestmain PROPERTIES
-    IMPORTED_LOCATION ${gtest_main_lib}
+  add_found_library(
+    LIB_NAME "libgtestmain"
+    LIB_PATH ${gtest_main_lib}
+    DLL_PATH ${gtest_main_dll}
   )
 
-  if(NOT ${gmock_dll} STREQUAL "gmock_dll-NOTFOUND")
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -E copy ${gmock_dll} ${CMAKE_CURRENT_BINARY_DIR}
-    )
-  endif()
-
-  if(${gmock_lib} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
-    add_library(libgmock SHARED IMPORTED GLOBAL)
-
-    set_target_properties(libgmock PROPERTIES
-      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
-    )
-  else()
-    add_library(libgmock STATIC IMPORTED GLOBAL)
-  endif()
-
-  set_target_properties(libgmock PROPERTIES
-    IMPORTED_LOCATION ${gmock_lib}
+  add_found_library(
+    LIB_NAME "libgmock"
+    LIB_PATH ${gmock_lib}
+    DLL_PATH ${gmock_dll}
   )
 
   include_directories(${gtest_header_path} ${gmock_header_path})
