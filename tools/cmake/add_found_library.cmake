@@ -2,15 +2,11 @@ function(add_found_library)
   set(single_val_args LIB_NAME LIB_PATH DLL_PATH)
   cmake_parse_arguments(FOUND_LIBRARY "" "${single_val_args}" "" ${ARGN})
 
-  message("name is ${FOUND_LIBRARY_LIB_NAME}")
-  message("path is ${FOUND_LIBRARY_LIB_PATH}")
-  message("dll_path is ${FOUND_LIBRARY_DLL_PATH}")
-
   if(${FOUND_LIBRARY_LIB_PATH} MATCHES "${CMAKE_SHARED_LIBRARY_SUFFIX}$")
     add_library(${FOUND_LIBRARY_LIB_NAME} SHARED IMPORTED GLOBAL)
 
     set_target_properties(${FOUND_LIBRARY_LIB_NAME} PROPERTIES
-      IMPORTED_LINK_INTERFACE_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
+      INTERFACE_LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
     )
   else()
     add_library(${FOUND_LIBRARY_LIB_NAME} STATIC IMPORTED GLOBAL)
