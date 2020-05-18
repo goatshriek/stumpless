@@ -50,6 +50,15 @@ takes longer than expected.
    flags, allowing builds that do not need lower-level logs to stay fast and
    efficient without requiring code changes or modification tools in the build
    pipeline.
+ * [FIX] **Socket targets may fail to bind to a local socket**
+   Socket targets can be opened with a local socket name provided, but this may
+   also be set to `NULL`, in which case a local socket is generated (see the
+   documentation of `stumpless_open_socket_target` for details). However, this
+   socket is always the same, which means that if a target is not properly
+   closed the local socket will remain. Successive targets will be unable to
+   open, as they will attempt to bind to the same socket name and will fail as
+   it already exists. For details on the progress of this bug, see
+   [issue #54](https://github.com/goatshriek/stumpless/issues/54).
 
 ## 2.0.0 (next major release)
  * [ADD] **Thread safety for all library calls and structures**
@@ -67,15 +76,6 @@ takes longer than expected.
    still point to the invalid memory. See
    [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
    the progress of this bug.
- * [FIX] **Socket targets may fail to bind to a local socket**
-   Socket targets can be opened with a local socket name provided, but this may
-   also be set to `NULL`, in which case a local socket is generated (see the
-   documentation of `stumpless_open_socket_target` for details). However, this
-   socket is always the same, which means that if a target is not properly
-   closed the local socket will remain. Successive targets will be unable to
-   open, as they will attempt to bind to the same socket name and will fail as
-   it already exists. For details on the progress of this bug, see
-   [issue #54](https://github.com/goatshriek/stumpless/issues/54).
  * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
    The [Wrapture](https://github.com/goatshriek/wrapture) project is being
    built to provide clean, readable, and explicit language binding functionality
@@ -97,6 +97,7 @@ takes longer than expected.
  * [ADD] **AWS/S3 logging target**
  * [ADD] **Database logging target**
  * [ADD] **REST endpoint logging target**
+ * [ADD] **Hyperledger/blockchain logging target**
  * [CHANGE] **Make network logging non-blocking**
  * [ADD] **Target chaining**
    In some cases a log message needs to be sent to multiple destinations, such
