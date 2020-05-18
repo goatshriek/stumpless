@@ -145,6 +145,8 @@ script:
     fi
 
 after_success:
+  - VERSION=$(grep "#define STUMPLESS_VERSION \".*\"" include/stumpless/config.h | sed 's/.*\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\)\+.*/\1/')
   - cd ..
+  - echo "sonar.projectVersion=$VERSION" >> sonar-project.properties
   - bash <(curl -s https://codecov.io/bash)
   - sonar-scanner
