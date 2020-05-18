@@ -25,12 +25,11 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/SocketBindFailure.hpp
   ${CPP_LIB_BUILD_DIR}/SocketConnectFailure.hpp
   ${CPP_LIB_BUILD_DIR}/SocketFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/SocketSend.hpp
+  ${CPP_LIB_BUILD_DIR}/SocketSendFailure.hpp
   ${CPP_LIB_BUILD_DIR}/StreamTarget.hpp
   ${CPP_LIB_BUILD_DIR}/StreamWriteFailure.hpp
   ${CPP_LIB_BUILD_DIR}/StumplessException.hpp
   ${CPP_LIB_BUILD_DIR}/TargetIncompatible.hpp
-  ${CPP_LIB_BUILD_DIR}/TargetType.hpp
   ${CPP_LIB_BUILD_DIR}/TargetUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/TransportProtocolUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/Version.hpp
@@ -98,14 +97,14 @@ endif()
 file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
 add_custom_command(
-  OUTPUT ${GENERATED_CPP_LIB_SOURCES} ${GENERATED_CPP_LIB_HEADERS}
+  OUTPUT ${GENERATED_CPP_LIB_SOURCES}# ${GENERATED_CPP_LIB_HEADERS}
   COMMAND wrapture ${WRAPTURE_SPECS}
   DEPENDS ${WRAPTURE_SPECS}
   WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
+  VERBATIM
 )
 
 add_library(stumplesscpp SHARED
-  EXCLUDE_FROM_ALL
   ${GENERATED_CPP_LIB_SOURCES}
 )
 
@@ -158,6 +157,20 @@ add_cpp_test(version
 
 add_custom_target(check-cpp
   DEPENDS ${STUMPLESS_CPP_TEST_RUNNERS}
+)
+
+
+# add c++ library to installation
+install(TARGETS stumplesscpp
+  RUNTIME DESTINATION "bin"
+  LIBRARY DESTINATION "lib"
+  PUBLIC_HEADER DESTINATION "include"
+  ARCHIVE DESTINATION "lib/static"
+)
+
+install(
+  FILES ${GENERATED_CPP_LIB_HEADERS}
+  DESTINATION "include/stumplesscpp"
 )
 
 #documentation generation
