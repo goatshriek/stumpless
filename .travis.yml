@@ -12,12 +12,14 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-    - name: "linux, gcc 7, amd64"
+    - name: "linux, gcc 7"
       os: linux
       arch: amd64
-      dist: trusty
+      dist: xenial
       addons:
         apt:
           sources:
@@ -28,89 +30,77 @@ matrix:
           organization: "goatshriek-github"
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-    - name: "linux, gcc 7, ppc64le"
+    - name: "linux, amd64"
+      os: linux
+      arch: amd64
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+    - name: "linux, ppc64le"
       os: linux
       arch: ppc64le
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-    - name: "linux, gcc 7, s390x"
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+    - name: "linux, s390x"
       os: linux
       arch: s390x
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-    - name: "linux, gcc 7, arm64"
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+    - name: "linux, arm64"
       os: linux
       arch: arm64
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
     - name: "linux, debug"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
         - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
     - name: "linux, release"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
         - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Release"
     - name: "linux, all options off"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
         - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
     - name: "linux, no unistd.h"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
         - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
     - name: "os x, clang"
       os: osx
@@ -155,6 +145,8 @@ script:
     fi
 
 after_success:
+  - VERSION=$(grep "#define STUMPLESS_VERSION \".*\"" include/stumpless/config.h | sed 's/.*\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\)\+.*/\1/')
   - cd ..
+  - echo "sonar.projectVersion=$VERSION" >> sonar-project.properties
   - bash <(curl -s https://codecov.io/bash)
   - sonar-scanner

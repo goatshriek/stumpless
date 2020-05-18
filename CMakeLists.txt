@@ -12,6 +12,34 @@ set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
 
+string(CONCAT benchmark_path_help_string
+  "A directory with a build of google benchmark that can be used instead of "
+  "downloading and building the library during build. "
+  "In order for this to be used the directory must include ALL of the "
+  "following at configuration time: the benchmark and benchmark_main "
+  "libraries, and the benchmark/benchmark.h header. "
+  "An easy way to set this up is to perform a normal build first, and then "
+  "copy the necessary files out of the build directory into a separate folder "
+  "which can then be used in future builds."
+)
+set(BENCHMARK_PATH ${PROJECT_BINARY_DIR}
+  CACHE PATH ${benchmark_path_help_string}
+)
+
+string(CONCAT gtest_path_help_string
+  "A directory with a build of google test that can be used instead of "
+  "downloading and building the library during build. "
+  "In order for this to be used the directory must include ALL of the "
+  "following at configuration time: the gtest, gtest_main, and gmock "
+  "libraries, the gtest/gtest.h header, and the gmock/gmock.h header. "
+  "An easy way to set this up is to perform a normal build first, and then "
+  "copy the necessary files out of the build directory into a separate folder "
+  "which can then be used in future builds."
+)
+set(GTEST_PATH ${PROJECT_BINARY_DIR}
+  CACHE PATH ${gtest_path_help_string}
+)
+
 find_package(Threads REQUIRED)
 
 
@@ -22,7 +50,10 @@ include(ExternalProject)
 
 
 # load utilities
-include(tools/cmake/google_libs.cmake) # needs to be before benchmark and gtest
+include(tools/cmake/google_libs.cmake)
+include(tools/cmake/add_found_library.cmake)
+# the above two need to be before benchmark and gtest
+
 include(tools/cmake/benchmark.cmake)
 include(tools/cmake/example.cmake)
 include(tools/cmake/gtest.cmake)
