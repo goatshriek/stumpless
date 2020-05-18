@@ -40,6 +40,8 @@ takes longer than expected.
    user experience to have a native, object-oriented interface to use. This
    would allow higher-level language features like operator overloading and
    runtime polymorphism to be used to create a cleaner API.
+
+## 1.6.0
  * [ADD] **Logging functions that can be compiled out**
    A common logging idiom is to log at different verbosity levels, and use
    different levels in different contexts, for example debug during development,
