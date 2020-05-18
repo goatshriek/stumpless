@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [1.5.0] - 2020-05-14
+## [1.5.0] - 2020-05-18
 ### Added
  - `stumpless_version_to_string` function.
  - Header check enforcement in CI pipeline.
