@@ -11,7 +11,8 @@ it will quickly become tedious to wait for the Google Test and/or Benchmark
 libraries to download and build each time as well. As an alternative, you can
 put a build of the libraries in some other location and simply tell the build
 process to use those instead using the `GTEST_PATH` and `BENCHMARK_PATH` build
-parameters.
+parameters. The following examples are for `GTEST_PATH`, but the same principles
+apply for `BENCHMARK_PATH` as well.
 
 This snippet shows how to download a fresh copy of Google Test via the hash,
 unzip it, and build it.
@@ -43,4 +44,21 @@ they will be used and gtest will not be downloaded and built again. If _any_ of
 them are missing though, a fresh copy will be downloaded and used anyway, so
 make sure everything is there!
 
-Benchmark works in much the same way, just using a different parameter.
+If you don't want to download a version and build it yourself, you can copy the
+result of a normal build out into a separate directory and use it going forward.
+An example of this strategy would look like this:
+
+```sh
+mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug ..
+make gtest # download and build gtest
+
+# copy the built libraries
+cp -r gtest/src/gtest-build/ ../../gtestd
+
+# copy the required headers
+cp -r gtest/src/gtest/googlemock/include/ ../../gtestd/googlemock/include/
+cp -r gtest/src/gtest/googletest/include/ ../../gtestd/googletest/include/
+
+# then, on your next build, you could do this instead:
+mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug -DGTEST_PATH=../../gtestd ..
+```
