@@ -1,0 +1,58 @@
+version: "0.4.2"
+classes:
+  - name: "BufferTarget"
+    doc: >
+      A target that will write log messages to a provided buffer, wrapping
+      around when the end is reached. A NULL character will be written to the
+      end of each message.
+
+      Note that callers must handle the wrap-around case, and not assume that
+      each read will end in a NULL character, in case a wrap-around occurs.
+    namespace: "stumplesscpp"
+    equivalent-struct:
+      name: "stumpless_target"
+      includes: "stumpless/target.h"
+    constructors:
+      - doc: >
+          Opens a buffer target for the given buffer.
+        wrapped-function:
+          name: "stumpless_open_buffer_target"
+          includes: "stumpless/target/buffer.h"
+          params:
+            - name: "name"
+              doc: "The name of this target."
+              type: "const char *"
+            - name: "buffer"
+              doc: "The buffer to log events to."
+              type: "char *"
+            - name: "size"
+              doc: "The number of characters buffer can hold."
+              type:
+                name: "size_t"
+                includes: "stddef.h"
+            - name: "options"
+              doc: >
+                The options to use for this target. This should be a bit-wise or
+                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
+                not need any options.
+              type: "int"
+            - name: "default_facility"
+              doc: >
+                The default facility to use on messages logged to this target
+                without a facility code of their own. This should be a
+                STUMPLESS_FACILITY value.
+              type: "int"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+    destructor:
+      doc: >
+        Closes the target and releases all memory owned by it. Does NOT empty or
+        free the buffer.
+      wrapped-function:
+        name: "stumpless_close_buffer_target"
+        includes: "stumpless/target/buffer.h"
+        params:
+          - value: "equivalent-struct-pointer"
+    functions:
+      - use-template: "common-target-functions"

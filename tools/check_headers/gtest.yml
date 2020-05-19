@@ -1,0 +1,8 @@
+"ASSERT_THAT": "gmock/gmock.h"
+"ASSERT_TRUE": "gtest/gtest.h"
+"BENCHMARK": "benchmark/benchmark.h"
+"BENCHMARK_MAIN": "benchmark/benchmark.h"
+"EXPECT_TRUE": "gtest/gtest.h"
+"FAIL": "gtest/gtest.h"
+"HasSubstr": "gmock/gmock.h"
+"RUN_ALL_TESTS": "gtest/gtest.h"

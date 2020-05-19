@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
+#include <cstddef>
+#include <cstdio>
 #include <fstream>
-#include <stdio.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -178,6 +179,17 @@ namespace {
   }
 
   /* non-fixture tests */
+
+  TEST( GetErrorId, Basic ) {
+    struct stumpless_error test_error;
+    enum stumpless_error_id result;
+
+    test_error.id = STUMPLESS_FILE_OPEN_FAILURE;
+
+    result = stumpless_get_error_id( &test_error );
+
+    EXPECT_EQ( result, test_error.id );
+  }
 
   TEST( SetPerrorTest, NullStream ) {
     stumpless_set_error_stream( NULL );

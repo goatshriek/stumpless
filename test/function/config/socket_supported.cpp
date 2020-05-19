@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,12 @@ namespace {
 
     EXPECT_TRUE( target != NULL );
 
+#ifndef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
     if( target ) {
       EXPECT_EQ( target->type, STUMPLESS_SOCKET_TARGET );
       EXPECT_STREQ( target->name, STUMPLESS_DEFAULT_SOCKET );
     }
+#endif
 
     stumpless_free_all(  );
   }

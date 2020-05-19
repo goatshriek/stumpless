@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,11 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_NETWORK_H
 #  define __STUMPLESS_PRIVATE_TARGET_NETWORK_H
 
-#  include "private/config.h"
 
 #  include <stddef.h>
 #  include <stumpless/target/network.h>
-
-#  ifdef HAVE_SYS_SOCKET_H
-#    include <sys/types.h>
-#    include <sys/socket.h>
-#  elif HAVE_WINSOCK2_H
-#    include <winsock2.h>
-#  endif
+#  include "private/config.h"
+#  include "private/config/wrapper.h"
 
 struct network_target {
   const char *destination;
@@ -37,12 +31,7 @@ struct network_target {
   enum stumpless_transport_protocol transport;
   size_t max_msg_size;
   const char *port;
-
-#  ifdef HAVE_SYS_SOCKET_H
-  int handle;
-#  elif HAVE_WINSOCK2_H
-  SOCKET handle;
-#  endif
+  config_socket_handle_t handle;
 };
 
 void

@@ -1,0 +1,242 @@
+version: "0.4.2"
+enums:
+  - name: "ErrorId"
+    doc: >
+      Unique identifiers for library errors.
+    namespace: "stumplesscpp"
+    includes: "stumpless/error.h"
+    elements:
+      - name: "ADDRESS_FAILURE"
+        doc: >
+          A provided network address was not valid.
+
+          This might be formatting problem, or it might mean that a DNS lookup
+          failed.
+        value: "STUMPLESS_ADDRESS_FAILURE"
+      - name: "ARGUMENT_EMPTY"
+        doc: "A required function parameter was NULL or empty."
+        value: "STUMPLESS_ARGUMENT_EMPTY"
+      - name: "ARGUMENT_TOO_BIG"
+        doc: >
+          A provided argument was too big, for example to fit into a buffer
+          target.
+        value: "STUMPLESS_ARGUMENT_TOO_BIG"
+      - name: "FILE_OPEN_FAILURE"
+        doc: "Could not open a file."
+        value: "STUMPLESS_FILE_OPEN_FAILURE"
+      - name: "FILE_WRITE_FAILURE"
+        doc: "Could not write to a file."
+        value: "STUMPLESS_FILE_WRITE_FAILURE"
+      - name: "INDEX_OUT_OF_BOUNDS"
+        doc: "A provided index was not in a valid range."
+        value: "STUMPLESS_INDEX_OUT_OF_BOUNDS"
+      - name: "INVALID_FACILITY"
+        doc: "A provided facility code did not conform to RFC 5424."
+        value: "STUMPLESS_INVALID_FACILITY"
+      - name: "INVALID_ID"
+        doc: "A target or entry ID was not valid."
+        value: "STUMPLESS_INVALID_ID"
+      - name: "MEMORY_ALLOCATION_FAILURE"
+        doc: "A memory allocation or reallocation failed."
+        value: "STUMPLESS_MEMORY_ALLOCATION_FAILURE"
+      - name: "NETWORK_PROTOCOL_UNSUPPORTED"
+        doc: >
+          The given layer 3 protocol is not supported by this implementation.
+        value: "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED"
+      - name: "SOCKET_BIND_FAILURE"
+        doc: "Could not bind to a socket."
+        value: "STUMPLESS_SOCKET_BIND_FAILURE"
+      - name: "SOCKET_CONNECT_FAILURE"
+        doc: "Could not connect to a socket."
+        value: "STUMPLESS_SOCKET_CONNECT_FAILURE"
+      - name: "SOCKET_FAILURE"
+        doc: "Could not create a socket."
+        value: "STUMPLESS_SOCKET_FAILURE"
+      - name: "SOCKET_SEND_FAILURE"
+        doc: "Could not send to a socket."
+        value: "STUMPLESS_SOCKET_SEND_FAILURE"
+      - name: "STREAM_WRITE_FAILURE"
+        doc: "Could not write to a stream."
+        value: "STUMPLESS_STREAM_WRITE_FAILURE"
+      - name: "TARGET_INCOMPATIBLE"
+        doc: "The requested operation is not valid on the given target type."
+        value: "STUMPLESS_TARGET_INCOMPATIBLE"
+      - name: "TARGET_UNSUPPORTED"
+        doc: "The target type provided is unsupported by this implementation."
+        value: "STUMPLESS_TARGET_UNSUPPORTED"
+      - name: "TRANSPORT_PROTOCOL_UNSUPPORTED"
+        doc: >
+          The given layer 4 protocol is not supported by this implementation.
+        value: "STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED"
+      - name: "WINDOWS_EVENT_LOG_CLOSE_FAILURE"
+        doc: "Could not close the Windows Event Log."
+        value: "STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE"
+      - name: "WINDOWS_EVENT_LOG_OPEN_FAILURE"
+        doc: "Could not open the Windows Event Log."
+        value: "STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE"
+classes:
+  - name: "StumplessException"
+    doc: "A general problem has been encountered by the library."
+    namespace: "stumplesscpp"
+    parent:
+      name: "std::exception"
+      includes: "exception"
+    type: "pointer"
+    equivalent-struct:
+      name: "stumpless_error"
+      includes: "stumpless/error.h"
+    functions:
+      - name: "GetErrorId"
+        return:
+          type: "ErrorId"
+          includes: "ErrorId.hpp"
+        wrapped-function:
+          name: "stumpless_get_error_id"
+          includes: "stumpless/error.h"
+          params:
+            - value: "equivalent-struct-pointer"
+  - name: "AddressFailure"
+    doc: |
+      A provided network address was not valid.
+
+      This might be formatting problem, or it might mean that a DNS lookup
+      failed.
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_ADDRESS_FAILURE"
+  - name: "ArgumentEmpty"
+    doc: "A required function parameter was NULL or empty."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_ARGUMENT_EMPTY"
+  - name: "ArgumentTooBig"
+    doc: >
+      A provided argument was too big, for example to fit into a buffer target.
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_ARGUMENT_TOO_BIG"
+  - name: "FileOpenFailure"
+    doc: "Could not open a file."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_FILE_OPEN_FAILURE"
+  - name: "FileWriteFailure"
+    doc: "Could not write to a file."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_FILE_WRITE_FAILURE"
+  - name: "IndexOutOfBounds"
+    doc: "A provided index was not in a valid range."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_INDEX_OUT_OF_BOUNDS"
+  - name: "InvalidFacility"
+    doc: "A provided facility code did not conform to RFC 5424."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_INVALID_FACILITY"
+  - name: "InvalidId"
+    doc: "A target or entry ID was not valid."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_INVALID_ID"
+  - name: "MemoryAllocationFailure"
+    doc: "A memory allocation or reallocation failed."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_MEMORY_ALLOCATION_FAILURE"
+  - name: "NetworkProtocolUnsupported"
+    doc: "The given layer 3 protocol is not supported by this implementation."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED"
+  - name: "SocketBindFailure"
+    doc: "Could not bind to a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_BIND_FAILURE"
+  - name: "SocketConnectFailure"
+    doc: "Could not connect to a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_CONNECT_FAILURE"
+  - name: "SocketFailure"
+    doc: "Could not create a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_FAILURE"
+  - name: "SocketSendFailure"
+    doc: "Could not send to a socket."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_SOCKET_SEND_FAILURE"
+  - name: "StreamWriteFailure"
+    doc: "Could not write to a stream."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_STREAM_WRITE_FAILURE"
+  - name: "TargetIncompatible"
+    doc: "The requested operation is not valid on the given target type."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_TARGET_INCOMPATIBLE"
+  - name: "TargetUnsupported"
+    doc: "The target type provided is unsupported by this implementation."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_TARGET_UNSUPPORTED"
+  - name: "TransportProtocolUnsupported"
+    doc: "The given layer 4 protocol is not supported by this implementation."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED"
+  - name: "WindowsEventLogCloseFailure"
+    doc: "Could not close the Windows Event Log."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE"
+  - name: "WindowsEventLogOpenFailure"
+    doc: "Could not open the Windows Event Log."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE"

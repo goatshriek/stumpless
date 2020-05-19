@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2019 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,5 +52,8 @@ strbuilder_destroy( struct strbuilder *builder );
 
 struct strbuilder *
 strbuilder_new( void );
+
+char *
+strbuilder_to_string( const struct strbuilder *builder );
 
 #endif /* __STUMPLESS_PRIVATE_STRBUILDER_H */

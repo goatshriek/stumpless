@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -351,72 +351,65 @@ namespace {
     struct stumpless_target *target_result;
     struct stumpless_error *error;
     struct stumpless_entry *entry;
-    const char *original_destination = "::1";
-    const char *new_destination = "localhost";
+    const char *destination = "::1";
     const char *destination_result;
     char buffer[2048];
     int add_result;
     socket_handle_t handle;
 
-    if( !name_resolves( new_destination, AF_INET6 ) ) {
-      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
-      SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
+    handle = open_udp_server_socket( AF_INET6, destination, "514" );
 
-    } else {
-      handle = open_udp_server_socket( AF_INET, original_destination, "514" );
+    target = stumpless_new_udp6_target( "target-to-self" );
+    ASSERT_TRUE( target != NULL );
 
-      target = stumpless_new_udp4_target( "target-to-self" );
-      ASSERT_TRUE( target != NULL );
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
 
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error == NULL );
+    destination_result = stumpless_get_destination( target );
+    EXPECT_TRUE( destination_result == NULL );
 
-      destination_result = stumpless_get_destination( target );
-      EXPECT_TRUE( destination_result == NULL );
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
+    target_result = stumpless_set_destination( target, destination );
+    EXPECT_TRUE( target_result != NULL );
 
-      EXPECT_FALSE( stumpless_target_is_open( target ) );
-      target_result = stumpless_set_destination( target, new_destination );
-      EXPECT_TRUE( target_result != NULL );
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
 
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error == NULL );
+    EXPECT_FALSE( stumpless_target_is_open( target ) );
 
-      EXPECT_FALSE( stumpless_target_is_open( target ) );
+    destination_result = stumpless_get_destination( target );
+    EXPECT_TRUE( destination_result != NULL );
+    EXPECT_STREQ( destination_result, destination );
 
-      destination_result = stumpless_get_destination( target );
-      EXPECT_TRUE( destination_result != NULL );
-      EXPECT_STREQ( destination_result, new_destination );
+    target_result = stumpless_open_target( target );
+    ASSERT_TRUE( target_result != NULL );
+    EXPECT_TRUE( target_result == target );
 
-      target_result = stumpless_open_target( target );
-      ASSERT_TRUE( target_result != NULL );
-      EXPECT_TRUE( target_result == target );
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error == NULL );
 
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error == NULL );
+    EXPECT_TRUE( stumpless_target_is_open( target ) );
 
-      EXPECT_TRUE( stumpless_target_is_open( target ) );
+    if( handle != BAD_HANDLE ) {
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "stumpless-unit-test",
+                                   "basic-entry",
+                                   "basic test message" );
+      EXPECT_TRUE( entry != NULL );
 
-      if( handle != BAD_HANDLE ) {
-        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "stumpless-unit-test",
-                                     "basic-entry",
-                                     "basic test message" );
-        EXPECT_TRUE( entry != NULL );
+      add_result = stumpless_add_entry( target, entry );
+      EXPECT_GE( add_result, 0 );
 
-        add_result = stumpless_add_entry( target, entry );
-        EXPECT_GE( add_result, 0 );
+      recv_from_handle( handle, buffer, 1024 );
+      EXPECT_TRUE( buffer[0] != '\0' );
+      TestRFC5424Compliance( buffer );
 
-        recv_from_handle( handle, buffer, 1024 );
-        EXPECT_TRUE( buffer[0] != '\0' );
-        TestRFC5424Compliance( buffer );
-
-        stumpless_destroy_entry( entry );
-      }
-
-      close_server_socket( handle );
-      stumpless_close_network_target( target );
+      stumpless_destroy_entry( entry );
     }
+
+    close_server_socket( handle );
+    stumpless_close_network_target( target );
   }
 
   TEST( NetworkTargetSetTransportPort, OpenTarget ) {

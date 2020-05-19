@@ -18,6 +18,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
 #include "private/config/wrapper.h"

@@ -279,8 +279,59 @@ namespace {
     stumpless_destroy_param( param );
   }
 
+  TEST( DestroyElementOnlyTest, NullElement ) {
+    stumpless_destroy_element_only( NULL );
+  }
+
+  TEST( DestroyElementOnlyTest, OneParam ) {
+    struct stumpless_element *element;
+    struct stumpless_param *param;
+    const char *param_name = "test-param-name";
+
+    element = stumpless_new_element( "test-element" );
+    ASSERT_TRUE( element != NULL );
+
+    param = stumpless_new_param( param_name, "test-param-value" );
+    ASSERT_TRUE( param != NULL );
+
+    EXPECT_TRUE( stumpless_add_param( element, param ) == element );
+
+    stumpless_destroy_element_only( element );
+
+    EXPECT_TRUE( memcmp( param->name, param_name, param->name_length ) == 0 );
+    stumpless_destroy_param( param );
+  }
+
   TEST( DestroyElementTest, NullElement ) {
     stumpless_destroy_element( NULL );
+  }
+
+  TEST( DestroyEntryOnlyTest, NullEntry ) {
+    stumpless_destroy_entry_only( NULL );
+  }
+
+  TEST( DestroyEntryOnlyTest, OneElement ) {
+    struct stumpless_entry *entry;
+    struct stumpless_element *element;
+    const char *element_name = "test-element-name";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "test-app-name",
+                                 "test-msgid",
+                                 "test message" );
+    ASSERT_TRUE( entry != NULL );
+
+    element = stumpless_new_element( element_name );
+    ASSERT_TRUE( element != NULL );
+
+    stumpless_destroy_entry_only( entry );
+
+    ASSERT_TRUE( memcmp( element->name,
+                         element_name,
+                         element->name_length ) == 0 );
+
+    stumpless_destroy_element_and_contents( element );
   }
 
   TEST( DestroyEntryTest, NullEntry ) {

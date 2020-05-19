@@ -3,9 +3,9 @@ enable_testing()
 if(MSVC)
   # the benefit of simple test code outweighs the burden of writing
   # platform-dependent code, such as the _s functions, just for tests
-  set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
+  set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
 else()
-  set(function_test_compile_flags "-std=c++11")
+  set(function_test_compile_flags "-std=gnu++11 -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
 endif(MSVC)
 
 function(private_add_function_test)
@@ -58,7 +58,7 @@ function(private_add_performance_test)
     ${FUNCTION_PERF_ARG_SOURCES}
   )
 
-  if(MSVC)
+  if(MSVC OR MINGW)
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
       libbenchmark
@@ -71,9 +71,10 @@ function(private_add_performance_test)
       stumpless
       libbenchmark
       libbenchmarkmain
+      pthread
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
-  endif(MSVC)
+  endif()
 
   set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
     PROPERTIES

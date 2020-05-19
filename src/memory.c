@@ -23,6 +23,7 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/target.h"
 #include "private/strbuilder.h"
 
 typedef void ( *free_func_t ) ( void * );

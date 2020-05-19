@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,6 +103,18 @@ struct stumpless_error {
  * function call. If no error was encountered, this will be NULL.
  */
 struct stumpless_error *stumpless_get_error( void );
+
+/**
+ * Gets the error id of the given error.
+ *
+ * @since Release v1.5.0
+ *
+ * @param err The error to get the id from. This must not be NULL.
+ *
+ * @return The error id of the given error.
+ */
+enum stumpless_error_id
+stumpless_get_error_id( const struct stumpless_error *err );
 
 /**
  * Gets the current stream that errors are written to.

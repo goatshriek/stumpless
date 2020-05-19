@@ -1,0 +1,37 @@
+version: "0.4.0"
+enums:
+  - name: "Severity"
+    doc: >
+      Severities (as defined in RFC 5424) describe the level of importance of a
+      given log entry. They range from extremely important to ignorable.
+
+      The underlying values of this enumeration will match those provided in
+      syslog.h if it was available during build. Check for the definition of
+      STUMPLESS_SYSLOG_H_COMPATIBLE to see if you can rely on this behavior.
+    namespace: "stumplesscpp"
+    includes: "stumpless/entry.h"
+    elements:
+      - name: "EMERGENCY"
+        doc: "System is unusable."
+        value: "STUMPLESS_SEVERITY_EMERG"
+      - name: "ALERT"
+        doc: "Action must be taken immediately."
+        value: "STUMPLESS_SEVERITY_ALERT"
+      - name: "CRITICAL"
+        doc: "Critical conditions."
+        value: "STUMPLESS_SEVERITY_CRIT"
+      - name: "ERR"
+        doc: "Error conditions."
+        value: "STUMPLESS_SEVERITY_ERR"
+      - name: "WARNING"
+        doc: "Warning conditions."
+        value: "STUMPLESS_SEVERITY_WARNING"
+      - name: "NOTICE"
+        doc: "Normal but significant conditions."
+        value: "STUMPLESS_SEVERITY_NOTICE"
+      - name: "INFO"
+        doc: "Informational messages."
+        value: "STUMPLESS_SEVERITY_INFO"
+      - name: "DEBUG"
+        doc: "Debug-level messages."
+        value: "STUMPLESS_SEVERITY_DEBUG"

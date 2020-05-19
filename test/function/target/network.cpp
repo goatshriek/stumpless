@@ -306,7 +306,7 @@ namespace {
   TEST( NetworkTargetOpenTest, BadHostname ) {
     struct stumpless_target *target;
     struct stumpless_error *error;
-    const char *hostname = "this-doesnt-exist.net";
+    const char *hostname = "this doesn't exist.net";
 
     if( name_resolves( hostname, AF_INET ) ) {
       printf( "WARNING: the bad hostname resolved, so this test will be skipped\n" );
@@ -319,13 +319,14 @@ namespace {
                                               STUMPLESS_UDP_TRANSPORT_PROTOCOL,
                                               STUMPLESS_OPTION_NONE,
                                               STUMPLESS_FACILITY_USER );
-      EXPECT_TRUE( target == NULL );
 
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error != NULL );
+      EXPECT_TRUE(target == NULL);
 
-      if( error ) {
-        EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+      error = stumpless_get_error();
+      EXPECT_TRUE(error != NULL);
+
+      if (error) {
+        EXPECT_EQ(error->id, STUMPLESS_ADDRESS_FAILURE);
       }
     }
   }

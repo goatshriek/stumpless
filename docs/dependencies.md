@@ -5,6 +5,12 @@ below:
  * `cmake` for build targets and orchestration
  * a toolchain that can be used by cmake (gcc, for example)
 
+If you want to build the C++ language bindings, you will need `wrapture`
+installed. It is available on rubygems.org as a packaged gem. You can also
+use bundler to install it with the project Gemfile (`bundle install`), but note
+that this is intended for development and may install some other gems that you
+do not need if you just want to build and install the library.
+
 ## Testing
 The test suite for the project is written using the Google Test suite. It will
 be downloaded and built on the system automatically if the test suites are run,
@@ -40,7 +46,9 @@ found on the [m.css project page](https://mcss.mosra.cz/).
 ## Development
 If you wish to develop within the stumpless project itself, you will need a few
 additional tools:
- * `perl` for some of the development scripts
+ * `ruby` for some of the development scripts. If you have bundler, you can use
+   the Gemfile (run `bundle install` from the project root) to install all the
+   gems you might need at once.
  * `indent` to format sources according to the project standard
 
 ## Simplified Wrapper Interface Generator (SWIG)

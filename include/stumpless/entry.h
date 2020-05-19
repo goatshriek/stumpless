@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,21 +47,22 @@ extern "C" {
 /* severity codes as set by syslog.h */
 
 /** Emergency: system is unusable. */
-#    define STUMPLESS_SEVERITY_EMERG  LOG_EMERG
+#    define STUMPLESS_SEVERITY_EMERG    LOG_EMERG
 /** Alert: action must be taken immediately. */
-#    define STUMPLESS_SEVERITY_ALERT  LOG_ALERT
+#    define STUMPLESS_SEVERITY_ALERT    LOG_ALERT
 /** Critical: critical conditions. */
-#    define STUMPLESS_SEVERITY_CRIT   LOG_CRIT
+#    define STUMPLESS_SEVERITY_CRIT     LOG_CRIT
 /** Error: error conditions. */
-#    define STUMPLESS_SEVERITY_ERR    LOG_ERR
+#    define STUMPLESS_SEVERITY_ERR      LOG_ERR
 /** Warning: warning conditions. */
-#    define STUMPLESS_SEVERITY_WARN   LOG_WARN
+#    define STUMPLESS_SEVERITY_WARN     LOG_WARNING
+#    define STUMPLESS_SEVERITY_WARNING  LOG_WARNING
 /** Notice: normal but significant condition. */
-#    define STUMPLESS_SEVERITY_NOTICE LOG_NOTICE
+#    define STUMPLESS_SEVERITY_NOTICE   LOG_NOTICE
 /** Informational: informational messages. */
-#    define STUMPLESS_SEVERITY_INFO   LOG_INFO
+#    define STUMPLESS_SEVERITY_INFO     LOG_INFO
 /** Debug: debug-level messages. */
-#    define STUMPLESS_SEVERITY_DEBUG  LOG_DEBUG
+#    define STUMPLESS_SEVERITY_DEBUG    LOG_DEBUG
 
 /** Creates a severity mask for the provided severity. */
 #    define STUMPLESS_SEVERITY_MASK(severity) (LOG_MASK(severity))
@@ -119,14 +120,15 @@ extern "C" {
 #  else
 
 /* severity codes as specified in RFC 5424 */
-#    define STUMPLESS_SEVERITY_EMERG  0
-#    define STUMPLESS_SEVERITY_ALERT  1
-#    define STUMPLESS_SEVERITY_CRIT   2
-#    define STUMPLESS_SEVERITY_ERR    3
-#    define STUMPLESS_SEVERITY_WARN   4
-#    define STUMPLESS_SEVERITY_NOTICE 5
-#    define STUMPLESS_SEVERITY_INFO   6
-#    define STUMPLESS_SEVERITY_DEBUG  7
+#    define STUMPLESS_SEVERITY_EMERG   0
+#    define STUMPLESS_SEVERITY_ALERT   1
+#    define STUMPLESS_SEVERITY_CRIT    2
+#    define STUMPLESS_SEVERITY_ERR     3
+#    define STUMPLESS_SEVERITY_WARN    4
+#    define STUMPLESS_SEVERITY_WARNING 4
+#    define STUMPLESS_SEVERITY_NOTICE  5
+#    define STUMPLESS_SEVERITY_INFO    6
+#    define STUMPLESS_SEVERITY_DEBUG   7
 
 #    define STUMPLESS_SEVERITY_MASK(severity) (1<<(severity))
 #    define STUMPLESS_SEVERITY_MASK_UPTO(severity) ((1<<(severity+1))-1)
@@ -215,7 +217,7 @@ struct stumpless_param {
 /**
  * An element of structured data.
  *
- * Elements must have a name, but may not have any parameters. Their compoments
+ * Elements must have a name, but may not have any parameters. Their components
  * must comply with RFC 5424.
  */
 struct stumpless_element {
@@ -294,11 +296,57 @@ struct stumpless_element *
 stumpless_add_param( struct stumpless_element *element,
                      struct stumpless_param *param );
 
+/**
+ * An alias for stumpless_destroy_element_and_contents.
+ *
+ * @param element The element to destroy.
+ */
 void
 stumpless_destroy_element( struct stumpless_element *element );
 
+/**
+ * Destroys an element as well as all params that it contains, freeing any
+ * allocated memory.
+ *
+ * @param element The element to destroy.
+ */
+void
+stumpless_destroy_element_and_contents( struct stumpless_element *element );
+
+/**
+ * Destroys an element, freeing any allocated memory. Associated params are left
+ * untouched, and must be destroyed separately.
+ *
+ * @param element The element to destroy.
+ */
+void
+stumpless_destroy_element_only( struct stumpless_element *element );
+
+/**
+ * An alias for stumpless_destroy_entry_and_contents.
+ *
+ * @param entry The entry to destroy.
+ */
 void
 stumpless_destroy_entry( struct stumpless_entry *entry );
+
+/**
+ * Destroys an entry as well as all elements and params that it contains,
+ * freeing any allocated memory.
+ *
+ * @param entry The entry to destroy.
+ */
+void
+stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
+
+/**
+ * Destroys an entry, freeing any allocated memory. Associated elements and
+ * params are left untouched, and must be destroyed separately.
+ *
+ * @param entry The entry to destroy.
+ */
+void
+stumpless_destroy_entry_only( struct stumpless_entry *entry );
 
 void
 stumpless_destroy_param( struct stumpless_param *param );
@@ -309,11 +357,11 @@ stumpless_new_element( const char *name );
 /**
  * Creates a new entry with the given parameters.
  *
- * @param facility The facility code of the entry. This should be a
- * \c STUMPLESS_FACILITY value.
+ * @param facility The facility code of the event this entry describes. This
+ * should be a \c STUMPLESS_FACILITY value.
  *
- * @param severity The severity code of the entry. This should be a
- * \c STUMPLESS_SEVERITY value.
+ * @param severity The severity code of the event this entry describes. This
+ * should be a \c STUMPLESS_SEVERITY value.
  *
  * @param app_name The app_name of the entry. If this is NULL, then it will be
  * blank in the entry (a single '-' character).
