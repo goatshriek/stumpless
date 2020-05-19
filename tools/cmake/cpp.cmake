@@ -97,7 +97,7 @@ endif()
 file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
 add_custom_command(
-  OUTPUT ${GENERATED_CPP_LIB_SOURCES}# ${GENERATED_CPP_LIB_HEADERS}
+  OUTPUT ${GENERATED_CPP_LIB_SOURCES}
   COMMAND wrapture ${WRAPTURE_SPECS}
   DEPENDS ${WRAPTURE_SPECS}
   WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
@@ -123,6 +123,10 @@ set_target_properties(stumplesscpp
   PROPERTIES
     VERSION ${PROJECT_VERSION}
 )
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+  target_compile_options(stumplesscpp PUBLIC "-std=c++11")
+endif()
 
 add_cpp_test(entry
   SOURCES

@@ -34,7 +34,7 @@ project team is not currently big enough to realistically make any promises, so
 timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
-## 1.6.0
+## 1.6.0 (next minor release)
  * [ADD] **Logging functions that can be compiled out**
    A common logging idiom is to log at different verbosity levels, and use
    different levels in different contexts, for example debug during development,
