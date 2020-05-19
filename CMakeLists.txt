@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 1.5.0)
 
-option(ENABLE_CPP "include the c++ library" OFF)
+string(CONCAT enable_cpp_help_string
+  "Build the C++ language binding library. The library will be added to the "
+  "'all' target and will be installed via the 'install' target, alongside the "
+  "C library. Other targets (such as 'docs' and 'check') will have a '-cpp' "
+  "version that takes the same action for the C++ library. For example, build "
+  "the 'check-cpp' target to build and run the test suite for the C++ library."
+)
+option(ENABLE_CPP ${enable_cpp_help_string} OFF)
+
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
