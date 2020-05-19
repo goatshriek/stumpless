@@ -663,7 +663,7 @@ if(ENABLE_CPP)
   if(HAVE_WRAPTURE)
     include(tools/cmake/cpp.cmake)
   else()
-    message("C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
+    message(WARNING "C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
   endif(HAVE_WRAPTURE)
 endif()
 
