@@ -124,7 +124,7 @@ set_target_properties(stumplesscpp
     VERSION ${PROJECT_VERSION}
 )
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
   target_compile_options(stumplesscpp PUBLIC "-std=c++11")
 endif()
 
