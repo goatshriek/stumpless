@@ -1,0 +1,166 @@
+version: "0.4.2"
+classes:
+  - name: "Entry"
+    doc: |
+      A log entry.
+
+      Entries are the basic element of logging in Stumpless.
+    namespace: "stumplesscpp"
+    equivalent-struct:
+      name: "stumpless_entry"
+      includes:
+        - "stumpless/entry.h"
+    type: "pointer"
+    constructors:
+      - doc: "Creates an Entry with the given properties."
+        wrapped-function:
+          name: "vstumpless_new_entry"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "facility"
+              doc: |
+                The facility code of the event this entry describes.
+              type:
+                name: "Facility"
+                includes: "Facility.hpp"
+              value: "static_cast<int>(facility)"
+            - name: "severity"
+              doc: |
+                The severity of the event this entry describes.
+              type:
+                name: "Severity"
+                includes: "Severity.hpp"
+              value: "static_cast<int>(severity)"
+            - name: "app_name"
+              doc: |
+                The app_name of the entry. If this is NULL, then it will be
+                blank in the entry (a single '-' character).
+              type: "const char *"
+            - name: "msgid"
+              doc: |
+                The msgid of the entry. If this is NULL, then it will be
+                blank in the entry (a single '-' character).
+              type: "const char *"
+            - name: "message"
+              doc: |
+                The message in the entry. This message may contain any format
+                specifiers valid in printf. If this is NULL, then it will be
+                blank in the entry (no characters). This also means that
+                characters such as % need to be escaped as they would be in
+                printf.
+              type: "const char *"
+            - name: "..."
+              doc: |
+                Substitutions for any format specifiers provided in message. The
+                number of substitutions provided must exactly match the number
+                of specifiers given.
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+    destructor:
+      doc: |
+        Destroys the Entry and frees any memory allocated for it.
+      wrapped-function:
+        name: "stumpless_destroy_entry_only"
+        includes:
+          - "stumpless/entry.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - name: "SetAppName"
+        doc: "Sets the app name for an entry."
+        params:
+          - name: "app_name"
+            doc: |
+              The new app_name for the entry as a NULL-terminated string. This
+              will be copied in to the entry, and therefore may be modified or
+              freed after this call without affecting the entry.
+            type: "const char *"
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_app_name"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "app_name"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "AddElement"
+        doc: "Adds an element to an entry."
+        params:
+          - name: "element"
+            doc: "The element to add."
+            type: "Element&"
+            includes: "Element.hpp"
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_element"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element"
+              type: "struct stumpless_element *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "AddElement"
+        doc: "Adds an element to an entry."
+        params:
+          - name: "element"
+            doc: "A pointer to the element to add."
+            type: "Element *"
+            includes: "Element.hpp"
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_element"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element"
+              type: "struct stumpless_element *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetMessage"
+        doc: "Sets the message of an Entry."
+        params:
+          - name: "message"
+            doc: |
+              The new message to set on the entry. The message may contain any
+              format specifiers valid in printf. If this is NULL, then it will
+              be blank in the entry (no characters). This also means that
+              characters such as % need to be escaped as they would be in
+              printf.
+            type: "const char *"
+          - name: "..."
+            doc: |
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "vstumpless_set_entry_message"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "message"
+              type: "const char *"
+            - value: "..."
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - use-template: "wel-functions"

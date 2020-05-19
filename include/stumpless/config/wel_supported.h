@@ -147,7 +147,7 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     LPCSTR str );
 
 /**
- * Sets the insertion strings of a Windows Even Log entry.
+ * Sets the insertion strings of a Windows Event Log entry.
  *
  * Instead of setting each insertion string separately via
  * \c stumpless_set_wel_insertion_string this function can set the insertion

@@ -1,0 +1,72 @@
+version: "0.4.2"
+classes:
+  - name: "Element"
+    doc: >
+      An element of structured data.
+
+      Elements must have a name, but may not have any parameters. Their
+      components must comply with RFC 5424.
+    namespace: "stumplesscpp"
+    equivalent-struct:
+      name: "stumpless_element"
+      includes:
+        - "stumpless/entry.h"
+    constructors:
+      - doc: "Creates a new Element with the given name."
+        params:
+          - name: "name"
+            doc: "The name of the element."
+            type: "const char *"
+        wrapped-function:
+          name: "stumpless_new_element"
+          includes:
+            - "stumpless/entry.h"
+          params:
+            - name: "name"
+              doc: "The name of the element."
+              type: "const char *"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+    destructor:
+      wrapped-function:
+        name: "stumpless_destroy_element_only"
+        includes:
+          - "stumpless/entry.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - name: "AddParam"
+        doc: "Adds a Param to this Element."
+        params:
+          - name: "new_param"
+            doc: "The Param to add to the Element."
+            type: "Param &"
+            includes: "Param.hpp"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_param"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "new_param"
+              type: "struct stumpless_param *"
+      - name: "AddParam"
+        doc: "Adds a Param to this Element."
+        params:
+          - name: "new_param"
+            doc: "The Param to add to the Element."
+            type: "Param *"
+            includes: "Param.hpp"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_param"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "new_param"
+              type: "struct stumpless_param *"
