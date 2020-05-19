@@ -108,13 +108,10 @@ matrix:
         - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
     - name: "linux, with c++"
       os: linux
-      dist: trusty
+      dist: xenial
       addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
         - BUILD_ARGS="-DENABLE_CPP=ON"
