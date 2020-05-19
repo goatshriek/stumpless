@@ -1,0 +1,190 @@
+version: "0.4.0"
+templates:
+  - name: "wel-functions"
+    value:
+      - name: "GetWelInsertionString"
+        doc: "Gets an insertion string from a Windows Log Event entry."
+        params:
+          - name: "index"
+            doc: "The index of the insertion string to retrieve."
+            type:
+              name: "WORD"
+              includes: "windows.h"
+        return:
+          doc: "The specified insertion string."
+          type: "LPCSTR"
+        wrapped-function:
+          name: "stumpless_get_wel_insertion_string"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+      - name: "SetWelCategory"
+        doc: >
+          Sets the category of an entry for use with a Windows Event Log target.
+
+          Entries that are going to be sent to a Windows Event Log target must
+          have the category specified before they are sent.
+        params:
+          - name: "category"
+            doc: >
+              The category to assign. This should be a category defined in a
+              header generated using the Windows Message Compiler.
+            type:
+              name: "WORD"
+              includes: "windows.h"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_wel_category"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "category"
+      - name: "SetWelEventId"
+        doc: >
+          Sets the event id of an entry for use with a Windows Event Log target.
+
+          Entries that are going to be sent to a Windows Event Log target must
+          have the event id specified before they are sent.
+        params:
+          - name: "event_id"
+            doc: >
+              The event id to assign. This should be a category defined in a
+              header generated using the Windows Message Compiler.
+            type:
+              name: "DWORD"
+              includes: "windows.h"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_wel_event_id"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "event_id"
+      - name: "SetWelInsertionParam"
+        doc: >
+          Sets a Param to use for string insertion in a Windows Event Log entry.
+
+          Windows Events may include insertion strings that are replaced with a
+          specific value provided when logged. This function maps a specific
+          insertion string to a Param. The value of the param will then be
+          substituted for that insertion string when an event is logged. If the
+          windows event does not have an insertion string correlating to the
+          given index, it will simply be ignored.
+
+          Note that insertion strings use the value of the param at log time. If
+          the value changes between log entries, it will reflect those changes
+          in the log itself as well. This also means that you should not destroy
+          a param unless you are sure that no entries exist that are using it.
+        params:
+          - name: "index"
+            doc: >
+              The index of the insertion string to use the param for. Valid
+              values are greater than or equal to 0, with 0 being the first
+              insertion string in a message.
+            type:
+              name: "WORD"
+              includes: "windows.h"
+          - name: "param"
+            doc: >
+              The param to use for the insertion strings. The value of the param
+              is obtained at log time.
+            type:
+              name: "Param"
+              includes: "Param.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_wel_insertion_param"
+          includes: "stumpless/config/wel_supported.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+            - value: "param"
+              type: "struct stumpless_param *"
+      - name: "SetWelInsertionString"
+        doc: >
+          Sets a string to use for string insertion in a Windows Event Log
+          entry.
+
+          Windows Events may include insertion strings such as %1 or %3 that are
+          replaced with a specific value provided when logged. This function
+          maps a specific insertion string to a given string. The string will
+          then be substituted for that insertion string when an event is logged.
+          If the windows event does not have an insertion string correlating to
+          the given index, it will simply be ignored.
+
+          Note that the provided string is copied by the library, and therefore
+          will always hold the value that was in the string at the time of
+          invocation, even if the string changes or is destroyed later.
+        params:
+          - name: "index"
+            doc: >
+              The index of the insertion string to use the param for. Valid
+              values are greater than or equal to 0, with 0 being the first
+              insertion string in a message.
+            type:
+              name: "WORD"
+              includes: "windows.h"
+          - name: "str"
+            doc: "The string to use for the insertion string."
+            type:
+              name: "LPCSTR"
+              includes: "windows.h"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_wel_insertion_string"
+          includes: "stumpless/config/wel_supported.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+            - value: "str"
+      - name: "SetWelInsertionStrings"
+        doc: >
+          Sets the insertion strings of a Windows Event Log entry.
+
+          Instead of setting each insertion string separately, this function
+          can set all of them at the same time.
+        params:
+          - name: "count"
+            doc: "The number of insertion strings that will be provided."
+            type:
+              name: "WORD"
+              includes: "windows.h"
+          - name: "..."
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "vstumpless_set_wel_insertion_strings"
+          includes: "stumpless/config/wel_supported.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "count"
+            - value: "..."
+      - name: "SetWelType"
+        doc: >
+          Sets the type of an entry for use with a Windows Event Log target.
+
+          Entries that are going to be sent to a Windows Event Log target must
+          have the type specified before they are sent.
+        params:
+          - name: "type"
+            doc: >
+              The type to assign. This should be a type defined in a
+              header generated using the Windows Message Compiler.
+            type:
+              name: "WORD"
+              includes: "windows.h"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_wel_type"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "type"

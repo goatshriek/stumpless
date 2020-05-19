@@ -2,6 +2,15 @@ cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 1.5.0)
 
+string(CONCAT enable_cpp_help_string
+  "Build the C++ language binding library. The library will be added to the "
+  "'all' target and will be installed via the 'install' target, alongside the "
+  "C library. Other targets (such as 'docs' and 'check') will have a '-cpp' "
+  "version that takes the same action for the C++ library. For example, build "
+  "the 'check-cpp' target to build and run the test suite for the C++ library."
+)
+option(ENABLE_CPP ${enable_cpp_help_string} OFF)
+
 option(BUILD_PYTHON "include the python libary" OFF)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -12,7 +21,47 @@ set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
 
+string(CONCAT benchmark_path_help_string
+  "A directory with a build of google benchmark that can be used instead of "
+  "downloading and building the library during build. "
+  "In order for this to be used the directory must include ALL of the "
+  "following at configuration time: the benchmark and benchmark_main "
+  "libraries, and the benchmark/benchmark.h header. "
+  "An easy way to set this up is to perform a normal build first, and then "
+  "copy the necessary files out of the build directory into a separate folder "
+  "which can then be used in future builds."
+)
+set(BENCHMARK_PATH ${PROJECT_BINARY_DIR}
+  CACHE PATH ${benchmark_path_help_string}
+)
+
+string(CONCAT gtest_path_help_string
+  "A directory with a build of google test that can be used instead of "
+  "downloading and building the library during build. "
+  "In order for this to be used the directory must include ALL of the "
+  "following at configuration time: the gtest, gtest_main, and gmock "
+  "libraries, the gtest/gtest.h header, and the gmock/gmock.h header. "
+  "An easy way to set this up is to perform a normal build first, and then "
+  "copy the necessary files out of the build directory into a separate folder "
+  "which can then be used in future builds."
+)
+set(GTEST_PATH ${PROJECT_BINARY_DIR}
+  CACHE PATH ${gtest_path_help_string}
+)
+
+# looking for packages and programs
 find_package(Threads REQUIRED)
+
+# documentation and doxygen setup
+set(PROJECT_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
+find_program(HAVE_DOXYGEN NAMES doxygen)
+if(HAVE_DOXYGEN)
+  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile)
+
+  add_custom_target(docs
+    COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
+  )
+endif(HAVE_DOXYGEN)
 
 
 # load modules
@@ -22,7 +71,10 @@ include(ExternalProject)
 
 
 # load utilities
-include(tools/cmake/google_libs.cmake) # needs to be before benchmark and gtest
+include(tools/cmake/google_libs.cmake)
+include(tools/cmake/add_found_library.cmake)
+# the above two need to be before benchmark and gtest
+
 include(tools/cmake/benchmark.cmake)
 include(tools/cmake/example.cmake)
 include(tools/cmake/gtest.cmake)
@@ -47,6 +99,8 @@ check_symbol_exists(_SC_PAGESIZE unistd.h HAVE_UNISTD_SC_PAGESIZE)
 check_symbol_exists(sysconf unistd.h HAVE_UNISTD_SYSCONF)
 check_symbol_exists(wcstombs_s windows.h HAVE_WCSTOMBS_S)
 
+find_program(HAVE_WRAPTURE NAMES wrapture)
+
 if(EXISTS "/var/run/syslog")
   set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
 else()
@@ -68,6 +122,26 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/file.c
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
+)
+
+
+# wrapture support
+set(WRAPTURE_SPECS
+  # template files must be first
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/error_templates.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/target_templates.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/buffer_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/element.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/entry.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/error.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/facility.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/file_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/memory.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/param.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/severity.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/stream_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/version.yml
 )
 
 
@@ -166,6 +240,7 @@ else()
   set(STUMPLESS_NETWORK_TARGETS_SUPPORTED TRUE)
 
   list(APPEND STUMPLESS_SOURCES src/target/network.c)
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/network_target.yml)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
@@ -287,6 +362,8 @@ else()
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/socket.c)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.c)
 
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/socket_target.yml)
+
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
     DESTINATION "include/stumpless/target"
@@ -317,6 +394,8 @@ if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
   message("windows event log targets are not supported without windows.h")
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
 
+  list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/no_wel_templates.yml)
+
   add_function_test(wel_unsupported
     SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
   )
@@ -325,6 +404,9 @@ else()
 
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
+
+  list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/have_wel_templates.yml)
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/wel_target.yml)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h
@@ -576,6 +658,16 @@ add_custom_target(bench
 )
 
 
+# c++ support
+if(ENABLE_CPP)
+  if(HAVE_WRAPTURE)
+    include(tools/cmake/cpp.cmake)
+  else()
+    message(WARNING "C++ library cannot be built without wrapture. You can install wrapture using standard gem installation tools, e.g. 'gem install wrapture'")
+  endif(HAVE_WRAPTURE)
+endif()
+
+
 # python support
 if(BUILD_PYTHON)
   add_swig_project()
@@ -621,14 +713,3 @@ if(BUILD_PYTHON)
 
 endif()
 
-
-# documentation generation
-find_program(HAVE_DOXYGEN NAMES doxygen)
-
-if(HAVE_DOXYGEN)
-  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile)
-
-  add_custom_target(docs
-    COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
-  )
-endif(HAVE_DOXYGEN)

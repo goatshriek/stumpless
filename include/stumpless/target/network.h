@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@
 /**
  * The default message size for UDP network targets.
  *
- * This is set to account for an MTU of 1500 byes, a 20 byte IP header, and an
+ * This is set to account for an MTU of 1500 bytes, a 20 byte IP header, and an
  * 8 byte datagram header. If you wish to change this value for a particular
  * target, then you must use the stumpless_set_udp_max_message_size() function
  * on the target.

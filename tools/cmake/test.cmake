@@ -71,6 +71,7 @@ function(private_add_performance_test)
       stumpless
       libbenchmark
       libbenchmarkmain
+      pthread
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   endif()
