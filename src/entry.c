@@ -289,8 +289,8 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
     return NULL;
   }
 
-  // todo need to check to see if the app_name is already set and free it before
-  // the assignment if it is (currently a memory leak)
+  // todo need to check to see if the app_name is already set and deallocate
+  // it before the assignment if it is (currently a memory leak)
 
   app_name_length = &( entry->app_name_length );
   entry->app_name = cstring_to_sized_string( app_name, app_name_length );
