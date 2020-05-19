@@ -1,0 +1,69 @@
+version: "0.4.2"
+classes:
+  - name: "WelTarget"
+    doc: >
+      Windows Event Log (WEL) targets allow messages to be sent to the Windows
+      event handling system.
+    namespace: "stumplesscpp"
+    equivalent-struct:
+      name: "stumpless_target"
+      includes: "stumpless/target.h"
+    constructors:
+      - doc: >
+          Opens a WelTarget on the local machine.
+        wrapped-function:
+          name: "stumpless_open_local_wel_target"
+          includes: "stumpless/target/wel.h"
+          params:
+            - name: "name"
+              doc: >
+                The name of the target to open. This should match the name of
+                the Windows Event Source that the logs will be added to.
+              type: "const char *"
+            - name: "options"
+              doc: >
+                The options to use for this target. This should be a bit-wise or
+                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
+                not need any options.
+              type: "int"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+      - doc: >
+          Opens a WelTarget on a remote machine.
+        wrapped-function:
+          name: "stumpless_open_remote_wel_target"
+          includes: "stumpless/target/wel.h"
+          params:
+            - name: "server"
+              doc: >
+                The remote server to log to. This should use the Universal
+                Naming Convention (UNC) of the remote end. If this parameter
+                is set to NULL, then the local machine is used. This is
+                equivalent to using the two argument constructor.
+              type: "const char *"
+            - name: "name"
+              doc: >
+                The name of the target to open. This should match the name of
+                the Windows Event Source that the logs will be added to.
+              type: "const char *"
+            - name: "options"
+              doc: >
+                The options to use for this target. This should be a bit-wise or
+                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
+                not need any options.
+              type: "int"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+    destructor:
+      doc: >
+        Closes this target and releases all memory and other resources held by
+        it.
+      wrapped-function:
+        name: "stumpless_close_wel_target"
+        includes: "stumpless/target/wel.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - use-template: "common-target-functions"

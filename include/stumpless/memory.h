@@ -87,7 +87,7 @@ void
  *
  * @param realloc_func A pointer to the memory reallocation function that is
  * desired. This function must have the same signature as the standard library
- * \c realloc function (which is the default if this is not called.
+ * \c realloc function (which is the default if this is not called).
  *
  * @return The new reallocation function.
  */

@@ -1,0 +1,252 @@
+version: "0.4.0"
+templates:
+  - name: "common-target-functions"
+    value:
+      - name: "GetDefaultFacility"
+        doc: "Gets the default facility of this target."
+        return:
+          doc: "The default facility of this target."
+          type: "Facility"
+        wrapped-function:
+          name: "stumpless_get_default_facility"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
+      - name: "GetOption"
+        doc: >
+          Gets the given option for this target.
+
+          While the returned value is the option if it is set, callers can also
+          simply use the truth value of the return to see if the provided option
+          is set.
+        params:
+          - name: "option"
+            doc: "The option to check this target for."
+            type: "int"
+        return:
+          doc: >
+            The option if it is set on the target. If the option is not set,
+            then zero is returned.
+          type: "int"
+        wrapped-function:
+          name: "stumpless_get_option"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "option"
+          return:
+            type: "int"
+      - name: "IsOpen"
+        doc: >
+          Checks to see if this target is open.
+        return:
+          doc: "True if the target is open, false otherwise."
+          type: "bool"
+        wrapped-function:
+          name: "stumpless_target_is_open"
+          params:
+            - value: "equivalent-struct-pointer"
+      - name: "Log"
+        doc: "Writes a string message to this target."
+        params:
+          - name: "message"
+            doc: >
+              The message to log, optionally containing any format specifiers
+              valid in printf. This may be NULL, in which case an event with no
+              message is logged.
+            type: "const char *"
+          - name: "..."
+            doc: >
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "vstumpless_add_message"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "message"
+            - value: "..."
+      - name: "Log"
+        doc: "Writes a log message with the given priority to this target."
+        params:
+          - name: "priority"
+            doc: >
+              The priority of the message, described in RFC 5424 as the PRIVAL.
+              This should be the bitwise or of the integer values of a Facility
+              and a Severity.
+            type: "int"
+          - name: "message"
+            doc: >
+              The message to log, optionally containing any format specifiers
+              valid in printf.
+            type: "const char *"
+          - name: "..."
+            doc: >
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "vstumpless_add_log"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "priority"
+            - value: "message"
+            - value: "..."
+      - name: "Log"
+        doc: >
+          Writes a log message with the given facility and severity to this
+          target.
+        params:
+          - name: "facility"
+            doc: >
+              The facility code of the message.
+            type: "Facility"
+          - name: "severity"
+            doc: >
+              The severity code of the message.
+            type: "Severity"
+          - name: "message"
+            doc: >
+              The message to log, optionally containing any format specifiers
+              valid in printf.
+            type: "const char *"
+          - name: "..."
+            doc: >
+              Substitutions for any format specifiers provided in message. The
+              number of substitutions provided must exactly match the number of
+              specifiers given.
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "vstumpless_add_log"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>(facility) | static_cast<int>(severity)"
+            - value: "message"
+            - value: "..."
+      - name: "Log"
+        doc: "Writes an Entry to this target."
+        params:
+          - name: "entry"
+            doc: "the entry to write"
+            type: "Entry"
+            includes: "Entry.hpp"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_entry"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "entry"
+              type: "struct stumpless_entry *"
+          return:
+            type: "int"
+          use-template: "int-return-error-check"
+      - name: "Open"
+        doc: "Opens this target if it has been paused."
+        wrapped-function:
+          name: "stumpless_open_target"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+      - name: "SetDefaultAppName"
+        doc: "Sets the default app name for this target."
+        params:
+          - name: "app_name"
+            doc: "The new default app name, as a NULL-terminated string."
+            type: "const char *"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_target_default_app_name"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "app_name"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
+      - name: "SetDefaultFacility"
+        doc: "Sets the default facility of the target."
+        params:
+          - name: "facility"
+            doc: >
+              The default facility for the target to use. This should be a
+              STUMPLESS_FACILITY value.
+            type: "int"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_default_facility"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "facility"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
+      - name: "SetDefaultMsgid"
+        doc: "Sets the default message id for this target."
+        params:
+          - name: "msgid"
+            doc: "The new default message id, as a NULL-terminated string."
+            type: "const char *"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_target_default_msgid"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "msgid"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
+      - name: "SetOption"
+        doc: "Sets an option on a target."
+        params:
+          - name: "option"
+            doc: >
+              The option to set. This should be a STUMPLESS_OPTION value.
+            type: "int"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_option"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "option"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
+      - name: "UnsetOption"
+        doc: "Unsets an option on a target."
+        params:
+          - name: "option"
+            doc: >
+              The option to unset. This should be a STUMPLESS_OPTION value.
+            type: "int"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_unset_option"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "option"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"

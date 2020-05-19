@@ -217,7 +217,7 @@ struct stumpless_param {
 /**
  * An element of structured data.
  *
- * Elements must have a name, but may not have any parameters. Their compoments
+ * Elements must have a name, but may not have any parameters. Their components
  * must comply with RFC 5424.
  */
 struct stumpless_element {
@@ -296,11 +296,57 @@ struct stumpless_element *
 stumpless_add_param( struct stumpless_element *element,
                      struct stumpless_param *param );
 
+/**
+ * An alias for stumpless_destroy_element_and_contents.
+ *
+ * @param element The element to destroy.
+ */
 void
 stumpless_destroy_element( struct stumpless_element *element );
 
+/**
+ * Destroys an element as well as all params that it contains, freeing any
+ * allocated memory.
+ *
+ * @param element The element to destroy.
+ */
+void
+stumpless_destroy_element_and_contents( struct stumpless_element *element );
+
+/**
+ * Destroys an element, freeing any allocated memory. Associated params are left
+ * untouched, and must be destroyed separately.
+ *
+ * @param element The element to destroy.
+ */
+void
+stumpless_destroy_element_only( struct stumpless_element *element );
+
+/**
+ * An alias for stumpless_destroy_entry_and_contents.
+ *
+ * @param entry The entry to destroy.
+ */
 void
 stumpless_destroy_entry( struct stumpless_entry *entry );
+
+/**
+ * Destroys an entry as well as all elements and params that it contains,
+ * freeing any allocated memory.
+ *
+ * @param entry The entry to destroy.
+ */
+void
+stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
+
+/**
+ * Destroys an entry, freeing any allocated memory. Associated elements and
+ * params are left untouched, and must be destroyed separately.
+ *
+ * @param entry The entry to destroy.
+ */
+void
+stumpless_destroy_entry_only( struct stumpless_entry *entry );
 
 void
 stumpless_destroy_param( struct stumpless_param *param );
@@ -311,11 +357,11 @@ stumpless_new_element( const char *name );
 /**
  * Creates a new entry with the given parameters.
  *
- * @param facility The facility code of the entry. This should be a
- * \c STUMPLESS_FACILITY value.
+ * @param facility The facility code of the event this entry describes. This
+ * should be a \c STUMPLESS_FACILITY value.
  *
- * @param severity The severity code of the entry. This should be a
- * \c STUMPLESS_SEVERITY value.
+ * @param severity The severity code of the event this entry describes. This
+ * should be a \c STUMPLESS_SEVERITY value.
  *
  * @param app_name The app_name of the entry. If this is NULL, then it will be
  * blank in the entry (a single '-' character).

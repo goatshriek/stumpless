@@ -1,0 +1,37 @@
+version: "0.3.0"
+classes:
+  - name: "Version"
+    doc: "Describes this version of Stumpless."
+    namespace: "stumplesscpp"
+    equivalent-struct:
+      name: "stumpless_version"
+      includes: "stumpless/version.h"
+      members:
+        - name: "major"
+          type: "int"
+        - name: "minor"
+          type: "int"
+        - name: "patch"
+          type: "int"
+    functions:
+      - name: "GetCurrent"
+        static: true
+        return:
+          type: "Version"
+        wrapped-function:
+          name: "stumpless_get_version"
+          includes: "stumpless/version.h"
+      - name: "ToString"
+        return:
+          type: "std::string"
+          includes: "string"
+        wrapped-function:
+          name: "stumpless_version_to_string"
+          params:
+            - name: "equivalent-struct-pointer"
+          includes: "stumpless/version.h"
+    constants:
+      - name: "CURRENT_VERSION"
+        type: "char *"
+        value: "STUMPLESS_VERSION"
+        includes: "stumpless/config.h"

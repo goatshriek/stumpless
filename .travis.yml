@@ -4,6 +4,10 @@ matrix:
   include:
     - name: "windows"
       os: windows
+    - name: "windows, with c++"
+      os: windows
+      env:
+        - BUILD_ARGS="-DENABLE_CPP=ON"
     - name: "linux, gcc 6"
       os: linux
       addons:
@@ -102,6 +106,15 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc && CXX=g++"
         - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
+    - name: "linux, with c++"
+      os: linux
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - BUILD_ARGS="-DENABLE_CPP=ON"
     - name: "os x, clang"
       os: osx
       env:
@@ -116,9 +129,17 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
+    - name: "os x, with c++"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DENABLE_CPP=ON"
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
+  - gem update --system
+  - gem install bundler -v 2.1.4
+  - bundle install
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
