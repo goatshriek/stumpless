@@ -2,133 +2,133 @@ language: c
 
 matrix:
   include:
-#    - name: "windows"
-#      os: windows
-#    - name: "windows, with c++"
-#      os: windows
-#      env:
-#        - BUILD_ARGS="-DENABLE_CPP=ON"
-#    - name: "linux, gcc 6"
-#      os: linux
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-6
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-#    - name: "linux, gcc 7"
-#      os: linux
-#      arch: amd64
-#      dist: xenial
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-#    - name: "linux, amd64"
-#      os: linux
-#      arch: amd64
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#    - name: "linux, ppc64le"
-#      os: linux
-#      arch: ppc64le
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#    - name: "linux, s390x"
-#      os: linux
-#      arch: s390x
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#    - name: "linux, arm64"
-#      os: linux
-#      arch: arm64
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#    - name: "linux, debug"
-#      os: linux
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
-#    - name: "linux, release"
-#      os: linux
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Release"
-#    - name: "linux, all options off"
-#      os: linux
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
-#    - name: "linux, no unistd.h"
-#      os: linux
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#        - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
-#    - name: "linux, with c++"
-#      os: linux
-#      dist: xenial
-#      addons:
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc && CXX=g++"
-#        - BUILD_ARGS="-DENABLE_CPP=ON"
-#    - name: "os x, clang"
-#      os: osx
-#      env:
-#        - MATRIX_EVAL="CC=clang && CXX=clang++"
-#    - name: "os x, debug"
-#      os: osx
-#      env:
-#        - MATRIX_EVAL="CC=clang && CXX=clang++"
-#        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
-#    - name: "os x, all options off"
-#      os: osx
-#      env:
-#        - MATRIX_EVAL="CC=clang && CXX=clang++"
-#        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
+    - name: "windows"
+      os: windows
+    - name: "windows, with c++"
+      os: windows
+      env:
+        - BUILD_ARGS="-DENABLE_CPP=ON"
+    - name: "linux, gcc 6"
+      os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+    - name: "linux, gcc 7"
+      os: linux
+      arch: amd64
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "linux, amd64"
+      os: linux
+      arch: amd64
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+    - name: "linux, ppc64le"
+      os: linux
+      arch: ppc64le
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+    - name: "linux, s390x"
+      os: linux
+      arch: s390x
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+    - name: "linux, arm64"
+      os: linux
+      arch: arm64
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+    - name: "linux, debug"
+      os: linux
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
+    - name: "linux, release"
+      os: linux
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Release"
+    - name: "linux, all options off"
+      os: linux
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
+    - name: "linux, no unistd.h"
+      os: linux
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - BUILD_ARGS="-DHAVE_UNISTD_H=FALSE"
+    - name: "linux, with c++"
+      os: linux
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - BUILD_ARGS="-DENABLE_CPP=ON"
+    - name: "os x, clang"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - name: "os x, debug"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
+    - name: "os x, all options off"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOW_EVENT_LOG_TARGETS=OFF"
     - name: "os x, with c++"
       os: osx
       env:
