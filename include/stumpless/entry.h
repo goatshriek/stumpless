@@ -36,39 +36,15 @@
 #    include <windows.h>
 #  endif
 
+/* included for compatability with all 1.x releases */
+#  include <stumpless/severity.h>
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
 
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    include <syslog.h>
-
-
-/* severity codes as set by syslog.h */
-
-/** Emergency: system is unusable. */
-#    define STUMPLESS_SEVERITY_EMERG    LOG_EMERG
-/** Alert: action must be taken immediately. */
-#    define STUMPLESS_SEVERITY_ALERT    LOG_ALERT
-/** Critical: critical conditions. */
-#    define STUMPLESS_SEVERITY_CRIT     LOG_CRIT
-/** Error: error conditions. */
-#    define STUMPLESS_SEVERITY_ERR      LOG_ERR
-/** Warning: warning conditions. */
-#    define STUMPLESS_SEVERITY_WARN     LOG_WARNING
-#    define STUMPLESS_SEVERITY_WARNING  LOG_WARNING
-/** Notice: normal but significant condition. */
-#    define STUMPLESS_SEVERITY_NOTICE   LOG_NOTICE
-/** Informational: informational messages. */
-#    define STUMPLESS_SEVERITY_INFO     LOG_INFO
-/** Debug: debug-level messages. */
-#    define STUMPLESS_SEVERITY_DEBUG    LOG_DEBUG
-
-/** Creates a severity mask for the provided severity. */
-#    define STUMPLESS_SEVERITY_MASK(severity) (LOG_MASK(severity))
-/** Creates a severity mask from EMERG up to the provided severity. */
-#    define STUMPLESS_SEVERITY_MASK_UPTO(severity) (LOG_UPTO(severity))
-
 
 /* facility codes as set by syslog.h */
 
@@ -118,20 +94,6 @@ extern "C" {
 #    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT
 
 #  else
-
-/* severity codes as specified in RFC 5424 */
-#    define STUMPLESS_SEVERITY_EMERG   0
-#    define STUMPLESS_SEVERITY_ALERT   1
-#    define STUMPLESS_SEVERITY_CRIT    2
-#    define STUMPLESS_SEVERITY_ERR     3
-#    define STUMPLESS_SEVERITY_WARN    4
-#    define STUMPLESS_SEVERITY_WARNING 4
-#    define STUMPLESS_SEVERITY_NOTICE  5
-#    define STUMPLESS_SEVERITY_INFO    6
-#    define STUMPLESS_SEVERITY_DEBUG   7
-
-#    define STUMPLESS_SEVERITY_MASK(severity) (1<<(severity))
-#    define STUMPLESS_SEVERITY_MASK_UPTO(severity) ((1<<(severity+1))-1)
 
 /* facility codes as specified in RFC 5424*/
 #    define STUMPLESS_FACILITY_KERN   0
