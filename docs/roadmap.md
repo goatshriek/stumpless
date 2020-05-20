@@ -110,11 +110,15 @@ takes longer than expected.
    specific values will make them consistent across all builds, increasing
    interoperability.
  * [CHANGE] **Facilities, severities, options, element functions, and param
-   functions will be moved to separate headers**
-   These items are all currently in the `stumpless/entry.h` header, which is
-   getting too large. Separating these will allow for smaller, more logically
-   separate headers. While the roll-up header will still include all of these,
-   code that is including specific headers may break as a result of this change.
+   functions will only be available in separate headers**
+   These items are all currently included in the `stumpless/entry.h` header,
+   which was originally getting too large. Separating these allowed for smaller,
+   more logically separate headers. While the roll-up header `stumpless.h` will
+   still include all of these, `stumpless/entry.h` will no longer included the
+   other headers. While the header split out was done in a minor release, the
+   removal of the headers from `stumpless/entry.h` is being delayed to a major
+   release as code that is including specific headers may break as a result of
+   this change.
  * [CHANGE] **Facilities and severities will be defined by enumerations**
    Enumerations are a cleaner way to represent the set values, and can be made
    compatible with the `syslog.h` values if their backing `int` values match.
