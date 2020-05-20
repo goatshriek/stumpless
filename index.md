@@ -41,5 +41,5 @@ written using standard Doxygen syntax. You can generate the documentation
 yourself with the `docs` build target, or you can look at one of the online
 lists below:
 
- * [C Doxygen Documentation](./docs/c/latest)
- * [CPP Doxygen Documentation](./docs/cpp/latest)
+ * [C Doxygen Documentation](./docs/c/latest/index.html)
+ * [CPP Doxygen Documentation](./docs/cpp/latest/index.html)
