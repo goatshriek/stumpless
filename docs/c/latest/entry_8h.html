@@ -1,361 +1,1369 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8" />
-  <title>entry.h file | stumpless</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
-  <link rel="stylesheet" href="m-dark+doxygen.compiled.css" />
-  <link rel="icon" href="favicon-dark.png" type="image/png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#22272e" />
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>stumpless: entry.h File Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<header><nav id="navigation">
-  <div class="m-container">
-    <div class="m-row">
-      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">stumpless</a>
-      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
-        <a href="#search" class="m-dox-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
-          <path d="m6 0c-3.3144 0-6 2.6856-6 6 0 3.3144 2.6856 6 6 6 1.4858 0 2.8463-0.54083 3.8945-1.4355-0.0164 0.33797 0.14734 0.75854 0.5 1.1504l3.2227 3.7891c0.55185 0.6139 1.4517 0.66544 2.002 0.11524 0.55022-0.55022 0.49866-1.4501-0.11524-2.002l-3.7891-3.2246c-0.39184-0.35266-0.81242-0.51469-1.1504-0.5 0.89472-1.0482 1.4355-2.4088 1.4355-3.8945 0-3.3128-2.6856-5.998-6-5.998zm0 1.5625a4.4375 4.4375 0 0 1 4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375-4.4375 4.4375 4.4375 0 0 1 4.4375-4.4375z"/>
-        </svg></a>
-        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
-        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
-      </div>
-      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
-        <div class="m-row">
-          <ol class="m-col-t-6 m-col-m-none">
-            <li><a href="pages.html">Pages</a></li>
-            <li><a href="namespaces.html">Namespaces</a></li>
-          </ol>
-          <ol class="m-col-t-6 m-col-m-none" start="3">
-            <li><a href="annotated.html">Classes</a></li>
-            <li><a href="files.html">Files</a></li>
-            <li class="m-show-m"><a href="#search" class="m-dox-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
-              <path d="m6 0c-3.3144 0-6 2.6856-6 6 0 3.3144 2.6856 6 6 6 1.4858 0 2.8463-0.54083 3.8945-1.4355-0.0164 0.33797 0.14734 0.75854 0.5 1.1504l3.2227 3.7891c0.55185 0.6139 1.4517 0.66544 2.002 0.11524 0.55022-0.55022 0.49866-1.4501-0.11524-2.002l-3.7891-3.2246c-0.39184-0.35266-0.81242-0.51469-1.1504-0.5 0.89472-1.0482 1.4355-2.4088 1.4355-3.8945 0-3.3128-2.6856-5.998-6-5.998zm0 1.5625a4.4375 4.4375 0 0 1 4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375-4.4375 4.4375 4.4375 0 0 1 4.4375-4.4375z"/>
-            </svg></a></li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav></header>
-<main><article>
-  <div class="m-container m-container-inflatable">
-    <div class="m-row">
-      <div class="m-col-l-10 m-push-l-1">
-        <h1>
-          entry.h <span class="m-thin">file</span>
-        </h1>
-        <p>Types and functions for creating and modifying entries.</p>
-        <div class="m-block m-default">
-          <h3>Contents</h3>
-          <ul>
-            <li>
-              Reference
-              <ul>
-                <li><a href="#nested-classes">Classes</a></li>
-                <li><a href="#func-members">Functions</a></li>
-                <li><a href="#defines">Defines</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-<p>Facilities, severities, and options are created to be compatible with the syslog.h header if it is found on the system. Otherwise, they are defined as closely as possible to the RFC 5424 standard.</p>
-        <section id="nested-classes">
-          <h2><a href="#nested-classes">Classes</a></h2>
-          <dl class="m-dox">
-            <dt>
-              struct <a href="structstumpless__param.html" class="m-dox">stumpless_param</a>
-            </dt>
-            <dd>A parameter within a structured data element.</dd>
-            <dt>
-              struct <a href="structstumpless__element.html" class="m-dox">stumpless_element</a>
-            </dt>
-            <dd>An element of structured data.</dd>
-            <dt>
-              struct <a href="structstumpless__entry.html" class="m-dox">stumpless_entry</a>
-            </dt>
-            <dd>A log entry.</dd>
-          </dl>
-        </section>
-        <section id="func-members">
-          <h2><a href="#func-members">Functions</a></h2>
-          <dl class="m-dox">
-            <dt>
-              <span class="m-dox-wrap-bumper">auto <a href="#ad3ce3c911a33587eece1ffd3532b68ca" class="m-dox">stumpless_new_entry</a>(</span><span class="m-dox-wrap">int facility,
-              int severity,
-              const char* app_name,
-              const char* msgid,
-              const char* message,
-              ...) -&gt; struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>*</span>
-            </dt>
-            <dd>Creates a new entry with the given parameters.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">auto <a href="#a6bdf09e512dbfe78c66a9923cbdf306c" class="m-dox">stumpless_set_entry_message</a>(</span><span class="m-dox-wrap">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* entry,
-              const char* message,
-              ...) -&gt; struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>*</span>
-            </dt>
-            <dd>Sets the message of a given entry.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">auto <a href="#ab575e9c6814f5b9722350e7412640b1e" class="m-dox">vstumpless_new_entry</a>(</span><span class="m-dox-wrap">int facility,
-              int severity,
-              const char* app_name,
-              const char* msgid,
-              const char* message,
-              va_list subs) -&gt; struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>*</span>
-            </dt>
-            <dd>Creates a new entry with the given parameters.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">auto <a href="#ae4c06b144b66a02ade646ab3c106c71d" class="m-dox">vstumpless_set_entry_message</a>(</span><span class="m-dox-wrap">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* entry,
-              const char* message,
-              va_list subs) -&gt; struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>*</span>
-            </dt>
-            <dd>Sets the message of a given entry.</dd>
-          </dl>
-        </section>
-        <section id="define-members">
-          <h2><a href="#define-members">Defines</a></h2>
-          <dl class="m-dox">
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#ad537e7d158d804b5edfc51c810917a4f" class="m-dox-self" name="ad537e7d158d804b5edfc51c810917a4f">STUMPLESS_FACILITY_SYSLOG</a></span>
-            </dt>
-            <dd>Messages generated internally by logging daemon.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#ab81112d328adce81873de2637c2bf082" class="m-dox-self" name="ab81112d328adce81873de2637c2bf082">STUMPLESS_FACILITY_AUTH2</a></span>
-            </dt>
-            <dd>Security/authorization messages.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#a17bf9a04266d318ffb9cd5fc95e1261a" class="m-dox-self" name="a17bf9a04266d318ffb9cd5fc95e1261a">STUMPLESS_FACILITY_FTP</a></span>
-            </dt>
-            <dd>FTP daemon.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#a0c38a51bed6c41d98ddde534845d7301" class="m-dox-self" name="a0c38a51bed6c41d98ddde534845d7301">STUMPLESS_FACILITY_NTP</a></span>
-            </dt>
-            <dd>NTP subsystem.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#a094b395bd1b97ca2bd30cb43d565a69c" class="m-dox-self" name="a094b395bd1b97ca2bd30cb43d565a69c">STUMPLESS_FACILITY_AUDIT</a></span>
-            </dt>
-            <dd>Log audit.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#a847c36eac7c989dfd3b5576eeb4e9ff9" class="m-dox-self" name="a847c36eac7c989dfd3b5576eeb4e9ff9">STUMPLESS_FACILITY_ALERT</a></span>
-            </dt>
-            <dd>Log alert.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#a55759756229b97cedd3961c04a812cbf" class="m-dox-self" name="a55759756229b97cedd3961c04a812cbf">STUMPLESS_FACILITY_CRON2</a></span>
-            </dt>
-            <dd>Clock daemon.</dd>
-            <dt>
-              <span class="m-dox-wrap-bumper">#define <a href="#aac7a81cb7d3afe8e655d191014ca7195" class="m-dox-self" name="aac7a81cb7d3afe8e655d191014ca7195">STUMPLESS_OPTION_NONE</a></span>
-            </dt>
-            <dd>Empty option mask for explicit &#x27;no option&#x27; use.</dd>
-          </dl>
-        </section>
-        <section>
-          <h2>Function documentation</h2>
-          <section class="m-dox-details" id="ad3ce3c911a33587eece1ffd3532b68ca"><div>
-            <h3>
-              <span class="m-dox-wrap-bumper">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* </span><span class="m-dox-wrap"><span class="m-dox-wrap-bumper"><a href="#ad3ce3c911a33587eece1ffd3532b68ca" class="m-dox-self">stumpless_new_entry</a>(</span><span class="m-dox-wrap">int facility,
-              int severity,
-              const char* app_name,
-              const char* msgid,
-              const char* message,
-              ...)</span></span>
-            </h3>
-            <p>Creates a new entry with the given parameters.</p>
-            <table class="m-table m-fullwidth m-flat">
-              <thead>
-                <tr><th colspan="2">Parameters</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="width: 1%">facility</td>
-                  <td>The facility code of the entry. This should be a <code>STUMPLESS_FACILITY</code> value.</td>
-                </tr>
-                <tr>
-                  <td>severity</td>
-                  <td>The severity code of the entry. This should be a <code>STUMPLESS_SEVERITY</code> value.</td>
-                </tr>
-                <tr>
-                  <td>app_name</td>
-                  <td>The app_name of the entry. If this is NULL, then it will be blank in the entry (a single &#x27;-&#x27; character).</td>
-                </tr>
-                <tr>
-                  <td>msgid</td>
-                  <td>The message id of the entry. If this is NULL, then it will be blank in the entry (a single &#x27;-&#x27; character).</td>
-                </tr>
-                <tr>
-                  <td>message</td>
-                  <td>The message in the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). This also means that characters such as % need to be escaped as they would be in printf.</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Returns</th>
-                  <td>The created entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div></section>
-          <section class="m-dox-details" id="a6bdf09e512dbfe78c66a9923cbdf306c"><div>
-            <h3>
-              <span class="m-dox-wrap-bumper">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* </span><span class="m-dox-wrap"><span class="m-dox-wrap-bumper"><a href="#a6bdf09e512dbfe78c66a9923cbdf306c" class="m-dox-self">stumpless_set_entry_message</a>(</span><span class="m-dox-wrap">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* entry,
-              const char* message,
-              ...)</span></span>
-            </h3>
-            <p>Sets the message of a given entry.</p>
-            <table class="m-table m-fullwidth m-flat">
-              <thead>
-                <tr><th colspan="2">Parameters</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="width: 1%">entry</td>
-                  <td>The entry to modify.</td>
-                </tr>
-                <tr>
-                  <td>message</td>
-                  <td>The new message to set on the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). This also means that characters such as % need to be escaped as they would be in printf.</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Returns</th>
-                  <td>The modified entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div></section>
-          <section class="m-dox-details" id="ab575e9c6814f5b9722350e7412640b1e"><div>
-            <h3>
-              <span class="m-dox-wrap-bumper">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* </span><span class="m-dox-wrap"><span class="m-dox-wrap-bumper"><a href="#ab575e9c6814f5b9722350e7412640b1e" class="m-dox-self">vstumpless_new_entry</a>(</span><span class="m-dox-wrap">int facility,
-              int severity,
-              const char* app_name,
-              const char* msgid,
-              const char* message,
-              va_list subs)</span></span>
-            </h3>
-            <p>Creates a new entry with the given parameters.</p>
-            <table class="m-table m-fullwidth m-flat">
-              <thead>
-                <tr><th colspan="2">Parameters</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="width: 1%">facility</td>
-                  <td>The facility code of the entry. This should be a <code>STUMPLESS_FACILITY</code> value.</td>
-                </tr>
-                <tr>
-                  <td>severity</td>
-                  <td>The severity code of the entry. This should be a <code>STUMPLESS_SEVERITY</code> value.</td>
-                </tr>
-                <tr>
-                  <td>app_name</td>
-                  <td>The app_name of the entry. If this is NULL, then it will be blank in the entry (a single &#x27;-&#x27; character).</td>
-                </tr>
-                <tr>
-                  <td>msgid</td>
-                  <td>The message id of the entry. If this is NULL, then it will be blank in the entry (a single &#x27;-&#x27; character).</td>
-                </tr>
-                <tr>
-                  <td>message</td>
-                  <td>The message in the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). This also means that characters such as % need to be escaped as they would be in printf.</td>
-                </tr>
-                <tr>
-                  <td>subs</td>
-                  <td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call them.</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Returns</th>
-                  <td>The created entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div></section>
-          <section class="m-dox-details" id="ae4c06b144b66a02ade646ab3c106c71d"><div>
-            <h3>
-              <span class="m-dox-wrap-bumper">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* </span><span class="m-dox-wrap"><span class="m-dox-wrap-bumper"><a href="#ae4c06b144b66a02ade646ab3c106c71d" class="m-dox-self">vstumpless_set_entry_message</a>(</span><span class="m-dox-wrap">struct <a href="structstumpless__entry.html" class="m-dox">stumpless_<wbr />entry</a>* entry,
-              const char* message,
-              va_list subs)</span></span>
-            </h3>
-            <p>Sets the message of a given entry.</p>
-            <table class="m-table m-fullwidth m-flat">
-              <thead>
-                <tr><th colspan="2">Parameters</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="width: 1%">entry</td>
-                  <td>The entry to modify.</td>
-                </tr>
-                <tr>
-                  <td>message</td>
-                  <td>The new message to set on the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). Characters such as % need to be escaped as they would be in printf.</td>
-                </tr>
-                <tr>
-                  <td>subs</td>
-                  <td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call them.</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Returns</th>
-                  <td>The modified entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div></section>
-        </section>
-      </div>
-    </div>
-  </div>
-</article></main>
-<div class="m-dox-search" id="search">
-  <a href="#!" onclick="return hideSearch()"></a>
-  <div class="m-container">
-    <div class="m-row">
-      <div class="m-col-m-8 m-push-m-2">
-        <div class="m-dox-search-header m-text m-small">
-          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
-          <div id="search-symbolcount">&hellip;</div>
-        </div>
-        <div class="m-dox-search-content">
-          <form>
-            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
-          </form>
-          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
-          <div id="search-help" class="m-text m-dim m-text-center">
-            <p class="m-noindent">Search for symbols, directories, files, pages or
-            modules. You can omit any prefix from the symbol or file path; adding a
-            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
-            directory.</p>
-            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
-            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
-            <span class="m-label m-dim">Enter</span> to go.
-            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
-            copy a link to the result using <span class="m-label m-dim">⌘</span>
-            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
-            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
-
-          </div>
-          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
-          <ul id="search-results"></ul>
-        </div>
-      </div>
-    </div>
-  </div>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">stumpless
+   &#160;<span id="projectnumber">1.5.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
 </div>
-<script src="search.js"></script>
-<script src="searchdata.js" async="async"></script>
-<footer><nav>
-  <div class="m-container">
-    <div class="m-row">
-      <div class="m-col-l-10 m-push-l-1">
-        <p>stumpless. Created by <a href="https://doxygen.org/">Doxygen</a> 1.8.13 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
-      </div>
-    </div>
-  </div>
-</nav></footer>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle">
+<div class="title">entry.h File Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Types and functions for creating and modifying entries.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="id_8h_source.html">stumpless/id.h</a>&gt;</code><br />
+</div>
+<p><a href="entry_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html">stumpless_param</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parameter within a structured data element.  <a href="structstumpless__param.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html">stumpless_element</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An element of structured data.  <a href="structstumpless__element.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__entry.html">stumpless_entry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A log entry.  <a href="structstumpless__entry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a10e7d77142a8fb0217ff838d6614a3e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a10e7d77142a8fb0217ff838d6614a3e2">STUMPLESS_SEVERITY_EMERG</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a10e7d77142a8fb0217ff838d6614a3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52cdd482702836942e619bbffdbc6770"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a52cdd482702836942e619bbffdbc6770">STUMPLESS_SEVERITY_ALERT</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a52cdd482702836942e619bbffdbc6770"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaff66b910c83ad047dfedaa9001a76f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#afaff66b910c83ad047dfedaa9001a76f">STUMPLESS_SEVERITY_CRIT</a>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:afaff66b910c83ad047dfedaa9001a76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac57a96c1503de16c095baa623807273b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ac57a96c1503de16c095baa623807273b">STUMPLESS_SEVERITY_ERR</a>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:ac57a96c1503de16c095baa623807273b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fc06292937b1c61401a3f242315d141"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a9fc06292937b1c61401a3f242315d141">STUMPLESS_SEVERITY_WARN</a>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a9fc06292937b1c61401a3f242315d141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e34a2991f0925370801b0ca6ab0f708"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a7e34a2991f0925370801b0ca6ab0f708">STUMPLESS_SEVERITY_WARNING</a>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a7e34a2991f0925370801b0ca6ab0f708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8c0777e873747ebd78dba28fe7eda88"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ab8c0777e873747ebd78dba28fe7eda88">STUMPLESS_SEVERITY_NOTICE</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:ab8c0777e873747ebd78dba28fe7eda88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a55b3bd0a6b3a8bee65331da06732ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a9a55b3bd0a6b3a8bee65331da06732ce">STUMPLESS_SEVERITY_INFO</a>&#160;&#160;&#160;6</td></tr>
+<tr class="separator:a9a55b3bd0a6b3a8bee65331da06732ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41b8acacf30c3cfd88ca26b81da5efe7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a41b8acacf30c3cfd88ca26b81da5efe7">STUMPLESS_SEVERITY_DEBUG</a>&#160;&#160;&#160;7</td></tr>
+<tr class="separator:a41b8acacf30c3cfd88ca26b81da5efe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7926f86c8d1eb5ce19908c23a9773ac9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a7926f86c8d1eb5ce19908c23a9773ac9">STUMPLESS_SEVERITY_MASK</a>(severity)&#160;&#160;&#160;(1&lt;&lt;(severity))</td></tr>
+<tr class="separator:a7926f86c8d1eb5ce19908c23a9773ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57bc283ea0cfa0177f8742d514d4781b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a57bc283ea0cfa0177f8742d514d4781b">STUMPLESS_SEVERITY_MASK_UPTO</a>(severity)&#160;&#160;&#160;((1&lt;&lt;(severity+1))-1)</td></tr>
+<tr class="separator:a57bc283ea0cfa0177f8742d514d4781b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a554035c60bf1582d8176aaca9b2a7e06"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a554035c60bf1582d8176aaca9b2a7e06">STUMPLESS_FACILITY_KERN</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a554035c60bf1582d8176aaca9b2a7e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae960e2009518c849de9f1a169d527248"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ae960e2009518c849de9f1a169d527248">STUMPLESS_FACILITY_USER</a>&#160;&#160;&#160;(1&lt;&lt;3)</td></tr>
+<tr class="separator:ae960e2009518c849de9f1a169d527248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63902d75b9248f97753a1a232f8b8da2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a63902d75b9248f97753a1a232f8b8da2">STUMPLESS_FACILITY_MAIL</a>&#160;&#160;&#160;(2&lt;&lt;3)</td></tr>
+<tr class="separator:a63902d75b9248f97753a1a232f8b8da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a9287ae1a036387d06366e8b270e9be"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a8a9287ae1a036387d06366e8b270e9be">STUMPLESS_FACILITY_DAEMON</a>&#160;&#160;&#160;(3&lt;&lt;3)</td></tr>
+<tr class="separator:a8a9287ae1a036387d06366e8b270e9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedda4a48f83fc58d56b50821a0e09bc5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#aedda4a48f83fc58d56b50821a0e09bc5">STUMPLESS_FACILITY_AUTH</a>&#160;&#160;&#160;(4&lt;&lt;3)</td></tr>
+<tr class="separator:aedda4a48f83fc58d56b50821a0e09bc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ddebad58744bda5ce061f1833e0d665"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a1ddebad58744bda5ce061f1833e0d665">STUMPLESS_FACILITY_LPR</a>&#160;&#160;&#160;(6&lt;&lt;3)</td></tr>
+<tr class="separator:a1ddebad58744bda5ce061f1833e0d665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c8cf4f159fd65ef10db210aec4a8f47"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a1c8cf4f159fd65ef10db210aec4a8f47">STUMPLESS_FACILITY_NEWS</a>&#160;&#160;&#160;(7&lt;&lt;3)</td></tr>
+<tr class="separator:a1c8cf4f159fd65ef10db210aec4a8f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0919cd80d738a5353ce342816a3b3187"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a0919cd80d738a5353ce342816a3b3187">STUMPLESS_FACILITY_UUCP</a>&#160;&#160;&#160;(8&lt;&lt;3)</td></tr>
+<tr class="separator:a0919cd80d738a5353ce342816a3b3187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6a5124aca437a5ff2a2db16dcf54cfb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ac6a5124aca437a5ff2a2db16dcf54cfb">STUMPLESS_FACILITY_CRON</a>&#160;&#160;&#160;(9&lt;&lt;3)</td></tr>
+<tr class="separator:ac6a5124aca437a5ff2a2db16dcf54cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f470746a8988db491834fe0b89423d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a5f470746a8988db491834fe0b89423d3">STUMPLESS_FACILITY_LOCAL0</a>&#160;&#160;&#160;(16&lt;&lt;3)</td></tr>
+<tr class="separator:a5f470746a8988db491834fe0b89423d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678a5b42205a6f4123d72bd14f68c6e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a678a5b42205a6f4123d72bd14f68c6e2">STUMPLESS_FACILITY_LOCAL1</a>&#160;&#160;&#160;(17&lt;&lt;3)</td></tr>
+<tr class="separator:a678a5b42205a6f4123d72bd14f68c6e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfd562914da4f00e6a75bdbefdfec2e1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#acfd562914da4f00e6a75bdbefdfec2e1">STUMPLESS_FACILITY_LOCAL2</a>&#160;&#160;&#160;(18&lt;&lt;3)</td></tr>
+<tr class="separator:acfd562914da4f00e6a75bdbefdfec2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4443c84142387e57473fa30a734fbb16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a4443c84142387e57473fa30a734fbb16">STUMPLESS_FACILITY_LOCAL3</a>&#160;&#160;&#160;(19&lt;&lt;3)</td></tr>
+<tr class="separator:a4443c84142387e57473fa30a734fbb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cbf7b5c04ec44654698899278bc64d5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a9cbf7b5c04ec44654698899278bc64d5">STUMPLESS_FACILITY_LOCAL4</a>&#160;&#160;&#160;(20&lt;&lt;3)</td></tr>
+<tr class="separator:a9cbf7b5c04ec44654698899278bc64d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d2e6473911c34946fdbc92b9333535d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a4d2e6473911c34946fdbc92b9333535d">STUMPLESS_FACILITY_LOCAL5</a>&#160;&#160;&#160;(21&lt;&lt;3)</td></tr>
+<tr class="separator:a4d2e6473911c34946fdbc92b9333535d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af432ef56325bd33e7b7d152d730b0c8a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#af432ef56325bd33e7b7d152d730b0c8a">STUMPLESS_FACILITY_LOCAL6</a>&#160;&#160;&#160;(22&lt;&lt;3)</td></tr>
+<tr class="separator:af432ef56325bd33e7b7d152d730b0c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa067d1a1858f7307f038f4dcf4a507e1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#aa067d1a1858f7307f038f4dcf4a507e1">STUMPLESS_FACILITY_LOCAL7</a>&#160;&#160;&#160;(23&lt;&lt;3)</td></tr>
+<tr class="separator:aa067d1a1858f7307f038f4dcf4a507e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98cb6445f06ce88c86d800648f9ff9d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a98cb6445f06ce88c86d800648f9ff9d0">STUMPLESS_OPTION_PID</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a98cb6445f06ce88c86d800648f9ff9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a993bc5db10d96e5c8e65b1964b52783b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a993bc5db10d96e5c8e65b1964b52783b">STUMPLESS_OPTION_CONS</a>&#160;&#160;&#160;(1&lt;&lt;1)</td></tr>
+<tr class="separator:a993bc5db10d96e5c8e65b1964b52783b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95453735e9adac27ede9f5e9f464a798"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a95453735e9adac27ede9f5e9f464a798">STUMPLESS_OPTION_NDELAY</a>&#160;&#160;&#160;(1&lt;&lt;2)</td></tr>
+<tr class="separator:a95453735e9adac27ede9f5e9f464a798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5e1ed49d636041b6fdf2eac33d04f51"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#aa5e1ed49d636041b6fdf2eac33d04f51">STUMPLESS_OPTION_ODELAY</a>&#160;&#160;&#160;(1&lt;&lt;3)</td></tr>
+<tr class="separator:aa5e1ed49d636041b6fdf2eac33d04f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5c3143e2110614932dbff133f898303"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ab5c3143e2110614932dbff133f898303">STUMPLESS_OPTION_NOWAIT</a>&#160;&#160;&#160;(1&lt;&lt;4)</td></tr>
+<tr class="separator:ab5c3143e2110614932dbff133f898303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad537e7d158d804b5edfc51c810917a4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ad537e7d158d804b5edfc51c810917a4f">STUMPLESS_FACILITY_SYSLOG</a>&#160;&#160;&#160;(5&lt;&lt;3)</td></tr>
+<tr class="memdesc:ad537e7d158d804b5edfc51c810917a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Messages generated internally by logging daemon.  <a href="#ad537e7d158d804b5edfc51c810917a4f">More...</a><br /></td></tr>
+<tr class="separator:ad537e7d158d804b5edfc51c810917a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab81112d328adce81873de2637c2bf082"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ab81112d328adce81873de2637c2bf082">STUMPLESS_FACILITY_AUTH2</a>&#160;&#160;&#160;(10&lt;&lt;3)</td></tr>
+<tr class="memdesc:ab81112d328adce81873de2637c2bf082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Security/authorization messages.  <a href="#ab81112d328adce81873de2637c2bf082">More...</a><br /></td></tr>
+<tr class="separator:ab81112d328adce81873de2637c2bf082"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17bf9a04266d318ffb9cd5fc95e1261a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a17bf9a04266d318ffb9cd5fc95e1261a">STUMPLESS_FACILITY_FTP</a>&#160;&#160;&#160;(11&lt;&lt;3)</td></tr>
+<tr class="memdesc:a17bf9a04266d318ffb9cd5fc95e1261a"><td class="mdescLeft">&#160;</td><td class="mdescRight">FTP daemon.  <a href="#a17bf9a04266d318ffb9cd5fc95e1261a">More...</a><br /></td></tr>
+<tr class="separator:a17bf9a04266d318ffb9cd5fc95e1261a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c38a51bed6c41d98ddde534845d7301"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a0c38a51bed6c41d98ddde534845d7301">STUMPLESS_FACILITY_NTP</a>&#160;&#160;&#160;(12&lt;&lt;3)</td></tr>
+<tr class="memdesc:a0c38a51bed6c41d98ddde534845d7301"><td class="mdescLeft">&#160;</td><td class="mdescRight">NTP subsystem.  <a href="#a0c38a51bed6c41d98ddde534845d7301">More...</a><br /></td></tr>
+<tr class="separator:a0c38a51bed6c41d98ddde534845d7301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a094b395bd1b97ca2bd30cb43d565a69c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a094b395bd1b97ca2bd30cb43d565a69c">STUMPLESS_FACILITY_AUDIT</a>&#160;&#160;&#160;(13&lt;&lt;3)</td></tr>
+<tr class="memdesc:a094b395bd1b97ca2bd30cb43d565a69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log audit.  <a href="#a094b395bd1b97ca2bd30cb43d565a69c">More...</a><br /></td></tr>
+<tr class="separator:a094b395bd1b97ca2bd30cb43d565a69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a847c36eac7c989dfd3b5576eeb4e9ff9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a847c36eac7c989dfd3b5576eeb4e9ff9">STUMPLESS_FACILITY_ALERT</a>&#160;&#160;&#160;(14&lt;&lt;3)</td></tr>
+<tr class="memdesc:a847c36eac7c989dfd3b5576eeb4e9ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log alert.  <a href="#a847c36eac7c989dfd3b5576eeb4e9ff9">More...</a><br /></td></tr>
+<tr class="separator:a847c36eac7c989dfd3b5576eeb4e9ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55759756229b97cedd3961c04a812cbf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a55759756229b97cedd3961c04a812cbf">STUMPLESS_FACILITY_CRON2</a>&#160;&#160;&#160;(15&lt;&lt;3)</td></tr>
+<tr class="memdesc:a55759756229b97cedd3961c04a812cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clock daemon.  <a href="#a55759756229b97cedd3961c04a812cbf">More...</a><br /></td></tr>
+<tr class="separator:a55759756229b97cedd3961c04a812cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac7a81cb7d3afe8e655d191014ca7195"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#aac7a81cb7d3afe8e655d191014ca7195">STUMPLESS_OPTION_NONE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:aac7a81cb7d3afe8e655d191014ca7195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty option mask for explicit 'no option' use.  <a href="#aac7a81cb7d3afe8e655d191014ca7195">More...</a><br /></td></tr>
+<tr class="separator:aac7a81cb7d3afe8e655d191014ca7195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ae3f557e1003ac224d122c999703cfe39"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ae3f557e1003ac224d122c999703cfe39">stumpless_add_element</a> (struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry, struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
+<tr class="separator:ae3f557e1003ac224d122c999703cfe39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d1270530cfd4516e1a4ce8a4f36d9ce"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a3d1270530cfd4516e1a4ce8a4f36d9ce">stumpless_add_param</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *param)</td></tr>
+<tr class="separator:a3d1270530cfd4516e1a4ce8a4f36d9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31602c97b019d4ec4e655ad7dd235ee5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a31602c97b019d4ec4e655ad7dd235ee5">stumpless_destroy_element</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
+<tr class="memdesc:a31602c97b019d4ec4e655ad7dd235ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">An alias for stumpless_destroy_element_and_contents.  <a href="#a31602c97b019d4ec4e655ad7dd235ee5">More...</a><br /></td></tr>
+<tr class="separator:a31602c97b019d4ec4e655ad7dd235ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1444ccc95efebc9c154d8f2726f2dc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ae1444ccc95efebc9c154d8f2726f2dc0">stumpless_destroy_element_and_contents</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
+<tr class="memdesc:ae1444ccc95efebc9c154d8f2726f2dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an element as well as all params that it contains, freeing any allocated memory.  <a href="#ae1444ccc95efebc9c154d8f2726f2dc0">More...</a><br /></td></tr>
+<tr class="separator:ae1444ccc95efebc9c154d8f2726f2dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e04bc3101ae9af2cd225eb39210ea99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a2e04bc3101ae9af2cd225eb39210ea99">stumpless_destroy_element_only</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
+<tr class="memdesc:a2e04bc3101ae9af2cd225eb39210ea99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an element, freeing any allocated memory.  <a href="#a2e04bc3101ae9af2cd225eb39210ea99">More...</a><br /></td></tr>
+<tr class="separator:a2e04bc3101ae9af2cd225eb39210ea99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed876925e2b23fcfadb394a35bd28c79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#aed876925e2b23fcfadb394a35bd28c79">stumpless_destroy_entry</a> (struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry)</td></tr>
+<tr class="memdesc:aed876925e2b23fcfadb394a35bd28c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">An alias for stumpless_destroy_entry_and_contents.  <a href="#aed876925e2b23fcfadb394a35bd28c79">More...</a><br /></td></tr>
+<tr class="separator:aed876925e2b23fcfadb394a35bd28c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada537920b248ad96c2ced2ed1150617a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ada537920b248ad96c2ced2ed1150617a">stumpless_destroy_entry_and_contents</a> (struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry)</td></tr>
+<tr class="memdesc:ada537920b248ad96c2ced2ed1150617a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an entry as well as all elements and params that it contains, freeing any allocated memory.  <a href="#ada537920b248ad96c2ced2ed1150617a">More...</a><br /></td></tr>
+<tr class="separator:ada537920b248ad96c2ced2ed1150617a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3458202c208a8269c32e9ddb534c05b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a3458202c208a8269c32e9ddb534c05b4">stumpless_destroy_entry_only</a> (struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry)</td></tr>
+<tr class="memdesc:a3458202c208a8269c32e9ddb534c05b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an entry, freeing any allocated memory.  <a href="#a3458202c208a8269c32e9ddb534c05b4">More...</a><br /></td></tr>
+<tr class="separator:a3458202c208a8269c32e9ddb534c05b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d8c1e9d97a7656d40ff7139581a46e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a4d8c1e9d97a7656d40ff7139581a46e7">stumpless_destroy_param</a> (struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *param)</td></tr>
+<tr class="separator:a4d8c1e9d97a7656d40ff7139581a46e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a794237f9dca8028953ed40579bbc7d57"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a794237f9dca8028953ed40579bbc7d57">stumpless_new_element</a> (const char *name)</td></tr>
+<tr class="separator:a794237f9dca8028953ed40579bbc7d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3ce3c911a33587eece1ffd3532b68ca"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ad3ce3c911a33587eece1ffd3532b68ca">stumpless_new_entry</a> (int facility, int severity, const char *app_name, const char *msgid, const char *message,...)</td></tr>
+<tr class="memdesc:ad3ce3c911a33587eece1ffd3532b68ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new entry with the given parameters.  <a href="#ad3ce3c911a33587eece1ffd3532b68ca">More...</a><br /></td></tr>
+<tr class="separator:ad3ce3c911a33587eece1ffd3532b68ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a770674e618405604dcfb96feb0323cab"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a770674e618405604dcfb96feb0323cab">stumpless_new_param</a> (const char *name, const char *value)</td></tr>
+<tr class="separator:a770674e618405604dcfb96feb0323cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab59891c02e8081d4a7fddd00f1ff39f6"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ab59891c02e8081d4a7fddd00f1ff39f6">stumpless_set_entry_app_name</a> (struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry, const char *app_name)</td></tr>
+<tr class="separator:ab59891c02e8081d4a7fddd00f1ff39f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bdf09e512dbfe78c66a9923cbdf306c"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#a6bdf09e512dbfe78c66a9923cbdf306c">stumpless_set_entry_message</a> (struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry, const char *message,...)</td></tr>
+<tr class="memdesc:a6bdf09e512dbfe78c66a9923cbdf306c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the message of a given entry.  <a href="#a6bdf09e512dbfe78c66a9923cbdf306c">More...</a><br /></td></tr>
+<tr class="separator:a6bdf09e512dbfe78c66a9923cbdf306c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab575e9c6814f5b9722350e7412640b1e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ab575e9c6814f5b9722350e7412640b1e">vstumpless_new_entry</a> (int facility, int severity, const char *app_name, const char *msgid, const char *message, va_list subs)</td></tr>
+<tr class="memdesc:ab575e9c6814f5b9722350e7412640b1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new entry with the given parameters.  <a href="#ab575e9c6814f5b9722350e7412640b1e">More...</a><br /></td></tr>
+<tr class="separator:ab575e9c6814f5b9722350e7412640b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4c06b144b66a02ade646ab3c106c71d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="entry_8h.html#ae4c06b144b66a02ade646ab3c106c71d">vstumpless_set_entry_message</a> (struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry, const char *message, va_list subs)</td></tr>
+<tr class="memdesc:ae4c06b144b66a02ade646ab3c106c71d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the message of a given entry.  <a href="#ae4c06b144b66a02ade646ab3c106c71d">More...</a><br /></td></tr>
+<tr class="separator:ae4c06b144b66a02ade646ab3c106c71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Types and functions for creating and modifying entries. </p>
+<p>Facilities, severities, and options are created to be compatible with the syslog.h header if it is found on the system. Otherwise, they are defined as closely as possible to the RFC 5424 standard. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a847c36eac7c989dfd3b5576eeb4e9ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a847c36eac7c989dfd3b5576eeb4e9ff9">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_ALERT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_ALERT&#160;&#160;&#160;(14&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Log alert. </p>
+
+</div>
+</div>
+<a id="a094b395bd1b97ca2bd30cb43d565a69c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a094b395bd1b97ca2bd30cb43d565a69c">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_AUDIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_AUDIT&#160;&#160;&#160;(13&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Log audit. </p>
+
+</div>
+</div>
+<a id="aedda4a48f83fc58d56b50821a0e09bc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedda4a48f83fc58d56b50821a0e09bc5">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_AUTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_AUTH&#160;&#160;&#160;(4&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab81112d328adce81873de2637c2bf082"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab81112d328adce81873de2637c2bf082">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_AUTH2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_AUTH2&#160;&#160;&#160;(10&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Security/authorization messages. </p>
+
+</div>
+</div>
+<a id="ac6a5124aca437a5ff2a2db16dcf54cfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6a5124aca437a5ff2a2db16dcf54cfb">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_CRON</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_CRON&#160;&#160;&#160;(9&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a55759756229b97cedd3961c04a812cbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55759756229b97cedd3961c04a812cbf">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_CRON2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_CRON2&#160;&#160;&#160;(15&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clock daemon. </p>
+
+</div>
+</div>
+<a id="a8a9287ae1a036387d06366e8b270e9be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a9287ae1a036387d06366e8b270e9be">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_DAEMON</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_DAEMON&#160;&#160;&#160;(3&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a17bf9a04266d318ffb9cd5fc95e1261a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17bf9a04266d318ffb9cd5fc95e1261a">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_FTP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_FTP&#160;&#160;&#160;(11&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>FTP daemon. </p>
+
+</div>
+</div>
+<a id="a554035c60bf1582d8176aaca9b2a7e06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a554035c60bf1582d8176aaca9b2a7e06">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_KERN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_KERN&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5f470746a8988db491834fe0b89423d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f470746a8988db491834fe0b89423d3">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL0</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL0&#160;&#160;&#160;(16&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a678a5b42205a6f4123d72bd14f68c6e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a678a5b42205a6f4123d72bd14f68c6e2">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL1&#160;&#160;&#160;(17&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acfd562914da4f00e6a75bdbefdfec2e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfd562914da4f00e6a75bdbefdfec2e1">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL2&#160;&#160;&#160;(18&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4443c84142387e57473fa30a734fbb16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4443c84142387e57473fa30a734fbb16">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL3&#160;&#160;&#160;(19&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9cbf7b5c04ec44654698899278bc64d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cbf7b5c04ec44654698899278bc64d5">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL4</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL4&#160;&#160;&#160;(20&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4d2e6473911c34946fdbc92b9333535d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2e6473911c34946fdbc92b9333535d">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL5</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL5&#160;&#160;&#160;(21&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af432ef56325bd33e7b7d152d730b0c8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af432ef56325bd33e7b7d152d730b0c8a">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL6</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL6&#160;&#160;&#160;(22&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa067d1a1858f7307f038f4dcf4a507e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa067d1a1858f7307f038f4dcf4a507e1">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LOCAL7</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LOCAL7&#160;&#160;&#160;(23&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1ddebad58744bda5ce061f1833e0d665"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ddebad58744bda5ce061f1833e0d665">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_LPR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_LPR&#160;&#160;&#160;(6&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a63902d75b9248f97753a1a232f8b8da2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63902d75b9248f97753a1a232f8b8da2">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_MAIL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_MAIL&#160;&#160;&#160;(2&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c8cf4f159fd65ef10db210aec4a8f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c8cf4f159fd65ef10db210aec4a8f47">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_NEWS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_NEWS&#160;&#160;&#160;(7&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0c38a51bed6c41d98ddde534845d7301"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c38a51bed6c41d98ddde534845d7301">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_NTP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_NTP&#160;&#160;&#160;(12&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>NTP subsystem. </p>
+
+</div>
+</div>
+<a id="ad537e7d158d804b5edfc51c810917a4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad537e7d158d804b5edfc51c810917a4f">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_SYSLOG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_SYSLOG&#160;&#160;&#160;(5&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Messages generated internally by logging daemon. </p>
+
+</div>
+</div>
+<a id="ae960e2009518c849de9f1a169d527248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae960e2009518c849de9f1a169d527248">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_USER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_USER&#160;&#160;&#160;(1&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0919cd80d738a5353ce342816a3b3187"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0919cd80d738a5353ce342816a3b3187">&#9670;&nbsp;</a></span>STUMPLESS_FACILITY_UUCP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_FACILITY_UUCP&#160;&#160;&#160;(8&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a993bc5db10d96e5c8e65b1964b52783b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a993bc5db10d96e5c8e65b1964b52783b">&#9670;&nbsp;</a></span>STUMPLESS_OPTION_CONS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_OPTION_CONS&#160;&#160;&#160;(1&lt;&lt;1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a95453735e9adac27ede9f5e9f464a798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95453735e9adac27ede9f5e9f464a798">&#9670;&nbsp;</a></span>STUMPLESS_OPTION_NDELAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_OPTION_NDELAY&#160;&#160;&#160;(1&lt;&lt;2)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aac7a81cb7d3afe8e655d191014ca7195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac7a81cb7d3afe8e655d191014ca7195">&#9670;&nbsp;</a></span>STUMPLESS_OPTION_NONE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_OPTION_NONE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Empty option mask for explicit 'no option' use. </p>
+
+</div>
+</div>
+<a id="ab5c3143e2110614932dbff133f898303"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c3143e2110614932dbff133f898303">&#9670;&nbsp;</a></span>STUMPLESS_OPTION_NOWAIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_OPTION_NOWAIT&#160;&#160;&#160;(1&lt;&lt;4)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa5e1ed49d636041b6fdf2eac33d04f51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5e1ed49d636041b6fdf2eac33d04f51">&#9670;&nbsp;</a></span>STUMPLESS_OPTION_ODELAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_OPTION_ODELAY&#160;&#160;&#160;(1&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a98cb6445f06ce88c86d800648f9ff9d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98cb6445f06ce88c86d800648f9ff9d0">&#9670;&nbsp;</a></span>STUMPLESS_OPTION_PID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_OPTION_PID&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a52cdd482702836942e619bbffdbc6770"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52cdd482702836942e619bbffdbc6770">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_ALERT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_ALERT&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afaff66b910c83ad047dfedaa9001a76f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaff66b910c83ad047dfedaa9001a76f">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_CRIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_CRIT&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a41b8acacf30c3cfd88ca26b81da5efe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41b8acacf30c3cfd88ca26b81da5efe7">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_DEBUG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_DEBUG&#160;&#160;&#160;7</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10e7d77142a8fb0217ff838d6614a3e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10e7d77142a8fb0217ff838d6614a3e2">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_EMERG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_EMERG&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac57a96c1503de16c095baa623807273b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac57a96c1503de16c095baa623807273b">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_ERR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_ERR&#160;&#160;&#160;3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9a55b3bd0a6b3a8bee65331da06732ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a55b3bd0a6b3a8bee65331da06732ce">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_INFO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_INFO&#160;&#160;&#160;6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7926f86c8d1eb5ce19908c23a9773ac9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7926f86c8d1eb5ce19908c23a9773ac9">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_MASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_MASK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">severity</td><td>)</td>
+          <td>&#160;&#160;&#160;(1&lt;&lt;(severity))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57bc283ea0cfa0177f8742d514d4781b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57bc283ea0cfa0177f8742d514d4781b">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_MASK_UPTO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_MASK_UPTO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">severity</td><td>)</td>
+          <td>&#160;&#160;&#160;((1&lt;&lt;(severity+1))-1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab8c0777e873747ebd78dba28fe7eda88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8c0777e873747ebd78dba28fe7eda88">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_NOTICE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_NOTICE&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9fc06292937b1c61401a3f242315d141"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fc06292937b1c61401a3f242315d141">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_WARN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_WARN&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e34a2991f0925370801b0ca6ab0f708"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e34a2991f0925370801b0ca6ab0f708">&#9670;&nbsp;</a></span>STUMPLESS_SEVERITY_WARNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_SEVERITY_WARNING&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ae3f557e1003ac224d122c999703cfe39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3f557e1003ac224d122c999703cfe39">&#9670;&nbsp;</a></span>stumpless_add_element()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a>* stumpless_add_element </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
+          <td class="paramname"><em>element</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d1270530cfd4516e1a4ce8a4f36d9ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d1270530cfd4516e1a4ce8a4f36d9ce">&#9670;&nbsp;</a></span>stumpless_add_param()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_add_param </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
+          <td class="paramname"><em>element</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td>
+          <td class="paramname"><em>param</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a31602c97b019d4ec4e655ad7dd235ee5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31602c97b019d4ec4e655ad7dd235ee5">&#9670;&nbsp;</a></span>stumpless_destroy_element()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_destroy_element </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
+          <td class="paramname"><em>element</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An alias for stumpless_destroy_element_and_contents. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae1444ccc95efebc9c154d8f2726f2dc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1444ccc95efebc9c154d8f2726f2dc0">&#9670;&nbsp;</a></span>stumpless_destroy_element_and_contents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_destroy_element_and_contents </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
+          <td class="paramname"><em>element</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destroys an element as well as all params that it contains, freeing any allocated memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2e04bc3101ae9af2cd225eb39210ea99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e04bc3101ae9af2cd225eb39210ea99">&#9670;&nbsp;</a></span>stumpless_destroy_element_only()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_destroy_element_only </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
+          <td class="paramname"><em>element</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destroys an element, freeing any allocated memory. </p>
+<p>Associated params are left untouched, and must be destroyed separately.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aed876925e2b23fcfadb394a35bd28c79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed876925e2b23fcfadb394a35bd28c79">&#9670;&nbsp;</a></span>stumpless_destroy_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_destroy_entry </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An alias for stumpless_destroy_entry_and_contents. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry to destroy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ada537920b248ad96c2ced2ed1150617a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada537920b248ad96c2ced2ed1150617a">&#9670;&nbsp;</a></span>stumpless_destroy_entry_and_contents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_destroy_entry_and_contents </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destroys an entry as well as all elements and params that it contains, freeing any allocated memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry to destroy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3458202c208a8269c32e9ddb534c05b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3458202c208a8269c32e9ddb534c05b4">&#9670;&nbsp;</a></span>stumpless_destroy_entry_only()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_destroy_entry_only </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destroys an entry, freeing any allocated memory. </p>
+<p>Associated elements and params are left untouched, and must be destroyed separately.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry to destroy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4d8c1e9d97a7656d40ff7139581a46e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d8c1e9d97a7656d40ff7139581a46e7">&#9670;&nbsp;</a></span>stumpless_destroy_param()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_destroy_param </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td>
+          <td class="paramname"><em>param</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a794237f9dca8028953ed40579bbc7d57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a794237f9dca8028953ed40579bbc7d57">&#9670;&nbsp;</a></span>stumpless_new_element()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_new_element </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad3ce3c911a33587eece1ffd3532b68ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3ce3c911a33587eece1ffd3532b68ca">&#9670;&nbsp;</a></span>stumpless_new_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a>* stumpless_new_entry </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>facility</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>severity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>app_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>msgid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new entry with the given parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">facility</td><td>The facility code of the event this entry describes. This should be a <code>STUMPLESS_FACILITY</code> value.</td></tr>
+    <tr><td class="paramname">severity</td><td>The severity code of the event this entry describes. This should be a <code>STUMPLESS_SEVERITY</code> value.</td></tr>
+    <tr><td class="paramname">app_name</td><td>The app_name of the entry. If this is NULL, then it will be blank in the entry (a single '-' character).</td></tr>
+    <tr><td class="paramname">msgid</td><td>The message id of the entry. If this is NULL, then it will be blank in the entry (a single '-' character).</td></tr>
+    <tr><td class="paramname">message</td><td>The message in the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). This also means that characters such as % need to be escaped as they would be in printf.</td></tr>
+    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The created entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="a770674e618405604dcfb96feb0323cab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a770674e618405604dcfb96feb0323cab">&#9670;&nbsp;</a></span>stumpless_new_param()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__param.html">stumpless_param</a>* stumpless_new_param </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab59891c02e8081d4a7fddd00f1ff39f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab59891c02e8081d4a7fddd00f1ff39f6">&#9670;&nbsp;</a></span>stumpless_set_entry_app_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a>* stumpless_set_entry_app_name </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>app_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6bdf09e512dbfe78c66a9923cbdf306c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bdf09e512dbfe78c66a9923cbdf306c">&#9670;&nbsp;</a></span>stumpless_set_entry_message()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a>* stumpless_set_entry_message </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the message of a given entry. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
+    <tr><td class="paramname">message</td><td>The new message to set on the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). This also means that characters such as % need to be escaped as they would be in printf.</td></tr>
+    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The modified entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="ab575e9c6814f5b9722350e7412640b1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab575e9c6814f5b9722350e7412640b1e">&#9670;&nbsp;</a></span>vstumpless_new_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a>* vstumpless_new_entry </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>facility</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>severity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>app_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>msgid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>subs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new entry with the given parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">facility</td><td>The facility code of the entry. This should be a <code>STUMPLESS_FACILITY</code> value.</td></tr>
+    <tr><td class="paramname">severity</td><td>The severity code of the entry. This should be a <code>STUMPLESS_SEVERITY</code> value.</td></tr>
+    <tr><td class="paramname">app_name</td><td>The app_name of the entry. If this is NULL, then it will be blank in the entry (a single '-' character).</td></tr>
+    <tr><td class="paramname">msgid</td><td>The message id of the entry. If this is NULL, then it will be blank in the entry (a single '-' character).</td></tr>
+    <tr><td class="paramname">message</td><td>The message in the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). This also means that characters such as % need to be escaped as they would be in printf.</td></tr>
+    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call them.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The created entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="ae4c06b144b66a02ade646ab3c106c71d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4c06b144b66a02ade646ab3c106c71d">&#9670;&nbsp;</a></span>vstumpless_set_entry_message()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a>* vstumpless_set_entry_message </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>subs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the message of a given entry. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
+    <tr><td class="paramname">message</td><td>The new message to set on the entry. This message may contain any format specifiers valid in <code>printf</code>. If this is NULL, then it will be blank in the entry (no characters). Characters such as % need to be escaped as they would be in printf.</td></tr>
+    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call them.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The modified entry if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated on Wed May 20 2020 06:03:55 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
 </body>
 </html>

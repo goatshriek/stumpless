@@ -1,152 +1,172 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8" />
-  <title>stumpless_param struct | stumpless</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
-  <link rel="stylesheet" href="m-dark+doxygen.compiled.css" />
-  <link rel="icon" href="favicon-dark.png" type="image/png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#22272e" />
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>stumpless: stumpless_param Struct Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<header><nav id="navigation">
-  <div class="m-container">
-    <div class="m-row">
-      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">stumpless</a>
-      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
-        <a href="#search" class="m-dox-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
-          <path d="m6 0c-3.3144 0-6 2.6856-6 6 0 3.3144 2.6856 6 6 6 1.4858 0 2.8463-0.54083 3.8945-1.4355-0.0164 0.33797 0.14734 0.75854 0.5 1.1504l3.2227 3.7891c0.55185 0.6139 1.4517 0.66544 2.002 0.11524 0.55022-0.55022 0.49866-1.4501-0.11524-2.002l-3.7891-3.2246c-0.39184-0.35266-0.81242-0.51469-1.1504-0.5 0.89472-1.0482 1.4355-2.4088 1.4355-3.8945 0-3.3128-2.6856-5.998-6-5.998zm0 1.5625a4.4375 4.4375 0 0 1 4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375-4.4375 4.4375 4.4375 0 0 1 4.4375-4.4375z"/>
-        </svg></a>
-        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
-        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
-      </div>
-      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
-        <div class="m-row">
-          <ol class="m-col-t-6 m-col-m-none">
-            <li><a href="pages.html">Pages</a></li>
-            <li><a href="namespaces.html">Namespaces</a></li>
-          </ol>
-          <ol class="m-col-t-6 m-col-m-none" start="3">
-            <li><a href="annotated.html">Classes</a></li>
-            <li><a href="files.html">Files</a></li>
-            <li class="m-show-m"><a href="#search" class="m-dox-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
-              <path d="m6 0c-3.3144 0-6 2.6856-6 6 0 3.3144 2.6856 6 6 6 1.4858 0 2.8463-0.54083 3.8945-1.4355-0.0164 0.33797 0.14734 0.75854 0.5 1.1504l3.2227 3.7891c0.55185 0.6139 1.4517 0.66544 2.002 0.11524 0.55022-0.55022 0.49866-1.4501-0.11524-2.002l-3.7891-3.2246c-0.39184-0.35266-0.81242-0.51469-1.1504-0.5 0.89472-1.0482 1.4355-2.4088 1.4355-3.8945 0-3.3128-2.6856-5.998-6-5.998zm0 1.5625a4.4375 4.4375 0 0 1 4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375 4.4375 4.4375 4.4375 0 0 1-4.4375-4.4375 4.4375 4.4375 0 0 1 4.4375-4.4375z"/>
-            </svg></a></li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav></header>
-<main><article>
-  <div class="m-container m-container-inflatable">
-    <div class="m-row">
-      <div class="m-col-l-10 m-push-l-1">
-        <h1>
-          stumpless_param <span class="m-thin">struct</span>
-          <div class="m-dox-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="entry_8h.html">&lt;entry.h&gt;</a></div>
-        </h1>
-        <p>A parameter within a structured data element.</p>
-        <div class="m-block m-default">
-          <h3>Contents</h3>
-          <ul>
-            <li>
-              Reference
-              <ul>
-                <li><a href="#pub-attribs">Public variables</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-<p>A parameter must have both a name and a value in compliance with RFC 5424.</p>
-        <section id="pub-attribs">
-          <h2><a href="#pub-attribs">Public variables</a></h2>
-          <dl class="m-dox">
-            <dt>
-              char* <a href="#a1e0746c3ebd33334d8a9ad0906f6a4da" class="m-dox">name</a>
-            </dt>
-            <dd>The name of the parameter.</dd>
-            <dt>
-              size_t <a href="#a2b4ea1c374f35edd5cb0cbcef1e10a14" class="m-dox-self" name="a2b4ea1c374f35edd5cb0cbcef1e10a14">name_length</a>
-            </dt>
-            <dd>The number of characters in name.</dd>
-            <dt>
-              char* <a href="#a515d92ed0193197635cea91735e0d7b0" class="m-dox">value</a>
-            </dt>
-            <dd>The value may be any UTF-8 string.</dd>
-            <dt>
-              size_t <a href="#acb5e0d5998b20c5d1180ad9d27400beb" class="m-dox-self" name="acb5e0d5998b20c5d1180ad9d27400beb">value_length</a>
-            </dt>
-            <dd>The number of characters in value.</dd>
-          </dl>
-        </section>
-        <section>
-          <h2>Variable documentation</h2>
-          <section class="m-dox-details" id="a1e0746c3ebd33334d8a9ad0906f6a4da"><div>
-            <h3>
-              char* stumpless_<wbr />param::<wbr /><a href="#a1e0746c3ebd33334d8a9ad0906f6a4da" class="m-dox-self">name</a>
-            </h3>
-            <p>The name of the parameter.</p>
-<p>The name must be between 1 and 32 characters long and consist only of ASCII characters between &#x27;!&#x27; and &#x27;~&#x27;, inclusive, with the exception of the &#x27;=&#x27;, &#x27; &#x27;, &#x27;]&#x27;, and &#x27;&quot;&#x27; characters, which are not allowed.</p><p>Note that the name will <em>not</em> be NULL-terminated.</p>
-          </div></section>
-          <section class="m-dox-details" id="a515d92ed0193197635cea91735e0d7b0"><div>
-            <h3>
-              char* stumpless_<wbr />param::<wbr /><a href="#a515d92ed0193197635cea91735e0d7b0" class="m-dox-self">value</a>
-            </h3>
-            <p>The value may be any UTF-8 string.</p>
-<p>As specified in RFC 5424, the characters &#x27;&quot;&#x27; (ABNF d34), &#x27;\&#x27; (ABNF d92), and &#x27;]&#x27; (ABNF d93) MUST be escaped by placing a backslash character &#x27;\&#x27; directly before them.</p><p>Unlike the name field, value will be NULL-terminated. This is done to support their use for wel insertion strings.</p>
-          </div></section>
-        </section>
-      </div>
-    </div>
-  </div>
-</article></main>
-<div class="m-dox-search" id="search">
-  <a href="#!" onclick="return hideSearch()"></a>
-  <div class="m-container">
-    <div class="m-row">
-      <div class="m-col-m-8 m-push-m-2">
-        <div class="m-dox-search-header m-text m-small">
-          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
-          <div id="search-symbolcount">&hellip;</div>
-        </div>
-        <div class="m-dox-search-content">
-          <form>
-            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
-          </form>
-          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
-          <div id="search-help" class="m-text m-dim m-text-center">
-            <p class="m-noindent">Search for symbols, directories, files, pages or
-            modules. You can omit any prefix from the symbol or file path; adding a
-            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
-            directory.</p>
-            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
-            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
-            <span class="m-label m-dim">Enter</span> to go.
-            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
-            copy a link to the result using <span class="m-label m-dim">⌘</span>
-            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
-            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
-
-          </div>
-          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
-          <ul id="search-results"></ul>
-        </div>
-      </div>
-    </div>
-  </div>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">stumpless
+   &#160;<span id="projectnumber">1.5.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
 </div>
-<script src="search.js"></script>
-<script src="searchdata.js" async="async"></script>
-<footer><nav>
-  <div class="m-container">
-    <div class="m-row">
-      <div class="m-col-l-10 m-push-l-1">
-        <p>stumpless. Created by <a href="https://doxygen.org/">Doxygen</a> 1.8.13 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
-      </div>
-    </div>
-  </div>
-</nav></footer>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
+  <div class="headertitle">
+<div class="title">stumpless_param Struct Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>A parameter within a structured data element.  
+ <a href="structstumpless__param.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="entry_8h_source.html">entry.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a1e0746c3ebd33334d8a9ad0906f6a4da"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#a1e0746c3ebd33334d8a9ad0906f6a4da">name</a></td></tr>
+<tr class="memdesc:a1e0746c3ebd33334d8a9ad0906f6a4da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the parameter.  <a href="#a1e0746c3ebd33334d8a9ad0906f6a4da">More...</a><br /></td></tr>
+<tr class="separator:a1e0746c3ebd33334d8a9ad0906f6a4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b4ea1c374f35edd5cb0cbcef1e10a14"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#a2b4ea1c374f35edd5cb0cbcef1e10a14">name_length</a></td></tr>
+<tr class="memdesc:a2b4ea1c374f35edd5cb0cbcef1e10a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of characters in name.  <a href="#a2b4ea1c374f35edd5cb0cbcef1e10a14">More...</a><br /></td></tr>
+<tr class="separator:a2b4ea1c374f35edd5cb0cbcef1e10a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a515d92ed0193197635cea91735e0d7b0"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#a515d92ed0193197635cea91735e0d7b0">value</a></td></tr>
+<tr class="memdesc:a515d92ed0193197635cea91735e0d7b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value may be any UTF-8 string.  <a href="#a515d92ed0193197635cea91735e0d7b0">More...</a><br /></td></tr>
+<tr class="separator:a515d92ed0193197635cea91735e0d7b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb5e0d5998b20c5d1180ad9d27400beb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#acb5e0d5998b20c5d1180ad9d27400beb">value_length</a></td></tr>
+<tr class="memdesc:acb5e0d5998b20c5d1180ad9d27400beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of characters in value.  <a href="#acb5e0d5998b20c5d1180ad9d27400beb">More...</a><br /></td></tr>
+<tr class="separator:acb5e0d5998b20c5d1180ad9d27400beb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A parameter within a structured data element. </p>
+<p>A parameter must have both a name and a value in compliance with RFC 5424. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a1e0746c3ebd33334d8a9ad0906f6a4da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e0746c3ebd33334d8a9ad0906f6a4da">&#9670;&nbsp;</a></span>name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* stumpless_param::name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The name of the parameter. </p>
+<p>The name must be between 1 and 32 characters long and consist only of ASCII characters between '!' and '~', inclusive, with the exception of the '=', ' ', ']', and '"' characters, which are not allowed.</p>
+<p>Note that the name will <em>not</em> be NULL-terminated. </p>
+
+</div>
+</div>
+<a id="a2b4ea1c374f35edd5cb0cbcef1e10a14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b4ea1c374f35edd5cb0cbcef1e10a14">&#9670;&nbsp;</a></span>name_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t stumpless_param::name_length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The number of characters in name. </p>
+
+</div>
+</div>
+<a id="a515d92ed0193197635cea91735e0d7b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a515d92ed0193197635cea91735e0d7b0">&#9670;&nbsp;</a></span>value</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* stumpless_param::value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The value may be any UTF-8 string. </p>
+<p>As specified in RFC 5424, the characters '"' (ABNF d34), '\' (ABNF d92), and ']' (ABNF d93) MUST be escaped by placing a backslash character '\' directly before them.</p>
+<p>Unlike the name field, value will be NULL-terminated. This is done to support their use for wel insertion strings. </p>
+
+</div>
+</div>
+<a id="acb5e0d5998b20c5d1180ad9d27400beb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb5e0d5998b20c5d1180ad9d27400beb">&#9670;&nbsp;</a></span>value_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t stumpless_param::value_length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The number of characters in value. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="entry_8h_source.html">entry.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated on Wed May 20 2020 06:03:55 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
 </body>
 </html>
