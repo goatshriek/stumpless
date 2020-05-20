@@ -3,7 +3,7 @@ title: C++ Documentation
 keywords: doxygen, stumpless, c++
 last_updated: May 20, 2020
 summary: "Documentation for C++ Stumpless v1.5.0."
-permalink: docs/cpp/v1-5-0/index.html
+permalink: docs/cpp/latest/index.html
 ---
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -72,7 +72,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p>The Stumpless library for C++ lightly wraps the base C library with an object model, and is intended to make logging feel more natural in C++. Of course, users can also choose to use the C library directly from their code rather than use the expanded C++ library. The library is generated using <a href="https://github.com/goatshriek/wrapture">Wrapture</a> with a collection of specs defined in the <code>wrapture</code> directory of the source for Stumpless.</p>
 <h2>Basic Usage</h2>
-<p>The following snippets show some usage patterns specific to C++. If you're looking for basic usage of the C library, check out the main project https://github.com/goatshriek/stumpless/blob/master/README.md "readme" for a quick rundown of what you can do.</p>
+<p>The following snippets show some usage patterns specific to C++. If you're looking for basic usage of the C library, check out the main project <a href="https://github.com/goatshriek/stumpless/blob/master/README.md">readme</a> for a quick rundown of what you can do.</p>
 <p>Targets and entries can be created by instantiating the appropriate class, just as you might expect:</p>
 <div class="fragment"><div class="line">FileTarget myLogFile( <span class="stringliteral">&quot;logfile.log&quot;</span>,</div><div class="line">                      STUMPLESS_OPTION_NONE,</div><div class="line">                      Facility::USER );</div><div class="line"></div><div class="line">Entry processStarting( Facility::USER,</div><div class="line">                       Severity::INFO,</div><div class="line">                       <span class="stringliteral">&quot;my-application&quot;</span>,</div><div class="line">                       <span class="stringliteral">&quot;process-start-msgid&quot;</span>,</div><div class="line">                       <span class="stringliteral">&quot;A new process is starting.&quot;</span> );</div></div><!-- fragment --><p>And then logged to by using the <code>Log</code> function of the target:</p>
 <div class="fragment"><div class="line">myLogFile.Log( processStarting );</div></div><!-- fragment --><p>The C++ library also puts functions and constants into a namespace and raises exceptions when errors are encountered. For more information and examples on what is possible, check out the <a href="https://goatshriek.github.io/stumpless/docs/cpp/latest">documentation</a> for the C++ bindings and the <a href="https://goatshriek.github.io/stumpless/examples/cpp.html">example code</a> in <code>docs/examples/cpp</code>. </p>
