@@ -281,13 +281,6 @@ struct stumpless_entry {
 #  endif
 };
 
-/*
- * While the functions provided right now offer basic creation and deletion
- * capabilities, there will need to be many more added to make working with
- * the messages, elements, and params easier. For example, hash-style accessors
- * and assignments, as well as a clear memory management strategy.
- */
-
 /**
  * Adds an element to an entry.
  *
@@ -295,13 +288,23 @@ struct stumpless_entry {
  *
  * @param element The element to add to the entry.
  *
- * @return The created entry if no error is encountered. If an error is
+ * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element );
 
+/**
+ * Adds a param to an element.
+ *
+ * @param element The element to add the param to.
+ *
+ * @param param The param to add to element.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 stumpless_add_param( struct stumpless_element *element,
                      struct stumpless_param *param );
@@ -366,6 +369,14 @@ stumpless_destroy_entry_only( struct stumpless_entry *entry );
 void
 stumpless_destroy_param( struct stumpless_param *param );
 
+/**
+ * Creates a new element with the given name.
+ *
+ * @param name The name of the new element.
+ *
+ * @return The created element, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code set appropriately.
+ */
 struct stumpless_element *
 stumpless_new_element( const char *name );
 
@@ -404,9 +415,18 @@ stumpless_new_entry( int facility,
                      const char *message,
                      ... );
 
+/**
+ * Creates a new param with the given name and value.
+ *
+ * @param name The name of the new param.
+ *
+ * @param value The value of the new param.
+ *
+ * @return The created param, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code set appropriately.
+ */
 struct stumpless_param *
-stumpless_new_param( const char *name,
-                     const char *value );
+stumpless_new_param( const char *name, const char *value );
 
 /**
  * Sets the app name for an entry.
