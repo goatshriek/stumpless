@@ -34,7 +34,7 @@ project team is not currently big enough to realistically make any promises, so
 timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
-## 1.5.0 (next minor release)
+## 1.6.0 (next minor release)
  * [ADD] **Logging functions that can be compiled out**
    A common logging idiom is to log at different verbosity levels, and use
    different levels in different contexts, for example debug during development,
@@ -43,11 +43,24 @@ takes longer than expected.
    flags, allowing builds that do not need lower-level logs to stay fast and
    efficient without requiring code changes or modification tools in the build
    pipeline.
-
-## 1.6.0
  * [ADD] **Roll-up header for C++ bindings**
    Instead of including each class header in the calling code, it would be more
    convenient to simply include a single header.
+ * [ADD] **Improvements to Entry, Element, and Param functions**
+   The functions dealing with these structures are currently limited, and
+   in some cases require several calls and local variables to accomplish tasks
+   that will be very common. Adding more convenience functions will make working
+   with these simpler, not only in the base library but in the other language
+   bindings as well.
+ * [FIX] **Socket targets may fail to bind to a local socket**
+   Socket targets can be opened with a local socket name provided, but this may
+   also be set to `NULL`, in which case a local socket is generated (see the
+   documentation of `stumpless_open_socket_target` for details). However, this
+   socket is always the same, which means that if a target is not properly
+   closed the local socket will remain. Successive targets will be unable to
+   open, as they will attempt to bind to the same socket name and will fail as
+   it already exists. For details on the progress of this bug, see
+   [issue #54](https://github.com/goatshriek/stumpless/issues/54).
 
 ## 2.0.0 (next major release)
  * [ADD] **Thread safety for all library calls and structures**
@@ -65,15 +78,6 @@ takes longer than expected.
    still point to the invalid memory. See
    [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
    the progress of this bug.
- * [FIX] **Socket targets may fail to bind to a local socket**
-   Socket targets can be opened with a local socket name provided, but this may
-   also be set to `NULL`, in which case a local socket is generated (see the
-   documentation of `stumpless_open_socket_target` for details). However, this
-   socket is always the same, which means that if a target is not properly
-   closed the local socket will remain. Successive targets will be unable to
-   open, as they will attempt to bind to the same socket name and will fail as
-   it already exists. For details on the progress of this bug, see
-   [issue #54](https://github.com/goatshriek/stumpless/issues/54).
  * [CHANGE] **`stumpless` function will be renamed**
    As currently named, the function makes it impossible to create a C++
    namespace named after the library itself. Renaming this function will give it
@@ -122,6 +126,7 @@ takes longer than expected.
  * [ADD] **AWS/S3 logging target**
  * [ADD] **Database logging target**
  * [ADD] **REST endpoint logging target**
+ * [ADD] **Hyperledger/blockchain logging target**
  * [CHANGE] **Make network logging non-blocking**
  * [ADD] **Target chaining**
    In some cases a log message needs to be sent to multiple destinations, such
