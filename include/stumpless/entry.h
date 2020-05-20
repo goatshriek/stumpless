@@ -295,6 +295,18 @@ struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element );
 
+struct stumpless entry *
+stumpless_add_new_element( struct stumpless entry *entry,
+                           const char *name );
+
+struct stumpless_entry *
+stumpless_add_new_param( struct stumpless_entry *entry,
+                         const char *element_name,
+                         const char *param_name,
+                         const char *param_value );
+
+
+
 /**
  * Adds a param to an element.
  *
@@ -368,6 +380,16 @@ stumpless_destroy_entry_only( struct stumpless_entry *entry );
  */
 void
 stumpless_destroy_param( struct stumpless_param *param );
+
+struct stumpless_element *
+stumpless_get_element( struct stumpless_entry *entry,
+                       const char *name );
+
+struct stumpless_param *
+stumpless_get_param( struct stumpless_entry *entry,
+                     const char *element_name,
+                     const char *param_name );
+
 
 /**
  * Creates a new element with the given name.
