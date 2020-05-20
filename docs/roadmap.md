@@ -109,6 +109,17 @@ takes longer than expected.
    specified, which means that they could change across builds. Setting these to
    specific values will make them consistent across all builds, increasing
    interoperability.
+ * [CHANGE] **Facilities, severities, options, element functions, and param
+   functions will be moved to separate headers**
+   These items are all currently in the `stumpless/entry.h` header, which is
+   getting too large. Separating these will allow for smaller, more logically
+   separate headers. While the roll-up header will still include all of these,
+   code that is including specific headers may break as a result of this change.
+ * [CHANGE] **Facilities and severities will be defined by enumerations**
+   Enumerations are a cleaner way to represent the set values, and can be made
+   compatible with the `syslog.h` values if their backing `int` values match.
+   Because function signatures will change, this will be done in a major
+   release.
 
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**
