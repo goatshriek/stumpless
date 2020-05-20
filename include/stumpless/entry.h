@@ -282,7 +282,8 @@ struct stumpless_entry {
 };
 
 /**
- * Adds an element to an entry.
+ * Adds an element to an entry. The element is appended to the end of the list
+ * of elements in this entry.
  *
  * @param entry The entry to add the element to.
  *
@@ -295,15 +296,20 @@ struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element );
 
-struct stumpless entry *
-stumpless_add_new_element( struct stumpless entry *entry,
+struct stumpless_entry *
+stumpless_add_new_element( struct stumpless_entry *entry,
                            const char *name );
 
-struct stumpless_entry *
-stumpless_add_new_param( struct stumpless_entry *entry,
-                         const char *element_name,
+struct stumpless_element *
+stumpless_add_new_param( struct stumpless_element *element,
                          const char *param_name,
                          const char *param_value );
+
+struct stumpless_entry *
+stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
+                                  const char *element_name,
+                                  const char *param_name,
+                                  const char *param_value );
 
 
 
@@ -382,13 +388,77 @@ void
 stumpless_destroy_param( struct stumpless_param *param );
 
 struct stumpless_element *
-stumpless_get_element( struct stumpless_entry *entry,
-                       const char *name );
+stumpless_get_element_by_index( struct stumpless_entry *entry,
+                                size_t index );
+
+struct stumpless_element *
+stumpless_get_element_by_name( struct stumpless_entry *entry,
+                               const char *name );
+
+int /** may cause index overflow error condition */
+stumpless_get_element_index( struct stumpless_entry *entry,
+                             const char *name );
+
+const char *
+stumpless_get_entry_app_name( const struct stumpless_entry *entry );
+
+int
+stumpless_get_entry_facility( const struct stumpless_entry *entry );
+
+const char *
+stumpless_get_entry_msgid( const struct stumpless_entry *entry );
+
+int
+stumpless_get_entry_prival( const struct stumpless_entry *entry );
+
+int
+stumpless_get_entry_severity( const struct stumpless_entry *entry );
 
 struct stumpless_param *
-stumpless_get_param( struct stumpless_entry *entry,
-                     const char *element_name,
-                     const char *param_name );
+stumpless_get_param_by_name( struct stumpless_element *element,
+                             const char *name );
+
+struct stumpless_param *
+stumpless_get_param_by_index( struct stumpless_element *element,
+                              size_t index );
+
+struct stumpless_param *
+stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
+                                         size_t element_index,
+                                         size_t param_index );
+
+struct stumpless_param *
+stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
+                                        const char *element_name,
+                                        const char *param_name );
+
+int /** may cause index overflow error condition */
+stumpless_get_param_index( struct stumpless_element *element,
+                           const char *name );
+
+const char *
+stumpless_get_param_value_by_name( struct stumpless_element *element,
+                                   const char *name );
+
+const char *
+stumpless_get_param_value_by_index( struct stumpless_element *element,
+                                    size_t index );
+
+const char *
+stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
+                                               size_t element_index,
+                                               size_t param_index );
+
+const char *
+stumpless_get_param_value_by_name_from_entry( struct stumpless_entry *entry,
+                                              const char *element_name,
+                                              const char *param_name );
+
+const char *
+stumpless_get_param_name( const struct stumpless_param *param );
+
+const char *
+stumpless_get_param_value( const struct stumpless_param *param );
 
 
 /**
@@ -466,6 +536,13 @@ struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name );
 
+struct stumpless_entry *
+stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
+
+struct stumpless_entry *
+stumpless_set_entry_msgid( struct stumpless_entry *entry,
+                           const char *msgid );
+
 /**
  * Sets the message of a given entry.
  *
@@ -487,6 +564,66 @@ struct stumpless_entry *
 stumpless_set_entry_message( struct stumpless_entry *entry,
                              const char *message,
                              ... );
+
+struct stumpless_entry *
+stumpless_set_entry_priority( struct stumpless_entry *entry,
+                              int facility,
+                              int severity );
+
+struct stumpless_entry *
+stumpless_set_entry_prival( struct stumpless_entry *entry,
+                            int prival );
+
+struct stumpless_entry *
+stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
+
+struct stumpless_entry *
+stumpless_set_element( struct stumpless_entry *entry,
+                       size_t index,
+                       struct stumpless_element *element );
+
+struct stumpless_element *
+stumpless_set_element_name( struct stumpless_element *element,
+                            const char *name );
+
+struct stumpless_element *
+stumpless_set_param_by_index( struct stumpless_element *element,
+                              size_t index,
+                              struct stumpless_param *param );
+
+struct stumpless_entry *
+stumpless_set_param_by_index_from_entry( struct stumpless_entry *entry,
+                                         size_t element_index,
+                                         size_t param_index,
+                                         struct stumpless_param *param );
+
+struct stumpless_element *
+stumpless_set_param_value_by_name( struct stumpless_element *element,
+                                   const char *param_name,
+                                   const char *param_value );
+
+struct stumpless_element *
+stumpless_set_param_value_by_index( struct stumpless_element *element,
+                                    size_t param_index,
+                                    const char *param_value );
+
+struct stumpless_entry *
+stumpless_set_param_value_by_index_from_entry( struct stumpless_entry *entry,
+                                               size_t element_index,
+                                               size_t param_index,
+                                               const char *param_value );
+
+struct stumpless_entry *
+stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
+                                              const char *element_name,
+                                              const char *param_name,
+                                              const char *param_value );
+
+struct stumpless_param *
+stumpless_set_param_name( struct stumpless_param *param, const char *name );
+
+struct stumpless_param *
+stumpless_set_param_value( struct stumpless_param *param, const char *value );
 
 /**
  * Creates a new entry with the given parameters.
