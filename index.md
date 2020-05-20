@@ -18,6 +18,8 @@ logging to the following targets:
  * the Windows Event Log
  * character buffers
 
+To see where we're heading in the near future, check out the project
+[roadmap](./roadmap.html).
 
 # More info
 

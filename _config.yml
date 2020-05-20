@@ -1,1 +1,10 @@
-theme: jekyll-theme-minimal
+# build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+
+header_pages:
+  - roadmap.md
+  - docs/c/latest/index.html
+  - docs/cpp/latest/index.html
