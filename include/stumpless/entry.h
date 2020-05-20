@@ -358,6 +358,11 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
 void
 stumpless_destroy_entry_only( struct stumpless_entry *entry );
 
+/**
+ * Destroys a param, freeing any allocated memory.
+ *
+ * @param param The param to destroy.
+ */
 void
 stumpless_destroy_param( struct stumpless_param *param );
 
