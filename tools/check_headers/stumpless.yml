@@ -189,6 +189,7 @@
 "stumpless_destroy_entry_only": "stumpless/entry.h"
 "stumpless_error_id_t": "stumpless/error.h"
 "STUMPLESS_FACILITY_KERN": "stumpless/facility.h"
+"STUMPLESS_FACILITY_USER": "stumpless/facility.h"
 "STUMPLESS_FALLBACK_PAGESIZE": "stumpless/config.h"
 "STUMPLESS_FILE_OPEN_FAILURE": "stumpless/error.h"
 "STUMPLESS_FILE_TARGET": "stumpless/target.h"

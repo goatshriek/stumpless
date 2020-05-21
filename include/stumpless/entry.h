@@ -35,9 +35,15 @@
 #  endif
 
 /* included for compatability with all 1.x releases */
-#  include <stumpless/facility.h> // includes STUMPLESS_FACILITY_USER etc.
-#  include <stumpless/option.h>   // includes STUMPLESS_OPTION_NONE etc.
-#  include <stumpless/severity.h> //  includes STUMPLESS_SEVERITY_INFO etc.
+#  ifndef STUMPLESS_FACILITY_USER
+#    include <stumpless/facility.h>
+#  endif
+#  ifndef STUMPLESS_OPTION_NONE
+#    include <stumpless/option.h>
+#  endif
+#  ifndef STUMPLESS_SEVERITY_INFO
+#    include <stumpless/severity.h>
+#  endif
 
 #  ifdef __cplusplus
 extern "C" {
