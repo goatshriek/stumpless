@@ -85,3 +85,4 @@ EXPORTS
   stumpless_destroy_element_and_contents @83
   stumpless_destroy_element_only         @84
   stumpless_get_error_id                 @85
+; added in v1.6.0

@@ -20,6 +20,9 @@
 #include <stddef.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
+#include <stumpless/option.h>
+#include <stumpless/param.h>
+#include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
 #include <windows.h>

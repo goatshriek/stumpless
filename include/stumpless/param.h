@@ -23,6 +23,8 @@
 #ifndef __STUMPLESS_PARAM_H
 #  define __STUMPLESS_PARAM_H
 
+#  include <stddef.h>
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif

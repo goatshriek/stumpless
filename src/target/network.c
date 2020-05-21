@@ -21,7 +21,8 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <stumpless/entry.h>
+#include <stumpless/facility.h>
+#include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
 #include "private/config/wrapper.h"

@@ -20,6 +20,8 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
+#include <stumpless/facility.h>
+#include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>

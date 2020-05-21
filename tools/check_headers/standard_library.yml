@@ -18,9 +18,15 @@
 "EVENTLOG_WARNING_TYPE": "windows.h"
 "EXIT_FAILURE": "stdlib.h"
 "EXIT_SUCCESS": "stdlib.h"
-"fclose": "stdio.h"
-"FILE": "stdio.h"
-"fopen": "stdio.h"
+"fclose":
+  - "cstdio"
+  - "stdio.h"
+"FILE":
+  - "cstdio"
+  - "stdio.h"
+"fopen":
+  - "cstdio"
+  - "stdio.h"
 "fprintf": "stdio.h"
 "free":
   - "cstdlib"
@@ -65,7 +71,9 @@
 "printf": "stdio.h"
 "PSOCKADDR": "winsock2.h"
 "PSOCKADDR_IN": "winsock2.h"
-"realloc": "stdlib.h"
+"realloc":
+  - "cstdlib"
+  - "stdlib.h"
 "recvfrom": "sys/socket.h"
 "regex_match": "regex"
 "RegisterEventSource": "windows.h"
@@ -89,7 +97,9 @@
 "std::cout": "iostream"
 "std::ifstream": "fstream"
 "std::regex": "regex"
-"stderr": "stdio.h"
+"stderr":
+  - "cstdio"
+  - "stdio.h"
 "strftime": "time.h"
 "strlen": "string.h"
 "strncpy": "string.h"
