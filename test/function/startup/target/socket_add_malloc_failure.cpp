@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <sys/types.h>
 #include <sys/un.h>
 #include <unistd.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include "test/function/rfc5424.hpp"
 
 using::testing::HasSubstr;
 

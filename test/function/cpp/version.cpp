@@ -18,7 +18,6 @@
 
 #include <cstddef>
 #include <cstdlib>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sstream>
 #include <Version.hpp>

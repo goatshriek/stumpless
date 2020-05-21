@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include <ArgumentEmpty.hpp>
 #include <exception>
 #include <fstream>
@@ -24,6 +25,8 @@
 #include <Facility.hpp>
 #include <FileTarget.hpp>
 #include <Severity.hpp>
+#include <stumpless/option.h>
+#include <stumpless/target.h>
 #include "test/function/rfc5424.hpp"
 
 using namespace stumplesscpp;
