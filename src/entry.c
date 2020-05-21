@@ -19,6 +19,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stumpless/entry.h>
+#include <stumpless/param.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
 #include "private/entry.h"

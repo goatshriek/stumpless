@@ -29,6 +29,7 @@
 #  include <stdarg.h>
 #  include <stddef.h>
 #  include <stumpless/id.h>
+#  include <stumpless/param.h>
 
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include <windows.h>
@@ -48,39 +49,6 @@
 #  ifdef __cplusplus
 extern "C" {
 #  endif
-
-/**
- * A parameter within a structured data element.
- *
- * A parameter must have both a name and a value in compliance with RFC 5424.
- */
-struct stumpless_param {
-/**
- * The name of the parameter.
- *
- * The name must be between 1 and 32 characters long and consist only of ASCII
- * characters between '!' and '~', inclusive, with the exception of the '=',
- * ' ', ']', and '"' characters, which are not allowed.
- *
- * Note that the name will _not_ be NULL-terminated.
- */
-  char *name;
-/** The number of characters in name. */
-  size_t name_length;
-/**
- * The value may be any UTF-8 string.
- *
- * As specified in RFC 5424, the characters '"' (ABNF %d34), '\' (ABNF %d92),
- * and ']' (ABNF %d93) MUST be escaped by placing a backslash character '\'
- * directly before them.
- *
- * Unlike the name field, value will be NULL-terminated. This is done to support
- * their use for wel insertion strings.
- */
-  char *value;
-/** The number of characters in value. */
-  size_t value_length;
-};
 
 /**
  * An element of structured data.
@@ -247,14 +215,6 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
 void
 stumpless_destroy_entry_only( struct stumpless_entry *entry );
 
-/**
- * Destroys a param, freeing any allocated memory.
- *
- * @param param The param to destroy.
- */
-void
-stumpless_destroy_param( struct stumpless_param *param );
-
 struct stumpless_element *
 stumpless_get_element_by_index( struct stumpless_entry *entry,
                                 size_t index );
@@ -322,13 +282,6 @@ stumpless_get_param_value_by_name_from_entry( struct stumpless_entry *entry,
                                               const char *element_name,
                                               const char *param_name );
 
-const char *
-stumpless_get_param_name( const struct stumpless_param *param );
-
-const char *
-stumpless_get_param_value( const struct stumpless_param *param );
-
-
 /**
  * Creates a new element with the given name.
  *
@@ -374,19 +327,6 @@ stumpless_new_entry( int facility,
                      const char *msgid,
                      const char *message,
                      ... );
-
-/**
- * Creates a new param with the given name and value.
- *
- * @param name The name of the new param.
- *
- * @param value The value of the new param.
- *
- * @return The created param, if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code set appropriately.
- */
-struct stumpless_param *
-stumpless_new_param( const char *name, const char *value );
 
 /**
  * Sets the app name for an entry.
@@ -486,12 +426,6 @@ stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
                                               const char *element_name,
                                               const char *param_name,
                                               const char *param_value );
-
-struct stumpless_param *
-stumpless_set_param_name( struct stumpless_param *param, const char *name );
-
-struct stumpless_param *
-stumpless_set_param_value( struct stumpless_param *param, const char *value );
 
 /**
  * Creates a new entry with the given parameters.

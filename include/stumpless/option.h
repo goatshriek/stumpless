@@ -17,10 +17,7 @@
  */
 
 /** @file
- * Severity codes for classifying log entries. See RFC 5424 section 6.2.1 for
- * details on these values. Severities are defined to be compatible with the
- * syslog.h header if it is found on the system. Otherwise, they are defined as
- * closely as possible to the RFC 5424 specification.
+ * Options that can be used to modify the behavior of Stumpless components.
  */
 
 #ifndef __STUMPLESS_OPTION_H
