@@ -27,6 +27,8 @@
 #ifndef __STUMPLESS_SEVERITY_H
 #  define __STUMPLESS_SEVERITY_H
 
+#  include <stumpless/config.h>
+
 /* severity codes as set by syslog.h */
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 
