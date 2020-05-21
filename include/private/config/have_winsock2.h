@@ -20,6 +20,7 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINSOCK2_H
 
+#  include <stddef.h>
 #  include "private/target/network.h"
 
 void

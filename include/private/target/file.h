@@ -21,6 +21,7 @@
 
 #  include <stddef.h>
 #  include <stdio.h>
+#  include <stumpless/target.h>
 
 struct file_target {
   FILE *stream;

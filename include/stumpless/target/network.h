@@ -26,6 +26,7 @@
 #ifndef __STUMPLESS_TARGET_NETWORK_H
 #  define __STUMPLESS_TARGET_NETWORK_H
 
+#  include <stddef.h>
 #  include <stumpless/target.h>
 
 /**

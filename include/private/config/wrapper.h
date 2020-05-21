@@ -86,6 +86,7 @@
 
 /* definition of network target support */
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
+#    include <stumpless/target/network.h>
 #    include "private/target/network.h"
 #    define config_close_network_target stumpless_close_network_target
 #    define config_network_free_all network_free_all

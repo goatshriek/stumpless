@@ -19,8 +19,10 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 
-#include <stumpless/entry.h>
-#include <windows.h>
+#  include <stumpless/entry.h>
+#  include <stumpless/param.h>
+#  include <stumpless/target.h>
+#  include <windows.h>
 
 void
 destroy_insertion_params( struct stumpless_entry *entry );
