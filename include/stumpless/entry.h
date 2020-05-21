@@ -26,8 +26,6 @@
 #ifndef __STUMPLESS_ENTRY_H
 #  define __STUMPLESS_ENTRY_H
 
-#  include <stumpless/config.h>
-
 #  include <stdarg.h>
 #  include <stddef.h>
 #  include <stumpless/id.h>
@@ -37,38 +35,13 @@
 #  endif
 
 /* included for compatability with all 1.x releases */
-#  include <stumpless/facility.h>
-#  include <stumpless/severity.h>
+#  include <stumpless/facility.h> // includes STUMPLESS_FACILITY_USER etc.
+#  include <stumpless/option.h>   // includes STUMPLESS_OPTION_NONE etc.
+#  include <stumpless/severity.h> //  includes STUMPLESS_SEVERITY_INFO etc.
 
 #  ifdef __cplusplus
 extern "C" {
 #  endif
-
-#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-#    include <syslog.h>
-
-/* options defined in syslog.h */
-/* these don't have doxygen documentation as they are currently not supported
- * by the implementation */
-#    define STUMPLESS_OPTION_PID    LOG_PID
-#    define STUMPLESS_OPTION_CONS   LOG_CONS
-#    define STUMPLESS_OPTION_NDELAY LOG_NDELAY
-#    define STUMPLESS_OPTION_ODELAY LOG_ODELAY
-#    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT
-
-#  else
-
-/* options normally defined in syslog.h */
-#    define STUMPLESS_OPTION_PID    1
-#    define STUMPLESS_OPTION_CONS   (1<<1)
-#    define STUMPLESS_OPTION_NDELAY (1<<2)
-#    define STUMPLESS_OPTION_ODELAY (1<<3)
-#    define STUMPLESS_OPTION_NOWAIT (1<<4)
-
-#  endif
-
-/** Empty option mask for explicit 'no option' use. */
-#  define STUMPLESS_OPTION_NONE 0
 
 /**
  * A parameter within a structured data element.
