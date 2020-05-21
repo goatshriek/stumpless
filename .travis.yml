@@ -156,9 +156,9 @@ before_script:
     fi
 
 script:
-  - ../tools/check_headers/check_headers.rb "../include/**/*.h*"
+  - ../tools/check_headers/check_headers.rb "../include/*/**/*.h*"
   - ../tools/check_headers/check_headers.rb "../src/**/*.c"
-  - ../tools/check_headers/check_headers.rb "../test/**.cpp"
+  - ../tools/check_headers/check_headers.rb "../test/**/*.cpp"
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
       source ../tools/travis-ci/windows_script.sh;
     else
