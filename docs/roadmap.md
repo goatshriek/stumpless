@@ -124,6 +124,10 @@ takes longer than expected.
    compatible with the `syslog.h` values if their backing `int` values match.
    Because function signatures will change, this will be done in a major
    release.
+ * [REMOVE] **Inclusion of windows.h in stumpless/config.h**
+   This inclusion, while convenient for some users, propogates inclusion
+   ordering problems. It will be removed so that such ordering concerns are only
+   on users of Windows, and not added to this library as well.
 
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**

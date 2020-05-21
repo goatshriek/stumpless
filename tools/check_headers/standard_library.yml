@@ -119,5 +119,6 @@
 "va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
+"WIN32_LEAN_AND_MEAN": "windows.h"
 "WORD": "windows.h"
 "WSACleanup": "winsock2.h"
