@@ -90,49 +90,6 @@ stumpless_new_entry( int facility,
   return entry;
 }
 
-struct stumpless_param *
-stumpless_new_param( const char *name, const char *value ) {
-  struct stumpless_param *param;
-
-  clear_error(  );
-
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
-
-  if( !value ) {
-    raise_argument_empty( "value is NULL" );
-    goto fail;
-  }
-
-  param = alloc_mem( sizeof( *param ) );
-  if( !param ) {
-    goto fail;
-  }
-
-  param->name = cstring_to_sized_string( name, &( param->name_length ) );
-  if( !param->name ) {
-    goto fail_name;
-  }
-
-  param->value = cstring_to_sized_string( value, &( param->value_length ) );
-  if( !param->value ) {
-    goto fail_value;
-  }
-
-  return param;
-
-fail_value:
-  free_mem( param->name );
-
-fail_name:
-  free_mem( param );
-
-fail:
-  return NULL;
-}
-
 void
 stumpless_destroy_entry( struct stumpless_entry *entry ) {
   stumpless_destroy_entry_and_contents( entry );
@@ -164,19 +121,6 @@ stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
   }
 
   unchecked_destroy_entry( entry );
-}
-
-void
-stumpless_destroy_param( struct stumpless_param *param ) {
-  clear_error(  );
-
-  if( !param ) {
-    return;
-  }
-
-  free_mem( param->name );
-  free_mem( param->value );
-  free_mem( param );
 }
 
 struct stumpless_entry *
