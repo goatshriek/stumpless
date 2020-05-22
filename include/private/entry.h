@@ -19,7 +19,6 @@
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
 #  define __STUMPLESS_PRIVATE_ENTRY_H
 
-#  include <stumpless/element.h>
 #  include <stumpless/entry.h>
 #  include "private/strbuilder.h"
 

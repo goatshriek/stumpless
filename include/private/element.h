@@ -19,6 +19,8 @@
 #ifndef __STUMPLESS_PRIVATE_ELEMENT_H
 #  define __STUMPLESS_PRIVATE_ELEMENT_H
 
+#  include <stumpless/element.h>
+
 void
 unchecked_destroy_element( struct stumpless_element *element );
 

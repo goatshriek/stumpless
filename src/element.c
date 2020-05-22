@@ -19,7 +19,7 @@
 #include <stddef.h>
 #include <stumpless/element.h>
 #include <stumpless/param.h>
-#include "private/entry.h"
+#include "private/element.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
