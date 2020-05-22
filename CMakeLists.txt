@@ -110,11 +110,13 @@ endif()
 # standard source files
 set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/cache.c
+  ${PROJECT_SOURCE_DIR}/src/element.c
   ${PROJECT_SOURCE_DIR}/src/entry.c
   ${PROJECT_SOURCE_DIR}/src/error.c
   ${PROJECT_SOURCE_DIR}/src/formatter.c
   ${PROJECT_SOURCE_DIR}/src/inthelper.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
+  ${PROJECT_SOURCE_DIR}/src/param.c
   ${PROJECT_SOURCE_DIR}/src/strbuilder.c
   ${PROJECT_SOURCE_DIR}/src/strhelper.c
   ${PROJECT_SOURCE_DIR}/src/target.c

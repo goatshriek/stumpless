@@ -60,6 +60,8 @@
 "destroy_wel_target": "private/target/wel.h"
 "entry_free_all": "private/entry.h"
 "enum stumpless_error_id": "stumpless/error.h"
+"enum stumpless_network_protocol": "stumpless/target/network.h"
+"enum stumpless_transport_protocol": "stumpless/target/network.h"
 "error_free_all": "private/error.h"
 "facility_is_invalid": "private/entry.h"
 "fallback_gethostname": "private/config/fallback.h"

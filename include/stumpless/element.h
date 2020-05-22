@@ -114,24 +114,24 @@ void
 stumpless_destroy_element_only( struct stumpless_element *element );
 
 struct stumpless_param *
-stumpless_get_param_by_name( struct stumpless_element *element,
-                             const char *name );
-
-struct stumpless_param *
 stumpless_get_param_by_index( struct stumpless_element *element,
                               size_t index );
+
+struct stumpless_param *
+stumpless_get_param_by_name( struct stumpless_element *element,
+                             const char *name );
 
 int /** may cause index overflow error condition */
 stumpless_get_param_index( struct stumpless_element *element,
                            const char *name );
 
 const char *
-stumpless_get_param_value_by_name( struct stumpless_element *element,
-                                   const char *name );
-
-const char *
 stumpless_get_param_value_by_index( struct stumpless_element *element,
                                     size_t index );
+
+const char *
+stumpless_get_param_value_by_name( struct stumpless_element *element,
+                                   const char *name );
 
 /**
  * Creates a new element with the given name.
@@ -154,14 +154,14 @@ stumpless_set_param_by_index( struct stumpless_element *element,
                               struct stumpless_param *param );
 
 struct stumpless_element *
-stumpless_set_param_value_by_name( struct stumpless_element *element,
-                                   const char *param_name,
-                                   const char *param_value );
-
-struct stumpless_element *
 stumpless_set_param_value_by_index( struct stumpless_element *element,
                                     size_t param_index,
                                     const char *param_value );
+
+struct stumpless_element *
+stumpless_set_param_value_by_name( struct stumpless_element *element,
+                                   const char *param_name,
+                                   const char *param_value );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

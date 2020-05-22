@@ -47,7 +47,7 @@ namespace {
     StreamTarget target( "test-stream",
                          stream,
                          STUMPLESS_OPTION_NONE,
-                         Facility::User );
+                         Facility::USER );
 
     target.Log( "this is a basic test of the stream target" );
   }
