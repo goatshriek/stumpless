@@ -426,13 +426,6 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 }
 
 void
-unchecked_destroy_element( struct stumpless_element *element ) {
-  free_mem( element->params );
-  free_mem( element->name );
-  free_mem( element );
-}
-
-void
 unchecked_destroy_entry( struct stumpless_entry *entry ) {
   config_destroy_insertion_params( entry );
 

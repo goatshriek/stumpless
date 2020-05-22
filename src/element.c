@@ -185,3 +185,12 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
                                    const char *param_value ) {
   return NULL;
 }
+
+/* private functions */
+
+void
+unchecked_destroy_element( struct stumpless_element *element ) {
+  free_mem( element->params );
+  free_mem( element->name );
+  free_mem( element );
+}
