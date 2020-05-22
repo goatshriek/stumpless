@@ -18,7 +18,8 @@
 
 #include <gtest/gtest.h>
 #include <Entry.hpp>
-#include <WelTarget.hpp>
+#include <Facility.hpp>
+#include <Severity.hpp>
 
 using namespace stumplesscpp;
 

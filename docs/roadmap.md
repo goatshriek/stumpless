@@ -128,9 +128,14 @@ takes longer than expected.
    This inclusion, while convenient for some users, propogates inclusion
    ordering problems. It will be removed so that such ordering concerns are only
    on users of Windows, and not added to this library as well.
+ * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
+   Enumerations are preferred for working with these set values in C++, and this
+   function was inadvertently left in the library during development.
 
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**
+   Removing previously deprecated feature.
+ * [REMOVE] **Stream target constructor using `int` facility**
    Removing previously deprecated feature.
 
 ## Unallocated to a release
