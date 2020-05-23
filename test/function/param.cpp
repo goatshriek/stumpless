@@ -16,12 +16,21 @@
  * limitations under the License.
  */
 
-using::testing::HasSubstr;
+#include <gtest/gtest.h>
+#include <stumpless.h>
 
 namespace {
 
   class ParamTest : public::testing::Test {
 
   };
+
+  TEST( SetName, Basic ) {
+    struct stumpless_param *param;
+
+    param = stumpless_new_param( "my_name", "my_value" );
+
+    stumpless_destroy_param( param );
+  }
 
 }
