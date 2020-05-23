@@ -42,7 +42,12 @@ struct stumpless_param {
  * characters between '!' and '~', inclusive, with the exception of the '=',
  * ' ', ']', and '"' characters, which are not allowed.
  *
- * Note that the name will _not_ be NULL-terminated.
+ * Note that the name will be NULL-terminated as of version 1.6.0. In earlier
+ * versions it is _not_ NULL-terminated.
+ *
+ * If you need to access the name, use the stumpless_(g|s)et_param_name
+ * functions. These will protect you from changes in the struct in future
+ * versions.
  */
   char *name;
 /** The number of characters in name. */
@@ -54,8 +59,12 @@ struct stumpless_param {
  * and ']' (ABNF %d93) MUST be escaped by placing a backslash character '\'
  * directly before them.
  *
- * Unlike the name field, value will be NULL-terminated. This is done to support
- * their use for wel insertion strings.
+ * Unlike the name field, value will always be NULL-terminated. This is done to
+ * support their use for wel insertion strings.
+ *
+ * If you need to access the value, use the stumpless_(g|s)et_param_value
+ * functions. These will protect you from changes in the struct in future
+ * versions.
  */
   char *value;
 /** The number of characters in value. */
@@ -70,9 +79,27 @@ struct stumpless_param {
 void
 stumpless_destroy_param( struct stumpless_param *param );
 
+/**
+ * Returns the name of the given param. The character buffer must not be
+ * altered or freed by the caller.
+ *
+ * @param param The param to get the name from.
+ *
+ * @return The name of param, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 const char *
 stumpless_get_param_name( const struct stumpless_param *param );
 
+/**
+ * Returns the value of the given param. The character buffer must not be
+ * altered or freed by the caller.
+ *
+ * @param param The param to get the value from.
+ *
+ * @return The value of param, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 const char *
 stumpless_get_param_value( const struct stumpless_param *param );
 
@@ -89,9 +116,29 @@ stumpless_get_param_value( const struct stumpless_param *param );
 struct stumpless_param *
 stumpless_new_param( const char *name, const char *value );
 
+/**
+ * Sets the name of the given param.
+ *
+ * @param param The param to set the name of.
+ *
+ * @param name The new name of param.
+ *
+ * @return The modified param, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name );
 
+/**
+ * Sets the value of the given param.
+ *
+ * @param param The param to set the value of.
+ *
+ * @param value The new name of param.
+ *
+ * @return The modified param, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value );
 
