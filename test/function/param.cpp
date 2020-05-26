@@ -22,8 +22,35 @@
 namespace {
 
   class ParamTest : public::testing::Test {
+    protected:
+      struct stumpless_param *basic_param;
+      const char *basic_name = "basic-name";
+      const char *basic_value = "basic-value";
 
+      virtual void
+      SetUp( void ) {
+        basic_param = stumpless_new_param( basic_name, basic_value );
+      }
+
+      virtual void
+      TearDown( void ) {
+        stumpless_destroy_param( basic_param );
+      }
   };
+
+  TEST_F( ParamTest, GetName ) {
+    EXPECT_STREQ( stumpless_get_param_name( basic_param ), basic_name );
+  }
+
+  TEST_F( ParamTest, GetValue ) {
+    EXPECT_STREQ( stumpless_get_param_value( basic_param ), basic_value );
+  }
+
+  /* non-fixture tests */
+
+  TEST( DestroyParamTest, NullParam ) {
+    stumpless_destroy_param( NULL );
+  }
 
   TEST( SetName, Basic ) {
     struct stumpless_param *param;

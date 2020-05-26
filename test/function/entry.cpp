@@ -338,10 +338,6 @@ namespace {
     stumpless_destroy_entry( NULL );
   }
 
-  TEST( DestroyParamTest, NullParam ) {
-    stumpless_destroy_param( NULL );
-  }
-
   TEST( NewElementTest, MemoryFailure ) {
     struct stumpless_element *element;
     struct stumpless_error *error;
