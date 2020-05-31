@@ -594,6 +594,10 @@ add_function_test(memory
   SOURCES test/function/memory.cpp
 )
 
+add_function_test(param
+  SOURCES test/function/param.cpp
+)
+
 add_function_test(perror
   SOURCES test/function/startup/perror.cpp
 )

@@ -102,7 +102,7 @@ fail:
 
 struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
-  const char *temp_name;
+  char *temp_name;
   size_t temp_size;
 
   if( !param ) {
@@ -132,7 +132,7 @@ fail:
 
 struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
-  const char *temp_value;
+  char *temp_value;
   size_t temp_size;
 
   if( !param ) {
