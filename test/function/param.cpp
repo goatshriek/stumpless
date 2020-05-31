@@ -17,6 +17,7 @@
  */
 
 #include <cstddef>
+#include <cstdlib>
 #include <cstring>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -52,7 +53,7 @@ namespace {
     void * (*set_malloc_result)(size_t);
     const char *new_name = "this-wont-work";
     const struct stumpless_param *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     // create the internal error struct
     stumpless_get_param_name( NULL );
@@ -76,11 +77,26 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
+  TEST_F( ParamTest, SetNameToNull ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_param_name( basic_param, NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+  }
+
   TEST_F( ParamTest, SetValueMemoryFailure ) {
     void * (*set_malloc_result)(size_t);
     const char *new_value = "this-wont-work";
     const struct stumpless_param *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     // create the internal error struct
     stumpless_get_param_name( NULL );
@@ -102,6 +118,21 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( ParamTest, SetValueToNull ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_param_value( basic_param, NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
   /* non-fixture tests */
@@ -204,6 +235,21 @@ namespace {
     stumpless_destroy_param( param );
   }
 
+  TEST( SetName, NullParam ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_param_name( NULL, "new-name" );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+  }
+
   TEST( SetValue, Basic ) {
     struct stumpless_param *param;
     const char *original_value = "first-value";
@@ -219,6 +265,21 @@ namespace {
     EXPECT_STREQ( stumpless_get_param_value( param ), new_value );
 
     stumpless_destroy_param( param );
+  }
+
+  TEST( SetValue, NullParam ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_param_value( NULL, "new-value" );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
 }
