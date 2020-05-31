@@ -86,3 +86,7 @@ EXPORTS
   stumpless_destroy_element_only         @84
   stumpless_get_error_id                 @85
 ; added in v1.6.0
+  stumpless_get_param_name               @86
+  stumpless_get_param_value              @87
+  stumpless_set_param_name               @88
+  stumpless_set_param_value              @89
