@@ -48,10 +48,96 @@ namespace {
     EXPECT_STREQ( stumpless_get_param_value( basic_param ), basic_value );
   }
 
+  TEST_F( ParamTest, SetNameMemoryFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const char *new_name = "this-wont-work";
+    const struct stumpless_param *result;
+    struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_param_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_param_name( basic_param, new_name );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    EXPECT_STRNE( stumpless_get_param_name( basic_param ), new_name );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( ParamTest, SetValueMemoryFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const char *new_value = "this-wont-work";
+    const struct stumpless_param *result;
+    struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_param_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_param_value( basic_param, new_value );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    }
+
+    EXPECT_STRNE( stumpless_get_param_value( basic_param ), new_value );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   /* non-fixture tests */
 
   TEST( DestroyParamTest, NullParam ) {
     stumpless_destroy_param( NULL );
+  }
+
+  TEST( GetParamNameTest, NullParam ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_name( NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+  }
+
+  TEST( GetParamValueTest, NullParam ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_value( NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
   }
 
   TEST( NewParamTest, New ){
@@ -103,17 +189,34 @@ namespace {
 
   TEST( SetName, Basic ) {
     struct stumpless_param *param;
-    const char *original_name = "first_name";
-    const char *new_name = "second_name";
+    const char *original_name = "first-name";
+    const char *new_name = "second-name";
     struct stumpless_param *result;
 
-    param = stumpless_new_param( original_name, "my_value" );
+    param = stumpless_new_param( original_name, "my-value" );
     ASSERT_TRUE( param != NULL );
     EXPECT_STREQ( stumpless_get_param_name( param ), original_name );
 
     result = stumpless_set_param_name( param, new_name );
     EXPECT_TRUE( result == param );
     EXPECT_STREQ( stumpless_get_param_name( param ), new_name );
+
+    stumpless_destroy_param( param );
+  }
+
+  TEST( SetValue, Basic ) {
+    struct stumpless_param *param;
+    const char *original_value = "first-value";
+    const char *new_value = "second-value";
+    struct stumpless_param *result;
+
+    param = stumpless_new_param( "my-name", original_value );
+    ASSERT_TRUE( param != NULL );
+    EXPECT_STREQ( stumpless_get_param_value( param ), original_value );
+
+    result = stumpless_set_param_value( param, new_value );
+    EXPECT_TRUE( result == param );
+    EXPECT_STREQ( stumpless_get_param_value( param ), new_value );
 
     stumpless_destroy_param( param );
   }
