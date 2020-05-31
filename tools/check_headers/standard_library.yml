@@ -101,7 +101,9 @@
   - "cstdio"
   - "stdio.h"
 "strftime": "time.h"
-"strlen": "string.h"
+"strlen":
+  - "cstring"
+  - "string.h"
 "strncpy": "string.h"
 "struct addrinfo": "netdb.h"
 "struct timespec": "time.h"
