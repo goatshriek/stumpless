@@ -82,12 +82,12 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail;
   }
 
-  param->name = cstring_to_sized_string( name, &( param->name_length ) );
+  param->name = copy_cstring_with_length( name, &( param->name_length ) );
   if( !param->name ) {
     goto fail_name;
   }
 
-  param->value = cstring_to_sized_string( value, &( param->value_length ) );
+  param->value = copy_cstring_with_length( value, &( param->value_length ) );
   if( !param->value ) {
     goto fail_value;
   }
@@ -153,7 +153,7 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
     goto fail;
   }
 
-  temp_value = cstring_to_sized_string( value, &temp_size );
+  temp_value = copy_cstring_with_length( value, &temp_size );
   if( !temp_value ) {
     goto fail;
   }
