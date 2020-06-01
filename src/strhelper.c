@@ -55,18 +55,3 @@ copy_cstring_with_length( const char *str, size_t *length ) {
   return new_string;
 }
 
-char *
-cstring_to_sized_string( const char *str, size_t *length ){
-  char *sized_string;
-
-  *length = strlen( str );
-  sized_string = alloc_mem( *length + 1 );
-  if( !sized_string ) {
-    return NULL;
-  }
-
-  memcpy( sized_string, str, *length );
-  sized_string[*length] = '\0';
-
-  return sized_string;
-}

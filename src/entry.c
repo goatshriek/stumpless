@@ -139,7 +139,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   // it before the assignment if it is (currently a memory leak)
 
   app_name_length = &( entry->app_name_length );
-  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
+  entry->app_name = copy_cstring_with_length( app_name, app_name_length );
   if( !entry->app_name ) {
     return NULL;
   } else {
@@ -192,15 +192,15 @@ vstumpless_new_entry( int facility,
 
   effective_app_name = app_name ? app_name : "-";
   app_name_length = &( entry->app_name_length );
-  entry->app_name = cstring_to_sized_string( effective_app_name,
-                                             app_name_length );
+  entry->app_name = copy_cstring_with_length( effective_app_name,
+                                              app_name_length );
   if( !entry->app_name ) {
     goto fail_app_name;
   }
 
   effective_msgid = msgid ? msgid : "-";
   msgid_length = &( entry->msgid_length );
-  entry->msgid = cstring_to_sized_string( effective_msgid, msgid_length );
+  entry->msgid = copy_cstring_with_length( effective_msgid, msgid_length );
   if( !entry->msgid ) {
     goto fail_msgid;
   }

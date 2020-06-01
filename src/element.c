@@ -142,7 +142,7 @@ stumpless_new_element( const char *name ) {
     goto fail;
   }
 
-  element->name = cstring_to_sized_string( name, &( element->name_length ) );
+  element->name = copy_cstring_with_length( name, &( element->name_length ) );
   if( !element->name ) {
     goto fail_name;
   }
