@@ -28,7 +28,14 @@ struct stumpless_element *
 stumpless_add_new_param( struct stumpless_element *element,
                          const char *param_name,
                          const char *param_value ) {
-  return NULL;
+  struct stumpless_param *new_param;
+
+  new_param = stumpless_new_param( param_name, param_value );
+  if( !new_param ) {
+    return NULL;
+  }
+
+  return stumpless_add_param( element, new_param );
 }
 
 struct stumpless_element *
