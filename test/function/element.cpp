@@ -141,7 +141,8 @@ namespace {
   TEST_F( ElementTest, AddTwoParams ) {
     size_t original_param_count;
     const struct stumpless_element *result;
-    const char *param1_name, *param2_name;
+    const char *param1_name = "test-param-name-1";
+    const char *param2_name = "test-param-name-2";
     struct stumpless_param *param1, *param2;
     const struct stumpless_param *found;
 
