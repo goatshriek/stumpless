@@ -96,6 +96,11 @@ stumpless_destroy_element_only( struct stumpless_element *element ) {
   unchecked_destroy_element( element );
 }
 
+const char *
+stumpless_get_element_name( const struct stumpless_element *element ) {
+  return NULL;
+}
+
 struct stumpless_param *
 stumpless_get_param_by_index( struct stumpless_element *element,
                               size_t index ) {

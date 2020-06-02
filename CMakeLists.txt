@@ -560,6 +560,10 @@ add_function_test(current_target
   SOURCES test/function/startup/current_target.cpp
 )
 
+add_function_test(element
+  SOURCES test/function/element.cpp
+)
+
 add_function_test(entry
   SOURCES test/function/entry.cpp
 )
