@@ -152,14 +152,14 @@ namespace {
 
     result = stumpless_add_param( basic_element, param1 );
     EXPECT_EQ( basic_element, result );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     param2 = stumpless_new_param( param2_name, "test-param-value-2" );
     ASSERT_TRUE( param2 != NULL );
 
     result = stumpless_add_param( basic_element, param2 );
     EXPECT_EQ( result, basic_element );
-    EXPECT_TRUE( stumpless_get_error(  ) != NULL );
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     EXPECT_EQ( stumpless_get_param_count( basic_element ),
                original_param_count + 2 );
