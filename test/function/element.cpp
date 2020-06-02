@@ -49,8 +49,11 @@ namespace {
   };
 
   TEST_F( ElementTest, AddNewParamNullName ) {
+    size_t original_param_count;
     const struct stumpless_element *result;
     const struct stumpless_error *error;
+
+    original_param_count = stumpless_get_param_count( basic_element );
 
     result = stumpless_add_new_param( basic_element, NULL, "param-value" );
     EXPECT_TRUE( result == NULL );
@@ -62,12 +65,16 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
     }
 
-    // todo test to make sure that param count has not changed
+    EXPECT_EQ( stumpless_get_param_count( basic_element ),
+               original_param_count );
   }
 
   TEST_F( ElementTest, AddNullParam ) {
+    size_t original_param_count;
     const struct stumpless_element *result;
     const struct stumpless_error *error;
+
+    original_param_count = stumpless_get_param_count( basic_element );
 
     result = stumpless_add_param( basic_element, NULL );
     EXPECT_TRUE( result == NULL );
@@ -79,12 +86,17 @@ namespace {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
     }
 
-    // todo test to make sure that param count has not changed
+    EXPECT_EQ( stumpless_get_param_count( basic_element ),
+               original_param_count );
   }
 
   TEST_F( ElementTest, AddParam ) {
+    size_t original_param_count;
     struct stumpless_param *param;
     const struct stumpless_element *result;
+    const struct stumpless_param *last_param;
+
+    original_param_count = stumpless_get_param_count( basic_element );
 
     param = stumpless_new_param( "test-param-name", "test-param-value" );
     ASSERT_TRUE( param != NULL );
@@ -92,9 +104,13 @@ namespace {
     result = stumpless_add_param( basic_element, param );
     EXPECT_EQ( basic_element, result );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-   
-    // todo test that param count has increased 
-    // todo test to make sure that new param actually exists
+
+    EXPECT_EQ( stumpless_get_param_count( basic_element ),
+               original_param_count + 1 );
+
+    last_param = stumpless_get_param_by_index( basic_element,
+                                               original_param_count );
+    EXPECT_EQ( last_param, param );
   }
 
   TEST_F( ElementTest, AddParamMemoryFailure ) {
@@ -105,43 +121,54 @@ namespace {
 
     param = stumpless_new_param( "test-param-name", "test-param-value" );
     ASSERT_TRUE( param != NULL );
-   
+
     set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
     ASSERT_TRUE( set_realloc_result != NULL );
 
     result = stumpless_add_param( basic_element, param );
     EXPECT_EQ( NULL, result );
-    
+
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     }
-   
+
     stumpless_set_realloc( realloc );
   }
 
   TEST_F( ElementTest, AddTwoParams ) {
-    struct stumpless_element *result;
+    size_t original_param_count;
+    const struct stumpless_element *result;
+    const char *param1_name, *param2_name;
     struct stumpless_param *param1, *param2;
+    const struct stumpless_param *found;
 
-    param1 = stumpless_new_param( "test-param-name-1", "test-param-value-1" );
+    original_param_count = stumpless_get_param_count( basic_element );
+
+    param1 = stumpless_new_param( param1_name, "test-param-value-1" );
     ASSERT_TRUE( param1 != NULL );
 
     result = stumpless_add_param( basic_element, param1 );
     EXPECT_EQ( basic_element, result );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-    
-    param2 = stumpless_new_param( "test-param-name-2", "test-param-value-2" );
+
+    param2 = stumpless_new_param( param2_name, "test-param-value-2" );
     ASSERT_TRUE( param2 != NULL );
 
     result = stumpless_add_param( basic_element, param2 );
-    EXPECT_EQ( basic_element, result );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
-   
-    // todo test that param count has increased 
-    // todo test to make sure that new param actually exists
+    EXPECT_EQ( result, basic_element );
+    EXPECT_TRUE( stumpless_get_error(  ) != NULL );
+
+    EXPECT_EQ( stumpless_get_param_count( basic_element ),
+               original_param_count + 2 );
+
+    found = stumpless_get_param_by_name( basic_element, param1_name );
+    EXPECT_TRUE( found != NULL );
+
+    found = stumpless_get_param_by_name( basic_element, param2_name );
+    EXPECT_TRUE( found != NULL );
   }
 
   TEST_F( ElementTest, GetName ) {
@@ -281,7 +308,7 @@ namespace {
     struct stumpless_element *element;
     struct stumpless_error *error;
     void *(*result)(size_t);
-   
+
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( result != NULL );
 
@@ -302,7 +329,7 @@ namespace {
     struct stumpless_element *element;
     struct stumpless_error *error;
 
-    element = stumpless_new_element( NULL );    
+    element = stumpless_new_element( NULL );
     EXPECT_TRUE( element == NULL );
 
     error = stumpless_get_error(  );
