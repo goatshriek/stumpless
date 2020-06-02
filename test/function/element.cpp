@@ -18,7 +18,6 @@
 
 #include <cstddef>
 #include <cstdlib>
-#include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
