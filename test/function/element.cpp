@@ -148,6 +148,11 @@ namespace {
     EXPECT_STREQ( stumpless_get_element_name( basic_element ), basic_name );
   }
 
+  TEST_F( ElementTest, GetParamCount ) {
+    EXPECT_EQ( stumpless_get_param_count( basic_element ), 0 );
+    EXPECT_EQ( stumpless_get_param_count( element_with_params ), 2 );
+  }
+
   TEST_F( ElementTest, SetNameMemoryFailure ) {
     void * (*set_malloc_result)(size_t);
     const char *new_name = "this-wont-work";
@@ -248,6 +253,21 @@ namespace {
 
     result = stumpless_get_element_name( NULL );
     EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+  }
+
+  TEST( GetParamCount, NullElement ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_count( NULL );
+    EXPECT_EQ( result, 0 );
 
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );

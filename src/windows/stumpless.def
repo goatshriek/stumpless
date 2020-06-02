@@ -93,3 +93,4 @@ EXPORTS
   stumpless_get_element_name             @90
   stumpless_set_element_name             @91
   stumpless_add_new_param                @92
+  stumpless_get_param_count              @93

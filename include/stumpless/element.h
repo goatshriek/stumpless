@@ -157,7 +157,20 @@ struct stumpless_param *
 stumpless_get_param_by_name( struct stumpless_element *element,
                              const char *name );
 
-int /** may cause index overflow error condition */
+/**
+ * Returns the number of params in the given element.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to get the param count of.
+ *
+ * @return The number of params element has. If there is an error, zero is
+ * returned and an error code is set appropriately.
+ */
+size_t
+stumpless_get_param_count( const struct stumpless_element *element );
+
+size_t
 stumpless_get_param_index( struct stumpless_element *element,
                            const char *name );
 
