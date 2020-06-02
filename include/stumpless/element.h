@@ -50,7 +50,12 @@ struct stumpless_element {
  * assumes that you have done your due diligence and does not enforce the
  * registration requirement.
  *
- * Note that the name will _not_ be NULL-terminated.
+ * Note that the name will be NULL-terminated as of version 1.6.0. In earlier
+ * versions it is _not_ NULL-terminated.
+ *
+ * If you need to access the name, use the stumpless_(g|s)et_element_name
+ * functions. These will protect you from changes in the struct in future
+ * versions.
  */
   char *name;
 /** The number of characters in name. */
@@ -113,6 +118,17 @@ stumpless_destroy_element_and_contents( struct stumpless_element *element );
 void
 stumpless_destroy_element_only( struct stumpless_element *element );
 
+/**
+ * Returns the name of the given element. The resulting character buffer must
+ * not be altered or freed by the caller.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to get the name from.
+ *
+ * @return The name of the element, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 const char *
 stumpless_get_element_name( const struct stumpless_element *element );
 
@@ -147,6 +163,16 @@ stumpless_get_param_value_by_name( struct stumpless_element *element,
 struct stumpless_element *
 stumpless_new_element( const char *name );
 
+/**
+ * Sets the name of the given element.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to set the name of.
+ *
+ * @return The modified element, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 stumpless_set_element_name( struct stumpless_element *element,
                             const char *name );

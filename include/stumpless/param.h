@@ -83,6 +83,8 @@ stumpless_destroy_param( struct stumpless_param *param );
  * Returns the name of the given param. The character buffer must not be
  * altered or freed by the caller.
  *
+ * @since Release v1.6.0
+ *
  * @param param The param to get the name from.
  *
  * @return The name of param, if no error is encountered. If an error is
@@ -94,6 +96,8 @@ stumpless_get_param_name( const struct stumpless_param *param );
 /**
  * Returns the value of the given param. The character buffer must not be
  * altered or freed by the caller.
+ *
+ * @since Release v1.6.0
  *
  * @param param The param to get the value from.
  *
@@ -119,6 +123,8 @@ stumpless_new_param( const char *name, const char *value );
 /**
  * Sets the name of the given param.
  *
+ * @since Release v1.6.0
+ *
  * @param param The param to set the name of.
  *
  * @param name The new name of param.
@@ -131,6 +137,8 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name );
 
 /**
  * Sets the value of the given param.
+ *
+ * @since Release v1.6.0
  *
  * @param param The param to set the value of.
  *
