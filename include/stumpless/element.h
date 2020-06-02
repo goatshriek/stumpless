@@ -73,6 +73,23 @@ struct stumpless_element {
   size_t param_count;
 };
 
+/**
+ * Creates a new param and adds it to the given element.
+ *
+ * This is equivalent to calling stumpless_new_param and passing the result
+ * directly stumpless_add_param.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to add the new param to.
+ *
+ * @param param_name The name of the new param.
+ *
+ * @param param_value The value of the new param.
+ *
+ * @return The modified element if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 stumpless_add_new_param( struct stumpless_element *element,
                          const char *param_name,
@@ -85,7 +102,7 @@ stumpless_add_new_param( struct stumpless_element *element,
  *
  * @param param The param to add to element.
  *
- * @return The modified entry if no error is encountered. If an error is
+ * @return The modified element if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_element *

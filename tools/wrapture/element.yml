@@ -9,8 +9,7 @@ classes:
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_element"
-      includes:
-        - "stumpless/entry.h"
+      includes: "stumpless/element.h"
     constructors:
       - doc: "Creates a new Element with the given name."
         params:
@@ -19,8 +18,7 @@ classes:
             type: "const char *"
         wrapped-function:
           name: "stumpless_new_element"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/element.h"
           params:
             - name: "name"
               doc: "The name of the element."
@@ -32,7 +30,7 @@ classes:
       wrapped-function:
         name: "stumpless_destroy_element_only"
         includes:
-          - "stumpless/entry.h"
+          - "stumpless/element.h"
         params:
           - name: "equivalent-struct-pointer"
     functions:
@@ -48,7 +46,7 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_param"
-          includes: "stumpless/entry.h"
+          includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
             - value: "new_param"
@@ -65,8 +63,64 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_param"
-          includes: "stumpless/entry.h"
+          includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
             - value: "new_param"
               type: "struct stumpless_param *"
+      - name: "AddParam"
+        doc: |
+          Creates a new param with the given name and value and adds it to this
+          Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "param_name"
+            doc: "The name of the new Param."
+            type: "const char *"
+          - name: "param_value"
+            doc: "The value of the new Param."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_new_param"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "param_name"
+            - value: "param_value"
+      - name: "GetName"
+        doc: |
+          The name of this Element.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The name of this Element."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_element_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+      - name: "SetName"
+        doc: |
+          Set the name of this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The new name."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_element_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
