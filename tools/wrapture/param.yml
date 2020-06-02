@@ -29,3 +29,70 @@ classes:
         includes: "stumpless/entry.h"
         params:
           - name: "equivalent-struct-pointer"
+    functions:
+      - name: "GetName"
+        doc: |
+          The name of this Param.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The name of this Param."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_name"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+      - name: "GetValue"
+        doc: |
+          The value of this Param.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The value of this Param."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_value"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+      - name: "SetName"
+        doc: |
+          Set the name of this Param.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The new name."
+            type: "const char *"
+        return:
+          doc: "The modified Param."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_name"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+      - name: "SetValue"
+        doc: |
+          Set the value of this Param.
+
+          Available since release v1.6.0.
+        params:
+          - name: "value"
+            doc: "The new value."
+            type: "const char *"
+        return:
+          doc: "The modified Param."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "value"
