@@ -48,16 +48,36 @@ namespace {
       }
   };
 
-  TEST_F( ElementTest, AddNullParam ) {
-    struct stumpless_element *result;
-    struct stumpless_error *error;
+  TEST_F( ElementTest, AddNewParamNullName ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
 
-    result = stumpless_add_param( basic_element, NULL );
-    ASSERT_TRUE( result == NULL );
+    result = stumpless_add_new_param( basic_element, NULL, "param-value" );
+    EXPECT_TRUE( result == NULL );
 
     error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
+
+    // todo test to make sure that param count has not changed
+  }
+
+  TEST_F( ElementTest, AddNullParam ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_add_param( basic_element, NULL );
+    EXPECT_TRUE( result == NULL );
+
+    error = stumpless_get_error(  );
+    EXPECT_TRUE( error != NULL );
+
+    if( error ) {
+      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    }
 
     // todo test to make sure that param count has not changed
   }
