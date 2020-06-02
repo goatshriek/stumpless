@@ -98,7 +98,14 @@ stumpless_destroy_element_only( struct stumpless_element *element ) {
 
 const char *
 stumpless_get_element_name( const struct stumpless_element *element ) {
-  return NULL;
+  clear_error(  );
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  return element->name;
 }
 
 struct stumpless_param *
@@ -167,6 +174,33 @@ fail:
 struct stumpless_element *
 stumpless_set_element_name( struct stumpless_element *element,
                             const char *name ) {
+  char *temp_name;
+  size_t temp_size;
+
+  clear_error(  );
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    goto fail;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    goto fail;
+  }
+
+  temp_name = copy_cstring_with_length( name, &temp_size );
+  if( !temp_name ) {
+    goto fail;
+  }
+
+  free_mem( element->name );
+  element->name = temp_name;
+  element->name_length = temp_size;
+
+  return element;
+
+fail:
   return NULL;
 }
 
