@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/element.h>
 #include <stumpless/param.h>
 #include "private/element.h"
@@ -125,12 +126,39 @@ stumpless_get_param_by_index( struct stumpless_element *element,
     return NULL;
   }
 
-  return NULL;
+  if( index >= element->param_count ) {
+    raise_index_out_of_bounds( "invalid param index", index );
+    return NULL;
+  }
+
+  return element->params[index];
 }
 
 struct stumpless_param *
 stumpless_get_param_by_name( struct stumpless_element *element,
                              const char *name ) {
+  size_t i;
+  struct stumpless_param *param;
+
+  clear_error(  );
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return NULL;
+  }
+
+  for( i = 0; i < element->param_count; i++ ) {
+    param = element->params[i];
+    if( strcmp( param->name, name ) == 0 ) {
+      return param;
+    }
+  }
+
   return NULL;
 }
 
