@@ -119,6 +119,9 @@ namespace {
     struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
 
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
     param = stumpless_new_param( "test-param-name", "test-param-value" );
     ASSERT_TRUE( param != NULL );
 
@@ -309,6 +312,9 @@ namespace {
     struct stumpless_element *element;
     struct stumpless_error *error;
     void *(*result)(size_t);
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
 
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_TRUE( result != NULL );

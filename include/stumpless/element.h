@@ -153,6 +153,20 @@ struct stumpless_param *
 stumpless_get_param_by_index( struct stumpless_element *element,
                               size_t index );
 
+/**
+ * Returns the first occurrence of a param with the given name in element, if it
+ * is found.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to search.
+ *
+ * @param name The param name to search for.
+ *
+ * @return The param, if it is found in the element, NULL otherwise. If an error
+ * was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
 struct stumpless_param *
 stumpless_get_param_by_name( struct stumpless_element *element,
                              const char *name );
