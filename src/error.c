@@ -174,6 +174,14 @@ raise_network_protocol_unsupported( void ) {
 }
 
 void
+raise_param_not_found( void ) {
+  raise_error( STUMPLESS_PARAM_NOT_FOUND,
+               "a param with the specified characteristics could not be found",
+               0,
+               NULL );
+}
+
+void
 raise_socket_bind_failure( const char *message, int code, const char *code_type ) {
   raise_error( STUMPLESS_SOCKET_BIND_FAILURE, message, code, code_type );
 }

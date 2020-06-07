@@ -24,8 +24,4 @@
 void
 unchecked_destroy_element( struct stumpless_element *element );
 
-struct stumpless_param *
-unchecked_get_param_by_name( struct stumpless_element *element,
-                             const char *name );
-
 #endif /* __STUMPLESS_PRIVATE_ELEMENT_H */

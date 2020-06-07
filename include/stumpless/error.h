@@ -61,6 +61,8 @@ enum stumpless_error_id {
   STUMPLESS_MEMORY_ALLOCATION_FAILURE,
 /** The given layer 3 protocol is not supported by this implementation. */
   STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED,
+/** No param with the specified characteristics was found. */
+  STUMPLESS_PARAM_NOT_FOUND,
 /** Could not bind to a socket. */
   STUMPLESS_SOCKET_BIND_FAILURE,
 /** Could not connect to a socket. */

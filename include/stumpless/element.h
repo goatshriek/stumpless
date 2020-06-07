@@ -189,6 +189,10 @@ stumpless_get_param_index( struct stumpless_element *element,
                            const char *name );
 
 const char *
+stumpless_get_param_name_by_index( struct stumpless_element *element,
+                                   size_t index );
+
+const char *
 stumpless_get_param_value_by_index( struct stumpless_element *element,
                                     size_t index );
 
@@ -233,8 +237,8 @@ stumpless_set_param_value_by_index( struct stumpless_element *element,
 
 struct stumpless_element *
 stumpless_set_param_value_by_name( struct stumpless_element *element,
-                                   const char *param_name,
-                                   const char *param_value );
+                                   const char *name,
+                                   const char *value );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

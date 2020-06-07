@@ -152,7 +152,15 @@ stumpless_get_param_by_name( struct stumpless_element *element,
     return NULL;
   }
 
-  return unchecked_get_param_by_name( element, name );
+  for( i = 0; i < element->param_count; i++ ) {
+    param = element->params[i];
+    if( strcmp( param->name, name ) == 0 ) {
+      return param;
+    }
+  }
+
+  raise_param_not_found(  );
+  return NULL;
 }
 
 size_t
@@ -170,19 +178,69 @@ stumpless_get_param_count( const struct stumpless_element *element ) {
 size_t
 stumpless_get_param_index( struct stumpless_element *element,
                            const char *name ) {
-  return -1;
+  size_t i;
+  struct stumpless_param *param;
+
+  clear_error(  );
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return 0;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return 0;
+  }
+
+  for( i = 0; i < element->param_count; i++ ) {
+    param = element->params[i];
+    if( strcmp( param->name, name ) == 0 ) {
+      return i;
+    }
+  }
+
+  raise_param_not_found(  );
+  return 0;
+}
+
+const char *
+stumpless_get_param_name_by_index( struct stumpless_element *element,
+                                   size_t index ) {
+  struct stumpless_param *param;
+
+  param = stumpless_get_param_by_index( element, index );
+  if( !param ) {
+    return NULL;
+  }
+
+  return stumpless_get_param_name( param );
 }
 
 const char *
 stumpless_get_param_value_by_index( struct stumpless_element *element,
                                     size_t index ) {
-  return NULL;
+  struct stumpless_param *param;
+
+  param = stumpless_get_param_by_index( element, index );
+  if( !param ) {
+    return NULL;
+  }
+
+  return stumpless_get_param_value( param );
 }
 
 const char *
 stumpless_get_param_value_by_name( struct stumpless_element *element,
                                    const char *name ) {
-  return NULL;
+  struct stumpless_param *param;
+
+  param = stumpless_get_param_by_name( element, name );
+  if( !param ) {
+    return NULL;
+  }
+
+  return stumpless_get_param_value( param );
 }
 
 struct stumpless_element *
@@ -255,21 +313,73 @@ struct stumpless_element *
 stumpless_set_param_by_index( struct stumpless_element *element,
                               size_t index,
                               struct stumpless_param *param ) {
-  return NULL;
+  clear_error(  );
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( index >= element->param_count ) {
+    raise_index_out_of_bounds( "invalid param index", index );
+    return NULL;
+  }
+
+  element->params[index] = param;
+
+  return element;
 }
 
 struct stumpless_element *
 stumpless_set_param_value_by_index( struct stumpless_element *element,
                                     size_t param_index,
                                     const char *param_value ) {
-  return NULL;
+  struct stumpless_param *result;
+
+  clear_error(  );
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( param_index >= element->param_count ) {
+    raise_index_out_of_bounds( "invalid param index", param_index );
+    return NULL;
+  }
+
+  if( !param_value ) {
+    raise_argument_empty( "param_value is NULL" );
+    return NULL;
+  }
+
+  result = stumpless_set_param_value( element->params[param_index],
+                                      param_value );
+
+  if( !result ) {
+    return NULL;
+  }
+
+  return element;
 }
 
 struct stumpless_element *
 stumpless_set_param_value_by_name( struct stumpless_element *element,
-                                   const char *param_name,
-                                   const char *param_value ) {
-  return NULL;
+                                   const char *name,
+                                   const char *value ) {
+  struct stumpless_param *param, *result;
+
+  param = stumpless_get_param_by_name( element, name );
+  if( !param ) {
+    return NULL;
+  }
+
+  result = stumpless_set_param_value( param, value );
+  if( !result ) {
+    return NULL;
+  }
+
+  return element;
 }
 
 /* private functions */
@@ -279,20 +389,4 @@ unchecked_destroy_element( struct stumpless_element *element ) {
   free_mem( element->params );
   free_mem( element->name );
   free_mem( element );
-}
-
-struct stumpless_param *
-unchecked_get_param_by_name( struct stumpless_element *element,
-                             const char *name ) {
-  size_t i;
-  struct stumpless_param *param;
-
-  for( i = 0; i < element->param_count; i++ ) {
-    param = element->params[i];
-    if( strcmp( param->name, name ) == 0 ) {
-      return param;
-    }
-  }
-
-  return NULL;
 }
