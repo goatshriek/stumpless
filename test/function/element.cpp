@@ -21,7 +21,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include "test/helper/common.hpp"
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -220,12 +220,7 @@ namespace {
     result = stumpless_set_element_name( basic_element, NULL );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   /* non-fixture tests */
