@@ -19,6 +19,10 @@
 #ifndef __STUMPLESS_TEST_HELPER_ASSERT_HPP
 #  define __STUMPLESS_TEST_HELPER_ASSERT_HPP
 
+#  include <cstddef>
+#  include <gtest/gtest.h>
+#  include <stumpless.h>
+
 #  define EXPECT_ERROR_CODE_IS(code) \
 error = stumpless_get_error(  );     \
 EXPECT_TRUE( error != NULL );        \
