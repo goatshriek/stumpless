@@ -202,6 +202,16 @@ namespace {
     EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST_F( ElementTest, GetParamIndexOutOfBounds ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_by_index( element_with_params, 455 );
+    EXPECT_TRUE( result == NULL );
+
+    EXPECT_ERROR_CODE_IS( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+  }
+
   /* non-fixture tests */
 
   TEST( AddParamTest, NullElement ) {
