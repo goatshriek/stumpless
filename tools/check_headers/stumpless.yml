@@ -63,6 +63,7 @@
 "enum stumpless_network_protocol": "stumpless/target/network.h"
 "enum stumpless_transport_protocol": "stumpless/target/network.h"
 "error_free_all": "private/error.h"
+"EXPECT_ERROR_CODE_IS": "test/helper/common.hpp"
 "facility_is_invalid": "private/entry.h"
 "fallback_gethostname": "private/config/fallback.h"
 "fallback_getpagesize": "private/config/fallback.h"
