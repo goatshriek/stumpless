@@ -32,14 +32,22 @@ namespace {
       struct stumpless_element *basic_element;
       const char *basic_name = "basic-element";
       struct stumpless_element *element_with_params;
+      const char *param_1_name = "param-1";
+      const char *param_1_value = "value-1";
+      const char *param_2_name = "param-2";
+      const char *param_2_value = "value-2";
 
       virtual void
       SetUp( void ) {
         basic_element = stumpless_new_element( basic_name );
 
         element_with_params = stumpless_new_element( "element-with-params" );
-        stumpless_add_new_param( element_with_params, "param-1", "value-1" );
-        stumpless_add_new_param( element_with_params, "param-2", "value-2" );
+        stumpless_add_new_param( element_with_params,
+                                 param_1_name,
+                                 param_1_value );
+        stumpless_add_new_param( element_with_params,
+                                 param_2_name,
+                                 param_2_value );
       }
 
       virtual void
@@ -183,6 +191,18 @@ namespace {
   TEST_F( ElementTest, GetParamCount ) {
     EXPECT_EQ( stumpless_get_param_count( basic_element ), 0 );
     EXPECT_EQ( stumpless_get_param_count( element_with_params ), 2 );
+  }
+
+  TEST_F( ElementTest, GetParamValueByName ) {
+    const char *value;
+
+    value = stumpless_get_param_value_by_name( element_with_params,
+                                               param_1_name );
+    EXPECT_STREQ( value, param_1_value );
+
+    value = stumpless_get_param_value_by_name( element_with_params,
+                                               param_2_name );
+    EXPECT_STREQ( value, param_2_value );
   }
 
   TEST_F( ElementTest, SetNameMemoryFailure ) {
