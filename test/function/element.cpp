@@ -21,7 +21,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include "test/helper/common.hpp"
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -67,12 +67,7 @@ namespace {
     result = stumpless_add_new_param( basic_element, NULL, "param-value" );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
 
     EXPECT_EQ( stumpless_get_param_count( basic_element ),
                original_param_count );
@@ -88,12 +83,7 @@ namespace {
     result = stumpless_add_param( basic_element, NULL );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
 
     EXPECT_EQ( stumpless_get_param_count( basic_element ),
                original_param_count );
@@ -140,12 +130,7 @@ namespace {
     result = stumpless_add_param( basic_element, param );
     EXPECT_EQ( NULL, result );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_ERROR_CODE_IS( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_realloc( realloc );
   }
@@ -220,13 +205,7 @@ namespace {
     result = stumpless_set_element_name( basic_element, new_name );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
-
+    EXPECT_ERROR_CODE_IS( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     EXPECT_STRNE( stumpless_get_element_name( basic_element ), new_name );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -240,12 +219,17 @@ namespace {
     result = stumpless_set_element_name( basic_element, NULL );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+  }
 
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+  TEST_F( ElementTest, GetParamIndexOutOfBounds ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_by_index( element_with_params, 455 );
+    EXPECT_TRUE( result == NULL );
+
+    EXPECT_ERROR_CODE_IS( STUMPLESS_INDEX_OUT_OF_BOUNDS );
   }
 
   /* non-fixture tests */
@@ -300,12 +284,7 @@ namespace {
     result = stumpless_get_element_name( NULL );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetParamByIndex, NullElement ) {
@@ -315,12 +294,7 @@ namespace {
     result = stumpless_get_param_by_index( NULL, 2 );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetParamCount, NullElement ) {
@@ -330,12 +304,7 @@ namespace {
     result = stumpless_get_param_count( NULL );
     EXPECT_EQ( result, 0 );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NewElementTest, MemoryFailure ) {
@@ -369,9 +338,7 @@ namespace {
     element = stumpless_new_element( NULL );
     EXPECT_TRUE( element == NULL );
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }

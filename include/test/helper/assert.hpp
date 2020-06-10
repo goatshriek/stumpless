@@ -16,8 +16,12 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_TEST_HELPER_COMMON_HPP
-#  define __STUMPLESS_TEST_HELPER_COMMON_HPP
+#ifndef __STUMPLESS_TEST_HELPER_ASSERT_HPP
+#  define __STUMPLESS_TEST_HELPER_ASSERT_HPP
+
+#  include <cstddef>
+#  include <gtest/gtest.h>
+#  include <stumpless.h>
 
 #  define EXPECT_ERROR_CODE_IS(code) \
 error = stumpless_get_error(  );     \
@@ -26,4 +30,4 @@ if( error ) {                        \
   EXPECT_EQ( error->id, (code) );    \
 }
 
-#endif /* __STUMPLESS_TEST_HELPER_COMMON_HPP */
+#endif /* __STUMPLESS_TEST_HELPER_ASSERT_HPP */
