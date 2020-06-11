@@ -21,6 +21,7 @@
 #include <cstring>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 namespace {
 
@@ -43,10 +44,12 @@ namespace {
 
   TEST_F( ParamTest, GetName ) {
     EXPECT_STREQ( stumpless_get_param_name( basic_param ), basic_name );
+    EXPECT_NO_ERROR;
   }
 
   TEST_F( ParamTest, GetValue ) {
     EXPECT_STREQ( stumpless_get_param_value( basic_param ), basic_value );
+    EXPECT_NO_ERROR;
   }
 
   TEST_F( ParamTest, SetNameMemoryFailure ) {
@@ -64,12 +67,7 @@ namespace {
     result = stumpless_set_param_name( basic_param, new_name );
     EXPECT_TRUE( result == NULL );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     EXPECT_STRNE( stumpless_get_param_name( basic_param ), new_name );
 
@@ -83,13 +81,7 @@ namespace {
 
     result = stumpless_set_param_name( basic_param, NULL );
     EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST_F( ParamTest, SetValueMemoryFailure ) {
@@ -106,13 +98,7 @@ namespace {
 
     result = stumpless_set_param_value( basic_param, new_value );
     EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     EXPECT_STRNE( stumpless_get_param_value( basic_param ), new_value );
 
@@ -126,13 +112,7 @@ namespace {
 
     result = stumpless_set_param_value( basic_param, NULL );
     EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   /* non-fixture tests */
@@ -147,13 +127,7 @@ namespace {
 
     result = stumpless_get_param_name( NULL );
     EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetParamValueTest, NullParam ) {
@@ -162,13 +136,7 @@ namespace {
 
     result = stumpless_get_param_value( NULL );
     EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NewParamTest, New ){
@@ -181,7 +149,7 @@ namespace {
  
     param = stumpless_new_param( name, value );
     ASSERT_TRUE( param != NULL );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
    
     ASSERT_EQ( name_length, param->name_length );
     ASSERT_TRUE( param->name != NULL );
@@ -200,10 +168,7 @@ namespace {
 
     param = stumpless_new_param( NULL, "test-value" );    
     EXPECT_TRUE( param == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NewParamTest, NullValue ) {
@@ -212,10 +177,7 @@ namespace {
 
     param = stumpless_new_param( "test-name", NULL );    
     EXPECT_TRUE( param == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SetName, Basic ) {
@@ -230,6 +192,8 @@ namespace {
 
     result = stumpless_set_param_name( param, new_name );
     EXPECT_TRUE( result == param );
+    EXPECT_NO_ERROR;
+
     EXPECT_STREQ( stumpless_get_param_name( param ), new_name );
 
     stumpless_destroy_param( param );
@@ -241,13 +205,7 @@ namespace {
 
     result = stumpless_set_param_name( NULL, "new-name" );
     EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SetValue, Basic ) {
@@ -262,6 +220,8 @@ namespace {
 
     result = stumpless_set_param_value( param, new_value );
     EXPECT_TRUE( result == param );
+    EXPECT_NO_ERROR;
+
     EXPECT_STREQ( stumpless_get_param_value( param ), new_value );
 
     stumpless_destroy_param( param );
@@ -273,13 +233,7 @@ namespace {
 
     result = stumpless_set_param_value( NULL, "new-value" );
     EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }

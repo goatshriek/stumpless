@@ -23,11 +23,13 @@
 #  include <gtest/gtest.h>
 #  include <stumpless.h>
 
-#  define EXPECT_ERROR_CODE_IS(code) \
+#  define EXPECT_ERROR_ID_EQ(code) \
 error = stumpless_get_error(  );     \
 EXPECT_TRUE( error != NULL );        \
 if( error ) {                        \
   EXPECT_EQ( error->id, (code) );    \
 }
+
+#  define EXPECT_NO_ERROR EXPECT_TRUE( stumpless_get_error(  ) == NULL )
 
 #endif /* __STUMPLESS_TEST_HELPER_ASSERT_HPP */

@@ -67,7 +67,7 @@ namespace {
     result = stumpless_add_new_param( basic_element, NULL, "param-value" );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     EXPECT_EQ( stumpless_get_param_count( basic_element ),
                original_param_count );
@@ -83,7 +83,7 @@ namespace {
     result = stumpless_add_param( basic_element, NULL );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     EXPECT_EQ( stumpless_get_param_count( basic_element ),
                original_param_count );
@@ -130,7 +130,7 @@ namespace {
     result = stumpless_add_param( basic_element, param );
     EXPECT_EQ( NULL, result );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_realloc( realloc );
   }
@@ -179,7 +179,7 @@ namespace {
 
     result = stumpless_get_param_by_name( element_with_params, "ugly-puppy" );
     EXPECT_TRUE( result == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_PARAM_NOT_FOUND );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_PARAM_NOT_FOUND );
   }
 
   TEST_F( ElementTest, GetParamCount ) {
@@ -194,7 +194,7 @@ namespace {
     result = stumpless_get_param_by_index( element_with_params, 455 );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 455 );
   }
 
@@ -214,7 +214,7 @@ namespace {
 
     name = stumpless_get_param_name_by_index( element_with_params, 9001 );
     EXPECT_TRUE( name == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 9001 );
   }
 
@@ -234,11 +234,11 @@ namespace {
 
     value = stumpless_get_param_value_by_index( NULL, 0 );
     EXPECT_TRUE( value == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     value = stumpless_get_param_value_by_index( NULL, 1 );
     EXPECT_TRUE( value == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST_F( ElementTest, GetParamValueByName ) {
@@ -259,11 +259,11 @@ namespace {
 
     value = stumpless_get_param_value_by_name( NULL, param_1_name );
     EXPECT_TRUE( value == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     value = stumpless_get_param_value_by_name( NULL, param_2_name );
     EXPECT_TRUE( value == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST_F( ElementTest, GetParamValueByNameNullName ) {
@@ -272,7 +272,7 @@ namespace {
 
     value = stumpless_get_param_value_by_name( element_with_params, NULL );
     EXPECT_TRUE( value == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST_F( ElementTest, SetNameMemoryFailure ) {
@@ -290,7 +290,7 @@ namespace {
     result = stumpless_set_element_name( basic_element, new_name );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     EXPECT_STRNE( stumpless_get_element_name( basic_element ), new_name );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -315,7 +315,7 @@ namespace {
     result = stumpless_set_element_name( basic_element, NULL );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   /* non-fixture tests */
@@ -331,7 +331,7 @@ namespace {
     result = stumpless_add_param( NULL, param );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_param( param );
   }
@@ -370,7 +370,7 @@ namespace {
     result = stumpless_get_element_name( NULL );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetParamByIndex, NullElement ) {
@@ -380,7 +380,7 @@ namespace {
     result = stumpless_get_param_by_index( NULL, 2 );
     EXPECT_TRUE( result == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetParamCount, NullElement ) {
@@ -390,7 +390,7 @@ namespace {
     result = stumpless_get_param_count( NULL );
     EXPECT_EQ( result, 0 );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NewElementTest, MemoryFailure ) {
@@ -406,7 +406,7 @@ namespace {
 
     element = stumpless_new_element( "memory-failure" );
     EXPECT_EQ( NULL, element );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
   }
@@ -430,7 +430,7 @@ namespace {
 
     element = stumpless_new_element( element_name );
     EXPECT_EQ( NULL, element );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
   }
@@ -442,7 +442,7 @@ namespace {
     element = stumpless_new_element( NULL );
     EXPECT_TRUE( element == NULL );
 
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SetElementNameTest, NullElement ) {
@@ -451,7 +451,7 @@ namespace {
 
     result = stumpless_set_element_name( NULL, "awesome-new-name" );
     EXPECT_TRUE( result == NULL );
-    EXPECT_ERROR_CODE_IS( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }
