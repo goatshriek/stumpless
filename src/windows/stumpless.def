@@ -96,3 +96,5 @@ EXPORTS
   stumpless_get_param_count              @93
   stumpless_get_param_by_index           @94
   stumpless_get_param_by_name            @95
+  stumpless_get_param_value_by_index     @96
+  stumpless_get_param_value_by_name      @97
