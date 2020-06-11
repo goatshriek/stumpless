@@ -16,20 +16,19 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_TEST_HELPER_ASSERT_HPP
-#  define __STUMPLESS_TEST_HELPER_ASSERT_HPP
+#ifndef __STUMPLESS_TEST_HELPER_MEMORY_ALLOCATION_HPP
+#  define __STUMPLESS_TEST_HELPER_MEMORY_ALLOCATION_HPP
 
 #  include <cstddef>
-#  include <gtest/gtest.h>
-#  include <stumpless.h>
+#  include <cstdlib>
 
-#  define EXPECT_ERROR_ID_EQ( code ) \
-error = stumpless_get_error(  );     \
-EXPECT_TRUE( error != NULL );        \
-if( error ) {                        \
-  EXPECT_EQ( error->id, (code) );    \
+#  define MALLOC_FAIL_ON_SIZE( fail_size ) \
+[]( size_t size ) -> void * {              \
+  if( size == ( fail_size ) ) {            \
+    return NULL;                           \
+  } else {                                 \
+    return malloc( size );                 \
+  }                                        \
 }
 
-#  define EXPECT_NO_ERROR EXPECT_TRUE( stumpless_get_error(  ) == NULL )
-
-#endif /* __STUMPLESS_TEST_HELPER_ASSERT_HPP */
+#endif /* __STUMPLESS_TEST_HELPER_MEMORY_ALLOCATION_HPP */

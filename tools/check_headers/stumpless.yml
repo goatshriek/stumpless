@@ -92,6 +92,7 @@
 "HAVE_WINSOCK2_H": "private/config.h"
 "INIT_MEMORY_COUNTER": "test/helper/memory_counter.hpp"
 "initialize_insertion_params": "private/config/wel_supported.h"
+"MALLOC_FAIL_ON_SIZE": "test/helper/memory_allocation.hpp"
 "MAX_INT_SIZE": "private/inthelper.h"
 "MSG_SIMPLE": "test/function/windows/events.h"
 "name_resolves": "test/helper/resolve.hpp"

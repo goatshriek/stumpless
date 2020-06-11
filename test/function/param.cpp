@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 namespace {
 
@@ -137,6 +138,65 @@ namespace {
     result = stumpless_get_param_value( NULL );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NewParamTest, MemoryFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_param *param;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_param_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    param = stumpless_new_param( "name", "value" );
+    EXPECT_TRUE( param == NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( NewParamTest, MemoryFailureOnName ) {
+    void * (*set_malloc_result)(size_t);
+    const char *param_name = "this-name-is-awesome";
+    const struct stumpless_param *param;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_param_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    param = stumpless_new_param( param_name, "value" );
+    EXPECT_TRUE( param == NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( NewParamTest, MemoryFailureOnValue ) {
+    void * (*set_malloc_result)(size_t);
+    const char *param_value = "this-value-is-awesome";
+    const struct stumpless_param *param;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_param_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 22 ) );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    param = stumpless_new_param( "name", param_value );
+    EXPECT_TRUE( param == NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
   TEST( NewParamTest, New ){

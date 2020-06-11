@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
 
@@ -420,12 +421,7 @@ namespace {
     // create the internal error struct
     stumpless_get_element_name( NULL );
 
-    result = stumpless_set_malloc( []( size_t size )->void * {
-      if( size == 21 )
-        return NULL;
-      else
-      return malloc( size );
-    } );
+    result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
     ASSERT_TRUE( result != NULL );
 
     element = stumpless_new_element( element_name );
