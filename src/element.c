@@ -320,6 +320,11 @@ stumpless_set_param_by_index( struct stumpless_element *element,
     return NULL;
   }
 
+  if( !param ) {
+    raise_argument_empty( "param is NULL" );
+    return NULL;
+  }
+
   if( index >= element->param_count ) {
     raise_index_out_of_bounds( "invalid param index", index );
     return NULL;
@@ -333,7 +338,7 @@ stumpless_set_param_by_index( struct stumpless_element *element,
 struct stumpless_element *
 stumpless_set_param_value_by_index( struct stumpless_element *element,
                                     size_t param_index,
-                                    const char *param_value ) {
+                                    const char *value ) {
   struct stumpless_param *result;
 
   clear_error(  );
@@ -348,14 +353,7 @@ stumpless_set_param_value_by_index( struct stumpless_element *element,
     return NULL;
   }
 
-  if( !param_value ) {
-    raise_argument_empty( "param_value is NULL" );
-    return NULL;
-  }
-
-  result = stumpless_set_param_value( element->params[param_index],
-                                      param_value );
-
+  result = stumpless_set_param_value( element->params[param_index], value );
   if( !result ) {
     return NULL;
   }

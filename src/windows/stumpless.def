@@ -86,16 +86,20 @@ EXPORTS
   stumpless_destroy_element_only         @84
   stumpless_get_error_id                 @85
 ; added in v1.6.0
-  stumpless_get_param_name               @86
-  stumpless_get_param_value              @87
-  stumpless_set_param_name               @88
-  stumpless_set_param_value              @89
-  stumpless_get_element_name             @90
-  stumpless_set_element_name             @91
-  stumpless_add_new_param                @92
-  stumpless_get_param_count              @93
-  stumpless_get_param_by_index           @94
-  stumpless_get_param_by_name            @95
-  stumpless_get_param_name_by_index      @96
-  stumpless_get_param_value_by_index     @97
-  stumpless_get_param_value_by_name      @98
+  stumpless_add_new_param                @86
+  stumpless_get_element_name             @87
+  stumpless_get_param_by_index           @88
+  stumpless_get_param_by_name            @89
+  stumpless_get_param_count              @90
+  stumpless_get_param_index              @91
+  stumpless_get_param_name               @92
+  stumpless_get_param_name_by_index      @93
+  stumpless_get_param_value              @94
+  stumpless_get_param_value_by_index     @95
+  stumpless_get_param_value_by_name      @96
+  stumpless_set_element_name             @97
+  stumpless_set_param_by_index           @98
+  stumpless_set_param_name               @99
+  stumpless_set_param_value              @100
+  stumpless_set_param_value_by_index     @101
+  stumpless_set_param_value_by_name      @102
