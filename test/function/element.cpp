@@ -259,6 +259,36 @@ namespace {
     EXPECT_EQ( result, 0 );
   }
 
+  TEST_F( ElementTest, GetParamNameCount ) {
+    size_t result;
+
+    result = stumpless_get_param_name_count( basic_element, param_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, 0 );
+
+    result = stumpless_get_param_name_count( element_with_params,
+                                             param_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, 1 );
+
+    stumpless_add_new_param( element_with_params, param_1_name, "new-val" );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_get_param_name_count( element_with_params,
+                                             param_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, 2 );
+  }
+
+  TEST_F( ElementTest, GetParamNameCountNullName ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_name_count( basic_element, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, 0 );
+  }
+
   TEST_F( ElementTest, GetParamNameByIndex ) {
     const char *name;
 
@@ -596,6 +626,15 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_get_param_index( NULL, "irrelevant-name" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, 0 );
+  }
+
+  TEST( GetParamNameCount, NullElement ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_name_count( NULL, "param-name" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, 0 );
   }

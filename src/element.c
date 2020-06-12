@@ -220,7 +220,29 @@ stumpless_get_param_name_by_index( struct stumpless_element *element,
 size_t
 stumpless_get_param_name_count( const struct stumpless_element *element,
                                 const char *name ) {
-  return 0;
+  size_t i;
+  size_t count = 0;
+  struct stumpless_param *param;
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return 0;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return 0;
+  }
+
+  for( i = 0; i < element->param_count; i++ ) {
+    param = element->params[i];
+    if( strcmp( param->name, name ) == 0 ) {
+      count++;
+    }
+  }
+
+  clear_error(  );
+  return count;
 }
 
 const char *
