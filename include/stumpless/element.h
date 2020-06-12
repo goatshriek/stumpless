@@ -310,16 +310,66 @@ struct stumpless_element *
 stumpless_set_element_name( struct stumpless_element *element,
                             const char *name );
 
+/**
+ * Puts the param at the given index in the given element.
+ *
+ * The parameter previously at this position will be removed from the element,
+ * but it is NOT destroyed by this call. Callers must clean up this param
+ * separately.
+ *
+ * A param cannot be set at an index position that does not already hold a
+ * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * is raised.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to set the param on.
+ *
+ * @param index The index to set to param.
+ *
+ * @param param The param to set at the given index.
+ *
+ * @return The modified element, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 stumpless_set_param_by_index( struct stumpless_element *element,
                               size_t index,
                               struct stumpless_param *param );
 
+/**
+ * Sets the value of the param at the given index in the given element.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to set the param on.
+ *
+ * @param index The index to set to param.
+ *
+ * @param value The new value to set on the param..
+ *
+ * @return The modified element, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 stumpless_set_param_value_by_index( struct stumpless_element *element,
                                     size_t index,
                                     const char *value );
 
+/**
+ * Sets the value of the first param with the given name in the given element.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to set the param on.
+ *
+ * @param name The name of the param to set the value of.
+ *
+ * @param value The new value to set on the param..
+ *
+ * @return The modified element, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 stumpless_set_param_value_by_name( struct stumpless_element *element,
                                    const char *name,
