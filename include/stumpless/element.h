@@ -232,7 +232,7 @@ stumpless_set_param_by_index( struct stumpless_element *element,
 
 struct stumpless_element *
 stumpless_set_param_value_by_index( struct stumpless_element *element,
-                                    size_t param_index,
+                                    size_t index,
                                     const char *value );
 
 struct stumpless_element *
