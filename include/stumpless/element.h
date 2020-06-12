@@ -246,10 +246,41 @@ size_t
 stumpless_get_param_name_count( const struct stumpless_element *element,
                                 const char *name );
 
+/**
+ * Returns the value of the param at the given index in the given element.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to retrieve the param and value from.
+ *
+ * @param index The index of the param to get the value from.
+ *
+ * @return The value of the param at the given index, if no error is
+ * encountered. If an error is encountered, then NULL is returned and an error
+ * code is set appropriately.
+ */
 const char *
 stumpless_get_param_value_by_index( struct stumpless_element *element,
                                     size_t index );
 
+/**
+ * Returns the value of the first param with the given name in the given
+ * element.
+ *
+ * If you need to get the value of a param with the given name beyond the first
+ * one, then you will need to loop through all params in the element using
+ * stumpless_get_param_by_index, checking each name.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to retrieve the param and value from.
+ *
+ * @param name The name of the param to get the value from.
+ *
+ * @return The value of the first param with the given name, if no error is
+ * encountered. If an error is encountered, then NULL is returned and an error
+ * code is set appropriately.
+ */
 const char *
 stumpless_get_param_value_by_name( struct stumpless_element *element,
                                    const char *name );
