@@ -149,6 +149,18 @@ stumpless_destroy_element_only( struct stumpless_element *element );
 const char *
 stumpless_get_element_name( const struct stumpless_element *element );
 
+/**
+ * Returns the param in the given element at the specified index.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to get the param from.
+ *
+ * @param index The index of the param to retrieve.
+ *
+ * @return The param if no error is encountered. If an error is encountered,
+ * then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_param *
 stumpless_get_param_by_index( struct stumpless_element *element,
                               size_t index );
@@ -184,6 +196,27 @@ stumpless_get_param_by_name( struct stumpless_element *element,
 size_t
 stumpless_get_param_count( const struct stumpless_element *element );
 
+/**
+ * Gives the index of the first occurrence of a param with the given name in
+ * the given element.
+ *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances that
+ * this function does hint at. If you simply need a count of params with a given
+ * name, then you can use stumpless_get_param_name_count to find this. If you
+ * need a reference to any other params, then you must loop through all params
+ * in the element using stumpless_get_param_by_index, checking each name.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to search for params with the given name.
+ *
+ * @param name The name to search params for.
+ *
+ * @return The first instance of a param with name in element, if one exists. If
+ * there is no such param or an error is encountered, NULL is returned and an
+ * error code is set appropriately.
+ */
 size_t
 stumpless_get_param_index( struct stumpless_element *element,
                            const char *name );
@@ -191,6 +224,27 @@ stumpless_get_param_index( struct stumpless_element *element,
 const char *
 stumpless_get_param_name_by_index( struct stumpless_element *element,
                                    size_t index );
+
+/**
+ * Gives the number of params with the given name found in the given element.
+ *
+ * If you need to get a reference to any of these params beyond the first one,
+ * then you will need to loop through all params in the element using
+ * stumpless_get_param_by_index, checking each name.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to search for params.
+ *
+ * @param name The name to look for in params.
+ *
+ * @return The number of params found with the given name in the given element.
+ * If an error is encountered, zero is returned and an error code is set
+ * appropriately.
+ */
+size_t
+stumpless_get_param_name_count( const struct stumpless_element *element,
+                                const char *name );
 
 const char *
 stumpless_get_param_value_by_index( struct stumpless_element *element,

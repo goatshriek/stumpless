@@ -94,12 +94,13 @@ EXPORTS
   stumpless_get_param_index              @91
   stumpless_get_param_name               @92
   stumpless_get_param_name_by_index      @93
-  stumpless_get_param_value              @94
-  stumpless_get_param_value_by_index     @95
-  stumpless_get_param_value_by_name      @96
-  stumpless_set_element_name             @97
-  stumpless_set_param_by_index           @98
-  stumpless_set_param_name               @99
-  stumpless_set_param_value              @100
-  stumpless_set_param_value_by_index     @101
-  stumpless_set_param_value_by_name      @102
+  stumpless_get_param_name_count         @94
+  stumpless_get_param_value              @95
+  stumpless_get_param_value_by_index     @96
+  stumpless_get_param_value_by_name      @97
+  stumpless_set_element_name             @98
+  stumpless_set_param_by_index           @99
+  stumpless_set_param_name               @100
+  stumpless_set_param_value              @101
+  stumpless_set_param_value_by_index     @102
+  stumpless_set_param_value_by_name      @103

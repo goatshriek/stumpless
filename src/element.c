@@ -217,6 +217,12 @@ stumpless_get_param_name_by_index( struct stumpless_element *element,
   return stumpless_get_param_name( param );
 }
 
+size_t
+stumpless_get_param_name_count( const struct stumpless_element *element,
+                                const char *name ) {
+  return 0;
+}
+
 const char *
 stumpless_get_param_value_by_index( struct stumpless_element *element,
                                     size_t index ) {
