@@ -180,7 +180,7 @@ classes:
             type: "size_t"
       - name: "GetParamIndex"
         doc: |
-          Gives the index of the first occurrence of a Param with the given name
+          Gets the index of the first occurrence of a Param with the given name
           in this Element.
 
           Note that an element may contain as many instances of a param as
@@ -211,6 +211,30 @@ classes:
             - value: "name"
           return:
             type: "size_t"
+      - name: "GetParamName"
+        doc: |
+          Gets the name of the Param with the given index in this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the param to get the name of."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: |
+            The name of the Param at the given index. If there is no Param, or
+            some other error occurs, a StumplessException will be thrown.
+        wrapped-function:
+          name: "stumpless_get_param_name_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+      - name: "GetParamNameCount"
+      - name: "GetParamValue"
+      - name: "GetParamValue"
       - name: "SetName"
         doc: |
           Set the name of this Element.
@@ -229,3 +253,6 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "name"
+      - name: "SetParam"
+      - name: "SetParamValue"
+      - name: "SetParamValue"

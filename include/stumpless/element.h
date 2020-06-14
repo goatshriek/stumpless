@@ -228,6 +228,19 @@ size_t
 stumpless_get_param_index( struct stumpless_element *element,
                            const char *name );
 
+/**
+ * Gets the name of the Param with the given index in this Element.
+ *
+ * @since Release v1.6.0
+ *
+ * @param element The element to get the param and name from.
+ *
+ * @param index The index of the param to get the name from.
+ *
+ * @return The name of the param at the given index, if no error is encountered.
+ * If an error is encountered, NULL is returned and an error code is set
+ * appropriately.
+ */
 const char *
 stumpless_get_param_name_by_index( struct stumpless_element *element,
                                    size_t index );
