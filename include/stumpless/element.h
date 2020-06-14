@@ -169,6 +169,13 @@ stumpless_get_param_by_index( struct stumpless_element *element,
  * Returns the first occurrence of a param with the given name in element, if it
  * is found.
  *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances with
+ * the same name. If you simply need a count of params with a given name, then
+ * you can use stumpless_get_param_name_count to find this. If you
+ * need a reference to any other params, then you must loop through all params
+ * in the element using stumpless_get_param_by_index, checking each name.
+ *
  * @since Release v1.6.0
  *
  * @param element The element to search.
@@ -202,10 +209,10 @@ stumpless_get_param_count( const struct stumpless_element *element );
  *
  * Note that an element may contain as many instances of a param as desired
  * according to RFC 5424, and therefore there may be other param instances that
- * this function does hint at. If you simply need a count of params with a given
- * name, then you can use stumpless_get_param_name_count to find this. If you
- * need a reference to any other params, then you must loop through all params
- * in the element using stumpless_get_param_by_index, checking each name.
+ * this function does not recognize. If you simply need a count of params with a
+ * given name, then you can use stumpless_get_param_name_count to find this. If
+ * you need a reference to any other params, then you must loop through all
+ * params in the element using stumpless_get_param_by_index, checking each name.
  *
  * @since Release v1.6.0
  *

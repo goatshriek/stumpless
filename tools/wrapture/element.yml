@@ -131,6 +131,86 @@ classes:
           return:
             type: "struct stumpless_param *"
             includes: "stumpless/param.h"
+      - name: "GetParam"
+        doc: |
+          Returns the first param in this element with the given name.
+
+          Note that an element may contain as many instances of a param as
+          desired according to RFC 5424, and therefore there may be other Params
+          with the same name. If you simply need a count of params with a given
+          name, then you can use GetParamNameCount to find this. If you need a
+          reference to any other params, then you must loop through all params
+          in the element using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the param to get."
+            type: "const char *"
+        return:
+          doc: "The param at the given index."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_param_by_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "struct stumpless_param *"
+            includes: "stumpless/param.h"
+      - name: "GetParamCount"
+        doc: |
+          Returns the number of params in the given element.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The number of params this Element has."
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_param_count"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "size_t"
+      - name: "GetParamIndex"
+        doc: |
+          Gives the index of the first occurrence of a Param with the given name
+          in this Element.
+
+          Note that an element may contain as many instances of a param as
+          desired according to RFC 5424, and therefore there may be other Params
+          that this function does not recognize. If you simply need a count of
+          params with a given name, then you can use GetParamNameCount to find
+          this. If you need a reference to any other params, then you must loop
+          through all params in the element using GetParam with an index,
+          checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to search for."
+            type: "const char *"
+        return:
+          doc: |
+            The index of the first Param with the given name. If no such Param
+            is found, then a StumplessParamNotFound exception is thrown.
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_param_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "size_t"
       - name: "SetName"
         doc: |
           Set the name of this Element.

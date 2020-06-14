@@ -46,7 +46,7 @@ namespace {
   };
 
   TEST_F( CppElementTest, GetParamByIndex ) {
-     Param param = element_with_params->GetParam( 0 );
+     Param param = element_with_params->GetParam( ( size_t ) 0 );
      EXPECT_STREQ( param.GetName(  ), param_1_name );
   }
 }
