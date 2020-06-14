@@ -128,6 +128,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
   target_compile_options(stumplesscpp PUBLIC "-std=c++11")
 endif()
 
+add_cpp_test(element
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/element.cpp
+)
+
 add_cpp_test(entry
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/cpp/entry.cpp

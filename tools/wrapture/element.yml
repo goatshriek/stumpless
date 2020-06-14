@@ -106,6 +106,31 @@ classes:
             - value: "equivalent-struct-pointer"
           return:
             type: "const char *"
+      - name: "GetParam"
+        doc: |
+          Returns the param in the given element at the specified index.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the param to get."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The param at the given index."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_param_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+          return:
+            type: "struct stumpless_param *"
+            includes: "stumpless/param.h"
       - name: "SetName"
         doc: |
           Set the name of this Element.
