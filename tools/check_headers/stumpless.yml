@@ -261,7 +261,7 @@
 "stumpless_set_free": "stumpless/memory.h"
 "stumpless_set_malloc": "stumpless/memory.h"
 "stumpless_set_option": "stumpless/target.h"
-"stumpless_set_param_by_index": "stumpless/element.h"
+"stumpless_set_param": "stumpless/element.h"
 "stumpless_set_param_name": "stumpless/param.h"
 "stumpless_set_param_value": "stumpless/param.h"
 "stumpless_set_param_value_by_name": "stumpless/element.h"

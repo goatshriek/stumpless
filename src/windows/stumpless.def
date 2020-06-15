@@ -99,7 +99,7 @@ EXPORTS
   stumpless_get_param_value_by_index     @96
   stumpless_get_param_value_by_name      @97
   stumpless_set_element_name             @98
-  stumpless_set_param_by_index           @99
+  stumpless_set_param                    @99
   stumpless_set_param_name               @100
   stumpless_set_param_value              @101
   stumpless_set_param_value_by_index     @102

@@ -338,9 +338,9 @@ fail:
 }
 
 struct stumpless_element *
-stumpless_set_param_by_index( struct stumpless_element *element,
-                              size_t index,
-                              struct stumpless_param *param ) {
+stumpless_set_param( struct stumpless_element *element,
+                     size_t index,
+                     struct stumpless_param *param ) {
   clear_error(  );
 
   if( !element ) {

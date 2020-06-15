@@ -413,14 +413,14 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST_F( ElementTest, SetParamByIndex ) {
+  TEST_F( ElementTest, SetParam ) {
     struct stumpless_param *new_param;
     const struct stumpless_element *result;
 
     new_param = stumpless_new_param( "new-param", "new-value" );
     ASSERT_TRUE( new_param != NULL );
 
-    result = stumpless_set_param_by_index( element_with_params, 1, new_param );
+    result = stumpless_set_param( element_with_params, 1, new_param );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, element_with_params );
 
@@ -428,29 +428,29 @@ namespace {
                new_param );
   }
 
-  TEST_F( ElementTest, SetParamByIndexNullElement ) {
+  TEST_F( ElementTest, SetParamNullElement ) {
     const struct stumpless_element *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_by_index( NULL, 1, param_1 );
+    result = stumpless_set_param( NULL, 1, param_1 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
   }
 
-  TEST_F( ElementTest, SetParamByIndexNullParam ) {
+  TEST_F( ElementTest, SetParamParam ) {
     const struct stumpless_element *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_by_index( element_with_params, 1, NULL );
+    result = stumpless_set_param( element_with_params, 1, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
   }
 
-  TEST_F( ElementTest, SetParamByIndexOutOfBounds ) {
+  TEST_F( ElementTest, SetParamOutOfBounds ) {
     const struct stumpless_element *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_by_index( element_with_params, 455, param_2 );
+    result = stumpless_set_param( element_with_params, 455, param_2 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 455 );
     EXPECT_TRUE( result == NULL );

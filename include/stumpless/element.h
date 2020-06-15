@@ -353,9 +353,9 @@ stumpless_set_element_name( struct stumpless_element *element,
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_element *
-stumpless_set_param_by_index( struct stumpless_element *element,
-                              size_t index,
-                              struct stumpless_param *param );
+stumpless_set_param( struct stumpless_element *element,
+                     size_t index,
+                     struct stumpless_param *param );
 
 /**
  * Sets the value of the param at the given index in the given element.
