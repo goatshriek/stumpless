@@ -232,8 +232,56 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "index"
+          return:
+            type: "const char *"
       - name: "GetParamNameCount"
+        doc: |
+          Gives the number of params with the given name found in this Element.
+
+          If you need to get an actual reference to any of these params beyond
+          the first one, then you will need to loop through all params in the
+          element using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to count."
+            type: "const char *"
+        return:
+          doc: "The number of Params with the given name in this Element."
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_param_name_count"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "size_t"
       - name: "GetParamValue"
+        doc: |
+          Returns the value of the param at the given index in this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the Param to get the value of."
+            type:
+              name: "size_t"
+              includs: "stddef.h"
+        return:
+          doc: "The value of the param at the given index."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_value_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+          return:
+            type: "const char *"
       - name: "GetParamValue"
       - name: "SetName"
         doc: |

@@ -248,8 +248,8 @@ stumpless_get_param_name_by_index( struct stumpless_element *element,
 /**
  * Gives the number of params with the given name found in the given element.
  *
- * If you need to get a reference to any of these params beyond the first one,
- * then you will need to loop through all params in the element using
+ * If you need to get an actual reference to any of these params beyond the
+ * first one, then you will need to loop through all params in the element using
  * stumpless_get_param_by_index, checking each name.
  *
  * @since Release v1.6.0
