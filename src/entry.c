@@ -69,25 +69,8 @@ stumpless_add_element( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
-stumpless_new_entry( int facility,
-                     int severity,
-                     const char *app_name,
-                     const char *msgid,
-                     const char *message,
-                     ... ) {
-  va_list subs;
-  struct stumpless_entry *entry;
-
-  va_start( subs, message );
-  entry = vstumpless_new_entry( facility,
-                                severity,
-                                app_name,
-                                msgid,
-                                message,
-                                subs );
-  va_end( subs );
-
-  return entry;
+stumpless_copy_entry( const struct stumpless_entry *entry ) {
+  return NULL;
 }
 
 void
@@ -121,6 +104,28 @@ stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
   }
 
   unchecked_destroy_entry( entry );
+}
+
+struct stumpless_entry *
+stumpless_new_entry( int facility,
+                     int severity,
+                     const char *app_name,
+                     const char *msgid,
+                     const char *message,
+                     ... ) {
+  va_list subs;
+  struct stumpless_entry *entry;
+
+  va_start( subs, message );
+  entry = vstumpless_new_entry( facility,
+                                severity,
+                                app_name,
+                                msgid,
+                                message,
+                                subs );
+  va_end( subs );
+
+  return entry;
 }
 
 struct stumpless_entry *

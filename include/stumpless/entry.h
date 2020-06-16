@@ -102,6 +102,9 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
                                   const char *param_name,
                                   const char *param_value );
 
+struct stumpless_entry *
+stumpless_copy_entry( const struct stumpless_entry *entry );
+
 /**
  * An alias for stumpless_destroy_entry_and_contents.
  *
