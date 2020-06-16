@@ -110,6 +110,22 @@ stumpless_add_param( struct stumpless_element *element,
                      struct stumpless_param *param );
 
 /**
+ * Creates a copy of an element.
+ *
+ * Copies of elements are 'deep' in that the copy also copies each of the params
+ * that the original element has, if any. This means that even if the params of
+ * the original element are destroyed, the equivalent ones in this element will
+ * still be valid.
+ *
+ * @param element The element to copy.
+ *
+ * @return A new element that is a deep copy of the original. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_element *
+stumpless_copy_element( const struct stumpless_element *element );
+
+/**
  * An alias for stumpless_destroy_element_and_contents.
  *
  * @param element The element to destroy.

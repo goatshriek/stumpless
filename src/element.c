@@ -73,6 +73,38 @@ stumpless_add_param( struct stumpless_element *element,
   return element;
 }
 
+struct stumpless_element *
+stumpless_copy_element( const struct stumpless_element *element ) {
+  struct stumpless_element *copy;
+  size_t i;
+  struct stumpless_param *param_copy;
+  const struct stumpless_element *add_result;
+
+  copy = stumpless_new_element( stumpless_get_element_name( element ) );
+  if( !copy ) {
+    goto fail;
+  }
+
+  for( i = 0; i < element->param_count; i++ ) {
+    param_copy = stumpless_copy_param( element->params[i] );
+    if( !param_copy ) {
+      goto fail_param_copy;
+    }
+
+    add_result = stumpless_add_param( copy, param_copy );
+    if( !add_result ) {
+      goto fail_param_copy;
+    }
+  }
+
+  return copy;
+
+fail_param_copy:
+  stumpless_destroy_element_and_contents( copy );
+fail:
+  return NULL;
+}
+
 void
 stumpless_destroy_element( struct stumpless_element *element ) {
   stumpless_destroy_element_and_contents( element );
@@ -81,8 +113,6 @@ stumpless_destroy_element( struct stumpless_element *element ) {
 void
 stumpless_destroy_element_and_contents( struct stumpless_element *element ) {
   size_t i;
-
-  clear_error(  );
 
   if( !element ) {
     return;

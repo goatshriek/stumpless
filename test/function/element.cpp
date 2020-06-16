@@ -196,6 +196,91 @@ namespace {
     EXPECT_TRUE( found != NULL );
   }
 
+  TEST_F( ElementTest, CopyMallocFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_copy_element( basic_element );
+    EXPECT_TRUE( result == NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( ElementTest, CopyMallocFailureOnParamName ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( sizeof( param_2_name ) ) );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_copy_element( element_with_params );
+    EXPECT_TRUE( result == NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( ElementTest, CopyReallocFailure ) {
+    struct stumpless_element *result;
+    struct stumpless_error *error;
+    void * (*set_realloc_result)(void *, size_t);
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    ASSERT_TRUE( set_realloc_result != NULL );
+
+    result = stumpless_copy_element( element_with_params );
+    EXPECT_TRUE( result == NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_realloc( realloc );
+  }
+
+  TEST_F( ElementTest, CopyWithoutParams ) {
+    const struct stumpless_element *result;
+
+    result = stumpless_copy_element( element_with_params );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result != element_with_params );
+    EXPECT_STREQ( stumpless_get_element_name( result ),
+                  stumpless_get_element_name( element_with_params ) );
+    EXPECT_EQ( stumpless_get_param_count( result ),
+               stumpless_get_param_count( element_with_params ) );
+
+    stumpless_destroy_element_and_contents( ( struct stumpless_element * ) result );
+  }
+
+  TEST_F( ElementTest, CopyWithParams ) {
+    const struct stumpless_element *result;
+
+    result = stumpless_copy_element( basic_element );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result != basic_element );
+    EXPECT_STREQ( stumpless_get_element_name( result ), basic_name );
+    EXPECT_EQ( stumpless_get_param_count( result ), 0 );
+
+    stumpless_destroy_element_and_contents( ( struct stumpless_element * ) result );
+  }
+
   TEST_F( ElementTest, GetName ) {
     EXPECT_STREQ( stumpless_get_element_name( basic_element ), basic_name );
     EXPECT_NO_ERROR;
