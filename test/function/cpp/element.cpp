@@ -20,7 +20,6 @@
 #include <Element.hpp>
 #include <gtest/gtest.h>
 #include <Param.hpp>
-#include <StumplessException.hpp>
 
 using namespace stumplesscpp;
 

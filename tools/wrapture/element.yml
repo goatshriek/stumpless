@@ -295,7 +295,7 @@ classes:
         params:
           - name: "name"
             doc: "The name of the Param to get the value of."
-            type: "const chawr *"
+            type: "const char *"
         return:
           doc: "The value of the param at the given index."
           type: "const char *"
@@ -360,4 +360,53 @@ classes:
             - value: "index"
             - value: "param->equivalent"
       - name: "SetParamValue"
+        doc: |
+          Sets the value of the Param at the given index in this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the Param to set the value of."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "value"
+            doc: "The new value of the Param at the given index."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+            - value: "value"
       - name: "SetParamValue"
+        doc: |
+          Sets the value of the first Param with the given name in this element.
+
+          If you need to set the value of a param with this name other than the
+          first one, then you will need to loop through the params using
+          GetParam with an index to find the params you want and then set the
+          value using SetValue on the result.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to set the Value of."
+            type: "const char *"
+          - name: "value"
+            doc: "The new value of the Param with the given name."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value_by_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+            - value: "value"

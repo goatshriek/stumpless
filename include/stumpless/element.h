@@ -379,6 +379,11 @@ stumpless_set_param_value_by_index( struct stumpless_element *element,
 /**
  * Sets the value of the first param with the given name in the given element.
  *
+ * If you need to set the value of a param with this name other than the first
+ * one, then you will need to loop through the params using
+ * stumpless_get_param_by_index to find the params you want and then set the
+ * value using stumpless_set_param_value.
+ *
  * @since Release v1.6.0
  *
  * @param element The element to set the param on.
