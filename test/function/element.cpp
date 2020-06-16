@@ -224,7 +224,7 @@ namespace {
     // create the internal error struct
     stumpless_get_element_name( NULL );
 
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( sizeof( param_2_name ) ) );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 8 ) );
     ASSERT_TRUE( set_malloc_result != NULL );
 
     result = stumpless_copy_element( element_with_params );
