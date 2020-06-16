@@ -49,8 +49,7 @@ classes:
           includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "new_param"
-              type: "struct stumpless_param *"
+            - value: "stumpless_copy_param( new_param.equivalent )"
       - name: "AddParam"
         doc: "Adds a Param to this Element."
         params:
@@ -66,8 +65,7 @@ classes:
           includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "new_param"
-              type: "struct stumpless_param *"
+            - value: "stumpless_copy_param( new_param->equivalent )"
       - name: "AddParam"
         doc: |
           Creates a new param with the given name and value and adds it to this
@@ -85,11 +83,12 @@ classes:
           doc: "The modified Element."
           type: "self-reference"
         wrapped-function:
-          name: "stumpless_add_param"
+          name: "stumpless_add_new_param"
           includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "stumpless_new_param( param_name, param_value )"
+            - value: "param_name"
+            - value: "param_value"
       - name: "GetName"
         doc: |
           The name of this Element.
