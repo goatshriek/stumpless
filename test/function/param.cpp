@@ -43,6 +43,24 @@ namespace {
       }
   };
 
+  TEST_F( ParamTest, Copy ) {
+    const struct stumpless_param *result;
+
+    result = stumpless_copy_param( basic_param );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result != basic_param );
+    EXPECT_STREQ( stumpless_get_param_name( result ),
+                  stumpless_get_param_name( basic_param ) );
+    EXPECT_TRUE( stumpless_get_param_name( result ) !=
+                 stumpless_get_param_name( basic_param ) );
+    EXPECT_STREQ( stumpless_get_param_value( result ),
+                  stumpless_get_param_value( basic_param ) );
+    EXPECT_TRUE( stumpless_get_param_value( result ) !=
+                 stumpless_get_param_value( basic_param ) );
+
+    stumpless_destroy_param( ( struct stumpless_param * ) result );
+  }
+
   TEST_F( ParamTest, GetName ) {
     EXPECT_STREQ( stumpless_get_param_name( basic_param ), basic_name );
     EXPECT_NO_ERROR;
@@ -117,6 +135,15 @@ namespace {
   }
 
   /* non-fixture tests */
+
+  TEST( CopyParamTest, NullParam ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_copy_param( NULL );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
 
   TEST( DestroyParamTest, NullParam ) {
     stumpless_destroy_param( NULL );

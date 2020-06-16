@@ -22,6 +22,17 @@
 #include "private/memory.h"
 #include "private/strhelper.h"
 
+struct stumpless_param *
+stumpless_copy_param( const struct stumpless_param *param ) {
+  if( !param ) {
+    raise_argument_empty( "param is NULL" );
+    return NULL;
+
+  } else {
+    return stumpless_new_param( param->name, param->value );
+  }
+}
+
 void
 stumpless_destroy_param( struct stumpless_param *param ) {
   clear_error(  );

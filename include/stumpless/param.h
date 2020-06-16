@@ -72,6 +72,17 @@ struct stumpless_param {
 };
 
 /**
+ * Creates a copy of a param.
+ *
+ * @param param The param to copy.
+ *
+ * @return A new param that is a copy of the original. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_param *
+stumpless_copy_param( const struct stumpless_param *param );
+
+/**
  * Destroys a param, freeing any allocated memory.
  *
  * @param param The param to destroy.
