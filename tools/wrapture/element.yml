@@ -28,7 +28,7 @@ classes:
           use-template: "pointer-return-error-check"
     destructor:
       wrapped-function:
-        name: "stumpless_destroy_element_only"
+        name: "stumpless_destroy_element_and_contents"
         includes:
           - "stumpless/element.h"
         params:
@@ -85,12 +85,11 @@ classes:
           doc: "The modified Element."
           type: "self-reference"
         wrapped-function:
-          name: "stumpless_add_new_param"
+          name: "stumpless_add_param"
           includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "param_name"
-            - value: "param_value"
+            - value: "stumpless_new_param( param_name, param_value )"
       - name: "GetName"
         doc: |
           The name of this Element.

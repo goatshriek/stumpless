@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <Element.hpp>
 #include <gtest/gtest.h>
+#include <MemoryManager.hpp>
 #include <Param.hpp>
 
 using namespace stumplesscpp;
@@ -41,6 +42,7 @@ namespace {
     virtual void
     TearDown( void ) {
       delete element_with_params;
+      MemoryManager::FreeAll(  );
     }
   };
 

@@ -3,6 +3,7 @@
 "ErrorId": "ErrorId.hpp"
 "Facility": "Facility.hpp"
 "FileTarget": "FileTarget.hpp"
+"FreeAll": "MemoryManager.hpp"
 "MemoryManager": "MemoryManager.hpp"
 "NetworkTarget": "NetworkTarget.hpp"
 "Param": "Param.hpp"
