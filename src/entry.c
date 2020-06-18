@@ -69,6 +69,20 @@ stumpless_add_element( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
+stumpless_add_new_element( struct stumpless_entry *entry,
+                           const char *name ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
+                                  const char *element_name,
+                                  const char *param_name,
+                                  const char *param_value ) {
+  return NULL;
+}
+
+struct stumpless_entry *
 stumpless_copy_entry( const struct stumpless_entry *entry ) {
   return NULL;
 }
@@ -81,8 +95,6 @@ stumpless_destroy_entry( struct stumpless_entry *entry ) {
 void
 stumpless_destroy_entry_and_contents( struct stumpless_entry *entry ) {
   size_t i;
-
-  clear_error(  );
 
   if( !entry ) {
     return;
@@ -97,13 +109,82 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry ) {
 
 void
 stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
-  clear_error(  );
-
   if( !entry ) {
     return;
   }
 
   unchecked_destroy_entry( entry );
+}
+
+struct stumpless_element *
+stumpless_get_element_by_index( struct stumpless_entry *entry,
+                                size_t index ) {
+  return NULL;
+}
+
+struct stumpless_element *
+stumpless_get_element_by_name( struct stumpless_entry *entry,
+                               const char *name ) {
+  return NULL;
+}
+
+size_t
+stumpless_get_element_index( struct stumpless_entry *entry,
+                             const char *name ) {
+  return 0;
+}
+
+const char *
+stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
+  return NULL;
+}
+
+int
+stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
+  return -1;
+}
+
+const char *
+stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
+  return NULL;
+}
+
+int
+stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
+  return -1;
+}
+
+int
+stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
+  return -1;
+}
+
+struct stumpless_param *
+stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
+                                         size_t element_index,
+                                         size_t param_index ) {
+  return NULL;
+}
+
+struct stumpless_param *
+stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
+                                        const char *element_name,
+                                        const char *param_name ) {
+  return NULL;
+}
+
+const char *
+stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
+                                               size_t element_index,
+                                               size_t param_index ) {
+  return NULL;
+}
+
+const char *
+stumpless_get_param_value_by_name_from_entry( struct stumpless_entry *entry,
+                                              const char *element_name,
+                                              const char *param_name ) {
+  return NULL;
 }
 
 struct stumpless_entry *
@@ -153,6 +234,17 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
+stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_msgid( struct stumpless_entry *entry,
+                           const char *msgid ) {
+  return NULL;
+}
+
+struct stumpless_entry *
 stumpless_set_entry_message( struct stumpless_entry *entry,
                              const char *message,
                              ... ) {
@@ -164,6 +256,55 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
   va_end( subs );
 
   return result;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_priority( struct stumpless_entry *entry,
+                              int facility,
+                              int severity ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_prival( struct stumpless_entry *entry,
+                            int prival ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_element( struct stumpless_entry *entry,
+                       size_t index,
+                       struct stumpless_element *element ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_param_by_index_from_entry( struct stumpless_entry *entry,
+                                         size_t element_index,
+                                         size_t param_index,
+                                         struct stumpless_param *param ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_param_value_by_index_from_entry( struct stumpless_entry *entry,
+                                               size_t element_index,
+                                               size_t param_index,
+                                               const char *param_value ) {
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
+                                              const char *element_name,
+                                              const char *param_name,
+                                              const char *param_value ) {
+  return NULL;
 }
 
 struct stumpless_entry *

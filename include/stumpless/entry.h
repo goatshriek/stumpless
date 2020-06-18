@@ -139,7 +139,7 @@ struct stumpless_element *
 stumpless_get_element_by_name( struct stumpless_entry *entry,
                                const char *name );
 
-int /** may cause index overflow error condition */
+size_t
 stumpless_get_element_index( struct stumpless_entry *entry,
                              const char *name );
 
@@ -179,7 +179,7 @@ stumpless_get_param_value_by_name_from_entry( struct stumpless_entry *entry,
                                               const char *param_name );
 
 /**
- * Creates a new entry with the given parameters.
+ * Creates a new entry with the given characteristics.
  *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
