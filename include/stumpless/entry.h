@@ -58,21 +58,42 @@ extern "C" {
 struct stumpless_entry {
 /** A unique identifier of this entry. */
   stumpless_id_t id;
+/**
+ * The prival of this entry. This is a combination of the facility and severity
+ * of the event, combined using a bitwise or.
+ */
   int prival;
+/** The app name of this entry, as a NULL-terminated string. */
   char *app_name;
+/** The length of the app name, without the NULL terminator. */
   size_t app_name_length;
+/** The message of this entry. */
   char *message;
+/** The length of the message, without the NULL terminator. */
   size_t message_length;
+/** The message id of this entry, as a NULL-terminated string. */
   char *msgid;
+/** The length of the message id, without the NULL terminator. */
   size_t msgid_length;
+/** An array holding the elements of this entry. */
   struct stumpless_element **elements;
+/** The number of elements in this entry. */
   size_t element_count;
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+/** The type of this entry, for use with Windows Event Log calls. */
   WORD wel_type;
+/** The category of this entry, for use with Windows Event Log calls. */
   WORD wel_category;
+/** The event id of this entry, for use with Windows Event Log calls. */
   DWORD wel_event_id;
+/** The number of insertion strings this entry has. */
   WORD wel_insertion_count;
+/** An array of the insertion strings this entry will use. */
   LPCSTR *wel_insertion_strings;
+/**
+ * An array of params of which the values can be used as insertion strings with
+ * Windows Event Log calls..
+ */
   struct stumpless_param **wel_insertion_params;
 #  endif
 };
