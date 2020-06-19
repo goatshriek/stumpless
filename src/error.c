@@ -111,6 +111,15 @@ raise_argument_too_big( const char *message, int code, const char *code_type ) {
 }
 
 void
+raise_duplicate_element( void ) {
+  raise_error( STUMPLESS_DUPLICATE_ELEMENT,
+               "an element with the provided name is already present in this" \
+               " entry",
+               0,
+               NULL );
+}
+
+void
 raise_error( enum stumpless_error_id id,
              const char *message,
              int code,

@@ -47,6 +47,8 @@ enum stumpless_error_id {
   STUMPLESS_ARGUMENT_EMPTY,
 /** A provided argument was too big, for example to fit into a buffer target. */
   STUMPLESS_ARGUMENT_TOO_BIG,
+/** A duplicate of an already existing element was detected in an entry. */
+  STUMPLESS_DUPLICATE_ELEMENT,
 /** Could not open a file. */
   STUMPLESS_FILE_OPEN_FAILURE,
 /** Could not write to a file. */

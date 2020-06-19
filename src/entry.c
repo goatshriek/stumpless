@@ -18,6 +18,7 @@
 
 #include <stdarg.h>
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
 #include <stumpless/param.h>
@@ -35,12 +36,10 @@ static struct cache *entry_cache = NULL;
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
-
+  size_t i;
   struct stumpless_element **new_elements;
   size_t old_elements_size;
   size_t new_elements_size;
-
-  clear_error(  );
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -51,7 +50,13 @@ stumpless_add_element( struct stumpless_entry *entry,
     raise_argument_empty( "element is NULL" );
     return NULL;
   }
-  // todo need to check for duplicates first
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    if( strcmp( entry->elements[0]->name, element->name ) == 0 ) {
+      raise_duplicate_element(  );
+      return NULL;
+    }
+  }
 
   old_elements_size = sizeof( element ) * entry->element_count;
   new_elements_size = old_elements_size + sizeof( element );
@@ -65,6 +70,7 @@ stumpless_add_element( struct stumpless_entry *entry,
   entry->elements = new_elements;
   entry->element_count++;
 
+  clear_error(  );
   return entry;
 }
 

@@ -85,7 +85,7 @@ namespace {
     ASSERT_TRUE( duplicate_element != NULL );
 
     result = stumpless_add_element( basic_entry, duplicate_element );
-    //EXPECT_ERROR_ID_EQ( NOT_DEFINED_YET );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_DUPLICATE_ELEMENT );
     EXPECT_TRUE( result == NULL );
     EXPECT_EQ( basic_entry->element_count, original_element_count );
 
