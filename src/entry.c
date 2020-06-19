@@ -77,7 +77,14 @@ stumpless_add_element( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_add_new_element( struct stumpless_entry *entry,
                            const char *name ) {
-  return NULL;
+  struct stumpless_element *new_element;
+
+  new_element = stumpless_new_element( name );
+  if( !new_element ) {
+    return NULL;
+  }
+
+  return stumpless_add_element( entry, new_element );
 }
 
 struct stumpless_entry *

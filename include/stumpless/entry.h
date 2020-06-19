@@ -113,6 +113,16 @@ struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element );
 
+/**
+ * Creates a new element with the given name and adds it to this entry.
+ *
+ * @param entry The entry to add the new element to.
+ *
+ * @param name The name of the new element.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_add_new_element( struct stumpless_entry *entry,
                            const char *name );

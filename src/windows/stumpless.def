@@ -86,6 +86,7 @@ EXPORTS
   stumpless_destroy_element_only         @84
   stumpless_get_error_id                 @85
 ; added in v1.6.0
+  stumpless_add_new_element              @107
   stumpless_add_new_param                @86
   stumpless_copy_element                 @87
   stumpless_copy_entry                   @88

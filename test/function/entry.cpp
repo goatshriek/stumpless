@@ -54,7 +54,7 @@ namespace {
 
       virtual void
       TearDown( void ){
-        stumpless_destroy_entry( basic_entry );
+        stumpless_destroy_entry_and_contents( basic_entry );
       }
   };
   
@@ -111,6 +111,28 @@ namespace {
 
     set_realloc_result = stumpless_set_realloc( realloc );
     EXPECT_TRUE( set_realloc_result == realloc );
+  }
+
+  TEST_F( EntryTest, AddNewElement ) {
+    size_t original_element_count;
+    const struct stumpless_entry *result;
+
+    original_element_count = basic_entry->element_count;
+
+    result = stumpless_add_new_element( basic_entry, "new-name" );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+
+    EXPECT_EQ( basic_entry->element_count, original_element_count + 1 );
+  }
+
+  TEST_F( EntryTest, AddNewElementNullName ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_add_new_element( basic_entry, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
   
   TEST_F( EntryTest, AddNullElement ) {
