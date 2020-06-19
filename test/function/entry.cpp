@@ -32,6 +32,7 @@ namespace {
   class EntryTest : public::testing::Test {
     protected:
       struct stumpless_entry *basic_entry;
+      const char *element_name = "basic-element";
 
       virtual void
       SetUp( void ) {
@@ -43,7 +44,7 @@ namespace {
                                            "basic-msgid",
                                            "basic message" );
 
-        element = stumpless_new_element( "basic-element" );
+        element = stumpless_new_element( element_name );
         stumpless_add_element( basic_entry, element );
 
         // cause a failure so that memory allocation tests will still have an
@@ -69,6 +70,26 @@ namespace {
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
     ASSERT_TRUE( entry != NULL );
     EXPECT_EQ( basic_entry, entry );
+  }
+
+  TEST_F( EntryTest, AddDuplicateElement ) {
+    struct stumpless_element *duplicate_element;
+    size_t original_element_count;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    original_element_count = basic_entry->element_count;
+
+    duplicate_element = stumpless_new_element( element_name );
+    EXPECT_NO_ERROR;
+    ASSERT_TRUE( duplicate_element != NULL );
+
+    result = stumpless_add_element( basic_entry, duplicate_element );
+    //EXPECT_ERROR_ID_EQ( NOT_DEFINED_YET );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_EQ( basic_entry->element_count, original_element_count );
+
+    stumpless_destroy_element_only( duplicate_element );
   }
 
   TEST_F( EntryTest, AddElementMemoryFailure ) {
