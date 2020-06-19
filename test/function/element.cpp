@@ -522,7 +522,7 @@ namespace {
     EXPECT_TRUE( result == NULL );
   }
 
-  TEST_F( ElementTest, SetParamParam ) {
+  TEST_F( ElementTest, SetParamNullParam ) {
     const struct stumpless_element *result;
     const struct stumpless_error *error;
 

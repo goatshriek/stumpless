@@ -22,6 +22,11 @@
 #  include <cstddef>
 #  include <cstdlib>
 
+#  define MALLOC_FAIL         \
+[]( size_t size ) -> void * { \
+  return NULL;                \
+}
+
 #  define MALLOC_FAIL_ON_SIZE( fail_size ) \
 []( size_t size ) -> void * {              \
   if( size == ( fail_size ) ) {            \

@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
 
@@ -139,6 +140,22 @@ namespace {
 
     ASSERT_EQ( new_app_name_length, basic_entry->app_name_length );
     ASSERT_EQ( 0, memcmp( basic_entry->app_name, new_app_name, new_app_name_length ) );
+  }
+
+  TEST_F( EntryTest, SetAppNameMemoryFailure ) {
+    void *(*set_malloc_result)(size_t);
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_entry_app_name( basic_entry, "gonna-fail" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_TRUE( result == NULL );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
   }
 
   /* non-fixture tests */
