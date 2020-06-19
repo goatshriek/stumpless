@@ -568,6 +568,10 @@ add_function_test(entry
   SOURCES test/function/entry.cpp
 )
 
+add_function_test(entry_leak
+  SOURCES test/function/leak/entry.cpp
+)
+
 add_function_test(entry_memory_failure
   SOURCES test/function/startup/entry_memory_failure.cpp
 )

@@ -212,25 +212,25 @@ stumpless_new_entry( int facility,
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
-  size_t *app_name_length;
-
-  clear_error(  );
+  size_t temp_name_length;
+  char *temp_name;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
-  // todo need to check to see if the app_name is already set and deallocate
-  // it before the assignment if it is (currently a memory leak)
-
-  app_name_length = &( entry->app_name_length );
-  entry->app_name = copy_cstring_with_length( app_name, app_name_length );
-  if( !entry->app_name ) {
+  temp_name = copy_cstring_with_length( app_name, &temp_name_length );
+  if( !temp_name ) {
     return NULL;
-  } else {
-    return entry;
   }
+
+  free_mem( entry->app_name );
+  entry->app_name = temp_name;
+  entry->app_name_length = temp_name_length;
+
+  clear_error(  );
+  return entry;
 }
 
 struct stumpless_entry *
