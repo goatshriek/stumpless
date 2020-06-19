@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -72,7 +73,7 @@ namespace {
   TEST_F( EntryTest, AddElementMemoryFailure ) {
     struct stumpless_entry *entry;
     struct stumpless_element *element;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
 
     element = stumpless_new_element( "test-memory-failure" );
@@ -84,40 +85,32 @@ namespace {
  
     entry = stumpless_add_element( basic_entry, element );
     EXPECT_EQ( NULL, entry );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_realloc_result = stumpless_set_realloc( realloc );
     EXPECT_TRUE( set_realloc_result == realloc );
   }
   
   TEST_F( EntryTest, AddNullElement ) {
-    struct stumpless_entry *entry;
-    struct stumpless_error *error;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
 
-    entry = stumpless_add_element( basic_entry, NULL );
-    ASSERT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    result = stumpless_add_element( basic_entry, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_TRUE( result == NULL );
   }
   
   TEST_F( EntryTest, AddTwoElements ) {
     struct stumpless_entry *entry;
-    struct stumpless_element *element1, *element2;
+    struct stumpless_element *element1;
+    struct stumpless_element *element2;
 
     element1 = stumpless_new_element( "test-new-element-1" );
     ASSERT_TRUE( element1 != NULL );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
     
     entry = stumpless_add_element( basic_entry, element1 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
     ASSERT_TRUE( entry != NULL );
     EXPECT_EQ( basic_entry, entry );
 
@@ -126,7 +119,7 @@ namespace {
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
     
     entry = stumpless_add_element( basic_entry, element2 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
     ASSERT_TRUE( entry != NULL );
     EXPECT_EQ( basic_entry, entry );
   }
@@ -141,8 +134,8 @@ namespace {
     previous_app_name = basic_entry->app_name;
 
     entry = stumpless_set_entry_app_name( basic_entry, new_app_name );
+    EXPECT_NO_ERROR;
     EXPECT_EQ( entry, basic_entry );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     ASSERT_EQ( new_app_name_length, basic_entry->app_name_length );
     ASSERT_EQ( 0, memcmp( basic_entry->app_name, new_app_name, new_app_name_length ) );
@@ -153,18 +146,15 @@ namespace {
   TEST( AddElementTest, NullEntry ){
     struct stumpless_entry *entry;
     struct stumpless_element *element;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     element = stumpless_new_element( "test-new-element" );
     ASSERT_TRUE( element != NULL );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( NULL, element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     ASSERT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_element( element );
   }
@@ -186,6 +176,7 @@ namespace {
     ASSERT_TRUE( entry != NULL );
 
     element = stumpless_new_element( element_name );
+    EXPECT_NO_ERROR;
     ASSERT_TRUE( element != NULL );
 
     stumpless_destroy_entry_only( entry );
@@ -219,6 +210,7 @@ namespace {
                                  string_sub,
                                  int_sub );
 
+    EXPECT_NO_ERROR;
     EXPECT_TRUE( entry != NULL );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
     EXPECT_TRUE( entry->message != NULL );
@@ -233,7 +225,7 @@ namespace {
   TEST( NewEntryTest, MallocFailureOnSecond ) {
     struct stumpless_entry *first_entry;
     struct stumpless_entry *second_entry;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
@@ -256,14 +248,8 @@ namespace {
                                         msgid,
                                         message );
 
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     EXPECT_TRUE( second_entry == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
@@ -290,7 +276,7 @@ namespace {
                                       msgid,
                                       message );
       
-      EXPECT_EQ( NULL, stumpless_get_error(  ) );
+      EXPECT_NO_ERROR;
  
       EXPECT_TRUE( entry[i] != NULL );
     }
@@ -317,7 +303,7 @@ namespace {
                                  msgid,
                                  message );
     
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
  
     ASSERT_TRUE( entry != NULL );
     EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
@@ -350,8 +336,8 @@ namespace {
                                  msgid,
                                  message );
 
+    EXPECT_NO_ERROR;
     EXPECT_TRUE( entry != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     if( entry ) {
       EXPECT_EQ( entry->app_name[0], '-' );
@@ -372,8 +358,8 @@ namespace {
                                  msgid,
                                  NULL );
 
+    EXPECT_NO_ERROR;
     EXPECT_TRUE( entry != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     if( entry ) {
       EXPECT_EQ( entry->message_length, 0 );
@@ -393,8 +379,8 @@ namespace {
                                  NULL,
                                  message );
 
+    EXPECT_NO_ERROR;
     EXPECT_TRUE( entry != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     if( entry ) {
       EXPECT_EQ( entry->msgid[0], '-' );
@@ -406,7 +392,7 @@ namespace {
 
   TEST( NewEntryTest, ReallocFailureOnSecond ) {
     struct stumpless_entry *entries[2000];
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
@@ -432,13 +418,7 @@ namespace {
                                        message ); 
 
       if( !entries[i] ) {
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error != NULL );
-
-        if( error ) {
-          EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-        }
-
+        EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
         break;
       }
     }
@@ -456,43 +436,38 @@ namespace {
   }
  
   TEST( SetAppNameTest, NullEntry ) {
-    struct stumpless_entry *entry;
-    struct stumpless_error *error;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
 
-    entry = stumpless_set_entry_app_name( NULL, "new-app-name" );
-    ASSERT_EQ( NULL, entry );
-    
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    result = stumpless_set_entry_app_name( NULL, "new-app-name" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( SetMessageTest, NullEntry ) {
-    struct stumpless_entry *result;
-    struct stumpless_error *error;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
 
     result = stumpless_set_entry_message( NULL, "test-message" );
-    ASSERT_EQ( NULL, result );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( SetMessageTest, NullMessage ) {
     struct stumpless_entry *entry;
-    struct stumpless_entry *result;
+    const struct stumpless_entry *result;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
                                  "test-app-name",
                                  "test-msgid",
                                  "test-message" );
+    EXPECT_NO_ERROR;
     EXPECT_TRUE( entry != NULL );
 
     result = stumpless_set_entry_message( entry, NULL );
+    EXPECT_NO_ERROR;
     EXPECT_EQ( entry, result );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
     EXPECT_TRUE( entry->message == NULL );
     EXPECT_EQ( 0, entry->message_length );
