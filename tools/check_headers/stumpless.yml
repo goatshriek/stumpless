@@ -206,7 +206,7 @@
 "stumpless_destroy_entry_only": "stumpless/entry.h"
 "stumpless_destroy_param": "stumpless/param.h"
 "STUMPLESS_DUPLICATE_ELEMENT": "stumpless/error.h"
-"STUMPLESS_ELEMENT_NOT_FOUND": "stumpless/erro.h"
+"STUMPLESS_ELEMENT_NOT_FOUND": "stumpless/error.h"
 "stumpless_error_id_t": "stumpless/error.h"
 "STUMPLESS_FACILITY_KERN": "stumpless/facility.h"
 "STUMPLESS_FACILITY_USER": "stumpless/facility.h"
