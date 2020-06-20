@@ -198,8 +198,8 @@ stumpless_get_param_by_index( struct stumpless_element *element,
  *
  * @param name The param name to search for.
  *
- * @return The param, if it is found in the element, NULL otherwise. If an error
- * was encountered, then NULL is returned and an error code is set
+ * @return The param if it is found in the element, or NULL otherwise. If an
+ * error was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
 struct stumpless_param *

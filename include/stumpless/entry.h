@@ -116,6 +116,8 @@ stumpless_add_element( struct stumpless_entry *entry,
 /**
  * Creates a new element with the given name and adds it to this entry.
  *
+ * @since Release v1.6.0.
+ *
  * @param entry The entry to add the new element to.
  *
  * @param name The name of the new element.
@@ -166,6 +168,19 @@ struct stumpless_element *
 stumpless_get_element_by_index( struct stumpless_entry *entry,
                                 size_t index );
 
+/**
+ * Returns the element with the given name in this entry, if it is found.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to search.
+ *
+ * @param name The name of the element to search for.
+ *
+ * @return The element if it is found in the entry, or NULL otherwise. If an
+ * error was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
 struct stumpless_element *
 stumpless_get_element_by_name( struct stumpless_entry *entry,
                                const char *name );
