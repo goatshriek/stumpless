@@ -32,20 +32,19 @@ namespace {
   class EntryTest : public::testing::Test {
     protected:
       struct stumpless_entry *basic_entry;
-      const char *element_name = "basic-element";
+      const char *element_1_name = "basic-element";
+      struct stumpless_element *element_1;
 
       virtual void
       SetUp( void ) {
-        struct stumpless_element *element;
-
         basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                            STUMPLESS_SEVERITY_INFO,
                                            "basic-app-name",
                                            "basic-msgid",
                                            "basic message" );
 
-        element = stumpless_new_element( element_name );
-        stumpless_add_element( basic_entry, element );
+        element_1 = stumpless_new_element( element_1_name );
+        stumpless_add_element( basic_entry, element_1 );
 
         // cause a failure so that memory allocation tests will still have an
         // error that they can return
@@ -80,7 +79,7 @@ namespace {
 
     original_element_count = basic_entry->element_count;
 
-    duplicate_element = stumpless_new_element( element_name );
+    duplicate_element = stumpless_new_element( element_1_name );
     EXPECT_NO_ERROR;
     ASSERT_TRUE( duplicate_element != NULL );
 
@@ -168,6 +167,32 @@ namespace {
     EXPECT_EQ( basic_entry, entry );
   }
 
+  TEST_F( EntryTest, GetElementByName ) {
+    const struct stumpless_element *result;
+
+    result = stumpless_get_element_by_name( basic_entry, element_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, element_1 );
+  }
+
+  TEST_F( EntryTest, GetElementByNameNotFound ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_by_name( basic_entry, "not-found" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ELEMENT_NOT_FOUND );
+    EXPECT_TRUE( result == NULL );
+  }
+
+  TEST_F( EntryTest, GetElementByNameNullName ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_by_name( basic_entry, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
+  }
+
   TEST_F( EntryTest, SetAppName ) {
     struct stumpless_entry *entry;
     const char *previous_app_name;
@@ -250,6 +275,15 @@ namespace {
 
   TEST( DestroyEntryTest, NullEntry ) {
     stumpless_destroy_entry( NULL );
+  }
+
+  TEST( GetElementByNameTest, NullEntry ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_by_name( NULL, "irrelevant" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( NewEntryTest, FormatSpecifiers ) {

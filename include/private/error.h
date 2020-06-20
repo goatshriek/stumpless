@@ -40,6 +40,9 @@ void
 raise_duplicate_element( void );
 
 void
+raise_element_not_found( void );
+
+void
 raise_error( enum stumpless_error_id id,
              const char *message,
              int code,

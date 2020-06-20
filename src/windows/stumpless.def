@@ -91,6 +91,7 @@ EXPORTS
   stumpless_copy_element                 @87
   stumpless_copy_entry                   @88
   stumpless_copy_param                   @89
+  stumpless_get_element_by_name          @108
   stumpless_get_element_name             @90
   stumpless_get_param_by_index           @91
   stumpless_get_param_by_name            @92

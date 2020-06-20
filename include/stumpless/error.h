@@ -49,6 +49,8 @@ enum stumpless_error_id {
   STUMPLESS_ARGUMENT_TOO_BIG,
 /** A duplicate of an already existing element was detected in an entry. */
   STUMPLESS_DUPLICATE_ELEMENT,
+/** No element with the specified characteristics was found. */
+  STUMPLESS_ELEMENT_NOT_FOUND,
 /** Could not open a file. */
   STUMPLESS_FILE_OPEN_FAILURE,
 /** Could not write to a file. */

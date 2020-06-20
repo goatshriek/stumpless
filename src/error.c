@@ -120,6 +120,15 @@ raise_duplicate_element( void ) {
 }
 
 void
+raise_element_not_found( void ) {
+  raise_error( STUMPLESS_ELEMENT_NOT_FOUND,
+               "an element with the specified characteristics could not be" \
+               " found",
+               0,
+               NULL );
+}
+
+void
 raise_error( enum stumpless_error_id id,
              const char *message,
              int code,
