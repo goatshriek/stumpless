@@ -68,28 +68,6 @@ classes:
         params:
           - name: "equivalent-struct-pointer"
     functions:
-      - name: "SetAppName"
-        doc: "Sets the app name for an entry."
-        params:
-          - name: "app_name"
-            doc: |
-              The new app_name for the entry as a NULL-terminated string. This
-              will be copied in to the entry, and therefore may be modified or
-              freed after this call without affecting the entry.
-            type: "const char *"
-        return:
-          doc: "The modified Entry, to support method chaining."
-          type: "self-reference"
-        wrapped-function:
-          name: "stumpless_set_entry_app_name"
-          includes:
-            - "stumpless/entry.h"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "app_name"
-          return:
-            type: "struct stumpless_entry *"
-          use-template: "pointer-return-error-check"
       - name: "AddElement"
         doc: "Adds an element to an entry."
         params:
@@ -102,8 +80,7 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_element"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
             - value: "element"
@@ -123,12 +100,73 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_element"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
             - value: "element"
               type: "struct stumpless_element *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "AddElement"
+        doc: "Creates a new Element and adds it to this Entry."
+        params:
+          - name: "name"
+            doc: "The name of the new Element."
+            type: "const char *"
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_new_element"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "GetElement"
+        doc: |
+          Gets the Element with the given name from this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Element to retrieve."
+            type: "const char *"
+        return:
+          doc: "The requested Element."
+          type:
+            name: "Element"
+            includes: "Element.hpp"
+        wrapped-function:
+          name: "stumpless_get_element_by_name"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "struct stumpless_element *"
+          use-template: "pointer-return-error-check"
+      - name: "SetAppName"
+        doc: "Sets the app name for an entry."
+        params:
+          - name: "app_name"
+            doc: |
+              The new app_name for the entry as a NULL-terminated string. This
+              will be copied in to the entry, and therefore may be modified or
+              freed after this call without affecting the entry.
+            type: "const char *"
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_app_name"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "app_name"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
