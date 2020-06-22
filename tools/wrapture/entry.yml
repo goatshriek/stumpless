@@ -171,7 +171,10 @@ classes:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
       - name: "SetMsgid"
-        doc: "Sets the msgid for this Entry."
+        doc: |
+          Sets the msgid for this Entry.
+
+          Available since release v1.6.0.
         params:
           - name: "msgid"
             doc: |
