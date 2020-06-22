@@ -226,6 +226,54 @@ namespace {
     ASSERT_TRUE( set_malloc_result == malloc );
   }
 
+  TEST_F( EntryTest, SetMsgid ) {
+    struct stumpless_entry *entry;
+    const char *previous_msgid;
+    const char *new_msgid = "new-msgid";
+
+    size_t new_msgid_length = strlen( new_msgid );
+
+    previous_msgid = basic_entry->msgid;
+
+    entry = stumpless_set_entry_msgid( basic_entry, new_msgid );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, basic_entry );
+
+    ASSERT_EQ( new_msgid_length, basic_entry->msgid_length );
+    ASSERT_EQ( 0, memcmp( basic_entry->msgid, new_msgid, new_msgid_length ) );
+  }
+
+  TEST_F( EntryTest, SetMsgidMemoryFailure ) {
+    void *(*set_malloc_result)(size_t);
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_entry_msgid( basic_entry, "gonna-fail" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_TRUE( result == NULL );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, SetMsgidNullMsgid ) {
+    struct stumpless_entry *entry;
+    const char *previous_msgid;
+
+    previous_msgid = basic_entry->msgid;
+
+    entry = stumpless_set_entry_msgid( basic_entry, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, basic_entry );
+    EXPECT_NE( basic_entry->msgid, previous_msgid );
+
+    EXPECT_EQ( basic_entry->msgid_length, 1 );
+    EXPECT_EQ( 0, strcmp( basic_entry->msgid, "-" ) );
+  }
+
   /* non-fixture tests */
 
   TEST( AddElementTest, NullEntry ){
@@ -534,6 +582,15 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_set_entry_app_name( NULL, "new-app-name" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
+  }
+
+  TEST( SetMsgidTest, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_msgid( NULL, "new-app-name" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
   }

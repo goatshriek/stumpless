@@ -278,6 +278,19 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
 
+/**
+ * Sets the msgid for an entry.
+ *
+ * @param entry The entry for which the msgid will be set.
+ *
+ * @param msgid A NULL-terminated string holding the new msgid for the entry.
+ * This will be copied in to the entry, and therefore may be modified or freed
+ * after this call without affecting the entry. If this is NULL, then a single
+ * '-' character will be used, as specified as the NILVALUE in RFC 5424.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_entry_msgid( struct stumpless_entry *entry,
                            const char *msgid );

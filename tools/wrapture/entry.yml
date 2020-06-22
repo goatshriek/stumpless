@@ -170,6 +170,29 @@ classes:
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
+      - name: "SetMsgid"
+        doc: "Sets the msgid for this Entry."
+        params:
+          - name: "msgid"
+            doc: |
+              A NULL-terminated string holding the new msgid. This will be
+              copied in to the Entry, and therefore may be modified or freed
+              after this call without affecting the entry. If this is NULL,
+              then a single '-' character will be used, as specified as the
+              NILVALUE in RFC 5424.
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_msgid"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "msgid"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
       - name: "SetMessage"
         doc: "Sets the message of an Entry."
         params:

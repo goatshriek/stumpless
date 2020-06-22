@@ -274,7 +274,27 @@ stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
 struct stumpless_entry *
 stumpless_set_entry_msgid( struct stumpless_entry *entry,
                            const char *msgid ) {
-  return NULL;
+  const char *effective_msgid;
+  size_t temp_length;
+  char *temp_msgid;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  effective_msgid = msgid ? msgid : "-";
+  temp_msgid = copy_cstring_with_length( effective_msgid, &temp_length );
+  if( !temp_msgid ) {
+    return NULL;
+  }
+
+  free_mem( entry->msgid );
+  entry->msgid = temp_msgid;
+  entry->msgid_length = temp_length;
+
+  clear_error(  );
+  return entry;
 }
 
 struct stumpless_entry *
