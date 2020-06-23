@@ -32,6 +32,7 @@
 #include "private/facility.h"
 #include "private/formatter.h"
 #include "private/memory.h"
+#include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/target.h"

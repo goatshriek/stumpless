@@ -77,7 +77,7 @@
 "get_paged_size": "private/memory.h"
 "get_priv_target": "private/target.h"
 "get_prival": "private/entry.h"
-"get_severity": "private/entry.h"
+"get_severity": "private/severity.h"
 "GetCurrentProcessId": "windows.h"
 "GetSystemInfo": "windows.h"
 "gmtime_r_get_now": "private/config/have_gmtime_r.h"

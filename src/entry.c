@@ -484,11 +484,6 @@ get_prival( int facility, int severity ) {
   return facility | severity;
 }
 
-int
-get_severity( int prival ) {
-  return prival & 0x7;
-}
-
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry ) {
