@@ -245,6 +245,7 @@ stumpless_new_entry( int facility,
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
+  const char * effective_name;
   size_t temp_name_length;
   char *temp_name;
 
@@ -253,7 +254,8 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
     return NULL;
   }
 
-  temp_name = copy_cstring_with_length( app_name, &temp_name_length );
+  effective_name = app_name ? app_name : "-";
+  temp_name = copy_cstring_with_length( effective_name, &temp_name_length );
   if( !temp_name ) {
     return NULL;
   }

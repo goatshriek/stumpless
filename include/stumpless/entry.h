@@ -266,7 +266,9 @@ stumpless_new_entry( int facility,
  *
  * @param app_name A NULL-terminated string holding the new app_name for the
  * entry. This will be copied in to the entry, and therefore may be modified
- * or freed after this call without affecting the entry.
+ * or freed after this call without affecting the entry. If this is NULL, then
+ * a single '-' character will be used, as specified as the NILVALUE in RFC
+ * 5424.
  *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -280,6 +282,8 @@ stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
 
 /**
  * Sets the msgid for an entry.
+ *
+ * @since Release v1.6.0.
  *
  * @param entry The entry for which the msgid will be set.
  *

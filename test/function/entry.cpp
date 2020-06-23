@@ -226,6 +226,21 @@ namespace {
     ASSERT_TRUE( set_malloc_result == malloc );
   }
 
+  TEST_F( EntryTest, SetAppNameNullAppName ) {
+    struct stumpless_entry *entry;
+    const char *previous_app_name;
+
+    previous_app_name = basic_entry->app_name;
+
+    entry = stumpless_set_entry_app_name( basic_entry, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, basic_entry );
+    EXPECT_NE( basic_entry->app_name, previous_app_name );
+
+    EXPECT_EQ( basic_entry->app_name_length, 1 );
+    EXPECT_EQ( 0, strcmp( basic_entry->app_name, "-" ) );
+  }
+
   TEST_F( EntryTest, SetMsgid ) {
     struct stumpless_entry *entry;
     const char *previous_msgid;
