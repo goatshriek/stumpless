@@ -364,6 +364,30 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
+  TEST( NewEntryTest, MallocFailureOnMsgid ) {
+    void *(*set_malloc_result)(size_t);
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid-of-unique-length";
+    const char *message = "test-message";
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 28 ) );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                  STUMPLESS_SEVERITY_INFO,
+                                  app_name,
+                                  msgid,
+                                  message );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_TRUE( result == NULL );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   TEST( NewEntryTest, MallocFailureOnSecond ) {
     struct stumpless_entry *first_entry;
     struct stumpless_entry *second_entry;
@@ -381,7 +405,7 @@ namespace {
                                        message );
     ASSERT_TRUE( first_entry != NULL );
    
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_TRUE( set_malloc_result != NULL );
 
     second_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -394,7 +418,7 @@ namespace {
     EXPECT_TRUE( second_entry == NULL );
 
     set_malloc_result = stumpless_set_malloc( malloc );
-    ASSERT_TRUE( set_malloc_result == malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
 
     stumpless_destroy_entry( second_entry );
     stumpless_destroy_entry( first_entry );
