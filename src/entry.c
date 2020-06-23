@@ -26,7 +26,9 @@
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/formatter.h"
+#include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/memory.h"
@@ -174,7 +176,13 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
 
 int
 stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
-  return -1;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return -1;
+  }
+
+  clear_error(  );
+  return get_facility( entry->prival );
 }
 
 const char *
@@ -189,7 +197,13 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
 
 int
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
-  return -1;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return -1;
+  }
+
+  clear_error(  );
+  return get_severity( entry->prival );
 }
 
 struct stumpless_param *
@@ -270,7 +284,20 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 
 struct stumpless_entry *
 stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
-  return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( facility_is_invalid( facility ) ) {
+    raise_invalid_facility( facility );
+    return NULL;
+  }
+
+  entry->prival = get_prival( facility, get_severity( entry->prival ) );
+
+  clear_error(  );
+  return entry;
 }
 
 struct stumpless_entry *
@@ -323,12 +350,30 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_prival( struct stumpless_entry *entry,
                             int prival ) {
-  return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  return entry;
 }
 
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
-  return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( severity_is_invalid( severity ) ) {
+    raise_invalid_severity( severity );
+    return NULL;
+  }
+
+  entry->prival = get_prival( get_facility( entry->prival ), severity );
+
+  clear_error(  );
+  return entry;
 }
 
 struct stumpless_entry *

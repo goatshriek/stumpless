@@ -192,6 +192,16 @@ stumpless_get_element_index( struct stumpless_entry *entry,
 const char *
 stumpless_get_entry_app_name( const struct stumpless_entry *entry );
 
+/**
+ * Returns the facility code of the given entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the facility of.
+ *
+ * @return The facility of the entry if no error is encountered. If an error
+ * was encountered, then -1 is returned and an error code is set appropriately.
+ */
 int
 stumpless_get_entry_facility( const struct stumpless_entry *entry );
 
@@ -277,6 +287,19 @@ struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name );
 
+/**
+ * Sets the facility of an entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to set the facility of.
+ *
+ * @param facility The new facility of the entry. This must be a valid value
+ * according to RFC 5424, most simply one of the STUMPLESS_FACILITY constants.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
 

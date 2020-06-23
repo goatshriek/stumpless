@@ -24,3 +24,8 @@ int
 get_severity( int prival ) {
   return prival & 0x7;
 }
+
+int
+severity_is_invalid( int severity ) {
+  return severity < 0 || severity > 7;
+}

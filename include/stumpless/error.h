@@ -61,6 +61,8 @@ enum stumpless_error_id {
   STUMPLESS_INVALID_FACILITY,
 /** A target or entry ID was not valid. */
   STUMPLESS_INVALID_ID,
+/** A provided severity code did not conform to RFC 5424. */
+  STUMPLESS_INVALID_SEVERITY,
 /** A memory allocation or reallocation failed. */
   STUMPLESS_MEMORY_ALLOCATION_FAILURE,
 /** The given layer 3 protocol is not supported by this implementation. */

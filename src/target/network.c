@@ -487,7 +487,7 @@ stumpless_open_network_target( const char *name,
   }
 
   if( facility_is_invalid( default_facility ) ) {
-    raise_invalid_facility(  );
+    raise_invalid_facility( default_facility );
     goto fail;
   }
 

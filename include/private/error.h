@@ -58,10 +58,13 @@ void
 raise_index_out_of_bounds( const char *message, int code );
 
 void
-raise_invalid_facility( void );
+raise_invalid_facility( int facility );
 
 void
 raise_invalid_id( void );
+
+void
+raise_invalid_severity( int severity );
 
 void
 raise_memory_allocation_failure( void );

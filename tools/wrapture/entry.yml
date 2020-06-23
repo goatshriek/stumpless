@@ -156,7 +156,9 @@ classes:
             doc: |
               The new app_name for the entry as a NULL-terminated string. This
               will be copied in to the entry, and therefore may be modified or
-              freed after this call without affecting the entry.
+              freed after this call without affecting the entry. If this is
+              NULL, then a single '-' character will be used, as specified as
+              the NILVALUE in RFC 5424.
             type: "const char *"
         return:
           doc: "The modified Entry, to support method chaining."

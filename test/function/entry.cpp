@@ -241,6 +241,33 @@ namespace {
     EXPECT_EQ( 0, strcmp( basic_entry->app_name, "-" ) );
   }
 
+  TEST_F( EntryTest, SetFacility ) {
+    const struct stumpless_entry *result;
+
+    result = stumpless_set_entry_facility( basic_entry,
+                                           STUMPLESS_FACILITY_LOCAL5 );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+
+    EXPECT_EQ( stumpless_get_entry_facility( basic_entry ),
+               STUMPLESS_FACILITY_LOCAL5 );
+  }
+
+  TEST_F( EntryTest, SetFacilityInvalidFacility ) {
+    int previous_facility;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    previous_facility = stumpless_get_entry_facility( basic_entry );
+
+    result = stumpless_set_entry_facility( basic_entry,
+                                           -66 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
+    EXPECT_EQ( error->code, -66 );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_EQ( stumpless_get_entry_facility( basic_entry ), previous_facility );
+  }
+
   TEST_F( EntryTest, SetMsgid ) {
     struct stumpless_entry *entry;
     const char *previous_msgid;
@@ -287,6 +314,33 @@ namespace {
 
     EXPECT_EQ( basic_entry->msgid_length, 1 );
     EXPECT_EQ( 0, strcmp( basic_entry->msgid, "-" ) );
+  }
+
+  TEST_F( EntryTest, SetSeverity ) {
+    const struct stumpless_entry *result;
+
+    result = stumpless_set_entry_severity( basic_entry,
+                                           STUMPLESS_SEVERITY_EMERG );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+
+    EXPECT_EQ( stumpless_get_entry_severity( basic_entry ),
+               STUMPLESS_SEVERITY_EMERG );
+  }
+
+  TEST_F( EntryTest, SetFacilityInvalidSeverity ) {
+    int previous_severity;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    previous_severity = stumpless_get_entry_severity( basic_entry );
+
+    result = stumpless_set_entry_severity( basic_entry,
+                                           -66 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
+    EXPECT_EQ( error->code, -66 );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_EQ( stumpless_get_entry_severity( basic_entry ), previous_severity );
   }
 
   /* non-fixture tests */
@@ -347,6 +401,24 @@ namespace {
     result = stumpless_get_element_by_name( NULL, "irrelevant" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
+  }
+
+  TEST( GetFacilityTest, NullEntry ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_facility( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetSeverityTest, NullEntry ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_severity( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, -1 );
   }
 
   TEST( NewEntryTest, FormatSpecifiers ) {
@@ -625,6 +697,15 @@ namespace {
     EXPECT_TRUE( result == NULL );
   }
 
+  TEST( SetFacilityTest, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_facility( NULL, STUMPLESS_FACILITY_USER );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
+  }
+
   TEST( SetMsgidTest, NullEntry ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
@@ -663,5 +744,14 @@ namespace {
     EXPECT_EQ( 0, entry->message_length );
 
     stumpless_destroy_entry( entry );
+  }
+
+  TEST( SetSeverityTest, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_severity( NULL, STUMPLESS_SEVERITY_INFO );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 }

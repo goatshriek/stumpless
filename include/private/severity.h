@@ -22,4 +22,7 @@
 int
 get_severity( int prival );
 
+int
+severity_is_invalid( int severity );
+
 #endif /* __STUMPLESS_PRIVATE_SEVERITY_H */

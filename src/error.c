@@ -164,17 +164,26 @@ raise_index_out_of_bounds( const char *message, int code ) {
 }
 
 void
-raise_invalid_facility( void ) {
+raise_invalid_facility( int facility ) {
   raise_error( STUMPLESS_INVALID_FACILITY,
                "facility codes must be defined in accordance with RFC 5424, "
                "after the multiplication by 8",
-               0,
-               NULL );
+               facility,
+               "the invalid facility" );
 }
 
 void
 raise_invalid_id( void ) {
   raise_error( STUMPLESS_INVALID_ID, NULL, 0, NULL );
+}
+
+void
+raise_invalid_severity( int severity ) {
+  raise_error( STUMPLESS_INVALID_SEVERITY,
+               "severity codes must be defined in accordance with RFC 5424: "
+               "values between 0 and 7 inclusive",
+               severity,
+               "the invalid severity" );
 }
 
 void
