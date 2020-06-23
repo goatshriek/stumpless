@@ -29,6 +29,7 @@
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/formatter.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"

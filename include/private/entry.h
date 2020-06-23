@@ -26,9 +26,6 @@ void
 entry_free_all( void );
 
 int
-get_facility( int prival );
-
-int
 get_prival( int facility, int severity );
 
 int
@@ -58,8 +55,5 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( struct stumpless_entry *entry );
-
-int
-facility_is_invalid( int facility );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */

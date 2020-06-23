@@ -26,8 +26,8 @@
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
 #include "private/config/wrapper.h"
-#include "private/entry.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/strhelper.h"

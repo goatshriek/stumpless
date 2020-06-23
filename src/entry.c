@@ -480,11 +480,6 @@ entry_free_all( void ) {
 }
 
 int
-get_facility( int prival ) {
-  return prival & 0xf8;
-}
-
-int
 get_prival( int facility, int severity ) {
   return facility | severity;
 }
@@ -580,9 +575,4 @@ unchecked_destroy_entry( struct stumpless_entry *entry ) {
   free_mem( entry->message );
 
   cache_free( entry_cache, entry );
-}
-
-int
-facility_is_invalid( int facility ) {
-  return facility < 0 || facility > ( 23 << 3 ) || facility % 8 != 0;
 }

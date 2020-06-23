@@ -113,6 +113,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/element.c
   ${PROJECT_SOURCE_DIR}/src/entry.c
   ${PROJECT_SOURCE_DIR}/src/error.c
+  ${PROJECT_SOURCE_DIR}/src/facility.c
   ${PROJECT_SOURCE_DIR}/src/formatter.c
   ${PROJECT_SOURCE_DIR}/src/inthelper.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
@@ -528,10 +529,15 @@ install(TARGETS stumpless
 
 install(FILES
   ${PROJECT_BINARY_DIR}/include/stumpless/config.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/element.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/entry.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/error.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/facility.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/option.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/param.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/severity.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
   DESTINATION "include/stumpless"
