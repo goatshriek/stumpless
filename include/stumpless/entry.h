@@ -164,6 +164,19 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
 void
 stumpless_destroy_entry_only( struct stumpless_entry *entry );
 
+/**
+ * Returns the element at the given index in this Entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to search.
+ *
+ * @param name The index of the element to get.
+ *
+ * @return The element if it is found in the entry, or NULL otherwise. If an
+ * error was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
 struct stumpless_element *
 stumpless_get_element_by_index( struct stumpless_entry *entry,
                                 size_t index );

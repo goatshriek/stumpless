@@ -134,7 +134,20 @@ stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
 struct stumpless_element *
 stumpless_get_element_by_index( struct stumpless_entry *entry,
                                 size_t index ) {
-  return NULL;
+  clear_error(  );
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", index );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->elements[index];
 }
 
 struct stumpless_element *

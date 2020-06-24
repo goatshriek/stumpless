@@ -149,8 +149,6 @@ stumpless_get_element_name( const struct stumpless_element *element ) {
 struct stumpless_param *
 stumpless_get_param_by_index( struct stumpless_element *element,
                               size_t index ) {
-  clear_error(  );
-
   if( !element ) {
     raise_argument_empty( "element is NULL" );
     return NULL;
@@ -161,6 +159,7 @@ stumpless_get_param_by_index( struct stumpless_element *element,
     return NULL;
   }
 
+  clear_error(  );
   return element->params[index];
 }
 

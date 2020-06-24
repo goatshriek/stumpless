@@ -179,6 +179,24 @@ namespace {
     EXPECT_NE( result, basic_app_name );
   }
 
+  TEST_F( EntryTest, GetElementByIndex ) {
+    const struct stumpless_element *result;
+
+    result = stumpless_get_element_by_index( basic_entry, 0 );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, element_1 );
+  }
+
+  TEST_F( EntryTest, GetElementByIndexOutOfBounds ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_by_index( basic_entry, 534 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+    EXPECT_EQ( error->code, 534 );
+    EXPECT_TRUE( result == NULL );
+  }
+
   TEST_F( EntryTest, GetElementByName ) {
     const struct stumpless_element *result;
 
@@ -456,6 +474,15 @@ namespace {
 
   TEST( DestroyEntryTest, NullEntry ) {
     stumpless_destroy_entry( NULL );
+  }
+
+  TEST( GetElementByIndexTest, NullEntry ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_by_index( NULL, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( GetElementByNameTest, NullEntry ) {

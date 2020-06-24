@@ -128,6 +128,31 @@ classes:
           use-template: "pointer-return-error-check"
       - name: "GetElement"
         doc: |
+          Gets the Element at the given index in this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the Element to retrieve."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The requested Element."
+          type:
+            name: "Element"
+            includes: "Element.hpp"
+        wrapped-function:
+          name: "stumpless_get_element_by_index"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+          return:
+            type: "struct stumpless_element *"
+          use-template: "pointer-return-error-check"
+      - name: "GetElement"
+        doc: |
           Gets the Element with the given name from this Entry.
 
           Available since release v1.6.0.
