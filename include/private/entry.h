@@ -51,6 +51,6 @@ strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );
 
 void
-unchecked_destroy_entry( struct stumpless_entry *entry );
+unchecked_destroy_entry( const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */

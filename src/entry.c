@@ -103,12 +103,12 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
 }
 
 void
-stumpless_destroy_entry( struct stumpless_entry *entry ) {
+stumpless_destroy_entry( const struct stumpless_entry *entry ) {
   stumpless_destroy_entry_and_contents( entry );
 }
 
 void
-stumpless_destroy_entry_and_contents( struct stumpless_entry *entry ) {
+stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry ) {
   size_t i;
 
   if( !entry ) {
@@ -123,7 +123,7 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry ) {
 }
 
 void
-stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
+stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
   if( !entry ) {
     return;
   }
@@ -652,7 +652,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 }
 
 void
-unchecked_destroy_entry( struct stumpless_entry *entry ) {
+unchecked_destroy_entry( const struct stumpless_entry *entry ) {
   config_destroy_insertion_params( entry );
 
   free_mem( entry->elements );

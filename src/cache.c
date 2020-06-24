@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ cache_destroy( struct cache *c ) {
 }
 
 void
-cache_free( struct cache *c, void *entry ) {
+cache_free( struct cache *c, const void *entry ) {
   size_t entry_index;
   size_t i;
   size_t entries_per_page;

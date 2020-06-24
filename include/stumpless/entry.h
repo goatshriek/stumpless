@@ -144,7 +144,7 @@ stumpless_copy_entry( const struct stumpless_entry *entry );
  * @param entry The entry to destroy.
  */
 void
-stumpless_destroy_entry( struct stumpless_entry *entry );
+stumpless_destroy_entry( const struct stumpless_entry *entry );
 
 /**
  * Destroys an entry as well as all elements and params that it contains,
@@ -153,7 +153,7 @@ stumpless_destroy_entry( struct stumpless_entry *entry );
  * @param entry The entry to destroy.
  */
 void
-stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
+stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry );
 
 /**
  * Destroys an entry, freeing any allocated memory. Associated elements and
@@ -162,7 +162,7 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
  * @param entry The entry to destroy.
  */
 void
-stumpless_destroy_entry_only( struct stumpless_entry *entry );
+stumpless_destroy_entry_only( const struct stumpless_entry *entry );
 
 /**
  * Returns the element at the given index in this Entry.
