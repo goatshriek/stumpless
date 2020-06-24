@@ -370,8 +370,6 @@ struct stumpless_element *
 stumpless_set_param( struct stumpless_element *element,
                      size_t index,
                      struct stumpless_param *param ) {
-  clear_error(  );
-
   if( !element ) {
     raise_argument_empty( "element is NULL" );
     return NULL;
@@ -389,6 +387,7 @@ stumpless_set_param( struct stumpless_element *element,
 
   element->params[index] = param;
 
+  clear_error(  );
   return element;
 }
 

@@ -435,7 +435,25 @@ struct stumpless_entry *
 stumpless_set_element( struct stumpless_entry *entry,
                        size_t index,
                        struct stumpless_element *element ) {
-  return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", index );
+    return NULL;
+  }
+
+  entry->elements[index] = element;
+
+  clear_error(  );
+  return entry;
 }
 
 struct stumpless_entry *

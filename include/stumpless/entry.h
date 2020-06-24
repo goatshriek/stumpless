@@ -102,6 +102,10 @@ struct stumpless_entry {
  * Adds an element to an entry. The element is appended to the end of the list
  * of elements in this entry.
  *
+ * Note that duplicate elements are not allowed in RFC 5424, and as such
+ * attempts to add an element to an entry already having one with the same name
+ * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ *
  * @param entry The entry to add the element to.
  *
  * @param element The element to add to the entry.
@@ -115,6 +119,10 @@ stumpless_add_element( struct stumpless_entry *entry,
 
 /**
  * Creates a new element with the given name and adds it to this entry.
+ *
+ * Note that duplicate elements are not allowed in RFC 5424, and as such
+ * attempts to add an element to an entry already having one with the same name
+ * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
  *
  * @since Release v1.6.0.
  *
@@ -468,6 +476,32 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
 
+/**
+ * Puts the element at the given index in the given entry.
+ *
+ * The element previously at this position will be removed from the entry,
+ * but it is NOT destroyed by this call. Callers must clean up this element
+ * separately.
+ *
+ * An element cannot be set at an index position that does not already hold a
+ * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * is raised.
+ *
+ * Note that duplicate elements are not allowed in RFC 5424, and as such
+ * attempts to set an element of an entry which already contains another element
+ * with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the element on.
+ *
+ * @param index The index to set to param.
+ *
+ * @param element The element to set at the given index.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_element( struct stumpless_entry *entry,
                        size_t index,

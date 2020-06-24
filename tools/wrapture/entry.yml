@@ -89,7 +89,12 @@ classes:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
       - name: "AddElement"
-        doc: "Adds an element to an entry."
+        doc: |
+          Adds an Element to this Entry.
+
+          Note that duplicate elements are not allowed in RFC 5424, and as such
+          attempts to add an Element to an Entry already having one with the
+          same name will result in a DuplicateElement exception.
         params:
           - name: "element"
             doc: "A pointer to the element to add."
@@ -109,7 +114,12 @@ classes:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
       - name: "AddElement"
-        doc: "Creates a new Element and adds it to this Entry."
+        doc: |
+          Creates a new Element and adds it to this Entry.
+
+          Note that duplicate elements are not allowed in RFC 5424, and as such
+          attempts to add an element to an entry already having one with the
+          same name will result in a DuplicateElement exception.
         params:
           - name: "name"
             doc: "The name of the new Element."
