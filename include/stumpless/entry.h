@@ -189,6 +189,17 @@ size_t
 stumpless_get_element_index( struct stumpless_entry *entry,
                              const char *name );
 
+/**
+ * Returns the app name of the given entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the app name of.
+ *
+ * @return The app name of the entry if no error is encountered. If an error
+ * was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
 const char *
 stumpless_get_entry_app_name( const struct stumpless_entry *entry );
 
@@ -205,12 +216,43 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry );
 int
 stumpless_get_entry_facility( const struct stumpless_entry *entry );
 
+/**
+ * Returns the msgid of the given entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the msgid of.
+ *
+ * @return The msgid of the entry if no error is encountered. If an error
+ * was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
 const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry );
 
+/**
+ * Returns the prival of the given entry, as defined in RFC 5424.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the prival of.
+ *
+ * @return The prival of the entry if no error is encountered. If an error
+ * was encountered, then -1 is returned and an error code is set appropriately.
+ */
 int
 stumpless_get_entry_prival( const struct stumpless_entry *entry );
 
+/**
+ * Returns the severity code of the given entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the severity of.
+ *
+ * @return The severity of the entry if no error is encountered. If an error
+ * was encountered, then -1 is returned and an error code is set appropriately.
+ */
 int
 stumpless_get_entry_severity( const struct stumpless_entry *entry );
 
@@ -295,7 +337,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
  * @param entry The entry to set the facility of.
  *
  * @param facility The new facility of the entry. This must be a valid value
- * according to RFC 5424, most simply one of the STUMPLESS_FACILITY constants.
+ * according to RFC 5424, available as STUMPLESS_FACILITY constants.
  *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -344,15 +386,58 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
                              const char *message,
                              ... );
 
+/**
+* Sets the facility and severity of an entry.
+*
+* @since Release v1.6.0.
+*
+* @param entry The entry to set the priority values of.
+*
+* @param facility The new facility of the entry. This must be a valid value
+* according to RFC 5424, available as STUMPLESS_FACILITY constants.
+*
+* @param severity The new severity of the entry. This must be a valid value
+* according to RFC 5424, available as STUMPLESS_SEVERITY constants.
+*
+* @return The modified entry if no error is encountered. If an error is
+* encountered, then NULL is returned and an error code is set appropriately.
+*/
 struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,
                               int facility,
                               int severity );
 
+/**
+ * Sets the prival of an entry, as defined in RFC 5424.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to set the prival of.
+ *
+ * @param prival The new prival of the entry, as defined in RFC 5424. Only the
+ * first 8 bits of prival are considered: the rest are discarded after
+ * extracting the effective facility and severity.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_entry_prival( struct stumpless_entry *entry,
                             int prival );
 
+/**
+ * Sets the severity of an entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to set the severity of.
+ *
+ * @param severity The new severity of the entry. This must be a valid value
+ * according to RFC 5424, available as STUMPLESS_SEVERITY constants.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
 
