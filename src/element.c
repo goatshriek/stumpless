@@ -106,12 +106,12 @@ fail:
 }
 
 void
-stumpless_destroy_element( struct stumpless_element *element ) {
+stumpless_destroy_element( const struct stumpless_element *element ) {
   stumpless_destroy_element_and_contents( element );
 }
 
 void
-stumpless_destroy_element_and_contents( struct stumpless_element *element ) {
+stumpless_destroy_element_and_contents( const struct stumpless_element *element ) {
   size_t i;
 
   if( !element ) {
@@ -126,7 +126,7 @@ stumpless_destroy_element_and_contents( struct stumpless_element *element ) {
 }
 
 void
-stumpless_destroy_element_only( struct stumpless_element *element ) {
+stumpless_destroy_element_only( const struct stumpless_element *element ) {
   if( !element ) {
     return;
   }
@@ -435,7 +435,7 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
 /* private functions */
 
 void
-unchecked_destroy_element( struct stumpless_element *element ) {
+unchecked_destroy_element( const struct stumpless_element *element ) {
   free_mem( element->params );
   free_mem( element->name );
   free_mem( element );

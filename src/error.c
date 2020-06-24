@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/error.h>
@@ -25,7 +26,7 @@
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
 static struct stumpless_error *last_error = NULL;
-static short error_valid = 0;
+static bool error_valid = false;
 
 struct stumpless_error *
 stumpless_get_error( void ) {
@@ -48,6 +49,11 @@ stumpless_get_error_stream( void ) {
   }
 
   return error_stream;
+}
+
+bool
+stumpless_has_error( void ) {
+  return error_valid;
 }
 
 void
@@ -86,7 +92,7 @@ stumpless_set_error_stream( FILE *stream ) {
 
 void
 clear_error( void ) {
-  error_valid = 0;
+  error_valid = false;
 }
 
 void
@@ -136,7 +142,7 @@ raise_error( enum stumpless_error_id id,
   if( !last_error ) {
     last_error = alloc_mem( sizeof( struct stumpless_error ) );
     if( !last_error ) {
-      error_valid = 0;
+      error_valid = false;
       return;
     }
   }
@@ -145,7 +151,7 @@ raise_error( enum stumpless_error_id id,
   last_error->message = message;
   last_error->code = code;
   last_error->code_type = code_type;
-  error_valid = 1;
+  error_valid = true;
 }
 
 void

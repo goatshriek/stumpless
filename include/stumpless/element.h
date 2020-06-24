@@ -131,7 +131,7 @@ stumpless_copy_element( const struct stumpless_element *element );
  * @param element The element to destroy.
  */
 void
-stumpless_destroy_element( struct stumpless_element *element );
+stumpless_destroy_element( const struct stumpless_element *element );
 
 /**
  * Destroys an element as well as all params that it contains, freeing any
@@ -140,7 +140,7 @@ stumpless_destroy_element( struct stumpless_element *element );
  * @param element The element to destroy.
  */
 void
-stumpless_destroy_element_and_contents( struct stumpless_element *element );
+stumpless_destroy_element_and_contents( const struct stumpless_element *element );
 
 /**
  * Destroys an element, freeing any allocated memory. Associated params are left
@@ -149,7 +149,7 @@ stumpless_destroy_element_and_contents( struct stumpless_element *element );
  * @param element The element to destroy.
  */
 void
-stumpless_destroy_element_only( struct stumpless_element *element );
+stumpless_destroy_element_only( const struct stumpless_element *element );
 
 /**
  * Returns the name of the given element. The resulting character buffer must

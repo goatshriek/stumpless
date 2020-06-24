@@ -110,6 +110,7 @@ EXPORTS
   stumpless_get_param_value              @98
   stumpless_get_param_value_by_index     @99
   stumpless_get_param_value_by_name      @100
+  stumpless_has_error                    @121
   stumpless_set_element_name             @101
   stumpless_set_entry_facility           @111
   stumpless_set_entry_msgid              @109

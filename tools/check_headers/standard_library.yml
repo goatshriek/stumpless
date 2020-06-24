@@ -5,6 +5,9 @@
   - "sys/socket.h"
   - "winsock2.h"
 "AF_UNIX": "sys/socket.h"
+"bool":
+  - "cstdbool"
+  - "stdbool.h"
 "BOOL": "windows.h"
 "clock": "time.h"
 "clock_t": "sys/types.h"

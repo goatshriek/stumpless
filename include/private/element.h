@@ -22,6 +22,6 @@
 #  include <stumpless/element.h>
 
 void
-unchecked_destroy_element( struct stumpless_element *element );
+unchecked_destroy_element( const struct stumpless_element *element );
 
 #endif /* __STUMPLESS_PRIVATE_ELEMENT_H */

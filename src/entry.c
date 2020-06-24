@@ -22,6 +22,7 @@
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
 #include <stumpless/param.h>
+#include <stumpless/error.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
 #include "private/entry.h"
@@ -153,27 +154,15 @@ stumpless_get_element_by_index( struct stumpless_entry *entry,
 struct stumpless_element *
 stumpless_get_element_by_name( struct stumpless_entry *entry,
                                const char *name ) {
-  size_t i;
+  size_t index;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+  index = stumpless_get_element_index( entry, name );
+
+  if( stumpless_has_error(  ) ) {
     return NULL;
   }
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return NULL;
-  }
-
-  for( i = 0; i < entry->element_count; i++ ) {
-    if( strcmp( entry->elements[i]->name, name ) == 0 ) {
-      clear_error(  );
-      return entry->elements[i];
-    }
-  }
-
-  raise_element_not_found(  );
-  return NULL;
+  return entry->elements[index];
 }
 
 size_t
@@ -183,12 +172,12 @@ stumpless_get_element_index( struct stumpless_entry *entry,
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
-    return NULL;
+    return 0;
   }
 
   if( !name ) {
     raise_argument_empty( "name is NULL" );
-    return NULL;
+    return 0;
   }
 
   for( i = 0; i < entry->element_count; i++ ) {

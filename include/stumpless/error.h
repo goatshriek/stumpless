@@ -23,6 +23,7 @@
 #ifndef __STUMPLESS_ERROR_H
 #  define __STUMPLESS_ERROR_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 #  ifdef __cplusplus
@@ -131,6 +132,15 @@ stumpless_get_error_id( const struct stumpless_error *err );
  */
 FILE *
 stumpless_get_error_stream( void );
+
+/**
+ * True if the last call to a stumpless function encountered an error. To get
+ * the error itself, use the stumpless_get_error function.
+ *
+ * @return True if the last stumpless call had an error, false if not.
+ */
+bool
+stumpless_has_error( void );
 
 /**
  * Prints information about the current error to the error stream.
