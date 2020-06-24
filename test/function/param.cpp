@@ -58,7 +58,7 @@ namespace {
     EXPECT_TRUE( stumpless_get_param_value( result ) !=
                  stumpless_get_param_value( basic_param ) );
 
-    stumpless_destroy_param( ( struct stumpless_param * ) result );
+    stumpless_destroy_param( result );
   }
 
   TEST_F( ParamTest, GetName ) {

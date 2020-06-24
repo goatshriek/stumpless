@@ -266,7 +266,7 @@ namespace {
     EXPECT_EQ( stumpless_get_param_count( result ),
                stumpless_get_param_count( element_with_params ) );
 
-    stumpless_destroy_element_and_contents( ( struct stumpless_element * ) result );
+    stumpless_destroy_element_and_contents( result );
   }
 
   TEST_F( ElementTest, CopyWithParams ) {
@@ -278,7 +278,7 @@ namespace {
     EXPECT_STREQ( stumpless_get_element_name( result ), basic_name );
     EXPECT_EQ( stumpless_get_param_count( result ), 0 );
 
-    stumpless_destroy_element_and_contents( ( struct stumpless_element * ) result );
+    stumpless_destroy_element_and_contents( result );
   }
 
   TEST_F( ElementTest, GetName ) {
