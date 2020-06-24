@@ -94,6 +94,7 @@ EXPORTS
   stumpless_get_element_by_name          @108
   stumpless_get_entry_facility           @112
   stumpless_get_entry_msgid              @110
+  stumpless_get_entry_prival             @115
   stumpless_get_entry_severity           @113
   stumpless_get_element_name             @90
   stumpless_get_param_by_index           @91
@@ -109,6 +110,8 @@ EXPORTS
   stumpless_set_element_name             @101
   stumpless_set_entry_facility           @111
   stumpless_set_entry_msgid              @109
+  stumpless_set_entry_priority           @116
+  stumpless_set_entry_prival             @117
   stumpless_set_entry_severity           @114
   stumpless_set_param                    @102
   stumpless_set_param_name               @103

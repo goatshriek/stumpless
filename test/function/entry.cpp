@@ -56,7 +56,7 @@ namespace {
         stumpless_destroy_entry_and_contents( basic_entry );
       }
   };
-  
+
   TEST_F( EntryTest, AddElement ) {
     struct stumpless_entry *entry;
     struct stumpless_element *element;
@@ -64,7 +64,7 @@ namespace {
     element = stumpless_new_element( "test-new-element" );
     ASSERT_TRUE( element != NULL );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-    
+
     entry = stumpless_add_element( basic_entry, element );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
     ASSERT_TRUE( entry != NULL );
@@ -100,10 +100,10 @@ namespace {
     element = stumpless_new_element( "test-memory-failure" );
     ASSERT_TRUE( element != NULL );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-   
+
     set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
     ASSERT_TRUE( set_realloc_result != NULL );
- 
+
     entry = stumpless_add_element( basic_entry, element );
     EXPECT_EQ( NULL, entry );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -133,7 +133,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
   }
-  
+
   TEST_F( EntryTest, AddNullElement ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
@@ -142,7 +142,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     ASSERT_TRUE( result == NULL );
   }
-  
+
   TEST_F( EntryTest, AddTwoElements ) {
     struct stumpless_entry *entry;
     struct stumpless_element *element1;
@@ -151,7 +151,7 @@ namespace {
     element1 = stumpless_new_element( "test-new-element-1" );
     ASSERT_TRUE( element1 != NULL );
     EXPECT_NO_ERROR;
-    
+
     entry = stumpless_add_element( basic_entry, element1 );
     EXPECT_NO_ERROR;
     ASSERT_TRUE( entry != NULL );
@@ -160,7 +160,7 @@ namespace {
     element2 = stumpless_new_element( "test-new-element-2" );
     ASSERT_TRUE( element2 != NULL );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-    
+
     entry = stumpless_add_element( basic_entry, element2 );
     EXPECT_NO_ERROR;
     ASSERT_TRUE( entry != NULL );
@@ -316,6 +316,38 @@ namespace {
     EXPECT_EQ( 0, strcmp( basic_entry->msgid, "-" ) );
   }
 
+  TEST_F( EntryTest, SetPriorityInvalidFacility ) {
+    int previous_prival;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    previous_prival = stumpless_get_entry_prival( basic_entry );
+
+    result = stumpless_set_entry_priority( basic_entry,
+                                           -66,
+                                           STUMPLESS_SEVERITY_EMERG );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
+    EXPECT_EQ( error->code, -66 );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_EQ( stumpless_get_entry_prival( basic_entry ), previous_prival );
+  }
+
+  TEST_F( EntryTest, SetPriorityInvalidSeverity ) {
+    int previous_prival;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    previous_prival = stumpless_get_entry_prival( basic_entry );
+
+    result = stumpless_set_entry_priority( basic_entry,
+                                           STUMPLESS_FACILITY_LOCAL5,
+                                           -66 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
+    EXPECT_EQ( error->code, -66 );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_EQ( stumpless_get_entry_prival( basic_entry ), previous_prival );
+  }
+
   TEST_F( EntryTest, SetPrival ) {
     int new_prival = STUMPLESS_FACILITY_LOCAL5 | STUMPLESS_SEVERITY_EMERG;
     const struct stumpless_entry *result;
@@ -339,7 +371,7 @@ namespace {
                STUMPLESS_SEVERITY_EMERG );
   }
 
-  TEST_F( EntryTest, SetFacilityInvalidSeverity ) {
+  TEST_F( EntryTest, SetSeverityInvalidSeverity ) {
     int previous_severity;
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
@@ -511,7 +543,7 @@ namespace {
                                        msgid,
                                        message );
     ASSERT_TRUE( first_entry != NULL );
-   
+
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_TRUE( set_malloc_result != NULL );
 
@@ -548,18 +580,18 @@ namespace {
                                       app_name,
                                       msgid,
                                       message );
-      
+
       EXPECT_NO_ERROR;
- 
+
       EXPECT_TRUE( entry[i] != NULL );
     }
 
     for( i = 0; i < 500; i++ ) {
       stumpless_destroy_entry( entry[i] );
     }
-    
+
   }
-  
+
   TEST( NewEntryTest, New ){
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
@@ -575,9 +607,9 @@ namespace {
                                  app_name,
                                  msgid,
                                  message );
-    
+
     EXPECT_NO_ERROR;
- 
+
     ASSERT_TRUE( entry != NULL );
     EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
     EXPECT_EQ( NULL, entry->elements );
@@ -679,7 +711,7 @@ namespace {
                                       msgid,
                                       message );
     ASSERT_TRUE( entries[0] != NULL );
-   
+
     set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
     ASSERT_TRUE( set_realloc_result != NULL );
 
@@ -688,7 +720,7 @@ namespace {
                                        STUMPLESS_SEVERITY_INFO,
                                        app_name,
                                        msgid,
-                                       message ); 
+                                       message );
 
       if( !entries[i] ) {
         EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -707,7 +739,7 @@ namespace {
       i--;
     }
   }
- 
+
   TEST( SetAppNameTest, NullEntry ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
@@ -764,6 +796,16 @@ namespace {
     EXPECT_EQ( 0, entry->message_length );
 
     stumpless_destroy_entry( entry );
+  }
+
+  TEST( SetPrivalTest, NullEntry ) {
+    int prival = STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_prival( NULL, prival );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( SetSeverityTest, NullEntry ) {
