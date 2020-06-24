@@ -31,6 +31,9 @@ namespace {
 
   class EntryTest : public::testing::Test {
     protected:
+      const char *basic_app_name = "basic-app-name";
+      const char *basic_msgid = "basic-msgid";
+      const char *basic_message = "basic message";
       struct stumpless_entry *basic_entry;
       const char *element_1_name = "basic-element";
       struct stumpless_element *element_1;
@@ -39,9 +42,9 @@ namespace {
       SetUp( void ) {
         basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                            STUMPLESS_SEVERITY_INFO,
-                                           "basic-app-name",
-                                           "basic-msgid",
-                                           "basic message" );
+                                           basic_app_name,
+                                           basic_msgid,
+                                           basic_message );
 
         element_1 = stumpless_new_element( element_1_name );
         stumpless_add_element( basic_entry, element_1 );
@@ -167,6 +170,15 @@ namespace {
     EXPECT_EQ( basic_entry, entry );
   }
 
+  TEST_F( EntryTest, GetAppName ) {
+    const char *result;
+
+    result = stumpless_get_entry_app_name( basic_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( result, basic_app_name );
+    EXPECT_NE( result, basic_app_name );
+  }
+
   TEST_F( EntryTest, GetElementByName ) {
     const struct stumpless_element *result;
 
@@ -191,6 +203,15 @@ namespace {
     result = stumpless_get_element_by_name( basic_entry, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
+  }
+
+  TEST_F( EntryTest, GetMsgid ) {
+    const char *result;
+
+    result = stumpless_get_entry_msgid( basic_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( result, basic_msgid );
+    EXPECT_NE( result, basic_msgid );
   }
 
   TEST_F( EntryTest, SetAppName ) {
@@ -446,6 +467,15 @@ namespace {
     EXPECT_TRUE( result == NULL );
   }
 
+  TEST( GetAppName, NullEntry ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_app_name( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
+  }
+
   TEST( GetFacilityTest, NullEntry ) {
     int result;
     const struct stumpless_error *error;
@@ -453,6 +483,15 @@ namespace {
     result = stumpless_get_entry_facility( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetMsgid, NullEntry ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_msgid( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( GetPrivalTest, NullEntry ) {

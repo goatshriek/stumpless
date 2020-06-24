@@ -171,7 +171,13 @@ stumpless_get_element_index( struct stumpless_entry *entry,
 
 const char *
 stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
-  return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->app_name;
 }
 
 int
@@ -187,7 +193,13 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 
 const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
-  return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->msgid;
 }
 
 int

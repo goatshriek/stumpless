@@ -92,6 +92,7 @@ EXPORTS
   stumpless_copy_entry                   @88
   stumpless_copy_param                   @89
   stumpless_get_element_by_name          @108
+  stumpless_get_entry_app_name           @118
   stumpless_get_entry_facility           @112
   stumpless_get_entry_msgid              @110
   stumpless_get_entry_prival             @115
