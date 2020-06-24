@@ -88,7 +88,7 @@ stumpless_copy_param( const struct stumpless_param *param );
  * @param param The param to destroy.
  */
 void
-stumpless_destroy_param( struct stumpless_param *param );
+stumpless_destroy_param( const struct stumpless_param *param );
 
 /**
  * Returns the name of the given param. The character buffer must not be
