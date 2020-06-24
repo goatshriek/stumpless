@@ -166,6 +166,21 @@ classes:
             - value: "equivalent-struct-pointer"
           return:
             type: "int"
+      - name: "GetPrival"
+        doc: |
+          Gets the prival of this Entry, as defined in RFC 5424.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The prival of this Entry."
+          type: "int"
+        wrapped-function:
+          name: "stumpless_get_entry_prival"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
       - name: "GetSeverity"
         doc: |
           Gets the Severity of this Entry.
@@ -213,6 +228,7 @@ classes:
           Available since release v1.6.0.
         params:
           - name: "facility"
+            doc: "The new Facility of this Entry."
             type:
               name: "Facility"
               includes: "Facility.hpp"
@@ -285,6 +301,56 @@ classes:
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
+      - name: "SetPriority"
+        doc: |
+          Sets the Facility and Severity of this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "facility"
+            doc: "The new Facility of this Entry."
+            type:
+              name: "Facility"
+              includes: "Facility.hpp"
+          - name: "severity"
+            doc: "The new Severity of this Entry."
+            type:
+              name: "Severity"
+              includes: "Severity.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_priority"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>( facility )"
+            - value: "static_cast<int>( severity )"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetPrival"
+        doc: |
+          Sets the prival of this Entry, as defined in RFC 5424.
+
+          Available since release v1.6.0.
+        params:
+          - name: "prival"
+            doc: "The new prival of this Entry."
+            type: "int"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_prival"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "prival"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
       - name: "SetSeverity"
         doc: |
           Sets the Severity of this Entry.
@@ -292,6 +358,7 @@ classes:
           Available since release v1.6.0.
         params:
           - name: "severity"
+            doc: "The new Severity of this Entry."
             type:
               name: "Severity"
               includes: "Severity.hpp"
