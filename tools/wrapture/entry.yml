@@ -149,6 +149,40 @@ classes:
           return:
             type: "struct stumpless_element *"
           use-template: "pointer-return-error-check"
+      - name: "GetFacility"
+        doc: |
+          Gets the Facility of this Entry.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The Facility of this Entry."
+          type:
+            name: "Facility"
+            includes: "Facility.hpp"
+        wrapped-function:
+          name: "stumpless_get_entry_facility"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
+      - name: "GetSeverity"
+        doc: |
+          Gets the Severity of this Entry.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The Severity of this Entry."
+          type:
+            name: "Severity"
+            includes: "Severity.hpp"
+        wrapped-function:
+          name: "stumpless_get_entry_severity"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
       - name: "SetAppName"
         doc: "Sets the app name for an entry."
         params:
@@ -169,6 +203,28 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "app_name"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetFacility"
+        doc: |
+          Sets the Facility of this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "facility"
+            type:
+              name: "Facility"
+              includes: "Facility.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_facility"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>( facility )"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
@@ -226,6 +282,28 @@ classes:
             - value: "message"
               type: "const char *"
             - value: "..."
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetSeverity"
+        doc: |
+          Sets the Severity of this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "severity"
+            type:
+              name: "Severity"
+              includes: "Severity.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_severity"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>( severity )"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
