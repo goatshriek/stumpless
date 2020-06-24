@@ -192,7 +192,13 @@ stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
 
 int
 stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
-  return -1;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return -1;
+  }
+
+  clear_error(  );
+  return entry->prival;
 }
 
 int
@@ -344,18 +350,33 @@ struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,
                               int facility,
                               int severity ) {
-  return NULL;
-}
-
-struct stumpless_entry *
-stumpless_set_entry_prival( struct stumpless_entry *entry,
-                            int prival ) {
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
+  if( facility_is_invalid( facility ) ) {
+    raise_invalid_facility( facility );
+    return NULL;
+  }
+
+  if( severity_is_invalid( severity ) ) {
+    raise_invalid_severity( severity );
+    return NULL;
+  }
+
+  entry->prival = get_prival( facility, severity );
+
+  clear_error(  );
   return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_prival( struct stumpless_entry *entry,
+                            int prival ) {
+  return stumpless_set_entry_priority( entry,
+                                       get_facility( prival ),
+                                       get_severity( prival ) );
 }
 
 struct stumpless_entry *

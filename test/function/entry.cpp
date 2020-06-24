@@ -316,6 +316,17 @@ namespace {
     EXPECT_EQ( 0, strcmp( basic_entry->msgid, "-" ) );
   }
 
+  TEST_F( EntryTest, SetPrival ) {
+    int new_prival = STUMPLESS_FACILITY_LOCAL5 | STUMPLESS_SEVERITY_EMERG;
+    const struct stumpless_entry *result;
+
+    result = stumpless_set_entry_prival( basic_entry, new_prival );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+
+    EXPECT_EQ( stumpless_get_entry_prival( basic_entry ), new_prival );
+  }
+
   TEST_F( EntryTest, SetSeverity ) {
     const struct stumpless_entry *result;
 
@@ -408,6 +419,15 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_get_entry_facility( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetPrivalTest, NullEntry ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_prival( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, -1 );
   }
