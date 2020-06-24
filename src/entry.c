@@ -450,6 +450,8 @@ stumpless_set_element( struct stumpless_entry *entry,
     return NULL;
   }
 
+  // todo catch duplicate element case
+
   entry->elements[index] = element;
 
   clear_error(  );
