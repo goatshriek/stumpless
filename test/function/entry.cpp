@@ -223,6 +223,32 @@ namespace {
     EXPECT_TRUE( result == NULL );
   }
 
+  TEST_F( EntryTest, GetElementIndex ) {
+    size_t result;
+
+    result = stumpless_get_element_index( basic_entry, element_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, 0 );
+  }
+
+  TEST_F( EntryTest, GetElementIndexNotFound ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_index( basic_entry, "not-found" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ELEMENT_NOT_FOUND );
+    EXPECT_EQ( result, 0 );
+  }
+
+  TEST_F( EntryTest, GetElementIndexNullName ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_index( basic_entry, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, 0 );
+  }
+
   TEST_F( EntryTest, GetMsgid ) {
     const char *result;
 
@@ -492,6 +518,15 @@ namespace {
     result = stumpless_get_element_by_name( NULL, "irrelevant" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
+  }
+
+  TEST( GetElementIndex, NullEntry ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_index( NULL, "irrelevant" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, 0 );
   }
 
   TEST( GetAppName, NullEntry ) {

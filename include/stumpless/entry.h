@@ -198,6 +198,20 @@ struct stumpless_element *
 stumpless_get_element_by_name( struct stumpless_entry *entry,
                                const char *name );
 
+/**
+ * Returns the index of the element with the given name in this entry, if it
+ * is found.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to search.
+ *
+ * @param name The name of the element to search for.
+ *
+ * @return The index of the element if it is found in the entry. If an error
+ * was encountered or the element does not exist in the entry, then 0 is
+ * returned and an error code is set appropriately.
+ */
 size_t
 stumpless_get_element_index( struct stumpless_entry *entry,
                              const char *name );

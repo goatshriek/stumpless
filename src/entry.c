@@ -179,6 +179,26 @@ stumpless_get_element_by_name( struct stumpless_entry *entry,
 size_t
 stumpless_get_element_index( struct stumpless_entry *entry,
                              const char *name ) {
+  size_t i;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return NULL;
+  }
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    if( strcmp( entry->elements[i]->name, name ) == 0 ) {
+      clear_error(  );
+      return i;
+    }
+  }
+
+  raise_element_not_found(  );
   return 0;
 }
 
