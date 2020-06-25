@@ -297,6 +297,33 @@ stumpless_new_entry( int facility,
 }
 
 struct stumpless_entry *
+stumpless_set_element( struct stumpless_entry *entry,
+                       size_t index,
+                       struct stumpless_element *element ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", index );
+    return NULL;
+  }
+
+  // todo catch duplicate element case
+
+  entry->elements[index] = element;
+
+  clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
   const char * effective_name;
@@ -426,33 +453,6 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
   }
 
   entry->prival = get_prival( get_facility( entry->prival ), severity );
-
-  clear_error(  );
-  return entry;
-}
-
-struct stumpless_entry *
-stumpless_set_element( struct stumpless_entry *entry,
-                       size_t index,
-                       struct stumpless_element *element ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
-
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
-
-  if( index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", index );
-    return NULL;
-  }
-
-  // todo catch duplicate element case
-
-  entry->elements[index] = element;
 
   clear_error(  );
   return entry;

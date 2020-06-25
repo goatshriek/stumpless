@@ -347,6 +347,37 @@ stumpless_new_entry( int facility,
                      ... );
 
 /**
+ * Puts the element at the given index in the given entry.
+ *
+ * The element previously at this position will be removed from the entry,
+ * but it is NOT destroyed by this call. Callers must clean up this element
+ * separately.
+ *
+ * An element cannot be set at an index position that does not already hold a
+ * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * is raised.
+ *
+ * Note that duplicate elements are not allowed in RFC 5424, and as such
+ * attempts to set an element of an entry which already contains another element
+ * with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the element on.
+ *
+ * @param index The index to set to param.
+ *
+ * @param element The element to set at the given index.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_element( struct stumpless_entry *entry,
+                       size_t index,
+                       struct stumpless_element *element );
+
+/**
  * Sets the app name for an entry.
  *
  * @param entry The entry for which the app name will be set.
@@ -475,37 +506,6 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
  */
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
-
-/**
- * Puts the element at the given index in the given entry.
- *
- * The element previously at this position will be removed from the entry,
- * but it is NOT destroyed by this call. Callers must clean up this element
- * separately.
- *
- * An element cannot be set at an index position that does not already hold a
- * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
- * is raised.
- *
- * Note that duplicate elements are not allowed in RFC 5424, and as such
- * attempts to set an element of an entry which already contains another element
- * with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error.
- *
- * @since Release v1.6.0
- *
- * @param entry The entry to set the element on.
- *
- * @param index The index to set to param.
- *
- * @param element The element to set at the given index.
- *
- * @return The modified entry, if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-struct stumpless_entry *
-stumpless_set_element( struct stumpless_entry *entry,
-                       size_t index,
-                       struct stumpless_element *element );
 
 struct stumpless_entry *
 stumpless_set_param_by_index_from_entry( struct stumpless_entry *entry,
