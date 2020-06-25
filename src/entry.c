@@ -17,6 +17,7 @@
  */
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/element.h>
@@ -39,7 +40,6 @@ static struct cache *entry_cache = NULL;
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
-  size_t i;
   struct stumpless_element **new_elements;
   size_t old_elements_size;
   size_t new_elements_size;
@@ -54,11 +54,9 @@ stumpless_add_element( struct stumpless_entry *entry,
     return NULL;
   }
 
-  for( i = 0; i < entry->element_count; i++ ) {
-    if( strcmp( entry->elements[0]->name, element->name ) == 0 ) {
-      raise_duplicate_element(  );
-      return NULL;
-    }
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
   }
 
   old_elements_size = sizeof( element ) * entry->element_count;
@@ -130,6 +128,25 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
   }
 
   unchecked_destroy_entry( entry );
+}
+
+bool
+stumpless_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name ) {
+  size_t i;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return false;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return false;
+  }
+
+  clear_error(  );
+  return unchecked_entry_has_element( entry, name );
 }
 
 struct stumpless_element *
@@ -297,6 +314,36 @@ stumpless_new_entry( int facility,
 }
 
 struct stumpless_entry *
+stumpless_set_element( struct stumpless_entry *entry,
+                       size_t index,
+                       struct stumpless_element *element ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return NULL;
+  }
+
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", index );
+    return NULL;
+  }
+
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
+  }
+
+  entry->elements[index] = element;
+
+  clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
   const char * effective_name;
@@ -426,33 +473,6 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
   }
 
   entry->prival = get_prival( get_facility( entry->prival ), severity );
-
-  clear_error(  );
-  return entry;
-}
-
-struct stumpless_entry *
-stumpless_set_element( struct stumpless_entry *entry,
-                       size_t index,
-                       struct stumpless_element *element ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
-
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
-
-  if( index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", index );
-    return NULL;
-  }
-
-  // todo catch duplicate element case
-
-  entry->elements[index] = element;
 
   clear_error(  );
   return entry;
@@ -690,4 +710,18 @@ unchecked_destroy_entry( const struct stumpless_entry *entry ) {
   free_mem( entry->message );
 
   cache_free( entry_cache, entry );
+}
+
+bool
+unchecked_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name ) {
+  size_t i;
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    if( strcmp( entry->elements[0]->name, name ) == 0 ) {
+      return true;
+    }
+  }
+
+  return false;
 }

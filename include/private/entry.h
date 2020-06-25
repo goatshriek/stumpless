@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
 #  define __STUMPLESS_PRIVATE_ENTRY_H
 
+#  include <stdbool.h>
 #  include <stumpless/entry.h>
 #  include "private/strbuilder.h"
 
@@ -52,5 +53,9 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry );
+
+bool
+unchecked_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */
