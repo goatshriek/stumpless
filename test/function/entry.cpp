@@ -327,6 +327,75 @@ namespace {
     EXPECT_EQ( 0, strcmp( basic_entry->app_name, "-" ) );
   }
 
+  TEST_F( EntryTest, SetElement ) {
+    struct stumpless_element *new_element;
+    const struct stumpless_element *previous_element;
+    const struct stumpless_entry *result;
+
+    new_element = stumpless_new_element( "new-element" );
+    ASSERT_TRUE( new_element != NULL );
+
+    previous_element = stumpless_get_element_by_index( basic_entry, 0 );
+
+    result = stumpless_set_element( basic_entry, 0, new_element );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+    EXPECT_NE( stumpless_get_element_by_index( basic_entry, 0 ),
+               previous_element );
+
+    stumpless_destroy_element( previous_element );
+  }
+
+  TEST_F( EntryTest, SetElementDuplicateName ) {
+    struct stumpless_element *new_element;
+    const struct stumpless_element *previous_element;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    new_element = stumpless_new_element( element_1_name );
+    ASSERT_TRUE( new_element != NULL );
+
+    previous_element = stumpless_get_element_by_index( basic_entry, 0 );
+
+    result = stumpless_set_element( basic_entry, 0, new_element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_DUPLICATE_ELEMENT );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_EQ( stumpless_get_element_by_index( basic_entry, 0 ),
+               previous_element );
+
+    stumpless_destroy_element( new_element );
+  }
+
+  TEST_F( EntryTest, SetElementIndexOutOfBounds ) {
+    struct stumpless_element *new_element;
+    const struct stumpless_element *previous_element;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    new_element = stumpless_new_element( "new-element" );
+    ASSERT_TRUE( new_element != NULL );
+
+    previous_element = stumpless_get_element_by_index( basic_entry, 0 );
+
+    result = stumpless_set_element( basic_entry, 200, new_element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+    EXPECT_EQ( error->code, 200 );
+    EXPECT_TRUE( result == NULL );
+    EXPECT_EQ( stumpless_get_element_by_index( basic_entry, 0 ),
+               previous_element );
+
+    stumpless_destroy_element( new_element );
+  }
+
+  TEST_F( EntryTest, SetElementNullElement ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_element( basic_entry, 0, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
+  }
+
   TEST_F( EntryTest, SetFacility ) {
     const struct stumpless_entry *result;
 
@@ -878,6 +947,21 @@ namespace {
     result = stumpless_set_entry_app_name( NULL, "new-app-name" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_TRUE( result == NULL );
+  }
+
+  TEST( SetElementTest, NullEntry ) {
+    struct stumpless_element *new_element;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    new_element = stumpless_new_element( "new-element" );
+    ASSERT_TRUE( new_element != NULL );
+
+    result = stumpless_set_element( NULL, 0, new_element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
+
+    stumpless_destroy_element( new_element );
   }
 
   TEST( SetFacilityTest, NullEntry ) {

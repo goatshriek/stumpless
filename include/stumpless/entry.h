@@ -176,6 +176,8 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry );
 /**
  * True if the given entry has an element with the given name, false otherwise.
  *
+ * @since Release v1.6.0.
+ *
  * @param entry The entry to search for the element.
  *
  * @param name The name of the element to check for.
@@ -369,8 +371,8 @@ stumpless_new_entry( int facility,
  * but it is NOT destroyed by this call. Callers must clean up this element
  * separately.
  *
- * An element cannot be set at an index position that does not already hold a
- * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * An element cannot be set at an index position that does not already hold
+ * one. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
  * is raised.
  *
  * Note that duplicate elements are not allowed in RFC 5424, and as such
@@ -381,7 +383,7 @@ stumpless_new_entry( int facility,
  *
  * @param entry The entry to set the element on.
  *
- * @param index The index to set to param.
+ * @param index The index to set to element.
  *
  * @param element The element to set at the given index.
  *
