@@ -30,6 +30,6 @@ if( error ) {                        \
   EXPECT_EQ( error->id, (code) );    \
 }
 
-#  define EXPECT_NO_ERROR EXPECT_TRUE( stumpless_get_error(  ) == NULL )
+#  define EXPECT_NO_ERROR EXPECT_FALSE( stumpless_has_error(  ) )
 
 #endif /* __STUMPLESS_TEST_HELPER_ASSERT_HPP */
