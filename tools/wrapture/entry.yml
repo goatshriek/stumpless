@@ -158,9 +158,6 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "index"
-          return:
-            type: "struct stumpless_element *"
-          use-template: "pointer-return-error-check"
       - name: "GetElement"
         doc: |
           Gets the Element with the given name from this Entry.
@@ -181,9 +178,6 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "name"
-          return:
-            type: "struct stumpless_element *"
-          use-template: "pointer-return-error-check"
       - name: "GetElementIndex"
         doc: |
           Gets the index of the Element with the given name from this Entry.

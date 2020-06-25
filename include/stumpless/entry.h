@@ -24,6 +24,7 @@
 #  define __STUMPLESS_ENTRY_H
 
 #  include <stdarg.h>
+#  include <stdbool.h>
 #  include <stddef.h>
 #  include <stumpless/element.h>
 #  include <stumpless/id.h>
@@ -171,6 +172,21 @@ stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry );
  */
 void
 stumpless_destroy_entry_only( const struct stumpless_entry *entry );
+
+/**
+ * True if the given entry has an element with the given name, false otherwise.
+ *
+ * @param entry The entry to search for the element.
+ *
+ * @param name The name of the element to check for.
+ *
+ * @return True if no error is encountered and the element is found. If the
+ * element is not found or an error is encountered, then false is returned and
+ * an error code is set appropriately.
+ */
+bool
+stumpless_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name );
 
 /**
  * Returns the element at the given index in this Entry.

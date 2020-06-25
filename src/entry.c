@@ -17,6 +17,7 @@
  */
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/element.h>
@@ -39,7 +40,6 @@ static struct cache *entry_cache = NULL;
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
-  size_t i;
   struct stumpless_element **new_elements;
   size_t old_elements_size;
   size_t new_elements_size;
@@ -54,11 +54,9 @@ stumpless_add_element( struct stumpless_entry *entry,
     return NULL;
   }
 
-  for( i = 0; i < entry->element_count; i++ ) {
-    if( strcmp( entry->elements[0]->name, element->name ) == 0 ) {
-      raise_duplicate_element(  );
-      return NULL;
-    }
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
   }
 
   old_elements_size = sizeof( element ) * entry->element_count;
@@ -130,6 +128,25 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
   }
 
   unchecked_destroy_entry( entry );
+}
+
+bool
+stumpless_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name ) {
+  size_t i;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return false;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return false;
+  }
+
+  clear_error(  );
+  return unchecked_entry_has_element( entry, name );
 }
 
 struct stumpless_element *
@@ -315,7 +332,10 @@ stumpless_set_element( struct stumpless_entry *entry,
     return NULL;
   }
 
-  // todo catch duplicate element case
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
+  }
 
   entry->elements[index] = element;
 
@@ -690,4 +710,18 @@ unchecked_destroy_entry( const struct stumpless_entry *entry ) {
   free_mem( entry->message );
 
   cache_free( entry_cache, entry );
+}
+
+bool
+unchecked_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name ) {
+  size_t i;
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    if( strcmp( entry->elements[0]->name, name ) == 0 ) {
+      return true;
+    }
+  }
+
+  return false;
 }
