@@ -258,6 +258,27 @@ namespace {
     EXPECT_NE( result, basic_msgid );
   }
 
+  TEST_F( EntryTest, HasElement ) {
+    bool result;
+
+    result = stumpless_entry_has_element( basic_entry, element_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result );
+
+    result = stumpless_entry_has_element( basic_entry, "not-found" );
+    EXPECT_NO_ERROR;
+    EXPECT_FALSE( result );
+  }
+
+  TEST_F( EntryTest, HasElementNullName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_entry_has_element( basic_entry, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_FALSE( result );
+  }
+
   TEST_F( EntryTest, SetAppName ) {
     struct stumpless_entry *entry;
     const char *previous_app_name;
@@ -572,6 +593,15 @@ namespace {
     result = stumpless_get_entry_severity( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, -1 );
+  }
+
+  TEST( HasElementTest, NullEntry ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_entry_has_element( NULL, "irrelevant" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_FALSE( result );
   }
 
   TEST( NewEntryTest, FormatSpecifiers ) {
