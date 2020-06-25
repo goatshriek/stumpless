@@ -29,26 +29,44 @@
 
 require 'yaml'
 
-header_alternates = {}
-known_terms = {}
+# script globals
+$header_alternates = {}
 
-default_manifests = %w[benchmark.yml standard_library.yml gtest.yml stumpless.yml stumplesscpp.yml]
-default_manifests.each do |filename|
+def load_manifest(filename, term_hash)
   file_path = File.join(__dir__, filename)
-  manifest_terms = YAML.load_file file_path
+  manifest_terms = YAML.load_file(file_path)
 
-  if manifest_terms.key? 'header-alternates'
-    header_alternates.merge! manifest_terms['header-alternates']
-    manifest_terms.delete 'header-alternates'
+  if manifest_terms.key?('header-alternates')
+    $header_alternates.merge!(manifest_terms['header-alternates'])
+    manifest_terms.delete('header-alternates')
   end
 
-  known_terms.merge! manifest_terms
+  term_hash.merge!(manifest_terms)
 end
+
+common_known_terms = {}
+%w[benchmark.yml standard_library.yml gtest.yml stumpless.yml
+   stumplesscpp.yml].each do |filename|
+  load_manifest(filename, common_known_terms)
+end
+
+c_only_terms = {}
+%w[c_standard_library.yml].each do |filename|
+  load_manifest(filename, c_only_terms)
+end
+
+all_known_terms = common_known_terms.merge(c_only_terms)
 
 return_code = 0
 
 ARGV.each do |source_glob|
   Dir.glob(source_glob) do |source_filename|
+    file_terms = if source_filename.match?(%r{\.(h|c)$})
+                   all_known_terms
+                 else
+                   common_known_terms
+                 end
+
     used_includes = []
     used_terms = []
     skipping = false
@@ -79,18 +97,18 @@ ARGV.each do |source_glob|
 
       line_terms = line.gsub(/"[^"]*"/, '*').split(/\W|(struct \w+)|(enum \w+)/)
       line_terms.each do |word|
-        used_terms << word if known_terms.key?(word)
+        used_terms << word if file_terms.key?(word)
       end
     end
 
     included_files.uniq!
 
     used_terms.uniq.each do |term|
-      possible_includes = [known_terms[term]]
+      possible_includes = [file_terms[term]]
       possible_includes.flatten!
 
       alternates = []
-      header_alternates.each_pair do |pattern, alternate|
+      $header_alternates.each_pair do |pattern, alternate|
         possible_includes.each do |include_file|
           alternates << alternate if include_file.match?(pattern)
         end
