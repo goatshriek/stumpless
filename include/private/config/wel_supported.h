@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018-2019 Joel E. Anderson
+* Copyright 2018-2020 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,6 +23,10 @@
 #  include <stumpless/param.h>
 #  include <stumpless/target.h>
 #  include <windows.h>
+
+struct stumpless_entry *
+copy_wel_fields( struct stumpless_entry *destination,
+                 const struct stumpless_entry *source );
 
 void
 destroy_insertion_params( struct stumpless_entry *entry );

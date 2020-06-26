@@ -87,13 +87,17 @@ struct stumpless_entry {
   WORD wel_category;
 /** The event id of this entry, for use with Windows Event Log calls. */
   DWORD wel_event_id;
-/** The number of insertion strings this entry has. */
+/**
+ * The number of insertion strings this entry has. This can be used as the
+ * length of both the wel_insertion_strings array and the wel_insertion_params
+ * array.
+ */
   WORD wel_insertion_count;
 /** An array of the insertion strings this entry will use. */
   LPCSTR *wel_insertion_strings;
 /**
  * An array of params of which the values can be used as insertion strings with
- * Windows Event Log calls..
+ * Windows Event Log calls.
  */
   struct stumpless_param **wel_insertion_params;
 #  endif

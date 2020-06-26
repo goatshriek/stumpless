@@ -133,13 +133,14 @@
 #  endif
 
 
-/* definition of config_sendto_wel_target */
+/* definition of wel functions */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include <stumpless/target/wel.h>
 #    include "private/config/wel_supported.h"
 #    include "private/target/wel.h"
 #    define config_close_wel_target stumpless_close_wel_target
 #    define config_send_entry_to_wel_target send_entry_to_wel_target
+#    define config_copy_wel_fields copy_wel_fields
 #    define config_destroy_insertion_params destroy_insertion_params
 #    define config_initialize_insertion_params initialize_insertion_params
 #    define config_set_entry_wel_type set_entry_wel_type
@@ -147,6 +148,7 @@
 #    include "private/target.h"
 #    define config_close_wel_target close_unsupported_target
 #    define config_send_entry_to_wel_target send_entry_to_unsupported_target
+#    define config_copy_wel_fields( DESTINATION, SOURCE ) ( DESTINATION )
 #    define config_destroy_insertion_params( ENTRY ) ( ( void ) 0 )
 #    define config_initialize_insertion_params( ENTRY ) ( ( void ) 0 )
 #    define config_set_entry_wel_type( ENTRY, SEVERITY ) ( ( void ) 0 )

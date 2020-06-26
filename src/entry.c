@@ -101,7 +101,7 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
   struct stumpless_entry *copy;
   size_t i;
   struct stumpless_element *element_copy;
-  const struct stumpless_entry *add_result;
+  const struct stumpless_entry *result;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -120,13 +120,16 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
       goto fail_elements;
     }
 
-    add_result = stumpless_add_element( copy, element_copy );
-    if( !add_result ) {
+    result = stumpless_add_element( copy, element_copy );
+    if( !result ) {
       goto fail_elements;
     }
   }
 
-  // todo add portion to deal with wel stuff
+  result = config_copy_wel_fields( copy, entry );
+  if( !result ) {
+    goto fail_elements;
+  }
 
   clear_error(  );
   return copy;
