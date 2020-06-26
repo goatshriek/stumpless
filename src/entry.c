@@ -98,6 +98,42 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
 
 struct stumpless_entry *
 stumpless_copy_entry( const struct stumpless_entry *entry ) {
+  struct stumpless_entry *copy;
+  size_t i;
+  struct stumpless_element *element_copy;
+  const struct stumpless_entry *add_result;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  copy = stumpless_new_entry( get_facility( entry->prival ),
+                              get_severity( entry->prival ),
+                              entry->app_name,
+                              entry->msgid,
+                              entry->message );
+
+  for( i = 0; i < entry->element_count; i++ ){
+    element_copy = stumpless_copy_element( entry->elements[i] );
+    if( !element_copy ) {
+      goto fail_elements;
+    }
+
+    add_result = stumpless_add_element( copy, element_copy );
+    if( !add_result ) {
+      goto fail_elements;
+    }
+  }
+
+  // todo add portion to deal with wel stuff
+
+  clear_error(  );
+  return copy;
+
+fail_elements:
+  stumpless_destroy_entry_and_contents( copy );
+fail:
   return NULL;
 }
 
