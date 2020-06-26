@@ -239,7 +239,9 @@ fail:
 struct stumpless_entry *
 copy_wel_fields( struct stumpless_entry *destination,
                  const struct stumpless_entry *source ) {
-
+  destination->wel_type = source->wel_type;
+  destination->wel_category = source->wel_category;
+  destination->wel_event_id = source->wel_event_id;
 
   return destination;
 }

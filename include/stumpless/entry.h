@@ -93,11 +93,18 @@ struct stumpless_entry {
  * array.
  */
   WORD wel_insertion_count;
-/** An array of the insertion strings this entry will use. */
+/**
+ * A buffer to hold insertion strings during the process of sending this entry
+ * to an Event log. This field should not be referred to for insertion string
+ * values as it is not updated until an event is logged: the actual values are
+ * stored as the values of params in wel_insertion_params.
+ */
   LPCSTR *wel_insertion_strings;
 /**
  * An array of params of which the values can be used as insertion strings with
- * Windows Event Log calls.
+ * Windows Event Log calls. Params in this list may not have name fields and
+ * should not be used with other functions for using params. They should only
+ * be interacted with using the Windows Event Log stumpless functions.
  */
   struct stumpless_param **wel_insertion_params;
 #  endif
