@@ -169,5 +169,6 @@ after_success:
   - VERSION=$(grep "#define STUMPLESS_VERSION \".*\"" include/stumpless/config.h | sed 's/.*\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\)\+.*/\1/')
   - cd ..
   - echo "sonar.projectVersion=$VERSION" >> sonar-project.properties
-  - bash <(curl -s https://codecov.io/bash)
+  - curl -L https://codecov.io/bash -o codecov.sh
+  - bash codecov.sh 2>&1 | grep -v "has arcs to entry block" | grep -v "has arcs from exit block"
   - sonar-scanner
