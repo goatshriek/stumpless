@@ -170,6 +170,14 @@ namespace {
     EXPECT_EQ( basic_entry, entry );
   }
 
+  TEST_F( EntryTest, Copy ) {
+    const struct stumpless_entry *result;
+
+    result = stumpless_copy_entry( basic_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_NE( result, basic_entry );
+  }
+
   TEST_F( EntryTest, GetAppName ) {
     const char *result;
 
@@ -557,6 +565,15 @@ namespace {
     ASSERT_TRUE( entry == NULL );
 
     stumpless_destroy_element( element );
+  }
+
+  TEST( CopyEntry, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_copy_entry( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( DestroyEntryOnlyTest, NullEntry ) {
