@@ -15,8 +15,7 @@ classes:
       - doc: "Creates an Entry with the given properties."
         wrapped-function:
           name: "vstumpless_new_entry"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/entry.h"
           params:
             - name: "facility"
               doc: |
@@ -55,6 +54,25 @@ classes:
                 Substitutions for any format specifiers provided in message. The
                 number of substitutions provided must exactly match the number
                 of specifiers given.
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+      - doc: "Creates an Entry from a stumpless_entry struct."
+        wrapped-function:
+          name: "stumpless_copy_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - name: "entry"
+              doc: |
+                The struct to create this Entry from. The struct will be copied
+                during this creation, and so any changes made to it after this
+                call will not be reflected in the resulting instance.
+
+                Available since release v1.6.0.
+              type:
+                name: "struct stumpless_entry *"
+                includes: "stumpless/entry.h"
+              value: "entry"
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
