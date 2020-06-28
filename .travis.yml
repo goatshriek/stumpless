@@ -137,9 +137,9 @@ matrix:
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
-  - if [ "${BUILD_ARGS}" =~ "ENABLE_CPP=ON" ]; then gem update --system; fi
-  - if [ "${BUILD_ARGS}" =~ "ENABLE_CPP=ON" ]; then gem install bundler -v 2.1.4; fi
-  - if [ "${BUILD_ARGS}" =~ "ENABLE_CPP=ON" ]; then bundle install; fi
+  - if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then gem update --system; fi
+  - if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then gem install bundler -v 2.1.4; fi
+  - if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then bundle install; fi
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
