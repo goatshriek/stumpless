@@ -35,8 +35,6 @@ stumpless_copy_param( const struct stumpless_param *param ) {
 
 void
 stumpless_destroy_param( const struct stumpless_param *param ) {
-  clear_error(  );
-
   if( !param ) {
     return;
   }
