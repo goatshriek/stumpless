@@ -88,6 +88,7 @@ EXPORTS
 ; added in v1.6.0
   stumpless_add_new_element              @107
   stumpless_add_new_param                @86
+  stumpless_add_new_param_to_entry       @124
   stumpless_copy_element                 @87
   stumpless_copy_entry                   @88
   stumpless_copy_param                   @89

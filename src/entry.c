@@ -93,6 +93,40 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
                                   const char *element_name,
                                   const char *param_name,
                                   const char *param_value ) {
+  struct stumpless_element *element;
+  bool element_created = false;
+  struct stumpless_element *add_param_result;
+  struct stumpless_entry *add_element_result;
+
+  element = stumpless_get_element_by_name( entry, element_name );
+  if( !element ) {
+    element = stumpless_new_element( element_name );
+    if( !element ) {
+      goto fail;
+    }
+
+    element_created = true;
+  }
+
+  add_param_result = stumpless_add_new_param( element, param_name, param_value );
+  if( !add_param_result ) {
+    goto fail_add;
+  }
+
+  if( element_created ) {
+    add_element_result = stumpless_add_element( entry, element );
+    if( !add_element_result ) {
+      goto fail_add;
+    }
+  }
+
+  return entry;
+
+fail_add:
+  if( element_created ) {
+    stumpless_destroy_element_and_contents( element );
+  }
+fail:
   return NULL;
 }
 

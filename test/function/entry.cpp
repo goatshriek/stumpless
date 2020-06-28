@@ -137,6 +137,100 @@ namespace {
     EXPECT_TRUE( result == NULL );
   }
 
+  TEST_F( EntryTest, AddNewParam ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_param *new_param;
+
+    result = stumpless_add_new_param_to_entry( basic_entry,
+                                               element_1_name,
+                                               "new-param-name",
+                                               "new-param-value" );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+
+    new_param = stumpless_get_param_by_name( element_1, "new-param-name" );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( new_param != NULL );
+  }
+
+  TEST_F( EntryTest, AddNewParamAndNewElement ) {
+    const struct stumpless_entry *result;
+    struct stumpless_element *new_element;
+    const struct stumpless_param *new_param;
+
+    result = stumpless_add_new_param_to_entry( basic_entry,
+                                               "new-element-name",
+                                               "new-param-name",
+                                               "new-param-value" );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+
+    new_element = stumpless_get_element_by_name( basic_entry, "new-element-name" );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( new_element != NULL );
+    EXPECT_EQ( stumpless_get_param_count( new_element ), 1 );
+
+    new_param = stumpless_get_param_by_name( new_element, "new-param-name" );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( new_param != NULL );
+  }
+
+  TEST_F( EntryTest, AddNewParamAndNewElementMallocFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_add_new_param_to_entry( basic_entry,
+                                               "new-element-name",
+                                               "new-param-name",
+                                               "new-param-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_TRUE( result == NULL );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, AddNewParamMallocFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_add_new_param_to_entry( basic_entry,
+                                               element_1_name,
+                                               "new-param-name",
+                                               "new-param-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_TRUE( result == NULL );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, AddNewParamNullElementName ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_add_new_param_to_entry( basic_entry,
+                                               NULL,
+                                               "new-param-name",
+                                               "new-param-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
+  }
+
   TEST_F( EntryTest, AddNullElement ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
@@ -623,6 +717,18 @@ namespace {
     ASSERT_TRUE( entry == NULL );
 
     stumpless_destroy_element( element );
+  }
+
+  TEST( AddNewParam, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_add_new_param_to_entry( NULL,
+                                               "new-element-name",
+                                               "new-param-name",
+                                               "new-param-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == NULL );
   }
 
   TEST( CopyEntry, NullEntry ) {

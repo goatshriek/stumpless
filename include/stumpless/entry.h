@@ -149,12 +149,44 @@ struct stumpless_entry *
 stumpless_add_new_element( struct stumpless_entry *entry,
                            const char *name );
 
+/**
+ * Creates a new param and adds it to the given element in the given entry. If
+ * an element with the given name does not exist in the given entry, then one
+ * will be created.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to add the new param to.
+ *
+ * @param element_name The name of the element to add the param to. If an
+ * element with this name is not found, it will be created.
+ *
+ * @param param_name The name of the new param to add.
+ *
+ * @param param_value The value of the new param to add.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
                                   const char *element_name,
                                   const char *param_name,
                                   const char *param_value );
 
+/**
+ * Creates a copy of an entry.
+ *
+ * Copies of entries are 'deep' in that the copy also copies each of the
+ * elements that the original entry has, if any. This means that even if the
+ * elements or params of the original entry are destroyed, the equivalent ones
+ * in this entry will still be valid.
+ *
+ * @param entry The entry to copy.
+ *
+ * @return A new entry that is a deep copy of the original. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_copy_entry( const struct stumpless_entry *entry );
 
