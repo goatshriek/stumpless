@@ -5,6 +5,7 @@
 # terms
 "accept_tcp_connection": "test/helper/server.hpp"
 "alloc_mem": "private/memory.h"
+"ASSERT_NOT_NULL": "test/helper/assert.hpp"
 "cache_alloc": "private/cache.h"
 "cache_destroy": "private/cache.h"
 "cache_free": "private/cache.h"
@@ -67,6 +68,8 @@
 "error_free_all": "private/error.h"
 "EXPECT_ERROR_ID_EQ": "test/helper/assert.hpp"
 "EXPECT_NO_ERROR": "test/helper/assert.hpp"
+"EXPECT_NOT_NULL": "test/helper/assert.hpp"
+"EXPECT_NULL": "test/helper/assert.hpp"
 "facility_is_invalid": "private/facility.h"
 "fallback_gethostname": "private/config/fallback.h"
 "fallback_getpagesize": "private/config/fallback.h"

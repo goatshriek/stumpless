@@ -23,6 +23,8 @@
 #  include <gtest/gtest.h>
 #  include <stumpless.h>
 
+#  define ASSERT_NOT_NULL( thing ) ASSERT_FALSE( (thing) == NULL )
+
 #  define EXPECT_ERROR_ID_EQ( code ) \
 error = stumpless_get_error(  );     \
 EXPECT_TRUE( error != NULL );        \
@@ -31,5 +33,9 @@ if( error ) {                        \
 }
 
 #  define EXPECT_NO_ERROR EXPECT_FALSE( stumpless_has_error(  ) )
+
+#  define EXPECT_NOT_NULL( thing ) EXPECT_FALSE( (thing) == NULL )
+
+#  define EXPECT_NULL( thing ) EXPECT_TRUE( (thing) == NULL )
 
 #endif /* __STUMPLESS_TEST_HELPER_ASSERT_HPP */
