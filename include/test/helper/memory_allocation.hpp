@@ -36,4 +36,9 @@
   }                                        \
 }
 
+#  define REALLOC_FAIL           \
+[]( void *, size_t ) -> void * { \
+  return NULL;                   \
+}
+
 #endif /* __STUMPLESS_TEST_HELPER_MEMORY_ALLOCATION_HPP */

@@ -151,7 +151,7 @@ namespace {
     param = stumpless_new_param( "test-param-name", "test-param-value" );
     ASSERT_TRUE( param != NULL );
 
-    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_TRUE( set_realloc_result != NULL );
 
     result = stumpless_add_param( basic_element, param );
@@ -244,7 +244,7 @@ namespace {
     // create the internal error struct
     stumpless_get_element_name( NULL );
 
-    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_TRUE( set_realloc_result != NULL );
 
     result = stumpless_copy_element( element_with_params );

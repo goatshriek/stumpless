@@ -136,6 +136,7 @@
 "raise_transport_protocol_unsupported": "private/error.h"
 "raise_wel_close_failure": "private/error.h"
 "raise_wel_open_failure": "private/error.h"
+"REALLOC_FAIL": "test/helper/memory_allocation.h"
 "realloc_mem": "private/memory.h"
 "recv_from_handle": "test/helper/server.hpp"
 "resize_insertion_params": "private/config/wel_supported.h"

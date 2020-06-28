@@ -104,7 +104,7 @@ namespace {
     ASSERT_TRUE( element != NULL );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
-    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_TRUE( set_realloc_result != NULL );
 
     entry = stumpless_add_element( basic_entry, element );
@@ -206,7 +206,7 @@ namespace {
     // create the internal error struct
     stumpless_get_element_name( NULL );
 
-    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_TRUE( set_realloc_result != NULL );
 
     result = stumpless_copy_entry( basic_entry );
@@ -968,7 +968,7 @@ namespace {
                                       message );
     ASSERT_TRUE( entries[0] != NULL );
 
-    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_TRUE( set_realloc_result != NULL );
 
     for( i = 1; i < 2000; i++ ) {
