@@ -152,7 +152,7 @@ stumpless_add_new_element( struct stumpless_entry *entry,
 /**
  * Creates a new param and adds it to the given element in the given entry. If
  * an element with the given name does not exist in the given entry, then one
- * will be created.
+ * will be created with the new param added to it.
  *
  * @since Release v1.6.0.
  *

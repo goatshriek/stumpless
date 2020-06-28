@@ -143,7 +143,7 @@ classes:
             doc: "The name of the new Element."
             type: "const char *"
         return:
-          doc: "The modified Entry, to support method chaining."
+          doc: "The modified Entry."
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_new_element"
@@ -151,6 +151,39 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "name"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "AddParam"
+        doc: |
+          Creates a new Param and adds it to the specified Element in this
+          Entry. If an Element with the given name does not exist in this Entry,
+          then one will be created with the new Param added to it.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: |
+               The name of the Element to add the Param to. This will be created
+               if it is not found.
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the new Param."
+            type: "const char *"
+          - name: "param_value"
+            doc: "The value of the new Param."
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_new_param_to_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+            - value: "param_value"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
