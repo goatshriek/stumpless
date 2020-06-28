@@ -178,6 +178,45 @@ namespace {
     EXPECT_NE( result, basic_entry );
   }
 
+  TEST_F( EntryTest, CopyMallocFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_copy_entry( basic_entry );
+    EXPECT_TRUE( result == NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, CopyReallocFailure ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    void * (*set_realloc_result)(void *, size_t);
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_realloc_result = stumpless_set_realloc( [](void *, size_t)->void *{ return NULL; } );
+    ASSERT_TRUE( set_realloc_result != NULL );
+
+    result = stumpless_copy_entry( basic_entry );
+    EXPECT_TRUE( result == NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_realloc( realloc );
+  }
+
   TEST_F( EntryTest, GetAppName ) {
     const char *result;
 

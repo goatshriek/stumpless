@@ -204,7 +204,7 @@ namespace {
     // create the internal error struct
     stumpless_get_element_name( NULL );
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_TRUE( set_malloc_result != NULL );
 
     result = stumpless_copy_element( basic_element );
