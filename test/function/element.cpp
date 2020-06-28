@@ -455,6 +455,27 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST_F( ElementTest, HasParam ) {
+    bool result;
+
+    result = stumpless_element_has_param( element_with_params, param_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result );
+
+    result = stumpless_element_has_param( element_with_params, "not-there" );
+    EXPECT_NO_ERROR;
+    EXPECT_FALSE( result );
+  }
+
+  TEST_F( ElementTest, HasParamNullName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_has_param( element_with_params, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_FALSE( result );
+  }
+
   TEST_F( ElementTest, SetNameMemoryFailure ) {
     void * (*set_malloc_result)(size_t);
     const char *new_name = "this-wont-work";
@@ -464,7 +485,7 @@ namespace {
     // create the internal error struct
     stumpless_get_element_name( NULL );
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_TRUE( set_malloc_result != NULL );
 
     result = stumpless_set_element_name( basic_element, new_name );
@@ -722,6 +743,15 @@ namespace {
     result = stumpless_get_param_name_count( NULL, "param-name" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, 0 );
+  }
+
+  TEST( HasParam, NullElement ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_has_param( NULL, "irrelevant" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_FALSE( result );
   }
 
   TEST( NewElementTest, MemoryFailure ) {

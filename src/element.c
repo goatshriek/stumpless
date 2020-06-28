@@ -140,6 +140,16 @@ stumpless_element_has_param( const struct stumpless_element *element,
                              const char *name ) {
   size_t i;
 
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
+    return false;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return false;
+  }
+
   for( i = 0; i < element->param_count; i++ ) {
     if( strcmp( element->params[i]->name, name ) == 0 ) {
       return true;
