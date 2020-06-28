@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/element.h>
@@ -132,6 +133,11 @@ stumpless_destroy_element_only( const struct stumpless_element *element ) {
   }
 
   unchecked_destroy_element( element );
+}
+
+bool
+stumpless_element_has_param( const struct stumpless_element *element ) {
+  return false;
 }
 
 const char *

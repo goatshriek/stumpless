@@ -23,6 +23,7 @@
 #ifndef __STUMPLESS_ELEMENT_H
 #  define __STUMPLESS_ELEMENT_H
 
+#  include <stdbool.h>
 #  include <stddef.h>
 #  include <stumpless/param.h>
 
@@ -150,6 +151,9 @@ stumpless_destroy_element_and_contents( const struct stumpless_element *element 
  */
 void
 stumpless_destroy_element_only( const struct stumpless_element *element );
+
+bool
+stumpless_element_has_param( const struct stumpless_element *element );
 
 /**
  * Returns the name of the given element. The resulting character buffer must
