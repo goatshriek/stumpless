@@ -739,7 +739,6 @@ namespace {
 
   TEST_F( EntryTest, SetParamElementIndexOutOfBounds ) {
     struct stumpless_param *new_param;
-    const struct stumpless_param *previous_param;
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
@@ -756,7 +755,6 @@ namespace {
 
   TEST_F( EntryTest, SetParamParamIndexOutOfBounds ) {
     struct stumpless_param *new_param;
-    const struct stumpless_param *previous_param;
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 

@@ -126,9 +126,10 @@ EXPORTS
   stumpless_set_entry_prival                    @123
   stumpless_set_entry_severity                  @124
   stumpless_set_param                           @125
-  stumpless_set_param_name                      @126
-  stumpless_set_param_value                     @127
-  stumpless_set_param_value_by_index            @128
-  stumpless_set_param_value_by_index_from_entry @129
-  stumpless_set_param_value_by_name             @130
-  stumpless_set_param_value_by_name_from_entry  @131
+  stumpless_set_param_by_index_from_entry       @126
+  stumpless_set_param_name                      @127
+  stumpless_set_param_value                     @128
+  stumpless_set_param_value_by_index            @129
+  stumpless_set_param_value_by_index_from_entry @130
+  stumpless_set_param_value_by_name             @131
+  stumpless_set_param_value_by_name_from_entry  @132
