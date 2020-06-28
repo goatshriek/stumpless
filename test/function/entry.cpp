@@ -210,9 +210,8 @@ namespace {
     ASSERT_TRUE( set_realloc_result != NULL );
 
     result = stumpless_copy_entry( basic_entry );
-    EXPECT_TRUE( result == NULL );
-
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_TRUE( result == NULL );
 
     stumpless_set_realloc( realloc );
   }
