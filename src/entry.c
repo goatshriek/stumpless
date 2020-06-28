@@ -113,6 +113,9 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
                               entry->app_name,
                               entry->msgid,
                               entry->message );
+  if( !copy ) {
+    goto fail;
+  }
 
   for( i = 0; i < entry->element_count; i++ ){
     element_copy = stumpless_copy_element( entry->elements[i] );
