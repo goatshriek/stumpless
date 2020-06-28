@@ -29,10 +29,10 @@ copy_wel_fields( struct stumpless_entry *destination,
                  const struct stumpless_entry *source );
 
 void
-destroy_insertion_params( struct stumpless_entry *entry );
+destroy_insertion_params( const struct stumpless_entry *entry );
 
 void
-destroy_insertion_string_param( struct stumpless_param *param );
+destroy_insertion_string_param( const struct stumpless_param *param );
 
 void
 initialize_insertion_params( struct stumpless_entry *entry );

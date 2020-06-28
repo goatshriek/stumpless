@@ -239,15 +239,54 @@ fail:
 struct stumpless_entry *
 copy_wel_fields( struct stumpless_entry *destination,
                  const struct stumpless_entry *source ) {
+  WORD i;
+  const struct stumpless_param *param;
+  const struct stumpless_entry *result;
+
   destination->wel_type = source->wel_type;
   destination->wel_category = source->wel_category;
   destination->wel_event_id = source->wel_event_id;
 
+  destination->wel_insertion_strings = alloc_mem( sizeof( LPCSTR ) * source->wel_insertion_count );
+  if( !destionation->wel_insertion_strings ) {
+    goto fail;
+  }
+
+  destination->wel_insertion_params = alloc_mem( sizeof( stumpless_param * ) * source->wel_insertion_count );
+  if( !destination->wel_insertion_params ) {
+    goto fail_params;
+  }
+
+  destination->wel_insertion_count = source->wel_insertion_count;
+  for( i = 0; i < source->wel_insertion_count; i++ ) {
+    desination->wel_insertion_params[i] = NULL;
+  }
+
+  for( i = 0; i < source->wel_insertion_count; i++ ) {
+    param = entry->wel_insertion_params[i];
+    if( param && !param->value ) {
+      result = set_wel_insertion_string( destination, i, param->value );
+      if( !result ) {
+        goto fail_set_string;
+      }
+
+    } else {
+      destination->wel_insertion_params[i] = param;
+    }
+  }
+
   return destination;
+
+fail_set_string:
+  destroy_insertion_params( destination );
+fail_params:
+  free_mem( destination->wel_insertion_strings );
+fail:
+  return NULL;
 }
 
 void
-destroy_insertion_params( struct stumpless_entry *entry ) {
+destroy_insertion_params( const struct stumpless_entry *entry ) {
   WORD i;
 
   for( i = 0; i < entry->wel_insertion_count; i++ ) {
@@ -258,7 +297,7 @@ destroy_insertion_params( struct stumpless_entry *entry ) {
 }
 
 void
-destroy_insertion_string_param( struct stumpless_param *param ) {
+destroy_insertion_string_param( const struct stumpless_param *param ) {
   if( param && !param->name ) {
     free_mem( param->value );
     free_mem( param );
