@@ -136,12 +136,12 @@ stumpless_destroy_element_only( const struct stumpless_element *element ) {
 }
 
 bool
-stumpless_element_has_param( const struct stumpless_element *element ) {
+stumpless_element_has_param( const struct stumpless_element *element,
+                             const char *name ) {
   size_t i;
 
   for( i = 0; i < element->param_count; i++ ) {
-    param = element->params[i];
-    if( strcmp( param->name, name ) == 0 ) {
+    if( strcmp( element->params[i]->name, name ) == 0 ) {
       return true;
     }
   }

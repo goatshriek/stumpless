@@ -153,7 +153,8 @@ void
 stumpless_destroy_element_only( const struct stumpless_element *element );
 
 bool
-stumpless_element_has_param( const struct stumpless_element *element );
+stumpless_element_has_param( const struct stumpless_element *element,
+                             const char *name );
 
 /**
  * Returns the name of the given element. The resulting character buffer must
