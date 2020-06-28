@@ -154,6 +154,24 @@ classes:
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
+      - name: "Copy"
+        doc: |
+          Creates a copy of this Entry.
+
+          Available since release v1.6.0.
+        return:
+          doc: "A new Entry based on this one."
+          type:
+            name: "Entry"
+            includes: "Entry.hpp"
+        wrapped-function:
+          name: "stumpless_copy_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
       - name: "GetElement"
         doc: |
           Gets the Element at the given index in this Entry.
