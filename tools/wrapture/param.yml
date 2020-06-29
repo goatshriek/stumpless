@@ -35,6 +35,23 @@ classes:
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
+      - doc: |
+          Creates a Param as a copy of another Param.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_param"
+          includes: "stumpless/param.h"
+          params:
+            - name: "param"
+              doc: "The Param to copy."
+              type:
+                name: "const Param &"
+                includes: "Param.hpp"
+              value: "param.equivalent"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       doc: "Destroys this parameter and releases all memory allocated for it."
       wrapped-function:
