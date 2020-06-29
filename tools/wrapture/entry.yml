@@ -469,7 +469,7 @@ classes:
               number of substitutions provided must exactly match the number of
               specifiers given.
         return:
-          doc: "The modified Entry, to support method chaining."
+          doc: "The modified Entry."
           type: "self-reference"
         wrapped-function:
           name: "vstumpless_set_entry_message"
@@ -480,6 +480,115 @@ classes:
             - value: "message"
               type: "const char *"
             - value: "..."
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetParam"
+        doc: |
+          Puts the Param in the Element at the given index of this Entry.
+
+          A Param cannot be set at an index position that does not already hold
+          one. If this is attempted, then an IndexOutOfBounds exception is
+          thrown.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to set the Param on."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: "The index of the Param to set."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param"
+            doc: "The new Param."
+            type:
+              name: "Param &"
+              includes: "Param.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_by_index_from_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+            - value: "param"
+              type: "struct stumpless_param *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetParamValue"
+        doc: |
+          Sets the value of the Param in the Element at the given index of this
+          Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to set the Param value on."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: "The index of the Param to set the value of."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "value"
+            doc: "The new value of the Param."
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value_by_index_from_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+            - value: "value"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetParamValue"
+        doc: |
+          Sets the value of the first Param with the given name in the Element
+          with the given name in this Entry.
+
+          If you need to set the value of a Param with this name other than the
+          first one, then you will need to loop through the Params using
+          GetParam with an index to find the necessary ones, and then use
+          SetParamValue with the correct index.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: "The name of the Element to set the Param value on."
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the Param to set the value of."
+            type: "const char *"
+          - name: "value"
+            doc: "The new value of the Param."
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value_by_name_from_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+            - value: "value"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
