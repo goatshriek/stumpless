@@ -398,9 +398,9 @@ stumpless_set_param( struct stumpless_element *element,
  *
  * @param element The element to set the param on.
  *
- * @param index The index to set to param.
+ * @param index The index of the param to set the value of.
  *
- * @param value The new value to set on the param..
+ * @param value The new value to set on the param.
  *
  * @return The modified element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.

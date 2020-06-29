@@ -568,23 +568,84 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
 
+/**
+ * Puts the param in the element at the given index of an entry.
+ *
+ * The parameter previously at this position will be removed from the element,
+ * but it is NOT destroyed by this call. Callers must clean up this param
+ * separately.
+ *
+ * A param cannot be set at an index position that does not already hold a
+ * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * is raised.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the param on.
+ *
+ * @param element_index The index of the element to have the param.
+ *
+ * @param param_index The index to put the param at in the chosen element.
+ *
+ * @param param The param to set.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_param_by_index_from_entry( struct stumpless_entry *entry,
                                          size_t element_index,
                                          size_t param_index,
                                          struct stumpless_param *param );
 
+/**
+ * Sets the value of the param in the element at the given index of an entry.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the param value on.
+ *
+ * @param element_index The index of the element having the param to modify.
+ *
+ * @param param_index The index of the param to set the value of.
+ *
+ * @param value The new value to set on the param.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_param_value_by_index_from_entry( struct stumpless_entry *entry,
                                                size_t element_index,
                                                size_t param_index,
-                                               const char *param_value );
+                                               const char *value );
 
+/**
+ * Sets the value of the first param in the named element an entry.
+ *
+ * If you need to set the value of a param with this name other than the first
+ * one, then you will need to loop through the params using
+ * stumpless_get_param_by_index_from_entry to find the params you want and then
+ * set the value using stumpless_set_param_value_by_index_from_entry.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the param value on.
+ *
+ * @param element_name The name of the element having the param to modify.
+ *
+ * @param param_name The name of the param to set the value of.
+ *
+ * @param value The new value to set on the param.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
                                               const char *element_name,
                                               const char *param_name,
-                                              const char *param_value );
+                                              const char *value );
 
 /**
  * Creates a new entry with the given parameters.

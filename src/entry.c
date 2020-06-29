@@ -613,7 +613,7 @@ struct stumpless_entry *
 stumpless_set_param_value_by_index_from_entry( struct stumpless_entry *entry,
                                                size_t element_index,
                                                size_t param_index,
-                                               const char *param_value ) {
+                                               const char *value ) {
   struct stumpless_element *element;
   const struct stumpless_element *set_result;
 
@@ -630,7 +630,7 @@ stumpless_set_param_value_by_index_from_entry( struct stumpless_entry *entry,
   element = entry->elements[element_index];
   set_result = stumpless_set_param_value_by_index( element,
                                                    param_index,
-                                                   param_value );
+                                                   value );
   if( !set_result ) {
     return NULL;
   }
@@ -642,7 +642,7 @@ struct stumpless_entry *
 stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
                                               const char *element_name,
                                               const char *param_name,
-                                              const char *param_value ) {
+                                              const char *value ) {
   struct stumpless_element *element;
   const struct stumpless_element *set_result;
 
@@ -653,7 +653,7 @@ stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
 
   set_result = stumpless_set_param_value_by_name( element,
                                                   param_name,
-                                                  param_value );
+                                                  value );
   if( !set_result ) {
     return NULL;
   }
