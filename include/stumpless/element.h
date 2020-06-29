@@ -152,6 +152,19 @@ stumpless_destroy_element_and_contents( const struct stumpless_element *element 
 void
 stumpless_destroy_element_only( const struct stumpless_element *element );
 
+/**
+ * True if the given element has a param with the given name, false otherwise.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The element to search for the param.
+ *
+ * @param name The name of the param to check for.
+ *
+ * @return True if no error is encountered and the param is found. If the
+ * param is not found or an error is encountered, then false is returned and
+ * an error code is set appropriately.
+ */
 bool
 stumpless_element_has_param( const struct stumpless_element *element,
                              const char *name );

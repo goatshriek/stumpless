@@ -305,6 +305,27 @@ classes:
             - value: "name"
           return:
             type: "const char *"
+      - name: "HasParam"
+        doc: |
+          True if this Element has a Param with the given name, false
+          otherwise.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to look for."
+            type: "const char *"
+        return:
+          doc: "True if the Param is found, false if not."
+          type: "bool"
+        wrapped-function:
+          name: "stumpless_element_has_param"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "bool"
       - name: "SetName"
         doc: |
           Set the name of this Element.
