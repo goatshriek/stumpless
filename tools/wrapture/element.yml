@@ -27,6 +27,26 @@ classes:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
       - doc: |
+          Creates an Element from a stumpless_element struct.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_element"
+          includes: "stumpless/element.h"
+          params:
+            - name: "element"
+              doc: |
+                The struct to create this Element from. The struct will be
+                copied during this creation, and so any changes made to it
+                after this call will not be reflected in the resulting instance.
+              type:
+                name: "struct stumpless_element *"
+                includes: "stumpless/element.h"
+              value: "element"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+      - doc: |
           Creates an Element as a copy of another Element.
 
           Available since release v1.6.0.
