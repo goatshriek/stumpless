@@ -57,7 +57,10 @@ classes:
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
-      - doc: "Creates an Entry from a stumpless_entry struct."
+      - doc: |
+          Creates an Entry from a stumpless_entry struct.
+
+          Available since release v1.6.0.
         wrapped-function:
           name: "stumpless_copy_entry"
           includes: "stumpless/entry.h"
@@ -67,12 +70,27 @@ classes:
                 The struct to create this Entry from. The struct will be copied
                 during this creation, and so any changes made to it after this
                 call will not be reflected in the resulting instance.
-
-                Available since release v1.6.0.
               type:
                 name: "struct stumpless_entry *"
                 includes: "stumpless/entry.h"
               value: "entry"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+      - doc: |
+          Creates an Entry as a copy of another Entry.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - name: "entry"
+              doc: "The Entry to copy."
+              type:
+                name: "const Entry &"
+                includes: "Entry.hpp"
+              value: "entry.equivalent"
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
@@ -184,24 +202,6 @@ classes:
             - value: "element_name"
             - value: "param_name"
             - value: "param_value"
-          return:
-            type: "struct stumpless_entry *"
-          use-template: "pointer-return-error-check"
-      - name: "Copy"
-        doc: |
-          Creates a copy of this Entry.
-
-          Available since release v1.6.0.
-        return:
-          doc: "A new Entry based on this one."
-          type:
-            name: "Entry"
-            includes: "Entry.hpp"
-        wrapped-function:
-          name: "stumpless_copy_entry"
-          includes: "stumpless/entry.h"
-          params:
-            - value: "equivalent-struct-pointer"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
