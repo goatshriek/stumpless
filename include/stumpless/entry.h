@@ -352,21 +352,93 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
 int
 stumpless_get_entry_severity( const struct stumpless_entry *entry );
 
+/**
+ * Gets the param from the element at the given index in an entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_index The index of the element to get the param from.
+ *
+ * @param param_index The index of the param to get from the element.
+ *
+ * @return The param at the given index if no error is encountered. If an error
+ * is encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_param *
 stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
                                          size_t element_index,
                                          size_t param_index );
 
+/**
+ * Gets the first param from the element with the given name in an entry.
+ *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances with
+ * the same name. If you need a reference to other params in the element with
+ * the same name, then you must loop through all params using
+ * stumpless_get_param_by_index_from_entry, checking each name.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_name The name of the element to get the param from.
+ *
+ * @param param_name The name of the param to get from the element.
+ *
+ * @return The first param with the given name if no error is encountered. If
+ * an error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
 struct stumpless_param *
 stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
                                         const char *element_name,
                                         const char *param_name );
 
+/**
+ * Gets the value of the param from the element at the given index in an entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_index The index of the element to get the param from.
+ *
+ * @param param_index The index of the param to get the value of.
+ *
+ * @return The value of the param at the given index if no error is encountered.
+ * If an error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
 const char *
 stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
                                                size_t element_index,
                                                size_t param_index );
 
+/**
+ * Gets the value of the first param from the element with the given name in an
+ * entry.
+ *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances with
+ * the same name. If you need the value of other params in the element with the
+ * same name, then you must loop through all params using
+ * stumpless_get_param_value_by_index_from_entry, checking each name.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_name The name of the element to get the param from.
+ *
+ * @param param_name The name of the param to get from the element.
+ *
+ * @return The value of the first param with the given name if no error is
+ * encountered. If an error is encountered, then NULL is returned and an error
+ * code is set appropriately.
+ */
 const char *
 stumpless_get_param_value_by_name_from_entry( struct stumpless_entry *entry,
                                               const char *element_name,
