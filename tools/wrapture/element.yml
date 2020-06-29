@@ -26,6 +26,23 @@ classes:
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
+      - doc: |
+          Creates an Element as a copy of another Element.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_element"
+          includes: "stumpless/element.h"
+          params:
+            - name: "element"
+              doc: "The Element to copy."
+              type:
+                name: "const Element &"
+                includes: "Element.hpp"
+              value: "element.equivalent"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       wrapped-function:
         name: "stumpless_destroy_element_and_contents"
