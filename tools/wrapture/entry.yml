@@ -288,6 +288,134 @@ classes:
             - value: "equivalent-struct-pointer"
           return:
             type: "int"
+      - name: "GetParam"
+        doc: |
+          Gets the Param from the Element at the given index from this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to get the Param from."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: "The index of the Param to get within the Element."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The Param at the given index."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_param_by_index_from_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+          return:
+            type: "struct stumpless_param *"
+          use-template: "pointer-return-error-check"
+      - name: "GetParam"
+        doc: |
+          Gets the first Param from the Element with the given name from this
+          Entry.
+
+          Note that an Element may contain as many instances of a Param as
+          desired according to RFC 5424, and therefore there may be other Param
+          instances with the same name. If you need a reference to other Params
+          with the same name in the Element, then you must loop through all
+          Params using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: "The name of the Element to get the Param from."
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the Param to get within the Element."
+            type: "const char *"
+        return:
+          doc: "The first Param with the given name."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_param_by_name_from_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+          return:
+            type: "struct stumpless_param *"
+          use-template: "pointer-return-error-check"
+      - name: "GetParamValue"
+        doc: |
+          Gets the value of the Param from the Element at the given index from
+          this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to get the Param from."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: |
+              The index of the Param to get the value of within the Element.
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The value of the Param at the given index."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_value_by_index_from_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
+      - name: "GetParamValue"
+        doc: |
+          Gets the value of the first Param from the Element with the given name
+          from this Entry.
+
+          Note that an Element may contain as many instances of a Param as
+          desired according to RFC 5424, and therefore there may be other Param
+          instances with the same name. If you need the value of other Params
+          with the same name in the Element, then you must loop through all
+          Params using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: "The name of the Element to get the Param from."
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the Param to get the value of within the Element."
+            type: "const char *"
+        return:
+          doc: "The value of the first Param with the given name."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_value_by_name_from_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
       - name: "GetPrival"
         doc: |
           Gets the prival of this Entry, as defined in RFC 5424.

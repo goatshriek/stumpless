@@ -376,8 +376,8 @@ stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
  *
  * Note that an element may contain as many instances of a param as desired
  * according to RFC 5424, and therefore there may be other param instances with
- * the same name. If you need a reference to other params in the element with
- * the same name, then you must loop through all params using
+ * the same name. If you need a reference to other params with the same name in
+ * the element, then you must loop through all params using
  * stumpless_get_param_by_index_from_entry, checking each name.
  *
  * @since Release v1.6.0.
@@ -423,9 +423,9 @@ stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
  *
  * Note that an element may contain as many instances of a param as desired
  * according to RFC 5424, and therefore there may be other param instances with
- * the same name. If you need the value of other params in the element with the
- * same name, then you must loop through all params using
- * stumpless_get_param_value_by_index_from_entry, checking each name.
+ * the same name. If you need the value of other params with the same name in
+ * the element, then you must loop through all params using
+ * stumpless_get_param_by_index_from_entry, checking each name.
  *
  * @since Release v1.6.0.
  *
