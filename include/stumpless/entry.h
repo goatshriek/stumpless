@@ -367,7 +367,7 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
  * is encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_param *
-stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_by_index_from_entry( const struct stumpless_entry *entry,
                                          size_t element_index,
                                          size_t param_index );
 
@@ -393,7 +393,7 @@ stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
  * appropriately.
  */
 struct stumpless_param *
-stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_by_name_from_entry( const struct stumpless_entry *entry,
                                         const char *element_name,
                                         const char *param_name );
 
@@ -413,7 +413,7 @@ stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
  * appropriately.
  */
 const char *
-stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_value_by_index_from_entry( const struct stumpless_entry *entry,
                                                size_t element_index,
                                                size_t param_index );
 
@@ -440,7 +440,7 @@ stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
  * code is set appropriately.
  */
 const char *
-stumpless_get_param_value_by_name_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_value_by_name_from_entry( const struct stumpless_entry *entry,
                                               const char *element_name,
                                               const char *param_name );
 

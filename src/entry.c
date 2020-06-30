@@ -338,7 +338,7 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
 }
 
 struct stumpless_param *
-stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_by_index_from_entry( const struct stumpless_entry *entry,
                                          size_t element_index,
                                          size_t param_index ) {
   const struct stumpless_element *element;
@@ -352,7 +352,7 @@ stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
 }
 
 struct stumpless_param *
-stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_by_name_from_entry( const struct stumpless_entry *entry,
                                         const char *element_name,
                                         const char *param_name ) {
   const struct stumpless_element *element;
@@ -366,10 +366,10 @@ stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
 }
 
 const char *
-stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_value_by_index_from_entry( const struct stumpless_entry *entry,
                                                size_t element_index,
                                                size_t param_index ) {
-  struct stumpless_element *element;
+  const struct stumpless_element *element;
 
   element = stumpless_get_element_by_index( entry, element_index );
   if( !element ) {
@@ -380,10 +380,10 @@ stumpless_get_param_value_by_index_from_entry( struct stumpless_entry *entry,
 }
 
 const char *
-stumpless_get_param_value_by_name_from_entry( struct stumpless_entry *entry,
+stumpless_get_param_value_by_name_from_entry( const struct stumpless_entry *entry,
                                               const char *element_name,
                                               const char *param_name ) {
-  struct stumpless_element *element;
+  const struct stumpless_element *element;
 
   element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
