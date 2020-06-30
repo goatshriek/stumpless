@@ -443,6 +443,10 @@ classes:
         doc: |
           Sets the value of the first Param with the given name in this element.
 
+          If a Param of the given name is not found in this Element, one is
+          created with the supplied name and value and added to the end of this
+          Element.
+
           If you need to set the value of a param with this name other than the
           first one, then you will need to loop through the params using
           GetParam with an index to find the params you want and then set the

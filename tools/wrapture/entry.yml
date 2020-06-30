@@ -690,6 +690,13 @@ classes:
           Sets the value of the first Param with the given name in the Element
           with the given name in this Entry.
 
+          If an Element with the given name is not found, one is created with
+          the supplied name and added to the end of this Entry.
+
+          If a Param of the given name is not found in the named Element, one is
+          created with the supplied name and value and added to the end of the
+          Element.
+
           If you need to set the value of a Param with this name other than the
           first one, then you will need to loop through the Params using
           GetParam with an index to find the necessary ones, and then use
