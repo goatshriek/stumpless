@@ -37,6 +37,8 @@ namespace {
       struct stumpless_entry *basic_entry;
       const char *element_1_name = "basic-element";
       struct stumpless_element *element_1;
+      const char *element_2_name = "basic-element-2";
+      struct stumpless_element *element_2;
       const char *param_1_1_name = "basic-param";
       const char *param_1_1_value = "basic-value";
       struct stumpless_param *param_1_1;
@@ -54,6 +56,9 @@ namespace {
 
         param_1_1 = stumpless_new_param( param_1_1_name, param_1_1_value );
         stumpless_add_param( element_1, param_1_1 );
+
+        element_2 = stumpless_new_element( element_2_name );
+        stumpless_add_element( basic_entry, element_2 );
 
         // cause a failure so that memory allocation tests will still have an
         // error that they can return
@@ -513,6 +518,10 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_TRUE( result );
 
+    result = stumpless_entry_has_element( basic_entry, element_2_name );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result );
+
     result = stumpless_entry_has_element( basic_entry, "not-found" );
     EXPECT_NO_ERROR;
     EXPECT_FALSE( result );
@@ -822,16 +831,107 @@ namespace {
     EXPECT_STREQ( stumpless_get_param_value( param_1_1 ), "new-value" );
   }
 
-  TEST_F( EntryTest, SetParamValueByNameParamNameNotFound ) {
+  TEST_F( EntryTest, SetParamValueByNameNullElementName ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
+
+    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
+                                                           NULL,
+                                                           param_1_1_name,
+                                                           "new-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+  }
+
+  TEST_F( EntryTest, SetParamValueByNameElementNameNotFound ) {
+    const struct stumpless_entry *result;
+    struct stumpless_element *new_element;
+
+    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
+                                                           "doesnt-exist",
+                                                           "new-name",
+                                                           "new-value" );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+    EXPECT_TRUE( stumpless_entry_has_element( basic_entry, "doesnt-exist" ) );
+
+    new_element = stumpless_get_element_by_name( basic_entry, "doesnt-exist" );
+    EXPECT_NOT_NULL( new_element );
+    EXPECT_TRUE( stumpless_element_has_param( new_element, "new-name" ) );
+    EXPECT_STREQ( stumpless_get_param_value_by_name( new_element, "new-name" ),
+                  "new-value" );
+  }
+
+  TEST_F( EntryTest, SetParamValueByNameElementNameNotFoundMallocFailure ) {
+    void *(*set_malloc_result)(size_t);
+    const struct stumpless_entry *result;
+    struct stumpless_element *new_element;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
+                                                           "doesnt-exist",
+                                                           "new-name",
+                                                           "new-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, SetParamValueByNameElementNameNotFoundMallocFailureOnParamValue ) {
+    void *(*set_malloc_result)(size_t);
+    const struct stumpless_entry *result;
+    struct stumpless_element *new_element;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 17 ) );
+    ASSERT_TRUE( set_malloc_result != NULL );
+
+    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
+                                                           "doesnt-exist",
+                                                           "new-name",
+                                                           "new-doomed-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, SetParamValueByNameElementNameNotFoundReallocFailure ) {
+    void * (*set_realloc_result)(void *, size_t);
+    const struct stumpless_entry *result;
+    struct stumpless_element *new_element;
+    const struct stumpless_error *error;
+
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
+    ASSERT_TRUE( set_realloc_result != NULL );
+
+    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
+                                                           "doesnt-exist",
+                                                           "new-name",
+                                                           "new-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_realloc_result = stumpless_set_realloc( realloc );
+    ASSERT_TRUE( set_realloc_result == realloc );
+  }
+
+  TEST_F( EntryTest, SetParamValueByNameParamNameNotFound ) {
+    const struct stumpless_entry *result;
 
     result = stumpless_set_param_value_by_name_from_entry( basic_entry,
                                                            element_1_name,
                                                            "doesnt-exist",
                                                            "new-value" );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_PARAM_NOT_FOUND );
-    EXPECT_NULL( result );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, basic_entry );
+    EXPECT_TRUE( stumpless_element_has_param( element_1, "doesnt-exist" ) );
   }
 
   TEST_F( EntryTest, SetPriorityInvalidFacility ) {

@@ -695,6 +695,12 @@ stumpless_set_param_value_by_index_from_entry( struct stumpless_entry *entry,
 /**
  * Sets the value of the first param in the named element an entry.
  *
+ * If an element with the given name is not found in the entry, one is created
+ * with the supplied name and added to the end of the entry.
+ *
+ * If a param of the given name is not found in the named element, one is
+ * created with the supplied name and value and added to the end of the element.
+ *
  * If you need to set the value of a param with this name other than the first
  * one, then you will need to loop through the params using
  * stumpless_get_param_by_index_from_entry to find the params you want and then

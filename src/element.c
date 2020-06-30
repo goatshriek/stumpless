@@ -194,8 +194,6 @@ stumpless_get_param_by_name( struct stumpless_element *element,
   size_t i;
   struct stumpless_param *param;
 
-  clear_error(  );
-
   if( !element ) {
     raise_argument_empty( "element is NULL" );
     return NULL;
@@ -209,6 +207,7 @@ stumpless_get_param_by_name( struct stumpless_element *element,
   for( i = 0; i < element->param_count; i++ ) {
     param = element->params[i];
     if( strcmp( param->name, name ) == 0 ) {
+      clear_error(  );
       return param;
     }
   }
@@ -440,15 +439,27 @@ struct stumpless_element *
 stumpless_set_param_value_by_name( struct stumpless_element *element,
                                    const char *name,
                                    const char *value ) {
+  size_t i;
   struct stumpless_param *param;
-  const struct stumpless_param *result;
+  const void *result;
 
-  param = stumpless_get_param_by_name( element, name );
-  if( !param ) {
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
     return NULL;
   }
 
-  result = stumpless_set_param_value( param, value );
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return NULL;
+  }
+
+  param = stumpless_get_param_by_name( element, name );
+  if( param ) {
+    result = stumpless_set_param_value( param, value );
+  } else {
+    result = stumpless_add_new_param( element, name, value );
+  }
+
   if( !result ) {
     return NULL;
   }

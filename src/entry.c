@@ -644,21 +644,49 @@ stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
                                               const char *param_name,
                                               const char *value ) {
   struct stumpless_element *element;
-  const struct stumpless_element *set_result;
+  bool element_created = false;
+  const void *result;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  if( !element_name ) {
+    raise_argument_empty( "element_name is NULL" );
+    goto fail;
+  }
 
   element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
-    return NULL;
+    element = stumpless_new_element( element_name );
+    if( !element ) {
+      goto fail;
+    }
+
+    element_created = true;
   }
 
-  set_result = stumpless_set_param_value_by_name( element,
-                                                  param_name,
-                                                  value );
-  if( !set_result ) {
-    return NULL;
+  result = stumpless_set_param_value_by_name( element, param_name, value );
+  if( !result ) {
+    goto fail_set;
+  }
+
+  if( element_created ) {
+    result = stumpless_add_element( entry, element );
+    if( !result ) {
+      goto fail_set;
+    }
   }
 
   return entry;
+
+fail_set:
+  if( element_created ) {
+    stumpless_destroy_element_and_contents( element );
+  }
+fail:
+  return NULL;
 }
 
 struct stumpless_entry *
@@ -877,7 +905,7 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
   size_t i;
 
   for( i = 0; i < entry->element_count; i++ ) {
-    if( strcmp( entry->elements[0]->name, name ) == 0 ) {
+    if( strcmp( entry->elements[i]->name, name ) == 0 ) {
       return true;
     }
   }
