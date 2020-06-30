@@ -247,7 +247,7 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
  * appropriately.
  */
 struct stumpless_element *
-stumpless_get_element_by_index( struct stumpless_entry *entry,
+stumpless_get_element_by_index( const struct stumpless_entry *entry,
                                 size_t index );
 
 /**
@@ -264,7 +264,7 @@ stumpless_get_element_by_index( struct stumpless_entry *entry,
  * appropriately.
  */
 struct stumpless_element *
-stumpless_get_element_by_name( struct stumpless_entry *entry,
+stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name );
 
 /**

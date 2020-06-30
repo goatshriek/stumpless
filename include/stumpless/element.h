@@ -276,7 +276,7 @@ stumpless_get_param_index( const struct stumpless_element *element,
  * appropriately.
  */
 const char *
-stumpless_get_param_name_by_index( struct stumpless_element *element,
+stumpless_get_param_name_by_index( const struct stumpless_element *element,
                                    size_t index );
 
 /**
@@ -314,7 +314,7 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
  * code is set appropriately.
  */
 const char *
-stumpless_get_param_value_by_index( struct stumpless_element *element,
+stumpless_get_param_value_by_index( const struct stumpless_element *element,
                                     size_t index );
 
 /**
@@ -336,7 +336,7 @@ stumpless_get_param_value_by_index( struct stumpless_element *element,
  * code is set appropriately.
  */
 const char *
-stumpless_get_param_value_by_name( struct stumpless_element *element,
+stumpless_get_param_value_by_name( const struct stumpless_element *element,
                                    const char *name );
 
 /**

@@ -226,7 +226,7 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
 }
 
 struct stumpless_element *
-stumpless_get_element_by_index( struct stumpless_entry *entry,
+stumpless_get_element_by_index( const struct stumpless_entry *entry,
                                 size_t index ) {
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -243,7 +243,7 @@ stumpless_get_element_by_index( struct stumpless_entry *entry,
 }
 
 struct stumpless_element *
-stumpless_get_element_by_name( struct stumpless_entry *entry,
+stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name ) {
   size_t index;
 
@@ -341,7 +341,7 @@ struct stumpless_param *
 stumpless_get_param_by_index_from_entry( struct stumpless_entry *entry,
                                          size_t element_index,
                                          size_t param_index ) {
-  struct stumpless_element *element;
+  const struct stumpless_element *element;
 
   element = stumpless_get_element_by_index( entry, element_index );
   if( !element ) {
@@ -355,7 +355,7 @@ struct stumpless_param *
 stumpless_get_param_by_name_from_entry( struct stumpless_entry *entry,
                                         const char *element_name,
                                         const char *param_name ) {
-  struct stumpless_element *element;
+  const struct stumpless_element *element;
 
   element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
