@@ -80,13 +80,10 @@ main( int argc, char **argv ) {
                                             "company-web-portal",
                                             "failed-login-attempt",
                                             "user failed to authenticate" );
-  stumpless_add_new_param_to_entry( failed_login_entry, "user", "name", "-" );
-  stumpless_add_new_param_to_entry( failed_login_entry, "user", "id", "-" );
-  stumpless_add_new_param_to_entry( failed_login_entry, "user", "locked", "-" );
-  stumpless_add_new_param_to_entry( failed_login_entry, "try", "number", "-" );
 
 
   // logging code to update the entry and log it for each event
+  // entries and params are automatically created if they are not present
   stumpless_set_param_value_by_name_from_entry( failed_login_entry,
                                                 "user", "name", "chester" );
   stumpless_set_param_value_by_name_from_entry( failed_login_entry,
