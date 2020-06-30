@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <stumpless.h>
 
@@ -23,6 +24,15 @@ int
 main( int argc, char **argv ) {
   struct stumpless_entry *basic_entry;
   struct stumpless_entry *formatted_entry;
+  struct stumpless_entry *failed_login_entry;
+  struct stumpless_target *stdout_target;
+
+
+  // creating a logging target for standard out to see the result of logging
+  // each of the example entries
+  stdout_target = stumpless_open_stdout_target( "entry-example",
+                                                STUMPLESS_OPTION_NONE,
+                                                STUMPLESS_FACILITY_USER );
 
 
   // creating a basic entry is done in a single call
@@ -36,6 +46,9 @@ main( int argc, char **argv ) {
                                      "example-msgid",
                                      // the message itself
                                      "my simple message" );
+  printf( "a basic entry:\n" );
+  stumpless_add_entry( stdout_target, basic_entry );
+  printf( "\n\n" );
 
 
   // the message can include format specifiers if needed
@@ -46,6 +59,9 @@ main( int argc, char **argv ) {
                                          "string %s and int %d",
                                          "substituted",
                                          334 );
+  printf( "an entry with format specifiers:\n" );
+  stumpless_add_entry( stdout_target, formatted_entry );
+  printf( "\n\n" );
 
 
   // if you only need to change the message, you can do so like this:
@@ -53,11 +69,45 @@ main( int argc, char **argv ) {
                                "string %s and int %d",
                                "new substitution",
                                42 );
+  printf( "the same entry after the message was reset:\n" );
+  stumpless_add_entry( stdout_target, formatted_entry );
+  printf( "\n\n" );
 
+
+  // creating a failed login attempt event with structured data
+  failed_login_entry = stumpless_new_entry( STUMPLESS_FACILITY_AUTH,
+                                            STUMPLESS_SEVERITY_NOTICE,
+                                            "company-web-portal",
+                                            "failed-login-attempt",
+                                            "user failed to authenticate" );
+  stumpless_add_new_param_to_entry( failed_login_entry, "user", "name", "-" );
+  stumpless_add_new_param_to_entry( failed_login_entry, "user", "id", "-" );
+  stumpless_add_new_param_to_entry( failed_login_entry, "user", "locked", "-" );
+  stumpless_add_new_param_to_entry( failed_login_entry, "try", "number", "-" );
+
+
+  // logging code to update the entry and log it for each event
+  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
+                                                "user", "name", "chester" );
+  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
+                                                "user", "id", "5763332" );
+  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
+                                                "user", "locked", "true" );
+  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
+                                                "try", "number", "3" );
+  printf( "an entry with structured data:\n" );
+  stumpless_add_entry( stdout_target, failed_login_entry );
+  printf( "\n\n" );
 
   // destroying all the resources before finishing up
+  stumpless_close_target( stdout_target );
   stumpless_destroy_entry( basic_entry );
   stumpless_destroy_entry( formatted_entry );
+
+  // we include the contents here to make sure the structured data is cleaned up
+  stumpless_destroy_entry_and_contents( failed_login_entry );
+
+  // final call required to completely free all resources (caches, etc.)
   stumpless_free_all(  );
 
 

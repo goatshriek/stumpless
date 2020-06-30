@@ -1,8 +1,8 @@
 # Entries
 
 Entries are at the heart of all logging performed by Stumpless. While they may
-not be explicitly created by calls such as the `stumpless` function, they are
-still involved behind the scenes. Understanding how to use them will lead to
+not be explicitly seen in calls like the `stumpless` function, they are
+still involved behind the scenes. Understanding how to use them leads to
 cleaner and more performant code.
 
 Entries are modeled directly after the hierarchy defined in
@@ -44,10 +44,10 @@ stumpless_set_entry_message( entry, "message by user %s", username );
 ```
 
 While this creates an entry with a message containing specific information, it's
-often more useful to put this information into the structured data of the entry
-so that it can be parsed and indexed efficiently by a remote collector such as
-Splunk. For the above example of a username, you could add this information to
-the entry like this:
+often more useful to separate fields into structured data so that it can be
+easily parsed and indexed efficiently by a remote collector such as Splunk. For
+the above example of a username, you could add this information to the entry
+like this:
 
 ```c
 element = stumpless_new_element( "user" );
@@ -57,6 +57,25 @@ stumpless_add_element( entry, element );
 ```
 
 This is certainly much more verbose than using the format string style, but it
-does result in a more structured message that can be cleanly parsed. In more
-complex messages with many pieces of information that should be included, this
-method may become easier to manage.
+does result in a more structured message that can be cleanly parsed. There are
+also a number of convenience functions that make this much more concise. Using
+these we can shorten the four calls above to a single function:
+
+```c
+stumpless_add_new_param_to_entry( entry, "user", "name", username );
+```
+
+In more complex messages with many pieces of information, using structured data
+may actually be a cleaner option. Consider the following snippet to log a failed
+login attempt event. The entry has been created once and saved, so that when the
+event is logged all that happens is the parameters are updated and the entry
+logged. This code could be packaged into a simple `log_failed_login` function
+to further encapsulate it wherever it is needed.
+
+```c
+stumpless_set_param_value_by_name_from_entry( entry, "user", "name", username );
+stumpless_set_param_value_by_name_from_entry( entry, "user", "id", user_id );
+stumpless_set_param_value_by_name_from_entry( entry, "user", "locked", locked );
+stumpless_set_param_value_by_name_from_entry( entry, "try", "number", try_num );
+stumpless_add_entry( aaa_target, entry );
+```
