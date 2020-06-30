@@ -100,36 +100,36 @@ EXPORTS
   stumpless_get_entry_app_name                  @97
   stumpless_get_entry_facility                  @98
   stumpless_get_entry_msgid                     @99
-  stumpless_get_entry_prival                    @100
-  stumpless_get_entry_severity                  @101
-  stumpless_get_element_name                    @102
-  stumpless_get_param_by_index                  @103
-  stumpless_get_param_by_index_from_entry       @104
-  stumpless_get_param_by_name                   @105
-  stumpless_get_param_by_name_from_entry        @106
-  stumpless_get_param_count                     @107
-  stumpless_get_param_index                     @108
-  stumpless_get_param_name                      @109
-  stumpless_get_param_name_by_index             @110
-  stumpless_get_param_name_count                @111
-  stumpless_get_param_value                     @112
-  stumpless_get_param_value_by_index            @113
-  stumpless_get_param_value_by_index_from_entry @114
-  stumpless_get_param_value_by_name             @115
-  stumpless_get_param_value_by_name_from_entry  @116
+  stumpless_get_entry_param_by_index            @100
+  stumpless_get_entry_param_by_name             @101
+  stumpless_get_entry_param_value_by_index      @102
+  stumpless_get_entry_param_value_by_name       @103
+  stumpless_get_entry_prival                    @104
+  stumpless_get_entry_severity                  @105
+  stumpless_get_element_name                    @106
+  stumpless_get_param_by_index                  @107
+  stumpless_get_param_by_name                   @108
+  stumpless_get_param_count                     @109
+  stumpless_get_param_index                     @110
+  stumpless_get_param_name                      @111
+  stumpless_get_param_name_by_index             @112
+  stumpless_get_param_name_count                @113
+  stumpless_get_param_value                     @114
+  stumpless_get_param_value_by_index            @115
+  stumpless_get_param_value_by_name             @116
   stumpless_has_error                           @117
   stumpless_set_element                         @118
   stumpless_set_element_name                    @119
   stumpless_set_entry_facility                  @120
   stumpless_set_entry_msgid                     @121
-  stumpless_set_entry_priority                  @122
-  stumpless_set_entry_prival                    @123
-  stumpless_set_entry_severity                  @124
-  stumpless_set_param                           @125
-  stumpless_set_param_by_index_from_entry       @126
-  stumpless_set_param_name                      @127
-  stumpless_set_param_value                     @128
-  stumpless_set_param_value_by_index            @129
-  stumpless_set_param_value_by_index_from_entry @130
-  stumpless_set_param_value_by_name             @131
-  stumpless_set_param_value_by_name_from_entry  @132
+  stumpless_set_entry_param_by_index            @122
+  stumpless_set_entry_param_value_by_index      @123
+  stumpless_set_entry_param_value_by_name       @124
+  stumpless_set_entry_priority                  @125
+  stumpless_set_entry_prival                    @126
+  stumpless_set_entry_severity                  @127
+  stumpless_set_param                           @128
+  stumpless_set_param_name                      @129
+  stumpless_set_param_value                     @130
+  stumpless_set_param_value_by_index            @131
+  stumpless_set_param_value_by_name             @132
