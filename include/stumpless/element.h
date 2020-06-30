@@ -196,7 +196,7 @@ stumpless_get_element_name( const struct stumpless_element *element );
  * then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_param *
-stumpless_get_param_by_index( struct stumpless_element *element,
+stumpless_get_param_by_index( const struct stumpless_element *element,
                               size_t index );
 
 /**
@@ -221,7 +221,7 @@ stumpless_get_param_by_index( struct stumpless_element *element,
  * appropriately.
  */
 struct stumpless_param *
-stumpless_get_param_by_name( struct stumpless_element *element,
+stumpless_get_param_by_name( const struct stumpless_element *element,
                              const char *name );
 
 /**

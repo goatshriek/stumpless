@@ -282,7 +282,7 @@ stumpless_get_element_by_name( struct stumpless_entry *entry,
  * returned and an error code is set appropriately.
  */
 size_t
-stumpless_get_element_index( struct stumpless_entry *entry,
+stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name );
 
 /**

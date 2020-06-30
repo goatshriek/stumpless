@@ -286,6 +286,20 @@ namespace {
     EXPECT_NO_ERROR;
   }
 
+  TEST_F( ElementTest, GetParamByNameAndModify ) {
+    struct stumpless_param *param;
+    struct stumpless_param *set_result;
+
+    param = stumpless_get_param_by_name( element_with_params, param_1_name );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( param, param_1 );
+
+    set_result = stumpless_set_param_name( param, "my-special-new-name" );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( set_result, param );
+    EXPECT_STREQ( stumpless_get_param_name( param ), "my-special-new-name" );
+  }
+
   TEST_F( ElementTest, GetParamByNameNotFound ) {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
