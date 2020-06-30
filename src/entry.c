@@ -95,8 +95,7 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
                                   const char *param_value ) {
   struct stumpless_element *element;
   bool element_created = false;
-  struct stumpless_element *add_param_result;
-  struct stumpless_entry *add_element_result;
+  const void *result;
 
   element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
@@ -108,14 +107,14 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
     element_created = true;
   }
 
-  add_param_result = stumpless_add_new_param( element, param_name, param_value );
-  if( !add_param_result ) {
+  result = stumpless_add_new_param( element, param_name, param_value );
+  if( !result ) {
     goto fail_add;
   }
 
   if( element_created ) {
-    add_element_result = stumpless_add_element( entry, element );
-    if( !add_element_result ) {
+    result = stumpless_add_element( entry, element );
+    if( !result ) {
       goto fail_add;
     }
   }
@@ -151,16 +150,19 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
     goto fail;
   }
 
+  copy->elements = alloc_mem( entry->element_count * sizeof( element_copy ) );
+  if( !copy->elements ) {
+    goto fail_elements;
+  }
+
   for( i = 0; i < entry->element_count; i++ ){
     element_copy = stumpless_copy_element( entry->elements[i] );
     if( !element_copy ) {
       goto fail_elements;
     }
 
-    result = stumpless_add_element( copy, element_copy );
-    if( !result ) {
-      goto fail_elements;
-    }
+    copy->elements[i] = element_copy;
+    copy->element_count++;
   }
 
   result = config_copy_wel_fields( copy, entry );
@@ -226,8 +228,6 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
 struct stumpless_element *
 stumpless_get_element_by_index( struct stumpless_entry *entry,
                                 size_t index ) {
-  clear_error(  );
-
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
@@ -257,7 +257,7 @@ stumpless_get_element_by_name( struct stumpless_entry *entry,
 }
 
 size_t
-stumpless_get_element_index( struct stumpless_entry *entry,
+stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name ) {
   size_t i;
 
