@@ -230,18 +230,18 @@ namespace {
     struct stumpless_param *param;
     const char *name = "test-param-name";
     const char *value = "test-param-value";
-  
+
     size_t name_length = strlen( name );
     size_t value_length = strlen( value );
- 
+
     param = stumpless_new_param( name, value );
     ASSERT_TRUE( param != NULL );
     EXPECT_NO_ERROR;
-   
+
     ASSERT_EQ( name_length, param->name_length );
     ASSERT_TRUE( param->name != NULL );
     ASSERT_EQ( 0, memcmp( param->name, name, name_length ) );
-    
+
     ASSERT_EQ( value_length, param->value_length );
     ASSERT_TRUE( param->value != NULL );
     ASSERT_EQ( 0, memcmp( param->value, value, value_length ) );
@@ -253,7 +253,7 @@ namespace {
     struct stumpless_param *param;
     struct stumpless_error *error;
 
-    param = stumpless_new_param( NULL, "test-value" );    
+    param = stumpless_new_param( NULL, "test-value" );
     EXPECT_TRUE( param == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -262,7 +262,7 @@ namespace {
     struct stumpless_param *param;
     struct stumpless_error *error;
 
-    param = stumpless_new_param( "test-name", NULL );    
+    param = stumpless_new_param( "test-name", NULL );
     EXPECT_TRUE( param == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
