@@ -259,7 +259,7 @@ stumpless_get_param_count( const struct stumpless_element *element );
  * error code is set appropriately.
  */
 size_t
-stumpless_get_param_index( struct stumpless_element *element,
+stumpless_get_param_index( const struct stumpless_element *element,
                            const char *name );
 
 /**

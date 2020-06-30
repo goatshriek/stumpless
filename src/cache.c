@@ -156,7 +156,7 @@ cache_free( struct cache *c, const void *entry ) {
 
       entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
       locks = current_page + ( entries_per_page * c->entry_size );
-      entry_index = ( ( char * ) entry - current_page ) / c->entry_size;
+      entry_index = ( ( const char * ) entry - current_page ) / c->entry_size;
       locks[entry_index] = 0;
 
       return;

@@ -229,12 +229,10 @@ stumpless_get_param_count( const struct stumpless_element *element ) {
 }
 
 size_t
-stumpless_get_param_index( struct stumpless_element *element,
+stumpless_get_param_index( const struct stumpless_element *element,
                            const char *name ) {
   size_t i;
-  struct stumpless_param *param;
-
-  clear_error(  );
+  const struct stumpless_param *param;
 
   if( !element ) {
     raise_argument_empty( "element is NULL" );
@@ -249,6 +247,7 @@ stumpless_get_param_index( struct stumpless_element *element,
   for( i = 0; i < element->param_count; i++ ) {
     param = element->params[i];
     if( strcmp( param->name, name ) == 0 ) {
+      clear_error(  );
       return i;
     }
   }
@@ -260,7 +259,7 @@ stumpless_get_param_index( struct stumpless_element *element,
 const char *
 stumpless_get_param_name_by_index( struct stumpless_element *element,
                                    size_t index ) {
-  struct stumpless_param *param;
+  const struct stumpless_param *param;
 
   param = stumpless_get_param_by_index( element, index );
   if( !param ) {
@@ -275,7 +274,7 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
                                 const char *name ) {
   size_t i;
   size_t count = 0;
-  struct stumpless_param *param;
+  const struct stumpless_param *param;
 
   if( !element ) {
     raise_argument_empty( "element is NULL" );
@@ -301,7 +300,7 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
 const char *
 stumpless_get_param_value_by_index( struct stumpless_element *element,
                                     size_t index ) {
-  struct stumpless_param *param;
+  const struct stumpless_param *param;
 
   param = stumpless_get_param_by_index( element, index );
   if( !param ) {
@@ -314,7 +313,7 @@ stumpless_get_param_value_by_index( struct stumpless_element *element,
 const char *
 stumpless_get_param_value_by_name( struct stumpless_element *element,
                                    const char *name ) {
-  struct stumpless_param *param;
+  const struct stumpless_param *param;
 
   param = stumpless_get_param_by_name( element, name );
   if( !param ) {
@@ -439,7 +438,6 @@ struct stumpless_element *
 stumpless_set_param_value_by_name( struct stumpless_element *element,
                                    const char *name,
                                    const char *value ) {
-  size_t i;
   struct stumpless_param *param;
   const void *result;
 

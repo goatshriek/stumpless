@@ -209,8 +209,6 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
 bool
 stumpless_entry_has_element( const struct stumpless_entry *entry,
                              const char *name ) {
-  size_t i;
-
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return false;
