@@ -44,7 +44,7 @@
 /* options normally defined in syslog.h */
 #  else
 
-/** Not currently supported. */
+/** Not currently supported. PIDs are always included in stumpless messages. */
 #    define STUMPLESS_OPTION_PID    1
 /** Not currently supported. */
 #    define STUMPLESS_OPTION_CONS   (1<<1)
