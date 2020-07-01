@@ -84,7 +84,7 @@ namespace {
     ASSERT_TRUE( set_malloc_result != NULL );
 
     result = stumpless_set_param_name( basic_param, new_name );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
@@ -99,7 +99,7 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_set_param_name( basic_param, NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -116,7 +116,7 @@ namespace {
     ASSERT_TRUE( set_malloc_result != NULL );
 
     result = stumpless_set_param_value( basic_param, new_value );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     EXPECT_STRNE( stumpless_get_param_value( basic_param ), new_value );
@@ -130,7 +130,7 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_set_param_value( basic_param, NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -141,7 +141,7 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_copy_param( NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -154,7 +154,7 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_get_param_name( NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -163,7 +163,7 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_get_param_value( NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -179,7 +179,7 @@ namespace {
     ASSERT_TRUE( set_malloc_result != NULL );
 
     param = stumpless_new_param( "name", "value" );
-    EXPECT_TRUE( param == NULL );
+    EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -199,7 +199,7 @@ namespace {
     ASSERT_TRUE( set_malloc_result != NULL );
 
     param = stumpless_new_param( param_name, "value" );
-    EXPECT_TRUE( param == NULL );
+    EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -219,7 +219,7 @@ namespace {
     ASSERT_TRUE( set_malloc_result != NULL );
 
     param = stumpless_new_param( "name", param_value );
-    EXPECT_TRUE( param == NULL );
+    EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -254,7 +254,7 @@ namespace {
     struct stumpless_error *error;
 
     param = stumpless_new_param( NULL, "test-value" );
-    EXPECT_TRUE( param == NULL );
+    EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -263,7 +263,7 @@ namespace {
     struct stumpless_error *error;
 
     param = stumpless_new_param( "test-name", NULL );
-    EXPECT_TRUE( param == NULL );
+    EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -291,7 +291,7 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_set_param_name( NULL, "new-name" );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -319,7 +319,7 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_set_param_value( NULL, "new-value" );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
