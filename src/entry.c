@@ -305,6 +305,17 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 }
 
 const char *
+stumpless_get_entry_message( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->message;
+}
+
+const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -313,11 +324,6 @@ stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
 
   clear_error(  );
   return entry->msgid;
-}
-
-const char *
-stumpless_get_entry_message( const struct stumpless_entry *entry ) {
-  return NULL;
 }
 
 struct stumpless_param *

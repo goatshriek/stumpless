@@ -420,6 +420,14 @@ namespace {
     EXPECT_EQ( result, 0 );
   }
 
+  TEST_F( EntryTest, GetMessage ) {
+    const char *result;
+
+    result = stumpless_get_entry_message( basic_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( result, basic_message );
+  }
+
   TEST_F( EntryTest, GetMsgid ) {
     const char *result;
 
@@ -1120,13 +1128,22 @@ namespace {
     EXPECT_EQ( result, -1 );
   }
 
+  TEST( GetMessage, NullEntry ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_message( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+  }
+
   TEST( GetMsgid, NullEntry ) {
     const char *result;
     const struct stumpless_error *error;
 
     result = stumpless_get_entry_msgid( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
   }
 
   TEST( GetPrivalTest, NullEntry ) {

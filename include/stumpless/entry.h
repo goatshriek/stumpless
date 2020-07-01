@@ -68,7 +68,7 @@ struct stumpless_entry {
   char *app_name;
 /** The length of the app name, without the NULL terminator. */
   size_t app_name_length;
-/** The message of this entry. */
+/** The message of this entry, as a NULL-terminated string. */
   char *message;
 /** The length of the message, without the NULL terminator. */
   size_t message_length;
