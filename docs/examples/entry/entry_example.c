@@ -48,7 +48,7 @@ main( int argc, char **argv ) {
                                      "my simple message" );
   printf( "a basic entry:\n" );
   stumpless_add_entry( stdout_target, basic_entry );
-  printf( "\n\n" );
+  printf( "\n" );
 
 
   // the message can include format specifiers if needed
@@ -61,7 +61,7 @@ main( int argc, char **argv ) {
                                          334 );
   printf( "an entry with format specifiers:\n" );
   stumpless_add_entry( stdout_target, formatted_entry );
-  printf( "\n\n" );
+  printf( "\n" );
 
 
   // if you only need to change the message, you can do so like this:
@@ -71,7 +71,7 @@ main( int argc, char **argv ) {
                                42 );
   printf( "the same entry after the message was reset:\n" );
   stumpless_add_entry( stdout_target, formatted_entry );
-  printf( "\n\n" );
+  printf( "\n" );
 
 
   // creating a failed login attempt event with structured data
@@ -95,8 +95,11 @@ main( int argc, char **argv ) {
   printf( "an entry with structured data:\n" );
   stumpless_add_entry( stdout_target, failed_login_entry );
 
-  // destroying all the resources before finishing up
+
+  // closing the target once we are finished
   stumpless_close_target( stdout_target );
+
+  // destroying all the resources before finishing up
   stumpless_destroy_entry( basic_entry );
   stumpless_destroy_entry( formatted_entry );
 
