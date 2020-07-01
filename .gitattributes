@@ -1,9 +1,7 @@
 *       text eol=lf
 
-test/*.cpp  linguist-documentation=true
-
 *.c     text eol=lf
-*.cpp   text eol=lf
+*.cpp   text eol=lf linguist-documentation
 *.cmake text eol=lf
 *.def   text eol=crlf
 *.h     text eol=lf linguist-language=C
