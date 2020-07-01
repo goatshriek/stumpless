@@ -21,12 +21,13 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <stumpless/entry.h>
+#include <stumpless/facility.h>
+#include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
 #include "private/config/wrapper.h"
-#include "private/entry.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
@@ -486,7 +487,7 @@ stumpless_open_network_target( const char *name,
   }
 
   if( facility_is_invalid( default_facility ) ) {
-    raise_invalid_facility(  );
+    raise_invalid_facility( default_facility );
     goto fail;
   }
 

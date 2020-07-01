@@ -23,6 +23,7 @@
 #ifndef __STUMPLESS_ERROR_H
 #  define __STUMPLESS_ERROR_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 #  ifdef __cplusplus
@@ -47,6 +48,18 @@ enum stumpless_error_id {
   STUMPLESS_ARGUMENT_EMPTY,
 /** A provided argument was too big, for example to fit into a buffer target. */
   STUMPLESS_ARGUMENT_TOO_BIG,
+/**
+ * A duplicate of an already existing element was detected in an entry.
+ *
+ * @since release v1.6.0.
+ */
+  STUMPLESS_DUPLICATE_ELEMENT,
+/**
+ * No element with the specified characteristics was found.
+ *
+ * @since release v1.6.0.
+ */
+  STUMPLESS_ELEMENT_NOT_FOUND,
 /** Could not open a file. */
   STUMPLESS_FILE_OPEN_FAILURE,
 /** Could not write to a file. */
@@ -57,10 +70,22 @@ enum stumpless_error_id {
   STUMPLESS_INVALID_FACILITY,
 /** A target or entry ID was not valid. */
   STUMPLESS_INVALID_ID,
+/**
+ * A provided severity code did not conform to RFC 5424.
+ *
+ * @since release v1.6.0.
+ */
+  STUMPLESS_INVALID_SEVERITY,
 /** A memory allocation or reallocation failed. */
   STUMPLESS_MEMORY_ALLOCATION_FAILURE,
 /** The given layer 3 protocol is not supported by this implementation. */
   STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED,
+/**
+ * No param with the specified characteristics was found.
+ *
+ * @since release v1.6.0.
+ */
+  STUMPLESS_PARAM_NOT_FOUND,
 /** Could not bind to a socket. */
   STUMPLESS_SOCKET_BIND_FAILURE,
 /** Could not connect to a socket. */
@@ -123,6 +148,17 @@ stumpless_get_error_id( const struct stumpless_error *err );
  */
 FILE *
 stumpless_get_error_stream( void );
+
+/**
+ * True if the last call to a stumpless function encountered an error. To get
+ * the error itself, use the stumpless_get_error function.
+ *
+ * @since release v1.6.0.
+ *
+ * @return True if the last stumpless call had an error, false if not.
+ */
+bool
+stumpless_has_error( void );
 
 /**
  * Prints information about the current error to the error stream.

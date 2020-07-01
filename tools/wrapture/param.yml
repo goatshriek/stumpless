@@ -6,12 +6,25 @@ classes:
     type: "pointer"
     equivalent-struct:
       name: "stumpless_param"
-      includes: "stumpless/entry.h"
+      includes: "stumpless/param.h"
     constructors:
+      - doc: |
+          Creates a new Param based on a stumpless_param struct. The struct is
+          copied to create this Param, and therefore can be freed later without
+          affecting the new instance.
+        wrapped-function:
+          name: "stumpless_copy_param"
+          includes: "stumpless/param.h"
+          params:
+            - name: "param"
+              doc: "The struct to base this param on."
+              type: "struct stumpless_param *"
+          return:
+            type: "equivalent-struct-pointer"
       - doc: "Creates a new Param with the given name and value."
         wrapped-function:
           name: "stumpless_new_param"
-          includes: "stumpless/entry.h"
+          includes: "stumpless/param.h"
           params:
             - name: "name"
               doc: "The name of the parameter."
@@ -22,10 +35,94 @@ classes:
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
+      - doc: |
+          Creates a Param as a copy of another Param.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_param"
+          includes: "stumpless/param.h"
+          params:
+            - name: "param"
+              doc: "The Param to copy."
+              type:
+                name: "const Param &"
+                includes: "Param.hpp"
+              value: "param.equivalent"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       doc: "Destroys this parameter and releases all memory allocated for it."
       wrapped-function:
         name: "stumpless_destroy_param"
-        includes: "stumpless/entry.h"
+        includes: "stumpless/param.h"
         params:
           - name: "equivalent-struct-pointer"
+    functions:
+      - name: "GetName"
+        doc: |
+          The name of this Param.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The name of this Param."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_name"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+      - name: "GetValue"
+        doc: |
+          The value of this Param.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The value of this Param."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_value"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+      - name: "SetName"
+        doc: |
+          Set the name of this Param.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The new name."
+            type: "const char *"
+        return:
+          doc: "The modified Param."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_name"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+      - name: "SetValue"
+        doc: |
+          Set the value of this Param.
+
+          Available since release v1.6.0.
+        params:
+          - name: "value"
+            doc: "The new value."
+            type: "const char *"
+        return:
+          doc: "The modified Param."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value"
+          includes: "stumpless/param.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "value"

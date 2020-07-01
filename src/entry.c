@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018-2020 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,13 +17,20 @@
  */
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
+#include <stumpless/element.h>
 #include <stumpless/entry.h>
+#include <stumpless/param.h>
+#include <stumpless/error.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/formatter.h"
+#include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/memory.h"
@@ -33,12 +40,9 @@ static struct cache *entry_cache = NULL;
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
-
   struct stumpless_element **new_elements;
   size_t old_elements_size;
   size_t new_elements_size;
-
-  clear_error(  );
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -49,7 +53,11 @@ stumpless_add_element( struct stumpless_entry *entry,
     raise_argument_empty( "element is NULL" );
     return NULL;
   }
-  // todo need to check for duplicates first
+
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
+  }
 
   old_elements_size = sizeof( element ) * entry->element_count;
   new_elements_size = old_elements_size + sizeof( element );
@@ -63,76 +71,337 @@ stumpless_add_element( struct stumpless_entry *entry,
   entry->elements = new_elements;
   entry->element_count++;
 
+  clear_error(  );
   return entry;
 }
 
+struct stumpless_entry *
+stumpless_add_new_element( struct stumpless_entry *entry,
+                           const char *name ) {
+  struct stumpless_element *new_element;
 
-struct stumpless_element *
-stumpless_add_param( struct stumpless_element *element,
-                     struct stumpless_param *param ) {
-
-  struct stumpless_param **new_params;
-  size_t old_params_size;
-  size_t new_params_size;
-
-  clear_error(  );
-
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
+  new_element = stumpless_new_element( name );
+  if( !new_element ) {
     return NULL;
   }
 
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    return NULL;
-  }
-
-  old_params_size = sizeof( param ) * element->param_count;
-  new_params_size = old_params_size + sizeof( param );
-
-  new_params = realloc_mem( element->params, new_params_size );
-  if( !new_params ) {
-    return NULL;
-  }
-
-  new_params[element->param_count] = param;
-  element->param_count++;
-  element->params = new_params;
-
-  return element;
+  return stumpless_add_element( entry, new_element );
 }
 
-struct stumpless_element *
-stumpless_new_element( const char *name ) {
+struct stumpless_entry *
+stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
+                                  const char *element_name,
+                                  const char *param_name,
+                                  const char *param_value ) {
   struct stumpless_element *element;
+  bool element_created = false;
+  const void *result;
+
+  element = stumpless_get_element_by_name( entry, element_name );
+  if( !element ) {
+    element = stumpless_new_element( element_name );
+    if( !element ) {
+      goto fail;
+    }
+
+    element_created = true;
+  }
+
+  result = stumpless_add_new_param( element, param_name, param_value );
+  if( !result ) {
+    goto fail_add;
+  }
+
+  if( element_created ) {
+    result = stumpless_add_element( entry, element );
+    if( !result ) {
+      goto fail_add;
+    }
+  }
+
+  return entry;
+
+fail_add:
+  if( element_created ) {
+    stumpless_destroy_element_and_contents( element );
+  }
+fail:
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_copy_entry( const struct stumpless_entry *entry ) {
+  struct stumpless_entry *copy;
+  size_t i;
+  struct stumpless_element *element_copy;
+  const struct stumpless_entry *result;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  copy = stumpless_new_entry( get_facility( entry->prival ),
+                              get_severity( entry->prival ),
+                              entry->app_name,
+                              entry->msgid,
+                              entry->message );
+  if( !copy ) {
+    goto fail;
+  }
+
+  copy->elements = alloc_mem( entry->element_count * sizeof( element_copy ) );
+  if( !copy->elements ) {
+    goto fail_elements;
+  }
+
+  for( i = 0; i < entry->element_count; i++ ){
+    element_copy = stumpless_copy_element( entry->elements[i] );
+    if( !element_copy ) {
+      goto fail_elements;
+    }
+
+    copy->elements[i] = element_copy;
+    copy->element_count++;
+  }
+
+  result = config_copy_wel_fields( copy, entry );
+  if( !result ) {
+    goto fail_elements;
+  }
 
   clear_error(  );
+  return copy;
+
+fail_elements:
+  stumpless_destroy_entry_and_contents( copy );
+fail:
+  return NULL;
+}
+
+void
+stumpless_destroy_entry( const struct stumpless_entry *entry ) {
+  stumpless_destroy_entry_and_contents( entry );
+}
+
+void
+stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry ) {
+  size_t i;
+
+  if( !entry ) {
+    return;
+  }
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    stumpless_destroy_element( entry->elements[i] );
+  }
+
+  unchecked_destroy_entry( entry );
+}
+
+void
+stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    return;
+  }
+
+  unchecked_destroy_entry( entry );
+}
+
+bool
+stumpless_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return false;
+  }
 
   if( !name ) {
     raise_argument_empty( "name is NULL" );
-    goto fail;
+    return false;
   }
 
-  element = alloc_mem( sizeof( *element ) );
+  clear_error(  );
+  return unchecked_entry_has_element( entry, name );
+}
+
+struct stumpless_element *
+stumpless_get_element_by_index( const struct stumpless_entry *entry,
+                                size_t index ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", index );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->elements[index];
+}
+
+struct stumpless_element *
+stumpless_get_element_by_name( const struct stumpless_entry *entry,
+                               const char *name ) {
+  size_t index;
+
+  index = stumpless_get_element_index( entry, name );
+
+  if( stumpless_has_error(  ) ) {
+    return NULL;
+  }
+
+  return entry->elements[index];
+}
+
+size_t
+stumpless_get_element_index( const struct stumpless_entry *entry,
+                             const char *name ) {
+  size_t i;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return 0;
+  }
+
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return 0;
+  }
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    if( strcmp( entry->elements[i]->name, name ) == 0 ) {
+      clear_error(  );
+      return i;
+    }
+  }
+
+  raise_element_not_found(  );
+  return 0;
+}
+
+const char *
+stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->app_name;
+}
+
+int
+stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return -1;
+  }
+
+  clear_error(  );
+  return get_facility( entry->prival );
+}
+
+const char *
+stumpless_get_entry_message( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->message;
+}
+
+const char *
+stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  clear_error(  );
+  return entry->msgid;
+}
+
+struct stumpless_param *
+stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
+                                    size_t element_index,
+                                    size_t param_index ) {
+  const struct stumpless_element *element;
+
+  element = stumpless_get_element_by_index( entry, element_index );
   if( !element ) {
-    goto fail;
+    return NULL;
   }
 
-  element->name = cstring_to_sized_string( name, &( element->name_length ) );
-  if( !element->name ) {
-    goto fail_name;
+  return stumpless_get_param_by_index( element, param_index );
+}
+
+struct stumpless_param *
+stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
+                                   const char *element_name,
+                                   const char *param_name ) {
+  const struct stumpless_element *element;
+
+  element = stumpless_get_element_by_name( entry, element_name );
+  if( !element ) {
+    return NULL;
   }
 
-  element->params = NULL;
-  element->param_count = 0;
+  return stumpless_get_param_by_name( element, param_name );
+}
 
-  return element;
+const char *
+stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
+                                          size_t element_index,
+                                          size_t param_index ) {
+  const struct stumpless_element *element;
 
-fail_name:
-  free_mem( element );
+  element = stumpless_get_element_by_index( entry, element_index );
+  if( !element ) {
+    return NULL;
+  }
 
-fail:
-  return NULL;
+  return stumpless_get_param_value_by_index( element, param_index );
+}
+
+const char *
+stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
+                                         const char *element_name,
+                                         const char *param_name ) {
+  const struct stumpless_element *element;
+
+  element = stumpless_get_element_by_name( entry, element_name );
+  if( !element ) {
+    return NULL;
+  }
+
+  return stumpless_get_param_value_by_name( element, param_name );
+}
+
+int
+stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return -1;
+  }
+
+  clear_error(  );
+  return entry->prival;
+}
+
+int
+stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return -1;
+  }
+
+  clear_error(  );
+  return get_severity( entry->prival );
 }
 
 struct stumpless_entry *
@@ -157,145 +426,104 @@ stumpless_new_entry( int facility,
   return entry;
 }
 
-struct stumpless_param *
-stumpless_new_param( const char *name, const char *value ) {
-  struct stumpless_param *param;
-
-  clear_error(  );
-
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
+struct stumpless_entry *
+stumpless_set_element( struct stumpless_entry *entry,
+                       size_t index,
+                       struct stumpless_element *element ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
   }
-
-  if( !value ) {
-    raise_argument_empty( "value is NULL" );
-    goto fail;
-  }
-
-  param = alloc_mem( sizeof( *param ) );
-  if( !param ) {
-    goto fail;
-  }
-
-  param->name = cstring_to_sized_string( name, &( param->name_length ) );
-  if( !param->name ) {
-    goto fail_name;
-  }
-
-  param->value = cstring_to_sized_string( value, &( param->value_length ) );
-  if( !param->value ) {
-    goto fail_value;
-  }
-
-  return param;
-
-fail_value:
-  free_mem( param->name );
-
-fail_name:
-  free_mem( param );
-
-fail:
-  return NULL;
-}
-
-void
-stumpless_destroy_element( struct stumpless_element *element ) {
-  stumpless_destroy_element_and_contents( element );
-}
-
-void
-stumpless_destroy_element_and_contents( struct stumpless_element *element ) {
-  size_t i;
-
-  clear_error(  );
 
   if( !element ) {
-    return;
+    raise_argument_empty( "element is NULL" );
+    return NULL;
   }
 
-  for( i = 0; i < element->param_count; i++ ) {
-    stumpless_destroy_param( element->params[i] );
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", index );
+    return NULL;
   }
 
-  unchecked_destroy_element( element );
-}
-
-void
-stumpless_destroy_element_only( struct stumpless_element *element ) {
-  if( !element ) {
-    return;
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
   }
 
-  unchecked_destroy_element( element );
-}
-
-void
-stumpless_destroy_entry( struct stumpless_entry *entry ) {
-  stumpless_destroy_entry_and_contents( entry );
-}
-
-void
-stumpless_destroy_entry_and_contents( struct stumpless_entry *entry ) {
-  size_t i;
+  entry->elements[index] = element;
 
   clear_error(  );
-
-  if( !entry ) {
-    return;
-  }
-
-  for( i = 0; i < entry->element_count; i++ ) {
-    stumpless_destroy_element( entry->elements[i] );
-  }
-
-  unchecked_destroy_entry( entry );
-}
-
-void
-stumpless_destroy_entry_only( struct stumpless_entry *entry ) {
-  clear_error(  );
-
-  if( !entry ) {
-    return;
-  }
-
-  unchecked_destroy_entry( entry );
-}
-
-void
-stumpless_destroy_param( struct stumpless_param *param ) {
-  clear_error(  );
-
-  if( !param ) {
-    return;
-  }
-
-  free_mem( param->name );
-  free_mem( param->value );
-  free_mem( param );
+  return entry;
 }
 
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
-  size_t *app_name_length;
-
-  clear_error(  );
+  const char * effective_name;
+  size_t temp_name_length;
+  char *temp_name;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
-  app_name_length = &( entry->app_name_length );
-  entry->app_name = cstring_to_sized_string( app_name, app_name_length );
-  if( !entry->app_name ) {
+  effective_name = app_name ? app_name : "-";
+  temp_name = copy_cstring_with_length( effective_name, &temp_name_length );
+  if( !temp_name ) {
     return NULL;
-  } else {
-    return entry;
   }
+
+  free_mem( entry->app_name );
+  entry->app_name = temp_name;
+  entry->app_name_length = temp_name_length;
+
+  clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( facility_is_invalid( facility ) ) {
+    raise_invalid_facility( facility );
+    return NULL;
+  }
+
+  entry->prival = get_prival( facility, get_severity( entry->prival ) );
+
+  clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_msgid( struct stumpless_entry *entry,
+                           const char *msgid ) {
+  const char *effective_msgid;
+  size_t temp_length;
+  char *temp_msgid;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  effective_msgid = msgid ? msgid : "-";
+  temp_msgid = copy_cstring_with_length( effective_msgid, &temp_length );
+  if( !temp_msgid ) {
+    return NULL;
+  }
+
+  free_mem( entry->msgid );
+  entry->msgid = temp_msgid;
+  entry->msgid_length = temp_length;
+
+  clear_error(  );
+  return entry;
 }
 
 struct stumpless_entry *
@@ -313,6 +541,164 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
+stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
+                                    size_t element_index,
+                                    size_t param_index,
+                                    struct stumpless_param *param ) {
+  struct stumpless_element *element;
+  const struct stumpless_element *set_result;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( element_index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", element_index );
+    return NULL;
+  }
+
+  element = entry->elements[element_index];
+  set_result = stumpless_set_param( element, param_index, param );
+  if( !set_result ) {
+    return NULL;
+  }
+
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
+                                          size_t element_index,
+                                          size_t param_index,
+                                          const char *value ) {
+  struct stumpless_element *element;
+  const struct stumpless_element *set_result;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( element_index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", element_index );
+    return NULL;
+  }
+
+  element = entry->elements[element_index];
+  set_result = stumpless_set_param_value_by_index( element,
+                                                   param_index,
+                                                   value );
+  if( !set_result ) {
+    return NULL;
+  }
+
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
+                                         const char *element_name,
+                                         const char *param_name,
+                                         const char *value ) {
+  struct stumpless_element *element;
+  bool element_created = false;
+  const void *result;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  if( !element_name ) {
+    raise_argument_empty( "element_name is NULL" );
+    goto fail;
+  }
+
+  element = stumpless_get_element_by_name( entry, element_name );
+  if( !element ) {
+    element = stumpless_new_element( element_name );
+    if( !element ) {
+      goto fail;
+    }
+
+    element_created = true;
+  }
+
+  result = stumpless_set_param_value_by_name( element, param_name, value );
+  if( !result ) {
+    goto fail_set;
+  }
+
+  if( element_created ) {
+    result = stumpless_add_element( entry, element );
+    if( !result ) {
+      goto fail_set;
+    }
+  }
+
+  return entry;
+
+fail_set:
+  if( element_created ) {
+    stumpless_destroy_element_and_contents( element );
+  }
+fail:
+  return NULL;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_priority( struct stumpless_entry *entry,
+                              int facility,
+                              int severity ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( facility_is_invalid( facility ) ) {
+    raise_invalid_facility( facility );
+    return NULL;
+  }
+
+  if( severity_is_invalid( severity ) ) {
+    raise_invalid_severity( severity );
+    return NULL;
+  }
+
+  entry->prival = get_prival( facility, severity );
+
+  clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_prival( struct stumpless_entry *entry,
+                            int prival ) {
+  return stumpless_set_entry_priority( entry,
+                                       get_facility( prival ),
+                                       get_severity( prival ) );
+}
+
+struct stumpless_entry *
+stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return NULL;
+  }
+
+  if( severity_is_invalid( severity ) ) {
+    raise_invalid_severity( severity );
+    return NULL;
+  }
+
+  entry->prival = get_prival( get_facility( entry->prival ), severity );
+
+  clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
 vstumpless_new_entry( int facility,
                       int severity,
                       const char *app_name,
@@ -325,8 +711,6 @@ vstumpless_new_entry( int facility,
   const char *effective_msgid;
   size_t *msgid_length;
   size_t *message_length;
-
-  clear_error(  );
 
   if( !entry_cache ) {
     entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
@@ -343,15 +727,15 @@ vstumpless_new_entry( int facility,
 
   effective_app_name = app_name ? app_name : "-";
   app_name_length = &( entry->app_name_length );
-  entry->app_name = cstring_to_sized_string( effective_app_name,
-                                             app_name_length );
+  entry->app_name = copy_cstring_with_length( effective_app_name,
+                                              app_name_length );
   if( !entry->app_name ) {
     goto fail_app_name;
   }
 
   effective_msgid = msgid ? msgid : "-";
   msgid_length = &( entry->msgid_length );
-  entry->msgid = cstring_to_sized_string( effective_msgid, msgid_length );
+  entry->msgid = copy_cstring_with_length( effective_msgid, msgid_length );
   if( !entry->msgid ) {
     goto fail_msgid;
   }
@@ -374,6 +758,7 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
+  clear_error(  );
   return entry;
 
 fail_message:
@@ -392,8 +777,6 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
                               va_list subs ) {
   char *formatted_message;
   size_t message_length;
-
-  clear_error(  );
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -418,6 +801,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
     }
   }
 
+  clear_error(  );
   return entry;
 }
 
@@ -430,18 +814,8 @@ entry_free_all( void ) {
 }
 
 int
-get_facility( int prival ) {
-  return prival & 0xf8;
-}
-
-int
 get_prival( int facility, int severity ) {
   return facility | severity;
-}
-
-int
-get_severity( int prival ) {
-  return prival & 0x7;
 }
 
 struct strbuilder *
@@ -521,14 +895,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 }
 
 void
-unchecked_destroy_element( struct stumpless_element *element ) {
-  free_mem( element->params );
-  free_mem( element->name );
-  free_mem( element );
-}
-
-void
-unchecked_destroy_entry( struct stumpless_entry *entry ) {
+unchecked_destroy_entry( const struct stumpless_entry *entry ) {
   config_destroy_insertion_params( entry );
 
   free_mem( entry->elements );
@@ -539,7 +906,16 @@ unchecked_destroy_entry( struct stumpless_entry *entry ) {
   cache_free( entry_cache, entry );
 }
 
-int
-facility_is_invalid( int facility ) {
-  return facility < 0 || facility > ( 23 << 3 ) || facility % 8 != 0;
+bool
+unchecked_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name ) {
+  size_t i;
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    if( strcmp( entry->elements[i]->name, name ) == 0 ) {
+      return true;
+    }
+  }
+
+  return false;
 }

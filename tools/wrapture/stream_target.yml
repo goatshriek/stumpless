@@ -45,6 +45,39 @@ classes:
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
+      - doc: >
+          Opens a stream target for the given stream.
+
+          Added in release 1.6.0.
+        wrapped-function:
+          name: "stumpless_open_stream_target"
+          includes: "stumpless/target/stream.h"
+          params:
+            - name: "name"
+              doc: "The name of this target."
+              type: "const char *"
+            - name: "stream"
+              doc: "The stream to log events to."
+              type:
+                name: "FILE *"
+                includes: "stdio.h"
+            - name: "options"
+              doc: >
+                The options to use for this target. This should be a bit-wise or
+                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
+                not need any options.
+              type: "int"
+            - name: "default_facility"
+              doc: >
+                The default facility to use on messages logged to this target
+                without a facility code of their own.
+              type:
+                name: "Facility"
+                includes: "Facility.hpp"
+              value: "static_cast<int>(default_facility)"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       doc: >
         Closes the target and releases all memory owned by it. Does NOT close

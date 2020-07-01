@@ -16,13 +16,12 @@
  * limitations under the License.
  */
 
-#include <cstddef>
 #include <gtest/gtest.h>
 #include <Element.hpp>
 #include <Entry.hpp>
 #include <Facility.hpp>
-#include <sstream>
-#include <StumplessException.hpp>
+#include <Param.hpp>
+#include <Severity.hpp>
 
 using namespace stumplesscpp;
 

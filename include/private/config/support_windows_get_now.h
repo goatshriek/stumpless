@@ -19,6 +19,8 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_SUPPORT_WINDOWS_GET_NOW_H
 #  define __STUMPLESS_PRIVATE_CONFIG_SUPPORT_WINDOWS_GET_NOW_H
 
+#  include <stddef.h>
+
 size_t
 windows_get_now( char *buffer );
 

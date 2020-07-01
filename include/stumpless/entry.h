@@ -17,240 +17,37 @@
  */
 
 /** @file
- * Types and functions for creating and modifying entries. Facilities,
- * severities, and options are created to be compatible with the syslog.h
- * header if it is found on the system. Otherwise, they are defined as closely
- * as possible to the RFC 5424 standard.
+ * Types and functions for creating and modifying entries.
  */
 
 #ifndef __STUMPLESS_ENTRY_H
 #  define __STUMPLESS_ENTRY_H
 
-#  include <stumpless/config.h>
-
 #  include <stdarg.h>
+#  include <stdbool.h>
 #  include <stddef.h>
+#  include <stumpless/element.h>
 #  include <stumpless/id.h>
+#  include <stumpless/param.h>
 
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include <windows.h>
 #  endif
 
+/* included for compatability with all 1.x releases */
+#  ifndef STUMPLESS_FACILITY_USER
+#    include <stumpless/facility.h>
+#  endif
+#  ifndef STUMPLESS_OPTION_NONE
+#    include <stumpless/option.h>
+#  endif
+#  ifndef STUMPLESS_SEVERITY_INFO
+#    include <stumpless/severity.h>
+#  endif
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
-
-#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-#    include <syslog.h>
-
-
-/* severity codes as set by syslog.h */
-
-/** Emergency: system is unusable. */
-#    define STUMPLESS_SEVERITY_EMERG    LOG_EMERG
-/** Alert: action must be taken immediately. */
-#    define STUMPLESS_SEVERITY_ALERT    LOG_ALERT
-/** Critical: critical conditions. */
-#    define STUMPLESS_SEVERITY_CRIT     LOG_CRIT
-/** Error: error conditions. */
-#    define STUMPLESS_SEVERITY_ERR      LOG_ERR
-/** Warning: warning conditions. */
-#    define STUMPLESS_SEVERITY_WARN     LOG_WARNING
-#    define STUMPLESS_SEVERITY_WARNING  LOG_WARNING
-/** Notice: normal but significant condition. */
-#    define STUMPLESS_SEVERITY_NOTICE   LOG_NOTICE
-/** Informational: informational messages. */
-#    define STUMPLESS_SEVERITY_INFO     LOG_INFO
-/** Debug: debug-level messages. */
-#    define STUMPLESS_SEVERITY_DEBUG    LOG_DEBUG
-
-/** Creates a severity mask for the provided severity. */
-#    define STUMPLESS_SEVERITY_MASK(severity) (LOG_MASK(severity))
-/** Creates a severity mask from EMERG up to the provided severity. */
-#    define STUMPLESS_SEVERITY_MASK_UPTO(severity) (LOG_UPTO(severity))
-
-
-/* facility codes as set by syslog.h */
-
-/** Kernel messages. */
-#    define STUMPLESS_FACILITY_KERN   LOG_KERN
-/** User-level messages. */
-#    define STUMPLESS_FACILITY_USER   LOG_USER
-/** Mail system. */
-#    define STUMPLESS_FACILITY_MAIL   LOG_MAIL
-/** Network news subsystem. */
-#    define STUMPLESS_FACILITY_NEWS   LOG_NEWS
-/** UUCP subsystem. */
-#    define STUMPLESS_FACILITY_UUCP   LOG_UUCP
-/** System daemons. */
-#    define STUMPLESS_FACILITY_DAEMON LOG_DAEMON
-/** Security/authorization messages. */
-#    define STUMPLESS_FACILITY_AUTH   LOG_AUTH
-/** Clock daemon. */
-#    define STUMPLESS_FACILITY_CRON   LOG_CRON
-/** Line printer subsystem. */
-#    define STUMPLESS_FACILITY_LPR    LOG_LPR
-/** Local use 0. */
-#    define STUMPLESS_FACILITY_LOCAL0 LOG_LOCAL0
-/** Local use 1. */
-#    define STUMPLESS_FACILITY_LOCAL1 LOG_LOCAL1
-/** Local use 2. */
-#    define STUMPLESS_FACILITY_LOCAL2 LOG_LOCAL2
-/** Local use 3. */
-#    define STUMPLESS_FACILITY_LOCAL3 LOG_LOCAL3
-/** Local use 4. */
-#    define STUMPLESS_FACILITY_LOCAL4 LOG_LOCAL4
-/** Local use 5. */
-#    define STUMPLESS_FACILITY_LOCAL5 LOG_LOCAL5
-/** Local use 6. */
-#    define STUMPLESS_FACILITY_LOCAL6 LOG_LOCAL6
-/** Local use 7. */
-#    define STUMPLESS_FACILITY_LOCAL7 LOG_LOCAL7
-
-
-/* options defined in syslog.h */
-/* these don't have doxygen documentation as they are currently not supported
- * by the implementation */
-#    define STUMPLESS_OPTION_PID    LOG_PID
-#    define STUMPLESS_OPTION_CONS   LOG_CONS
-#    define STUMPLESS_OPTION_NDELAY LOG_NDELAY
-#    define STUMPLESS_OPTION_ODELAY LOG_ODELAY
-#    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT
-
-#  else
-
-/* severity codes as specified in RFC 5424 */
-#    define STUMPLESS_SEVERITY_EMERG   0
-#    define STUMPLESS_SEVERITY_ALERT   1
-#    define STUMPLESS_SEVERITY_CRIT    2
-#    define STUMPLESS_SEVERITY_ERR     3
-#    define STUMPLESS_SEVERITY_WARN    4
-#    define STUMPLESS_SEVERITY_WARNING 4
-#    define STUMPLESS_SEVERITY_NOTICE  5
-#    define STUMPLESS_SEVERITY_INFO    6
-#    define STUMPLESS_SEVERITY_DEBUG   7
-
-#    define STUMPLESS_SEVERITY_MASK(severity) (1<<(severity))
-#    define STUMPLESS_SEVERITY_MASK_UPTO(severity) ((1<<(severity+1))-1)
-
-/* facility codes as specified in RFC 5424*/
-#    define STUMPLESS_FACILITY_KERN   0
-#    define STUMPLESS_FACILITY_USER   (1<<3)
-#    define STUMPLESS_FACILITY_MAIL   (2<<3)
-#    define STUMPLESS_FACILITY_DAEMON (3<<3)
-#    define STUMPLESS_FACILITY_AUTH   (4<<3)
-#    define STUMPLESS_FACILITY_LPR    (6<<3)
-#    define STUMPLESS_FACILITY_NEWS   (7<<3)
-#    define STUMPLESS_FACILITY_UUCP   (8<<3)
-#    define STUMPLESS_FACILITY_CRON   (9<<3)
-#    define STUMPLESS_FACILITY_LOCAL0 (16<<3)
-#    define STUMPLESS_FACILITY_LOCAL1 (17<<3)
-#    define STUMPLESS_FACILITY_LOCAL2 (18<<3)
-#    define STUMPLESS_FACILITY_LOCAL3 (19<<3)
-#    define STUMPLESS_FACILITY_LOCAL4 (20<<3)
-#    define STUMPLESS_FACILITY_LOCAL5 (21<<3)
-#    define STUMPLESS_FACILITY_LOCAL6 (22<<3)
-#    define STUMPLESS_FACILITY_LOCAL7 (23<<3)
-
-/* options normally defined in syslog.h */
-#    define STUMPLESS_OPTION_PID    1
-#    define STUMPLESS_OPTION_CONS   (1<<1)
-#    define STUMPLESS_OPTION_NDELAY (1<<2)
-#    define STUMPLESS_OPTION_ODELAY (1<<3)
-#    define STUMPLESS_OPTION_NOWAIT (1<<4)
-
-#  endif
-
-/* remaining facility codes specified in RFC 5424 */
-
-/** Messages generated internally by logging daemon. */
-#  define STUMPLESS_FACILITY_SYSLOG (5<<3)
-/** Security/authorization messages. */
-#  define STUMPLESS_FACILITY_AUTH2  (10<<3)
-/** FTP daemon. */
-#  define STUMPLESS_FACILITY_FTP    (11<<3)
-/** NTP subsystem. */
-#  define STUMPLESS_FACILITY_NTP    (12<<3)
-/** Log audit. */
-#  define STUMPLESS_FACILITY_AUDIT  (13<<3)
-/** Log alert. */
-#  define STUMPLESS_FACILITY_ALERT  (14<<3)
-/** Clock daemon. */
-#  define STUMPLESS_FACILITY_CRON2  (15<<3)
-
-/** Empty option mask for explicit 'no option' use. */
-#  define STUMPLESS_OPTION_NONE 0
-
-/**
- * A parameter within a structured data element.
- *
- * A parameter must have both a name and a value in compliance with RFC 5424.
- */
-struct stumpless_param {
-/**
- * The name of the parameter.
- *
- * The name must be between 1 and 32 characters long and consist only of ASCII
- * characters between '!' and '~', inclusive, with the exception of the '=',
- * ' ', ']', and '"' characters, which are not allowed.
- *
- * Note that the name will _not_ be NULL-terminated.
- */
-  char *name;
-/** The number of characters in name. */
-  size_t name_length;
-/**
- * The value may be any UTF-8 string.
- *
- * As specified in RFC 5424, the characters '"' (ABNF %d34), '\' (ABNF %d92),
- * and ']' (ABNF %d93) MUST be escaped by placing a backslash character '\'
- * directly before them.
- *
- * Unlike the name field, value will be NULL-terminated. This is done to support
- * their use for wel insertion strings.
- */
-  char *value;
-/** The number of characters in value. */
-  size_t value_length;
-};
-
-/**
- * An element of structured data.
- *
- * Elements must have a name, but may not have any parameters. Their components
- * must comply with RFC 5424.
- */
-struct stumpless_element {
-/**
- * The name of the element.
- *
- * As specified in RFC 5424, the '=', ']', '"' characters are not allowed in
- * element names. In addition, the '@' character is only allowed in names that
- * are private. All other characters between '!' and '~', inclusive, are
- * allowed.
- *
- * According to the standard names must either be private (of the form
- * name@<private enterprise number>) or registered with the IANA. This library
- * assumes that you have done your due diligence and does not enforce the
- * registration requirement.
- *
- * Note that the name will _not_ be NULL-terminated.
- */
-  char *name;
-/** The number of characters in name. */
-  size_t name_length;
-/**
- * The parameters this element contains.
- *
- * This is an array of pointers to param structures. Use the param_count member
- * to iterate through the array if needed. This may be NULL if there are no
- * params in the element, but not necessarily - the param_count is the only way
- * to tell for sure.
- */
-  struct stumpless_param **params;
-/** The number of params in the array. */
-  size_t param_count;
-};
 
 /**
  * A log entry.
@@ -262,65 +59,136 @@ struct stumpless_element {
 struct stumpless_entry {
 /** A unique identifier of this entry. */
   stumpless_id_t id;
+/**
+ * The prival of this entry. This is a combination of the facility and severity
+ * of the event, combined using a bitwise or.
+ */
   int prival;
+/** The app name of this entry, as a NULL-terminated string. */
   char *app_name;
+/** The length of the app name, without the NULL terminator. */
   size_t app_name_length;
+/** The message of this entry, as a NULL-terminated string. */
   char *message;
+/** The length of the message, without the NULL terminator. */
   size_t message_length;
+/** The message id of this entry, as a NULL-terminated string. */
   char *msgid;
+/** The length of the message id, without the NULL terminator. */
   size_t msgid_length;
+/** An array holding the elements of this entry. */
   struct stumpless_element **elements;
+/** The number of elements in this entry. */
   size_t element_count;
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+/** The type of this entry, for use with Windows Event Log calls. */
   WORD wel_type;
+/** The category of this entry, for use with Windows Event Log calls. */
   WORD wel_category;
+/** The event id of this entry, for use with Windows Event Log calls. */
   DWORD wel_event_id;
+/**
+ * The number of insertion strings this entry has. This can be used as the
+ * length of both the wel_insertion_strings array and the wel_insertion_params
+ * array.
+ */
   WORD wel_insertion_count;
+/**
+ * A buffer to hold insertion strings during the process of sending this entry
+ * to an Event log. This field should not be referred to for insertion string
+ * values as it is not updated until an event is logged: the actual values are
+ * stored as the values of params in wel_insertion_params.
+ */
   LPCSTR *wel_insertion_strings;
+/**
+ * An array of params of which the values can be used as insertion strings with
+ * Windows Event Log calls. Params in this list may not have name fields and
+ * should not be used with other functions for using params. They should only
+ * be interacted with using the Windows Event Log stumpless functions.
+ */
   struct stumpless_param **wel_insertion_params;
 #  endif
 };
 
-/*
- * While the functions provided right now offer basic creation and deletion
- * capabilities, there will need to be many more added to make working with
- * the messages, elements, and params easier. For example, hash-style accessors
- * and assignments, as well as a clear memory management strategy.
+/**
+ * Adds an element to an entry. The element is appended to the end of the list
+ * of elements in this entry.
+ *
+ * Note that duplicate elements are not allowed in RFC 5424, and as such
+ * attempts to add an element to an entry already having one with the same name
+ * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ *
+ * @param entry The entry to add the element to.
+ *
+ * @param element The element to add to the entry.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
  */
-
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element );
 
-struct stumpless_element *
-stumpless_add_param( struct stumpless_element *element,
-                     struct stumpless_param *param );
+/**
+ * Creates a new element with the given name and adds it to this entry.
+ *
+ * Note that duplicate elements are not allowed in RFC 5424, and as such
+ * attempts to add an element to an entry already having one with the same name
+ * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to add the new element to.
+ *
+ * @param name The name of the new element.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_add_new_element( struct stumpless_entry *entry,
+                           const char *name );
 
 /**
- * An alias for stumpless_destroy_element_and_contents.
+ * Creates a new param and adds it to the given element in the given entry. If
+ * an element with the given name does not exist in the given entry, then one
+ * will be created with the new param added to it.
  *
- * @param element The element to destroy.
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to add the new param to.
+ *
+ * @param element_name The name of the element to add the param to. If an
+ * element with this name is not found, it will be created.
+ *
+ * @param param_name The name of the new param to add.
+ *
+ * @param param_value The value of the new param to add.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
  */
-void
-stumpless_destroy_element( struct stumpless_element *element );
+struct stumpless_entry *
+stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
+                                  const char *element_name,
+                                  const char *param_name,
+                                  const char *param_value );
 
 /**
- * Destroys an element as well as all params that it contains, freeing any
- * allocated memory.
+ * Creates a copy of an entry.
  *
- * @param element The element to destroy.
- */
-void
-stumpless_destroy_element_and_contents( struct stumpless_element *element );
-
-/**
- * Destroys an element, freeing any allocated memory. Associated params are left
- * untouched, and must be destroyed separately.
+ * Copies of entries are 'deep' in that the copy also copies each of the
+ * elements that the original entry has, if any. This means that even if the
+ * elements or params of the original entry are destroyed, the equivalent ones
+ * in this entry will still be valid.
  *
- * @param element The element to destroy.
+ * @param entry The entry to copy.
+ *
+ * @return A new entry that is a deep copy of the original. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
  */
-void
-stumpless_destroy_element_only( struct stumpless_element *element );
+struct stumpless_entry *
+stumpless_copy_entry( const struct stumpless_entry *entry );
 
 /**
  * An alias for stumpless_destroy_entry_and_contents.
@@ -328,7 +196,7 @@ stumpless_destroy_element_only( struct stumpless_element *element );
  * @param entry The entry to destroy.
  */
 void
-stumpless_destroy_entry( struct stumpless_entry *entry );
+stumpless_destroy_entry( const struct stumpless_entry *entry );
 
 /**
  * Destroys an entry as well as all elements and params that it contains,
@@ -337,7 +205,7 @@ stumpless_destroy_entry( struct stumpless_entry *entry );
  * @param entry The entry to destroy.
  */
 void
-stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
+stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry );
 
 /**
  * Destroys an entry, freeing any allocated memory. Associated elements and
@@ -346,16 +214,255 @@ stumpless_destroy_entry_and_contents( struct stumpless_entry *entry );
  * @param entry The entry to destroy.
  */
 void
-stumpless_destroy_entry_only( struct stumpless_entry *entry );
-
-void
-stumpless_destroy_param( struct stumpless_param *param );
-
-struct stumpless_element *
-stumpless_new_element( const char *name );
+stumpless_destroy_entry_only( const struct stumpless_entry *entry );
 
 /**
- * Creates a new entry with the given parameters.
+ * True if the given entry has an element with the given name, false otherwise.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to search for the element.
+ *
+ * @param name The name of the element to check for.
+ *
+ * @return True if no error is encountered and the element is found. If the
+ * element is not found or an error is encountered, then false is returned and
+ * an error code is set appropriately.
+ */
+bool
+stumpless_entry_has_element( const struct stumpless_entry *entry,
+                             const char *name );
+
+/**
+ * Returns the element at the given index in this Entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to search.
+ *
+ * @param index The index of the element to get.
+ *
+ * @return The element if it is found in the entry, or NULL otherwise. If an
+ * error was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+struct stumpless_element *
+stumpless_get_element_by_index( const struct stumpless_entry *entry,
+                                size_t index );
+
+/**
+ * Returns the element with the given name in this entry, if it is found.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to search.
+ *
+ * @param name The name of the element to search for.
+ *
+ * @return The element if it is found in the entry, or NULL otherwise. If an
+ * error was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+struct stumpless_element *
+stumpless_get_element_by_name( const struct stumpless_entry *entry,
+                               const char *name );
+
+/**
+ * Returns the index of the element with the given name in this entry, if it
+ * is found.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to search.
+ *
+ * @param name The name of the element to search for.
+ *
+ * @return The index of the element if it is found in the entry. If an error
+ * was encountered or the element does not exist in the entry, then 0 is
+ * returned and an error code is set appropriately.
+ */
+size_t
+stumpless_get_element_index( const struct stumpless_entry *entry,
+                             const char *name );
+
+/**
+ * Returns the app name of the given entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the app name of.
+ *
+ * @return The app name of the entry if no error is encountered. If an error
+ * was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_entry_app_name( const struct stumpless_entry *entry );
+
+/**
+ * Returns the facility code of the given entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the facility of.
+ *
+ * @return The facility of the entry if no error is encountered. If an error
+ * was encountered, then -1 is returned and an error code is set appropriately.
+ */
+int
+stumpless_get_entry_facility( const struct stumpless_entry *entry );
+
+/**
+ * Returns the message of the given entry.
+ *
+ * Note that if this message was originally set using format specifiers, the
+ * result will have them substituted, instead of the original placeholders.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the message of.
+ *
+ * @return The message of the entry if no error is encountered. If an error
+ * was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_entry_message( const struct stumpless_entry *entry );
+
+/**
+ * Returns the msgid of the given entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the msgid of.
+ *
+ * @return The msgid of the entry if no error is encountered. If an error
+ * was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_entry_msgid( const struct stumpless_entry *entry );
+
+/**
+ * Gets the param from the element at the given index in an entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_index The index of the element to get the param from.
+ *
+ * @param param_index The index of the param to get from the element.
+ *
+ * @return The param at the given index if no error is encountered. If an error
+ * is encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_param *
+stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
+                                    size_t element_index,
+                                    size_t param_index );
+
+/**
+ * Gets the first param from the element with the given name in an entry.
+ *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances with
+ * the same name. If you need a reference to other params with the same name in
+ * the element, then you must loop through all params using
+ * stumpless_get_entry_param_by_index, checking each name.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_name The name of the element to get the param from.
+ *
+ * @param param_name The name of the param to get from the element.
+ *
+ * @return The first param with the given name if no error is encountered. If
+ * an error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+struct stumpless_param *
+stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
+                                   const char *element_name,
+                                   const char *param_name );
+
+/**
+ * Gets the value of the param from the element at the given index in an entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_index The index of the element to get the param from.
+ *
+ * @param param_index The index of the param to get the value of.
+ *
+ * @return The value of the param at the given index if no error is encountered.
+ * If an error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
+                                          size_t element_index,
+                                          size_t param_index );
+
+/**
+ * Gets the value of the first param from the element with the given name in an
+ * entry.
+ *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances with
+ * the same name. If you need the value of other params with the same name in
+ * the element, then you must loop through all params using
+ * stumpless_get_entry_param_by_index, checking each name.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_name The name of the element to get the param from.
+ *
+ * @param param_name The name of the param to get from the element.
+ *
+ * @return The value of the first param with the given name if no error is
+ * encountered. If an error is encountered, then NULL is returned and an error
+ * code is set appropriately.
+ */
+const char *
+stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
+                                         const char *element_name,
+                                         const char *param_name );
+
+/**
+ * Returns the prival of the given entry, as defined in RFC 5424.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the prival of.
+ *
+ * @return The prival of the entry if no error is encountered. If an error
+ * was encountered, then -1 is returned and an error code is set appropriately.
+ */
+int
+stumpless_get_entry_prival( const struct stumpless_entry *entry );
+
+/**
+ * Returns the severity code of the given entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to get the severity of.
+ *
+ * @return The severity of the entry if no error is encountered. If an error
+ * was encountered, then -1 is returned and an error code is set appropriately.
+ */
+int
+stumpless_get_entry_severity( const struct stumpless_entry *entry );
+
+/**
+ * Creates a new entry with the given characteristics.
  *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
@@ -389,13 +496,89 @@ stumpless_new_entry( int facility,
                      const char *message,
                      ... );
 
-struct stumpless_param *
-stumpless_new_param( const char *name,
-                     const char *value );
+/**
+ * Puts the element at the given index in the given entry.
+ *
+ * The element previously at this position will be removed from the entry,
+ * but it is NOT destroyed by this call. Callers must clean up this element
+ * separately.
+ *
+ * An element cannot be set at an index position that does not already hold
+ * one. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * is raised.
+ *
+ * Note that duplicate elements are not allowed in RFC 5424, and as such
+ * attempts to set an element of an entry which already contains another element
+ * with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ *
+ * @since release v1.6.0
+ *
+ * @param entry The entry to set the element on.
+ *
+ * @param index The index to set to element.
+ *
+ * @param element The element to set at the given index.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_element( struct stumpless_entry *entry,
+                       size_t index,
+                       struct stumpless_element *element );
 
+/**
+ * Sets the app name for an entry.
+ *
+ * @param entry The entry for which the app name will be set.
+ *
+ * @param app_name A NULL-terminated string holding the new app_name for the
+ * entry. This will be copied in to the entry, and therefore may be modified
+ * or freed after this call without affecting the entry. If this is NULL, then
+ * a single '-' character will be used, as specified as the NILVALUE in RFC
+ * 5424.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name );
+
+/**
+ * Sets the facility of an entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to set the facility of.
+ *
+ * @param facility The new facility of the entry. This must be a valid value
+ * according to RFC 5424, available as STUMPLESS_FACILITY constants.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
+
+/**
+ * Sets the msgid for an entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry for which the msgid will be set.
+ *
+ * @param msgid A NULL-terminated string holding the new msgid for the entry.
+ * This will be copied in to the entry, and therefore may be modified or freed
+ * after this call without affecting the entry. If this is NULL, then a single
+ * '-' character will be used, as specified as the NILVALUE in RFC 5424.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_msgid( struct stumpless_entry *entry,
+                           const char *msgid );
 
 /**
  * Sets the message of a given entry.
@@ -418,6 +601,146 @@ struct stumpless_entry *
 stumpless_set_entry_message( struct stumpless_entry *entry,
                              const char *message,
                              ... );
+
+/**
+ * Puts the param in the element at the given index of an entry.
+ *
+ * The parameter previously at this position will be removed from the element,
+ * but it is NOT destroyed by this call. Callers must clean up this param
+ * separately.
+ *
+ * A param cannot be set at an index position that does not already hold a
+ * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * is raised.
+ *
+ * @since release v1.6.0
+ *
+ * @param entry The entry to set the param on.
+ *
+ * @param element_index The index of the element to have the param.
+ *
+ * @param param_index The index to put the param at in the chosen element.
+ *
+ * @param param The param to set.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
+                                    size_t element_index,
+                                    size_t param_index,
+                                    struct stumpless_param *param );
+
+/**
+ * Sets the value of the param in the element at the given index of an entry.
+ *
+ * @since release v1.6.0
+ *
+ * @param entry The entry to set the param value on.
+ *
+ * @param element_index The index of the element having the param to modify.
+ *
+ * @param param_index The index of the param to set the value of.
+ *
+ * @param value The new value to set on the param.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
+                                          size_t element_index,
+                                          size_t param_index,
+                                          const char *value );
+
+/**
+ * Sets the value of the first param in the named element an entry.
+ *
+ * If an element with the given name is not found in the entry, one is created
+ * with the supplied name and added to the end of the entry.
+ *
+ * If a param of the given name is not found in the named element, one is
+ * created with the supplied name and value and added to the end of the element.
+ *
+ * If you need to set the value of a param with this name other than the first
+ * one, then you will need to loop through the params using
+ * stumpless_get_entry_param_by_index to find the params you want and then
+ * set the value using stumpless_set_entry_param_value_by_index.
+ *
+ * @since release v1.6.0
+ *
+ * @param entry The entry to set the param value on.
+ *
+ * @param element_name The name of the element having the param to modify.
+ *
+ * @param param_name The name of the param to set the value of.
+ *
+ * @param value The new value to set on the param.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
+                                         const char *element_name,
+                                         const char *param_name,
+                                         const char *value );
+
+/**
+* Sets the facility and severity of an entry.
+*
+* @since release v1.6.0.
+*
+* @param entry The entry to set the priority values of.
+*
+* @param facility The new facility of the entry. This must be a valid value
+* according to RFC 5424, available as STUMPLESS_FACILITY constants.
+*
+* @param severity The new severity of the entry. This must be a valid value
+* according to RFC 5424, available as STUMPLESS_SEVERITY constants.
+*
+* @return The modified entry if no error is encountered. If an error is
+* encountered, then NULL is returned and an error code is set appropriately.
+*/
+struct stumpless_entry *
+stumpless_set_entry_priority( struct stumpless_entry *entry,
+                              int facility,
+                              int severity );
+
+/**
+ * Sets the prival of an entry, as defined in RFC 5424.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to set the prival of.
+ *
+ * @param prival The new prival of the entry, as defined in RFC 5424. Only the
+ * first 8 bits of prival are considered: the rest are discarded after
+ * extracting the effective facility and severity.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_prival( struct stumpless_entry *entry,
+                            int prival );
+
+/**
+ * Sets the severity of an entry.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to set the severity of.
+ *
+ * @param severity The new severity of the entry. This must be a valid value
+ * according to RFC 5424, available as STUMPLESS_SEVERITY constants.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
 
 /**
  * Creates a new entry with the given parameters.

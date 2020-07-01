@@ -8,6 +8,29 @@ classes:
       name: "stumpless_version"
       includes: "stumpless/version.h"
     functions:
+      - name: "FreeAll"
+        doc: |
+          Frees all memory allocated internally, and performs any other
+          necessary cleanup.
+
+          This function serves as a final exit function, which should be called
+          when an application using the library is preparing to exit or when the
+          library is no longer needed. Before this function is called, all
+          targets must be closed and no pointers to any structs should be
+          retained. Failing to do this will result in undefined behavior.
+
+          Calling other functions after a call to this function is acceptable,
+          however execution times may be longer than usual as memory used to
+          cache objects may need to be allocated again. If other functions are
+          called, this function should be called again before exit to ensure a
+          memory leak does not exist.
+
+          In a windows environment, this function will call WSACleanup as part
+          of its cleanup.
+        static: true
+        wrapped-function:
+          name: "stumpless_free_all"
+          includes: "stumpless/memory.h"
       - name: "SetMalloc"
         doc: "Sets the function used by Stumpless to allocate memory."
         static: true

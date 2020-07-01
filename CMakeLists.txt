@@ -110,11 +110,15 @@ endif()
 # standard source files
 set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/cache.c
+  ${PROJECT_SOURCE_DIR}/src/element.c
   ${PROJECT_SOURCE_DIR}/src/entry.c
   ${PROJECT_SOURCE_DIR}/src/error.c
+  ${PROJECT_SOURCE_DIR}/src/facility.c
   ${PROJECT_SOURCE_DIR}/src/formatter.c
   ${PROJECT_SOURCE_DIR}/src/inthelper.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
+  ${PROJECT_SOURCE_DIR}/src/param.c
+  ${PROJECT_SOURCE_DIR}/src/severity.c
   ${PROJECT_SOURCE_DIR}/src/strbuilder.c
   ${PROJECT_SOURCE_DIR}/src/strhelper.c
   ${PROJECT_SOURCE_DIR}/src/target.c
@@ -526,10 +530,15 @@ install(TARGETS stumpless
 
 install(FILES
   ${PROJECT_BINARY_DIR}/include/stumpless/config.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/element.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/entry.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/error.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/facility.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/option.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/param.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/severity.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
   DESTINATION "include/stumpless"
@@ -558,8 +567,16 @@ add_function_test(current_target
   SOURCES test/function/startup/current_target.cpp
 )
 
+add_function_test(element
+  SOURCES test/function/element.cpp
+)
+
 add_function_test(entry
   SOURCES test/function/entry.cpp
+)
+
+add_function_test(entry_leak
+  SOURCES test/function/leak/entry.cpp
 )
 
 add_function_test(entry_memory_failure
@@ -590,6 +607,10 @@ add_function_test(get_error_stream
 
 add_function_test(memory
   SOURCES test/function/memory.cpp
+)
+
+add_function_test(param
+  SOURCES test/function/param.cpp
 )
 
 add_function_test(perror

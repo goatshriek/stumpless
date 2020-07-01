@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 #include <stddef.h>
 #include <stumpless/entry.h>
+#include <stumpless/facility.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
 #include <windows.h>

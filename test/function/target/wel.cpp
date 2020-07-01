@@ -18,6 +18,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless.h>

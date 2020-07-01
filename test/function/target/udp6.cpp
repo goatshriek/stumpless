@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include <regex>
+#include <cstdlib>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>

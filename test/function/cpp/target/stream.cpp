@@ -17,8 +17,10 @@
  */
 
 #include <cstdio>
+#include <Facility.hpp>
 #include <gtest/gtest.h>
 #include <StreamTarget.hpp>
+#include <stumpless/option.h>
 
 using namespace stumplesscpp;
 
@@ -42,7 +44,10 @@ namespace {
   };
 
   TEST_F( CppStreamTargetTest, AddMessage ) {
-    StreamTarget target( "test-stream", stream, STUMPLESS_OPTION_NONE, STUMPLESS_FACILITY_USER);
+    StreamTarget target( "test-stream",
+                         stream,
+                         STUMPLESS_OPTION_NONE,
+                         Facility::USER );
 
     target.Log( "this is a basic test of the stream target" );
   }

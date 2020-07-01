@@ -20,6 +20,8 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>
+#include <stumpless/facility.h>
+#include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>
@@ -27,8 +29,10 @@
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/formatter.h"
 #include "private/memory.h"
+#include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/target.h"
@@ -294,7 +298,7 @@ stumpless_set_default_facility( struct stumpless_target *target,
   }
 
   if( facility_is_invalid( default_facility ) ) {
-    raise_invalid_facility(  );
+    raise_invalid_facility( default_facility );
     goto fail;
   }
 
@@ -339,7 +343,7 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
   }
 
   app_name_length = &( target->default_app_name_length );
-  sized_name = cstring_to_sized_string( app_name, app_name_length );
+  sized_name = copy_cstring_with_length( app_name, app_name_length );
   if( !sized_name ) {
     return NULL;
 
@@ -369,7 +373,7 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   }
 
   msgid_length = &( target->default_msgid_length );
-  sized_msgid = cstring_to_sized_string( msgid, msgid_length );
+  sized_msgid = copy_cstring_with_length( msgid, msgid_length );
   if( !sized_msgid ) {
     return NULL;
 

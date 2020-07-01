@@ -21,8 +21,8 @@
 
 
 #  include <stddef.h>
+#  include <stumpless/target.h>
 #  include <stumpless/target/network.h>
-#  include "private/config.h"
 #  include "private/config/wrapper.h"
 
 struct network_target {

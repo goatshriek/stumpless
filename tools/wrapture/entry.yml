@@ -15,8 +15,7 @@ classes:
       - doc: "Creates an Entry with the given properties."
         wrapped-function:
           name: "vstumpless_new_entry"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/entry.h"
           params:
             - name: "facility"
               doc: |
@@ -58,6 +57,43 @@ classes:
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
+      - doc: |
+          Creates an Entry from a stumpless_entry struct.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - name: "entry"
+              doc: |
+                The struct to create this Entry from. The struct will be copied
+                during this creation, and so any changes made to it after this
+                call will not be reflected in the resulting instance.
+              type:
+                name: "struct stumpless_entry *"
+                includes: "stumpless/entry.h"
+              value: "entry"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+      - doc: |
+          Creates an Entry as a copy of another Entry.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - name: "entry"
+              doc: "The Entry to copy."
+              type:
+                name: "const Entry &"
+                includes: "Entry.hpp"
+              value: "entry.equivalent"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       doc: |
         Destroys the Entry and frees any memory allocated for it.
@@ -68,28 +104,6 @@ classes:
         params:
           - name: "equivalent-struct-pointer"
     functions:
-      - name: "SetAppName"
-        doc: "Sets the app name for an entry."
-        params:
-          - name: "app_name"
-            doc: |
-              The new app_name for the entry as a NULL-terminated string. This
-              will be copied in to the entry, and therefore may be modified or
-              freed after this call without affecting the entry.
-            type: "const char *"
-        return:
-          doc: "The modified Entry, to support method chaining."
-          type: "self-reference"
-        wrapped-function:
-          name: "stumpless_set_entry_app_name"
-          includes:
-            - "stumpless/entry.h"
-          params:
-            - value: "equivalent-struct-pointer"
-            - value: "app_name"
-          return:
-            type: "struct stumpless_entry *"
-          use-template: "pointer-return-error-check"
       - name: "AddElement"
         doc: "Adds an element to an entry."
         params:
@@ -102,8 +116,7 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_element"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
             - value: "element"
@@ -112,7 +125,12 @@ classes:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
       - name: "AddElement"
-        doc: "Adds an element to an entry."
+        doc: |
+          Adds an Element to this Entry.
+
+          Note that duplicate elements are not allowed in RFC 5424, and as such
+          attempts to add an Element to an Entry already having one with the
+          same name will result in a DuplicateElement exception.
         params:
           - name: "element"
             doc: "A pointer to the element to add."
@@ -123,12 +141,442 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_element"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
             - value: "element"
               type: "struct stumpless_element *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "AddElement"
+        doc: |
+          Creates a new Element and adds it to this Entry.
+
+          Note that duplicate elements are not allowed in RFC 5424, and as such
+          attempts to add an element to an entry already having one with the
+          same name will result in a DuplicateElement exception.
+        params:
+          - name: "name"
+            doc: "The name of the new Element."
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_new_element"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "AddParam"
+        doc: |
+          Creates a new Param and adds it to the specified Element in this
+          Entry. If an Element with the given name does not exist in this Entry,
+          then one will be created with the new Param added to it.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: |
+               The name of the Element to add the Param to. This will be created
+               if it is not found.
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the new Param."
+            type: "const char *"
+          - name: "param_value"
+            doc: "The value of the new Param."
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_new_param_to_entry"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+            - value: "param_value"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "GetElement"
+        doc: |
+          Gets the Element at the given index in this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the Element to retrieve."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The requested Element."
+          type:
+            name: "Element"
+            includes: "Element.hpp"
+        wrapped-function:
+          name: "stumpless_get_element_by_index"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+      - name: "GetElement"
+        doc: |
+          Gets the Element with the given name from this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Element to retrieve."
+            type: "const char *"
+        return:
+          doc: "The requested Element."
+          type:
+            name: "Element"
+            includes: "Element.hpp"
+        wrapped-function:
+          name: "stumpless_get_element_by_name"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+      - name: "GetElementIndex"
+        doc: |
+          Gets the index of the Element with the given name from this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Element to retrieve."
+            type: "const char *"
+        return:
+          doc: "The index of the specified Element."
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_element_index"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+      - name: "GetFacility"
+        doc: |
+          Gets the Facility of this Entry.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The Facility of this Entry."
+          type:
+            name: "Facility"
+            includes: "Facility.hpp"
+        wrapped-function:
+          name: "stumpless_get_entry_facility"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
+      - name: "GetParam"
+        doc: |
+          Gets the Param from the Element at the given index from this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to get the Param from."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: "The index of the Param to get within the Element."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The Param at the given index."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_entry_param_by_index"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+          return:
+            type: "struct stumpless_param *"
+          use-template: "pointer-return-error-check"
+      - name: "GetParam"
+        doc: |
+          Gets the first Param from the Element with the given name from this
+          Entry.
+
+          Note that an Element may contain as many instances of a Param as
+          desired according to RFC 5424, and therefore there may be other Param
+          instances with the same name. If you need a reference to other Params
+          with the same name in the Element, then you must loop through all
+          Params using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: "The name of the Element to get the Param from."
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the Param to get within the Element."
+            type: "const char *"
+        return:
+          doc: "The first Param with the given name."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_entry_param_by_name"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+          return:
+            type: "struct stumpless_param *"
+          use-template: "pointer-return-error-check"
+      - name: "GetParamValue"
+        doc: |
+          Gets the value of the Param from the Element at the given index from
+          this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to get the Param from."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: |
+              The index of the Param to get the value of within the Element.
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The value of the Param at the given index."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_entry_param_value_by_index"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
+      - name: "GetParamValue"
+        doc: |
+          Gets the value of the first Param from the Element with the given name
+          from this Entry.
+
+          Note that an Element may contain as many instances of a Param as
+          desired according to RFC 5424, and therefore there may be other Param
+          instances with the same name. If you need the value of other Params
+          with the same name in the Element, then you must loop through all
+          Params using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: "The name of the Element to get the Param from."
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the Param to get the value of within the Element."
+            type: "const char *"
+        return:
+          doc: "The value of the first Param with the given name."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_entry_param_value_by_name"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
+      - name: "GetPrival"
+        doc: |
+          Gets the prival of this Entry, as defined in RFC 5424.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The prival of this Entry."
+          type: "int"
+        wrapped-function:
+          name: "stumpless_get_entry_prival"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
+      - name: "GetSeverity"
+        doc: |
+          Gets the Severity of this Entry.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The Severity of this Entry."
+          type:
+            name: "Severity"
+            includes: "Severity.hpp"
+        wrapped-function:
+          name: "stumpless_get_entry_severity"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
+      - name: "HasElement"
+        doc: |
+          True if this Entry has an Element with the given name, false
+          otherwise.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Element to look for."
+            type: "const char *"
+        return:
+          doc: "True if the Element is found, false if not."
+          type: "bool"
+        wrapped-function:
+          name: "stumpless_entry_has_element"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "bool"
+      - name: "SetAppName"
+        doc: "Sets the app name for an entry."
+        params:
+          - name: "app_name"
+            doc: |
+              The new app_name for the entry as a NULL-terminated string. This
+              will be copied in to the entry, and therefore may be modified or
+              freed after this call without affecting the entry. If this is
+              NULL, then a single '-' character will be used, as specified as
+              the NILVALUE in RFC 5424.
+            type: "const char *"
+        return:
+          doc: "The modified Entry, to support method chaining."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_app_name"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "app_name"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetElement"
+        doc: |
+          Puts the element at the given index in this Entry.
+
+          An Element cannot be set at an index position that does not already
+          hold one. If this is attempted, then an IndexOutOfBounds exception is
+          thrown.
+
+          Note that duplicate elements are not allowed in RFC 5424, and as such
+          attempts to set an Element of an Entry which already contains another
+          Element with the same name will result in a DuplicateElement
+          exception.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index to set."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "element"
+            doc: "The Element to put at index."
+            type:
+              name: "Element &"
+              includes: "Element.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_element"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+            - value: "element"
+              type: "struct stumpless_element *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetFacility"
+        doc: |
+          Sets the Facility of this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "facility"
+            doc: "The new Facility of this Entry."
+            type:
+              name: "Facility"
+              includes: "Facility.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_facility"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>( facility )"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetMsgid"
+        doc: |
+          Sets the msgid for this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "msgid"
+            doc: |
+              A NULL-terminated string holding the new msgid. This will be
+              copied in to the Entry, and therefore may be modified or freed
+              after this call without affecting the entry. If this is NULL,
+              then a single '-' character will be used, as specified as the
+              NILVALUE in RFC 5424.
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_msgid"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "msgid"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
@@ -149,7 +597,7 @@ classes:
               number of substitutions provided must exactly match the number of
               specifiers given.
         return:
-          doc: "The modified Entry, to support method chaining."
+          doc: "The modified Entry."
           type: "self-reference"
         wrapped-function:
           name: "vstumpless_set_entry_message"
@@ -160,6 +608,195 @@ classes:
             - value: "message"
               type: "const char *"
             - value: "..."
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetParam"
+        doc: |
+          Puts the Param in the Element at the given index of this Entry.
+
+          A Param cannot be set at an index position that does not already hold
+          one. If this is attempted, then an IndexOutOfBounds exception is
+          thrown.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to set the Param on."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: "The index of the Param to set."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param"
+            doc: "The new Param."
+            type:
+              name: "Param &"
+              includes: "Param.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_param_by_index"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+            - value: "param"
+              type: "struct stumpless_param *"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetParamValue"
+        doc: |
+          Sets the value of the Param in the Element at the given index of this
+          Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_index"
+            doc: "The index of the Element to set the Param value on."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param_index"
+            doc: "The index of the Param to set the value of."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "value"
+            doc: "The new value of the Param."
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_param_value_by_index"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_index"
+            - value: "param_index"
+            - value: "value"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetParamValue"
+        doc: |
+          Sets the value of the first Param with the given name in the Element
+          with the given name in this Entry.
+
+          If an Element with the given name is not found, one is created with
+          the supplied name and added to the end of this Entry.
+
+          If a Param of the given name is not found in the named Element, one is
+          created with the supplied name and value and added to the end of the
+          Element.
+
+          If you need to set the value of a Param with this name other than the
+          first one, then you will need to loop through the Params using
+          GetParam with an index to find the necessary ones, and then use
+          SetParamValue with the correct index.
+
+          Available since release v1.6.0.
+        params:
+          - name: "element_name"
+            doc: "The name of the Element to set the Param value on."
+            type: "const char *"
+          - name: "param_name"
+            doc: "The name of the Param to set the value of."
+            type: "const char *"
+          - name: "value"
+            doc: "The new value of the Param."
+            type: "const char *"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_param_value_by_name"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "element_name"
+            - value: "param_name"
+            - value: "value"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetPriority"
+        doc: |
+          Sets the Facility and Severity of this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "facility"
+            doc: "The new Facility of this Entry."
+            type:
+              name: "Facility"
+              includes: "Facility.hpp"
+          - name: "severity"
+            doc: "The new Severity of this Entry."
+            type:
+              name: "Severity"
+              includes: "Severity.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_priority"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>( facility )"
+            - value: "static_cast<int>( severity )"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetPrival"
+        doc: |
+          Sets the prival of this Entry, as defined in RFC 5424.
+
+          Available since release v1.6.0.
+        params:
+          - name: "prival"
+            doc: "The new prival of this Entry."
+            type: "int"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_prival"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "prival"
+          return:
+            type: "struct stumpless_entry *"
+          use-template: "pointer-return-error-check"
+      - name: "SetSeverity"
+        doc: |
+          Sets the Severity of this Entry.
+
+          Available since release v1.6.0.
+        params:
+          - name: "severity"
+            doc: "The new Severity of this Entry."
+            type:
+              name: "Severity"
+              includes: "Severity.hpp"
+        return:
+          doc: "The modified Entry."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_entry_severity"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "static_cast<int>( severity )"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"

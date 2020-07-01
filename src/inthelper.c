@@ -28,3 +28,13 @@ cap_size_t_to_int( size_t val ){
     return ( int ) val;
   }
 }
+
+int
+size_t_to_int(size_t val)
+{
+  if( val > INT_MAX ) {
+    return -1;
+  } else {
+    return ( int ) val;
+  }
+}

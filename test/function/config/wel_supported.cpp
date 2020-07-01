@@ -20,6 +20,7 @@
 #include <gtest/gtest.h>
 #include <stddef.h>
 #include <stumpless.h>
+#include <windows.h>
 #include "test/function/windows/events.h"
 
 using::testing::HasSubstr;

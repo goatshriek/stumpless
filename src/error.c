@@ -16,16 +16,18 @@
  * limitations under the License.
  */
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/error.h>
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
 static struct stumpless_error *last_error = NULL;
-static short error_valid = 0;
+static bool error_valid = false;
 
 struct stumpless_error *
 stumpless_get_error( void ) {
@@ -48,6 +50,11 @@ stumpless_get_error_stream( void ) {
   }
 
   return error_stream;
+}
+
+bool
+stumpless_has_error( void ) {
+  return error_valid;
 }
 
 void
@@ -86,7 +93,7 @@ stumpless_set_error_stream( FILE *stream ) {
 
 void
 clear_error( void ) {
-  error_valid = 0;
+  error_valid = false;
 }
 
 void
@@ -111,6 +118,24 @@ raise_argument_too_big( const char *message, int code, const char *code_type ) {
 }
 
 void
+raise_duplicate_element( void ) {
+  raise_error( STUMPLESS_DUPLICATE_ELEMENT,
+               "an element with the provided name is already present in this" \
+               " entry",
+               0,
+               NULL );
+}
+
+void
+raise_element_not_found( void ) {
+  raise_error( STUMPLESS_ELEMENT_NOT_FOUND,
+               "an element with the specified characteristics could not be" \
+               " found",
+               0,
+               NULL );
+}
+
+void
 raise_error( enum stumpless_error_id id,
              const char *message,
              int code,
@@ -118,7 +143,7 @@ raise_error( enum stumpless_error_id id,
   if( !last_error ) {
     last_error = alloc_mem( sizeof( struct stumpless_error ) );
     if( !last_error ) {
-      error_valid = 0;
+      error_valid = false;
       return;
     }
   }
@@ -127,7 +152,7 @@ raise_error( enum stumpless_error_id id,
   last_error->message = message;
   last_error->code = code;
   last_error->code_type = code_type;
-  error_valid = 1;
+  error_valid = true;
 }
 
 void
@@ -141,22 +166,35 @@ raise_file_write_failure( void ) {
 }
 
 void
-raise_index_out_of_bounds( const char *message, int code ) {
-  raise_error( STUMPLESS_INDEX_OUT_OF_BOUNDS, message, code, "the invalid index" );
+raise_index_out_of_bounds( const char *message, size_t index ) {
+  raise_error( STUMPLESS_INDEX_OUT_OF_BOUNDS,
+               message,
+               size_t_to_int( index ),
+               "the invalid index, or -1 if it is too large to represent as"
+               " an int" );
 }
 
 void
-raise_invalid_facility( void ) {
+raise_invalid_facility( int facility ) {
   raise_error( STUMPLESS_INVALID_FACILITY,
                "facility codes must be defined in accordance with RFC 5424, "
                "after the multiplication by 8",
-               0,
-               NULL );
+               facility,
+               "the invalid facility" );
 }
 
 void
 raise_invalid_id( void ) {
   raise_error( STUMPLESS_INVALID_ID, NULL, 0, NULL );
+}
+
+void
+raise_invalid_severity( int severity ) {
+  raise_error( STUMPLESS_INVALID_SEVERITY,
+               "severity codes must be defined in accordance with RFC 5424: "
+               "values between 0 and 7 inclusive",
+               severity,
+               "the invalid severity" );
 }
 
 void
@@ -171,6 +209,14 @@ raise_memory_allocation_failure( void ) {
 void
 raise_network_protocol_unsupported( void ) {
   raise_error( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED, NULL, 0, NULL );
+}
+
+void
+raise_param_not_found( void ) {
+  raise_error( STUMPLESS_PARAM_NOT_FOUND,
+               "a param with the specified characteristics could not be found",
+               0,
+               NULL );
 }
 
 void

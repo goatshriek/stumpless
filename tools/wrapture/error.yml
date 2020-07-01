@@ -21,6 +21,13 @@ enums:
           A provided argument was too big, for example to fit into a buffer
           target.
         value: "STUMPLESS_ARGUMENT_TOO_BIG"
+      - name: "DUPLICATE_ELEMENT"
+        doc: >
+          A duplicate of an already existing element was detected in an Entry.
+        value: "STUMPLESS_DUPLICATE_ELEMENT"
+      - name: "ELEMENT_NOT_FOUND"
+        doc: "No element with the specified characteristics was found."
+        value: "STUMPLESS_ELEMENT_NOT_FOUND"
       - name: "FILE_OPEN_FAILURE"
         doc: "Could not open a file."
         value: "STUMPLESS_FILE_OPEN_FAILURE"
@@ -36,6 +43,9 @@ enums:
       - name: "INVALID_ID"
         doc: "A target or entry ID was not valid."
         value: "STUMPLESS_INVALID_ID"
+      - name: "INVALID_SEVERITY"
+        doc: "A provided severity code did not conform to RFC 5424."
+        value: "STUMPLESS_INVALID_SEVERITY"
       - name: "MEMORY_ALLOCATION_FAILURE"
         doc: "A memory allocation or reallocation failed."
         value: "STUMPLESS_MEMORY_ALLOCATION_FAILURE"
@@ -43,7 +53,9 @@ enums:
         doc: >
           The given layer 3 protocol is not supported by this implementation.
         value: "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED"
-      - name: "SOCKET_BIND_FAILURE"
+      - name: "PARAM_NOT_FOUND"
+        doc: "No param with the specified characteristics was found."
+        value: "STUMPLESS_PARAM_NOT_FOUND"
         doc: "Could not bind to a socket."
         value: "STUMPLESS_SOCKET_BIND_FAILURE"
       - name: "SOCKET_CONNECT_FAILURE"
@@ -121,6 +133,20 @@ classes:
       params:
         - name: "error-id"
           value: "STUMPLESS_ARGUMENT_TOO_BIG"
+  - name: "DuplicateElement"
+    doc: "A duplicate of an already existing element was detected in an Entry."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_DUPLICATE_ELEMENT"
+  - name: "ElementNotFound"
+    doc: "No element with the specified characteristics was found."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_ELEMENT_NOT_FOUND"
   - name: "FileOpenFailure"
     doc: "Could not open a file."
     use-template:
@@ -156,6 +182,13 @@ classes:
       params:
         - name: "error-id"
           value: "STUMPLESS_INVALID_ID"
+  - name: "InvalidSeverity"
+    doc: "A provided severity code did not conform to RFC 5424."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_INVALID_SEVERITY"
   - name: "MemoryAllocationFailure"
     doc: "A memory allocation or reallocation failed."
     use-template:
@@ -170,6 +203,13 @@ classes:
       params:
         - name: "error-id"
           value: "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED"
+  - name: "ParamNotFound"
+    doc: "No param with the specified characteristics was found."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_PARAM_NOT_FOUND"
   - name: "SocketBindFailure"
     doc: "Could not bind to a socket."
     use-template:

@@ -18,9 +18,15 @@
 "EVENTLOG_WARNING_TYPE": "windows.h"
 "EXIT_FAILURE": "stdlib.h"
 "EXIT_SUCCESS": "stdlib.h"
-"fclose": "stdio.h"
-"FILE": "stdio.h"
-"fopen": "stdio.h"
+"fclose":
+  - "cstdio"
+  - "stdio.h"
+"FILE":
+  - "cstdio"
+  - "stdio.h"
+"fopen":
+  - "cstdio"
+  - "stdio.h"
 "fprintf": "stdio.h"
 "free":
   - "cstdlib"
@@ -49,6 +55,8 @@
 "INT_MAX": "limits.h"
 "LPCSTR": "windows.h"
 "LOG_INFO": "syslog.h"
+"LOG_PID": "syslog.h"
+"LOG_USER": "syslog.h"
 "malloc":
   - "cstdlib"
   - "stdlib.h"
@@ -63,7 +71,9 @@
 "printf": "stdio.h"
 "PSOCKADDR": "winsock2.h"
 "PSOCKADDR_IN": "winsock2.h"
-"realloc": "stdlib.h"
+"realloc":
+  - "cstdlib"
+  - "stdlib.h"
 "recvfrom": "sys/socket.h"
 "regex_match": "regex"
 "RegisterEventSource": "windows.h"
@@ -87,9 +97,16 @@
 "std::cout": "iostream"
 "std::ifstream": "fstream"
 "std::regex": "regex"
-"stderr": "stdio.h"
+"stderr":
+  - "cstdio"
+  - "stdio.h"
+"strcmp":
+  - "cstring"
+  - "string.h"
 "strftime": "time.h"
-"strlen": "string.h"
+"strlen":
+  - "cstring"
+  - "string.h"
 "strncpy": "string.h"
 "struct addrinfo": "netdb.h"
 "struct timespec": "time.h"
@@ -107,5 +124,6 @@
 "va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
+"WIN32_LEAN_AND_MEAN": "windows.h"
 "WORD": "windows.h"
 "WSACleanup": "winsock2.h"

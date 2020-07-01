@@ -9,8 +9,7 @@ classes:
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_element"
-      includes:
-        - "stumpless/entry.h"
+      includes: "stumpless/element.h"
     constructors:
       - doc: "Creates a new Element with the given name."
         params:
@@ -19,8 +18,7 @@ classes:
             type: "const char *"
         wrapped-function:
           name: "stumpless_new_element"
-          includes:
-            - "stumpless/entry.h"
+          includes: "stumpless/element.h"
           params:
             - name: "name"
               doc: "The name of the element."
@@ -28,11 +26,48 @@ classes:
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
+      - doc: |
+          Creates an Element from a stumpless_element struct.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_element"
+          includes: "stumpless/element.h"
+          params:
+            - name: "element"
+              doc: |
+                The struct to create this Element from. The struct will be
+                copied during this creation, and so any changes made to it
+                after this call will not be reflected in the resulting instance.
+              type:
+                name: "struct stumpless_element *"
+                includes: "stumpless/element.h"
+              value: "element"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+      - doc: |
+          Creates an Element as a copy of another Element.
+
+          Available since release v1.6.0.
+        wrapped-function:
+          name: "stumpless_copy_element"
+          includes: "stumpless/element.h"
+          params:
+            - name: "element"
+              doc: "The Element to copy."
+              type:
+                name: "const Element &"
+                includes: "Element.hpp"
+              value: "element.equivalent"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
     destructor:
       wrapped-function:
-        name: "stumpless_destroy_element_only"
+        name: "stumpless_destroy_element_and_contents"
         includes:
-          - "stumpless/entry.h"
+          - "stumpless/element.h"
         params:
           - name: "equivalent-struct-pointer"
     functions:
@@ -48,11 +83,10 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_param"
-          includes: "stumpless/entry.h"
+          includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "new_param"
-              type: "struct stumpless_param *"
+            - value: "stumpless_copy_param( new_param.equivalent )"
       - name: "AddParam"
         doc: "Adds a Param to this Element."
         params:
@@ -65,8 +99,374 @@ classes:
           type: "self-reference"
         wrapped-function:
           name: "stumpless_add_param"
-          includes: "stumpless/entry.h"
+          includes: "stumpless/element.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "new_param"
-              type: "struct stumpless_param *"
+            - value: "stumpless_copy_param( new_param->equivalent )"
+      - name: "AddParam"
+        doc: |
+          Creates a new param with the given name and value and adds it to this
+          Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "param_name"
+            doc: "The name of the new Param."
+            type: "const char *"
+          - name: "param_value"
+            doc: "The value of the new Param."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_add_new_param"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "param_name"
+            - value: "param_value"
+      - name: "GetName"
+        doc: |
+          The name of this Element.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The name of this Element."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_element_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+      - name: "GetParam"
+        doc: |
+          Returns the param in the given element at the specified index.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the param to get."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: "The param at the given index."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_param_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+          return:
+            type: "struct stumpless_param *"
+            includes: "stumpless/param.h"
+      - name: "GetParam"
+        doc: |
+          Returns the first param in this element with the given name.
+
+          Note that an element may contain as many instances of a param as
+          desired according to RFC 5424, and therefore there may be other Params
+          with the same name. If you simply need a count of params with a given
+          name, then you can use GetParamNameCount to find this. If you need a
+          reference to any other params, then you must loop through all params
+          in the element using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the param to get."
+            type: "const char *"
+        return:
+          doc: "The param at the given index."
+          type:
+            name: "Param"
+            includes: "Param.hpp"
+        wrapped-function:
+          name: "stumpless_get_param_by_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "struct stumpless_param *"
+            includes: "stumpless/param.h"
+      - name: "GetParamCount"
+        doc: |
+          Returns the number of params in the given element.
+
+          Available since release v1.6.0.
+        return:
+          doc: "The number of params this Element has."
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_param_count"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "size_t"
+      - name: "GetParamIndex"
+        doc: |
+          Gets the index of the first occurrence of a Param with the given name
+          in this Element.
+
+          Note that an element may contain as many instances of a param as
+          desired according to RFC 5424, and therefore there may be other Params
+          that this function does not recognize. If you simply need a count of
+          params with a given name, then you can use GetParamNameCount to find
+          this. If you need a reference to any other params, then you must loop
+          through all params in the element using GetParam with an index,
+          checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to search for."
+            type: "const char *"
+        return:
+          doc: |
+            The index of the first Param with the given name. If no such Param
+            is found, then a StumplessParamNotFound exception is thrown.
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_param_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "size_t"
+      - name: "GetParamName"
+        doc: |
+          Gets the name of the Param with the given index in this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the param to get the name of."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+        return:
+          doc: |
+            The name of the Param at the given index. If there is no Param, or
+            some other error occurs, a StumplessException will be thrown.
+        wrapped-function:
+          name: "stumpless_get_param_name_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+          return:
+            type: "const char *"
+      - name: "GetParamNameCount"
+        doc: |
+          Gives the number of params with the given name found in this Element.
+
+          If you need to get an actual reference to any of these params beyond
+          the first one, then you will need to loop through all params in the
+          element using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to count."
+            type: "const char *"
+        return:
+          doc: "The number of Params with the given name in this Element."
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_param_name_count"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "size_t"
+      - name: "GetParamValue"
+        doc: |
+          Returns the value of the param at the given index in this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the Param to get the value of."
+            type:
+              name: "size_t"
+              includs: "stddef.h"
+        return:
+          doc: "The value of the param at the given index."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_value_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+          return:
+            type: "const char *"
+      - name: "GetParamValue"
+        doc: |
+          Returns the value of the first param with the given name in this
+          Element.
+
+          If you need to get the value of a param with the given name beyond
+          the first one, then you will need to loop through all params in the
+          element using GetParam with an index, checking each name.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to get the value of."
+            type: "const char *"
+        return:
+          doc: "The value of the param at the given index."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_param_value_by_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "const char *"
+      - name: "HasParam"
+        doc: |
+          True if this Element has a Param with the given name, false
+          otherwise.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to look for."
+            type: "const char *"
+        return:
+          doc: "True if the Param is found, false if not."
+          type: "bool"
+        wrapped-function:
+          name: "stumpless_element_has_param"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+          return:
+            type: "bool"
+      - name: "SetName"
+        doc: |
+          Set the name of this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The new name."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_element_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+      - name: "SetParam"
+        doc: |
+          Puts the param at the given index in this Element.
+
+          The parameter previously at this position will be removed from the
+          element, but it is NOT destroyed by this call. Callers must clean up
+          this param separately.
+
+          A param cannot be set at an index position that does not already hold
+          a Param. If this is attempted, then a StumplessIndexOutOfBounds
+          exception is raised.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index to set to the Param."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "param"
+            doc: "The new Param to put at the index."
+            type:
+              name: "Param *"
+              includes: "Param.hpp"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+            - value: "param->equivalent"
+      - name: "SetParamValue"
+        doc: |
+          Sets the value of the Param at the given index in this Element.
+
+          Available since release v1.6.0.
+        params:
+          - name: "index"
+            doc: "The index of the Param to set the value of."
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          - name: "value"
+            doc: "The new value of the Param at the given index."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value_by_index"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "index"
+            - value: "value"
+      - name: "SetParamValue"
+        doc: |
+          Sets the value of the first Param with the given name in this element.
+
+          If a Param of the given name is not found in this Element, one is
+          created with the supplied name and value and added to the end of this
+          Element.
+
+          If you need to set the value of a param with this name other than the
+          first one, then you will need to loop through the params using
+          GetParam with an index to find the params you want and then set the
+          value using SetValue on the result.
+
+          Available since release v1.6.0.
+        params:
+          - name: "name"
+            doc: "The name of the Param to set the Value of."
+            type: "const char *"
+          - name: "value"
+            doc: "The new value of the Param with the given name."
+            type: "const char *"
+        return:
+          doc: "The modified Element."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_param_value_by_name"
+          includes: "stumpless/element.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "name"
+            - value: "value"

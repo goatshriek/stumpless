@@ -137,9 +137,9 @@ matrix:
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
-  - gem update --system
-  - gem install bundler -v 2.1.4
-  - bundle install
+  - if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then gem update --system; fi
+  - if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then gem install bundler -v 2.1.4; fi
+  - if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then bundle install; fi
 
 before_script:
   # Add an IPv6 config - see the corresponding Travis issue
@@ -156,9 +156,9 @@ before_script:
     fi
 
 script:
-  - ../tools/check_headers/check_headers.rb ../include/**/*.h ../include/**/*.hpp
-  - ../tools/check_headers/check_headers.rb ../src/*.c ../src/**/*.c
-  - ../tools/check_headers/check_headers.rb ../test/**.cpp
+  - ../tools/check_headers/check_headers.rb "../include/*/**/*.h*"
+  - ../tools/check_headers/check_headers.rb "../src/**/*.c"
+  - ../tools/check_headers/check_headers.rb "../test/**/*.cpp"
   - if [ "${TRAVIS_OS_NAME}" == "windows" ]; then
       source ../tools/travis-ci/windows_script.sh;
     else
@@ -169,5 +169,6 @@ after_success:
   - VERSION=$(grep "#define STUMPLESS_VERSION \".*\"" include/stumpless/config.h | sed 's/.*\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\)\+.*/\1/')
   - cd ..
   - echo "sonar.projectVersion=$VERSION" >> sonar-project.properties
-  - bash <(curl -s https://codecov.io/bash)
+  - curl -L https://codecov.io/bash -o codecov.sh
+  - bash codecov.sh 2>&1 | grep -v "has arcs to entry block" | grep -v "has arcs from exit block"
   - sonar-scanner

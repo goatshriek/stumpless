@@ -19,6 +19,8 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 
+#  include <stddef.h>
+
 size_t
 windows_getpagesize( void );
 

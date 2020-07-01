@@ -46,12 +46,6 @@ takes longer than expected.
  * [ADD] **Roll-up header for C++ bindings**
    Instead of including each class header in the calling code, it would be more
    convenient to simply include a single header.
- * [ADD] **Improvements to Entry, Element, and Param functions**
-   The functions dealing with these structures are currently limited, and
-   in some cases require several calls and local variables to accomplish tasks
-   that will be very common. Adding more convenience functions will make working
-   with these simpler, not only in the base library but in the other language
-   bindings as well.
  * [FIX] **Socket targets may fail to bind to a local socket**
    Socket targets can be opened with a local socket name provided, but this may
    also be set to `NULL`, in which case a local socket is generated (see the
@@ -109,9 +103,33 @@ takes longer than expected.
    specified, which means that they could change across builds. Setting these to
    specific values will make them consistent across all builds, increasing
    interoperability.
+ * [CHANGE] **Facilities, severities, options, element functions, and param
+   functions will only be available in separate headers**
+   These items are all currently included in the `stumpless/entry.h` header,
+   which was originally getting too large. Separating these allowed for smaller,
+   more logically separate headers. While the roll-up header `stumpless.h` will
+   still include all of these, `stumpless/entry.h` will no longer included the
+   other headers. While the header split out was done in a minor release, the
+   removal of the headers from `stumpless/entry.h` is being delayed to a major
+   release as code that is including specific headers may break as a result of
+   this change.
+ * [CHANGE] **Facilities and severities will be defined by enumerations**
+   Enumerations are a cleaner way to represent the set values, and can be made
+   compatible with the `syslog.h` values if their backing `int` values match.
+   Because function signatures will change, this will be done in a major
+   release.
+ * [REMOVE] **Inclusion of windows.h in stumpless/config.h**
+   This inclusion, while convenient for some users, propogates inclusion
+   ordering problems. It will be removed so that such ordering concerns are only
+   on users of Windows, and not added to this library as well.
+ * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
+   Enumerations are preferred for working with these set values in C++, and this
+   function was inadvertently left in the library during development.
 
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**
+   Removing previously deprecated feature.
+ * [REMOVE] **Stream target constructor using `int` facility**
    Removing previously deprecated feature.
 
 ## Unallocated to a release

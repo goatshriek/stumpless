@@ -7,7 +7,9 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/ArgumentEmpty.hpp
   ${CPP_LIB_BUILD_DIR}/ArgumentTooBig.hpp
   ${CPP_LIB_BUILD_DIR}/BufferTarget.hpp
+  ${CPP_LIB_BUILD_DIR}/DuplicateElement.hpp
   ${CPP_LIB_BUILD_DIR}/Element.hpp
+  ${CPP_LIB_BUILD_DIR}/ElementNotFound.hpp
   ${CPP_LIB_BUILD_DIR}/Entry.hpp
   ${CPP_LIB_BUILD_DIR}/ErrorId.hpp
   ${CPP_LIB_BUILD_DIR}/Facility.hpp
@@ -17,10 +19,12 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CPP_LIB_BUILD_DIR}/IndexOutOfBounds.hpp
   ${CPP_LIB_BUILD_DIR}/InvalidFacility.hpp
   ${CPP_LIB_BUILD_DIR}/InvalidId.hpp
+  ${CPP_LIB_BUILD_DIR}/InvalidSeverity.hpp
   ${CPP_LIB_BUILD_DIR}/MemoryAllocationFailure.hpp
   ${CPP_LIB_BUILD_DIR}/MemoryManager.hpp
   ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.hpp
   ${CPP_LIB_BUILD_DIR}/Param.hpp
+  ${CPP_LIB_BUILD_DIR}/ParamNotFound.hpp
   ${CPP_LIB_BUILD_DIR}/Severity.hpp
   ${CPP_LIB_BUILD_DIR}/SocketBindFailure.hpp
   ${CPP_LIB_BUILD_DIR}/SocketConnectFailure.hpp
@@ -42,7 +46,9 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/ArgumentEmpty.cpp
   ${CPP_LIB_BUILD_DIR}/ArgumentTooBig.cpp
   ${CPP_LIB_BUILD_DIR}/BufferTarget.cpp
+  ${CPP_LIB_BUILD_DIR}/DuplicateElement.cpp
   ${CPP_LIB_BUILD_DIR}/Element.cpp
+  ${CPP_LIB_BUILD_DIR}/ElementNotFound.cpp
   ${CPP_LIB_BUILD_DIR}/Entry.cpp
   ${CPP_LIB_BUILD_DIR}/FileOpenFailure.cpp
   ${CPP_LIB_BUILD_DIR}/FileTarget.cpp
@@ -50,10 +56,12 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/IndexOutOfBounds.cpp
   ${CPP_LIB_BUILD_DIR}/InvalidFacility.cpp
   ${CPP_LIB_BUILD_DIR}/InvalidId.cpp
+  ${CPP_LIB_BUILD_DIR}/InvalidSeverity.cpp
   ${CPP_LIB_BUILD_DIR}/MemoryAllocationFailure.cpp
   ${CPP_LIB_BUILD_DIR}/MemoryManager.cpp
   ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.cpp
   ${CPP_LIB_BUILD_DIR}/Param.cpp
+  ${CPP_LIB_BUILD_DIR}/ParamNotFound.cpp
   ${CPP_LIB_BUILD_DIR}/SocketBindFailure.cpp
   ${CPP_LIB_BUILD_DIR}/SocketConnectFailure.cpp
   ${CPP_LIB_BUILD_DIR}/SocketFailure.cpp
@@ -127,6 +135,11 @@ set_target_properties(stumplesscpp
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
   target_compile_options(stumplesscpp PUBLIC "-std=c++11")
 endif()
+
+add_cpp_test(element
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/element.cpp
+)
 
 add_cpp_test(entry
   SOURCES
