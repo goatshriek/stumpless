@@ -13,4 +13,4 @@
 *.xml   text eol=lf
 *.yml   text eol=lf
 
-test/*  linguist-documentation=true
+test/*.cpp  linguist-documentation=true
