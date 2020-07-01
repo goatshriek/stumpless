@@ -872,7 +872,6 @@ namespace {
   TEST_F( EntryTest, SetParamValueByNameElementNameNotFoundMallocFailure ) {
     void *(*set_malloc_result)(size_t);
     const struct stumpless_entry *result;
-    struct stumpless_element *new_element;
     const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
@@ -892,7 +891,6 @@ namespace {
   TEST_F( EntryTest, SetParamValueByNameElementNameNotFoundMallocFailureOnParamValue ) {
     void *(*set_malloc_result)(size_t);
     const struct stumpless_entry *result;
-    struct stumpless_element *new_element;
     const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 17 ) );
@@ -912,7 +910,6 @@ namespace {
   TEST_F( EntryTest, SetParamValueByNameElementNameNotFoundReallocFailure ) {
     void * (*set_realloc_result)(void *, size_t);
     const struct stumpless_entry *result;
-    struct stumpless_element *new_element;
     const struct stumpless_error *error;
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );

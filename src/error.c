@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stumpless/error.h>
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 
 static FILE *error_stream = NULL;
@@ -165,8 +166,12 @@ raise_file_write_failure( void ) {
 }
 
 void
-raise_index_out_of_bounds( const char *message, int code ) {
-  raise_error( STUMPLESS_INDEX_OUT_OF_BOUNDS, message, code, "the invalid index" );
+raise_index_out_of_bounds( const char *message, size_t index ) {
+  raise_error( STUMPLESS_INDEX_OUT_OF_BOUNDS,
+               message,
+               size_t_to_int( index ),
+               "the invalid index, or -1 if it is too large to represent as"
+               " an int" );
 }
 
 void

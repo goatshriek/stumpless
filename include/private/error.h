@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_ERROR_H
 #  define __STUMPLESS_PRIVATE_ERROR_H
 
+#  include <stddef.h>
 #  include <stumpless/error.h>
 
 void
@@ -55,7 +56,7 @@ void
 raise_file_write_failure( void );
 
 void
-raise_index_out_of_bounds( const char *message, int code );
+raise_index_out_of_bounds( const char *message, size_t index );
 
 void
 raise_invalid_facility( int facility );

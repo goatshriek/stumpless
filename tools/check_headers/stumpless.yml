@@ -163,6 +163,7 @@
 "sendto_unsupported_target": "private/target.h"
 "set_entry_wel_type": "private/config/wel_supported.h"
 "severity_is_invalid": "private/severity.h"
+"size_t_to_int": "private/inthelper.h"
 "socket_open_default_target": "private/config/socket_supported.h"
 "strbuilder_append_app_name": "private/entry.h"
 "strbuilder_get_buffer": "private/strbuilder.h"

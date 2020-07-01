@@ -33,4 +33,8 @@
 int
 cap_size_t_to_int( size_t val );
 
+
+int
+size_t_to_int( size_t val );
+
 #endif /* __STUMPLESS_PRIVATE_INTHELPER_H */
