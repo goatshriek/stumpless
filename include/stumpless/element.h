@@ -118,6 +118,8 @@ stumpless_add_param( struct stumpless_element *element,
  * the original element are destroyed, the equivalent ones in this element will
  * still be valid.
  *
+ * @since Release v1.6.0.
+ *
  * @param element The element to copy.
  *
  * @return A new element that is a deep copy of the original. If an error is

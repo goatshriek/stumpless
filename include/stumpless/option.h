@@ -30,21 +30,29 @@
 
 #    include <syslog.h>
 
-/* these don't have doxygen documentation as they are currently not supported
- * by the implementation */
+/** Not currently supported. PIDs are always included in stumpless messages. */
 #    define STUMPLESS_OPTION_PID    LOG_PID
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_CONS   LOG_CONS
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_NDELAY LOG_NDELAY
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_ODELAY LOG_ODELAY
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT
 
 /* options normally defined in syslog.h */
 #  else
 
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_PID    1
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_CONS   (1<<1)
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_NDELAY (1<<2)
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_ODELAY (1<<3)
+/** Not currently supported. */
 #    define STUMPLESS_OPTION_NOWAIT (1<<4)
 
 #  endif
