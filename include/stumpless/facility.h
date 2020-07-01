@@ -43,23 +43,23 @@
 /** Mail system. */
 #    define STUMPLESS_FACILITY_MAIL   LOG_MAIL
 
-/** Network news subsystem. */
-#    define STUMPLESS_FACILITY_NEWS   LOG_NEWS
-
-/** UUCP subsystem. */
-#    define STUMPLESS_FACILITY_UUCP   LOG_UUCP
-
 /** System daemons. */
 #    define STUMPLESS_FACILITY_DAEMON LOG_DAEMON
 
 /** Security/authorization messages. */
 #    define STUMPLESS_FACILITY_AUTH   LOG_AUTH
 
-/** Clock daemon. */
-#    define STUMPLESS_FACILITY_CRON   LOG_CRON
-
 /** Line printer subsystem. */
 #    define STUMPLESS_FACILITY_LPR    LOG_LPR
+
+/** Network news subsystem. */
+#    define STUMPLESS_FACILITY_NEWS   LOG_NEWS
+
+/** UUCP subsystem. */
+#    define STUMPLESS_FACILITY_UUCP   LOG_UUCP
+
+/** Clock daemon. */
+#    define STUMPLESS_FACILITY_CRON   LOG_CRON
 
 /** Local use 0. */
 #    define STUMPLESS_FACILITY_LOCAL0 LOG_LOCAL0
@@ -88,22 +88,55 @@
 /* facility codes as specified in RFC 5424*/
 #  else
 
+/** Kernel messages. */
 #    define STUMPLESS_FACILITY_KERN   0
+
+/** User-level messages. */
 #    define STUMPLESS_FACILITY_USER   (1<<3)
+
+/** Mail system. */
 #    define STUMPLESS_FACILITY_MAIL   (2<<3)
+
+/** System daemons. */
 #    define STUMPLESS_FACILITY_DAEMON (3<<3)
+
+/** Security/authorization messages. */
 #    define STUMPLESS_FACILITY_AUTH   (4<<3)
+
+/** Line printer subsystem. */
 #    define STUMPLESS_FACILITY_LPR    (6<<3)
+
+/** Network news subsystem. */
 #    define STUMPLESS_FACILITY_NEWS   (7<<3)
+
+/** UUCP subsystem. */
 #    define STUMPLESS_FACILITY_UUCP   (8<<3)
+
+/** Clock daemon. */
 #    define STUMPLESS_FACILITY_CRON   (9<<3)
+
+/** Local use 0. */
 #    define STUMPLESS_FACILITY_LOCAL0 (16<<3)
+
+/** Local use 1. */
 #    define STUMPLESS_FACILITY_LOCAL1 (17<<3)
+
+/** Local use 2. */
 #    define STUMPLESS_FACILITY_LOCAL2 (18<<3)
+
+/** Local use 3. */
 #    define STUMPLESS_FACILITY_LOCAL3 (19<<3)
+
+/** Local use 4. */
 #    define STUMPLESS_FACILITY_LOCAL4 (20<<3)
+
+/** Local use 5. */
 #    define STUMPLESS_FACILITY_LOCAL5 (21<<3)
+
+/** Local use 6. */
 #    define STUMPLESS_FACILITY_LOCAL6 (22<<3)
+
+/** Local use 7. */
 #    define STUMPLESS_FACILITY_LOCAL7 (23<<3)
 
 #  endif
