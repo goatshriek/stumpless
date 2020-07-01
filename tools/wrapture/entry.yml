@@ -310,7 +310,7 @@ classes:
             name: "Param"
             includes: "Param.hpp"
         wrapped-function:
-          name: "stumpless_get_param_by_index_from_entry"
+          name: "stumpless_get_entry_param_by_index"
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
@@ -344,7 +344,7 @@ classes:
             name: "Param"
             includes: "Param.hpp"
         wrapped-function:
-          name: "stumpless_get_param_by_name_from_entry"
+          name: "stumpless_get_entry_param_by_name"
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
@@ -375,7 +375,7 @@ classes:
           doc: "The value of the Param at the given index."
           type: "const char *"
         wrapped-function:
-          name: "stumpless_get_param_value_by_index_from_entry"
+          name: "stumpless_get_entry_param_value_by_index"
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
@@ -407,7 +407,7 @@ classes:
           doc: "The value of the first Param with the given name."
           type: "const char *"
         wrapped-function:
-          name: "stumpless_get_param_value_by_name_from_entry"
+          name: "stumpless_get_entry_param_value_by_name"
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
@@ -640,7 +640,7 @@ classes:
           doc: "The modified Entry."
           type: "self-reference"
         wrapped-function:
-          name: "stumpless_set_param_by_index_from_entry"
+          name: "stumpless_set_entry_param_by_index"
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
@@ -675,7 +675,7 @@ classes:
           doc: "The modified Entry."
           type: "self-reference"
         wrapped-function:
-          name: "stumpless_set_param_value_by_index_from_entry"
+          name: "stumpless_set_entry_param_value_by_index"
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
@@ -717,7 +717,7 @@ classes:
           doc: "The modified Entry."
           type: "self-reference"
         wrapped-function:
-          name: "stumpless_set_param_value_by_name_from_entry"
+          name: "stumpless_set_entry_param_value_by_name"
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"

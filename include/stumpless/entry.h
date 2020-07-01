@@ -327,6 +327,98 @@ const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry );
 
 /**
+ * Gets the param from the element at the given index in an entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_index The index of the element to get the param from.
+ *
+ * @param param_index The index of the param to get from the element.
+ *
+ * @return The param at the given index if no error is encountered. If an error
+ * is encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_param *
+stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
+                                    size_t element_index,
+                                    size_t param_index );
+
+/**
+ * Gets the first param from the element with the given name in an entry.
+ *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances with
+ * the same name. If you need a reference to other params with the same name in
+ * the element, then you must loop through all params using
+ * stumpless_get_entry_param_by_index, checking each name.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_name The name of the element to get the param from.
+ *
+ * @param param_name The name of the param to get from the element.
+ *
+ * @return The first param with the given name if no error is encountered. If
+ * an error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+struct stumpless_param *
+stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
+                                   const char *element_name,
+                                   const char *param_name );
+
+/**
+ * Gets the value of the param from the element at the given index in an entry.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_index The index of the element to get the param from.
+ *
+ * @param param_index The index of the param to get the value of.
+ *
+ * @return The value of the param at the given index if no error is encountered.
+ * If an error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
+                                          size_t element_index,
+                                          size_t param_index );
+
+/**
+ * Gets the value of the first param from the element with the given name in an
+ * entry.
+ *
+ * Note that an element may contain as many instances of a param as desired
+ * according to RFC 5424, and therefore there may be other param instances with
+ * the same name. If you need the value of other params with the same name in
+ * the element, then you must loop through all params using
+ * stumpless_get_entry_param_by_index, checking each name.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the param from.
+ *
+ * @param element_name The name of the element to get the param from.
+ *
+ * @param param_name The name of the param to get from the element.
+ *
+ * @return The value of the first param with the given name if no error is
+ * encountered. If an error is encountered, then NULL is returned and an error
+ * code is set appropriately.
+ */
+const char *
+stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
+                                         const char *element_name,
+                                         const char *param_name );
+
+/**
  * Returns the prival of the given entry, as defined in RFC 5424.
  *
  * @since Release v1.6.0.
@@ -351,98 +443,6 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
  */
 int
 stumpless_get_entry_severity( const struct stumpless_entry *entry );
-
-/**
- * Gets the param from the element at the given index in an entry.
- *
- * @since Release v1.6.0.
- *
- * @param entry The entry to get the param from.
- *
- * @param element_index The index of the element to get the param from.
- *
- * @param param_index The index of the param to get from the element.
- *
- * @return The param at the given index if no error is encountered. If an error
- * is encountered, then NULL is returned and an error code is set appropriately.
- */
-struct stumpless_param *
-stumpless_get_param_by_index_from_entry( const struct stumpless_entry *entry,
-                                         size_t element_index,
-                                         size_t param_index );
-
-/**
- * Gets the first param from the element with the given name in an entry.
- *
- * Note that an element may contain as many instances of a param as desired
- * according to RFC 5424, and therefore there may be other param instances with
- * the same name. If you need a reference to other params with the same name in
- * the element, then you must loop through all params using
- * stumpless_get_param_by_index_from_entry, checking each name.
- *
- * @since Release v1.6.0.
- *
- * @param entry The entry to get the param from.
- *
- * @param element_name The name of the element to get the param from.
- *
- * @param param_name The name of the param to get from the element.
- *
- * @return The first param with the given name if no error is encountered. If
- * an error is encountered, then NULL is returned and an error code is set
- * appropriately.
- */
-struct stumpless_param *
-stumpless_get_param_by_name_from_entry( const struct stumpless_entry *entry,
-                                        const char *element_name,
-                                        const char *param_name );
-
-/**
- * Gets the value of the param from the element at the given index in an entry.
- *
- * @since Release v1.6.0.
- *
- * @param entry The entry to get the param from.
- *
- * @param element_index The index of the element to get the param from.
- *
- * @param param_index The index of the param to get the value of.
- *
- * @return The value of the param at the given index if no error is encountered.
- * If an error is encountered, then NULL is returned and an error code is set
- * appropriately.
- */
-const char *
-stumpless_get_param_value_by_index_from_entry( const struct stumpless_entry *entry,
-                                               size_t element_index,
-                                               size_t param_index );
-
-/**
- * Gets the value of the first param from the element with the given name in an
- * entry.
- *
- * Note that an element may contain as many instances of a param as desired
- * according to RFC 5424, and therefore there may be other param instances with
- * the same name. If you need the value of other params with the same name in
- * the element, then you must loop through all params using
- * stumpless_get_param_by_index_from_entry, checking each name.
- *
- * @since Release v1.6.0.
- *
- * @param entry The entry to get the param from.
- *
- * @param element_name The name of the element to get the param from.
- *
- * @param param_name The name of the param to get from the element.
- *
- * @return The value of the first param with the given name if no error is
- * encountered. If an error is encountered, then NULL is returned and an error
- * code is set appropriately.
- */
-const char *
-stumpless_get_param_value_by_name_from_entry( const struct stumpless_entry *entry,
-                                              const char *element_name,
-                                              const char *param_name );
 
 /**
  * Creates a new entry with the given characteristics.
@@ -586,6 +586,91 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
                              ... );
 
 /**
+ * Puts the param in the element at the given index of an entry.
+ *
+ * The parameter previously at this position will be removed from the element,
+ * but it is NOT destroyed by this call. Callers must clean up this param
+ * separately.
+ *
+ * A param cannot be set at an index position that does not already hold a
+ * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
+ * is raised.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the param on.
+ *
+ * @param element_index The index of the element to have the param.
+ *
+ * @param param_index The index to put the param at in the chosen element.
+ *
+ * @param param The param to set.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
+                                    size_t element_index,
+                                    size_t param_index,
+                                    struct stumpless_param *param );
+
+/**
+ * Sets the value of the param in the element at the given index of an entry.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the param value on.
+ *
+ * @param element_index The index of the element having the param to modify.
+ *
+ * @param param_index The index of the param to set the value of.
+ *
+ * @param value The new value to set on the param.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
+                                          size_t element_index,
+                                          size_t param_index,
+                                          const char *value );
+
+/**
+ * Sets the value of the first param in the named element an entry.
+ *
+ * If an element with the given name is not found in the entry, one is created
+ * with the supplied name and added to the end of the entry.
+ *
+ * If a param of the given name is not found in the named element, one is
+ * created with the supplied name and value and added to the end of the element.
+ *
+ * If you need to set the value of a param with this name other than the first
+ * one, then you will need to loop through the params using
+ * stumpless_get_entry_param_by_index to find the params you want and then
+ * set the value using stumpless_set_entry_param_value_by_index.
+ *
+ * @since Release v1.6.0
+ *
+ * @param entry The entry to set the param value on.
+ *
+ * @param element_name The name of the element having the param to modify.
+ *
+ * @param param_name The name of the param to set the value of.
+ *
+ * @param value The new value to set on the param.
+ *
+ * @return The modified entry, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
+                                         const char *element_name,
+                                         const char *param_name,
+                                         const char *value );
+
+/**
 * Sets the facility and severity of an entry.
 *
 * @since Release v1.6.0.
@@ -639,91 +724,6 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
  */
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
-
-/**
- * Puts the param in the element at the given index of an entry.
- *
- * The parameter previously at this position will be removed from the element,
- * but it is NOT destroyed by this call. Callers must clean up this param
- * separately.
- *
- * A param cannot be set at an index position that does not already hold a
- * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
- * is raised.
- *
- * @since Release v1.6.0
- *
- * @param entry The entry to set the param on.
- *
- * @param element_index The index of the element to have the param.
- *
- * @param param_index The index to put the param at in the chosen element.
- *
- * @param param The param to set.
- *
- * @return The modified entry, if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-struct stumpless_entry *
-stumpless_set_param_by_index_from_entry( struct stumpless_entry *entry,
-                                         size_t element_index,
-                                         size_t param_index,
-                                         struct stumpless_param *param );
-
-/**
- * Sets the value of the param in the element at the given index of an entry.
- *
- * @since Release v1.6.0
- *
- * @param entry The entry to set the param value on.
- *
- * @param element_index The index of the element having the param to modify.
- *
- * @param param_index The index of the param to set the value of.
- *
- * @param value The new value to set on the param.
- *
- * @return The modified entry, if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-struct stumpless_entry *
-stumpless_set_param_value_by_index_from_entry( struct stumpless_entry *entry,
-                                               size_t element_index,
-                                               size_t param_index,
-                                               const char *value );
-
-/**
- * Sets the value of the first param in the named element an entry.
- *
- * If an element with the given name is not found in the entry, one is created
- * with the supplied name and added to the end of the entry.
- *
- * If a param of the given name is not found in the named element, one is
- * created with the supplied name and value and added to the end of the element.
- *
- * If you need to set the value of a param with this name other than the first
- * one, then you will need to loop through the params using
- * stumpless_get_param_by_index_from_entry to find the params you want and then
- * set the value using stumpless_set_param_value_by_index_from_entry.
- *
- * @since Release v1.6.0
- *
- * @param entry The entry to set the param value on.
- *
- * @param element_name The name of the element having the param to modify.
- *
- * @param param_name The name of the param to set the value of.
- *
- * @param value The new value to set on the param.
- *
- * @return The modified entry, if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-struct stumpless_entry *
-stumpless_set_param_value_by_name_from_entry( struct stumpless_entry *entry,
-                                              const char *element_name,
-                                              const char *param_name,
-                                              const char *value );
 
 /**
  * Creates a new entry with the given parameters.

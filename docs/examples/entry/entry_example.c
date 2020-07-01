@@ -84,17 +84,16 @@ main( int argc, char **argv ) {
 
   // logging code to update the entry and log it for each event
   // entries and params are automatically created if they are not present
-  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
-                                                "user", "name", "chester" );
-  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
-                                                "user", "id", "5763332" );
-  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
-                                                "user", "locked", "true" );
-  stumpless_set_param_value_by_name_from_entry( failed_login_entry,
-                                                "try", "number", "3" );
+  stumpless_set_entry_param_value_by_name( failed_login_entry,
+                                           "user", "name", "chester" );
+  stumpless_set_entry_param_value_by_name( failed_login_entry,
+                                           "user", "id", "5763332" );
+  stumpless_set_entry_param_value_by_name( failed_login_entry,
+                                           "user", "locked", "true" );
+  stumpless_set_entry_param_value_by_name( failed_login_entry,
+                                           "try", "number", "3" );
   printf( "an entry with structured data:\n" );
   stumpless_add_entry( stdout_target, failed_login_entry );
-  printf( "\n\n" );
 
   // destroying all the resources before finishing up
   stumpless_close_target( stdout_target );

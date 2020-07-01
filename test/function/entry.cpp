@@ -432,9 +432,7 @@ namespace {
   TEST_F( EntryTest, GetParamByIndex ) {
     const struct stumpless_param *result;
 
-    result = stumpless_get_param_by_index_from_entry( basic_entry,
-                                                      0,
-                                                      0 );
+    result = stumpless_get_entry_param_by_index( basic_entry, 0, 0 );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, param_1_1 );
   }
@@ -443,7 +441,7 @@ namespace {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
 
-    result = stumpless_get_param_by_index_from_entry( basic_entry, 766, 0 );
+    result = stumpless_get_entry_param_by_index( basic_entry, 766, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 766 );
     EXPECT_NULL( result );
@@ -452,9 +450,9 @@ namespace {
   TEST_F( EntryTest, GetParamByName ) {
     const struct stumpless_param *result;
 
-    result = stumpless_get_param_by_name_from_entry( basic_entry,
-                                                     element_1_name,
-                                                     param_1_1_name );
+    result = stumpless_get_entry_param_by_name( basic_entry,
+                                                element_1_name,
+                                                param_1_1_name );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, param_1_1 );
   }
@@ -463,9 +461,9 @@ namespace {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
 
-    result = stumpless_get_param_by_name_from_entry( basic_entry,
-                                                     "not-present",
-                                                     param_1_1_name );
+    result = stumpless_get_entry_param_by_name( basic_entry,
+                                                "not-present",
+                                                param_1_1_name );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ELEMENT_NOT_FOUND );
     EXPECT_NULL( result );
   }
@@ -473,7 +471,7 @@ namespace {
   TEST_F( EntryTest, GetParamValueByIndex ) {
     const char *result;
 
-    result = stumpless_get_param_value_by_index_from_entry( basic_entry, 0, 0 );
+    result = stumpless_get_entry_param_value_by_index( basic_entry, 0, 0 );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( result, param_1_1_value );
   }
@@ -482,9 +480,7 @@ namespace {
     const char *result;
     const struct stumpless_error *error;
 
-    result = stumpless_get_param_value_by_index_from_entry( basic_entry,
-                                                            455,
-                                                            0 );
+    result = stumpless_get_entry_param_value_by_index( basic_entry, 455, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 455 );
     EXPECT_NULL( result );
@@ -493,9 +489,9 @@ namespace {
   TEST_F( EntryTest, GetParamValueByName ) {
     const char *result;
 
-    result = stumpless_get_param_value_by_name_from_entry( basic_entry,
-                                                           element_1_name,
-                                                           param_1_1_name );
+    result = stumpless_get_entry_param_value_by_name( basic_entry,
+                                                      element_1_name,
+                                                      param_1_1_name );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( result, param_1_1_value );
   }
@@ -504,9 +500,9 @@ namespace {
     const char *result;
     const struct stumpless_error *error;
 
-    result = stumpless_get_param_value_by_name_from_entry( basic_entry,
-                                                           "not-present",
-                                                           param_1_1_name );
+    result = stumpless_get_entry_param_value_by_name( basic_entry,
+                                                      "not-present",
+                                                      param_1_1_name );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ELEMENT_NOT_FOUND );
     EXPECT_NULL( result );
   }
@@ -736,10 +732,10 @@ namespace {
     new_param = stumpless_new_param( "new-param", "new-value" );
     ASSERT_NOT_NULL( new_param );
 
-    previous_param = stumpless_get_param_by_index_from_entry( basic_entry, 0, 0 );
+    previous_param = stumpless_get_entry_param_by_index( basic_entry, 0, 0 );
     ASSERT_NOT_NULL( previous_param );
 
-    result = stumpless_set_param_by_index_from_entry( basic_entry, 0, 0, new_param );
+    result = stumpless_set_entry_param_by_index( basic_entry, 0, 0, new_param );
     EXPECT_NO_ERROR;
     ASSERT_EQ( result, basic_entry );
 
@@ -754,7 +750,10 @@ namespace {
     new_param = stumpless_new_param( "new-param", "new-value" );
     ASSERT_NOT_NULL( new_param );
 
-    result = stumpless_set_param_by_index_from_entry( basic_entry, 455, 0, new_param );
+    result = stumpless_set_entry_param_by_index( basic_entry,
+                                                 455,
+                                                 0,
+                                                 new_param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 455 );
     EXPECT_NULL( result );
@@ -770,10 +769,10 @@ namespace {
     new_param = stumpless_new_param( "new-param", "new-value" );
     ASSERT_NOT_NULL( new_param );
 
-    result = stumpless_set_param_by_index_from_entry( basic_entry,
-                                                      0,
-                                                      566,
-                                                      new_param );
+    result = stumpless_set_entry_param_by_index( basic_entry,
+                                                 0,
+                                                 566,
+                                                 new_param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 566 );
     EXPECT_NULL( result );
@@ -784,10 +783,10 @@ namespace {
   TEST_F( EntryTest, SetParamValueByIndex ) {
     const struct stumpless_entry *result;
 
-    result = stumpless_set_param_value_by_index_from_entry( basic_entry,
-                                                            0,
-                                                            0,
-                                                            "new-value" );
+    result = stumpless_set_entry_param_value_by_index( basic_entry,
+                                                       0,
+                                                       0,
+                                                       "new-value" );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, basic_entry );
     EXPECT_STREQ( stumpless_get_param_value( param_1_1 ), "new-value" );
@@ -797,10 +796,10 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_value_by_index_from_entry( basic_entry,
-                                                            5666,
-                                                            0,
-                                                            "new-value" );
+    result = stumpless_set_entry_param_value_by_index( basic_entry,
+                                                       5666,
+                                                       0,
+                                                       "new-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 5666 );
     EXPECT_NULL( result );
@@ -810,10 +809,10 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_value_by_index_from_entry( basic_entry,
-                                                            0,
-                                                            666,
-                                                            "new-value" );
+    result = stumpless_set_entry_param_value_by_index( basic_entry,
+                                                       0,
+                                                       666,
+                                                       "new-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( error->code, 666 );
     EXPECT_NULL( result );
@@ -822,10 +821,10 @@ namespace {
   TEST_F( EntryTest, SetParamValueByName ) {
     const struct stumpless_entry *result;
 
-    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
-                                                           element_1_name,
-                                                           param_1_1_name,
-                                                           "new-value" );
+    result = stumpless_set_entry_param_value_by_name( basic_entry,
+                                                      element_1_name,
+                                                      param_1_1_name,
+                                                      "new-value" );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, basic_entry );
     EXPECT_STREQ( stumpless_get_param_value( param_1_1 ), "new-value" );
@@ -835,10 +834,10 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
-                                                           NULL,
-                                                           param_1_1_name,
-                                                           "new-value" );
+    result = stumpless_set_entry_param_value_by_name( basic_entry,
+                                                      NULL,
+                                                      param_1_1_name,
+                                                      "new-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
   }
@@ -847,10 +846,10 @@ namespace {
     const struct stumpless_entry *result;
     struct stumpless_element *new_element;
 
-    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
-                                                           "doesnt-exist",
-                                                           "new-name",
-                                                           "new-value" );
+    result = stumpless_set_entry_param_value_by_name( basic_entry,
+                                                      "doesnt-exist",
+                                                      "new-name",
+                                                      "new-value" );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, basic_entry );
     EXPECT_TRUE( stumpless_entry_has_element( basic_entry, "doesnt-exist" ) );
@@ -871,10 +870,10 @@ namespace {
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_TRUE( set_malloc_result != NULL );
 
-    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
-                                                           "doesnt-exist",
-                                                           "new-name",
-                                                           "new-value" );
+    result = stumpless_set_entry_param_value_by_name( basic_entry,
+                                                      "doesnt-exist",
+                                                      "new-name",
+                                                      "new-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     EXPECT_NULL( result );
 
@@ -891,10 +890,10 @@ namespace {
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 17 ) );
     ASSERT_TRUE( set_malloc_result != NULL );
 
-    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
-                                                           "doesnt-exist",
-                                                           "new-name",
-                                                           "new-doomed-value" );
+    result = stumpless_set_entry_param_value_by_name( basic_entry,
+                                                      "doesnt-exist",
+                                                      "new-name",
+                                                      "new-doomed-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     EXPECT_NULL( result );
 
@@ -911,10 +910,10 @@ namespace {
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_TRUE( set_realloc_result != NULL );
 
-    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
-                                                           "doesnt-exist",
-                                                           "new-name",
-                                                           "new-value" );
+    result = stumpless_set_entry_param_value_by_name( basic_entry,
+                                                      "doesnt-exist",
+                                                      "new-name",
+                                                      "new-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
     EXPECT_NULL( result );
 
@@ -925,10 +924,10 @@ namespace {
   TEST_F( EntryTest, SetParamValueByNameParamNameNotFound ) {
     const struct stumpless_entry *result;
 
-    result = stumpless_set_param_value_by_name_from_entry( basic_entry,
-                                                           element_1_name,
-                                                           "doesnt-exist",
-                                                           "new-value" );
+    result = stumpless_set_entry_param_value_by_name( basic_entry,
+                                                      element_1_name,
+                                                      "doesnt-exist",
+                                                      "new-value" );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, basic_entry );
     EXPECT_TRUE( stumpless_element_has_param( element_1, "doesnt-exist" ) );
@@ -1505,7 +1504,7 @@ namespace {
     param = stumpless_new_param( "param-name", "param-value" );
     ASSERT_NOT_NULL( param );
 
-    result = stumpless_set_param_by_index_from_entry( NULL, 0, 0, param );
+    result = stumpless_set_entry_param_by_index( NULL, 0, 0, param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
 
@@ -1516,10 +1515,10 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_value_by_index_from_entry( NULL,
-                                                            0,
-                                                            0,
-                                                            "new-value" );
+    result = stumpless_set_entry_param_value_by_index( NULL,
+                                                       0,
+                                                       0,
+                                                       "new-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
   }
@@ -1528,10 +1527,10 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    result = stumpless_set_param_value_by_name_from_entry( NULL,
-                                                           "element-name",
-                                                           "param-name",
-                                                           "new-value" );
+    result = stumpless_set_entry_param_value_by_name( NULL,
+                                                      "element-name",
+                                                      "param-name",
+                                                      "new-value" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
   }
