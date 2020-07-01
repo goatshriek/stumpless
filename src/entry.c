@@ -315,6 +315,11 @@ stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
   return entry->msgid;
 }
 
+const char *
+stumpless_get_entry_message( const struct stumpless_entry *entry ) {
+  return NULL;
+}
+
 struct stumpless_param *
 stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
                                     size_t element_index,

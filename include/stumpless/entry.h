@@ -313,6 +313,23 @@ int
 stumpless_get_entry_facility( const struct stumpless_entry *entry );
 
 /**
+ * Returns the message of the given entry.
+ *
+ * Note that if this message was originally set using format specifiers, the
+ * result will have them substituted, instead of the original placeholders.
+ *
+ * @since Release v1.6.0.
+ *
+ * @param entry The entry to get the message of.
+ *
+ * @return The message of the entry if no error is encountered. If an error
+ * was encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_entry_message( const struct stumpless_entry *entry );
+
+/**
  * Returns the msgid of the given entry.
  *
  * @since Release v1.6.0.
