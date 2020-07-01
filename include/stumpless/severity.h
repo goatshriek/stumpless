@@ -71,17 +71,37 @@
 /* severity codes as specified in RFC 5424 */
 #  else
 
+/** Emergency: system is unusable. */
 #    define STUMPLESS_SEVERITY_EMERG   0
+
+/** Alert: action must be taken immediately. */
 #    define STUMPLESS_SEVERITY_ALERT   1
+
+/** Critical: critical conditions. */
 #    define STUMPLESS_SEVERITY_CRIT    2
+
+/** Error: error conditions. */
 #    define STUMPLESS_SEVERITY_ERR     3
+
+/** Warning: warning conditions. */
 #    define STUMPLESS_SEVERITY_WARN    4
+
+/** Warning: warning conditions. */
 #    define STUMPLESS_SEVERITY_WARNING 4
+
+/** Notice: normal but significant condition. */
 #    define STUMPLESS_SEVERITY_NOTICE  5
+
+/** Informational: informational messages. */
 #    define STUMPLESS_SEVERITY_INFO    6
+
+/** Debug: debug-level messages. */
 #    define STUMPLESS_SEVERITY_DEBUG   7
 
+/** Creates a severity mask for the provided severity. */
 #    define STUMPLESS_SEVERITY_MASK(severity) (1<<(severity))
+
+/** Creates a severity mask from EMERG up to the provided severity. */
 #    define STUMPLESS_SEVERITY_MASK_UPTO(severity) ((1<<((severity)+1))-1)
 
 #  endif
