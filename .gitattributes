@@ -1,10 +1,11 @@
 *       text eol=lf
 
 *.c     text eol=lf
-*.cpp   text eol=lf
+*.cpp   text eol=lf linguist-documentation
 *.cmake text eol=lf
 *.def   text eol=crlf
 *.h     text eol=lf linguist-language=C
+*.hpp   text eol=lf linguist-documentation
 *.i     text eol=lf
 *.mc    text eol=crlf
 *.pl    text eol=lf
@@ -12,4 +13,3 @@
 *.txt   text eol=lf
 *.xml   text eol=lf
 *.yml   text eol=lf
-
