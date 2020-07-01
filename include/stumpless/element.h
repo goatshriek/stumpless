@@ -34,8 +34,8 @@ extern "C" {
 /**
  * An element of structured data.
  *
- * Elements must have a name, but may not have any parameters. Their components
- * must comply with RFC 5424.
+ * Elements must have a name, but may or may not have any parameters. Their
+ * components must comply with RFC 5424.
  */
 struct stumpless_element {
 /**
