@@ -81,7 +81,7 @@ namespace {
     stumpless_get_param_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_param_name( basic_param, new_name );
     EXPECT_NULL( result );
@@ -113,7 +113,7 @@ namespace {
     stumpless_get_param_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_param_value( basic_param, new_value );
     EXPECT_NULL( result );
@@ -176,7 +176,7 @@ namespace {
     stumpless_get_param_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     param = stumpless_new_param( "name", "value" );
     EXPECT_NULL( param );
@@ -196,7 +196,7 @@ namespace {
     stumpless_get_param_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     param = stumpless_new_param( param_name, "value" );
     EXPECT_NULL( param );
@@ -216,7 +216,7 @@ namespace {
     stumpless_get_param_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 22 ) );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     param = stumpless_new_param( "name", param_value );
     EXPECT_NULL( param );
@@ -235,15 +235,15 @@ namespace {
     size_t value_length = strlen( value );
 
     param = stumpless_new_param( name, value );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
     EXPECT_NO_ERROR;
 
     ASSERT_EQ( name_length, param->name_length );
-    ASSERT_TRUE( param->name != NULL );
+    ASSERT_NOT_NULL( param->name );
     ASSERT_EQ( 0, memcmp( param->name, name, name_length ) );
 
     ASSERT_EQ( value_length, param->value_length );
-    ASSERT_TRUE( param->value != NULL );
+    ASSERT_NOT_NULL( param->value );
     ASSERT_EQ( 0, memcmp( param->value, value, value_length ) );
 
     stumpless_destroy_param( param );
@@ -274,7 +274,7 @@ namespace {
     struct stumpless_param *result;
 
     param = stumpless_new_param( original_name, "my-value" );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
     EXPECT_STREQ( stumpless_get_param_name( param ), original_name );
 
     result = stumpless_set_param_name( param, new_name );
@@ -302,7 +302,7 @@ namespace {
     struct stumpless_param *result;
 
     param = stumpless_new_param( "my-name", original_value );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
     EXPECT_STREQ( stumpless_get_param_value( param ), original_value );
 
     result = stumpless_set_param_value( param, new_value );

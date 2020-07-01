@@ -76,12 +76,12 @@ namespace {
     struct stumpless_element *element;
 
     element = stumpless_new_element( "test-new-element" );
-    ASSERT_TRUE( element != NULL );
+    ASSERT_NOT_NULL( element );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( basic_entry, element );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
     EXPECT_EQ( basic_entry, entry );
   }
 
@@ -95,7 +95,7 @@ namespace {
 
     duplicate_element = stumpless_new_element( element_1_name );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( duplicate_element != NULL );
+    ASSERT_NOT_NULL( duplicate_element );
 
     result = stumpless_add_element( basic_entry, duplicate_element );
     EXPECT_ERROR_ID_EQ( STUMPLESS_DUPLICATE_ELEMENT );
@@ -112,11 +112,11 @@ namespace {
     void * (*set_realloc_result)(void *, size_t);
 
     element = stumpless_new_element( "test-memory-failure" );
-    ASSERT_TRUE( element != NULL );
+    ASSERT_NOT_NULL( element );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
-    ASSERT_TRUE( set_realloc_result != NULL );
+    ASSERT_NOT_NULL( set_realloc_result );
 
     entry = stumpless_add_element( basic_entry, element );
     EXPECT_EQ( NULL, entry );
@@ -195,7 +195,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_add_new_param_to_entry( basic_entry,
                                                "new-element-name",
@@ -217,7 +217,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_add_new_param_to_entry( basic_entry,
                                                element_1_name,
@@ -257,21 +257,21 @@ namespace {
     struct stumpless_element *element2;
 
     element1 = stumpless_new_element( "test-new-element-1" );
-    ASSERT_TRUE( element1 != NULL );
+    ASSERT_NOT_NULL( element1 );
     EXPECT_NO_ERROR;
 
     entry = stumpless_add_element( basic_entry, element1 );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
     EXPECT_EQ( basic_entry, entry );
 
     element2 = stumpless_new_element( "test-new-element-2" );
-    ASSERT_TRUE( element2 != NULL );
+    ASSERT_NOT_NULL( element2 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( basic_entry, element2 );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
     EXPECT_EQ( basic_entry, entry );
   }
 
@@ -292,7 +292,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_copy_entry( basic_entry );
     EXPECT_NULL( result );
@@ -312,7 +312,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 14 ) );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_copy_entry( basic_entry );
     EXPECT_NULL( result );
@@ -332,7 +332,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
-    ASSERT_TRUE( set_realloc_result != NULL );
+    ASSERT_NOT_NULL( set_realloc_result );
 
     result = stumpless_copy_entry( basic_entry );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -563,7 +563,7 @@ namespace {
     const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_entry_app_name( basic_entry, "gonna-fail" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -594,7 +594,7 @@ namespace {
     const struct stumpless_entry *result;
 
     new_element = stumpless_new_element( "new-element" );
-    ASSERT_TRUE( new_element != NULL );
+    ASSERT_NOT_NULL( new_element );
 
     previous_element = stumpless_get_element_by_index( basic_entry, 0 );
 
@@ -614,7 +614,7 @@ namespace {
     const struct stumpless_error *error;
 
     new_element = stumpless_new_element( element_1_name );
-    ASSERT_TRUE( new_element != NULL );
+    ASSERT_NOT_NULL( new_element );
 
     previous_element = stumpless_get_element_by_index( basic_entry, 0 );
 
@@ -634,7 +634,7 @@ namespace {
     const struct stumpless_error *error;
 
     new_element = stumpless_new_element( "new-element" );
-    ASSERT_TRUE( new_element != NULL );
+    ASSERT_NOT_NULL( new_element );
 
     previous_element = stumpless_get_element_by_index( basic_entry, 0 );
 
@@ -707,7 +707,7 @@ namespace {
     const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_entry_msgid( basic_entry, "gonna-fail" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -876,7 +876,7 @@ namespace {
     const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_entry_param_value_by_name( basic_entry,
                                                       "doesnt-exist",
@@ -896,7 +896,7 @@ namespace {
     const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 17 ) );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_entry_param_value_by_name( basic_entry,
                                                       "doesnt-exist",
@@ -916,7 +916,7 @@ namespace {
     const struct stumpless_error *error;
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
-    ASSERT_TRUE( set_realloc_result != NULL );
+    ASSERT_NOT_NULL( set_realloc_result );
 
     result = stumpless_set_entry_param_value_by_name( basic_entry,
                                                       "doesnt-exist",
@@ -1019,7 +1019,7 @@ namespace {
     const struct stumpless_error *error;
 
     element = stumpless_new_element( "test-new-element" );
-    ASSERT_TRUE( element != NULL );
+    ASSERT_NOT_NULL( element );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( NULL, element );
@@ -1064,11 +1064,11 @@ namespace {
                                  "test-app-name",
                                  "test-msgid",
                                  "test message" );
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
 
     element = stumpless_new_element( element_name );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( element != NULL );
+    ASSERT_NOT_NULL( element );
 
     stumpless_destroy_entry_only( entry );
 
@@ -1212,7 +1212,7 @@ namespace {
     const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 28 ) );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                   STUMPLESS_SEVERITY_INFO,
@@ -1242,10 +1242,10 @@ namespace {
                                        app_name,
                                        msgid,
                                        message );
-    ASSERT_TRUE( first_entry != NULL );
+    ASSERT_NOT_NULL( first_entry );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     second_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                         STUMPLESS_SEVERITY_INFO,
@@ -1310,21 +1310,21 @@ namespace {
 
     EXPECT_NO_ERROR;
 
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
     EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
     EXPECT_EQ( NULL, entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
     ASSERT_EQ( app_name_length, entry->app_name_length );
-    ASSERT_TRUE( entry->app_name != NULL );
+    ASSERT_NOT_NULL( entry->app_name );
     ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
 
     ASSERT_EQ( msgid_length, entry->msgid_length );
-    ASSERT_TRUE( entry->msgid != NULL );
+    ASSERT_NOT_NULL( entry->msgid );
     ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
 
     ASSERT_EQ( message_length, entry->message_length );
-    ASSERT_TRUE( entry->message != NULL );
+    ASSERT_NOT_NULL( entry->message );
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
     stumpless_destroy_entry( entry );
@@ -1410,10 +1410,10 @@ namespace {
                                       app_name,
                                       msgid,
                                       message );
-    ASSERT_TRUE( entries[0] != NULL );
+    ASSERT_NOT_NULL( entries[0] );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
-    ASSERT_TRUE( set_realloc_result != NULL );
+    ASSERT_NOT_NULL( set_realloc_result );
 
     for( i = 1; i < 2000; i++ ) {
      entries[i] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -1455,7 +1455,7 @@ namespace {
     const struct stumpless_error *error;
 
     new_element = stumpless_new_element( "new-element" );
-    ASSERT_TRUE( new_element != NULL );
+    ASSERT_NOT_NULL( new_element );
 
     result = stumpless_set_element( NULL, 0, new_element );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );

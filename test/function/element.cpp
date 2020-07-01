@@ -125,7 +125,7 @@ namespace {
     original_param_count = stumpless_get_param_count( basic_element );
 
     param = stumpless_new_param( "test-param-name", "test-param-value" );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
 
     result = stumpless_add_param( basic_element, param );
     EXPECT_EQ( basic_element, result );
@@ -149,10 +149,10 @@ namespace {
     stumpless_get_element_name( NULL );
 
     param = stumpless_new_param( "test-param-name", "test-param-value" );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
-    ASSERT_TRUE( set_realloc_result != NULL );
+    ASSERT_NOT_NULL( set_realloc_result );
 
     result = stumpless_add_param( basic_element, param );
     EXPECT_NULL( result );
@@ -173,14 +173,14 @@ namespace {
     original_param_count = stumpless_get_param_count( basic_element );
 
     param1 = stumpless_new_param( param1_name, "test-param-value-1" );
-    ASSERT_TRUE( param1 != NULL );
+    ASSERT_NOT_NULL( param1 );
 
     result = stumpless_add_param( basic_element, param1 );
     EXPECT_EQ( basic_element, result );
     EXPECT_NO_ERROR;
 
     param2 = stumpless_new_param( param2_name, "test-param-value-2" );
-    ASSERT_TRUE( param2 != NULL );
+    ASSERT_NOT_NULL( param2 );
 
     result = stumpless_add_param( basic_element, param2 );
     EXPECT_EQ( result, basic_element );
@@ -205,7 +205,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_copy_element( basic_element );
     EXPECT_NULL( result );
@@ -225,7 +225,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 8 ) );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_copy_element( element_with_params );
     EXPECT_NULL( result );
@@ -245,7 +245,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
-    ASSERT_TRUE( set_realloc_result != NULL );
+    ASSERT_NOT_NULL( set_realloc_result );
 
     result = stumpless_copy_element( element_with_params );
     EXPECT_NULL( result );
@@ -500,7 +500,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_element_name( basic_element, new_name );
     EXPECT_NULL( result );
@@ -538,7 +538,7 @@ namespace {
     const struct stumpless_element *result;
 
     new_param = stumpless_new_param( "new-param", "new-value" );
-    ASSERT_TRUE( new_param != NULL );
+    ASSERT_NOT_NULL( new_param );
 
     result = stumpless_set_param( element_with_params, 1, new_param );
     EXPECT_NO_ERROR;
@@ -674,7 +674,7 @@ namespace {
     struct stumpless_error *error;
 
     param = stumpless_new_param( "test-name", "test-value" );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
 
     result = stumpless_add_param( NULL, param );
     EXPECT_NULL( result );
@@ -694,10 +694,10 @@ namespace {
     const char *param_name = "test-param-name";
 
     element = stumpless_new_element( "test-element" );
-    ASSERT_TRUE( element != NULL );
+    ASSERT_NOT_NULL( element );
 
     param = stumpless_new_param( param_name, "test-param-value" );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
 
     EXPECT_TRUE( stumpless_add_param( element, param ) == element );
 
@@ -777,7 +777,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( result != NULL );
+    ASSERT_NOT_NULL( result );
 
     element = stumpless_new_element( "memory-failure" );
     EXPECT_EQ( NULL, element );
@@ -796,7 +796,7 @@ namespace {
     stumpless_get_element_name( NULL );
 
     result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
-    ASSERT_TRUE( result != NULL );
+    ASSERT_NOT_NULL( result );
 
     element = stumpless_new_element( element_name );
     EXPECT_EQ( NULL, element );
