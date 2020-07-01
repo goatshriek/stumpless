@@ -5,6 +5,7 @@
 *.cmake text eol=lf
 *.def   text eol=crlf
 *.h     text eol=lf linguist-language=C
+*.hpp   text eol=lf linguist-documentation
 *.i     text eol=lf
 *.mc    text eol=crlf
 *.pl    text eol=lf
