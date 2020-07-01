@@ -712,8 +712,6 @@ vstumpless_new_entry( int facility,
   size_t *msgid_length;
   size_t *message_length;
 
-  clear_error(  );
-
   if( !entry_cache ) {
     entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
 
@@ -760,6 +758,7 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
+  clear_error(  );
   return entry;
 
 fail_message:
@@ -778,8 +777,6 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
                               va_list subs ) {
   char *formatted_message;
   size_t message_length;
-
-  clear_error(  );
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -804,6 +801,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
     }
   }
 
+  clear_error(  );
   return entry;
 }
 

@@ -47,8 +47,6 @@ stumpless_add_param( struct stumpless_element *element,
   size_t old_params_size;
   size_t new_params_size;
 
-  clear_error(  );
-
   if( !element ) {
     raise_argument_empty( "element is NULL" );
     return NULL;
@@ -71,6 +69,7 @@ stumpless_add_param( struct stumpless_element *element,
   element->param_count++;
   element->params = new_params;
 
+  clear_error(  );
   return element;
 }
 
@@ -161,13 +160,12 @@ stumpless_element_has_param( const struct stumpless_element *element,
 
 const char *
 stumpless_get_element_name( const struct stumpless_element *element ) {
-  clear_error(  );
-
   if( !element ) {
     raise_argument_empty( "element is NULL" );
     return NULL;
   }
 
+  clear_error(  );
   return element->name;
 }
 
@@ -218,13 +216,12 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
 
 size_t
 stumpless_get_param_count( const struct stumpless_element *element ) {
-  clear_error(  );
-
   if( !element ) {
     raise_argument_empty( "element is NULL" );
     return 0;
   }
 
+  clear_error(  );
   return element->param_count;
 }
 
@@ -327,8 +324,6 @@ struct stumpless_element *
 stumpless_new_element( const char *name ) {
   struct stumpless_element *element;
 
-  clear_error(  );
-
   if( !name ) {
     raise_argument_empty( "name is NULL" );
     goto fail;
@@ -347,6 +342,7 @@ stumpless_new_element( const char *name ) {
   element->params = NULL;
   element->param_count = 0;
 
+  clear_error(  );
   return element;
 
 fail_name:
@@ -361,8 +357,6 @@ stumpless_set_element_name( struct stumpless_element *element,
                             const char *name ) {
   char *temp_name;
   size_t temp_size;
-
-  clear_error(  );
 
   if( !element ) {
     raise_argument_empty( "element is NULL" );
@@ -383,6 +377,7 @@ stumpless_set_element_name( struct stumpless_element *element,
   element->name = temp_name;
   element->name_length = temp_size;
 
+  clear_error(  );
   return element;
 
 fail:

@@ -46,35 +46,30 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
 
 const char *
 stumpless_get_param_name( const struct stumpless_param *param ) {
-  clear_error(  );
-
   if( !param ) {
     raise_argument_empty( "param is NULL" );
     return NULL;
-
-  } else {
-    return param->name;
   }
+
+  clear_error(  );
+  return param->name;
 }
 
 const char *
 stumpless_get_param_value( const struct stumpless_param *param ) {
-  clear_error(  );
-
   if( !param ) {
     raise_argument_empty( "param is NULL" );
     return NULL;
 
-  } else {
-    return param->value;
   }
+
+  clear_error(  );
+  return param->value;
 }
 
 struct stumpless_param *
 stumpless_new_param( const char *name, const char *value ) {
   struct stumpless_param *param;
-
-  clear_error(  );
 
   if( !name ) {
     raise_argument_empty( "name is NULL" );
@@ -101,6 +96,7 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail_value;
   }
 
+  clear_error(  );
   return param;
 
 fail_value:
@@ -117,8 +113,6 @@ struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   char *temp_name;
   size_t temp_size;
-
-  clear_error(  );
 
   if( !param ) {
     raise_argument_empty( "param is NULL" );
@@ -139,6 +133,7 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   param->name = temp_name;
   param->name_length = temp_size;
 
+  clear_error(  );
   return param;
 
 fail:
@@ -149,8 +144,6 @@ struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
   char *temp_value;
   size_t temp_size;
-
-  clear_error(  );
 
   if( !param ) {
     raise_argument_empty( "param is NULL" );
@@ -171,6 +164,7 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
   param->value = temp_value;
   param->value_length = temp_size;
 
+  clear_error(  );
   return param;
 
 fail:
