@@ -80,7 +80,7 @@ struct stumpless_element {
  * This is equivalent to calling stumpless_new_param and passing the result
  * directly stumpless_add_param.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to add the new param to.
  *
@@ -118,7 +118,7 @@ stumpless_add_param( struct stumpless_element *element,
  * the original element are destroyed, the equivalent ones in this element will
  * still be valid.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param element The element to copy.
  *
@@ -157,9 +157,9 @@ stumpless_destroy_element_only( const struct stumpless_element *element );
 /**
  * True if the given element has a param with the given name, false otherwise.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
- * @param entry The element to search for the param.
+ * @param element The element to search for the param.
  *
  * @param name The name of the param to check for.
  *
@@ -175,7 +175,7 @@ stumpless_element_has_param( const struct stumpless_element *element,
  * Returns the name of the given element. The resulting character buffer must
  * not be altered or freed by the caller.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to get the name from.
  *
@@ -188,7 +188,7 @@ stumpless_get_element_name( const struct stumpless_element *element );
 /**
  * Returns the param in the given element at the specified index.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to get the param from.
  *
@@ -212,7 +212,7 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
  * need a reference to any other params, then you must loop through all params
  * in the element using stumpless_get_param_by_index, checking each name.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to search.
  *
@@ -229,7 +229,7 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
 /**
  * Returns the number of params in the given element.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to get the param count of.
  *
@@ -250,7 +250,7 @@ stumpless_get_param_count( const struct stumpless_element *element );
  * you need a reference to any other params, then you must loop through all
  * params in the element using stumpless_get_param_by_index, checking each name.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to search for params with the given name.
  *
@@ -267,7 +267,7 @@ stumpless_get_param_index( const struct stumpless_element *element,
 /**
  * Gets the name of the Param with the given index in this Element.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to get the param and name from.
  *
@@ -288,7 +288,7 @@ stumpless_get_param_name_by_index( const struct stumpless_element *element,
  * first one, then you will need to loop through all params in the element using
  * stumpless_get_param_by_index, checking each name.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to search for params.
  *
@@ -305,7 +305,7 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
 /**
  * Returns the value of the param at the given index in the given element.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to retrieve the param and value from.
  *
@@ -327,7 +327,7 @@ stumpless_get_param_value_by_index( const struct stumpless_element *element,
  * one, then you will need to loop through all params in the element using
  * stumpless_get_param_by_index, checking each name.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to retrieve the param and value from.
  *
@@ -355,9 +355,11 @@ stumpless_new_element( const char *name );
 /**
  * Sets the name of the given element.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to set the name of.
+ *
+ * @param name The new name of the element.
  *
  * @return The modified element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -377,7 +379,7 @@ stumpless_set_element_name( struct stumpless_element *element,
  * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
  * is raised.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to set the param on.
  *
@@ -396,7 +398,7 @@ stumpless_set_param( struct stumpless_element *element,
 /**
  * Sets the value of the param at the given index in the given element.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to set the param on.
  *
@@ -423,7 +425,7 @@ stumpless_set_param_value_by_index( struct stumpless_element *element,
  * stumpless_get_param_by_index to find the params you want and then set the
  * value using stumpless_set_param_value.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param element The element to set the param on.
  *

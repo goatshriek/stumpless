@@ -136,7 +136,7 @@ stumpless_add_element( struct stumpless_entry *entry,
  * attempts to add an element to an entry already having one with the same name
  * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to add the new element to.
  *
@@ -154,7 +154,7 @@ stumpless_add_new_element( struct stumpless_entry *entry,
  * an element with the given name does not exist in the given entry, then one
  * will be created with the new param added to it.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to add the new param to.
  *
@@ -219,7 +219,7 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry );
 /**
  * True if the given entry has an element with the given name, false otherwise.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to search for the element.
  *
@@ -236,11 +236,11 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
 /**
  * Returns the element at the given index in this Entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to search.
  *
- * @param name The index of the element to get.
+ * @param index The index of the element to get.
  *
  * @return The element if it is found in the entry, or NULL otherwise. If an
  * error was encountered, then NULL is returned and an error code is set
@@ -253,7 +253,7 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
 /**
  * Returns the element with the given name in this entry, if it is found.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to search.
  *
@@ -271,7 +271,7 @@ stumpless_get_element_by_name( const struct stumpless_entry *entry,
  * Returns the index of the element with the given name in this entry, if it
  * is found.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to search.
  *
@@ -288,7 +288,7 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
 /**
  * Returns the app name of the given entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the app name of.
  *
@@ -302,7 +302,7 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry );
 /**
  * Returns the facility code of the given entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the facility of.
  *
@@ -318,7 +318,7 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry );
  * Note that if this message was originally set using format specifiers, the
  * result will have them substituted, instead of the original placeholders.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the message of.
  *
@@ -332,7 +332,7 @@ stumpless_get_entry_message( const struct stumpless_entry *entry );
 /**
  * Returns the msgid of the given entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the msgid of.
  *
@@ -346,7 +346,7 @@ stumpless_get_entry_msgid( const struct stumpless_entry *entry );
 /**
  * Gets the param from the element at the given index in an entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the param from.
  *
@@ -371,7 +371,7 @@ stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
  * the element, then you must loop through all params using
  * stumpless_get_entry_param_by_index, checking each name.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the param from.
  *
@@ -391,7 +391,7 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
 /**
  * Gets the value of the param from the element at the given index in an entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the param from.
  *
@@ -418,7 +418,7 @@ stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
  * the element, then you must loop through all params using
  * stumpless_get_entry_param_by_index, checking each name.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the param from.
  *
@@ -438,7 +438,7 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
 /**
  * Returns the prival of the given entry, as defined in RFC 5424.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the prival of.
  *
@@ -451,7 +451,7 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
 /**
  * Returns the severity code of the given entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to get the severity of.
  *
@@ -511,7 +511,7 @@ stumpless_new_entry( int facility,
  * attempts to set an element of an entry which already contains another element
  * with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param entry The entry to set the element on.
  *
@@ -548,7 +548,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 /**
  * Sets the facility of an entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to set the facility of.
  *
@@ -564,7 +564,7 @@ stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
 /**
  * Sets the msgid for an entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry for which the msgid will be set.
  *
@@ -613,7 +613,7 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
  * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
  * is raised.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param entry The entry to set the param on.
  *
@@ -635,7 +635,7 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
 /**
  * Sets the value of the param in the element at the given index of an entry.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param entry The entry to set the param value on.
  *
@@ -668,7 +668,7 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
  * stumpless_get_entry_param_by_index to find the params you want and then
  * set the value using stumpless_set_entry_param_value_by_index.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param entry The entry to set the param value on.
  *
@@ -690,7 +690,7 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
 /**
 * Sets the facility and severity of an entry.
 *
-* @since Release v1.6.0.
+* @since release v1.6.0.
 *
 * @param entry The entry to set the priority values of.
 *
@@ -711,7 +711,7 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
 /**
  * Sets the prival of an entry, as defined in RFC 5424.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to set the prival of.
  *
@@ -729,7 +729,7 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 /**
  * Sets the severity of an entry.
  *
- * @since Release v1.6.0.
+ * @since release v1.6.0.
  *
  * @param entry The entry to set the severity of.
  *
