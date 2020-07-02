@@ -44,5 +44,5 @@ build:
 test_script:
   - set CTEST_OUTPUT_ON_FAILURE=1
   - msbuild c:\project\stumpless\build\check.vcxproj
-    if %cpp_enabled%=="ON" ( msbuild c:\project\stumpless\build\check-cpp.vcxproj )
+  - if %cpp_enabled%=="ON" ( msbuild c:\project\stumpless\build\check-cpp.vcxproj )
   - msbuild c:\project\stumpless\build\examples.vcxproj
