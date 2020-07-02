@@ -114,7 +114,7 @@ add_custom_command(
 
 
 # create the rollup header
-SET(cpp_rollup_header "${CPP_LIB_BUILD_DIR}/stumpless.hpp")
+SET(cpp_rollup_header "${PROJECT_BINARY_DIR}/include/stumpless.hpp")
 FILE(WRITE ${cpp_rollup_header} "#ifndef __STUMPLESS_HPP\n")
 FILE(APPEND ${cpp_rollup_header} "#  define __STUMPLESS_HPP\n\n")
 
@@ -132,7 +132,7 @@ add_library(stumplesscpp SHARED
 )
 
 target_link_libraries(stumplesscpp
-  optimized stumpless
+  stumpless
 )
 
 target_include_directories(stumplesscpp
@@ -147,6 +147,11 @@ set_target_properties(stumplesscpp
     VERSION ${PROJECT_VERSION}
     PUBLIC_HEADER ${cpp_rollup_header}
 )
+
+if(MINGW)
+  target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
+  set_target_properties(stumpless PROPERTIES PREFIX "")
+endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
   target_compile_options(stumplesscpp PUBLIC "-std=c++11")
