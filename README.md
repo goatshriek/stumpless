@@ -1,13 +1,14 @@
 # Stumpless
 
-[![Travis Build Status](https://travis-ci.org/goatshriek/stumpless.svg?branch=master)](https://travis-ci.org/goatshriek/stumpless)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/uwied5cn5jujl4d2/branch/master?svg=true)](https://ci.appveyor.com/project/goatshriek/stumpless)
-[![Coverage Report](https://codecov.io/gh/goatshriek/stumpless/branch/master/graph/badge.svg)](https://codecov.io/gh/goatshriek/stumpless)
+[![Travis Build Status](https://travis-ci.org/goatshriek/stumpless.svg?branch=latest)](https://travis-ci.org/goatshriek/stumpless)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/uwied5cn5jujl4d2/branch/latest?svg=true)](https://ci.appveyor.com/project/goatshriek/stumpless)
+[![Coverage Report](https://codecov.io/gh/goatshriek/stumpless/branch/latest/graph/badge.svg)](https://codecov.io/gh/goatshriek/stumpless)
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=stumpless&metric=alert_status)](https://sonarcloud.io/dashboard?id=stumpless)
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
 A logging library built with a
-[vision](https://github.com/goatshriek/stumpless/blob/master/docs/vision.md):
+[vision](https://github.com/goatshriek/stumpless/blob/latest/docs/vision.md):
 a rich and intuitive interface, standards compliance, fast performance, and a
 small footprint.
 
@@ -87,7 +88,7 @@ stumpless_add_message( target,
 
 It's as easy as that! For more detailed examples of different targets and more
 complicated message structures, check out the
-[examples](https://github.com/goatshriek/stumpless/tree/master/docs/examples).
+[examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples).
 for detailed walkthroughs and annotated example code for using various features
 of the library.
 

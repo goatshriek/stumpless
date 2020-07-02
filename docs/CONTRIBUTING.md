@@ -56,16 +56,20 @@ need attention and are relatively simple to fix, respectively.
 If you are brand new to the community at large and are looking for a little more
 detail on how to contribute, then this section should help you get started.
 
-Stumpless keeps the master branch as the main and stable branch, and develops
-the next version in a branch named after its semantic version. For most updates,
-you should fork the repository and create a new branch from the next version's
-branch. Don't forget to update the ChangeLog with your changes, and when you're
-ready open a pull request against the next version's branch in the main
-repository.
+Stumpless has a default branch named `latest` off of which all new feature
+branches are based. Once all changes planned for the next version have been
+implemented, a tag will be added for the commit named after the semantic version
+number and the `release` branch will be updated to point to this commit. In this
+way, `latest` always has the most up to date changes and `release` always points
+to the last complete version released.
+
+To create your own feature or update, you should fork the repository and create
+a new branch based on the `latest` branch. Don't forget to update the ChangeLog
+with your changes, and when you're ready open a pull request against `latest`.
 
 It is unusual, but you may find that it is more appropriate to base your branch
-on the master branch instead of the next version. Some examples of these types
-of changes are:
+on the `release` branch instead of `latest`. Some examples of these types of
+changes are:
  * updates to project documentation that is relevant to the current version of
    the project as well as the next
  * patches that need to be applied to the current version of the library in
@@ -84,9 +88,9 @@ starting material:
  * [Creating a Pull Request from a Fork](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork)
 
 To recap, your basic steps will be to fork the repository, create a new branch
-based on the latest version (or perhaps the master branch if you are special as
-described above), and when you are finished adding commits to it create a pull
-request back to this repository.
+based on `latest` (or perhaps `release` depending on the circumstances), and
+when you are finished adding commits to it create a pull request back to the
+main repository.
 
 And thanks for giving back to the community!
 
