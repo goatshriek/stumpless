@@ -30,7 +30,7 @@ init:
 
 install:
  - set PATH=C:\Ruby26-x64\bin;%PATH%
- - if %cpp_enabled%=="ON" ( bundle install )
+ - if "%cpp_enabled%"=="ON" ( bundle install )
 
 before_build:
 - cmd: |-
@@ -44,5 +44,5 @@ build:
 test_script:
   - set CTEST_OUTPUT_ON_FAILURE=1
   - msbuild c:\project\stumpless\build\check.vcxproj
-  - if %cpp_enabled%=="ON" ( msbuild c:\project\stumpless\build\check-cpp.vcxproj )
+  - if "%cpp_enabled%"=="ON" ( msbuild c:\project\stumpless\build\check-cpp.vcxproj )
   - msbuild c:\project\stumpless\build\examples.vcxproj
