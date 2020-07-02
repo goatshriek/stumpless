@@ -112,6 +112,21 @@ add_custom_command(
   VERBATIM
 )
 
+
+# create the rollup header
+SET(cpp_rollup_header "${CPP_LIB_BUILD_DIR}/stumpless.hpp")
+FILE(WRITE ${cpp_rollup_header} "#ifndef __STUMPLESS_HPP\n")
+FILE(APPEND ${cpp_rollup_header} "#  define __STUMPLESS_HPP\n\n")
+
+foreach(header_path ${GENERATED_CPP_LIB_HEADERS})
+  get_filename_component(header_filename ${header_path} NAME)
+  FILE(APPEND ${cpp_rollup_header} "#  include <stumpless/${header_filename}>\n")
+endforeach(header_path)
+
+FILE(APPEND ${cpp_rollup_header} "\n#endif /* __STUMPLESS_HPP */\n")
+
+
+# shared library definition
 add_library(stumplesscpp SHARED
   ${GENERATED_CPP_LIB_SOURCES}
 )
@@ -130,6 +145,7 @@ target_include_directories(stumplesscpp
 set_target_properties(stumplesscpp
   PROPERTIES
     VERSION ${PROJECT_VERSION}
+    PUBLIC_HEADER ${cpp_rollup_header}
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
@@ -187,7 +203,7 @@ install(TARGETS stumplesscpp
 
 install(
   FILES ${GENERATED_CPP_LIB_HEADERS}
-  DESTINATION "include/stumplesscpp"
+  DESTINATION "include/stumpless"
 )
 
 #documentation generation
