@@ -10,7 +10,7 @@ defined in the `wrapture` directory of the source for Stumpless.
 ## Basic Usage
 The following snippets show some usage patterns specific to C++. If you're
 looking for basic usage of the C library, check out the main project
-[readme](https://github.com/goatshriek/stumpless/blob/master/README.md) for a
+[readme](https://github.com/goatshriek/stumpless/blob/latest/README.md) for a
 quick rundown of what you can do.
 
 Targets and entries can be created by instantiating the appropriate class, just
