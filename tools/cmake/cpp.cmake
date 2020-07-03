@@ -104,13 +104,26 @@ endif()
 
 file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
-add_custom_command(
-  OUTPUT ${GENERATED_CPP_LIB_SOURCES}
-  COMMAND wrapture ${WRAPTURE_SPECS}
-  DEPENDS ${WRAPTURE_SPECS}
-  WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
-  VERBATIM
-)
+if(WIN32)
+  list(JOIN GENERATED_CPP_LIB_HEADERS "," header_files)
+
+  add_custom_command(
+    OUTPUT ${GENERATED_CPP_LIB_SOURCES}
+    COMMAND call wrapture ${WRAPTURE_SPECS}
+    COMMAND powershell ${PROJECT_SOURCE_DIR}/scripts/Repair-HeaderDllExports.ps1 -HeaderFilePaths ${header_files}
+    DEPENDS ${WRAPTURE_SPECS}
+    WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
+    VERBATIM
+  )
+else()
+  add_custom_command(
+    OUTPUT ${GENERATED_CPP_LIB_SOURCES}
+    COMMAND wrapture ${WRAPTURE_SPECS}
+    DEPENDS ${WRAPTURE_SPECS}
+    WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
+    VERBATIM
+  )
+endif()
 
 
 # create the rollup header
@@ -148,9 +161,16 @@ set_target_properties(stumplesscpp
     PUBLIC_HEADER ${cpp_rollup_header}
 )
 
+if(WIN32)
+  set_target_properties(stumplesscpp
+    PROPERTIES
+      COMPILE_DEFINITIONS DLL_EXPORTS
+  )
+endif()
+
 if(MINGW)
-  target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
-  set_target_properties(stumpless PROPERTIES PREFIX "")
+  target_compile_options(stumplesscpp PRIVATE -D__USE_MINGW_ANSI_STDIO)
+  set_target_properties(stumplesscpp PROPERTIES PREFIX "")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
@@ -170,7 +190,8 @@ add_cpp_test(entry
 add_cpp_test(file
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/cpp/target/file.cpp
-    $<TARGET_OBJECTS:rfc5424_checker>
+    ${PROJECT_SOURCE_DIR}/test/function/rfc5424.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/utf8.cpp
 )
 
 add_cpp_test(memory
