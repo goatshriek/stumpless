@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <fstream>
 #include <gtest/gtest.h>
+#include <stumpless.h>
 #include <stumpless.hpp>
 #include "test/function/rfc5424.hpp"
 
