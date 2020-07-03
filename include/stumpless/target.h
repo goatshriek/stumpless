@@ -29,6 +29,7 @@
 
 #  include <stdarg.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
@@ -99,16 +100,16 @@ struct stumpless_target {
   int mask;
 };
 
-#  ifdef STUMPLESS_INFO_LOGS_ENABLED
+#  ifdef STUMPLESS_INFO_LEVEL_ENABLED
 
 /**
  * Logs a message to the default target.
  *
- * This function only operates when STUMPLESS_INFO_LOGS_ENABLED has been defined
- * during build. It is enabled by default and has been enabled in this build. If
- * it is not enabled, then this function is removed at compile time and will
- * have no effect. If it is enabled, then it is equivalent to a call to stump
- * with the same parameters.
+ * This function only operates when STUMPLESS_INFO_LEVEL_ENABLED has been
+ * defined during build. It is enabled by default and has been enabled in this
+ * build. If it is not enabled, then this function is removed at compile time
+ * and will have no effect. If it is enabled, then it is equivalent to a call
+ * to stump with the same parameters.
  *
  * Note that this function does not actually set the severity of the logged
  * message to STUMPLESS_SEVERITY_INFO. Messages logged using this function will

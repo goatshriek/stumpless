@@ -247,6 +247,7 @@
 "stumpless_has_error": "stumpless/error.h"
 "stumpless_id_t": "stumpless/id.h"
 "STUMPLESS_INDEX_OUT_OF_BOUNDS": "stumpless/error.h"
+"STUMPLESS_INFO_LEVEL_ENABLED": "stumpless/config.h"
 "STUMPLESS_INVALID_FACILITY": "stumpless/error.h"
 "STUMPLESS_INVALID_ID": "stumpless/error.h"
 "STUMPLESS_INVALID_SEVERITY": "stumpless/error.h"

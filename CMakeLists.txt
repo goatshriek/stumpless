@@ -13,11 +13,12 @@ option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 
-string(CONCAT enable_info_logs_help_string
+string(CONCAT enable_info_level_help_string
   "Enable functions defined at the informational level. If this is set to OFF "
   "then these functions (stump_i, stump_i_entry, stumplog_i) are removed "
   "during compilation."
 )
+option(ENABLE_INFO_LEVEL ${enable_info_level_help_string} ON)
 
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -56,8 +57,10 @@ set(GTEST_PATH ${PROJECT_BINARY_DIR}
   CACHE PATH ${gtest_path_help_string}
 )
 
+
 # looking for packages and programs
 find_package(Threads REQUIRED)
+
 
 # documentation and doxygen setup
 set(PROJECT_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
@@ -105,6 +108,12 @@ check_symbol_exists(getpagesize unistd.h HAVE_UNISTD_GETPAGESIZE)
 check_symbol_exists(_SC_PAGESIZE unistd.h HAVE_UNISTD_SC_PAGESIZE)
 check_symbol_exists(sysconf unistd.h HAVE_UNISTD_SYSCONF)
 check_symbol_exists(wcstombs_s windows.h HAVE_WCSTOMBS_S)
+
+if(ENABLE_INFO_LEVEL)
+  set(STUMPLESS_INFO_LEVEL_ENABLED TRUE)
+else()
+  set(STUMPLESS_INFO_LEVEL_ENABLED FALSE)
+endif()
 
 find_program(HAVE_WRAPTURE NAMES wrapture)
 
