@@ -25,6 +25,20 @@ option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
+string(CONCAT default_facility_help_string
+  "The facility code to use for messages where one is not explicitly provided."
+)
+set(DEFAULT_FACILITY "STUMPLESS_FACILITY_USER"
+  CACHE STRING ${default_facility_help_string}
+)
+
+string(CONCAT default_severity_help_string
+  "The severity code to use for messages where one is not explicitly provided."
+)
+set(DEFAULT_SEVERITY "STUMPLESS_SEVERITY_INFO"
+  CACHE STRING ${default_severity_help_string}
+)
+
 set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
@@ -749,4 +763,3 @@ if(BUILD_PYTHON)
   )
 
 endif()
-

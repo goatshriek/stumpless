@@ -103,7 +103,7 @@ struct stumpless_target {
 #  ifdef STUMPLESS_INFO_LEVEL_ENABLED
 
 /**
- * Logs a message to the default target.
+ * Logs a message to the default target with informational severity.
  *
  * This function only operates when STUMPLESS_INFO_LEVEL_ENABLED has been
  * defined during build. It is enabled by default and has been enabled in this
@@ -111,12 +111,10 @@ struct stumpless_target {
  * and will have no effect. If it is enabled, then it is equivalent to a call
  * to stump with the same parameters.
  *
- * Note that this function does not actually set the severity of the logged
- * message to STUMPLESS_SEVERITY_INFO. Messages logged using this function will
- * have the default severity of the target. If you need to set this, use
- * stumpless_set_default_severity on the target. If you need to do it on a
- * per-message basis, use the stumplog_i function or consider using an entry
- * with the severity set as needed instead.
+ * This function will log the given message with a severity of
+ * STUMPLESS_SEVERITY_INFO, and the facility defined by the
+ * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different prival, then
+ * you will need to use stumplog_i instead.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
