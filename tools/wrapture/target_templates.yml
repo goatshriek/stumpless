@@ -139,7 +139,7 @@ templates:
           - name: "entry"
             doc: "the entry to write"
             type: "Entry"
-            includes: "Entry.hpp"
+            includes: "stumpless/Entry.hpp"
         return:
           doc: "The modified target."
           type: "self-reference"

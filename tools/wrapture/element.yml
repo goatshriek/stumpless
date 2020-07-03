@@ -58,7 +58,7 @@ classes:
               doc: "The Element to copy."
               type:
                 name: "const Element &"
-                includes: "Element.hpp"
+                includes: "stumpless/Element.hpp"
               value: "element.equivalent"
           return:
             type: "equivalent-struct-pointer"
@@ -66,8 +66,7 @@ classes:
     destructor:
       wrapped-function:
         name: "stumpless_destroy_element_and_contents"
-        includes:
-          - "stumpless/element.h"
+        includes: "stumpless/element.h"
         params:
           - name: "equivalent-struct-pointer"
     functions:
@@ -77,7 +76,7 @@ classes:
           - name: "new_param"
             doc: "The Param to add to the Element."
             type: "Param &"
-            includes: "Param.hpp"
+            includes: "stumpless/Param.hpp"
         return:
           doc: "The modified Element."
           type: "self-reference"
@@ -93,7 +92,7 @@ classes:
           - name: "new_param"
             doc: "The Param to add to the Element."
             type: "Param *"
-            includes: "Param.hpp"
+            includes: "stumpless/Param.hpp"
         return:
           doc: "The modified Element."
           type: "self-reference"
@@ -156,7 +155,7 @@ classes:
           doc: "The param at the given index."
           type:
             name: "Param"
-            includes: "Param.hpp"
+            includes: "stumpless/Param.hpp"
         wrapped-function:
           name: "stumpless_get_param_by_index"
           includes: "stumpless/element.h"
@@ -186,7 +185,7 @@ classes:
           doc: "The param at the given index."
           type:
             name: "Param"
-            includes: "Param.hpp"
+            includes: "stumpless/Param.hpp"
         wrapped-function:
           name: "stumpless_get_param_by_name"
           includes: "stumpless/element.h"
@@ -404,7 +403,7 @@ classes:
             doc: "The new Param to put at the index."
             type:
               name: "Param *"
-              includes: "Param.hpp"
+              includes: "stumpless/Param.hpp"
         return:
           doc: "The modified Element."
           type: "self-reference"

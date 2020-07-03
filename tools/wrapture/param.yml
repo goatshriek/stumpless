@@ -47,7 +47,7 @@ classes:
               doc: "The Param to copy."
               type:
                 name: "const Param &"
-                includes: "Param.hpp"
+                includes: "stumpless/Param.hpp"
               value: "param.equivalent"
           return:
             type: "equivalent-struct-pointer"

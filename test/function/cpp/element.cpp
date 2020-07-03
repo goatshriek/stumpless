@@ -17,10 +17,8 @@
  */
 
 #include <cstddef>
-#include <Element.hpp>
 #include <gtest/gtest.h>
-#include <MemoryManager.hpp>
-#include <Param.hpp>
+#include <stumpless.hpp>
 
 using namespace stumplesscpp;
 

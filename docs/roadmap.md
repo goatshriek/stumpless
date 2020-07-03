@@ -43,9 +43,6 @@ takes longer than expected.
    flags, allowing builds that do not need lower-level logs to stay fast and
    efficient without requiring code changes or modification tools in the build
    pipeline.
- * [ADD] **Roll-up header for C++ bindings**
-   Instead of including each class header in the calling code, it would be more
-   convenient to simply include a single header.
  * [FIX] **Socket targets may fail to bind to a local socket**
    Socket targets can be opened with a local socket name provided, but this may
    also be set to `NULL`, in which case a local socket is generated (see the

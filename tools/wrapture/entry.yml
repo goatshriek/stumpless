@@ -8,8 +8,7 @@ classes:
     namespace: "stumplesscpp"
     equivalent-struct:
       name: "stumpless_entry"
-      includes:
-        - "stumpless/entry.h"
+      includes: "stumpless/entry.h"
     type: "pointer"
     constructors:
       - doc: "Creates an Entry with the given properties."
@@ -22,14 +21,14 @@ classes:
                 The facility code of the event this entry describes.
               type:
                 name: "Facility"
-                includes: "Facility.hpp"
+                includes: "stumpless/Facility.hpp"
               value: "static_cast<int>(facility)"
             - name: "severity"
               doc: |
                 The severity of the event this entry describes.
               type:
                 name: "Severity"
-                includes: "Severity.hpp"
+                includes: "stumpless/Severity.hpp"
               value: "static_cast<int>(severity)"
             - name: "app_name"
               doc: |
@@ -89,7 +88,7 @@ classes:
               doc: "The Entry to copy."
               type:
                 name: "const Entry &"
-                includes: "Entry.hpp"
+                includes: "stumpless/Entry.hpp"
               value: "entry.equivalent"
           return:
             type: "equivalent-struct-pointer"
@@ -110,7 +109,7 @@ classes:
           - name: "element"
             doc: "The element to add."
             type: "Element&"
-            includes: "Element.hpp"
+            includes: "stumpless/Element.hpp"
         return:
           doc: "The modified Entry, to support method chaining."
           type: "self-reference"
@@ -135,7 +134,7 @@ classes:
           - name: "element"
             doc: "A pointer to the element to add."
             type: "Element *"
-            includes: "Element.hpp"
+            includes: "stumpless/Element.hpp"
         return:
           doc: "The modified Entry, to support method chaining."
           type: "self-reference"
@@ -220,7 +219,7 @@ classes:
           doc: "The requested Element."
           type:
             name: "Element"
-            includes: "Element.hpp"
+            includes: "stumpless/Element.hpp"
         wrapped-function:
           name: "stumpless_get_element_by_index"
           includes: "stumpless/entry.h"
@@ -240,7 +239,7 @@ classes:
           doc: "The requested Element."
           type:
             name: "Element"
-            includes: "Element.hpp"
+            includes: "stumpless/Element.hpp"
         wrapped-function:
           name: "stumpless_get_element_by_name"
           includes: "stumpless/entry.h"
@@ -280,7 +279,7 @@ classes:
           doc: "The Facility of this Entry."
           type:
             name: "Facility"
-            includes: "Facility.hpp"
+            includes: "stumpless/Facility.hpp"
         wrapped-function:
           name: "stumpless_get_entry_facility"
           includes: "stumpless/entry.h"
@@ -308,7 +307,7 @@ classes:
           doc: "The Param at the given index."
           type:
             name: "Param"
-            includes: "Param.hpp"
+            includes: "stumpless/Param.hpp"
         wrapped-function:
           name: "stumpless_get_entry_param_by_index"
           includes: "stumpless/entry.h"
@@ -342,7 +341,7 @@ classes:
           doc: "The first Param with the given name."
           type:
             name: "Param"
-            includes: "Param.hpp"
+            includes: "stumpless/Param.hpp"
         wrapped-function:
           name: "stumpless_get_entry_param_by_name"
           includes: "stumpless/entry.h"
@@ -440,7 +439,7 @@ classes:
           doc: "The Severity of this Entry."
           type:
             name: "Severity"
-            includes: "Severity.hpp"
+            includes: "stumpless/Severity.hpp"
         wrapped-function:
           name: "stumpless_get_entry_severity"
           includes: "stumpless/entry.h"
@@ -516,7 +515,7 @@ classes:
             doc: "The Element to put at index."
             type:
               name: "Element &"
-              includes: "Element.hpp"
+              includes: "stumpless/Element.hpp"
         return:
           doc: "The modified Entry."
           type: "self-reference"
@@ -541,7 +540,7 @@ classes:
             doc: "The new Facility of this Entry."
             type:
               name: "Facility"
-              includes: "Facility.hpp"
+              includes: "stumpless/Facility.hpp"
         return:
           doc: "The modified Entry."
           type: "self-reference"
@@ -635,7 +634,7 @@ classes:
             doc: "The new Param."
             type:
               name: "Param &"
-              includes: "Param.hpp"
+              includes: "stumpless/Param.hpp"
         return:
           doc: "The modified Entry."
           type: "self-reference"
@@ -737,12 +736,12 @@ classes:
             doc: "The new Facility of this Entry."
             type:
               name: "Facility"
-              includes: "Facility.hpp"
+              includes: "stumpless/Facility.hpp"
           - name: "severity"
             doc: "The new Severity of this Entry."
             type:
               name: "Severity"
-              includes: "Severity.hpp"
+              includes: "stumpless/Severity.hpp"
         return:
           doc: "The modified Entry."
           type: "self-reference"
@@ -787,7 +786,7 @@ classes:
             doc: "The new Severity of this Entry."
             type:
               name: "Severity"
-              includes: "Severity.hpp"
+              includes: "stumpless/Severity.hpp"
         return:
           doc: "The modified Entry."
           type: "self-reference"
