@@ -73,7 +73,7 @@ classes:
                 without a facility code of their own.
               type:
                 name: "Facility"
-                includes: "Facility.hpp"
+                includes: "stumpless/Facility.hpp"
               value: "static_cast<int>(default_facility)"
           return:
             type: "equivalent-struct-pointer"

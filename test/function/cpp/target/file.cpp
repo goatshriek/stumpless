@@ -17,16 +17,9 @@
  */
 
 #include <cstddef>
-#include <ErrorId.hpp>
 #include <fstream>
 #include <gtest/gtest.h>
-#include <Entry.hpp>
-#include <Facility.hpp>
-#include <FileTarget.hpp>
-#include <Severity.hpp>
-#include <stumpless/option.h>
-#include <stumpless/target.h>
-#include <StumplessException.hpp>
+#include <stumpless.hpp>
 #include "test/function/rfc5424.hpp"
 
 using namespace stumplesscpp;

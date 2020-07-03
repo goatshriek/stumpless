@@ -92,7 +92,7 @@ templates:
               is obtained at log time.
             type:
               name: "Param"
-              includes: "Param.hpp"
+              includes: "stumpless/Param.hpp"
         return:
           doc: "The modified Entry."
           type: "self-reference"

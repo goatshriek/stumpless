@@ -17,7 +17,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <Version.hpp>
+#include <stumpless.hpp>
 
 using namespace stumplesscpp;
 

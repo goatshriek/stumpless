@@ -13,16 +13,17 @@
 [CmdletBinding()]
 
 Param (
-    # An array of paths to the files to repair.
+    # The path to the directory containing the header files to repair.
     [Parameter(Mandatory=$true,Position=0)]
-    [string[]]$HeaderFilePaths
+    [string]$InputFileDir,
+
+    # The path to the directory where the modified header files should go.
+    [Parameter(Mandatory=$true,Position=1)]
+    [string]$OutputFileDir
 )
 
-$HeaderFilePaths | ForEach-Object {
-  $className = [System.IO.Path]::GetFileNameWithoutExtension($_)
-  $newContents = Get-Content $_ | `
-    ForEach-Object { $_ -replace "class $className", "class DLL_API $className" }
-  $preambleLines = @(
+Get-ChildItem -Path $HeaderFileDirectory | Where-Object { $_.Extension -eq '.hpp' } | ForEach-Object {
+  $newContents = @(
     "#ifdef DLL_EXPORTS",
     "#  define DLL_API __declspec(dllexport)",
     "#else",
@@ -30,5 +31,9 @@ $HeaderFilePaths | ForEach-Object {
     "#endif",
     ""
   )
-  Set-Content $_ -Value ($preambleLines + $newContents)
+
+  $newContents += Get-Content $_.FullName | ForEach-Object { $_ -replace "class $className", "class DLL_API $className" }
+
+  $newFile = Join-Path -Path $OutputFileDir -ChildPath $_.Name
+  Set-Content $newFile -Value $newContents
 }

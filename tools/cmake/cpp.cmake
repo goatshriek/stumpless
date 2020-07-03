@@ -3,42 +3,42 @@ include(tools/cmake/cpp_test.cmake)
 set(CPP_LIB_BUILD_DIR ${CMAKE_BINARY_DIR}/cpp-lib)
 
 set(GENERATED_CPP_LIB_HEADERS
-  ${CPP_LIB_BUILD_DIR}/AddressFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/ArgumentEmpty.hpp
-  ${CPP_LIB_BUILD_DIR}/ArgumentTooBig.hpp
-  ${CPP_LIB_BUILD_DIR}/BufferTarget.hpp
-  ${CPP_LIB_BUILD_DIR}/DuplicateElement.hpp
-  ${CPP_LIB_BUILD_DIR}/Element.hpp
-  ${CPP_LIB_BUILD_DIR}/ElementNotFound.hpp
-  ${CPP_LIB_BUILD_DIR}/Entry.hpp
-  ${CPP_LIB_BUILD_DIR}/ErrorId.hpp
-  ${CPP_LIB_BUILD_DIR}/Facility.hpp
-  ${CPP_LIB_BUILD_DIR}/FileOpenFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/FileTarget.hpp
-  ${CPP_LIB_BUILD_DIR}/FileWriteFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/IndexOutOfBounds.hpp
-  ${CPP_LIB_BUILD_DIR}/InvalidFacility.hpp
-  ${CPP_LIB_BUILD_DIR}/InvalidId.hpp
-  ${CPP_LIB_BUILD_DIR}/InvalidSeverity.hpp
-  ${CPP_LIB_BUILD_DIR}/MemoryAllocationFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/MemoryManager.hpp
-  ${CPP_LIB_BUILD_DIR}/NetworkProtocolUnsupported.hpp
-  ${CPP_LIB_BUILD_DIR}/Param.hpp
-  ${CPP_LIB_BUILD_DIR}/ParamNotFound.hpp
-  ${CPP_LIB_BUILD_DIR}/Severity.hpp
-  ${CPP_LIB_BUILD_DIR}/SocketBindFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/SocketConnectFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/SocketFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/SocketSendFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/StreamTarget.hpp
-  ${CPP_LIB_BUILD_DIR}/StreamWriteFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/StumplessException.hpp
-  ${CPP_LIB_BUILD_DIR}/TargetIncompatible.hpp
-  ${CPP_LIB_BUILD_DIR}/TargetUnsupported.hpp
-  ${CPP_LIB_BUILD_DIR}/TransportProtocolUnsupported.hpp
-  ${CPP_LIB_BUILD_DIR}/Version.hpp
-  ${CPP_LIB_BUILD_DIR}/WindowsEventLogCloseFailure.hpp
-  ${CPP_LIB_BUILD_DIR}/WindowsEventLogOpenFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/AddressFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/ArgumentEmpty.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/ArgumentTooBig.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/BufferTarget.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/DuplicateElement.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/Element.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/ElementNotFound.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/Entry.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/ErrorId.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/Facility.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/FileOpenFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/FileTarget.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/FileWriteFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/IndexOutOfBounds.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/InvalidFacility.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/InvalidId.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/InvalidSeverity.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/MemoryAllocationFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/MemoryManager.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/NetworkProtocolUnsupported.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/Param.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/ParamNotFound.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/Severity.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/SocketBindFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/SocketConnectFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/SocketFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/SocketSendFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/StreamTarget.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/StreamWriteFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/StumplessException.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/TargetIncompatible.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/TargetUnsupported.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/TransportProtocolUnsupported.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/Version.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/WindowsEventLogCloseFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/WindowsEventLogOpenFailure.hpp
 )
 
 set(GENERATED_CPP_LIB_SOURCES
@@ -94,7 +94,7 @@ endif()
 
 if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/WelTarget.hpp)
-  list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/WelTarget.cpp)
+  list(APPEND GENERATED_CPP_LIB_SOURCES ${CPP_LIB_BUILD_DIR}/WelTarget.cpp)
 
   add_cpp_test(wel
     SOURCES
@@ -105,12 +105,10 @@ endif()
 file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
 if(MSVC)
-  list(JOIN GENERATED_CPP_LIB_HEADERS "," header_files)
-
   add_custom_command(
     OUTPUT ${GENERATED_CPP_LIB_SOURCES}
     COMMAND call wrapture ${WRAPTURE_SPECS}
-    COMMAND powershell ${PROJECT_SOURCE_DIR}/scripts/Repair-HeaderDllExports.ps1 -HeaderFilePaths ${header_files}
+    COMMAND powershell ${PROJECT_SOURCE_DIR}/scripts/Repair-HeaderDllExports.ps1 -InputFileDir ${CPP_LIB_BUILD_DIR} -OutputFileDir ${CMAKE_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}
     WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
     VERBATIM
@@ -119,9 +117,9 @@ else()
   add_custom_command(
     OUTPUT ${GENERATED_CPP_LIB_SOURCES}
     COMMAND wrapture ${WRAPTURE_SPECS}
+    COMMAND ${CMAKE_COMMAND} -E copy *.hpp ${CMAKE_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}
     WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
-    VERBATIM
   )
 endif()
 
@@ -152,7 +150,7 @@ target_include_directories(stumplesscpp
   PRIVATE
   ${PROJECT_SOURCE_DIR}/include
   ${CMAKE_BINARY_DIR}/include
-  ${CPP_LIB_BUILD_DIR}
+  ${CMAKE_BINARY_DIR}/include/stumpless
 )
 
 set_target_properties(stumplesscpp
