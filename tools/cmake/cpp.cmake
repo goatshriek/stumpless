@@ -117,9 +117,10 @@ else()
   add_custom_command(
     OUTPUT ${GENERATED_CPP_LIB_SOURCES}
     COMMAND wrapture ${WRAPTURE_SPECS}
-    COMMAND ${CMAKE_COMMAND} -E copy *".hpp" ${CMAKE_BINARY_DIR}/include/stumpless
+    COMMAND ruby ${PROJECT_SOURCE_DIR}/scripts/copy_headers.rb ${CMAKE_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}
     WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
+    VERBATIM
   )
 endif()
 
