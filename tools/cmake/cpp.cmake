@@ -104,7 +104,7 @@ endif()
 
 file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
-if(WIN32)
+if(MSVC)
   list(JOIN GENERATED_CPP_LIB_HEADERS "," header_files)
 
   add_custom_command(
