@@ -130,12 +130,22 @@ struct stumpless_target {
 #    define stump_i(...) stump(__VA_ARGS__)
 
 /**
- * Adds an entry into a given target at the informational level.
+ * Adds an entry to a given target with informational severity.
  */
-#    define stump_i_entry(TARGET, ENTRY) stumpless_add_entry( (TARGET), (ENTRY) );
+#    define stump_i_entry(TARGET, ENTRY) stumpless_add_entry( (TARGET), (ENTRY) )
 
 /**
- *
+ * Adds a message to a given target with the specified priority.
+ */
+#    define stump_i_log(TARGET, PRIORITY, ...) stumpless_add_entry( (TARGET), (PRIORITY), __VA_ARGS__ )
+
+/**
+ * Adds a message to a given target with informational severity.
+ */
+#    define stump_i_message(TARGET, ...) stumpless_add_entry( (TARGET), __VA_ARGS__ )
+
+/**
+ * Adds a message to the default target with the specified priority.
  */
 #    define stumplog_i(PRIORITY, ...) stumplog( (PRIORITY), __VA_ARGS__)
 
@@ -164,12 +174,12 @@ struct stumpless_target {
 /**
  *
  */
-#    define stump_i_entry(TARGET, ENTRY) ( ( void ) 0 );
+#    define stump_i_entry(TARGET, ENTRY) ( ( void ) 0 )
 
 /**
  *
  */
-#    define stumplog_i(PRIORITY, ...) ( ( void ) 0 );
+#    define stumplog_i(PRIORITY, ...) ( ( void ) 0 )
 
 #  endif
 
