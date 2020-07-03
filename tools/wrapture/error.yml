@@ -101,7 +101,7 @@ classes:
       - name: "GetErrorId"
         return:
           type: "ErrorId"
-          includes: "ErrorId.hpp"
+          includes: "stumpless/ErrorId.hpp"
         wrapped-function:
           name: "stumpless_get_error_id"
           includes: "stumpless/error.h"

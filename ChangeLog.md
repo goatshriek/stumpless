@@ -9,9 +9,13 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [1.6.0] - 2020-07-01
+## [1.6.0] - 2020-07-03
 ### Added
  - A number of new functions for working with entries, elements, and params.
+ - A rollup header, `stumpless.hpp`, for the C++ library to make use easier.
+
+### Fixed
+ - Added missing DLL exports of C++ library in standard Visual Studio builds.
 
 ## [1.5.0] - 2020-05-19
 ### Added

@@ -44,7 +44,7 @@ classes:
                 STUMPLESS_FACILITY value.
               type:
                 name: "Facility"
-                includes: "Facility.hpp"
+                includes: "stumpless/Facility.hpp"
               value: "static_cast<int>(default_facility)"
           return:
             type: "equivalent-struct-pointer"

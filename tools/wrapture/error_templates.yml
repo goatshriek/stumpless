@@ -5,7 +5,7 @@ templates:
       namespace: "stumplesscpp"
       parent:
         name: "StumplessException"
-        includes: "StumplessException.hpp"
+        includes: "stumpless/StumplessException.hpp"
       type: "pointer"
       equivalent-struct:
         name: "stumpless_error"
@@ -28,7 +28,7 @@ templates:
           constructor:
             name: "StumplessException::newStumplessException"
             includes:
-              - "StumplessException.hpp"
+              - "stumpless/StumplessException.hpp"
               - "stumpless/error.h"
             params:
               - value: "stumpless_get_error(  )"
@@ -44,7 +44,7 @@ templates:
           constructor:
             name: "StumplessException::newStumplessException"
             includes:
-              - "StumplessException.hpp"
+              - "stumpless/StumplessException.hpp"
               - "stumpless/error.h"
             params:
               - value: "stumpless_get_error()"
@@ -60,7 +60,7 @@ templates:
           constructor:
             name: "StumplessException::newStumplessException"
             includes:
-              - "StumplessException.hpp"
+              - "stumpless/StumplessException.hpp"
               - "stumpless/error.h"
             params:
               - value: "stumpless_get_error()"

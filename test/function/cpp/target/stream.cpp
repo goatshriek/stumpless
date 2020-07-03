@@ -17,9 +17,8 @@
  */
 
 #include <cstdio>
-#include <Facility.hpp>
 #include <gtest/gtest.h>
-#include <StreamTarget.hpp>
+#include <stumpless.hpp>
 #include <stumpless/option.h>
 
 using namespace stumplesscpp;

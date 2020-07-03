@@ -19,7 +19,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
-#include <MemoryManager.hpp>
+#include <stumpless.hpp>
 
 using namespace stumplesscpp;
 

@@ -1,4 +1,4 @@
-version: 1.5.{build}-{branch}
+version: 1.6.0+{build}
 
 clone_folder: c:\project\stumpless
 
@@ -17,9 +17,9 @@ platform:
 environment:
   matrix:
   - arch: Win64
-    network_targets_enabled: OFF
+    cpp_enabled: OFF
   - arch: Win64
-    network_targets_enabled: ON
+    cpp_enabled: ON
 
 init:
 - set arch=
@@ -28,11 +28,15 @@ init:
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%arch%" )
 
+install:
+ - set PATH=C:\Ruby26-x64\bin;%PATH%
+ - if "%cpp_enabled%"=="ON" ( bundle install )
+
 before_build:
 - cmd: |-
     mkdir build
     cd build
-    cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration% -DENABLE_NETWORK_TARGETS=%network_targets_enabled%
+    cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration% -DENABLE_CPP=%cpp_enabled%
 
 build:
   project: c:\project\stumpless\build\stumpless.vcxproj
@@ -40,4 +44,5 @@ build:
 test_script:
   - set CTEST_OUTPUT_ON_FAILURE=1
   - msbuild c:\project\stumpless\build\check.vcxproj
+  - if "%cpp_enabled%"=="ON" ( msbuild c:\project\stumpless\build\check-cpp.vcxproj )
   - msbuild c:\project\stumpless\build\examples.vcxproj

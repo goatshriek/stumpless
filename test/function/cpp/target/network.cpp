@@ -17,8 +17,8 @@
  */
 
 #include <gtest/gtest.h>
-#include <NetworkTarget.hpp>
 #include <stumpless.h>
+#include <stumpless.hpp>
 
 using namespace stumplesscpp;
 

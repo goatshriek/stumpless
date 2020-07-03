@@ -17,11 +17,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <Element.hpp>
-#include <Entry.hpp>
-#include <Facility.hpp>
-#include <Param.hpp>
-#include <Severity.hpp>
+#include <stumpless.hpp>
 
 using namespace stumplesscpp;
 

@@ -18,8 +18,7 @@
 
 #include <cstddef>
 #include <gtest/gtest.h>
-#include <Param.hpp>
-#include <StumplessException.hpp>
+#include <stumpless.hpp>
 
 using namespace stumplesscpp;
 
