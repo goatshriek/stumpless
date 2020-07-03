@@ -132,7 +132,7 @@ struct stumpless_target {
 #    define stump_i(...) stump(__VA_ARGS__)
 
 /**
- *
+ * Adds an entry into a given target at the informational level.
  */
 #    define stump_i_entry(TARGET, ENTRY) stumpless_add_entry( (TARGET), (ENTRY) );
 
