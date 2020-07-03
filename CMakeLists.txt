@@ -12,6 +12,13 @@ string(CONCAT enable_cpp_help_string
 option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
 option(BUILD_PYTHON "include the python libary" OFF)
+
+string(CONCAT enable_info_logs_help_string
+  "Enable functions defined at the informational level. If this is set to OFF "
+  "then these functions (stump_i, stump_i_entry, stumplog_i) are removed "
+  "during compilation."
+)
+
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)

@@ -99,8 +99,102 @@ struct stumpless_target {
   int mask;
 };
 
+#  ifdef STUMPLESS_INFO_LOGS_ENABLED
+
 /**
  * Logs a message to the default target.
+ *
+ * This function only operates when STUMPLESS_INFO_LOGS_ENABLED has been defined
+ * during build. It is enabled by default and has been enabled in this build. If
+ * it is not enabled, then this function is removed at compile time and will
+ * have no effect. If it is enabled, then it is equivalent to a call to stump
+ * with the same parameters.
+ *
+ * Note that this function does not actually set the severity of the logged
+ * message to STUMPLESS_SEVERITY_INFO. Messages logged using this function will
+ * have the default severity of the target. If you need to set this, use
+ * stumpless_set_default_severity on the target. If you need to do it on a
+ * per-message basis, use the stumplog_i function or consider using an entry
+ * with the severity set as needed instead.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+#    define stump_i(...) stump(__VA_ARGS__)
+
+/**
+ *
+ */
+#    define stump_i_entry(TARGET, ENTRY) stumpless_add_entry( (TARGET), (ENTRY) );
+
+/**
+ *
+ */
+#    define stumplog_i(PRIORITY, ...) stumplog( (PRIORITY), __VA_ARGS__)
+
+#  else
+
+/**
+ * A placeholder for a logging call of informational severity.
+ *
+ * This function has been disabled during the build of this library, and
+ * will therefore be removed during compilation. Use ENABLE_INFO_LOGS during
+ * build to enable this function.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+#    define stump_i(...) ( ( void ) 0 )
+
+/**
+ *
+ */
+#    define stump_i_entry(TARGET, ENTRY) ( ( void ) 0 );
+
+/**
+ *
+ */
+#    define stumplog_i(PRIORITY, ...) ( ( void ) 0 );
+
+#  endif
+
+/**
+ * Logs a message to the default target.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int stump( const char *message, ... );
+
+/**
+ * Logs a message to the default target.
+ *
+ * This is an alias for the stump function, which is preferred. This function
+ * will be deprecated in a future release.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
