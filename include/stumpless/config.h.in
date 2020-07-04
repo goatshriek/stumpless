@@ -36,9 +36,6 @@
 /** A string literal with the default socket logged to. */
 #cmakedefine STUMPLESS_DEFAULT_SOCKET "@STUMPLESS_DEFAULT_SOCKET@"
 
-/** Defined if Informational level calls are enabled in this build. */
-#cmakedefine STUMPLESS_INFO_LEVEL_ENABLED 1
-
 /** The memory page size used for dynamic memory allocations. */
 #define STUMPLESS_FALLBACK_PAGESIZE @FALLBACK_PAGESIZE@
 

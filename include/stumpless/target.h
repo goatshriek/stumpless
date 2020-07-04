@@ -29,7 +29,6 @@
 
 #  include <stdarg.h>
 #  include <stddef.h>
-#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 

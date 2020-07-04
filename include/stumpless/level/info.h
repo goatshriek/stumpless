@@ -18,7 +18,7 @@
 
 /** @file
  * Macro functinons that log messages and entries at the informational level.
- * 
+ *
  * These can be turned into no-ops at compile time by defining
  * STUMPLESS_DISABLE_INFO_LEVEL during build, or at least before inclusion of
  * this header (or stumpless.h).
