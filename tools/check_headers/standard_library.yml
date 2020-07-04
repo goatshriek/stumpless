@@ -88,7 +88,9 @@
 "size_t":
   - "cstddef"
   - "stddef.h"
-"snprintf": "stdio.h"
+"snprintf":
+ - "cstdio"
+ - "stdio.h"
 "SOCKET": "winsock2.h"
 "SOCKADDR_STORAGE": "winsock2.h"
 "socklen_t": "sys/socket.h"
