@@ -39,6 +39,7 @@
 #  include <stumpless/error.h>
 #  include <stumpless/facility.h>
 #  include <stumpless/id.h>
+#  include <stumpless/level/info.h>
 #  include <stumpless/memory.h>
 #  include <stumpless/option.h>
 #  include <stumpless/param.h>
