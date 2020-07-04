@@ -228,7 +228,7 @@ stumpless_add_entry( ( target ), ( entry ) )
  * appropriately.
  */
 #    define stump_i_log( target, priority, ... ) \
-stumpless_add_entry( ( target ), ( priority ), __VA_ARGS__ )
+stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
 
 /**
  * Adds a message to a given target with informational severity.
@@ -252,7 +252,7 @@ stumpless_add_entry( ( target ), ( priority ), __VA_ARGS__ )
  * appropriately.
  */
 #    define stump_i_message( target, ... ) \
-stumpless_add_entry( ( target ), __VA_ARGS__ )
+stumpless_add_message( ( target ), __VA_ARGS__ )
 
 /**
  * Adds a message to the default target with the specified priority.
