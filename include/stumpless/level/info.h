@@ -17,7 +17,7 @@
  */
 
 /** @file
- * Macro functinons that log messages and entries at the informational level.
+ * Macro functions that log messages and entries at the informational level.
  *
  * These can be turned into no-ops at compile time by defining
  * STUMPLESS_DISABLE_INFO_LEVEL during build, or at least before inclusion of
@@ -30,7 +30,7 @@
 #  ifdef STUMPLESS_DISABLE_INFO_LEVEL
 
 /**
- * Logs a message to the default target with informational severity.
+ * Logs a message to the current target with informational severity.
  *
  * This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL
  * has been defined during build. If it is disabled, then this function is
@@ -56,9 +56,11 @@
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
-#    define stump_i( ... ) ( ( void ) 0 )
+#    define stump_i( ... ) ( 0 )
 
 /**
  * Adds an entry to a given target with informational severity.
@@ -83,9 +85,11 @@
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
-#    define stump_i_entry( target, entry ) ( ( void ) 0 )
+#    define stump_i_entry( target, entry ) ( 0 )
 
 /**
  * Adds a message to a given target with the specified priority.
@@ -114,9 +118,11 @@
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
-#    define stump_i_log( target, priority, ... ) ( ( void ) 0 )
+#    define stump_i_log( target, priority, ... ) ( 0 )
 
 /**
  * Adds a message to a given target with informational severity.
@@ -131,6 +137,11 @@
  * side effects you rely on will not cause problems if they are left out during
  * a build with info level calls disabled.
  *
+ * This function will log the given message with a severity of
+ * STUMPLESS_SEVERITY_INFO, and the facility defined by the
+ * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
+ * you will need to use stump_i_log instead.
+ *
  * @param target The target to send the entry to.
  *
  * @param message The message to log, optionally containing any format
@@ -142,12 +153,14 @@
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
-#    define stump_i_message( target, ... ) ( ( void ) 0 )
+#    define stump_i_message( target, ... ) ( 0 )
 
 /**
- * Adds a message to the default target with the specified priority.
+ * Adds a message to the current target with the specified priority.
  *
  * This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL
  * has been defined during build. If it is disabled, then this function is
@@ -168,10 +181,6 @@
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
  * specifiers given.
- *
- * @return A non-negative value if no error is encountered. If an error is
- * encountered, then a negative value is returned and an error code is set
- * appropriately.
  */
 #    define stumplog_i( priority, ... ) ( ( void ) 0 )
 
@@ -181,7 +190,7 @@
 #  include <stumpless/target.h>
 
 /**
- * Logs a message to the default target with informational severity.
+ * Logs a message to the current target with informational severity.
  *
  * This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL
  * has been defined during build. If it is disabled, then this function is
@@ -196,7 +205,7 @@
  * This function will log the given message with a severity of
  * STUMPLESS_SEVERITY_INFO, and the facility defined by the
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
- * you will need to use stumplog_i instead.
+ * you will need to use stump_i_log instead.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
@@ -207,11 +216,14 @@
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
-#    define stump_i( ... )                                      \
-stumplog( STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY, \
-          __VA_ARGS__ )
+#    define stump_i( ... )                                               \
+stumpless_add_log( stumpless_get_current_target(  ),                     \
+                   STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY, \
+                   __VA_ARGS__ )
 
 /**
  * Adds an entry to a given target with informational severity.
@@ -236,7 +248,9 @@ stumplog( STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY, \
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
 #    define stump_i_entry( target, entry ) \
 stumpless_add_entry( ( target ), ( entry ) )
@@ -268,7 +282,9 @@ stumpless_add_entry( ( target ), ( entry ) )
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
 #    define stump_i_log( target, priority, ... ) \
 stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
@@ -286,6 +302,11 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * side effects you rely on will not cause problems if they are left out during
  * a build with info level calls disabled.
  *
+ * This function will log the given message with a severity of
+ * STUMPLESS_SEVERITY_INFO, and the facility defined by the
+ * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
+ * you will need to use stump_i_log instead.
+ *
  * @param target The target to send the entry to.
  *
  * @param message The message to log, optionally containing any format
@@ -297,13 +318,17 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
  */
-#    define stump_i_message( target, ... ) \
-stumpless_add_message( ( target ), __VA_ARGS__ )
+#    define stump_i_message( target, ... )                               \
+stumpless_add_log( ( target ),                                           \
+                   STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY, \
+                   __VA_ARGS__ )
 
 /**
- * Adds a message to the default target with the specified priority.
+ * Adds a message to the current target with the specified priority.
  *
  * This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL
  * has been defined during build. If it is disabled, then this function is
@@ -324,10 +349,6 @@ stumpless_add_message( ( target ), __VA_ARGS__ )
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
  * specifiers given.
- *
- * @return A non-negative value if no error is encountered. If an error is
- * encountered, then a negative value is returned and an error code is set
- * appropriately.
  */
 #    define stumplog_i( priority, ... ) stumplog( ( priority ), __VA_ARGS__ )
 

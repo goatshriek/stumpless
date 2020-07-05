@@ -20,6 +20,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 #define TEST_BUFFER_LENGTH 8192
 
@@ -33,6 +34,7 @@ namespace {
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_target *target;
     struct stumpless_entry *basic_entry;
+    const char *basic_message = "basic test message";
 
     virtual void
     SetUp( void ) {
@@ -50,10 +52,10 @@ namespace {
       stumpless_set_target_default_msgid( target, "default-message" );
 
       basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
+                                         STUMPLESS_SEVERITY_WARNING,
                                         "stumpless-unit-test",
                                         "basic-entry",
-                                        "basic test message" );
+                                        basic_message );
 
       element = stumpless_new_element( "basic-element" );
       stumpless_add_element( basic_entry, element );
@@ -70,10 +72,13 @@ namespace {
   };
 
   TEST_F( InfoLevelEnabledTest, StumpI ) {
+    int result;
     int expected_prival;
     char prival[6];
 
-    stump_i( "simple message id: glorious kumquat" );
+    result = stump_i( "simple message id: glorious kumquat" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
 
     EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );
 
@@ -82,12 +87,31 @@ namespace {
     EXPECT_THAT( buffer, StartsWith( prival ) );
   }
 
+  TEST_F( InfoLevelEnabledTest, StumpIEntry ) {
+    int result;
+    int expected_prival;
+    char prival[6];
+
+    result = stump_i_entry( target, basic_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    EXPECT_THAT( buffer, HasSubstr( basic_message ) );
+
+    expected_prival = stumpless_get_entry_prival( basic_entry );
+    snprintf( prival, 6, "<%d>", expected_prival );
+    EXPECT_THAT( buffer, StartsWith( prival ) );
+  }
+
   TEST_F( InfoLevelEnabledTest, StumpISideEffects ) {
+    int result;
     int before_val = 344;
     int expected_prival;
     char prival[6];
 
-    stump_i( "simple message id #%d: glorious kumquat", before_val++ );
+    result = stump_i( "simple message id #%d: glorious kumquat", before_val++ );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
 
     EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );
     EXPECT_THAT( buffer, HasSubstr( "#344" ) );
