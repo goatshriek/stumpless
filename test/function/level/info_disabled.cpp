@@ -24,11 +24,10 @@
 #define TEST_BUFFER_LENGTH 8192
 
 using::testing::HasSubstr;
-using::testing::StartsWith;
 
 namespace {
 
-  class InfoLevelEnabledTest : public::testing::Test {
+  class InfoLevelDisabledTest : public::testing::Test {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_target *target;
@@ -69,17 +68,13 @@ namespace {
     }
   };
 
-  TEST_F( InfoLevelEnabledTest, StumpI ) {
+  TEST_F( InfoLevelDisabledTest, StumpI ) {
     int expected_prival;
     char prival[6];
 
     stump_i( "simple message id: glorious kumquat" );
 
-    EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );
-
-    expected_prival = STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_INFO;
-    snprintf( prival, 6, "<%d>", expected_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
+    EXPECT_TRUE( buffer[0] == '\0' );
   }
 
 }
