@@ -37,6 +37,11 @@
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
  *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
+ *
  * This function will log the given message with a severity of
  * STUMPLESS_SEVERITY_INFO, and the facility defined by the
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
@@ -63,9 +68,14 @@
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
  *
- * Note that this call does not override the severity of the entry itself.
- * Rather, it is intended to allow logging calls to be removed at compile time
- * if the severity is known ahead of time.
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
+ *
+ * This call does not override the severity of the entry itself. Rather, it is
+ * intended to allow logging calls to be removed at compile time if the severity
+ * is known ahead of time.
  *
  * @param target The target to send the entry to.
  *
@@ -84,6 +94,11 @@
  * has been defined during build. If it is disabled, then this function is
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
  *
  * @param target The target to send the entry to.
  *
@@ -111,6 +126,11 @@
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
  *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
+ *
  * @param target The target to send the entry to.
  *
  * @param message The message to log, optionally containing any format
@@ -133,6 +153,11 @@
  * has been defined during build. If it is disabled, then this function is
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
@@ -163,6 +188,11 @@
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
  *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
+ *
  * This function will log the given message with a severity of
  * STUMPLESS_SEVERITY_INFO, and the facility defined by the
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
@@ -191,9 +221,14 @@ stumplog( STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY, \
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
  *
- * Note that this call does not override the severity of the entry itself.
- * Rather, it is intended to allow logging calls to be removed at compile time
- * if the severity is known ahead of time.
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
+ *
+ * This call does not override the severity of the entry itself. Rather, it is
+ * intended to allow logging calls to be removed at compile time if the severity
+ * is known ahead of time.
  *
  * @param target The target to send the entry to.
  *
@@ -213,6 +248,11 @@ stumpless_add_entry( ( target ), ( entry ) )
  * has been defined during build. If it is disabled, then this function is
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
  *
  * @param target The target to send the entry to.
  *
@@ -241,6 +281,11 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
  *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
+ *
  * @param target The target to send the entry to.
  *
  * @param message The message to log, optionally containing any format
@@ -264,6 +309,11 @@ stumpless_add_message( ( target ), __VA_ARGS__ )
  * has been defined during build. If it is disabled, then this function is
  * removed at compile time and will have no effect. Otherwise, it is equivalent
  * to a call to stumplog with the provided message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with info level calls disabled.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
