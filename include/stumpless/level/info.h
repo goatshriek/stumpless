@@ -152,6 +152,9 @@
 
 #  else
 
+#  include <stumpless/severity.h>
+#  include <stumpless/target.h>
+
 /**
  * Logs a message to the default target with informational severity.
  *
