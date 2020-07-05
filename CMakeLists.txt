@@ -622,8 +622,8 @@ add_function_test(get_error_stream
   SOURCES test/function/startup/get_error_stream.cpp
 )
 
-add_function_test(info
-  SOURCES test/function/level/info.cpp
+add_function_test(info_enabled
+  SOURCES test/function/level/info_enabled.cpp
 )
 
 add_function_test(memory
