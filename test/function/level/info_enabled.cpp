@@ -82,4 +82,21 @@ namespace {
     EXPECT_THAT( buffer, StartsWith( prival ) );
   }
 
+  TEST_F( InfoLevelEnabledTest, StumpISideEffects ) {
+    int before_val = 344;
+    int expected_prival;
+    char prival[6];
+
+    stump_i( "simple message id #%d: glorious kumquat", before_val++ );
+
+    EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );
+    EXPECT_THAT( buffer, HasSubstr( "#344" ) );
+
+    expected_prival = STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_INFO;
+    snprintf( prival, 6, "<%d>", expected_prival );
+    EXPECT_THAT( buffer, StartsWith( prival ) );
+
+    EXPECT_EQ( before_val, 345 );
+  }
+
 }

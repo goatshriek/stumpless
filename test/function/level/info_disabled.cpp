@@ -68,12 +68,18 @@ namespace {
   };
 
   TEST_F( InfoLevelDisabledTest, StumpI ) {
-    int expected_prival;
-    char prival[6];
-
     stump_i( "simple message id: glorious kumquat" );
 
     EXPECT_TRUE( buffer[0] == '\0' );
+  }
+
+  TEST_F( InfoLevelDisabledTest, StumpISideEffects ) {
+    int before_val = 3;
+
+    stump_i( "simple message id #%d: glorious kumquat", before_val++ );
+
+    EXPECT_TRUE( buffer[0] == '\0' );
+    EXPECT_EQ( before_val, 3 );
   }
 
 }
