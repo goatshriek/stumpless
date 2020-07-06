@@ -38,7 +38,8 @@
  * This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL
  * has been defined during build. If it is disabled, then this function is
  * removed at compile time and will have no effect. Otherwise, it is equivalent
- * to a call to stumplog with the provided message and calculated priority.
+ * to a call to stumpless_add_log with the provided message and calculated
+ * priority.
  *
  * Note that if this function is disabled, then the arguments will not be
  * evaluated, meaning that any side effects will not happen. Be sure that any
@@ -67,9 +68,9 @@
 #    define stump_i( ... ) ( 0 )
 #  else
 #    define stump_i( ... )                                                     \
-       stumpless_add_log( stumpless_get_current_target(  ),                    \
-                          STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY,\
-                          __VA_ARGS__ )
+stumpless_add_log( stumpless_get_current_target(  ),                           \
+                   STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY,       \
+                   __VA_ARGS__ )
 #  endif
 
 /**
@@ -102,8 +103,8 @@
 #  ifdef STUMPLESS_DISABLE_INFO_LEVEL
 #    define stump_i_entry( target, entry ) ( 0 )
 #  else
-#    define stump_i_entry( target, entry ) \
-       stumpless_add_entry( ( target ), ( entry ) )
+#    define stump_i_entry( target, entry )                                     \
+stumpless_add_entry( ( target ), ( entry ) )
 #  endif
 
 /**
@@ -140,8 +141,8 @@
 #  ifdef STUMPLESS_DISABLE_INFO_LEVEL
 #    define stump_i_log( target, priority, ... ) ( 0 )
 #  else
-#    define stump_i_log( target, priority, ... ) \
-       stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
+#    define stump_i_log( target, priority, ... )                               \
+stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
 #endif
 
 /**
@@ -150,7 +151,8 @@
  * This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL
  * has been defined during build. If it is disabled, then this function is
  * removed at compile time and will have no effect. Otherwise, it is equivalent
- * to a call to stumplog with the provided message and calculated priority.
+ * to a call to stumpless_add_log with the provided message and calculated
+ * priority.
  *
  * Note that if this function is disabled, then the arguments will not be
  * evaluated, meaning that any side effects will not happen. Be sure that any
@@ -181,9 +183,9 @@
 #    define stump_i_message( target, ... ) ( 0 )
 #  else
 #    define stump_i_message( target, ... )                                     \
-       stumpless_add_log( ( target ),                                          \
-                          STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY,\
-                          __VA_ARGS__ )
+stumpless_add_log( ( target ),                                                 \
+                   STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY,       \
+                   __VA_ARGS__ )
 #  endif
 
 /**
@@ -212,7 +214,8 @@
 #  ifdef STUMPLESS_DISABLE_INFO_LEVEL
 #    define stumplog_i( priority, ... ) ( ( void ) 0 )
 #  else
-#    define stumplog_i( priority, ... ) stumplog( ( priority ), __VA_ARGS__ )
+#    define stumplog_i( priority, ... )                                        \
+stumplog( ( priority ), __VA_ARGS__ )
 #  endif
 
 #endif /* __STUMPLESS_LEVEL_INFO_H */
