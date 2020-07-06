@@ -622,13 +622,13 @@ add_function_test(get_error_stream
   SOURCES test/function/startup/get_error_stream.cpp
 )
 
-add_function_test(info_disabled
-  SOURCES test/function/level/info_disabled.cpp
+add_function_test(level_all_disabled
+  SOURCES test/function/level/all_disabled.cpp
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_INFO_LEVEL
 )
 
-add_function_test(info_enabled
-  SOURCES test/function/level/info_enabled.cpp
+add_function_test(levels_all_enabled
+  SOURCES test/function/level/all_enabled.cpp
 )
 
 add_function_test(memory
