@@ -20,17 +20,39 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 
+#define TEST_LEVEL_DISABLED( LEVEL_NAME, LEVEL_LETTER )                        \
+TEST_F( LevelDisabledTest, Stump##LEVEL_NAME ) {                               \
+  int result;                                                                  \
+  result = stump_i( "simple message id: glorious kumquat" );                   \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##SideEffects ) {                  \
+  int result;                                                                  \
+  int before_val = 3;                                                          \
+                                                                               \
+  result = stump_##LEVEL_LETTER( "simple message id #%d: glorious kumquat",    \
+                                 before_val++ );                               \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+  EXPECT_EQ( before_val, 3 );                                                  \
+}
+
 #define TEST_BUFFER_LENGTH 8192
 
 using::testing::HasSubstr;
 
 namespace {
 
-  class InfoLevelDisabledTest : public::testing::Test {
+  class LevelDisabledTest : public::testing::Test {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_target *target;
     struct stumpless_entry *basic_entry;
+    const char *basic_message = "basic test message";
 
     virtual void
     SetUp( void ) {
@@ -51,7 +73,7 @@ namespace {
                                          STUMPLESS_SEVERITY_INFO,
                                         "stumpless-unit-test",
                                         "basic-entry",
-                                        "basic test message" );
+                                        basic_message );
 
       element = stumpless_new_element( "basic-element" );
       stumpless_add_element( basic_entry, element );
@@ -67,23 +89,6 @@ namespace {
     }
   };
 
-  TEST_F( InfoLevelDisabledTest, StumpI ) {
-    int result;
-    result = stump_i( "simple message id: glorious kumquat" );
-    EXPECT_EQ( result, 0 );
-
-    EXPECT_TRUE( buffer[0] == '\0' );
-  }
-
-  TEST_F( InfoLevelDisabledTest, StumpISideEffects ) {
-    int result;
-    int before_val = 3;
-
-    result = stump_i( "simple message id #%d: glorious kumquat", before_val++ );
-    EXPECT_EQ( result, 0 );
-
-    EXPECT_TRUE( buffer[0] == '\0' );
-    EXPECT_EQ( before_val, 3 );
-  }
+  TEST_LEVEL_DISABLED( INFO, i );
 
 }
