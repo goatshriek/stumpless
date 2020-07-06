@@ -22,6 +22,62 @@
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 
+#define TEST_LEVEL_ENABLED( LEVEL_NAME, LEVEL_LETTER )                         \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME ) {                                \
+  int result;                                                                  \
+  int expected_prival;                                                         \
+  char prival[6];                                                              \
+                                                                               \
+  result = stump_##LEVEL_LETTER( "simple message id: glorious kumquat" );      \
+  EXPECT_NO_ERROR;                                                             \
+  EXPECT_GE( result, 0 );                                                      \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );                      \
+                                                                               \
+  expected_prival = STUMPLESS_DEFAULT_FACILITY |                               \
+                    STUMPLESS_SEVERITY_##LEVEL_NAME;                           \
+  snprintf( prival, 6, "<%d>", expected_prival );                              \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Entry ) {                         \
+  int result;                                                                  \
+  int expected_prival;                                                         \
+  char prival[6];                                                              \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_entry( target, basic_entry );                \
+  EXPECT_NO_ERROR;                                                             \
+  EXPECT_GE( result, 0 );                                                      \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( basic_message ) );                           \
+                                                                               \
+  expected_prival = stumpless_get_entry_prival( basic_entry );                 \
+  snprintf( prival, 6, "<%d>", expected_prival );                              \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##SideEffects ) {                   \
+  int result;                                                                  \
+  int before_val = 344;                                                        \
+  int expected_prival;                                                         \
+  char prival[6];                                                              \
+                                                                               \
+  result = stump_##LEVEL_LETTER( "simple message id #%d: glorious kumquat",    \
+                    before_val++ );                                            \
+  EXPECT_NO_ERROR;                                                             \
+  EXPECT_GE( result, 0 );                                                      \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );                      \
+  EXPECT_THAT( buffer, HasSubstr( "#344" ) );                                  \
+                                                                               \
+  expected_prival = STUMPLESS_DEFAULT_FACILITY |                               \
+                    STUMPLESS_SEVERITY_##LEVEL_NAME;                           \
+  snprintf( prival, 6, "<%d>", expected_prival );                              \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+                                                                               \
+  EXPECT_EQ( before_val, 345 );                                                \
+}
+
 #define TEST_BUFFER_LENGTH 8192
 
 using::testing::HasSubstr;
@@ -29,7 +85,7 @@ using::testing::StartsWith;
 
 namespace {
 
-  class InfoLevelEnabledTest : public::testing::Test {
+  class LevelEnabledTest : public::testing::Test {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_target *target;
@@ -42,13 +98,13 @@ namespace {
       struct stumpless_param *param;
 
       buffer[0] = '\0';
-      target = stumpless_open_buffer_target( "info level testing",
+      target = stumpless_open_buffer_target( "level enabled testing",
                                              buffer,
                                              TEST_BUFFER_LENGTH,
                                              STUMPLESS_OPTION_NONE,
                                              STUMPLESS_FACILITY_USER );
 
-      stumpless_set_target_default_app_name( target, "info-level-test" );
+      stumpless_set_target_default_app_name( target, "level-enabled-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
 
       basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -71,56 +127,6 @@ namespace {
     }
   };
 
-  TEST_F( InfoLevelEnabledTest, StumpI ) {
-    int result;
-    int expected_prival;
-    char prival[6];
-
-    result = stump_i( "simple message id: glorious kumquat" );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );
-
-    expected_prival = STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_INFO;
-    snprintf( prival, 6, "<%d>", expected_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-  }
-
-  TEST_F( InfoLevelEnabledTest, StumpIEntry ) {
-    int result;
-    int expected_prival;
-    char prival[6];
-
-    result = stump_i_entry( target, basic_entry );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    EXPECT_THAT( buffer, HasSubstr( basic_message ) );
-
-    expected_prival = stumpless_get_entry_prival( basic_entry );
-    snprintf( prival, 6, "<%d>", expected_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-  }
-
-  TEST_F( InfoLevelEnabledTest, StumpISideEffects ) {
-    int result;
-    int before_val = 344;
-    int expected_prival;
-    char prival[6];
-
-    result = stump_i( "simple message id #%d: glorious kumquat", before_val++ );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    EXPECT_THAT( buffer, HasSubstr( "glorious kumquat" ) );
-    EXPECT_THAT( buffer, HasSubstr( "#344" ) );
-
-    expected_prival = STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_INFO;
-    snprintf( prival, 6, "<%d>", expected_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-
-    EXPECT_EQ( before_val, 345 );
-  }
+  TEST_LEVEL_ENABLED( INFO, i );
 
 }
