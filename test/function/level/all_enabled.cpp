@@ -145,4 +145,24 @@ namespace {
     EXPECT_THAT( buffer, StartsWith( prival ) );
   }
 
+  TEST_F( LevelEnabledTest, StumpInfoLogSideEffects ) {
+    int result;
+    int before_val = 6889;
+    int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;
+    char prival[6];
+
+    result = stump_i_log( target,
+                          logged_prival,
+                          "simple message id #%d: lost primitive",
+                          before_val++ );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );
+    snprintf( prival, 6, "<%d>", logged_prival );
+    EXPECT_THAT( buffer, StartsWith( prival ) );
+
+    EXPECT_EQ( before_val, 6890 );
+  }
+
 }
