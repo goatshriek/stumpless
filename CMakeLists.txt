@@ -624,7 +624,7 @@ add_function_test(get_error_stream
 
 add_function_test(level_all_disabled
   SOURCES test/function/level/all_disabled.cpp
-  COMPILE_DEFINITIONS STUMPLESS_DISABLE_INFO_LEVEL
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_EMERG_LEVEL STUMPLESS_DISABLE_INFO_LEVEL
 )
 
 add_function_test(level_all_enabled

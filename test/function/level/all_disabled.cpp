@@ -56,7 +56,7 @@ TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##Log ) {                          \
                                                                                \
   result = stump_##LEVEL_LETTER##_log( target,                                 \
                                        STUMPLESS_FACILITY_KERN |               \
-                                       STUMPLESS_SEVERITY_INFO                 \
+                                       STUMPLESS_SEVERITY_INFO,                \
                                        "message id: inchworm bingo" );         \
   EXPECT_EQ( result, 0 );                                                      \
                                                                                \
@@ -69,7 +69,7 @@ TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##LogSideEffects ) {               \
                                                                                \
   result = stump_##LEVEL_LETTER##_log( target,                                 \
                                        STUMPLESS_FACILITY_KERN |               \
-                                       STUMPLESS_SEVERITY_INFO                 \
+                                       STUMPLESS_SEVERITY_INFO,                \
                                        "message id #%d: inchworm bingo",       \
                                        before_val++ );                         \
   EXPECT_EQ( result, 0 );                                                      \
@@ -103,7 +103,7 @@ TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##MessageSideEffects ) {           \
                                                                                \
 TEST_F( LevelDisabledTest, Stumplog##LEVEL_NAME ) {                            \
   stumplog_##LEVEL_LETTER( STUMPLESS_FACILITY_KERN |                           \
-                           STUMPLESS_SEVERITY_INFO                             \
+                           STUMPLESS_SEVERITY_INFO,                            \
                            "message id: inchworm bingo" );                     \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \
@@ -114,7 +114,7 @@ TEST_F( LevelDisabledTest, Stumplog##LEVEL_NAME##SideEffects ) {               \
   int before_val = 555;                                                        \
                                                                                \
   stumplog_##LEVEL_LETTER( STUMPLESS_FACILITY_KERN |                           \
-                           STUMPLESS_SEVERITY_INFO                             \
+                           STUMPLESS_SEVERITY_INFO,                            \
                            "message id #%d: inchworm bingo",                   \
                            before_val++ );                                     \
                                                                                \
@@ -170,6 +170,7 @@ namespace {
     }
   };
 
+  TEST_LEVEL_DISABLED( EMERG, em );
   TEST_LEVEL_DISABLED( INFO, i );
 
 }

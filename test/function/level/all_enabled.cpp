@@ -229,6 +229,7 @@ namespace {
     }
   };
 
+  TEST_LEVEL_ENABLED( EMERG, em );
   TEST_LEVEL_ENABLED( INFO, i );
 
 }
