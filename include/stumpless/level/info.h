@@ -184,7 +184,7 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
 #  else
 #    define stump_i_message( target, ... )                                     \
 stumpless_add_log( ( target ),                                                 \
-                   STUMPLESS_SEVERITY_INFO | STUMPLESS_DEFAULT_FACILITY,       \
+                   STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_INFO,       \
                    __VA_ARGS__ )
 #  endif
 
