@@ -343,7 +343,7 @@
 "stumplog_a": "stumpless/level/alert.h"
 "stumplog_c": "stumpless/level/crit.h"
 "stumplog_i": "stumpless/level/info.h"
-"stumplog_er": "stumpless/level/error.h"
+"stumplog_er": "stumpless/level/err.h"
 "stumplog_w": "stumpless/level/warning.h"
 "stumplog_n": "stumpless/level/notice.h"
 "stumplog_i": "stumpless/level/info.h"
