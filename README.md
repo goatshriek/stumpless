@@ -43,14 +43,14 @@ If you want an even shorter function call, you can use the `stump` function
 to just send a message to the default target:
 
 ```c
-stumpless( "My message" );
+stump( "My message" );
 ```
 
 And of course, you can use format specifiers in both functions just as you would
 with `printf`:
 
 ```c
-stumpless( "Login attempt failure #%d for user %s", count, username );
+stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
 
@@ -62,7 +62,7 @@ target = stumpless_open_file_target( "example.log",
                                      STUMPLESS_OPTION_NONE,
                                      STUMPLESS_FACILITY_USER );
 // uses the last opened target by default
-stumpless( "Login attempt failure #%d for user %s", count, username );
+stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
 Sending messages over the network to something like Splunk or rsyslog is just
@@ -73,7 +73,7 @@ target = stumpless_open_udp4_target( "send-to-splunk-example",
                                      "mylogserver.com", // or use an IP
                                      STUMPLESS_OPTION_NONE,
                                      STUMPLESS_FACILITY_USER );
-stumpless( "Login attempt failure #%d for user %s", count, username );
+stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
 If you have multiple targets, you can send messages to a chosen target like

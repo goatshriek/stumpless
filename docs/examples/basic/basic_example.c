@@ -33,11 +33,11 @@ main( int argc, char **argv ) {
 
 
   // logs to the last opened target
-  stumpless( "The hello world of stumpless." );
+  stump( "The hello world of stumpless." );
 
 
   // logs a more complex message to the last target
-  stumpless( "Login failed for username %s", username );
+  stump( "Login failed for username %s", username );
 
 
 #ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
