@@ -63,7 +63,7 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##SideEffects ) {                   \
   char prival[6];                                                              \
                                                                                \
   result = stump_##LEVEL_LETTER( "simple message id #%d: glorious kumquat",    \
-                    before_val++ );                                            \
+                                 before_val++ );                               \
   EXPECT_NO_ERROR;                                                             \
   EXPECT_GE( result, 0 );                                                      \
                                                                                \
@@ -76,6 +76,108 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##SideEffects ) {                   \
   EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
                                                                                \
   EXPECT_EQ( before_val, 345 );                                                \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Log ) {                           \
+  int result;                                                                  \
+  int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;    \
+  char prival[6];                                                              \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_log( target,                                 \
+                                       logged_prival,                          \
+                                       "simple message id: lost primitive" );  \
+  EXPECT_NO_ERROR;                                                             \
+  EXPECT_GE( result, 0 );                                                      \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );                        \
+  snprintf( prival, 6, "<%d>", logged_prival );                                \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##LogSideEffects ) {                \
+  int result;                                                                  \
+  int before_val = 6889;                                                       \
+  int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;    \
+  char prival[6];                                                              \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_log( target,                                 \
+                                       logged_prival,                          \
+                                       "message id #%d: lost primitive",       \
+                                       before_val++ );                         \
+  EXPECT_NO_ERROR;                                                             \
+  EXPECT_GE( result, 0 );                                                      \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );                        \
+  snprintf( prival, 6, "<%d>", logged_prival );                                \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+                                                                               \
+  EXPECT_EQ( before_val, 6890 );                                               \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Message ) {                       \
+  int result;                                                                  \
+  int expected_prival = STUMPLESS_DEFAULT_FACILITY |                           \
+                        STUMPLESS_SEVERITY_##LEVEL_NAME;                       \
+  char prival[6];                                                              \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_message( target,                             \
+                                           "message id: lost primitive" );     \
+  EXPECT_NO_ERROR;                                                             \
+  EXPECT_GE( result, 0 );                                                      \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );                        \
+  snprintf( prival, 6, "<%d>", expected_prival );                              \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##MessageSideEffects ) {            \
+  int result;                                                                  \
+  int before_val = 6889;                                                       \
+  int expected_prival = STUMPLESS_DEFAULT_FACILITY |                           \
+                        STUMPLESS_SEVERITY_##LEVEL_NAME;                       \
+  char prival[6];                                                              \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_message( target,                             \
+                                           "message id #%d: lost primitive",   \
+                                           before_val++ );                     \
+  EXPECT_NO_ERROR;                                                             \
+  EXPECT_GE( result, 0 );                                                      \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );                        \
+  snprintf( prival, 6, "<%d>", expected_prival );                              \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+                                                                               \
+  EXPECT_EQ( before_val, 6890 );                                               \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME ) {                             \
+  int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;    \
+  char prival[6];                                                              \
+                                                                               \
+  stumplog_##LEVEL_LETTER( logged_prival,                                      \
+                           "simple message id: lost primitive" );              \
+  EXPECT_NO_ERROR;                                                             \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );                        \
+  snprintf( prival, 6, "<%d>", logged_prival );                                \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME##SideEffects ) {                \
+  int before_val = 6889;                                                       \
+  int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;    \
+  char prival[6];                                                              \
+                                                                               \
+  stumplog_##LEVEL_LETTER( logged_prival,                                      \
+                           "simple message id #%d: lost primitive",            \
+                           before_val++ );                                     \
+  EXPECT_NO_ERROR;                                                             \
+                                                                               \
+  EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );                        \
+  snprintf( prival, 6, "<%d>", logged_prival );                                \
+  EXPECT_THAT( buffer, StartsWith( prival ) );                                 \
+                                                                               \
+  EXPECT_EQ( before_val, 6890 );                                               \
 }
 
 #define TEST_BUFFER_LENGTH 8192
@@ -128,104 +230,5 @@ namespace {
   };
 
   TEST_LEVEL_ENABLED( INFO, i );
-
-  TEST_F( LevelEnabledTest, StumpInfoLog ) {
-    int result;
-    int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;
-    char prival[6];
-
-    result = stump_i_log( target,
-                          logged_prival,
-                          "simple message id: lost primitive" );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );
-    snprintf( prival, 6, "<%d>", logged_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-  }
-
-  TEST_F( LevelEnabledTest, StumpInfoLogSideEffects ) {
-    int result;
-    int before_val = 6889;
-    int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;
-    char prival[6];
-
-    result = stump_i_log( target,
-                          logged_prival,
-                          "simple message id #%d: lost primitive",
-                          before_val++ );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );
-    snprintf( prival, 6, "<%d>", logged_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-
-    EXPECT_EQ( before_val, 6890 );
-  }
-
-  TEST_F( LevelEnabledTest, StumpInfoMessage ) {
-    int result;
-    int expected_prival = STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_INFO;
-    char prival[6];
-
-    result = stump_i_message( target,
-                              "simple message id: lost primitive" );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );
-    snprintf( prival, 6, "<%d>", expected_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-  }
-
-  TEST_F( LevelEnabledTest, StumpInfoMessageSideEffects ) {
-    int result;
-    int before_val = 6889;
-    int expected_prival = STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_INFO;
-    char prival[6];
-
-    result = stump_i_message( target,
-                              "simple message id #%d: lost primitive",
-                              before_val++ );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );
-    snprintf( prival, 6, "<%d>", expected_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-
-    EXPECT_EQ( before_val, 6890 );
-  }
-
-  TEST_F( LevelEnabledTest, StumplogInfo ) {
-    int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;
-    char prival[6];
-
-    stumplog_i( logged_prival, "simple message id: lost primitive" );
-    EXPECT_NO_ERROR;
-
-    EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );
-    snprintf( prival, 6, "<%d>", logged_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-  }
-
-  TEST_F( LevelEnabledTest, StumplogInfoSideEffects ) {
-    int before_val = 6889;
-    int logged_prival = STUMPLESS_FACILITY_KERN | STUMPLESS_SEVERITY_WARNING;
-    char prival[6];
-
-    stumplog_i( logged_prival,
-                "simple message id #%d: lost primitive",
-                before_val++ );
-    EXPECT_NO_ERROR;
-
-    EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );
-    snprintf( prival, 6, "<%d>", logged_prival );
-    EXPECT_THAT( buffer, StartsWith( prival ) );
-
-    EXPECT_EQ( before_val, 6890 );
-  }
 
 }

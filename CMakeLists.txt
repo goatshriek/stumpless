@@ -627,7 +627,7 @@ add_function_test(level_all_disabled
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_INFO_LEVEL
 )
 
-add_function_test(levels_all_enabled
+add_function_test(level_all_enabled
   SOURCES test/function/level/all_enabled.cpp
 )
 
