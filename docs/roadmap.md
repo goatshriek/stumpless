@@ -35,14 +35,6 @@ timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
 ## 1.6.0 (next minor release)
- * [ADD] **Logging functions that can be compiled out**
-   A common logging idiom is to log at different verbosity levels, and use
-   different levels in different contexts, for example debug during development,
-   and then only informational in production workloads. This feature will add
-   function calls that will be removed when the code is compiled with specific
-   flags, allowing builds that do not need lower-level logs to stay fast and
-   efficient without requiring code changes or modification tools in the build
-   pipeline.
  * [FIX] **Socket targets may fail to bind to a local socket**
    Socket targets can be opened with a local socket name provided, but this may
    also be set to `NULL`, in which case a local socket is generated (see the
