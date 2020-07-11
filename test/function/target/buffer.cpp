@@ -96,7 +96,7 @@ namespace {
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
-    result = stumpless( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
+    result = stump( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
     EXPECT_GE( result, 0 );
     EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
@@ -141,7 +141,7 @@ namespace {
 
     memset( test_string, 'g', TEST_BUFFER_LENGTH );
     test_string[TEST_BUFFER_LENGTH] = '\0';
-    ASSERT_EQ( -1, stumpless( test_string ) );
+    ASSERT_EQ( -1, stump( test_string ) );
 
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
