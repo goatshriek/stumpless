@@ -171,6 +171,7 @@ namespace {
   };
 
   TEST_LEVEL_DISABLED( EMERG, em );
+  TEST_LEVEL_DISABLED( WARNING, w );
   TEST_LEVEL_DISABLED( INFO, i );
 
 }

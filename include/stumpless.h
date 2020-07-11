@@ -41,6 +41,7 @@
 #  include <stumpless/id.h>
 #  include <stumpless/level/emerg.h>
 #  include <stumpless/level/info.h>
+#  include <stumpless/level/warning.h>
 #  include <stumpless/memory.h>
 #  include <stumpless/option.h>
 #  include <stumpless/param.h>
