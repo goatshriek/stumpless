@@ -39,6 +39,87 @@ TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##SideEffects ) {                  \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \
   EXPECT_EQ( before_val, 3 );                                                  \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##Entry ) {                        \
+  int result;                                                                  \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_entry( target,                               \
+                                         basic_entry );                        \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##Log ) {                          \
+  int result;                                                                  \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_log( target,                                 \
+                                       STUMPLESS_FACILITY_KERN |               \
+                                       STUMPLESS_SEVERITY_INFO                 \
+                                       "message id: inchworm bingo" );         \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##LogSideEffects ) {               \
+  int result;                                                                  \
+  int before_val = 555;                                                        \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_log( target,                                 \
+                                       STUMPLESS_FACILITY_KERN |               \
+                                       STUMPLESS_SEVERITY_INFO                 \
+                                       "message id #%d: inchworm bingo",       \
+                                       before_val++ );                         \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+  EXPECT_EQ( before_val, 555 );                                                \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##Message ) {                      \
+  int result;                                                                  \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_message( target,                             \
+                                           "message id: inchworm bingo" );     \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stump##LEVEL_NAME##MessageSideEffects ) {           \
+  int result;                                                                  \
+  int before_val = 555;                                                        \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_message( target,                             \
+                                           "message id #%d: inchworm bingo",   \
+                                           before_val++ );                     \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+  EXPECT_EQ( before_val, 555 );                                                \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stumplog##LEVEL_NAME ) {                            \
+  stumplog_##LEVEL_LETTER( STUMPLESS_FACILITY_KERN |                           \
+                           STUMPLESS_SEVERITY_INFO                             \
+                           "message id: inchworm bingo" );                     \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
+TEST_F( LevelDisabledTest, Stumplog##LEVEL_NAME##SideEffects ) {               \
+  int result;                                                                  \
+  int before_val = 555;                                                        \
+                                                                               \
+  stumplog_##LEVEL_LETTER( STUMPLESS_FACILITY_KERN |                           \
+                           STUMPLESS_SEVERITY_INFO                             \
+                           "message id #%d: inchworm bingo",                   \
+                           before_val++ );                                     \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+  EXPECT_EQ( before_val, 555 );                                                \
 }
 
 #define TEST_BUFFER_LENGTH 8192
