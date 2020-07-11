@@ -376,6 +376,7 @@
 "unistd_sysconf_getpagesize": "private/config/support_unistd_sysconf_getpagesize.h"
 "unsupported_target_is_open": "private/target.h"
 "vsnprintf_s_format_string": "private/config/have_vsnprintf_s.h"
+"vstump": "stumpless/target.h"
 "vstumpless": "stumpless/target.h"
 "vstumpless_add_log": "stumpless/target.h"
 "vstumpless_add_message": "stumpless/target.h"
