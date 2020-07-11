@@ -39,7 +39,7 @@ the platform: on a Linux this is `/dev/log`, on a Mac system this will be
 open a target or a few before calling `stumplog`, then logs will be sent to the
 most recently opened target.
 
-If you want an even shorter function call, you can use the `stumpless` function
+If you want an even shorter function call, you can use the `stump` function
 to just send a message to the default target:
 
 ```c
