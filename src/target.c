@@ -70,7 +70,7 @@ stumpless( const char *message, ... ) {
   va_list subs;
 
   va_start( subs, message );
-  result = vstumpless( message, subs );
+  result = vstump( message, subs );
   va_end( subs );
 
   return result;
