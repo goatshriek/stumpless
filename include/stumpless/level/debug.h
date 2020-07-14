@@ -27,6 +27,8 @@
 #ifndef __STUMPLESS_LEVEL_DEBUG_H
 #  define __STUMPLESS_LEVEL_DEBUG_H
 
+#  include <stumpless/level/mask.h>
+
 #  ifndef STUMPLESS_DISABLE_DEBUG_LEVEL
 #    include <stumpless/severity.h>
 #    include <stumpless/target.h>

@@ -27,6 +27,8 @@
 #ifndef __STUMPLESS_LEVEL_EMERG_H
 #  define __STUMPLESS_LEVEL_EMERG_H
 
+#  include <stumpless/level/mask.h>
+
 #  ifndef STUMPLESS_DISABLE_EMERG_LEVEL
 #    include <stumpless/severity.h>
 #    include <stumpless/target.h>

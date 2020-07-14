@@ -27,6 +27,8 @@
 #ifndef __STUMPLESS_LEVEL_NOTICE_H
 #  define __STUMPLESS_LEVEL_NOTICE_H
 
+#  include <stumpless/level/mask.h>
+
 #  ifndef STUMPLESS_DISABLE_NOTICE_LEVEL
 #    include <stumpless/severity.h>
 #    include <stumpless/target.h>
