@@ -91,18 +91,18 @@ stumpless_add_message( target,
 ## Severity Shorthand
 
 It's common to specify severity levels directly in logging calls, so stumpless
-provides a number of macro functions and `#define`s to make this less verbose
-and more efficient. For example, to log messages with a severity of INFO, you
-can do this:
+provides some macro functions to make this less verbose and more efficient. For
+example, to log messages with a severity of INFO, you can do this:
 
 ```c
 stump_i( "this gets logged as an info message" );
 ```
 
-Using these functions also has the added benefit that they can be removed at
-compile time simply by defining the `STUMPLESS_ENABLE_UPTO` or
+Using these functions has the added benefit that they can be removed at
+compile time by simply defining the `STUMPLESS_ENABLE_UPTO` or
 `STUMPLESS_DISABLE_DOWNTO` symbols. This makes it easy to change logging levels
-between builds to allow prod and debug builds to not require source changes.
+between builds, for example to have prod and debug versions without differences
+in their source code.
 
 ```c
 // be sure to define this before stumpless.h gets included
