@@ -117,9 +117,10 @@ stump_i( "I'm doing that thing you asked" );
 stump_d( "DEBUG info: %d, %d, %s", thing_1, thing_2, stringy_thingy );
 ```
 
-Check out the headers in `stumpless/level` to see the full list of severity
-shorthand functions, or the severity level example to see a complete program
-using this.
+Check out the headers in [stumpless/level](include/stumpless/level) to see the
+full list of severity shorthand functions, or the
+[severity level example](docs/examples/severity_level) to see a complete program
+in action.
 
 ## Even more examples
 
