@@ -6,7 +6,7 @@ The table below lists the current supported versions of Stumpless.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.6.x   | :white_check_mark: |
+| 1.6.x   | :heavy_check_mark: |
 | <= 1.5  | :x:                |
 
 ## Reporting a Vulnerability
