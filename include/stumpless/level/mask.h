@@ -22,7 +22,7 @@
  *
  * While this files does not contain any definitions itself, it provides the
  * logic that makes it possible to set a certain level of compile-time logging
- * using one of two shorthand definitions.
+ * using some shorthand definitions.
  *
  * Stumpless does not support mixing any of these masks with the
  * `STUMPLESS_DISABLE_<LEVEL_NAME>_LEVEL` definitions that remove specific
@@ -34,17 +34,19 @@
  * all levels up to and including the named one, and disables all of those below
  * it. For example, defining `STUMPLESS_ENABLE_UPTO_WARNING` will enable
  * `EMERG`, `ALERT`, `CRIT`, `ERR`, and `WARNING` level calls and will
- * disable `NOTICE`, `INFO`, and `DEBUG` level calls.
+ * disable `NOTICE`, `INFO`, and `DEBUG` level calls. Note that the semantics
+ * of this mask closely resemble the `LOG_UPTO` macro provided in `syslog.h`
+ * for runtime level filtering.
  *
  * Defining `STUMPLESS_ENABLE_UPTO_DEBUG` enables all log levels, which is the
  * default for stumpless.
  *
- * Similarly, the `STUMPLESS_DISABLE_DOWNTO_<LEVEL>` definition will perform
- * the opposite, disabling all levels down to and including the named one and
- * enabling all of those above it. For example, defining
- * `STUMPLESS_DISABLE_DOWNTO_WARNING` will enable `EMERG`, `ALERT`, `CRIT`, and
- * `ERR` level calls and will disable `WARNING`, `NOTICE`, `INFO`, and `DEBUG`
- * level calls.
+ * As the corollary to the UPTO mask, the `STUMPLESS_DISABLE_DOWNTO_<LEVEL>`
+ * definition will perform the opposite, disabling all levels down to and
+ * including the named one and enabling all of those above it. For example,
+ * defining `STUMPLESS_DISABLE_DOWNTO_WARNING` will enable `EMERG`, `ALERT`,
+ * `CRIT`, and `ERR` level calls and will disable `WARNING`, `NOTICE`, `INFO`,
+ * and `DEBUG` level calls.
  *
  * This means that defining `STUMPLESS_DISABLE_DOWNTO_EMERG` disables all
  * logging calls that can be removed during compile time. There is also a
@@ -62,6 +64,15 @@
 #ifndef __STUMPLESS_LEVEL_MASK_H
 #  define __STUMPLESS_LEVEL_MASK_H
 
-
+#  if defined(STUMPLESS_DISABLE_ALL_LEVELS) || defined(STUMPLESS_DISABLE_DOWNTO_EMERG)
+#    define STUMPLESS_DISABLE_EMERG_LEVEL 1
+#    define STUMPLESS_DISABLE_ALERT_LEVEL 1
+#    define STUMPLESS_DISABLE_CRIT_LEVEL 1
+#    define STUMPLESS_DISABLE_ERR_LEVEL 1
+#    define STUMPLESS_DISABLE_WARNING_LEVEL 1
+#    define STUMPLESS_DISABLE_NOTICE_LEVEL 1
+#    define STUMPLESS_DISABLE_INFO_LEVEL 1
+#    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#  endif
 
 #endif /* __STUMPLESS_LEVEL_MASK_H */
