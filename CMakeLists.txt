@@ -631,6 +631,11 @@ add_function_test(level_all_enabled
   SOURCES test/function/level/all_enabled.cpp
 )
 
+add_function_test(level_disabled_downto_alert
+  SOURCES test/function/level/enable_upto_emerg.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_ALERT
+)
+
 add_function_test(level_enable_upto_emerg
   SOURCES test/function/level/enable_upto_emerg.cpp
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_EMERG
