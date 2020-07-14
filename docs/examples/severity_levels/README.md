@@ -61,7 +61,7 @@ stump_n( "notice" );
 stump_i( "informational" );
 stump_d( "debug" );
 
-// without any customization, this will result in these messages:
+// without any extra symbols defined, this will result in these messages:
 
 // if you define the following symbols:
 // this will result in these messages:
