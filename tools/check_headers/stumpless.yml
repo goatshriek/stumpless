@@ -374,6 +374,8 @@
 "sys_socket_sendto_udp_target": "private/config/have_sys_socket.h"
 "sys_socket_network_target_is_open": "private/config/have_sys_socket.h"
 "target_free_all": "private/target.h"
+"TEST_LEVEL_DISABLED": "test/helper/level_disabled.hpp"
+"TEST_LEVEL_ENABLED": "test/helper/level_enabled.hpp"
 "TestRFC5424Compliance": "test/function/rfc5424.hpp"
 "TestUTF8Compliance": "test/function/utf8.hpp"
 "unchecked_destroy_element": "private/element.h"

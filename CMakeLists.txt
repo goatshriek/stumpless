@@ -631,6 +631,11 @@ add_function_test(level_all_enabled
   SOURCES test/function/level/all_enabled.cpp
 )
 
+add_function_test(level_enable_upto_emerg
+  SOURCES test/function/level/enable_upto_emerg.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_EMERG
+)
+
 add_function_test(memory
   SOURCES test/function/memory.cpp
 )

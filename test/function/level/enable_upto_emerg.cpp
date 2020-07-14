@@ -20,6 +20,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/level_disabled.hpp"
+#include "test/helper/level_enabled.hpp"
 
 #define TEST_BUFFER_LENGTH 8192
 
@@ -69,7 +70,8 @@ namespace {
     }
   };
 
-  TEST_LEVEL_DISABLED( EMERG, em );
+  TEST_LEVEL_ENABLED( EMERG, em );
+
   TEST_LEVEL_DISABLED( ALERT, a );
   TEST_LEVEL_DISABLED( CRIT, c );
   TEST_LEVEL_DISABLED( ERR, er );

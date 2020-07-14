@@ -7,5 +7,6 @@
 "FAIL": "gtest/gtest.h"
 "HasSubstr": "gmock/gmock.h"
 "RUN_ALL_TESTS": "gtest/gtest.h"
+"Test": "gtest/gtest.h"
 "TEST": "gtest/gtest.h"
 "TEST_F": "gtest/gtest.h"
