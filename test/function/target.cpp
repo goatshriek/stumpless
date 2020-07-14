@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -601,6 +602,50 @@ namespace {
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
     EXPECT_TRUE( option );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( Stump, Basic ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_NOT_NULL( target );
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    result = stump( "test message" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( Stumpless, Basic ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_NOT_NULL( target );
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    result = stump( "test message" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
   }
