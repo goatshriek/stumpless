@@ -22,14 +22,15 @@ logging to the following targets:
  * the Windows Event Log
  * character buffers
 
-## Basic Usage
-If you want to start off slow, then you can use the `stumplog` function as a
-direct replacement for the syslog function:
+## Basic Logging Functions
+The simplest way to get started is to use the `stumplog` function as a direct
+replacement for the standard library's `syslog` function:
 
 ```c
+// if you're used to doing this:
 syslog( LOG_INFO | LOG_USER, "My message" );
 
-// the above can be directly replaced with:
+// then you can start doing this:
 stumplog( LOG_INFO | LOG_USER, "My message" );
 ```
 
@@ -40,7 +41,7 @@ open a target or a few before calling `stumplog`, then logs will be sent to the
 most recently opened target.
 
 If you want an even shorter function call, you can use the `stump` function
-to just send a message to the default target:
+to send a message to the current target:
 
 ```c
 stump( "My message" );
@@ -54,8 +55,9 @@ stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
 
-If you want to open your own target, then you simply open the target that you
-want and start sending messages. For example, to log to a file:
+If you want to open a specific target rather than using the default, then just
+open the target that you need and start sending messages. For example, to log to
+a file named `example.log`:
 
 ```c
 target = stumpless_open_file_target( "example.log",
@@ -86,11 +88,46 @@ stumpless_add_message( target,
                        username );
 ```
 
-It's as easy as that! For more detailed examples of different targets and more
-complicated message structures, check out the
+## Severity Shorthand
+
+It's common to specify severity levels directly in logging calls, so stumpless
+provides a number of macro functions and `#define`s to make this less verbose
+and more efficient. For example, to log messages with a severity of INFO, you
+can do this:
+
+```c
+stump_i( "this gets logged as an info message" );
+```
+
+Using these functions also has the added benefit that they can be removed at
+compile time simply by defining the `STUMPLESS_ENABLE_UPTO` or
+`STUMPLESS_DISABLE_DOWNTO` symbols. This makes it easy to change logging levels
+between builds to allow prod and debug builds to not require source changes.
+
+```c
+// be sure to define this before stumpless.h gets included
+#define STUMPLESS_ENABLE_UPTO_INFO
+
+// ...
+
+// this log will go through just fine
+stump_i( "I'm doing that thing you asked" );
+
+// this debugging message is completely removed: no runtime impact whatsoever
+stump_d( "DEBUG info: %d, %d, %s", thing_1, thing_2, stringy_thingy );
+```
+
+Check out the headers in `stumpless/level` to see the full list of severity
+shorthand functions, or the severity level example to see a complete program
+using this.
+
+## Even more examples
+
+For more detailed examples of the above scenarios, usage of specific target
+types, how to handle more complicated message structures, and more check out the
 [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples).
-for detailed walkthroughs and annotated example code for using various features
-of the library.
+The examples also include annoted example code files to compile, run, and modify
+to get you started.
 
 ## Further Documentation
 If you're curious about how something in stumpless works that isn't explained
