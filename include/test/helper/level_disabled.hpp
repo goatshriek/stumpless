@@ -25,7 +25,7 @@
 #  define TEST_LEVEL_DISABLED( LEVEL_NAME, LEVEL_LETTER )                      \
 TEST_F( LevelEnabledTest, Stump##LEVEL_NAME ) {                                \
   int result;                                                                  \
-  result = stump_i( "simple message id: glorious kumquat" );                   \
+  result = stump_##LEVEL_LETTER( "simple message id: glorious kumquat" );      \
   EXPECT_EQ( result, 0 );                                                      \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \

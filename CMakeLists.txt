@@ -636,9 +636,39 @@ add_function_test(level_disabled_downto_alert
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_ALERT
 )
 
+add_function_test(level_disabled_downto_emerg
+  SOURCES test/function/level/all_disabled.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_EMERG
+)
+
+add_function_test(level_disabled_downto_err
+  SOURCES test/function/level/enable_upto_crit.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_ERR
+)
+
 add_function_test(level_disabled_downto_crit
   SOURCES test/function/level/enable_upto_alert.cpp
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_CRIT
+)
+
+add_function_test(level_disabled_downto_debug
+  SOURCES test/function/level/enable_upto_info.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_DEBUG
+)
+
+add_function_test(level_disabled_downto_info
+  SOURCES test/function/level/enable_upto_notice.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_INFO
+)
+
+add_function_test(level_disabled_downto_notice
+  SOURCES test/function/level/enable_upto_warning.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_NOTICE
+)
+
+add_function_test(level_disabled_downto_warning
+  SOURCES test/function/level/enable_upto_err.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_WARNING
 )
 
 add_function_test(level_enable_upto_alert
@@ -646,9 +676,39 @@ add_function_test(level_enable_upto_alert
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_ALERT
 )
 
+add_function_test(level_enable_upto_crit
+  SOURCES test/function/level/enable_upto_crit.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_CRIT
+)
+
+add_function_test(level_enable_upto_debug
+  SOURCES test/function/level/all_enabled.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_DEBUG
+)
+
 add_function_test(level_enable_upto_emerg
   SOURCES test/function/level/enable_upto_emerg.cpp
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_EMERG
+)
+
+add_function_test(level_enable_upto_err
+  SOURCES test/function/level/enable_upto_err.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_ERR
+)
+
+add_function_test(level_enable_upto_info
+  SOURCES test/function/level/enable_upto_info.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_INFO
+)
+
+add_function_test(level_enable_upto_notice
+  SOURCES test/function/level/enable_upto_notice.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_NOTICE
+)
+
+add_function_test(level_enable_upto_warning
+  SOURCES test/function/level/enable_upto_warning.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_WARNING
 )
 
 add_function_test(memory
