@@ -61,7 +61,7 @@ takes longer than expected.
    still point to the invalid memory. See
    [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
    the progress of this bug.
- * [CHANGE] **`stumpless` function will be renamed**
+ * [CHANGE] **`stumpless` function will be removed (use `stump` instead)**
    As currently named, the function makes it impossible to create a C++
    namespace named after the library itself. Renaming this function will give it
    a more meaningful name and also allow a cleaner namespace in the C++
@@ -114,6 +114,9 @@ takes longer than expected.
  * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
    Enumerations are preferred for working with these set values in C++, and this
    function was inadvertently left in the library during development.
+ * [REMOVE] **Options and default facility from all target constructors**
+   These are typically boilerplate, and if needed can be set with subsequent
+   calls. This will allow for less verbose code in most use cases.
 
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**
