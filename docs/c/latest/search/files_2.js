@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['entry_2eh',['entry.h',['../entry_8h.html',1,'']]],
-  ['error_2eh',['error.h',['../error_8h.html',1,'']]]
+  ['config_2eh',['config.h',['../config_8h.html',1,'']]],
+  ['crit_2eh',['crit.h',['../crit_8h.html',1,'']]]
 ];

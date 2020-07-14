@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -73,6 +73,12 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:aa309f1ace201a2d29178c1b599fa06cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#aa309f1ace201a2d29178c1b599fa06cd">STUMPLESS_DEFAULT_FACILITY</a>&#160;&#160;&#160;<a class="el" href="facility_8h.html#ae960e2009518c849de9f1a169d527248">STUMPLESS_FACILITY_USER</a></td></tr>
+<tr class="memdesc:aa309f1ace201a2d29178c1b599fa06cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The facility code to use when one is not supplied.  <a href="#aa309f1ace201a2d29178c1b599fa06cd">More...</a><br /></td></tr>
+<tr class="separator:aa309f1ace201a2d29178c1b599fa06cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5151e9defe16061a817188255b16606"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#ab5151e9defe16061a817188255b16606">STUMPLESS_DEFAULT_SEVERITY</a>&#160;&#160;&#160;<a class="el" href="severity_8h.html#a9a55b3bd0a6b3a8bee65331da06732ce">STUMPLESS_SEVERITY_INFO</a></td></tr>
+<tr class="memdesc:ab5151e9defe16061a817188255b16606"><td class="mdescLeft">&#160;</td><td class="mdescRight">The severity code to use when one is not supplied.  <a href="#ab5151e9defe16061a817188255b16606">More...</a><br /></td></tr>
+<tr class="separator:ab5151e9defe16061a817188255b16606"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae37eeba5eda204c4bb3637e52aab3b13"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#ae37eeba5eda204c4bb3637e52aab3b13">STUMPLESS_DEFAULT_SOCKET</a>&#160;&#160;&#160;&quot;/dev/log&quot;</td></tr>
 <tr class="memdesc:ae37eeba5eda204c4bb3637e52aab3b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">A string literal with the default socket logged to.  <a href="#ae37eeba5eda204c4bb3637e52aab3b13">More...</a><br /></td></tr>
 <tr class="separator:ae37eeba5eda204c4bb3637e52aab3b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -91,19 +97,51 @@ Macros</h2></td></tr>
 <tr class="memitem:a08b8d3b494c3b0117fd8a7f2664d5eee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a08b8d3b494c3b0117fd8a7f2664d5eee">STUMPLESS_MAJOR_VERSION</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:a08b8d3b494c3b0117fd8a7f2664d5eee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if Windows Event Log targets are supported by this build.  <a href="#a08b8d3b494c3b0117fd8a7f2664d5eee">More...</a><br /></td></tr>
 <tr class="separator:a08b8d3b494c3b0117fd8a7f2664d5eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add9d784358097bb7dcdb318148490601"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#add9d784358097bb7dcdb318148490601">STUMPLESS_MINOR_VERSION</a>&#160;&#160;&#160;5</td></tr>
+<tr class="memitem:add9d784358097bb7dcdb318148490601"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#add9d784358097bb7dcdb318148490601">STUMPLESS_MINOR_VERSION</a>&#160;&#160;&#160;6</td></tr>
 <tr class="memdesc:add9d784358097bb7dcdb318148490601"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minor version of this stumpless build.  <a href="#add9d784358097bb7dcdb318148490601">More...</a><br /></td></tr>
 <tr class="separator:add9d784358097bb7dcdb318148490601"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa732a24f731f1404f5ecc24a15d85306"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#aa732a24f731f1404f5ecc24a15d85306">STUMPLESS_PATCH_VERSION</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:aa732a24f731f1404f5ecc24a15d85306"><td class="mdescLeft">&#160;</td><td class="mdescRight">The patch version of this stumpless build.  <a href="#aa732a24f731f1404f5ecc24a15d85306">More...</a><br /></td></tr>
 <tr class="separator:aa732a24f731f1404f5ecc24a15d85306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a206a120f0880fed4e4e73ca6f7d13b4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a206a120f0880fed4e4e73ca6f7d13b4f">STUMPLESS_VERSION</a>&#160;&#160;&#160;&quot;1.5.0&quot;</td></tr>
+<tr class="memitem:a206a120f0880fed4e4e73ca6f7d13b4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a206a120f0880fed4e4e73ca6f7d13b4f">STUMPLESS_VERSION</a>&#160;&#160;&#160;&quot;1.6.0&quot;</td></tr>
 <tr class="memdesc:a206a120f0880fed4e4e73ca6f7d13b4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The version of stumpless this library was built with.  <a href="#a206a120f0880fed4e4e73ca6f7d13b4f">More...</a><br /></td></tr>
 <tr class="separator:a206a120f0880fed4e4e73ca6f7d13b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Configuration information to provide to code built with the library. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aa309f1ace201a2d29178c1b599fa06cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa309f1ace201a2d29178c1b599fa06cd">&#9670;&nbsp;</a></span>STUMPLESS_DEFAULT_FACILITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_DEFAULT_FACILITY&#160;&#160;&#160;<a class="el" href="facility_8h.html#ae960e2009518c849de9f1a169d527248">STUMPLESS_FACILITY_USER</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The facility code to use when one is not supplied. </p>
+
+</div>
+</div>
+<a id="ab5151e9defe16061a817188255b16606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5151e9defe16061a817188255b16606">&#9670;&nbsp;</a></span>STUMPLESS_DEFAULT_SEVERITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_DEFAULT_SEVERITY&#160;&#160;&#160;<a class="el" href="severity_8h.html#a9a55b3bd0a6b3a8bee65331da06732ce">STUMPLESS_SEVERITY_INFO</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The severity code to use when one is not supplied. </p>
+
+</div>
+</div>
 <a id="ae37eeba5eda204c4bb3637e52aab3b13"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae37eeba5eda204c4bb3637e52aab3b13">&#9670;&nbsp;</a></span>STUMPLESS_DEFAULT_SOCKET</h2>
 
@@ -160,7 +198,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define STUMPLESS_MINOR_VERSION&#160;&#160;&#160;5</td>
+          <td class="memname">#define STUMPLESS_MINOR_VERSION&#160;&#160;&#160;6</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -240,7 +278,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define STUMPLESS_VERSION&#160;&#160;&#160;&quot;1.5.0&quot;</td>
+          <td class="memname">#define STUMPLESS_VERSION&#160;&#160;&#160;&quot;1.6.0&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -253,7 +291,7 @@ Macros</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 20 2020 06:03:55 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 14 2020 17:47:45 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

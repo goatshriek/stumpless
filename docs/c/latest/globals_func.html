@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -62,6 +62,9 @@ $(function() {
 &#160;
 
 <h3><a id="index_s"></a>- s -</h3><ul>
+<li>stump()
+: <a class="el" href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">target.h</a>
+</li>
 <li>stumpless()
 : <a class="el" href="target_8h.html#aa9d298f8841ae8c2c9ef07c3e3a8614b">target.h</a>
 </li>
@@ -77,8 +80,17 @@ $(function() {
 <li>stumpless_add_message()
 : <a class="el" href="target_8h.html#a6a6584fafc1a009fe10c7f92ec93f5bc">target.h</a>
 </li>
+<li>stumpless_add_new_element()
+: <a class="el" href="entry_8h.html#a65babe624e462794c910f23821567b65">entry.h</a>
+</li>
+<li>stumpless_add_new_param()
+: <a class="el" href="element_8h.html#a2a2d9474a3f9f44beb0360ba7c6061ec">element.h</a>
+</li>
+<li>stumpless_add_new_param_to_entry()
+: <a class="el" href="entry_8h.html#a77245510773f826dd714bf45b7f39a5d">entry.h</a>
+</li>
 <li>stumpless_add_param()
-: <a class="el" href="entry_8h.html#a3d1270530cfd4516e1a4ce8a4f36d9ce">entry.h</a>
+: <a class="el" href="element_8h.html#a3d1270530cfd4516e1a4ce8a4f36d9ce">element.h</a>
 </li>
 <li>stumpless_close_buffer_target()
 : <a class="el" href="buffer_8h.html#a9577fa5a1aee7e5f8e7a193911080061">buffer.h</a>
@@ -101,26 +113,41 @@ $(function() {
 <li>stumpless_close_wel_target()
 : <a class="el" href="wel_8h.html#af1034af01e6b4201bb3aee6e90863dee">wel.h</a>
 </li>
+<li>stumpless_copy_element()
+: <a class="el" href="element_8h.html#a399c8ce623ed296bebec5907a57092e7">element.h</a>
+</li>
+<li>stumpless_copy_entry()
+: <a class="el" href="entry_8h.html#ae2f2be65bcbb19608c3fc00fe3c52c49">entry.h</a>
+</li>
+<li>stumpless_copy_param()
+: <a class="el" href="param_8h.html#a728f368fdb4eb7c0f3cea37419cff648">param.h</a>
+</li>
 <li>stumpless_destroy_element()
-: <a class="el" href="entry_8h.html#a31602c97b019d4ec4e655ad7dd235ee5">entry.h</a>
+: <a class="el" href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">element.h</a>
 </li>
 <li>stumpless_destroy_element_and_contents()
-: <a class="el" href="entry_8h.html#ae1444ccc95efebc9c154d8f2726f2dc0">entry.h</a>
+: <a class="el" href="element_8h.html#a5485ff12e4d45a2938ed5598f82205fc">element.h</a>
 </li>
 <li>stumpless_destroy_element_only()
-: <a class="el" href="entry_8h.html#a2e04bc3101ae9af2cd225eb39210ea99">entry.h</a>
+: <a class="el" href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">element.h</a>
 </li>
 <li>stumpless_destroy_entry()
-: <a class="el" href="entry_8h.html#aed876925e2b23fcfadb394a35bd28c79">entry.h</a>
+: <a class="el" href="entry_8h.html#a8a2aa7037104cf77afe2a5ee8617d26f">entry.h</a>
 </li>
 <li>stumpless_destroy_entry_and_contents()
-: <a class="el" href="entry_8h.html#ada537920b248ad96c2ced2ed1150617a">entry.h</a>
+: <a class="el" href="entry_8h.html#ab7d65cc3149e2162b7824bf190825f7d">entry.h</a>
 </li>
 <li>stumpless_destroy_entry_only()
-: <a class="el" href="entry_8h.html#a3458202c208a8269c32e9ddb534c05b4">entry.h</a>
+: <a class="el" href="entry_8h.html#a454dc149ffd4206f978dcce2b6e81fa7">entry.h</a>
 </li>
 <li>stumpless_destroy_param()
-: <a class="el" href="entry_8h.html#a4d8c1e9d97a7656d40ff7139581a46e7">entry.h</a>
+: <a class="el" href="param_8h.html#aac5f733c5f53c20565b8f96dd9db27d6">param.h</a>
+</li>
+<li>stumpless_element_has_param()
+: <a class="el" href="element_8h.html#a96a1a0eaf93f5026f91824ff1292e71f">element.h</a>
+</li>
+<li>stumpless_entry_has_element()
+: <a class="el" href="entry_8h.html#a694454f9cca66faa009dfc969cc42e47">entry.h</a>
 </li>
 <li>stumpless_free_all()
 : <a class="el" href="memory_8h.html#a290757bff049c42f1f7d3cb387f04072">memory.h</a>
@@ -137,6 +164,48 @@ $(function() {
 <li>stumpless_get_destination()
 : <a class="el" href="network_8h.html#a4cdacdb8ee004600eb7ac47d48896f40">network.h</a>
 </li>
+<li>stumpless_get_element_by_index()
+: <a class="el" href="entry_8h.html#af354e501ef97dda7fc73db185c0eddfc">entry.h</a>
+</li>
+<li>stumpless_get_element_by_name()
+: <a class="el" href="entry_8h.html#abeedbc754cf23dba74b5db10e2158d29">entry.h</a>
+</li>
+<li>stumpless_get_element_index()
+: <a class="el" href="entry_8h.html#a4d247f4d57a5ad86c9f289bf816afa88">entry.h</a>
+</li>
+<li>stumpless_get_element_name()
+: <a class="el" href="element_8h.html#a5e67491f43202b62ea759e4b6f618409">element.h</a>
+</li>
+<li>stumpless_get_entry_app_name()
+: <a class="el" href="entry_8h.html#abfac0e81595f4440f6ef7fea9a56b4c6">entry.h</a>
+</li>
+<li>stumpless_get_entry_facility()
+: <a class="el" href="entry_8h.html#a9ce48f24220aedc8d09797f0087997c0">entry.h</a>
+</li>
+<li>stumpless_get_entry_message()
+: <a class="el" href="entry_8h.html#ae3b192be58a0ce56e301da9195f5fa15">entry.h</a>
+</li>
+<li>stumpless_get_entry_msgid()
+: <a class="el" href="entry_8h.html#a43a2ae7cc0c85ffb39728fa51e5d083a">entry.h</a>
+</li>
+<li>stumpless_get_entry_param_by_index()
+: <a class="el" href="entry_8h.html#adb92535ef22159a446257f9e783f9215">entry.h</a>
+</li>
+<li>stumpless_get_entry_param_by_name()
+: <a class="el" href="entry_8h.html#a4ac480c84954ee7e025302ff4bf2ef78">entry.h</a>
+</li>
+<li>stumpless_get_entry_param_value_by_index()
+: <a class="el" href="entry_8h.html#af1a9cf879d69009f855bad26764bbd4a">entry.h</a>
+</li>
+<li>stumpless_get_entry_param_value_by_name()
+: <a class="el" href="entry_8h.html#aa6cd99cc5c0ebd9e89b7024ce54161d5">entry.h</a>
+</li>
+<li>stumpless_get_entry_prival()
+: <a class="el" href="entry_8h.html#a65c3907dcc7be649473944dea368ee1c">entry.h</a>
+</li>
+<li>stumpless_get_entry_severity()
+: <a class="el" href="entry_8h.html#a0bcd14ef5aa04be7f909b5894546b4e3">entry.h</a>
+</li>
 <li>stumpless_get_error()
 : <a class="el" href="error_8h.html#a815feec2232597ca82bb6f6da314dceb">error.h</a>
 </li>
@@ -148,6 +217,36 @@ $(function() {
 </li>
 <li>stumpless_get_option()
 : <a class="el" href="target_8h.html#aed16b4ce57d0bc6c489b0e67b7403a13">target.h</a>
+</li>
+<li>stumpless_get_param_by_index()
+: <a class="el" href="element_8h.html#a8528efea9d31509dbcbe4ff8b5adcbdd">element.h</a>
+</li>
+<li>stumpless_get_param_by_name()
+: <a class="el" href="element_8h.html#a84775b3f220eedae2946f0895b19ab35">element.h</a>
+</li>
+<li>stumpless_get_param_count()
+: <a class="el" href="element_8h.html#a792f240cdec230073975f0e890a7cd80">element.h</a>
+</li>
+<li>stumpless_get_param_index()
+: <a class="el" href="element_8h.html#a8fcc1fbe4d13fdcab7d7a16997f99b10">element.h</a>
+</li>
+<li>stumpless_get_param_name()
+: <a class="el" href="param_8h.html#ae844cf2c48fadc7656282259ecdd5755">param.h</a>
+</li>
+<li>stumpless_get_param_name_by_index()
+: <a class="el" href="element_8h.html#aa955455cf880790264eeed278021471e">element.h</a>
+</li>
+<li>stumpless_get_param_name_count()
+: <a class="el" href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">element.h</a>
+</li>
+<li>stumpless_get_param_value()
+: <a class="el" href="param_8h.html#a5106c1b802e8897b8875596abfc9d2db">param.h</a>
+</li>
+<li>stumpless_get_param_value_by_index()
+: <a class="el" href="element_8h.html#a20b367a62509d2533c5e9eff2b6c5c02">element.h</a>
+</li>
+<li>stumpless_get_param_value_by_name()
+: <a class="el" href="element_8h.html#aec5674aa3a78fba4a3e2252e8501bb98">element.h</a>
 </li>
 <li>stumpless_get_transport_port()
 : <a class="el" href="network_8h.html#ae79ca498be39c06cd9287710f5e24436">network.h</a>
@@ -161,8 +260,11 @@ $(function() {
 <li>stumpless_get_wel_insertion_string()
 : <a class="el" href="wel__supported_8h.html#ac5dbe29cd87a66a36954fc5b598c52a6">wel_supported.h</a>
 </li>
+<li>stumpless_has_error()
+: <a class="el" href="error_8h.html#ac58f3cb83e4e87bfa0066abac3cf1bec">error.h</a>
+</li>
 <li>stumpless_new_element()
-: <a class="el" href="entry_8h.html#a794237f9dca8028953ed40579bbc7d57">entry.h</a>
+: <a class="el" href="element_8h.html#a794237f9dca8028953ed40579bbc7d57">element.h</a>
 </li>
 <li>stumpless_new_entry()
 : <a class="el" href="entry_8h.html#ad3ce3c911a33587eece1ffd3532b68ca">entry.h</a>
@@ -171,7 +273,7 @@ $(function() {
 : <a class="el" href="network_8h.html#acf165117100eec115d8a591072545984">network.h</a>
 </li>
 <li>stumpless_new_param()
-: <a class="el" href="entry_8h.html#a770674e618405604dcfb96feb0323cab">entry.h</a>
+: <a class="el" href="param_8h.html#a770674e618405604dcfb96feb0323cab">param.h</a>
 </li>
 <li>stumpless_new_tcp4_target()
 : <a class="el" href="network_8h.html#a8d090880542bba2ab1d5d3472aae9dbd">network.h</a>
@@ -239,17 +341,62 @@ $(function() {
 <li>stumpless_set_destination()
 : <a class="el" href="network_8h.html#a9a321bdfcedc908d6c1994804054e41a">network.h</a>
 </li>
+<li>stumpless_set_element()
+: <a class="el" href="entry_8h.html#afc3e4aaf1732e8092bfb557597181463">entry.h</a>
+</li>
+<li>stumpless_set_element_name()
+: <a class="el" href="element_8h.html#a3cc5b88ffc06f719122133eefc648a82">element.h</a>
+</li>
 <li>stumpless_set_entry_app_name()
 : <a class="el" href="entry_8h.html#ab59891c02e8081d4a7fddd00f1ff39f6">entry.h</a>
 </li>
+<li>stumpless_set_entry_facility()
+: <a class="el" href="entry_8h.html#a4bb32658a71f7f12d4e2472bd820d1b8">entry.h</a>
+</li>
 <li>stumpless_set_entry_message()
 : <a class="el" href="entry_8h.html#a6bdf09e512dbfe78c66a9923cbdf306c">entry.h</a>
+</li>
+<li>stumpless_set_entry_msgid()
+: <a class="el" href="entry_8h.html#afd2338c345676015208efb1e1cafd2d0">entry.h</a>
+</li>
+<li>stumpless_set_entry_param_by_index()
+: <a class="el" href="entry_8h.html#a0cab66ae13eb71814f19949619b9fa77">entry.h</a>
+</li>
+<li>stumpless_set_entry_param_value_by_index()
+: <a class="el" href="entry_8h.html#ad53f514991130b79f6d83813edeb0734">entry.h</a>
+</li>
+<li>stumpless_set_entry_param_value_by_name()
+: <a class="el" href="entry_8h.html#aca01a0f9e542c2685b24d7faae5f6150">entry.h</a>
+</li>
+<li>stumpless_set_entry_priority()
+: <a class="el" href="entry_8h.html#abf2dde84c36b4a684faea3275bd5307f">entry.h</a>
+</li>
+<li>stumpless_set_entry_prival()
+: <a class="el" href="entry_8h.html#ade045632d3f8982526026de6bc2752cc">entry.h</a>
+</li>
+<li>stumpless_set_entry_severity()
+: <a class="el" href="entry_8h.html#a8fdca74f2dae4f2fcbf43eced2f1ad8f">entry.h</a>
 </li>
 <li>stumpless_set_error_stream()
 : <a class="el" href="error_8h.html#a13262d1480cfafd82148079bc00e54a9">error.h</a>
 </li>
 <li>stumpless_set_option()
 : <a class="el" href="target_8h.html#a41a1ba9b5770efdce875e70c5e373fbd">target.h</a>
+</li>
+<li>stumpless_set_param()
+: <a class="el" href="element_8h.html#a5ef415a2201601bfad342784bf8511e0">element.h</a>
+</li>
+<li>stumpless_set_param_name()
+: <a class="el" href="param_8h.html#aa66bdc7bb8bb47fec51c4a8a0a7712e0">param.h</a>
+</li>
+<li>stumpless_set_param_value()
+: <a class="el" href="param_8h.html#a7e57db902a7d1ddfc3ac101eeaac99d5">param.h</a>
+</li>
+<li>stumpless_set_param_value_by_index()
+: <a class="el" href="element_8h.html#a7f06efd932779308b864066262dbf037">element.h</a>
+</li>
+<li>stumpless_set_param_value_by_name()
+: <a class="el" href="element_8h.html#af51ad1da49c1284cf83a7d00ad8eea15">element.h</a>
 </li>
 <li>stumpless_set_target_default_app_name()
 : <a class="el" href="target_8h.html#a3c37a8f9cb5a89da964df2c234e3e62a">target.h</a>
@@ -297,6 +444,9 @@ $(function() {
 
 
 <h3><a id="index_v"></a>- v -</h3><ul>
+<li>vstump()
+: <a class="el" href="target_8h.html#a02f3968128fa180088368881e96074bb">target.h</a>
+</li>
 <li>vstumpless()
 : <a class="el" href="target_8h.html#a06e21a8be4e949205f58029770c377da">target.h</a>
 </li>
@@ -322,7 +472,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 20 2020 06:03:55 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 14 2020 17:47:46 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

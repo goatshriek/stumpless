@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 <p>An element of structured data.  
  <a href="structstumpless__element.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="entry_8h_source.html">entry.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="element_8h_source.html">element.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -88,7 +88,7 @@ Data Fields</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An element of structured data. </p>
-<p>Elements must have a name, but may not have any parameters. Their components must comply with RFC 5424. </p>
+<p>Elements must have a name, but may or may not have any parameters. Their components must comply with RFC 5424. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a097b16dfb972e51ca6687948a8cfa4d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a097b16dfb972e51ca6687948a8cfa4d0">&#9670;&nbsp;</a></span>name</h2>
@@ -105,7 +105,8 @@ Data Fields</h2></td></tr>
 <p>The name of the element. </p>
 <p>As specified in RFC 5424, the '=', ']', '"' characters are not allowed in element names. In addition, the '@' character is only allowed in names that are private. All other characters between '!' and '~', inclusive, are allowed.</p>
 <p>According to the standard names must either be private (of the form name&lt;private enterprise number&gt;) or registered with the IANA. This library assumes that you have done your due diligence and does not enforce the registration requirement.</p>
-<p>Note that the name will <em>not</em> be NULL-terminated. </p>
+<p>Note that the name will be NULL-terminated as of version 1.6.0. In earlier versions it is <em>not</em> NULL-terminated.</p>
+<p>If you need to access the name, use the stumpless_(g|s)et_element_name functions. These will protect you from changes in the struct in future versions. </p>
 
 </div>
 </div>
@@ -159,12 +160,12 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="entry_8h_source.html">entry.h</a></li>
+<li><a class="el" href="element_8h_source.html">element.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 20 2020 06:03:55 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 14 2020 17:47:46 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

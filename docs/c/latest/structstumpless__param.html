@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 <p>A parameter within a structured data element.  
  <a href="structstumpless__param.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="entry_8h_source.html">entry.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="param_8h_source.html">param.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -104,7 +104,8 @@ Data Fields</h2></td></tr>
 
 <p>The name of the parameter. </p>
 <p>The name must be between 1 and 32 characters long and consist only of ASCII characters between '!' and '~', inclusive, with the exception of the '=', ' ', ']', and '"' characters, which are not allowed.</p>
-<p>Note that the name will <em>not</em> be NULL-terminated. </p>
+<p>Note that the name will be NULL-terminated as of version 1.6.0. In earlier versions it is <em>not</em> NULL-terminated.</p>
+<p>If you need to access the name, use the stumpless_(g|s)et_param_name functions. These will protect you from changes in the struct in future versions. </p>
 
 </div>
 </div>
@@ -138,7 +139,8 @@ Data Fields</h2></td></tr>
 
 <p>The value may be any UTF-8 string. </p>
 <p>As specified in RFC 5424, the characters '"' (ABNF d34), '\' (ABNF d92), and ']' (ABNF d93) MUST be escaped by placing a backslash character '\' directly before them.</p>
-<p>Unlike the name field, value will be NULL-terminated. This is done to support their use for wel insertion strings. </p>
+<p>Unlike the name field, value will always be NULL-terminated. This is done to support their use for wel insertion strings.</p>
+<p>If you need to access the value, use the stumpless_(g|s)et_param_value functions. These will protect you from changes in the struct in future versions. </p>
 
 </div>
 </div>
@@ -159,12 +161,12 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="entry_8h_source.html">entry.h</a></li>
+<li><a class="el" href="param_8h_source.html">param.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 20 2020 06:03:55 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 14 2020 17:47:46 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

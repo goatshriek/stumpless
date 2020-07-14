@@ -28,6 +28,7 @@ below. There is source code for each of these in the `docs/examples` folder of
 the repository if you want to actually compile and run them.
 
  * [Basic Usage](./examples/basic.html)
+ * [Using Severity Levels](./examples/severity_level.html)
  * [Working with Entries](./examples/entry.html)
  * [File Targets](./examples/file.html)
  * [Network Targets](./examples/network.html)
@@ -42,4 +43,4 @@ yourself with the `docs` build target, or you can look at one of the online
 lists below:
 
  * [C Doxygen Documentation](./docs/c/latest/index.html)
- * [CPP Doxygen Documentation](./docs/cpp/latest/index.html)
+ * [C++ Doxygen Documentation](./docs/cpp/latest/index.html)

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -110,6 +110,9 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">stump</a> (const char *message,...)</td></tr>
+<tr class="memdesc:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="#a2c81e0ae3ce13cd81ee7a464bfb1d751">More...</a><br /></td></tr>
+<tr class="separator:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d298f8841ae8c2c9ef07c3e3a8614b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa9d298f8841ae8c2c9ef07c3e3a8614b">stumpless</a> (const char *message,...)</td></tr>
 <tr class="memdesc:aa9d298f8841ae8c2c9ef07c3e3a8614b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="#aa9d298f8841ae8c2c9ef07c3e3a8614b">More...</a><br /></td></tr>
 <tr class="separator:aa9d298f8841ae8c2c9ef07c3e3a8614b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,6 +167,9 @@ Functions</h2></td></tr>
 <tr class="memitem:adeccfe0bfd8cad1e82eef3e8806bb191"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#adeccfe0bfd8cad1e82eef3e8806bb191">stumpless_unset_option</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int option)</td></tr>
 <tr class="memdesc:adeccfe0bfd8cad1e82eef3e8806bb191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets an option on a target.  <a href="#adeccfe0bfd8cad1e82eef3e8806bb191">More...</a><br /></td></tr>
 <tr class="separator:adeccfe0bfd8cad1e82eef3e8806bb191"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02f3968128fa180088368881e96074bb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a02f3968128fa180088368881e96074bb">vstump</a> (const char *message, va_list subs)</td></tr>
+<tr class="memdesc:a02f3968128fa180088368881e96074bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="#a02f3968128fa180088368881e96074bb">More...</a><br /></td></tr>
+<tr class="separator:a02f3968128fa180088368881e96074bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06e21a8be4e949205f58029770c377da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a06e21a8be4e949205f58029770c377da">vstumpless</a> (const char *message, va_list subs)</td></tr>
 <tr class="memdesc:a06e21a8be4e949205f58029770c377da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="#a06e21a8be4e949205f58029770c377da">More...</a><br /></td></tr>
 <tr class="separator:a06e21a8be4e949205f58029770c377da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,6 +250,44 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a2c81e0ae3ce13cd81ee7a464bfb1d751"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c81e0ae3ce13cd81ee7a464bfb1d751">&#9670;&nbsp;</a></span>stump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int stump </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Logs a message to the default target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
+    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
 <a id="aa9d298f8841ae8c2c9ef07c3e3a8614b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9d298f8841ae8c2c9ef07c3e3a8614b">&#9670;&nbsp;</a></span>stumpless()</h2>
 
@@ -271,6 +315,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Logs a message to the default target. </p>
+<p>This is an alias for the stump function, which is preferred. This function will be deprecated in a future release.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
@@ -878,6 +923,44 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a02f3968128fa180088368881e96074bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02f3968128fa180088368881e96074bb">&#9670;&nbsp;</a></span>vstump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int vstump </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>subs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Logs a message to the default target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
+    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call it.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
 <a id="a06e21a8be4e949205f58029770c377da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a06e21a8be4e949205f58029770c377da">&#9670;&nbsp;</a></span>vstumpless()</h2>
 
@@ -905,6 +988,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Logs a message to the default target. </p>
+<p>This is an alias for the vstump function, which is preferred. This function will be deprecated in a future release.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
@@ -1062,7 +1146,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 20 2020 06:03:55 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 14 2020 17:47:46 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
