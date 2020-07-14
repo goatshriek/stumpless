@@ -762,6 +762,10 @@ add_example(file
   ${PROJECT_SOURCE_DIR}/docs/examples/file/file_example.c
 )
 
+add_example(severity_level
+  ${PROJECT_SOURCE_DIR}/docs/examples/severity_level/severity_level_example.c
+)
+
 add_example(stream
   ${PROJECT_SOURCE_DIR}/docs/examples/stream/stream_example.c
 )
