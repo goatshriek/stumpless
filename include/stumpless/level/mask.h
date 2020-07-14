@@ -24,8 +24,14 @@
  * logic that makes it possible to set a certain level of compile-time logging
  * using one of two shorthand definitions.
  *
- * The first of these is `STUMPLESS_ENABLE_UPTO_<LEVEL>`, which enables all
- * levels up to and including the named one, and disables all of those below
+ * Stumpless does not support mixing any of these masks with the
+ * `STUMPLESS_DISABLE_<LEVEL_NAME>_LEVEL` definitions that remove specific
+ * levels during compilation. If you need to disable a non-contiguous series
+ * of levels, then you will need to explicitly disable each one, rather than
+ * using a mask and disabling the remaining ones.
+ *
+ * The first mask definition is `STUMPLESS_ENABLE_UPTO_<LEVEL>`, which enables
+ * all levels up to and including the named one, and disables all of those below
  * it. For example, defining `STUMPLESS_ENABLE_UPTO_WARNING` will enable
  * `EMERG`, `ALERT`, `CRIT`, `ERR`, and `WARNING` level calls and will
  * disable `NOTICE`, `INFO`, and `DEBUG` level calls.
