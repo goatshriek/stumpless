@@ -641,7 +641,7 @@ namespace {
     ASSERT_NOT_NULL( target );
     ASSERT_TRUE( stumpless_get_current_target(  ) == target );
 
-    result = stump( "test message" );
+    result = stumpless( "test message" );
     EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
 
