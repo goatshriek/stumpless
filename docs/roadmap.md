@@ -139,6 +139,11 @@ takes longer than expected.
    it through a target at runtime, this is limited and inflexible. Instead, a
    generic filter structure that can filter on a wide variety of properties of
    each log entry and even use custom functions to filter messages.
+ * [ADD] **Abstract socket support**
+   When creating a Unix socket target, an abstract socket name would allow the
+   socket to be hidden from the local filesystem. This has currently been left
+   out due to portability issues, but using this capability when it is available
+   would increase the 'cleanliness' of using socket targets.
 
 ## A Note about Github issues and projects
 
