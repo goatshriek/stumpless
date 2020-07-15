@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
- * 
+ * Copyright 2018-2020 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -201,7 +201,7 @@ namespace {
                                            STUMPLESS_FACILITY_USER );
 
     EXPECT_NO_ERROR;
-    EXPECT_NOT_NULL( target );
+    ASSERT_NOT_NULL( target );
 
     stumpless_close_target( target );
     EXPECT_NO_ERROR;
@@ -222,10 +222,11 @@ namespace {
     struct stumpless_error *error;
 
     target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
-    ASSERT_TRUE( target != NULL );
-    ASSERT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
 
     stumpless_close_socket_target( target );
+    EXPECT_NO_ERROR;
   }
 
   TEST( SocketTargetOpenTest, LocalSocketAlreadyExists ) {
