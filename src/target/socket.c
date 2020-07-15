@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,7 +90,8 @@ stumpless_open_socket_target( const char *name,
     default_socket[13] = ( next_socket_number & 0xf ) + 97;
     default_socket[14] = '\0';
     next_socket_number++;
-    target->id = new_socket_target( name, name_len, default_socket, 15 );
+    // target->id = new_socket_target( name, name_len, default_socket, 15 );
+    target->id = new_socket_target( name, name_len, NULL, 0 );
   } else {
     local_socket_len = strlen( local_socket );
     target->id =
@@ -142,8 +143,16 @@ new_socket_target( const char *dest,
   target->target_addr.sun_path[dest_len] = '\0';
 
   target->local_addr.sun_family = AF_UNIX;
-  memcpy( &target->local_addr.sun_path, source, source_len );
-  target->local_addr.sun_path[source_len] = '\0';
+  if( !source ) {
+    memset( &target->local_addr.sun_path, '\0', sizeof( target->local_addr.sun_path ));
+    target->local_addr.sun_path[1] = 't';
+    target->local_addr.sun_path[2] = 'e';
+    target->local_addr.sun_path[3] = 's';
+    target->local_addr.sun_path[4] = 't';
+  } else {
+    memcpy( &target->local_addr.sun_path, source, source_len );
+    target->local_addr.sun_path[source_len] = '\0';
+  }
 
   target->local_socket = socket( target->local_addr.sun_family, SOCK_DGRAM, 0 );
   if( target->local_socket < 0 ) {
