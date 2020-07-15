@@ -27,6 +27,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -138,7 +139,7 @@ namespace {
                                            NULL,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_add_message( target, "test message" );
     EXPECT_LT( result, 0 );
@@ -198,11 +199,15 @@ namespace {
                                            NULL,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target != NULL );
+
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    if( !target ) {
+      stumpless_perror( "socket target could not be opened" );
+    }
 
     stumpless_close_target( target );
-
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
