@@ -51,7 +51,7 @@ stumpless_open_socket_target( const char *name,
   struct stumpless_target *target;
   size_t name_len;
   size_t local_socket_len;
-  char temp_name[15];
+  char temp_name[16];
   int temp_fd;
 
   if( !name ) {
