@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [1.6.0] - 2020-07-14
+## [1.6.0] - 2020-07-15
 ### Added
  - A number of new functions for working with entries, elements, and params.
  - A rollup header, `stumpless.hpp`, for the C++ library to make use easier.
@@ -17,6 +17,8 @@ fixes, check out the
 
 ### Fixed
  - Added missing DLL exports of C++ library in standard Visual Studio builds.
+ - Local socket names are generated using mkstemp instead of using a static
+   counter ([issue #54](https://github.com/goatshriek/stumpless/issues/54)]).
 
 ## [1.5.0] - 2020-05-19
 ### Added
