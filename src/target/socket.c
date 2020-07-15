@@ -22,6 +22,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/error.h"
@@ -75,6 +76,10 @@ stumpless_open_socket_target( const char *name,
     memcpy( temp_name, "stumplessXXXXXX", 16 );
     temp_fd = mkstemp( temp_name );
     if( temp_fd == -1 ) {
+      raise_error( STUMPLESS_FILE_OPEN_FAILURE,
+                   "could not create a file with the chosen local socket name",
+                   errno,
+                   "errno after the failed call to mkstemp" );
       goto fail_id;
     }
 
