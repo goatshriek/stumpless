@@ -202,9 +202,6 @@ namespace {
 
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
-    if( !target ) {
-      stumpless_perror( "socket target could not be opened" );
-    }
 
     stumpless_close_target( target );
     EXPECT_NO_ERROR;

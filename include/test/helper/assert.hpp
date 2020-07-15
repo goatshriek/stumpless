@@ -32,7 +32,9 @@ if( error ) {                        \
   EXPECT_EQ( error->id, (code) );    \
 }
 
-#  define EXPECT_NO_ERROR EXPECT_FALSE( stumpless_has_error(  ) )
+#  define EXPECT_NO_ERROR                \
+EXPECT_FALSE( stumpless_has_error(  ) ); \
+stumpless_perror( "an unexpected error occurred" )
 
 #  define EXPECT_NOT_NULL( thing ) EXPECT_FALSE( (thing) == NULL )
 
