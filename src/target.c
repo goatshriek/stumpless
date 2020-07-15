@@ -53,12 +53,24 @@ close_unsupported_target( struct stumpless_target *target ) {
 }
 
 int
+stump( const char *message, ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstump( message, subs );
+  va_end( subs );
+
+  return result;
+}
+
+int
 stumpless( const char *message, ... ) {
   int result;
   va_list subs;
 
   va_start( subs, message );
-  result = vstumpless( message, subs );
+  result = vstump( message, subs );
   va_end( subs );
 
   return result;
@@ -427,10 +439,8 @@ stumpless_unset_option( struct stumpless_target *target, int option ) {
 }
 
 int
-vstumpless( const char *message, va_list subs ) {
+vstump( const char *message, va_list subs ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   target = stumpless_get_current_target(  );
   if( !target ) {
@@ -438,6 +448,11 @@ vstumpless( const char *message, va_list subs ) {
   }
 
   return vstumpless_add_message( target, message, subs );
+}
+
+int
+vstumpless( const char *message, va_list subs ) {
+  return vstump( message, subs );
 }
 
 void

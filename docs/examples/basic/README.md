@@ -10,13 +10,13 @@ can start logging to a file with just two calls:
 file_target = stumpless_open_file_target( "example.log",
                                           STUMPLESS_OPTION_NONE,
                                           STUMPLESS_FACILITY_USER );
-stumpless( "The hello world of stumpless." );
+stump( "The hello world of stumpless." );
 ```
 
 Using a format specifier to include extra information:
 
 ```c
-stumpless( "Login failed for username %s", "example-username" );
+stump( "Login failed for username %s", "example-username" );
 ```
 
 If you need to have multiple targets open you can get the same functionality

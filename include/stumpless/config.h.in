@@ -27,6 +27,12 @@
 #ifndef __STUMPLESS_CONFIG_H
 #define __STUMPLESS_CONFIG_H
 
+/** The facility code to use when one is not supplied. */
+#define STUMPLESS_DEFAULT_FACILITY @DEFAULT_FACILITY@
+
+/** The severity code to use when one is not supplied. */
+#define STUMPLESS_DEFAULT_SEVERITY @DEFAULT_SEVERITY@
+
 /** A string literal with the default socket logged to. */
 #cmakedefine STUMPLESS_DEFAULT_SOCKET "@STUMPLESS_DEFAULT_SOCKET@"
 

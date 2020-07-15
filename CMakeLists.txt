@@ -12,10 +12,25 @@ string(CONCAT enable_cpp_help_string
 option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
 option(BUILD_PYTHON "include the python libary" OFF)
+
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
+
+string(CONCAT default_facility_help_string
+  "The facility code to use for messages where one is not explicitly provided."
+)
+set(DEFAULT_FACILITY "STUMPLESS_FACILITY_USER"
+  CACHE STRING ${default_facility_help_string}
+)
+
+string(CONCAT default_severity_help_string
+  "The severity code to use for messages where one is not explicitly provided."
+)
+set(DEFAULT_SEVERITY "STUMPLESS_SEVERITY_INFO"
+  CACHE STRING ${default_severity_help_string}
+)
 
 set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
@@ -49,8 +64,10 @@ set(GTEST_PATH ${PROJECT_BINARY_DIR}
   CACHE PATH ${gtest_path_help_string}
 )
 
+
 # looking for packages and programs
 find_package(Threads REQUIRED)
+
 
 # documentation and doxygen setup
 set(PROJECT_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
@@ -605,6 +622,95 @@ add_function_test(get_error_stream
   SOURCES test/function/startup/get_error_stream.cpp
 )
 
+add_function_test(level_all_disabled
+  SOURCES test/function/level/all_disabled.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_ALL_LEVELS
+)
+
+add_function_test(level_all_enabled
+  SOURCES test/function/level/all_enabled.cpp
+)
+
+add_function_test(level_disabled_downto_alert
+  SOURCES test/function/level/enable_upto_emerg.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_ALERT
+)
+
+add_function_test(level_disabled_downto_emerg
+  SOURCES test/function/level/all_disabled.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_EMERG
+)
+
+add_function_test(level_disabled_downto_err
+  SOURCES test/function/level/enable_upto_crit.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_ERR
+)
+
+add_function_test(level_disabled_downto_crit
+  SOURCES test/function/level/enable_upto_alert.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_CRIT
+)
+
+add_function_test(level_disabled_downto_debug
+  SOURCES test/function/level/enable_upto_info.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_DEBUG
+)
+
+add_function_test(level_disabled_downto_info
+  SOURCES test/function/level/enable_upto_notice.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_INFO
+)
+
+add_function_test(level_disabled_downto_notice
+  SOURCES test/function/level/enable_upto_warning.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_NOTICE
+)
+
+add_function_test(level_disabled_downto_warning
+  SOURCES test/function/level/enable_upto_err.cpp
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_WARNING
+)
+
+add_function_test(level_enable_upto_alert
+  SOURCES test/function/level/enable_upto_alert.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_ALERT
+)
+
+add_function_test(level_enable_upto_crit
+  SOURCES test/function/level/enable_upto_crit.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_CRIT
+)
+
+add_function_test(level_enable_upto_debug
+  SOURCES test/function/level/all_enabled.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_DEBUG
+)
+
+add_function_test(level_enable_upto_emerg
+  SOURCES test/function/level/enable_upto_emerg.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_EMERG
+)
+
+add_function_test(level_enable_upto_err
+  SOURCES test/function/level/enable_upto_err.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_ERR
+)
+
+add_function_test(level_enable_upto_info
+  SOURCES test/function/level/enable_upto_info.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_INFO
+)
+
+add_function_test(level_enable_upto_notice
+  SOURCES test/function/level/enable_upto_notice.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_NOTICE
+)
+
+add_function_test(level_enable_upto_warning
+  SOURCES test/function/level/enable_upto_warning.cpp
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_WARNING
+)
+
 add_function_test(memory
   SOURCES test/function/memory.cpp
 )
@@ -654,6 +760,10 @@ add_example(entry
 
 add_example(file
   ${PROJECT_SOURCE_DIR}/docs/examples/file/file_example.c
+)
+
+add_example(severity_level
+  ${PROJECT_SOURCE_DIR}/docs/examples/severity_level/severity_level_example.c
 )
 
 add_example(stream
@@ -733,4 +843,3 @@ if(BUILD_PYTHON)
   )
 
 endif()
-

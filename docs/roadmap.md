@@ -35,14 +35,6 @@ timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
 ## 1.6.0 (next minor release)
- * [ADD] **Logging functions that can be compiled out**
-   A common logging idiom is to log at different verbosity levels, and use
-   different levels in different contexts, for example debug during development,
-   and then only informational in production workloads. This feature will add
-   function calls that will be removed when the code is compiled with specific
-   flags, allowing builds that do not need lower-level logs to stay fast and
-   efficient without requiring code changes or modification tools in the build
-   pipeline.
  * [FIX] **Socket targets may fail to bind to a local socket**
    Socket targets can be opened with a local socket name provided, but this may
    also be set to `NULL`, in which case a local socket is generated (see the
@@ -69,7 +61,7 @@ takes longer than expected.
    still point to the invalid memory. See
    [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
    the progress of this bug.
- * [CHANGE] **`stumpless` function will be renamed**
+ * [CHANGE] **`stumpless` function will be removed (use `stump` instead)**
    As currently named, the function makes it impossible to create a C++
    namespace named after the library itself. Renaming this function will give it
    a more meaningful name and also allow a cleaner namespace in the C++
@@ -122,6 +114,9 @@ takes longer than expected.
  * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
    Enumerations are preferred for working with these set values in C++, and this
    function was inadvertently left in the library during development.
+ * [REMOVE] **Options and default facility from all target constructors**
+   These are typically boilerplate, and if needed can be set with subsequent
+   calls. This will allow for less verbose code in most use cases.
 
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**

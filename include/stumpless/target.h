@@ -113,6 +113,25 @@ struct stumpless_target {
  * encountered, then a negative value is returned and an error code is set
  * appropriately.
  */
+int stump( const char *message, ... );
+
+/**
+ * Logs a message to the default target.
+ *
+ * This is an alias for the stump function, which is preferred. This function
+ * will be deprecated in a future release.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
 int
 stumpless( const char *message, ... );
 
@@ -419,6 +438,28 @@ stumpless_unset_option( struct stumpless_target *target, int option );
 
 /**
  * Logs a message to the default target.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+vstump( const char *message, va_list subs );
+
+/**
+ * Logs a message to the default target.
+ *
+ * This is an alias for the vstump function, which is preferred. This function
+ * will be deprecated in a future release.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.

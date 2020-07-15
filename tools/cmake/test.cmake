@@ -10,7 +10,7 @@ endif(MSVC)
 
 function(private_add_function_test)
   set(single_val_args NAME)
-  set(multi_val_args SOURCES LIBRARIES)
+  set(multi_val_args SOURCES LIBRARIES COMPILE_DEFINITIONS)
   cmake_parse_arguments(FUNCTION_TEST_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
 
   add_executable(function-test-${FUNCTION_TEST_ARG_NAME}
@@ -22,6 +22,7 @@ function(private_add_function_test)
     PROPERTIES
     OUTPUT_NAME function-test-${FUNCTION_TEST_ARG_NAME}
     COMPILE_FLAGS "${function_test_compile_flags}"
+    COMPILE_DEFINITIONS "${FUNCTION_TEST_ARG_COMPILE_DEFINITIONS}"
   )
 
   target_link_libraries(function-test-${FUNCTION_TEST_ARG_NAME}
