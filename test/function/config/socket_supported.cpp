@@ -17,8 +17,8 @@
  */
 
 #include <gtest/gtest.h>
-#include <stddef.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 namespace {
 
@@ -26,8 +26,8 @@ namespace {
     struct stumpless_target *target;
 
     target = stumpless_get_default_target(  );
-
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
 
 #ifndef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
     if( target ) {

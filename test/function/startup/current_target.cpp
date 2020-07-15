@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 namespace {
 
@@ -27,9 +27,8 @@ namespace {
 
     target = stumpless_get_current_target(  );
 
-    EXPECT_TRUE( target != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
-
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
     EXPECT_EQ( target, stumpless_get_default_target(  ) );
 
     stumpless_free_all(  );

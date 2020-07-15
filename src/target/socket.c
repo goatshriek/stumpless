@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,11 @@
 
 #include <errno.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/error.h"
@@ -28,12 +30,8 @@
 #include "private/target.h"
 #include "private/target/socket.h"
 
-static size_t next_socket_number = 0;
-
 void
 stumpless_close_socket_target( struct stumpless_target *target ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return;
@@ -41,6 +39,8 @@ stumpless_close_socket_target( struct stumpless_target *target ) {
 
   destroy_socket_target( target->id );
   destroy_target( target );
+
+  clear_error(  );
 }
 
 struct stumpless_target *
@@ -51,9 +51,8 @@ stumpless_open_socket_target( const char *name,
   struct stumpless_target *target;
   size_t name_len;
   size_t local_socket_len;
-  char default_socket[15];
-
-  clear_error(  );
+  char temp_name[16];
+  int temp_fd;
 
   if( !name ) {
     raise_argument_empty( "name is NULL" );
@@ -74,23 +73,19 @@ stumpless_open_socket_target( const char *name,
   name_len = strlen( name );
 
   if( !local_socket ) {
-    default_socket[0] = 's';
-    default_socket[1] = 't';
-    default_socket[2] = 'u';
-    default_socket[3] = 'm';
-    default_socket[4] = 'p';
-    default_socket[5] = 'l';
-    default_socket[6] = 'e';
-    default_socket[7] = 's';
-    default_socket[8] = 's';
-    default_socket[9] = '-';
-    default_socket[10] = ( ( next_socket_number >> 12 ) & 0xf ) + 97;
-    default_socket[11] = ( ( next_socket_number >> 8 ) & 0xf ) + 97;
-    default_socket[12] = ( ( next_socket_number >> 4 ) & 0xf ) + 97;
-    default_socket[13] = ( next_socket_number & 0xf ) + 97;
-    default_socket[14] = '\0';
-    next_socket_number++;
-    target->id = new_socket_target( name, name_len, default_socket, 15 );
+    memcpy( temp_name, "stumplessXXXXXX", 16 );
+    temp_fd = mkstemp( temp_name );
+    if( temp_fd == -1 ) {
+      raise_error( STUMPLESS_FILE_OPEN_FAILURE,
+                   "could not create a file with the chosen local socket name",
+                   errno,
+                   "errno after the failed call to mkstemp" );
+      goto fail_id;
+    }
+
+    close( temp_fd );
+    unlink( temp_name );
+    target->id = new_socket_target( name, name_len, temp_name, 16 );
   } else {
     local_socket_len = strlen( local_socket );
     target->id =

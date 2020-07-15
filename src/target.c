@@ -294,6 +294,7 @@ stumpless_open_target( struct stumpless_target *target ) {
 
 void
 stumpless_set_current_target( struct stumpless_target *target ) {
+  clear_error(  );
   current_target = target;
 }
 

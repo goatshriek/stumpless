@@ -35,15 +35,13 @@ timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
 ## 1.6.0 (next minor release)
- * [FIX] **Socket targets may fail to bind to a local socket**
-   Socket targets can be opened with a local socket name provided, but this may
-   also be set to `NULL`, in which case a local socket is generated (see the
-   documentation of `stumpless_open_socket_target` for details). However, this
-   socket is always the same, which means that if a target is not properly
-   closed the local socket will remain. Successive targets will be unable to
-   open, as they will attempt to bind to the same socket name and will fail as
-   it already exists. For details on the progress of this bug, see
-   [issue #54](https://github.com/goatshriek/stumpless/issues/54).
+ * [FIX] **Current target is invalid after closure**
+   The current target is set to to the last opened target, or it can be manually
+   set by the user using the `stumpless_set_current_target` function. However,
+   if this target is closed the current target pointer is not changed, and will
+   still point to the invalid memory. See
+   [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
+   the progress of this bug.
 
 ## 2.0.0 (next major release)
  * [ADD] **Thread safety for all library calls and structures**
@@ -54,13 +52,6 @@ takes longer than expected.
    alternative. This implementation will be done as granularly as possible, and
    will not use any static library-wide locks in order to avoid throughput
    issues in the future.
- * [FIX] **Current target is invalid after closure**
-   The current target is set to to the last opened target, or it can be manually
-   set by the user using the `stumpless_set_current_target` function. However,
-   if this target is closed the current target pointer is not changed, and will
-   still point to the invalid memory. See
-   [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
-   the progress of this bug.
  * [CHANGE] **`stumpless` function will be removed (use `stump` instead)**
    As currently named, the function makes it impossible to create a C++
    namespace named after the library itself. Renaming this function will give it
@@ -148,6 +139,11 @@ takes longer than expected.
    it through a target at runtime, this is limited and inflexible. Instead, a
    generic filter structure that can filter on a wide variety of properties of
    each log entry and even use custom functions to filter messages.
+ * [ADD] **Abstract socket support**
+   When creating a Unix socket target, an abstract socket name would allow the
+   socket to be hidden from the local filesystem. This has currently been left
+   out due to portability issues, but using this capability when it is available
+   would increase the 'cleanliness' of using socket targets.
 
 ## A Note about Github issues and projects
 

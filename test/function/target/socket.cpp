@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
- * 
+ * Copyright 2018-2020 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,6 +27,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -132,23 +133,19 @@ namespace {
   TEST( SocketTargetAddTest, DestinationMissing ) {
     struct stumpless_target *target;
     int result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_socket_target( "/dev/not/there",
                                            NULL,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_add_message( target, "test message" );
     EXPECT_LT( result, 0 );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_SOCKET_SEND_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_SOCKET_SEND_FAILURE );
 
     stumpless_close_socket_target( target );
   }
@@ -198,11 +195,12 @@ namespace {
                                            NULL,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target != NULL );
+
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
 
     stumpless_close_target( target );
-
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
@@ -220,10 +218,11 @@ namespace {
     struct stumpless_error *error;
 
     target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
-    ASSERT_TRUE( target != NULL );
-    ASSERT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
 
     stumpless_close_socket_target( target );
+    EXPECT_NO_ERROR;
   }
 
   TEST( SocketTargetOpenTest, LocalSocketAlreadyExists ) {
