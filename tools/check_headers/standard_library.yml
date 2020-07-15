@@ -62,6 +62,7 @@
   - "stdlib.h"
 "memcpy": "string.h"
 "memset": "string.h"
+"mkstemp": "stdlib.h"
 "NULL":
   - "cstddef"
   - "stddef.h"

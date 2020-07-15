@@ -133,23 +133,19 @@ namespace {
   TEST( SocketTargetAddTest, DestinationMissing ) {
     struct stumpless_target *target;
     int result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_socket_target( "/dev/not/there",
                                            NULL,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
     result = stumpless_add_message( target, "test message" );
     EXPECT_LT( result, 0 );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_SOCKET_SEND_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_SOCKET_SEND_FAILURE );
 
     stumpless_close_socket_target( target );
   }
