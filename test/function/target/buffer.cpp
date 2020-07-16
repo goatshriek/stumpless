@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/assert.hpp"
 
 #define TEST_BUFFER_LENGTH 8192
 
@@ -183,11 +184,14 @@ namespace {
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
+    EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NE( stumpless_get_current_target(  ), target );
   }
 
   TEST( BufferTargetCloseTest, NullTarget ) {
