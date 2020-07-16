@@ -556,6 +556,10 @@ vstumpless_add_message( struct stumpless_target *target,
 
 void
 destroy_target( struct stumpless_target *target ) {
+  if( target == current_target ) {
+    current_target = NULL;
+  }
+
   free_mem( target->default_app_name );
   free_mem( target->default_msgid );
   free_mem( target->name );

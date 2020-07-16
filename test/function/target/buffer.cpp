@@ -176,10 +176,11 @@ namespace {
   /* non-fixture tests */
 
   TEST( BufferTargetCloseTest, Generic ) {
+    const char *target_name = "normal target";
     struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "normal target",
+    target = stumpless_open_buffer_target( target_name,
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
@@ -191,7 +192,10 @@ namespace {
     stumpless_close_target( target );
     EXPECT_NO_ERROR;
 
-    EXPECT_NE( stumpless_get_current_target(  ), target );
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+    EXPECT_STRNE( stumpless_get_current_target(  )->name,
+                  target_name );
   }
 
   TEST( BufferTargetCloseTest, NullTarget ) {

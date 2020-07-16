@@ -189,9 +189,10 @@ namespace {
   }
 
   TEST( SocketTargetCloseTest, Generic ) {
+    const char *target_name = "generic-close-test";
     struct stumpless_target *target;
 
-    target = stumpless_open_socket_target( "generic-close-test",
+    target = stumpless_open_socket_target( target_name,
                                            NULL,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
@@ -202,7 +203,11 @@ namespace {
 
     stumpless_close_target( target );
     EXPECT_NO_ERROR;
-    EXPECT_NE( stumpless_get_current_target(  ), target );
+
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+    EXPECT_STRNE( stumpless_get_current_target(  )->name,
+                  target_name );
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {

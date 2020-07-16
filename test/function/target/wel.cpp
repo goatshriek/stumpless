@@ -209,9 +209,10 @@ namespace {
   /* non-fixture tests */
 
   TEST( WelTargetCloseTest, Generic ) {
+    const char *target_name = "wel-target-test";
     struct stumpless_target *target;
 
-    target = stumpless_open_local_wel_target( "wel-target-test",
+    target = stumpless_open_local_wel_target( target_name,
                                               STUMPLESS_OPTION_NONE );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
@@ -219,7 +220,11 @@ namespace {
 
     stumpless_close_target( target );
     EXPECT_NO_ERROR;
-    EXPECT_NE( stumpless_get_current_target(  ), target );
+
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+    EXPECT_STRNE( stumpless_get_current_target(  )->name,
+                  target_name );
   }
 
   TEST( WelTargetCloseTest, NullTarget ) {

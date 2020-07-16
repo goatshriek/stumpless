@@ -98,7 +98,11 @@ namespace {
 
     stumpless_close_target( target );
     EXPECT_NO_ERROR;
-    EXPECT_NE( stumpless_get_current_target(  ), target );
+
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+    EXPECT_STRNE( stumpless_get_current_target(  )->name,
+                  filename );
   }
 
   TEST( StreamTargetCloseTest, NullTarget ) {
