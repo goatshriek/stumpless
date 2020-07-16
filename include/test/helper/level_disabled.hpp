@@ -112,7 +112,6 @@ TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME ) {                             \
 }                                                                              \
                                                                                \
 TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME##SideEffects ) {                \
-  int result;                                                                  \
   int before_val = 555;                                                        \
                                                                                \
   stumplog_##LEVEL_LETTER( STUMPLESS_FACILITY_KERN |                           \
