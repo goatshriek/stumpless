@@ -23,6 +23,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/assert.hpp"
 
 namespace {
   class StreamTargetTest : public::testing::Test {
@@ -85,17 +86,19 @@ namespace {
     struct stumpless_target *target;
 
     stream = fopen( filename, "w+" );
-    ASSERT_TRUE( stream != NULL );
+    ASSERT_NOT_NULL( stream );
 
     target = stumpless_open_stream_target( filename,
                                            stream,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
-
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NE( stumpless_get_current_target(  ), target );
   }
 
   TEST( StreamTargetCloseTest, NullTarget ) {

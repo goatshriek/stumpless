@@ -198,9 +198,11 @@ namespace {
 
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
     EXPECT_NO_ERROR;
+    EXPECT_NE( stumpless_get_current_target(  ), target );
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {

@@ -24,6 +24,7 @@
 #include <stumpless.h>
 #include <windows.h>
 #include "test/function/windows/events.h"
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -212,11 +213,13 @@ namespace {
 
     target = stumpless_open_local_wel_target( "wel-target-test",
                                               STUMPLESS_OPTION_NONE );
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
-
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NE( stumpless_get_current_target(  ), target );
   }
 
   TEST( WelTargetCloseTest, NullTarget ) {

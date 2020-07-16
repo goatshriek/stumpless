@@ -28,6 +28,7 @@
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include "test/helper/assert.hpp"
 #include "test/helper/resolve.hpp"
 #include "test/helper/server.hpp"
 
@@ -48,11 +49,13 @@ namespace {
                                          "127.0.0.1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
-
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NE( stumpless_get_current_target(  ), target );
   }
 
   TEST( NetworkTargetCloseTest, NullTarget ) {
