@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 #include <stumpless.h>
 #include <windows.h>
 #include "test/function/windows/events.h"
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -208,15 +209,22 @@ namespace {
   /* non-fixture tests */
 
   TEST( WelTargetCloseTest, Generic ) {
+    const char *target_name = "wel-target-test";
     struct stumpless_target *target;
 
-    target = stumpless_open_local_wel_target( "wel-target-test",
+    target = stumpless_open_local_wel_target( target_name,
                                               STUMPLESS_OPTION_NONE );
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
+    EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+    EXPECT_STRNE( stumpless_get_current_target(  )->name,
+                  target_name );
   }
 
   TEST( WelTargetCloseTest, NullTarget ) {

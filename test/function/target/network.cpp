@@ -28,6 +28,7 @@
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include "test/helper/assert.hpp"
 #include "test/helper/resolve.hpp"
 #include "test/helper/server.hpp"
 
@@ -42,17 +43,24 @@ using::testing::Not;
 namespace {
 
   TEST( NetworkTargetCloseTest, Generic ) {
+    const char *target_name = "generic-close-test";
     struct stumpless_target *target;
 
-    target = stumpless_open_udp4_target( "generic-close-test",
+    target = stumpless_open_udp4_target( target_name,
                                          "127.0.0.1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
+    EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+    EXPECT_STRNE( stumpless_get_current_target(  )->name,
+                  target_name );
   }
 
   TEST( NetworkTargetCloseTest, NullTarget ) {

@@ -35,13 +35,6 @@ timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
 ## 1.6.0 (next minor release)
- * [FIX] **Current target is invalid after closure**
-   The current target is set to to the last opened target, or it can be manually
-   set by the user using the `stumpless_set_current_target` function. However,
-   if this target is closed the current target pointer is not changed, and will
-   still point to the invalid memory. See
-   [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
-   the progress of this bug.
 
 ## 2.0.0 (next major release)
  * [ADD] **Thread safety for all library calls and structures**

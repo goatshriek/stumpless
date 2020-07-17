@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -239,6 +239,10 @@ stumpless_close_target( struct stumpless_target *target );
  * The current target is either the last target that was opened, set by a call
  * to stumpless_set_current_target(), or the default target if neither of the
  * former exists.
+ *
+ * If the target that is designated as the current target is closed, then the
+ * current target will be reset to the default target until another target is
+ * opened.
  *
  * Be careful not to confuse this target with the default target, which is the
  * target used when no suitable current target exists. While these may be the

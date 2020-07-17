@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/assert.hpp"
 
 namespace {
   class FileTargetTest : public::testing::Test {
@@ -83,11 +84,17 @@ namespace {
     target = stumpless_open_file_target( filename,
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target != NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_EQ( stumpless_get_current_target(  ), target );
 
     stumpless_close_target( target );
+    EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+    EXPECT_STRNE( stumpless_get_current_target(  )->name,
+                  filename );
   }
 
   TEST( FileTargetCloseTest, NullTarget ) {
