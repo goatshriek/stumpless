@@ -240,6 +240,10 @@ stumpless_close_target( struct stumpless_target *target );
  * to stumpless_set_current_target(), or the default target if neither of the
  * former exists.
  *
+ * If the target that is designated as the current target is closed, then the
+ * current target will be reset to the default target until another target is
+ * opened.
+ *
  * Be careful not to confuse this target with the default target, which is the
  * target used when no suitable current target exists. While these may be the
  * same in some cases, they will not always be.
