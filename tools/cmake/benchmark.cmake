@@ -31,7 +31,7 @@ if(${benchmark_lib} STREQUAL "benchmark_lib-NOTFOUND" OR ${benchmark_main_lib} S
   )
 
   ExternalProject_Add(benchmark
-    URL https://github.com/google/benchmark/archive/c078337494086f9372a46b4ed31a3ae7b3f1a6a2.zip
+    URL https://github.com/google/benchmark/archive/37177a84b7e8d33696ea1e1854513cb0de3b4dc3.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/benchmark
     CMAKE_ARGS -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_SH=${CMAKE_SH} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ""
