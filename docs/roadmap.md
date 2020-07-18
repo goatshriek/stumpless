@@ -4,39 +4,7 @@ See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
-## What you'll find here and what you wont
-
-Stumpless is under active development, and has a long list of new features and
-improvements waiting to be implemented. Some of these are detailed in the issues
-list on the project Github website, but this is certainly not a comprehensive
-list of planned updates. Similarly, work that is in progress on new features is
-tracked as a project on the Github repository, but future planned work does not
-exist there either. Instead, the plans for future direction are kept here, in
-the project roadmap.
-
-Items are added to the roadmap once they have been identified, assessed for
-level of effort, and prioritized based on community needs. Each item is assigned
-to a semantic version, along with its change type, a description, and the
-reasoning behind it. Where they exist, you will see references to issues on the
-Github repository where you can go for more details on the origin of the
-request. Once a version is in work, you will be able to find a corresponding
-project on the Github repository with each roadmap item listed as a task. Once
-all tasks are complete, the version will be released and the next started.
-
-Once an item has been implemented it will be removed from the roadmap. If you
-would like to see a history of changes on the existing codebase, check out the
-ChangeLog (ChangeLog.md in the project root) to see what was included in each
-version of the library. In most cases, roadmap items will be removed from this
-document and placed there upon completion.
-
-Note that the timelines associated with each change are vague at best. The
-project team is not currently big enough to realistically make any promises, so
-timing is often left out to prevent folks from feeling cheated if something
-takes longer than expected.
-
-## 1.6.0 (next minor release)
-
-## 2.0.0 (next major release)
+## 2.0.0 (next major and minor release)
  * [ADD] **Thread safety for all library calls and structures**
    This is a critical feature for a logging library that needs to be run in a
    huge variety of contexts with minimal overhead work to implement it. Adding
@@ -63,14 +31,6 @@ takes longer than expected.
    clear the error flags. Clearing them can especially cause confusion in other
    language bindings, where the calling of the destructor is not explicit and
    may be difficult to track down.
- * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
-   The [Wrapture](https://github.com/goatshriek/wrapture) project is being
-   built to provide clean, readable, and explicit language binding functionality
-   from C to other target languages, specifically to support Stumpless. Once
-   Python is added as a target language, this will be utilized to create the
-   associated library bindings, replacing SWIG and removing the dependency. In
-   the future, other language bindings will be added using Wrapture as they are
-   added to the tool.
  - [CHANGE] **Error codes will be guaranteed to be a consistent value**
    Error ids are currently defined by an enumeration without any values
    specified, which means that they could change across builds. Setting these to
@@ -107,6 +67,14 @@ takes longer than expected.
    Removing previously deprecated feature.
  * [REMOVE] **Stream target constructor using `int` facility**
    Removing previously deprecated feature.
+ * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
+   The [Wrapture](https://github.com/goatshriek/wrapture) project is being
+   built to provide clean, readable, and explicit language binding functionality
+   from C to other target languages, specifically to support Stumpless. Once
+   Python is added as a target language, this will be utilized to create the
+   associated library bindings, replacing SWIG and removing the dependency. In
+   the future, other language bindings will be added using Wrapture as they are
+   added to the tool.
 
 ## Unallocated to a release
  * [ADD] **Ruby language bindings**
@@ -137,6 +105,36 @@ takes longer than expected.
    socket to be hidden from the local filesystem. This has currently been left
    out due to portability issues, but using this capability when it is available
    would increase the 'cleanliness' of using socket targets.
+
+## What you'll find here and what you wont
+
+Stumpless is under active development, and has a long list of new features and
+improvements waiting to be implemented. Some of these are detailed in the issues
+list on the project Github website, but this is certainly not a comprehensive
+list of planned updates. Similarly, work that is in progress on new features is
+tracked as a project on the Github repository, but future planned work does not
+exist there either. Instead, the plans for future direction are kept here, in
+the project roadmap.
+
+Items are added to the roadmap once they have been identified, assessed for
+level of effort, and prioritized based on community needs. Each item is assigned
+to a semantic version, along with its change type, a description, and the
+reasoning behind it. Where they exist, you will see references to issues on the
+Github repository where you can go for more details on the origin of the
+request. Once a version is in work, you will be able to find a corresponding
+project on the Github repository with each roadmap item listed as a task. Once
+all tasks are complete, the version will be released and the next started.
+
+Once an item has been implemented it will be removed from the roadmap. If you
+would like to see a history of changes on the existing codebase, check out the
+ChangeLog (ChangeLog.md in the project root) to see what was included in each
+version of the library. In most cases, roadmap items will be removed from this
+document and placed there upon completion.
+
+Note that the timelines associated with each change are vague at best. The
+project team is not currently big enough to realistically make any promises, so
+timing is often left out to prevent folks from feeling cheated if something
+takes longer than expected.
 
 ## A Note about Github issues and projects
 
