@@ -62,6 +62,16 @@ or want to make a suggestion, please submit an issue on the project's
    These are typically boilerplate, and if needed can be set with subsequent
    calls. This will allow for less verbose code in most use cases.
 
+## 2.1.0
+ * [ADD] **journald logging target**
+   Logging to systemd's journal system is should be relatively straightforward
+   to implement, and is an important feature to support.
+ * [ADD] **Filters**
+   While message severity codes can be used to filter which log messages make
+   it through a target at runtime, this is limited and inflexible. Instead, a
+   generic filter structure that can filter on a wide variety of properties of
+   each log entry and even use custom functions to filter messages.
+
 ## 3.0.0
  * [REMOVE] **entry and element destructor synonyms**
    Removing previously deprecated feature.
@@ -83,7 +93,6 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **Java language bindings**
  * [ADD] **Powershell language bindings**
  * [ADD] **Perl language bindings**
- * [ADD] **journald logging target**
  * [ADD] **Function callback logging target**
  * [ADD] **AWS/S3 logging target**
  * [ADD] **Database logging target**
@@ -95,11 +104,6 @@ or want to make a suggestion, please submit an issue on the project's
    as to a local file as well as a network server. Target chains will allow this
    stream to be defined as a logging target, and a logging call only made to
    this instead of manually logging to each target.
- * [ADD] **Filters**
-   While message severity codes can be used to filter which log messages make
-   it through a target at runtime, this is limited and inflexible. Instead, a
-   generic filter structure that can filter on a wide variety of properties of
-   each log entry and even use custom functions to filter messages.
  * [ADD] **Abstract socket support**
    When creating a Unix socket target, an abstract socket name would allow the
    socket to be hidden from the local filesystem. This has currently been left
