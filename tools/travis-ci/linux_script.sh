@@ -5,5 +5,4 @@ make CTEST_OUTPUT_ON_FAILURE=1 -j 2 check &&
 sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 -j 2 check &&
 if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then make -j 2 check-cpp; fi &&
 make -j 2 examples &&
-sudo --preserve-env make install &&
-cpack -G DEB
+sudo --preserve-env make install
