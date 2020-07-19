@@ -113,6 +113,15 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
   include_directories("${source_dir}/googletest/include"
                       "${source_dir}/googlemock/include"
   )
+
+  add_custom_target(export-gtest
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_gtest_binary_dir} ${GTEST_PATH}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_gtest_shared_dir} ${GTEST_PATH}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_gtest_static_dir} ${GTEST_PATH}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${source_dir}/googletest/include" ${GTEST_PATH}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${source_dir}/googlemock/include" ${GTEST_PATH}
+    DEPENDS gtest
+  )
 else()
   add_found_library(
     LIB_NAME "libgtest"

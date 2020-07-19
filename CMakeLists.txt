@@ -42,9 +42,9 @@ string(CONCAT benchmark_path_help_string
   "In order for this to be used the directory must include ALL of the "
   "following at configuration time: the benchmark and benchmark_main "
   "libraries, and the benchmark/benchmark.h header. "
-  "An easy way to set this up is to perform a normal build first, and then "
-  "copy the necessary files out of the build directory into a separate folder "
-  "which can then be used in future builds."
+  "If the necessary files are not found, the benchmark library will be "
+  "downloaded and built when it is needed, and the export-benchmark target "
+  "can be used to populate the provided directory for future builds."
 )
 set(BENCHMARK_PATH ${PROJECT_BINARY_DIR}
   CACHE PATH ${benchmark_path_help_string}
@@ -56,9 +56,9 @@ string(CONCAT gtest_path_help_string
   "In order for this to be used the directory must include ALL of the "
   "following at configuration time: the gtest, gtest_main, and gmock "
   "libraries, the gtest/gtest.h header, and the gmock/gmock.h header. "
-  "An easy way to set this up is to perform a normal build first, and then "
-  "copy the necessary files out of the build directory into a separate folder "
-  "which can then be used in future builds."
+  "If the necessary files are not found, the gtest library will be "
+  "downloaded and built when it is needed, and the export-gtest target "
+  "can be used to populate the provided directory for future builds."
 )
 set(GTEST_PATH ${PROJECT_BINARY_DIR}
   CACHE PATH ${gtest_path_help_string}
