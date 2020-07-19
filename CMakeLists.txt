@@ -581,6 +581,8 @@ install(FILES
   DESTINATION "include/stumpless/target"
 )
 
+include(tools/cmake/cpack.cmake)
+
 
 # functionality tests
 add_function_test(buffer
