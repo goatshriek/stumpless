@@ -1,22 +1,26 @@
 ---
+title: Stumpless
+keywords: stumpless, c, logging, library, syslog, splunk, rsyslog
+last_updated: July 20, 2020
 layout: default
 ---
 
 # Stumpless at a glance
 
-Stumpless is a logging library built with a [vision](./vision.html): a rich and
-intuitive interface, standards compliance, fast performance, and a small
-footprint.
+Stumpless is a C logging library built for high performance and a rich feature
+set. Check out our [vision](./vision.html) to see what we are all about!
 
-Currently stumpless offers [standardized](https://tools.ietf.org/html/rfc5424)
-logging to the following targets:
- * network servers ([UDP](https://tools.ietf.org/html/rfc5426) or
-   [TCP](https://tools.ietf.org/html/rfc6587) over IPv4 or IPv6)
- * files
- * streams
- * Linux sockets
- * the Windows Event Log
- * character buffers
+Stumpless offers a robust set of features to make logging in C faster and
+easier:
+ * cross-platform builds on Linux, Windows, MacOSX, Cygwin, and more
+ * easy logging to network targets like Splunk or rsyslog servers
+ * logging that can be removed at compile-time for zero performance impact
+ * interoperability with standard syslog daemons and library functions
+ * an extensive unit testing suite and continuous integration
+ * easy-access
+   [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html)
+   and
+   [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples)
 
 To see where we're heading in the near future, check out the project
 [roadmap](./roadmap.html).

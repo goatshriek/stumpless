@@ -2,9 +2,117 @@
 title: The Future
 ---
 
+# The Future of Stumpless
+
 See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
+
+## 2.0.0 (next major and minor release)
+ * [ADD] **Thread safety for all library calls and structures**
+   This is a critical feature for a logging library that needs to be run in a
+   huge variety of contexts with minimal overhead work to implement it. Adding
+   this feature will likely change how structures are interacted with in the
+   library, as things like direct struct access will need to have a thread-safe
+   alternative. This implementation will be done as granularly as possible, and
+   will not use any static library-wide locks in order to avoid throughput
+   issues in the future.
+ * [CHANGE] **`stumpless` function will be removed (use `stump` instead)**
+   As currently named, the function makes it impossible to create a C++
+   namespace named after the library itself. Renaming this function will give it
+   a more meaningful name and also allow a cleaner namespace in the C++
+   bindings.
+ * [DEPRECATE] **entry and element destructor synonyms**
+   Currently, there are two forms of the destructors for these two structures:
+   one that destroys the object itself, and one that destroys the object and all
+   of the ones that it contains. The former is named `destroy_..._only` while
+   the latter is named `destroy_..._and_contents`. The latter has a synonym
+   named simply `destroy`, which does not convey its behavior well. This alias
+   will be deprecated, and removed in the next major release in order to prevent
+   confusion and misuse of the two forms.
+ * [CHANGE] **Destructors no longer clear errors**
+   As destruction functions do not throw any errors by design, they should not
+   clear the error flags. Clearing them can especially cause confusion in other
+   language bindings, where the calling of the destructor is not explicit and
+   may be difficult to track down.
+ - [CHANGE] **Error codes will be guaranteed to be a consistent value**
+   Error ids are currently defined by an enumeration without any values
+   specified, which means that they could change across builds. Setting these to
+   specific values will make them consistent across all builds, increasing
+   interoperability.
+ * [CHANGE] **Facilities, severities, options, element functions, and param
+   functions will only be available in separate headers**
+   These items are all currently included in the `stumpless/entry.h` header,
+   which was originally getting too large. Separating these allowed for smaller,
+   more logically separate headers. While the roll-up header `stumpless.h` will
+   still include all of these, `stumpless/entry.h` will no longer included the
+   other headers. While the header split out was done in a minor release, the
+   removal of the headers from `stumpless/entry.h` is being delayed to a major
+   release as code that is including specific headers may break as a result of
+   this change.
+ * [CHANGE] **Facilities and severities will be defined by enumerations**
+   Enumerations are a cleaner way to represent the set values, and can be made
+   compatible with the `syslog.h` values if their backing `int` values match.
+   Because function signatures will change, this will be done in a major
+   release.
+ * [REMOVE] **Inclusion of windows.h in stumpless/config.h**
+   This inclusion, while convenient for some users, propogates inclusion
+   ordering problems. It will be removed so that such ordering concerns are only
+   on users of Windows, and not added to this library as well.
+ * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
+   Enumerations are preferred for working with these set values in C++, and this
+   function was inadvertently left in the library during development.
+ * [REMOVE] **Options and default facility from all target constructors**
+   These are typically boilerplate, and if needed can be set with subsequent
+   calls. This will allow for less verbose code in most use cases.
+
+## 2.1.0
+ * [ADD] **journald logging target**
+   Logging to systemd's journal system is should be relatively straightforward
+   to implement, and is an important feature to support.
+ * [ADD] **Filters**
+   While message severity codes can be used to filter which log messages make
+   it through a target at runtime, this is limited and inflexible. Instead, a
+   generic filter structure that can filter on a wide variety of properties of
+   each log entry and even use custom functions to filter messages.
+
+## 3.0.0
+ * [REMOVE] **entry and element destructor synonyms**
+   Removing previously deprecated feature.
+ * [REMOVE] **Stream target constructor using `int` facility**
+   Removing previously deprecated feature.
+ * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
+   The [Wrapture](https://github.com/goatshriek/wrapture) project is being
+   built to provide clean, readable, and explicit language binding functionality
+   from C to other target languages, specifically to support Stumpless. Once
+   Python is added as a target language, this will be utilized to create the
+   associated library bindings, replacing SWIG and removing the dependency. In
+   the future, other language bindings will be added using Wrapture as they are
+   added to the tool.
+
+## Unallocated to a release
+ * [ADD] **Ruby language bindings**
+ * [ADD] **C# language bindings**
+ * [ADD] **TCL language bindings**
+ * [ADD] **Java language bindings**
+ * [ADD] **Powershell language bindings**
+ * [ADD] **Perl language bindings**
+ * [ADD] **Function callback logging target**
+ * [ADD] **AWS/S3 logging target**
+ * [ADD] **Database logging target**
+ * [ADD] **REST endpoint logging target**
+ * [ADD] **Hyperledger/blockchain logging target**
+ * [CHANGE] **Make network logging non-blocking**
+ * [ADD] **Target chaining**
+   In some cases a log message needs to be sent to multiple destinations, such
+   as to a local file as well as a network server. Target chains will allow this
+   stream to be defined as a logging target, and a logging call only made to
+   this instead of manually logging to each target.
+ * [ADD] **Abstract socket support**
+   When creating a Unix socket target, an abstract socket name would allow the
+   socket to be hidden from the local filesystem. This has currently been left
+   out due to portability issues, but using this capability when it is available
+   would increase the 'cleanliness' of using socket targets.
 
 ## What you'll find here and what you wont
 
@@ -36,111 +144,6 @@ project team is not currently big enough to realistically make any promises, so
 timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
-## 1.6.0 (next minor release)
- * [ADD] **Logging functions that can be compiled out**
-   A common logging idiom is to log at different verbosity levels, and use
-   different levels in different contexts, for example debug during development,
-   and then only informational in production workloads. This feature will add
-   function calls that will be removed when the code is compiled with specific
-   flags, allowing builds that do not need lower-level logs to stay fast and
-   efficient without requiring code changes or modification tools in the build
-   pipeline.
- * [ADD] **Roll-up header for C++ bindings**
-   Instead of including each class header in the calling code, it would be more
-   convenient to simply include a single header.
- * [ADD] **Improvements to Entry, Element, and Param functions**
-   The functions dealing with these structures are currently limited, and
-   in some cases require several calls and local variables to accomplish tasks
-   that will be very common. Adding more convenience functions will make working
-   with these simpler, not only in the base library but in the other language
-   bindings as well.
- * [FIX] **Socket targets may fail to bind to a local socket**
-   Socket targets can be opened with a local socket name provided, but this may
-   also be set to `NULL`, in which case a local socket is generated (see the
-   documentation of `stumpless_open_socket_target` for details). However, this
-   socket is always the same, which means that if a target is not properly
-   closed the local socket will remain. Successive targets will be unable to
-   open, as they will attempt to bind to the same socket name and will fail as
-   it already exists. For details on the progress of this bug, see
-   [issue #54](https://github.com/goatshriek/stumpless/issues/54).
-
-## 2.0.0 (next major release)
- * [ADD] **Thread safety for all library calls and structures**
-   This is a critical feature for a logging library that needs to be run in a
-   huge variety of contexts with minimal overhead work to implement it. Adding
-   this feature will likely change how structures are interacted with in the
-   library, as things like direct struct access will need to have a thread-safe
-   alternative. This implementation will be done as granularly as possible, and
-   will not use any static library-wide locks in order to avoid throughput
-   issues in the future.
- * [FIX] **Current target is invalid after closure**
-   The current target is set to to the last opened target, or it can be manually
-   set by the user using the `stumpless_set_current_target` function. However,
-   if this target is closed the current target pointer is not changed, and will
-   still point to the invalid memory. See
-   [issue #52](https://github.com/goatshriek/stumpless/issues/52) for details on
-   the progress of this bug.
- * [CHANGE] **`stumpless` function will be renamed**
-   As currently named, the function makes it impossible to create a C++
-   namespace named after the library itself. Renaming this function will give it
-   a more meaningful name and also allow a cleaner namespace in the C++
-   bindings.
- * [DEPRECATE] **entry and element destructor synonyms**
-   Currently, there are two forms of the destructors for these two structures:
-   one that destroys the object itself, and one that destroys the object and all
-   of the ones that it contains. The former is named `destroy_..._only` while
-   the latter is named `destroy_..._and_contents`. The latter has a synonym
-   named simply `destroy`, which does not convey its behavior well. This alias
-   will be deprecated, and removed in the next major release in order to prevent
-   confusion and misuse of the two forms.
- * [CHANGE] **Destructors no longer clear errors**
-   As destruction functions do not throw any errors by design, they should not
-   clear the error flags. Clearing them can especially cause confusion in other
-   language bindings, where the calling of the destructor is not explicit and
-   may be difficult to track down.
- * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
-   The [Wrapture](https://github.com/goatshriek/wrapture) project is being
-   built to provide clean, readable, and explicit language binding functionality
-   from C to other target languages, specifically to support Stumpless. Once
-   Python is added as a target language, this will be utilized to create the
-   associated library bindings, replacing SWIG and removing the dependency. In
-   the future, other language bindings will be added using Wrapture as they are
-   added to the tool.
- - [CHANGE] **Error codes will be guaranteed to be a consistent value**
-   Error ids are currently defined by an enumeration without any values
-   specified, which means that they could change across builds. Setting these to
-   specific values will make them consistent across all builds, increasing
-   interoperability.
-
-## 3.0.0
- * [REMOVE] **entry and element destructor synonyms**
-   Removing previously deprecated feature.
-
-## Unallocated to a release
- * [ADD] **Ruby language bindings**
- * [ADD] **C# language bindings**
- * [ADD] **TCL language bindings**
- * [ADD] **Java language bindings**
- * [ADD] **Powershell language bindings**
- * [ADD] **Perl language bindings**
- * [ADD] **journald logging target**
- * [ADD] **Function callback logging target**
- * [ADD] **AWS/S3 logging target**
- * [ADD] **Database logging target**
- * [ADD] **REST endpoint logging target**
- * [ADD] **Hyperledger/blockchain logging target**
- * [CHANGE] **Make network logging non-blocking**
- * [ADD] **Target chaining**
-   In some cases a log message needs to be sent to multiple destinations, such
-   as to a local file as well as a network server. Target chains will allow this
-   stream to be defined as a logging target, and a logging call only made to
-   this instead of manually logging to each target.
- * [ADD] **Filters**
-   While message severity codes can be used to filter which log messages make
-   it through a target at runtime, this is limited and inflexible. Instead, a
-   generic filter structure that can filter on a wide variety of properties of
-   each log entry and even use custom functions to filter messages.
-
 ## A Note about Github issues and projects
 
 A fair question to ask is why the roadmap is not being managed within the issue
@@ -165,3 +168,4 @@ reasons that a separate roadmap is maintained:
    itself facilitates this, the same way that licensing and copyright
    notifications are traditionally bundled with code. And if you don't care,
    you can always ignore them.
+
