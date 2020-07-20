@@ -562,11 +562,26 @@ install(FILES
 )
 
 install(FILES
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/alert.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/crit.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/debug.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/emerg.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/err.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/info.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/mask.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/notice.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/warning.h
+  DESTINATION "include/stumpless/level"
+)
+
+install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h
   DESTINATION "include/stumpless/target"
 )
+
+include(tools/cmake/cpack.cmake)
 
 
 # functionality tests
