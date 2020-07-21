@@ -9,6 +9,10 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
+## [2.0.0] - 2020-07-21
+### Added
+ - Thread safety to all functions.
+
 ## [1.6.0] - 2020-07-16
 ### Added
  - A number of new functions for working with entries, elements, and params.
