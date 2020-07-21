@@ -18,6 +18,7 @@ easier:
  * easy logging to network targets like Splunk or rsyslog servers
  * logging that can be removed at compile-time for zero performance impact
  * interoperability with standard syslog daemons and library functions
+ * complete thread safety for multithreaded programs
  * an extensive unit testing suite and continuous integration
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html)
