@@ -6,6 +6,7 @@ if(MSVC)
   set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
 else()
   set(function_test_compile_flags "-std=gnu++11 -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
+  set(performance_test_compile_flags "-std=c++11")
 endif(MSVC)
 
 function(private_add_function_test)
@@ -79,6 +80,7 @@ function(private_add_performance_test)
 
   set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
     PROPERTIES
+    COMPILE_FLAGS "${performance_test_compile_flags}"
     OUTPUT_NAME performance-test-${FUNCTION_PERF_ARG_NAME}
   )
 
