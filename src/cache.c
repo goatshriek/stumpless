@@ -22,7 +22,7 @@
 #include "private/memory.h"
 
 static void
-init_page( struct cache *c, size_t page_index ) {
+init_page( const struct cache *c, size_t page_index ) {
   size_t entries_per_page;
   size_t i;
   char *current_page;
@@ -41,7 +41,7 @@ init_page( struct cache *c, size_t page_index ) {
 }
 
 static void
-teardown_page( struct cache *c, size_t page_index ) {
+teardown_page( const struct cache *c, size_t page_index ) {
   size_t entries_per_page;
   size_t i;
   char *current_page;
@@ -119,7 +119,7 @@ cache_alloc( struct cache *c ) {
 }
 
 void
-cache_destroy( struct cache *c ) {
+cache_destroy( const struct cache *c ) {
   size_t i;
 
   if( !c ) {
@@ -136,7 +136,7 @@ cache_destroy( struct cache *c ) {
 }
 
 void
-cache_free( struct cache *c, const void *entry ) {
+cache_free( const struct cache *c, const void *entry ) {
   size_t entry_index;
   size_t i;
   size_t entries_per_page;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ strbuilder_init( void *builder ) {
 
 static void
 strbuilder_teardown( void *builder ) {
-  struct strbuilder *b = ( struct strbuilder * ) builder;
+  const struct strbuilder *b = ( struct strbuilder * ) builder;
 
   free_mem( b->buffer );
 }
@@ -162,7 +162,7 @@ strbuilder_get_buffer( struct strbuilder *builder, size_t * length ) {
 }
 
 void
-strbuilder_destroy( struct strbuilder *builder ) {
+strbuilder_destroy( const struct strbuilder *builder ) {
   cache_free( strbuilder_cache, builder );
 }
 

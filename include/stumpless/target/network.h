@@ -78,7 +78,7 @@ enum stumpless_transport_protocol {
  * @param target The network target to close.
  */
 void
-stumpless_close_network_target( struct stumpless_target *target );
+stumpless_close_network_target( const struct stumpless_target *target );
 
 /**
  * Gets the destination of a network target.
@@ -113,7 +113,7 @@ stumpless_get_transport_port( const struct stumpless_target *target );
  * set appropriately.
  */
 size_t
-stumpless_get_udp_max_message_size( struct stumpless_target *target );
+stumpless_get_udp_max_message_size( const struct stumpless_target *target );
 
 /**
  * Creates a network target, but does not open it.
