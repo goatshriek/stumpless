@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -606,7 +606,7 @@ stumpless_set_destination( struct stumpless_target *target,
 
   net_target = target->id;
 
-  free_mem( ( void * ) net_target->destination );
+  free_mem( net_target->destination );
   net_target->destination = destination_copy;
 
   if( network_target_is_open( target ) ) {
@@ -654,7 +654,7 @@ stumpless_set_transport_port( struct stumpless_target *target,
 
   net_target = target->id;
 
-  free_mem( ( void * ) net_target->port );
+  free_mem( net_target->port );
   net_target->port = port_copy;
 
   if( network_target_is_open( target ) ) {
@@ -716,8 +716,8 @@ destroy_network_target( struct network_target *target ) {
 
   }
 
-  free_mem( ( void * ) target->destination );
-  free_mem( ( void * ) target->port );
+  free_mem( target->destination );
+  free_mem( target->port );
   free_mem( target );
 }
 
