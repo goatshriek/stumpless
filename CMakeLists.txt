@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2.3)
 
-project(stumpless VERSION 1.6.0)
+project(stumpless VERSION 1.7.0)
 
 string(CONCAT enable_cpp_help_string
   "Build the C++ language binding library. The library will be added to the "
