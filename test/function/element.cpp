@@ -248,11 +248,12 @@ namespace {
     ASSERT_NOT_NULL( set_realloc_result );
 
     result = stumpless_copy_element( element_with_params );
-    EXPECT_NULL( result );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NO_ERROR;
+    EXPECT_NE( result, element_with_params );
 
     stumpless_set_realloc( realloc );
+
+    stumpless_destroy_element_and_contents( result );
   }
 
   TEST_F( ElementTest, CopyWithoutParams ) {
