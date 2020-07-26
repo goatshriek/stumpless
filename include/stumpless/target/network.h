@@ -113,7 +113,7 @@ stumpless_get_transport_port( const struct stumpless_target *target );
  * set appropriately.
  */
 size_t
-stumpless_get_udp_max_message_size( struct stumpless_target *target );
+stumpless_get_udp_max_message_size( const struct stumpless_target *target );
 
 /**
  * Creates a network target, but does not open it.

@@ -27,7 +27,7 @@
 #include "private/target/buffer.h"
 
 void
-stumpless_close_buffer_target( struct stumpless_target *target ) {
+stumpless_close_buffer_target( const struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {

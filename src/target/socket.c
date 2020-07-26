@@ -31,7 +31,7 @@
 #include "private/target/socket.h"
 
 void
-stumpless_close_socket_target( struct stumpless_target *target ) {
+stumpless_close_socket_target( const struct stumpless_target *target ) {
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return;

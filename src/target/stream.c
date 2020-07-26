@@ -27,14 +27,13 @@
 #include "private/target/stream.h"
 
 void
-stumpless_close_stream_target( struct stumpless_target *target ) {
-  clear_error(  );
-
+stumpless_close_stream_target( const struct stumpless_target *target ) {
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return;
   }
 
+  clear_error(  );
   destroy_stream_target( target->id );
   destroy_target( target );
 }

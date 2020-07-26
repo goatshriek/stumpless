@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ extern "C" {
  * @param target The stream target to close.
  */
 void
-stumpless_close_stream_target( struct stumpless_target *target );
+stumpless_close_stream_target( const struct stumpless_target *target );
 
 /**
  * Opens a stream target for the stderr stream.

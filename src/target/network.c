@@ -39,7 +39,7 @@ static size_t tcp_send_buffer_length = 0;
 
 static
 void
-destroy_ipv4_target( struct network_target *target ) {
+destroy_ipv4_target( const struct network_target *target ) {
 
   if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
     config_close_tcp4_target( target );
@@ -52,7 +52,7 @@ destroy_ipv4_target( struct network_target *target ) {
 
 static
 void
-destroy_ipv6_target( struct network_target *target ) {
+destroy_ipv6_target( const struct network_target *target ) {
 
   if( target->transport == STUMPLESS_TCP_TRANSPORT_PROTOCOL ) {
     config_close_tcp6_target( target );
@@ -373,7 +373,7 @@ fail:
 }
 
 size_t
-stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
+stumpless_get_udp_max_message_size( const struct stumpless_target *target ) {
   const struct network_target *net_target;
 
   if( !target ) {
