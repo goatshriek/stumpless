@@ -314,7 +314,7 @@ sendto_udp_target( struct network_target *target,
 /* public definitions */
 
 void
-stumpless_close_network_target( struct stumpless_target *target ) {
+stumpless_close_network_target( const struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {

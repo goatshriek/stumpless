@@ -78,7 +78,7 @@ enum stumpless_transport_protocol {
  * @param target The network target to close.
  */
 void
-stumpless_close_network_target( struct stumpless_target *target );
+stumpless_close_network_target( const struct stumpless_target *target );
 
 /**
  * Gets the destination of a network target.
