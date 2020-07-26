@@ -328,9 +328,7 @@ stumpless_close_network_target( struct stumpless_target *target ) {
 
 const char *
 stumpless_get_destination( const struct stumpless_target *target ) {
-  struct network_target *net_target;
-
-  clear_error(  );
+  const struct network_target *net_target;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -343,6 +341,7 @@ stumpless_get_destination( const struct stumpless_target *target ) {
     goto fail;
   }
 
+  clear_error(  );
   net_target = target->id;
   return net_target->destination;
 
@@ -352,9 +351,7 @@ fail:
 
 const char *
 stumpless_get_transport_port( const struct stumpless_target *target ) {
-  struct network_target *net_target;
-
-  clear_error(  );
+  const struct network_target *net_target;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -367,6 +364,7 @@ stumpless_get_transport_port( const struct stumpless_target *target ) {
     goto fail;
   }
 
+  clear_error(  );
   net_target = target->id;
   return net_target->port;
 
@@ -376,9 +374,7 @@ fail:
 
 size_t
 stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
-  struct network_target *net_target;
-
-  clear_error(  );
+  const struct network_target *net_target;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -397,6 +393,7 @@ stumpless_get_udp_max_message_size( struct stumpless_target *target ) {
     goto fail;
   }
 
+  clear_error(  );
   return net_target->max_msg_size;
 
 fail:
@@ -579,9 +576,7 @@ stumpless_set_destination( struct stumpless_target *target,
                            const char *destination ) {
   const char *destination_copy;
   struct network_target *net_target;
-  struct network_target *result;
-
-  clear_error(  );
+  const struct network_target *result;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -616,6 +611,7 @@ stumpless_set_destination( struct stumpless_target *target,
     }
   }
 
+  clear_error(  );
   return target;
 
 fail:
@@ -627,7 +623,7 @@ stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
   struct network_target *net_target;
   const char *port_copy;
-  void *result;
+  const struct network_target *result;
 
   clear_error(  );
 
@@ -775,7 +771,7 @@ fail:
 
 struct stumpless_target *
 open_network_target( struct stumpless_target *target ) {
-  struct network_target *result;
+  const struct network_target *result;
 
   result = open_private_network_target( target->id );
   if( result ) {
@@ -792,7 +788,7 @@ open_new_network_target( const char *destination,
                          enum stumpless_network_protocol network,
                          enum stumpless_transport_protocol transport ) {
   struct network_target *target;
-  struct network_target *open_result;
+  const struct network_target *open_result;
 
   target = new_network_target( network, transport );
   if( !target ) {

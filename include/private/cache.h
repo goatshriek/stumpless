@@ -34,10 +34,10 @@ void *
 cache_alloc( struct cache *c );
 
 void
-cache_destroy( struct cache *c );
+cache_destroy( const struct cache *c );
 
 void
-cache_free( struct cache *c, const void *entry );
+cache_free( const struct cache *c, const void *entry );
 
 struct cache *
 cache_new( size_t size,

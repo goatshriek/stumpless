@@ -46,7 +46,7 @@ static struct stumpless_target *default_target = NULL;
 
 static
 void
-close_unsupported_target( struct stumpless_target *target ) {
+close_unsupported_target( const struct stumpless_target *target ) {
   ( void ) target;
 
   raise_target_unsupported( "attempted to close an unsupported target type" );
@@ -555,7 +555,7 @@ vstumpless_add_message( struct stumpless_target *target,
 /* private definitions */
 
 void
-destroy_target( struct stumpless_target *target ) {
+destroy_target( const struct stumpless_target *target ) {
   if( target == current_target ) {
     current_target = NULL;
   }
