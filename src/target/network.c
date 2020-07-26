@@ -702,7 +702,7 @@ fail:
 /* private definitions */
 
 void
-destroy_network_target( struct network_target *target ) {
+destroy_network_target( const struct network_target *target ) {
 
   if( target->network == STUMPLESS_IPV4_NETWORK_PROTOCOL ) {
     destroy_ipv4_target( target );

@@ -35,7 +35,7 @@ struct network_target {
 };
 
 void
-destroy_network_target( struct network_target *target );
+destroy_network_target( const struct network_target *target );
 
 void
 network_free_all( void );
