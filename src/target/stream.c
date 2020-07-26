@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,13 @@
 #include "private/target/stream.h"
 
 void
-stumpless_close_stream_target( struct stumpless_target *target ) {
-  clear_error(  );
-
+stumpless_close_stream_target( const struct stumpless_target *target ) {
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return;
   }
 
+  clear_error(  );
   destroy_stream_target( target->id );
   destroy_target( target );
 }
@@ -107,7 +106,7 @@ fail:
 /* private definitions */
 
 void
-destroy_stream_target( struct stream_target *target ) {
+destroy_stream_target( const struct stream_target *target ) {
   free_mem( target );
 }
 

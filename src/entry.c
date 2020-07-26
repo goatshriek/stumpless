@@ -857,8 +857,8 @@ strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry ) {
   size_t i;
   size_t j;
-  struct stumpless_element *element;
-  struct stumpless_param *param;
+  const struct stumpless_element *element;
+  const struct stumpless_param *param;
 
   if( entry->element_count == 0 ) {
     return strbuilder_append_char( builder, '-' );

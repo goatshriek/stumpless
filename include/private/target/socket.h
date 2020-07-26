@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ struct socket_target {
 };
 
 void
-destroy_socket_target( struct socket_target *trgt );
+destroy_socket_target( const struct socket_target *trgt );
 
 struct socket_target *
 new_socket_target( const char *dest, size_t dest_len,
