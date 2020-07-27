@@ -83,7 +83,7 @@ static void CopyElement(benchmark::State& state){
   state.counters["CallsToFree"] = ( double ) copy_element_memory_counter.free_count;
   state.counters["MemoryFreed"] = ( double ) copy_element_memory_counter.free_total;
 }
-``` 
+```
 
 We can run this specific test with the following command, which will build the
 test if necessary and then execute it.
