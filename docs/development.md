@@ -3,6 +3,78 @@
 If you're going to work on the library itself, here are some helpful tips that
 will make the experience a little smoother and faster.
 
+## Getting Started
+
+Stumpless is configured using the popular [CMake](https://cmake.org/) build
+platform. In order to build it from the source you will need this tool
+available, as well as any of a number of supported build systems.
+[GNU Make](https://www.gnu.org/software/make/) is one of the most well-known
+ones, and so most if not all examples you will find in stumpless
+documentation use it. However, other tools support CMake as well. For example,
+Visual Studio has CMake support built in so that you can build targets in a
+CMake project easily within the IDE itself. The `CMakeLists.txt` file contains
+the build specification for stumpless, and is worth browsing through if you are
+curious about where configuration checks, source and test files, and other build
+targets are specified.
+
+There are a number of other dependencies for working on stumpless, but they are
+less noteworth as you may not find yourself interacting with them. For example,
+the Google Test and Benchmark libraries are needed, but they are downloaded and
+built dynamically during the build process, so you do not need to worry about
+providing them. Ruby is also used for some development and testing scripts, but
+the basic builds and tests will succeed without it. For a more detailed rundown
+of the dependencies you might encounter, check out the
+[dependencies documentation](dependencies.md).
+
+Basic steps to building the library are available in the
+[INSTALL.md](../INSTALL.md)
+file at the root of the project. However, if you plan to be developing on
+stumpless itself it is recommended that you avoid using the `install` target.
+Instead, simply work off of the version of the library in your build folder,
+which will make it easier to work with different builds without worrying about
+the installed library being used by accident.
+
+A few other documents may be helpful for newcomers to glance through:
+ * [docs/acronyms.md](acronyms.md) lists acronyms and initialisms used in the
+   source of stumpless.
+ * [docs/portability.md](portability.md) describes the framework used in
+   stumpless to deal with differences between environments. If you are going
+   to be working on something that may behave differently depending on the
+   platform, or that may be missing on some, then this document holds
+   important information for you. If you need to work with a function starting
+   with `config_`, this is also a good indication you should read this doc.
+ * [docs/benchmark.md](benchmark.md)
+   has a detailed walkthrough of the performance testing framework set up in
+   stumpless. If you're looking to make a performance improvement that will
+   otherwise be transparent, this document describes the steps for this in
+   detail with a full example.
+
+## Adding new functions
+
+If you're adding a new function to stumpless, here are a few notes that will
+help you along the way.
+
+In order to support being built as a DLL, stumpless has a `.def` file at
+`src/windows/stumpless.def`. If you are adding a new public function to
+stumpless, you will need to make sure to add it to the `.def` file so that the
+DLL will include it. Failing to do so will result in tests failing on Windows
+builds with a note that your new function is not defined. The AppVeyor CI builds
+typically catch this issue.
+
+Stumpless uses a custom tool to make sure that all required headers are included
+in a source file without any extras. The tool is called `check_headers` and is
+stored in the `tools/check_headers` folder. You can run this manually if you
+wish, by simply executing the script and passing it your source file (or files)
+as parameters. You will need Ruby to run it. It is also run as a part of Travis
+CI builds, so you can wait for it to run there instead of doing it yourself.
+
+However, if you have added a new function and you see Travis CI builds failing
+as a result of this tool claiming that an include file is unnecessary, then you
+probably need to add your function to the manifest that powers it. This is a
+simple YAML file at `tools/check_headers/stumpless.yml` with entries for each
+function. Adding your function and the associated header it is declared in will
+remove this error as the tool will now know why the include is required.
+
 ## Caching Google Test and Benchmark
 
 If you are going to be repeatedly building the library from scratch, for example
@@ -81,5 +153,5 @@ make bench
 
 For a detailed discussion of the performance testing framework used to gauge
 the speed and efficiency of various calls, check out the
-[benchmark](https://github.com/goatshriek/stumpless/blob/latest/docs/benchmark.md)
-documentation for the basic strategy and a full walkthrough of an example.
+[benchmark](benchmark.md) documentation for the basic strategy and a full
+walkthrough of an example.

@@ -38,11 +38,12 @@ these guidelines:
 
 ### **It would be great if...** 
 
-If you have a new feature that you think would be worthwhile, feel free to send
-an email to the current project owner at joelanderson333@gmail.com with your
-idea. If it fits with the project then you can begin working on a fork of the
-project and submit a pull request of your branch so that we can watch it
-progress and merge it in once it is complete.
+If you have a new feature that you think would be worthwhile, please open an
+issue on the github project using the 'Feature Request' template. If it fits
+with the project then you can begin working on a fork and submit a pull
+request of your branch so that we can watch it progress and merge it in once
+it is complete. Or if you don't have time we will add it to the project
+[roadmap](roadmap.md) and eventually implement it depending on other priorities.
 
 ### **I don't know where to start**
 
@@ -50,6 +51,9 @@ If you'd like to contribute but aren't quite sure where to start, take a look at
 the issues and see if there is anything there that you think you can tackle! In
 particular, the 'help wanted' and 'good first issue' labels mark issues that
 need attention and are relatively simple to fix, respectively.
+
+The [development notes](development.md) have a getting started section for
+newcomers to the project, and are worth a read.
 
 #### No, I mean I **really** don't know where to start
 
