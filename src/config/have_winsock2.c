@@ -94,7 +94,7 @@ fail:
 }
 
 void
-winsock2_close_network_target( struct network_target *target ) {
+winsock2_close_network_target( const struct network_target *target ) {
   closesocket( target->handle );
 }
 
