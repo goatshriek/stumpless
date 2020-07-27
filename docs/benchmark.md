@@ -143,8 +143,8 @@ make performance-test-element && ./performance-test-element --benchmark_filter=C
 ```
 
 We immediately see that the number of calls to `realloc` dropped significantly,
-and the calls to `alloc` only moderately increased. The execution time is also
-lower, so we can declare success!
+and is clearly no longer tied to calls to CopyElement. The execution time is
+also lower, so we can declare success!
 
 If you run a number of benchmarks at once and want to compare all of the
 results, manually comparing this output can get difficult. Google Benchmark
@@ -189,11 +189,16 @@ python3 compare.py benchmarks ../../../../old.json ../../../../new.json
 ```
 
 This execution tells us that we have reduced the execution time of the function
-by just over 17 percent.
+by just over 17 percent. Note that the numbers are slightly different from our
+previous executions, but that the general trend still holds true. This relative
+nature is exactly why benchmark test results are only relevant when executed on
+the same machine in the same environment, under the same load if at all 
+possible.
 
 You can also pass the compare script two performance test executables, if you
-have them. However, if you implemented a new benchmark for your change then
-this method works as well.
+have them, and bypass the json output steps. However, if you implemented a new
+benchmark for your change then the latest build tree may not have a test, and
+you can simply rely on the above method.
 
 This is a real example of an actual improvement made to stumpless, so if you
 want to see any of the tests or code in detail you can simply look at them in
