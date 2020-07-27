@@ -23,7 +23,7 @@
 #  include "private/target/network.h"
 
 void
-sys_socket_close_network_target( struct network_target *target );
+sys_socket_close_network_target( const struct network_target *target );
 
 void
 sys_socket_init_network_target( struct network_target *target );

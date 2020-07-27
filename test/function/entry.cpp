@@ -335,10 +335,17 @@ namespace {
     ASSERT_NOT_NULL( set_realloc_result );
 
     result = stumpless_copy_entry( basic_entry );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    EXPECT_NULL( result );
+
+    if( !result ) {
+      EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    } else {
+      EXPECT_NO_ERROR;
+      EXPECT_NE( result, basic_entry );
+      stumpless_destroy_entry_and_contents( result );
+    }
 
     stumpless_set_realloc( realloc );
+
   }
 
   TEST_F( EntryTest, GetAppName ) {

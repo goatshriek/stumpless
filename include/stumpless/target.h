@@ -170,7 +170,7 @@ stumplog( int priority, const char *message, ... );
  */
 int
 stumpless_add_entry( struct stumpless_target *target,
-                     struct stumpless_entry *entry );
+                     const struct stumpless_entry *entry );
 
 /**
  * Adds a log message with a priority to a given target.

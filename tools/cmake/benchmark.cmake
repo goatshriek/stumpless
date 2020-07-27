@@ -69,6 +69,7 @@ if(${benchmark_lib} STREQUAL "benchmark_lib-NOTFOUND" OR ${benchmark_main_lib} S
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_benchmark_binary_dir} ${BENCHMARK_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_benchmark_static_dir} ${BENCHMARK_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${source_dir}/include" ${BENCHMARK_PATH}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${source_dir}/tools" "${BENCHMARK_PATH}/tools"
     DEPENDS benchmark
   )
 else()

@@ -31,7 +31,7 @@
 #include "private/target/socket.h"
 
 void
-stumpless_close_socket_target( struct stumpless_target *target ) {
+stumpless_close_socket_target( const struct stumpless_target *target ) {
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return;
@@ -109,7 +109,7 @@ fail:
 /* private definitions */
 
 void
-destroy_socket_target( struct socket_target *trgt ) {
+destroy_socket_target( const struct socket_target *trgt ) {
   if( !trgt ) {
     return;
   }
@@ -178,7 +178,7 @@ sendto_socket_target( const struct socket_target *target,
                   msg,
                   msg_length,
                   0,
-                  ( struct sockaddr * ) &target->target_addr,
+                  ( const struct sockaddr * ) &target->target_addr,
                   target->target_addr_len );
 
   if( result == -1 ) {

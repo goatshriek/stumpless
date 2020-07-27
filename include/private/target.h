@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 #include <stumpless/target.h>
 
 void
-destroy_target( struct stumpless_target *target );
+destroy_target( const struct stumpless_target *target );
 
 struct stumpless_target *
 new_target( enum stumpless_target_type type,

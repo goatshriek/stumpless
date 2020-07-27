@@ -791,6 +791,10 @@ add_custom_target(examples
 
 
 # performance tests
+add_performance_test(element
+  SOURCES test/performance/element.cpp
+)
+
 add_performance_test(entry
   SOURCES test/performance/entry.cpp
 )

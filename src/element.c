@@ -78,11 +78,15 @@ stumpless_copy_element( const struct stumpless_element *element ) {
   struct stumpless_element *copy;
   size_t i;
   struct stumpless_param *param_copy;
-  const struct stumpless_element *add_result;
 
   copy = stumpless_new_element( stumpless_get_element_name( element ) );
   if( !copy ) {
     goto fail;
+  }
+
+  copy->params = alloc_mem( element->param_count * sizeof( param_copy ) );
+  if( !copy->params ) {
+    goto fail_param_copy;
   }
 
   for( i = 0; i < element->param_count; i++ ) {
@@ -91,10 +95,8 @@ stumpless_copy_element( const struct stumpless_element *element ) {
       goto fail_param_copy;
     }
 
-    add_result = stumpless_add_param( copy, param_copy );
-    if( !add_result ) {
-      goto fail_param_copy;
-    }
+    copy->params[i] = param_copy;
+    copy->param_count++;
   }
 
   return copy;
