@@ -151,7 +151,9 @@ results, manually comparing this output can get difficult. Google Benchmark
 provides a python script in the `tools` folder that makes this much easier.
 In a normal build tree this is in `benchmark/src/benchmark/tools/`, and it is
 exported by the `export-benchmark` build target if you are using
-`BENCHMARK_PATH`.
+`BENCHMARK_PATH` (see the
+[development notes](https://github.com/goatshriek/stumpless/blob/latest/docs/development.md)
+for details on this option).
 
 Running the script is straightforward, as you simply need to export JSON output
 from each benchmark execution and then compare the results. If you want more
@@ -168,12 +170,12 @@ test, run it once with each library version, and then compare the results.
 make performance-test-element
 
 # run the test with our changes
-./performance-test-element --benchmark_filter=CopyElement --benchmark_output=new.json --benchmark_output_format=json
+./performance-test-element --benchmark_filter=CopyElement --benchmark_out=new.json --benchmark_out_format=json
 
 # and then swap out the library and run it again
 rm libstumpless.so.2.0.0
 cp ../build-latest/libstumpless.so.2.0.0 ./
-./performance-test-element --benchmark_filter=CopyElement --benchmark_output=old.json --benchmark_output_format=json
+./performance-test-element --benchmark_filter=CopyElement --benchmark_out=old.json --benchmark_out_format=json
 
 # compare results with the Google Benchmark tool
 cd benchmark/src/benchmark/tools
@@ -185,6 +187,13 @@ python3 compare.py benchmarks ../../../../old.json ../../../../new.json
 # ----------------------------------------------------------------------------------------------------------
 # CopyElement                -0.1791         -0.1747           663           545           663           547
 ```
+
+This execution tells us that we have reduced the execution time of the function
+by just over 17 percent.
+
+You can also pass the compare script two performance test executables, if you
+have them. However, if you implemented a new benchmark for your change then
+this method works as well.
 
 This is a real example of an actual improvement made to stumpless, so if you
 want to see any of the tests or code in detail you can simply look at them in
