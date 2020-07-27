@@ -24,7 +24,7 @@
 #  include "private/target/network.h"
 
 void
-winsock2_close_network_target( struct network_target *target );
+winsock2_close_network_target( const struct network_target *target );
 
 void
 winsock2_cleanup( void );
