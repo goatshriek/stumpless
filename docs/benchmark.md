@@ -91,13 +91,100 @@ test if necessary and then execute it.
 ```sh
 make performance-test-element && ./performance-test-element --benchmark_filter=CopyElement
 
-# sample output
-
+# sample output:
+# 2020-07-27T14:40:33-04:00
+# Running ./performance-test-element
+# Run on (8 X 1498 MHz CPU s)
+# Load Average: 0.52, 0.58, 0.59
+# ----------------------------------------------------------------------
+# Benchmark            Time             CPU   Iterations UserCounters...
+# ----------------------------------------------------------------------
+# CopyElement        633 ns          628 ns      1120000 CallsToAlloc=8.96001M CallsToFree=10.08M CallsToRealloc=2.24M MemoryAllocated=181.44M MemoryFreed=181.44M
 ```
 
 If you got an error about the library being built as DEBUG, make sure that you
 pass the `-DCMAKE_BUILD_TYPE=Release` argument to cmake when you are building
 stumpless.
+
+Great! We have an idea of the speed of the library, as well as the number of
+calls that are made to various memory allocation routines. Next, let's make our
+fix to `stumpless_copy_element`.
+
+```c
+// we still create a new element the same way
+copy = stumpless_new_element( stumpless_get_element_name( element ) );
+
+// now we manually allocate the array just once
+copy->params = alloc_mem( element->param_count * sizeof( param_copy ) );
+
+for( i = 0; i < element->param_count; i++ ) {
+  param_copy = stumpless_copy_param( element->params[i] );
+
+  // and then populate it with each copy
+  copy->params[i] = param_copy;
+  copy->param_count++;
+}
+```
+
+Now that we've made this change, let's rebuild our performance test and run it!
+
+```sh
+make performance-test-element && ./performance-test-element --benchmark_filter=CopyElement
+
+# sample output:
+# 2020-07-27T14:45:05-04:00
+# Running ./performance-test-element
+# Run on (8 X 1498 MHz CPU s)
+# Load Average: 0.52, 0.58, 0.59
+# ----------------------------------------------------------------------
+# Benchmark            Time             CPU   Iterations UserCounters...
+# ----------------------------------------------------------------------
+# CopyElement        542 ns          547 ns      1000000 CallsToAlloc=9.00001M CallsToFree=9.00001M CallsToRealloc=2 MemoryAllocated=162M MemoryFreed=162M
+```
+
+We immediately see that the number of calls to `realloc` dropped significantly,
+and the calls to `alloc` only moderately increased. The execution time is also
+lower, so we can declare success!
+
+If you run a number of benchmarks at once and want to compare all of the
+results, manually comparing this output can get difficult. Google Benchmark
+provides a python script in the `tools` folder that makes this much easier.
+In a normal build tree this is in `benchmark/src/benchmark/tools/`, and it is
+exported by the `export-benchmark` build target if you are using
+`BENCHMARK_PATH`.
+
+Running the script is straightforward, as you simply need to export JSON output
+from each benchmark execution and then compare the results. If you want more
+detail, check out the full documentation
+[here](https://github.com/google/benchmark/blob/master/docs/tools.md).
+
+For this example, we'll assume that you've built stumpless twice, one based on
+the `latest` branch in folder `build-latest`, and another based on a branch with
+your changes in folder `build-element-copy`. The general flow is to build the
+test, run it once with each library version, and then compare the results.
+
+```sh
+# in folder build-element-copy
+make performance-test-element
+
+# run the test with our changes
+./performance-test-element --benchmark_filter=CopyElement --benchmark_output=new.json --benchmark_output_format=json
+
+# and then swap out the library and run it again
+rm libstumpless.so.2.0.0
+cp ../build-latest/libstumpless.so.2.0.0 ./
+./performance-test-element --benchmark_filter=CopyElement --benchmark_output=old.json --benchmark_output_format=json
+
+# compare results with the Google Benchmark tool
+cd benchmark/src/benchmark/tools
+python3 compare.py benchmarks ../../../../old.json ../../../../new.json
+
+# sample output:
+# Comparing old.json to new.json
+# Benchmark                     Time             CPU      Time Old      Time New       CPU Old       CPU New
+# ----------------------------------------------------------------------------------------------------------
+# CopyElement                -0.1791         -0.1747           663           545           663           547
+```
 
 This is a real example of an actual improvement made to stumpless, so if you
 want to see any of the tests or code in detail you can simply look at them in
