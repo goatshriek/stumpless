@@ -10,6 +10,13 @@ library. You can use the `bench` target to build and execute all performance
 tests at once, or just the name of the executable if you only want to measure
 a single module.
 
+Performance tests are NOT intended to be an absolute measurement of the
+performance of a function or the library as a whole. They are only useful for
+measuring the relative performance between two versions of code on the same
+machine in the same environment. This is why you will not see performance
+test results posted in any documentation. The results are only useful when
+compared to one another, typically during development of some change.
+
 ## Walkthrough: Improving `stumpless_copy_element`
 
 Walking through a benchmarking improvement change from beginning to end
