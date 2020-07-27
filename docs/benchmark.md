@@ -85,8 +85,20 @@ static void CopyElement(benchmark::State& state){
 }
 ``` 
 
-pick up here.
+We can run this specific test with the following command, which will build the
+test if necessary and then execute it.
+
+```sh
+make performance-test-element && ./performance-test-element --benchmark_filter=CopyElement
+
+# sample output
+
+```
+
+If you got an error about the library being built as DEBUG, make sure that you
+pass the `-DCMAKE_BUILD_TYPE=Release` argument to cmake when you are building
+stumpless.
 
 This is a real example of an actual improvement made to stumpless, so if you
 want to see any of the tests or code in detail you can simply look at them in
-the source tree. The benchmark itself is in `test\performance\element.cpp`.
+the source tree.
