@@ -62,3 +62,10 @@ cp -r gtest/src/gtest/googletest/include/ ../../gtestd/googletest/include/
 # then, on your next build, you could do this instead:
 mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug -DGTEST_PATH=../../gtestd ..
 ```
+
+## Other development notes
+
+For a detailed discussion of the performance testing framework used to gauge
+the speed and efficiency of various calls, check out the
+[benchmark](https://github.com/goatshriek/stumpless/blob/latest/docs/benchmark.md)
+documentation for the basic strategy and a full walkthrough of an example.
