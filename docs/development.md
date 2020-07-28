@@ -81,21 +81,25 @@ Stumpless uses a number of CI tools to test builds and monitor code coverage
 and quality. These tools each have badges in the main README.md that link to
 their respective pages.
 
-Travis CI and AppVeyor build the library in a variety of environments and with
-a variety of build options. They ensure that changes are portable and that no
-tests are failing. They also perform a number of other tests such as header
-checks and ensuring that the `install` target works. These must be passing on
-a change before it will be merged to the library.
+[Travis CI](https://travis-ci.com/github/goatshriek/stumpless) and
+[AppVeyor](https://ci.appveyor.com/project/goatshriek/stumpless) build the
+library in a variety of environments and with a variety of build options.
+They ensure that changes are portable and that no tests are failing. They also
+perform a number of other tests such as header checks and ensuring that the
+`install` target works. These must be passing on a change before it will be
+merged to the library.
 
-Codecov provides a way to review and analyze code coverage from the test
-suite. It is fed by Travis CI builds, and will check pull requests for diff
-and total coverage. In some cases this gate may be failing and code will still
-be merged, but this is only in situations where coverage is not reasonably
-obtainable.
+[Codecov](https://codecov.io/gh/goatshriek/stumpless) provides a way to
+review and analyze code coverage from the test suite. It is fed by Travis CI
+builds, and will check pull requests for diff and total coverage. In some
+cases this gate may be failing and code will still be merged, but this is only
+in situations where coverage is not reasonably obtainable. For example, if the
+only way to cover a failure branch is a very specific chain of memory or
+system call failures, then the coverage requirement may be relaxed.
 
-Sonarcloud provides code quality reviews and static analysis. Changes should
-avoid introducing any new issues in Sonarcloud. Changes that do introduce new
-issues in Sonarcloud will likely not be accepted.
+[Sonarcloud](https://sonarcloud.io/dashboard?id=stumpless) provides code quality
+reviews and static analysis. Changes should avoid introducing any new issues in
+Sonarcloud. Changes that do introduce new issues will likely not be accepted.
 
 ## Caching Google Test and Benchmark
 
