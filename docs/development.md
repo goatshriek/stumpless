@@ -54,6 +54,11 @@ A few other documents may be helpful for newcomers to glance through:
 If you're adding a new function to stumpless, here are a few notes that will
 help you along the way.
 
+First, always make sure that you have documented your function, especially if it
+is public facing. Stumpless uses [doxygen](https://www.doxygen.nl/index.html) to
+generate its documentation from the header files. You can use the `docs` build
+target to generate them, provided that doxygen was installed when you ran cmake.
+
 In order to support being built as a DLL, stumpless has a `.def` file at
 `src/windows/stumpless.def`. If you are adding a new public function to
 stumpless, you will need to make sure to add it to the `.def` file so that the
