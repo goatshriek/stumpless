@@ -93,8 +93,6 @@ stumpless_add_entry( struct stumpless_target *target,
   const char *buffer;
   int result;
 
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return -1;
@@ -109,6 +107,8 @@ stumpless_add_entry( struct stumpless_target *target,
     raise_invalid_id(  );
     return -1;
   }
+
+  clear_error(  );
 
   // windows targets are not formatted in code
   // instead their formatting comes from message text files
