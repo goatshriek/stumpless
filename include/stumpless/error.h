@@ -175,7 +175,8 @@ struct stumpless_error *stumpless_get_error( void );
  */
 enum stumpless_error_id
 stumpless_get_error_id( const struct stumpless_error *err );
-
+const char *
+stumpless_get_error_id_string( enum stumpless_error_id id );
 /**
  * Gets the current stream that errors are written to.
  *
