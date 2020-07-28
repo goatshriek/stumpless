@@ -85,6 +85,8 @@ namespace {
 
     EXPECT_THAT( line, HasSubstr( prefix ) );
     EXPECT_THAT( line, HasSubstr( ": " ) );
+    EXPECT_THAT( line, HasSubstr( stumpless_error_enum_to_string[error->id] ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
     EXPECT_THAT( line, HasSubstr( std::to_string( error->code ) ) );
     EXPECT_THAT( line, HasSubstr( error->code_type ) );
@@ -124,6 +126,8 @@ namespace {
     std::string line;
     std::getline( infile, line );
 
+    EXPECT_THAT( line, HasSubstr( stumpless_error_enum_to_string[error->id] ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
     EXPECT_THAT( line, HasSubstr( std::to_string( error->code ) ) );
     EXPECT_THAT( line, HasSubstr( error->code_type ) );
@@ -155,6 +159,8 @@ namespace {
     std::getline( infile, line );
 
     EXPECT_THAT( line, HasSubstr( prefix ) );
+    EXPECT_THAT( line, HasSubstr( stumpless_error_enum_to_string[error->id] ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
   }
 
@@ -175,6 +181,8 @@ namespace {
     std::string line;
     std::getline( infile, line );
 
+    EXPECT_THAT( line, HasSubstr( stumpless_error_enum_to_string[error->id] ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
   }
 

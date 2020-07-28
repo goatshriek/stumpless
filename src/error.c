@@ -73,6 +73,12 @@ stumpless_perror( const char *prefix ) {
       fputc( ' ', error_stream );
     }
 
+    if( stumpless_error_enum_to_string[last_error->id] ) {
+      fputs( stumpless_error_enum_to_string[last_error->id], error_stream );
+      fputc( ':', error_stream );
+      fputc( ' ', error_stream );
+    }
+
     fputs( last_error->message, error_stream );
 
     if( last_error->code_type ) {
