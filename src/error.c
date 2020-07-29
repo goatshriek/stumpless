@@ -29,6 +29,10 @@ static int error_stream_valid = 0;
 static struct stumpless_error *last_error = NULL;
 static bool error_valid = false;
 
+static const char *stumpless_error_enum_to_string[] = {
+  FOREACH_ERROR(GENERATE_STRING)
+};
+
 struct stumpless_error *
 stumpless_get_error( void ) {
   if( error_valid )
