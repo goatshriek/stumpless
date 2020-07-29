@@ -15,5 +15,15 @@ combination of them to balance performance and simplicity.
 The primary goal of stumpless is to have a logging call that is as fast as
 possible. For this reason the thread safety design is built around optimizing
 calls to `stumpless_add_entry`, which is the function that ultimately handles
-all logging requests. The implementation of this function is therefore
-_wait free_.
+all logging requests. The implementation is therefore designed around making
+this function _wait free_.
+
+This is accomplished by keeping an immutable copy of each entry available
+at all times. This copy is then grabbed at the beginning of the logging call,
+which becomes the linearization point of the event. If any changes are made
+to the entry after this copy is grabbed, they are linearized after this point.
+
+The design of the entry, element, and param structs revolves around this method.
+Updates to any of these structures requires an update to entries referring to
+them so that the immutable copy is consistent. These updates are coordinated
+using traditional locking mechanisms.
