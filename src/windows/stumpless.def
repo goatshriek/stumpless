@@ -136,4 +136,4 @@ EXPORTS
   stumpless_set_param_value_by_name             @133
   stump                                         @134
   vstump                                        @135
-  stumpless_get_error_id_string			@136
+  stumpless_get_error_id_string                 @136

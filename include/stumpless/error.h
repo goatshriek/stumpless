@@ -33,12 +33,11 @@ extern "C" {
 /**
  * A macro to implement error id enum and error string array.
  */
-#define FOREACH_ERROR(ERROR)	\
-/**<@def FOREACH_ERROR(ERROR)
- * @par STUMPLESS_ADDRESS_FAILURE:
- * A provided network address was not valid.
- *
- * This might be formatting problem, or it might mean that a DNS lookup failed.
+#define STUMPLESS_FOREACH_ERROR(ERROR)	\
+/**
+  A provided network address was not valid.
+ 
+  This might be formatting problem, or it might mean that a DNS lookup failed.
  */\
   ERROR(STUMPLESS_ADDRESS_FAILURE, 0)	\
 /** A required function parameter was NULL or empty. */\
@@ -46,15 +45,15 @@ extern "C" {
 /** A provided argument was too big, for example to fit into a buffer target. */\
   ERROR(STUMPLESS_ARGUMENT_TOO_BIG, 2)	\
 /**
- * A duplicate of an already existing element was detected in an entry.
- *
- * @since release v1.6.0.
+  A duplicate of an already existing element was detected in an entry.
+ 
+  @since release v1.6.0.
  */\
   ERROR(STUMPLESS_DUPLICATE_ELEMENT, 3)	\
 /**
- * No element with the specified characteristics was found.
- *
- * @since release v1.6.0.
+  No element with the specified characteristics was found.
+ 
+  @since release v1.6.0.
  */\
   ERROR(STUMPLESS_ELEMENT_NOT_FOUND, 4)	\
 /** Could not open a file. */\
@@ -68,9 +67,9 @@ extern "C" {
 /** A target or entry ID was not valid. */\
   ERROR(STUMPLESS_INVALID_ID, 9)	\
 /**
- * A provided severity code did not conform to RFC 5424.
- *
- * @since release v1.6.0.
+  A provided severity code did not conform to RFC 5424.
+ 
+  @since release v1.6.0.
  */\
   ERROR(STUMPLESS_INVALID_SEVERITY, 10)	\
 /** A memory allocation or reallocation failed. */\
@@ -78,9 +77,9 @@ extern "C" {
 /** The given layer 3 protocol is not supported by this implementation. */\
   ERROR(STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED, 12)	\
 /**
- * No param with the specified characteristics was found.
- *
- * @since release v1.6.0.
+  No param with the specified characteristics was found.
+ 
+  @since release v1.6.0.
  */\
   ERROR(STUMPLESS_PARAM_NOT_FOUND, 13)	\
 /** Could not bind to a socket. */\
@@ -104,8 +103,7 @@ extern "C" {
 /** Could not open the Windows Event Log. */\
   ERROR(STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE, 23)	\
 
-#define GENERATE_ENUM(ENUM, INDEX) ENUM = INDEX,
-#define GENERATE_STRING(STRING, INDEX) #STRING,
+#define STUMPLESS_GENERATE_ENUM(ENUM, INDEX) ENUM = INDEX,
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.
@@ -114,10 +112,10 @@ extern "C" {
  * different ultimate cause. To completely diagnose a problem, you will need
  * to look at more than just the error id.
  *
- * @note The real implementation of enum values is now moved under `FOREACH_ERROR(ERROR)` macro.
+ * @note The real implementation of enum values is now moved under `STUMPLESS_FOREACH_ERROR(ERROR)` macro.
  */
 enum stumpless_error_id {
-  FOREACH_ERROR(GENERATE_ENUM)
+  STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_ENUM)
 };
 
 
