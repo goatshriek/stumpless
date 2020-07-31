@@ -1,6 +1,5 @@
-![Stumpless logo](assets/logo.png)
+![Stumpless logo](assets/logo-and-name.png)
 
-# Stumpless
 **A C logging library built for high performance and a rich feature set.**
 
 [![Travis Build Status](https://travis-ci.com/goatshriek/stumpless.svg?branch=latest)](https://travis-ci.com/goatshriek/stumpless)
