@@ -11,7 +11,7 @@
 [Key Features](#key-features) |
 [Download and Build](#quick-build-and-install) |
 [Basic Usage](#basic-usage) |
-[Contributing](#contributing)>
+[Contributing](#contributing)
 
 ## Key Features
 
