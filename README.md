@@ -1,3 +1,5 @@
+![Stumpless logo](assets/logo.png)
+
 # Stumpless
 **A C logging library built for high performance and a rich feature set.**
 
