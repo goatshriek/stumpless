@@ -41,6 +41,8 @@ A few other documents may be helpful for newcomers to glance through:
    the branching scheme.
  * [docs/acronyms.md](acronyms.md) lists acronyms and initialisms used in the
    source of stumpless.
+ * [docs/style.md](style.md) has a basic set of style guidelines to follow when
+   working on the source code itself.
  * [docs/portability.md](portability.md) describes the framework used in
    stumpless to deal with differences between environments. If you are going
    to be working on something that may behave differently depending on the

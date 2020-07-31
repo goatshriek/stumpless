@@ -7,7 +7,7 @@ of situations that don't arise in standard desktop or server environments.
 
 Stumpless follows a few key design principles in order to be feature-rich and
 easy to maintain while remaining as portable as possible:
- * **No `#ifdef` directives are allowed in source files.**
+ * **No `#ifdef` directives are allowed in source (`.c`) files.**
    Source code with preprocesor directives that add, alter, or remove
    functionality are easy to add, but scatter configuration-specific behavior
    and build environment dependencies across source files, and make it harder to
