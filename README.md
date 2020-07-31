@@ -7,14 +7,14 @@
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
-->**A C logging library built for high performance and a rich feature set.**<-
+A C logging library built for high performance and a rich feature set.
 
-->
-  [Key Features](#key-features) |
-  [Download and Build](#quick-build-and-install) |
-  [Basic Usage](#basic-usage) |
-  [Contributing](#contributing)
-<-
+<p align="center">
+  <a href="#key-features">Key Features</a>
+  <a href="#quick-build-and-install">Download and Build</a>
+  <a href="#basic-usage">Basic Usage</a>
+  <a href="#contributing">Contributing</a>
+</p>
 
 ## Key Features
 
