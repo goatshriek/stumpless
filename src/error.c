@@ -48,7 +48,9 @@ stumpless_get_error_id( const struct stumpless_error *err ) {
 
 const char *
 stumpless_get_error_id_string( enum stumpless_error_id id) {
-  if ( stumpless_error_enum_to_string[id] ) {
+  int error_id_upper_bound = 
+	  sizeof( stumpless_error_enum_to_string ) / sizeof( char * );
+  if ( id >= 0 && id < error_id_upper_bound ) {
     return stumpless_error_enum_to_string[id];
   }
   
