@@ -29,6 +29,10 @@ static int error_stream_valid = 0;
 static struct stumpless_error *last_error = NULL;
 static bool error_valid = false;
 
+static const char *stumpless_error_enum_to_string[] = {
+  STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
+};
+
 struct stumpless_error *
 stumpless_get_error( void ) {
   if( error_valid )
@@ -40,6 +44,17 @@ stumpless_get_error( void ) {
 enum stumpless_error_id
 stumpless_get_error_id( const struct stumpless_error *err ) {
   return err->id;
+}
+
+const char *
+stumpless_get_error_id_string( enum stumpless_error_id id) {
+  int error_id_upper_bound = 
+	  sizeof( stumpless_error_enum_to_string ) / sizeof( char * );
+  if ( id >= 0 && id < error_id_upper_bound ) {
+    return stumpless_error_enum_to_string[id];
+  }
+  
+  return "NO_SUCH_ERROR_ID";
 }
 
 FILE *
@@ -72,6 +87,11 @@ stumpless_perror( const char *prefix ) {
       fputc( ':', error_stream );
       fputc( ' ', error_stream );
     }
+
+    fputs( stumpless_get_error_id_string(last_error->id), error_stream );
+    fputc( ':', error_stream );
+    fputc( ' ', error_stream );
+    
 
     fputs( last_error->message, error_stream );
 
