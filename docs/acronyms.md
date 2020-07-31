@@ -5,3 +5,4 @@ everything out. To help newcomers to the codebase cope with these situations,
 this document expands on these terms as they are used.
 
  * wel: Windows Event Log
+ * wfi: Wait-Free Identifier
