@@ -35,6 +35,10 @@ which will make it easier to work with different builds without worrying about
 the installed library being used by accident.
 
 A few other documents may be helpful for newcomers to glance through:
+ * [Contributing Guidelines](CONTRIBUTING.md) If you have not read these yet,
+   definitely do this soon. This document contains basic getting started info
+   about different ways to contribute to stumpless, including a discussion of
+   the branching scheme.
  * [docs/acronyms.md](acronyms.md) lists acronyms and initialisms used in the
    source of stumpless.
  * [docs/portability.md](portability.md) describes the framework used in
