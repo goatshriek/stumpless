@@ -85,6 +85,8 @@ namespace {
 
     EXPECT_THAT( line, HasSubstr( prefix ) );
     EXPECT_THAT( line, HasSubstr( ": " ) );
+    EXPECT_THAT( line, HasSubstr( stumpless_get_error_id_string(error->id) ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
     EXPECT_THAT( line, HasSubstr( std::to_string( error->code ) ) );
     EXPECT_THAT( line, HasSubstr( error->code_type ) );
@@ -124,6 +126,8 @@ namespace {
     std::string line;
     std::getline( infile, line );
 
+    EXPECT_THAT( line, HasSubstr( stumpless_get_error_id_string(error->id) ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
     EXPECT_THAT( line, HasSubstr( std::to_string( error->code ) ) );
     EXPECT_THAT( line, HasSubstr( error->code_type ) );
@@ -155,6 +159,8 @@ namespace {
     std::getline( infile, line );
 
     EXPECT_THAT( line, HasSubstr( prefix ) );
+    EXPECT_THAT( line, HasSubstr( stumpless_get_error_id_string(error->id) ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
   }
 
@@ -175,6 +181,8 @@ namespace {
     std::string line;
     std::getline( infile, line );
 
+    EXPECT_THAT( line, HasSubstr( stumpless_get_error_id_string(error->id) ) );
+    EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
   }
 
@@ -198,5 +206,22 @@ namespace {
 
     stumpless_perror( "won't be hit, make sure no segfault" );
   }
+
+  TEST( GetErrorId, NoSuchErrorId ) {
+    #define STUMPLESS_GENERATE_STRING( STRING, ENUM ) #STRING,
+    static const char *stumpless_error_enum_to_string[] = {
+      STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
+    };
+
+    int wrong_id_int = 
+	    sizeof( stumpless_error_enum_to_string ) / sizeof( char * ) + 1;
+    stumpless_error_id wrong_id = 
+	    static_cast<stumpless_error_id>(wrong_id_int);
+    
+    std::string result( stumpless_get_error_id_string( wrong_id ) );
+    
+    EXPECT_TRUE( result == "NO_SUCH_ERROR_ID" );
+  }
+
 
 }

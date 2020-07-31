@@ -19,6 +19,9 @@
 #ifndef __STUMPLESS_PRIVATE_ERROR_H
 #  define __STUMPLESS_PRIVATE_ERROR_H
 
+// Generate error enum strings array in src/error.c
+#define STUMPLESS_GENERATE_STRING(STRING, INDEX) #STRING,
+
 #  include <stddef.h>
 #  include <stumpless/error.h>
 
