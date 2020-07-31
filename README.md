@@ -7,10 +7,16 @@
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
-A C logging library built for high performance and a rich feature set. Check
-out our
-[vision](https://github.com/goatshriek/stumpless/blob/latest/docs/vision.md)
-to see what we are all about!
+A C logging library built for high performance and a rich feature set.
+
+<p align="center">
+  <a href="#key-features">Key Features</a>
+  <a href="#quick-build-and-install">Download and Build</a>
+  <a href="#basic-usage">Basic Usage</a>
+  <a href="#contributing">Contributing</a>
+</p>
+
+## Key Features
 
 Stumpless offers a robust set of features to make logging in C faster and
 easier:
@@ -24,7 +30,37 @@ easier:
    and
    [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples)
 
-## Basic Logging Functions
+## Quick Build and Install
+Stumpless only requires cmake and a cmake-supported build toolchain (like GCC
+or Visual Studio) to build. For a system using the standard GNU make toolchain,
+you can simply do:
+
+```sh
+# cloning the latest version of the source tree
+git clone git@github.com:goatshriek/stumpless.git
+
+# creating a new build directory
+mkdir build
+cd build
+
+# configuring the new build
+cmake ../stumpless
+
+# building stumpless (with 4 threads - adjust as desired)
+make -j 4 all
+
+# install the library (you probably need sudo to do this)
+sudo make install
+```
+
+Check out the [Installation Instructions](INSTALL.md) for more detail on building
+and installing stumpless.
+
+## Basic Usage
+
+The following code snippets show the most common ways to use stumpless.
+
+### Basic Logging Functions
 The simplest way to get started is to use the `stumplog` function as a direct
 replacement for the standard library's `syslog` function:
 
@@ -90,7 +126,7 @@ stumpless_add_message( target,
                        username );
 ```
 
-## Severity Shorthand
+### Severity Shorthand
 
 It's common to specify severity levels directly in logging calls, so stumpless
 provides some macro functions to make this less verbose and more efficient. For
@@ -124,13 +160,24 @@ full list of severity shorthand functions, or the
 [severity level example](docs/examples/severity_level) to see a complete program
 in action.
 
-## Even more examples
+### Even more examples
 
 For more detailed examples of the above scenarios, usage of specific target
 types, how to handle more complicated message structures, and more check out the
-[examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples).
-The examples also include annoted example code files to compile, run, and modify
-to get you started.
+[examples](docs/examples). These include annoted example code files to compile,
+run, and modify to get you started.
+
+## Contributing
+Notice a problem or have a feature request? Just create an issue using one of
+the templates, and we will respond as quickly as we can. You can also look at
+the project's [Contribution Guidelines](docs/CONTRIBUTING.md) for more details
+on the different ways you can give back to the open source community!
+
+If you want to actually write some code or make an update yourself, take a look
+at the [development guide](docs/development.md) to get a detailed orientation.
+
+Or if you just want to say thanks or drop me a private message, please feel free
+to do so in an [email](joelanderson333@gmail.com)!
 
 ## Further Documentation
 If you're curious about how something in stumpless works that isn't explained
