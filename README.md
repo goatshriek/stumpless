@@ -10,9 +10,9 @@
 A C logging library built for high performance and a rich feature set.
 
 <p align="center">
-  <a href="#key-features">Key Features</a>
-  <a href="#quick-build-and-install">Download and Build</a>
-  <a href="#basic-usage">Basic Usage</a>
+  <a href="#key-features">Key Features</a> |
+  <a href="#quick-build-and-install">Download and Build</a> |
+  <a href="#basic-usage">Basic Usage</a> |
   <a href="#contributing">Contributing</a>
 </p>
 
