@@ -26,13 +26,44 @@ the basic builds and tests will succeed without it. For a more detailed rundown
 of the dependencies you might encounter, check out the
 [dependencies documentation](dependencies.md).
 
-Basic steps to building the library are available in the
-[INSTALL.md](../INSTALL.md)
-file at the root of the project. However, if you plan to be developing on
-stumpless itself it is recommended that you avoid using the `install` target.
-Instead, simply work off of the version of the library in your build folder,
-which will make it easier to work with different builds without worrying about
-the installed library being used by accident.
+A typical development workflow involves an initial configuration and build,
+followed by re-running the test suite after making some changes. This might
+look like this:
+
+```sh
+# first, the initial setup:
+
+# cloning the latest version of the source tree
+git clone git@github.com:goatshriek/stumpless.git
+
+# creating a new build directory
+mkdir build
+cd build
+
+# configuring the new build
+cmake ../stumpless
+
+# after the above initial commands, a normal development cycle would be:
+
+# update a few files (your favorite editor - here we use vim)
+vim ../stumpless/src/target.c
+
+# build and run the test suite
+# change the number of threads with the j parameter to make things faster:
+# a good starting place is your processor's core count
+make -j 4 check
+
+# if you want to build a single test, you can do this using the executable
+# name, which for functionality tests is function-test-<name>
+make -j 4 function-test-target && ./function-test-target
+```
+
+More details about building the library are available in the
+[INSTALL.md](../INSTALL.md) file. However, if you plan to be developing
+stumpless itself it is recommended that you avoid using the `install` target
+described there. Instead, simply work off of the version of the library in your
+build folder, which will make it easier to work with different builds without
+worrying about the installed library being used by accident.
 
 A few other documents may be helpful for newcomers to glance through:
  * [Contributing Guidelines](CONTRIBUTING.md) If you have not read these yet,
@@ -49,11 +80,10 @@ A few other documents may be helpful for newcomers to glance through:
    platform, or that may be missing on some, then this document holds
    important information for you. If you need to work with a function starting
    with `config_`, this is also a good indication you should read this doc.
- * [docs/benchmark.md](benchmark.md)
-   has a detailed walkthrough of the performance testing framework set up in
-   stumpless. If you're looking to make a performance improvement that will
-   otherwise be transparent, this document describes the steps for this in
-   detail with a full example.
+ * [docs/benchmark.md](benchmark.md) has a detailed walkthrough of the
+   performance testing framework set up in stumpless. If you're looking to
+   make a performance improvement that will otherwise be transparent, this
+   document describes the steps for this in detail with a full example.
 
 ## Adding new functions
 
