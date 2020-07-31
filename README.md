@@ -1,4 +1,5 @@
 # Stumpless
+**A C logging library built for high performance and a rich feature set.**
 
 [![Travis Build Status](https://travis-ci.com/goatshriek/stumpless.svg?branch=latest)](https://travis-ci.com/goatshriek/stumpless)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/uwied5cn5jujl4d2/branch/latest?svg=true)](https://ci.appveyor.com/project/goatshriek/stumpless)
@@ -7,16 +8,10 @@
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
-<h4 align="center">
-A C logging library built for high performance and a rich feature set.
-</h4>
-
-<p align="center">
-  <a href="#key-features">Key Features</a> |
-  <a href="#quick-build-and-install">Download and Build</a> |
-  <a href="#basic-usage">Basic Usage</a> |
-  <a href="#contributing">Contributing</a>
-</p>
+[Key Features](#key-features) |
+[Download and Build](#quick-build-and-install) |
+[Basic Usage](#basic-usage) |
+[Contributing](#contributing)>
 
 ## Key Features
 
