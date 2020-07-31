@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">2.0.0</span>
    </div>
   </td>
  </tr>
@@ -73,7 +73,7 @@ $(function() {
 <a href="buffer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2019 Joel E. Anderson</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2020 Joel E. Anderson</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -99,7 +99,7 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#  endif</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="buffer_8h.html#a9577fa5a1aee7e5f8e7a193911080061">   46</a></span>&#160;<a class="code" href="buffer_8h.html#a9577fa5a1aee7e5f8e7a193911080061">stumpless_close_buffer_target</a>( <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">   46</a></span>&#160;<a class="code" href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">stumpless_close_buffer_target</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
 <div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="buffer_8h.html#aa965271b20bea88e8bc63353023f9c98">   78</a></span>&#160;<a class="code" href="buffer_8h.html#aa965271b20bea88e8bc63353023f9c98">stumpless_open_buffer_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
@@ -116,12 +116,12 @@ $(function() {
 <div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:72</div></div>
 <div class="ttc" id="abuffer_8h_html_aa965271b20bea88e8bc63353023f9c98"><div class="ttname"><a href="buffer_8h.html#aa965271b20bea88e8bc63353023f9c98">stumpless_open_buffer_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_buffer_target(const char *name, char *buffer, size_t size, int options, int default_facility)</div><div class="ttdoc">Creates a buffer target for the given buffer.</div></div>
 <div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:58</div></div>
+<div class="ttc" id="abuffer_8h_html_abbd81bd277432c5046046f2fd00445ef"><div class="ttname"><a href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">stumpless_close_buffer_target</a></div><div class="ttdeci">void stumpless_close_buffer_target(const struct stumpless_target *target)</div><div class="ttdoc">Closes a buffer target.</div></div>
 <div class="ttc" id="atarget_8h_html"><div class="ttname"><a href="target_8h.html">target.h</a></div></div>
 <div class="ttc" id="astructstumpless__target_html_ab4036dc1c418541ec8c84233d0565e35"><div class="ttname"><a href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">stumpless_target::options</a></div><div class="ttdeci">int options</div><div class="ttdoc">A bitwise or of all options set on the target.</div><div class="ttdef"><b>Definition:</b> target.h:74</div></div>
-<div class="ttc" id="abuffer_8h_html_a9577fa5a1aee7e5f8e7a193911080061"><div class="ttname"><a href="buffer_8h.html#a9577fa5a1aee7e5f8e7a193911080061">stumpless_close_buffer_target</a></div><div class="ttdeci">void stumpless_close_buffer_target(struct stumpless_target *target)</div><div class="ttdoc">Closes a buffer target.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 20 2020 18:34:06 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jul 31 2020 10:34:23 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">2.0.0</span>
    </div>
   </td>
  </tr>
@@ -79,9 +79,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9577fa5a1aee7e5f8e7a193911080061"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8h.html#a9577fa5a1aee7e5f8e7a193911080061">stumpless_close_buffer_target</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:a9577fa5a1aee7e5f8e7a193911080061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a buffer target.  <a href="buffer_8h.html#a9577fa5a1aee7e5f8e7a193911080061">More...</a><br /></td></tr>
-<tr class="separator:a9577fa5a1aee7e5f8e7a193911080061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd81bd277432c5046046f2fd00445ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">stumpless_close_buffer_target</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:abbd81bd277432c5046046f2fd00445ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a buffer target.  <a href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">More...</a><br /></td></tr>
+<tr class="separator:abbd81bd277432c5046046f2fd00445ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa965271b20bea88e8bc63353023f9c98"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8h.html#aa965271b20bea88e8bc63353023f9c98">stumpless_open_buffer_target</a> (const char *name, char *buffer, size_t size, int options, int default_facility)</td></tr>
 <tr class="memdesc:aa965271b20bea88e8bc63353023f9c98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffer target for the given buffer.  <a href="buffer_8h.html#aa965271b20bea88e8bc63353023f9c98">More...</a><br /></td></tr>
 <tr class="separator:aa965271b20bea88e8bc63353023f9c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -89,8 +89,8 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Buffer targets provide an extremely simple capability to write logs into a plain character buffer. They must be completely synchronized with the code reading from the buffer, leading to usage limited to extremely simple applications and testing or troubleshooting. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a9577fa5a1aee7e5f8e7a193911080061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9577fa5a1aee7e5f8e7a193911080061">&#9670;&nbsp;</a></span>stumpless_close_buffer_target()</h2>
+<a id="abbd81bd277432c5046046f2fd00445ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd81bd277432c5046046f2fd00445ef">&#9670;&nbsp;</a></span>stumpless_close_buffer_target()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -98,7 +98,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void stumpless_close_buffer_target </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
           <td class="paramname"><em>target</em></td><td>)</td>
           <td></td>
         </tr>
@@ -181,7 +181,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 20 2020 18:34:07 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jul 31 2020 10:34:23 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>
