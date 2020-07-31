@@ -32,7 +32,9 @@ these guidelines:
    of `git commit`).
  * Keep the number of commits in your request to a minimum. Having multiple
    commits is fine if necessary to separate multiple changes, but make sure
-   that these are logical and value to the commit history.
+   that these are logical and add value to the commit history. For smaller
+   changes, your request may simply be squash merged, making sure to preserve
+   credit to you for the contribution.
  * If a commit resolves or is otherwise related to a particular issue, include
    a reference to it in the body of the commit.
 
