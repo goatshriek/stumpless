@@ -8,7 +8,9 @@ follow it perfectly. This is up to the pull request reviewer's discretion.
 If you are not sure about a formatting choice, you can simply run the GNU indent
 wrapper available in `scripts/indent.sh` to format your changes. Note that you
 will need to make sure that this does not introduce changes to parts of the
-source file that you did not change.
+source file that you did not change. `indent` will save the original file as the
+original with a `~` character at the end if you need to go back, or you can use
+the git history.
 
 Here are a few other style points to follow in the code base:
 
@@ -21,7 +23,7 @@ Here are a few other style points to follow in the code base:
    other logic and easy to find, understand, and modify. See the
    [portability guide](portability.md) for more context on this decision and how
    to work within the limitation.
- * **Spaces (2 per indent) are used for indentation.**
+ * **Spaces are used for indentation (2 per indent level).**
    We recognize that there are many a heated conversation that can be had about
    the "tabs vs. spaces" war. Please respect this project's chosen convention
    and avoid the use of tabs.

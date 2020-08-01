@@ -10,12 +10,14 @@ platform. In order to build it from the source you will need this tool
 available, as well as any of a number of supported build systems.
 [GNU Make](https://www.gnu.org/software/make/) is one of the most well-known
 ones, and so most if not all examples you will find in stumpless
-documentation use it. However, other tools support CMake as well. For example,
-Visual Studio has CMake support built in so that you can build targets in a
-CMake project easily within the IDE itself. The `CMakeLists.txt` file contains
-the build specification for stumpless, and is worth browsing through if you are
-curious about where configuration checks, source and test files, and other build
-targets are specified.
+documentation use it. If you prefer to use something else, there is plenty of
+support for CMake in other build systems. For example, Visual Studio has CMake
+support built in so that you can build targets in a CMake project easily within
+the IDE itself.
+
+The `CMakeLists.txt` file contains the build specification for stumpless, and is
+worth browsing through if you are curious about where configuration checks,
+source and test files, and other build targets are specified.
 
 There are a number of other dependencies for working on stumpless, but they are
 less noteworth as you may not find yourself interacting with them. For example,
@@ -119,8 +121,8 @@ remove this error as the tool will now know why the include is required.
 ## Continuous Integration Tools
 
 Stumpless uses a number of CI tools to test builds and monitor code coverage
-and quality. These tools each have badges in the main README.md that link to
-their respective pages.
+and quality. These tools each have badges in the project
+[README](../README.md) that link to their respective pages.
 
 [Travis CI](https://travis-ci.com/github/goatshriek/stumpless) and
 [AppVeyor](https://ci.appveyor.com/project/goatshriek/stumpless) build the
@@ -134,7 +136,7 @@ merged to the library.
 review and analyze code coverage from the test suite. It is fed by Travis CI
 builds, and will check pull requests for diff and total coverage. In some
 cases this gate may be failing and code will still be merged, but this is only
-in situations where coverage is not reasonably obtainable. For example, if the
+in situations where coverage is not reasonably obtainable. For example if the
 only way to cover a failure branch is a very specific chain of memory or
 system call failures, then the coverage requirement may be relaxed.
 

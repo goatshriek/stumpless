@@ -3,7 +3,7 @@
 In order to compile Stumpless you will need cmake and a compatible build system
 such as the GNU toolchain or Microsoft Visual Studio. Given these dependencies
 building the library is very straightforward. The examples below show how to do
-this in a build environment using `make` from the root folder.
+this in a build environment using `make` from a fresh clone.
 
 ```sh
 # cloning the latest version of the source tree
@@ -78,6 +78,7 @@ be done like this:
 
 ```sh
 # in the build directory, modify the cmake to enable c++
+# this will emit a warning and leave c++ disabled if wrapture cannot be found
 cmake -DENABLE_CPP=ON ../stumpless
 
 # the all target will now include the stumpless c++ library
