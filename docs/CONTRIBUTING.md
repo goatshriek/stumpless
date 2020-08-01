@@ -34,7 +34,10 @@ these guidelines:
    commits is fine if necessary to separate multiple changes, but make sure
    that these are logical and add value to the commit history. For smaller
    changes, your request may simply be squash merged, making sure to preserve
-   credit to you for the contribution.
+   credit to you for the contribution. If you need a little guidance to get
+   started with adjusting the commit history of your change, check out
+   [this chapter](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
+   from the Git Book about it, which covers several common adjustments.
  * If a commit resolves or is otherwise related to a particular issue, include
    a reference to it in the body of the commit.
 
