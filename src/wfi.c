@@ -17,10 +17,11 @@
  */
 
 #include <stdbool.h>
+#include <stddef.h>
 #include "private/wfi.h"
 
 bool
-wfi_compare_and_exchange( struct wfi *wait_free_id, int old_id, int new_id ){
+wfi_compare_and_exchange( struct wfi *wait_free_id, unsigned old_id, unsigned new_id ){
   return false;
 }
 
@@ -30,7 +31,7 @@ wfi_destroy( const struct wfi *wait_free_id ){
 }
 
 struct wfi *
-wfi_new( int initial_id, void ( *retire_id )( int ) ){
+wfi_new( unsigned initial_id, void ( *retire_id )( unsigned ) ){
   return NULL;
 }
 
@@ -111,24 +112,27 @@ if (ce == counter_start ||
 && can_delete(blk, 0, max_hes))
 free(blk);
 } }
+
 // Allocate a memory block
 block* alloc_block(int size) {
-if (alloc_counter++ % era_freq == 0)
-increment_era(tid);
-block* ptr = new block(size);
-ptr->alloc_era = global_era;
-return ptr;
+  if (alloc_counter++ % era_freq == 0)
+    increment_era(tid);
+
+  block* ptr = new block(size);
+  ptr->alloc_era = global_era;
+  return ptr;
 }
 
 // Retire a memory block
 void retire(block* ptr) {
-ptr->retire_era = global_era;
-retire_list.append(ptr);
-if (retire_counter++ % cleanup_freq == 0) {
-if (ptr->retire_era == global_era)
-increment_era(tid);
-cleanup();
-}
+  ptr->retire_era = global_era;
+  retire_list.append(ptr);
+  if (retire_counter++ % cleanup_freq == 0) {
+    if (ptr->retire_era == global_era) {
+      increment_era(tid);
+    }
+    cleanup();
+  }
 }
 
 // Help others before incrementing an era

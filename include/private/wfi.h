@@ -19,20 +19,23 @@
 #ifndef __STUMPLESS_PRIVATE_WFI_H
 #  define __STUMPLESS_PRIVATE_WFI_H
 
+#include <stdatomic.h>
 #include <stdbool.h>
 
+// 16 bits for the tag, the remaining for the id
+
 struct wfi {
-  int id;
+  atomic_uint id;
 };
 
 bool
-wfi_compare_and_exchange( struct wfi *wait_free_id, int old_id, int new_id );
+wfi_compare_and_exchange( struct wfi *wait_free_id, unsigned old_id, unsigned new_id );
 
 void
 wfi_destroy( const struct wfi *wait_free_id );
 
 struct wfi *
-wfi_new( int initial_id, void ( *retire_id )( int ) );
+wfi_new( unsigned initial_id, void ( *retire_id )( unsigned ) );
 
 int
 wfi_read( struct wfi *wait_free_id );

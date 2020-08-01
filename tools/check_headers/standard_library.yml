@@ -5,6 +5,7 @@
   - "sys/socket.h"
   - "winsock2.h"
 "AF_UNIX": "sys/socket.h"
+"atomic_uint": "stdatomic.h"
 "BOOL": "windows.h"
 "clock": "time.h"
 "clock_t": "sys/types.h"

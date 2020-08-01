@@ -181,6 +181,7 @@
 "struct stumpless_target": "stumpless/target.h"
 "struct stumpless_version": "stumpless/version.h"
 "struct wel_target": "private/target/wel.h"
+"struct wfi": "private/wfi.h"
 "stump": "stumpless/target.h"
 "stump_i": "stumpless/level/info.h"
 "stump_i_entry": "stumpless/level/info.h"
