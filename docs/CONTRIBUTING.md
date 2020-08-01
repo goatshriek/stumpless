@@ -32,17 +32,23 @@ these guidelines:
    of `git commit`).
  * Keep the number of commits in your request to a minimum. Having multiple
    commits is fine if necessary to separate multiple changes, but make sure
-   that these are logical and value to the commit history.
+   that these are logical and add value to the commit history. For smaller
+   changes, your request may simply be squash merged, making sure to preserve
+   credit to you for the contribution. If you need a little guidance to get
+   started with adjusting the commit history of your change, check out
+   [this chapter](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
+   from the Git Book about it, which covers several common adjustments.
  * If a commit resolves or is otherwise related to a particular issue, include
    a reference to it in the body of the commit.
 
 ### **It would be great if...** 
 
-If you have a new feature that you think would be worthwhile, feel free to send
-an email to the current project owner at joelanderson333@gmail.com with your
-idea. If it fits with the project then you can begin working on a fork of the
-project and submit a pull request of your branch so that we can watch it
-progress and merge it in once it is complete.
+If you have a new feature that you think would be worthwhile, please open an
+issue on the github project using the 'Feature Request' template. If it fits
+with the project then you can begin working on a fork and submit a pull
+request of your branch so that we can watch it progress and merge it in once
+it is complete. Or if you don't have time we will add it to the project
+[roadmap](roadmap.md) and eventually implement it depending on other priorities.
 
 ### **I don't know where to start**
 
@@ -50,6 +56,9 @@ If you'd like to contribute but aren't quite sure where to start, take a look at
 the issues and see if there is anything there that you think you can tackle! In
 particular, the 'help wanted' and 'good first issue' labels mark issues that
 need attention and are relatively simple to fix, respectively.
+
+The [development notes](development.md) have a getting started section for
+newcomers to the project, and are worth a read.
 
 #### No, I mean I **really** don't know where to start
 

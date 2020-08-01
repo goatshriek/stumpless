@@ -31,84 +31,97 @@ extern "C" {
 #  endif
 
 /**
- * An identifier of the types of errors that might be encountered.
+ * A macro to implement error id enum and error string array.
+ */
+#define STUMPLESS_FOREACH_ERROR(ERROR)	\
+/**
+  A provided network address was not valid.
+ 
+  This might be formatting problem, or it might mean that a DNS lookup failed.
+ */\
+  ERROR(STUMPLESS_ADDRESS_FAILURE, 0)	\
+/** A required function parameter was NULL or empty. */\
+  ERROR(STUMPLESS_ARGUMENT_EMPTY, 1)	\
+/** A provided argument was too big, for example to fit into a buffer target. */\
+  ERROR(STUMPLESS_ARGUMENT_TOO_BIG, 2)	\
+/**
+  A duplicate of an already existing element was detected in an entry.
+ 
+  @since release v1.6.0.
+ */\
+  ERROR(STUMPLESS_DUPLICATE_ELEMENT, 3)	\
+/**
+  No element with the specified characteristics was found.
+ 
+  @since release v1.6.0.
+ */\
+  ERROR(STUMPLESS_ELEMENT_NOT_FOUND, 4)	\
+/** Could not open a file. */\
+  ERROR(STUMPLESS_FILE_OPEN_FAILURE, 5)	\
+/** Could not write to a file. */\
+  ERROR(STUMPLESS_FILE_WRITE_FAILURE, 6)	\
+/** A provided index was not in a valid range. */\
+  ERROR(STUMPLESS_INDEX_OUT_OF_BOUNDS, 7)	\
+/** A provided facility code did not conform to RFC 5424. */\
+  ERROR(STUMPLESS_INVALID_FACILITY, 8)	\
+/** A target or entry ID was not valid. */\
+  ERROR(STUMPLESS_INVALID_ID, 9)	\
+/**
+  A provided severity code did not conform to RFC 5424.
+ 
+  @since release v1.6.0.
+ */\
+  ERROR(STUMPLESS_INVALID_SEVERITY, 10)	\
+/** A memory allocation or reallocation failed. */\
+  ERROR(STUMPLESS_MEMORY_ALLOCATION_FAILURE, 11)	\
+/** The given layer 3 protocol is not supported by this implementation. */\
+  ERROR(STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED, 12)	\
+/**
+  No param with the specified characteristics was found.
+ 
+  @since release v1.6.0.
+ */\
+  ERROR(STUMPLESS_PARAM_NOT_FOUND, 13)	\
+/** Could not bind to a socket. */\
+  ERROR(STUMPLESS_SOCKET_BIND_FAILURE, 14)	\
+/** Could not connect to a socket. */\
+  ERROR(STUMPLESS_SOCKET_CONNECT_FAILURE, 15)	\
+/** Could not create a socket. */\
+  ERROR(STUMPLESS_SOCKET_FAILURE, 16)	\
+/** Could not send to a socket. */\
+  ERROR(STUMPLESS_SOCKET_SEND_FAILURE, 17)	\
+/** Could not write to a stream. */\
+  ERROR(STUMPLESS_STREAM_WRITE_FAILURE, 18)	\
+/** The requested operation is not valid on the given target type. */\
+  ERROR(STUMPLESS_TARGET_INCOMPATIBLE, 19)	\
+/** The target type provided is unsupported by this implementation. */\
+  ERROR(STUMPLESS_TARGET_UNSUPPORTED, 20)	\
+/** The given layer 4 protocol is not supported by this implementation. */\
+  ERROR(STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED, 21)	\
+/** Could not close the Windows Event Log. */\
+  ERROR(STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE, 22)	\
+/** Could not open the Windows Event Log. */\
+  ERROR(STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE, 23)	\
+
+#define STUMPLESS_GENERATE_ENUM(ENUM, INDEX) ENUM = INDEX,
+
+/**
+ * An (enum) identifier of the types of errors that might be encountered.
  *
  * Note that the same error may be encountered in different contexts with a
  * different ultimate cause. To completely diagnose a problem, you will need
  * to look at more than just the error id.
+ *
+ * @note The real implementation of enum values is now moved under `STUMPLESS_FOREACH_ERROR(ERROR)` macro.
  */
 enum stumpless_error_id {
-/**
- * A provided network address was not valid.
- *
- * This might be formatting problem, or it might mean that a DNS lookup failed.
- */
-  STUMPLESS_ADDRESS_FAILURE,
-/** A required function parameter was NULL or empty. */
-  STUMPLESS_ARGUMENT_EMPTY,
-/** A provided argument was too big, for example to fit into a buffer target. */
-  STUMPLESS_ARGUMENT_TOO_BIG,
-/**
- * A duplicate of an already existing element was detected in an entry.
- *
- * @since release v1.6.0.
- */
-  STUMPLESS_DUPLICATE_ELEMENT,
-/**
- * No element with the specified characteristics was found.
- *
- * @since release v1.6.0.
- */
-  STUMPLESS_ELEMENT_NOT_FOUND,
-/** Could not open a file. */
-  STUMPLESS_FILE_OPEN_FAILURE,
-/** Could not write to a file. */
-  STUMPLESS_FILE_WRITE_FAILURE,
-/** A provided index was not in a valid range. */
-  STUMPLESS_INDEX_OUT_OF_BOUNDS,
-/** A provided facility code did not conform to RFC 5424. */
-  STUMPLESS_INVALID_FACILITY,
-/** A target or entry ID was not valid. */
-  STUMPLESS_INVALID_ID,
-/**
- * A provided severity code did not conform to RFC 5424.
- *
- * @since release v1.6.0.
- */
-  STUMPLESS_INVALID_SEVERITY,
-/** A memory allocation or reallocation failed. */
-  STUMPLESS_MEMORY_ALLOCATION_FAILURE,
-/** The given layer 3 protocol is not supported by this implementation. */
-  STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED,
-/**
- * No param with the specified characteristics was found.
- *
- * @since release v1.6.0.
- */
-  STUMPLESS_PARAM_NOT_FOUND,
-/** Could not bind to a socket. */
-  STUMPLESS_SOCKET_BIND_FAILURE,
-/** Could not connect to a socket. */
-  STUMPLESS_SOCKET_CONNECT_FAILURE,
-/** Could not create a socket. */
-  STUMPLESS_SOCKET_FAILURE,
-/** Could not send to a socket. */
-  STUMPLESS_SOCKET_SEND_FAILURE,
-/** Could not write to a stream. */
-  STUMPLESS_STREAM_WRITE_FAILURE,
-/** The requested operation is not valid on the given target type. */
-  STUMPLESS_TARGET_INCOMPATIBLE,
-/** The target type provided is unsupported by this implementation. */
-  STUMPLESS_TARGET_UNSUPPORTED,
-/** The given layer 4 protocol is not supported by this implementation. */
-  STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED,
-/** Could not close the Windows Event Log. */
-  STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE,
-/** Could not open the Windows Event Log. */
-  STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE
+  STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_ENUM)
 };
 
-/** Information describing an error encountered by the library. */
+
+/** 
+ *Information describing an error encountered by the library. 
+ */
 struct stumpless_error {
   enum stumpless_error_id id; /**< error family */
   const char *message; /**< specific details of the failure */
@@ -140,6 +153,18 @@ struct stumpless_error *stumpless_get_error( void );
  */
 enum stumpless_error_id
 stumpless_get_error_id( const struct stumpless_error *err );
+
+/**
+ * Gets the error string of the given error id.
+ *
+ * @since Release v1.6.0
+ *
+ * @param id The error id to get the error string from.
+ *
+ * @return The error string of the given error id.
+ */
+const char *
+stumpless_get_error_id_string( enum stumpless_error_id id );
 
 /**
  * Gets the current stream that errors are written to.

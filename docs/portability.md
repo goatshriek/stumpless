@@ -7,7 +7,7 @@ of situations that don't arise in standard desktop or server environments.
 
 Stumpless follows a few key design principles in order to be feature-rich and
 easy to maintain while remaining as portable as possible:
- * **No `#ifdef` directives are allowed in source files.**
+ * **No `#ifdef` directives are allowed in source (`.c`) files.**
    Source code with preprocesor directives that add, alter, or remove
    functionality are easy to add, but scatter configuration-specific behavior
    and build environment dependencies across source files, and make it harder to
@@ -43,7 +43,7 @@ certain target types are support is also available, for example if the
 `STUMPLESS_SOCKET_TARGETS_SUPPORTED` symbol is defined, then Unix sockets are
 available in this build. A complete list of the symbols in this header can be
 found in the
-[documentation](https://goatshriek.github.io/stumpless/doxygen/config_8h.html).
+[documentation](https://goatshriek.github.io/stumpless/docs/c/latest/config_8h.html).
 
 However, this header does not include information needed to make some internal
 code decisions. For example, the public header will not indicate whether a
