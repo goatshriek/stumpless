@@ -18,27 +18,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include "private/wfi.h"
-
-bool
-wfi_compare_and_exchange( struct wfi *wait_free_id, unsigned old_id, unsigned new_id ){
-  return false;
-}
-
-void
-wfi_destroy( const struct wfi *wait_free_id ){
-  return;
-}
-
-struct wfi *
-wfi_new( unsigned initial_id, void ( *retire_id )( unsigned ) ){
-  return NULL;
-}
-
-int
-wfi_read( struct wfi *wait_free_id ){
-  return 0;
-}
+#include "private/wfp.h"
 
 /* pseudocode from wfe paper */
 

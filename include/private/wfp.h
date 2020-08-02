@@ -16,28 +16,43 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_WFI_H
-#  define __STUMPLESS_PRIVATE_WFI_H
+#ifndef __STUMPLESS_PRIVATE_WFP_H
+#  define __STUMPLESS_PRIVATE_WFP_H
 
-#include <stdatomic.h>
-#include <stdbool.h>
+/** @file
+ * Wait-Free Pointer functions.
+ */
 
-// 16 bits for the tag, the remaining for the id
+#  include <stdatomic.h>
+#  include <stdbool.h>
 
-struct wfi {
-  atomic_uint id;
+#  define MAX_THREADS 16
+
+struct wf_reference {
+  void *pointer;
+  unsigned alloc_era;
+  unsigned retire_era;
 };
 
-bool
-wfi_compare_and_exchange( struct wfi *wait_free_id, unsigned old_id, unsigned new_id );
+
+struct wfp {
+  atomic_uint id;
+  struct  wf_reference ref_cache[MAX_THREADS*MAX_THREADS];
+  
+  atomic_uint counter_start;
+  atomic_uint counter_end;
+};
 
 void
-wfi_destroy( const struct wfi *wait_free_id );
+wfp_set( struct wfp *pointer, void *new_pointer );
 
-struct wfi *
-wfi_new( unsigned initial_id, void ( *retire_id )( unsigned ) );
+void
+wfp_destroy( const struct wfp *pointer );
 
-int
-wfi_read( struct wfi *wait_free_id );
+void *
+wfp_get( struct wfp *pointer );
 
-#endif /* __STUMPLESS_PRIVATE_WFI_H */
+struct wfp *
+wfp_new( void *initial_pointer );
+
+#endif /* __STUMPLESS_PRIVATE_WFP_H */
