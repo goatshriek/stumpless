@@ -45,6 +45,21 @@ struct stumpless_version *
 stumpless_get_version( void );
 
 /**
+ * Compares the version of two given stumpless_version struct.
+ * @param version_x,version_y Two given version(const) to be compared.
+ * `
+ * @return 0 if version numbers are the same, <br />
+ *         1 if version_y->patch > version_x->patch,   <br />
+ *         10 if version_y->minor > version_x->minor,  <br />
+ *         100 if version_y->major > version_x->major, <br />
+ *         666 if one of the version pointers is null. <br />
+ */
+int
+stumpless_version_cmp( const struct stumpless_version * version_x, 
+                        const struct stumpless_version * version_y);
+
+
+/**
  * Creates a string representation of the given version.
  *
  * This string will be NULL-terminated, and will appear in the standard

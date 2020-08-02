@@ -87,6 +87,41 @@ namespace {
     stumpless_set_malloc( malloc );
   }
 
+  TEST( VersionCmp, BasicSame ) {
+    struct stumpless_version version_x = {1, 5, 0};
+    struct stumpless_version version_y = {1, 5, 0};
+
+    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), 0 );
+  }
+
+  TEST( VersionCmp, BasicPatch ) {
+    struct stumpless_version version_x = {1, 5, 2};
+    struct stumpless_version version_y = {1, 5, 1};
+
+    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), 1 );
+  }
+
+  TEST( VersionCmp, BasicMinor ) {
+    struct stumpless_version version_x = {1, 5, 0};
+    struct stumpless_version version_y = {1, 6, 0};
+
+    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), 10 );
+  }
+
+  TEST( VersionCmp, BasicMajor ) {
+    struct stumpless_version version_x = {1, 5, 0};
+    struct stumpless_version version_y = {2, 6, 0};
+
+    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), 100 );
+  }
+
+  TEST( VersionCmp, NullVersion ) {
+    struct stumpless_version version_x = {1, 5, 0};
+    struct stumpless_version * version_y = NULL;
+
+    EXPECT_EQ( stumpless_version_cmp( &version_x, version_y ), 666 );
+  }
+
   TEST( VersionToString, Basic ) {
     struct stumpless_version version = {1, 5, 0};
     char *string_result;

@@ -41,6 +41,31 @@ stumpless_get_version( void ) {
   return version;
 }
 
+int
+stumpless_version_cmp ( const struct stumpless_version * version_x, 
+                         const struct stumpless_version * version_y) {
+  if ( version_x == NULL || version_y == NULL ) {
+    return 666;
+  }
+  
+  if( version_y->major != version_x->major ) {
+    return ( version_y->major - version_x->major )/
+	    ( version_y->major - version_x->major ) * 100;
+  }
+  
+  if( version_y->minor != version_x->minor ) {
+    return ( version_y->minor - version_x->minor )/
+	    ( version_y->minor - version_x->minor ) * 10;
+  }
+  
+  if( version_y->patch != version_x->patch ) {
+    return ( version_y->patch - version_x->patch )/
+	    ( version_y->patch - version_x->patch ) * 1;
+  }
+
+  return 0;
+}
+
 char *
 stumpless_version_to_string( const struct stumpless_version *version ) {
   struct strbuilder *builder;
