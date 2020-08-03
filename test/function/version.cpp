@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <limits.h>
 #include <cstddef>
 #include <cstdlib>
 #include <gmock/gmock.h>

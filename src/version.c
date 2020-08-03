@@ -17,7 +17,6 @@
  */
 
 #include <stddef.h>
-#include <stdlib.h>
 #include <limits.h>
 #include <stumpless/config.h>
 #include <stumpless/version.h>
