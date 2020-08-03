@@ -17,6 +17,8 @@
  */
 
 #include <stddef.h>
+#include <stdlib.h>
+#include <limits.h>
 #include <stumpless/config.h>
 #include <stumpless/version.h>
 #include "private/error.h"
@@ -43,24 +45,25 @@ stumpless_get_version( void ) {
 
 int
 stumpless_version_cmp ( const struct stumpless_version * version_x, 
-                         const struct stumpless_version * version_y) {
+                        const struct stumpless_version * version_y ) {
   if ( version_x == NULL || version_y == NULL ) {
-    return 666;
+    raise_argument_empty( "NULL version struct given." );
+    return INT_MAX;
   }
   
-  if( version_y->major != version_x->major ) {
-    return ( version_y->major - version_x->major )/
-	    ( version_y->major - version_x->major ) * 100;
+  if( version_x->major != version_y->major ) {
+    return ( version_x->major - version_y->major )/
+	    abs( version_x->major - version_y->major ) * 100;
   }
   
   if( version_y->minor != version_x->minor ) {
-    return ( version_y->minor - version_x->minor )/
-	    ( version_y->minor - version_x->minor ) * 10;
+    return ( version_x->minor - version_y->minor )/
+	    abs( version_x->minor - version_y->minor ) * 10;
   }
   
-  if( version_y->patch != version_x->patch ) {
-    return ( version_y->patch - version_x->patch )/
-	    ( version_y->patch - version_x->patch ) * 1;
+  if( version_x->patch != version_y->patch ) {
+    return ( version_x->patch - version_y->patch )/
+	    abs( version_x->patch - version_y->patch );
   }
 
   return 0;

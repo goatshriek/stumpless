@@ -105,21 +105,21 @@ namespace {
     struct stumpless_version version_x = {1, 5, 0};
     struct stumpless_version version_y = {1, 6, 0};
 
-    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), 10 );
+    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), -10 );
   }
 
   TEST( VersionCmp, BasicMajor ) {
     struct stumpless_version version_x = {1, 5, 0};
     struct stumpless_version version_y = {2, 6, 0};
 
-    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), 100 );
+    EXPECT_EQ( stumpless_version_cmp( &version_x, &version_y ), -100 );
   }
 
   TEST( VersionCmp, NullVersion ) {
     struct stumpless_version version_x = {1, 5, 0};
     struct stumpless_version * version_y = NULL;
 
-    EXPECT_EQ( stumpless_version_cmp( &version_x, version_y ), 666 );
+    EXPECT_EQ( stumpless_version_cmp( &version_x, version_y ), INT_MAX );
   }
 
   TEST( VersionToString, Basic ) {
