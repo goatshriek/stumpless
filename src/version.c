@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdlib.h>
 #include <stddef.h>
 #include <limits.h>
 #include <stumpless/config.h>
