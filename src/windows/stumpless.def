@@ -137,3 +137,4 @@ EXPORTS
   stump                                         @134
   vstump                                        @135
   stumpless_get_error_id_string                 @136
+  stumpless_version_cmp                         @137

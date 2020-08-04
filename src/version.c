@@ -16,7 +16,9 @@
  * limitations under the License.
  */
 
+#include <stdlib.h>
 #include <stddef.h>
+#include <limits.h>
 #include <stumpless/config.h>
 #include <stumpless/version.h>
 #include "private/error.h"
@@ -39,6 +41,32 @@ stumpless_get_version( void ) {
   version->patch = STUMPLESS_PATCH_VERSION;
 
   return version;
+}
+
+int
+stumpless_version_cmp ( const struct stumpless_version * version_x, 
+                        const struct stumpless_version * version_y ) {
+  if ( version_x == NULL || version_y == NULL ) {
+    raise_argument_empty( "NULL version struct given." );
+    return INT_MAX;
+  }
+  
+  if( version_x->major != version_y->major ) {
+    return ( version_x->major - version_y->major )/
+	    abs( version_x->major - version_y->major ) * 100;
+  }
+  
+  if( version_y->minor != version_x->minor ) {
+    return ( version_x->minor - version_y->minor )/
+	    abs( version_x->minor - version_y->minor ) * 10;
+  }
+  
+  if( version_x->patch != version_y->patch ) {
+    return ( version_x->patch - version_y->patch )/
+	    abs( version_x->patch - version_y->patch );
+  }
+
+  return 0;
 }
 
 char *

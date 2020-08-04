@@ -45,6 +45,24 @@ struct stumpless_version *
 stumpless_get_version( void );
 
 /**
+ * Compares the version of two given stumpless_version struct. 
+ * 
+ * This function make use of a similar convention used by the standard library's strcmp function.
+ * 
+ * @param version_x,version_y Two given version(const) to be compared.
+ * 
+ * @return 0 if version numbers are the same,                           <br />
+ *         1 if version_x->patch - version_y->patch > 0,    -1   if < 0 <br />
+ *         10 if version_x->minor - version_y->minor > 0,   -10  if < 0 <br />
+ *         100 if version_x->major - version_y->major > 0,  -100 if < 0 <br />
+ *         INT_MAX if one of the version pointers is null.              <br />
+ */
+int
+stumpless_version_cmp( const struct stumpless_version * version_x, 
+                       const struct stumpless_version * version_y );
+
+
+/**
  * Creates a string representation of the given version.
  *
  * This string will be NULL-terminated, and will appear in the standard
