@@ -89,57 +89,59 @@ A few other documents may be helpful for newcomers to glance through:
 
 ## Error Handling
 
-Stumpless has an internal framework for handling errors to make it simple to
-note that an error has occurred. If you are writing any new functionality or
-extending something that already exists then you will need to make sure that
-any errors that cause an operation to stop use this framework.
+Stumpless has a framework for handling errors that happen at runtime. If you
+are writing new functionality or extending something that already exists
+then you will need to make sure that this framework is used whenever an
+operation stops prematurely after encountering a problem.
 
 All possible errors are specified in `stumpless/error.h` as part of the
 `STUMPLESS_FOREACH_ERROR` macro function. This function lists all possible
-errors, their integral id values, and their documentation. If you need to add
-a new error, it will get added to the end of this list (_not_ in alphabetical
-order) with the next available integer assigned as the id.
+errors and their integral id values, along with their documentation. If you
+need to add a new error, it will get added to the end of this list (_not_
+in alphabetical order) with the next available integer assigned as the id.
 
 Each error has an internal `raise` function associated with it, declared in
 `include/private/error.h` and defined in `src/error.c`. These functions set
 the stumpless error id and error messages, and are intended to keep error
-handling in the stumpless readable and expressive. If you need to add a new
-error, you will need to implement one of these to use to raise it as well.
+handling in stumpless readable and expressive. If you need to add a new error,
+you will need to implement one of these to raise it as well.
 
 For example, if a public function detects a `NULL` parameter and this is not a
 valid argument, then `raise_argument_empty` should be called with a string
-literal describing the error, something like `"arg_1 is NULL"`. This is a
-common pattern that can be seen throughout the library code.
+describing the error, something like `"arg_1 is NULL"`. This is a common pattern
+that can be seen throughout the library code.
 
 Other `raise` functions include more information to help with troubleshooting.
 A good example of this is `raise_index_out_of_bounds` which takes a message
-describing the out of bounds access as well as the index that was out of bounds.
-This is then made available in the resulting error to the user as the `code`
-of the struct, along with a string description of what the value is in
+describing the invalid access attempt as well as the index that was out of
+bounds. This is then made available in the resulting error to the user as the
+`code` of the struct, along with a string description of what the value is in
 `code_type`. The code of an error can be different across errors and even in
-the same error thrown from a different context.
+the same error when thrown from a different context.
 
 Note that if you are calling another internal function and checking its result
 for an error, you do not need to raise an error if this function already does
-it. A good example of this is the memory allocation function `alloc_mem` which
+so. A good example of this is the memory allocation function `alloc_mem` which
 will raise the appropriate error if it encounters a problem. Functions that
 detect a failure of `alloc_mem` can simply return, without needing to raise an
-error of their own first (as this would overwrite the original error).
+error of their own first (since this would overwrite the original error).
 
 Any public function must clear the error if there was no issue. This is so that
 a user can tell if their last call succeeded by checking for the presence of an
 error. Most public functions do this by calling `clear_error` directly before
-returning from their non-error path, which handles this cleanup. The only
-functions that do not need to clear the error code are destructors and any error
-handling functions.
+returning from their non-error path, which handles this cleanup. Some do not
+explicitly call `clear_error`, but instead rely on a call to another public
+function to clear it for them if it succeeds. The only functions that do not
+need to clear the error code are destructors and any error handling functions.
 
 There is error handling code everywhere, but if you want a singular place to
 look we recommend `stumpless_copy_entry` in `src/entry.c`. This function
-demonstrates how to detect errors, call the appropriate `raise` functions, and
-simply return a failure when the error comes from a different function.
+demonstrates how to detect errors in parameters and internal function calls,
+call the appropriate `raise` functions when needed, and simply return when the
+error comes from a different function.
 
-Errors raised this way can be accessed by the various error handling functions
-provided for the user. Some of the more useful of these are:
+Errors raised in stumpless can be accessed by the various error handling
+functions provided for the user. Some of the common useful ones are:
  * `stumpless_get_error` gets the current error struct if there was an error on
    the last call
  * `stumpless_has_error` is true if the last call failed, false if it succeeded
