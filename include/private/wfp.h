@@ -38,7 +38,9 @@ struct wf_reference {
 struct wfp {
   atomic_uint id;
   struct  wf_reference ref_cache[MAX_THREADS*MAX_THREADS];
-  
+  // reservations are an unsigned int split into two parts
+  // A -> era and B -> tag
+  atomic_uint reservations[MAX_THREADS];
   atomic_uint counter_start;
   atomic_uint counter_end;
 };
