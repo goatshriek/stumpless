@@ -25,6 +25,7 @@
 
 #  include <stdatomic.h>
 #  include <stdbool.h>
+#  include <stddef.h>
 
 #  define MAX_THREADS 16
 
@@ -34,13 +35,24 @@ struct wf_reference {
   unsigned retire_era;
 };
 
+struct wf_thread_state {
+  // result is an unsigned int split into two parts:
+  // A -> pointer index and B -> tag
+  atomic_uint result;
+  int era;
+  size_t reference;
+}
 
 struct wfp {
   atomic_uint id;
   struct  wf_reference ref_cache[MAX_THREADS*MAX_THREADS];
-  // reservations are an unsigned int split into two parts
+  // reservations are an unsigned int split into two parts:
   // A -> era and B -> tag
   atomic_uint reservations[MAX_THREADS];
+  // these fill the role of the extra two reservations
+  atomic_uint extra_reservation_1[MAX_THREADS];
+  atomic_uint extra_reservation_2[MAX_THREADS];
+  struct wf_thread_state [MAX_THREADS];
   atomic_uint counter_start;
   atomic_uint counter_end;
 };
