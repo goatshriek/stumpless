@@ -16,9 +16,28 @@
  * limitations under the License.
  */
 
-#include <stdbool.h>
 #include <stddef.h>
 #include "private/wfp.h"
+
+void
+wfp_set( struct wfp *pointer, void *new_pointer ){
+  return;
+}
+
+void
+wfp_destroy( const struct wfp *pointer ){
+  return;
+}
+
+void *
+wfp_get( struct wfp *pointer ){
+  return NULL;
+}
+
+struct wfp *
+wfp_new( void *initial_pointer ){
+  return NULL;
+}
 
 /* pseudocode from wfe paper */
 

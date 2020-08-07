@@ -24,7 +24,6 @@
  */
 
 #  include <stdatomic.h>
-#  include <stdbool.h>
 #  include <stddef.h>
 
 #  define MAX_THREADS 16
