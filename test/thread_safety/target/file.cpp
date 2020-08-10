@@ -17,6 +17,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <pthread.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 
@@ -26,7 +27,7 @@ namespace {
 
     file_target = ( struct stumpless_target * ) target;
 
-    for( int i=0; i < 100; i++ ) {
+    for( int i = 0; i < 100; i++ ) {
       stumpless_add_message( file_target, "thread message #%d", i );
     }
   }
@@ -34,6 +35,8 @@ namespace {
   TEST( WriteConsistency, ThreadCount16 ) {
     const char *filename = "file_target_thread_safety.log";
     struct stumpless_target *target;
+    size_t i;
+    pthread_t threads[16];
 
     remove( filename );
     target = stumpless_open_file_target( filename,
@@ -42,8 +45,19 @@ namespace {
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
+    for( i = 0; i < 16; i++ ) {
+      pthread_create( &threads[i], NULL, write_messages, ( void * ) target );
+    }
+
+    for( i = 0; i < 16; i++ ) {
+      pthread_join( threads[i], NULL );
+    }
+
     stumpless_close_file_target( target );
     EXPECT_NO_ERROR;
+
+    // check for consistency in file
+
     remove( filename );
   }
 }

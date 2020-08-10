@@ -71,6 +71,7 @@ function(private_add_thread_safety_test)
     stumpless
     libgtest
     libgtestmain
+    pthread
     ${THREAD_SAFETY_TEST_ARG_LIBRARIES}
   )
 
