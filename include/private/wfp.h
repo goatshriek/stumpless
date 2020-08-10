@@ -40,7 +40,7 @@ struct wf_thread_state {
   atomic_uint result;
   int era;
   size_t reference;
-}
+};
 
 struct wfp {
   atomic_uint id;
@@ -51,7 +51,7 @@ struct wfp {
   // these fill the role of the extra two reservations
   atomic_uint extra_reservation_1[MAX_THREADS];
   atomic_uint extra_reservation_2[MAX_THREADS];
-  struct wf_thread_state [MAX_THREADS];
+  struct wf_thread_state states[MAX_THREADS];
   atomic_uint counter_start;
   atomic_uint counter_end;
 };

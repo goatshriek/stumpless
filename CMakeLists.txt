@@ -65,10 +65,6 @@ set(GTEST_PATH ${PROJECT_BINARY_DIR}
 )
 
 
-# looking for packages and programs
-find_package(Threads REQUIRED)
-
-
 # documentation and doxygen setup
 set(PROJECT_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
 find_program(HAVE_DOXYGEN NAMES doxygen)
