@@ -50,6 +50,48 @@ macro(add_function_test name)
   private_add_function_test(NAME ${name} ${ARGN})
 endmacro(add_function_test name)
 
+function(private_add_thread_safety_test)
+  set(single_val_args NAME)
+  set(multi_val_args SOURCES LIBRARIES COMPILE_DEFINITIONS)
+  cmake_parse_arguments(THREAD_SAFETY_TEST_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+
+  add_executable(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+    EXCLUDE_FROM_ALL
+    ${THREAD_SAFETY_TEST_ARG_SOURCES}
+  )
+
+  set_target_properties(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+    PROPERTIES
+    OUTPUT_NAME thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+    COMPILE_FLAGS "${function_test_compile_flags}"
+    COMPILE_DEFINITIONS "${THREAD_SAFETY_TEST_ARG_COMPILE_DEFINITIONS}"
+  )
+
+  target_link_libraries(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+    stumpless
+    libgtest
+    libgtestmain
+    ${THREAD_SAFETY_TEST_ARG_LIBRARIES}
+  )
+
+  target_include_directories(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+  )
+
+  add_custom_target(run-thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+    COMMAND "thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}"
+    DEPENDS thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+  )
+endfunction(private_add_thread_safety_test)
+
+macro(add_thread_safety_test name)
+  list(APPEND STUMPLESS_THREAD_SAFETY_TEST_RUNNERS run-thread-safety-test-${name})
+
+  private_add_thread_safety_test(NAME ${name} ${ARGN})
+endmacro(add_thread_safety_test name)
+
 function(private_add_performance_test)
   set(single_val_args NAME)
   set(multi_val_args SOURCES LIBRARIES)

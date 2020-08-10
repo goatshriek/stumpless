@@ -761,6 +761,17 @@ add_custom_target(check
 )
 
 
+# thread safety tests
+add_thread_safety_test(file
+  SOURCES
+    test/thread_safety/target/file.cpp
+)
+
+add_custom_target(check-thread-safety
+  DEPENDS ${STUMPLESS_THREAD_SAFETY_TEST_RUNNERS}
+)
+
+
 # examples
 add_example(basic
   ${PROJECT_SOURCE_DIR}/docs/examples/basic/basic_example.c
