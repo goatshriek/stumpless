@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018-2020 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ namespace {
   TEST( AddEntryTest, NullEntry ) {
     int result;
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     char buffer[10];
 
     target = stumpless_open_buffer_target( "null entry testing",
@@ -42,10 +42,7 @@ namespace {
 
     result = stumpless_add_entry( target, NULL );
     EXPECT_LT( result, 0 );
-    
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
   }
@@ -53,7 +50,7 @@ namespace {
   TEST( AddEntryTest, NullTarget ) {
     int result;
     struct stumpless_entry *entry;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -63,17 +60,14 @@ namespace {
 
     result = stumpless_add_entry( NULL, entry );
     EXPECT_LT( result, 0 );
-    
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry( entry );
   }
 
   TEST( AddEntryTest, UnsupportedType ) {
     struct stumpless_entry *entry;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_target *target;
     int result;
     char buffer[10];
@@ -92,16 +86,11 @@ namespace {
                                  "stumpless-unit-test",
                                  "basic-entry",
                                  "basic test message" );
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_add_entry( target, entry );
     EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
     stumpless_close_buffer_target( target );
     stumpless_destroy_entry( entry );
@@ -110,35 +99,23 @@ namespace {
   TEST( AddLogTest, NullTarget ) {
     int priority;
     int result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     result = stumpless_add_log( NULL, priority , "test-message" );
     EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( AddMessageTest, NullTarget ) {
     int result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     result = stumpless_add_message( NULL, "test-message" );
     EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( AddMessageTest, ReallocFailure ) {
@@ -152,28 +129,21 @@ namespace {
                                "size, then a memory allocation failure will be "
                                "raised.";
     int result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
-    EXPECT_TRUE( set_realloc_result != NULL );
+    EXPECT_NOT_NULL( set_realloc_result );
 
     result = stumpless_add_message( target, long_message );
     EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
