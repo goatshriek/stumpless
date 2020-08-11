@@ -73,6 +73,7 @@
 "printf": "stdio.h"
 "PSOCKADDR": "winsock2.h"
 "PSOCKADDR_IN": "winsock2.h"
+"pthread_create": "pthread.h"
 "realloc":
   - "cstdlib"
   - "stdlib.h"

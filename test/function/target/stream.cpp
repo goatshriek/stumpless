@@ -75,7 +75,7 @@ namespace {
 
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
   }
 
   /* non-fixture tests */
@@ -106,13 +106,10 @@ namespace {
   }
 
   TEST( StreamTargetCloseTest, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_close_stream_target( NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( StreamTargetFormat, NewlineSeparator ) {
@@ -169,7 +166,7 @@ namespace {
 
   TEST( StreamTargetOpenTest, MallocFailure ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     const char *filename = "open-malloc-fail.log";
     FILE *stream;
     void *(*set_malloc_result)(size_t);
@@ -178,16 +175,11 @@ namespace {
     ASSERT_TRUE( set_malloc_result != NULL );
 
     stream = fopen( filename, "w+" );
-    EXPECT_TRUE( stream != NULL );
+    EXPECT_NOT_NULL( stream );
 
     target = stumpless_open_stream_target( filename, stream, 0, 0 );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     fclose( stream );
     remove( filename );
@@ -198,64 +190,51 @@ namespace {
 
   TEST( StreamTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     const char *filename = "null-name.log";
     FILE *stream;
 
     stream = fopen( filename, "w+" );
-    ASSERT_TRUE( stream != NULL );
+    ASSERT_NOT_NULL( stream );
 
     target = stumpless_open_stream_target( NULL, stream, 0, 0 );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     fclose( stream );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-
     remove( filename );
   }
 
   TEST( StreamTargetOpenTest, NullStream ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_stream_target( "no-stream-provided", NULL, 0, 0 );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( StreamTargetStderrTest, NullName ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
 
     target = stumpless_open_stderr_target( NULL, 0, 0 );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( StreamTargetStdoutTest, NullName ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( NULL, 0, 0 );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( StreamTargetWriteTest, ReadOnlyStream ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_entry *basic_entry;
     const char *filename = "null-name.log";
     FILE *stream;
@@ -279,10 +258,7 @@ namespace {
 
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_STREAM_WRITE_FAILURE );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
 
     stumpless_destroy_entry( basic_entry );
     fclose( stream );

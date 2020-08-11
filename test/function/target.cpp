@@ -23,6 +23,7 @@
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
 
@@ -155,33 +156,28 @@ namespace {
     void *(*set_malloc_result)(size_t);
     void *(*set_realloc_result)(void *, size_t);
     int result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
+    EXPECT_NO_ERROR;
 
     result = stumpless_add_message( target, "test message" );
     EXPECT_GE( result, 0 );
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    EXPECT_TRUE( set_malloc_result != NULL );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    EXPECT_NOT_NULL( set_malloc_result );
 
-    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
-    EXPECT_TRUE( set_realloc_result != NULL );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
+    EXPECT_NOT_NULL( set_realloc_result );
 
     result = stumpless_add_message( target, "second test message" );
     EXPECT_LT( result, 0 );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
     stumpless_set_realloc( realloc );
@@ -190,98 +186,68 @@ namespace {
 
   TEST( CloseTarget, BadTargetType ) {
     struct stumpless_target target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target.type = ( enum stumpless_target_type ) -1; // assuming this is invalid
 
     stumpless_close_target( &target );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
   }
 
   TEST( CloseTarget, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_close_target( NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( GetDefaultFacility, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     int facility;
 
     facility = stumpless_get_default_facility( NULL );
     EXPECT_EQ( -1, facility );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( GetOption, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     int option;
 
     option = stumpless_get_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_EQ( option, 0 );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( OpenTarget, AlreadyOpenTarget ) {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_open_target( target );
-    EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_TARGET_INCOMPATIBLE );
-    }
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
 
   TEST( OpenTarget, NullTarget ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_target( NULL );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
@@ -289,7 +255,7 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
     target = stumpless_open_buffer_target( "test target",
@@ -297,19 +263,14 @@ namespace {
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
    
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     target_result = stumpless_set_target_default_app_name( target, "app-name" );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
@@ -319,39 +280,29 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_target_default_app_name( target, NULL );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
   }
 
   TEST( SetDefaultAppName, NullTarget ) {
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target_result = stumpless_set_target_default_app_name( NULL, "app-name" );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SetDefaultFacility, Local1 ) {
@@ -381,63 +332,48 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, 3 );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
   }
 
   TEST( SetDefaultFacility, NullTarget ) {
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target_result = stumpless_set_default_facility( NULL, STUMPLESS_FACILITY_USER );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( SetDefaultFacility, TooHigh ) {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, 800 );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
   }
@@ -446,23 +382,18 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, -800 );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_INVALID_FACILITY );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
   }
@@ -471,7 +402,7 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
     target = stumpless_open_buffer_target( "test target",
@@ -479,19 +410,14 @@ namespace {
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
    
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     target_result = stumpless_set_target_default_msgid( target, "msgid" );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
@@ -501,54 +427,41 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_target_default_msgid( target, NULL );
-    EXPECT_EQ( NULL, target_result );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
   }
 
   TEST( SetDefaultMsgId, NullTarget ) {
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target_result = stumpless_set_target_default_msgid( NULL, "msgid" );
-    EXPECT_EQ( NULL, target_result );
+    EXPECT_NULL( target_result );
 
     error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SetOption, NullTarget ) {
-    struct stumpless_error *error;
-    struct stumpless_target *result;
+    const struct stumpless_error *error;
+    const struct stumpless_target *result;
 
     result = stumpless_set_option( NULL, STUMPLESS_OPTION_PID );
-    EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( SetOption, Pid ) {
@@ -646,18 +559,13 @@ namespace {
   }
 
   TEST( UnsetOption, NullTarget ) {
-    struct stumpless_error *error;
-    struct stumpless_target *result;
+    const struct stumpless_error *error;
+    const struct stumpless_target *result;
 
     result = stumpless_unset_option( NULL, STUMPLESS_OPTION_PID );
-    EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
-    }
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( UnsetOption, Pid ) {

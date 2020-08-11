@@ -18,6 +18,7 @@
 
 #include <gtest/gtest.h>
 #include <pthread.h>
+#include <cstddef>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 

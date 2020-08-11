@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include "test/helper/assert.hpp"
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
@@ -41,7 +42,6 @@ namespace {
     struct stumpless_param *param;
     size_t i;
     int add_result;
-    struct stumpless_error *error;
     socket_handle_t handle;
     socket_handle_t accepted = BAD_HANDLE;
     char buffer[1024];
@@ -80,9 +80,7 @@ namespace {
       for( i = 0; i < 1000; i++ ) {
         add_result = stumpless_add_entry( target, entry );
         EXPECT_GE( add_result, 0 );
-
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error == NULL );
+        EXPECT_NO_ERROR;
 
         if( accepted == BAD_HANDLE ) {
           accepted = accept_tcp_connection( handle );

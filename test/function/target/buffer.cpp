@@ -80,7 +80,7 @@ namespace {
 
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
     EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
@@ -99,7 +99,7 @@ namespace {
 
     result = stump( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( target->default_prival ) ) );
     EXPECT_THAT( buffer, HasSubstr( "buffer-target-test" ) );
@@ -136,17 +136,14 @@ namespace {
 
   TEST_F( BufferTargetTest, OverFill ) {
     char test_string[TEST_BUFFER_LENGTH + 1];
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
     memset( test_string, 'g', TEST_BUFFER_LENGTH );
     test_string[TEST_BUFFER_LENGTH] = '\0';
     ASSERT_EQ( -1, stump( test_string ) );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_TOO_BIG );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
   }
 
   TEST_F( BufferTargetTest, WrapAround ) {
@@ -158,7 +155,7 @@ namespace {
     while( bytes_written <= TEST_BUFFER_LENGTH ) {
       result = stumpless_add_entry( target, basic_entry );
       EXPECT_GT( result, 0 );
-      EXPECT_EQ( NULL, stumpless_get_error(  ) );
+      EXPECT_NO_ERROR;
 
       write_count++;
       bytes_written += result;
@@ -199,13 +196,10 @@ namespace {
   }
 
   TEST( BufferTargetCloseTest, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_close_buffer_target( NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( BufferTargetOpenTest, Basic ) {
@@ -217,7 +211,7 @@ namespace {
                                            100,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     EXPECT_EQ( target, stumpless_get_current_target(  ) );
 
@@ -225,24 +219,21 @@ namespace {
   }
 
   TEST( BufferTargetOpenTest, NullBuffer ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "null-buffer",
                                            NULL,
                                            100,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( BufferTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     char buffer[100];
 
     target = stumpless_open_buffer_target( NULL,
@@ -250,11 +241,8 @@ namespace {
                                            100,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( BufferTargetOpenTest, Open100Targets ) {
@@ -268,8 +256,8 @@ namespace {
                                                  100,
                                                  STUMPLESS_OPTION_NONE,
                                                  STUMPLESS_FACILITY_USER );
-      ASSERT_TRUE( targets[i] != NULL );
-      ASSERT_EQ( NULL, stumpless_get_error(  ) );
+      EXPECT_NO_ERROR;
+      ASSERT_NOT_NULL( targets[i] );
     }
 
     for( i=0; i < 100; i++ ) {

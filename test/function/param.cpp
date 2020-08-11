@@ -251,7 +251,7 @@ namespace {
 
   TEST( NewParamTest, NullName ) {
     struct stumpless_param *param;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     param = stumpless_new_param( NULL, "test-value" );
     EXPECT_NULL( param );
@@ -260,7 +260,7 @@ namespace {
 
   TEST( NewParamTest, NullValue ) {
     struct stumpless_param *param;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     param = stumpless_new_param( "test-name", NULL );
     EXPECT_NULL( param );

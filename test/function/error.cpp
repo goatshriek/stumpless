@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 using::testing::HasSubstr;
 
@@ -51,7 +52,7 @@ namespace {
   TEST_F( PerrorTest, ErrorCodeAndPrefix ) {
     char buffer[10];
     const char *prefix = "with a prefix";
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_target *target;
     struct stumpless_entry *entry;
 
@@ -73,7 +74,7 @@ namespace {
     stumpless_perror( prefix );
 
     error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
+    EXPECT_NOT_NULL( error );
 
     stumpless_destroy_entry( entry );
     stumpless_close_buffer_target( target );
@@ -94,7 +95,7 @@ namespace {
 
   TEST_F( PerrorTest, ErrorCodeNoPrefix ) {
     char buffer[10];
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_target *target;
     struct stumpless_entry *entry;
 
@@ -116,7 +117,7 @@ namespace {
     stumpless_perror( NULL );
 
     error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
+    EXPECT_NOT_NULL( error );
 
     stumpless_destroy_entry( entry );
     stumpless_close_buffer_target( target );
@@ -142,14 +143,14 @@ namespace {
 
   TEST_F( PerrorTest, NoErrorCodeAndPrefix ) {
     const char *prefix = "with a prefix";
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_new_param( NULL, NULL ); // will cause an empty argument error
 
     stumpless_perror( prefix );
 
     error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
+    EXPECT_NOT_NULL( error );
 
     stumpless_set_error_stream( stderr );
     fflush( error_file );
@@ -165,14 +166,14 @@ namespace {
   }
 
   TEST_F( PerrorTest, NoErrorCodeOrPrefix ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_new_param( NULL, NULL ); // will cause an empty argument error
 
     stumpless_perror( NULL );
 
     error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
+    EXPECT_NOT_NULL( error );
 
     stumpless_set_error_stream( stderr );
     fflush( error_file );

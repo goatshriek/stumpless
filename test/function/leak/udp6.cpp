@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include "test/helper/assert.hpp"
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
@@ -63,13 +64,9 @@ namespace {
   TEST( Udp6TargetLeakTest, TypicalUse ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    struct stumpless_entry *result_entry;
-    struct stumpless_element *element;
-    struct stumpless_element *result_element;
-    struct stumpless_param *param;
     size_t i;
     int add_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     socket_handle_t handle;
     bool fixture_enabled = true;
 
@@ -86,38 +83,31 @@ namespace {
                                          "::1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
                                  "memory-leak-test",
                                  "basic-entry",
                                  "basic test message" );
-    ASSERT_TRUE( entry != NULL );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
 
-    element = stumpless_new_element( "basic-element" );
-    ASSERT_TRUE( element != NULL );
-
-    result_entry = stumpless_add_element( entry, element );
-    ASSERT_TRUE( result_entry != NULL );
-
-    param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-    ASSERT_TRUE( param != NULL );
-
-    result_element = stumpless_add_param( element, param );
-    ASSERT_TRUE( result_element != NULL );
+    stumpless_add_new_param_to_entry( entry,
+                                      "basic-element",
+                                      "basic-param-name",
+                                      "basic-param-value" );
+    EXPECT_NO_ERROR;
 
     for( i = 0; i < 1000; i++ ) {
       add_result = stumpless_add_entry( target, entry );
       if( fixture_enabled ) {
         EXPECT_GE( add_result, 0 );
-
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error == NULL );
+        EXPECT_NO_ERROR;
       }
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_close_network_target( target );
 
     stumpless_free_all(  );
