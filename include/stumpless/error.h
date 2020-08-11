@@ -136,14 +136,14 @@ struct stumpless_error {
  * function. After this, it should not be referred to, and if the error of any
  * subsequent call is needed another call to stumpless_get_error must be made.
  *
- * This function is thread safe since release v2.0.0. The returned pointer is
- * specific to the thread of execution, and therefore should not be shared
- * between threads.
- *
  * Note that the id is the only field of the error that is guaranteed to be set.
  * Other members may or may not be set, depending on the context of the error.
  *
  * If the code_type is NULL, then the code is not valid and should be ignored.
+ *
+ * This function is thread safe since release v2.0.0. The returned pointer is
+ * specific to the thread of execution, and therefore should not be shared
+ * between threads.
  *
  * @return A stumpless_error struct describing the error encountered by the last
  * function call. If no error was encountered, this will be NULL.
