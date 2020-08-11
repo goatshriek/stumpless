@@ -132,6 +132,10 @@ struct stumpless_error {
 /**
  * Retrieves the error encountered by the last library call.
  *
+ * The returned error struct is only valid until the next call to a stumpless
+ * function. After this, it should not be referred to, and if the error of any
+ * subsequent call is needed another call to stumpless_get_error must be made.
+ *
  * This function is thread safe since release v2.0.0. The returned pointer is
  * specific to the thread of execution, and therefore should not be shared
  * between threads.
