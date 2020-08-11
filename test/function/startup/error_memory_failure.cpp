@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,23 @@
 #include <stdlib.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 namespace {
 
   TEST( ErrorMemoryAllocationFailureTest, Initialization ) {
     void *(*result)(size_t);
-    struct stumpless_param *param;
+    const struct stumpless_param *param;
+    const struct stumpless_error *error;
 
-    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( result != NULL );
+    result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( result );
 
     // this will create an immediate failure
     param = stumpless_new_param( NULL, NULL );
-
-    EXPECT_TRUE( param == NULL );
-
-    // this is fine - really we just want to ensure this doesn't crash
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_set_malloc( malloc );
   }

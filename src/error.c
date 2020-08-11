@@ -26,7 +26,7 @@
 
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
-static struct stumpless_error *last_error = NULL;
+static struct stumpless_error last_error;
 static bool error_valid = false;
 
 static const char *stumpless_error_enum_to_string[] = {
@@ -36,7 +36,7 @@ static const char *stumpless_error_enum_to_string[] = {
 struct stumpless_error *
 stumpless_get_error( void ) {
   if( error_valid )
-    return last_error;
+    return &last_error;
   else
     return NULL;
 }
@@ -88,15 +88,15 @@ stumpless_perror( const char *prefix ) {
       fputc( ' ', error_stream );
     }
 
-    fputs( stumpless_get_error_id_string(last_error->id), error_stream );
+    fputs( stumpless_get_error_id_string(last_error.id), error_stream );
     fputc( ':', error_stream );
     fputc( ' ', error_stream );
     
 
-    fputs( last_error->message, error_stream );
+    fputs( last_error.message, error_stream );
 
-    if( last_error->code_type ) {
-      fprintf( error_stream, " (%s: %d)", last_error->code_type, last_error->code );
+    if( last_error.code_type ) {
+      fprintf( error_stream, " (%s: %d)", last_error.code_type, last_error.code );
     }
 
     fputc( '\n', error_stream );
@@ -118,8 +118,7 @@ clear_error( void ) {
 
 void
 error_free_all( void ) {
-  free_mem( last_error );
-  last_error = NULL;
+  return;
 }
 
 void
@@ -160,18 +159,10 @@ raise_error( enum stumpless_error_id id,
              const char *message,
              int code,
              const char *code_type ) {
-  if( !last_error ) {
-    last_error = alloc_mem( sizeof( struct stumpless_error ) );
-    if( !last_error ) {
-      error_valid = false;
-      return;
-    }
-  }
-
-  last_error->id = id;
-  last_error->message = message;
-  last_error->code = code;
-  last_error->code_type = code_type;
+  last_error.id = id;
+  last_error.message = message;
+  last_error.code = code;
+  last_error.code_type = code_type;
   error_valid = true;
 }
 
@@ -219,10 +210,6 @@ raise_invalid_severity( int severity ) {
 
 void
 raise_memory_allocation_failure( void ) {
-  if( !last_error ) {
-    return;
-  }
-
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE, NULL, 0, NULL );
 }
 
