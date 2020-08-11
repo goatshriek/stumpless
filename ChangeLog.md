@@ -11,7 +11,7 @@ fixes, check out the
 
 ## [2.0.0] - 2020-07-21
 ### Added
- - Thread safety to all functions.
+ - Thread safety for all functions.
 
 ## [1.6.0] - 2020-07-16
 ### Added
