@@ -65,7 +65,6 @@
 "enum stumpless_error_id": "stumpless/error.h"
 "enum stumpless_network_protocol": "stumpless/target/network.h"
 "enum stumpless_transport_protocol": "stumpless/target/network.h"
-"error_free_all": "private/error.h"
 "EXPECT_ERROR_ID_EQ": "test/helper/assert.hpp"
 "EXPECT_NO_ERROR": "test/helper/assert.hpp"
 "EXPECT_NOT_NULL": "test/helper/assert.hpp"

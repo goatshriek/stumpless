@@ -22,18 +22,17 @@
 #include <stumpless/error.h>
 #include "private/error.h"
 #include "private/inthelper.h"
-#include "private/memory.h"
 
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
-static struct stumpless_error last_error;
-static bool error_valid = false;
+static __thread struct stumpless_error last_error;
+static __thread bool error_valid = false;
 
 static const char *stumpless_error_enum_to_string[] = {
   STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
 };
 
-struct stumpless_error *
+const struct stumpless_error *
 stumpless_get_error( void ) {
   if( error_valid )
     return &last_error;
@@ -114,11 +113,6 @@ stumpless_set_error_stream( FILE *stream ) {
 void
 clear_error( void ) {
   error_valid = false;
-}
-
-void
-error_free_all( void ) {
-  return;
 }
 
 void

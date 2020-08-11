@@ -129,7 +129,7 @@ namespace {
 
     result = stumpless_add_param( basic_element, param );
     EXPECT_EQ( basic_element, result );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
 
     EXPECT_EQ( stumpless_get_param_count( basic_element ),
                original_param_count + 1 );
@@ -142,7 +142,7 @@ namespace {
   TEST_F( ElementTest, AddParamMemoryFailure ) {
     struct stumpless_element *result;
     struct stumpless_param *param;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
 
     // create the internal error struct
@@ -238,7 +238,7 @@ namespace {
 
   TEST_F( ElementTest, CopyReallocFailure ) {
     struct stumpless_element *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
 
     // create the internal error struct
@@ -672,7 +672,7 @@ namespace {
   TEST( AddParamTest, NullElement ) {
     struct stumpless_param *param;
     struct stumpless_element *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     param = stumpless_new_param( "test-name", "test-value" );
     ASSERT_NOT_NULL( param );
@@ -771,7 +771,7 @@ namespace {
 
   TEST( NewElementTest, MemoryFailure ) {
     struct stumpless_element *element;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void *(*result)(size_t);
 
     // create the internal error struct
@@ -790,7 +790,7 @@ namespace {
   TEST( NewElementTest, MemoryFailureOnName ) {
     const char *element_name = "this-name-is-awesome";
     struct stumpless_element *element;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void *(*result)(size_t);
 
     // create the internal error struct
@@ -808,7 +808,7 @@ namespace {
 
   TEST( NewElementTest, NullName ) {
     struct stumpless_element *element;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     element = stumpless_new_element( NULL );
     EXPECT_NULL( element );
