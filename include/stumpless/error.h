@@ -142,9 +142,16 @@ struct stumpless_error {
  * If the code_type is NULL, then the code is not valid and should be ignored.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe as of v2.0.0. The returned pointer is specific
- * to the thread of execution, and therefore should not be shared between
- * threads.
+ * This function is thread safe. No synchronization primitives are used as the
+ * returned pointer is specific to the thread of execution. As a result, the
+ * result should not be shared between threads.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @return A stumpless_error struct describing the error encountered by the last
  * function call. If no error was encountered, this will be NULL.
