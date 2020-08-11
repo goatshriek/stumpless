@@ -77,10 +77,7 @@ namespace {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_param_name( NULL );
-
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_param_name( basic_param, new_name );
@@ -109,10 +106,7 @@ namespace {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_param_name( NULL );
-
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_param_value( basic_param, new_value );
@@ -172,10 +166,7 @@ namespace {
     const struct stumpless_param *param;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_param_name( NULL );
-
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
     param = stumpless_new_param( "name", "value" );
@@ -191,9 +182,6 @@ namespace {
     const char *param_name = "this-name-is-awesome";
     const struct stumpless_param *param;
     const struct stumpless_error *error;
-
-    // create the internal error struct
-    stumpless_get_param_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -211,9 +199,6 @@ namespace {
     const char *param_value = "this-value-is-awesome";
     const struct stumpless_param *param;
     const struct stumpless_error *error;
-
-    // create the internal error struct
-    stumpless_get_param_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 22 ) );
     ASSERT_NOT_NULL( set_malloc_result );

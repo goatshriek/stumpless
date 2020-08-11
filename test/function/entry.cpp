@@ -59,10 +59,6 @@ namespace {
 
         element_2 = stumpless_new_element( element_2_name );
         stumpless_add_element( basic_entry, element_2 );
-
-        // cause a failure so that memory allocation tests will still have an
-        // error that they can return
-        stumpless_new_element( NULL );
       }
 
       virtual void
@@ -191,9 +187,6 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
-
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
@@ -212,9 +205,6 @@ namespace {
     void * (*set_malloc_result)(size_t);
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
-
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -288,9 +278,6 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
-
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
@@ -308,9 +295,6 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
-
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 14 ) );
     ASSERT_NOT_NULL( set_malloc_result );
 
@@ -327,9 +311,6 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
-
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_NOT_NULL( set_realloc_result );

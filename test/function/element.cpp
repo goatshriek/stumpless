@@ -145,9 +145,6 @@ namespace {
     const struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
 
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
-
     param = stumpless_new_param( "test-param-name", "test-param-value" );
     ASSERT_NOT_NULL( param );
 
@@ -201,9 +198,6 @@ namespace {
     const struct stumpless_element *result;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
-
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
@@ -221,9 +215,6 @@ namespace {
     const struct stumpless_element *result;
     const struct stumpless_error *error;
 
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
-
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 8 ) );
     ASSERT_NOT_NULL( set_malloc_result );
 
@@ -240,9 +231,6 @@ namespace {
     struct stumpless_element *result;
     const struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
-
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_NOT_NULL( set_realloc_result );
@@ -496,9 +484,6 @@ namespace {
     const char *new_name = "this-wont-work";
     const struct stumpless_element *result;
     const struct stumpless_error *error;
-
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -774,10 +759,7 @@ namespace {
     const struct stumpless_error *error;
     void *(*result)(size_t);
 
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
-
-    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( result );
 
     element = stumpless_new_element( "memory-failure" );
@@ -792,9 +774,6 @@ namespace {
     struct stumpless_element *element;
     const struct stumpless_error *error;
     void *(*result)(size_t);
-
-    // create the internal error struct
-    stumpless_get_element_name( NULL );
 
     result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
     ASSERT_NOT_NULL( result );
