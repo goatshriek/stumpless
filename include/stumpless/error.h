@@ -147,7 +147,9 @@ struct stumpless_error {
  * result should not be shared between threads.
  *
  * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
+ * This function is safe to call from signal handlers. If you do so, note that
+ * if it is called before a stumpless library function in the handler itself
+ * the result will not be meaningful.
  *
  * **Async Cancel Safety: AC-Safe**
  * This function is safe to call from threads that may be asynchronously

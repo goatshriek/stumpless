@@ -40,9 +40,12 @@
 #include "private/target/file.h"
 #include "private/target/stream.h"
 
+// global static variables
 static struct stumpless_target *current_target = NULL;
-static struct stumpless_entry *cached_entry = NULL;
 static struct stumpless_target *default_target = NULL;
+
+// per-thread variables
+static __thread struct stumpless_entry *cached_entry = NULL;
 
 static
 void
@@ -479,8 +482,6 @@ vstumpless_add_log( struct stumpless_target *target,
   char *app_name;
   char *msgid;
 
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return -1;
@@ -489,8 +490,8 @@ vstumpless_add_log( struct stumpless_target *target,
   if( !cached_entry ) {
     cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
-                                         "-",
-                                         "-",
+                                         target->default_app_name,
+                                         target->default_msgid,
                                          message,
                                          subs );
     if( !cached_entry ) {
@@ -503,37 +504,21 @@ vstumpless_add_log( struct stumpless_target *target,
       return -1;
     }
 
+    set_result = stumpless_set_entry_app_name( cached_entry,
+                                               target->default_app_name );
+    if( !set_result ) {
+      return -1;
+    }
+
+    set_result = stumpless_set_entry_msgid( cached_entry,
+                                            target->default_msgid );
+    if( !set_result ) {
+      return -1;
+    }
+
   }
 
   cached_entry->prival = priority;
-
-  if( target->default_app_name ) {
-    app_name = alloc_mem( target->default_app_name_length );
-    if( !app_name ) {
-      return -1;
-    }
-
-    free_mem( cached_entry->app_name );
-    memcpy( app_name,
-            target->default_app_name,
-            target->default_app_name_length );
-    cached_entry->app_name = app_name;
-    cached_entry->app_name_length = target->default_app_name_length;
-  }
-
-  if( target->default_msgid ) {
-    msgid = alloc_mem( target->default_msgid_length );
-    if( !msgid ) {
-      return -1;
-    }
-
-    free_mem( cached_entry->msgid );
-    memcpy( msgid,
-            target->default_msgid,
-            target->default_msgid_length );
-    cached_entry->msgid = msgid;
-    cached_entry->msgid_length = target->default_msgid_length;
-  }
 
   return stumpless_add_entry( target, cached_entry );
 }
@@ -542,8 +527,6 @@ int
 vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
                         va_list subs ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return -1;
