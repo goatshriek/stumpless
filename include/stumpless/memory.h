@@ -37,14 +37,15 @@ extern "C" {
 #  endif
 
 /**
- * Frees all memory allocated internally, and performs any other necessary
- * cleanup.
+ * Closes the default target if it has been opened, frees all memory allocated
+ * internally, and performs any other necessary cleanup.
  *
  * This function serves as a final exit function, which should be called when
  * an application using the library is preparing to exit or when the library is
- * no longer needed. Before this function is called, all targets must be closed
- * and no pointers to any structs should be retained. Failing to do this will
- * result in undefined behavior.
+ * no longer needed. Before this function is called, all targets explicitly
+ * opened must be closed (with the exception of the default target, which is
+ * opened implicitly) and no pointers to any structs should be retained. Failing
+ * to do this will result in undefined behavior.
  *
  * Calling other functions after a call to this function is acceptable, however
  * execution times may be longer than usual as memory used to cache objects may
