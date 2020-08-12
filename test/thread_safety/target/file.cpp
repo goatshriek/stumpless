@@ -25,22 +25,27 @@
 #include "test/helper/assert.hpp"
 
 namespace {
+  const int THREAD_COUNT = 16;
+  const int MESSAGE_COUNT = 100;
+  struct stumpless_entry *shared_entry = NULL;
+
   void *
   write_messages( void *target ) {
     struct stumpless_target *file_target;
 
     file_target = ( struct stumpless_target * ) target;
 
-    for( int i = 0; i < 100; i++ ) {
-      stumpless_add_message( file_target, "thread message #%d", i );
+    for( int i = 0; i < MESSAGE_COUNT; i++ ) {
+      stumpless_set_entry_message( shared_entry, "message number #%d from thread #%d", i, pthread_self() );
+      stumpless_add_entry( file_target, shared_entry );
     }
   }
 
-  TEST( WriteConsistency, ThreadCount16 ) {
+  TEST( WriteConsistency, SimultaneousWrites ) {
     const char *filename = "file_target_thread_safety.log";
     struct stumpless_target *target;
     size_t i;
-    pthread_t threads[16];
+    pthread_t threads[THREAD_COUNT];
 
     remove( filename );
     target = stumpless_open_file_target( filename,
@@ -49,13 +54,23 @@ namespace {
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
-    for( i = 0; i < 16; i++ ) {
+    shared_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        "file-target-thread-safety-test",
+                                        "test-message",
+                                        "this is a test message" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( shared_entry );
+
+    for( i = 0; i < THREAD_COUNT; i++ ) {
       pthread_create( &threads[i], NULL, write_messages, ( void * ) target );
     }
 
-    for( i = 0; i < 16; i++ ) {
+    for( i = 0; i < THREAD_COUNT; i++ ) {
       pthread_join( threads[i], NULL );
     }
+
+    stumpless_destroy_entry( shared_entry );
 
     stumpless_close_file_target( target );
     EXPECT_NO_ERROR;
@@ -67,12 +82,12 @@ namespace {
     std::string line;
     i = 0;
     while( std::getline( infile, line ) ) {
-      TestRFC5424Compliance( line.c_str() );
+      //TestRFC5424Compliance( line.c_str() );
       i++;
     }
 
-    EXPECT_EQ( i, 16 * 100 );
+    EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
 
-    remove( filename );
+    //remove( filename );
   }
 }
