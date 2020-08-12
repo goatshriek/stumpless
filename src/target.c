@@ -39,11 +39,11 @@
 #include "private/target/file.h"
 #include "private/target/stream.h"
 
-// global static variables
+/* global static variables */
 static struct stumpless_target *current_target = NULL;
 static struct stumpless_target *default_target = NULL;
 
-// per-thread variables
+/* per-thread static variables */
 static __thread struct stumpless_entry *cached_entry = NULL;
 
 static

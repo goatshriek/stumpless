@@ -23,14 +23,17 @@
 #include "private/error.h"
 #include "private/inthelper.h"
 
+/* global static variabls */
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
-static __thread struct stumpless_error last_error;
-static __thread bool error_valid = false;
 
 static const char *stumpless_error_enum_to_string[] = {
   STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
 };
+
+/* per-thread static variables */
+static __thread struct stumpless_error last_error;
+static __thread bool error_valid = false;
 
 const struct stumpless_error *
 stumpless_get_error( void ) {
