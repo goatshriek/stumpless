@@ -348,7 +348,6 @@ namespace {
   TEST( NetworkTargetOpenTest, Hostname ) {
     struct stumpless_target *target;
     const char *hostname = "localhost";
-    const struct stumpless_error *error;
 
     if( !name_resolves( hostname, AF_INET ) ) {
       printf( "WARNING: %s did not resolve, so this test will be skipped\n", hostname );

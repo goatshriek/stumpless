@@ -43,7 +43,6 @@ namespace {
     struct timeval read_timeout;
     int test_socket;
     const char *socket_name = "sockettargettest";
-    char buffer[1024];
     struct stumpless_entry *basic_entry;
 
     test_socket_addr.sun_family = AF_UNIX;

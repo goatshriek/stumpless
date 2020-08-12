@@ -229,7 +229,6 @@ namespace {
 
   TEST_F( ElementTest, CopyReallocFailure ) {
     struct stumpless_element *result;
-    const struct stumpless_error *error;
     void * (*set_realloc_result)(void *, size_t);
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );

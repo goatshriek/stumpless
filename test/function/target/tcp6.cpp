@@ -270,7 +270,6 @@ namespace {
     const char *original_destination = "::1";
     const char *new_destination = "localhost";
     const char *destination_result;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;
@@ -348,7 +347,6 @@ namespace {
     struct stumpless_entry *entry;
     const char *destination = "::1";
     const char *destination_result;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;
@@ -413,7 +411,6 @@ namespace {
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;
@@ -483,7 +480,6 @@ namespace {
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;

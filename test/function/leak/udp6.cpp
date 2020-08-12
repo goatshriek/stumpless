@@ -66,7 +66,6 @@ namespace {
     struct stumpless_entry *entry;
     size_t i;
     int add_result;
-    const struct stumpless_error *error;
     socket_handle_t handle;
     bool fixture_enabled = true;
 

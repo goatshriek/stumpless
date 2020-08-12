@@ -105,7 +105,6 @@ namespace {
   TEST_F( Tcp4TargetTest, AddEntry ) {
     int result;
     int octet_count;
-    const struct stumpless_error *error;
     char *syslog_msg;
     std::cmatch matches;
     std::regex octet_count_regex( "^(\\d+) (.*)$" );
@@ -238,12 +237,10 @@ namespace {
   TEST( NetworkTargetSetDestination, OpenTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *original_destination = "127.0.0.1";
     const char *new_destination = "localhost";
     const char *destination_result;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;
@@ -318,11 +315,9 @@ namespace {
   TEST( NetworkTargetSetDestination, PausedTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *destination = "127.0.0.1";
     const char *destination_result;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;
@@ -383,12 +378,10 @@ namespace {
   TEST( NetworkTargetSetTransportPort, OpenTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;
@@ -453,13 +446,11 @@ namespace {
   TEST( NetworkTargetSetTransportPort, PausedTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *destination = "127.0.0.1";
     const char *new_port = "515";
     const char *default_port;
     const char *current_port;
-    bool could_bind = true;
     char buffer[2048];
     int add_result;
     socket_handle_t accepted;

@@ -214,8 +214,7 @@ namespace {
   }
 
   TEST( SocketTargetOpenTest, Basic ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_target *target;
 
     target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
     EXPECT_NO_ERROR;

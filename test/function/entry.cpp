@@ -1253,10 +1253,6 @@ namespace {
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
-
-    size_t app_name_length = strlen( app_name );
-    size_t msgid_length = strlen( msgid );
-    size_t message_length = strlen( message );
     size_t i;
 
     for( i = 0; i < 500; i++ ) {
@@ -1267,8 +1263,7 @@ namespace {
                                       message );
 
       EXPECT_NO_ERROR;
-
-      EXPECT_TRUE( entry[i] != NULL );
+      EXPECT_NOT_NULL( entry[i] );
     }
 
     for( i = 0; i < 500; i++ ) {

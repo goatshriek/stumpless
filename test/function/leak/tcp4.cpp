@@ -42,7 +42,6 @@ namespace {
     struct stumpless_param *param;
     size_t i;
     int add_result;
-    const struct stumpless_error *error;
     socket_handle_t handle;
     socket_handle_t accepted = BAD_HANDLE;
     char buffer[1024];

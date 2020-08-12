@@ -478,8 +478,6 @@ vstumpless_add_log( struct stumpless_target *target,
                     const char *message,
                     va_list subs ) {
   const struct stumpless_entry *set_result;
-  char *app_name;
-  char *msgid;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );

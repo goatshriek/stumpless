@@ -26,8 +26,6 @@ NEW_MEMORY_COUNTER( free_all )
 namespace {
 
   TEST( ErrorLeakTest, FreeAllDeallocatesStaticError ) {
-    const struct stumpless_error *error;
-
     INIT_MEMORY_COUNTER( free_all );
     stumpless_set_malloc( free_all_memory_counter_malloc );
     stumpless_set_realloc( free_all_memory_counter_realloc );
