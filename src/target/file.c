@@ -83,6 +83,7 @@ fail:
 
 void
 destroy_file_target( struct file_target *target ) {
+  pthread_mutex_destroy( &target->stream_mutex );
   fclose( target->stream );
   free_mem( target );
 }
@@ -109,6 +110,8 @@ new_file_target( const char *filename ) {
     goto fail_stream;
   }
 
+  pthread_mutex_init( &target->stream_mutex, NULL );
+
   return target;
 
 fail_stream:
@@ -124,6 +127,8 @@ sendto_file_target( struct file_target *target,
   size_t fwrite_result;
   int putc_result;
 
+  pthread_mutex_lock( &target->stream_mutex );
+
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
   if( fwrite_result != msg_length ) {
     goto write_failure;
@@ -133,6 +138,10 @@ sendto_file_target( struct file_target *target,
   if( putc_result != '\n' ) {
     goto write_failure;
   }
+
+  fflush( target->stream );
+
+  pthread_mutex_unlock( &target->stream_mutex );
 
   return cap_size_t_to_int( fwrite_result + 1 );
 
