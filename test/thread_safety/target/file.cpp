@@ -16,10 +16,12 @@
  * limitations under the License.
  */
 
+#include <cstddef>
+#include <fstream>
 #include <gtest/gtest.h>
 #include <pthread.h>
-#include <cstddef>
 #include <stumpless.h>
+#include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 
 namespace {
@@ -57,7 +59,18 @@ namespace {
     stumpless_close_file_target( target );
     EXPECT_NO_ERROR;
 
+    stumpless_free_all(  );
+
     // check for consistency in file
+    std::ifstream infile( filename );
+    std::string line;
+    i = 0;
+    while( std::getline( infile, line ) ) {
+      TestRFC5424Compliance( line.c_str() );
+      i++;
+    }
+
+    EXPECT_EQ( i, 16 * 100 );
 
     remove( filename );
   }

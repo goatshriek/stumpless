@@ -765,6 +765,7 @@ add_custom_target(check
 add_thread_safety_test(file
   SOURCES
     test/thread_safety/target/file.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
 )
 
 add_custom_target(check-thread-safety
