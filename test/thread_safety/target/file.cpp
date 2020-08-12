@@ -25,7 +25,8 @@
 #include "test/helper/assert.hpp"
 
 namespace {
-  void * write_messages( void *target ) {
+  void *
+  write_messages( void *target ) {
     struct stumpless_target *file_target;
 
     file_target = ( struct stumpless_target * ) target;
