@@ -204,6 +204,8 @@ namespace {
                stumpless_get_default_target(  ) );
     EXPECT_STRNE( stumpless_get_current_target(  )->name,
                   target_name );
+
+    stumpless_free_all(  );
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
