@@ -74,6 +74,7 @@
 "PSOCKADDR": "winsock2.h"
 "PSOCKADDR_IN": "winsock2.h"
 "pthread_create": "pthread.h"
+"pthread_mutex_t": "pthread.h"
 "realloc":
   - "cstdlib"
   - "stdlib.h"

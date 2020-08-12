@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,22 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_FILE_H
 #  define __STUMPLESS_PRIVATE_TARGET_FILE_H
 
+#  include <pthread.h>
 #  include <stddef.h>
 #  include <stdio.h>
 #  include <stumpless/target.h>
 
+/**
+ * Internal representation of a file target.
+ */
 struct file_target {
+/** A stream for the file this target writes to. */
   FILE *stream;
+/**
+ * Protects stream. This mutex must be locked by a thread before it can write
+ * to the stream.
+ */
+  pthread_mutex_t stream_mutex;
 };
 
 void
