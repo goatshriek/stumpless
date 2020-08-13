@@ -32,6 +32,19 @@
 #  define RFC_5424_TIMESTAMP_BUFFER_SIZE 33
 #  define RFC_5424_WHOLE_TIME_BUFFER_SIZE 20
 
+/**
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to ensure that the entry does
+ * not change while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to prevent changes during the read.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of a lock that could be left locked.
+ */
 struct strbuilder *
 format_entry( const struct stumpless_entry *entry );
 

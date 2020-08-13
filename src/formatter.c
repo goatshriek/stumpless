@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stddef.h>
 #include <stumpless/entry.h>
 #include "private/config/wrapper.h"
@@ -34,6 +35,9 @@ format_entry( const struct stumpless_entry *entry ) {
 
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
+
+  pthread_mutex_lock( ( pthread_mutex_t * ) &entry->entry_mutex );
+
   builder = strbuilder_append_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
   builder = strbuilder_append_buffer( builder, timestamp, timestamp_size );
@@ -52,6 +56,8 @@ format_entry( const struct stumpless_entry *entry ) {
     builder = strbuilder_append_char( builder, ' ' );
     builder = strbuilder_append_message( builder, entry );
   }
+
+  pthread_mutex_unlock( ( pthread_mutex_t * ) &entry->entry_mutex );
 
   return builder;
 }
