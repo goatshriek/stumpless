@@ -783,34 +783,35 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
-    return NULL;
+    goto fail;
   }
 
   pthread_mutex_lock( &entry->entry_mutex );
 
   if( !message ) {
-    free_mem( entry->message );
     entry->message = NULL;
     entry->message_length = 0;
 
   } else {
     formatted_message = config_format_string( message, subs, &message_length );
     if( !formatted_message ) {
-      pthread_mutex_unlock( &entry->entry_mutex );
-      return NULL;
-
-    } else {
-      free_mem( entry->message );
-      entry->message = formatted_message;
-      entry->message_length = message_length;
-
+      goto fail_format;
     }
+
+    entry->message = formatted_message;
+    entry->message_length = message_length;
   }
 
   pthread_mutex_unlock( &entry->entry_mutex );
+  free_mem( entry->message );
 
   clear_error(  );
   return entry;
+
+fail_format:
+  pthread_mutex_unlock( &entry->entry_mutex );
+fail:
+  return NULL;
 }
 
 /* private functions */
