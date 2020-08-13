@@ -129,15 +129,9 @@ sendto_stream_target( struct stream_target *target,
                       const char *msg,
                       size_t msg_length ) {
   size_t fwrite_result;
-  int putc_result;
 
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
   if( fwrite_result != msg_length ) {
-    goto write_failure;
-  }
-
-  putc_result = fputc( '\n', target->stream );
-  if( putc_result != '\n' ) {
     goto write_failure;
   }
 

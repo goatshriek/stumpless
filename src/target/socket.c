@@ -174,6 +174,9 @@ sendto_socket_target( const struct socket_target *target,
                       const char *msg, size_t msg_length ) {
   int result;
 
+  // leave off the newline
+  msg_length--;
+
  result = sendto( target->local_socket,
                   msg,
                   msg_length,

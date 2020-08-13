@@ -33,6 +33,11 @@
 #  define RFC_5424_WHOLE_TIME_BUFFER_SIZE 20
 
 /**
+ * Creates a new strbuilder with the formatted message.
+ *
+ * A newline is added to the end of the message - it is up to functions that use
+ * this to decide whether they want to include this newline or not.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to ensure that the entry does
  * not change while it is being read.

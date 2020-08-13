@@ -817,6 +817,8 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length ) {
+  // leave off the newline
+  msg_length--;
 
   if( target->transport == STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
      return sendto_udp_target( target, msg, msg_length );

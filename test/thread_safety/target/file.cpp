@@ -41,6 +41,8 @@ namespace {
       // this may not be the above message because of other threads
       stumpless_add_entry( file_target, shared_entry );
     }
+
+    return NULL;
   }
 
   TEST( WriteConsistency, SimultaneousWrites ) {

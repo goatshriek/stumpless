@@ -56,6 +56,8 @@ format_entry( const struct stumpless_entry *entry ) {
     builder = strbuilder_append_message( builder, entry );
   }
 
+  builder = strbuilder_append_char( builder, '\n' );
+
   pthread_mutex_unlock( ( pthread_mutex_t * ) &entry->entry_mutex );
 
   return builder;
