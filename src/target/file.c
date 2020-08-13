@@ -147,6 +147,7 @@ sendto_file_target( struct file_target *target,
   return cap_size_t_to_int( fwrite_result + 1 );
 
 write_failure:
+  pthread_mutex_unlock( &target->stream_mutex );
   raise_file_write_failure(  );
   return -1;
 }

@@ -759,7 +759,7 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
-  pthread_mutex_init( &entry->entry_mutex );
+  pthread_mutex_init( &entry->entry_mutex, NULL );
 
   clear_error(  );
   return entry;
@@ -796,6 +796,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
   } else {
     formatted_message = config_format_string( message, subs, &message_length );
     if( !formatted_message ) {
+      pthread_mutex_unlock( &entry->entry_mutex );
       return NULL;
 
     } else {
@@ -903,6 +904,8 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
+  pthread_mutex_destroy( ( pthread_mutex_t * ) &entry->entry_mutex );
+
   config_destroy_insertion_params( entry );
 
   free_mem( entry->elements );
