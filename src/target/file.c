@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/facility.h>

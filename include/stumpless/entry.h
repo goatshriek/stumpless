@@ -23,6 +23,7 @@
 #ifndef __STUMPLESS_ENTRY_H
 #  define __STUMPLESS_ENTRY_H
 
+#  include <pthread.h>
 #  include <stdarg.h>
 #  include <stdbool.h>
 #  include <stddef.h>
@@ -80,6 +81,8 @@ struct stumpless_entry {
   struct stumpless_element **elements;
 /** The number of elements in this entry. */
   size_t element_count;
+/** A mutex used to coordinate multi-threaded access to this entry. */
+  pthread_mutex_t entry_mutex;
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 /** The type of this entry, for use with Windows Event Log calls. */
   WORD wel_type;

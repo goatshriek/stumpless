@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -758,6 +759,8 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
+  pthread_mutex_init( &entry->entry_mutex );
+
   clear_error(  );
   return entry;
 
@@ -783,6 +786,8 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
     return NULL;
   }
 
+  pthread_mutex_lock( &entry->entry_mutex );
+
   if( !message ) {
     free_mem( entry->message );
     entry->message = NULL;
@@ -800,6 +805,8 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
 
     }
   }
+
+  pthread_mutex_unlock( &entry->entry_mutex );
 
   clear_error(  );
   return entry;
