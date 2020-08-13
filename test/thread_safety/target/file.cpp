@@ -84,12 +84,12 @@ namespace {
     std::string line;
     i = 0;
     while( std::getline( infile, line ) ) {
-      //TestRFC5424Compliance( line.c_str() );
+      TestRFC5424Compliance( line.c_str() );
       i++;
     }
 
     EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
 
-    //remove( filename );
+    // remove( filename );
   }
 }
