@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stddef.h>
 #include <stumpless/entry.h>
 #include "private/config/wrapper.h"
@@ -33,7 +32,7 @@ format_entry( const struct stumpless_entry *entry ) {
   // do this as soon as possible to be closer to invocation
   timestamp_size = config_get_now( timestamp );
 
-  pthread_mutex_lock( ( pthread_mutex_t * ) &entry->entry_mutex );
+  lock_entry( entry );
 
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
@@ -58,7 +57,7 @@ format_entry( const struct stumpless_entry *entry ) {
 
   builder = strbuilder_append_char( builder, '\n' );
 
-  pthread_mutex_unlock( ( pthread_mutex_t * ) &entry->entry_mutex );
+  unlock_entry( entry );
 
   return builder;
 }

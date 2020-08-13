@@ -799,11 +799,11 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
     }
   }
 
-  pthread_mutex_lock( &entry->entry_mutex );
+  lock_entry( entry );
   old_message = entry->message;
   entry->message = new_message;
   entry->message_length = message_length;
-  pthread_mutex_unlock( &entry->entry_mutex );
+  unlock_entry( entry );
 
   free_mem( old_message );
   clear_error(  );
@@ -821,6 +821,11 @@ entry_free_all( void ) {
 int
 get_prival( int facility, int severity ) {
   return facility | severity;
+}
+
+int
+lock_entry( const struct stumpless_entry *entry ) {
+  return pthread_mutex_lock( ( pthread_mutex_t * ) &entry->entry_mutex );
 }
 
 struct strbuilder *
@@ -925,4 +930,9 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
   }
 
   return false;
+}
+
+int
+unlock_entry( const struct stumpless_entry *entry ) {
+  return pthread_mutex_unlock( ( pthread_mutex_t * ) &entry->entry_mutex );
 }
