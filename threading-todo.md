@@ -78,7 +78,7 @@
  - [ ] stumplog
  - [ ] vstumpless_add_log
  - [ ] vstumplog
- - [ ] stumpless_version_to_string
+ - [x] stumpless_version_to_string
  - [x] vstumpless_set_entry_message
  - [x] stumpless_destroy_entry_and_contents
  - [x] stumpless_destroy_entry_only
@@ -136,4 +136,4 @@
  - [ ] stump
  - [ ] vstump
  - [x] stumpless_get_error_id_string
- - [ ] stumpless_version_cmp
+ - [x] stumpless_version_cmp
