@@ -16,9 +16,9 @@
  - [ ] stumpless_new_param
  - [ ] stumpless_open_buffer_target
  - [ ] stumpless_set_entry_app_name
- - [ ] stumpless_set_free
- - [ ] stumpless_set_malloc
- - [ ] stumpless_set_realloc
+ - [x] stumpless_set_free
+ - [x] stumpless_set_malloc
+ - [x] stumpless_set_realloc
  - [ ] stumpless_set_target_default_app_name
  - [ ] stumpless_set_target_default_msgid
  - [x] stumpless_set_entry_message
@@ -37,7 +37,7 @@
  - [ ] stumpless_open_stderr_target
  - [ ] stumpless_open_stdout_target
  - [ ] stumpless_open_stream_target
- - [ ] stumpless_free_all
+ - [x] stumpless_free_all
  - [ ] stumpless_get_error_stream
  - [ ] stumpless_perror
  - [ ] stumpless_set_error_stream
