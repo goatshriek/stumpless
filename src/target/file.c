@@ -126,7 +126,7 @@ sendto_file_target( struct file_target *target,
                     const char *msg,
                     size_t msg_length ) {
   size_t fwrite_result;
-  int putc_result;
+  char newline = '\n';
 
   pthread_mutex_lock( &target->stream_mutex );
 
@@ -135,8 +135,8 @@ sendto_file_target( struct file_target *target,
     goto write_failure;
   }
 
-  putc_result = fputc( '\n', target->stream );
-  if( putc_result != '\n' ) {
+  fwrite_result = fwrite( &newline, sizeof( char ), 1, target->stream );
+  if( fwrite_result != 1 ) {
     goto write_failure;
   }
 
