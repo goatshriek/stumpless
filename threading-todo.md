@@ -84,7 +84,7 @@
  - [x] stumpless_destroy_entry_only
  - [ ] stumpless_destroy_element_and_contents
  - [ ] stumpless_destroy_element_only
- - [ ] stumpless_get_error_id
+ - [x] stumpless_get_error_id
  - [ ] stumpless_add_new_element
  - [ ] stumpless_add_new_param
  - [ ] stumpless_add_new_param_to_entry
@@ -117,7 +117,7 @@
  - [ ] stumpless_get_param_value
  - [ ] stumpless_get_param_value_by_index
  - [ ] stumpless_get_param_value_by_name
- - [ ] stumpless_has_error
+ - [x] stumpless_has_error
  - [ ] stumpless_set_element
  - [ ] stumpless_set_element_name
  - [ ] stumpless_set_entry_facility
@@ -135,5 +135,5 @@
  - [ ] stumpless_set_param_value_by_name
  - [ ] stump
  - [ ] vstump
- - [ ] stumpless_get_error_id_string
+ - [x] stumpless_get_error_id_string
  - [ ] stumpless_version_cmp

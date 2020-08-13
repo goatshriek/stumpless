@@ -164,6 +164,17 @@ stumpless_get_error( void );
 /**
  * Gets the error id of the given error.
  *
+ * **Thread Safety: MT-Safe race:err**
+ * This function is thread safe, as long as err is not modifed by other threads
+ * during this call.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @since Release v1.5.0
  *
  * @param err The error to get the id from. This must not be NULL.
@@ -175,6 +186,16 @@ stumpless_get_error_id( const struct stumpless_error *err );
 
 /**
  * Gets the error string of the given error id.
+ *
+ * **Thread Safety: MT-Safe race:err**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @since Release v1.6.0
  *
@@ -196,6 +217,19 @@ stumpless_get_error_stream( void );
 /**
  * True if the last call to a stumpless function encountered an error. To get
  * the error itself, use the stumpless_get_error function.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. No synchronization primitives are used as the
+ * returned flag is specific to the thread of execution.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers. If you do so, note that
+ * if it is called before a stumpless library function in the handler itself
+ * the result will not be meaningful.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @since release v1.6.0.
  *
