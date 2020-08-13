@@ -778,6 +778,7 @@ struct stumpless_entry *
 vstumpless_set_entry_message( struct stumpless_entry *entry,
                               const char *message,
                               va_list subs ) {
+  const char *old_message;
   char *formatted_message;
   size_t message_length;
 
@@ -787,6 +788,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
   }
 
   pthread_mutex_lock( &entry->entry_mutex );
+  old_message = entry->message;
 
   if( !message ) {
     entry->message = NULL;
@@ -803,7 +805,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
   }
 
   pthread_mutex_unlock( &entry->entry_mutex );
-  free_mem( entry->message );
+  free_mem( old_message );
 
   clear_error(  );
   return entry;
