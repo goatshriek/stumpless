@@ -9,7 +9,7 @@
  - [x] stumpless_destroy_entry
  - [ ] stumpless_destroy_param
  - [ ] stumpless_get_current_target
- - [ ] stumpless_get_error
+ - [x] stumpless_get_error
  - [ ] stumpless_get_version
  - [ ] stumpless_new_element
  - [ ] stumpless_new_entry
@@ -22,7 +22,7 @@
  - [ ] stumpless_set_target_default_app_name
  - [ ] stumpless_set_target_default_msgid
  - [x] stumpless_set_entry_message
- - [ ] stumpless_close_file_target
+ - [x] stumpless_close_file_target
  - [ ] stumpless_open_file_target
  - [ ] stumpless_set_current_target
  - [ ] stumpless_close_wel_target

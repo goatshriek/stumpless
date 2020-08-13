@@ -208,7 +208,7 @@ stumpless_copy_entry( const struct stumpless_entry *entry );
  * **Async Cancel Safety: AC-Unsafe lock heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the cleanup of the lock may not be completed, and the memory
- * deallocation function may not be AC-Safe.
+ * deallocation function may not be AC-Safe itself.
  *
  * @param entry The entry to destroy.
  */
@@ -231,7 +231,7 @@ stumpless_destroy_entry( const struct stumpless_entry *entry );
  * **Async Cancel Safety: AC-Unsafe lock heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the cleanup of the lock may not be completed, and the memory
- * deallocation function may not be AC-Safe.
+ * deallocation function may not be AC-Safe itself.
  *
  * @param entry The entry to destroy.
  */
@@ -254,7 +254,7 @@ stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry );
  * **Async Cancel Safety: AC-Unsafe lock heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the cleanup of the lock may not be completed, and the memory
- * deallocation function may not be AC-Safe.
+ * deallocation function may not be AC-Safe itself.
  *
  * @param entry The entry to destroy.
  */
