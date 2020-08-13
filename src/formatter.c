@@ -33,11 +33,10 @@ format_entry( const struct stumpless_entry *entry ) {
   // do this as soon as possible to be closer to invocation
   timestamp_size = config_get_now( timestamp );
 
-  builder = strbuilder_new(  );
-  builder = strbuilder_append_char( builder, '<' );
-
   pthread_mutex_lock( ( pthread_mutex_t * ) &entry->entry_mutex );
 
+  builder = strbuilder_new(  );
+  builder = strbuilder_append_char( builder, '<' );
   builder = strbuilder_append_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
   builder = strbuilder_append_buffer( builder, timestamp, timestamp_size );
