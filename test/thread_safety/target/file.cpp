@@ -37,6 +37,8 @@ namespace {
 
     for( int i = 0; i < MESSAGE_COUNT; i++ ) {
       stumpless_set_entry_message( shared_entry, "message number #%d from thread #%d", i, pthread_self() );
+
+      // this may not be the above message because of other threads
       stumpless_add_entry( file_target, shared_entry );
     }
   }
