@@ -460,9 +460,10 @@ stumpless_set_element( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
-  const char * effective_name;
-  size_t temp_name_length;
-  char *temp_name;
+  const char *effective_name;
+  char *new_name;
+  size_t new_name_length;
+  const char *old_name;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -470,15 +471,18 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   }
 
   effective_name = app_name ? app_name : "-";
-  temp_name = copy_cstring_with_length( effective_name, &temp_name_length );
-  if( !temp_name ) {
+  new_name = copy_cstring_with_length( effective_name, &new_name_length );
+  if( !new_name ) {
     return NULL;
   }
 
-  free_mem( entry->app_name );
-  entry->app_name = temp_name;
-  entry->app_name_length = temp_name_length;
+  lock_entry( entry );
+  old_name = entry->app_name;
+  entry->app_name = new_name;
+  entry->app_name_length = new_name_length;
+  unlock_entry( entry );
 
+  free_mem( old_name );
   clear_error(  );
   return entry;
 }

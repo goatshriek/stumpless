@@ -15,7 +15,7 @@
  - [ ] stumpless_new_entry
  - [ ] stumpless_new_param
  - [ ] stumpless_open_buffer_target
- - [ ] stumpless_set_entry_app_name
+ - [x] stumpless_set_entry_app_name
  - [x] stumpless_set_free
  - [x] stumpless_set_malloc
  - [x] stumpless_set_realloc

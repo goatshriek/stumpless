@@ -37,7 +37,11 @@ namespace {
     file_target = ( struct stumpless_target * ) target;
 
     for( int i = 0; i < MESSAGE_COUNT; i++ ) {
-      stumpless_set_entry_message( shared_entry, "message number #%d from thread #%d", i, pthread_self() );
+      // lots of changes to the shared entry
+      std::ostringstream app_stream;
+      app_stream << "app-name-" << pthread_self(  );
+      stumpless_set_entry_app_name( shared_entry, app_stream.str(  ).c_str(  ) );
+      stumpless_set_entry_message( shared_entry, "message number #%d from thread #%d", i, pthread_self(  ) );
 
       // this may not be the above message because of other threads
       stumpless_add_entry( file_target, shared_entry );
