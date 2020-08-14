@@ -55,9 +55,11 @@ stumpless_add_element( struct stumpless_entry *entry,
     return NULL;
   }
 
+  lock_entry( entry );
+
   if( unchecked_entry_has_element( entry, element->name ) ) {
     raise_duplicate_element(  );
-    return NULL;
+    goto fail_locked;
   }
 
   old_elements_size = sizeof( element ) * entry->element_count;
@@ -65,15 +67,21 @@ stumpless_add_element( struct stumpless_entry *entry,
 
   new_elements = realloc_mem( entry->elements, new_elements_size );
   if( !new_elements ) {
-    return NULL;
+    goto fail_locked;
   }
 
   new_elements[entry->element_count] = element;
   entry->elements = new_elements;
   entry->element_count++;
 
+  unlock_entry( entry );
+
   clear_error(  );
   return entry;
+
+fail_locked:
+  unlock_entry( entry );
+  return NULL;
 }
 
 struct stumpless_entry *

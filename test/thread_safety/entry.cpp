@@ -39,7 +39,10 @@ namespace {
   void
   write_entry( struct stumpless_entry *entry ) {
     std::thread::id thread_id = std::this_thread::get_id(  );
-    struct stumpless_element *element;
+
+    std::ostringstream element_stream;
+    element_stream << "element-" << thread_id;
+    stumpless_add_new_element( entry, element_stream.str(  ).c_str(  ) );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
       std::ostringstream app_stream;
@@ -51,12 +54,6 @@ namespace {
       stumpless_set_entry_msgid( entry, msgid_stream.str(  ).c_str(  ) );
 
       stumpless_set_entry_message( entry, "message number #%d from thread %d", i, thread_id );
-
-      if( i == ITERATION_COUNT / 2 ) {
-        std::ostringstream element_stream;
-        element_stream << "element-" << thread_id;
-        element = stumpless_new_element( element_stream.str(  ).c_str(  ) );
-      }
     }
   }
 
@@ -84,9 +81,11 @@ namespace {
       writer_threads[i]->join(  );
     }
 
+    // check the entry for consistency
+    EXPECT_EQ( entry->element_count, THREAD_COUNT );
+
     // cleanup after the test
     stumpless_destroy_entry_and_contents( entry );
-
     stumpless_free_all(  );
   }
 }
