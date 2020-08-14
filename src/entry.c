@@ -84,6 +84,7 @@ fail_locked:
   return NULL;
 }
 
+// todo possible memory leak here if add_element fails?
 struct stumpless_entry *
 stumpless_add_new_element( struct stumpless_entry *entry,
                            const char *name ) {
