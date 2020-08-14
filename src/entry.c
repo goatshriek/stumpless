@@ -267,6 +267,22 @@ stumpless_get_element_by_name( const struct stumpless_entry *entry,
 }
 
 size_t
+stumpless_get_element_count( const struct stumpless_entry *entry ) {
+  size_t count;
+
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return 0;
+  }
+
+  lock_entry( entry );
+  count = entry->element_count;
+  unlock_entry( entry );
+
+  return count;
+}
+
+size_t
 stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name ) {
   size_t i;

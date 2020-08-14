@@ -244,6 +244,7 @@
 "stumpless_get_default_facility": "stumpless/target.h"
 "stumpless_get_default_target": "stumpless/target.h"
 "stumpless_get_element_by_name": "stumpless/entry.h"
+"stumpless_get_element_count": "stumpless/entry.h"
 "stumpless_get_entry_facility": "stumpless/entry.h"
 "stumpless_get_entry_severity": "stumpless/entry.h"
 "stumpless_get_error": "stumpless/error.h"

@@ -136,5 +136,7 @@ EXPORTS
   stumpless_set_param_value_by_name             @133
   stump                                         @134
   vstump                                        @135
+; added in v2.0.0
   stumpless_get_error_id_string                 @136
   stumpless_version_cmp                         @137
+  stumpless_get_element_count                   @138

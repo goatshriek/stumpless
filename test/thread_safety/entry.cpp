@@ -28,8 +28,15 @@ namespace {
   const int ITERATION_COUNT = 1000;
 
   void
-  read_entry( struct stumpless_entry *entry ) {
+  read_entry( const struct stumpless_entry *entry ) {
+    size_t element_count;
+
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
+      element_count = stumpless_get_element_count( entry );
+      for( int j = 0; j < element_count; j++ ) {
+        stumpless_get_element_by_index( entry, j );
+      }
+
       stumpless_get_entry_app_name( entry );
       stumpless_get_entry_msgid( entry );
       stumpless_get_entry_message( entry );
@@ -78,7 +85,9 @@ namespace {
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
       reader_threads[i]->join(  );
+      delete reader_threads[i];
       writer_threads[i]->join(  );
+      delete writer_threads[i];
     }
 
     // check the entry for consistency

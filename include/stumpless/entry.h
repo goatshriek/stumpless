@@ -341,6 +341,31 @@ stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name );
 
 /**
+ * Returns the number of elements in the given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the entry.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.0.0
+ *
+ * @param entry The entry to get the element count of.
+ *
+ * @return The number of elements entry has. If there is an error, zero is
+ * returned and an error code is set appropriately.
+ */
+size_t
+stumpless_get_element_count( const struct stumpless_entry *entry );
+
+/**
  * Returns the index of the element with the given name in this entry, if it
  * is found.
  *
