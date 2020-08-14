@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_CACHE_H
 #  define __STUMPLESS_PRIVATE_CACHE_H
 
+#  include <pthread.h>
 #  include <stddef.h>
 
 struct cache {
@@ -28,17 +29,74 @@ struct cache {
   char **pages;
   int page_count;
   size_t page_size;
+  pthread_mutex_t cache_mutex;
 };
 
+/**
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to ensure that the cache is
+ * accessed safely.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock and possibly memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of a lock that could be left locked and the possible
+ * use of memory management functions.
+ */
 void *
 cache_alloc( struct cache *c );
 
+/**
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other
+ * threads may be using.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions and the destruction of a lock that may be held
+ * by another thread.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of a lock that could be left locked/not destroyed
+ * and the possible use of memory management functions.
+ */
 void
 cache_destroy( const struct cache *c );
 
+/**
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to ensure that the cache is
+ * accessed safely.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock and possibly memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of a lock that could be left locked and the possible
+ * use of memory management functions.
+ */
 void
 cache_free( const struct cache *c, const void *entry );
 
+/**
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as it does not expose resources that need to
+ * be coordinated on until it is finished.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of memory management functions.
+ */
 struct cache *
 cache_new( size_t size,
            void ( *entry_init ) ( void * ),

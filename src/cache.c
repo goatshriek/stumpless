@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stdint.h>
 #include <stddef.h>
 #include "private/cache.h"
@@ -96,12 +97,16 @@ cache_alloc( struct cache *c ) {
   char *locks;
 
   entries_per_page = c->page_size / ( c->entry_size + sizeof( char ) );
+
+  pthread_mutex_lock( &c->cache_mutex );
+
   for( i = 0; i < c->page_count; i++ ) {
     current_page = c->pages[i];
     locks = current_page + ( entries_per_page * c->entry_size );
     for( j = 0; j < entries_per_page; j++ ) {
       if( locks[j] == 0 ) {
         locks[j] = 1;
+        pthread_mutex_unlock( &c->cache_mutex );
         return current_page + ( j * c->entry_size );
       }
     }
@@ -109,12 +114,14 @@ cache_alloc( struct cache *c ) {
 
   new_page = add_page( c );
   if( new_page < 0 ) {
+    pthread_mutex_unlock( &c->cache_mutex );
     return NULL;
   }
 
   current_page = c->pages[new_page];
   locks = current_page + ( entries_per_page * c->entry_size );
   locks[0] = 1;
+  pthread_mutex_unlock( &c->cache_mutex );
   return current_page;
 }
 
@@ -131,6 +138,7 @@ cache_destroy( const struct cache *c ) {
     free_mem( c->pages[i] );
   }
 
+  pthread_mutex_destroy( ( pthread_mutex_t * ) &c->cache_mutex );
   free_mem( c->pages );
   free_mem( c );
 }
@@ -147,6 +155,8 @@ cache_free( const struct cache *c, const void *entry ) {
 
   entry_int = ( uintptr_t ) entry;
 
+  pthread_mutex_lock( ( pthread_mutex_t * ) &c->cache_mutex );
+
   for( i = 0; i < c->page_count; i++ ) {
     current_page = c->pages[i];
     current_page_int = ( uintptr_t ) current_page;
@@ -159,9 +169,12 @@ cache_free( const struct cache *c, const void *entry ) {
       entry_index = ( ( const char * ) entry - current_page ) / c->entry_size;
       locks[entry_index] = 0;
 
+      pthread_mutex_unlock( ( pthread_mutex_t * ) &c->cache_mutex );
       return;
     }
   }
+
+  pthread_mutex_unlock( ( pthread_mutex_t * ) &c->cache_mutex );
 }
 
 struct cache *
@@ -186,6 +199,7 @@ cache_new( size_t size,
   c->entry_size = size;
   c->page_size = get_paged_size( size );
   c->page_count = 0;
+  pthread_mutex_init( &c->cache_mutex, NULL );
 
   first_page = add_page( c );
   if( first_page != 0 ) {

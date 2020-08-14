@@ -49,6 +49,11 @@
  * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to format.
+ *
+ * @return A strbuilder with the formatted version of the entry, with a newline
+ * character added to the end.
  */
 struct strbuilder *
 format_entry( const struct stumpless_entry *entry );
