@@ -17,6 +17,7 @@
  */
 
 #include <cstddef>
+#include <cstdio>
 #include <fstream>
 #include <gtest/gtest.h>
 #include <pthread.h>
@@ -40,19 +41,33 @@ namespace {
 
       // this may not be the above message because of other threads
       stumpless_add_entry( file_target, shared_entry );
+
+      // cause an error and write it to the error stream
+      stumpless_add_entry( file_target, NULL );
+      stumpless_perror( "intentional error" );
     }
 
     return NULL;
   }
 
   TEST( WriteConsistency, SimultaneousWrites ) {
-    const char *filename = "file_target_thread_safety.log";
+    const char *log_filename = "file_target_thread_safety.log";
+    const char *error_filename = "file_target_thread_safety_errors.log";
+    FILE *error_stream;
     struct stumpless_target *target;
     size_t i;
     pthread_t threads[THREAD_COUNT];
 
-    remove( filename );
-    target = stumpless_open_file_target( filename,
+    remove( log_filename );
+    remove( error_filename );
+
+    // set up the file stream for errors
+    error_stream = fopen( error_filename, "w+" );
+    ASSERT_NOT_NULL( error_stream );
+    stumpless_set_error_stream( error_stream );
+
+    // set up the target to log to
+    target = stumpless_open_file_target( log_filename,
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_NO_ERROR;
@@ -74,24 +89,36 @@ namespace {
       pthread_join( threads[i], NULL );
     }
 
+    // cleanup after the test
     stumpless_destroy_entry( shared_entry );
 
     stumpless_close_file_target( target );
     EXPECT_NO_ERROR;
 
+    stumpless_set_error_stream( stderr );
+    fclose( error_stream );
+
     stumpless_free_all(  );
 
-    // check for consistency in file
-    std::ifstream infile( filename );
+    // check for consistency in the log file
+    std::ifstream log_file( log_filename );
     std::string line;
     i = 0;
-    while( std::getline( infile, line ) ) {
+    while( std::getline( log_file, line ) ) {
       TestRFC5424Compliance( line.c_str() );
       i++;
     }
-
     EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
 
-    // remove( filename );
+    // check for consistency in the error file
+    std::ifstream error_file( error_filename );
+    i = 0;
+    while( std::getline( error_file, line ) ) {
+      i++;
+    }
+    EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
+
+    // remove( log_filename );
+    // remove( error_filename );
   }
 }

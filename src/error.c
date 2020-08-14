@@ -24,7 +24,7 @@
 #include "private/error.h"
 #include "private/inthelper.h"
 
-/* global static variabls */
+/* global static variables */
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
 static pthread_mutex_t error_stream_mutex = PTHREAD_MUTEX_INITIALIZER;
