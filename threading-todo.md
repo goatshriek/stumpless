@@ -121,7 +121,7 @@
  - [ ] stumpless_set_element
  - [ ] stumpless_set_element_name
  - [ ] stumpless_set_entry_facility
- - [ ] stumpless_set_entry_msgid
+ - [x] stumpless_set_entry_msgid
  - [ ] stumpless_set_entry_param_by_index
  - [ ] stumpless_set_entry_param_value_by_index
  - [ ] stumpless_set_entry_param_value_by_name

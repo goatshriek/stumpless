@@ -39,8 +39,13 @@ namespace {
     for( int i = 0; i < MESSAGE_COUNT; i++ ) {
       // lots of changes to the shared entry
       std::ostringstream app_stream;
-      app_stream << "app-name-" << pthread_self(  );
+      app_stream << "app-" << pthread_self(  );
       stumpless_set_entry_app_name( shared_entry, app_stream.str(  ).c_str(  ) );
+
+      std::ostringstream msgid_stream;
+      msgid_stream << "msgid-" << pthread_self(  );
+      stumpless_set_entry_msgid( shared_entry, msgid_stream.str(  ).c_str(  ) );
+
       stumpless_set_entry_message( shared_entry, "message number #%d from thread #%d", i, pthread_self(  ) );
 
       // this may not be the above message because of other threads

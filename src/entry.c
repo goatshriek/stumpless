@@ -509,8 +509,9 @@ struct stumpless_entry *
 stumpless_set_entry_msgid( struct stumpless_entry *entry,
                            const char *msgid ) {
   const char *effective_msgid;
-  size_t temp_length;
-  char *temp_msgid;
+  char *new_msgid;
+  size_t new_msgid_length;
+  const char *old_msgid;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -518,15 +519,18 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
   }
 
   effective_msgid = msgid ? msgid : "-";
-  temp_msgid = copy_cstring_with_length( effective_msgid, &temp_length );
-  if( !temp_msgid ) {
+  new_msgid = copy_cstring_with_length( effective_msgid, &new_msgid_length );
+  if( !new_msgid ) {
     return NULL;
   }
 
-  free_mem( entry->msgid );
-  entry->msgid = temp_msgid;
-  entry->msgid_length = temp_length;
+  lock_entry( entry );
+  old_msgid = entry->msgid;
+  entry->msgid = new_msgid;
+  entry->msgid_length = new_msgid_length;
+  unlock_entry( entry );
 
+  free_mem( old_msgid );
   clear_error(  );
   return entry;
 }
