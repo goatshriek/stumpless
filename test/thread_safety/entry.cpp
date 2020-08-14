@@ -17,13 +17,10 @@
  */
 
 #include <cstddef>
-#include <cstdio>
-#include <fstream>
 #include <gtest/gtest.h>
 #include <pthread.h>
 #include <sstream>
 #include <stumpless.h>
-#include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 
 namespace {
