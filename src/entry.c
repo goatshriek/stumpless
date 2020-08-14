@@ -797,7 +797,6 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
                               va_list subs ) {
   const char *old_message;
   char *new_message;
-  char *formatted_message;
   size_t message_length;
 
   if( !entry ) {
