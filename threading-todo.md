@@ -38,9 +38,9 @@
  - [ ] stumpless_open_stdout_target
  - [ ] stumpless_open_stream_target
  - [x] stumpless_free_all
- - [ ] stumpless_get_error_stream
- - [ ] stumpless_perror
- - [ ] stumpless_set_error_stream
+ - [x] stumpless_get_error_stream
+ - [x] stumpless_perror
+ - [x] stumpless_set_error_stream
  - [ ] stumpless_close_network_target
  - [ ] stumpless_new_network_target
  - [ ] stumpless_new_tcp4_target

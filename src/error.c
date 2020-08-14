@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -26,6 +27,7 @@
 /* global static variabls */
 static FILE *error_stream = NULL;
 static int error_stream_valid = 0;
+static pthread_mutex_t error_stream_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static const char *stumpless_error_enum_to_string[] = {
   STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
@@ -61,10 +63,15 @@ stumpless_get_error_id_string( enum stumpless_error_id id) {
 
 FILE *
 stumpless_get_error_stream( void ) {
+
+  pthread_mutex_lock( &error_stream_mutex );
+
   if( !error_stream_valid ) {
     error_stream = stderr;
     error_stream_valid = 1;
   }
+
+  pthread_mutex_unlock( &error_stream_mutex );
 
   return error_stream;
 }
@@ -76,6 +83,8 @@ stumpless_has_error( void ) {
 
 void
 stumpless_perror( const char *prefix ) {
+
+  pthread_mutex_lock( &error_stream_mutex );
 
   if( !error_stream_valid ) {
     error_stream = stderr;
@@ -103,12 +112,18 @@ stumpless_perror( const char *prefix ) {
 
     fputc( '\n', error_stream );
   }
+
+  pthread_mutex_unlock( &error_stream_mutex );
 }
 
 void
 stumpless_set_error_stream( FILE *stream ) {
+  pthread_mutex_lock( &error_stream_mutex );
+
   error_stream = stream;
   error_stream_valid = 1;
+
+  pthread_mutex_unlock( &error_stream_mutex );
 }
 
 /* private functions */

@@ -187,7 +187,7 @@ stumpless_get_error_id( const struct stumpless_error *err );
 /**
  * Gets the error string of the given error id.
  *
- * **Thread Safety: MT-Safe race:err**
+ * **Thread Safety: MT-Safe**
  * This function is thread safe.
  *
  * **Async Signal Safety: AS-Safe**
@@ -208,6 +208,19 @@ stumpless_get_error_id_string( enum stumpless_error_id id );
 
 /**
  * Gets the current stream that errors are written to.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A lock is used to coordinate accesses to the
+ * error stream.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers, as it uses a
+ * non-reentrant lock to synchronize access to the error stream.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock used to control access to the error stream may not
+ * be released after a cancellation.
  *
  * @return The current stream errors are written to.
  */
@@ -251,6 +264,20 @@ stumpless_has_error( void );
  * If there is not currently an active error message, then nothing will be
  * printed (not even the prefix).
  *
+ * **Thread Safety: MT-Safe race:prefix**
+ * This function is thread safe, of course assuming that prefix is not changed
+ * by other threads during execution. A lock is used to coordinate accesses to
+ * the error stream.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers, as it uses a
+ * non-reentrant lock to synchronize access to the error stream.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock used to control access to the error stream may not
+ * be released after a cancellation.
+ *
  * @param prefix An optional prefix to print in front of the message. If this is
  * NULL then it will simply be ignored.
  */
@@ -263,6 +290,19 @@ stumpless_perror( const char *prefix );
  * This will be stderr by default, but can be set to any stream. If it is set
  * to NULL then error messages will not be printed (essentially skipping all
  * \c stumpless_perror calls).
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A lock is used to coordinate accesses to the
+ * error stream.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers, as it uses a
+ * non-reentrant lock to synchronize access to the error stream.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock used to control access to the error stream may not
+ * be released after a cancellation.
  *
  * @param stream The stream to write errors to. If this is NULL then it will be
  * ignored.
