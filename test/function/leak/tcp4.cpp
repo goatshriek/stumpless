@@ -38,7 +38,6 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
     size_t i;
-    int add_result;
     socket_handle_t handle;
     socket_handle_t accepted = BAD_HANDLE;
     char buffer[1024];
@@ -57,8 +56,7 @@ namespace {
       ASSERT_NOT_NULL( entry );
 
       for( i = 0; i < 1000; i++ ) {
-        add_result = stumpless_add_entry( target, entry );
-        EXPECT_GE( add_result, 0 );
+        stumpless_add_entry( target, entry );
         EXPECT_NO_ERROR;
 
         if( accepted == BAD_HANDLE ) {
