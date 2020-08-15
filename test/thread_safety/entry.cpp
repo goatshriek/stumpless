@@ -49,7 +49,17 @@ namespace {
 
     std::ostringstream element_stream;
     element_stream << "element-" << thread_id;
-    stumpless_add_new_element( entry, element_stream.str(  ).c_str(  ) );
+    const char *element_name = element_stream.str(  ).c_str(  );
+    stumpless_add_new_element( entry, element_name );
+
+    std::ostringstream param_name_stream;
+    param_name_stream << "param-name-" << thread_id;
+    std::ostringstream param_value_stream;
+    param_value_stream << "param-value-" << thread_id;
+    stumpless_add_new_param_to_entry( entry,
+                                      element_name,
+                                      param_name_stream.str(  ).c_str(  ),
+                                      param_value_stream.str(  ).c_str(  ) );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
       std::ostringstream app_stream;
