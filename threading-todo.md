@@ -7,7 +7,7 @@
  - [ ] stumpless_close_buffer_target
  - [x] stumpless_destroy_element
  - [x] stumpless_destroy_entry
- - [ ] stumpless_destroy_param
+ - [x] stumpless_destroy_param
  - [ ] stumpless_get_current_target
  - [x] stumpless_get_error
  - [ ] stumpless_get_version
