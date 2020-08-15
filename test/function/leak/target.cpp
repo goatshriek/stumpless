@@ -34,9 +34,6 @@ namespace {
     int add_result;
 
     INIT_MEMORY_COUNTER( add_message_leak );
-    stumpless_set_malloc( add_message_leak_memory_counter_malloc );
-    stumpless_set_realloc( add_message_leak_memory_counter_realloc );
-    stumpless_set_free( add_message_leak_memory_counter_free );
 
     target = stumpless_open_buffer_target( "add-message-leak-testing",
                                            buffer,
@@ -54,7 +51,6 @@ namespace {
 
     stumpless_free_all(  );
 
-    ASSERT_EQ( add_message_leak_memory_counter.alloc_total,
-               add_message_leak_memory_counter.free_total );
+    ASSERT_NO_LEAK( add_message_leak );
   }
 }

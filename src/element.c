@@ -31,13 +31,20 @@ stumpless_add_new_param( struct stumpless_element *element,
                          const char *param_name,
                          const char *param_value ) {
   struct stumpless_param *new_param;
+  struct stumpless_element *result;
 
   new_param = stumpless_new_param( param_name, param_value );
   if( !new_param ) {
     return NULL;
   }
 
-  return stumpless_add_param( element, new_param );
+  result = stumpless_add_param( element, new_param );
+
+  if( !result ) {
+    stumpless_destroy_param( new_param );
+  }
+
+  return result;
 }
 
 struct stumpless_element *

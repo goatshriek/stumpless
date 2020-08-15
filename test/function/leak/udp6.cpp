@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
@@ -38,26 +40,21 @@ namespace {
     struct stumpless_target *result;
 
     INIT_MEMORY_COUNTER( set_port );
-    stumpless_set_malloc( set_port_memory_counter_malloc );
-    stumpless_set_realloc( set_port_memory_counter_realloc );
-    stumpless_set_free( set_port_memory_counter_free );
 
     target = stumpless_open_udp6_target( "set-port-leak",
                                          "::1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "6514" );
-    ASSERT_TRUE( result != NULL );
+    ASSERT_NOT_NULL( result );
 
     stumpless_close_network_target( target );
 
     stumpless_free_all(  );
 
-    EXPECT_EQ( set_port_memory_counter.alloc_total,
-               set_port_memory_counter.free_total );
-
+    ASSERT_NO_LEAK( set_port );
   }
 
   TEST( Udp6TargetLeakTest, TypicalUse ) {
@@ -78,53 +75,32 @@ namespace {
       fixture_enabled = false;
     }
 
-    stumpless_set_malloc( udp6_leak_memory_counter_malloc );
-    stumpless_set_realloc( udp6_leak_memory_counter_realloc );
-    stumpless_set_free( udp6_leak_memory_counter_free );
+    INIT_MEMORY_COUNTER( udp6_leak );
 
     target = stumpless_open_udp6_target( "test-self",
                                          "::1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "memory-leak-test",
-                                 "basic-entry",
-                                 "basic test message" );
-    ASSERT_TRUE( entry != NULL );
-
-    element = stumpless_new_element( "basic-element" );
-    ASSERT_TRUE( element != NULL );
-
-    result_entry = stumpless_add_element( entry, element );
-    ASSERT_TRUE( result_entry != NULL );
-
-    param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-    ASSERT_TRUE( param != NULL );
-
-    result_element = stumpless_add_param( element, param );
-    ASSERT_TRUE( result_element != NULL );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     for( i = 0; i < 1000; i++ ) {
       add_result = stumpless_add_entry( target, entry );
       if( fixture_enabled ) {
+        EXPECT_NO_ERROR;
         EXPECT_GE( add_result, 0 );
-
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error == NULL );
       }
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_close_network_target( target );
 
     stumpless_free_all(  );
 
-    EXPECT_EQ( udp6_leak_memory_counter.alloc_total,
-               udp6_leak_memory_counter.free_total );
-
     close_server_socket( handle );
+
+    ASSERT_NO_LEAK( udp6_leak );
   }
 }

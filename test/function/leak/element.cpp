@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,36 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
 #include <stddef.h>
 #include <stumpless.h>
+#include <gtest/gtest.h>
+#include "test/helper/assert.hpp"
 #include "test/helper/memory_counter.hpp"
 
-NEW_MEMORY_COUNTER( free_all )
+NEW_MEMORY_COUNTER( add_new_param )
 
 namespace {
 
-  TEST( ErrorLeakTest, FreeAllDeallocatesStaticError ) {
-    struct stumpless_error *error;
+  TEST( AddNewParamLeakTest, ErrorCondition ) {
+    struct stumpless_element *element;
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
 
-    INIT_MEMORY_COUNTER( free_all );
+    INIT_MEMORY_COUNTER( add_new_param );
 
-    // cause an error
-    stumpless_new_param( NULL, NULL );
+    element = stumpless_new_element( "test-element" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( element );
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
+    result = stumpless_add_new_param( NULL, "param-name", "param-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( result );
+
+    stumpless_destroy_element_and_contents( element );
 
     stumpless_free_all(  );
 
-    ASSERT_NO_LEAK( free_all );
+    ASSERT_NO_LEAK( add_new_param );
   }
+
 }
