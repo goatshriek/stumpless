@@ -20,6 +20,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
@@ -48,34 +49,15 @@ namespace {
 
     handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
     if( handle != BAD_HANDLE ) {
-      stumpless_set_malloc( tcp4_leak_memory_counter_malloc );
-      stumpless_set_realloc( tcp4_leak_memory_counter_realloc );
-      stumpless_set_free( tcp4_leak_memory_counter_free );
 
       target = stumpless_open_tcp4_target( "test-self",
                                            "127.0.0.1",
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-      ASSERT_TRUE( target != NULL );
+      ASSERT_NOT_NULL( target );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "memory-leak-test",
-                                   "basic-entry",
-                                   "basic test message" );
-      ASSERT_TRUE( entry != NULL );
-
-      element = stumpless_new_element( "basic-element" );
-      ASSERT_TRUE( element != NULL );
-
-      result_entry = stumpless_add_element( entry, element );
-      ASSERT_TRUE( result_entry != NULL );
-
-      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-      ASSERT_TRUE( param != NULL );
-
-      result_element = stumpless_add_param( element, param );
-      ASSERT_TRUE( result_element != NULL );
+      entry = create_entry(  );
+      ASSERT_NOT_NULL( entry );
 
       for( i = 0; i < 1000; i++ ) {
         add_result = stumpless_add_entry( target, entry );
@@ -89,16 +71,15 @@ namespace {
         recv_from_handle( accepted, buffer, 1024 );
       }
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
       stumpless_close_network_target( target );
 
       stumpless_free_all(  );
 
-      ASSERT_EQ( tcp4_leak_memory_counter.alloc_total,
-                 tcp4_leak_memory_counter.free_total );
-
       close_server_socket( handle );
       close_server_socket( accepted );
+
+      ASSERT_NO_LEAK( tcp4_leak );
     }
   }
 }

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,10 @@
 #ifndef __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP
 #  define __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP
 
+#include <gtest/gtest.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <stumpless.h>
 
 struct memory_counter {
   size_t malloc_count;
@@ -35,7 +37,10 @@ PREFIX##_memory_counter.malloc_count = 0;                                      \
 PREFIX##_memory_counter.alloc_total = 0;                                       \
 PREFIX##_memory_counter.realloc_count = 0;                                     \
 PREFIX##_memory_counter.free_count = 0;                                        \
-PREFIX##_memory_counter.free_total = 0;
+PREFIX##_memory_counter.free_total = 0;                                        \
+stumpless_set_malloc( PREFIX##_memory_counter_malloc );                        \
+stumpless_set_realloc( PREFIX##_memory_counter_realloc );                      \
+stumpless_set_free( PREFIX##_memory_counter_free );
 
 
 #define NEW_MEMORY_COUNTER(PREFIX)                                             \
@@ -80,5 +85,9 @@ PREFIX##_memory_counter_free( void *mem ) {                                    \
   PREFIX##_memory_counter.free_total += PREFIX##_memory_counter_map[mem];      \
   free( mem );                                                                 \
 }
+
+#define ASSERT_NO_LEAK( PREFIX )                                               \
+ASSERT_EQ( PREFIX##_memory_counter.alloc_total,                                \
+           PREFIX##_memory_counter.free_total )
 
 #endif /* __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP */

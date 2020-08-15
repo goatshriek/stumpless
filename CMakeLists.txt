@@ -316,6 +316,7 @@ else()
   add_function_test(tcp4_leak
     SOURCES
       test/function/leak/tcp4.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
@@ -323,6 +324,7 @@ else()
   add_function_test(tcp6_leak
     SOURCES
       test/function/leak/tcp6.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
@@ -330,6 +332,7 @@ else()
   add_function_test(udp4_leak
     SOURCES
       test/function/leak/udp4.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
@@ -337,6 +340,7 @@ else()
   add_function_test(udp6_leak
     SOURCES
       test/function/leak/udp6.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
@@ -589,7 +593,9 @@ add_function_test(buffer
 )
 
 add_function_test(buffer_leak
-  SOURCES test/function/leak/buffer.cpp
+  SOURCES
+    test/function/leak/buffer.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(current_target
@@ -598,6 +604,10 @@ add_function_test(current_target
 
 add_function_test(element
   SOURCES test/function/element.cpp
+)
+
+add_function_test(element_leak
+  SOURCES test/function/leak/element.cpp
 )
 
 add_function_test(entry

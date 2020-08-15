@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: Apache-2.0
+/* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,12 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-#include <stddef.h>
-#include <stumpless.h>
-#include "test/helper/memory_counter.hpp"
+#ifndef __STUMPLESS_TEST_HELPER_FIXTURE_HPP
+#  define __STUMPLESS_TEST_HELPER_FIXTURE_HPP
 
-NEW_MEMORY_COUNTER( free_all )
+#  include <stumpless.h>
 
-namespace {
+struct stumpless_entry *
+create_entry( void );
 
-  TEST( ErrorLeakTest, FreeAllDeallocatesStaticError ) {
-    INIT_MEMORY_COUNTER( free_all );
-
-    // cause an error
-    stumpless_new_param( NULL, NULL );
-    ASSERT_TRUE( stumpless_has_error(  ) );
-
-    stumpless_free_all(  );
-
-    ASSERT_NO_LEAK( free_all );
-  }
-}
+#endif /* __STUMPLESS_TEST_HELPER_FIXTURE_HPP */

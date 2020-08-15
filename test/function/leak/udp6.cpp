@@ -20,6 +20,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
@@ -39,26 +40,21 @@ namespace {
     struct stumpless_target *result;
 
     INIT_MEMORY_COUNTER( set_port );
-    stumpless_set_malloc( set_port_memory_counter_malloc );
-    stumpless_set_realloc( set_port_memory_counter_realloc );
-    stumpless_set_free( set_port_memory_counter_free );
 
     target = stumpless_open_udp6_target( "set-port-leak",
                                          "::1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "6514" );
-    ASSERT_TRUE( result != NULL );
+    ASSERT_NOT_NULL( result );
 
     stumpless_close_network_target( target );
 
     stumpless_free_all(  );
 
-    EXPECT_EQ( set_port_memory_counter.alloc_total,
-               set_port_memory_counter.free_total );
-
+    ASSERT_NO_LEAK( set_port );
   }
 
   TEST( Udp6TargetLeakTest, TypicalUse ) {
@@ -74,9 +70,7 @@ namespace {
       fixture_enabled = false;
     }
 
-    stumpless_set_malloc( udp6_leak_memory_counter_malloc );
-    stumpless_set_realloc( udp6_leak_memory_counter_realloc );
-    stumpless_set_free( udp6_leak_memory_counter_free );
+    INIT_MEMORY_COUNTER( udp6_leak );
 
     target = stumpless_open_udp6_target( "test-self",
                                          "::1",
@@ -84,19 +78,8 @@ namespace {
                                          STUMPLESS_FACILITY_USER );
     ASSERT_NOT_NULL( target );
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "memory-leak-test",
-                                 "basic-entry",
-                                 "basic test message" );
-    EXPECT_NO_ERROR;
+    entry = create_entry(  );
     ASSERT_NOT_NULL( entry );
-
-    stumpless_add_new_param_to_entry( entry,
-                                      "basic-element",
-                                      "basic-param-name",
-                                      "basic-param-value" );
-    EXPECT_NO_ERROR;
 
     for( i = 0; i < 1000; i++ ) {
       add_result = stumpless_add_entry( target, entry );
@@ -111,9 +94,8 @@ namespace {
 
     stumpless_free_all(  );
 
-    EXPECT_EQ( udp6_leak_memory_counter.alloc_total,
-               udp6_leak_memory_counter.free_total );
-
     close_server_socket( handle );
+
+    ASSERT_NO_LEAK( udp6_leak );
   }
 }

@@ -166,6 +166,21 @@ target_include_directories(rfc5424_checker
 )
 
 # helper libraries
+add_library(test_helper_fixture
+  EXCLUDE_FROM_ALL
+  OBJECT ${PROJECT_SOURCE_DIR}/test/helper/fixture.cpp
+)
+
+set_target_properties(test_helper_fixture
+  PROPERTIES
+  COMPILE_FLAGS "${function_test_compile_flags}"
+)
+
+target_include_directories(test_helper_fixture
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)
 add_library(test_helper_resolve
   EXCLUDE_FROM_ALL
   OBJECT ${PROJECT_SOURCE_DIR}/test/helper/resolve.cpp

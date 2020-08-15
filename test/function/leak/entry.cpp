@@ -22,18 +22,42 @@
 #include "test/helper/assert.hpp"
 #include "test/helper/memory_counter.hpp"
 
+NEW_MEMORY_COUNTER( add_new_element_leak )
 NEW_MEMORY_COUNTER( set_app_name_leak )
 
 namespace {
+
+  TEST( AddNewElementLeakTest, ErrorCondition ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    INIT_MEMORY_COUNTER( add_new_element_leak );
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "app-name",
+                                 "msgid",
+                                 "the message" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_add_new_element( NULL, "new-element" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( result );
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+
+    ASSERT_NO_LEAK( add_new_element_leak );
+  }
 
   TEST( SetAppNameLeakTest, TypicalUse ) {
     struct stumpless_entry *entry;
     const struct stumpless_entry *result;
 
     INIT_MEMORY_COUNTER( set_app_name_leak );
-    stumpless_set_malloc( set_app_name_leak_memory_counter_malloc );
-    stumpless_set_realloc( set_app_name_leak_memory_counter_realloc );
-    stumpless_set_free( set_app_name_leak_memory_counter_free );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -41,17 +65,16 @@ namespace {
                                  "msgid",
                                  "your message goes here" );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_set_entry_app_name( entry, "new-app-name" );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( result == entry );
+    ASSERT_EQ( result, entry );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
 
-    ASSERT_EQ( set_app_name_leak_memory_counter.alloc_total,
-               set_app_name_leak_memory_counter.free_total );
+    ASSERT_NO_LEAK( set_app_name_leak );
   }
 }

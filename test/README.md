@@ -10,6 +10,14 @@ Test library. These tests are used to measure coverage as well, and check for
 memory leaks, startup conditions, and error scenarios in addition to the basic
 features of the library.
 
+## Memory Leak Tests
+Memory leaks are a concern for any application written in C, and so whenever a
+leak is found or suspected a test for it is implemented and added here to
+prevent regression. These tests are in the [`function/leak`](./function/leak)
+directory and focus on causing the leak and detecting it. These tests do not
+necessarily verify correct functionality around the potential leak, as that is
+the focus of the more general functionality tests.
+
 ## Thread Safety Tests
 Testing for thread safety is not as straightforward as for basic functionality,
 and therefore these tests are separated from the standard unit testing suite in
