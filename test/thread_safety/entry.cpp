@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <iostream>
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <sstream>

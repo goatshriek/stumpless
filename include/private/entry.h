@@ -20,6 +20,7 @@
 #  define __STUMPLESS_PRIVATE_ENTRY_H
 
 #  include <stdbool.h>
+#  include <stumpless/element.h>
 #  include <stumpless/entry.h>
 #  include "private/strbuilder.h"
 
