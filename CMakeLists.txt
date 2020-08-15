@@ -319,6 +319,7 @@ else()
   add_function_test(tcp4_leak
     SOURCES
       test/function/leak/tcp4.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
@@ -326,6 +327,7 @@ else()
   add_function_test(tcp6_leak
     SOURCES
       test/function/leak/tcp6.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
