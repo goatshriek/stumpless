@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <iostream>
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <sstream>
@@ -49,17 +50,19 @@ namespace {
 
     std::ostringstream element_stream;
     element_stream << "element-" << thread_id;
-    const char *element_name = element_stream.str(  ).c_str(  );
-    stumpless_add_new_element( entry, element_name );
+    std::string element_name( element_stream.str(  ) );
+    stumpless_add_new_element( entry, element_name.c_str(  ) );
 
     std::ostringstream param_name_stream;
     param_name_stream << "param-name-" << thread_id;
+    std::string param_name( param_name_stream.str(  ) );
     std::ostringstream param_value_stream;
     param_value_stream << "param-value-" << thread_id;
+    std::string param_value( param_value_stream.str(  ) );
     stumpless_add_new_param_to_entry( entry,
-                                      element_name,
-                                      param_name_stream.str(  ).c_str(  ),
-                                      param_value_stream.str(  ).c_str(  ) );
+                                      element_name.c_str(  ),
+                                      param_name.c_str(  ),
+                                      param_value.c_str(  ) );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
       std::ostringstream app_stream;
@@ -79,6 +82,7 @@ namespace {
     size_t i;
     std::thread *reader_threads[THREAD_COUNT];
     std::thread *writer_threads[THREAD_COUNT];
+    const struct stumpless_element *element;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -101,7 +105,13 @@ namespace {
     }
 
     // check the entry for consistency
-    EXPECT_EQ( entry->element_count, THREAD_COUNT );
+    size_t element_count = stumpless_get_element_count( entry );
+    EXPECT_EQ( element_count, THREAD_COUNT );
+
+    for( i = 0; i < element_count; i++ ) {
+      element = stumpless_get_element_by_index( entry, i );
+      EXPECT_EQ( stumpless_get_param_count( element ), 1 );
+    }
 
     // cleanup after the test
     stumpless_destroy_entry_and_contents( entry );

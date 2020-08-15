@@ -32,6 +32,10 @@ get_prival( int facility, int severity );
 int
 lock_entry( const struct stumpless_entry *entry );
 
+struct stumpless_entry *
+locked_add_element( struct stumpless_entry *entry,
+                    struct stumpless_element *element );
+
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry );

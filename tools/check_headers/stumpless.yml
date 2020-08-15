@@ -99,6 +99,7 @@
 "INIT_MEMORY_COUNTER": "test/helper/memory_counter.hpp"
 "initialize_insertion_params": "private/config/wel_supported.h"
 "lock_entry": "private/entry.h"
+"locked_add_element": "private/entry.h"
 "MALLOC_FAIL": "test/helper/memory_allocation.hpp"
 "MALLOC_FAIL_ON_SIZE": "test/helper/memory_allocation.hpp"
 "MAX_INT_SIZE": "private/inthelper.h"

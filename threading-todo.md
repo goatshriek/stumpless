@@ -87,7 +87,7 @@
  - [x] stumpless_get_error_id
  - [x] stumpless_add_new_element
  - [ ] stumpless_add_new_param
- - [ ] stumpless_add_new_param_to_entry
+ - [x] stumpless_add_new_param_to_entry
  - [ ] stumpless_copy_element
  - [ ] stumpless_copy_entry
  - [ ] stumpless_copy_param

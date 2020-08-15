@@ -41,9 +41,7 @@ static struct cache *entry_cache = NULL;
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
-  struct stumpless_element **new_elements;
-  size_t old_elements_size;
-  size_t new_elements_size;
+  struct stumpless_entry *result;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -55,33 +53,13 @@ stumpless_add_element( struct stumpless_entry *entry,
     return NULL;
   }
 
-  lock_entry( entry );
-
-  if( unchecked_entry_has_element( entry, element->name ) ) {
-    raise_duplicate_element(  );
-    goto fail_locked;
-  }
-
-  old_elements_size = sizeof( element ) * entry->element_count;
-  new_elements_size = old_elements_size + sizeof( element );
-
-  new_elements = realloc_mem( entry->elements, new_elements_size );
-  if( !new_elements ) {
-    goto fail_locked;
-  }
-
-  new_elements[entry->element_count] = element;
-  entry->elements = new_elements;
-  entry->element_count++;
-
-  unlock_entry( entry );
-
   clear_error(  );
-  return entry;
 
-fail_locked:
+  lock_entry( entry );
+  result = locked_add_element( entry, element );
   unlock_entry( entry );
-  return NULL;
+
+  return result;
 }
 
 struct stumpless_entry *
@@ -113,11 +91,18 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
   bool element_created = false;
   const void *result;
 
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  lock_entry( entry );
+
   element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
     element = stumpless_new_element( element_name );
     if( !element ) {
-      goto fail;
+      goto fail_locked;
     }
 
     element_created = true;
@@ -125,19 +110,21 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
 
   result = stumpless_add_new_param( element, param_name, param_value );
   if( !result ) {
-    goto fail_add;
+    goto fail_locked;
   }
 
   if( element_created ) {
-    result = stumpless_add_element( entry, element );
+    result = locked_add_element( entry, element );
     if( !result ) {
-      goto fail_add;
+      goto fail_locked;
     }
   }
 
+  unlock_entry( entry );
   return entry;
 
-fail_add:
+fail_locked:
+  unlock_entry( entry );
   if( element_created ) {
     stumpless_destroy_element_and_contents( element );
   }
@@ -864,6 +851,33 @@ get_prival( int facility, int severity ) {
 int
 lock_entry( const struct stumpless_entry *entry ) {
   return pthread_mutex_lock( ( pthread_mutex_t * ) &entry->entry_mutex );
+}
+
+struct stumpless_entry *
+locked_add_element( struct stumpless_entry *entry,
+                    struct stumpless_element *element ) {
+  struct stumpless_element **new_elements;
+  size_t old_elements_size;
+  size_t new_elements_size;
+
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
+  }
+
+  old_elements_size = sizeof( element ) * entry->element_count;
+  new_elements_size = old_elements_size + sizeof( element );
+
+  new_elements = realloc_mem( entry->elements, new_elements_size );
+  if( !new_elements ) {
+    return NULL;
+  }
+
+  new_elements[entry->element_count] = element;
+  entry->elements = new_elements;
+  entry->element_count++;
+
+  return entry;
 }
 
 struct strbuilder *
