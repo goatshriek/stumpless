@@ -46,7 +46,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     ASSERT_NULL( result );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
 
@@ -65,16 +65,16 @@ namespace {
                                  "msgid",
                                  "your message goes here" );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_set_entry_app_name( entry, "new-app-name" );
     EXPECT_NO_ERROR;
-    ASSERT_TRUE( result == entry );
+    ASSERT_EQ( result, entry );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
 
-    ASSERT_NO_LEAK( add_new_element_leak );
+    ASSERT_NO_LEAK( set_app_name_leak );
   }
 }

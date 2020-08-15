@@ -603,6 +603,10 @@ add_function_test(element
   SOURCES test/function/element.cpp
 )
 
+add_function_test(element_leak
+  SOURCES test/function/leak/element.cpp
+)
+
 add_function_test(entry
   SOURCES test/function/entry.cpp
 )
