@@ -19,6 +19,8 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
 
@@ -43,10 +45,10 @@ namespace {
                                          "127.0.0.1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "6514" );
-    ASSERT_TRUE( result != NULL );
+    ASSERT_NOT_NULL( result );
 
     stumpless_close_network_target( target );
 
@@ -64,7 +66,6 @@ namespace {
     struct stumpless_param *param;
     size_t i;
     int add_result;
-    struct stumpless_error *error;
     socket_handle_t handle;
     bool fixture_enabled = true;
 
@@ -79,38 +80,20 @@ namespace {
                                          "127.0.0.1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "memory-leak-test",
-                                 "basic-entry",
-                                 "basic test message" );
-    ASSERT_TRUE( entry != NULL );
-
-    element = stumpless_new_element( "basic-element" );
-    ASSERT_TRUE( element != NULL );
-
-    result_entry = stumpless_add_element( entry, element );
-    ASSERT_TRUE( result_entry != NULL );
-
-    param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-    ASSERT_TRUE( param != NULL );
-
-    result_element = stumpless_add_param( element, param );
-    ASSERT_TRUE( result_element != NULL );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     for( i = 0; i < 1000; i++ ) {
       add_result = stumpless_add_entry( target, entry );
       if( fixture_enabled ) {
+        EXPECT_NO_ERROR;
         EXPECT_GE( add_result, 0 );
-
-        error = stumpless_get_error(  );
-        EXPECT_TRUE( error == NULL );
       }
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_close_network_target( target );
 
     stumpless_free_all(  );
