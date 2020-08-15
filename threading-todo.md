@@ -5,7 +5,7 @@
  - [ ] stumpless_add_entry
  - [ ] stumpless_add_param
  - [ ] stumpless_close_buffer_target
- - [ ] stumpless_destroy_element
+ - [x] stumpless_destroy_element
  - [x] stumpless_destroy_entry
  - [ ] stumpless_destroy_param
  - [ ] stumpless_get_current_target
@@ -82,8 +82,8 @@
  - [x] vstumpless_set_entry_message
  - [x] stumpless_destroy_entry_and_contents
  - [x] stumpless_destroy_entry_only
- - [ ] stumpless_destroy_element_and_contents
- - [ ] stumpless_destroy_element_only
+ - [x] stumpless_destroy_element_and_contents
+ - [x] stumpless_destroy_element_only
  - [x] stumpless_get_error_id
  - [x] stumpless_add_new_element
  - [ ] stumpless_add_new_param
