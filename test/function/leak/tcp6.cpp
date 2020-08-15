@@ -37,10 +37,6 @@ namespace {
   TEST( Tcp6TargetLeakTest, TypicalUse ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    struct stumpless_entry *result_entry;
-    struct stumpless_element *element;
-    struct stumpless_element *result_element;
-    struct stumpless_param *param;
     size_t i;
     int add_result;
     socket_handle_t handle;
@@ -49,6 +45,7 @@ namespace {
 
     handle = open_tcp_server_socket( AF_INET6, "::1", "514" );
     if( handle != BAD_HANDLE ) {
+      INIT_MEMORY_COUNTER( tcp6_leak );
 
       target = stumpless_open_tcp6_target( "test-self",
                                            "::1",

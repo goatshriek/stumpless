@@ -37,10 +37,6 @@ namespace {
   TEST( Tcp4TargetLeakTest, TypicalUse ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    struct stumpless_entry *result_entry;
-    struct stumpless_element *element;
-    struct stumpless_element *result_element;
-    struct stumpless_param *param;
     size_t i;
     int add_result;
     socket_handle_t handle;
@@ -49,6 +45,7 @@ namespace {
 
     handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
     if( handle != BAD_HANDLE ) {
+      INIT_MEMORY_COUNTER( tcp4_leak );
 
       target = stumpless_open_tcp4_target( "test-self",
                                            "127.0.0.1",
