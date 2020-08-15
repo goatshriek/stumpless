@@ -1,3 +1,4 @@
+"ASSERT_EQ": "gtest/gtest.h"
 "ASSERT_THAT": "gmock/gmock.h"
 "ASSERT_TRUE": "gtest/gtest.h"
 "BENCHMARK": "benchmark/benchmark.h"
