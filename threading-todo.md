@@ -137,3 +137,4 @@
  - [ ] vstump
  - [x] stumpless_get_error_id_string
  - [x] stumpless_version_cmp
+ - [x] stumpless_get_element_count
