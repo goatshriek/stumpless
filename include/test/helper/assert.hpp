@@ -25,6 +25,8 @@
 
 #  define ASSERT_NOT_NULL( thing ) ASSERT_FALSE( (thing) == NULL )
 
+#  define ASSERT_NULL( thing ) ASSERT_TRUE( (thing) == NULL )
+
 #  define EXPECT_ERROR_ID_EQ( code ) \
 error = stumpless_get_error(  );     \
 EXPECT_TRUE( error != NULL );        \

@@ -6,6 +6,7 @@
 "accept_tcp_connection": "test/helper/server.hpp"
 "alloc_mem": "private/memory.h"
 "ASSERT_NOT_NULL": "test/helper/assert.hpp"
+"ASSERT_NULL": "test/helper/assert.hpp"
 "cache_alloc": "private/cache.h"
 "cache_destroy": "private/cache.h"
 "cache_free": "private/cache.h"
