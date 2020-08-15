@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +38,6 @@ namespace {
     struct stumpless_target *result;
 
     INIT_MEMORY_COUNTER( set_port );
-    stumpless_set_malloc( set_port_memory_counter_malloc );
-    stumpless_set_realloc( set_port_memory_counter_realloc );
-    stumpless_set_free( set_port_memory_counter_free );
 
     target = stumpless_open_udp6_target( "set-port-leak",
                                          "::1",
@@ -55,9 +52,7 @@ namespace {
 
     stumpless_free_all(  );
 
-    EXPECT_EQ( set_port_memory_counter.alloc_total,
-               set_port_memory_counter.free_total );
-
+    ASSERT_NO_LEAK( set_port );
   }
 
   TEST( Udp6TargetLeakTest, TypicalUse ) {
@@ -78,9 +73,7 @@ namespace {
       fixture_enabled = false;
     }
 
-    stumpless_set_malloc( udp6_leak_memory_counter_malloc );
-    stumpless_set_realloc( udp6_leak_memory_counter_realloc );
-    stumpless_set_free( udp6_leak_memory_counter_free );
+    INIT_MEMORY_COUNTER( udp6_leak );
 
     target = stumpless_open_udp6_target( "test-self",
                                          "::1",
@@ -122,9 +115,8 @@ namespace {
 
     stumpless_free_all(  );
 
-    EXPECT_EQ( udp6_leak_memory_counter.alloc_total,
-               udp6_leak_memory_counter.free_total );
-
     close_server_socket( handle );
+
+    ASSERT_NO_LEAK( udp6_leak );
   }
 }

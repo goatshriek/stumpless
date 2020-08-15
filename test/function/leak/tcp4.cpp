@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,9 +48,6 @@ namespace {
 
     handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
     if( handle != BAD_HANDLE ) {
-      stumpless_set_malloc( tcp4_leak_memory_counter_malloc );
-      stumpless_set_realloc( tcp4_leak_memory_counter_realloc );
-      stumpless_set_free( tcp4_leak_memory_counter_free );
 
       target = stumpless_open_tcp4_target( "test-self",
                                            "127.0.0.1",
@@ -96,11 +93,10 @@ namespace {
 
       stumpless_free_all(  );
 
-      ASSERT_EQ( tcp4_leak_memory_counter.alloc_total,
-                 tcp4_leak_memory_counter.free_total );
-
       close_server_socket( handle );
       close_server_socket( accepted );
+
+      ASSERT_NO_LEAK( tcp4_leak );
     }
   }
 }

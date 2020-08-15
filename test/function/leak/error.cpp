@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,6 @@ namespace {
     struct stumpless_error *error;
 
     INIT_MEMORY_COUNTER( free_all );
-    stumpless_set_malloc( free_all_memory_counter_malloc );
-    stumpless_set_realloc( free_all_memory_counter_realloc );
-    stumpless_set_free( free_all_memory_counter_free );
 
     // cause an error
     stumpless_new_param( NULL, NULL );
@@ -41,7 +38,6 @@ namespace {
 
     stumpless_free_all(  );
 
-    EXPECT_EQ( free_all_memory_counter.alloc_total,
-               free_all_memory_counter.free_total );
+    ASSERT_NO_LEAK( free_all );
   }
 }

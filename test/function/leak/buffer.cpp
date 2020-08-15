@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,9 +39,6 @@ namespace {
     int add_result;
 
     INIT_MEMORY_COUNTER( buffer_leak );
-    stumpless_set_malloc( buffer_leak_memory_counter_malloc );
-    stumpless_set_realloc( buffer_leak_memory_counter_realloc );
-    stumpless_set_free( buffer_leak_memory_counter_free );
 
     target = stumpless_open_buffer_target( "buffer-leak-testing",
                                            buffer,
@@ -79,7 +76,6 @@ namespace {
 
     stumpless_free_all(  );
 
-    ASSERT_EQ( buffer_leak_memory_counter.alloc_total,
-               buffer_leak_memory_counter.free_total );
+    ASSERT_NO_LEAK( buffer_leak );
   }
 }
