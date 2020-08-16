@@ -16,21 +16,29 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stddef.h>
 #include <stumpless/param.h>
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/param.h"
 #include "private/strhelper.h"
 
 struct stumpless_param *
 stumpless_copy_param( const struct stumpless_param *param ) {
+  struct stumpless_param *result;
+
   if( !param ) {
     raise_argument_empty( "param is NULL" );
     return NULL;
 
-  } else {
-    return stumpless_new_param( param->name, param->value );
   }
+
+  lock_param( param );
+  result = stumpless_new_param( param->name, param->value );
+  unlock_param( param );
+
+  return result;
 }
 
 void
@@ -39,6 +47,7 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
     return;
   }
 
+  pthread_mutex_destroy( ( pthread_mutex_t * ) &param->param_mutex );
   free_mem( param->name );
   free_mem( param->value );
   free_mem( param );
@@ -95,6 +104,8 @@ stumpless_new_param( const char *name, const char *value ) {
   if( !param->value ) {
     goto fail_value;
   }
+
+  pthread_mutex_init( &param->param_mutex, NULL );
 
   clear_error(  );
   return param;
@@ -169,4 +180,16 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
 
 fail:
   return NULL;
+}
+
+/* private functions */
+
+int
+lock_param( const struct stumpless_param *param ) {
+  return pthread_mutex_lock( ( pthread_mutex_t * ) &param->param_mutex );
+}
+
+int
+unlock_param( const struct stumpless_param *param ) {
+  return pthread_mutex_unlock( ( pthread_mutex_t * ) &param->param_mutex );
 }

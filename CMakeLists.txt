@@ -783,6 +783,11 @@ add_thread_safety_test(file
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 
+add_thread_safety_test(param
+  SOURCES
+    test/thread_safety/param.cpp
+)
+
 add_custom_target(check-thread-safety
   DEPENDS ${STUMPLESS_THREAD_SAFETY_TEST_RUNNERS}
 )
