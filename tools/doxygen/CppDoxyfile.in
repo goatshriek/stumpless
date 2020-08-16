@@ -159,7 +159,6 @@ SEARCH_INCLUDES        = YES
 SKIP_FUNCTION_MACROS   = YES
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
-PERL_PATH              = /usr/bin/perl
 CLASS_DIAGRAMS         = YES
 HIDE_UNDOC_RELATIONS   = YES
 HAVE_DOT               = NO
