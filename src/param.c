@@ -18,6 +18,7 @@
 
 #include <pthread.h>
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/param.h>
 #include "private/error.h"
 #include "private/memory.h"
@@ -55,25 +56,46 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
 
 const char *
 stumpless_get_param_name( const struct stumpless_param *param ) {
+  char *name_copy;
+
   if( !param ) {
     raise_argument_empty( "param is NULL" );
     return NULL;
   }
 
+  lock_param( param );
+  name_copy = alloc_mem( param->name_length + 1 );
+  if( !name_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( name_copy, param->name, param->name_length + 1 );
   clear_error(  );
-  return param->name;
+
+cleanup_and_return:
+  unlock_param( param );
+  return name_copy;
 }
 
 const char *
 stumpless_get_param_value( const struct stumpless_param *param ) {
+  char *value_copy;
+
   if( !param ) {
     raise_argument_empty( "param is NULL" );
     return NULL;
-
   }
 
+  lock_param( param );
+  value_copy = alloc_mem( param->value_length + 1 );
+  if( !value_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( value_copy, param->value, param->value_length + 1 );
   clear_error(  );
-  return param->value;
+
+cleanup_and_return:
+  unlock_param( param );
+  return value_copy;
 }
 
 struct stumpless_param *

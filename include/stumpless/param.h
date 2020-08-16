@@ -51,7 +51,7 @@ struct stumpless_param {
  * versions.
  */
   char *name;
-/** The number of characters in name. */
+/** The number of characters in name (not including the NULL character). */
   size_t name_length;
 /**
  * The value may be any UTF-8 string.
@@ -68,7 +68,7 @@ struct stumpless_param {
  * versions.
  */
   char *value;
-/** The number of characters in value. */
+/** The number of characters in value (not including the NULL character). */
   size_t value_length;
 /** A mutex used to coordinate multi-threaded access to this param. */
   pthread_mutex_t param_mutex;
@@ -108,8 +108,12 @@ void
 stumpless_destroy_param( const struct stumpless_param *param );
 
 /**
- * Returns the name of the given param. The character buffer must not be
- * altered or freed by the caller.
+ * Returns the name of the given param. The character buffer must be freed by
+ * the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
  *
  * @since release v1.6.0
  *
@@ -122,8 +126,12 @@ const char *
 stumpless_get_param_name( const struct stumpless_param *param );
 
 /**
- * Returns the value of the given param. The character buffer must not be
- * altered or freed by the caller.
+ * Returns the value of the given param. The character buffer must be freed by
+ * the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
  *
  * @since release v1.6.0
  *
