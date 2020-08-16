@@ -1,6 +1,5 @@
 ## Remaining functions
 
- - [ ] stumpless
  - [x] stumpless_add_element
  - [ ] stumpless_add_entry
  - [ ] stumpless_add_param
@@ -68,7 +67,6 @@
  - [ ] stumpless_add_message
  - [ ] stumpless_get_wel_insertion_string
  - [ ] stumpless_set_wel_insertion_strings
- - [ ] vstumpless
  - [ ] vstumpless_add_message
  - [ ] vstumpless_new_entry
  - [ ] vstumpless_set_wel_insertion_strings
