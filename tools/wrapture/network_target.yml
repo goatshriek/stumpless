@@ -2,7 +2,7 @@ version: "0.4.2"
 enums:
   - name: "NetworkProtocol"
     doc: "Network protocols used by network targets."
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     includes: "stumpless/target/network.h"
     elements:
       - name: "IPV4"
@@ -13,7 +13,7 @@ enums:
         value: "STUMPLESS_IPV6_NETWORK_PROTOCOL"
   - name: "TransportProtocol"
     doc: "Transport protocols used by network targets."
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     includes: "stumpless/target/network.h"
     elements:
       - name: "TCP"
@@ -27,7 +27,7 @@ classes:
     doc: >
       Network targets allow traditional syslog messages to be sent to a remote
       server. These can use either UDP or TCP over either IPv4 or IPv6.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"

@@ -10,7 +10,7 @@ enums:
       syslog.h if it was available during build, and if there is matching value
       in the standard. Check for the definition of STUMPLESS_SYSLOG_H_COMPATIBLE
       to see if you can rely on this behavior.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     includes: "stumpless/entry.h"
     elements:
       - name: "KERNEL"

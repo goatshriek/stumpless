@@ -2,7 +2,7 @@ version: "0.4.2"
 classes:
   - name: "MemoryManager"
     doc: "Container for memory management functions in Stumpless."
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       # this is a dummy struct simply to get wrapture to work
       name: "stumpless_version"

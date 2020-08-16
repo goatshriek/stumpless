@@ -5,7 +5,7 @@ classes:
       A log entry.
 
       Entries are the basic element of logging in Stumpless.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_entry"
       includes: "stumpless/entry.h"

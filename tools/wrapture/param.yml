@@ -2,7 +2,7 @@ version: "0.4.2"
 classes:
   - name: "Param"
     doc: "A parameter within a structured data element."
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     type: "pointer"
     equivalent-struct:
       name: "stumpless_param"

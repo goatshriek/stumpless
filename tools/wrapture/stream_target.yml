@@ -11,7 +11,7 @@ classes:
 
       Stream targets also provide a quick way to log to stderr and stdout, which
       is not possible with a FileTarget.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"

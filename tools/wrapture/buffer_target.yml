@@ -8,7 +8,7 @@ classes:
 
       Note that callers must handle the wrap-around case, and not assume that
       each read will end in a NULL character, in case a wrap-around occurs.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"

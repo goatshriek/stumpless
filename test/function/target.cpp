@@ -511,28 +511,6 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
-  TEST( Stumpless, Basic ) {
-    char buffer[1000];
-    struct stumpless_target *target;
-    int result;
-
-    target = stumpless_open_buffer_target( "test target",
-                                           buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
-    ASSERT_NOT_NULL( target );
-    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
-
-    result = stumpless( "test message" );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    TestRFC5424Compliance( buffer );
-
-    stumpless_close_buffer_target( target );
-  }
-
   TEST( Stumplog, Basic ) {
     char buffer[1000];
     struct stumpless_target *target;
