@@ -7,7 +7,7 @@
 #include <StumplessException.hpp>
 #include <iostream>
 
-using namespace stumplesscpp;
+using namespace stumpless;
 
 int
 main( int argc, char **argv ) {
