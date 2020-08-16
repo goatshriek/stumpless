@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['targetincompatible',['TargetIncompatible',['../classstumplesscpp_1_1TargetIncompatible.html#a4205083422b5fa62cf15e5ae56803ad5',1,'stumplesscpp::TargetIncompatible']]],
-  ['targetunsupported',['TargetUnsupported',['../classstumplesscpp_1_1TargetUnsupported.html#ab97ea201564d77fc7f92aebf91b888eb',1,'stumplesscpp::TargetUnsupported']]],
-  ['tostring',['ToString',['../classstumplesscpp_1_1Version.html#a26894843f06b3000e41bea0e0f4adec3',1,'stumplesscpp::Version']]],
-  ['transportprotocolunsupported',['TransportProtocolUnsupported',['../classstumplesscpp_1_1TransportProtocolUnsupported.html#aaca59545b00e7c508b960390b4e00a05',1,'stumplesscpp::TransportProtocolUnsupported']]]
+  ['param_355',['Param',['../classstumpless_1_1Param.html#a846b7ce41e7625501ac93e2aad774eb6',1,'stumpless::Param::Param(struct stumpless_param *param)'],['../classstumpless_1_1Param.html#a873ecc97f39ac5bb1675f92940847638',1,'stumpless::Param::Param(const char *name, const char *value)'],['../classstumpless_1_1Param.html#a49c0693115079c6d9d671c70a6d3d3f4',1,'stumpless::Param::Param(const Param &amp;param)']]],
+  ['paramnotfound_356',['ParamNotFound',['../classstumpless_1_1ParamNotFound.html#a9e5879e43b2cc030d845127adba8c623',1,'stumpless::ParamNotFound']]]
 ];

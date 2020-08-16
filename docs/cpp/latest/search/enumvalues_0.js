@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['address_5ffailure',['ADDRESS_FAILURE',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2a78418a10e57febd48ca8fad1e8d7f2ea',1,'stumplesscpp']]],
-  ['alert',['ALERT',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5a320f86f60f25459ba5550e000b2c3929',1,'stumplesscpp::ALERT()'],['../namespacestumplesscpp.html#ab4620ccb92b1578958da6cd144516fb3a320f86f60f25459ba5550e000b2c3929',1,'stumplesscpp::ALERT()']]],
-  ['argument_5fempty',['ARGUMENT_EMPTY',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2a50661f70b60be9c1a50efa1fc1294664',1,'stumplesscpp']]],
-  ['argument_5ftoo_5fbig',['ARGUMENT_TOO_BIG',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2af855321c2f67da229de8629bee72e181',1,'stumplesscpp']]],
-  ['audit',['AUDIT',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5abaf59904c1198705e351e642531e9aed',1,'stumplesscpp']]],
-  ['auth',['AUTH',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5af458afcda462a9ed24f08634cb2ceced',1,'stumplesscpp']]],
-  ['auth2',['AUTH2',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5a345308982add664c23da9f2bf02653fb',1,'stumplesscpp']]]
+  ['address_5ffailure_414',['ADDRESS_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba78418a10e57febd48ca8fad1e8d7f2ea',1,'stumpless']]],
+  ['alert_415',['ALERT',['../namespacestumpless.html#af87f737294ef9fcbc6e3b97d1d7d5726a320f86f60f25459ba5550e000b2c3929',1,'stumpless::ALERT()'],['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29a320f86f60f25459ba5550e000b2c3929',1,'stumpless::ALERT()']]],
+  ['argument_5fempty_416',['ARGUMENT_EMPTY',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba50661f70b60be9c1a50efa1fc1294664',1,'stumpless']]],
+  ['argument_5ftoo_5fbig_417',['ARGUMENT_TOO_BIG',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf855321c2f67da229de8629bee72e181',1,'stumpless']]],
+  ['audit_418',['AUDIT',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29abaf59904c1198705e351e642531e9aed',1,'stumpless']]],
+  ['auth_419',['AUTH',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29af458afcda462a9ed24f08634cb2ceced',1,'stumpless']]],
+  ['auth2_420',['AUTH2',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29a345308982add664c23da9f2bf02653fb',1,'stumpless']]]
 ];

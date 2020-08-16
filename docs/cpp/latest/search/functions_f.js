@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['weltarget',['WelTarget',['../classstumplesscpp_1_1WelTarget.html#a5d8e6b27e1575ce50cd7f4a8b64fb931',1,'stumplesscpp::WelTarget::WelTarget(struct stumpless_target *equivalent)'],['../classstumplesscpp_1_1WelTarget.html#ac273eda7f002c23a2769d032eac8330a',1,'stumplesscpp::WelTarget::WelTarget(const char *name, int options)'],['../classstumplesscpp_1_1WelTarget.html#a862a3e486517c2f8c08757449aba81ea',1,'stumplesscpp::WelTarget::WelTarget(const char *server, const char *name, int options)']]],
-  ['windowseventlogclosefailure',['WindowsEventLogCloseFailure',['../classstumplesscpp_1_1WindowsEventLogCloseFailure.html#af6608e03f246528ba1fedd944c1881a4',1,'stumplesscpp::WindowsEventLogCloseFailure']]],
-  ['windowseventlogopenfailure',['WindowsEventLogOpenFailure',['../classstumplesscpp_1_1WindowsEventLogOpenFailure.html#adc6f53804f226dae0d568041ee608539',1,'stumplesscpp::WindowsEventLogOpenFailure']]]
+  ['unsetoption_388',['UnsetOption',['../classstumpless_1_1BufferTarget.html#ad663c0da17d993da9c8c261e9b7445c7',1,'stumpless::BufferTarget::UnsetOption()'],['../classstumpless_1_1FileTarget.html#a936b90e3c27443c2e431d4f4f545d540',1,'stumpless::FileTarget::UnsetOption()'],['../classstumpless_1_1NetworkTarget.html#a179052843538845fe7a13dc55ac04aca',1,'stumpless::NetworkTarget::UnsetOption()'],['../classstumpless_1_1SocketTarget.html#a2da53b6fa2fa1762479dd422996284d6',1,'stumpless::SocketTarget::UnsetOption()'],['../classstumpless_1_1StreamTarget.html#a9ce0fe42001747797b5db794f62dc15c',1,'stumpless::StreamTarget::UnsetOption()']]]
 ];

@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['target_5fincompatible',['TARGET_INCOMPATIBLE',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2af0ca81452fb882204f8ac4de620d616a',1,'stumplesscpp']]],
-  ['target_5funsupported',['TARGET_UNSUPPORTED',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2a4ae202bdc496eb3aadd5f10b925ace54',1,'stumplesscpp']]],
-  ['tcp',['TCP',['../namespacestumplesscpp.html#a592f715c0afdeb45e7937312198d3a33ab136ef5f6a01d816991fe3cf7a6ac763',1,'stumplesscpp']]],
-  ['transport_5fprotocol_5funsupported',['TRANSPORT_PROTOCOL_UNSUPPORTED',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2afb1d67d576efad86d8f41b4a72827bb4',1,'stumplesscpp']]]
+  ['socket_5fconnect_5ffailure_457',['SOCKET_CONNECT_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baff55f8f36c08c3e7cc042ab25d21e602',1,'stumpless']]],
+  ['socket_5ffailure_458',['SOCKET_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba3562f69744a0bd8da7a7445125aee3db',1,'stumpless']]],
+  ['socket_5fsend_5ffailure_459',['SOCKET_SEND_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bacc8c5928b9a91d01b153da9a62eb260c',1,'stumpless']]],
+  ['stream_5fwrite_5ffailure_460',['STREAM_WRITE_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0badb604f6f30e165e823e3b4984752b323',1,'stumpless']]],
+  ['syslog_461',['SYSLOG',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29a944a2117e503628e99b31fc28b8bd483',1,'stumpless']]]
 ];

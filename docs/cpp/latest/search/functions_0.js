@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['addelement',['AddElement',['../classstumplesscpp_1_1Entry.html#ade890b308e4d77da9bf4988015dae0e5',1,'stumplesscpp::Entry::AddElement(Element &amp;element)'],['../classstumplesscpp_1_1Entry.html#a6462a828ff23d114afff4cefc4fe1461',1,'stumplesscpp::Entry::AddElement(Element *element)']]],
-  ['addparam',['AddParam',['../classstumplesscpp_1_1Element.html#a1d8203492881ccdb7b6d57fc81fcc246',1,'stumplesscpp::Element::AddParam(Param &amp;new_param)'],['../classstumplesscpp_1_1Element.html#acbf16c7c8b95b1e7865c4c12fc715e98',1,'stumplesscpp::Element::AddParam(Param *new_param)']]],
-  ['addressfailure',['AddressFailure',['../classstumplesscpp_1_1AddressFailure.html#a8dfda65a2ce67adf9bde6aa84e1a630c',1,'stumplesscpp::AddressFailure']]],
-  ['argumentempty',['ArgumentEmpty',['../classstumplesscpp_1_1ArgumentEmpty.html#a99372902e5b59a60634c754b8ebfb9c7',1,'stumplesscpp::ArgumentEmpty']]],
-  ['argumenttoobig',['ArgumentTooBig',['../classstumplesscpp_1_1ArgumentTooBig.html#a0545b4fd72530695754ee0c083b4248c',1,'stumplesscpp::ArgumentTooBig']]]
+  ['addelement_296',['AddElement',['../classstumpless_1_1Entry.html#a57892057b530c5cfff6344d4c60f597b',1,'stumpless::Entry::AddElement(Element &amp;element)'],['../classstumpless_1_1Entry.html#ae89c7f2a64e1ba19a9e6b5e29ae3a091',1,'stumpless::Entry::AddElement(Element *element)'],['../classstumpless_1_1Entry.html#aebf1b0937d4b1bf82c02c024a8e6142d',1,'stumpless::Entry::AddElement(const char *name)']]],
+  ['addparam_297',['AddParam',['../classstumpless_1_1Element.html#a1a3bb7cee0c5d9ee55ed928147899063',1,'stumpless::Element::AddParam(Param &amp;new_param)'],['../classstumpless_1_1Element.html#a504e2e1b880439c7f44b25972462481b',1,'stumpless::Element::AddParam(Param *new_param)'],['../classstumpless_1_1Element.html#a427406b302781083c79f046c885999ae',1,'stumpless::Element::AddParam(const char *param_name, const char *param_value)'],['../classstumpless_1_1Entry.html#acef1d1a63e9487ca3fe19ef876288a09',1,'stumpless::Entry::AddParam()']]],
+  ['addressfailure_298',['AddressFailure',['../classstumpless_1_1AddressFailure.html#a2e1991e8c0c76feb49e49ad7e43bd0f9',1,'stumpless::AddressFailure']]],
+  ['argumentempty_299',['ArgumentEmpty',['../classstumpless_1_1ArgumentEmpty.html#adb2957e289599b01cccb280c1a6169e6',1,'stumpless::ArgumentEmpty']]],
+  ['argumenttoobig_300',['ArgumentTooBig',['../classstumpless_1_1ArgumentTooBig.html#a09617f269fa9c20971e6a3f55409b1e6',1,'stumpless::ArgumentTooBig']]]
 ];

@@ -1,7 +1,7 @@
 ---
 title: C Documentation
 keywords: doxygen, stumpless, c
-last_updated: July 31, 2020
+last_updated: August 16, 2020
 summary: "Documentation for the latest version of Stumpless."
 permalink: docs/c/latest/index.html
 ---
@@ -12,7 +12,7 @@ permalink: docs/c/latest/index.html
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.19"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>stumpless: Stumpless</title>
+<title>stumpless: Main Page</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,11 +70,15 @@ $(function() {
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Stumpless </div>  </div>
+<div class="title">stumpless Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__mnt_c_Users_reall_code_stumpless_README"></a> <a href="https://travis-ci.com/goatshriek/stumpless"><img src="https://travis-ci.com/goatshriek/stumpless.svg?branch=latest" alt="Travis Build Status" style="pointer-events: none;" class="inline"/></a> <a href="https://ci.appveyor.com/project/goatshriek/stumpless"><img src="https://ci.appveyor.com/api/projects/status/uwied5cn5jujl4d2/branch/latest?svg=true" alt="AppVeyor Build Status" class="inline"/></a> <a href="https://codecov.io/gh/goatshriek/stumpless"><img src="https://codecov.io/gh/goatshriek/stumpless/branch/latest/graph/badge.svg" alt="Coverage Report" style="pointer-events: none;" class="inline"/></a> <a href="https://sonarcloud.io/dashboard?id=stumpless"><img src="https://sonarcloud.io/api/project_badges/measure?project=stumpless&amp;metric=alert_status" alt="SonarCloud Status" class="inline"/></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Apache 2.0 License" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg" alt="Contributor Covenant" style="pointer-events: none;" class="inline"/></a></p>
-<p>A C logging library built for high performance and a rich feature set. Check out our <a href="https://github.com/goatshriek/stumpless/blob/latest/docs/vision.md">vision</a> to see what we are all about!</p>
+<div class="textblock"><p><a class="anchor" id="md__mnt_c_Users_reall_code_stumpless_README"></a><img src="assets/logo-and-name.png" alt="Stumpless logo" class="inline" style="width:450px"/></p>
+<p><b>A C logging library built for high performance and a rich feature set.</b></p>
+<p><a href="https://travis-ci.com/goatshriek/stumpless"><img src="https://travis-ci.com/goatshriek/stumpless.svg?branch=latest" alt="Travis Build Status" style="pointer-events: none;" class="inline"/></a> <a href="https://ci.appveyor.com/project/goatshriek/stumpless"><img src="https://ci.appveyor.com/api/projects/status/uwied5cn5jujl4d2/branch/latest?svg=true" alt="AppVeyor Build Status" class="inline"/></a> <a href="https://codecov.io/gh/goatshriek/stumpless"><img src="https://codecov.io/gh/goatshriek/stumpless/branch/latest/graph/badge.svg" alt="Coverage Report" style="pointer-events: none;" class="inline"/></a> <a href="https://sonarcloud.io/dashboard?id=stumpless"><img src="https://sonarcloud.io/api/project_badges/measure?project=stumpless&amp;metric=alert_status" alt="SonarCloud Status" class="inline"/></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Apache 2.0 License" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg" alt="Contributor Covenant" style="pointer-events: none;" class="inline"/></a></p>
+<p><a href="#autotoc_md0">Key Features</a> | <a href="#autotoc_md1">Download and Build</a> | <a href="#autotoc_md2">Basic Usage</a> | <a href="#autotoc_md6">Contributing</a></p>
+<h2><a class="anchor" id="autotoc_md0"></a>
+Key Features</h2>
 <p>Stumpless offers a robust set of features to make logging in C faster and easier:</p><ul>
 <li>cross-platform builds on Linux, Windows, MacOSX, Cygwin, and more</li>
 <li>easy logging to network targets like Splunk or rsyslog servers</li>
@@ -83,8 +87,30 @@ $(function() {
 <li>an extensive unit testing suite and continuous integration</li>
 <li>easy-access <a href="https://goatshriek.github.io/stumpless/docs/c/latest/index.html">documentation</a> and <a href="https://github.com/goatshriek/stumpless/tree/latest/docs/examples">examples</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1"></a>
-Basic Logging Functions</h1>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Quick Build and Install</h2>
+<p>Stumpless only requires cmake and a cmake-supported build toolchain (like GCC or Visual Studio) to build. For a system using the standard GNU make toolchain, you can simply do:</p>
+<div class="fragment"><div class="line"># cloning the latest version of the source tree</div>
+<div class="line">git clone git@github.com:goatshriek/stumpless.git</div>
+<div class="line"> </div>
+<div class="line"># creating a new build directory</div>
+<div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line"> </div>
+<div class="line"># configuring the new build</div>
+<div class="line">cmake ../stumpless</div>
+<div class="line"> </div>
+<div class="line"># building stumpless (with 4 threads - adjust as desired)</div>
+<div class="line">make -j 4 all</div>
+<div class="line"> </div>
+<div class="line"># install the library (you probably need sudo to do this)</div>
+<div class="line">sudo make install</div>
+</div><!-- fragment --><p>Check out the Installation Instructions for more detail on building and installing stumpless.</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Basic Usage</h2>
+<p>The following code snippets show the most common ways to use stumpless.</p>
+<h3><a class="anchor" id="autotoc_md3"></a>
+Basic Logging Functions</h3>
 <p>The simplest way to get started is to use the <code>stumplog</code> function as a direct replacement for the standard library's <code>syslog</code> function:</p>
 <div class="fragment"><div class="line"><span class="comment">// if you&#39;re used to doing this:</span></div>
 <div class="line">syslog( LOG_INFO | LOG_USER, <span class="stringliteral">&quot;My message&quot;</span> );</div>
@@ -113,8 +139,8 @@ Basic Logging Functions</h1>
 <div class="line">                       <span class="stringliteral">&quot;Login attempt failure #%d for user %s&quot;</span>,</div>
 <div class="line">                       count,</div>
 <div class="line">                       username );</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md2"></a>
-Severity Shorthand</h1>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md4"></a>
+Severity Shorthand</h3>
 <p>It's common to specify severity levels directly in logging calls, so stumpless provides some macro functions to make this less verbose and more efficient. For example, to log messages with a severity of INFO, you can do this:</p>
 <div class="fragment"><div class="line"><a class="code" href="info_8h.html#a17d6fc25c971a6c4ac3bd02c14ba48a5">stump_i</a>( <span class="stringliteral">&quot;this gets logged as an info message&quot;</span> );</div>
 </div><!-- fragment --><p>Using these functions has the added benefit that they can be removed at compile time by simply defining the <code>STUMPLESS_ENABLE_UPTO</code> or <code>STUMPLESS_DISABLE_DOWNTO</code> symbols. This makes it easy to change logging levels between builds, for example to have prod and debug versions without differences in their source code.</p>
@@ -129,11 +155,16 @@ Severity Shorthand</h1>
 <div class="line"><span class="comment">// this debugging message is completely removed: no runtime impact whatsoever</span></div>
 <div class="line"><a class="code" href="debug_8h.html#a88301d0241ec06830d9cb1d6c43efaaa">stump_d</a>( <span class="stringliteral">&quot;DEBUG info: %d, %d, %s&quot;</span>, thing_1, thing_2, stringy_thingy );</div>
 </div><!-- fragment --><p>Check out the headers in <a href="include/stumpless/level">stumpless/level</a> to see the full list of severity shorthand functions, or the <a href="docs/examples/severity_level">severity level example</a> to see a complete program in action.</p>
-<h1><a class="anchor" id="autotoc_md3"></a>
-Even more examples</h1>
-<p>For more detailed examples of the above scenarios, usage of specific target types, how to handle more complicated message structures, and more check out the <a href="https://github.com/goatshriek/stumpless/tree/latest/docs/examples">examples</a>. The examples also include annoted example code files to compile, run, and modify to get you started.</p>
-<h1><a class="anchor" id="autotoc_md4"></a>
-Further Documentation</h1>
+<h3><a class="anchor" id="autotoc_md5"></a>
+Even more examples</h3>
+<p>For more detailed examples of the above scenarios, usage of specific target types, how to handle more complicated message structures, and more check out the <a href="docs/examples">examples</a>. These include annoted example code files to compile, run, and modify to get you started.</p>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Contributing</h2>
+<p>Notice a problem or have a feature request? Just create an issue using one of the templates, and we will respond as quickly as we can. You can also look at the project's Contribution Guidelines for more details on the different ways you can give back to the open source community!</p>
+<p>If you want to actually write some code or make an update yourself, take a look at the development guide to get a detailed orientation.</p>
+<p>Or if you just want to say thanks or drop me a private message, please feel free to do so in an <a href="joelanderson333@gmail.com">email</a>!</p>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Further Documentation</h2>
 <p>If you're curious about how something in stumpless works that isn't explained here, you can check the appropriate section of the documentation, stored in the docs folder of the repository. Folders in the repository contain their own README files that detail what they contain and any other relevant information. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
@@ -148,7 +179,7 @@ Further Documentation</h1>
 <div class="ttc" id="afacility_8h_html_ae960e2009518c849de9f1a169d527248"><div class="ttname"><a href="facility_8h.html#ae960e2009518c849de9f1a169d527248">STUMPLESS_FACILITY_USER</a></div><div class="ttdeci">#define STUMPLESS_FACILITY_USER</div><div class="ttdoc">User-level messages.</div><div class="ttdef"><b>Definition:</b> facility.h:41</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jul 31 2020 10:34:24 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

@@ -1,18 +1,18 @@
 var searchData=
 [
-  ['addelement',['AddElement',['../classstumplesscpp_1_1Entry.html#ade890b308e4d77da9bf4988015dae0e5',1,'stumplesscpp::Entry::AddElement(Element &amp;element)'],['../classstumplesscpp_1_1Entry.html#a6462a828ff23d114afff4cefc4fe1461',1,'stumplesscpp::Entry::AddElement(Element *element)']]],
-  ['addparam',['AddParam',['../classstumplesscpp_1_1Element.html#a1d8203492881ccdb7b6d57fc81fcc246',1,'stumplesscpp::Element::AddParam(Param &amp;new_param)'],['../classstumplesscpp_1_1Element.html#acbf16c7c8b95b1e7865c4c12fc715e98',1,'stumplesscpp::Element::AddParam(Param *new_param)']]],
-  ['address_5ffailure',['ADDRESS_FAILURE',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2a78418a10e57febd48ca8fad1e8d7f2ea',1,'stumplesscpp']]],
-  ['addressfailure',['AddressFailure',['../classstumplesscpp_1_1AddressFailure.html',1,'stumplesscpp::AddressFailure'],['../classstumplesscpp_1_1AddressFailure.html#a8dfda65a2ce67adf9bde6aa84e1a630c',1,'stumplesscpp::AddressFailure::AddressFailure()']]],
-  ['addressfailure_2ehpp',['AddressFailure.hpp',['../AddressFailure_8hpp.html',1,'']]],
-  ['alert',['ALERT',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5a320f86f60f25459ba5550e000b2c3929',1,'stumplesscpp::ALERT()'],['../namespacestumplesscpp.html#ab4620ccb92b1578958da6cd144516fb3a320f86f60f25459ba5550e000b2c3929',1,'stumplesscpp::ALERT()']]],
-  ['argument_5fempty',['ARGUMENT_EMPTY',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2a50661f70b60be9c1a50efa1fc1294664',1,'stumplesscpp']]],
-  ['argument_5ftoo_5fbig',['ARGUMENT_TOO_BIG',['../namespacestumplesscpp.html#ab8265aeb1beeb222f2d6c40437b352a2af855321c2f67da229de8629bee72e181',1,'stumplesscpp']]],
-  ['argumentempty',['ArgumentEmpty',['../classstumplesscpp_1_1ArgumentEmpty.html',1,'stumplesscpp::ArgumentEmpty'],['../classstumplesscpp_1_1ArgumentEmpty.html#a99372902e5b59a60634c754b8ebfb9c7',1,'stumplesscpp::ArgumentEmpty::ArgumentEmpty()']]],
-  ['argumentempty_2ehpp',['ArgumentEmpty.hpp',['../ArgumentEmpty_8hpp.html',1,'']]],
-  ['argumenttoobig',['ArgumentTooBig',['../classstumplesscpp_1_1ArgumentTooBig.html',1,'stumplesscpp::ArgumentTooBig'],['../classstumplesscpp_1_1ArgumentTooBig.html#a0545b4fd72530695754ee0c083b4248c',1,'stumplesscpp::ArgumentTooBig::ArgumentTooBig()']]],
-  ['argumenttoobig_2ehpp',['ArgumentTooBig.hpp',['../ArgumentTooBig_8hpp.html',1,'']]],
-  ['audit',['AUDIT',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5abaf59904c1198705e351e642531e9aed',1,'stumplesscpp']]],
-  ['auth',['AUTH',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5af458afcda462a9ed24f08634cb2ceced',1,'stumplesscpp']]],
-  ['auth2',['AUTH2',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5a345308982add664c23da9f2bf02653fb',1,'stumplesscpp']]]
+  ['addelement_0',['AddElement',['../classstumpless_1_1Entry.html#a57892057b530c5cfff6344d4c60f597b',1,'stumpless::Entry::AddElement(Element &amp;element)'],['../classstumpless_1_1Entry.html#ae89c7f2a64e1ba19a9e6b5e29ae3a091',1,'stumpless::Entry::AddElement(Element *element)'],['../classstumpless_1_1Entry.html#aebf1b0937d4b1bf82c02c024a8e6142d',1,'stumpless::Entry::AddElement(const char *name)']]],
+  ['addparam_1',['AddParam',['../classstumpless_1_1Element.html#a1a3bb7cee0c5d9ee55ed928147899063',1,'stumpless::Element::AddParam(Param &amp;new_param)'],['../classstumpless_1_1Element.html#a504e2e1b880439c7f44b25972462481b',1,'stumpless::Element::AddParam(Param *new_param)'],['../classstumpless_1_1Element.html#a427406b302781083c79f046c885999ae',1,'stumpless::Element::AddParam(const char *param_name, const char *param_value)'],['../classstumpless_1_1Entry.html#acef1d1a63e9487ca3fe19ef876288a09',1,'stumpless::Entry::AddParam()']]],
+  ['address_5ffailure_2',['ADDRESS_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba78418a10e57febd48ca8fad1e8d7f2ea',1,'stumpless']]],
+  ['addressfailure_3',['AddressFailure',['../classstumpless_1_1AddressFailure.html',1,'stumpless::AddressFailure'],['../classstumpless_1_1AddressFailure.html#a2e1991e8c0c76feb49e49ad7e43bd0f9',1,'stumpless::AddressFailure::AddressFailure()']]],
+  ['addressfailure_2ehpp_4',['AddressFailure.hpp',['../AddressFailure_8hpp.html',1,'']]],
+  ['alert_5',['ALERT',['../namespacestumpless.html#af87f737294ef9fcbc6e3b97d1d7d5726a320f86f60f25459ba5550e000b2c3929',1,'stumpless::ALERT()'],['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29a320f86f60f25459ba5550e000b2c3929',1,'stumpless::ALERT()']]],
+  ['argument_5fempty_6',['ARGUMENT_EMPTY',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba50661f70b60be9c1a50efa1fc1294664',1,'stumpless']]],
+  ['argument_5ftoo_5fbig_7',['ARGUMENT_TOO_BIG',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf855321c2f67da229de8629bee72e181',1,'stumpless']]],
+  ['argumentempty_8',['ArgumentEmpty',['../classstumpless_1_1ArgumentEmpty.html',1,'stumpless::ArgumentEmpty'],['../classstumpless_1_1ArgumentEmpty.html#adb2957e289599b01cccb280c1a6169e6',1,'stumpless::ArgumentEmpty::ArgumentEmpty()']]],
+  ['argumentempty_2ehpp_9',['ArgumentEmpty.hpp',['../ArgumentEmpty_8hpp.html',1,'']]],
+  ['argumenttoobig_10',['ArgumentTooBig',['../classstumpless_1_1ArgumentTooBig.html',1,'stumpless::ArgumentTooBig'],['../classstumpless_1_1ArgumentTooBig.html#a09617f269fa9c20971e6a3f55409b1e6',1,'stumpless::ArgumentTooBig::ArgumentTooBig()']]],
+  ['argumenttoobig_2ehpp_11',['ArgumentTooBig.hpp',['../ArgumentTooBig_8hpp.html',1,'']]],
+  ['audit_12',['AUDIT',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29abaf59904c1198705e351e642531e9aed',1,'stumpless']]],
+  ['auth_13',['AUTH',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29af458afcda462a9ed24f08634cb2ceced',1,'stumpless']]],
+  ['auth2_14',['AUTH2',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29a345308982add664c23da9f2bf02653fb',1,'stumpless']]]
 ];

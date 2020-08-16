@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['param',['Param',['../classstumplesscpp_1_1Param.html',1,'stumplesscpp']]]
+  ['networkprotocolunsupported_236',['NetworkProtocolUnsupported',['../classstumpless_1_1NetworkProtocolUnsupported.html',1,'stumpless']]],
+  ['networktarget_237',['NetworkTarget',['../classstumpless_1_1NetworkTarget.html',1,'stumpless']]]
 ];

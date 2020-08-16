@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['networkprotocol_2ehpp',['NetworkProtocol.hpp',['../NetworkProtocol_8hpp.html',1,'']]],
-  ['networkprotocolunsupported_2ehpp',['NetworkProtocolUnsupported.hpp',['../NetworkProtocolUnsupported_8hpp.html',1,'']]],
-  ['networktarget_2ehpp',['NetworkTarget.hpp',['../NetworkTarget_8hpp.html',1,'']]]
+  ['memoryallocationfailure_2ehpp_273',['MemoryAllocationFailure.hpp',['../MemoryAllocationFailure_8hpp.html',1,'']]],
+  ['memorymanager_2ehpp_274',['MemoryManager.hpp',['../MemoryManager_8hpp.html',1,'']]]
 ];

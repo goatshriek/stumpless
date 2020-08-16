@@ -1,7 +1,16 @@
 var searchData=
 [
-  ['udp',['UDP',['../namespacestumplesscpp.html#a592f715c0afdeb45e7937312198d3a33af5ef036b4d8b630721e51fe23489fbc9',1,'stumplesscpp']]],
-  ['unsetoption',['UnsetOption',['../classstumplesscpp_1_1BufferTarget.html#a15571d4cbb61c85d28b5dc2fde0a8b0a',1,'stumplesscpp::BufferTarget::UnsetOption()'],['../classstumplesscpp_1_1FileTarget.html#ac6188679b697f5979d9129f63786fefe',1,'stumplesscpp::FileTarget::UnsetOption()'],['../classstumplesscpp_1_1NetworkTarget.html#af5cf6217b17a5e27419161f3c4ca59f3',1,'stumplesscpp::NetworkTarget::UnsetOption()'],['../classstumplesscpp_1_1SocketTarget.html#a2191cc0c229552a1421a45e0236ce595',1,'stumplesscpp::SocketTarget::UnsetOption()'],['../classstumplesscpp_1_1StreamTarget.html#a0105e612d2e3669862116f282bd908e2',1,'stumplesscpp::StreamTarget::UnsetOption()'],['../classstumplesscpp_1_1WelTarget.html#a3aabcf586649f4d63957fad9f4da9680',1,'stumplesscpp::WelTarget::UnsetOption()']]],
-  ['user',['USER',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5a2e40ad879e955201df4dedbf8d479a12',1,'stumplesscpp']]],
-  ['uucp',['UUCP',['../namespacestumplesscpp.html#ac2517ef003ba924259c6d05d563e70a5a46e0017f9f8bd4ac1f18904cfa50aeaf',1,'stumplesscpp']]]
+  ['target_5fincompatible_185',['TARGET_INCOMPATIBLE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf0ca81452fb882204f8ac4de620d616a',1,'stumpless']]],
+  ['target_5funsupported_186',['TARGET_UNSUPPORTED',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba4ae202bdc496eb3aadd5f10b925ace54',1,'stumpless']]],
+  ['targetincompatible_187',['TargetIncompatible',['../classstumpless_1_1TargetIncompatible.html',1,'stumpless::TargetIncompatible'],['../classstumpless_1_1TargetIncompatible.html#acf46be09a87b27378574e7516fea6cf4',1,'stumpless::TargetIncompatible::TargetIncompatible()']]],
+  ['targetincompatible_2ehpp_188',['TargetIncompatible.hpp',['../TargetIncompatible_8hpp.html',1,'']]],
+  ['targetunsupported_189',['TargetUnsupported',['../classstumpless_1_1TargetUnsupported.html',1,'stumpless::TargetUnsupported'],['../classstumpless_1_1TargetUnsupported.html#a275a4eb41e3714523385c80f25ae8a92',1,'stumpless::TargetUnsupported::TargetUnsupported()']]],
+  ['targetunsupported_2ehpp_190',['TargetUnsupported.hpp',['../TargetUnsupported_8hpp.html',1,'']]],
+  ['tcp_191',['TCP',['../namespacestumpless.html#ac8cebf3fbf3ad110a87ed9dbcb103c4bab136ef5f6a01d816991fe3cf7a6ac763',1,'stumpless']]],
+  ['tostring_192',['ToString',['../classstumpless_1_1Version.html#a7c743ce61c9821f3b71ea66b5a61a94b',1,'stumpless::Version']]],
+  ['transport_5fprotocol_5funsupported_193',['TRANSPORT_PROTOCOL_UNSUPPORTED',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bafb1d67d576efad86d8f41b4a72827bb4',1,'stumpless']]],
+  ['transportprotocol_194',['TransportProtocol',['../namespacestumpless.html#ac8cebf3fbf3ad110a87ed9dbcb103c4b',1,'stumpless']]],
+  ['transportprotocol_2ehpp_195',['TransportProtocol.hpp',['../TransportProtocol_8hpp.html',1,'']]],
+  ['transportprotocolunsupported_196',['TransportProtocolUnsupported',['../classstumpless_1_1TransportProtocolUnsupported.html',1,'stumpless::TransportProtocolUnsupported'],['../classstumpless_1_1TransportProtocolUnsupported.html#ac85a873806f6388a2b6802f4a5f2e64c',1,'stumpless::TransportProtocolUnsupported::TransportProtocolUnsupported()']]],
+  ['transportprotocolunsupported_2ehpp_197',['TransportProtocolUnsupported.hpp',['../TransportProtocolUnsupported_8hpp.html',1,'']]]
 ];

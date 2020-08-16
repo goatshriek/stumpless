@@ -113,9 +113,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">stump</a> (const char *message,...)</td></tr>
 <tr class="memdesc:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">More...</a><br /></td></tr>
 <tr class="separator:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9d298f8841ae8c2c9ef07c3e3a8614b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa9d298f8841ae8c2c9ef07c3e3a8614b">stumpless</a> (const char *message,...)</td></tr>
-<tr class="memdesc:aa9d298f8841ae8c2c9ef07c3e3a8614b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="target_8h.html#aa9d298f8841ae8c2c9ef07c3e3a8614b">More...</a><br /></td></tr>
-<tr class="separator:aa9d298f8841ae8c2c9ef07c3e3a8614b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a020475261f73fba86caa8bb1f3d7f4df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df">stumplog</a> (int priority, const char *message,...)</td></tr>
 <tr class="memdesc:a020475261f73fba86caa8bb1f3d7f4df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target with the given priority.  <a href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df">More...</a><br /></td></tr>
 <tr class="separator:a020475261f73fba86caa8bb1f3d7f4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,9 +167,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a02f3968128fa180088368881e96074bb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a02f3968128fa180088368881e96074bb">vstump</a> (const char *message, va_list subs)</td></tr>
 <tr class="memdesc:a02f3968128fa180088368881e96074bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="target_8h.html#a02f3968128fa180088368881e96074bb">More...</a><br /></td></tr>
 <tr class="separator:a02f3968128fa180088368881e96074bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06e21a8be4e949205f58029770c377da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a06e21a8be4e949205f58029770c377da">vstumpless</a> (const char *message, va_list subs)</td></tr>
-<tr class="memdesc:a06e21a8be4e949205f58029770c377da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="target_8h.html#a06e21a8be4e949205f58029770c377da">More...</a><br /></td></tr>
-<tr class="separator:a06e21a8be4e949205f58029770c377da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3ad35a684b4d4cdcac9eefa36c459c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa3ad35a684b4d4cdcac9eefa36c459c5">vstumplog</a> (int priority, const char *message, va_list subs)</td></tr>
 <tr class="memdesc:aa3ad35a684b4d4cdcac9eefa36c459c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target with the given priority.  <a href="target_8h.html#aa3ad35a684b4d4cdcac9eefa36c459c5">More...</a><br /></td></tr>
 <tr class="separator:aa3ad35a684b4d4cdcac9eefa36c459c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -277,45 +271,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Logs a message to the default target. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
-    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="aa9d298f8841ae8c2c9ef07c3e3a8614b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9d298f8841ae8c2c9ef07c3e3a8614b">&#9670;&nbsp;</a></span>stumpless()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int stumpless </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Logs a message to the default target. </p>
-<p>This is an alias for the stump function, which is preferred. This function will be deprecated in a future release.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
@@ -557,7 +512,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the default target. </p>
-<p>The default target is opened when a logging call is made with no target open. It will not be opened until either this happens or a call to this function is made. It will not be closed until a call to <a class="el" href="memory_8h.html#a290757bff049c42f1f7d3cb387f04072" title="Frees all memory allocated internally, and performs any other necessary cleanup.">stumpless_free_all()</a> is made.</p>
+<p>The default target is opened when a logging call is made with no target open. It will not be opened until either this happens or a call to this function is made. It will not be closed until a call to <a class="el" href="memory_8h.html#a290757bff049c42f1f7d3cb387f04072" title="Closes the default target if it has been opened, frees all memory allocated internally,...">stumpless_free_all()</a> is made.</p>
 <p>Be careful not to confuse this target with the current target, which is the last target opened or set via <a class="el" href="target_8h.html#a33ab9d3dd3d55f39c1df420dbc8327d4" title="Sets the target used when one is not provided.">stumpless_set_current_target()</a>. While these will return the same target in some cases, such as if they are called before opening any targets, they are not equivalent.</p>
 <p>The default target type will change depending on the configuration of the system configuration. If Windows Event Log targets are supported, then the default target will log to an event log named <code>STUMPLESS_DEFAULT_TARGET_NAME</code>. If Windows Event Log targets are not supported and socket targets are, then the default target will point at the socket named in STUMPLESS_DEFAULT_SOCKET, which will be /var/run/syslog if it existed at build time, or else /dev/log. If neither of these target types are supported then a file target is opened to log to the file named in <code>STUMPLESS_DEFAULT_FILE</code>.</p>
 <p>The default target will not have any options set, and will have a default facility of <code>STUMPLESS_FACILITY_USER</code>. These settings may be modified by calling the appropriate modifiers on the target after retrieving it with this function.</p>
@@ -650,7 +605,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the target used when one is not provided. </p>
-<p>Without being set, the current target will be the last one opened, or the default target if a target has not yet been opened. The current target is used by functions like <a class="el" href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df" title="Logs a message to the default target with the given priority.">stumplog()</a> and <a class="el" href="target_8h.html#aa9d298f8841ae8c2c9ef07c3e3a8614b" title="Logs a message to the default target.">stumpless()</a> where a target is not explicitly provided to the call.</p>
+<p>Without being set, the current target will be the last one opened, or the default target if a target has not yet been opened. The current target is used by functions like <a class="el" href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df" title="Logs a message to the default target with the given priority.">stumplog()</a> and stumpless() where a target is not explicitly provided to the call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to use as the current target. </td></tr>
@@ -962,45 +917,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a06e21a8be4e949205f58029770c377da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06e21a8be4e949205f58029770c377da">&#9670;&nbsp;</a></span>vstumpless()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vstumpless </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">va_list&#160;</td>
-          <td class="paramname"><em>subs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Logs a message to the default target. </p>
-<p>This is an alias for the vstump function, which is preferred. This function will be deprecated in a future release.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
-    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call it.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
 <a id="a4115e8973baebd2124dad14dd1be36b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4115e8973baebd2124dad14dd1be36b2">&#9670;&nbsp;</a></span>vstumpless_add_log()</h2>
 
@@ -1147,7 +1063,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jul 31 2020 10:34:23 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['current_5fversion',['CURRENT_VERSION',['../classstumplesscpp_1_1Version.html#a6bf3379f22ce3e61b3b0951afd107c78',1,'stumplesscpp::Version']]]
+  ['current_5fversion_400',['CURRENT_VERSION',['../classstumpless_1_1Version.html#a695509853e02c097438c7dee90e4c9ed',1,'stumpless::Version']]]
 ];

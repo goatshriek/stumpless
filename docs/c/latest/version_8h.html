@@ -83,6 +83,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2dfd4da5c3680153f7e19f782129a21d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__version.html">stumpless_version</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="version_8h.html#a2dfd4da5c3680153f7e19f782129a21d">stumpless_get_version</a> (void)</td></tr>
 <tr class="memdesc:a2dfd4da5c3680153f7e19f782129a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the version of code the library was built with.  <a href="version_8h.html#a2dfd4da5c3680153f7e19f782129a21d">More...</a><br /></td></tr>
 <tr class="separator:a2dfd4da5c3680153f7e19f782129a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8c32210c8ef9a111515c090abbd4b73"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="version_8h.html#ae8c32210c8ef9a111515c090abbd4b73">stumpless_version_cmp</a> (const struct <a class="el" href="structstumpless__version.html">stumpless_version</a> *version_x, const struct <a class="el" href="structstumpless__version.html">stumpless_version</a> *version_y)</td></tr>
+<tr class="memdesc:ae8c32210c8ef9a111515c090abbd4b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares the version of two given <a class="el" href="structstumpless__version.html" title="A description of a library version.">stumpless_version</a> struct.  <a href="version_8h.html#ae8c32210c8ef9a111515c090abbd4b73">More...</a><br /></td></tr>
+<tr class="separator:ae8c32210c8ef9a111515c090abbd4b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58bdf2b546e20783c5e0054ac6772dda"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="version_8h.html#a58bdf2b546e20783c5e0054ac6772dda">stumpless_version_to_string</a> (const struct <a class="el" href="structstumpless__version.html">stumpless_version</a> *version)</td></tr>
 <tr class="memdesc:a58bdf2b546e20783c5e0054ac6772dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a string representation of the given version.  <a href="version_8h.html#a58bdf2b546e20783c5e0054ac6772dda">More...</a><br /></td></tr>
 <tr class="separator:a58bdf2b546e20783c5e0054ac6772dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,6 +111,49 @@ Functions</h2></td></tr>
 
 <p>Gets the version of code the library was built with. </p>
 <dl class="section return"><dt>Returns</dt><dd>The version of code used by the library build. </dd></dl>
+
+</div>
+</div>
+<a id="ae8c32210c8ef9a111515c090abbd4b73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8c32210c8ef9a111515c090abbd4b73">&#9670;&nbsp;</a></span>stumpless_version_cmp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int stumpless_version_cmp </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__version.html">stumpless_version</a> *&#160;</td>
+          <td class="paramname"><em>version_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__version.html">stumpless_version</a> *&#160;</td>
+          <td class="paramname"><em>version_y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compares the version of two given <a class="el" href="structstumpless__version.html" title="A description of a library version.">stumpless_version</a> struct. </p>
+<p>This function make use of a similar convention used by the standard library's strcmp function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version_x,version_y</td><td>Two given version(const) to be compared.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if version numbers are the same, <br  />
+ 1 if version_x-&gt;patch - version_y-&gt;patch &gt; 0, -1 if &lt; 0 <br  />
+ 10 if version_x-&gt;minor - version_y-&gt;minor &gt; 0, -10 if &lt; 0 <br  />
+ 100 if version_x-&gt;major - version_y-&gt;major &gt; 0, -100 if &lt; 0 <br  />
+ INT_MAX if one of the version pointers is null. <br  />
+ </dd></dl>
 
 </div>
 </div>
@@ -142,7 +188,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jul 31 2020 10:34:23 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

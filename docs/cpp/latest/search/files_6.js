@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['memoryallocationfailure_2ehpp',['MemoryAllocationFailure.hpp',['../MemoryAllocationFailure_8hpp.html',1,'']]],
-  ['memorymanager_2ehpp',['MemoryManager.hpp',['../MemoryManager_8hpp.html',1,'']]]
+  ['indexoutofbounds_2ehpp_269',['IndexOutOfBounds.hpp',['../IndexOutOfBounds_8hpp.html',1,'']]],
+  ['invalidfacility_2ehpp_270',['InvalidFacility.hpp',['../InvalidFacility_8hpp.html',1,'']]],
+  ['invalidid_2ehpp_271',['InvalidId.hpp',['../InvalidId_8hpp.html',1,'']]],
+  ['invalidseverity_2ehpp_272',['InvalidSeverity.hpp',['../InvalidSeverity_8hpp.html',1,'']]]
 ];
