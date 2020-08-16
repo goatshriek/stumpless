@@ -23,6 +23,7 @@
 #ifndef __STUMPLESS_PARAM_H
 #  define __STUMPLESS_PARAM_H
 
+#  include <pthread.h>
 #  include <stddef.h>
 
 #  ifdef __cplusplus
@@ -69,6 +70,8 @@ struct stumpless_param {
   char *value;
 /** The number of characters in value. */
   size_t value_length;
+/** A mutex used to coordinate multi-threaded access to this param. */
+  pthread_mutex_t param_mutex;
 };
 
 /**
