@@ -144,8 +144,9 @@ fail:
 
 struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
-  char *temp_name;
-  size_t temp_size;
+  char *new_name;
+  size_t new_size;
+  char *old_name;
 
   if( !param ) {
     raise_argument_empty( "param is NULL" );
@@ -157,15 +158,18 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
     goto fail;
   }
 
-  temp_name = copy_cstring_with_length( name, &temp_size );
-  if( !temp_name ) {
+  new_name = copy_cstring_with_length( name, &new_size );
+  if( !new_name ) {
     goto fail;
   }
 
-  free_mem( param->name );
-  param->name = temp_name;
-  param->name_length = temp_size;
+  lock_param( param );
+  old_name = param->name;
+  param->name = new_name;
+  param->name_length = new_size;
+  unlock_param( param );
 
+  free_mem( old_name );
   clear_error(  );
   return param;
 
@@ -175,8 +179,9 @@ fail:
 
 struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
-  char *temp_value;
-  size_t temp_size;
+  char *new_value;
+  size_t new_size;
+  char *old_value;
 
   if( !param ) {
     raise_argument_empty( "param is NULL" );
@@ -188,15 +193,18 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
     goto fail;
   }
 
-  temp_value = copy_cstring_with_length( value, &temp_size );
-  if( !temp_value ) {
+  new_value = copy_cstring_with_length( value, &new_size );
+  if( !new_value ) {
     goto fail;
   }
 
-  free_mem( param->value );
-  param->value = temp_value;
-  param->value_length = temp_size;
+  lock_param( param );
+  old_value = param->value;
+  param->value = new_value;
+  param->value_length = new_size;
+  unlock_param( param );
 
+  free_mem( old_value );
   clear_error(  );
   return param;
 
