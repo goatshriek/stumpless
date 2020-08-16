@@ -6,7 +6,7 @@ classes:
       as needed, and logs are appended to any existing contents.
 
       Events logged to the file will be separated by a newline character.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     constants:
       - name: "DEFAULT_FILE"
         type: "char *"

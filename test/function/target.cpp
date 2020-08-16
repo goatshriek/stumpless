@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2018-2020 Joel E. Anderson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -620,28 +620,6 @@ namespace {
     ASSERT_TRUE( stumpless_get_current_target(  ) == target );
 
     result = stump( "test message" );
-    EXPECT_NO_ERROR;
-    EXPECT_GE( result, 0 );
-
-    TestRFC5424Compliance( buffer );
-
-    stumpless_close_buffer_target( target );
-  }
-
-  TEST( Stumpless, Basic ) {
-    char buffer[1000];
-    struct stumpless_target *target;
-    int result;
-
-    target = stumpless_open_buffer_target( "test target",
-                                           buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
-    ASSERT_NOT_NULL( target );
-    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
-
-    result = stumpless( "test message" );
     EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
 

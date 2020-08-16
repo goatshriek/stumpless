@@ -5,7 +5,7 @@ classes:
       Socket targets allow logs to be sent to a Unix domain socket, like the
       frequently used /dev/log or /var/run/syslog sockets associated with syslog
       daemons.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"

@@ -19,7 +19,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.hpp>
 
-using namespace stumplesscpp;
+using namespace stumpless;
 
 namespace {
   TEST( BuildEntry, WithElement ) {

@@ -23,7 +23,7 @@
 #include <stumpless.hpp>
 #include "test/function/rfc5424.hpp"
 
-using namespace stumplesscpp;
+using namespace stumpless;
 
 namespace {
 

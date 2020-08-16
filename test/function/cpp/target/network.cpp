@@ -20,7 +20,7 @@
 #include <stumpless.h>
 #include <stumpless.hpp>
 
-using namespace stumplesscpp;
+using namespace stumpless;
 
 namespace {
   TEST( CppDefaultTransportPortTest, EqualToStumpless ) {

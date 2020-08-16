@@ -21,7 +21,7 @@
 #include <stumpless.hpp>
 #include <stumpless/option.h>
 
-using namespace stumplesscpp;
+using namespace stumpless;
 
 namespace {
 

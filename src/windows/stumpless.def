@@ -1,6 +1,9 @@
 LIBRARY   STUMPLESS
 EXPORTS
-  stumpless                                     @1
+; added in v2.0.0
+  stumpless_version_cmp                         @1
+
+; added in v1.5.0 and earlier
   stumpless_add_element                         @2
   stumpless_add_entry                           @3
   stumpless_add_param                           @4
@@ -68,7 +71,11 @@ EXPORTS
   stumpless_add_message                         @66
   stumpless_get_wel_insertion_string            @67
   stumpless_set_wel_insertion_strings           @68
-  vstumpless                                    @69
+
+; added in v2.0.0
+  stumpless_get_error_id_string                 @69
+
+; added in v1.5.0 and earlier
   vstumpless_add_message                        @70
   vstumpless_new_entry                          @71
   vstumpless_set_wel_insertion_strings          @72
@@ -85,6 +92,7 @@ EXPORTS
   stumpless_destroy_element_and_contents        @83
   stumpless_destroy_element_only                @84
   stumpless_get_error_id                        @85
+
 ; added in v1.6.0
   stumpless_add_new_element                     @86
   stumpless_add_new_param                       @87
@@ -136,5 +144,3 @@ EXPORTS
   stumpless_set_param_value_by_name             @133
   stump                                         @134
   vstump                                        @135
-  stumpless_get_error_id_string                 @136
-  stumpless_version_cmp                         @137

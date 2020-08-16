@@ -64,18 +64,6 @@ stump( const char *message, ... ) {
   return result;
 }
 
-int
-stumpless( const char *message, ... ) {
-  int result;
-  va_list subs;
-
-  va_start( subs, message );
-  result = vstump( message, subs );
-  va_end( subs );
-
-  return result;
-}
-
 void
 stumplog( int priority, const char *message, ... ) {
   va_list subs;
@@ -449,11 +437,6 @@ vstump( const char *message, va_list subs ) {
   }
 
   return vstumpless_add_message( target, message, subs );
-}
-
-int
-vstumpless( const char *message, va_list subs ) {
-  return vstump( message, subs );
 }
 
 void
