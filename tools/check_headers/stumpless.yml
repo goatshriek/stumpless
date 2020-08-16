@@ -188,7 +188,6 @@
 "stump_i_entry": "stumpless/level/info.h"
 "stump_i_log": "stumpless/level/info.h"
 "stump_i_message": "stumpless/level/info.h"
-"stumpless": "stumpless/target.h"
 "stumpless_add_entry": "stumpless/target.h"
 "stumpless_add_log": "stumpless/target.h"
 "stumpless_add_message": "stumpless/target.h"
