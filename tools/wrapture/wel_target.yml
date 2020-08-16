@@ -4,7 +4,7 @@ classes:
     doc: >
       Windows Event Log (WEL) targets allow messages to be sent to the Windows
       event handling system.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_target"
       includes: "stumpless/target.h"

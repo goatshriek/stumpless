@@ -3,7 +3,7 @@ enums:
   - name: "ErrorId"
     doc: >
       Unique identifiers for library errors.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     includes: "stumpless/error.h"
     elements:
       - name: "ADDRESS_FAILURE"
@@ -89,7 +89,7 @@ enums:
 classes:
   - name: "StumplessException"
     doc: "A general problem has been encountered by the library."
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     parent:
       name: "std::exception"
       includes: "exception"

@@ -2,7 +2,7 @@ version: "0.3.0"
 classes:
   - name: "Version"
     doc: "Describes this version of Stumpless."
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_version"
       includes: "stumpless/version.h"

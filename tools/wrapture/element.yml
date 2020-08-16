@@ -6,7 +6,7 @@ classes:
 
       Elements must have a name, but may not have any parameters. Their
       components must comply with RFC 5424.
-    namespace: "stumplesscpp"
+    namespace: "stumpless"
     equivalent-struct:
       name: "stumpless_element"
       includes: "stumpless/element.h"
