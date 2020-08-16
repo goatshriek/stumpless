@@ -13,11 +13,6 @@ or want to make a suggestion, please submit an issue on the project's
    alternative. This implementation will be done as granularly as possible, and
    will not use any static library-wide locks in order to avoid throughput
    issues in the future.
- * [CHANGE] **`stumpless` function will be removed (use `stump` instead)**
-   As currently named, the function makes it impossible to create a C++
-   namespace named after the library itself. Renaming this function will give it
-   a more meaningful name and also allow a cleaner namespace in the C++
-   bindings.
  * [DEPRECATE] **entry and element destructor synonyms**
    Currently, there are two forms of the destructors for these two structures:
    one that destroys the object itself, and one that destroys the object and all
