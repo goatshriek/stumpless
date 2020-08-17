@@ -12,7 +12,7 @@
  - [ ] stumpless_get_version
  - [ ] stumpless_new_element
  - [ ] stumpless_new_entry
- - [ ] stumpless_new_param
+ - [x] stumpless_new_param
  - [ ] stumpless_open_buffer_target
  - [x] stumpless_set_entry_app_name
  - [x] stumpless_set_free
@@ -88,7 +88,7 @@
  - [x] stumpless_add_new_param_to_entry
  - [ ] stumpless_copy_element
  - [ ] stumpless_copy_entry
- - [ ] stumpless_copy_param
+ - [x] stumpless_copy_param
  - [ ] stumpless_element_has_param
  - [ ] stumpless_entry_has_element
  - [ ] stumpless_get_element_by_index
@@ -109,10 +109,10 @@
  - [ ] stumpless_get_param_by_name
  - [ ] stumpless_get_param_count
  - [ ] stumpless_get_param_index
- - [ ] stumpless_get_param_name
+ - [x] stumpless_get_param_name
  - [ ] stumpless_get_param_name_by_index
  - [ ] stumpless_get_param_name_count
- - [ ] stumpless_get_param_value
+ - [x] stumpless_get_param_value
  - [ ] stumpless_get_param_value_by_index
  - [ ] stumpless_get_param_value_by_name
  - [x] stumpless_has_error
@@ -127,8 +127,8 @@
  - [ ] stumpless_set_entry_prival
  - [ ] stumpless_set_entry_severity
  - [ ] stumpless_set_param
- - [ ] stumpless_set_param_name
- - [ ] stumpless_set_param_value
+ - [x] stumpless_set_param_name
+ - [x] stumpless_set_param_value
  - [ ] stumpless_set_param_value_by_index
  - [ ] stumpless_set_param_value_by_name
  - [ ] stump
