@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <cstdlib>
 #include <gtest/gtest.h>
 #include <sstream>
 #include <stumpless.h>

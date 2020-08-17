@@ -62,8 +62,12 @@ namespace {
   }
 
   TEST_F( ParamTest, GetName ) {
-    EXPECT_STREQ( stumpless_get_param_name( basic_param ), basic_name );
+    const char *name = stumpless_get_param_name( basic_param );
+
+    EXPECT_STREQ( name, basic_name );
     EXPECT_NO_ERROR;
+
+    free( ( void * ) name );
   }
 
   TEST_F( ParamTest, GetValue ) {
