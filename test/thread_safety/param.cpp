@@ -29,14 +29,18 @@ namespace {
   void
   read_param( const struct stumpless_param *param ) {
     struct stumpless_param *copy;
+    const char *name;
+    const char *value;
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
       copy = stumpless_copy_param( param );
 
-      stumpless_get_param_name( param );
-      stumpless_get_param_value( param );
+      name = stumpless_get_param_name( param );
+      value = stumpless_get_param_value( param );
 
       stumpless_destroy_param( copy );
+      free( ( void * ) name );
+      free( ( void * ) value );
     }
   }
 
