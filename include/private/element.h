@@ -21,7 +21,13 @@
 
 #  include <stumpless/element.h>
 
+int
+lock_element( const struct stumpless_element *element );
+
 void
 unchecked_destroy_element( const struct stumpless_element *element );
+
+int
+unlock_element( const struct stumpless_element *element );
 
 #endif /* __STUMPLESS_PRIVATE_ELEMENT_H */

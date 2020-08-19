@@ -158,12 +158,15 @@ stumpless_element_has_param( const struct stumpless_element *element,
     return false;
   }
 
+  lock_element( element );
   for( i = 0; i < element->param_count; i++ ) {
     if( strcmp( element->params[i]->name, name ) == 0 ) {
+      unlock_element( element );
       return true;
     }
   }
 
+  unlock_element( element );
   return false;
 }
 
@@ -350,6 +353,7 @@ stumpless_new_element( const char *name ) {
 
   element->params = NULL;
   element->param_count = 0;
+  pthread_mutex_init( &element->element_mutex, NULL );
 
   clear_error(  );
   return element;
@@ -471,9 +475,21 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
 
 /* private functions */
 
+int
+lock_element( const struct stumpless_element *element ) {
+  pthread_mutex_lock( ( pthread_mutex_t * ) &element->element_mutex );
+}
+
 void
 unchecked_destroy_element( const struct stumpless_element *element ) {
+  pthread_mutex_destroy( &element->element_mutex );
   free_mem( element->params );
   free_mem( element->name );
   free_mem( element );
 }
+
+int
+unlock_element( const struct stumpless_element *element ) {
+  pthread_mutex_unlock( ( pthread_mutex_t * ) &element->element_mutex );
+}
+
