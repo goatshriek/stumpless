@@ -772,6 +772,11 @@ add_custom_target(check
 
 
 # thread safety tests
+add_thread_safety_test(element
+  SOURCES
+    test/thread_safety/element.cpp
+)
+
 add_thread_safety_test(entry
   SOURCES
     test/thread_safety/entry.cpp
