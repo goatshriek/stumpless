@@ -66,17 +66,21 @@ stumpless_add_param( struct stumpless_element *element,
     return NULL;
   }
 
+  lock_element( element );
+
   old_params_size = sizeof( param ) * element->param_count;
   new_params_size = old_params_size + sizeof( param );
 
   new_params = realloc_mem( element->params, new_params_size );
   if( !new_params ) {
+    unlock_element( element );
     return NULL;
   }
 
   new_params[element->param_count] = param;
   element->param_count++;
   element->params = new_params;
+  unlock_element( element );
 
   clear_error(  );
   return element;
@@ -209,16 +213,10 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
   }
 
   lock_element( element );
-  if( index >= element->param_count ) {
-    raise_index_out_of_bounds( "invalid param index", index );
-    goto cleanup_and_return;
-  }
-
-  result = element->params[index];
-  clear_error(  );
-
-cleanup_and_return:
+  result = locked_get_param_by_index( element, index );
   unlock_element( element );
+
+  clear_error(  );
   return result;
 }
 
@@ -476,12 +474,16 @@ stumpless_set_param( struct stumpless_element *element,
     return NULL;
   }
 
+  lock_element( element );
+
   if( index >= element->param_count ) {
+    unlock_element( element );
     raise_index_out_of_bounds( "invalid param index", index );
     return NULL;
   }
 
   element->params[index] = param;
+  unlock_element( element );
 
   clear_error(  );
   return element;
@@ -494,17 +496,28 @@ stumpless_set_param_value_by_index( struct stumpless_element *element,
   struct stumpless_param *param;
   const struct stumpless_param *result;
 
-  param = stumpless_get_param_by_index( element, index );
-  if( !param ) {
+  if( !element ) {
+    raise_argument_empty( "element is NULL" );
     return NULL;
+  }
+
+  lock_element( element );
+  param = locked_get_param_by_index( element, index );
+  if( !param ) {
+    goto fail;
   }
 
   result = stumpless_set_param_value( param, value );
   if( !result ) {
-    return NULL;
+    goto fail;
   }
 
+  unlock_element( element );
   return element;
+
+fail:
+  unlock_element( element );
+  return NULL;
 }
 
 struct stumpless_element *
@@ -543,6 +556,17 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
 int
 lock_element( const struct stumpless_element *element ) {
   pthread_mutex_lock( ( pthread_mutex_t * ) &element->element_mutex );
+}
+
+struct stumpless_param *
+locked_get_param_by_index( const struct stumpless_element *element,
+                           size_t index ) {
+  if( index >= element->param_count ) {
+    raise_index_out_of_bounds( "invalid param index", index );
+    return NULL;
+  }
+
+  return element->params[index];
 }
 
 void

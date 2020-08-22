@@ -19,10 +19,16 @@
 #ifndef __STUMPLESS_PRIVATE_ELEMENT_H
 #  define __STUMPLESS_PRIVATE_ELEMENT_H
 
+#  include <stddef.h>
 #  include <stumpless/element.h>
+#  include <stumpless/param.h>
 
 int
 lock_element( const struct stumpless_element *element );
+
+struct stumpless_param *
+locked_get_param_by_index( const struct stumpless_element *element,
+                           size_t index );
 
 void
 unchecked_destroy_element( const struct stumpless_element *element );

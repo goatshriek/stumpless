@@ -102,6 +102,7 @@
 "lock_entry": "private/entry.h"
 "lock_param": "private/param.h"
 "locked_add_element": "private/entry.h"
+"locked_get_param_by_index": "private/element.h"
 "MALLOC_FAIL": "test/helper/memory_allocation.hpp"
 "MALLOC_FAIL_ON_SIZE": "test/helper/memory_allocation.hpp"
 "MAX_INT_SIZE": "private/inthelper.h"
