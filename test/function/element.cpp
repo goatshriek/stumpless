@@ -33,6 +33,7 @@ namespace {
       struct stumpless_element *basic_element;
       const char *basic_name = "basic-element";
       struct stumpless_element *element_with_params;
+      const char *with_params_name = "element-with-params";
       const char *param_1_name = "param-1";
       const char *param_1_value = "value-1";
       struct stumpless_param *param_1;
@@ -44,7 +45,7 @@ namespace {
       SetUp( void ) {
         basic_element = stumpless_new_element( basic_name );
 
-        element_with_params = stumpless_new_element( "element-with-params" );
+        element_with_params = stumpless_new_element( with_params_name );
 
         param_1 = stumpless_new_param( param_1_name, param_1_value );
         param_2 = stumpless_new_param( param_2_name, param_2_value );
@@ -57,6 +58,8 @@ namespace {
       TearDown( void ) {
         stumpless_destroy_element_and_contents( basic_element );
         stumpless_destroy_element_and_contents( element_with_params );
+
+        stumpless_free_all(  );
       }
   };
 
@@ -66,6 +69,8 @@ namespace {
     const char *new_value = "new-param-value";
     const struct stumpless_element *result;
     const struct stumpless_param *param;
+    const char *new_name_result;
+    const char *new_value_result;
 
     original_param_count = stumpless_get_param_count( basic_element );
 
@@ -78,10 +83,15 @@ namespace {
 
     param = stumpless_get_param_by_index( basic_element, original_param_count );
     EXPECT_NO_ERROR;
-    EXPECT_TRUE( param != NULL );
+    EXPECT_NOT_NULL( param );
 
-    EXPECT_STREQ( stumpless_get_param_name( param ), new_name );
-    EXPECT_STREQ( stumpless_get_param_value( param ), new_value );
+    new_name_result = stumpless_get_param_name( param );
+    EXPECT_STREQ( new_name_result, new_name );
+    free( ( void * ) new_name_result );
+
+    new_value_result = stumpless_get_param_value( param );
+    EXPECT_STREQ( new_value_result, new_value );
+    free( ( void * ) new_value_result );
   }
 
   TEST_F( ElementTest, AddNewParamNullName ) {
@@ -157,6 +167,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_realloc( realloc );
+    stumpless_destroy_param( param );
   }
 
   TEST_F( ElementTest, AddTwoParams ) {
@@ -245,12 +256,16 @@ namespace {
 
   TEST_F( ElementTest, CopyWithoutParams ) {
     const struct stumpless_element *result;
+    const char *result_name;
 
     result = stumpless_copy_element( element_with_params );
     EXPECT_NO_ERROR;
     EXPECT_TRUE( result != element_with_params );
-    EXPECT_STREQ( stumpless_get_element_name( result ),
-                  stumpless_get_element_name( element_with_params ) );
+
+    result_name = stumpless_get_element_name( result );
+    EXPECT_STREQ( result_name, with_params_name );
+    free( ( void * ) result_name );
+
     EXPECT_EQ( stumpless_get_param_count( result ),
                stumpless_get_param_count( element_with_params ) );
 
@@ -259,24 +274,35 @@ namespace {
 
   TEST_F( ElementTest, CopyWithParams ) {
     const struct stumpless_element *result;
+    const char *result_name;
 
     result = stumpless_copy_element( basic_element );
     EXPECT_NO_ERROR;
     EXPECT_TRUE( result != basic_element );
-    EXPECT_STREQ( stumpless_get_element_name( result ), basic_name );
+
+    result_name = stumpless_get_element_name( result );
+    EXPECT_STREQ( result_name, basic_name );
+    free( ( void * ) result_name );
+
     EXPECT_EQ( stumpless_get_param_count( result ), 0 );
 
     stumpless_destroy_element_and_contents( result );
   }
 
   TEST_F( ElementTest, GetName ) {
-    EXPECT_STREQ( stumpless_get_element_name( basic_element ), basic_name );
+    const char *name;
+
+    name = stumpless_get_element_name( basic_element );
+    EXPECT_STREQ( name, basic_name );
     EXPECT_NO_ERROR;
+
+    free( ( void * ) name );
   }
 
   TEST_F( ElementTest, GetParamByNameAndModify ) {
     struct stumpless_param *param;
     struct stumpless_param *set_result;
+    const char *param_name;
 
     param = stumpless_get_param_by_name( element_with_params, param_1_name );
     EXPECT_NO_ERROR;
@@ -285,7 +311,10 @@ namespace {
     set_result = stumpless_set_param_name( param, "my-special-new-name" );
     EXPECT_NO_ERROR;
     EXPECT_EQ( set_result, param );
-    EXPECT_STREQ( stumpless_get_param_name( param ), "my-special-new-name" );
+
+    param_name = stumpless_get_param_name( param );
+    EXPECT_STREQ( param_name, "my-special-new-name" );
+    free( ( void * ) param_name );
   }
 
   TEST_F( ElementTest, GetParamByNameNotFound ) {
@@ -382,10 +411,12 @@ namespace {
     name = stumpless_get_param_name_by_index( element_with_params, 0 );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( name, param_1_name );
+    free( ( void * ) name );
 
     name = stumpless_get_param_name_by_index( element_with_params, 1 );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( name, param_2_name );
+    free( ( void * ) name );
   }
 
   TEST_F( ElementTest, GetParamNameByIndexOutOfBounds ) {
@@ -403,9 +434,11 @@ namespace {
 
     value = stumpless_get_param_value_by_index( element_with_params, 0 );
     EXPECT_STREQ( value, param_1_value );
+    free( ( void * ) value );
 
     value = stumpless_get_param_value_by_index( element_with_params, 1 );
     EXPECT_STREQ( value, param_2_value );
+    free( ( void * ) value );
   }
 
   TEST_F( ElementTest, GetParamValueByIndexNullElement ) {
@@ -428,11 +461,13 @@ namespace {
                                                param_1_name );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( value, param_1_value );
+    free( ( void * ) value );
 
     value = stumpless_get_param_value_by_name( element_with_params,
                                                param_2_name );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( value, param_2_value );
+    free( ( void * ) value );
   }
 
   TEST_F( ElementTest, GetParamValueByNameNullElement ) {
@@ -483,6 +518,7 @@ namespace {
     const char *new_name = "this-wont-work";
     const struct stumpless_element *result;
     const struct stumpless_error *error;
+    const char *after_name;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -491,7 +527,10 @@ namespace {
     EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    EXPECT_STRNE( stumpless_get_element_name( basic_element ), new_name );
+
+    after_name = stumpless_get_element_name( basic_element );
+    EXPECT_STRNE( after_name, new_name );
+    free( ( void * ) after_name );
 
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
@@ -500,12 +539,15 @@ namespace {
   TEST_F( ElementTest, SetName ) {
     const char *new_name = "awesome-new-name";
     const struct stumpless_element *result;
+    const char *after_name;
 
     result = stumpless_set_element_name( basic_element, new_name );
     EXPECT_EQ( result, basic_element );
 
-    EXPECT_STRNE( stumpless_get_element_name( basic_element ), basic_name );
-    EXPECT_STREQ( stumpless_get_element_name( basic_element ), new_name );
+    after_name = stumpless_get_element_name( basic_element );
+    EXPECT_STRNE( after_name, basic_name );
+    EXPECT_STREQ( after_name, new_name );
+    free( ( void * ) after_name );
   }
 
   TEST_F( ElementTest, SetNameToNull ) {
@@ -519,8 +561,12 @@ namespace {
   }
 
   TEST_F( ElementTest, SetParam ) {
+    struct stumpless_param *old_param;
     struct stumpless_param *new_param;
     const struct stumpless_element *result;
+
+    old_param = stumpless_get_param_by_index( element_with_params, 1 );
+    EXPECT_EQ( old_param, param_2 );
 
     new_param = stumpless_new_param( "new-param", "new-value" );
     ASSERT_NOT_NULL( new_param );
@@ -531,6 +577,8 @@ namespace {
 
     EXPECT_EQ( stumpless_get_param_by_index( element_with_params, 1 ),
                new_param );
+
+    stumpless_destroy_param( old_param );
   }
 
   TEST_F( ElementTest, SetParamNullElement ) {
@@ -564,14 +612,19 @@ namespace {
   TEST_F( ElementTest, SetParamValueByIndex ) {
     const char *new_value = "my-new-value-by-index";
     const struct stumpless_element *result;
+    const char *after_value;
 
     result = stumpless_set_param_value_by_index( element_with_params, 1, new_value );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, element_with_params );
 
-    EXPECT_STREQ( stumpless_get_param_value_by_index( element_with_params, 1 ),
-                  new_value );
-    EXPECT_STREQ( stumpless_get_param_value( param_2 ), new_value );
+    after_value = stumpless_get_param_value_by_index( element_with_params, 1 );
+    EXPECT_STREQ( after_value, new_value );
+    free( ( void * ) after_value );
+
+    after_value = stumpless_get_param_value( param_2 );
+    EXPECT_STREQ( after_value, new_value );
+    free( ( void * ) after_value );
   }
 
   TEST_F( ElementTest, SetParamValueByIndexNullElement ) {
@@ -608,6 +661,7 @@ namespace {
   TEST_F( ElementTest, SetParamValueByName ) {
     const char *new_value = "my-new-value-by-name";
     const struct stumpless_element *result;
+    const char *after_value;
 
     result = stumpless_set_param_value_by_name( element_with_params,
                                                 param_1_name,
@@ -615,9 +669,13 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, element_with_params );
 
-    EXPECT_STREQ( stumpless_get_param_value_by_index( element_with_params, 0 ),
-                  new_value );
-    EXPECT_STREQ( stumpless_get_param_value( param_1 ), new_value );
+    after_value = stumpless_get_param_value_by_index( element_with_params, 0 );
+    EXPECT_STREQ( after_value, new_value );
+    free( ( void * ) after_value );
+
+    after_value = stumpless_get_param_value( param_1 );
+    EXPECT_STREQ( after_value, new_value );
+    free( ( void * ) after_value );
   }
 
   TEST_F( ElementTest, SetParamValueByNameNullElement ) {
@@ -667,6 +725,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_param( param );
+    stumpless_free_all(  );
   }
 
   TEST( DestroyElementOnlyTest, NullElement ) {
@@ -690,6 +749,7 @@ namespace {
 
     EXPECT_TRUE( memcmp( param->name, param_name, param->name_length ) == 0 );
     stumpless_destroy_param( param );
+    stumpless_free_all(  );
   }
 
   TEST( DestroyElementTest, NullElement ) {
@@ -704,6 +764,8 @@ namespace {
     EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
   }
 
   TEST( GetParamByIndex, NullElement ) {
@@ -714,6 +776,8 @@ namespace {
     EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
   }
 
   TEST( GetParamCount, NullElement ) {
@@ -724,6 +788,8 @@ namespace {
     EXPECT_EQ( result, 0 );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
   }
 
   TEST( GetParamIndex, NullElement ) {
@@ -733,6 +799,8 @@ namespace {
     result = stumpless_get_param_index( NULL, "irrelevant-name" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, 0 );
+
+    stumpless_free_all(  );
   }
 
   TEST( GetParamNameCount, NullElement ) {
@@ -742,6 +810,8 @@ namespace {
     result = stumpless_get_param_name_count( NULL, "param-name" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, 0 );
+
+    stumpless_free_all(  );
   }
 
   TEST( HasParam, NullElement ) {
@@ -751,6 +821,8 @@ namespace {
     result = stumpless_element_has_param( NULL, "irrelevant" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_FALSE( result );
+
+    stumpless_free_all(  );
   }
 
   TEST( NewElementTest, MemoryFailure ) {
@@ -766,6 +838,8 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
+
+    stumpless_free_all(  );
   }
 
   TEST( NewElementTest, MemoryFailureOnName ) {
@@ -782,6 +856,8 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
+
+    stumpless_free_all(  );
   }
 
   TEST( NewElementTest, NullName ) {
@@ -792,6 +868,8 @@ namespace {
     EXPECT_NULL( element );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
   }
 
   TEST( SetElementNameTest, NullElement ) {
@@ -801,6 +879,8 @@ namespace {
     result = stumpless_set_element_name( NULL, "awesome-new-name" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
   }
 
 }
