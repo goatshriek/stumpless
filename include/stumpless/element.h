@@ -83,6 +83,21 @@ struct stumpless_element {
  * This is equivalent to calling stumpless_new_param and passing the result
  * directly stumpless_add_param.
  *
+ * **Thread Safety: MT-Safe race:param_name race:param_value**
+ * This function is thread safe, of course assuming that the param name and
+ * value or not changed by other threads during execution. A mutex is used to
+ * coordinate updates to the element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the new param.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @since release v1.6.0
  *
  * @param element The element to add the new param to.
@@ -102,6 +117,20 @@ stumpless_add_new_param( struct stumpless_element *element,
 /**
  * Adds a param to an element.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate updates to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to adjust the array of params in the element.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param element The element to add the param to.
  *
  * @param param The param to add to element.
@@ -120,6 +149,20 @@ stumpless_add_param( struct stumpless_element *element,
  * that the original element has, if any. This means that even if the params of
  * the original element are destroyed, the equivalent ones in this element will
  * still be valid.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the copy.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0.
  *
@@ -202,6 +245,19 @@ stumpless_destroy_element_only( const struct stumpless_element *element );
 /**
  * True if the given element has a param with the given name, false otherwise.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param element The element to search for the param.
@@ -217,8 +273,26 @@ stumpless_element_has_param( const struct stumpless_element *element,
                              const char *name );
 
 /**
- * Returns the name of the given element. The resulting character buffer must
- * not be altered or freed by the caller.
+ * Returns the name of the given element. The character buffer must be freed by
+ * the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -232,6 +306,18 @@ stumpless_get_element_name( const struct stumpless_element *element );
 
 /**
  * Returns the param in the given element at the specified index.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0
  *
@@ -257,6 +343,19 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
  * need a reference to any other params, then you must loop through all params
  * in the element using stumpless_get_param_by_index, checking each name.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0
  *
  * @param element The element to search.
@@ -273,6 +372,18 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
 
 /**
  * Returns the number of params in the given element.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0
  *
@@ -295,6 +406,19 @@ stumpless_get_param_count( const struct stumpless_element *element );
  * you need a reference to any other params, then you must loop through all
  * params in the element using stumpless_get_param_by_index, checking each name.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0
  *
  * @param element The element to search for params with the given name.
@@ -310,7 +434,27 @@ stumpless_get_param_index( const struct stumpless_element *element,
                            const char *name );
 
 /**
- * Gets the name of the Param with the given index in this Element.
+ * Gets the name of the param with the given index in this element. The
+ * result character buffer must be freed by the caller when it is no longer
+ * needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -333,6 +477,19 @@ stumpless_get_param_name_by_index( const struct stumpless_element *element,
  * first one, then you will need to loop through all params in the element using
  * stumpless_get_param_by_index, checking each name.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0
  *
  * @param element The element to search for params.
@@ -348,7 +505,27 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
                                 const char *name );
 
 /**
- * Returns the value of the param at the given index in the given element.
+ * Returns the value of the param at the given index in the given element. The
+ * result character buffer must be freed by the caller when it is no longer
+ * needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -366,7 +543,26 @@ stumpless_get_param_value_by_index( const struct stumpless_element *element,
 
 /**
  * Returns the value of the first param with the given name in the given
- * element.
+ * element. The result character buffer must be freed by the caller when it is
+ * no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * If you need to get the value of a param with the given name beyond the first
  * one, then you will need to loop through all params in the element using
@@ -389,6 +585,18 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
 /**
  * Creates a new element with the given name.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed
+ * by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new element.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
  * @param name The name of the new element.
  *
  * @return The created element, if no error is encountered. If an error is
@@ -399,6 +607,20 @@ stumpless_new_element( const char *name );
 
 /**
  * Sets the name of the given element.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -424,6 +646,18 @@ stumpless_set_element_name( struct stumpless_element *element,
  * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
  * is raised.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0
  *
  * @param element The element to set the param on.
@@ -442,6 +676,21 @@ stumpless_set_param( struct stumpless_element *element,
 
 /**
  * Sets the value of the param at the given index in the given element.
+ *
+ * **Thread Safety: MT-Safe race:value**
+ * This function is thread safe, of course assuming that the value is not
+ * changed during execution by another thread. A mutex is used to coordinate
+ * changes to the element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -469,6 +718,21 @@ stumpless_set_param_value_by_index( struct stumpless_element *element,
  * one, then you will need to loop through the params using
  * stumpless_get_param_by_index to find the params you want and then set the
  * value using stumpless_set_param_value.
+ *
+ * **Thread Safety: MT-Safe race:name race:value**
+ * This function is thread safe, of course assuming that the name and value are
+ * not changed during execution by another thread.. A mutex is used to
+ * coordinate changes to the element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *

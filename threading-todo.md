@@ -2,7 +2,7 @@
 
  - [x] stumpless_add_element
  - [ ] stumpless_add_entry
- - [ ] stumpless_add_param
+ - [x] stumpless_add_param
  - [ ] stumpless_close_buffer_target
  - [x] stumpless_destroy_element
  - [x] stumpless_destroy_entry
@@ -10,7 +10,7 @@
  - [ ] stumpless_get_current_target
  - [x] stumpless_get_error
  - [ ] stumpless_get_version
- - [ ] stumpless_new_element
+ - [x] stumpless_new_element
  - [ ] stumpless_new_entry
  - [x] stumpless_new_param
  - [ ] stumpless_open_buffer_target
@@ -84,12 +84,12 @@
  - [x] stumpless_destroy_element_only
  - [x] stumpless_get_error_id
  - [x] stumpless_add_new_element
- - [ ] stumpless_add_new_param
+ - [x] stumpless_add_new_param
  - [x] stumpless_add_new_param_to_entry
- - [ ] stumpless_copy_element
+ - [x] stumpless_copy_element
  - [ ] stumpless_copy_entry
  - [x] stumpless_copy_param
- - [ ] stumpless_element_has_param
+ - [x] stumpless_element_has_param
  - [ ] stumpless_entry_has_element
  - [ ] stumpless_get_element_by_index
  - [ ] stumpless_get_element_by_name
@@ -104,20 +104,20 @@
  - [ ] stumpless_get_entry_param_value_by_name
  - [ ] stumpless_get_entry_prival
  - [ ] stumpless_get_entry_severity
- - [ ] stumpless_get_element_name
- - [ ] stumpless_get_param_by_index
- - [ ] stumpless_get_param_by_name
- - [ ] stumpless_get_param_count
- - [ ] stumpless_get_param_index
+ - [x] stumpless_get_element_name
+ - [x] stumpless_get_param_by_index
+ - [x] stumpless_get_param_by_name
+ - [x] stumpless_get_param_count
+ - [x] stumpless_get_param_index
  - [x] stumpless_get_param_name
- - [ ] stumpless_get_param_name_by_index
- - [ ] stumpless_get_param_name_count
+ - [x] stumpless_get_param_name_by_index
+ - [x] stumpless_get_param_name_count
  - [x] stumpless_get_param_value
- - [ ] stumpless_get_param_value_by_index
- - [ ] stumpless_get_param_value_by_name
+ - [x] stumpless_get_param_value_by_index
+ - [x] stumpless_get_param_value_by_name
  - [x] stumpless_has_error
  - [ ] stumpless_set_element
- - [ ] stumpless_set_element_name
+ - [x] stumpless_set_element_name
  - [ ] stumpless_set_entry_facility
  - [x] stumpless_set_entry_msgid
  - [ ] stumpless_set_entry_param_by_index
@@ -126,11 +126,11 @@
  - [ ] stumpless_set_entry_priority
  - [ ] stumpless_set_entry_prival
  - [ ] stumpless_set_entry_severity
- - [ ] stumpless_set_param
+ - [x] stumpless_set_param
  - [x] stumpless_set_param_name
  - [x] stumpless_set_param_value
- - [ ] stumpless_set_param_value_by_index
- - [ ] stumpless_set_param_value_by_name
+ - [x] stumpless_set_param_value_by_index
+ - [x] stumpless_set_param_value_by_name
  - [ ] stump
  - [ ] vstump
  - [x] stumpless_get_error_id_string
