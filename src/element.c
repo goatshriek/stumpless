@@ -212,11 +212,12 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
     return NULL;
   }
 
+  clear_error(  );
+
   lock_element( element );
   result = locked_get_param_by_index( element, index );
   unlock_element( element );
 
-  clear_error(  );
   return result;
 }
 
