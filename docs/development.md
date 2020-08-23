@@ -51,8 +51,8 @@ cmake ../stumpless
 vim ../stumpless/src/target.c
 
 # build and run the test suite
-# change the number of threads with the j parameter to make things faster:
-# a good starting place is your processor's core count
+# change the number of threads with the j parameter to make things faster
+# your processor's core count is a good starting place
 make -j 4 check
 
 # if you want to build a single test, you can do this using the executable
