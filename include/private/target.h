@@ -45,7 +45,10 @@ sendto_unsupported_target( const struct stumpless_target *target,
                            size_t msg_length );
 
 void
-target_free_all( void );
+target_free_global( void );
+
+void
+target_free_thread( void );
 
 int
 unsupported_target_is_open( const struct stumpless_target *target );

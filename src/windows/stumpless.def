@@ -146,4 +146,5 @@ EXPORTS
   vstump                                        @135
 
 ; added in v2.0.0
-  stumpless_get_element_count                   @136
+  stumpless_free_thread                         @136
+  stumpless_get_element_count                   @137

@@ -36,12 +36,21 @@ static realloc_func_t stumpless_realloc = realloc;
 
 void
 stumpless_free_all( void ) {
-  clear_error(  );
+  // thread-local resources must be destroyed before the global resources as
+  // they may be using space from caches allocated globally
+  stumpless_free_thread(  );
 
-  target_free_all(  ); // comes before entry_free_all due to cached entry
+  target_free_global(  );
   entry_free_all(  );
   strbuilder_free_all(  );
   config_network_free_all(  );
+}
+
+void
+stumpless_free_thread( void ) {
+  clear_error(  );
+
+  target_free_thread(  );
 }
 
 malloc_func_t

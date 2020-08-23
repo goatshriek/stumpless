@@ -595,12 +595,15 @@ sendto_unsupported_target( const struct stumpless_target *target,
 }
 
 void
-target_free_all( void ) {
-  stumpless_destroy_entry( cached_entry );
-  cached_entry = NULL;
-
+target_free_global( void ) {
   config_close_default_target( default_target );
   default_target = NULL;
+}
+
+void
+target_free_thread( void ) {
+  stumpless_destroy_entry( cached_entry );
+  cached_entry = NULL;
 }
 
 int

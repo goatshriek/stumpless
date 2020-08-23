@@ -36,6 +36,8 @@ namespace {
                              i,
                              pthread_self(  ) );
     }
+
+    stumpless_free_thread(  );
   }
 
   TEST( WriteConsistency, SimultaneousWrites ) {
@@ -69,14 +71,14 @@ namespace {
     stumpless_free_all(  );
 
     // check for consistency in the log file
-    //std::ifstream log_file( filename );
-    //std::string line;
-    //i = 0;
-    //while( std::getline( log_file, line ) ) {
-    //  TestRFC5424Compliance( line.c_str() );
-    //  i++;
-    //}
-    //EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
+    std::ifstream log_file( filename );
+    std::string line;
+    i = 0;
+    while( std::getline( log_file, line ) ) {
+      TestRFC5424Compliance( line.c_str() );
+      i++;
+    }
+    EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
 
     // remove( filename );
   }
