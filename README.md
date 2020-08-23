@@ -25,9 +25,9 @@ easier:
  * interoperability with standard syslog daemons and library functions
  * an extensive unit testing suite and continuous integration
  * easy-access
-   [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html)
-   and
-   [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples)
+   [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
+   [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
+   and [support](https://gitter.im/stumpless/community).
 
 ## Quick Build and Install
 Stumpless only requires cmake and a cmake-supported build toolchain (like GCC
@@ -183,3 +183,6 @@ If you're curious about how something in stumpless works that isn't explained
 here, you can check the appropriate section of the documentation, stored in the
 docs folder of the repository. Folders in the repository contain their own
 README files that detail what they contain and any other relevant information.
+If you still can't find an answer, submit an issue or head over to
+[gitter](https://gitter.im/stumpless/community) and ask for some help.
+

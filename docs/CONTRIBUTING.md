@@ -1,10 +1,17 @@
 ## Help Stumpless Do Better, Suck Less
 
-Stumpless is a small project that aims to do a small thing well while staying as
-small as possible. If you've got a problem with the project, you have a great
-idea for a new feature, or you just want to find a way to contribute, then check
-out the guidelines below on how to get started. Also, please make sure that you
-adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) however you participate.
+Stumpless aims to do a small thing well while staying as small as possible. If
+you've got a problem with the project, you have a great idea for a new feature,
+or you just want to find a way to contribute, then check out the guidelines
+below on how to get started. Also, please make sure that you adhere to the
+[Code of Conduct](CODE_OF_CONDUCT.md) however you participate.
+
+### **I know what I'm doing**
+
+If you're a regular user of the library and know it pretty well, you can give
+back to the community just by helping out others who have a question. Head over
+to the project's [gitter](https://gitter.im/stumpless/community) room and if
+there is a question that you can help with, don't hesitate to jump in!
 
 ### **It broke**
 
