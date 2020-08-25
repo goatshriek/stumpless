@@ -303,13 +303,24 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
 
 const char *
 stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
+  char *app_name_copy;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
+  lock_entry( entry );
+  app_name_copy = alloc_mem( entry->app_name_length + 1 );
+  if( !app_name_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( app_name_copy, entry->app_name, entry->app_name_length + 1 );
   clear_error(  );
-  return entry->app_name;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return app_name_copy;
 }
 
 int

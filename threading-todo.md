@@ -94,7 +94,7 @@
  - [ ] stumpless_get_element_by_index
  - [ ] stumpless_get_element_by_name
  - [ ] stumpless_get_element_index
- - [ ] stumpless_get_entry_app_name
+ - [x] stumpless_get_entry_app_name
  - [ ] stumpless_get_entry_facility
  - [ ] stumpless_get_entry_message
  - [ ] stumpless_get_entry_msgid
