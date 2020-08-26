@@ -11,7 +11,7 @@
  - [x] stumpless_get_error
  - [ ] stumpless_get_version
  - [x] stumpless_new_element
- - [ ] stumpless_new_entry
+ - [x] stumpless_new_entry
  - [x] stumpless_new_param
  - [ ] stumpless_open_buffer_target
  - [x] stumpless_set_entry_app_name
@@ -68,7 +68,7 @@
  - [ ] stumpless_get_wel_insertion_string
  - [ ] stumpless_set_wel_insertion_strings
  - [ ] vstumpless_add_message
- - [ ] vstumpless_new_entry
+ - [x] vstumpless_new_entry
  - [ ] vstumpless_set_wel_insertion_strings
  - [ ] stumpless_close_target
  - [ ] stumpless_add_log

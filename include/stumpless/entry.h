@@ -633,6 +633,18 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
 /**
  * Creates a new entry with the given characteristics.
  *
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is thread safe, of course assuming that the string arguments
+ * are not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new element.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
  *
@@ -955,6 +967,18 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
 
 /**
  * Creates a new entry with the given parameters.
+ *
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is thread safe, of course assuming that the string arguments
+ * are not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new element.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @param facility The facility code of the entry. This should be a
  * \c STUMPLESS_FACILITY value.
