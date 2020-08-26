@@ -118,14 +118,14 @@
  - [x] stumpless_has_error
  - [ ] stumpless_set_element
  - [x] stumpless_set_element_name
- - [ ] stumpless_set_entry_facility
+ - [x] stumpless_set_entry_facility
  - [x] stumpless_set_entry_msgid
  - [ ] stumpless_set_entry_param_by_index
  - [ ] stumpless_set_entry_param_value_by_index
  - [ ] stumpless_set_entry_param_value_by_name
- - [ ] stumpless_set_entry_priority
- - [ ] stumpless_set_entry_prival
- - [ ] stumpless_set_entry_severity
+ - [x] stumpless_set_entry_priority
+ - [x] stumpless_set_entry_prival
+ - [x] stumpless_set_entry_severity
  - [x] stumpless_set_param
  - [x] stumpless_set_param_name
  - [x] stumpless_set_param_value

@@ -568,7 +568,9 @@ stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
     return NULL;
   }
 
+  lock_entry( entry );
   entry->prival = get_prival( facility, get_severity( entry->prival ) );
+  unlock_entry( entry );
 
   clear_error(  );
   return entry;
@@ -744,7 +746,9 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
     return NULL;
   }
 
+  lock_entry( entry );
   entry->prival = get_prival( facility, severity );
+  unlock_entry( entry );
 
   clear_error(  );
   return entry;
@@ -770,7 +774,9 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
     return NULL;
   }
 
+  lock_entry( entry );
   entry->prival = get_prival( get_facility( entry->prival ), severity );
+  unlock_entry( entry );
 
   clear_error(  );
   return entry;

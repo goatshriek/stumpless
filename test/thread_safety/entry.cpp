@@ -85,6 +85,14 @@ namespace {
       stumpless_set_entry_msgid( entry, msgid_stream.str(  ).c_str(  ) );
 
       stumpless_set_entry_message( entry, "message number #%d from thread %d", i, thread_id );
+
+      stumpless_set_entry_facility( entry, STUMPLESS_FACILITY_USER);
+      stumpless_set_entry_priority( entry,
+                                    STUMPLESS_FACILITY_USER,
+                                    STUMPLESS_SEVERITY_INFO );
+      stumpless_set_entry_prival( entry,
+                                  STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO );
+      stumpless_set_entry_severity( entry, STUMPLESS_SEVERITY_INFO );
     }
   }
 
