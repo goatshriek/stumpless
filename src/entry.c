@@ -325,13 +325,19 @@ cleanup_and_return:
 
 int
 stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
+  int prival;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return -1;
   }
 
+  lock_entry( entry );
+  prival = entry->prival;
+  unlock_entry( entry );
+
   clear_error(  );
-  return get_facility( entry->prival );
+  return get_facility( prival );
 }
 
 const char *
@@ -436,24 +442,36 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
 
 int
 stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
+  int prival;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return -1;
   }
 
+  lock_entry( entry );
+  prival = entry->prival;
+  unlock_entry( entry );
+
   clear_error(  );
-  return entry->prival;
+  return prival;
 }
 
 int
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
+  int prival;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return -1;
   }
 
+  lock_entry( entry );
+  prival = entry->prival;
+  unlock_entry( entry );
+
   clear_error(  );
-  return get_severity( entry->prival );
+  return get_severity( prival );
 }
 
 struct stumpless_entry *

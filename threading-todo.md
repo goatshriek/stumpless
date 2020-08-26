@@ -95,15 +95,15 @@
  - [ ] stumpless_get_element_by_name
  - [ ] stumpless_get_element_index
  - [x] stumpless_get_entry_app_name
- - [ ] stumpless_get_entry_facility
+ - [x] stumpless_get_entry_facility
  - [x] stumpless_get_entry_message
  - [x] stumpless_get_entry_msgid
  - [ ] stumpless_get_entry_param_by_index
  - [ ] stumpless_get_entry_param_by_name
  - [ ] stumpless_get_entry_param_value_by_index
  - [ ] stumpless_get_entry_param_value_by_name
- - [ ] stumpless_get_entry_prival
- - [ ] stumpless_get_entry_severity
+ - [x] stumpless_get_entry_prival
+ - [x] stumpless_get_entry_severity
  - [x] stumpless_get_element_name
  - [x] stumpless_get_param_by_index
  - [x] stumpless_get_param_by_name
