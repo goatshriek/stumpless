@@ -336,13 +336,24 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 
 const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
+  const char *message_copy;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
+  lock_entry( entry );
+  message_copy = alloc_mem( entry->message_length + 1 );
+  if( !message_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( message_copy, entry->message, entry->message_length + 1 );
   clear_error(  );
-  return entry->message;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return message_copy;
 }
 
 const char *

@@ -421,6 +421,8 @@ namespace {
     result = stumpless_get_entry_message( basic_entry );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( result, basic_message );
+
+    free( ( void * ) result );
   }
 
   TEST_F( EntryTest, GetMsgid ) {
