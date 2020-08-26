@@ -146,7 +146,7 @@ struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   char *new_name;
   size_t new_size;
-  char *old_name;
+  const char *old_name;
 
   if( !param ) {
     raise_argument_empty( "param is NULL" );
@@ -181,7 +181,7 @@ struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
   char *new_value;
   size_t new_size;
-  char *old_value;
+  const char *old_value;
 
   if( !param ) {
     raise_argument_empty( "param is NULL" );
