@@ -9,7 +9,7 @@
  - [x] stumpless_destroy_param
  - [ ] stumpless_get_current_target
  - [x] stumpless_get_error
- - [ ] stumpless_get_version
+ - [x] stumpless_get_version
  - [x] stumpless_new_element
  - [x] stumpless_new_entry
  - [x] stumpless_new_param

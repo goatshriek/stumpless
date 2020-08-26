@@ -37,7 +37,19 @@ struct stumpless_version {
 };
 
 /**
- * Gets the version of code the library was built with.
+ * Gets the version of code the library was built with. This version must be
+ * freed by the caller when it is no longer needed to avoid a memory leak.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the version structure.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @return The version of code used by the library build.
  */
