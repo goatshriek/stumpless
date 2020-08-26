@@ -447,6 +447,9 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry );
  * Returns the message of the given entry. The character buffer returned must
  * be freed by the caller when it is no longer needed to avoid memory leaks.
  *
+ * Note that if this message was originally set using format specifiers, the
+ * result will have them substituted, instead of the original placeholders.
+ *
  * In versions prior to v2.0.0, the returned pointer was to the internal buffer
  * used to store the name and was not to be modified by the caller. This
  * behavior changed in v2.0.0 in order to avoid thread safety issues.
@@ -465,9 +468,6 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry );
  * cancelled, due to the use of a lock that could be left locked as well as
  * memory management functions.
  *
- * Note that if this message was originally set using format specifiers, the
- * result will have them substituted, instead of the original placeholders.
- *
  * @since release v1.6.0.
  *
  * @param entry The entry to get the message of.
@@ -480,7 +480,26 @@ const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry );
 
 /**
- * Returns the msgid of the given entry.
+ * Returns the msgid of the given entry. The character buffer returned must
+ * be freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0.
  *

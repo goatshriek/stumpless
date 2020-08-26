@@ -32,6 +32,7 @@ namespace {
   read_entry( const struct stumpless_entry *entry ) {
     size_t element_count;
     const char *app_name;
+    const char *msgid;
     const char *message;
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
@@ -41,10 +42,11 @@ namespace {
       }
 
       app_name = stumpless_get_entry_app_name( entry );
-      stumpless_get_entry_msgid( entry );
+      msgid = stumpless_get_entry_msgid( entry );
       message = stumpless_get_entry_message( entry );
 
       free( ( void * ) app_name );
+      free( ( void * ) msgid );
       free( ( void * ) message );
     }
   }

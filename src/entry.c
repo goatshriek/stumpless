@@ -336,7 +336,7 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 
 const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
-  const char *message_copy;
+  char *message_copy;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -358,13 +358,24 @@ cleanup_and_return:
 
 const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
+  char *msgid_copy;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
+  lock_entry( entry );
+  msgid_copy = alloc_mem( entry->msgid_length + 1 );
+  if( !msgid_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( msgid_copy, entry->msgid, entry->msgid_length + 1 );
   clear_error(  );
-  return entry->msgid;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return msgid_copy;
 }
 
 struct stumpless_param *

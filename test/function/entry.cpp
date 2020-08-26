@@ -432,6 +432,8 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_STREQ( result, basic_msgid );
     EXPECT_NE( result, basic_msgid );
+
+    free( ( void * ) result );
   }
 
   TEST_F( EntryTest, GetParamByIndex ) {
