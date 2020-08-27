@@ -91,9 +91,9 @@
  - [x] stumpless_copy_param
  - [x] stumpless_element_has_param
  - [x] stumpless_entry_has_element
- - [ ] stumpless_get_element_by_index
- - [ ] stumpless_get_element_by_name
- - [ ] stumpless_get_element_index
+ - [x] stumpless_get_element_by_index
+ - [x] stumpless_get_element_by_name
+ - [x] stumpless_get_element_index
  - [x] stumpless_get_entry_app_name
  - [x] stumpless_get_entry_facility
  - [x] stumpless_get_entry_message

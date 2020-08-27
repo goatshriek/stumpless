@@ -27,6 +27,7 @@
 #include <stumpless/error.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
+#include "private/element.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -96,9 +97,14 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
     goto fail;
   }
 
+  if( !element_name ) {
+    raise_argument_empty( "element_name is NULL" );
+    goto fail;
+  }
+
   lock_entry( entry );
 
-  element = stumpless_get_element_by_name( entry, element_name );
+  element = locked_get_element_by_name( entry, element_name );
   if( !element ) {
     element = stumpless_new_element( element_name );
     if( !element ) {
@@ -237,32 +243,44 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
 struct stumpless_element *
 stumpless_get_element_by_index( const struct stumpless_entry *entry,
                                 size_t index ) {
+  struct stumpless_element *result;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
-  if( index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", index );
-    return NULL;
-  }
-
   clear_error(  );
-  return entry->elements[index];
+
+  lock_entry( entry );
+  result = locked_get_element_by_index( entry, index );
+  unlock_entry( entry );
+
+  return result;
 }
 
 struct stumpless_element *
 stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name ) {
-  size_t index;
+  struct stumpless_element *result;
 
-  index = stumpless_get_element_index( entry, name );
-
-  if( stumpless_has_error(  ) ) {
-    return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return 0;
   }
 
-  return entry->elements[index];
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return 0;
+  }
+
+  clear_error(  );
+
+  lock_entry( entry );
+  result = locked_get_element_by_name( entry, name );
+  unlock_entry( entry );
+
+  return result;
 }
 
 size_t
@@ -285,6 +303,8 @@ size_t
 stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name ) {
   size_t i;
+  struct stumpless_element *element;
+  int cmp_result;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -296,15 +316,26 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
     return 0;
   }
 
+  lock_entry( entry );
   for( i = 0; i < entry->element_count; i++ ) {
-    if( strcmp( entry->elements[i]->name, name ) == 0 ) {
+    element = entry->elements[i];
+
+    lock_element( element );
+    cmp_result = strcmp( element->name, name );
+    unlock_element( element );
+
+    if( cmp_result == 0 ) {
       clear_error(  );
-      return i;
+      goto cleanup_and_return;
     }
   }
 
+  i = 0;
   raise_element_not_found(  );
-  return 0;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return i;
 }
 
 const char *
@@ -941,6 +972,40 @@ locked_add_element( struct stumpless_entry *entry,
   entry->element_count++;
 
   return entry;
+}
+
+struct stumpless_element *
+locked_get_element_by_index( const struct stumpless_entry *entry,
+                             size_t index ) {
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( "invalid element index", index );
+    return NULL;
+  }
+
+  return entry->elements[index];
+}
+
+struct stumpless_element *
+locked_get_element_by_name( const struct stumpless_entry *entry,
+                            const char *name ) {
+  int i;
+  struct stumpless_element *element;
+  int cmp_result;
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    element = entry->elements[i];
+
+    lock_element( element );
+    cmp_result = strcmp( element->name, name );
+    unlock_element( element );
+
+    if( cmp_result == 0 ) {
+      return element;
+    }
+  }
+
+  raise_element_not_found(  );
+  return NULL;
 }
 
 struct strbuilder *

@@ -336,6 +336,18 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
 /**
  * Returns the element at the given index in this Entry.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to search.
@@ -352,6 +364,19 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
 
 /**
  * Returns the element with the given name in this entry, if it is found.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *
@@ -395,6 +420,19 @@ stumpless_get_element_count( const struct stumpless_entry *entry );
 /**
  * Returns the index of the element with the given name in this entry, if it
  * is found.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *

@@ -37,6 +37,14 @@ struct stumpless_entry *
 locked_add_element( struct stumpless_entry *entry,
                     struct stumpless_element *element );
 
+struct stumpless_element *
+locked_get_element_by_index( const struct stumpless_entry *entry,
+                             size_t index );
+
+struct stumpless_element *
+locked_get_element_by_name( const struct stumpless_entry *entry,
+                            const char *name );
+
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry );

@@ -45,6 +45,10 @@ namespace {
       stumpless_get_entry_prival( entry );
       stumpless_get_entry_severity( entry );
 
+      stumpless_get_element_by_index( entry, 1 );
+      stumpless_get_element_by_name( entry, "element-name" );
+      stumpless_get_element_index( entry, "element-name" );
+
       app_name = stumpless_get_entry_app_name( entry );
       msgid = stumpless_get_entry_msgid( entry );
       message = stumpless_get_entry_message( entry );
