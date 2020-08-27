@@ -24,7 +24,6 @@
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
 #include <stumpless/param.h>
-#include <stumpless/error.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
 #include "private/element.h"
