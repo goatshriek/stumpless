@@ -214,6 +214,8 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
 bool
 stumpless_entry_has_element( const struct stumpless_entry *entry,
                              const char *name ) {
+  bool result;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return false;
@@ -224,8 +226,12 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
     return false;
   }
 
+  lock_entry( entry );
+  result = unchecked_entry_has_element( entry, name );
+  unlock_entry( entry );
+
   clear_error(  );
-  return unchecked_entry_has_element( entry, name );
+  return result;
 }
 
 struct stumpless_element *

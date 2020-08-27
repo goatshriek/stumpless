@@ -306,6 +306,19 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry );
 /**
  * True if the given entry has an element with the given name, false otherwise.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to search for the element.

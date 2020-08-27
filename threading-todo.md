@@ -90,7 +90,7 @@
  - [ ] stumpless_copy_entry
  - [x] stumpless_copy_param
  - [x] stumpless_element_has_param
- - [ ] stumpless_entry_has_element
+ - [x] stumpless_entry_has_element
  - [ ] stumpless_get_element_by_index
  - [ ] stumpless_get_element_by_name
  - [ ] stumpless_get_element_index

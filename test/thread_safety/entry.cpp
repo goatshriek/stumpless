@@ -49,6 +49,8 @@ namespace {
       msgid = stumpless_get_entry_msgid( entry );
       message = stumpless_get_entry_message( entry );
 
+      stumpless_entry_has_element( entry, "element-name" );
+
       free( ( void * ) app_name );
       free( ( void * ) msgid );
       free( ( void * ) message );
