@@ -227,6 +227,20 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
  * elements or params of the original entry are destroyed, the equivalent ones
  * in this entry will still be valid.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the copy.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param entry The entry to copy.
  *
  * @return A new entry that is a deep copy of the original. If an error is

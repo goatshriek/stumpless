@@ -87,7 +87,7 @@
  - [x] stumpless_add_new_param
  - [x] stumpless_add_new_param_to_entry
  - [x] stumpless_copy_element
- - [ ] stumpless_copy_entry
+ - [x] stumpless_copy_entry
  - [x] stumpless_copy_param
  - [x] stumpless_element_has_param
  - [x] stumpless_entry_has_element

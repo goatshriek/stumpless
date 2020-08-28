@@ -30,12 +30,15 @@ namespace {
 
   void
   read_entry( const struct stumpless_entry *entry ) {
+    const struct stumpless_entry *copy;
     size_t element_count;
     const char *app_name;
     const char *msgid;
     const char *message;
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
+      copy = stumpless_copy_entry( entry );
+
       element_count = stumpless_get_element_count( entry );
       for( int j = 0; j < element_count; j++ ) {
         stumpless_get_element_by_index( entry, j );
@@ -55,6 +58,7 @@ namespace {
 
       stumpless_entry_has_element( entry, "element-name" );
 
+      stumpless_destroy_entry_and_contents( copy );
       free( ( void * ) app_name );
       free( ( void * ) msgid );
       free( ( void * ) message );

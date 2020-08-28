@@ -146,16 +146,17 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
-    goto fail;
+    return NULL;
   }
 
+  lock_entry( entry );
   copy = stumpless_new_entry( get_facility( entry->prival ),
                               get_severity( entry->prival ),
                               entry->app_name,
                               entry->msgid,
                               entry->message );
   if( !copy ) {
-    goto fail;
+    goto cleanup_and_fail;
   }
 
   copy->elements = alloc_mem( entry->element_count * sizeof( element_copy ) );
@@ -178,12 +179,14 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
     goto fail_elements;
   }
 
+  unlock_entry( entry );
   clear_error(  );
   return copy;
 
 fail_elements:
   stumpless_destroy_entry_and_contents( copy );
-fail:
+cleanup_and_fail:
+  unlock_entry( entry );
   return NULL;
 }
 
