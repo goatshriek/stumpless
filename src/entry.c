@@ -581,6 +581,8 @@ struct stumpless_entry *
 stumpless_set_element( struct stumpless_entry *entry,
                        size_t index,
                        struct stumpless_element *element ) {
+  struct stumpless_entry *result = NULL;
+
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
@@ -591,20 +593,26 @@ stumpless_set_element( struct stumpless_entry *entry,
     return NULL;
   }
 
+  lock_entry( entry );
+
   if( index >= entry->element_count ) {
     raise_index_out_of_bounds( "invalid element index", index );
-    return NULL;
+    goto cleanup_and_return;
   }
 
   if( unchecked_entry_has_element( entry, element->name ) ) {
     raise_duplicate_element(  );
-    return NULL;
+    goto cleanup_and_return;
   }
 
   entry->elements[index] = element;
 
+  result = entry;
   clear_error(  );
-  return entry;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return result;
 }
 
 struct stumpless_entry *

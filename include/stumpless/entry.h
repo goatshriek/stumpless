@@ -854,6 +854,18 @@ stumpless_new_entry( int facility,
  * attempts to set an element of an entry which already contains another element
  * with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0
  *
  * @param entry The entry to set the element on.

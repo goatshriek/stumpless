@@ -116,7 +116,7 @@
  - [x] stumpless_get_param_value_by_index
  - [x] stumpless_get_param_value_by_name
  - [x] stumpless_has_error
- - [ ] stumpless_set_element
+ - [x] stumpless_set_element
  - [x] stumpless_set_element_name
  - [x] stumpless_set_entry_facility
  - [x] stumpless_set_entry_msgid
