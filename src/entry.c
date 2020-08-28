@@ -722,12 +722,14 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
     return NULL;
   }
 
-  if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", element_index );
+  lock_entry( entry );
+  element = locked_get_element_by_index( entry, element_index );
+  unlock_entry( entry );
+
+  if( !element ) {
     return NULL;
   }
 
-  element = entry->elements[element_index];
   set_result = stumpless_set_param( element, param_index, param );
   if( !set_result ) {
     return NULL;
@@ -749,12 +751,14 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
     return NULL;
   }
 
-  if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", element_index );
+  lock_entry( entry );
+  element = locked_get_element_by_index( entry, element_index );
+  unlock_entry( entry );
+
+  if( !element ) {
     return NULL;
   }
 
-  element = entry->elements[element_index];
   set_result = stumpless_set_param_value_by_index( element,
                                                    param_index,
                                                    value );
@@ -776,19 +780,21 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
-    goto fail;
+    return NULL;
   }
 
   if( !element_name ) {
     raise_argument_empty( "element_name is NULL" );
-    goto fail;
+    return NULL;
   }
 
-  element = stumpless_get_element_by_name( entry, element_name );
+  lock_entry( entry );
+  element = locked_get_element_by_name( entry, element_name );
+
   if( !element ) {
     element = stumpless_new_element( element_name );
     if( !element ) {
-      goto fail;
+      goto cleanup_and_fail;
     }
 
     element_created = true;
@@ -800,19 +806,22 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
   }
 
   if( element_created ) {
-    result = stumpless_add_element( entry, element );
+    result = locked_add_element( entry, element );
     if( !result ) {
       goto fail_set;
     }
   }
 
+  unlock_entry( entry );
+  clear_error(  );
   return entry;
 
 fail_set:
   if( element_created ) {
     stumpless_destroy_element_and_contents( element );
   }
-fail:
+cleanup_and_fail:
+  unlock_entry( entry );
   return NULL;
 }
 

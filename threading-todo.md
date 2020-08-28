@@ -120,9 +120,9 @@
  - [x] stumpless_set_element_name
  - [x] stumpless_set_entry_facility
  - [x] stumpless_set_entry_msgid
- - [ ] stumpless_set_entry_param_by_index
- - [ ] stumpless_set_entry_param_value_by_index
- - [ ] stumpless_set_entry_param_value_by_name
+ - [x] stumpless_set_entry_param_by_index
+ - [x] stumpless_set_entry_param_value_by_index
+ - [x] stumpless_set_entry_param_value_by_name
  - [x] stumpless_set_entry_priority
  - [x] stumpless_set_entry_prival
  - [x] stumpless_set_entry_severity

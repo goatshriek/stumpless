@@ -1022,6 +1022,20 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
  * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
  * is raised.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @since release v1.6.0
  *
  * @param entry The entry to set the param on.
@@ -1043,6 +1057,21 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
 
 /**
  * Sets the value of the param in the element at the given index of an entry.
+ *
+ * **Thread Safety: MT-Safe race:value**
+ * This function is thread safe, of course assuming that value is not changed
+ * by any other threads during execution. A mutex is used to coordinate changes
+ * to the entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -1076,6 +1105,21 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
  * one, then you will need to loop through the params using
  * stumpless_get_entry_param_by_index to find the params you want and then
  * set the value using stumpless_set_entry_param_value_by_index.
+ *
+ * **Thread Safety: MT-Safe race:element_name race:param_name race:value**
+ * This function is thread safe, of course assuming that the names and value
+ * are not changed by any other threads during execution. A mutex is used to
+ * coordinate changes to the entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
