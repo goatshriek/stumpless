@@ -592,6 +592,18 @@ stumpless_get_entry_msgid( const struct stumpless_entry *entry );
 /**
  * Gets the param from the element at the given index in an entry.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to get the param from.
@@ -617,6 +629,19 @@ stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
  * the element, then you must loop through all params using
  * stumpless_get_entry_param_by_index, checking each name.
  *
+ * **Thread Safety: MT-Safe race:element_name race:param_name**
+ * This function is thread safe, of course assuming that the names are not
+ * changed by another thread during execution. A mutex is used to coordinate
+ * access to the entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to get the param from.
@@ -636,6 +661,24 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
 
 /**
  * Gets the value of the param from the element at the given index in an entry.
+ * The result character buffer must be freed by the caller when it is no longer
+ * needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *
@@ -656,13 +699,31 @@ stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
 
 /**
  * Gets the value of the first param from the element with the given name in an
- * entry.
+ * entry. The result character buffer must be freed by the caller when it is no
+ * longer needed to avoid memory leaks.
  *
  * Note that an element may contain as many instances of a param as desired
  * according to RFC 5424, and therefore there may be other param instances with
  * the same name. If you need the value of other params with the same name in
  * the element, then you must loop through all params using
  * stumpless_get_entry_param_by_index, checking each name.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe race:element_name race:param_name**
+ * This function is thread safe, of course assuming that the names are not
+ * changed by another thread during execution. A mutex is used to coordinate
+ * access to the entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *

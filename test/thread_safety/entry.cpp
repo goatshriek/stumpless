@@ -32,6 +32,7 @@ namespace {
   read_entry( const struct stumpless_entry *entry ) {
     const struct stumpless_entry *copy;
     size_t element_count;
+    const char *param_value;
     const char *app_name;
     const char *msgid;
     const char *message;
@@ -51,6 +52,17 @@ namespace {
       stumpless_get_element_by_index( entry, 1 );
       stumpless_get_element_by_name( entry, "element-name" );
       stumpless_get_element_index( entry, "element-name" );
+
+      stumpless_get_entry_param_by_index( entry, 0, 0 );
+      stumpless_get_entry_param_by_name( entry, "element-name", "param-name" );
+
+      param_value = stumpless_get_entry_param_value_by_index( entry, 0, 0 );
+      free( ( void * ) param_value );
+
+      param_value = stumpless_get_entry_param_value_by_name( entry,
+                                                             "element-name",
+                                                             "param-name" );
+      free( ( void * ) param_value );
 
       app_name = stumpless_get_entry_app_name( entry );
       msgid = stumpless_get_entry_msgid( entry );
