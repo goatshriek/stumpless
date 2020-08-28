@@ -7,7 +7,7 @@
  - [x] stumpless_destroy_element
  - [x] stumpless_destroy_entry
  - [x] stumpless_destroy_param
- - [ ] stumpless_get_current_target
+ - [x] stumpless_get_current_target
  - [x] stumpless_get_error
  - [x] stumpless_get_version
  - [x] stumpless_new_element
@@ -23,7 +23,7 @@
  - [x] stumpless_set_entry_message
  - [x] stumpless_close_file_target
  - [ ] stumpless_open_file_target
- - [ ] stumpless_set_current_target
+ - [x] stumpless_set_current_target
  - [ ] stumpless_close_wel_target
  - [ ] stumpless_open_local_wel_target
  - [ ] stumpless_open_remote_wel_target

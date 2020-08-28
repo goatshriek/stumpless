@@ -228,6 +228,20 @@ stumpless_close_target( struct stumpless_target *target );
  * target used when no suitable current target exists. While these may be the
  * same in some cases, they will not always be.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate accesses and
+ * updates to the current target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the possible use of memory
+ * management functions to create the default target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @return The current target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
@@ -323,6 +337,18 @@ stumpless_open_target( struct stumpless_target *target );
  * default target if a target has not yet been opened. The current target is
  * used by functions like stumplog() and stumpless() where a target is not
  * explicitly provided to the call.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate accesses and
+ * updates to the current target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param target The target to use as the current target.
  */

@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stumpless/entry.h>
@@ -41,7 +42,10 @@
 
 /* global static variables */
 static struct stumpless_target *current_target = NULL;
+static pthread_mutex_t current_target_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 static struct stumpless_target *default_target = NULL;
+static pthread_mutex_t default_target_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* per-thread static variables */
 static __thread struct stumpless_entry *cached_entry = NULL;
@@ -219,13 +223,29 @@ stumpless_close_target( struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_get_current_target( void ) {
+  struct stumpless_target *result;
+
   clear_error(  );
 
-  if( !current_target ) {
-    current_target = stumpless_get_default_target(  );
+  pthread_mutex_lock( &current_target_mutex );
+  result = current_target;
+  pthread_mutex_unlock( &current_target_mutex );
+
+  if( result ) {
+    return result;
   }
 
-  return current_target;
+  result = stumpless_get_default_target(  );
+
+  pthread_mutex_lock( &current_target_mutex );
+  if( !current_target ) {
+    current_target = result;
+  } else {
+    result = current_target;
+  }
+  pthread_mutex_unlock( &current_target_mutex );
+
+  return result;
 }
 
 int
@@ -285,7 +305,10 @@ stumpless_open_target( struct stumpless_target *target ) {
 void
 stumpless_set_current_target( struct stumpless_target *target ) {
   clear_error(  );
+
+  pthread_mutex_lock( &current_target_mutex );
   current_target = target;
+  pthread_mutex_unlock( &current_target_mutex );
 }
 
 struct stumpless_target *
