@@ -37,7 +37,19 @@ namespace {
     const char *msgid;
     const char *message;
 
+    std::thread::id thread_id = std::this_thread::get_id(  );
+
+    std::ostringstream element_stream;
+    element_stream << "element-" << thread_id;
+    std::string element_name( element_stream.str(  ) );
+
+    std::ostringstream param_name_stream;
+    param_name_stream << "param-name-" << thread_id;
+    std::string param_name( param_name_stream.str(  ) );
+
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
+      size_t index = i % THREAD_COUNT;
+
       copy = stumpless_copy_entry( entry );
 
       element_count = stumpless_get_element_count( entry );
@@ -49,26 +61,28 @@ namespace {
       stumpless_get_entry_prival( entry );
       stumpless_get_entry_severity( entry );
 
-      stumpless_get_element_by_index( entry, 1 );
-      stumpless_get_element_by_name( entry, "element-name" );
-      stumpless_get_element_index( entry, "element-name" );
+      stumpless_get_element_by_index( entry, index );
+      stumpless_get_element_by_name( entry, element_name.c_str(  ) );
+      stumpless_get_element_index( entry, element_name.c_str(  ) );
 
-      stumpless_get_entry_param_by_index( entry, 0, 0 );
-      stumpless_get_entry_param_by_name( entry, "element-name", "param-name" );
+      stumpless_get_entry_param_by_index( entry, index, index );
+      stumpless_get_entry_param_by_name( entry,
+                                         element_name.c_str(  ),
+                                         param_name.c_str(  ) );
 
-      param_value = stumpless_get_entry_param_value_by_index( entry, 0, 0 );
+      param_value = stumpless_get_entry_param_value_by_index( entry, index, index );
       free( ( void * ) param_value );
 
       param_value = stumpless_get_entry_param_value_by_name( entry,
-                                                             "element-name",
-                                                             "param-name" );
+                                                             element_name.c_str(  ),
+                                                             param_name.c_str(  ) );
       free( ( void * ) param_value );
 
       app_name = stumpless_get_entry_app_name( entry );
       msgid = stumpless_get_entry_msgid( entry );
       message = stumpless_get_entry_message( entry );
 
-      stumpless_entry_has_element( entry, "element-name" );
+      stumpless_entry_has_element( entry, element_name.c_str(  ) );
 
       stumpless_destroy_entry_and_contents( copy );
       free( ( void * ) app_name );
@@ -98,6 +112,8 @@ namespace {
                                       param_value.c_str(  ) );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
+      size_t index = i % THREAD_COUNT;
+
       std::ostringstream app_stream;
       app_stream << "app-" << thread_id;
       stumpless_set_entry_app_name( entry, app_stream.str(  ).c_str(  ) );
@@ -115,6 +131,16 @@ namespace {
       stumpless_set_entry_prival( entry,
                                   STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO );
       stumpless_set_entry_severity( entry, STUMPLESS_SEVERITY_INFO );
+
+      stumpless_set_entry_param_value_by_index( entry,
+                                                index,
+                                                index,
+                                                param_value.c_str(  ) );
+
+      stumpless_set_entry_param_value_by_name( entry,
+                                               element_name.c_str(  ),
+                                               param_name.c_str(  ),
+                                               param_value.c_str(  ) );
     }
   }
 
