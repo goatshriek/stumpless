@@ -16,12 +16,12 @@
  * limitations under the License.
  */
 
+#include <stumpless/entry.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/element.h>
-#include <stumpless/entry.h>
 #include <stumpless/param.h>
 #include <stumpless/error.h>
 #include "private/cache.h"

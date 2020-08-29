@@ -23,12 +23,11 @@
 #ifndef __STUMPLESS_ENTRY_H
 #  define __STUMPLESS_ENTRY_H
 
-#  include <stumpless/config.h>
-
 /*
  * According to Microsoft, windows.h should be included first in any sources, as
  * it sets up definitions that need to be first.
  */
+#  include <stumpless/config.h>
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include <windows.h>
 #  endif
