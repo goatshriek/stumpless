@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-#include <winsock2.h>
 #include <windows.h>
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
