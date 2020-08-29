@@ -104,7 +104,7 @@ stumpless_add_entry( struct stumpless_target *target,
     return config_send_entry_to_wel_target( target->id, entry );
   }
 
-  builder = format_entry( entry );
+  builder = format_entry( entry, target );
   if( !builder ) {
     return -1;
   }
