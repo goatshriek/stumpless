@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+#include <winsock2.h>
+#include <windows.h>
+
 #include <stdarg.h>
 #include <stddef.h>
 #include <stumpless/config/wel_supported.h>
@@ -25,7 +28,6 @@
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
-#include <windows.h>
 #include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"
