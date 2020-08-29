@@ -347,6 +347,7 @@
 "abs": "stdlib.h"
 "stumpless_version_to_string": "stumpless/version.h"
 "STUMPLESS_WINDOWS_EVENT_LOG_TARGET": "stumpless/target.h"
+"STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED": "stumpless/config.h"
 "STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE": "stumpless/error.h"
 "STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE": "stumpless/error.h"
 "stumplog": "stumpless/target.h"

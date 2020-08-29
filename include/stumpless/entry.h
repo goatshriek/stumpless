@@ -26,6 +26,7 @@
 #  include <stdarg.h>
 #  include <stdbool.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/id.h>
 #  include <stumpless/param.h>
