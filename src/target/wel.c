@@ -22,6 +22,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
 #include <windows.h>
+#include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/target.h"
@@ -156,23 +157,26 @@ send_entry_to_wel_target( const struct wel_target *target,
                           const struct stumpless_entry *entry ) {
   BOOL success;
   WORD i;
+  struct wel_data *data;
 
-  for( i = 0; i < entry->wel_insertion_count; i++ ) {
-    if( entry->wel_insertion_params[i] ) {
-      entry->wel_insertion_strings[i] = entry->wel_insertion_params[i]->value;
+  data = entry->wel_data;
+
+  for( i = 0; i < data->insertion_count; i++ ) {
+    if( data->insertion_params[i] ) {
+      data->insertion_strings[i] = data->insertion_params[i]->value;
     } else {
-      entry->wel_insertion_strings[i] = NULL;
+      data->insertion_strings[i] = NULL;
     }
   }
 
   success = ReportEvent( target->handle,
-                         entry->wel_type,
-                         entry->wel_category,
-                         entry->wel_event_id,
+                         data->type,
+                         data->category,
+                         data->event_id,
                          NULL,
-                         entry->wel_insertion_count,
+                         data->insertion_count,
                          0,
-                         entry->wel_insertion_strings,
+                         data->insertion_strings,
                          NULL );
 
   if( success ) {
