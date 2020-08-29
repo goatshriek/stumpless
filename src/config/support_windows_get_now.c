@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#include <winsock2.h>
-#include <windows.h>
+/* this must be included first to avoid errors */
+#include "private/windows_wrapper.h"
 
 #include <stddef.h>
 #include <stdio.h>

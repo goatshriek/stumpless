@@ -24,7 +24,7 @@
 
 #  ifndef HAVE_SYS_SOCKET_H
 #    ifdef HAVE_WINSOCK2_H
-#      include <winsock2.h>
+#      include "private/windows_wrapper.h"
 #    endif
 #  endif
 

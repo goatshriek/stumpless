@@ -16,12 +16,14 @@
  * limitations under the License.
  */
 
+/* this must be included first to avoid errors */
+#include "private/windows_wrapper.h"
+
 #include <stddef.h>
 #include <stumpless/entry.h>
 #include <stumpless/facility.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
-#include <windows.h>
 #include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"

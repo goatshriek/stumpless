@@ -61,6 +61,9 @@ return_code = 0
 
 ARGV.each do |source_glob|
   Dir.glob(source_glob) do |source_filename|
+    next if source_filename.match?(%r{windows_wrapper\.h})
+    next if source_filename.match?(%r{stumpless\.h})
+
     file_terms = if source_filename.match?(%r{\.(h|c)$})
                    all_known_terms
                  else

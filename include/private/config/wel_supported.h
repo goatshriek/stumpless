@@ -19,11 +19,13 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 
+/* this must be included first to avoid errors */
+#  include "private/windows_wrapper.h"
+
 #  include <stdbool.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/param.h>
 #  include <stumpless/target.h>
-#  include <windows.h>
 
 /**
  * The extra fields needed in an entry to provide information for Windows Event
