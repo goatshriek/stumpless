@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 /** @file
  * Serves as a single inclusion point for windows.h, winsock2.h, and
  * ws2tcpip.h. Windows headers have ordering dependencies that can cause
