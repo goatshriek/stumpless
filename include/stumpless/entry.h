@@ -23,17 +23,22 @@
 #ifndef __STUMPLESS_ENTRY_H
 #  define __STUMPLESS_ENTRY_H
 
-#  include <stdarg.h>
-#  include <stdbool.h>
-#  include <stddef.h>
 #  include <stumpless/config.h>
-#  include <stumpless/element.h>
-#  include <stumpless/id.h>
-#  include <stumpless/param.h>
 
+/*
+ * According to Microsoft, windows.h should be included first in any sources, as
+ * it sets up definitions that need to be first.
+ */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include <windows.h>
 #  endif
+
+#  include <stdarg.h>
+#  include <stdbool.h>
+#  include <stddef.h>
+#  include <stumpless/element.h>
+#  include <stumpless/id.h>
+#  include <stumpless/param.h>
 
 #  ifdef __cplusplus
 extern "C" {
