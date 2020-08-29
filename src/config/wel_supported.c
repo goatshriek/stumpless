@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <winsock2.h>
 #include <windows.h>
 
 #include <stdarg.h>
