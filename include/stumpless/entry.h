@@ -29,6 +29,7 @@
  */
 #  include <stumpless/config.h>
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+#    include <winsock2.h>
 #    include <windows.h>
 #  endif
 
