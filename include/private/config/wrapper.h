@@ -22,6 +22,12 @@
 #  include <stumpless/config.h>
 #  include "private/config.h"
 
+#  ifndef HAVE_SYS_SOCKET_H
+#    ifdef HAVE_WINSOCK2_H
+#      include <winsock2.h>
+#    endif
+#  endif
+
 
 /* definition of network target functions */
 #  ifdef HAVE_SYS_SOCKET_H
@@ -53,7 +59,6 @@
 #    define config_udp4_is_open sys_socket_network_target_is_open
 #    define config_udp6_is_open sys_socket_network_target_is_open
 #  elif HAVE_WINSOCK2_H
-#    include <winsock2.h>
 #    define config_socket_handle_t SOCKET
 #    include "private/config/have_winsock2.h"
 #    define config_close_tcp4_target winsock2_close_network_target
