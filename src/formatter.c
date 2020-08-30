@@ -18,13 +18,16 @@
 
 #include <stddef.h>
 #include <stumpless/entry.h>
+#include <stumpless/option.h>
+#include <stumpless/target.h>
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/strbuilder.h"
 #include "private/formatter.h"
 
 struct strbuilder *
-format_entry( const struct stumpless_entry *entry ) {
+format_entry( const struct stumpless_entry *entry,
+              struct stumpless_target *target ) {
   char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
   struct strbuilder *builder;
   size_t timestamp_size;
@@ -42,7 +45,11 @@ format_entry( const struct stumpless_entry *entry ) {
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_app_name( builder, entry );
   builder = strbuilder_append_char( builder, ' ' );
-  builder = strbuilder_append_procid( builder );
+  if (target->options & STUMPLESS_OPTION_PID) {
+    builder = strbuilder_append_procid( builder );
+  } else {
+    builder = strbuilder_append_char( builder, RFC_5424_NILVALUE );
+  }
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_msgid( builder, entry );
   builder = strbuilder_append_char( builder, ' ' );

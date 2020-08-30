@@ -30,7 +30,7 @@
 
 #    include <syslog.h>
 
-/** Not currently supported. PIDs are always included in stumpless messages. */
+/** Option to include the PID in stumpless messages  */
 #    define STUMPLESS_OPTION_PID    LOG_PID
 /** Not currently supported. */
 #    define STUMPLESS_OPTION_CONS   LOG_CONS
@@ -44,7 +44,7 @@
 /* options normally defined in syslog.h */
 #  else
 
-/** Not currently supported. PIDs are always included in stumpless messages. */
+/** Option to include the PID in stumpless messages  */
 #    define STUMPLESS_OPTION_PID    1
 /** Not currently supported. */
 #    define STUMPLESS_OPTION_CONS   (1<<1)
