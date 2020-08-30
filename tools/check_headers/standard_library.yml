@@ -1,22 +1,36 @@
 "AF_INET":
   - "sys/socket.h"
+  - "private/windows_wrapper.h"
   - "winsock2.h"
 "AF_INET6":
   - "sys/socket.h"
+  - "private/windows_wrapper.h"
   - "winsock2.h"
 "AF_UNIX": "sys/socket.h"
 "atomic_uint": "stdatomic.h"
-"BOOL": "windows.h"
+"BOOL":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "clock": "time.h"
 "clock_t": "sys/types.h"
 "CLOCKS_PER_SEC": "time.h"
 "close": "unistd.h"
-"DWORD": "windows.h"
+"DWORD":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "errno": "errno.h"
-"EVENTLOG_ERROR_TYPE": "windows.h"
-"EVENTLOG_INFORMATION_TYPE": "windows.h"
-"EVENTLOG_SUCCESS": "windows.h"
-"EVENTLOG_WARNING_TYPE": "windows.h"
+"EVENTLOG_ERROR_TYPE":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"EVENTLOG_INFORMATION_TYPE":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"EVENTLOG_SUCCESS":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"EVENTLOG_WARNING_TYPE":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "EXIT_FAILURE": "stdlib.h"
 "EXIT_SUCCESS": "stdlib.h"
 "fclose":
@@ -35,26 +49,34 @@
 "freeaddrinfo":
   - "netdb.h"
   - "ws2tcpip.h"
+  - "private/windows_wrapper.h"
 "fwrite": "stdio.h"
 "getaddrinfo":
   - "netdb.h"
   - "ws2tcpip.h"
+  - "private/windows_wrapper.h"
 "gethostname":
   - "unistd.h"
   - "winsock2.h"
+  - "private/windows_wrapper.h"
 "getpagesize":
   - "unistd.h"
   - "windows.h"
+  - "private/windows_wrapper.h"
 "getpid": "unistd.h"
 "gmtime": "time.h"
-"HANDLE": "windows.h"
+"HANDLE":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "htons": "arpa/inet.h"
 "ifstream": "fstream"
 "inet_pton":
   - "arpa/inet.h"
-  - "ws2tcpip.h"
+  - "private/windows_wrapper.h"
 "INT_MAX": "limits.h"
-"LPCSTR": "windows.h"
+"LPCSTR":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "LOG_INFO": "syslog.h"
 "LOG_PID": "syslog.h"
 "LOG_USER": "syslog.h"
@@ -71,8 +93,12 @@
 "perror": "stdio.h"
 "pid_t": "sys/types.h"
 "printf": "stdio.h"
-"PSOCKADDR": "winsock2.h"
-"PSOCKADDR_IN": "winsock2.h"
+"PSOCKADDR":
+  - "winsock2.h"
+  - "private/windows_wrapper.h"
+"PSOCKADDR_IN":
+  - "winsock2.h"
+  - "private/windows_wrapper.h"
 "pthread_create": "pthread.h"
 "pthread_mutex_lock": "pthread.h"
 "pthread_mutex_t": "pthread.h"
@@ -82,12 +108,16 @@
   - "stdlib.h"
 "recvfrom": "sys/socket.h"
 "regex_match": "regex"
-"RegisterEventSource": "windows.h"
-"ReportEvent": "windows.h"
+"RegisterEventSource":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"ReportEvent":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "_SC_PAGESIZE": "unistd.h"
 "sendto":
   - "sys/socket.h"
-  - "winsock2.h"
+  - "private/windows_wrapper.h"
 "SIG_ERR": "signal.h"
 "SIGINT": "signal.h"
 "signal": "signal.h"
@@ -97,8 +127,12 @@
 "snprintf":
  - "cstdio"
  - "stdio.h"
-"SOCKET": "winsock2.h"
-"SOCKADDR_STORAGE": "winsock2.h"
+"SOCKET":
+  - "winsock2.h"
+  - "private/windows_wrapper.h"
+"SOCKADDR_STORAGE":
+  - "winsock2.h"
+  - "private/windows_wrapper.h"
 "socklen_t": "sys/socket.h"
 "sprintf_s": "stdio.h"
 "ssize_t": "sys/types.h"
@@ -123,7 +157,9 @@
 "struct sockaddr_un": "sys/un.h"
 "sysconf": "unistd.h"
 "syslog": "syslog.h"
-"SYSTEMTIME": "windows.h"
+"SYSTEMTIME":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "thread": "thread"
 "time": "time.h"
 "time_t": "time.h"
@@ -133,6 +169,12 @@
 "va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
-"WIN32_LEAN_AND_MEAN": "windows.h"
-"WORD": "windows.h"
-"WSACleanup": "winsock2.h"
+"WIN32_LEAN_AND_MEAN":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"WORD":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"WSACleanup":
+  - "winsock2.h"
+  - "private/windows_wrapper.h"

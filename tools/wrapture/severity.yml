@@ -9,7 +9,7 @@ enums:
       syslog.h if it was available during build. Check for the definition of
       STUMPLESS_SYSLOG_H_COMPATIBLE to see if you can rely on this behavior.
     namespace: "stumpless"
-    includes: "stumpless/entry.h"
+    includes: "stumpless/severity.h"
     elements:
       - name: "EMERGENCY"
         doc: "System is unusable."

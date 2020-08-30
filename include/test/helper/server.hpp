@@ -19,8 +19,6 @@
 #ifndef __STUMPLESS_TEST_HELPER_SERVER_HPP
 #  define __STUMPLESS_TEST_HELPER_SERVER_HPP
 
-#  include <cstddef>
-
 #  ifdef _WIN32
 #    include <winsock2.h>
 #    define BAD_HANDLE INVALID_SOCKET
@@ -29,6 +27,8 @@ typedef SOCKET socket_handle_t;
 #    define BAD_HANDLE -1
 typedef int socket_handle_t;
 #  endif
+
+#  include <cstddef>
 
 socket_handle_t
 open_tcp_server_socket( int af, const char *dest, const char *port );

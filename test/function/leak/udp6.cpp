@@ -16,6 +16,12 @@
  * limitations under the License.
  */
 
+#ifdef _WIN32
+#  include <winsock2.h>
+#else
+#  include <sys/socket.h>
+#endif
+
 #include <stddef.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
@@ -23,12 +29,6 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 #include "test/helper/server.hpp"
-
-#ifdef _WIN32
-#  include <winsock2.h>
-#else
-#  include <sys/socket.h>
-#endif
 
 NEW_MEMORY_COUNTER( set_port )
 NEW_MEMORY_COUNTER( udp6_leak )

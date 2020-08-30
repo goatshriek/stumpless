@@ -31,9 +31,7 @@
 #ifndef __STUMPLESS_H
 #  define __STUMPLESS_H
 
-/* the config includes should always be first, thanks to windows.h */
 #  include <stumpless/config.h>
-
 #  include <stumpless/element.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/error.h>

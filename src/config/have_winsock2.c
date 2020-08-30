@@ -17,10 +17,9 @@
  */
 
 /* this must be included first to avoid errors */
-#include <winsock2.h>
+#include "private/windows_wrapper.h"
 
 #include <stddef.h>
-#include <ws2tcpip.h>
 #include "private/config/have_winsock2.h"
 #include "private/error.h"
 #include "private/inthelper.h"

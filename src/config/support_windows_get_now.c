@@ -16,9 +16,11 @@
  * limitations under the License.
  */
 
+/* this must be included first to avoid errors */
+#include "private/windows_wrapper.h"
+
 #include <stddef.h>
 #include <stdio.h>
-#include <windows.h>
 #include "private/config/support_windows_get_now.h"
 #include "private/formatter.h"
 

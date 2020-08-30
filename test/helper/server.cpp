@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <cstddef>
 #ifdef _WIN32
 #  include <winsock2.h>
 #  include <ws2tcpip.h>
@@ -27,6 +26,7 @@
 #  include <unistd.h>
 #endif
 
+#include <cstddef>
 #include "test/helper/server.hpp"
 
 #ifdef _WIN32

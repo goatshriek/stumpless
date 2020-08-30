@@ -174,7 +174,7 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
     copy->element_count++;
   }
 
-  result = config_copy_wel_fields( copy, entry );
+  result = config_copy_wel_data( copy, entry );
   if( !result ) {
     goto fail_elements;
   }
@@ -933,7 +933,9 @@ vstumpless_new_entry( int facility,
     }
   }
 
-  config_initialize_insertion_params( entry );
+  if( !config_initialize_wel_data( entry ) ) {
+    goto fail_wel_data;
+  }
   config_set_entry_wel_type( entry, severity );
 
   entry->prival = get_prival( facility, severity );
@@ -945,6 +947,8 @@ vstumpless_new_entry( int facility,
   clear_error(  );
   return entry;
 
+fail_wel_data:
+  free_mem( entry->message );
 fail_message:
   free_mem( entry->msgid );
 fail_msgid:
@@ -1149,7 +1153,7 @@ void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
   pthread_mutex_destroy( ( pthread_mutex_t * ) &entry->entry_mutex );
 
-  config_destroy_insertion_params( entry );
+  config_destroy_wel_data( entry );
 
   free_mem( entry->elements );
   free_mem( entry->msgid );
