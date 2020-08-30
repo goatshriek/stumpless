@@ -26,6 +26,9 @@
 void
 destroy_target( const struct stumpless_target *target );
 
+int
+lock_target( const struct stumpless_target *target );
+
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,
@@ -49,6 +52,9 @@ target_free_global( void );
 
 void
 target_free_thread( void );
+
+int
+unlock_target( const struct stumpless_target *target );
 
 int
 unsupported_target_is_open( const struct stumpless_target *target );

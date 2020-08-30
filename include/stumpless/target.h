@@ -27,6 +27,7 @@
 #ifndef __STUMPLESS_TARGET_H
 #  define __STUMPLESS_TARGET_H
 
+#  include <pthread.h>
 #  include <stdarg.h>
 #  include <stddef.h>
 #  include <stumpless/entry.h>
@@ -58,7 +59,10 @@ enum stumpless_target_type {
 struct stumpless_target {
 /** A unique identifier of this target. */
   stumpless_id_t id;
-/** The type of this target. */
+/**
+ * The type of this target. The type of a target will not change over the
+ * lifetime of the target.
+ */
   enum stumpless_target_type type;
 /**
  * The name of this target.
@@ -70,6 +74,8 @@ struct stumpless_target {
  * The name of the target will be NULL-terminated.
  */
   char *name;
+/** The number of characters in the name. */
+  size_t name_length;
 /** A bitwise or of all options set on the target. */
   int options;
 /** The prival used for messages without a severity or facility provided. */
@@ -97,6 +103,8 @@ struct stumpless_target {
  * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
  */
   int mask;
+/** A mutex used to coordinate multi-threaded access to this target. */
+  pthread_mutex_t target_mutex;
 };
 
 /**
@@ -309,6 +317,34 @@ stumpless_get_default_target( void );
  */
 int
 stumpless_get_option( const struct stumpless_target *target, int option );
+
+/**
+ * Returns the name of the given target. The character buffer must be freed by
+ * the caller when it is no longer needed to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.0.0
+ *
+ * @param target The target to get the name from.
+ *
+ * @return The name of target, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+const char *
+stumpless_get_target_name( const struct stumpless_target *target );
 
 /**
  * Opens a target that has already been created and configured.

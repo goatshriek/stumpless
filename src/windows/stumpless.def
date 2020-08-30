@@ -148,3 +148,4 @@ EXPORTS
 ; added in v2.0.0
   stumpless_free_thread                         @136
   stumpless_get_element_count                   @137
+  stumpless_get_target_name                     @138

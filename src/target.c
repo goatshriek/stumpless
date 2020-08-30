@@ -283,6 +283,28 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
   return target->options & option;
 }
 
+const char *
+stumpless_get_target_name( const struct stumpless_target *target ) {
+  char *name_copy;
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  lock_target( target );
+  name_copy = alloc_mem( target->name_length + 1 );
+  if( !name_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( name_copy, target->name, target->name_length + 1 );
+  clear_error(  );
+
+cleanup_and_return:
+  unlock_target( target );
+  return name_copy;
+}
+
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target ) {
   clear_error(  );
@@ -552,6 +574,11 @@ destroy_target( const struct stumpless_target *target ) {
   free_mem( target );
 }
 
+int
+lock_target( const struct stumpless_target *target ) {
+  return pthread_mutex_lock( ( pthread_mutex_t * ) &target->target_mutex );
+}
+
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
             const char *name,
@@ -565,7 +592,7 @@ new_target( enum stumpless_target_type type,
     goto fail;
   }
 
-  target->name = copy_cstring( name );
+  target->name = copy_cstring_with_length( name, &target->name_length );
   if( !target->name ) {
     goto fail_name;
   }
@@ -627,6 +654,11 @@ void
 target_free_thread( void ) {
   stumpless_destroy_entry( cached_entry );
   cached_entry = NULL;
+}
+
+int
+unlock_target( const struct stumpless_target *target ) {
+  return pthread_mutex_unlock( ( pthread_mutex_t * ) &target->target_mutex );
 }
 
 int
