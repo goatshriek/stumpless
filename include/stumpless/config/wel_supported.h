@@ -24,10 +24,15 @@
 #ifndef __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 #  define __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 
+/*
+ * According to Microsoft, windows.h should be included first in any sources, as
+ * it sets up definitions that need to be first.
+ */
+#  include <windows.h>
+
 #  include <stdarg.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/param.h>
-#  include <windows.h>
 
 #  ifdef __cplusplus
 extern "C" {

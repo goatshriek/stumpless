@@ -11,7 +11,7 @@ enums:
       in the standard. Check for the definition of STUMPLESS_SYSLOG_H_COMPATIBLE
       to see if you can rely on this behavior.
     namespace: "stumpless"
-    includes: "stumpless/entry.h"
+    includes: "stumpless/facility.h"
     elements:
       - name: "KERNEL"
         doc: "Kernel messages."

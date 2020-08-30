@@ -16,7 +16,11 @@
  * limitations under the License.
  */
 
+/* this must be included first to avoid errors */
+#include "private/windows_wrapper.h"
+
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
@@ -25,11 +29,11 @@
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
-#include <windows.h>
 #include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
+#include "private/config/wrapper.h"
 
 static
 struct stumpless_entry *
@@ -38,6 +42,7 @@ set_wel_insertion_string( struct stumpless_entry *entry,
                           LPCSTR str ) {
   size_t *str_length;
   struct stumpless_param *param;
+  struct wel_data *data;
 
   param = alloc_mem( sizeof( *param ) );
   if( !param ) {
@@ -50,17 +55,18 @@ set_wel_insertion_string( struct stumpless_entry *entry,
     goto fail_str;
   }
 
-  if( index >= entry->wel_insertion_count ) {
+  data = entry->wel_data;
+  if( index >= data->insertion_count ) {
     if( !resize_insertion_params( entry, index ) ) {
       goto fail_resize;
     }
   }
 
-  destroy_insertion_string_param( entry->wel_insertion_params[index] );
+  destroy_insertion_string_param( data->insertion_params[index] );
 
   param->name = NULL;
   param->name_length = 0;
-  entry->wel_insertion_params[index] = param;
+  data->insertion_params[index] = param;
 
   return entry;
 
@@ -76,19 +82,21 @@ fail:
 LPCSTR
 stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index ) {
-  clear_error(  );
+  struct wel_data *data;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     goto fail;
   }
 
-  if( index >= entry->wel_insertion_count ) {
+  data = entry->wel_data;
+  if( index >= data->insertion_count ) {
     raise_index_out_of_bounds( "invalid insertion string index", index );
     goto fail;
   }
 
-  return entry->wel_insertion_params[index]->value;
+  clear_error();
+  return data->insertion_params[index]->value;
 
 fail:
   return NULL;
@@ -96,29 +104,33 @@ fail:
 
 struct stumpless_entry *
 stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
-  clear_error(  );
+  struct wel_data *data;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
-  entry->wel_category = category;
+  data = entry->wel_data;
+  data->category = category;
 
+  clear_error();
   return entry;
 }
 
 struct stumpless_entry *
 stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
-  clear_error(  );
+  struct wel_data *data;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
-  entry->wel_event_id = event_id;
+  data = entry->wel_data;
+  data->event_id = event_id;
 
+  clear_error();
   return entry;
 }
 
@@ -126,7 +138,7 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
                                    WORD index,
                                    struct stumpless_param *param ) {
-  clear_error(  );
+  struct wel_data *data;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
@@ -138,14 +150,16 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
     return NULL;
   }
 
-  if( index >= entry->wel_insertion_count ) {
+  data = entry->wel_data;
+  if( index >= data->insertion_count ) {
     if( !resize_insertion_params( entry, index ) ) {
       return NULL;
     }
   }
 
-  entry->wel_insertion_params[index] = param;
+  data->insertion_params[index] = param;
 
+  clear_error();
   return entry;
 }
 
@@ -187,15 +201,17 @@ stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
 
 struct stumpless_entry *
 stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
-  clear_error(  );
+  struct wel_data *data;
 
   if( !entry ) {
     raise_argument_empty( "entry is NULL" );
     return NULL;
   }
 
-  entry->wel_type = type;
+  data = entry->wel_data;
+  data->type = type;
 
+  clear_error();
   return entry;
 }
 
@@ -237,33 +253,42 @@ fail:
 /* private definitions */
 
 struct stumpless_entry *
-copy_wel_fields( struct stumpless_entry *destination,
-                 const struct stumpless_entry *source ) {
+copy_wel_data( struct stumpless_entry *destination,
+               const struct stumpless_entry *source ) {
+  struct wel_data *dest_data;
+  struct wel_data* source_data;
   WORD i;
   struct stumpless_param *param;
   const struct stumpless_entry *result;
 
-  destination->wel_type = source->wel_type;
-  destination->wel_category = source->wel_category;
-  destination->wel_event_id = source->wel_event_id;
-
-  destination->wel_insertion_strings = alloc_mem( sizeof( LPCSTR ) * source->wel_insertion_count );
-  if( !destination->wel_insertion_strings ) {
+  if( !config_initialize_wel_data( destination ) ) {
     goto fail;
   }
 
-  destination->wel_insertion_params = alloc_mem( sizeof( struct stumpless_param * ) * source->wel_insertion_count );
-  if( !destination->wel_insertion_params ) {
+  dest_data = destination->wel_data;
+  source_data = destination->wel_data;
+
+  dest_data->type = source_data->type;
+  dest_data->category = source_data->category;
+  dest_data->event_id = source_data->event_id;
+
+  dest_data->insertion_strings = alloc_mem( sizeof( LPCSTR ) * source_data->insertion_count );
+  if( !dest_data->insertion_strings) {
+    goto fail;
+  }
+
+  dest_data->insertion_params = alloc_mem( sizeof( struct stumpless_param * ) * source_data->insertion_count );
+  if( !dest_data->insertion_params) {
     goto fail_params;
   }
 
-  destination->wel_insertion_count = source->wel_insertion_count;
-  for( i = 0; i < source->wel_insertion_count; i++ ) {
-    destination->wel_insertion_params[i] = NULL;
+  dest_data->insertion_count = source_data->insertion_count;
+  for( i = 0; i < source_data->insertion_count; i++ ) {
+    dest_data->insertion_params[i] = NULL;
   }
 
-  for( i = 0; i < source->wel_insertion_count; i++ ) {
-    param = source->wel_insertion_params[i];
+  for( i = 0; i < source_data->insertion_count; i++ ) {
+    param = source_data->insertion_params[i];
     if( param && !param->value ) {
       result = set_wel_insertion_string( destination, i, param->value );
       if( !result ) {
@@ -271,7 +296,7 @@ copy_wel_fields( struct stumpless_entry *destination,
       }
 
     } else {
-      destination->wel_insertion_params[i] = param;
+      dest_data->insertion_params[i] = param;
     }
   }
 
@@ -280,20 +305,28 @@ copy_wel_fields( struct stumpless_entry *destination,
 fail_set_string:
   destroy_insertion_params( destination );
 fail_params:
-  free_mem( destination->wel_insertion_strings );
+  free_mem( dest_data->insertion_strings );
 fail:
   return NULL;
 }
 
 void
+destroy_wel_data(const struct stumpless_entry* entry) {
+    destroy_insertion_params( entry );
+    free_mem( entry->wel_data );
+}
+
+void
 destroy_insertion_params( const struct stumpless_entry *entry ) {
+  struct wel_data *data;
   WORD i;
 
-  for( i = 0; i < entry->wel_insertion_count; i++ ) {
-    destroy_insertion_string_param( entry->wel_insertion_params[i] );
+  data = ( struct wel_data * ) entry->wel_data;
+  for( i = 0; i < data->insertion_count; i++ ) {
+    destroy_insertion_string_param( data->insertion_params[i] );
   }
 
-  free_mem( entry->wel_insertion_params );
+  free_mem( data->insertion_params );
 }
 
 void
@@ -304,69 +337,85 @@ destroy_insertion_string_param( const struct stumpless_param *param ) {
   }
 }
 
-void
-initialize_insertion_params( struct stumpless_entry *entry ) {
-  entry->wel_insertion_strings = NULL;
-  entry->wel_insertion_params = NULL;
-  entry->wel_insertion_count = 0;
+bool
+initialize_wel_data( struct stumpless_entry *entry ) {
+  struct wel_data *data;
+
+  data = alloc_mem( sizeof( *data ) );
+  if( !data ){
+    return false;
+  }
+
+  data->insertion_strings = NULL;
+  data->insertion_params = NULL;
+  data->insertion_count = 0;
+
+  entry->wel_data = data;
+  return true;
 }
 
 struct stumpless_param **
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index ) {
   size_t new_size;
+  struct wel_data *data;
   struct stumpless_param **new_params;
   LPCSTR *new_strings;
   WORD i;
 
   new_size = sizeof( *new_params ) * ( max_index + 1 );
-  new_params = realloc_mem( entry->wel_insertion_params, new_size );
+  data = entry->wel_data;
+  new_params = realloc_mem( data->insertion_params, new_size );
   if( !new_params ) {
     return NULL;
 
   } else {
-    for( i = entry->wel_insertion_count; i <= max_index; i++ ) {
+    for( i = data->insertion_count; i <= max_index; i++ ) {
       new_params[i] = NULL;
     }
 
-    entry->wel_insertion_params = new_params;
+    data->insertion_params = new_params;
 
   }
 
   new_size = sizeof( LPCSTR ) * ( max_index + 1 );
-  new_strings = realloc_mem( ( void * ) entry->wel_insertion_strings, new_size );
+  new_strings = realloc_mem( ( void * ) data->insertion_strings, new_size );
   if( !new_strings ) {
     return NULL;
 
   } else {
-    for( i = entry->wel_insertion_count; i <= max_index; i++ ) {
+    for( i = data->insertion_count; i <= max_index; i++ ) {
       new_strings[i] = NULL;
     }
 
-    entry->wel_insertion_strings = new_strings;
+    data->insertion_strings = new_strings;
 
   }
 
-  entry->wel_insertion_count = max_index + 1;
+  data->insertion_count = max_index + 1;
   return new_params;
 }
 
 void
 set_entry_wel_type( struct stumpless_entry *entry, int severity ) {
+  struct wel_data *data;
+
+  data = entry->wel_data;
+
   switch ( severity ) {
     case STUMPLESS_SEVERITY_ERR:
-      entry->wel_type = EVENTLOG_ERROR_TYPE;
+      data->type = EVENTLOG_ERROR_TYPE;
       break;
 
     case STUMPLESS_SEVERITY_INFO:
-      entry->wel_type = EVENTLOG_INFORMATION_TYPE;
+      data->type = EVENTLOG_INFORMATION_TYPE;
       break;
 
     case STUMPLESS_SEVERITY_WARNING:
-      entry->wel_type = EVENTLOG_WARNING_TYPE;
+      data->type = EVENTLOG_WARNING_TYPE;
       break;
 
     default:
-      entry->wel_type = EVENTLOG_SUCCESS;
+      data->type = EVENTLOG_SUCCESS;
   }
 }
 

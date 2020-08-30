@@ -19,14 +19,53 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WEL_SUPPORTED_H
 
+/* this must be included first to avoid errors */
+#  include "private/windows_wrapper.h"
+
+#  include <stdbool.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/param.h>
 #  include <stumpless/target.h>
-#  include <windows.h>
+
+/**
+ * The extra fields needed in an entry to provide information for Windows Event
+ * Log messages.
+ */
+struct wel_data {
+  /** The type of this entry, for use with Windows Event Log calls. */
+  WORD type;
+  /** The category of this entry, for use with Windows Event Log calls. */
+  WORD category;
+  /** The event id of this entry, for use with Windows Event Log calls. */
+  DWORD event_id;
+  /**
+   * The number of insertion strings this entry has. This can be used as the
+   * length of both the wel_insertion_strings array and the wel_insertion_params
+   * array.
+   */
+  WORD insertion_count;
+  /**
+   * A buffer to hold insertion strings during the process of sending this entry
+   * to an Event log. This field should not be referred to for insertion string
+   * values as it is not updated until an event is logged: the actual values are
+   * stored as the values of params in wel_insertion_params.
+   */
+  LPCSTR* insertion_strings;
+  /**
+   * An array of params of which the values can be used as insertion strings with
+   * Windows Event Log calls. Params in this list may not have name fields and
+   * should not be used with other functions for using params. They should only
+   * be interacted with using the Windows Event Log stumpless functions.
+   */
+  struct stumpless_param** insertion_params;
+};
 
 struct stumpless_entry *
-copy_wel_fields( struct stumpless_entry *destination,
-                 const struct stumpless_entry *source );
+copy_wel_data( struct stumpless_entry *destination,
+               const struct stumpless_entry *source );
+
+void
+destroy_wel_data( const struct stumpless_entry *entry );
 
 void
 destroy_insertion_params( const struct stumpless_entry *entry );
@@ -34,8 +73,8 @@ destroy_insertion_params( const struct stumpless_entry *entry );
 void
 destroy_insertion_string_param( const struct stumpless_param *param );
 
-void
-initialize_insertion_params( struct stumpless_entry *entry );
+bool
+initialize_wel_data( struct stumpless_entry *entry );
 
 struct stumpless_param **
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index );

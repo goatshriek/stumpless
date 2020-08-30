@@ -26,24 +26,10 @@
 #  include <stdarg.h>
 #  include <stdbool.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/id.h>
 #  include <stumpless/param.h>
-
-#  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-#    include <windows.h>
-#  endif
-
-/* included for compatability with all 1.x releases */
-#  ifndef STUMPLESS_FACILITY_USER
-#    include <stumpless/facility.h>
-#  endif
-#  ifndef STUMPLESS_OPTION_NONE
-#    include <stumpless/option.h>
-#  endif
-#  ifndef STUMPLESS_SEVERITY_INFO
-#    include <stumpless/severity.h>
-#  endif
 
 #  ifdef __cplusplus
 extern "C" {
@@ -81,32 +67,8 @@ struct stumpless_entry {
 /** The number of elements in this entry. */
   size_t element_count;
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-/** The type of this entry, for use with Windows Event Log calls. */
-  WORD wel_type;
-/** The category of this entry, for use with Windows Event Log calls. */
-  WORD wel_category;
-/** The event id of this entry, for use with Windows Event Log calls. */
-  DWORD wel_event_id;
-/**
- * The number of insertion strings this entry has. This can be used as the
- * length of both the wel_insertion_strings array and the wel_insertion_params
- * array.
- */
-  WORD wel_insertion_count;
-/**
- * A buffer to hold insertion strings during the process of sending this entry
- * to an Event log. This field should not be referred to for insertion string
- * values as it is not updated until an event is logged: the actual values are
- * stored as the values of params in wel_insertion_params.
- */
-  LPCSTR *wel_insertion_strings;
-/**
- * An array of params of which the values can be used as insertion strings with
- * Windows Event Log calls. Params in this list may not have name fields and
- * should not be used with other functions for using params. They should only
- * be interacted with using the Windows Event Log stumpless functions.
- */
-  struct stumpless_param **wel_insertion_params;
+/** A pointer to a wel_fields structure. */
+  void *wel_data;
 #  endif
 };
 

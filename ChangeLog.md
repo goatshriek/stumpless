@@ -12,6 +12,10 @@ fixes, check out the
 ## [2.0.0] - 2020-08-16
 ### Changed
  - C++ namespace from `stumplesscpp` to `stumpless`.
+ - Including `stumpless/config.h` no longer defines `WIN32_LEAN_AND_MEAN`.
+ - Facilities, options, and severities are now only available in the
+   `stumpless/facility.h`, `stumpless/option.h`, and `stumpless/severity.h`
+   headers, respectively.
 
 ### Removed
  - `stumpless` and `vstumpless` functions (use `stump` and `vstump` instead).

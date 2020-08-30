@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+#include "test/helper/server.hpp"
+
 #include <cstdlib>
 #include <stddef.h>
 #include <stdio.h>
@@ -25,7 +27,6 @@
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/resolve.hpp"
-#include "test/helper/server.hpp"
 
 #ifndef _WIN32
 #  include <sys/socket.h>

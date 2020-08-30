@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,24 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_TARGET_WEL_H
-#  define __STUMPLESS_PRIVATE_TARGET_WEL_H
+/** @file
+ * Serves as a single inclusion point for windows.h, winsock2.h, and
+ * ws2tcpip.h. Windows headers have ordering dependencies that can cause
+ * compilation errors, and as such need to be done carefully.
+ */
 
-/* this must be included first to avoid errors */
-#  include "private/windows_wrapper.h"
+#ifndef __STUMPLESS_PRIVATE_WINDOWS_WRAPPER_H
+#  define __STUMPLESS_PRIVATE_WINDOWS_WRAPPER_H
 
-#  include <stumpless/entry.h>
+#  include "private/config.h"
 
-struct wel_target {
-  HANDLE handle;
-};
+#  ifdef HAVE_WINSOCK2_H
+#    include <winsock2.h>
+#    include <ws2tcpip.h>
+#  endif
 
-void
-destroy_wel_target( struct wel_target *target );
+#  ifdef HAVE_WINDOWS_H
+#    include <windows.h>
+#  endif
 
-struct wel_target *
-new_wel_target( LPCSTR server_name, LPCSTR source_name );
-
-int
-send_entry_to_wel_target( const struct wel_target *target,
-                          const struct stumpless_entry *entry );
-
-#endif /* __STUMPLESS_PRIVATE_TARGET_WEL_H */
+#endif /* __STUMPLESS_PRIVATE_WINDOWS_WRAPPER_H */
