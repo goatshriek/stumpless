@@ -176,7 +176,7 @@ If you want to actually write some code or make an update yourself, take a look
 at the [development guide](docs/development.md) to get a detailed orientation.
 
 Or if you just want to say thanks or drop me a private message, please feel free
-to do so in an [email](joelanderson333@gmail.com)!
+to do so in an [email](mailto:joelanderson333@gmail.com)!
 
 ## Further Documentation
 If you're curious about how something in stumpless works that isn't explained
