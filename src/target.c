@@ -284,6 +284,16 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
 }
 
 const char *
+stumpless_get_target_default_app_name( struct stumpless_target *target ) {
+  return NULL;
+}
+
+const char *
+stumpless_get_target_default_msgid( struct stumpless_target *target ) {
+  return NULL;
+}
+
+const char *
 stumpless_get_target_name( const struct stumpless_target *target ) {
   char *name_copy;
 

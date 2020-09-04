@@ -136,3 +136,5 @@
  - [x] stumpless_get_error_id_string
  - [x] stumpless_version_cmp
  - [x] stumpless_get_element_count
+ - [ ] stumpless_get_target_default_app_name
+ - [ ] stumpless_get_target_default_msgid

@@ -149,3 +149,5 @@ EXPORTS
   stumpless_free_thread                         @136
   stumpless_get_element_count                   @137
   stumpless_get_target_name                     @138
+  stumpless_get_target_default_app_name         @139
+  stumpless_get_target_default_msgid            @140

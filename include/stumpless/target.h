@@ -319,6 +319,64 @@ int
 stumpless_get_option( const struct stumpless_target *target, int option );
 
 /**
+ * Returns the default app name of the given target. The character buffer must
+ * be freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.0.0
+ *
+ * @param target The target to get the app name from.
+ *
+ * @return The default app name of the target, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_target_default_app_name( struct stumpless_target *target );
+
+/**
+ * Returns the default msgid of the given target. The character buffer must be
+ * freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.0.0
+ *
+ * @param target The target to get the msgid from.
+ *
+ * @return The default msgid of the target, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_target_default_msgid( struct stumpless_target *target );
+
+/**
  * Returns the name of the given target. The character buffer must be freed by
  * the caller when it is no longer needed to avoid memory leaks.
  *
@@ -444,7 +502,6 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
-
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid );
