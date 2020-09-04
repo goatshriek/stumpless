@@ -302,6 +302,7 @@
 "stumpless_open_tcp4_target": "stumpless/target/network.h"
 "stumpless_open_udp4_target": "stumpless/target/network.h"
 "STUMPLESS_OPTION_NONE": "stumpless/option.h"
+"STUMPLESS_OPTION_PID": "stumpless/option.h"
 "STUMPLESS_PATCH_VERSION": "stumpless/config.h"
 "STUMPLESS_PARAM_NOT_FOUND": "stumpless/error.h"
 "stumpless_perror": "stumpless/error.h"

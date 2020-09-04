@@ -27,34 +27,42 @@
 
 /* options defined in syslog.h */
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-
 #    include <syslog.h>
+#  endif
 
-/** Not currently supported. PIDs are always included in stumpless messages. */
+/** Option to include the PID in stumpless messages. */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    define STUMPLESS_OPTION_PID    LOG_PID
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_CONS   LOG_CONS
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_NDELAY LOG_NDELAY
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_ODELAY LOG_ODELAY
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT
-
-/* options normally defined in syslog.h */
 #  else
-
-/** Not currently supported. PIDs are always included in stumpless messages. */
 #    define STUMPLESS_OPTION_PID    1
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_CONS   (1<<1)
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_NDELAY (1<<2)
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_ODELAY (1<<3)
-/** Not currently supported. */
-#    define STUMPLESS_OPTION_NOWAIT (1<<4)
+#  endif
 
+/** Not currently supported. */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_OPTION_CONS   LOG_CONS
+#  else
+#    define STUMPLESS_OPTION_CONS   (1<<1)
+#  endif
+
+/** Not currently supported. */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_OPTION_NDELAY LOG_NDELAY
+#  else
+#    define STUMPLESS_OPTION_NDELAY (1<<2)
+#  endif
+
+/** Not currently supported. */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_OPTION_ODELAY LOG_ODELAY
+#  else
+#    define STUMPLESS_OPTION_ODELAY (1<<3)
+#  endif
+
+/** Not currently supported. */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT
+#  else
+#    define STUMPLESS_OPTION_NOWAIT (1<<4)
 #  endif
 
 /** Empty option mask for explicit 'no option' use. */

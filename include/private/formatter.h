@@ -20,6 +20,7 @@
 #  define __STUMPLESS_PRIVATE_FORMATTER_H
 
 #  include <stumpless/entry.h>
+#  include <stumpless/target.h>
 #  include "private/strbuilder.h"
 
 #  define RFC_5424_FULL_DATE_BUFFER_SIZE 11
@@ -31,6 +32,8 @@
 #  define RFC_5424_TIME_SECFRAC_BUFFER_SIZE 8
 #  define RFC_5424_TIMESTAMP_BUFFER_SIZE 33
 #  define RFC_5424_WHOLE_TIME_BUFFER_SIZE 20
+
+#  define RFC_5424_NILVALUE '-'
 
 /**
  * Creates a new strbuilder with the formatted message.
@@ -56,6 +59,7 @@
  * character added to the end.
  */
 struct strbuilder *
-format_entry( const struct stumpless_entry *entry );
+format_entry( const struct stumpless_entry *entry,
+              struct stumpless_target *target );
 
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */
