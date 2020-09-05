@@ -170,20 +170,6 @@ namespace {
     stumpless_destroy_entry( entry );
   }
 
-  TEST( SocketTargetCloseTest, BadIdTarget ) {
-    struct stumpless_target *target;
-
-    target = ( struct stumpless_target * ) malloc( sizeof( *target ) );
-    ASSERT_TRUE( target != NULL );
-
-    target->name = NULL;
-    target->default_app_name = NULL;
-    target->default_msgid = NULL;
-    target->id = NULL;
-
-    stumpless_close_socket_target( target );
-  }
-
   TEST( SocketTargetCloseTest, Generic ) {
     const char *target_name = "generic-close-test";
     struct stumpless_target *target;
