@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
+#include <mutex>
 #include <sstream>
 #include <stumpless.h>
 #include <thread>
@@ -28,6 +29,7 @@ namespace {
   const int THREAD_COUNT = 16;
   const int ITERATION_COUNT = 1000;
   std::vector<struct stumpless_param *> thread_params(THREAD_COUNT);
+  std::mutex thread_params_mutex;
 
   void
   read_element( const struct stumpless_element *element ) {
@@ -102,7 +104,9 @@ namespace {
       stumpless_set_param( element, index, thread_param );
     }
 
+    thread_params_mutex.lock(  );
     thread_params.push_back( thread_param );
+    thread_params_mutex.unlock(  );
   }
 
   void
