@@ -60,12 +60,12 @@ namespace {
     std::string msgid( msgid_stream.str(  ) );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
-
       stumpless_set_target_default_app_name( target, app_name.c_str(  ) );
       stumpless_set_target_default_msgid( target, msgid.c_str(  ) );
 
       stumpless_set_default_facility( target, STUMPLESS_FACILITY_USER );
       stumpless_set_option( target, STUMPLESS_OPTION_PID );
+      stumpless_unset_option( target, STUMPLESS_OPTION_PID );
     }
   }
 

@@ -274,14 +274,19 @@ stumpless_get_default_target( void ) {
 
 int
 stumpless_get_option( const struct stumpless_target *target, int option ) {
-  clear_error(  );
+  int options;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return 0;
   }
 
-  return target->options & option;
+  lock_target( target );
+  options = target->options;
+  unlock_target( target );
+
+  clear_error(  );
+  return options & option;
 }
 
 const char *
@@ -418,15 +423,16 @@ fail:
 
 struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return NULL;
   }
 
+  lock_target( target );
   target->options |= option;
+  unlock_target( target );
 
+  clear_error(  );
   return target;
 }
 
@@ -528,15 +534,16 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return NULL;
   }
 
+  lock_target( target );
   target->options &= ~option;
+  unlock_target( target );
 
+  clear_error(  );
   return target;
 }
 

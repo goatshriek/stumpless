@@ -54,16 +54,16 @@
  - [ ] stumpless_open_udp6_target
  - [ ] stumpless_get_default_facility
  - [ ] stumpless_get_destination
- - [ ] stumpless_get_option
+ - [x] stumpless_get_option
  - [ ] stumpless_get_transport_port
  - [ ] stumpless_get_udp_max_message_size
  - [ ] stumpless_set_default_facility
  - [ ] stumpless_set_destination
- - [ ] stumpless_set_option
+ - [x] stumpless_set_option
  - [ ] stumpless_set_transport_port
  - [ ] stumpless_set_udp_max_message_size
  - [ ] stumpless_target_is_open
- - [ ] stumpless_unset_option
+ - [x] stumpless_unset_option
  - [ ] stumpless_add_message
  - [ ] stumpless_get_wel_insertion_string
  - [ ] stumpless_set_wel_insertion_strings
