@@ -251,14 +251,19 @@ stumpless_get_current_target( void ) {
 
 int
 stumpless_get_default_facility( const struct stumpless_target *target ) {
-  clear_error(  );
+  int prival;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
     return -1;
   }
 
-  return get_facility( target->default_prival );
+  lock_target( target );
+  prival = target->default_prival;
+  unlock_target( target );
+
+  clear_error(  );
+  return get_facility( prival );
 }
 
 struct stumpless_target *
@@ -401,24 +406,23 @@ stumpless_set_default_facility( struct stumpless_target *target,
                                 int default_facility ) {
   int old_severity;
 
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( "target is NULL" );
-    goto fail;
+    return NULL;
   }
 
   if( facility_is_invalid( default_facility ) ) {
     raise_invalid_facility( default_facility );
-    goto fail;
+    return NULL;
   }
 
+  lock_target( target );
   old_severity = get_severity( target->default_prival );
   target->default_prival = default_facility + old_severity;
-  return target;
+  unlock_target( target );
 
-fail:
-  return NULL;
+  clear_error(  );
+  return target;
 }
 
 struct stumpless_target *
