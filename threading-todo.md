@@ -18,8 +18,8 @@
  - [x] stumpless_set_free
  - [x] stumpless_set_malloc
  - [x] stumpless_set_realloc
- - [ ] stumpless_set_target_default_app_name
- - [ ] stumpless_set_target_default_msgid
+ - [x] stumpless_set_target_default_app_name
+ - [x] stumpless_set_target_default_msgid
  - [x] stumpless_set_entry_message
  - [x] stumpless_close_file_target
  - [ ] stumpless_open_file_target
@@ -136,5 +136,5 @@
  - [x] stumpless_get_error_id_string
  - [x] stumpless_version_cmp
  - [x] stumpless_get_element_count
- - [ ] stumpless_get_target_default_app_name
- - [ ] stumpless_get_target_default_msgid
+ - [x] stumpless_get_target_default_app_name
+ - [x] stumpless_get_target_default_msgid

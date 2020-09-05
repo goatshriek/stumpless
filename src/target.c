@@ -19,6 +19,7 @@
 #include <pthread.h>
 #include <stdarg.h>
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/entry.h>
 #include <stumpless/facility.h>
 #include <stumpless/severity.h>
@@ -284,13 +285,60 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
 }
 
 const char *
-stumpless_get_target_default_app_name( struct stumpless_target *target ) {
-  return NULL;
+stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
+  char *name_copy = NULL;
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  lock_target( target );
+  if( !target->default_app_name ) {
+    goto cleanup_and_return;
+  }
+
+
+  name_copy = alloc_mem( target->default_app_name_length + 1 );
+  if( !name_copy ) {
+    goto cleanup_and_return;
+  }
+
+  memcpy( name_copy,
+          target->default_app_name,
+          target->default_app_name_length + 1 );
+  clear_error(  );
+
+cleanup_and_return:
+  unlock_target( target );
+  return name_copy;
 }
 
 const char *
-stumpless_get_target_default_msgid( struct stumpless_target *target ) {
-  return NULL;
+stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
+  char *msgid_copy = NULL;
+
+  if( !target ) {
+    raise_argument_empty( "target is NULL" );
+    return NULL;
+  }
+
+  lock_target( target );
+  if( !target->default_msgid ) {
+    goto cleanup_and_return;
+  }
+
+  msgid_copy = alloc_mem( target->default_msgid_length + 1 );
+  if( !msgid_copy ) {
+    goto cleanup_and_return;
+  }
+
+  memcpy( msgid_copy, target->default_msgid, target->default_msgid_length + 1 );
+  clear_error(  );
+
+cleanup_and_return:
+  unlock_target( target );
+  return msgid_copy;
 }
 
 const char *
@@ -385,10 +433,9 @@ stumpless_set_option( struct stumpless_target *target, int option ) {
 struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name ) {
-  size_t *app_name_length;
-  char *sized_name;
-
-  clear_error(  );
+  size_t new_length;
+  char *new_name;
+  char *old_name;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -400,25 +447,29 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
     return NULL;
   }
 
-  app_name_length = &( target->default_app_name_length );
-  sized_name = copy_cstring_with_length( app_name, app_name_length );
-  if( !sized_name ) {
+  new_name = copy_cstring_with_length( app_name, &new_length );
+  if( !new_name ) {
     return NULL;
 
-  } else {
-    target->default_app_name = sized_name;
-    return target;
-
   }
+
+  lock_target( target );
+  old_name = target->default_app_name;
+  target->default_app_name = new_name;
+  target->default_app_name_length = new_length;
+  unlock_target( target );
+
+  free_mem( old_name );
+  clear_error(  );
+  return target;
 }
 
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid ) {
-  size_t *msgid_length;
-  char *sized_msgid;
-
-  clear_error(  );
+  size_t new_length;
+  char *new_msgid;
+  char *old_msgid;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -426,20 +477,25 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   }
 
   if( !msgid ) {
-    raise_argument_empty( "msgid is NULL" );
+    raise_argument_empty( "app_name is NULL" );
     return NULL;
   }
 
-  msgid_length = &( target->default_msgid_length );
-  sized_msgid = copy_cstring_with_length( msgid, msgid_length );
-  if( !sized_msgid ) {
+  new_msgid = copy_cstring_with_length( msgid, &new_length );
+  if( !new_msgid ) {
     return NULL;
 
-  } else {
-    target->default_msgid = sized_msgid;
-    return target;
-
   }
+
+  lock_target( target );
+  old_msgid = target->default_msgid;
+  target->default_msgid = new_msgid;
+  target->default_msgid_length = new_length;
+  unlock_target( target );
+
+  free_mem( old_msgid );
+  clear_error(  );
+  return target;
 }
 
 const struct stumpless_target *
@@ -578,6 +634,7 @@ destroy_target( const struct stumpless_target *target ) {
     current_target = NULL;
   }
 
+  pthread_mutex_destroy( ( pthread_mutex_t * ) &target->target_mutex );
   free_mem( target->default_app_name );
   free_mem( target->default_msgid );
   free_mem( target->name );
@@ -607,6 +664,7 @@ new_target( enum stumpless_target_type type,
     goto fail_name;
   }
 
+  pthread_mutex_init( &target->target_mutex, NULL );
   target->type = type;
   target->options = options;
   default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );

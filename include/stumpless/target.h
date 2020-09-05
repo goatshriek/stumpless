@@ -345,7 +345,7 @@ stumpless_get_option( const struct stumpless_target *target, int option );
  * appropriately.
  */
 const char *
-stumpless_get_target_default_app_name( struct stumpless_target *target );
+stumpless_get_target_default_app_name( const struct stumpless_target *target );
 
 /**
  * Returns the default msgid of the given target. The character buffer must be
@@ -374,7 +374,7 @@ stumpless_get_target_default_app_name( struct stumpless_target *target );
  * appropriately.
  */
 const char *
-stumpless_get_target_default_msgid( struct stumpless_target *target );
+stumpless_get_target_default_msgid( const struct stumpless_target *target );
 
 /**
  * Returns the name of the given target. The character buffer must be freed by
@@ -481,6 +481,21 @@ stumpless_set_option( struct stumpless_target *target, int option );
 /**
  * Sets the default app name for a given target.
  *
+ * **Thread Safety: MT-Safe race:app_name**
+ * This function is thread safe, of course assuming that the name is not changed
+ * by any other threads during exeuction. A mutex is used to coordinate changes
+ * to the target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new name and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param target The target to modify.
  *
  * @param app_name The new default app name, as a NULL-terminated string.
@@ -494,6 +509,21 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
 
 /**
  * Sets the default msgid for a given target.
+ *
+ * **Thread Safety: MT-Safe race:msgid**
+ * This function is thread safe, of course assuming that the msgid is not
+ * changed by any other threads during exeuction. A mutex is used to coordinate
+ * changes to the target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new name and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param target The target to modify.
  *

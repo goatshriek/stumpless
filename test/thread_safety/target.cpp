@@ -35,15 +35,15 @@ namespace {
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
       name = stumpless_get_target_name( target );
-      //app_name = stumpless_get_target_default_app_name( target );
-      //msgid = stumpless_get_target_default_msgid( target );
+      app_name = stumpless_get_target_default_app_name( target );
+      msgid = stumpless_get_target_default_msgid( target );
 
       stumpless_get_default_facility( target );
       stumpless_get_option( target, STUMPLESS_OPTION_PID );
 
       free( ( void * ) name );
-      //free( ( void * ) app_name );
-      //free( ( void * ) msgid );
+      free( ( void * ) app_name );
+      free( ( void * ) msgid );
     }
   }
 

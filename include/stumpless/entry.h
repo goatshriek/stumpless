@@ -847,14 +847,15 @@ stumpless_set_element( struct stumpless_entry *entry,
 /**
  * Sets the app name for an entry.
  *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate changes to the
- * entry while it is being modified.
+ * **Thread Safety: MT-Safe race:app_name**
+ * This function is thread safe, of course assuming that the name is not changed
+ * by any other threads during execution. A mutex is used to coordinate changes
+ * to the entry while it is being modified.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers due to the use of a
  * non-reentrant lock to coordinate changes and the use of memory management
- * functions to create the new message and free the old one.
+ * functions to create the new name and free the old one.
  *
  * **Async Cancel Safety: AC-Unsafe lock heap**
  * This function is not safe to call from threads that may be asynchronously
@@ -907,14 +908,15 @@ stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
 /**
  * Sets the msgid for an entry.
  *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate changes to the
- * entry while it is being modified.
+ * **Thread Safety: MT-Safe race:msgid**
+ * This function is thread safe, of course assuming that the msgid is not
+ * changed by any other threads during execution. A mutex is used to coordinate
+ * changes to the entry while it is being modified.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers due to the use of a
  * non-reentrant lock to coordinate changes and the use of memory management
- * functions to create the new message and free the old one.
+ * functions to create the new msgid and free the old one.
  *
  * **Async Cancel Safety: AC-Unsafe lock heap**
  * This function is not safe to call from threads that may be asynchronously
