@@ -22,7 +22,7 @@
  - [x] stumpless_set_target_default_msgid
  - [x] stumpless_set_entry_message
  - [x] stumpless_close_file_target
- - [ ] stumpless_open_file_target
+ - [x] stumpless_open_file_target
  - [x] stumpless_set_current_target
  - [ ] stumpless_close_wel_target
  - [ ] stumpless_open_local_wel_target

@@ -80,6 +80,6 @@ namespace {
     }
     EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
 
-    // remove( filename );
+    remove( filename );
   }
 }

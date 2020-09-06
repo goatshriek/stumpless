@@ -63,6 +63,18 @@ stumpless_close_file_target( struct stumpless_target *target );
  * need to control the file stream yourself, then you should consider using a
  * stream target instead.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
  * @param name The name of the logging target, as well as the name of the file
  * to open.
  *
