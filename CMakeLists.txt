@@ -786,6 +786,7 @@ add_thread_safety_test(file
   SOURCES
     test/thread_safety/target/file.cpp
     $<TARGET_OBJECTS:rfc5424_checker>
+    $<TARGET_OBJECTS:test_helper_usage>
 )
 
 add_thread_safety_test(param

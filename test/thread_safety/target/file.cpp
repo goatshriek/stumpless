@@ -27,6 +27,7 @@
 
 namespace {
   const int THREAD_COUNT = 16;
+  const int MESSAGE_COUNT = 100;
 
   TEST( WriteConsistency, SimultaneousWrites ) {
     const char *filename = "file_target_thread_safety.log";
@@ -44,7 +45,7 @@ namespace {
     ASSERT_NOT_NULL( target );
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
-      threads[i] = new std::thread( add_messages, target, 100 );
+      threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
     }
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
