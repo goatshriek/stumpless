@@ -788,14 +788,20 @@ add_thread_safety_test(file
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 
-add_thread_safety_test(target
-  SOURCES
-    test/thread_safety/target.cpp
-)
-
 add_thread_safety_test(param
   SOURCES
     test/thread_safety/param.cpp
+)
+
+add_thread_safety_test(stream
+  SOURCES
+    test/thread_safety/target/stream.cpp
+    $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_thread_safety_test(target
+  SOURCES
+    test/thread_safety/target.cpp
 )
 
 add_custom_target(check-thread-safety
