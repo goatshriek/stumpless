@@ -41,6 +41,8 @@ namespace {
       stumpless_get_default_facility( target );
       stumpless_get_option( target, STUMPLESS_OPTION_PID );
 
+      stumpless_get_default_target(  );
+
       free( ( void * ) name );
       free( ( void * ) app_name );
       free( ( void * ) msgid );

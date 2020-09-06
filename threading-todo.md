@@ -72,7 +72,7 @@
  - [ ] vstumpless_set_wel_insertion_strings
  - [ ] stumpless_close_target
  - [ ] stumpless_add_log
- - [ ] stumpless_get_default_target
+ - [x] stumpless_get_default_target
  - [ ] stumplog
  - [ ] vstumpless_add_log
  - [ ] vstumplog

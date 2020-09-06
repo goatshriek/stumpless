@@ -268,13 +268,18 @@ stumpless_get_default_facility( const struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_get_default_target( void ) {
+  struct stumpless_target *result;
+
   clear_error(  );
 
+  pthread_mutex_lock( &default_target_mutex );
   if( !default_target ) {
     default_target = config_open_default_target(  );
   }
+  result = default_target;
+  pthread_mutex_unlock( &default_target_mutex );
 
-  return default_target;
+  return result;
 }
 
 int
@@ -445,7 +450,7 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name ) {
   size_t new_length;
   char *new_name;
-  char *old_name;
+  const char *old_name;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
@@ -479,7 +484,7 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid ) {
   size_t new_length;
   char *new_msgid;
-  char *old_msgid;
+  const char *old_msgid;
 
   if( !target ) {
     raise_argument_empty( "target is NULL" );
