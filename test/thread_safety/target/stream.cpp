@@ -42,7 +42,7 @@ namespace {
   }
 
   TEST( WriteConsistency, SimultaneousWrites ) {
-    const char *filename = "file_target_thread_safety.log";
+    const char *filename = "stream_target_thread_safety.log";
     FILE *log_stream;
     struct stumpless_target *target;
     size_t i;

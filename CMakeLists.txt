@@ -797,6 +797,7 @@ add_thread_safety_test(stream
   SOURCES
     test/thread_safety/target/stream.cpp
     $<TARGET_OBJECTS:rfc5424_checker>
+    $<TARGET_OBJECTS:test_helper_usage>
 )
 
 add_thread_safety_test(target

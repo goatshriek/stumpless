@@ -23,22 +23,10 @@
 #include <thread>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/usage.hpp"
 
 namespace {
   const int THREAD_COUNT = 16;
-  const int MESSAGE_COUNT = 100;
-
-  void
-  write_messages( struct stumpless_target *target ) {
-    for( int i = 0; i < MESSAGE_COUNT; i++ ) {
-      stumpless_add_message( target,
-                             "message number #%d from thread #%d",
-                             i,
-                             pthread_self(  ) );
-    }
-
-    stumpless_free_thread(  );
-  }
 
   TEST( WriteConsistency, SimultaneousWrites ) {
     const char *filename = "file_target_thread_safety.log";
@@ -56,7 +44,7 @@ namespace {
     ASSERT_NOT_NULL( target );
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
-      threads[i] = new std::thread( write_messages, target );
+      threads[i] = new std::thread( add_messages, target, 100 );
     }
 
     for( i = 0; i < THREAD_COUNT; i++ ) {

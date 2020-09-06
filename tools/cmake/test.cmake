@@ -212,3 +212,19 @@ target_include_directories(test_helper_server
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
 )
+
+add_library(test_helper_usage
+  EXCLUDE_FROM_ALL
+  OBJECT ${PROJECT_SOURCE_DIR}/test/helper/usage.cpp
+)
+
+set_target_properties(test_helper_usage
+  PROPERTIES
+  COMPILE_FLAGS "${function_test_compile_flags}"
+)
+
+target_include_directories(test_helper_usage
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)

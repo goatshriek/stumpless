@@ -4,6 +4,7 @@
 
 # terms
 "accept_tcp_connection": "test/helper/server.hpp"
+"add_messages": "test/helper/usage.hpp"
 "alloc_mem": "private/memory.h"
 "ASSERT_NOT_NULL": "test/helper/assert.hpp"
 "ASSERT_NULL": "test/helper/assert.hpp"
