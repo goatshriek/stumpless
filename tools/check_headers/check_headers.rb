@@ -46,7 +46,7 @@ end
 
 common_known_terms = {}
 %w[benchmark.yml standard_library.yml gtest.yml stumpless.yml
-   stumplesscpp.yml].each do |filename|
+   stumpless_private.yml stumplesscpp.yml].each do |filename|
   load_manifest(filename, common_known_terms)
 end
 

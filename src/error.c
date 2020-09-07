@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/error.h>
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
@@ -140,8 +141,7 @@ raise_argument_too_big( const char *message, int code, const char *code_type ) {
 void
 raise_duplicate_element( void ) {
   raise_error( STUMPLESS_DUPLICATE_ELEMENT,
-               "an element with the provided name is already present in this" \
-               " entry",
+               L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE,
                0,
                NULL );
 }
