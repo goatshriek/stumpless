@@ -25,12 +25,24 @@
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
 "an element with the specified characteristics could not be found"
 
+#  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
+"the invalid index, or -1 of it is too large to represent as an int"
+
+#  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
+"the invalid facility"
+
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
 "facility codes must be defined in accordance with RFC 5424, after the" \
 " multiplication by 8"
 
+#  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
+"the invalid severity"
+
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "severity codes must be defined in accordance with RFC 5424: values between 0" \
 " and 7 inclusive"
+
+#  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
+"a param with the specified characteristics could not be found"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */

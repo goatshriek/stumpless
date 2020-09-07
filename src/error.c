@@ -189,8 +189,7 @@ raise_index_out_of_bounds( const char *message, size_t index ) {
   raise_error( STUMPLESS_INDEX_OUT_OF_BOUNDS,
                message,
                size_t_to_int( index ),
-               "the invalid index, or -1 if it is too large to represent as"
-               " an int" );
+               L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE );
 }
 
 void
@@ -198,7 +197,7 @@ raise_invalid_facility( int facility ) {
   raise_error( STUMPLESS_INVALID_FACILITY,
                L10N_INVALID_FACILITY_ERROR_MESSAGE,
                facility,
-               "the invalid facility" );
+               L10N_INVALID_FACILITY_ERROR_CODE_TYPE );
 }
 
 void
@@ -211,7 +210,7 @@ raise_invalid_severity( int severity ) {
   raise_error( STUMPLESS_INVALID_SEVERITY,
                L10N_INVALID_SEVERITY_ERROR_MESSAGE,
                severity,
-               "the invalid severity" );
+               L10N_INVALID_SEVERITY_ERROR_CODE_TYPE );
 }
 
 void
@@ -231,7 +230,7 @@ raise_network_protocol_unsupported( void ) {
 void
 raise_param_not_found( void ) {
   raise_error( STUMPLESS_PARAM_NOT_FOUND,
-               "a param with the specified characteristics could not be found",
+               L10N_PARAM_NOT_FOUND_ERROR_MESSAGE,
                0,
                NULL );
 }
