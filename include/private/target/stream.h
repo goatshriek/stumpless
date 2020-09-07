@@ -19,11 +19,21 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_STREAM_H
 #  define __STUMPLESS_PRIVATE_TARGET_STREAM_H
 
+#  include <pthread.h>
 #  include <stddef.h>
 #  include <stdio.h>
 
+/**
+ * Internal representation of a stream target.
+ */
 struct stream_target {
+/** The stream this target writes to. */
   FILE *stream;
+/**
+ * Protects stream. This mutex must be locked by a thread before it can write
+ * to the stream.
+ */
+  pthread_mutex_t stream_mutex;
 };
 
 void
@@ -32,9 +42,22 @@ destroy_stream_target( const struct stream_target *target );
 struct stream_target *
 new_stream_target( FILE *stream );
 
+/**
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. The stream_mutex is used to coordinate updates
+ * to the stream.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate writes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ */
 int
 sendto_stream_target( struct stream_target *target,
                       const char *msg,
                       size_t msg_length );
 
-#endif /* __STUMPLESS_PRIVATE_TARGET_FILE_H */
+#endif /* __STUMPLESS_PRIVATE_TARGET_STREAM_H */

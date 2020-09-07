@@ -107,6 +107,7 @@ fail:
 
 void
 destroy_stream_target( const struct stream_target *target ) {
+  pthread_mutex_destroy( ( pthread_mutex_t * ) &target->stream_mutex );
   free_mem( target );
 }
 
@@ -119,6 +120,7 @@ new_stream_target( FILE *stream ) {
     return NULL;
   }
 
+  pthread_mutex_init( &target->stream_mutex, NULL );
   target->stream = stream;
 
   return target;
@@ -130,14 +132,19 @@ sendto_stream_target( struct stream_target *target,
                       size_t msg_length ) {
   size_t fwrite_result;
 
+  pthread_mutex_lock( &target->stream_mutex );
+
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
   if( fwrite_result != msg_length ) {
     goto write_failure;
   }
 
+  pthread_mutex_unlock( &target->stream_mutex );
+
   return cap_size_t_to_int( fwrite_result + 1 );
 
 write_failure:
+  pthread_mutex_unlock( &target->stream_mutex );
   raise_stream_write_failure(  );
   return -1;
 }
