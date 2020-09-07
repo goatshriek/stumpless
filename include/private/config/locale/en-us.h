@@ -19,10 +19,18 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 
-#define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
+#  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
 "an element with the provided name is already present in this entry"
 
-#define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
+#  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
 "an element with the specified characteristics could not be found"
+
+#  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
+"facility codes must be defined in accordance with RFC 5424, after the" \
+" multiplication by 8"
+
+#  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
+"severity codes must be defined in accordance with RFC 5424: values between 0" \
+" and 7 inclusive"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */

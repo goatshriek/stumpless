@@ -196,8 +196,7 @@ raise_index_out_of_bounds( const char *message, size_t index ) {
 void
 raise_invalid_facility( int facility ) {
   raise_error( STUMPLESS_INVALID_FACILITY,
-               "facility codes must be defined in accordance with RFC 5424, "
-               "after the multiplication by 8",
+               L10N_INVALID_FACILITY_ERROR_MESSAGE,
                facility,
                "the invalid facility" );
 }
@@ -210,8 +209,7 @@ raise_invalid_id( void ) {
 void
 raise_invalid_severity( int severity ) {
   raise_error( STUMPLESS_INVALID_SEVERITY,
-               "severity codes must be defined in accordance with RFC 5424: "
-               "values between 0 and 7 inclusive",
+               L10N_INVALID_SEVERITY_ERROR_MESSAGE,
                severity,
                "the invalid severity" );
 }
