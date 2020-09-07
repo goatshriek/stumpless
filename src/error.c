@@ -149,8 +149,7 @@ raise_duplicate_element( void ) {
 void
 raise_element_not_found( void ) {
   raise_error( STUMPLESS_ELEMENT_NOT_FOUND,
-               "an element with the specified characteristics could not be" \
-               " found",
+               L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE,
                0,
                NULL );
 }

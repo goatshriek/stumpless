@@ -22,4 +22,7 @@
 #define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
 "an element with the provided name is already present in this entry"
 
+#define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
+"an element with the specified characteristics could not be found"
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */
