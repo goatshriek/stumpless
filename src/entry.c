@@ -34,6 +34,7 @@
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/memory.h"
+#include "private/validate.h"
 
 static struct cache *entry_cache = NULL;
 
@@ -44,10 +45,7 @@ stumpless_add_element( struct stumpless_entry *entry,
   size_t old_elements_size;
   size_t new_elements_size;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( !element ) {
     raise_argument_empty( "element is NULL" );

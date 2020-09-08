@@ -19,5 +19,15 @@
 #ifndef __STUMPLESS_PRIVATE_VALIDATE_H
 #  define __STUMPLESS_PRIVATE_VALIDATE_H
 
+#  include <stddef.h>
+#  include "private/config/locale/wrapper.h"
+#  include "private/error.h"
+
+#  define VALIDATE_ARG_NOT_NULL( ARG_NAME )                        \
+if( ARG_NAME == NULL ) {                                           \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) ); \
+  return NULL;                                                     \
+}
+
 
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */
