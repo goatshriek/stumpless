@@ -86,6 +86,8 @@ A few other documents may be helpful for newcomers to glance through:
    performance testing framework set up in stumpless. If you're looking to
    make a performance improvement that will otherwise be transparent, this
    document describes the steps for this in detail with a full example.
+ * [docs/localization.md](localization.md) describes how localization is
+   implemented in detail and how to add additional locales.
 
 ## Error Handling
 
