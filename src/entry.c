@@ -230,7 +230,8 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               index );
     return NULL;
   }
 
@@ -421,7 +422,8 @@ stumpless_set_element( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( element );
 
   if( index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               index );
     return NULL;
   }
 
@@ -522,7 +524,8 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", element_index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               element_index );
     return NULL;
   }
 
@@ -546,7 +549,8 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", element_index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               element_index );
     return NULL;
   }
 

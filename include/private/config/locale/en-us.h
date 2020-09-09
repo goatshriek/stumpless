@@ -38,6 +38,9 @@ ARG_NAME " was NULL"
 "facility codes must be defined in accordance with RFC 5424, after the" \
 " multiplication by 8"
 
+#  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
+"invalid " INDEXED_THING " index"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "the invalid severity"
 

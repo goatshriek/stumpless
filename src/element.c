@@ -176,7 +176,8 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
 
   if( index >= element->param_count ) {
-    raise_index_out_of_bounds( "invalid param index", index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "param" ),
+                               index );
     return NULL;
   }
 
@@ -373,7 +374,8 @@ stumpless_set_param( struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( param );
 
   if( index >= element->param_count ) {
-    raise_index_out_of_bounds( "invalid param index", index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "param" ),
+                               index );
     return NULL;
   }
 
