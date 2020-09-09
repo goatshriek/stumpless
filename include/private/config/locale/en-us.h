@@ -20,7 +20,7 @@
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
-#ARG_NAME " was NULL"
+ARG_NAME " was NULL"
 
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
 "an element with the provided name is already present in this entry"

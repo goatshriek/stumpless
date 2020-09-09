@@ -23,10 +23,10 @@
 #  include "private/config/locale/wrapper.h"
 #  include "private/error.h"
 
-#  define VALIDATE_ARG_NOT_NULL( ARG_NAME )                        \
-if( ARG_NAME == NULL ) {                                           \
-  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) ); \
-  return NULL;                                                     \
+#  define VALIDATE_ARG_NOT_NULL( ARG_NAME )                         \
+if( ARG_NAME == NULL ) {                                            \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) ); \
+  return NULL;                                                      \
 }
 
 
