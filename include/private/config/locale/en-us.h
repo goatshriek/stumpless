@@ -28,6 +28,9 @@ ARG_NAME " was NULL"
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
 "an element with the specified characteristics could not be found"
 
+#  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
+"getaddrinfo failed on the provided hostname"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "the invalid index, or -1 of it is too large to represent as an int"
 
@@ -50,5 +53,11 @@ ARG_NAME " was NULL"
 
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "a param with the specified characteristics could not be found"
+
+#  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
+"Windows Socket error code"
+
+#  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
+"the result of WSAGetLastError after the failed call"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */

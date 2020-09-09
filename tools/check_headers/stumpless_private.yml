@@ -1,3 +1,4 @@
 "L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE": "private/config/locale/wrapper.h"
+"L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE": "private/config/locale/wrapper.h"
 "L10N_NULL_ARG_ERROR_MESSAGE": "private/config/locale/wrapper.h"
 "VALIDATE_ARG_NOT_NULL": "private/validate.h"

@@ -23,6 +23,7 @@
 #include <stddef.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/target/network.h"
 
@@ -56,7 +57,7 @@ sys_socket_open_socket( const char *destination,
 
   result = getaddrinfo( destination, port, &hints, &addr_result );
   if( result != 0 ) {
-    raise_address_failure( "getaddrinfo failed on name",
+    raise_address_failure( L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE,
                            result,
                            "return code from getaddrinfo" );
     goto fail_addr;
