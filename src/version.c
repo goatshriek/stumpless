@@ -21,9 +21,11 @@
 #include <limits.h>
 #include <stumpless/config.h>
 #include <stumpless/version.h>
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"
+#include "private/validate.h"
 
 struct stumpless_version *
 stumpless_get_version( void ) {
@@ -46,8 +48,13 @@ stumpless_get_version( void ) {
 int
 stumpless_version_cmp ( const struct stumpless_version * version_x, 
                         const struct stumpless_version * version_y ) {
-  if ( version_x == NULL || version_y == NULL ) {
-    raise_argument_empty( "NULL version struct given." );
+  if( !version_x ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "version_x" ) );
+    return INT_MAX;
+  }
+
+  if( !version_y ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "version_y" ) );
     return INT_MAX;
   }
   
@@ -77,10 +84,7 @@ stumpless_version_to_string( const struct stumpless_version *version ) {
 
   clear_error(  );
 
-  if( !version ) {
-    raise_argument_empty( "version is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( version );
 
   builder = strbuilder_new(  );
 

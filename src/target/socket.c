@@ -25,15 +25,17 @@
 #include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/socket.h"
+#include "private/validate.h"
 
 void
 stumpless_close_socket_target( const struct stumpless_target *target ) {
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -54,10 +56,7 @@ stumpless_open_socket_target( const char *name,
   char temp_name[16];
   int temp_fd;
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
 
   target = new_target(
     STUMPLESS_SOCKET_TARGET,
