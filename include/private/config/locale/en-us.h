@@ -51,6 +51,9 @@ ARG_NAME " was NULL"
 "severity codes must be defined in accordance with RFC 5424: values between 0" \
 " and 7 inclusive"
 
+#  define L10N_NETWORK_TARGETS_UNSUPPORTED \
+"network targets are not supported by this build"
+
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "a param with the specified characteristics could not be found"
 

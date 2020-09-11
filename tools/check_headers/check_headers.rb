@@ -101,6 +101,7 @@ ARGV.each do |source_glob|
 
       line_terms = line.gsub(/"[^"]*"/, '*').split(/\W|(struct \w+)|(enum \w+)/)
       line_terms.each do |word|
+        used_terms << 'L10N_' if word.start_with?('L10N_')
         used_terms << word if file_terms.key?(word)
       end
     end
