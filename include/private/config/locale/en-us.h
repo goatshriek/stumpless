@@ -22,6 +22,9 @@
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "connect failed with a sys/socket.h socket"
 
+#  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
+"connect failed with a winsock2 socket"
+
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
 "an element with the provided name is already present in this entry"
 
@@ -69,11 +72,17 @@ ARG_NAME " was NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "send failed with a sys/socket.h socket"
 
+#  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
+"send failed with a winsock2 socket"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a socket"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket error code"
+
+#  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
+"failed to open a winsock2 socket"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "the result of WSAGetLastError after the failed call"
