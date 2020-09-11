@@ -76,9 +76,9 @@ stumpless_open_socket_target( const char *name,
     temp_fd = mkstemp( temp_name );
     if( temp_fd == -1 ) {
       raise_error( STUMPLESS_FILE_OPEN_FAILURE,
-                   "could not create a file with the chosen local socket name",
+                   L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE,
                    errno,
-                   "errno after the failed call to mkstemp" );
+                   L10N_ERRNO_ERROR_CODE_TYPE );
       goto fail_id;
     }
 
@@ -141,9 +141,9 @@ new_socket_target( const char *dest,
 
   target->local_socket = socket( target->local_addr.sun_family, SOCK_DGRAM, 0 );
   if( target->local_socket < 0 ) {
-    raise_socket_failure( "could not create a local unix socket",
+    raise_socket_failure( L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                           errno,
-                          "errno after the failed call to socket" );
+                          L10N_ERRNO_ERROR_CODE_TYPE );
     goto fail_socket;
   }
 
@@ -152,9 +152,9 @@ new_socket_target( const char *dest,
                      sizeof( target->local_addr ) );
 
   if( bind_result < 0 ) {
-    raise_socket_bind_failure( "could not bind to the local unix socket",
+    raise_socket_bind_failure( L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
-                               "errno after the failed called to bind" );
+                               L10N_ERRNO_ERROR_CODE_TYPE );
     goto fail_socket;
   }
 
@@ -181,9 +181,9 @@ sendto_socket_target( const struct socket_target *target,
                   target->target_addr_len );
 
   if( result == -1 ) {
-    raise_socket_send_failure( "sendto failed with unix socket",
+    raise_socket_send_failure( L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
-                               "errno after the failed call to sendto" );
+                               L10N_ERRNO_ERROR_CODE_TYPE );
   }
 
   return result;
