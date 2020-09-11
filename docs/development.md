@@ -115,6 +115,10 @@ string describing the error, something like
 was passed in. This is a common pattern that can be seen throughout the
 library code.
 
+All error messages must be localized so that they can be understood by those
+who will troubleshoot them. More information about handling localization can
+be found in the [localization documentation](localization.md).
+
 Often `raise` functions include information to help with troubleshooting. The
 `raise_index_out_of_bounds` is a good example of this: in addition to a string
 describing the invalid access it also takes the index that was out of bounds.

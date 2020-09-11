@@ -24,6 +24,17 @@ argument that was null as a parameter so that it can insert it into the error
 message that it generates. Different locales may use this value in different
 places, or not at all.
 
+## Adding New Strings
+If you are making a change that requires a new error message or other string
+that needs to be localized, you will need to add it to all defined locales. It
+is _required_ that the `en-us` locale include a meaningful definition of the
+symbol. Others may be added as a placeholder value, for later translation by
+someone with the necessary knowledge. The conventional placeholder for this
+situation is a string containing the name of the symbol, minus the L10N_ prefix
+and with spaces instead of underscores. For example, for the
+`L10N_INVALID_SEVERITY_ERROR_MESSAGE` symbol this would be
+`"INVALID SEVERITY ERROR MESSAGE"`.
+
 ## Defining a New Locale
 Adding a new locale to the library only requires the addition of the new header
 file and making sure that it can be used during build configuration. Adding
