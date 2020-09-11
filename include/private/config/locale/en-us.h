@@ -19,8 +19,8 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 
-#  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
-ARG_NAME " was NULL"
+#  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
+"connect failed with a sys/socket.h socket"
 
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
 "an element with the provided name is already present in this entry"
@@ -28,8 +28,14 @@ ARG_NAME " was NULL"
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
 "an element with the specified characteristics could not be found"
 
+#  define L10N_ERRNO_ERROR_CODE_TYPE \
+"errno after the failed call"
+
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo failed on the provided hostname"
+
+#  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
+"return code of the failed getaddrinfo call"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "the invalid index, or -1 of it is too large to represent as an int"
@@ -54,8 +60,17 @@ ARG_NAME " was NULL"
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "network targets are not supported by this build"
 
+#  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
+ARG_NAME " was NULL"
+
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "a param with the specified characteristics could not be found"
+
+#  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
+"send failed with a sys/socket.h socket"
+
+#  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
+"failed to open a socket"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket error code"

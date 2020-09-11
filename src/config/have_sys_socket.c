@@ -45,9 +45,9 @@ sys_socket_open_socket( const char *destination,
 
   handle = socket( domain, type, protocol );
   if( handle == -1 ) {
-    raise_socket_failure( "failed to open a socket",
+    raise_socket_failure( L10N_SOCKET_FAILED_ERROR_MESSAGE,
                           errno,
-                          "errno after the failed call" );
+                          L10N_ERRNO_ERROR_CODE_TYPE );
     goto fail;
   }
 
@@ -59,7 +59,7 @@ sys_socket_open_socket( const char *destination,
   if( result != 0 ) {
     raise_address_failure( L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE,
                            result,
-                           "return code from getaddrinfo" );
+                           L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE );
     goto fail_addr;
   }
 
@@ -68,9 +68,9 @@ sys_socket_open_socket( const char *destination,
                     addr_result->ai_addrlen );
 
   if( result == -1 ) {
-    raise_socket_connect_failure( "connect failed with socket",
+    raise_socket_connect_failure( L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE,
                                   errno,
-                                  "errno after the failed call" );
+                                  L10N_ERRNO_ERROR_CODE_TYPE );
     goto fail_connect;
   }
 
@@ -206,9 +206,9 @@ sys_socket_sendto_target( struct network_target *target,
                  0 );
 
   if( result == -1 ){
-    raise_socket_send_failure( "send failed with linux socket",
+    raise_socket_send_failure( L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
-                               "errno after the failed call to send");
+                               L10N_ERRNO_ERROR_CODE_TYPE );
   }
 
   return result;
