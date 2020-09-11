@@ -51,7 +51,7 @@ void
 close_unsupported_target( const struct stumpless_target *target ) {
   ( void ) target;
 
-  raise_target_unsupported( "attempted to close an unsupported target type" );
+  raise_target_unsupported( L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE );
 }
 
 int
@@ -211,8 +211,7 @@ stumpless_close_target( struct stumpless_target *target ) {
       break;
 
     default:
-      raise_target_unsupported( "attempted to close an unsupported target"
-                                " type" );
+      raise_target_unsupported( L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE );
 
   }
 }
@@ -269,7 +268,7 @@ stumpless_open_target( struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL( target );
 
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( "this target type is always open" );
+    raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
     return NULL;
 
   }
@@ -557,7 +556,7 @@ struct stumpless_target *
 open_unsupported_target( struct stumpless_target *target ) {
   ( void ) target;
 
-  raise_target_unsupported( "tried to open an unsupported target type" );
+  raise_target_unsupported( L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE );
   return NULL;
 }
 
@@ -567,7 +566,9 @@ send_entry_to_unsupported_target( const struct stumpless_target *target,
   ( void ) target;
   ( void ) entry;
 
-  raise_target_unsupported( "attempted to send an entry to an unsupported target type" );
+  raise_target_unsupported(
+    L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE
+  );
   return -1;
 }
 
@@ -579,7 +580,9 @@ sendto_unsupported_target( const struct stumpless_target *target,
   ( void ) msg;
   ( void ) msg_length;
 
-  raise_target_unsupported( "attempted to send a message to an unsupported target type" );
+  raise_target_unsupported(
+    L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE
+  );
   return -1;
 }
 
@@ -596,6 +599,6 @@ int
 unsupported_target_is_open( const struct stumpless_target *target ) {
   ( void ) target;
 
-  raise_target_unsupported( "checked to see if an unsupported target type was empty" );
+  raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
 }

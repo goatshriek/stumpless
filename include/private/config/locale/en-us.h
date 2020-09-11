@@ -19,6 +19,9 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 
+#  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"attempted to close an unsupported target type"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "connect failed with a sys/socket.h socket"
 
@@ -66,8 +69,17 @@
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
 ARG_NAME " was NULL"
 
+#  define L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"tried to open an unsupported target type"
+
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "a param with the specified characteristics could not be found"
+
+#  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"attempted to send an entry to an unsupported target type"
+
+#  define L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"attempted to send a message to an unsupported target type"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "send failed with a sys/socket.h socket"
@@ -77,6 +89,12 @@ ARG_NAME " was NULL"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a socket"
+
+#  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
+"this target type is always open"
+
+#  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
+"checked to see if an unsupported target type was open"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket error code"
