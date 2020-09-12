@@ -27,14 +27,12 @@ environment:
     locale: "fr-fr"
 
 matrix:
+  fast_finish: true
   exclude:
     - image: Visual Studio 2017
       locale: "fr-fr"
     - image: Visual Studio 2015
       locale: "fr-fr"
-
-matrix:
-  fast_finish: true
 
 init:
 - ps: |
