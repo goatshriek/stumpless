@@ -189,4 +189,5 @@ after_success:
   - echo "sonar.projectVersion=$VERSION" >> sonar-project.properties
   - curl -L https://codecov.io/bash -o codecov.sh
   - bash codecov.sh 2>&1 | grep -v "has arcs to entry block" | grep -v "has arcs from exit block"
+  - git fetch latest
   - sonar-scanner
