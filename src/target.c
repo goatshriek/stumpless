@@ -26,6 +26,7 @@
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/stream.h>
+#include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -39,6 +40,7 @@
 #include "private/target/buffer.h"
 #include "private/target/file.h"
 #include "private/target/stream.h"
+#include "private/validate.h"
 
 static struct stumpless_target *current_target = NULL;
 static struct stumpless_entry *cached_entry = NULL;
@@ -49,7 +51,7 @@ void
 close_unsupported_target( const struct stumpless_target *target ) {
   ( void ) target;
 
-  raise_target_unsupported( "attempted to close an unsupported target type" );
+  raise_target_unsupported( L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE );
 }
 
 int
@@ -84,12 +86,12 @@ stumpless_add_entry( struct stumpless_target *target,
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
   }
 
   if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
@@ -179,7 +181,7 @@ stumpless_close_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target was NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -209,8 +211,7 @@ stumpless_close_target( struct stumpless_target *target ) {
       break;
 
     default:
-      raise_target_unsupported( "attempted to close an unsupported target"
-                                " type" );
+      raise_target_unsupported( L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE );
 
   }
 }
@@ -231,7 +232,7 @@ stumpless_get_default_facility( const struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
   }
 
@@ -254,7 +255,7 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return 0;
   }
 
@@ -263,21 +264,16 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
 
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target ) {
+
+  VALIDATE_ARG_NOT_NULL( target );
+
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
+    return NULL;
+
+  }
   clear_error(  );
-
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
-
-  if( target->type == STUMPLESS_NETWORK_TARGET ) {
-    return config_open_network_target( target );
-
-  } else {
-    raise_target_incompatible( "this target type is always open" );
-    return NULL;
-
-  }
+  return config_open_network_target( target );
 }
 
 void
@@ -291,18 +287,14 @@ stumpless_set_default_facility( struct stumpless_target *target,
                                 int default_facility ) {
   int old_severity;
 
-  clear_error(  );
-
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
 
   if( facility_is_invalid( default_facility ) ) {
     raise_invalid_facility( default_facility );
     goto fail;
   }
 
+  clear_error(  );
   old_severity = get_severity( target->default_prival );
   target->default_prival = default_facility + old_severity;
   return target;
@@ -313,15 +305,11 @@ fail:
 
 struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option ) {
+
+  VALIDATE_ARG_NOT_NULL( target );
+
   clear_error(  );
-
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
-
   target->options |= option;
-
   return target;
 }
 
@@ -333,15 +321,8 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
-
-  if( !app_name ) {
-    raise_argument_empty( "app_name is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
+  VALIDATE_ARG_NOT_NULL( app_name );
 
   app_name_length = &( target->default_app_name_length );
   sized_name = copy_cstring_with_length( app_name, app_name_length );
@@ -363,15 +344,8 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
-
-  if( !msgid ) {
-    raise_argument_empty( "msgid is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
+  VALIDATE_ARG_NOT_NULL( msgid );
 
   msgid_length = &( target->default_msgid_length );
   sized_msgid = copy_cstring_with_length( msgid, msgid_length );
@@ -391,10 +365,7 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
 
   clear_error(  );
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
 
   if( target->type == STUMPLESS_NETWORK_TARGET ) {
     is_open = config_network_target_is_open( target );
@@ -417,10 +388,7 @@ struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option ) {
   clear_error(  );
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
 
   target->options &= ~option;
 
@@ -465,7 +433,7 @@ vstumpless_add_log( struct stumpless_target *target,
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
   }
 
@@ -528,7 +496,7 @@ vstumpless_add_message( struct stumpless_target *target,
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
   }
 
@@ -588,7 +556,7 @@ struct stumpless_target *
 open_unsupported_target( struct stumpless_target *target ) {
   ( void ) target;
 
-  raise_target_unsupported( "tried to open an unsupported target type" );
+  raise_target_unsupported( L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE );
   return NULL;
 }
 
@@ -598,7 +566,9 @@ send_entry_to_unsupported_target( const struct stumpless_target *target,
   ( void ) target;
   ( void ) entry;
 
-  raise_target_unsupported( "attempted to send an entry to an unsupported target type" );
+  raise_target_unsupported(
+    L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE
+  );
   return -1;
 }
 
@@ -610,7 +580,9 @@ sendto_unsupported_target( const struct stumpless_target *target,
   ( void ) msg;
   ( void ) msg_length;
 
-  raise_target_unsupported( "attempted to send a message to an unsupported target type" );
+  raise_target_unsupported(
+    L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE
+  );
   return -1;
 }
 
@@ -627,6 +599,6 @@ int
 unsupported_target_is_open( const struct stumpless_target *target ) {
   ( void ) target;
 
-  raise_target_unsupported( "checked to see if an unsupported target type was empty" );
+  raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
 }

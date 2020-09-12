@@ -20,16 +20,18 @@
 #include <stdio.h>
 #include <stumpless/target.h>
 #include <stumpless/target/stream.h>
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/stream.h"
+#include "private/validate.h"
 
 void
 stumpless_close_stream_target( const struct stumpless_target *target ) {
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -68,15 +70,8 @@ stumpless_open_stream_target( const char *name,
 
   clear_error(  );
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return NULL;
-  }
-
-  if( !stream ) {
-    raise_argument_empty( "stream is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
+  VALIDATE_ARG_NOT_NULL( stream );
 
   target = new_target(
     STUMPLESS_STREAM_TARGET,

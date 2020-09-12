@@ -19,12 +19,9 @@
 #include <limits.h>
 #include <cstddef>
 #include <cstdlib>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sstream>
 #include <stumpless.h>
-
-using ::testing::HasSubstr;
 
 namespace {
 
@@ -121,6 +118,7 @@ namespace {
     struct stumpless_version * version_y = NULL;
 
     EXPECT_EQ( stumpless_version_cmp( &version_x, version_y ), INT_MAX );
+    EXPECT_EQ( stumpless_version_cmp( version_y, &version_x ), INT_MAX );
   }
 
   TEST( VersionToString, Basic ) {
@@ -186,7 +184,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "version" ) );
     }
   }
 }

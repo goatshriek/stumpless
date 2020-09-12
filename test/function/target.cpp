@@ -20,14 +20,11 @@
 #include <cstdlib>
 #include <regex>
 #include <string.h>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "private/target/buffer.h"
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
-
-using::testing::HasSubstr;
 
 namespace {
 
@@ -124,7 +121,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -140,7 +136,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -247,7 +242,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -262,7 +256,6 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -277,7 +270,6 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -315,7 +307,6 @@ namespace {
     error = stumpless_get_error(  );
     ASSERT_TRUE( error != NULL );
     EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( SetDefaultAppName, MemoryFailure ) {
@@ -446,7 +437,6 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -580,7 +570,6 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -733,7 +722,6 @@ namespace {
     EXPECT_TRUE( error != NULL );
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 

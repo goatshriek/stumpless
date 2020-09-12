@@ -9,7 +9,10 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.0.0] - 2020-08-16
+## [2.0.0] - 2020-09-12
+### Added
+ - Localization framework for error messages and other library strings.
+
 ### Changed
  - C++ namespace from `stumplesscpp` to `stumpless`.
  - Including `stumpless/config.h` no longer defines `WIN32_LEAN_AND_MEAN`.

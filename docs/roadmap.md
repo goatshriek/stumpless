@@ -90,6 +90,7 @@ or want to make a suggestion, please submit an issue on the project's
    socket to be hidden from the local filesystem. This has currently been left
    out due to portability issues, but using this capability when it is available
    would increase the 'cleanliness' of using socket targets.
+ * [ADD] **Localization for italiano (it)**
 
 ## What you'll find here and what you wont
 

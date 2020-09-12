@@ -25,6 +25,7 @@
 #include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
+#include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -33,6 +34,7 @@
 #include "private/strhelper.h"
 #include "private/target.h"
 #include "private/target/network.h"
+#include "private/validate.h"
 
 static char *tcp_send_buffer = NULL;
 static size_t tcp_send_buffer_length = 0;
@@ -295,9 +297,9 @@ sendto_udp_target( struct network_target *target,
 
   if( msg_length > target->max_msg_size ) {
     effective_length = target->max_msg_size;
-    raise_argument_too_big( "message is too large to be sent in a single datagram",
+    raise_argument_too_big( L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE,
                             cap_size_t_to_int( msg_length ),
-                            "size of the message that is too large" );
+                            L10N_MESSAGE_SIZE_ERROR_CODE_TYPE );
   } else {
     effective_length = msg_length;
   }
@@ -318,7 +320,7 @@ stumpless_close_network_target( const struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -330,14 +332,10 @@ const char *
 stumpless_get_destination( const struct stumpless_target *target ) {
   const struct network_target *net_target;
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
 
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( "destination is only valid for network"
-                               " targets" );
+    raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
     goto fail;
   }
 
@@ -353,14 +351,10 @@ const char *
 stumpless_get_transport_port( const struct stumpless_target *target ) {
   const struct network_target *net_target;
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
 
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( "transport port is only valid for network"
-                               " targets" );
+    raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
     goto fail;
   }
 
@@ -377,25 +371,24 @@ stumpless_get_udp_max_message_size( const struct stumpless_target *target ) {
   const struct network_target *net_target;
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     goto fail;
   }
 
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( "max message size is only valid for network"
-                               " targets" );
-    goto fail;
+    goto incompatible;
   }
 
   net_target = target->id;
   if( net_target->transport != STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
-    raise_target_incompatible( "max message size is only valid for UDP targets" );
-    goto fail;
+    goto incompatible;
   }
 
   clear_error(  );
   return net_target->max_msg_size;
 
+incompatible:
+  raise_target_incompatible( L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE );
 fail:
   return 0;
 }
@@ -408,10 +401,7 @@ stumpless_new_network_target( const char *name,
 
   clear_error(  );
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
 
   target = new_target( STUMPLESS_NETWORK_TARGET,
                        name,
@@ -473,15 +463,8 @@ stumpless_open_network_target( const char *name,
 
   clear_error(  );
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
-
-  if( !destination ) {
-    raise_argument_empty( "destination is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
+  VALIDATE_ARG_NOT_NULL( destination );
 
   if( facility_is_invalid( default_facility ) ) {
     raise_invalid_facility( default_facility );
@@ -578,19 +561,11 @@ stumpless_set_destination( struct stumpless_target *target,
   struct network_target *net_target;
   const struct network_target *result;
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    goto fail;
-  }
-
-  if( !destination ) {
-    raise_argument_empty( "destination is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
+  VALIDATE_ARG_NOT_NULL( destination );
 
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( "transport port is only valid for network"
-                               " targets" );
+    raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
     goto fail;
   }
 
@@ -627,19 +602,11 @@ stumpless_set_transport_port( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    goto fail;
-  }
-
-  if( !port ) {
-    raise_argument_empty( "port is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
+  VALIDATE_ARG_NOT_NULL( port );
 
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( "transport port is only valid for network"
-                               " targets" );
+    raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
     goto fail;
   }
 
@@ -673,21 +640,15 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
 
   clear_error(  );
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
 
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( "max message size is only valid for network"
-                               " targets" );
-    goto fail;
+    goto incompatible;
   }
 
   net_target = target->id;
   if( net_target->transport != STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
-    raise_target_incompatible( "max message size is only valid for UDP targets" );
-    goto fail;
+    goto incompatible;
   }
 
   net_target = target->id;
@@ -695,7 +656,8 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
 
   return target;
 
-fail:
+incompatible:
+  raise_target_incompatible( L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE );
   return NULL;
 }
 

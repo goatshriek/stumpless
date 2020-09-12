@@ -26,6 +26,7 @@
 #include <stumpless/error.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
+#include "private/config/locale/wrapper.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -34,6 +35,7 @@
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/memory.h"
+#include "private/validate.h"
 
 static struct cache *entry_cache = NULL;
 
@@ -44,15 +46,8 @@ stumpless_add_element( struct stumpless_entry *entry,
   size_t old_elements_size;
   size_t new_elements_size;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
-
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( element );
 
   if( unchecked_entry_has_element( entry, element->name ) ) {
     raise_duplicate_element(  );
@@ -143,10 +138,7 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
   struct stumpless_element *element_copy;
   const struct stumpless_entry *result;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   copy = stumpless_new_entry( get_facility( entry->prival ),
                               get_severity( entry->prival ),
@@ -219,12 +211,12 @@ bool
 stumpless_entry_has_element( const struct stumpless_entry *entry,
                              const char *name ) {
   if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return false;
   }
 
   if( !name ) {
-    raise_argument_empty( "name is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
     return false;
   }
 
@@ -235,13 +227,11 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
 struct stumpless_element *
 stumpless_get_element_by_index( const struct stumpless_entry *entry,
                                 size_t index ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               index );
     return NULL;
   }
 
@@ -269,12 +259,12 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
   size_t i;
 
   if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return 0;
   }
 
   if( !name ) {
-    raise_argument_empty( "name is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
     return 0;
   }
 
@@ -291,10 +281,7 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
 
 const char *
 stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   clear_error(  );
   return entry->app_name;
@@ -303,7 +290,7 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
 int
 stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
   if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
@@ -313,10 +300,7 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 
 const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   clear_error(  );
   return entry->message;
@@ -324,10 +308,7 @@ stumpless_get_entry_message( const struct stumpless_entry *entry ) {
 
 const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   clear_error(  );
   return entry->msgid;
@@ -392,7 +373,7 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
 int
 stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
   if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
@@ -403,7 +384,7 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
 int
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
   if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
@@ -437,18 +418,12 @@ struct stumpless_entry *
 stumpless_set_element( struct stumpless_entry *entry,
                        size_t index,
                        struct stumpless_element *element ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
-
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( element );
 
   if( index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               index );
     return NULL;
   }
 
@@ -470,10 +445,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   size_t temp_name_length;
   char *temp_name;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   effective_name = app_name ? app_name : "-";
   temp_name = copy_cstring_with_length( effective_name, &temp_name_length );
@@ -491,10 +463,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 
 struct stumpless_entry *
 stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( facility_is_invalid( facility ) ) {
     raise_invalid_facility( facility );
@@ -514,10 +483,7 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
   size_t temp_length;
   char *temp_msgid;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   effective_msgid = msgid ? msgid : "-";
   temp_msgid = copy_cstring_with_length( effective_msgid, &temp_length );
@@ -555,13 +521,11 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
   struct stumpless_element *element;
   const struct stumpless_element *set_result;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", element_index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               element_index );
     return NULL;
   }
 
@@ -582,13 +546,11 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
   struct stumpless_element *element;
   const struct stumpless_element *set_result;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( "invalid element index", element_index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               element_index );
     return NULL;
   }
 
@@ -612,15 +574,8 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
   bool element_created = false;
   const void *result;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    goto fail;
-  }
-
-  if( !element_name ) {
-    raise_argument_empty( "element_name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( element_name );
 
   element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
@@ -658,10 +613,7 @@ struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,
                               int facility,
                               int severity ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( facility_is_invalid( facility ) ) {
     raise_invalid_facility( facility );
@@ -689,10 +641,7 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( severity_is_invalid( severity ) ) {
     raise_invalid_severity( severity );
@@ -789,10 +738,7 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
   char *formatted_message;
   size_t message_length;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   if( !message ) {
     free_mem( entry->message );

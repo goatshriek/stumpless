@@ -25,15 +25,17 @@
 #include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/socket.h"
+#include "private/validate.h"
 
 void
 stumpless_close_socket_target( const struct stumpless_target *target ) {
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -54,10 +56,7 @@ stumpless_open_socket_target( const char *name,
   char temp_name[16];
   int temp_fd;
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
 
   target = new_target(
     STUMPLESS_SOCKET_TARGET,
@@ -77,9 +76,9 @@ stumpless_open_socket_target( const char *name,
     temp_fd = mkstemp( temp_name );
     if( temp_fd == -1 ) {
       raise_error( STUMPLESS_FILE_OPEN_FAILURE,
-                   "could not create a file with the chosen local socket name",
+                   L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE,
                    errno,
-                   "errno after the failed call to mkstemp" );
+                   L10N_ERRNO_ERROR_CODE_TYPE );
       goto fail_id;
     }
 
@@ -142,9 +141,9 @@ new_socket_target( const char *dest,
 
   target->local_socket = socket( target->local_addr.sun_family, SOCK_DGRAM, 0 );
   if( target->local_socket < 0 ) {
-    raise_socket_failure( "could not create a local unix socket",
+    raise_socket_failure( L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                           errno,
-                          "errno after the failed call to socket" );
+                          L10N_ERRNO_ERROR_CODE_TYPE );
     goto fail_socket;
   }
 
@@ -153,9 +152,9 @@ new_socket_target( const char *dest,
                      sizeof( target->local_addr ) );
 
   if( bind_result < 0 ) {
-    raise_socket_bind_failure( "could not bind to the local unix socket",
+    raise_socket_bind_failure( L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
-                               "errno after the failed called to bind" );
+                               L10N_ERRNO_ERROR_CODE_TYPE );
     goto fail_socket;
   }
 
@@ -182,9 +181,9 @@ sendto_socket_target( const struct socket_target *target,
                   target->target_addr_len );
 
   if( result == -1 ) {
-    raise_socket_send_failure( "sendto failed with unix socket",
+    raise_socket_send_failure( L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
-                               "errno after the failed call to sendto" );
+                               L10N_ERRNO_ERROR_CODE_TYPE );
   }
 
   return result;
