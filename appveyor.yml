@@ -18,10 +18,31 @@ environment:
   matrix:
   - arch: Win64
     cpp_enabled: OFF
+    locale: "en-us"
   - arch: Win64
     cpp_enabled: ON
+    locale: "en-us"
+  - arch: Win64
+    cpp_enabled: OFF
+    locale: "fr-fr"
+
+matrix:
+  exclude:
+    - image: Visual Studio 2017
+      locale: "fr-fr"
+    - image: Visual Studio 2015
+      locale: "fr-fr"
+
+matrix:
+  fast_finish: true
 
 init:
+- ps: |
+    if( %locale%!="en-us" ) {
+      Set-WinSystemLocale %locale%
+      Restart-Computer
+      Start-Sleep -s 5
+    }
 - set arch=
 - if "%arch%"=="Win64" ( set arch= Win64)
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" ( set generator="Visual Studio 16 2019" )
