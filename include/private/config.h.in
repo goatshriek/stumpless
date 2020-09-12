@@ -43,7 +43,7 @@
 
 
 /* locale definition */
-#cmakedefine USE_LOCALE_FR_FR_H 1
-#cmakedefine USE_LOCALE_EN_US_H 1
+#cmakedefine USE_LOCALE_FR_FR 1
+#cmakedefine USE_LOCALE_EN_US 1
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */
