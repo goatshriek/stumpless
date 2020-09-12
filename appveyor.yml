@@ -29,6 +29,8 @@ environment:
 matrix:
   fast_finish: true
   exclude:
+    - configuration: Debug
+      locale: "fr-fr"
     - image: Visual Studio 2017
       locale: "fr-fr"
     - image: Visual Studio 2015
