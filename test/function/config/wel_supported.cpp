@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,11 @@
  * limitations under the License.
  */
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stddef.h>
 #include <stumpless.h>
 #include <windows.h>
 #include "test/function/windows/events.h"
-
-using::testing::HasSubstr;
 
 namespace {
   class WelSupportedTest : public::testing::Test {
@@ -114,7 +111,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "entry" ) );
     }
   }
 
@@ -388,7 +384,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "entry" ) );
     }
   }
 
@@ -412,7 +407,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "insertion string" ) );
     }
 
     stumpless_destroy_entry( entry );

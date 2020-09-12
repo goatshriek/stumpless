@@ -29,11 +29,13 @@
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
+#include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
 #include "private/config/wrapper.h"
+#include "private/validate.h"
 
 static
 struct stumpless_entry *
@@ -84,14 +86,14 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index ) {
   struct wel_data *data;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
   if( index >= data->insertion_count ) {
-    raise_index_out_of_bounds( "invalid insertion string index", index );
+    raise_index_out_of_bounds(
+       L10N_INVALID_INDEX_ERROR_MESSAGE( "insertion string" ),
+       index
+    );
     goto fail;
   }
 
@@ -106,10 +108,7 @@ struct stumpless_entry *
 stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
   struct wel_data *data;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
   data->category = category;
@@ -122,10 +121,7 @@ struct stumpless_entry *
 stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
   struct wel_data *data;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
   data->event_id = event_id;
@@ -140,15 +136,8 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
                                    struct stumpless_param *param ) {
   struct wel_data *data;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
-
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( param );
 
   data = entry->wel_data;
   if( index >= data->insertion_count ) {
@@ -167,22 +156,11 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( str );
+
   clear_error(  );
-
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    goto fail;
-  }
-
-  if( !str ) {
-    raise_argument_empty( "insertion string is NULL" );
-    goto fail;
-  }
-
   return set_wel_insertion_string( entry, index, str );
-
-fail:
-  return NULL;
 }
 
 struct stumpless_entry *
@@ -203,10 +181,7 @@ struct stumpless_entry *
 stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   struct wel_data *data;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
   data->type = type;
@@ -223,18 +198,15 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
   WORD i = 0;
   const char *arg;
 
-  clear_error(  );
+  VALIDATE_ARG_NOT_NULL( entry );
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    goto fail;
-  }
+  clear_error(  );
 
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
 
     if( !arg ) {
-      raise_argument_empty( "insertion string is NULL" );
+      raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "insertion string" ) );
       goto fail;
     }
 

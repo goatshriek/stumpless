@@ -18,8 +18,23 @@ environment:
   matrix:
   - arch: Win64
     cpp_enabled: OFF
+    locale: "en-us"
   - arch: Win64
     cpp_enabled: ON
+    locale: "en-us"
+  - arch: Win64
+    cpp_enabled: OFF
+    locale: "fr-fr"
+
+matrix:
+  fast_finish: true
+  exclude:
+    - configuration: Debug
+      locale: "fr-fr"
+    - image: Visual Studio 2017
+      locale: "fr-fr"
+    - image: Visual Studio 2015
+      locale: "fr-fr"
 
 init:
 - set arch=
@@ -36,7 +51,7 @@ before_build:
 - cmd: |-
     mkdir build
     cd build
-    cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration% -DENABLE_CPP=%cpp_enabled%
+    cmake .. -G %generator% -DCMAKE_BUILD_TYPE=%configuration% -DENABLE_CPP=%cpp_enabled% -DLOCALE=%locale%
 
 build:
   project: c:\project\stumpless\build\stumpless.vcxproj

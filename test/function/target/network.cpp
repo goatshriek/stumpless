@@ -37,7 +37,6 @@
                                  " receive messages."
 
 using::testing::EndsWith;
-using::testing::HasSubstr;
 using::testing::Not;
 
 namespace {
@@ -90,7 +89,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -132,7 +130,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -198,7 +195,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -267,7 +263,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -308,7 +303,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "name" ) );
     }
   }
 
@@ -634,7 +628,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "destination" ) );
     }
 
     stumpless_close_network_target( target );
@@ -652,7 +645,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -805,7 +797,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "port" ) );
     }
 
     stumpless_close_network_target( target );
@@ -823,7 +814,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 
@@ -865,7 +855,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "target" ) );
     }
   }
 }

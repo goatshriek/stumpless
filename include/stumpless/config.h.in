@@ -39,6 +39,9 @@
 /** The memory page size used for dynamic memory allocations. */
 #define STUMPLESS_FALLBACK_PAGESIZE @FALLBACK_PAGESIZE@
 
+/** The language stumpless was built for, as an RFC 5646 language tag. */
+#define STUMPLESS_LANGUAGE "@STUMPLESS_LANGUAGE@"
+
 /** Defined if network targets are supported by this build. */
 #cmakedefine STUMPLESS_NETWORK_TARGETS_SUPPORTED 1
 

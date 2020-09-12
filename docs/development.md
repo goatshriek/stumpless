@@ -86,6 +86,8 @@ A few other documents may be helpful for newcomers to glance through:
    performance testing framework set up in stumpless. If you're looking to
    make a performance improvement that will otherwise be transparent, this
    document describes the steps for this in detail with a full example.
+ * [docs/localization.md](localization.md) describes how localization is
+   implemented in detail and how to add new locales.
 
 ## Error Handling
 
@@ -106,16 +108,22 @@ the stumpless error id and error messages, and are intended to keep error
 handling in stumpless readable and expressive. If you need to add a new error,
 you will need to implement one of these to raise it as well.
 
-For example, if a public function detects a `NULL` parameter and this is not a
-valid argument, then `raise_argument_empty` should be called with a string
-describing the error, something like `"arg_1 is NULL"`. This is a common pattern
-that can be seen throughout the library code.
+For example, if a public function detects that a provided index is out of
+bounds, then `raise_index_out_of_bounds` should be called with a localized
+string describing the error, something like
+`L10N_INVALID_INDEX_ERROR_MESSAGE( "element" )`, and the invalid index that
+was passed in. This is a common pattern that can be seen throughout the
+library code.
 
-Other `raise` functions include more information to help with troubleshooting.
-A good example of this is `raise_index_out_of_bounds` which takes a message
-describing the invalid access attempt as well as the index that was out of
-bounds. This is then made available in the resulting error to the user as the
-`code` of the struct, along with a string description of what the value is in
+All error messages must be localized so that they can be understood by those
+who will troubleshoot them. More information about handling localization can
+be found in the [localization documentation](localization.md).
+
+Often `raise` functions include information to help with troubleshooting. The
+`raise_index_out_of_bounds` is a good example of this: in addition to a string
+describing the invalid access it also takes the index that was out of bounds.
+This is then made available in the resulting error to the user as the `code`
+of the struct, along with a localized string description of what the value is in
 `code_type`. The code of an error can be different across errors and even in
 the same error when thrown from a different context.
 
@@ -135,10 +143,10 @@ function to clear it for them if it succeeds. The only functions that do not
 need to clear the error code are destructors and any error handling functions.
 
 There is error handling code everywhere, but if you want a singular place to
-look we recommend `stumpless_copy_entry` in `src/entry.c`. This function
-demonstrates how to detect errors in parameters and internal function calls,
-call the appropriate `raise` functions when needed, and simply return when the
-error comes from a different function.
+look we recommend `stumpless_set_entry_param_value_by_index` in `src/entry.c`.
+This function demonstrates how to detect errors in parameters and internal
+function calls, call the appropriate `raise` functions when needed, and simply
+return when the error comes from a different function.
 
 Errors raised in stumpless can be accessed by the various error handling
 functions provided for the user. Some of the common useful ones are:

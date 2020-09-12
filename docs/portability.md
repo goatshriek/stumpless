@@ -94,6 +94,15 @@ defined as an alias for the `fopen` library call. Any library code that needs
 `fopen` functionality will then simply use `config_fopen` without needing to
 know which underlying call is being provided.
 
+## Other Wrapper Headers
+
+There are other wrapper headers that hide configuration-related details beyond
+`private/config/wrapper.h`. The most prominent of these is
+`private/config/locale/wrapper.h` which includes the correct set of localized
+string definitions based on the locale chosen during the build configuration.
+Another example is `private/windows_wrapper.h` which includes Windows-related
+header files only if they are found and in the correct order.
+
 ## Fallback Behavior
 
 Stumpless is designed to work in a variety of environments, and can typically

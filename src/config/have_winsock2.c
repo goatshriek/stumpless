@@ -21,6 +21,7 @@
 
 #include <stddef.h>
 #include "private/config/have_winsock2.h"
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"
@@ -51,9 +52,9 @@ winsock_open_socket( const char *destination,
     }
 
     if( handle == INVALID_SOCKET ) {
-      raise_socket_failure( "winsock2 failed to open a socket",
+      raise_socket_failure( L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE,
                             WSAGetLastError(  ),
-                            "WSAGetLastError after the failed call" );
+                            L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
       goto fail;
     }
   }
@@ -64,9 +65,9 @@ winsock_open_socket( const char *destination,
 
   result = getaddrinfo( destination, port, &hints, &addr_result );
   if( result != 0 ) {
-    raise_address_failure( "getaddrinfo failed on name",
+    raise_address_failure( L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE,
                            result,
-                           "Windows Socket error code" );
+                           L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE );
     goto fail_addr;
   }
 
@@ -75,9 +76,9 @@ winsock_open_socket( const char *destination,
                     cap_size_t_to_int( addr_result->ai_addrlen ) );
 
   if( result == SOCKET_ERROR ) {
-    raise_socket_connect_failure( "connect failed on winsock2 socket",
+    raise_socket_connect_failure( L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE,
                                   WSAGetLastError(  ),
-                                  "WSAGetLastError after the failed call" );
+                                  L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
     goto fail_connect;
   }
 
@@ -239,9 +240,9 @@ winsock2_sendto_target( struct network_target *target,
                  0 );
 
   if( result == SOCKET_ERROR ) {
-    raise_socket_send_failure( "send failed with winsock socket",
+    raise_socket_send_failure( L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE,
                                WSAGetLastError(  ),
-                               "WSAGetLastError after the failed call" );
+                               L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
     return -1;
   }
 
