@@ -146,6 +146,12 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - BUILD_ARGS="-DENABLE_CPP=ON"
+    - name: "os x, fr"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - LANG=fr_FR.UTF-8
+        - LC_ALL=fr_FR.UTF-8
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
