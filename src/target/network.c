@@ -658,7 +658,6 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
 
 incompatible:
   raise_target_incompatible( L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE );
-fail:
   return NULL;
 }
 

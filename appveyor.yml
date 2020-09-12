@@ -57,7 +57,6 @@ build:
   project: c:\project\stumpless\build\stumpless.vcxproj
 
 test_script:
-  - type c:\project\stumpless\build\include\private\config.h
   - set CTEST_OUTPUT_ON_FAILURE=1
   - msbuild c:\project\stumpless\build\check.vcxproj
   - if "%cpp_enabled%"=="ON" ( msbuild c:\project\stumpless\build\check-cpp.vcxproj )
