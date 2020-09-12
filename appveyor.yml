@@ -36,8 +36,8 @@ matrix:
 
 init:
 - ps: |
-    if( %locale%!="en-us" ) {
-      Set-WinSystemLocale %locale%
+    if( $env:locale -ne "en-us" ) {
+      Set-WinSystemLocale $env:locale
       Restart-Computer
       Start-Sleep -s 5
     }
