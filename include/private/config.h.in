@@ -41,4 +41,9 @@
 #cmakedefine SUPPORT_UNISTD_SYSCONF_GETPAGESIZE 1
 #cmakedefine SUPPORT_WINDOWS_GET_NOW 1
 
+
+/* locale definition */
+#cmakedefine USE_LOCALE_FR_FR_H 1
+#cmakedefine USE_LOCALE_EN_US_H 1
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */

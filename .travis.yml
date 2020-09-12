@@ -179,6 +179,8 @@ script:
 
 after_success:
   - VERSION=$(grep "#define STUMPLESS_VERSION \".*\"" include/stumpless/config.h | sed 's/.*\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\)\+.*/\1/')
+  - cat include/private/config.h
+  - cat include/stumpless/config.h
   - cd ..
   - echo "sonar.projectVersion=$VERSION" >> sonar-project.properties
   - curl -L https://codecov.io/bash -o codecov.sh

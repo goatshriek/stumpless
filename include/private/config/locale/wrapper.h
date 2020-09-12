@@ -19,6 +19,12 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H
 
-#  include "private/config/locale/en-us.h"
+#  include "private/config.h"
+
+#  ifdef USE_LOCALE_FR_FR
+#    include "private/config/local/fr-fr.h"
+#  else
+#    include "private/config/locale/en-us.h"
+#  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H */

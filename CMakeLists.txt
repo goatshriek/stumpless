@@ -64,6 +64,15 @@ set(GTEST_PATH ${PROJECT_BINARY_DIR}
   CACHE PATH ${gtest_path_help_string}
 )
 
+string(CONCAT locale_help_string
+  "The locale used for strings passed by the library, for example error "
+  "messages. If this is not set it will use the LANG environment variable "
+  "of the build system."
+)
+set(LOCALE $ENV{LANG}
+  CACHE STRING ${locale_help_string}
+)
+
 
 # looking for packages and programs
 find_package(Threads REQUIRED)
@@ -122,6 +131,14 @@ if(EXISTS "/var/run/syslog")
   set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
 else()
   set(STUMPLESS_DEFAULT_SOCKET "/dev/log")
+endif()
+
+if(LOCALE MATCHES "^fr[_-]")
+  set(STUMPLESS_LANGUAGE "fr-FR")
+  set(USE_LOCALE_FR_FR)
+else()
+  set(STUMPLESS_LANGUAGE "en-US")
+  set(USE_LOCALE_EN_US)
 endif()
 
 # standard source files
