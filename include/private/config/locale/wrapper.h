@@ -22,7 +22,7 @@
 #  include "private/config.h"
 
 #  ifdef USE_LOCALE_FR_FR
-#    include "private/config/local/fr-fr.h"
+#    include "private/config/locale/fr-fr.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
