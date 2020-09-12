@@ -6,6 +6,7 @@ locale. A simple wrapper header, `private/config/locale/wrapper.h`, can then
 be included by source files. This wrapper header chooses the correct locale
 header based on the build configuration.
 
+
 ## Locale Headers
 Locale headers are located in `private/config/locale` and are named after the
 locale that they hold using the IETF Language Tag format defined in
@@ -24,6 +25,7 @@ argument that was null as a parameter so that it can insert it into the error
 message that it generates. Different locales may use this value in different
 places, or not at all.
 
+
 ## Adding New Strings
 If you are making a change that requires a new error message or other string
 that needs to be localized, you will need to add it to all defined locales. It
@@ -35,10 +37,22 @@ and with spaces instead of underscores. For example, for the
 `L10N_INVALID_SEVERITY_ERROR_MESSAGE` symbol this would be
 `"INVALID SEVERITY ERROR MESSAGE"`.
 
+
 ## Defining a New Locale
 Adding a new locale to the library only requires the addition of the new header
 file and making sure that it can be used during build configuration. Adding
 the header is straightforward: just copy any already existing header (this will
 be easier if you understand the language of the original) and then change the
 defined symbols to reflect your new locale. Be sure that the name of the new
-header is a valid IETF Language Tag.
+header is a valid IETF Language Tag in all lowercase letters.
+
+After adding the header itself, you will need to tie it in to the build system
+by updating the `CMakeList.txt` file and the `include/private/config.h.in`
+header template. In the CMake script, add an `elseif` block to the chain of
+conditionals responsible for determining the locale (do a search for
+`STUMPLESS_LANGUAGE` to quickly find this) following the pattern of the others
+that are already there. Then, in the private config header template, add a
+definition for the locale symbol for the new locale. This symbol should be of
+the form `USE_LOCALE_XXX` where the last portion is the RFC 5646 language tag
+in all caps with underscore separators. Again, reference the already defined
+locales to see what this should look like.

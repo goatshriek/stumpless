@@ -133,6 +133,7 @@ else()
   set(STUMPLESS_DEFAULT_SOCKET "/dev/log")
 endif()
 
+# setting the chosen locale
 if(LOCALE MATCHES "^fr[_-]")
   set(STUMPLESS_LANGUAGE "fr-FR")
   set(USE_LOCALE_FR_FR TRUE)
