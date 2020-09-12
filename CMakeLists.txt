@@ -135,13 +135,13 @@ endif()
 
 if(LOCALE MATCHES "^fr[_-]")
   set(STUMPLESS_LANGUAGE "fr-FR")
-  set(USE_LOCALE_FR_FR)
+  set(USE_LOCALE_FR_FR TRUE)
 else()
   if(NOT LOCALE MATCHES "^en[_-]")
     message("building default language en-US")
   endif()
   set(STUMPLESS_LANGUAGE "en-US")
-  set(USE_LOCALE_EN_US)
+  set(USE_LOCALE_EN_US TRUE)
 endif()
 
 # standard source files
