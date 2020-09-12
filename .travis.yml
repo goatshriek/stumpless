@@ -8,18 +8,6 @@ matrix:
       os: windows
       env:
         - BUILD_ARGS="-DENABLE_CPP=ON"
-    - name: "linux, fr"
-      os: linux
-      addons:
-        apt:
-          packages:
-            - language-pack-fr
-        sonarcloud:
-          organization: "goatshriek-github"
-      env:
-        - MATRIX_EVAL="CC=gcc && CXX=g++"
-        - LANG=fr_FR.UTF-8
-        - LC_ALL=fr_FR.UTF-8
     - name: "linux, gcc 6"
       os: linux
       addons:
@@ -127,6 +115,18 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc && CXX=g++"
         - BUILD_ARGS="-DENABLE_CPP=ON"
+    - name: "linux, fr"
+      os: linux
+      addons:
+        apt:
+          packages:
+            - language-pack-fr
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - LANG=fr_FR.UTF-8
+        - LC_ALL=fr_FR.UTF-8
     - name: "os x, clang"
       os: osx
       env:
