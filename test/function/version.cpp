@@ -19,12 +19,9 @@
 #include <limits.h>
 #include <cstddef>
 #include <cstdlib>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sstream>
 #include <stumpless.h>
-
-using ::testing::HasSubstr;
 
 namespace {
 
@@ -186,7 +183,6 @@ namespace {
 
     if( error ) {
       EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-      EXPECT_THAT( error->message, HasSubstr( "version" ) );
     }
   }
 }
