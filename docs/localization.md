@@ -22,8 +22,8 @@ Some of these symbols may be functions that take string constants as
 parameters and insert these into the appropriate location. An example of this
 is the `L10N_NULL_ARG_ERROR_MESSAGE` function, which takes the name of the
 argument that was null as a parameter so that it can insert it into the error
-message that it generates. Different locales may use this value in different
-places, or not at all.
+message. Different locales may use this value in different places, or not at
+all.
 
 
 ## Adding New Strings
@@ -32,8 +32,8 @@ that needs to be localized, you will need to add it to all defined locales. It
 is _required_ that the `en-us` locale include a meaningful definition of the
 symbol. Others may be added as a placeholder value, for later translation by
 someone with the necessary knowledge. The conventional placeholder for this
-situation is a string containing the name of the symbol, minus the L10N_ prefix
-and with spaces instead of underscores. For example, for the
+situation is a string containing the name of the symbol, minus the `L10N_`
+prefix and with spaces instead of underscores. For example, for the
 `L10N_INVALID_SEVERITY_ERROR_MESSAGE` symbol this would be
 `"INVALID SEVERITY ERROR MESSAGE"`.
 
