@@ -47,12 +47,15 @@ defined symbols to reflect your new locale. Be sure that the name of the new
 header is a valid IETF Language Tag in all lowercase letters.
 
 After adding the header itself, you will need to tie it in to the build system
-by updating the `CMakeList.txt` file and the `include/private/config.h.in`
-header template. In the CMake script, add an `elseif` block to the chain of
-conditionals responsible for determining the locale (do a search for
-`STUMPLESS_LANGUAGE` to quickly find this) following the pattern of the others
-that are already there. Then, in the private config header template, add a
-definition for the locale symbol for the new locale. This symbol should be of
-the form `USE_LOCALE_XXX` where the last portion is the RFC 5646 language tag
-in all caps with underscore separators. Again, reference the already defined
-locales to see what this should look like.
+by updating the `CMakeList.txt` file, the `include/private/config.h.in`
+header template, and the locale wrapper
+`include/private/config/locale/wrapper.h`. In the CMake script, add an `elseif`
+block to the chain of conditionals responsible for determining the locale (do a
+search for `STUMPLESS_LANGUAGE` to quickly find this) following the pattern of
+the others that are already there. Next, in the private config header template,
+add a definition for the locale symbol for the new locale. This symbol should
+be of the form `USE_LOCALE_XXX` where the last portion is the RFC 5646 language
+tag in all caps with underscore separators. Again, reference the already defined
+locales to see what this should look like. Finally, in the locale wrapper header
+add an `#elseif` statement for the new locale symbol in the same order as it
+appears in the CMake build script to include the new header.
