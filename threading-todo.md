@@ -53,7 +53,7 @@
  - [ ] stumpless_open_udp4_target
  - [ ] stumpless_open_udp6_target
  - [x] stumpless_get_default_facility
- - [ ] stumpless_get_destination
+ - [x] stumpless_get_destination
  - [x] stumpless_get_option
  - [ ] stumpless_get_transport_port
  - [ ] stumpless_get_udp_max_message_size

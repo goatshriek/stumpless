@@ -29,12 +29,18 @@ namespace {
 
   void
   read_network_target( const struct stumpless_target *target ) {
-    
+    const char *destination;
+
+    for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
+      destination = stumpless_get_destination( target );
+
+      free( ( void * ) destination );
+    }
   }
 
   void
   write_network_target( struct stumpless_target *target ) {
-    
+
   }
 
   TEST( WriteConsistency, SimultaneousWrites ) {

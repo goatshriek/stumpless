@@ -81,12 +81,35 @@ void
 stumpless_close_network_target( const struct stumpless_target *target );
 
 /**
- * Gets the destination of a network target.
+ * Gets the destination of a network target. The character buffer returned must
+ * be freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * If the network target has been created but not had a destination set yet,
+ * the result will be NULL.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the destination and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param target The target to get the destination from.
  *
- * @return The current destination of the network target. In the event of an
- * error, NULL is returned and an error code is set appropriately.
+ * @return The current destination of the network target, or NULL if one has
+ * not yet been set. In the event of an error, NULL is returned and an error
+ * code is set appropriately.
  */
 const char *
 stumpless_get_destination( const struct stumpless_target *target );

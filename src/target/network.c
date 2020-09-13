@@ -331,20 +331,32 @@ stumpless_close_network_target( const struct stumpless_target *target ) {
 const char *
 stumpless_get_destination( const struct stumpless_target *target ) {
   const struct network_target *net_target;
+  const char *destination_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
+    goto cleanup_and_return;
+  }
+
+  net_target = target->id;
+
+  if( !net_target->destination ) {
+    goto cleanup_and_return;
+  }
+
+  destination_copy = copy_cstring( net_target->destination );
+  if( !destination_copy ) {
+    goto cleanup_and_return;
   }
 
   clear_error(  );
-  net_target = target->id;
-  return net_target->destination;
 
-fail:
-  return NULL;
+cleanup_and_return:
+  unlock_target( target );
+  return destination_copy;
 }
 
 const char *

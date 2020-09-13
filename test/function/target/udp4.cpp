@@ -339,6 +339,7 @@ namespace {
     destination_result = stumpless_get_destination( target );
     EXPECT_TRUE( destination_result != NULL );
     EXPECT_STREQ( destination_result, destination );
+    free( ( void * ) destination_result );
 
     target_result = stumpless_open_target( target );
     ASSERT_TRUE( target_result != NULL );
