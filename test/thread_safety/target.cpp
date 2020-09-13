@@ -72,7 +72,7 @@ namespace {
   }
 
   TEST( TargetConsistency, SimultaneousReadsAndWrites ) {
-    const char *filename = "file_target_thread_safety.log";
+    const char *filename = "target_thread_safety.log";
     struct stumpless_target *target;
     int i;
     std::thread *reader_threads[THREAD_COUNT];
