@@ -24,18 +24,20 @@
 #include <stumpless/facility.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
+#include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/wel.h"
+#include "private/validate.h"
 
 void
 stumpless_close_wel_target( struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -50,10 +52,7 @@ stumpless_open_local_wel_target( const char *name,
 
   clear_error(  );
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
 
   target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
                        name,
@@ -88,10 +87,7 @@ stumpless_open_remote_wel_target( const char *server,
 
    clear_error(  );
 
-   if( !name ) {
-     raise_argument_empty( "name is NULL" );
-     goto fail;
-   }
+   VALIDATE_ARG_NOT_NULL( name );
 
    target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
                         name,

@@ -24,16 +24,13 @@
 #include "private/memory.h"
 #include "private/param.h"
 #include "private/strhelper.h"
+#include "private/validate.h"
 
 struct stumpless_param *
 stumpless_copy_param( const struct stumpless_param *param ) {
   struct stumpless_param *result;
 
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    return NULL;
-
-  }
+  VALIDATE_ARG_NOT_NULL( param );
 
   lock_param( param );
   result = stumpless_new_param( param->name, param->value );
@@ -58,10 +55,7 @@ const char *
 stumpless_get_param_name( const struct stumpless_param *param ) {
   char *name_copy;
 
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( param );
 
   lock_param( param );
   name_copy = alloc_mem( param->name_length + 1 );
@@ -80,10 +74,7 @@ const char *
 stumpless_get_param_value( const struct stumpless_param *param ) {
   char *value_copy;
 
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( param );
 
   lock_param( param );
   value_copy = alloc_mem( param->value_length + 1 );
@@ -102,15 +93,8 @@ struct stumpless_param *
 stumpless_new_param( const char *name, const char *value ) {
   struct stumpless_param *param;
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
-
-  if( !value ) {
-    raise_argument_empty( "value is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
+  VALIDATE_ARG_NOT_NULL( value );
 
   param = alloc_mem( sizeof( *param ) );
   if( !param ) {
@@ -148,15 +132,8 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   size_t new_size;
   const char *old_name;
 
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    goto fail;
-  }
-
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( param );
+  VALIDATE_ARG_NOT_NULL( name );
 
   new_name = copy_cstring_with_length( name, &new_size );
   if( !new_name ) {
@@ -183,15 +160,8 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
   size_t new_size;
   const char *old_value;
 
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    goto fail;
-  }
-
-  if( !value ) {
-    raise_argument_empty( "value is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( param );
+  VALIDATE_ARG_NOT_NULL( value );
 
   new_value = copy_cstring_with_length( value, &new_size );
   if( !new_value ) {

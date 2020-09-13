@@ -20,15 +20,12 @@
 #include <cstdlib>
 #include <regex>
 #include <string.h>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "private/target/buffer.h"
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/memory_allocation.hpp"
-
-using::testing::HasSubstr;
 
 namespace {
 
@@ -109,7 +106,6 @@ namespace {
     result = stumpless_add_log( NULL, priority , "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( AddMessageTest, NullTarget ) {
@@ -119,7 +115,6 @@ namespace {
     result = stumpless_add_message( NULL, "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( AddMessageTest, ReallocFailure ) {
@@ -202,7 +197,6 @@ namespace {
 
     stumpless_close_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( GetDefaultFacility, NullTarget ) {
@@ -213,7 +207,6 @@ namespace {
     EXPECT_EQ( -1, facility );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( GetOption, NullTarget ) {
@@ -223,7 +216,6 @@ namespace {
     option = stumpless_get_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_EQ( option, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( OpenTarget, AlreadyOpenTarget ) {
@@ -251,7 +243,6 @@ namespace {
     target = stumpless_open_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( SetDefaultAppName, MemoryFailure ) {
@@ -358,7 +349,6 @@ namespace {
     target_result = stumpless_set_default_facility( NULL, STUMPLESS_FACILITY_USER );
     EXPECT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( SetDefaultFacility, TooHigh ) {
@@ -464,7 +454,6 @@ namespace {
     result = stumpless_set_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( SetOption, Pid ) {
@@ -612,7 +601,6 @@ namespace {
     result = stumpless_unset_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( UnsetOption, Pid ) {

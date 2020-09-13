@@ -38,7 +38,6 @@
                                  " receive messages."
 
 using::testing::EndsWith;
-using::testing::HasSubstr;
 using::testing::Not;
 
 namespace {
@@ -80,7 +79,6 @@ namespace {
     result = stumpless_get_destination( NULL );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( NetworkTargetGetDestination, BadTargetType ) {
@@ -110,7 +108,6 @@ namespace {
     result = stumpless_get_transport_port( NULL );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( NetworkTargetGetTransportProtocol, BadTargetType ) {
@@ -160,7 +157,6 @@ namespace {
     result = stumpless_get_udp_max_message_size( NULL );
     EXPECT_TRUE( result == 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( NetworkTargetNewTest, BadIpv4TransportProtocol ) {
@@ -206,7 +202,6 @@ namespace {
     result = stumpless_target_is_open( NULL );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( NetworkTargetNewTest, MallocFailure ) {
@@ -236,7 +231,6 @@ namespace {
                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "name" ) );
   }
 
   TEST( NetworkTargetOpenTest, BadHostname ) {
@@ -480,7 +474,6 @@ namespace {
     result = stumpless_set_destination( target, NULL );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "destination" ) );
 
     stumpless_close_network_target( target );
   }
@@ -492,7 +485,6 @@ namespace {
     result = stumpless_set_destination( NULL, "localhost" );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( NetworkTargetSetTransportPort, BadTcpPort ) {
@@ -615,7 +607,6 @@ namespace {
     result = stumpless_set_transport_port( target, NULL );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "port" ) );
 
     stumpless_close_network_target( target );
   }
@@ -627,7 +618,6 @@ namespace {
     result = stumpless_set_transport_port( NULL, "5514" );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 
   TEST( NetworkTargetSetUdpMaxMessage, BadTargetType ) {
@@ -657,6 +647,5 @@ namespace {
     result = stumpless_set_udp_max_message_size( NULL, 1500 );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_THAT( error->message, HasSubstr( "target" ) );
   }
 }

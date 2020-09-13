@@ -23,17 +23,19 @@
 #include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
+#include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/file.h"
+#include "private/validate.h"
 
 void
 stumpless_close_file_target( struct stumpless_target *target ) {
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -47,10 +49,7 @@ stumpless_open_file_target( const char *name,
                             int options, int default_facility ) {
   struct stumpless_target *target;
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
 
   target = new_target(
     STUMPLESS_FILE_TARGET,

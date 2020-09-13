@@ -115,6 +115,18 @@ matrix:
 #      env:
 #        - MATRIX_EVAL="CC=gcc && CXX=g++"
 #        - BUILD_ARGS="-DENABLE_CPP=ON"
+#    - name: "linux, fr-fr"
+#      os: linux
+#      addons:
+#        apt:
+#          packages:
+#            - language-pack-fr
+#        sonarcloud:
+#          organization: "goatshriek-github"
+#      env:
+#        - MATRIX_EVAL="CC=gcc && CXX=g++"
+#        - LANG=fr_FR.UTF-8
+#        - LC_ALL=fr_FR.UTF-8
     - name: "os x, clang"
       os: osx
       env:
@@ -134,6 +146,12 @@ matrix:
 #      env:
 #        - MATRIX_EVAL="CC=clang && CXX=clang++"
 #        - BUILD_ARGS="-DENABLE_CPP=ON"
+#    - name: "os x, fr-fr"
+#      os: osx
+#      env:
+#        - MATRIX_EVAL="CC=clang && CXX=clang++"
+#        - LANG=fr_FR.UTF-8
+#        - LC_ALL=fr_FR.UTF-8
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
@@ -171,4 +189,5 @@ after_success:
   - echo "sonar.projectVersion=$VERSION" >> sonar-project.properties
   - curl -L https://codecov.io/bash -o codecov.sh
   - bash codecov.sh 2>&1 | grep -v "has arcs to entry block" | grep -v "has arcs from exit block"
+  - git fetch origin latest
   - sonar-scanner

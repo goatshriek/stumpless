@@ -22,11 +22,13 @@
 #include <string.h>
 #include <stumpless/element.h>
 #include <stumpless/param.h>
+#include "private/config/locale/wrapper.h"
 #include "private/element.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/param.h"
 #include "private/strhelper.h"
+#include "private/validate.h"
 
 struct stumpless_element *
 stumpless_add_new_param( struct stumpless_element *element,
@@ -56,15 +58,8 @@ stumpless_add_param( struct stumpless_element *element,
   size_t old_params_size;
   size_t new_params_size;
 
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
-
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( element );
+  VALIDATE_ARG_NOT_NULL( param );
 
   lock_element( element );
 
@@ -158,12 +153,12 @@ stumpless_element_has_param( const struct stumpless_element *element,
   size_t i;
 
   if( !element ) {
-    raise_argument_empty( "element is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "element" ) );
     return false;
   }
 
   if( !name ) {
-    raise_argument_empty( "name is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
     return false;
   }
 
@@ -184,10 +179,7 @@ const char *
 stumpless_get_element_name( const struct stumpless_element *element ) {
   char *name_copy;
 
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( element );
 
   lock_element( element );
   name_copy = alloc_mem( element->name_length + 1 );
@@ -207,8 +199,11 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
                               size_t index ) {
   struct stumpless_param *result = NULL;
 
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
+  VALIDATE_ARG_NOT_NULL( element );
+
+  if( index >= element->param_count ) {
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "param" ),
+                               index );
     return NULL;
   }
 
@@ -228,15 +223,8 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
   struct stumpless_param *param;
   int cmp_result;
 
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
-
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( element );
+  VALIDATE_ARG_NOT_NULL( name );
 
   lock_element( element );
   for( i = 0; i < element->param_count; i++ ) {
@@ -265,7 +253,7 @@ stumpless_get_param_count( const struct stumpless_element *element ) {
   size_t result;
 
   if( !element ) {
-    raise_argument_empty( "element is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "element" ) );
     return 0;
   }
 
@@ -285,12 +273,12 @@ stumpless_get_param_index( const struct stumpless_element *element,
   int cmp_result;
 
   if( !element ) {
-    raise_argument_empty( "element is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "element" ) );
     return 0;
   }
 
   if( !name ) {
-    raise_argument_empty( "name is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
     return 0;
   }
 
@@ -338,12 +326,12 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
   int cmp_result;
 
   if( !element ) {
-    raise_argument_empty( "element is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "element" ) );
     return 0;
   }
 
   if( !name ) {
-    raise_argument_empty( "name is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
     return 0;
   }
 
@@ -395,10 +383,7 @@ struct stumpless_element *
 stumpless_new_element( const char *name ) {
   struct stumpless_element *element;
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
 
   element = alloc_mem( sizeof( *element ) );
   if( !element ) {
@@ -431,15 +416,8 @@ stumpless_set_element_name( struct stumpless_element *element,
   size_t new_size;
   const char *old_name;
 
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    goto fail;
-  }
-
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    goto fail;
-  }
+  VALIDATE_ARG_NOT_NULL( element );
+  VALIDATE_ARG_NOT_NULL( name );
 
   new_name = copy_cstring_with_length( name, &new_size );
   if( !new_name ) {
@@ -465,21 +443,15 @@ struct stumpless_element *
 stumpless_set_param( struct stumpless_element *element,
                      size_t index,
                      struct stumpless_param *param ) {
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
-
-  if( !param ) {
-    raise_argument_empty( "param is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( element );
+  VALIDATE_ARG_NOT_NULL( param );
 
   lock_element( element );
 
   if( index >= element->param_count ) {
     unlock_element( element );
-    raise_index_out_of_bounds( "invalid param index", index );
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "param" ),
+                               index );
     return NULL;
   }
 
@@ -528,15 +500,8 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
   struct stumpless_param *param;
   const void *result;
 
-  if( !element ) {
-    raise_argument_empty( "element is NULL" );
-    return NULL;
-  }
-
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( element );
+  VALIDATE_ARG_NOT_NULL( name );
 
   param = stumpless_get_param_by_name( element, name );
   if( param ) {

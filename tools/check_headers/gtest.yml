@@ -3,6 +3,7 @@
 "ASSERT_TRUE": "gtest/gtest.h"
 "BENCHMARK": "benchmark/benchmark.h"
 "BENCHMARK_MAIN": "benchmark/benchmark.h"
+"EndsWith": "gmock/gmock.h"
 "EXPECT_EQ": "gtest/gtest.h"
 "EXPECT_TRUE": "gtest/gtest.h"
 "FAIL": "gtest/gtest.h"

@@ -20,18 +20,20 @@
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
+#include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
+#include "private/validate.h"
 
 void
 stumpless_close_buffer_target( const struct stumpless_target *target ) {
   clear_error(  );
 
   if( !target ) {
-    raise_argument_empty( "target is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
@@ -49,15 +51,8 @@ stumpless_open_buffer_target( const char *name,
 
   clear_error(  );
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return NULL;
-  }
-
-  if( !buffer ) {
-    raise_argument_empty( "buffer is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( name );
+  VALIDATE_ARG_NOT_NULL( buffer );
 
   target = new_target(
     STUMPLESS_BUFFER_TARGET,
@@ -118,9 +113,9 @@ sendto_buffer_target( struct buffer_target *target,
   msg_length--;
 
   if( msg_length >= target->size ) {
-    raise_argument_too_big( "buffer is too small for the given message",
+    raise_argument_too_big( L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE,
                             cap_size_t_to_int( msg_length ),
-                            "size of the message that is too large" );
+                            L10N_MESSAGE_SIZE_ERROR_CODE_TYPE );
     return -1;
   }
 

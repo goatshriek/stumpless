@@ -25,6 +25,7 @@
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/strbuilder.h"
+#include "private/validate.h"
 
 typedef void ( *free_func_t ) ( void * );
 typedef void *( *malloc_func_t ) ( size_t );
@@ -55,41 +56,29 @@ stumpless_free_thread( void ) {
 
 malloc_func_t
 stumpless_set_malloc( malloc_func_t malloc_func ) {
-  clear_error(  );
+  VALIDATE_ARG_NOT_NULL( malloc_func );
 
-  if( !malloc_func ) {
-    raise_argument_empty( "malloc_func is NULL" );
-    return NULL;
-  } else {
-    stumpless_malloc = malloc_func;
-    return stumpless_malloc;
-  }
+  clear_error(  );
+  stumpless_malloc = malloc_func;
+  return stumpless_malloc;
 }
 
 free_func_t
 stumpless_set_free( free_func_t free_func ) {
-  clear_error(  );
+  VALIDATE_ARG_NOT_NULL( free_func );
 
-  if( !free_func ) {
-    raise_argument_empty( "free_func is NULL" );
-    return NULL;
-  } else {
-    stumpless_free = free_func;
-    return stumpless_free;
-  }
+  clear_error(  );
+  stumpless_free = free_func;
+  return stumpless_free;
 }
 
 realloc_func_t
 stumpless_set_realloc( realloc_func_t realloc_func ) {
-  clear_error(  );
+  VALIDATE_ARG_NOT_NULL( realloc_func );
 
-  if( !realloc_func ) {
-    raise_argument_empty( "realloc_func is NULL" );
-    return NULL;
-  } else {
-    stumpless_realloc = realloc_func;
-    return stumpless_realloc;
-  }
+  clear_error(  );
+  stumpless_realloc = realloc_func;
+  return stumpless_realloc;
 }
 
 /* private functions */
