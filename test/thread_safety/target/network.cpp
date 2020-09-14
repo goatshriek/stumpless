@@ -17,6 +17,7 @@
  */
 
 #include <cstddef>
+#include <stdlib>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <thread>
