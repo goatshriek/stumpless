@@ -362,20 +362,32 @@ cleanup_and_return:
 const char *
 stumpless_get_transport_port( const struct stumpless_target *target ) {
   const struct network_target *net_target;
+  const char *port_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
+    goto cleanup_and_return;
+  }
+
+  net_target = target->id;
+
+  if( !net_target->port ) {
+    goto cleanup_and_return;
+  }
+
+  port_copy = copy_cstring( net_target->port );
+  if( !port_copy ) {
+    goto cleanup_and_return;
   }
 
   clear_error(  );
-  net_target = target->id;
-  return net_target->port;
 
-fail:
-  return NULL;
+cleanup_and_return:
+  unlock_target( target );
+  return port_copy;
 }
 
 size_t
