@@ -20,117 +20,119 @@
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_FR_FR_H
 
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"BIND UNIX SOCKET FAILED ERROR MESSAGE"
+"impossible de se lier au socket local unix"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
-"BUFFER TOO SMALL ERROR MESSAGE"
+"le tampon est trop petit pour le message donné"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"CLOSE UNSUPPORTED TARGET ERROR MESSAGE"
+"tentative de fermeture d'un type de cible no supporté"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"CONNECT SYS SOCKET FAILED ERROR MESSAGE"
+"échec de connexion avec un socket sys/socket.h"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"CONNECT WIN SOCKET FAILED ERROR MESSAGE"
+"échec de connexion avec un socket winsock2"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
-"DESTINATION NETWORK ONLY ERROR MESSAGE"
+"destination valide uniquement pour les cibles réseaux"
 
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
-"DUPLICATE ELEMENT ERROR MESSAGE"
+"un élément avec le nom fourni est déjà présent dans cette entrée"
 
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
-"ELEMENT NOT FOUND ERROR MESSAGE"
+"un élément avec les caractéristiques spécifiées est introuvable"
 
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
-"ERRNO ERROR CODE TYPE"
+"errno après l'échec d'appel"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"LOCAL SOCKET NAME FILE OPEN ERROR MESSAGE"
+"échec de création de fichier avec le nom de socket local choisi utilisant mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
-"GETADDRINFO FAILURE ERROR MESSAGE"
+"echec de getaddrinfo sur le hostname fourni"
 
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
-"GETADDRINFO RETURN ERROR CODE TYPE"
+"code de retour de l'échec d'appel getaddrinfo"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"INDEX OUT OF BOUNDS ERROR CODE TYPE"
+"l'index invalide, ou son -1 est trop grand pour être représenté comme un int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
-"INVALID FACILITY ERROR CODE TYPE"
+"l'installation invalide"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"INVALID FACILITY ERROR MESSAGE"
+"les codes d'installations doivent être définis confirmément au RFC 5424, après la" \
+" multiplication par 8"
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
-"INVALID INDEX ERROR MESSAGE"
+"index " INDEXED_THING " invalide"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
-"INVALID SEVERITY ERROR CODE TYPE"
+"la sévérité invalide"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"INVALID SEVERITY ERROR MESSAGE"
+"les codes de sévérité doivent être définis conformément au RFC 5424: valeurs entre 0" \
+" et 7 inclus"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
-"MAX MESSAGE SIZE UDP ONLY ERROR MESSAGE"
+"taille maximale des messages valide uniquement pour les cibles réseaux UDP"
 
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"MESSAGE TOO BIG FOR DATAGRAM ERROR MESSAGE"
+"message trop grand pour être envoyé en un seul datagramme"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
-"MESSAGE SIZE ERROR CODE TYPE"
+"la taille du message qui a été tenté d'être envoyé"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
-"NETWORK TARGETS UNSUPPORTED"
+"les cibles réseaux ne sont pas supportés par cette build"
 
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
-"NULL ARG ERROR MESSAGE"
+ARG_NAME " a été NULL"
 
 #  define L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"OPEN UNSUPPORTED TARGET ERROR MESSAGE"
+"essai d'ouverture d'un type de cible non supporté"
 
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
-"PARAM NOT FOUND ERROR MESSAGE"
+"un paramètre avec les caractéristiques spécifiées est introuvable"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"SEND ENTRY TO UNSUPPORTED TARGET ERROR MESSAGE"
+"tentative d'envoi d'une entrée à un type de cible non supporté"
 
 #  define L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"SEND MESSAGE TO UNSUPPORTED TARGET ERROR MESSAGE"
+"tentative d'envoi d'un message à un type de cible non supporté"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"SEND SYS SOCKET FAILED ERROR MESSAGE"
+"envoi échoué avec un socket sys/socket.h"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"SENDTO UNIX SOCKET FAILED ERROR MESSAGE"
+"sendto échoué avec un socket unix"
 
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"SEND WIN SOCKET FAILED ERROR MESSAGE"
+"envoi échoué avec un socket winsock2"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
-"SOCKET FAILED ERROR MESSAGE"
+"échec d'ouverture d'un socket"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
-"TARGET ALWAYS OPEN ERROR MESSAGE"
+"ce type de cible est toujours ouvert"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
-"TRANSPORT PORT NETWORK ONLY ERROR MESSAGE"
+"ports de transport valides uniquement pour les cibles réseaux"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"UNIX SOCKET FAILED ERROR MESSAGE"
+"échec d'ouverture d'un socket unix avec la fonction socket"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
-"UNSUPPORTED TARGET IS OPEN ERROR MESSAGE"
+"vérification pour voir si un type de cible non supporté a été ouvert"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
-"WINDOWS SOCKET ERROR CODE TYPE"
+"Code d'erreur Windows Socket"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
-"WINSOCK2 SOCKET FAILED ERROR MESSAGE"
+"échec d'ouverture d'un socket winsock2"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
-"WSAGETLASTERROR ERROR CODE TYPE"
+"le résultat de WSAGetLastError après l'échec de l'appel"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_FR_FR_H */
