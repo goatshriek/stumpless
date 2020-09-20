@@ -115,6 +115,18 @@ matrix:
 #      env:
 #        - MATRIX_EVAL="CC=gcc && CXX=g++"
 #        - BUILD_ARGS="-DENABLE_CPP=ON"
+#    - name: "linux, es-es"
+#      os: linux
+#      addons:
+#        apt:
+#          packages:
+#            - language-pack-es
+#        sonarcloud:
+#          organization: "goatshriek-github"
+#      env:
+#        - MATRIX_EVAL="CC=gcc && CXX=g++"
+#        - LANG=es_ES.UTF-8
+#        - LC_ALL=es_ES.UTF-8
 #    - name: "linux, fr-fr"
 #      os: linux
 #      addons:
@@ -146,6 +158,12 @@ matrix:
 #      env:
 #        - MATRIX_EVAL="CC=clang && CXX=clang++"
 #        - BUILD_ARGS="-DENABLE_CPP=ON"
+#    - name: "os x, es-es"
+#      os: osx
+#      env:
+#        - MATRIX_EVAL="CC=clang && CXX=clang++"
+#        - LANG=es_ES.UTF-8
+#        - LC_ALL=es_ES.UTF-8
 #    - name: "os x, fr-fr"
 #      os: osx
 #      env:

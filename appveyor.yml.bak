@@ -24,11 +24,20 @@ environment:
     locale: "en-us"
   - arch: Win64
     cpp_enabled: OFF
+    locale: "es-es"
+  - arch: Win64
+    cpp_enabled: OFF
     locale: "fr-fr"
 
 matrix:
   fast_finish: true
   exclude:
+    - configuration: Debug
+      locale: "es-es"
+    - image: Visual Studio 2017
+      locale: "es-es"
+    - image: Visual Studio 2015
+      locale: "es-es"
     - configuration: Debug
       locale: "fr-fr"
     - image: Visual Studio 2017
