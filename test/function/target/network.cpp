@@ -31,11 +31,6 @@
 #include "test/helper/assert.hpp"
 #include "test/helper/memory_allocation.hpp"
 #include "test/helper/resolve.hpp"
-#include "test/helper/server.hpp"
-
-#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
-                                 " ability to listen on a local socket to"     \
-                                 " receive messages."
 
 using::testing::EndsWith;
 using::testing::Not;
