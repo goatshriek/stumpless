@@ -429,8 +429,6 @@ stumpless_new_network_target( const char *name,
                               enum stumpless_transport_protocol transport ) {
   struct stumpless_target *target;
 
-  clear_error(  );
-
   VALIDATE_ARG_NOT_NULL( name );
 
   target = new_target( STUMPLESS_NETWORK_TARGET,
@@ -446,6 +444,7 @@ stumpless_new_network_target( const char *name,
     goto fail_id;
   }
 
+  clear_error(  );
   return target;
 
 fail_id:
@@ -490,8 +489,6 @@ stumpless_open_network_target( const char *name,
                                int options,
                                int default_facility ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( destination );

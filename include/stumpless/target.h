@@ -447,7 +447,7 @@ stumpless_get_target_name( const struct stumpless_target *target );
  *
  * Targets that have been created using the \c stumpless_new_*_target family of
  * functions need to be opened once they have been configured with all of the
- * desired parameters.
+ * desired parameters, or if a previous change caused them to pause.
  *
  * If the provided target has not had all mandatory settings configured or some
  * other error is encountered, then the operation will fail and the target will
