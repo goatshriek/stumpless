@@ -115,7 +115,27 @@ const char *
 stumpless_get_destination( const struct stumpless_target *target );
 
 /**
- * Gets the transport port number of a network target.
+ * Gets the transport port number of a network target. The character buffer
+ * returned must be freed by the caller when it is no longer needed to avoid
+ * memory leaks.
+ *
+ * If the network target has been created but not had a destination set yet,
+ * the result will be a string holding the same string as in
+ * STUMPLESS_DEFAULT_TRANSPORT_PORT.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param target The target to get the port number from.
  *
