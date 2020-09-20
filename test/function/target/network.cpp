@@ -487,37 +487,6 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( NetworkTargetSetTransportPort, BadTcpPort ) {
-    struct stumpless_target *target;
-    struct stumpless_target *result;
-    const struct stumpless_error *error;
-    const char *default_port;
-    const char *bad_port = "337zrat";
-    socket_handle_t handle;
-
-    handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
-    if( handle != BAD_HANDLE ) {
-      target = stumpless_open_tcp4_target( "target-to-self",
-                                           "127.0.0.1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
-      EXPECT_TRUE( target != NULL );
-      error = stumpless_get_error(  );
-
-      default_port = stumpless_get_transport_port( target );
-      ASSERT_TRUE( default_port != NULL );
-      ASSERT_STRNE( default_port, bad_port );
-
-      result = stumpless_set_transport_port( target, bad_port );
-      EXPECT_TRUE( result == NULL );
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
-
-      stumpless_close_network_target( target );
-    }
-
-    close_server_socket( handle );
-  }
-
   TEST( NetworkTargetSetTransportPort, BadTargetType ) {
     const struct stumpless_error *error;
     struct stumpless_target *target;
