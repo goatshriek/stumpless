@@ -36,6 +36,7 @@ namespace {
     for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
       destination = stumpless_get_destination( target );
       port = stumpless_get_transport_port( target );
+      stumpless_get_udp_max_message_size( target );
 
       free( ( void * ) destination );
       free( ( void * ) port );
@@ -47,6 +48,7 @@ namespace {
     for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
       stumpless_set_destination( target, "localhost" );
       stumpless_set_transport_port( target, "514" );
+      stumpless_set_udp_max_message_size( target, 3200 );
     }
   }
 

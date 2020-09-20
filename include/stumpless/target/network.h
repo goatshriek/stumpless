@@ -149,6 +149,18 @@ stumpless_get_transport_port( const struct stumpless_target *target );
 /**
  * Gets the current maximum message size of a UDP network target.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param target The target to get the message size from.
  *
  * @return The current maximum message size of the supplied target if no error
@@ -512,6 +524,18 @@ stumpless_set_transport_port( struct stumpless_target *target,
  *
  * Without calling this function, UDP targets start with a maximum message size
  * set to \c STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param target The target to be modified.
  *

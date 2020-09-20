@@ -393,12 +393,14 @@ cleanup_and_return:
 size_t
 stumpless_get_udp_max_message_size( const struct stumpless_target *target ) {
   const struct network_target *net_target;
+  size_t result;
 
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     goto fail;
   }
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     goto incompatible;
   }
@@ -408,10 +410,14 @@ stumpless_get_udp_max_message_size( const struct stumpless_target *target ) {
     goto incompatible;
   }
 
+  result = net_target->max_msg_size;
+  unlock_target( target );
+
   clear_error(  );
-  return net_target->max_msg_size;
+  return result;
 
 incompatible:
+  unlock_target( target );
   raise_target_incompatible( L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE );
 fail:
   return 0;
@@ -665,10 +671,9 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
                                     size_t max_msg_size ) {
   struct network_target *net_target;
 
-  clear_error(  );
-
   VALIDATE_ARG_NOT_NULL( target );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     goto incompatible;
   }
@@ -680,10 +685,13 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
 
   net_target = target->id;
   net_target->max_msg_size = max_msg_size;
+  unlock_target( target );
 
+  clear_error(  );
   return target;
 
 incompatible:
+  unlock_target( target );
   raise_target_incompatible( L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE );
   return NULL;
 }
