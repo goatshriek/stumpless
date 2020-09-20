@@ -44,7 +44,10 @@ namespace {
 
   void
   write_network_target( struct stumpless_target *target ) {
-
+    for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
+      stumpless_set_destination( target, "localhost" );
+      stumpless_set_transport_port( target, "514" );
+    }
   }
 
   TEST( WriteConsistency, SimultaneousWrites ) {

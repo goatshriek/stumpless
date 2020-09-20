@@ -414,7 +414,28 @@ stumpless_open_udp6_target( const char *name,
  * If the target is already open when this function is called, then it will
  * attempt to re-open the target after the destination is changed. If the target
  * is in a paused state, then it will be left that way until an explicit call to
- * \c stumpless_open_target is made.
+ * stumpless_open_target is made.
+ *
+ * Note that if the target cannot be re-opened, this will not be treated as an
+ * error condition. That is, the returned value will still be the target, and
+ * the destination will reflect the new value. Versions prior to 2.0.0 treated
+ * this as an error condition and returned NULL despite the destination being
+ * updated successfully.
+ *
+ * **Thread Safety: MT-Safe race:destination**
+ * This function is thread safe, of course assuming that the destination string
+ * is not changed by any other threads during execution. A mutex is used to
+ * coordinate changes to the target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new destination and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param target The target to be modified.
  *
@@ -431,10 +452,36 @@ stumpless_set_destination( struct stumpless_target *target,
 /**
  * Sets the transport port number of a network target.
  *
+ * No validation is performed on the provided port number. The string can
+ * even contain non-numerical characters, and the target will be updated with
+ * the provided string. However, the target may not be able to successfully
+ * open if the port is invalid.
+ *
  * If the target is already open when this function is called, then it will
  * attempt to re-open the target after the port is changed. If the target is in
  * a paused state, then it will be left that way until an explicit call to
- * \c stumpless_open_target is made.
+ * stumpless_open_target is made.
+ *
+ * Note that if the target cannot be re-opened, this will not be treated as an
+ * error condition. That is, the returned value will still be the target, and
+ * the port will reflect the new value. Versions prior to 2.0.0 treated this
+ * as an error condition and returned NULL despite the port being updated
+ * successfully.
+ *
+ * **Thread Safety: MT-Safe race:port**
+ * This function is thread safe, of course assuming that the port string
+ * is not changed by any other threads during execution. A mutex is used to
+ * coordinate changes to the target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new destination and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param target The target to be modified.
  *

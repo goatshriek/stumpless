@@ -583,77 +583,80 @@ stumpless_set_destination( struct stumpless_target *target,
                            const char *destination ) {
   const char *destination_copy;
   struct network_target *net_target;
-  const struct network_target *result;
+  const char *old_destination;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( destination );
 
-  if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
-  }
-
   destination_copy = copy_cstring( destination );
   if( !destination_copy ) {
-    goto fail;
+    return NULL;
+  }
+
+  lock_target( target );
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
+    goto cleanup_and_fail;
   }
 
   net_target = target->id;
-
-  free_mem( net_target->destination );
+  old_destination = net_target->destination;
   net_target->destination = destination_copy;
+  unlock_target( target );
+
+  free_mem( old_destination );
 
   if( network_target_is_open( target ) ) {
-    result = reopen_network_target( net_target );
-    if( !result ) {
-      goto fail;
-    }
+    reopen_network_target( net_target );
   }
 
   clear_error(  );
   return target;
 
-fail:
+cleanup_and_fail:
+  unlock_target( target );
+  free_mem( destination_copy );
   return NULL;
 }
 
 struct stumpless_target *
 stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
-  struct network_target *net_target;
   const char *port_copy;
-  const struct network_target *result;
-
-  clear_error(  );
+  struct network_target *net_target;
+  const char *old_port;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( port );
 
-  if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
-  }
-
   port_copy = copy_cstring( port );
   if( !port_copy ) {
-    goto fail;
+    return NULL;
+  }
+
+  lock_target( target );
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
+    goto cleanup_and_fail;
   }
 
   net_target = target->id;
-
-  free_mem( net_target->port );
+  old_port = net_target->port;
   net_target->port = port_copy;
+  unlock_target( target );
+
+  free_mem( old_port );
 
   if( network_target_is_open( target ) ) {
-    result = reopen_network_target( net_target );
-    if( !result ) {
-      goto fail;
-    }
+    reopen_network_target( net_target );
   }
 
+  clear_error(  );
   return target;
 
-fail:
+cleanup_and_fail:
+  unlock_target( target );
+  free_mem( port_copy );
   return NULL;
 }
 

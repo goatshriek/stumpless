@@ -55,12 +55,12 @@
  - [x] stumpless_get_default_facility
  - [x] stumpless_get_destination
  - [x] stumpless_get_option
- - [ ] stumpless_get_transport_port
+ - [x] stumpless_get_transport_port
  - [ ] stumpless_get_udp_max_message_size
  - [x] stumpless_set_default_facility
- - [ ] stumpless_set_destination
+ - [x] stumpless_set_destination
  - [x] stumpless_set_option
- - [ ] stumpless_set_transport_port
+ - [x] stumpless_set_transport_port
  - [ ] stumpless_set_udp_max_message_size
  - [ ] stumpless_target_is_open
  - [x] stumpless_unset_option
