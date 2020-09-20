@@ -134,7 +134,10 @@ else()
 endif()
 
 # setting the chosen locale
-if(LOCALE MATCHES "^fr[_-]")
+if(LOCALE MATCHES "^es[_-]")
+  set(STUMPLESS_LANGUAGE "es-ES")
+  set(USE_LOCALE_ES_ES TRUE)
+elseif(LOCALE MATCHES "^fr[_-]")
   set(STUMPLESS_LANGUAGE "fr-FR")
   set(USE_LOCALE_FR_FR TRUE)
 else()
