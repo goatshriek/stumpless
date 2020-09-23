@@ -605,14 +605,14 @@ stumpless_set_destination( struct stumpless_target *target,
   net_target = target->id;
   old_destination = net_target->destination;
   net_target->destination = destination_copy;
-  unlock_target( target );
-
-  free_mem( old_destination );
 
   if( network_target_is_open( target ) ) {
     reopen_network_target( net_target );
   }
 
+  unlock_target( target );
+
+  free_mem( old_destination );
   clear_error(  );
   return target;
 
@@ -646,14 +646,14 @@ stumpless_set_transport_port( struct stumpless_target *target,
   net_target = target->id;
   old_port = net_target->port;
   net_target->port = port_copy;
-  unlock_target( target );
-
-  free_mem( old_port );
 
   if( network_target_is_open( target ) ) {
     reopen_network_target( net_target );
   }
 
+  unlock_target( target );
+
+  free_mem( old_port );
   clear_error(  );
   return target;
 

@@ -381,16 +381,22 @@ cleanup_and_return:
 
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target ) {
+  struct stumpless_target *result;
 
   VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    unlock_target( target );
     raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
     return NULL;
-
   }
-  clear_error(  );
-  return config_open_network_target( target );
+
+  result = config_open_network_target( target );
+  unlock_target( target );
+
+  return result;
 }
 
 void

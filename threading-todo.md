@@ -47,7 +47,7 @@
  - [ ] stumpless_new_udp4_target
  - [ ] stumpless_new_udp6_target
  - [ ] stumpless_open_network_target
- - [ ] stumpless_open_target
+ - [x] stumpless_open_target
  - [ ] stumpless_open_tcp4_target
  - [ ] stumpless_open_tcp6_target
  - [ ] stumpless_open_udp4_target

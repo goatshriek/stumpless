@@ -453,6 +453,18 @@ stumpless_get_target_name( const struct stumpless_target *target );
  * other error is encountered, then the operation will fail and the target will
  * remain in a paused state.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate accesses and
+ * updates to the current target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param target The target to open.
  *
  * @return The opened target if it was opened successfully (which will be
@@ -478,7 +490,7 @@ stumpless_open_target( struct stumpless_target *target );
  * This function is not safe to call from signal handlers due to the use of a
  * non-reentrant lock to coordinate access.
  *
- * **Async Cancel Safety: AC-Unsafe lock heap**
+ * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
