@@ -497,27 +497,18 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 
 const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target ) {
-  int is_open;
-
-  clear_error(  );
+  int is_open = 1;
 
   VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
 
+  lock_target( target );
   if( target->type == STUMPLESS_NETWORK_TARGET ) {
     is_open = config_network_target_is_open( target );
-
-  } else {
-    is_open = 1;
-
   }
+  unlock_target( target );
 
-  if( is_open ) {
-    return target;
-
-  } else {
-    return NULL;
-
-  }
+  return is_open ? target : NULL;
 }
 
 struct stumpless_target *

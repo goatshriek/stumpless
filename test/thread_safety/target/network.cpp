@@ -37,6 +37,7 @@ namespace {
       destination = stumpless_get_destination( target );
       port = stumpless_get_transport_port( target );
       stumpless_get_udp_max_message_size( target );
+      stumpless_target_is_open( target );
 
       free( ( void * ) destination );
       free( ( void * ) port );

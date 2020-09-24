@@ -62,7 +62,7 @@
  - [x] stumpless_set_option
  - [x] stumpless_set_transport_port
  - [x] stumpless_set_udp_max_message_size
- - [ ] stumpless_target_is_open
+ - [x] stumpless_target_is_open
  - [x] stumpless_unset_option
  - [ ] stumpless_add_message
  - [ ] stumpless_get_wel_insertion_string

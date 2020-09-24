@@ -622,6 +622,18 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
  * change has been made that could not be validated, such as changing the port
  * on a TCP network target to one that does not respond on the server.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being accessed.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param target The target to check.
  *
  * @return The target if it is currently open, and NULL if not.
