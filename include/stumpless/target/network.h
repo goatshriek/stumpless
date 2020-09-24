@@ -75,6 +75,20 @@ enum stumpless_transport_protocol {
  * destruction. It also destroys all memory allocated for the target, including
  * the target struct itself.
  *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
  * @param target The network target to close.
  */
 void
@@ -179,7 +193,19 @@ stumpless_get_udp_max_message_size( const struct stumpless_target *target );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * \c stumpless_open_target function.
+ * stumpless_open_target function.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -205,7 +231,19 @@ stumpless_new_network_target( const char *name,
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * \c stumpless_open_target function.
+ * stumpless_open_target function.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -225,7 +263,19 @@ stumpless_new_tcp4_target( const char *name );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * \c stumpless_open_target function.
+ * stumpless_open_target function.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -245,7 +295,19 @@ stumpless_new_tcp6_target( const char *name );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * \c stumpless_open_target function.
+ * stumpless_open_target function.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -265,7 +327,19 @@ stumpless_new_udp4_target( const char *name );
  * session, instead of restarting the session on each change.
  *
  * The target will stay in a paused state until it is opened using the
- * \c stumpless_open_target function.
+ * stumpless_open_target function.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -283,7 +357,19 @@ stumpless_new_udp6_target( const char *name );
  * server. This function allows the type of network target to be specified by
  * parameters, but if you know that you want a specific type then it is easier
  * to use the simplified functions that specify the type by name, such as the
- * \c stumpless_open_udp4_target function.
+ * stumpless_open_udp4_target function.
+ *
+ * **Thread Safety: MT-Safe race:name race:destination**
+ * This function is thread safe, of course assuming that name and destination
+ * are not modified by any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
@@ -319,6 +405,18 @@ stumpless_open_network_target( const char *name,
  * this includes the use of octet counting for transmission of messages, instead
  * of a delimiter such as a newline character.
  *
+ * **Thread Safety: MT-Safe race:name race:destination**
+ * This function is thread safe, of course assuming that name and destination
+ * is not modified by any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
@@ -347,6 +445,18 @@ stumpless_open_tcp4_target( const char *name,
  * this includes the use of octet counting for transmission of messages, instead
  * of a delimiter such as a newline character.
  *
+ * **Thread Safety: MT-Safe race:name race:destination**
+ * This function is thread safe, of course assuming that name and destination
+ * is not modified by any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
@@ -373,6 +483,18 @@ stumpless_open_tcp6_target( const char *name,
  *
  * A UDP4 target will use Syslog over UDP, as defined in RFC 5426.
  *
+ * **Thread Safety: MT-Safe race:name race:destination**
+ * This function is thread safe, of course assuming that name and destination
+ * is not modified by any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
@@ -398,6 +520,18 @@ stumpless_open_udp4_target( const char *name,
  * Opens a network target for remote logging over IPv6 and UDP.
  *
  * A UDP6 target will use Syslog over UDP, as defined in RFC 5426.
+ *
+ * **Thread Safety: MT-Safe race:name race:destination**
+ * This function is thread safe, of course assuming that name and destination
+ * is not modified by any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.

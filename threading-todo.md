@@ -40,18 +40,18 @@
  - [x] stumpless_get_error_stream
  - [x] stumpless_perror
  - [x] stumpless_set_error_stream
- - [ ] stumpless_close_network_target
- - [ ] stumpless_new_network_target
- - [ ] stumpless_new_tcp4_target
- - [ ] stumpless_new_tcp6_target
- - [ ] stumpless_new_udp4_target
- - [ ] stumpless_new_udp6_target
- - [ ] stumpless_open_network_target
+ - [x] stumpless_close_network_target
+ - [x] stumpless_new_network_target
+ - [x] stumpless_new_tcp4_target
+ - [x] stumpless_new_tcp6_target
+ - [x] stumpless_new_udp4_target
+ - [x] stumpless_new_udp6_target
+ - [x] stumpless_open_network_target
  - [x] stumpless_open_target
- - [ ] stumpless_open_tcp4_target
- - [ ] stumpless_open_tcp6_target
- - [ ] stumpless_open_udp4_target
- - [ ] stumpless_open_udp6_target
+ - [x] stumpless_open_tcp4_target
+ - [x] stumpless_open_tcp6_target
+ - [x] stumpless_open_udp4_target
+ - [x] stumpless_open_udp6_target
  - [x] stumpless_get_default_facility
  - [x] stumpless_get_destination
  - [x] stumpless_get_option
