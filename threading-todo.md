@@ -32,10 +32,10 @@
  - [ ] stumpless_set_wel_insertion_param
  - [ ] stumpless_set_wel_insertion_string
  - [ ] stumpless_set_wel_type
- - [ ] stumpless_close_stream_target
- - [ ] stumpless_open_stderr_target
- - [ ] stumpless_open_stdout_target
- - [ ] stumpless_open_stream_target
+ - [x] stumpless_close_stream_target
+ - [x] stumpless_open_stderr_target
+ - [x] stumpless_open_stdout_target
+ - [x] stumpless_open_stream_target
  - [x] stumpless_free_all
  - [x] stumpless_get_error_stream
  - [x] stumpless_perror
