@@ -17,11 +17,9 @@
  */
 
 #include <cstddef>
-#include <fstream>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <thread>
-#include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/usage.hpp"
 
