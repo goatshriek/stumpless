@@ -434,6 +434,12 @@ else()
     SOURCES test/function/config/socket_supported.cpp
   )
 
+  add_thread_safety_test(socket
+    SOURCES
+      test/thread_safety/target/socket.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
   add_example(socket
     ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
   )
