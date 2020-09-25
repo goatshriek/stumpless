@@ -40,6 +40,20 @@ extern "C" {
  * must be done after the buffer target is closed to avoid invalid memory
  * accesses.
  *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
  * @param target The buffer target to close.
  */
 void
@@ -57,6 +71,18 @@ stumpless_close_buffer_target( const struct stumpless_target *target );
  *
  * Messages are overwritten as new messages come in. If the user of the buffer
  * target is not reading these, they will be lost.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param name The name of the target to open. This is only used for
  * identification of the target.
