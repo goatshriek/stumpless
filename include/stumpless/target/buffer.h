@@ -107,6 +107,35 @@ stumpless_open_buffer_target( const char *name,
                               int options,
                               int default_facility );
 
+/**
+ * Reads the next message from the provided buffer target into the given buffer.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe. A mutex is used to coordinate reads and writes
+ * of the message buffer.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * a non-reentrant lock to coordinate accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as a lock may be left locked when a thread exits prematurely.
+ *
+ * @param target The buffer target to read from.
+ *
+ * @param buffer The buffer to read the messages in to.
+ *
+ * @param max_length The maximum number of bytes to read into the provided buffer.
+ *
+ * @return The number of bytes read from the buffer. In the event of an error,
+ * 0 is returned and an error code is set appropriately.
+ */
+size_t
+stumpless_read_buffer_target( struct stumpless_target *target,
+                              char *buffer,
+                              size_t max_length );
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
