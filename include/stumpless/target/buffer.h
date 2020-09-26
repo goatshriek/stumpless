@@ -17,10 +17,15 @@
  */
 
 /** @file
- * Buffer targets provide an extremely simple capability to write logs into a
- * plain character buffer. They must be completely synchronized with the code
- * reading from the buffer, leading to usage limited to extremely simple
- * applications and testing or troubleshooting.
+ * Buffer targets provide the simple capability to write logs into a character
+ * buffer.
+ *
+ * The interface for buffer targets is based on the Linux kernel log buffer
+ * interface. Interacting with the buffer should only be done using the provided
+ * functions, or corruption or loss of log messages may occur.
+ *
+ * The contents of the buffer itself may be modified at any time, and should not
+ * be read directly with any expectation of consistency or coherence.
  */
 
 #ifndef __STUMPLESS_TARGET_BUFFER_H
@@ -108,9 +113,23 @@ stumpless_open_buffer_target( const char *name,
                               int default_facility );
 
 /**
- * Reads the next message from the provided buffer target into the given buffer.
+ * Reads the next message from the provided buffer target and writes it into the
+ * given buffer.
  *
- * **Thread Safety: MT-Safe race:name**
+ * Messages are delimited using newline characters, which will not themselves be
+ * written into the provided buffer. Therefore, messages with newlines in them
+ * may produce surprising results as they will need multiple calls to this
+ * function to be retrieved completely and will not contain the newline
+ * characters they had when they were logged. This behavior is scheduled to be
+ * changed to allow single messages to contain newlines; see the project roadmap
+ * for details.
+ *
+ * A terminating NULL character will always be written at the end of the output.
+ *
+ * If the length of the provided buffer is zero, this will be considered an
+ * empty argument.
+ *
+ * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate reads and writes
  * of the message buffer.
  *
@@ -126,10 +145,11 @@ stumpless_open_buffer_target( const char *name,
  *
  * @param buffer The buffer to read the messages in to.
  *
- * @param max_length The maximum number of bytes to read into the provided buffer.
+ * @param max_length The maximum number of bytes to read into the provided
+ * buffer.
  *
- * @return The number of bytes read from the buffer. In the event of an error,
- * 0 is returned and an error code is set appropriately.
+ * @return The number of bytes written into the buffer. In the event of an
+ * error, 0 is returned and an error code is set appropriately.
  */
 size_t
 stumpless_read_buffer_target( struct stumpless_target *target,
