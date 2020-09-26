@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <pthread.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/target.h>
@@ -49,8 +50,6 @@ stumpless_open_buffer_target( const char *name,
                               int default_facility ) {
   struct stumpless_target *target;
 
-  clear_error(  );
-
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( buffer );
 
@@ -79,11 +78,53 @@ fail:
   return NULL;
 }
 
+size_t
+stumpless_read_buffer( struct stumpless_target *target,
+                       char *buffer,
+                       size_t max_length ) {
+  struct buffer_target *buffer_target;
+  size_t read_position;
+  size_t out_position = 0;
+
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return 0;
+  }
+
+  if( !buffer ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "buffer" ) );
+    return 0;
+  }
+
+  if( max_length == 0 ) {
+    return 0;
+  }
+
+  buffer_target = ( struct buffer_target * ) target->id;
+
+  pthread_mutex_lock( &buffer_target->buffer_mutex );
+
+  read_position = buffer_target->read_position;
+  while( read_position != buffer_target->write_position &&
+         out_position < max_length ) {
+    buffer[out_position] = buffer_target->buffer[read_position];
+
+    read_position = ( read_position + 1 ) % buffer_target->size;
+    out_position++;
+  }
+
+  buffer_target->read_position = read_position;
+  pthread_mutex_unlock( &buffer_target->buffer_mutex );
+
+  buffer[out_position] = '\0';
+  return out_position + 1;
+}
 
 /* private definitions */
 
 void
 destroy_buffer_target( const struct buffer_target *target ) {
+  pthread_mutex_destroy( ( pthread_mutex_t * ) &target->buffer_mutex );
   free_mem( target );
 }
 
@@ -96,9 +137,11 @@ new_buffer_target( char *buffer, size_t size ) {
     return NULL;
   }
 
+  pthread_mutex_init( &target->buffer_mutex, NULL );
   target->buffer = buffer;
   target->size = size;
-  target->position = 0;
+  target->read_position = 0;
+  target->write_position = 0;
 
   return target;
 }
@@ -107,7 +150,9 @@ int
 sendto_buffer_target( struct buffer_target *target,
                       const char *msg,
                       size_t msg_length ) {
+  size_t write_start;
   size_t buffer_remaining;
+  size_t free_space_left;
 
   // leave off the newline
   msg_length--;
@@ -119,20 +164,39 @@ sendto_buffer_target( struct buffer_target *target,
     return -1;
   }
 
-  buffer_remaining = target->size - target->position;
+  pthread_mutex_lock( &target->buffer_mutex );
+  write_start = target->write_position;
+  buffer_remaining = target->size - write_start;
 
   if( buffer_remaining > msg_length ) {
-    memcpy( target->buffer + target->position, msg, msg_length );
-    target->position += msg_length + 1;
+    // the entire message will fit into the buffer without wrapping around
+    memcpy( target->buffer + write_start, msg, msg_length );
+    target->write_position += msg_length + 1;
+ 
   } else {
-    memcpy( target->buffer + target->position, msg, buffer_remaining );
+    // we need to split the message and wrap it around to the beginning
+    memcpy( target->buffer + write_start, msg, buffer_remaining );
     memcpy( target->buffer,
             msg + buffer_remaining,
             msg_length - buffer_remaining );
-    target->position = msg_length - buffer_remaining + 1;
+    target->write_position = msg_length - buffer_remaining + 1;
   }
 
-  target->buffer[target->position - 1] = '\0';
+  target->buffer[target->write_position - 1] = '\0';
+
+  // checking to see if we have overwritten older messages and need to adjust
+  // the read position to reflect this
+  if( target->read_position > write_start ) {
+    free_space_left = target->read_position - write_start;
+  } else {
+    free_space_left = ( target->size - write_start ) + ( target->read_position );
+  }
+
+  if( free_space_left <= msg_length ) {
+    target->read_position = ( target->write_position + 1 ) % target->size;
+  }
+
+  pthread_mutex_unlock( &target->buffer_mutex );
 
   return cap_size_t_to_int( msg_length + 1 );
 }

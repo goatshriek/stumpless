@@ -19,10 +19,8 @@
 #include <cstddef>
 #include <cstdlib>
 #include <regex>
-#include <string.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include "private/target/buffer.h"
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/memory_allocation.hpp"
@@ -484,8 +482,8 @@ namespace {
   TEST( WithPid, Pid) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct buffer_target* internal_buffer;
     char buffer[300];
+    char message_buffer[300];
     int result;
     std::cmatch matches;
     std::regex pid_regex(RFC_5424_REGEX_STRING);
@@ -497,21 +495,17 @@ namespace {
                                            STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
 
-    internal_buffer = (struct buffer_target*) target->id;
-
     result = stump( "test message" );
     EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
 
-    if( !std::regex_match( buffer, matches, pid_regex ) ) {
+    stumpless_read_buffer( target, message_buffer, 300 );
+    std::cout << message_buffer << std::endl;
+    if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
       FAIL(  ) << "produced invalid procid";
     } else {
       EXPECT_EQ( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
     }
-
-    // reset buffer
-    memset(buffer, 0, sizeof(buffer));
-    internal_buffer->position = 0;
 
     target_result = stumpless_set_option( target, STUMPLESS_OPTION_PID );
     EXPECT_EQ( target_result, target );
@@ -520,16 +514,13 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
 
-    if( !std::regex_match( buffer, matches, pid_regex ) ) {
+    stumpless_read_buffer( target, message_buffer, 300 );
+    std::cout << message_buffer << std::endl;
+    if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
       FAIL(  ) << "produced invalid procid";
     } else {
       EXPECT_NE( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
-      std::stoi( matches[RFC_5424_PROCID_MATCH_INDEX] );
     }
-
-    // reset buffer
-    memset(buffer, 0, sizeof(buffer));
-    internal_buffer->position = 0;
 
     target_result = stumpless_unset_option( target, STUMPLESS_OPTION_PID );
     EXPECT_EQ( target_result, target );
@@ -538,7 +529,9 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
 
-    if( !std::regex_match( buffer, matches, pid_regex ) ) {
+    stumpless_read_buffer( target, message_buffer, 300 );
+    std::cout << message_buffer << std::endl;
+    if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
       FAIL(  ) << "produced invalid procid";
     } else {
       EXPECT_EQ( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );

@@ -58,11 +58,6 @@ or want to make a suggestion, please submit an issue on the project's
    associated library bindings, replacing SWIG and removing the dependency. In
    the future, other language bindings will be added using Wrapture as they are
    added to the tool.
- * [CHANGE] **Buffer target messages may contain newlines in a single message.**
-   Currently messages read back out from a buffer target will have each newline
-   interpreted as the end of a message, potentially breaking a single message
-   into multiples. Using a different scheme in the implementation would allow
-   messages to contain any characters without being split apart.
 
 ## Unallocated to a release
  * [ADD] **Ruby language bindings**

@@ -116,18 +116,12 @@ stumpless_open_buffer_target( const char *name,
  * Reads the next message from the provided buffer target and writes it into the
  * given buffer.
  *
- * Messages are delimited using newline characters, which will not themselves be
- * written into the provided buffer. Therefore, messages with newlines in them
- * may produce surprising results as they will need multiple calls to this
- * function to be retrieved completely and will not contain the newline
- * characters they had when they were logged. This behavior is scheduled to be
- * changed to allow single messages to contain newlines; see the project roadmap
- * for details.
+ * If the buffer has not been read from before messages have wrapped around,
+ * then you may only get the end of a message. To avoid this situation, you will
+ * need to read the buffer enough to stay ahead of the written messages. Making
+ * sure that the buffer is sufficiently sized may help with this.
  *
  * A terminating NULL character will always be written at the end of the output.
- *
- * If the length of the provided buffer is zero, this will be considered an
- * empty argument.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate reads and writes
@@ -143,18 +137,19 @@ stumpless_open_buffer_target( const char *name,
  *
  * @param target The buffer target to read from.
  *
- * @param buffer The buffer to read the messages in to.
+ * @param buffer The buffer to read the message in to.
  *
  * @param max_length The maximum number of bytes to read into the provided
  * buffer.
  *
- * @return The number of bytes written into the buffer. In the event of an
- * error, 0 is returned and an error code is set appropriately.
+ * @return The number of bytes written into buffer, including the terminating
+ * NULL character. In the event of an error, 0 is returned and an error code
+ * is set appropriately.
  */
 size_t
-stumpless_read_buffer_target( struct stumpless_target *target,
-                              char *buffer,
-                              size_t max_length );
+stumpless_read_buffer( struct stumpless_target *target,
+                       char *buffer,
+                       size_t max_length );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

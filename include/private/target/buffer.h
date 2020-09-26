@@ -19,12 +19,32 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_BUFFER_H
 #  define __STUMPLESS_PRIVATE_TARGET_BUFFER_H
 
+#  include <pthread.h>
 #  include <stddef.h>
 
+/**
+ * Internal representation of a buffer target.
+ *
+ * Buffer targets use a ring buffer approach, wrapping around when the end
+ * of the buffer is reached, and writing over older messages.
+ */
 struct buffer_target {
+/** The buffer logged messages are written into. */
   char *buffer;
+/** The size of buffer. */
   size_t size;
-  size_t position;
+/** The index to start reading from. */
+  size_t read_position;
+/** The index to start writing to. */
+  size_t write_position;
+/**
+ * Protects updates to buffer and the position counters. This mutex must be
+ * locked by a thread before it can read from or write to the buffer.
+ *
+ * Size is _not_ protected by this mutex, as it must not change over the life
+ * of the buffer target.
+ */
+  pthread_mutex_t buffer_mutex;
 };
 
 void
