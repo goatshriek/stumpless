@@ -13,6 +13,7 @@ option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 
+option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
@@ -105,6 +106,7 @@ include(tools/cmake/test.cmake)
 
 
 # building configuration
+check_include_files(pthread.h HAVE_PTHREAD_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(unistd.h HAVE_UNISTD_H)
@@ -540,6 +542,14 @@ else()
     ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
   )
 endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
+
+# thread safety support
+if(ENABLE_THREAD_SAFETY AND NOT HAVE_PTHREAD_H)
+  message("thread safety is not supported without pthread.h")
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
+endif()
 
 
 # shared library definition

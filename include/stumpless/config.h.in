@@ -51,6 +51,9 @@
 /** Defined if this build can directly replace syslog.h usage. */
 #cmakedefine STUMPLESS_SYSLOG_H_COMPATIBLE 1
 
+/** Defined if thread-safe functionality is supported. */
+#cmakedefine STUMPLESS_THREAD_SAFETY_SUPPORTED 1
+
 /** Defined if Windows Event Log targets are supported by this build. */
 #cmakedefine STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED 1
 
