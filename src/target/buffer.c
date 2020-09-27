@@ -31,12 +31,12 @@
 
 void
 stumpless_close_buffer_target( const struct stumpless_target *target ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
+
+  clear_error(  );
 
   destroy_buffer_target( target->id );
   destroy_target( target );
@@ -172,7 +172,7 @@ sendto_buffer_target( struct buffer_target *target,
     // the entire message will fit into the buffer without wrapping around
     memcpy( target->buffer + write_start, msg, msg_length );
     target->write_position += msg_length + 1;
- 
+
   } else {
     // we need to split the message and wrap it around to the beginning
     memcpy( target->buffer + write_start, msg, buffer_remaining );
