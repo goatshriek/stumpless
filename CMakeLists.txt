@@ -807,6 +807,12 @@ add_custom_target(check
 
 
 # thread safety tests
+add_thread_safety_test(buffer
+  SOURCES
+    test/thread_safety/target/buffer.cpp
+    $<TARGET_OBJECTS:test_helper_usage>
+)
+
 add_thread_safety_test(element
   SOURCES
     test/thread_safety/element.cpp
