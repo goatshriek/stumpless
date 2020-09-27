@@ -3,7 +3,7 @@
  - [x] stumpless_add_element
  - [ ] stumpless_add_entry
  - [x] stumpless_add_param
- - [ ] stumpless_close_buffer_target
+ - [x] stumpless_close_buffer_target
  - [x] stumpless_destroy_element
  - [x] stumpless_destroy_entry
  - [x] stumpless_destroy_param
@@ -13,7 +13,7 @@
  - [x] stumpless_new_element
  - [x] stumpless_new_entry
  - [x] stumpless_new_param
- - [ ] stumpless_open_buffer_target
+ - [x] stumpless_open_buffer_target
  - [x] stumpless_set_entry_app_name
  - [x] stumpless_set_free
  - [x] stumpless_set_malloc
