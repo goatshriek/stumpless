@@ -198,6 +198,10 @@ if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
 endif(HAVE_GMTIME_R)
 
+if(HAVE_PTHREAD_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_pthread.c)
+endif()
+
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
