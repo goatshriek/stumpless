@@ -145,7 +145,7 @@ matrix:
         apt:
           packages:
             -language-pack-de
-        sonarloud:
+        sonarcloud:
           organization: "goatshriek-github"
       env:
         - MATRIX_EVAL="CC=gcc && CXX=g++"
