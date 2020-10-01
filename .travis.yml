@@ -139,6 +139,18 @@ matrix:
         - MATRIX_EVAL="CC=gcc && CXX=g++"
         - LANG=fr_FR.UTF-8
         - LC_ALL=fr_FR.UTF-8
+    - name: "linux, de-de"
+      os: linux
+      addons:
+        apt:
+          packages:
+            - language-pack-de
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc && CXX=g++"
+        - LANG=de_DE.UTF-8
+        - LC_ALLE=de_DE.UTF-8
     - name: "os x, clang"
       os: osx
       env:
@@ -170,6 +182,12 @@ matrix:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - LANG=fr_FR.UTF-8
         - LC_ALL=fr_FR.UTF-8
+    - name: "os x, de-de"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - LANG=de_DE.UTF-8
+        - LC_ALL=de_DE.UTF-8
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
