@@ -28,6 +28,9 @@ environment:
   - arch: Win64
     cpp_enabled: OFF
     locale: "fr-fr"
+  - arch: Win64
+    cpp_enabled: OFF
+    locale: "de-de"
 
 matrix:
   fast_finish: true
@@ -44,6 +47,12 @@ matrix:
       locale: "fr-fr"
     - image: Visual Studio 2015
       locale: "fr-fr"
+    - configuration: Debug
+      locale: "de-de"
+    - image: Visual Studio 2017
+      locale: "de-de"
+    - image: Visual Studio 2015
+      locale: "de-de"
 
 init:
 - set arch=
