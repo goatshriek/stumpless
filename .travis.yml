@@ -144,7 +144,7 @@ matrix:
       addons:
         apt:
           packages:
-            -language-pack-de
+            - language-pack-de
         sonarcloud:
           organization: "goatshriek-github"
       env:
