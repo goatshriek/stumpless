@@ -27,9 +27,9 @@
 #ifndef __STUMPLESS_TARGET_H
 #  define __STUMPLESS_TARGET_H
 
-#  include <pthread.h>
 #  include <stdarg.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
@@ -103,8 +103,13 @@ struct stumpless_target {
  * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
  */
   int mask;
-/** A mutex used to coordinate multi-threaded access to this target. */
-  pthread_mutex_t target_mutex;
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/**
+ * A pointer to the mutex used to coordinate multi-threaded access to this
+ * target.
+ */
+  void *target_mutex;
+#  endif
 };
 
 /**

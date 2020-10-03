@@ -29,6 +29,7 @@
 #include <stumpless/target/stream.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -617,16 +618,16 @@ destroy_target( const struct stumpless_target *target ) {
     current_target = NULL;
   }
 
-  pthread_mutex_destroy( ( pthread_mutex_t * ) &target->target_mutex );
+  config_destroy_mutex( target->target_mutex );
   free_mem( target->default_app_name );
   free_mem( target->default_msgid );
   free_mem( target->name );
   free_mem( target );
 }
 
-int
+void
 lock_target( const struct stumpless_target *target ) {
-  return pthread_mutex_lock( ( pthread_mutex_t * ) &target->target_mutex );
+  config_lock_mutex( target->target_mutex );
 }
 
 struct stumpless_target *
@@ -637,7 +638,7 @@ new_target( enum stumpless_target_type type,
   struct stumpless_target *target;
   int default_prival;
 
-  target = alloc_mem( sizeof( *target ) );
+  target = alloc_mem( sizeof( *target ) + sizeof( config_mutex_t ) );
   if( !target ) {
     goto fail;
   }
@@ -647,7 +648,9 @@ new_target( enum stumpless_target_type type,
     goto fail_name;
   }
 
-  pthread_mutex_init( &target->target_mutex, NULL );
+  target->target_mutex = ( ( char * ) target ) + sizeof( *target );
+  config_init_mutex( target->target_mutex );
+
   target->type = type;
   target->options = options;
   default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
@@ -711,9 +714,9 @@ target_free_thread( void ) {
   cached_entry = NULL;
 }
 
-int
+void
 unlock_target( const struct stumpless_target *target ) {
-  return pthread_mutex_unlock( ( pthread_mutex_t * ) &target->target_mutex );
+  config_unlock_mutex( target->target_mutex );
 }
 
 int

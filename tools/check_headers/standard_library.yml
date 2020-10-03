@@ -86,7 +86,6 @@
 "memcpy": "string.h"
 "memset": "string.h"
 "mkstemp": "stdlib.h"
-"mutex": "mutex"
 "NULL":
   - "cstddef"
   - "stddef.h"

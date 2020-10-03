@@ -19,10 +19,18 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_PTHREAD_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_PTHREAD_H
 
-void
-pthread_lock_mutex( lock_t *lock );
+#  include "private/config/wrapper/thread_safety.h"
 
 void
-pthread_unlock_mutex( lock_t *lock );
+pthread_destroy_mutex( const config_mutex_t *mutex );
+
+void
+pthread_init_mutex( config_mutex_t *mutex );
+
+void
+pthread_lock_mutex( const config_mutex_t *mutex );
+
+void
+pthread_unlock_mutex( const config_mutex_t *mutex );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_PTHREAD_H */

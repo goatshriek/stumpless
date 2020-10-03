@@ -355,6 +355,7 @@
 "stumpless_target_is_open": "stumpless/target.h"
 "STUMPLESS_TARGET_UNSUPPORTED": "stumpless/error.h"
 "STUMPLESS_TCP_TRANSPORT_PROTOCOL": "stumpless/target/network.h"
+"STUMPLESS_THREAD_SAFETY_SUPPORTED": "stumpless/config.h"
 "stumpless_transport_protocol": "stumpless/target/network.h"
 "STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED": "stumpless/error.h"
 "STUMPLESS_UDP_TRANSPORT_PROTOCOL": "stumpless/target/network.h"
