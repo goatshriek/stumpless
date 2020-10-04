@@ -578,7 +578,7 @@ if(MINGW)
   set_target_properties(stumpless PROPERTIES PREFIX "")
 endif()
 
-if(HAVE_STDATOMIC_H)
+if(HAVE_STDATOMIC_H AND NOT APPLE)
   target_link_libraries(stumpless PRIVATE atomic)
 endif()
 
