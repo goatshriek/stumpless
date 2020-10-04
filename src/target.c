@@ -45,8 +45,7 @@
 #include "private/validate.h"
 
 /* global static variables */
-static struct stumpless_target *current_target = NULL;
-static pthread_mutex_t current_target_mutex = PTHREAD_MUTEX_INITIALIZER;
+static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 
 static struct stumpless_target *default_target = NULL;
 static pthread_mutex_t default_target_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -230,23 +229,13 @@ stumpless_get_current_target( void ) {
 
   clear_error(  );
 
-  pthread_mutex_lock( &current_target_mutex );
-  result = current_target;
-  pthread_mutex_unlock( &current_target_mutex );
-
+  result = config_read_ptr( &current_target );
   if( result ) {
     return result;
   }
 
   result = stumpless_get_default_target(  );
-
-  pthread_mutex_lock( &current_target_mutex );
-  if( !current_target ) {
-    current_target = result;
-  } else {
-    result = current_target;
-  }
-  pthread_mutex_unlock( &current_target_mutex );
+  config_compare_exchange_ptr( &current_target, NULL, result );
 
   return result;
 }
@@ -403,10 +392,7 @@ stumpless_open_target( struct stumpless_target *target ) {
 void
 stumpless_set_current_target( struct stumpless_target *target ) {
   clear_error(  );
-
-  pthread_mutex_lock( &current_target_mutex );
-  current_target = target;
-  pthread_mutex_unlock( &current_target_mutex );
+  config_write_ptr( &current_target, target );
 }
 
 struct stumpless_target *
@@ -614,9 +600,7 @@ vstumpless_add_message( struct stumpless_target *target,
 
 void
 destroy_target( const struct stumpless_target *target ) {
-  if( target == current_target ) {
-    current_target = NULL;
-  }
+  config_compare_exchange_ptr( &current_target, target, NULL );
 
   config_destroy_mutex( target->target_mutex );
   free_mem( target->default_app_name );

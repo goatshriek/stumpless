@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_THREAD_SAFETY_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_THREAD_SAFETY_H
 
+#  include <stddef.h>
 #  include <stumpless/config.h>
 #  include "private/config.h"
 
@@ -27,14 +28,22 @@
 #    define config_init_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_lock_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_unlock_mutex( MUTEX ) ( ( void ) 0 )
-#  elif defined HAVE_PTHREAD_H
+#  elif defined HAVE_PTHREAD_H && defined HAVE_STDATOMIC_H
 #    include <pthread.h>
+#    include <stdatomic.h>
+#    include <stdint.h>
 typedef pthread_mutex_t config_mutex_t;
+typedef atomic_uintptr_t config_atomic_ptr_t;
 #    include "private/config/have_pthread.h"
+#    include "private/config/have_stdatomic.h"
+#    define config_atomic_ptr_initializer ( uintptr_t ) NULL
+#    define config_compare_exchange_ptr stdatomic_compare_exchange_ptr
 #    define config_destroy_mutex pthread_destroy_mutex
 #    define config_init_mutex pthread_init_mutex
 #    define config_lock_mutex pthread_lock_mutex
+#    define config_read_ptr stdatomic_read_ptr
 #    define config_unlock_mutex pthread_unlock_mutex
+#    define config_write_ptr stdatomic_write_ptr
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_THREAD_SAFETY_H */

@@ -107,6 +107,7 @@ include(tools/cmake/test.cmake)
 
 # building configuration
 check_include_files(pthread.h HAVE_PTHREAD_H)
+check_include_files(stdatomic.h HAVE_STDATOMIC_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(unistd.h HAVE_UNISTD_H)
@@ -203,6 +204,10 @@ endif(HAVE_GMTIME_R)
 
 if(HAVE_PTHREAD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_pthread.c)
+endif()
+
+if(HAVE_STDATOMIC_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_stdatomic.c)
 endif()
 
 if(HAVE_UNISTD_H)
@@ -551,8 +556,13 @@ else()
 endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
 
 # thread safety support
-if(ENABLE_THREAD_SAFETY AND NOT HAVE_PTHREAD_H)
+if(NOT ENABLE_THREAD_SAFETY)
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+elseif(NOT HAVE_PTHREAD_H)
   message("thread safety is not supported without pthread.h")
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+elseif(NOT HAVE_STDATOMIC_H)
+  message("thread safety is not supported without stdatomic.h")
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
 else()
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
@@ -566,6 +576,10 @@ set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 if(MINGW)
   target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
   set_target_properties(stumpless PROPERTIES PREFIX "")
+endif()
+
+if(HAVE_STDATOMIC_H)
+  target_link_libraries(stumpless PRIVATE atomic)
 endif()
 
 if(HAVE_WINSOCK2_H)
