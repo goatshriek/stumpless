@@ -192,7 +192,6 @@
 "struct stumpless_version": "stumpless/version.h"
 "struct wel_data": "private/config/wel_supported.h"
 "struct wel_target": "private/target/wel.h"
-"struct wfp": "private/wfp.h"
 "stump": "stumpless/target.h"
 "stump_i": "stumpless/level/info.h"
 "stump_i_entry": "stumpless/level/info.h"
