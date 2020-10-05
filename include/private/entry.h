@@ -31,7 +31,7 @@ entry_free_all( void );
 int
 get_prival( int facility, int severity );
 
-int
+void
 lock_entry( const struct stumpless_entry *entry );
 
 struct stumpless_entry *
@@ -75,7 +75,7 @@ bool
 unchecked_entry_has_element( const struct stumpless_entry *entry,
                              const char *name );
 
-int
+void
 unlock_entry( const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */
