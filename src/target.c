@@ -603,7 +603,7 @@ void
 destroy_target( const struct stumpless_target *target ) {
   config_compare_exchange_ptr( &current_target, target, NULL );
 
-  config_destroy_mutex( target->target_mutex );
+  config_destroy_mutex( target->mutex );
   free_mem( target->default_app_name );
   free_mem( target->default_msgid );
   free_mem( target->name );
@@ -612,7 +612,7 @@ destroy_target( const struct stumpless_target *target ) {
 
 void
 lock_target( const struct stumpless_target *target ) {
-  config_lock_mutex( target->target_mutex );
+  config_lock_mutex( target->mutex );
 }
 
 struct stumpless_target *
@@ -633,8 +633,8 @@ new_target( enum stumpless_target_type type,
     goto fail_name;
   }
 
-  target->target_mutex = ( ( char * ) target ) + sizeof( *target );
-  config_init_mutex( target->target_mutex );
+  target->mutex = ( ( char * ) target ) + sizeof( *target );
+  config_init_mutex( target->mutex );
 
   target->type = type;
   target->options = options;
@@ -701,7 +701,7 @@ target_free_thread( void ) {
 
 void
 unlock_target( const struct stumpless_target *target ) {
-  config_unlock_mutex( target->target_mutex );
+  config_unlock_mutex( target->mutex );
 }
 
 int

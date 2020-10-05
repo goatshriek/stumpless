@@ -74,7 +74,10 @@ struct stumpless_element {
 /** The number of params in the array. */
   size_t param_count;
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-/** A mutex used to coordinate multi-threaded access to this element. */
+/**
+ * A pointer to a mutex used to coordinate multi-threaded access to this
+ * element.
+ */
   void *mutex;
 #endif
 };

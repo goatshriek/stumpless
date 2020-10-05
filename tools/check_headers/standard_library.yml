@@ -103,6 +103,7 @@
 "pthread_mutex_lock": "pthread.h"
 "pthread_mutex_t": "pthread.h"
 "pthread_mutex_unlock": "pthread.h"
+"pthread_self": "pthread.h"
 "realloc":
   - "cstdlib"
   - "stdlib.h"

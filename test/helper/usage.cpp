@@ -17,6 +17,7 @@
  */
 
 #include <cstddef>
+#include <pthread.h>
 #include <stumpless.h>
 #include "test/helper/usage.hpp"
 

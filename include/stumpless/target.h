@@ -108,7 +108,7 @@ struct stumpless_target {
  * A pointer to the mutex used to coordinate multi-threaded access to this
  * target.
  */
-  void *target_mutex;
+  void *mutex;
 #  endif
 };
 
