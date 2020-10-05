@@ -69,7 +69,7 @@ struct stumpless_entry {
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /** A mutex used to coordinate multi-threaded access to this entry. */
   void *mutex;
-#  endif /* STUMPLESS_THREAD_SAFETY_SUPPORTED */
+#  endif
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 /** A pointer to a wel_fields structure. */
   void *wel_data;
