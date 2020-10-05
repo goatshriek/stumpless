@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
@@ -46,9 +45,7 @@
 
 /* global static variables */
 static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
-
-static struct stumpless_target *default_target = NULL;
-static pthread_mutex_t default_target_mutex = PTHREAD_MUTEX_INITIALIZER;
+static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
 
 /* per-thread static variables */
 static __thread struct stumpless_entry *cached_entry = NULL;
@@ -263,12 +260,16 @@ stumpless_get_default_target( void ) {
 
   clear_error(  );
 
-  pthread_mutex_lock( &default_target_mutex );
-  if( !default_target ) {
-    default_target = config_open_default_target(  );
+  result = config_read_ptr( &default_target );
+
+  while( !result ) {
+    result = config_open_default_target(  );
+
+    if( !config_compare_exchange_ptr( &default_target, NULL, result ) ) {
+      config_close_default_target( result );
+      result = config_read_ptr( &default_target );
+    }
   }
-  result = default_target;
-  pthread_mutex_unlock( &default_target_mutex );
 
   return result;
 }
@@ -688,8 +689,8 @@ sendto_unsupported_target( const struct stumpless_target *target,
 
 void
 target_free_global( void ) {
-  config_close_default_target( default_target );
-  default_target = NULL;
+  config_close_default_target( config_read_ptr( &default_target ) );
+  config_write_ptr( &default_target, NULL );
 }
 
 void
