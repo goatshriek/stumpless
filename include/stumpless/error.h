@@ -210,17 +210,15 @@ stumpless_get_error_id_string( enum stumpless_error_id id );
  * Gets the current stream that errors are written to.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. A lock is used to coordinate accesses to the
- * error stream.
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the error stream.
  *
- * **Async Signal Safety: AS-Unsafe lock**
- * This function is not safe to call from signal handlers, as it uses a
- * non-reentrant lock to synchronize access to the error stream.
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
  *
- * **Async Cancel Safety: AC-Unsafe lock**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, as the lock used to control access to the error stream may not
- * be released after a cancellation.
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
  *
  * @return The current stream errors are written to.
  */
@@ -292,17 +290,15 @@ stumpless_perror( const char *prefix );
  * \c stumpless_perror calls).
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. A lock is used to coordinate accesses to the
- * error stream.
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the error stream.
  *
- * **Async Signal Safety: AS-Unsafe lock**
- * This function is not safe to call from signal handlers, as it uses a
- * non-reentrant lock to synchronize access to the error stream.
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
  *
- * **Async Cancel Safety: AC-Unsafe lock**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, as the lock used to control access to the error stream may not
- * be released after a cancellation.
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
  *
  * @param stream The stream to write errors to. If this is NULL then it will be
  * ignored.

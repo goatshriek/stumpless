@@ -23,6 +23,13 @@
 #include "private/config/wrapper/thread_safety.h"
 
 bool
+stdatomic_compare_exchange_bool( config_atomic_bool_t *b,
+                                 bool expected,
+                                 bool replacement ) {
+  return atomic_compare_exchange_strong( b, &expected, replacement );
+}
+
+bool
 stdatomic_compare_exchange_ptr( config_atomic_ptr_t *p,
                                 const void *expected,
                                 void *replacement ) {
@@ -33,9 +40,19 @@ stdatomic_compare_exchange_ptr( config_atomic_ptr_t *p,
                                          ( uintptr_t ) replacement );
 }
 
+bool
+stdatomic_read_bool( config_atomic_bool_t *b ) {
+  return ( bool ) atomic_load( b );
+}
+
 void *
 stdatomic_read_ptr( config_atomic_ptr_t *p ) {
   return ( void * ) atomic_load( p );
+}
+
+void
+stdatomic_write_bool( config_atomic_bool_t *b, bool replacement ) {
+  atomic_store( b, replacement );
 }
 
 void

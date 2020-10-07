@@ -23,12 +23,23 @@
 #  include "private/config/wrapper/thread_safety.h"
 
 bool
+stdatomic_compare_exchange_bool( config_atomic_bool_t *n,
+                                 bool expected,
+                                 bool replacement );
+
+bool
 stdatomic_compare_exchange_ptr( config_atomic_ptr_t *p,
                                 const void *expected,
                                 void *replacement );
 
+bool
+stdatomic_read_bool( config_atomic_bool_t *b );
+
 void *
 stdatomic_read_ptr( config_atomic_ptr_t *p );
+
+void
+stdatomic_write_bool( config_atomic_bool_t *b, bool replacement );
 
 void
 stdatomic_write_ptr( config_atomic_ptr_t *p, void *replacement );

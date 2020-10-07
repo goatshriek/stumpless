@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_THREAD_SAFETY_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_THREAD_SAFETY_H
 
+#  include <stdbool.h>
 #  include <stddef.h>
 #  include <stumpless/config.h>
 #  include "private/config.h"
@@ -32,17 +33,23 @@
 #    include <pthread.h>
 #    include <stdatomic.h>
 #    include <stdint.h>
-typedef pthread_mutex_t config_mutex_t;
+typedef atomic_bool config_atomic_bool_t;
 typedef atomic_uintptr_t config_atomic_ptr_t;
+typedef pthread_mutex_t config_mutex_t;
 #    include "private/config/have_pthread.h"
 #    include "private/config/have_stdatomic.h"
+#    define config_atomic_bool_false false
+#    define config_atomic_bool_true true
 #    define config_atomic_ptr_initializer ( uintptr_t ) NULL
+#    define config_compare_exchange_bool stdatomic_compare_exchange_bool
 #    define config_compare_exchange_ptr stdatomic_compare_exchange_ptr
 #    define config_destroy_mutex pthread_destroy_mutex
 #    define config_init_mutex pthread_init_mutex
 #    define config_lock_mutex pthread_lock_mutex
+#    define config_read_bool stdatomic_read_bool
 #    define config_read_ptr stdatomic_read_ptr
 #    define config_unlock_mutex pthread_unlock_mutex
+#    define config_write_bool stdatomic_write_bool
 #    define config_write_ptr stdatomic_write_ptr
 #  endif
 
