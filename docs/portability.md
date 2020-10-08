@@ -154,7 +154,7 @@ assumptions, and should make sense in the context they intend to be used. This
 example uses a fallback memory page size of 4 KiB, a common size and reasonable
 guess.
 
-Fallback functions are free to rais errors if there is no natural "default"
+Fallback functions are free to raise errors if there is no natural "default"
 behavior, but this should only be done in cases where the other configuration
 options might also raise errors. Extra error handling should not be introduced
 solely for the sake of avoiding extra work in the fallback option.

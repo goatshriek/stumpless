@@ -26,11 +26,6 @@ or want to make a suggestion, please submit an issue on the project's
    clear the error flags. Clearing them can especially cause confusion in other
    language bindings, where the calling of the destructor is not explicit and
    may be difficult to track down.
- - [CHANGE] **Error codes will be guaranteed to be a consistent value**
-   Error ids are currently defined by an enumeration without any values
-   specified, which means that they could change across builds. Setting these to
-   specific values will make them consistent across all builds, increasing
-   interoperability.
  * [CHANGE] **Facilities and severities will be defined by enumerations**
    Enumerations are a cleaner way to represent the set values, and can be made
    compatible with the `syslog.h` values if their backing `int` values match.
