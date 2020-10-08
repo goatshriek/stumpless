@@ -16,12 +16,12 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
@@ -102,7 +102,7 @@ stumpless_read_buffer( struct stumpless_target *target,
 
   buffer_target = ( struct buffer_target * ) target->id;
 
-  pthread_mutex_lock( &buffer_target->buffer_mutex );
+  config_lock_mutex( &buffer_target->buffer_mutex );
 
   read_position = buffer_target->read_position;
   while( read_position != buffer_target->write_position &&
@@ -114,7 +114,7 @@ stumpless_read_buffer( struct stumpless_target *target,
   }
 
   buffer_target->read_position = read_position;
-  pthread_mutex_unlock( &buffer_target->buffer_mutex );
+  config_unlock_mutex( &buffer_target->buffer_mutex );
 
   buffer[out_position] = '\0';
   return out_position + 1;
@@ -124,7 +124,7 @@ stumpless_read_buffer( struct stumpless_target *target,
 
 void
 destroy_buffer_target( const struct buffer_target *target ) {
-  pthread_mutex_destroy( ( pthread_mutex_t * ) &target->buffer_mutex );
+  config_destroy_mutex( &target->buffer_mutex );
   free_mem( target );
 }
 
@@ -137,7 +137,7 @@ new_buffer_target( char *buffer, size_t size ) {
     return NULL;
   }
 
-  pthread_mutex_init( &target->buffer_mutex, NULL );
+  config_init_mutex( &target->buffer_mutex );
   target->buffer = buffer;
   target->size = size;
   target->read_position = 0;
@@ -164,7 +164,7 @@ sendto_buffer_target( struct buffer_target *target,
     return -1;
   }
 
-  pthread_mutex_lock( &target->buffer_mutex );
+  config_lock_mutex( &target->buffer_mutex );
   write_start = target->write_position;
   buffer_remaining = target->size - write_start;
 
@@ -196,7 +196,7 @@ sendto_buffer_target( struct buffer_target *target,
     target->read_position = ( target->write_position + 1 ) % target->size;
   }
 
-  pthread_mutex_unlock( &target->buffer_mutex );
+  config_unlock_mutex( &target->buffer_mutex );
 
   return cap_size_t_to_int( msg_length + 1 );
 }
