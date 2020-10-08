@@ -214,7 +214,7 @@ Sonarcloud. Changes that do introduce new issues will likely not be accepted.
 
 If you are making a documentation change or other update that won't affect the
 output of any of these tools, you may include `[skip ci]` in your commit message
-to bypass their builds and save some electricty. Travis CI and AppVeyor also
+to bypass their builds and save some electricity. Travis CI and AppVeyor also
 support the targeted skip messages `[skip travis]` and `[skip appveyor]`,
 respectively.
 
