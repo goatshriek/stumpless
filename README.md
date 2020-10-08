@@ -178,25 +178,24 @@ at the [development guide](docs/development.md) to get a detailed orientation.
 There are a few options based on your level of experience and familiarity with
 making contributions.
 
-The first option if you're looking for a way to contribute is to browse the list
-of issues that are marked with the label
+The first option is to browse the list of issues that are marked with the label
 [good first issue](https://github.com/goatshriek/stumpless/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 These issues are selected to be a small but meaningful amount of work, and
 include details on the general approach that you can take to complete them. They
 are a great place to start if you are just looking to test the waters of this
 project or open source contribution in general.
 
-More experienced developers are invited to look at the full list of issues on
-the project, as well as the project
+More experienced developers may prefer to look at the full list of issues on the
+project, as well as the
 [roadmap](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md).
 If an item catches your interest, drop a comment in the existing issue or open
 a new one if it doesn't exist yet and state your intent to work on it so that
 others will have a way to know it is underway.
 
-Or perhaps you are just looking for a way to say thanks! If that's the case or
-you would prefer to drop me a private message, please feel free to do so in an
-[email](mailto:joelanderson333@gmail.com)! I'd love to hear your thoughts on the
-project or anything related to it.
+Or perhaps you are just looking for a way to say thanks! If that's the case, or
+if you have something that you would prefer to drop me a private message about,
+please feel free to do so in an [email](mailto:joelanderson333@gmail.com)! I'd
+love to hear your thoughts on the project or anything related to it.
 
 ## Further Documentation
 If you're curious about how something in stumpless works that isn't explained
