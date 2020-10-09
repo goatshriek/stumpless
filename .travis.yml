@@ -151,6 +151,18 @@ matrix:
 #        - MATRIX_EVAL="CC=gcc && CXX=g++"
 #        - LANG=de_DE.UTF-8
 #        - LC_ALLE=de_DE.UTF-8
+#    - name: "linux, sv-se"
+#      os: linux
+#      addons:
+#        apt:
+#          packages:
+#            - language-pack-sv
+#        sonarcloud:
+#          organization: "goatshriek-github"
+#      env:
+#        - MATRIX_EVAL="CC=gcc && CXX=g++"
+#        - LANG=sv_SE.UTF-8
+#        - LC_ALL=sv_SE.UTF-8
     - name: "os x, clang"
       os: osx
       env:
@@ -188,6 +200,12 @@ matrix:
 #        - MATRIX_EVAL="CC=clang && CXX=clang++"
 #        - LANG=de_DE.UTF-8
 #        - LC_ALL=de_DE.UTF-8
+#    - name: "os x, sv-se"
+#      os: osx
+#      env:
+#        - MATRIX_EVAL="CC=clang && CXX=clang++"
+#        - LANG=sv_SE.UTF-8
+#        - LC_ALL=sv_SE.UTF-8
 
 before_install:
   - if [ "${TRAVIS_OS_NAME}" != "windows" ]; then eval "${MATRIX_EVAL}"; fi
