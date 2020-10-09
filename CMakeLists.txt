@@ -567,6 +567,10 @@ else()
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
 endif()
 
+if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
+  list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
+endif()
+
 
 # shared library definition
 add_library(stumpless SHARED ${STUMPLESS_SOURCES})

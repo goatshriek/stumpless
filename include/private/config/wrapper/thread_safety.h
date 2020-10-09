@@ -27,11 +27,12 @@
 #  ifndef STUMPLESS_THREAD_SAFETY_SUPPORTED
 typedef bool config_atomic_bool_t;
 typedef void * config_atomic_ptr_t;
+#  include "private/config/no_thread_safety.h"
 #    define config_atomic_bool_false false
 #    define config_atomic_bool_true true
 #    define config_atomic_ptr_initializer NULL
-#    define config_compare_exchange_bool stdatomic_compare_exchange_bool
-#    define config_compare_exchange_ptr stdatomic_compare_exchange_ptr
+#    define config_compare_exchange_bool no_thread_safety_compare_exchange_bool
+#    define config_compare_exchange_ptr no_thread_safety_compare_exchange_ptr
 #    define config_destroy_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_init_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_lock_mutex( MUTEX ) ( ( void ) 0 )

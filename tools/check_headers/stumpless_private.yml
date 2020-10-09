@@ -11,6 +11,8 @@
 "config_write_ptr": "private/config/wrapper/thread_safety.h"
 "HAVE_PTHREAD_H": "private/config.h"
 "L10N_": "private/config/locale/wrapper.h"
+"no_thread_safety_compare_exchange_bool": "private/config/no_thread_safety.h"
+"no_thread_safety_compare_exchange_ptr": "private/config/no_thread_safety.h"
 "pthread_destroy_mutex": "private/config/have_pthread.h"
 "pthread_init_mutex": "private/config/have_pthread.h"
 "pthread_lock_mutex": "private/config/have_pthread.h"
