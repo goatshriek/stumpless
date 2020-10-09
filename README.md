@@ -24,7 +24,7 @@ easier:
  * can be adjusted or removed during compilation for zero runtime impact
  * interoperability with standard syslog daemons and library functions
  * an extensive unit testing suite and continuous integration
- * localized for multiple languages ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
+ * localized for multiple languages :de: :fr: :sweden: ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
    [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
