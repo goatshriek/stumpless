@@ -23,7 +23,7 @@
 #  include "private/config/wrapper/thread_safety.h"
 
 bool
-stdatomic_compare_exchange_bool( config_atomic_bool_t *n,
+stdatomic_compare_exchange_bool( config_atomic_bool_t *b,
                                  bool expected,
                                  bool replacement );
 

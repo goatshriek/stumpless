@@ -19,9 +19,10 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_STREAM_H
 #  define __STUMPLESS_PRIVATE_TARGET_STREAM_H
 
-#  include <pthread.h>
 #  include <stddef.h>
 #  include <stdio.h>
+#  include <stumpless/config.h>
+#  include "private/config/wrapper/thread_safety.h"
 
 /**
  * Internal representation of a stream target.
@@ -29,11 +30,13 @@
 struct stream_target {
 /** The stream this target writes to. */
   FILE *stream;
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * Protects stream. This mutex must be locked by a thread before it can write
  * to the stream.
  */
-  pthread_mutex_t stream_mutex;
+  config_mutex_t stream_mutex;
+#  endif
 };
 
 void

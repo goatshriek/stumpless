@@ -25,10 +25,22 @@
 #  include "private/config.h"
 
 #  ifndef STUMPLESS_THREAD_SAFETY_SUPPORTED
+typedef bool config_atomic_bool_t;
+typedef void * config_atomic_ptr_t;
+#    define config_atomic_bool_false false
+#    define config_atomic_bool_true true
+#    define config_atomic_ptr_initializer NULL
+#    define config_compare_exchange_bool stdatomic_compare_exchange_bool
+#    define config_compare_exchange_ptr stdatomic_compare_exchange_ptr
 #    define config_destroy_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_init_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_lock_mutex( MUTEX ) ( ( void ) 0 )
+#    define CONFIG_MUTEX_T_SIZE 0
+#    define config_read_bool( B ) *( B )
+#    define config_read_ptr( P ) *( P )
 #    define config_unlock_mutex( MUTEX ) ( ( void ) 0 )
+#    define config_write_bool( B, REPLACEMENT ) *( B ) = ( REPLACEMENT )
+#    define config_write_ptr( P, REPLACEMENT ) *( P ) = ( REPLACEMENT )
 #  elif defined HAVE_PTHREAD_H && defined HAVE_STDATOMIC_H
 #    include <pthread.h>
 #    include <stdatomic.h>
@@ -46,6 +58,7 @@ typedef pthread_mutex_t config_mutex_t;
 #    define config_destroy_mutex pthread_destroy_mutex
 #    define config_init_mutex pthread_init_mutex
 #    define config_lock_mutex pthread_lock_mutex
+#    define CONFIG_MUTEX_T_SIZE sizeof( config_mutex_t )
 #    define config_read_bool stdatomic_read_bool
 #    define config_read_ptr stdatomic_read_ptr
 #    define config_unlock_mutex pthread_unlock_mutex

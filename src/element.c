@@ -385,7 +385,7 @@ stumpless_new_element( const char *name ) {
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  element = alloc_mem( sizeof( *element ) + sizeof( config_mutex_t ) );
+  element = alloc_mem( sizeof( *element ) + CONFIG_MUTEX_T_SIZE );
   if( !element ) {
     goto fail;
   }
