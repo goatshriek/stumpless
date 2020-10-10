@@ -17,9 +17,6 @@
  */
 
 #include <gtest/gtest.h>
-#include <stumpless.hpp>
-
-using namespace stumpless;
 
 namespace {
 
