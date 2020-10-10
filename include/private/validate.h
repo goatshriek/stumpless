@@ -29,5 +29,6 @@ if( ARG_NAME == NULL ) {                                            \
   return NULL;                                                      \
 }
 
+bool validate_msgid_length( size_t *msgid );
 
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */
