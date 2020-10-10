@@ -572,6 +572,51 @@ endif()
 
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
   list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
+else()
+  # thread safety tests
+  add_thread_safety_test(buffer
+    SOURCES
+      test/thread_safety/target/buffer.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
+  add_thread_safety_test(element
+    SOURCES
+      test/thread_safety/element.cpp
+  )
+
+  add_thread_safety_test(entry
+    SOURCES
+      test/thread_safety/entry.cpp
+  )
+
+  add_thread_safety_test(file
+    SOURCES
+      test/thread_safety/target/file.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
+  add_thread_safety_test(param
+    SOURCES
+      test/thread_safety/param.cpp
+  )
+
+  add_thread_safety_test(stream
+    SOURCES
+      test/thread_safety/target/stream.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
+  add_thread_safety_test(target
+    SOURCES
+      test/thread_safety/target.cpp
+  )
+
+  add_custom_target(check-thread-safety
+    DEPENDS ${STUMPLESS_THREAD_SAFETY_TEST_RUNNERS}
+  )
 endif()
 
 
@@ -840,52 +885,6 @@ add_function_test(version
 add_custom_target(check
   COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
-)
-
-
-# thread safety tests
-add_thread_safety_test(buffer
-  SOURCES
-    test/thread_safety/target/buffer.cpp
-    $<TARGET_OBJECTS:test_helper_usage>
-)
-
-add_thread_safety_test(element
-  SOURCES
-    test/thread_safety/element.cpp
-)
-
-add_thread_safety_test(entry
-  SOURCES
-    test/thread_safety/entry.cpp
-)
-
-add_thread_safety_test(file
-  SOURCES
-    test/thread_safety/target/file.cpp
-    $<TARGET_OBJECTS:rfc5424_checker>
-    $<TARGET_OBJECTS:test_helper_usage>
-)
-
-add_thread_safety_test(param
-  SOURCES
-    test/thread_safety/param.cpp
-)
-
-add_thread_safety_test(stream
-  SOURCES
-    test/thread_safety/target/stream.cpp
-    $<TARGET_OBJECTS:rfc5424_checker>
-    $<TARGET_OBJECTS:test_helper_usage>
-)
-
-add_thread_safety_test(target
-  SOURCES
-    test/thread_safety/target.cpp
-)
-
-add_custom_target(check-thread-safety
-  DEPENDS ${STUMPLESS_THREAD_SAFETY_TEST_RUNNERS}
 )
 
 
