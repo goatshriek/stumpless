@@ -35,8 +35,8 @@ static const char *stumpless_error_enum_to_string[] = {
 };
 
 /* per-thread static variables */
-static __thread struct stumpless_error last_error;
-static __thread bool error_valid = false;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_error last_error;
+static CONFIG_THREAD_LOCAL_STORAGE bool error_valid = false;
 
 const struct stumpless_error *
 stumpless_get_error( void ) {

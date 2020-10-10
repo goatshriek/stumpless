@@ -27,7 +27,8 @@
 #  ifndef STUMPLESS_THREAD_SAFETY_SUPPORTED
 typedef bool config_atomic_bool_t;
 typedef void * config_atomic_ptr_t;
-#  include "private/config/no_thread_safety.h"
+#    define CONFIG_THREAD_LOCAL_STORAGE
+#    include "private/config/no_thread_safety.h"
 #    define config_atomic_bool_false false
 #    define config_atomic_bool_true true
 #    define config_atomic_ptr_initializer NULL
@@ -49,6 +50,7 @@ typedef void * config_atomic_ptr_t;
 typedef atomic_bool config_atomic_bool_t;
 typedef atomic_uintptr_t config_atomic_ptr_t;
 typedef pthread_mutex_t config_mutex_t;
+#    define CONFIG_THREAD_LOCAL_STORAGE __thread
 #    include "private/config/have_pthread.h"
 #    include "private/config/have_stdatomic.h"
 #    define config_atomic_bool_false false

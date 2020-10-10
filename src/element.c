@@ -398,8 +398,7 @@ stumpless_new_element( const char *name ) {
   element->params = NULL;
   element->param_count = 0;
 
-  element->mutex = ( char * ) element + sizeof( *element );
-  config_init_mutex( element->mutex );
+  config_init_mutex( element->mutex = ( char * ) element + sizeof( *element ) );
 
   clear_error(  );
   return element;

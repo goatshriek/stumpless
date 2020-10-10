@@ -96,7 +96,7 @@ stumpless_new_param( const char *name, const char *value ) {
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
-  param = alloc_mem( sizeof( *param ) + sizeof( config_mutex_t ) );
+  param = alloc_mem( sizeof( *param ) + CONFIG_MUTEX_T_SIZE );
   if( !param ) {
     goto fail;
   }
@@ -111,8 +111,7 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail_value;
   }
 
-  param->mutex = ( char * ) param + sizeof( *param );
-  config_init_mutex( param->mutex );
+  config_init_mutex( param->mutex = ( char * ) param + sizeof( *param ) );
 
   clear_error(  );
   return param;

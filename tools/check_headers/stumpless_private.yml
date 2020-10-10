@@ -5,6 +5,7 @@
 "config_lock_mutex": "private/config/wrapper/thread_safety.h"
 "config_read_flag": "private/config/wrapper/thread_safety.h"
 "config_read_ptr": "private/config/wrapper/thread_safety.h"
+"CONFIG_THREAD_LOCAL_STORAGE": "private/config/wrapper/thread_safety.h"
 "config_mutex_t": "private/config/wrapper/thread_safety.h"
 "config_unlock_mutex": "private/config/wrapper/thread_safety.h"
 "config_write_flag": "private/config/wrapper/thread_safety.h"

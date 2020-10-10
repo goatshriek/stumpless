@@ -48,7 +48,7 @@ static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
 
 /* per-thread static variables */
-static __thread struct stumpless_entry *cached_entry = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
 
 static
 void
@@ -623,7 +623,7 @@ new_target( enum stumpless_target_type type,
   struct stumpless_target *target;
   int default_prival;
 
-  target = alloc_mem( sizeof( *target ) + sizeof( config_mutex_t ) );
+  target = alloc_mem( sizeof( *target ) + CONFIG_MUTEX_T_SIZE );
   if( !target ) {
     goto fail;
   }
@@ -633,8 +633,7 @@ new_target( enum stumpless_target_type type,
     goto fail_name;
   }
 
-  target->mutex = ( ( char * ) target ) + sizeof( *target );
-  config_init_mutex( target->mutex );
+  config_init_mutex( target->mutex = ( char * ) target + sizeof( *target ) );
 
   target->type = type;
   target->options = options;

@@ -847,7 +847,7 @@ vstumpless_new_entry( int facility,
   size_t *message_length;
 
   if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ) + sizeof( config_mutex_t ),
+    entry_cache = cache_new( sizeof( *entry ) + CONFIG_MUTEX_T_SIZE,
                              NULL,
                              NULL );
 
@@ -896,8 +896,7 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
-  entry->mutex = ( char * ) entry + sizeof( *entry );
-  config_init_mutex( entry->mutex );
+  config_init_mutex( entry->mutex = ( char * ) entry + sizeof( *entry ) );
 
   clear_error(  );
   return entry;
