@@ -32,7 +32,7 @@ bool
 windows_compare_exchange_ptr( config_atomic_ptr_t *p,
                               const void *expected,
                               void *replacement );
-i
+
 void
 windows_destroy_mutex( const config_mutex_t *mutex );
 
