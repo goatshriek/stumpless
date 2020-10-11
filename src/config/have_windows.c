@@ -16,9 +16,30 @@
  * limitations under the License.
  */
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <windows.h>
 #include "private/config/have_windows.h"
+#include "private/config/wrapper/thread_safety.h"
+
+bool
+windows_compare_exchange_bool( config_atomic_bool_t *b,
+                               bool expected,
+                               bool replacement ) {
+  return false;
+}
+
+bool
+windows_compare_exchange_ptr( config_atomic_ptr_t *p,
+                              const void *expected,
+                              void *replacement ) {
+  return false;
+}
+
+void
+windows_destroy_mutex( const config_mutex_t *mutex ){
+  return;
+}
 
 size_t
 windows_getpagesize( void ) {
@@ -32,4 +53,19 @@ windows_getpagesize( void ) {
 int
 windows_getpid( void ) {
   return ( int ) ( GetCurrentProcessId(  ) );
+}
+
+void
+windows_init_mutex( config_mutex_t *mutex ) {
+  return;
+}
+
+void
+windows_lock_mutex( const config_mutex_t *mutex ) {
+  return;
+}
+
+void
+windows_unlock_mutex( const config_mutex_t *mutex ) {
+  return;
 }
