@@ -19,29 +19,29 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_STDATOMIC_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_STDATOMIC_H
 
+#  include <stdatomic.h>
 #  include <stdbool.h>
-#  include "private/config/wrapper/thread_safety.h"
 
 bool
-stdatomic_compare_exchange_bool( config_atomic_bool_t *b,
+stdatomic_compare_exchange_bool( atomic_bool *b,
                                  bool expected,
                                  bool replacement );
 
 bool
-stdatomic_compare_exchange_ptr( config_atomic_ptr_t *p,
+stdatomic_compare_exchange_ptr( atomic_uintptr_t *p,
                                 const void *expected,
                                 void *replacement );
 
 bool
-stdatomic_read_bool( config_atomic_bool_t *b );
+stdatomic_read_bool( atomic_bool *b );
 
 void *
-stdatomic_read_ptr( config_atomic_ptr_t *p );
+stdatomic_read_ptr( atomic_uintptr_t *p );
 
 void
-stdatomic_write_bool( config_atomic_bool_t *b, bool replacement );
+stdatomic_write_bool( atomic_bool *b, bool replacement );
 
 void
-stdatomic_write_ptr( config_atomic_ptr_t *p, void *replacement );
+stdatomic_write_ptr( atomic_uintptr_t *p, void *replacement );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_STDATOMIC_H */

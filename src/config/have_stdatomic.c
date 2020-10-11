@@ -20,17 +20,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "private/config/have_stdatomic.h"
-#include "private/config/wrapper/thread_safety.h"
 
 bool
-stdatomic_compare_exchange_bool( config_atomic_bool_t *b,
+stdatomic_compare_exchange_bool( atomic_bool *b,
                                  bool expected,
                                  bool replacement ) {
   return atomic_compare_exchange_strong( b, &expected, replacement );
 }
 
 bool
-stdatomic_compare_exchange_ptr( config_atomic_ptr_t *p,
+stdatomic_compare_exchange_ptr( atomic_uintptr_t *p,
                                 const void *expected,
                                 void *replacement ) {
   uintptr_t expected_uint = ( uintptr_t ) expected;
@@ -41,21 +40,21 @@ stdatomic_compare_exchange_ptr( config_atomic_ptr_t *p,
 }
 
 bool
-stdatomic_read_bool( config_atomic_bool_t *b ) {
+stdatomic_read_bool( atomic_bool *b ) {
   return ( bool ) atomic_load( b );
 }
 
 void *
-stdatomic_read_ptr( config_atomic_ptr_t *p ) {
+stdatomic_read_ptr( atomic_uintptr_t *p ) {
   return ( void * ) atomic_load( p );
 }
 
 void
-stdatomic_write_bool( config_atomic_bool_t *b, bool replacement ) {
+stdatomic_write_bool( atomic_bool *b, bool replacement ) {
   atomic_store( b, replacement );
 }
 
 void
-stdatomic_write_ptr( config_atomic_ptr_t *p, void *replacement ) {
+stdatomic_write_ptr( atomic_uintptr_t *p, void *replacement ) {
   atomic_store( p, ( uintptr_t ) replacement );
 }
