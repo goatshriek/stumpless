@@ -161,7 +161,6 @@
 "SYSTEMTIME":
   - "windows.h"
   - "private/windows_wrapper.h"
-"thread": "thread"
 "time": "time.h"
 "time_t": "time.h"
 "uintptr_t": "stdint.h"

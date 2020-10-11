@@ -3,4 +3,7 @@
 "atomic_store": "stdatomic.h"
 "atomic_uintptr_t": "stdatomic.h"
 "bool": "stdbool.h"
+"CRITICAL_SECTION":
+  - "private/windows_wrapper.h"
+  - "windows.h"
 "true": "stdbool.h"

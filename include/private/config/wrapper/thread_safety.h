@@ -44,6 +44,7 @@ typedef void * config_atomic_ptr_t;
 #    define config_write_bool( B, REPLACEMENT ) *( B ) = ( REPLACEMENT )
 #    define config_write_ptr( P, REPLACEMENT ) *( P ) = ( REPLACEMENT )
 #  elif defined HAVE_WINDOWS_H
+#    include "private/config/have_windows.h"
 #    include "private/windows_wrapper.h"
 typedef bool config_atomic_bool_t;
 typedef void * config_atomic_ptr_t;

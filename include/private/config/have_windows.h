@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 
+#  include <stdbool.h>
 #  include <stddef.h>
 #  include "private/config/wrapper/thread_safety.h"
 
