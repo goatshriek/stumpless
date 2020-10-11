@@ -24,14 +24,14 @@
 #  include "private/windows_wrapper.h"
 
 bool
-windows_compare_exchange_bool( bool *b,
-                               bool expected,
-                               bool replacement );
+windows_compare_exchange_bool( BOOL volatile *b,
+                               BOOL expected,
+                               BOOL replacement );
 
 bool
-windows_compare_exchange_ptr( void **p,
+windows_compare_exchange_ptr( PVOID volatile *p,
                               const void *expected,
-                              void *replacement );
+                              PVOID replacement );
 
 void
 windows_destroy_mutex( const CRITICAL_SECTION *mutex );
@@ -43,7 +43,7 @@ int
 windows_getpid( void );
 
 void
-windows_init_mutex( CRITICAL_SECTION *mutex );
+windows_init_mutex( LPCRITICAL_SECTION mutex );
 
 void
 windows_lock_mutex( const CRITICAL_SECTION *mutex );

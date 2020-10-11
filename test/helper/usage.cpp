@@ -17,8 +17,8 @@
  */
 
 #include <cstddef>
-#include <pthread.h>
 #include <stumpless.h>
+#include <thread>
 #include "test/helper/usage.hpp"
 
 void
@@ -27,7 +27,7 @@ add_messages( struct stumpless_target *target, size_t message_count ) {
     stumpless_add_message( target,
                            "message number #%zd from thread #%d",
                            i,
-                           pthread_self(  ) );
+                           std::this_thread::get_id(  ) );
   }
 
   stumpless_free_thread(  );
