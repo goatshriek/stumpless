@@ -564,7 +564,7 @@ endif()
 # thread safety support
 if(NOT ENABLE_THREAD_SAFETY)
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
-elseif(NOT HAVE_WINDOWS.H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
+elseif(NOT HAVE_WINDOWS_H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
   message("thread safety is not supported without either windows.h or both pthread.h and stdatomic.h")
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
 else()

@@ -85,8 +85,6 @@
 "get_priv_target": "private/target.h"
 "get_prival": "private/entry.h"
 "get_severity": "private/severity.h"
-"GetCurrentProcessId": "windows.h"
-"GetSystemInfo": "windows.h"
 "gmtime_r_get_now": "private/config/have_gmtime_r.h"
 "HAVE_GMTIME_R": "private/config.h"
 "HAVE_LOCALE_NAME_SYSTEM_DEFAULT": "private/config.h"

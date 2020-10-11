@@ -21,20 +21,20 @@
 
 #  include <stdbool.h>
 #  include <stddef.h>
-#  include "private/config/wrapper/thread_safety.h"
+#  include "private/windows_wrapper.h"
 
 bool
-windows_compare_exchange_bool( config_atomic_bool_t *b,
+windows_compare_exchange_bool( bool *b,
                                bool expected,
                                bool replacement );
 
 bool
-windows_compare_exchange_ptr( config_atomic_ptr_t *p,
+windows_compare_exchange_ptr( void **p,
                               const void *expected,
                               void *replacement );
 
 void
-windows_destroy_mutex( const config_mutex_t *mutex );
+windows_destroy_mutex( const CRITICAL_SECTION *mutex );
 
 size_t
 windows_getpagesize( void );
@@ -43,12 +43,12 @@ int
 windows_getpid( void );
 
 void
-windows_init_mutex( config_mutex_t *mutex );
+windows_init_mutex( CRITICAL_SECTION *mutex );
 
 void
-windows_lock_mutex( const config_mutex_t *mutex );
+windows_lock_mutex( const CRITICAL_SECTION *mutex );
 
 void
-windows_unlock_mutex( const config_mutex_t *mutex );
+windows_unlock_mutex( const CRITICAL_SECTION *mutex );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H */

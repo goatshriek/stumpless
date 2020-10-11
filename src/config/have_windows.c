@@ -18,9 +18,9 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <windows.h>
 #include "private/config/have_windows.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/windows_wrapper.h"
 
 bool
 windows_compare_exchange_bool( config_atomic_bool_t *b,

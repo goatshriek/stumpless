@@ -55,6 +55,9 @@
   - "netdb.h"
   - "ws2tcpip.h"
   - "private/windows_wrapper.h"
+"GetCurrentProcessId":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "gethostname":
   - "unistd.h"
   - "winsock2.h"
@@ -64,6 +67,9 @@
   - "windows.h"
   - "private/windows_wrapper.h"
 "getpid": "unistd.h"
+"GetSystemInfo":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "gmtime": "time.h"
 "HANDLE":
   - "windows.h"
