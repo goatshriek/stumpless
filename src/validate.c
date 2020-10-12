@@ -17,8 +17,9 @@
  */
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <string.h>
-#include "private/validate.h"
+#include "private/error.h"
 #include "private/config/locale/wrapper.h"
 
 bool validate_msgid_length(const char* msgid ) {
