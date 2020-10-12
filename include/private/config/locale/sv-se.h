@@ -136,7 +136,7 @@ ARG_NAME " var NULL"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "resultatet av WSAGetLastError efter det misslyckade anropet"
 
-#  define L10N_STRING_TOO_LONG \
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
 "STRING TOO LONG"
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \

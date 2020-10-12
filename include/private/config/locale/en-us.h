@@ -127,7 +127,7 @@ ARG_NAME " was NULL"
 "checked to see if an unsupported target type was open"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
-"Windows Socket error code" 
+"Windows Socket error code"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a winsock2 socket"
@@ -135,7 +135,7 @@ ARG_NAME " was NULL"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "the result of WSAGetLastError after the failed call"
 
-#  define L10N_STRING_TOO_LONG \
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
 "length of string exceeded maximum limit"
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \

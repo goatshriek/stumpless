@@ -137,7 +137,7 @@ ARG_NAME " war NULL"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "Das Ergebnis von WSAGetLastError nach dem fehlgeschlagenen Aufruf"
 
-#  define L10N_STRING_TOO_LONG \
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
 "STRING TOO LONG"
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
