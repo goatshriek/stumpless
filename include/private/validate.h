@@ -29,6 +29,14 @@ if( ARG_NAME == NULL ) {                                            \
   return NULL;                                                      \
 }
 
-bool validate_msgid_length( size_t *msgid );
+/**
+ * Checks the char length of msgid.
+ *
+ * @param the msgid.
+ * 
+ * @return True if the msgid is at or below the maximum allowed length, otherwise
+ * it will return false and raise the appropriate error.
+ */
+bool validate_msgid_length(const char* msgid );
 
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */

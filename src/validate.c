@@ -27,15 +27,15 @@
 #include "private/error.h"
 #include "private/validate.h"
 
-bool validate_msgid_length( size_t *msgid ) {
+bool validate_msgid_length(const char* msgid ) {
   size_t max_msgid_length = 32;
   size_t msgid_char_length = strlen( msgid );
   bool validation_status = true;
 
   if( msgid_char_length > max_msgid_length ) {
-    raise_argument_too_big( STUMPLESS_ARGUMENT_TOO_BIG, 
-                            cap_size_t_to_int( msgid_char_length ), 
-                            "msgid exceeded 32 characters" );
+    raise_argument_too_big( L10N_STRING_TOO_LONG, 
+                            msgid_char_length, 
+                            L10N_STRING_LENGTH_ERROR_CODE_TYPE );
 
     validation_status = false;
   }
