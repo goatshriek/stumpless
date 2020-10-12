@@ -136,4 +136,10 @@ ARG_NAME " var NULL"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "resultatet av WSAGetLastError efter det misslyckade anropet"
 
+#  define L10N_STRING_TOO_LONG \
+"STRING TOO LONG"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"STRING LENGTH ERROR CODE TYPE"
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_SV_SE_H */

@@ -559,7 +559,7 @@ namespace {
     }
   }
 
-  TEST( SetDefaultMsgId, MsgIdRejected ) {
+  TEST( SetDefaultMsgId, MsgIdTargetRejected ) {
     char buffer[100];
     struct stumpless_target* target;
     struct stumpless_target* target_result;
