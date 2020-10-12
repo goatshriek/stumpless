@@ -16,19 +16,26 @@
  * limitations under the License.
  */
 
-#include <cstddef>
-#include <stumpless.h>
-#include <thread>
-#include "test/helper/usage.hpp"
+#include <pthread.h>
+#include <stddef.h>
+#include "private/config/have_pthread.h"
 
 void
-add_messages( struct stumpless_target *target, size_t message_count ) {
-  for( size_t i = 0; i < message_count; i++ ) {
-    stumpless_add_message( target,
-                           "message number #%zd from thread #%d",
-                           i,
-                           std::this_thread::get_id(  ) );
-  }
+pthread_destroy_mutex( const pthread_mutex_t *mutex ) {
+  pthread_mutex_destroy( ( pthread_mutex_t * ) mutex );
+}
 
-  stumpless_free_thread(  );
+void
+pthread_init_mutex( pthread_mutex_t *mutex ) {
+  pthread_mutex_init( mutex, NULL );
+}
+
+void
+pthread_lock_mutex( const pthread_mutex_t *mutex ) {
+  pthread_mutex_lock( ( pthread_mutex_t * ) mutex );
+}
+
+void
+pthread_unlock_mutex( const pthread_mutex_t *mutex ) {
+  pthread_mutex_unlock( ( pthread_mutex_t * ) mutex );
 }

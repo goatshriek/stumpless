@@ -18,8 +18,6 @@
 
 #include <gtest/gtest.h>
 
-using namespace stumpless;
-
 namespace {
 
   class CppParamTest : public ::testing::Test {};

@@ -23,9 +23,9 @@
 #ifndef __STUMPLESS_ELEMENT_H
 #  define __STUMPLESS_ELEMENT_H
 
-#  include <pthread.h>
 #  include <stdbool.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/param.h>
 
 #  ifdef __cplusplus
@@ -73,8 +73,13 @@ struct stumpless_element {
   struct stumpless_param **params;
 /** The number of params in the array. */
   size_t param_count;
-/** A mutex used to coordinate multi-threaded access to this element. */
-  pthread_mutex_t element_mutex;
+#ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/**
+ * A pointer to a mutex used to coordinate multi-threaded access to this
+ * element.
+ */
+  void *mutex;
+#endif
 };
 
 /**

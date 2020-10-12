@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/facility.h>
@@ -24,6 +23,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
@@ -80,7 +80,7 @@ fail:
 
 void
 destroy_file_target( struct file_target *target ) {
-  pthread_mutex_destroy( &target->stream_mutex );
+  config_destroy_mutex( &target->stream_mutex );
   fclose( target->stream );
   free_mem( target );
 }
@@ -107,7 +107,7 @@ new_file_target( const char *filename ) {
     goto fail_stream;
   }
 
-  pthread_mutex_init( &target->stream_mutex, NULL );
+  config_init_mutex( &target->stream_mutex );
 
   return target;
 
@@ -123,19 +123,19 @@ sendto_file_target( struct file_target *target,
                     size_t msg_length ) {
   size_t fwrite_result;
 
-  pthread_mutex_lock( &target->stream_mutex );
+  config_lock_mutex( &target->stream_mutex );
 
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
   if( fwrite_result != msg_length ) {
     goto write_failure;
   }
 
-  pthread_mutex_unlock( &target->stream_mutex );
+  config_unlock_mutex( &target->stream_mutex );
 
   return cap_size_t_to_int( fwrite_result + 1 );
 
 write_failure:
-  pthread_mutex_unlock( &target->stream_mutex );
+  config_unlock_mutex( &target->stream_mutex );
   raise_file_write_failure(  );
   return -1;
 }

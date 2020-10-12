@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -27,6 +26,7 @@
 #include "private/cache.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/element.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -847,7 +847,9 @@ vstumpless_new_entry( int facility,
   size_t *message_length;
 
   if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
+    entry_cache = cache_new( sizeof( *entry ) + CONFIG_MUTEX_T_SIZE,
+                             NULL,
+                             NULL );
 
     if( !entry_cache ) {
       goto fail;
@@ -894,7 +896,7 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
-  pthread_mutex_init( &entry->entry_mutex, NULL );
+  config_init_mutex( entry->mutex = ( char * ) entry + sizeof( *entry ) );
 
   clear_error(  );
   return entry;
@@ -956,9 +958,9 @@ get_prival( int facility, int severity ) {
   return facility | severity;
 }
 
-int
+void
 lock_entry( const struct stumpless_entry *entry ) {
-  return pthread_mutex_lock( ( pthread_mutex_t * ) &entry->entry_mutex );
+  config_lock_mutex( entry->mutex );
 }
 
 struct stumpless_entry *
@@ -1101,7 +1103,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
-  pthread_mutex_destroy( ( pthread_mutex_t * ) &entry->entry_mutex );
+  config_destroy_mutex( entry->mutex );
 
   config_destroy_wel_data( entry );
 
@@ -1127,7 +1129,7 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
   return false;
 }
 
-int
+void
 unlock_entry( const struct stumpless_entry *entry ) {
-  return pthread_mutex_unlock( ( pthread_mutex_t * ) &entry->entry_mutex );
+  config_unlock_mutex( entry->mutex );
 }

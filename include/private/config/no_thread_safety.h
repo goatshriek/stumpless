@@ -16,21 +16,20 @@
 * limitations under the License.
 */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H
-#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_NO_THREAD_SAFETY_H
+#  define __STUMPLESS_PRIVATE_CONFIG_NO_THREAD_SAFETY_H
 
-#  include "private/config.h"
+#  include <stdbool.h>
+#  include "private/config/wrapper/thread_safety.h"
 
-#  ifdef USE_LOCALE_ES_ES
-#    include "private/config/locale/es-es.h"
-#  elif defined USE_LOCALE_FR_FR
-#    include "private/config/locale/fr-fr.h"
-#  elif defined USE_LOCALE_DE_DE
-#	 include "private/config/locale/de-de.h"
-#  elif defined USE_LOCALE_SV_SE
-#    include "private/config/locale/sv-se.h"
-#  else
-#    include "private/config/locale/en-us.h"
-#  endif
+bool
+no_thread_safety_compare_exchange_bool( config_atomic_bool_t *b,
+                                        bool expected,
+                                        bool replacement );
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H */
+bool
+no_thread_safety_compare_exchange_ptr( config_atomic_ptr_t *p,
+                                       const void *expected,
+                                       void *replacement );
+
+#endif /* __STUMPLESS_PRIVATE_CONFIG_NO_THREAD_SAFETY_H */

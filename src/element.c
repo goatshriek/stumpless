@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/element.h>
 #include <stumpless/param.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/element.h"
 #include "private/error.h"
 #include "private/memory.h"
@@ -385,7 +385,7 @@ stumpless_new_element( const char *name ) {
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  element = alloc_mem( sizeof( *element ) );
+  element = alloc_mem( sizeof( *element ) + CONFIG_MUTEX_T_SIZE );
   if( !element ) {
     goto fail;
   }
@@ -397,7 +397,8 @@ stumpless_new_element( const char *name ) {
 
   element->params = NULL;
   element->param_count = 0;
-  pthread_mutex_init( &element->element_mutex, NULL );
+
+  config_init_mutex( element->mutex = ( char * ) element + sizeof( *element ) );
 
   clear_error(  );
   return element;
@@ -519,9 +520,9 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
 
 /* private functions */
 
-int
+void
 lock_element( const struct stumpless_element *element ) {
-  pthread_mutex_lock( ( pthread_mutex_t * ) &element->element_mutex );
+  config_lock_mutex( element->mutex );
 }
 
 struct stumpless_param *
@@ -537,14 +538,14 @@ locked_get_param_by_index( const struct stumpless_element *element,
 
 void
 unchecked_destroy_element( const struct stumpless_element *element ) {
-  pthread_mutex_destroy( ( pthread_mutex_t * ) &element->element_mutex );
+  config_destroy_mutex( element->mutex );
   free_mem( element->params );
   free_mem( element->name );
   free_mem( element );
 }
 
-int
+void
 unlock_element( const struct stumpless_element *element ) {
-  pthread_mutex_unlock( ( pthread_mutex_t * ) &element->element_mutex );
+  config_unlock_mutex( element->mutex );
 }
 

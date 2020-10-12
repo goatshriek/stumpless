@@ -16,21 +16,21 @@
 * limitations under the License.
 */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H
-#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_PTHREAD_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_PTHREAD_H
 
-#  include "private/config.h"
+#  include <pthread.h>
 
-#  ifdef USE_LOCALE_ES_ES
-#    include "private/config/locale/es-es.h"
-#  elif defined USE_LOCALE_FR_FR
-#    include "private/config/locale/fr-fr.h"
-#  elif defined USE_LOCALE_DE_DE
-#	 include "private/config/locale/de-de.h"
-#  elif defined USE_LOCALE_SV_SE
-#    include "private/config/locale/sv-se.h"
-#  else
-#    include "private/config/locale/en-us.h"
-#  endif
+void
+pthread_destroy_mutex( const pthread_mutex_t *mutex );
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_WRAPPER_H */
+void
+pthread_init_mutex( pthread_mutex_t *mutex );
+
+void
+pthread_lock_mutex( const pthread_mutex_t *mutex );
+
+void
+pthread_unlock_mutex( const pthread_mutex_t *mutex );
+
+#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_PTHREAD_H */

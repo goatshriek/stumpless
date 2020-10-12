@@ -26,7 +26,7 @@
 void
 destroy_target( const struct stumpless_target *target );
 
-int
+void
 lock_target( const struct stumpless_target *target );
 
 struct stumpless_target *
@@ -53,7 +53,7 @@ target_free_global( void );
 void
 target_free_thread( void );
 
-int
+void
 unlock_target( const struct stumpless_target *target );
 
 int

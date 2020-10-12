@@ -55,7 +55,10 @@ c_only_terms = {}
   load_manifest(filename, c_only_terms)
 end
 
-all_known_terms = common_known_terms.merge(c_only_terms)
+cpp_only_terms = {}
+%w[cpp_standard_library.yml].each do |filename|
+  load_manifest(filename, cpp_only_terms)
+end
 
 return_code = 0
 
@@ -66,9 +69,9 @@ ARGV.each do |source_glob|
     next if source_filename.match?(%r{locale})
 
     file_terms = if source_filename.match?(%r{\.(h|c)$})
-                   all_known_terms
+                   common_known_terms.merge(c_only_terms)
                  else
-                   common_known_terms
+                   common_known_terms.merge(cpp_only_terms)
                  end
 
     used_includes = []

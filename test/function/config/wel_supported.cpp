@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include <windows.h>
+#include "test/helper/assert.hpp"
 #include "test/function/windows/events.h"
 
 namespace {
@@ -68,20 +69,15 @@ namespace {
   TEST_F( WelSupportedTest, GetInsertionStringIndexTooHigh ) {
     const char *result;
     WORD index = 4;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
-    ASSERT_TRUE( insertion_entry != NULL );
+    ASSERT_NOT_NULL( insertion_entry );
 
     result = stumpless_get_wel_insertion_string( insertion_entry, index );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_INDEX_OUT_OF_BOUNDS );
-      EXPECT_EQ( error->code, index );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+    EXPECT_EQ( error->code, index );
   }
 
   TEST_F( WelSupportedTest, GetInsertionStringLastString ) {
@@ -99,43 +95,31 @@ namespace {
 
   TEST_F( WelSupportedTest, GetInsertionStringNullEntry ) {
     const char *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
-    ASSERT_TRUE( insertion_entry != NULL );
+    ASSERT_NOT_NULL( insertion_entry );
 
     result = stumpless_get_wel_insertion_string( NULL, 1 );
-    EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST_F( WelSupportedTest, SetNullInsertionParam ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_entry *entry_result;
 
     entry_result = stumpless_set_wel_insertion_param( simple_entry, 0, NULL );
-    EXPECT_TRUE( entry_result == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( entry_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST_F( WelSupportedTest, SetNullInsertionString ) {
-    struct stumpless_error *error;
-    struct stumpless_entry *entry_result;
+    const struct stumpless_error *error;
+    const struct stumpless_entry *entry_result;
 
     entry_result = stumpless_set_wel_insertion_string( simple_entry, 0, NULL );
-    EXPECT_TRUE( entry_result == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( entry_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   /* non-fixture tests */
@@ -144,67 +128,52 @@ namespace {
     struct stumpless_target *target;
 
     target = stumpless_get_default_target(  );
+    ASSERT_NOT_NULL( target );
 
-    EXPECT_TRUE( target != NULL );
-
-    if( target ) {
-      EXPECT_EQ( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
-      EXPECT_STREQ( target->name, STUMPLESS_DEFAULT_TARGET_NAME );
-    }
+    EXPECT_EQ( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
+    EXPECT_STREQ( target->name, STUMPLESS_DEFAULT_TARGET_NAME );
 
     stumpless_free_all(  );
   }
 
   TEST( WelEntryCategoryTest, NullEntry ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_category( NULL, CATEGORY_TEST );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( entry );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelEntryEventIdTest, NullEntry ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_event_id( NULL, MSG_SIMPLE );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( entry );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelEntryTypeTest, NullEntry ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( entry );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelSetEntryInsertionParamTest, NullEntry ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_entry *entry;
     struct stumpless_param *param;
 
     param = stumpless_new_param( "param-name", "param-value" );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
 
     entry = stumpless_set_wel_insertion_param( NULL, 0, param );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( entry );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_param( param );
   }
@@ -298,15 +267,12 @@ namespace {
   }
 
   TEST( WelSetEntryInsertionStringTest, NullEntry ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_insertion_string( NULL, 0, "test-string" );
-    EXPECT_TRUE( entry == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( entry );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelSetInsertionStringTest, SetSingleString ) {
@@ -374,40 +340,28 @@ namespace {
 
   TEST( WelSetInsertionStringsTest, NullEntry ) {
     struct stumpless_entry *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     result = stumpless_set_wel_insertion_strings( NULL, 1, "add me!" );
-    EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelSetInsertionStringsTest, NullString ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
                                  "stumpless-wel-unit-test",
                                  "simple-entry",
                                  "simple test message" );
-    ASSERT_TRUE( entry != NULL );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_set_wel_insertion_strings( entry, 1, NULL );
-    EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry( entry );
   }

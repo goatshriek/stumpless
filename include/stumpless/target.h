@@ -27,9 +27,9 @@
 #ifndef __STUMPLESS_TARGET_H
 #  define __STUMPLESS_TARGET_H
 
-#  include <pthread.h>
 #  include <stdarg.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
@@ -103,8 +103,13 @@ struct stumpless_target {
  * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
  */
   int mask;
-/** A mutex used to coordinate multi-threaded access to this target. */
-  pthread_mutex_t target_mutex;
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/**
+ * A pointer to the mutex used to coordinate multi-threaded access to this
+ * target.
+ */
+  void *mutex;
+#  endif
 };
 
 /**
@@ -237,18 +242,16 @@ stumpless_close_target( struct stumpless_target *target );
  * same in some cases, they will not always be.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate accesses and
- * updates to the current target.
+ * This function is thread safe. Atomic operations are used to work with the
+ * default target.
  *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate access and the possible use of memory
- * management functions to create the default target.
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the
+ * possible use of memory management functions to create the default target.
  *
- * **Async Cancel Safety: AC-Unsafe lock heap**
+ * **Async Cancel Safety: AC-Unsafe heap**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked as well as
- * memory management functions.
+ * cancelled, due to the use of memory management functions.
  *
  * @return The current target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -308,18 +311,16 @@ stumpless_get_default_facility( const struct stumpless_target *target );
  * function.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate accesses and
- * updates to the default target.
+ * This function is thread safe. Atomic operations are used to work with the
+ * default target.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate access and the possible use of memory
- * management functions to create the default target.
+ * This function is not safe to call from signal handlers due to the
+ * possible use of memory management functions to create the default target.
  *
- * **Async Cancel Safety: AC-Unsafe lock heap**
+ * **Async Cancel Safety: AC-Unsafe heap**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked as well as
- * memory management functions.
+ * cancelled, due to the use of memory management functions.
  *
  * @return The default target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -483,16 +484,16 @@ stumpless_open_target( struct stumpless_target *target );
  * explicitly provided to the call.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate accesses and
- * updates to the current target.
+ * This function is thread safe. Atomic operations are used to work with the
+ * default target.
  *
- * **Async Signal Safety: AS-Unsafe lock**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate access.
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers as it only consists of
+ * an atomic read.
  *
- * **Async Cancel Safety: AC-Unsafe lock**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked.
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled, as it only consists of an atomic read.
  *
  * @param target The target to use as the current target.
  */

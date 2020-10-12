@@ -19,8 +19,9 @@
 #ifndef __STUMPLESS_PRIVATE_CACHE_H
 #  define __STUMPLESS_PRIVATE_CACHE_H
 
-#  include <pthread.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
+#  include "private/config/wrapper/thread_safety.h"
 
 struct cache {
   void ( *entry_init ) ( void * );
@@ -29,7 +30,9 @@ struct cache {
   char **pages;
   int page_count;
   size_t page_size;
-  pthread_mutex_t cache_mutex;
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+  config_mutex_t mutex;
+#  endif
 };
 
 /**

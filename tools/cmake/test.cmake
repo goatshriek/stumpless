@@ -71,9 +71,14 @@ function(private_add_thread_safety_test)
     stumpless
     libgtest
     libgtestmain
-    pthread
     ${THREAD_SAFETY_TEST_ARG_LIBRARIES}
   )
+
+  if(NOT HAVE_WINDOWS_H)
+    target_link_libraries(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
+      pthread
+    )
+  endif()
 
   target_include_directories(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     PRIVATE

@@ -21,10 +21,10 @@
 
 #  include <stumpless/param.h>
 
-int
+void
 lock_param( const struct stumpless_param *param );
 
-int
+void
 unlock_param( const struct stumpless_param *param );
 
 #endif /* __STUMPLESS_PRIVATE_PARAM_H */

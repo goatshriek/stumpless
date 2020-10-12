@@ -23,7 +23,7 @@
 #  include <stumpless/element.h>
 #  include <stumpless/param.h>
 
-int
+void
 lock_element( const struct stumpless_element *element );
 
 struct stumpless_param *
@@ -33,7 +33,7 @@ locked_get_param_by_index( const struct stumpless_element *element,
 void
 unchecked_destroy_element( const struct stumpless_element *element );
 
-int
+void
 unlock_element( const struct stumpless_element *element );
 
 #endif /* __STUMPLESS_PRIVATE_ELEMENT_H */

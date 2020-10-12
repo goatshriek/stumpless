@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
@@ -29,6 +28,7 @@
 #include <stumpless/target/stream.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -44,14 +44,11 @@
 #include "private/validate.h"
 
 /* global static variables */
-static struct stumpless_target *current_target = NULL;
-static pthread_mutex_t current_target_mutex = PTHREAD_MUTEX_INITIALIZER;
-
-static struct stumpless_target *default_target = NULL;
-static pthread_mutex_t default_target_mutex = PTHREAD_MUTEX_INITIALIZER;
+static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
+static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
 
 /* per-thread static variables */
-static __thread struct stumpless_entry *cached_entry = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
 
 static
 void
@@ -229,23 +226,13 @@ stumpless_get_current_target( void ) {
 
   clear_error(  );
 
-  pthread_mutex_lock( &current_target_mutex );
-  result = current_target;
-  pthread_mutex_unlock( &current_target_mutex );
-
+  result = config_read_ptr( &current_target );
   if( result ) {
     return result;
   }
 
   result = stumpless_get_default_target(  );
-
-  pthread_mutex_lock( &current_target_mutex );
-  if( !current_target ) {
-    current_target = result;
-  } else {
-    result = current_target;
-  }
-  pthread_mutex_unlock( &current_target_mutex );
+  config_compare_exchange_ptr( &current_target, NULL, result );
 
   return result;
 }
@@ -273,12 +260,16 @@ stumpless_get_default_target( void ) {
 
   clear_error(  );
 
-  pthread_mutex_lock( &default_target_mutex );
-  if( !default_target ) {
-    default_target = config_open_default_target(  );
+  result = config_read_ptr( &default_target );
+
+  while( !result ) {
+    result = config_open_default_target(  );
+
+    if( !config_compare_exchange_ptr( &default_target, NULL, result ) ) {
+      config_close_default_target( result );
+      result = config_read_ptr( &default_target );
+    }
   }
-  result = default_target;
-  pthread_mutex_unlock( &default_target_mutex );
 
   return result;
 }
@@ -402,10 +393,7 @@ stumpless_open_target( struct stumpless_target *target ) {
 void
 stumpless_set_current_target( struct stumpless_target *target ) {
   clear_error(  );
-
-  pthread_mutex_lock( &current_target_mutex );
-  current_target = target;
-  pthread_mutex_unlock( &current_target_mutex );
+  config_write_ptr( &current_target, target );
 }
 
 struct stumpless_target *
@@ -613,20 +601,18 @@ vstumpless_add_message( struct stumpless_target *target,
 
 void
 destroy_target( const struct stumpless_target *target ) {
-  if( target == current_target ) {
-    current_target = NULL;
-  }
+  config_compare_exchange_ptr( &current_target, target, NULL );
 
-  pthread_mutex_destroy( ( pthread_mutex_t * ) &target->target_mutex );
+  config_destroy_mutex( target->mutex );
   free_mem( target->default_app_name );
   free_mem( target->default_msgid );
   free_mem( target->name );
   free_mem( target );
 }
 
-int
+void
 lock_target( const struct stumpless_target *target ) {
-  return pthread_mutex_lock( ( pthread_mutex_t * ) &target->target_mutex );
+  config_lock_mutex( target->mutex );
 }
 
 struct stumpless_target *
@@ -637,7 +623,7 @@ new_target( enum stumpless_target_type type,
   struct stumpless_target *target;
   int default_prival;
 
-  target = alloc_mem( sizeof( *target ) );
+  target = alloc_mem( sizeof( *target ) + CONFIG_MUTEX_T_SIZE );
   if( !target ) {
     goto fail;
   }
@@ -647,7 +633,8 @@ new_target( enum stumpless_target_type type,
     goto fail_name;
   }
 
-  pthread_mutex_init( &target->target_mutex, NULL );
+  config_init_mutex( target->mutex = ( char * ) target + sizeof( *target ) );
+
   target->type = type;
   target->options = options;
   default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
@@ -701,8 +688,8 @@ sendto_unsupported_target( const struct stumpless_target *target,
 
 void
 target_free_global( void ) {
-  config_close_default_target( default_target );
-  default_target = NULL;
+  config_close_default_target( config_read_ptr( &default_target ) );
+  config_write_ptr( &default_target, NULL );
 }
 
 void
@@ -711,9 +698,9 @@ target_free_thread( void ) {
   cached_entry = NULL;
 }
 
-int
+void
 unlock_target( const struct stumpless_target *target ) {
-  return pthread_mutex_unlock( ( pthread_mutex_t * ) &target->target_mutex );
+  config_unlock_mutex( target->mutex );
 }
 
 int

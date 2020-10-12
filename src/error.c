@@ -16,27 +16,27 @@
  * limitations under the License.
  */
 
-#include <pthread.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/error.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 
 /* global static variables */
-static FILE *error_stream = NULL;
-static int error_stream_valid = 0;
-static pthread_mutex_t error_stream_mutex = PTHREAD_MUTEX_INITIALIZER;
+static config_atomic_ptr_t error_stream = config_atomic_ptr_initializer;
+static config_atomic_bool_t error_stream_free = config_atomic_bool_true;
+static config_atomic_bool_t error_stream_valid = config_atomic_bool_false;
 
 static const char *stumpless_error_enum_to_string[] = {
   STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
 };
 
 /* per-thread static variables */
-static __thread struct stumpless_error last_error;
-static __thread bool error_valid = false;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_error last_error;
+static CONFIG_THREAD_LOCAL_STORAGE bool error_valid = false;
 
 const struct stumpless_error *
 stumpless_get_error( void ) {
@@ -64,17 +64,11 @@ stumpless_get_error_id_string( enum stumpless_error_id id) {
 
 FILE *
 stumpless_get_error_stream( void ) {
-
-  pthread_mutex_lock( &error_stream_mutex );
-
-  if( !error_stream_valid ) {
-    error_stream = stderr;
-    error_stream_valid = 1;
+  if( config_read_bool( &error_stream_valid ) ) {
+    return config_read_ptr( &error_stream );
+  } else {
+    return stderr;
   }
-
-  pthread_mutex_unlock( &error_stream_mutex );
-
-  return error_stream;
 }
 
 bool
@@ -84,47 +78,41 @@ stumpless_has_error( void ) {
 
 void
 stumpless_perror( const char *prefix ) {
+  FILE *stream;
 
-  pthread_mutex_lock( &error_stream_mutex );
+  stream = stumpless_get_error_stream(  );
 
-  if( !error_stream_valid ) {
-    error_stream = stderr;
-    error_stream_valid = 1;
-  }
+  if( stream && error_valid ) {
 
-  if( error_stream && error_valid ) {
+    while(!config_compare_exchange_bool( &error_stream_free, true, false )) {};
 
     if( prefix ) {
-      fputs( prefix, error_stream );
-      fputc( ':', error_stream );
-      fputc( ' ', error_stream );
+      fputs( prefix, stream );
+      fputc( ':', stream );
+      fputc( ' ', stream );
     }
 
-    fputs( stumpless_get_error_id_string(last_error.id), error_stream );
-    fputc( ':', error_stream );
-    fputc( ' ', error_stream );
+    fputs( stumpless_get_error_id_string(last_error.id), stream );
+    fputc( ':', stream );
+    fputc( ' ', stream );
     
 
-    fputs( last_error.message, error_stream );
+    fputs( last_error.message, stream );
 
     if( last_error.code_type ) {
-      fprintf( error_stream, " (%s: %d)", last_error.code_type, last_error.code );
+      fprintf( stream, " (%s: %d)", last_error.code_type, last_error.code );
     }
 
-    fputc( '\n', error_stream );
+    fputc( '\n', stream );
   }
 
-  pthread_mutex_unlock( &error_stream_mutex );
+  config_write_bool( &error_stream_free, true );
 }
 
 void
 stumpless_set_error_stream( FILE *stream ) {
-  pthread_mutex_lock( &error_stream_mutex );
-
-  error_stream = stream;
-  error_stream_valid = 1;
-
-  pthread_mutex_unlock( &error_stream_mutex );
+  config_write_ptr( &error_stream, stream );
+  config_write_bool( &error_stream_valid, true );
 }
 
 /* private functions */

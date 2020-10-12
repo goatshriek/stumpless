@@ -55,6 +55,9 @@
   - "netdb.h"
   - "ws2tcpip.h"
   - "private/windows_wrapper.h"
+"GetCurrentProcessId":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "gethostname":
   - "unistd.h"
   - "winsock2.h"
@@ -64,6 +67,9 @@
   - "windows.h"
   - "private/windows_wrapper.h"
 "getpid": "unistd.h"
+"GetSystemInfo":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "gmtime": "time.h"
 "HANDLE":
   - "windows.h"
@@ -86,7 +92,6 @@
 "memcpy": "string.h"
 "memset": "string.h"
 "mkstemp": "stdlib.h"
-"mutex": "mutex"
 "NULL":
   - "cstddef"
   - "stddef.h"
@@ -104,6 +109,7 @@
 "pthread_mutex_lock": "pthread.h"
 "pthread_mutex_t": "pthread.h"
 "pthread_mutex_unlock": "pthread.h"
+"pthread_self": "pthread.h"
 "realloc":
   - "cstdlib"
   - "stdlib.h"
@@ -161,7 +167,6 @@
 "SYSTEMTIME":
   - "windows.h"
   - "private/windows_wrapper.h"
-"thread": "thread"
 "time": "time.h"
 "time_t": "time.h"
 "uintptr_t": "stdint.h"
