@@ -16,16 +16,10 @@
  * limitations under the License.
  */
 
-#include <stdarg.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <stumpless/entry.h>
-#include <stumpless/param.h>
-#include <stumpless/error.h>
-#include "private/entry.h"
-#include "private/error.h"
 #include "private/validate.h"
+#include "private/config/locale/wrapper.h"
 
 bool validate_msgid_length(const char* msgid ) {
   size_t max_msgid_length = 32;

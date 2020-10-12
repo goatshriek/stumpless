@@ -20,6 +20,7 @@
 #  define __STUMPLESS_PRIVATE_VALIDATE_H
 
 #  include <stddef.h>
+#  include <stdbool.h>
 #  include "private/config/locale/wrapper.h"
 #  include "private/error.h"
 
