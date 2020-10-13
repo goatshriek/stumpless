@@ -37,3 +37,7 @@ bool validate_msgid_length(const char* msgid ) {
 
   return validation_status;
 }
+
+bool validate_msgid_format( const char* msgid ) {
+  return true;
+}
