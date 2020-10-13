@@ -28,7 +28,7 @@ bool validate_msgid_length(const char* msgid ) {
   bool validation_status = true;
 
   if( msgid_char_length > max_msgid_length ) {
-    raise_argument_too_big( L10N_STRING_TOO_LONG, 
+    raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
                             msgid_char_length, 
                             L10N_STRING_LENGTH_ERROR_CODE_TYPE );
 
