@@ -290,6 +290,6 @@ raise_wel_open_failure( void ) {
 }
 
 void
-raise_invalid_encoding( void ) {
-  raise_error( STUMPLESS_INVALID_ENCODING, NULL, 0, NULL );
+raise_invalid_encoding( const char *message ) {
+  raise_error( STUMPLESS_INVALID_ENCODING, message, 0, NULL );
 }

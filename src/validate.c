@@ -39,5 +39,14 @@ bool validate_msgid_length(const char* msgid ) {
 }
 
 bool validate_msgid_format( const char* msgid ) {
+  size_t msgid_length = strlen( msgid );
+
+  for (size_t i = 0; i < msgid_length; ++i) {
+    if (!(msgid[i] >= 33 && msgid[i] <= 126)) {
+      raise_invalid_encoding(L10N_MSGID_FORMAT_ERROR_MESSAGE);
+      return false;
+    }
+  }
+  
   return true;
 }
