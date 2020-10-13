@@ -20,6 +20,7 @@
 #  define __STUMPLESS_PRIVATE_VALIDATE_H
 
 #  include <stddef.h>
+#  include <stdbool.h>
 #  include "private/config/locale/wrapper.h"
 #  include "private/error.h"
 
@@ -29,5 +30,14 @@ if( ARG_NAME == NULL ) {                                            \
   return NULL;                                                      \
 }
 
+/**
+ * Checks the char length of msgid.
+ *
+ * @param the msgid.
+ * 
+ * @return True if the msgid is at or below the maximum allowed length, otherwise
+ * it will return false and raise the appropriate error.
+ */
+bool validate_msgid_length(const char* msgid );
 
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */

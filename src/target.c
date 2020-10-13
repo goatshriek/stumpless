@@ -466,10 +466,13 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
 
+  if( !validate_msgid_length( msgid ) ) {
+      return NULL;
+  }
+
   new_msgid = copy_cstring_with_length( msgid, &new_length );
   if( !new_msgid ) {
     return NULL;
-
   }
 
   lock_target( target );

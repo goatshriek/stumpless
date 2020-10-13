@@ -172,6 +172,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/file.c
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
+  ${PROJECT_SOURCE_DIR}/src/validate.c
 )
 
 

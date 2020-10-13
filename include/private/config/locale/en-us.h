@@ -135,4 +135,10 @@ ARG_NAME " was NULL"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "the result of WSAGetLastError after the failed call"
 
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"length of string exceeded maximum limit"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"the length of the offending string"
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */

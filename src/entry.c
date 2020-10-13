@@ -650,6 +650,10 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
 
   effective_msgid = msgid ? msgid : "-";
+  if( !validate_msgid_length( effective_msgid ) ) {
+      return NULL;
+  }
+
   new_msgid = copy_cstring_with_length( effective_msgid, &new_msgid_length );
   if( !new_msgid ) {
     return NULL;
@@ -870,6 +874,10 @@ vstumpless_new_entry( int facility,
   }
 
   effective_msgid = msgid ? msgid : "-";
+  if( !validate_msgid_length( effective_msgid ) ) {
+      goto fail_msgid;
+  }
+
   msgid_length = &( entry->msgid_length );
   entry->msgid = copy_cstring_with_length( effective_msgid, msgid_length );
   if( !entry->msgid ) {

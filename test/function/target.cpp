@@ -445,6 +445,25 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( SetDefaultMsgId, MsgIdTargetRejected ) {
+    char buffer[100];
+    struct stumpless_target* target;
+    struct stumpless_target* target_result;
+    const struct stumpless_error* error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    ASSERT_TRUE( target != NULL );
+
+
+    target_result = stumpless_set_target_default_msgid( target, "msgid-that-is-too-long-to-be-accepted" );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+  }
+
   TEST( SetOption, NullTarget ) {
     const struct stumpless_error *error;
     const struct stumpless_target *result;
