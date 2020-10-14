@@ -22,9 +22,9 @@
 #include "private/windows_wrapper.h"
 
 bool
-windows_compare_exchange_bool( BOOL volatile *b,
-                               BOOL expected,
-                               BOOL replacement ) {
+windows_compare_exchange_bool( LONG volatile *b,
+                               LONG expected,
+                               LONG replacement ) {
   LONG initial;
 
   initial = InterlockedCompareExchange( b, replacement, expected );

@@ -46,7 +46,7 @@ typedef void * config_atomic_ptr_t;
 #  elif defined HAVE_WINDOWS_H
 #    include "private/config/have_windows.h"
 #    include "private/windows_wrapper.h"
-typedef BOOL volatile config_atomic_bool_t;
+typedef LONG volatile config_atomic_bool_t;
 typedef PVOID volatile config_atomic_ptr_t;
 typedef CRITICAL_SECTION config_mutex_t;
 #    define CONFIG_THREAD_LOCAL_STORAGE __declspec( thread )

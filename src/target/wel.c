@@ -34,14 +34,16 @@
 
 void
 stumpless_close_wel_target( struct stumpless_target *target ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
 
-  destroy_wel_target( target->id );
+  if( !destroy_wel_target( target->id ) ) {
+    return;
+  }
+
+  clear_error(  );
   destroy_target( target );
 }
 
@@ -115,16 +117,18 @@ stumpless_open_remote_wel_target( const char *server,
 
 /* private definitions */
 
-void
+BOOL
 destroy_wel_target( struct wel_target *target ) {
   BOOL success;
 
   success = DeregisterEventSource( target->handle );
   if( !success ) {
     raise_wel_close_failure(  );
+  } else {
+    free_mem( target );
   }
 
-  free_mem( target );
+  return success;
 }
 
 struct wel_target *

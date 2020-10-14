@@ -24,9 +24,9 @@
 #  include "private/windows_wrapper.h"
 
 bool
-windows_compare_exchange_bool( BOOL volatile *b,
-                               BOOL expected,
-                               BOOL replacement );
+windows_compare_exchange_bool( LONG volatile *b,
+                               LONG expected,
+                               LONG replacement );
 
 bool
 windows_compare_exchange_ptr( PVOID volatile *p,

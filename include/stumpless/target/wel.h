@@ -38,8 +38,25 @@ extern "C" {
  * In addition to closing the target, this function also destroys all memory
  * allocated for the target, including the target struct itself.
  *
- * If there is a problem closing the target, then an error code will be set
- * appropriately.
+ * If there is a problem while closing the target, then an error code will be
+ * set appropriately, the target will NOT be closed, and no memory will be
+ * released. To avoid a memory leak, check for errors using
+ * `stumpless_has_error` and resolve any errors that arise before calling this
+ * function again.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
  *
  * @param target The Windows Event Log target to close.
  */
