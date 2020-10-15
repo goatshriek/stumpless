@@ -141,7 +141,7 @@ ARG_NAME " was NULL"
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
 "the length of the offending string"
 
-#  define L10N_MSGID_FORMAT_ERROR_MESSAGE \
-"invalid msgid format"
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"invalid " ARG " format"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */

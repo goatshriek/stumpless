@@ -753,6 +753,20 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
   }
 
+  TEST_F( EntryTest, MsgidFormatRejected ) {
+    const struct stumpless_error* error;
+    struct stumpless_entry* entry;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "test-app-name",
+                                 "test-msgid-wro\ng-format",
+                                 "test message" );
+
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
   TEST_F( EntryTest, SetMsgidRejected ) {
     const struct stumpless_entry* result;
     const struct stumpless_error* error;
@@ -760,6 +774,15 @@ namespace {
     result = stumpless_set_entry_msgid( basic_entry, "gonna-fail-because-length-exceeded-max-allowed" );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+  }
+
+  TEST_F( EntryTest, SetMsgidFormatRejected ) {
+    const struct stumpless_entry* result;
+    const struct stumpless_error* error;
+
+    result = stumpless_set_entry_msgid( basic_entry, "test-msgid-wro\ng-format" );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
   TEST_F( EntryTest, SetParam ) {
