@@ -73,7 +73,7 @@ stumplog( LOG_INFO | LOG_USER, "My message" );
 ```
 
 If you haven't opened a target, this will log messages to the default target for
-the platform: on a Linux this is `/dev/log`, on a Mac system this will be
+the platform: on Linux this is `/dev/log`, on a Mac system this will be
 `/var/run/syslog`, and on a Windows machine it is the Windows Event Log. If you
 open a target or a few before calling `stumplog`, then logs will be sent to the
 most recently opened target.
