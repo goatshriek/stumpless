@@ -455,6 +455,7 @@ else()
     SOURCES
       test/thread_safety/target/socket.cpp
       $<TARGET_OBJECTS:test_helper_usage>
+      $<TARGET_OBJECTS:rfc5424_checker>
   )
 
   add_example(socket
