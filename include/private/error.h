@@ -115,4 +115,7 @@ raise_wel_close_failure( void );
 void
 raise_wel_open_failure( void );
 
+void
+raise_invalid_encoding( const char *message );
+
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

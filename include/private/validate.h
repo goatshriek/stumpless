@@ -40,4 +40,14 @@ if( ARG_NAME == NULL ) {                                            \
  */
 bool validate_msgid_length(const char* msgid );
 
+/**
+ * Checks the format of msgid.
+ *
+ * @param the msgid.
+ *
+ * @return True if the msgid has the correct format, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ */
+bool validate_msgid_format( const char* msgid );
+
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */
