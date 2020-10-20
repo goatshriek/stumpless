@@ -92,6 +92,9 @@ stumpless_version_cmp( const struct stumpless_version * version_x,
  * This string will be NULL-terminated, and will appear in the standard
  * semantic versioning format of 'major.minor.patch'.
  *
+ * This string must be freed by the caller when it is no longer needed. Failing
+ * to do so will result in a memory leak of the returned string.
+ *
  * **Thread Safety: MT-Safe race:version**
  * This function is thread safe, as long as the version is not modified by
  * other threads during the call.
