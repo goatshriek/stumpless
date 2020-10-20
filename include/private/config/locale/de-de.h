@@ -137,4 +137,13 @@ ARG_NAME " war NULL"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "Das Ergebnis von WSAGetLastError nach dem fehlgeschlagenen Aufruf"
 
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"STRING TOO LONG"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"STRING LENGTH ERROR CODE TYPE"
+
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"invalid " ARG " format"
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_DE_DE_H */
