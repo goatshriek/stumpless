@@ -275,3 +275,8 @@ void
 raise_wel_open_failure( void ) {
   raise_error( STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE, NULL, 0, NULL );
 }
+
+void
+raise_invalid_encoding( const char *message ) {
+  raise_error( STUMPLESS_INVALID_ENCODING, message, 0, NULL );
+}

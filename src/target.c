@@ -466,7 +466,7 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
 
-  if( !validate_msgid_length( msgid ) ) {
+  if( !validate_msgid_length( msgid ) || !validate_msgid_format( msgid ) ) {
       return NULL;
   }
 

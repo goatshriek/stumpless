@@ -102,6 +102,8 @@ extern "C" {
   ERROR(STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE, 22)	\
 /** Could not open the Windows Event Log. */\
   ERROR(STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE, 23)	\
+/** A provided encoding does not conform to the standard. */\
+  ERROR(STUMPLESS_INVALID_ENCODING, 24) \
 
 #define STUMPLESS_GENERATE_ENUM(ENUM, INDEX) ENUM = INDEX,
 
