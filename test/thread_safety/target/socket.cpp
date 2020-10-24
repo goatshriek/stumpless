@@ -33,6 +33,7 @@
 namespace {
   const int THREAD_COUNT = 4;
   const int MESSAGE_COUNT = 100;
+  const int READ_WRITE_RATIO = 4;
   std::atomic_int received_count;
 
   void
@@ -40,11 +41,9 @@ namespace {
     size_t i;
     char buffer[1024];
     ssize_t msg_len;
-    struct sockaddr_un from_addr;
-    socklen_t size = 100;
 
     while( true ) {
-      msg_len = recvfrom( socket, buffer, 1024, 0, ( struct sockaddr *) &from_addr, &size );
+      msg_len = recv( socket, buffer, 1024, 0 );
       if( msg_len < 0 ) {
         break;
       } else {
@@ -63,7 +62,7 @@ namespace {
     struct stumpless_target *target;
     size_t i;
     std::thread *threads[THREAD_COUNT];
-    std::thread *listener_threads[THREAD_COUNT*2];
+    std::thread *listener_threads[THREAD_COUNT*READ_WRITE_RATIO];
     struct timeval read_timeout;
     int buffer_size;
 
@@ -93,7 +92,7 @@ namespace {
          sizeof(test_socket_addr));
 
     received_count = 0;
-    for( i = 0; i < THREAD_COUNT*2; i++ ) {
+    for( i = 0; i < THREAD_COUNT * READ_WRITE_RATIO; i++ ) {
       listener_threads[i] = new std::thread( listen_and_validate, test_socket );
     }
 
@@ -114,7 +113,7 @@ namespace {
       delete threads[i];
     }
 
-    for( i = 0; i < THREAD_COUNT*2; i++ ) {
+    for( i = 0; i < THREAD_COUNT * READ_WRITE_RATIO; i++ ) {
       listener_threads[i]->join(  );
       delete listener_threads[i];
     }
