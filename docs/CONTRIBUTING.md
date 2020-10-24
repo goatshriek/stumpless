@@ -35,22 +35,24 @@ request using the provided template, mentioning the corresponding issue number.
 Made some changes and want to share your work? Great! Submit a pull request and
 we'll review it for inclusion into the latest version. Make sure that you follow
 these guidelines:
- * Include a `Signed-off-by` tag in all of your commits (using the `-s` option
-   of `git commit`).
  * If you're working on something that's relatively small, then you don't need
    to worry about the number of commits in your branch, as it will be squashed
    before it is merged into the `latest` branch. If you're working on something
    marked as a `good first issue` for example, don't worry about keeping a clean
    commit history and just focus on the fun stuff! You will be retained as the
-   author of the commit, to make sure that contribution credit is be reflected
-   in github. But if you're working on something larger, squashing it into a
+   author of the commit, to make sure that contribution credit is reflected
+   in the commit history and on GitHub.
+ * If you're working on something larger, squashing it into a
    single commit might not make a lot of sense, and so the number of commits
    becomes more important. If you find yourself in this situation, try to make
    sure that each commit is logical and adds value to the commit history. If
    you need a little guidance to get started with adjusting the commit history
    of your change, check out
    [this chapter](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
-   from the Git Book about it, which covers several common adjustments.
+   from the Git Book about it, which covers several common adjustments. Note
+   that this scenario will be rare, and if you aren't sure if it applies to
+   your change then you should ask before going down the complex and
+   time-consuming path of rebasing.
  * If a commit resolves or is otherwise related to a particular issue, include
    a reference to it in the body of the commit.
 

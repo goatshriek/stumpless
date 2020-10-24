@@ -177,7 +177,12 @@ in a source file without any extras. The tool is called `check_headers` and is
 stored in the `tools/check_headers` folder. You can run this manually if you
 wish, by simply executing the script and passing it your source file (or files)
 as parameters. You will need Ruby to run it. It is also run as a part of Travis
-CI builds, so you can wait for it to run there instead of doing it yourself.
+CI builds, so you can wait for it to run there instead of doing it yourself. For
+a one-liner command to catch issues, you can run the tool like this:
+
+```sh
+tools/check_headers/check_headers.rb "src/**/*.c" "include/**/*.h*" "test/**/*.cpp"
+```
 
 However, if you have added a new function and you see Travis CI builds failing
 as a result of this tool claiming that an include file is unnecessary, then you
