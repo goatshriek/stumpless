@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <atomic>
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <string.h>
@@ -32,15 +33,20 @@
 namespace {
   const int THREAD_COUNT = 16;
   const int MESSAGE_COUNT = 100;
+  std::atomic_int received_count;
 
   void
   listen_and_validate( int socket, size_t message_count ){
     size_t i;
     char buffer[1024];
     ssize_t msg_len;
+    struct sockaddr_un from_addr;
+    socklen_t size = 100;
+
+    received_count = 0;
 
     for( i = 0; i < message_count; i++ ) {
-      msg_len = recv( socket, buffer, 1024, 0 );
+      msg_len = recvfrom( socket, buffer, 1024, 0, ( struct sockaddr *) &from_addr, &size );
       if( msg_len < 0 ) {
         buffer[0] = '\0';
       } else {
@@ -48,6 +54,7 @@ namespace {
       }
 
       TestRFC5424Compliance( buffer );
+      received_count++;
     }
   }
 
@@ -59,7 +66,7 @@ namespace {
     struct stumpless_target *target;
     size_t i;
     std::thread *threads[THREAD_COUNT];
-    struct timeval read_timeout;
+    //struct timeval read_timeout;
 
     // setting up the listening socket
     test_socket_addr.sun_family = AF_UNIX;
@@ -67,13 +74,13 @@ namespace {
 
     test_socket = socket(test_socket_addr.sun_family, SOCK_DGRAM, 0);
 
-    read_timeout.tv_sec = 2;
-    read_timeout.tv_usec = 0;
-    setsockopt( test_socket,
-                SOL_SOCKET,
-                SO_RCVTIMEO,
-                &read_timeout,
-                sizeof( read_timeout ) );
+    //read_timeout.tv_sec = 2;
+    //read_timeout.tv_usec = 0;
+    //setsockopt( test_socket,
+    //            SOL_SOCKET,
+    //            SO_RCVTIMEO,
+    //            &read_timeout,
+    //            sizeof( read_timeout ) );
 
     bind(test_socket,
          (struct sockaddr *) &test_socket_addr,
@@ -108,5 +115,8 @@ namespace {
     unlink( socket_name );
 
     stumpless_free_all(  );
+
+    // final checks
+    EXPECT_EQ( THREAD_COUNT * MESSAGE_COUNT, received_count );
   }
 }

@@ -1,3 +1,4 @@
+"atomic_int": "atomic"
 "get_id": "thread"
 "mutex": "mutex"
 "thread": "thread"
