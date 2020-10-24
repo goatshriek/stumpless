@@ -36,16 +36,14 @@ namespace {
   std::atomic_int received_count;
 
   void
-  listen_and_validate( int socket, size_t message_count ){
+  listen_and_validate( int socket ){
     size_t i;
     char buffer[1024];
     ssize_t msg_len;
     struct sockaddr_un from_addr;
     socklen_t size = 100;
 
-    received_count = 0;
-
-    for( i = 0; i < message_count; i++ ) {
+    while( true ) {
       msg_len = recvfrom( socket, buffer, 1024, 0, ( struct sockaddr *) &from_addr, &size );
       if( msg_len < 0 ) {
         break;
@@ -62,10 +60,10 @@ namespace {
     struct sockaddr_un test_socket_addr;
     int test_socket;
     const char *socket_name = "sockettargettest";
-    std::thread listener_thread;
     struct stumpless_target *target;
     size_t i;
     std::thread *threads[THREAD_COUNT];
+    std::thread *listener_threads[THREAD_COUNT*2];
     struct timeval read_timeout;
 
     // setting up the listening socket
@@ -85,9 +83,11 @@ namespace {
     bind(test_socket,
          (struct sockaddr *) &test_socket_addr,
          sizeof(test_socket_addr));
-    listener_thread = std::thread( listen_and_validate,
-                                   test_socket,
-                                   THREAD_COUNT * MESSAGE_COUNT );
+
+    received_count = 0;
+    for( i = 0; i < THREAD_COUNT*2; i++ ) {
+      listener_threads[i] = new std::thread( listen_and_validate, test_socket );
+    }
 
     // set up the target to log to
     target = stumpless_open_socket_target( socket_name,
@@ -105,7 +105,11 @@ namespace {
       threads[i]->join(  );
       delete threads[i];
     }
-    listener_thread.join(  );
+
+    for( i = 0; i < THREAD_COUNT*2; i++ ) {
+      listener_threads[i]->join(  );
+      delete listener_threads[i];
+    }
 
     // cleanup after the test
     stumpless_close_socket_target( target );
