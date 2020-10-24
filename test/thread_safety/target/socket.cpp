@@ -65,6 +65,7 @@ namespace {
     std::thread *threads[THREAD_COUNT];
     std::thread *listener_threads[THREAD_COUNT*2];
     struct timeval read_timeout;
+    int buffer_size;
 
     // setting up the listening socket
     test_socket_addr.sun_family = AF_UNIX;
@@ -79,6 +80,13 @@ namespace {
                 SO_RCVTIMEO,
                 &read_timeout,
                 sizeof( read_timeout ) );
+
+    buffer_size = 1024 * THREAD_COUNT;
+    setsockopt( test_socket,
+                SOL_SOCKET,
+                SO_SNDBUF,
+                &buffer_size,
+                sizeof( buffer_size ) );
 
     bind(test_socket,
          (struct sockaddr *) &test_socket_addr,
