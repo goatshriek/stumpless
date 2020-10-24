@@ -24,7 +24,8 @@ easier:
  * can be adjusted or removed during compilation for zero runtime impact
  * interoperability with standard syslog daemons and library functions
  * an extensive unit testing suite and continuous integration
- * localized for multiple languages ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
+ * localized for multiple languages :de: :fr: :sweden:
+   ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
    [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
@@ -73,7 +74,7 @@ stumplog( LOG_INFO | LOG_USER, "My message" );
 ```
 
 If you haven't opened a target, this will log messages to the default target for
-the platform: on a Linux this is `/dev/log`, on a Mac system this will be
+the platform: on Linux this is `/dev/log`, on a Mac system this will be
 `/var/run/syslog`, and on a Windows machine it is the Windows Event Log. If you
 open a target or a few before calling `stumplog`, then logs will be sent to the
 most recently opened target.
