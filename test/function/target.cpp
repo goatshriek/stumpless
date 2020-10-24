@@ -466,9 +466,9 @@ namespace {
 
   TEST( SetDefaultMsgId, MsgidSetTargetFormatRejected ) {
     char buffer[100];
-    struct stumpless_target* target;
-    struct stumpless_target* target_result;
-    struct stumpless_error* error;
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
