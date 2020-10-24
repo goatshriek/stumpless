@@ -81,12 +81,7 @@ namespace {
                 &read_timeout,
                 sizeof( read_timeout ) );
 
-    buffer_size = 8192 * THREAD_COUNT;
-    setsockopt( test_socket,
-                SOL_SOCKET,
-                SO_SNDBUF,
-                &buffer_size,
-                sizeof( buffer_size ) );
+    buffer_size = 32768 * THREAD_COUNT;
     setsockopt( test_socket,
                 SOL_SOCKET,
                 SO_RCVBUF,
