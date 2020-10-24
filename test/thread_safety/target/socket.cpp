@@ -31,7 +31,7 @@
 #include "test/helper/usage.hpp"
 
 namespace {
-  const int THREAD_COUNT = 16;
+  const int THREAD_COUNT = 4;
   const int MESSAGE_COUNT = 100;
   std::atomic_int received_count;
 
