@@ -87,6 +87,11 @@ namespace {
                 SO_SNDBUF,
                 &buffer_size,
                 sizeof( buffer_size ) );
+    setsockopt( test_socket,
+                SOL_SOCKET,
+                SO_RCVBUF,
+                &buffer_size,
+                sizeof( buffer_size ) );
 
     bind(test_socket,
          (struct sockaddr *) &test_socket_addr,
