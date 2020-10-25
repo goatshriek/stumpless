@@ -24,9 +24,9 @@
  - [x] stumpless_close_file_target
  - [x] stumpless_open_file_target
  - [x] stumpless_set_current_target
- - [ ] stumpless_close_wel_target
- - [ ] stumpless_open_local_wel_target
- - [ ] stumpless_open_remote_wel_target
+ - [x] stumpless_close_wel_target
+ - [x] stumpless_open_local_wel_target
+ - [x] stumpless_open_remote_wel_target
  - [ ] stumpless_set_wel_category
  - [ ] stumpless_set_wel_event_id
  - [ ] stumpless_set_wel_insertion_param
