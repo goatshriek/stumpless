@@ -90,7 +90,7 @@ namespace {
 
     result = stumpless_add_entry( target, one_insertion_entry );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
   }
 
   TEST_F( WelTargetTest, AddEntryWithTwoInsertionStrings ) {

@@ -285,6 +285,7 @@ fail:
 
 void
 destroy_wel_data(const struct stumpless_entry* entry) {
+    config_destroy_mutex( &entry->wel_data->mutex );
     destroy_insertion_params( entry );
     free_mem( entry->wel_data );
 }
@@ -322,6 +323,7 @@ initialize_wel_data( struct stumpless_entry *entry ) {
   data->insertion_strings = NULL;
   data->insertion_params = NULL;
   data->insertion_count = 0;
+  config_init_mutex( &data->mutex );
 
   entry->wel_data = data;
   return true;
