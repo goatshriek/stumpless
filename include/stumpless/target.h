@@ -151,7 +151,25 @@ void
 stumplog( int priority, const char *message, ... );
 
 /**
- * Adds an entry into a given target.
+ * Adds an entry into a given target. This is the primary logging function of
+ * the library; all other logging functions call this one after performing any
+ * specific setup.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked.
  *
  * @param target The target to send the message to.
  *

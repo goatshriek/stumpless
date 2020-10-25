@@ -1,7 +1,7 @@
 ## Remaining functions
 
  - [x] stumpless_add_element
- - [ ] stumpless_add_entry
+ - [x] stumpless_add_entry
  - [x] stumpless_add_param
  - [x] stumpless_close_buffer_target
  - [x] stumpless_destroy_element
