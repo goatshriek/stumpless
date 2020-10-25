@@ -71,10 +71,10 @@
  - [x] vstumpless_new_entry
  - [x] vstumpless_set_wel_insertion_strings
  - [ ] stumpless_close_target
- - [ ] stumpless_add_log
+ - [x] stumpless_add_log
  - [x] stumpless_get_default_target
  - [ ] stumplog
- - [ ] vstumpless_add_log
+ - [x] vstumpless_add_log
  - [ ] vstumplog
  - [x] stumpless_version_to_string
  - [x] vstumpless_set_entry_message

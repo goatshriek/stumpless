@@ -186,6 +186,25 @@ stumpless_add_entry( struct stumpless_target *target,
 /**
  * Adds a log message with a priority to a given target.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
  * @param target The target to send the message to.
  *
  * @param priority The priority of the message - this should be the bitwise or
@@ -729,6 +748,25 @@ vstumplog( int priority, const char *message, va_list subs );
 
 /**
  * Adds a log message with a priority to a given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param target The target to send the message to.
  *
