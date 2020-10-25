@@ -152,8 +152,8 @@ stumplog( int priority, const char *message, ... );
 
 /**
  * Adds an entry into a given target. This is the primary logging function of
- * the library; all other logging functions call this one after performing any
- * specific setup.
+ * stumpless; all other logging functions call this one after performing any
+ * setup specific to themselves.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
