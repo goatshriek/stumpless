@@ -543,6 +543,12 @@ else()
       ${PROJECT_BINARY_DIR}/events.rc
   )
 
+  add_thread_safety_test(wel
+    SOURCES
+      test/thread_safety/target/wel.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
   ADD_CUSTOM_COMMAND(

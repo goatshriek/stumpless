@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,6 +66,18 @@ stumpless_close_wel_target( struct stumpless_target *target );
 /**
  * Opens a Windows Event Log target on the local machine.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
  * @param name The name of the target to open. This should match the name of the
  * Windows Event Source that the logs will be added to.
  *
@@ -81,6 +93,18 @@ stumpless_open_local_wel_target( const char *name,
 
 /**
  * Opens a Windows Event Log target on a remote machine.
+ *
+ * **Thread Safety: MT-Safe race:server race:name**
+ * This function is thread safe, of course assuming that server and name are
+ * not modified by any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
  * @param server The remote server to log to. This should use the Universal
  * Naming Convention (UNC) of the remote end. If this parameter is set to NULL,
