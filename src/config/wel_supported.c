@@ -31,6 +31,7 @@
 #include <stumpless/target/wel.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
@@ -326,6 +327,11 @@ initialize_wel_data( struct stumpless_entry *entry ) {
   return true;
 }
 
+void
+lock_wel_data( const struct wel_data *data ) {
+  config_lock_mutex( &data->mutex );
+}
+
 struct stumpless_param **
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index ) {
   size_t new_size;
@@ -389,6 +395,11 @@ set_entry_wel_type( struct stumpless_entry *entry, int severity ) {
     default:
       data->type = EVENTLOG_SUCCESS;
   }
+}
+
+void
+unlock_wel_data( const struct wel_data *data ) {
+  config_unlock_mutex( &data->mutex );
 }
 
 struct stumpless_target *

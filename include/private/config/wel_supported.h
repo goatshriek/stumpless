@@ -82,11 +82,17 @@ destroy_insertion_string_param( const struct stumpless_param *param );
 bool
 initialize_wel_data( struct stumpless_entry *entry );
 
+void
+lock_wel_data( const struct wel_data *data );
+
 struct stumpless_param **
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index );
 
 void
 set_entry_wel_type( struct stumpless_entry *entry, int severity );
+
+void
+unlock_wel_data( const struct wel_data *data );
 
 struct stumpless_target *
 wel_open_default_target( void );

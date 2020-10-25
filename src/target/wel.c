@@ -162,6 +162,7 @@ send_entry_to_wel_target( const struct wel_target *target,
   struct wel_data *data;
 
   data = entry->wel_data;
+  lock_wel_data( data );
 
   for( i = 0; i < data->insertion_count; i++ ) {
     if( data->insertion_params[i] ) {
@@ -180,6 +181,8 @@ send_entry_to_wel_target( const struct wel_target *target,
                          0,
                          data->insertion_strings,
                          NULL );
+
+  unlock_wel_data( data );
 
   if( success ) {
     return 1;
