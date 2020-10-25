@@ -65,7 +65,7 @@
  - [x] stumpless_target_is_open
  - [x] stumpless_unset_option
  - [ ] stumpless_add_message
- - [ ] stumpless_get_wel_insertion_string
+ - [x] stumpless_get_wel_insertion_string
  - [ ] stumpless_set_wel_insertion_strings
  - [ ] vstumpless_add_message
  - [x] vstumpless_new_entry

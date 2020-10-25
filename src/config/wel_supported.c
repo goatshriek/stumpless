@@ -22,6 +22,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
 #include <stumpless/option.h>
@@ -87,6 +88,8 @@ LPCSTR
 stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index ) {
   struct wel_data *data;
+  const struct stumpless_param *param;
+  char *value_copy;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
@@ -99,10 +102,20 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
     );
     goto fail;
   }
+
+  param = data->insertion_params[index];
+  if( param->name ) {
+    value_copy = ( char * ) stumpless_get_param_value( param );
+  } else {
+    value_copy = alloc_mem( param->value_length + 1 );
+    if( !value_copy ) {
+      goto fail;
+    }
+    memcpy( value_copy, param->value, param->value_length + 1 );
+  }
   unlock_wel_data( data );
 
-  clear_error();
-  return data->insertion_params[index]->value;
+  return value_copy;
 
 fail:
   unlock_wel_data( data );

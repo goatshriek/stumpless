@@ -549,6 +549,12 @@ else()
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
+  add_thread_safety_test(wel_supported
+    SOURCES
+      test/thread_safety/config/wel_supported.cpp
+      ${PROJECT_BINARY_DIR}/events.rc
+  )
+
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
   ADD_CUSTOM_COMMAND(
