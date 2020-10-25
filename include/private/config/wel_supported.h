@@ -26,6 +26,7 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/param.h>
 #  include <stumpless/target.h>
+#  include "private/config/wrapper/thread_safety.h"
 
 /**
  * The extra fields needed in an entry to provide information for Windows Event
@@ -58,6 +59,11 @@ struct wel_data {
    * be interacted with using the Windows Event Log stumpless functions.
    */
   struct stumpless_param** insertion_params;
+  /**
+   * Protects all of the data in this structure. This mutex must be locked
+   * before reading or writing any of the fields.
+   */
+  config_mutex_t mutex;
 };
 
 struct stumpless_entry *
