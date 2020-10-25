@@ -59,7 +59,6 @@ set_wel_insertion_string( struct stumpless_entry *entry,
   }
 
   data = entry->wel_data;
-  lock_wel_data( data );
   if( index >= data->insertion_count ) {
     if( !resize_insertion_params( entry, index ) ) {
       goto fail_resize;
@@ -71,14 +70,12 @@ set_wel_insertion_string( struct stumpless_entry *entry,
   param->name = NULL;
   param->name_length = 0;
   data->insertion_params[index] = param;
-  unlock_wel_data( data );
 
   clear_error(  );
   return entry;
 
 
 fail_resize:
-  unlock_wel_data( data );
   free_mem( param->value );
 fail_str:
   free_mem( param );
@@ -171,11 +168,19 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
+  struct wel_data *data;
+  struct stumpless_entry *result;
+
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( str );
 
   clear_error(  );
-  return set_wel_insertion_string( entry, index, str );
+  data = entry->wel_data;
+  lock_wel_data( data );
+  result = set_wel_insertion_string( entry, index, str );
+  unlock_wel_data( data );
+
+  return result;
 }
 
 struct stumpless_entry *
@@ -211,11 +216,15 @@ struct stumpless_entry *
 vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                       WORD count,
                                       va_list insertions ) {
+  struct wel_data *data;
   struct stumpless_entry *result;
   WORD i = 0;
   const char *arg;
 
   VALIDATE_ARG_NOT_NULL( entry );
+
+  data = entry->wel_data;
+  lock_wel_data( data );
 
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
@@ -231,10 +240,12 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
     }
   }
 
+  unlock_wel_data( data );
   clear_error(  );
   return entry;
 
 fail:
+  unlock_wel_data( data );
   return NULL;
 }
 
@@ -250,11 +261,12 @@ copy_wel_data( struct stumpless_entry *destination,
   const struct stumpless_entry *result;
 
   if( !config_initialize_wel_data( destination ) ) {
-    goto fail;
+    return NULL;
   }
 
   dest_data = destination->wel_data;
   source_data = destination->wel_data;
+  lock_wel_data( source_data );
 
   dest_data->type = source_data->type;
   dest_data->category = source_data->category;
@@ -288,6 +300,8 @@ copy_wel_data( struct stumpless_entry *destination,
     }
   }
 
+  unlock_wel_data( source_data );
+  clear_error(  );
   return destination;
 
 fail_set_string:
@@ -295,6 +309,7 @@ fail_set_string:
 fail_params:
   free_mem( dest_data->insertion_strings );
 fail:
+  unlock_wel_data( source_data );
   return NULL;
 }
 
