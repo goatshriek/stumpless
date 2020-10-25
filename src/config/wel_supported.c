@@ -59,6 +59,7 @@ set_wel_insertion_string( struct stumpless_entry *entry,
   }
 
   data = entry->wel_data;
+  lock_wel_data( data );
   if( index >= data->insertion_count ) {
     if( !resize_insertion_params( entry, index ) ) {
       goto fail_resize;
@@ -70,11 +71,14 @@ set_wel_insertion_string( struct stumpless_entry *entry,
   param->name = NULL;
   param->name_length = 0;
   data->insertion_params[index] = param;
+  unlock_wel_data( data );
 
+  clear_error(  );
   return entry;
 
 
 fail_resize:
+  unlock_wel_data( data );
   free_mem( param->value );
 fail_str:
   free_mem( param );
@@ -90,6 +94,7 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   if( index >= data->insertion_count ) {
     raise_index_out_of_bounds(
        L10N_INVALID_INDEX_ERROR_MESSAGE( "insertion string" ),
@@ -97,11 +102,13 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
     );
     goto fail;
   }
+  unlock_wel_data( data );
 
   clear_error();
   return data->insertion_params[index]->value;
 
 fail:
+  unlock_wel_data( data );
   return NULL;
 }
 
@@ -112,7 +119,9 @@ stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   data->category = category;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -125,7 +134,9 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   data->event_id = event_id;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -141,13 +152,16 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( param );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   if( index >= data->insertion_count ) {
     if( !resize_insertion_params( entry, index ) ) {
+      unlock_wel_data( data );
       return NULL;
     }
   }
 
   data->insertion_params[index] = param;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -185,7 +199,9 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   data->type = type;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -201,8 +217,6 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  clear_error(  );
-
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
 
@@ -211,12 +225,13 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
       goto fail;
     }
 
-    result = stumpless_set_wel_insertion_string( entry, i, arg );
+    result = set_wel_insertion_string( entry, i, arg );
     if( !result ) {
       goto fail;
     }
   }
 
+  clear_error(  );
   return entry;
 
 fail:
@@ -285,9 +300,12 @@ fail:
 
 void
 destroy_wel_data(const struct stumpless_entry* entry) {
-    config_destroy_mutex( &entry->wel_data->mutex );
-    destroy_insertion_params( entry );
-    free_mem( entry->wel_data );
+  struct wel_data *data;
+  data = ( struct wel_data * ) entry->wel_data;
+
+  config_destroy_mutex( &data->mutex );
+  destroy_insertion_params( entry );
+  free_mem( data );
 }
 
 void
