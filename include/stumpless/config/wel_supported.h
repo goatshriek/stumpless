@@ -80,6 +80,18 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
  * be sent to a Windows Event Log target must have the category specified before
  * they are sent.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry's WEL data while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param entry The entry to modify.
  *
  * @param category The category to assign. This should be a category defined
@@ -98,6 +110,18 @@ stumpless_set_wel_category( struct stumpless_entry *entry, WORD category );
  * The event id is used by a Windows Event Log target. Entries that are going to
  * be sent to a Windows Event Log target must have the event id specified before
  * they are sent.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry's WEL data while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param entry The entry to modify.
  *
@@ -124,6 +148,18 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
  * value changes between log entries, it will reflect these changes in the log
  * itself as well. This also means that you should not destroy a param unless
  * you are sure that no entries exist that are using it.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry's WEL data with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param entry The entry to modify.
  *
@@ -156,6 +192,19 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
  * always hold the value that was in str when this function was called, even
  * if the string changes or is destroyed later.
  *
+ * **Thread Safety: MT-Safe race:str**
+ * This function is thread safe, of course assuming that the str is not changed
+ * by any other threads during execution. A mutex is used to coordinate changes
+ * to the entry's WEL data with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param entry The entry to modify.
  *
  * @param index The index of the insertion string to use the param for. Valid
@@ -179,6 +228,20 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
  * \c stumpless_set_wel_insertion_string this function can set the insertion
  * strings all at the same time.
  *
+ * **Thread Safety: MT-Safe race:...**
+ * This function is thread safe, of course assuming that none of the supplied
+ * insertion strings are changed by any other threads during execution. A
+ * mutex is used to coordinate changes to the entry's WEL data with other
+ * accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param entry The entry to modify.
  *
  * @param count The number of insertion strings that will be provided.
@@ -201,6 +264,18 @@ stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
  * sent to a Windows Event Log target must have the type specified before
  * they are sent.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry's WEL data while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param entry The entry to modify.
  *
  * @param type The type to assign. This should be a type defined
@@ -218,6 +293,20 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
  * Instead of setting the each insertion string separately via
  * \c stumpless_set_wel_insertion_string this function can set the insertion
  * strings all at the same time.
+ *
+ * **Thread Safety: MT-Safe race:...**
+ * This function is thread safe, of course assuming that none of the supplied
+ * insertion strings are changed by any other threads during execution. A
+ * mutex is used to coordinate changes to the entry's WEL data with other
+ * accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param entry The entry to modify.
  *

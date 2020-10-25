@@ -27,11 +27,11 @@
  - [x] stumpless_close_wel_target
  - [x] stumpless_open_local_wel_target
  - [x] stumpless_open_remote_wel_target
- - [ ] stumpless_set_wel_category
- - [ ] stumpless_set_wel_event_id
- - [ ] stumpless_set_wel_insertion_param
- - [ ] stumpless_set_wel_insertion_string
- - [ ] stumpless_set_wel_type
+ - [x] stumpless_set_wel_category
+ - [x] stumpless_set_wel_event_id
+ - [x] stumpless_set_wel_insertion_param
+ - [x] stumpless_set_wel_insertion_string
+ - [x] stumpless_set_wel_type
  - [x] stumpless_close_stream_target
  - [x] stumpless_open_stderr_target
  - [x] stumpless_open_stdout_target
@@ -66,10 +66,10 @@
  - [x] stumpless_unset_option
  - [ ] stumpless_add_message
  - [x] stumpless_get_wel_insertion_string
- - [ ] stumpless_set_wel_insertion_strings
+ - [x] stumpless_set_wel_insertion_strings
  - [ ] vstumpless_add_message
  - [x] vstumpless_new_entry
- - [ ] vstumpless_set_wel_insertion_strings
+ - [x] vstumpless_set_wel_insertion_strings
  - [ ] stumpless_close_target
  - [ ] stumpless_add_log
  - [x] stumpless_get_default_target
