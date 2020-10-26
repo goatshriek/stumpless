@@ -53,6 +53,25 @@
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stumplog_n instead.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
  *
@@ -93,6 +112,22 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
  * intended to allow logging calls to be removed at compile time if the severity
  * is known ahead of time.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked.
+ *
  * @param target The target to send the entry to.
  *
  * @param entry The entry to send to the target.
@@ -123,6 +158,25 @@ stumpless_add_entry( ( target ), ( entry ) )
  * evaluated, meaning that any side effects will not happen. Be sure that any
  * side effects you rely on will not cause problems if they are left out during
  * a build with notice level calls disabled.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param target The target to send the entry to.
  *
@@ -168,6 +222,25 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stump_n_log instead.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
  * @param target The target to send the entry to.
  *
  * @param message The message to log, optionally containing any format
@@ -205,6 +278,25 @@ stumpless_add_log( ( target ),                                                 \
  * evaluated, meaning that any side effects will not happen. Be sure that any
  * side effects you rely on will not cause problems if they are left out during
  * a build with notice level calls disabled.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
