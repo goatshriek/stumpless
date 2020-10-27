@@ -26,6 +26,18 @@
  *
  * The contents of the buffer itself may be modified at any time, and should not
  * be read directly with any expectation of consistency or coherence.
+ *
+ * **Thread Safety: MT-Safe**
+ * Logging to buffer targets is thread safe. A mutex is used to coordinate
+ * changes to the buffer with each other and reads.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to buffer targets is not signal safe, as a non-reentrant lock is used
+ * to coordinate accesses to the buffer.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to buffer targets is not safe to call from threads that may be
+ * asynchronously cancelled, as the cleanup of the lock may not be completed.
  */
 
 #ifndef __STUMPLESS_TARGET_BUFFER_H
