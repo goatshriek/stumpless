@@ -18,6 +18,18 @@
 
 /** @file
  * Functions for working with stream targets (that is, FILE pointers).
+ *
+ * **Thread Safety: MT-Safe**
+ * Logging to stream targets is thread safe. A mutex is used to coordinate
+ * writes to the stream.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to stream targets is not signal safe, as a non-reentrant lock is used
+ * to coordinate writes to the stream.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to stream targets is not safe to call from threads that may be
+ * asynchronously cancelled, as the cleanup of the lock may not be completed.
  */
 
 #ifndef __STUMPLESS_TARGET_STREAM_H
