@@ -21,6 +21,19 @@
  *
  * The most common use for socket targets is to send logs to the /dev/log socket
  * or the /var/run/syslog where the syslog daemon is listening.
+ *
+ * **Thread Safety: MT-Safe**
+ * Logging to socket targets is thread safe by virtue of using the `sendto`
+ * function which is thread safe itself.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to socket targets is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the entry with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to socket targets is not safe to call from threads that may be
+ * asynchronously cancelled, as the cleanup of the lock used for entries may not
+ * be completed.
  */
 
 #ifndef __STUMPLESS_TARGET_SOCKET_H

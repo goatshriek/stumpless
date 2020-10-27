@@ -21,6 +21,19 @@
  * collector or relay. There are a number of popular options for the remote
  * end including Splunk, rsyslog, and syslog-ng. Network targets can send
  * messages to these and others, over both IPv4 and IPv6, TCP and UDP.
+ *
+ * **Thread Safety: MT-Safe**
+ * Logging to network targets is thread safe by virtue of using the network
+ * logging functions which are thread safe themselves.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to network targets is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the entry with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to network targets is not safe to call from threads that may be
+ * asynchronously cancelled, as the cleanup of the lock used for entries may not
+ * be completed.
  */
 
 #ifndef __STUMPLESS_TARGET_NETWORK_H
