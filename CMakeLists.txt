@@ -592,6 +592,7 @@ else()
   add_thread_safety_test(buffer
     SOURCES
       test/thread_safety/target/buffer.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
       $<TARGET_OBJECTS:test_helper_usage>
   )
 

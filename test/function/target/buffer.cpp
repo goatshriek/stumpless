@@ -146,6 +146,19 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
   }
 
+  TEST_F( BufferTargetTest, ReadBufferTooSmall ) {
+    size_t result;
+    char read_buffer[5];
+
+    result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GT( result, 0 );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_read_buffer( target, read_buffer, 5 );
+    EXPECT_EQ( result, 5 );
+    EXPECT_EQ( read_buffer[4], '\0' );
+  }
+
   TEST_F( BufferTargetTest, WrapAround ) {
     size_t bytes_written=0, write_count=0, null_count=0, i;
     int result;
