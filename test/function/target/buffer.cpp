@@ -106,13 +106,12 @@ namespace {
     read_result = stumpless_read_buffer( target, read_buffer, 1024 );
     EXPECT_EQ( read_result, write_result );
     EXPECT_NO_ERROR;
-    std::cout << read_buffer << std::endl;
 
-    EXPECT_THAT( buffer, HasSubstr( std::to_string( target->default_prival ) ) );
-    EXPECT_THAT( buffer, HasSubstr( "buffer-target-test" ) );
-    EXPECT_THAT( buffer, HasSubstr( "default-message" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( std::to_string( target->default_prival ) ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "buffer-target-test" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "default-message" ) );
 
-    TestRFC5424Compliance( buffer );
+    TestRFC5424Compliance( read_buffer );
   }
 
   TEST_F( BufferTargetTest, EmptyMessage ) {
