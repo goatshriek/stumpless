@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <atomic>
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -25,16 +26,22 @@
 #include "test/helper/usage.hpp"
 
 namespace {
-  const int THREAD_COUNT = 16;
-  const int MESSAGE_COUNT = 100;
+  const int THREAD_COUNT = 2;
+  const int MESSAGE_COUNT = 10;
+  std::atomic_int read_count;
 
   void
   read_and_validate( struct stumpless_target *target, int message_count ) {
     char read_buffer[1024];
+    size_t result;
 
-    for( int i = 0; i < message_count; i++ ) {
-      stumpless_read_buffer( target, read_buffer, 1024 );
-      TestRFC5424Compliance( read_buffer );
+    while( read_count < THREAD_COUNT * MESSAGE_COUNT ) {
+      result = stumpless_read_buffer( target, read_buffer, 1024 );
+
+      if( result > 1 ) {
+        TestRFC5424Compliance( read_buffer );
+        read_count++;
+      }
     }
   }
 
@@ -45,6 +52,8 @@ namespace {
     std::thread *threads[THREAD_COUNT];
     std::thread reader_thread;
 
+    read_count = 0;
+
     // set up the target to log to
     target = stumpless_open_buffer_target( "thread-safety-test-buffer",
                                            log_buffer,
@@ -54,13 +63,13 @@ namespace {
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
-    reader_thread = std::thread( read_and_validate,
-                                 target,
-                                 MESSAGE_COUNT * THREAD_COUNT );
-
     for( i = 0; i < THREAD_COUNT; i++ ) {
       threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
     }
+
+    reader_thread = std::thread( read_and_validate,
+                                 target,
+                                 MESSAGE_COUNT * THREAD_COUNT );
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
       threads[i]->join(  );

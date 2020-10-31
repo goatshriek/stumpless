@@ -108,15 +108,20 @@ stumpless_read_buffer( struct stumpless_target *target,
   while( read_position != buffer_target->write_position &&
          out_position < max_length - 1 ) {
     buffer[out_position] = buffer_target->buffer[read_position];
-
     read_position = ( read_position + 1 ) % buffer_target->size;
+
+    if( buffer[out_position] == '\0' ) {
+      goto cleanup_and_return;
+    }
+
     out_position++;
   }
 
+  buffer[out_position] = '\0';
+
+cleanup_and_return:
   buffer_target->read_position = read_position;
   config_unlock_mutex( &buffer_target->buffer_mutex );
-
-  buffer[out_position] = '\0';
   return out_position + 1;
 }
 

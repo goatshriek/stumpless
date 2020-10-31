@@ -134,6 +134,9 @@ stumpless_open_buffer_target( const char *name,
  * sure that the buffer is sufficiently sized may help with this.
  *
  * A terminating NULL character will always be written at the end of the output.
+ * Note that this means that if the read operation was successful but there was
+ * no message to read, the result will be 1 with a single NULL character being
+ * written to the read buffer.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate reads and writes

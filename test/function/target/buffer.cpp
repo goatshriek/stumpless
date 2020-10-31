@@ -91,15 +91,22 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, Basic ) {
-    int result;
+    int write_result;
+    char read_buffer[1024];
+    int read_result;
 
     SCOPED_TRACE( "BufferTargetTest.Basic" );
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
-    result = stump( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
-    EXPECT_GE( result, 0 );
+    write_result = stump( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
+    EXPECT_GE( write_result, 0 );
     EXPECT_NO_ERROR;
+
+    read_result = stumpless_read_buffer( target, read_buffer, 1024 );
+    EXPECT_EQ( read_result, write_result );
+    EXPECT_NO_ERROR;
+    std::cout << read_buffer << std::endl;
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( target->default_prival ) ) );
     EXPECT_THAT( buffer, HasSubstr( "buffer-target-test" ) );
