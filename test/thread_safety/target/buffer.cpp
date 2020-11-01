@@ -26,12 +26,12 @@
 #include "test/helper/usage.hpp"
 
 namespace {
-  const int THREAD_COUNT = 2;
-  const int MESSAGE_COUNT = 10;
+  const int THREAD_COUNT = 8;
+  const int MESSAGE_COUNT = 20;
   std::atomic_int read_count;
 
   void
-  read_and_validate( struct stumpless_target *target, int message_count ) {
+  read_and_validate( struct stumpless_target *target ) {
     char read_buffer[1024];
     size_t result;
 
@@ -45,14 +45,12 @@ namespace {
     }
   }
 
-  TEST( WriteConsistency, SimultaneousWrites ) {
-    char log_buffer[16384];
+  TEST( BufferConsistency, SimultaneousReadsAndWrites ) {
+    char log_buffer[65536];
     struct stumpless_target *target;
     size_t i;
-    std::thread *threads[THREAD_COUNT];
-    std::thread reader_thread;
-
-    read_count = 0;
+    std::thread *writer_threads[THREAD_COUNT];
+    std::thread *reader_threads[THREAD_COUNT];
 
     // set up the target to log to
     target = stumpless_open_buffer_target( "thread-safety-test-buffer",
@@ -63,19 +61,18 @@ namespace {
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
+    read_count = 0;
     for( i = 0; i < THREAD_COUNT; i++ ) {
-      threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
+      writer_threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
+      reader_threads[i] = new std::thread( read_and_validate, target );
     }
 
-    reader_thread = std::thread( read_and_validate,
-                                 target,
-                                 MESSAGE_COUNT * THREAD_COUNT );
-
     for( i = 0; i < THREAD_COUNT; i++ ) {
-      threads[i]->join(  );
-      delete threads[i];
+      writer_threads[i]->join(  );
+      delete writer_threads[i];
+      reader_threads[i]->join(  );
+      delete reader_threads[i];
     }
-    reader_thread.join(  );
 
     // cleanup after the test
     stumpless_close_buffer_target( target );
