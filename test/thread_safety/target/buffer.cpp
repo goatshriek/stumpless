@@ -50,7 +50,7 @@ namespace {
     struct stumpless_target *target;
     size_t i;
     std::thread *writer_threads[THREAD_COUNT];
-    std::thread *reader_threads[THREAD_COUNT];
+    std::thread *reader_threads[THREAD_COUNT * 2];
 
     // set up the target to log to
     target = stumpless_open_buffer_target( "thread-safety-test-buffer",
@@ -62,14 +62,20 @@ namespace {
     ASSERT_NOT_NULL( target );
 
     read_count = 0;
+    for( i = 0; i < THREAD_COUNT * 2; i++ ) {
+      reader_threads[i] = new std::thread( read_and_validate, target );
+    }
+
     for( i = 0; i < THREAD_COUNT; i++ ) {
       writer_threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
-      reader_threads[i] = new std::thread( read_and_validate, target );
     }
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
       writer_threads[i]->join(  );
       delete writer_threads[i];
+    }
+
+    for( i = 0; i < THREAD_COUNT * 2; i++ ) {
       reader_threads[i]->join(  );
       delete reader_threads[i];
     }
