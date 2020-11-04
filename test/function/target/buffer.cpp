@@ -24,11 +24,12 @@
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 
-#define TEST_BUFFER_LENGTH 8192
-
 using::testing::HasSubstr;
 
 namespace {
+
+  static const size_t TEST_BUFFER_LENGTH = 8192;
+  static const size_t READ_BUFFER_LENGTH = 1024;
 
   class
     BufferTargetTest:
@@ -92,7 +93,7 @@ namespace {
 
   TEST_F( BufferTargetTest, Basic ) {
     int write_result;
-    char read_buffer[1024];
+    char read_buffer[READ_BUFFER_LENGTH];
     int read_result;
 
     SCOPED_TRACE( "BufferTargetTest.Basic" );
@@ -103,7 +104,7 @@ namespace {
     EXPECT_GE( write_result, 0 );
     EXPECT_NO_ERROR;
 
-    read_result = stumpless_read_buffer( target, read_buffer, 1024 );
+    read_result = stumpless_read_buffer( target, read_buffer, READ_BUFFER_LENGTH );
     EXPECT_EQ( read_result, write_result );
     EXPECT_NO_ERROR;
 
