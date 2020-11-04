@@ -36,6 +36,7 @@ namespace {
     public::testing::Test {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
+    char read_buffer[READ_BUFFER_LENGTH];
     struct stumpless_target *target;
     struct stumpless_entry *basic_entry;
 
@@ -75,25 +76,32 @@ namespace {
   };
 
   TEST_F( BufferTargetTest, AddEntry ) {
-    int result;
+    int write_result;
+    int read_result;
 
     SCOPED_TRACE( "BufferTargetTest.AddEntry" );
 
-    result = stumpless_add_entry( target, basic_entry );
-    EXPECT_GE( result, 0 );
+    write_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( write_result, 0 );
     EXPECT_NO_ERROR;
 
-    EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_EQ( read_result, write_result );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( read_buffer,
+                 HasSubstr( std::to_string( basic_entry->prival ) ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "basic-element" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "basic-param-name" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "basic-param-value" ) );
 
     TestRFC5424Compliance(buffer);
   }
 
   TEST_F( BufferTargetTest, Basic ) {
     int write_result;
-    char read_buffer[READ_BUFFER_LENGTH];
     int read_result;
 
     SCOPED_TRACE( "BufferTargetTest.Basic" );
