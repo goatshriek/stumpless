@@ -29,15 +29,17 @@ namespace {
   const int THREAD_COUNT = 8;
   const int MESSAGE_COUNT = 20;
   const int READ_WRITE_RATIO = 4;
+  const int LOG_BUFFER_SIZE = 65536;
+  const int READ_BUFFER_SIZE = 1024;
   std::atomic_int read_count;
 
   void
   read_and_validate( struct stumpless_target *target ) {
-    char read_buffer[1024];
+    char read_buffer[READ_BUFFER_SIZE];
     size_t result;
 
     while( read_count < THREAD_COUNT * MESSAGE_COUNT ) {
-      result = stumpless_read_buffer( target, read_buffer, 1024 );
+      result = stumpless_read_buffer( target, read_buffer, READ_BUFFER_SIZE );
 
       if( result > 1 ) {
         TestRFC5424Compliance( read_buffer );
@@ -47,7 +49,7 @@ namespace {
   }
 
   TEST( BufferConsistency, SimultaneousReadsAndWrites ) {
-    char log_buffer[65536];
+    char log_buffer[LOG_BUFFER_SIZE];
     struct stumpless_target *target;
     size_t i;
     std::thread *writer_threads[THREAD_COUNT];
@@ -56,7 +58,7 @@ namespace {
     // set up the target to log to
     target = stumpless_open_buffer_target( "thread-safety-test-buffer",
                                            log_buffer,
-                                           65536,
+                                           LOG_BUFFER_SIZE,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     EXPECT_NO_ERROR;
