@@ -205,6 +205,10 @@ sendto_buffer_target( struct buffer_target *target,
 
   if( free_space_left <= msg_length ) {
     target->read_position = ( target->write_position + 1 ) % target->size;
+
+    if( target->buffer[target->read_position] == '\0' ) {
+      target->read_position = ( target->read_position + 1 ) % target->size;
+    }
   }
 
   config_unlock_mutex( &target->buffer_mutex );

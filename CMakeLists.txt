@@ -722,6 +722,7 @@ include(tools/cmake/cpack.cmake)
 add_function_test(buffer
   SOURCES
     test/function/target/buffer.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 

@@ -24,6 +24,7 @@
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
@@ -370,5 +371,58 @@ namespace {
     result = stumpless_read_buffer( NULL, buffer, sizeof( buffer ) );
     EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( BufferTargetWriteTest, WrapAroundToEndOfPreviousMessage ) {
+    char buffer[TEST_BUFFER_LENGTH];
+    struct stumpless_target *target;
+    const struct stumpless_entry *entry;
+    int write_result;
+    char read_buffer[READ_BUFFER_LENGTH];
+    size_t read_result;
+
+    target = stumpless_open_buffer_target( "wrap-around-test",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( write_result, 0 );
+
+    stumpless_close_buffer_target( target );
+
+    target = stumpless_open_buffer_target( "wrap-around-test",
+                                           buffer,
+                                           write_result + 2,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( write_result, 0 );
+
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( write_result, 0 );
+
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( read_result, 1 );
+
+    stumpless_close_buffer_target( target );
+    stumpless_destroy_entry( entry );
+    stumpless_free_all(  );
   }
 }
