@@ -158,6 +158,15 @@ namespace {
     EXPECT_TRUE( stumpless_target_is_open( target ) );
   }
 
+  TEST_F( BufferTargetTest, NullReadBuffer ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_read_buffer( target, NULL, sizeof( read_buffer ) );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST_F( BufferTargetTest, OverFill ) {
     char test_string[TEST_BUFFER_LENGTH + 1];
     const struct stumpless_error *error;
@@ -316,5 +325,15 @@ namespace {
     for( i=0; i < 100; i++ ) {
       stumpless_close_buffer_target( targets[i] );
     }
+  }
+
+  TEST( BufferTargetReadTest, NullTarget ) {
+    char buffer[100];
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_read_buffer( NULL, buffer, sizeof( buffer ) );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 }
