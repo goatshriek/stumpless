@@ -239,6 +239,7 @@ namespace {
       read_count++;
     }
 
+    EXPECT_NO_ERROR;
     EXPECT_EQ( read_count, write_count );
   }
 
