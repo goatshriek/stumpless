@@ -2,38 +2,38 @@ language: c
 
 matrix:
   include:
-#    - name: "windows"
-#      os: windows
-#    - name: "windows, with c++"
-#      os: windows
-#      env:
-#        - BUILD_ARGS="-DENABLE_CPP=ON"
-#    - name: "linux, gcc 6"
-#      os: linux
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-6
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-#    - name: "linux, gcc 7"
-#      os: linux
-#      arch: amd64
-#      dist: xenial
-#      addons:
-#        apt:
-#          sources:
-#            - ubuntu-toolchain-r-test
-#          packages:
-#            - g++-7
-#        sonarcloud:
-#          organization: "goatshriek-github"
-#      env:
-#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    - name: "windows"
+      os: windows
+    - name: "windows, with c++"
+      os: windows
+      env:
+        - BUILD_ARGS="-DENABLE_CPP=ON"
+    - name: "linux, gcc 6"
+      os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+    - name: "linux, gcc 7"
+      os: linux
+      arch: amd64
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+        sonarcloud:
+          organization: "goatshriek-github"
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - name: "linux, amd64"
       os: linux
       arch: amd64

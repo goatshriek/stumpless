@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
-
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/target.h>
@@ -102,21 +100,13 @@ stumpless_read_buffer( struct stumpless_target *target,
 
   config_lock_mutex( &buffer_target->buffer_mutex );
 
-  printf( "read_position at start: %zd\n", buffer_target->read_position );
-  printf( "write_position at start: %zd\n", buffer_target->write_position );
-
   read_position = buffer_target->read_position;
   while( read_position != buffer_target->write_position &&
          out_position < max_length - 1 ) {
     buffer[out_position] = buffer_target->buffer[read_position];
-
-    printf( "read in character '%d'\n", buffer[out_position] );
-
     read_position = ( read_position + 1 ) % buffer_target->size;
-    printf( "advanced read_position to '%zd'\n", read_position );
 
     if( buffer[out_position] == '\0' ) {
-      printf( "read a NULL character, exiting\n" );
       goto cleanup_and_return;
     }
 
