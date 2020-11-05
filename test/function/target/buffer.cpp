@@ -235,10 +235,11 @@ namespace {
     while( stumpless_read_buffer( target,
                                   read_buffer,
                                   READ_BUFFER_LENGTH ) > 1 ) {
+      EXPECT_NO_ERROR;
       read_count++;
     }
 
-    ASSERT_EQ( read_count, write_count );
+    EXPECT_EQ( read_count, write_count );
   }
 
   /* non-fixture tests */
