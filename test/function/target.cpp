@@ -27,6 +27,62 @@
 
 namespace {
 
+  static const size_t TEST_BUFFER_LENGTH = 8192;
+
+  class
+    TargetTest:
+    public::testing::Test {
+  protected:
+    char buffer[TEST_BUFFER_LENGTH];
+    struct stumpless_target *target;
+    const char *default_app_name = "target-default-app-name";
+    const char *default_msgid = "target-default-msgid";
+
+    virtual void
+    SetUp( void ) {
+      buffer[0] = '\0';
+      target = stumpless_open_buffer_target( "buffer target testing",
+                                             buffer,
+                                             sizeof( buffer ),
+                                             STUMPLESS_OPTION_NONE,
+                                             STUMPLESS_FACILITY_USER );
+
+      stumpless_set_target_default_app_name( target, default_app_name );
+      stumpless_set_target_default_msgid( target, default_msgid );
+    }
+
+    virtual void
+    TearDown( void ) {
+      stumpless_close_buffer_target( target );
+    }
+  };
+
+  TEST_F( TargetTest, GetDefaultAppName ) {
+    const char *result;
+
+    result = stumpless_get_target_default_app_name( target );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
+    EXPECT_NE( result, default_app_name );
+    EXPECT_STREQ( result, default_app_name );
+
+    free( ( void * ) result );
+  }
+
+  TEST_F( TargetTest, GetDefaultMsgid ) {
+    const char *result;
+
+    result = stumpless_get_target_default_msgid( target );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
+    EXPECT_NE( result, default_msgid );
+    EXPECT_STREQ( result, default_msgid );
+
+    free( ( void * ) result );
+  }
+
+  /* non-fixture tests */
+
   TEST( AddEntryTest, NullEntry ) {
     int result;
     struct stumpless_target *target;

@@ -405,6 +405,14 @@ namespace {
     EXPECT_NULL( result );
   }
 
+  TEST_F( EntryTest, GetElementCount ) {
+    size_t result;
+
+    result = stumpless_get_element_count( basic_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, 2 );
+  }
+
   TEST_F( EntryTest, GetElementIndex ) {
     size_t result;
 
