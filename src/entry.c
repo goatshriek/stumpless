@@ -415,10 +415,7 @@ stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
                                     size_t param_index ) {
   const struct stumpless_element *element;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
 
   lock_entry( entry );
   element = locked_get_element_by_index( entry, element_index );
@@ -437,15 +434,9 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
                                    const char *param_name ) {
   const struct stumpless_element *element;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return NULL;
-  }
-
-  if( !element_name ) {
-    raise_argument_empty( "element_name is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( element_name );
+  VALIDATE_ARG_NOT_NULL( param_name );
 
   lock_entry( entry );
   element = locked_get_element_by_name( entry, element_name );
