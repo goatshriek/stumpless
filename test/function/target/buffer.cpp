@@ -166,11 +166,26 @@ namespace {
 
     memset( test_string, 'g', TEST_BUFFER_LENGTH );
     test_string[TEST_BUFFER_LENGTH] = '\0';
-    ASSERT_EQ( -1, stump( test_string ) );
+    EXPECT_EQ( -1, stump( test_string ) );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
   }
 
-  TEST_F( BufferTargetTest, ReadBufferTooSmall ) {
+  TEST_F( BufferTargetTest, ReadBufferOneCharacterTooSmall ) {
+    int write_result;
+    int read_result;
+
+    write_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GT( write_result, 0 );
+    EXPECT_NO_ERROR;
+
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         write_result - 1 );
+    EXPECT_EQ( read_result, write_result - 1 );
+    EXPECT_EQ( read_buffer[read_result - 1], '\0' );
+  }
+
+  TEST_F( BufferTargetTest, ReadBufferWayTooSmall ) {
     int result;
 
     result = stumpless_add_entry( target, basic_entry );
