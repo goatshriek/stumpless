@@ -295,10 +295,8 @@ const char *
 stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   char *name_copy = NULL;
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
 
   lock_target( target );
   if( !target->default_app_name ) {
@@ -325,10 +323,8 @@ const char *
 stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
   char *msgid_copy = NULL;
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
 
   lock_target( target );
   if( !target->default_msgid ) {

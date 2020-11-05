@@ -197,6 +197,15 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( GetDefaultAppName, NullTarget ) {
+    const struct stumpless_error *error;
+    const char *result;
+
+    result = stumpless_get_target_default_app_name( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+  }
+
   TEST( GetDefaultFacility, NullTarget ) {
     const struct stumpless_error *error;
     int facility;
@@ -205,6 +214,15 @@ namespace {
     EXPECT_EQ( -1, facility );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( GetDefaultMsgid, NullTarget ) {
+    const struct stumpless_error *error;
+    const char *result;
+
+    result = stumpless_get_target_default_msgid( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
   }
 
   TEST( GetOption, NullTarget ) {
