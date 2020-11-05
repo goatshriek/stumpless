@@ -130,8 +130,8 @@ stumpless_open_buffer_target( const char *name,
  *
  * If the buffer has not been read from before messages have wrapped around,
  * then you may only get the end of a message. To avoid this situation, you will
- * need to read the buffer enough to stay ahead of the written messages. Making
- * sure that the buffer is sufficiently sized may help with this.
+ * need to read the buffer often enough to stay ahead of the written messages.
+ * Making sure that the log buffer is sufficiently sized may help with this.
  *
  * A terminating NULL character will always be written at the end of the output.
  * Note that this means that if the read operation was successful but there was
@@ -155,7 +155,8 @@ stumpless_open_buffer_target( const char *name,
  * @param buffer The buffer to read the message in to.
  *
  * @param max_length The maximum number of bytes to read into the provided
- * buffer.
+ * buffer. If this is zero, then the read buffer will be considered an
+ * empty argument and an error will be raised.
  *
  * @return The number of bytes written into buffer, including the terminating
  * NULL character. In the event of an error, 0 is returned and an error code

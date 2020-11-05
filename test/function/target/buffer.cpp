@@ -17,12 +17,14 @@
  */
 
 #include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
 
@@ -179,6 +181,15 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
   }
 
+  TEST_F( BufferTargetTest, ReadBufferSizeZero ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_read_buffer( target, read_buffer, 0 );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST_F( BufferTargetTest, ReadBufferOneCharacterTooSmall ) {
     int write_result;
     int read_result;
@@ -278,6 +289,27 @@ namespace {
     EXPECT_EQ( target, stumpless_get_current_target(  ) );
 
     stumpless_close_buffer_target( target );
+  }
+
+  TEST( BufferTargetOpenTest, MemoryAllocationFailure ) {
+    void * (*set_malloc_result)(size_t);
+    char buffer[100];
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    target = stumpless_open_buffer_target( "malloc-fail-buffer",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
   TEST( BufferTargetOpenTest, NullBuffer ) {

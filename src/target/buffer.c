@@ -91,12 +91,8 @@ stumpless_read_buffer( struct stumpless_target *target,
     return 0;
   }
 
-  if( !buffer ) {
+  if( !buffer || max_length == 0 ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "buffer" ) );
-    return 0;
-  }
-
-  if( max_length == 0 ) {
     return 0;
   }
 
