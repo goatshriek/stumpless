@@ -79,7 +79,7 @@ namespace {
 
   TEST_F( BufferTargetTest, AddEntry ) {
     int write_result;
-    int read_result;
+    size_t read_result;
 
     SCOPED_TRACE( "BufferTargetTest.AddEntry" );
 
@@ -104,7 +104,7 @@ namespace {
 
   TEST_F( BufferTargetTest, Basic ) {
     int write_result;
-    int read_result;
+    size_t read_result;
 
     SCOPED_TRACE( "BufferTargetTest.Basic" );
 
@@ -132,7 +132,7 @@ namespace {
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     int write_result;
-    int read_result;
+    size_t read_result;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -161,7 +161,7 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, NullReadBuffer ) {
-    int result;
+    size_t result;
     const struct stumpless_error *error;
 
     result = stumpless_read_buffer( target, NULL, sizeof( read_buffer ) );
@@ -182,7 +182,7 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, ReadBufferSizeZero ) {
-    int result;
+    size_t result;
     const struct stumpless_error *error;
 
     result = stumpless_read_buffer( target, read_buffer, 0 );
@@ -192,28 +192,29 @@ namespace {
 
   TEST_F( BufferTargetTest, ReadBufferOneCharacterTooSmall ) {
     int write_result;
-    int read_result;
+    size_t read_size;
+    size_t read_result;
 
     write_result = stumpless_add_entry( target, basic_entry );
     EXPECT_GT( write_result, 0 );
     EXPECT_NO_ERROR;
 
-    read_result = stumpless_read_buffer( target,
-                                         read_buffer,
-                                         write_result - 1 );
-    EXPECT_EQ( read_result, write_result - 1 );
+    read_size = static_cast<size_t>( write_result ) - 1;
+    read_result = stumpless_read_buffer( target, read_buffer, read_size );
+    EXPECT_EQ( read_result, read_size );
     EXPECT_EQ( read_buffer[read_result - 1], '\0' );
   }
 
   TEST_F( BufferTargetTest, ReadBufferWayTooSmall ) {
-    int result;
+    int write_result;
+    size_t read_result;
 
-    result = stumpless_add_entry( target, basic_entry );
-    EXPECT_GT( result, 0 );
+    write_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GT( write_result, 0 );
     EXPECT_NO_ERROR;
 
-    result = stumpless_read_buffer( target, read_buffer, 5 );
-    EXPECT_EQ( result, 5 );
+    read_result = stumpless_read_buffer( target, read_buffer, 5 );
+    EXPECT_EQ( read_result, 5 );
     EXPECT_EQ( read_buffer[4], '\0' );
   }
 
@@ -363,7 +364,7 @@ namespace {
 
   TEST( BufferTargetReadTest, NullTarget ) {
     char buffer[100];
-    int result;
+    size_t result;
     const struct stumpless_error *error;
 
     result = stumpless_read_buffer( NULL, buffer, sizeof( buffer ) );
