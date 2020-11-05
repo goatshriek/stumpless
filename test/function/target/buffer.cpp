@@ -112,7 +112,9 @@ namespace {
     EXPECT_GE( write_result, 0 );
     EXPECT_NO_ERROR;
 
-    read_result = stumpless_read_buffer( target, read_buffer, READ_BUFFER_LENGTH );
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
     EXPECT_EQ( read_result, write_result );
     EXPECT_NO_ERROR;
 
@@ -127,7 +129,8 @@ namespace {
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
-    int result;
+    int write_result;
+    int read_result;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -136,11 +139,17 @@ namespace {
                                  NULL );
     ASSERT_TRUE( entry != NULL );
 
-    result = stumpless_add_entry( target, entry );
-    EXPECT_GE( result, 0 );
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_GE( write_result, 0 );
 
-    TestRFC5424Compliance( buffer );
-    EXPECT_NE( buffer[result-1], ' ' );
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_EQ( read_result, write_result );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( read_buffer );
+    EXPECT_NE( read_buffer[read_result-1], ' ' );
 
     stumpless_destroy_entry( entry );
   }
@@ -162,8 +171,7 @@ namespace {
   }
 
   TEST_F( BufferTargetTest, ReadBufferTooSmall ) {
-    size_t result;
-    char read_buffer[5];
+    int result;
 
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_GT( result, 0 );
@@ -238,7 +246,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "normal target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_NOT_NULL( target );
@@ -268,7 +276,7 @@ namespace {
 
     target = stumpless_open_buffer_target( NULL,
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
     ASSERT_NULL( target );
@@ -283,7 +291,7 @@ namespace {
     for( i=0; i < 100; i++ ) {
       targets[i] = stumpless_open_buffer_target( "many target test",
                                                  buffer,
-                                                 100,
+                                                 sizeof( buffer ),
                                                  STUMPLESS_OPTION_NONE,
                                                  STUMPLESS_FACILITY_USER );
       EXPECT_NO_ERROR;
