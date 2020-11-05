@@ -584,6 +584,28 @@ namespace {
     EXPECT_NULL( result );
   }
 
+  TEST_F( EntryTest, GetParamValueByNameNullElementName ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_param_value_by_name( basic_entry,
+                                                      NULL,
+                                                      "p-name" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+  }
+
+  TEST_F( EntryTest, GetParamValueByNameNullParamName ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_param_value_by_name( basic_entry,
+                                                      "e-name",
+                                                      NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+  }
+
   TEST_F( EntryTest, HasElement ) {
     bool result;
 
@@ -1318,6 +1340,30 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_get_entry_param_by_name( NULL, "e-name", "p-name" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( GetParamValueByIndexTest, NullEntry ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_param_value_by_index( NULL, 0, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( GetParamValueByNameTest, NullEntry ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_param_value_by_name( NULL,
+                                                      "e-name",
+                                                      "p-name" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
 
