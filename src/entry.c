@@ -285,7 +285,7 @@ stumpless_get_element_count( const struct stumpless_entry *entry ) {
   size_t count;
 
   if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return 0;
   }
 

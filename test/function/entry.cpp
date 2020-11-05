@@ -1170,6 +1170,17 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( GetElementCount, NullEntry ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_count( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, 0 );
+
+    stumpless_free_all(  );
+  }
+
   TEST( GetElementIndex, NullEntry ) {
     size_t result;
     const struct stumpless_error *error;
