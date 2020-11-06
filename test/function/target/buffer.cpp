@@ -296,7 +296,7 @@ namespace {
   }
 
   TEST( BufferTargetOpenTest, MemoryAllocationFailure ) {
-    void * (*set_malloc_result)(size_t);
+    void * ( *set_malloc_result )( size_t );
     char buffer[100];
     struct stumpless_target *target;
     const struct stumpless_error *error;

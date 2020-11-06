@@ -348,10 +348,7 @@ const char *
 stumpless_get_target_name( const struct stumpless_target *target ) {
   char *name_copy;
 
-  if( !target ) {
-    raise_argument_empty( "target is NULL" );
-    return NULL;
-  }
+  VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
   name_copy = alloc_mem( target->name_length + 1 );

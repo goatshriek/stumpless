@@ -35,13 +35,15 @@ namespace {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_target *target;
+    const char *target_name = "test-target";
     const char *default_app_name = "target-default-app-name";
     const char *default_msgid = "target-default-msgid";
+    char plain_buffer[TEST_BUFFER_LENGTH];
+    struct stumpless_target *plain_target;
 
     virtual void
     SetUp( void ) {
-      buffer[0] = '\0';
-      target = stumpless_open_buffer_target( "buffer target testing",
+      target = stumpless_open_buffer_target( target_name,
                                              buffer,
                                              sizeof( buffer ),
                                              STUMPLESS_OPTION_NONE,
@@ -49,11 +51,18 @@ namespace {
 
       stumpless_set_target_default_app_name( target, default_app_name );
       stumpless_set_target_default_msgid( target, default_msgid );
+
+      plain_target = stumpless_open_buffer_target( "plain-target",
+                                                   plain_buffer,
+                                                   sizeof( plain_buffer ),
+                                                   STUMPLESS_OPTION_NONE,
+                                                   STUMPLESS_FACILITY_USER );
     }
 
     virtual void
     TearDown( void ) {
       stumpless_close_buffer_target( target );
+      stumpless_close_buffer_target( plain_target );
     }
   };
 
@@ -69,6 +78,30 @@ namespace {
     free( ( void * ) result );
   }
 
+  TEST_F( TargetTest, GetDefaultAppNameMallocFailure ) {
+    void * ( *set_malloc_result )( size_t );
+    const char *result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_get_target_default_app_name( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( TargetTest, GetDefaultAppNameNotSet ) {
+    const char *result;
+
+    result = stumpless_get_target_default_app_name( plain_target );
+    EXPECT_NO_ERROR;
+    EXPECT_NULL( result );
+  }
+
   TEST_F( TargetTest, GetDefaultMsgid ) {
     const char *result;
 
@@ -79,6 +112,58 @@ namespace {
     EXPECT_STREQ( result, default_msgid );
 
     free( ( void * ) result );
+  }
+
+  TEST_F( TargetTest, GetDefaultMsgidMallocFailure ) {
+    void * ( *set_malloc_result )( size_t );
+    const char *result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_get_target_default_msgid( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( TargetTest, GetDefaultMsgidNotSet ) {
+    const char *result;
+
+    result = stumpless_get_target_default_msgid( plain_target );
+    EXPECT_NO_ERROR;
+    EXPECT_NULL( result );
+  }
+
+  TEST_F( TargetTest, GetName ) {
+    const char *name;
+
+    name = stumpless_get_target_name( target );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( name );
+    EXPECT_NE( name, target_name );
+    EXPECT_STREQ( name, target_name );
+
+    free( ( void * ) name );
+  }
+
+  TEST_F( TargetTest, GetNameMallocFailure ) {
+    void * ( *set_malloc_result )( size_t );
+    const char *result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_get_target_name( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
   /* non-fixture tests */
@@ -277,6 +362,15 @@ namespace {
     const char *result;
 
     result = stumpless_get_target_default_msgid( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+  }
+
+  TEST( GetName, NullTarget ) {
+    const struct stumpless_error *error;
+    const char *result;
+
+    result = stumpless_get_target_name( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
   }
@@ -612,7 +706,6 @@ namespace {
     EXPECT_GE( result, 0 );
 
     stumpless_read_buffer( target, message_buffer, 300 );
-    std::cout << message_buffer << std::endl;
     if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
       FAIL(  ) << "produced invalid procid";
     } else {
@@ -627,7 +720,6 @@ namespace {
     EXPECT_GE( result, 0 );
 
     stumpless_read_buffer( target, message_buffer, 300 );
-    std::cout << message_buffer << std::endl;
     if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
       FAIL(  ) << "produced invalid procid";
     } else {
@@ -642,7 +734,6 @@ namespace {
     EXPECT_GE( result, 0 );
 
     stumpless_read_buffer( target, message_buffer, 300 );
-    std::cout << message_buffer << std::endl;
     if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
       FAIL(  ) << "produced invalid procid";
     } else {
