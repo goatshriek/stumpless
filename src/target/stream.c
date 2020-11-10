@@ -129,18 +129,16 @@ sendto_stream_target( struct stream_target *target,
   size_t fwrite_result;
 
   config_lock_mutex( &target->stream_mutex );
-
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
+  config_unlock_mutex( &target->stream_mutex );
+
   if( fwrite_result != msg_length ) {
     goto write_failure;
   }
 
-  config_unlock_mutex( &target->stream_mutex );
-
   return cap_size_t_to_int( fwrite_result + 1 );
 
 write_failure:
-  config_unlock_mutex( &target->stream_mutex );
   raise_stream_write_failure(  );
   return -1;
 }
