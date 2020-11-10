@@ -190,7 +190,7 @@ sendto_buffer_target( struct buffer_target *target,
   if( target->read_position > write_start ) {
     free_space_left = target->read_position - write_start;
   } else {
-    free_space_left = ( target->size - write_start ) + ( target->read_position );
+    free_space_left = ( target->size - write_start ) + target->read_position;
   }
 
   if( free_space_left <= msg_length ) {

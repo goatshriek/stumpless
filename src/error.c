@@ -79,12 +79,15 @@ stumpless_has_error( void ) {
 void
 stumpless_perror( const char *prefix ) {
   FILE *stream;
+  bool locked;
 
   stream = stumpless_get_error_stream(  );
 
   if( stream && error_valid ) {
 
-    while(!config_compare_exchange_bool( &error_stream_free, true, false )) {};
+    do {
+      locked = config_compare_exchange_bool( &error_stream_free, true, false );
+    } while( !locked );
 
     if( prefix ) {
       fputs( prefix, stream );
