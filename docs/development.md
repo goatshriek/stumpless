@@ -215,7 +215,21 @@ system call failures, then the coverage requirement may be relaxed.
 
 [Sonarcloud](https://sonarcloud.io/dashboard?id=stumpless) provides code quality
 reviews and static analysis. Changes should avoid introducing any new issues in
-Sonarcloud. Changes that do introduce new issues will likely not be accepted.
+Sonarcloud. Changes that do introduce new issues will likely not be accepted,
+unless it can be shown that they are false positives. Unfortunately due to
+limitations with this tool it will likely not run for pull requests from forks
+of the project, so if you don't see an analysis of your requests this is likely
+the reason. Requests will _not_ be rejected simply because they do not have this
+scan (since the CodeQL analysis will still run) so this is no reason to worry.
+But if you notice that a previous change (yours or someone else's) has
+introduced an issue, please consider submitting a fix.
+
+[CodeQL](https://github.com/goatshriek/stumpless/security/code-scanning) is a
+github tool that provides static code scanning services. This service is similar
+to the Sonarcloud analysis and is used in the same manner; changes that
+introduce new issues will likely not be accepted. Fortunately this service will
+be run on requests from forks of the project (unlike Sonarcloud), and as such
+there is no risk of finding out an issue has been introduced after the fact.
 
 If you are making a documentation change or other update that won't affect the
 output of any of these tools, you may include `[skip ci]` in your commit message
