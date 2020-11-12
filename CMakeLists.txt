@@ -553,6 +553,7 @@ else()
     SOURCES
       test/thread_safety/config/wel_supported.cpp
       ${PROJECT_BINARY_DIR}/events.rc
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
@@ -604,6 +605,7 @@ else()
   add_thread_safety_test(entry
     SOURCES
       test/thread_safety/entry.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 
   add_thread_safety_test(file

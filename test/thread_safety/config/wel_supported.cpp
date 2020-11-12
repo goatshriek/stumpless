@@ -27,6 +27,7 @@
 #include <thread>
 #include "test/function/windows/events.h"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 
 namespace {
   const int THREAD_COUNT = 16;
@@ -35,7 +36,7 @@ namespace {
   std::mutex thread_params_mutex;
 
   void
-  read_entry( const struct stumpless_entry *entry ) {
+  read_entry_wel_data( const struct stumpless_entry *entry ) {
     const struct stumpless_entry *copy;
     const char *insertion_string_1;
 
@@ -56,7 +57,7 @@ namespace {
   }
 
   void
-  write_entry( struct stumpless_entry *entry ) {
+  write_entry_wel_data( struct stumpless_entry *entry ) {
     std::thread::id thread_id = std::this_thread::get_id(  );
 
     std::ostringstream insertion_string_1_stream;
@@ -110,17 +111,13 @@ namespace {
     std::thread *reader_threads[THREAD_COUNT];
     std::thread *writer_threads[THREAD_COUNT];
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "file-target-thread-safety-test",
-                                 "test-message",
-                                 "this is a test message" );
+    entry = create_entry(  );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
-      reader_threads[i] = new std::thread( read_entry, entry );
-      writer_threads[i] = new std::thread( write_entry, entry );
+      reader_threads[i] = new std::thread( read_entry_wel_data, entry );
+      writer_threads[i] = new std::thread( write_entry_wel_data, entry );
     }
 
     for( i = 0; i < THREAD_COUNT; i++ ) {

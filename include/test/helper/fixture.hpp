@@ -22,6 +22,9 @@
 #  include <stumpless.h>
 
 struct stumpless_entry *
+create_empty_entry( void );
+
+struct stumpless_entry *
 create_entry( void );
 
 #endif /* __STUMPLESS_TEST_HELPER_FIXTURE_HPP */

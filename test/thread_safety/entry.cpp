@@ -23,6 +23,7 @@
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 
 namespace {
   const int THREAD_COUNT = 16;
@@ -151,11 +152,7 @@ namespace {
     std::thread *writer_threads[THREAD_COUNT];
     const struct stumpless_element *element;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "file-target-thread-safety-test",
-                                 "test-message",
-                                 "this is a test message" );
+    entry = create_empty_entry(  );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
 
