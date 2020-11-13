@@ -25,6 +25,7 @@
 "stdatomic_read_ptr": "private/config/have_stdatomic.h"
 "stdatomic_write_flag": "private/config/have_stdatomic.h"
 "stdatomic_write_ptr": "private/config/have_stdatomic.h"
+"TARGET_MUTEX": "private/target.h"
 "unlock_wel_data": "private/config/wel_supported.h"
 "VALIDATE_ARG_NOT_NULL": "private/validate.h"
 "windows compare_exchange_bool": "private/config/have_windows.h"

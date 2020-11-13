@@ -104,11 +104,13 @@ struct stumpless_target {
  */
   int mask;
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-/**
- * A pointer to the mutex used to coordinate multi-threaded access to this
- * target.
+/*
+ * In thread-safe builds the memory at the end of the target holds a mutex that
+ * is used to coordinate access to the target. However the type info is not
+ * included in the struct definition in the public headers as it is
+ * configuration-specific and would complicate the public headers significantly
+ * if they were to stay portable.
  */
-  void *mutex;
 #  endif
 };
 
