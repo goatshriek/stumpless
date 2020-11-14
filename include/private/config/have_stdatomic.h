@@ -33,10 +33,10 @@ stdatomic_compare_exchange_ptr( atomic_uintptr_t *p,
                                 void *replacement );
 
 bool
-stdatomic_read_bool( atomic_bool *b );
+stdatomic_read_bool( const atomic_bool *b );
 
 void *
-stdatomic_read_ptr( atomic_uintptr_t *p );
+stdatomic_read_ptr( const atomic_uintptr_t *p );
 
 void
 stdatomic_write_bool( atomic_bool *b, bool replacement );

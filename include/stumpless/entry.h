@@ -66,15 +66,18 @@ struct stumpless_entry {
   struct stumpless_element **elements;
 /** The number of elements in this entry. */
   size_t element_count;
-#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-/**
- * A pointer to a mutex used to coordinate multi-threaded access to this entry.
- */
-  void *mutex;
-#  endif
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 /** A pointer to a wel_fields structure. */
   void *wel_data;
+#  endif
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/*
+ * In thread-safe builds the memory at the end of the entry holds a mutex that
+ * is used to coordinate access to the entry. However the type info is not
+ * included in the struct definition in the public headers as it is
+ * configuration-specific and would complicate the public headers significantly
+ * if they were to stay portable.
+ */
 #  endif
 };
 

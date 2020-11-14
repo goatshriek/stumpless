@@ -21,9 +21,18 @@
 
 #  include <stdbool.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/entry.h>
+#  include "private/config/wrapper/thread_safety.h"
 #  include "private/strbuilder.h"
+
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+#    define ENTRY_MUTEX( ENTRY ) \
+( ( config_mutex_t * ) ( ( char * ) ( ENTRY ) + sizeof( *( ENTRY ) ) ) )
+#  else
+#    define ENTRY_MUTEX( ENTRY ) NULL
+#  endif
 
 void
 entry_free_all( void );

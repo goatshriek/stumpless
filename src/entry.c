@@ -300,7 +300,7 @@ size_t
 stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name ) {
   size_t i;
-  struct stumpless_element *element;
+  const struct stumpless_element *element;
   int cmp_result;
 
   if( !entry ) {
@@ -886,7 +886,7 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
-  config_init_mutex( entry->mutex = ( char * ) entry + sizeof( *entry ) );
+  config_init_mutex( ENTRY_MUTEX( entry ) );
 
   clear_error(  );
   return entry;
@@ -950,7 +950,7 @@ get_prival( int facility, int severity ) {
 
 void
 lock_entry( const struct stumpless_entry *entry ) {
-  config_lock_mutex( entry->mutex );
+  config_lock_mutex( ENTRY_MUTEX( entry ) );
 }
 
 struct stumpless_entry *
@@ -1093,7 +1093,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
-  config_destroy_mutex( entry->mutex );
+  config_destroy_mutex( ENTRY_MUTEX( entry ) );
 
   config_destroy_wel_data( entry );
 
@@ -1121,5 +1121,5 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
 
 void
 unlock_entry( const struct stumpless_entry *entry ) {
-  config_unlock_mutex( entry->mutex );
+  config_unlock_mutex( ENTRY_MUTEX( entry ) );
 }

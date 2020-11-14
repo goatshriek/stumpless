@@ -45,7 +45,7 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
     return;
   }
 
-  config_destroy_mutex( param->mutex );
+  config_destroy_mutex( PARAM_MUTEX( param ) );
   free_mem( param->name );
   free_mem( param->value );
   free_mem( param );
@@ -111,7 +111,7 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail_value;
   }
 
-  config_init_mutex( param->mutex = ( char * ) param + sizeof( *param ) );
+  config_init_mutex( PARAM_MUTEX( param ) );
 
   clear_error(  );
   return param;
@@ -225,10 +225,10 @@ fail:
 
 void
 lock_param( const struct stumpless_param *param ) {
-  config_lock_mutex( param->mutex );
+  config_lock_mutex( PARAM_MUTEX( param ) );
 }
 
 void
 unlock_param( const struct stumpless_param *param ) {
-  config_unlock_mutex( param->mutex );
+  config_unlock_mutex( PARAM_MUTEX( param ) );
 }

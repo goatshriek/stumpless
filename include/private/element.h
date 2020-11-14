@@ -20,8 +20,17 @@
 #  define __STUMPLESS_PRIVATE_ELEMENT_H
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/param.h>
+#  include "private/config/wrapper/thread_safety.h"
+
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+#    define ELEMENT_MUTEX( ELEMENT ) \
+( ( config_mutex_t * ) ( ( char * ) ( ELEMENT ) + sizeof( *( ELEMENT ) ) ) )
+#  else
+#    define ELEMENT_MUTEX( ELEMENT ) NULL
+#  endif
 
 void
 lock_element( const struct stumpless_element *element );

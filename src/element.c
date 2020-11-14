@@ -398,7 +398,7 @@ stumpless_new_element( const char *name ) {
   element->params = NULL;
   element->param_count = 0;
 
-  config_init_mutex( element->mutex = ( char * ) element + sizeof( *element ) );
+  config_init_mutex( ELEMENT_MUTEX( element ) );
 
   clear_error(  );
   return element;
@@ -522,7 +522,7 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
 
 void
 lock_element( const struct stumpless_element *element ) {
-  config_lock_mutex( element->mutex );
+  config_lock_mutex( ELEMENT_MUTEX( element ) );
 }
 
 struct stumpless_param *
@@ -538,7 +538,7 @@ locked_get_param_by_index( const struct stumpless_element *element,
 
 void
 unchecked_destroy_element( const struct stumpless_element *element ) {
-  config_destroy_mutex( element->mutex );
+  config_destroy_mutex( ELEMENT_MUTEX( element ) );
   free_mem( element->params );
   free_mem( element->name );
   free_mem( element );
@@ -546,6 +546,6 @@ unchecked_destroy_element( const struct stumpless_element *element ) {
 
 void
 unlock_element( const struct stumpless_element *element ) {
-  config_unlock_mutex( element->mutex );
+  config_unlock_mutex( ELEMENT_MUTEX( element ) );
 }
 
