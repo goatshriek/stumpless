@@ -31,7 +31,7 @@ stdatomic_compare_exchange_bool( atomic_bool *b,
 bool
 stdatomic_compare_exchange_ptr( atomic_uintptr_t *p,
                                 const void *expected,
-                                void *replacement ) {
+                                const void *replacement ) {
   uintptr_t expected_uint = ( uintptr_t ) expected;
 
   return atomic_compare_exchange_strong( p,

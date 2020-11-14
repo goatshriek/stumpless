@@ -30,7 +30,7 @@ stdatomic_compare_exchange_bool( atomic_bool *b,
 bool
 stdatomic_compare_exchange_ptr( atomic_uintptr_t *p,
                                 const void *expected,
-                                void *replacement );
+                                const void *replacement );
 
 bool
 stdatomic_read_bool( atomic_bool *b );
