@@ -36,7 +36,7 @@ windows_compare_exchange_ptr( PVOID volatile *p,
                               const void *expected,
                               PVOID replacement ) {
   PVOID initial;
-  
+
   initial = InterlockedCompareExchangePointer( p,
                                                replacement,
                                                ( PVOID ) expected );

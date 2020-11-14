@@ -523,4 +523,3 @@ void
 unlock_element( const struct stumpless_element *element ) {
   config_unlock_mutex( ELEMENT_MUTEX( element ) );
 }
-

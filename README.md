@@ -25,7 +25,6 @@ easier:
  * completely thread safe
  * can be adjusted or removed during compilation for zero runtime impact
  * interoperability with standard syslog daemons and library functions
- * complete thread safety for multithreaded programs
  * an extensive unit testing suite and continuous integration
  * localized for multiple languages :de: :fr: :sweden:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
