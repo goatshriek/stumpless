@@ -5,5 +5,6 @@ make CTEST_OUTPUT_ON_FAILURE=1 -j 2 check &&
 sudo --preserve-env make CTEST_OUTPUT_ON_FAILURE=1 -j 2 check &&
 if [[ $BUILD_ARGS =~ "ENABLE_CPP=ON" ]]; then make -j 2 check-cpp; fi &&
 if ! [[ $BUILD_ARGS =~ "ENABLE_THREAD_SAFETY=OFF" ]]; then make -j 2 check-thread-safety; fi &&
+if [[ $BUILD_ARGS =~ "CMAKE_BUILD_TYPE=Release" ]]; then make -j 2 bench; fi &&
 make -j 2 examples &&
 sudo --preserve-env make install
