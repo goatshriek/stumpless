@@ -402,6 +402,27 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
 
+  TEST( OpenTarget, MemoryFailureOnName ) {
+    const char *target_name = "test-target-name-of-known-length";
+    char buffer[100];
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+    void *(*set_malloc_result)(size_t);
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 33 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    target = stumpless_open_buffer_target( target_name,
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_malloc( malloc );
+  }
+
   TEST( OpenTarget, NullTarget ) {
     struct stumpless_target *target;
     const struct stumpless_error *error;
