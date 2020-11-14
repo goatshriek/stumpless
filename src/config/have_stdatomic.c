@@ -40,12 +40,12 @@ stdatomic_compare_exchange_ptr( atomic_uintptr_t *p,
 }
 
 bool
-stdatomic_read_bool( const atomic_bool *b ) {
+stdatomic_read_bool( atomic_bool *b ) {
   return ( bool ) atomic_load( b );
 }
 
 void *
-stdatomic_read_ptr( const atomic_uintptr_t *p ) {
+stdatomic_read_ptr( atomic_uintptr_t *p ) {
   return ( void * ) atomic_load( p );
 }
 
