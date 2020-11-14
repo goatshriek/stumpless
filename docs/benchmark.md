@@ -17,6 +17,10 @@ machine in the same environment. This is why you will not see performance
 test results posted in any documentation. The results are only useful when
 compared to one another, typically during development of some change.
 
+Benchmarks are run for Release CI builds, but should not be used as indicators
+of performance for this exact reason. They are only included in the CI process
+to make sure that they are not broken.
+
 ## Walkthrough: Improving `stumpless_copy_element`
 
 Walking through a benchmarking improvement change from beginning to end
