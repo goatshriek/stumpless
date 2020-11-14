@@ -169,10 +169,6 @@ matrix:
         - MATRIX_EVAL="CC=gcc && CXX=g++"
         - LANG=sv_SE.UTF-8
         - LC_ALL=sv_SE.UTF-8
-    - name: "os x, clang"
-      os: osx
-      env:
-        - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "os x, debug"
       os: osx
       env:

@@ -20,32 +20,32 @@
 #include <stumpless.h>
 #include "test/helper/memory_counter.hpp"
 
-NEW_MEMORY_COUNTER( stumpless )
+NEW_MEMORY_COUNTER( stump )
 NEW_MEMORY_COUNTER( stumplog )
 
-static void Stumpless(benchmark::State& state){
+static void Stump(benchmark::State& state){
   char buffer[1000];
   struct stumpless_target *target;
 
-  INIT_MEMORY_COUNTER( stumpless );
-  stumpless_set_malloc( stumpless_memory_counter_malloc );
-  stumpless_set_realloc( stumpless_memory_counter_realloc );
-  stumpless_set_free( stumpless_memory_counter_free );
+  INIT_MEMORY_COUNTER( stump );
+  stumpless_set_malloc( stump_memory_counter_malloc );
+  stumpless_set_realloc( stump_memory_counter_realloc );
+  stumpless_set_free( stump_memory_counter_free );
 
-  target = stumpless_open_buffer_target( "stumpless-perf", buffer, 1000, 0, 0 );
+  target = stumpless_open_buffer_target( "stump-perf", buffer, 1000, 0, 0 );
   stumpless_set_current_target( target );
 
   for(auto _ : state){
-    stumpless("testing");
+    stump( "testing" );
   }
 
   stumpless_close_buffer_target( target );
 
-  state.counters["CallsToAlloc"] = ( double ) stumpless_memory_counter.malloc_count;
-  state.counters["MemoryAllocated"] = ( double ) stumpless_memory_counter.alloc_total;
-  state.counters["CallsToRealloc"] = ( double ) stumpless_memory_counter.realloc_count;
-  state.counters["CallsToFree"] = ( double ) stumpless_memory_counter.free_count;
-  state.counters["MemoryFreed"] = ( double ) stumpless_memory_counter.free_total;
+  state.counters["CallsToAlloc"] = ( double ) stump_memory_counter.malloc_count;
+  state.counters["MemoryAllocated"] = ( double ) stump_memory_counter.alloc_total;
+  state.counters["CallsToRealloc"] = ( double ) stump_memory_counter.realloc_count;
+  state.counters["CallsToFree"] = ( double ) stump_memory_counter.free_count;
+  state.counters["MemoryFreed"] = ( double ) stump_memory_counter.free_total;
 }
 
 static void Stumplog( benchmark::State& state ) {
@@ -72,5 +72,5 @@ static void Stumplog( benchmark::State& state ) {
   state.counters["MemoryFreed"] = ( double ) stumplog_memory_counter.free_total;
 }
 
-BENCHMARK(Stumpless);
-BENCHMARK(Stumplog);
+BENCHMARK( Stump );
+BENCHMARK( Stumplog );
