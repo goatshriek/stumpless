@@ -155,6 +155,37 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+
+  TEST_F( ParamTest, GetParamToString) {
+      const char *format;
+    
+      format = stumpless_param_to_string( basic_param );
+      ASSERT_NOT_NULL( format );
+
+      EXPECT_STREQ( format, "<basic-name>:<basic-value>" );
+      EXPECT_NO_ERROR;
+  }
+
+  TEST_F( ParamTest, ParamToStringMemoryFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_error *error;
+    const char *result;
+    
+    
+    // create the internal error struct
+    stumpless_get_param_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_param_to_string( basic_param );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   /* non-fixture tests */
 
   TEST( CopyParamTest, NullParam ) {
@@ -372,6 +403,15 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_free_all(  );
+  }
+
+  TEST( ParamToStringTest, NullParam) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_param_to_string( NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }

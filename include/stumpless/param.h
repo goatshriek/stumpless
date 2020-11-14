@@ -272,6 +272,20 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name );
 struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value );
 
+
+/**
+ * Returns the name and the value from param as a formatted string.
+ * The character buffer should be freed when no longer is needed by the caller.
+ *
+ * @param param The param to get the name and the value from.  
+ *
+ * @return The formatted string of <name>: <value> if no error is encountered.
+ * If an error is  encountered, then NULL is returned and an error code is set appropriately.
+ */
+
+const char *
+stumpless_param_to_string(const struct stumpless_param * param);
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif

@@ -182,6 +182,45 @@ fail:
   return NULL;
 }
 
+const char *
+stumpless_param_to_string(const struct stumpless_param * param) {
+
+    char *format;
+    const char *name;
+    const char *value;
+    size_t value_len;
+    size_t name_len;
+
+    VALIDATE_ARG_NOT_NULL(param);
+
+    name  = stumpless_get_param_name(param);
+    value = stumpless_get_param_value(param);
+
+    name_len = param->name_length;
+    value_len = param->value_length;
+
+    /* <name>:<value> */
+    format = alloc_mem(value_len + name_len + 6);
+    if (format == NULL)
+        goto fail;
+
+    format[0] = '<';
+    memcpy(format + 1, name, name_len);
+    format[name_len + 1] = '>';
+    format[name_len + 2] = ':';
+    format[name_len + 3] = '<';
+    memcpy(format + name_len + 4, value, value_len);
+    format[name_len + value_len + 4] = '>';
+    format[name_len + value_len + 5] = '\0';
+
+
+    clear_error( );
+    return format;
+
+fail:
+    return NULL;
+}
+
 /* private functions */
 
 void
