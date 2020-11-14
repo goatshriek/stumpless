@@ -20,10 +20,12 @@
 #  define __STUMPLESS_PRIVATE_ELEMENT_H
 
 #  include <stddef.h>
+#  include <string.h>
 #  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/param.h>
 #  include "private/config/wrapper/thread_safety.h"
+#  include "private/param.h"
 
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 #    define ELEMENT_MUTEX( ELEMENT ) \
@@ -31,6 +33,18 @@
 #  else
 #    define ELEMENT_MUTEX( ELEMENT ) NULL
 #  endif
+
+#  define FOR_EACH_PARAM_WITH_NAME( ELEMENT, NAME ) \
+for( i = 0; i < ( ELEMENT )->param_count; i++ ) {   \
+  param = element->params[i];                       \
+                                                    \
+  lock_param( param );                              \
+  cmp_result = strcmp( param->name, ( NAME ) );     \
+  unlock_param( param );                            \
+                                                    \
+  if( cmp_result != 0 ) {                           \
+    continue;                                       \
+  }
 
 void
 lock_element( const struct stumpless_element *element );

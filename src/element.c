@@ -26,7 +26,6 @@
 #include "private/element.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/param.h"
 #include "private/strhelper.h"
 #include "private/validate.h"
 
@@ -151,6 +150,8 @@ bool
 stumpless_element_has_param( const struct stumpless_element *element,
                              const char *name ) {
   size_t i;
+  const struct stumpless_param *param;
+  int cmp_result;
 
   if( !element ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "element" ) );
@@ -164,11 +165,9 @@ stumpless_element_has_param( const struct stumpless_element *element,
 
   clear_error(  );
   lock_element( element );
-  for( i = 0; i < element->param_count; i++ ) {
-    if( strcmp( element->params[i]->name, name ) == 0 ) {
-      unlock_element( element );
-      return true;
-    }
+  FOR_EACH_PARAM_WITH_NAME( element, name )
+    unlock_element( element );
+    return true;
   }
 
   unlock_element( element );
@@ -227,17 +226,9 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( name );
 
   lock_element( element );
-  for( i = 0; i < element->param_count; i++ ) {
-    param = element->params[i];
-
-    lock_param( param );
-    cmp_result = strcmp( param->name, name );
-    unlock_param( param );
-
-    if( cmp_result == 0 ) {
-      clear_error(  );
-      goto cleanup_and_return;
-    }
+  FOR_EACH_PARAM_WITH_NAME( element, name )
+    clear_error(  );
+    goto cleanup_and_return;
   }
 
   param = NULL;
@@ -283,17 +274,9 @@ stumpless_get_param_index( const struct stumpless_element *element,
   }
 
   lock_element( element );
-  for( i = 0; i < element->param_count; i++ ) {
-    param = element->params[i];
-
-    lock_param( param );
-    cmp_result = strcmp( param->name, name );
-    unlock_param( param );
-
-    if( cmp_result == 0 ) {
-      clear_error(  );
-      goto cleanup_and_return;
-    }
+  FOR_EACH_PARAM_WITH_NAME( element, name )
+    clear_error(  );
+    goto cleanup_and_return;
   }
 
   i = 0;
@@ -336,16 +319,8 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
   }
 
   lock_element( element );
-  for( i = 0; i < element->param_count; i++ ) {
-    param = element->params[i];
-
-    lock_param( param );
-    cmp_result = strcmp( param->name, name );
-    unlock_param( param );
-
-    if( cmp_result == 0 ) {
-      count++;
-    }
+  FOR_EACH_PARAM_WITH_NAME( element, name )
+    count++;
   }
   unlock_element( element );
 
