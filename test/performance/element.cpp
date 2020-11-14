@@ -37,8 +37,8 @@ static void CopyElement(benchmark::State& state){
 
   for(auto _ : state){
     result = stumpless_copy_element( element );
-    if( result <= 0 ) {
-      state.SkipWithError( "could not send an entry to the target" );
+    if( !result ) {
+      state.SkipWithError( "the element copy failed" );
     } else {
       stumpless_destroy_element_and_contents( result );
     }

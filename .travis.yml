@@ -2,8 +2,14 @@ language: c
 
 matrix:
   include:
-    - name: "windows"
+    - name: "windows, debug"
       os: windows
+      env:
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
+    - name: "windows, release"
+      os: windows
+      env:
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Release"
     - name: "windows, with c++"
       os: windows
       env:
@@ -163,15 +169,16 @@ matrix:
         - MATRIX_EVAL="CC=gcc && CXX=g++"
         - LANG=sv_SE.UTF-8
         - LC_ALL=sv_SE.UTF-8
-    - name: "os x, clang"
-      os: osx
-      env:
-        - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "os x, debug"
       os: osx
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Debug"
+    - name: "os x, release"
+      os: osx
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - BUILD_ARGS="-DCMAKE_BUILD_TYPE=Release"
     - name: "os x, all options off"
       os: osx
       env:
