@@ -32,16 +32,19 @@ namespace {
     struct stumpless_param *copy;
     const char *name;
     const char *value;
+    const char *str;
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
       copy = stumpless_copy_param( param );
 
       name = stumpless_get_param_name( param );
       value = stumpless_get_param_value( param );
+      str = stumpless_param_to_string( param );
 
       stumpless_destroy_param( copy );
       free( ( void * ) name );
       free( ( void * ) value );
+      free( ( void * ) str );
     }
   }
 
