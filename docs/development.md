@@ -88,6 +88,9 @@ A few other documents may be helpful for newcomers to glance through:
    document describes the steps for this in detail with a full example.
  * [docs/localization.md](localization.md) describes how localization is
    implemented in detail and how to add new locales.
+ * [docs/thread_safety.md](thread_safety.md) describes the thread safety
+   implementation approach. Be sure that you follow the principles outlined
+   here for any new functionality you implement.
 
 ## Error Handling
 
