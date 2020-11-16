@@ -126,3 +126,21 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "value"
+      - name: "ToString"
+        doc: >
+          Gives a string representation of this Param. This is not intended for
+          parsing or formatted output, but simply gives a human-readable form.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+        return:
+          doc: >
+            The name and value of this Param in a human-readable string.
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_param_to_string"
+          includes: "stumpless/param.h"
+          params:
+            - name: "equivalent-struct-pointer"
+          return:
+            type: "const char *"

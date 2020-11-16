@@ -246,6 +246,18 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "name"
+      - name: "GetElementCount"
+        doc: "Returns the number of elements in this Entry."
+        return:
+          doc: "The number of elements this Entry has."
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_element_count"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
       - name: "GetElementIndex"
         doc: |
           Gets the index of the Element with the given name from this Entry.

@@ -152,9 +152,9 @@ stumpless_open_buffer_target( const char *name,
  *
  * @param target The buffer target to read from.
  *
- * @param buffer The buffer to read the message in to.
+ * @param buffer The buffer to write the message in to.
  *
- * @param max_length The maximum number of bytes to read into the provided
+ * @param max_length The maximum number of bytes to write into the provided
  * buffer. If this is zero, then the read buffer will be considered an
  * empty argument and an error will be raised.
  *

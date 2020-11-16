@@ -31,6 +31,20 @@ classes:
         wrapped-function:
           name: "stumpless_free_all"
           includes: "stumpless/memory.h"
+      - name: "FreeThread"
+        doc: |
+          Frees all memory allocated internally to the calling thread, and
+          performs any other thread-specific cleanup.
+
+          This function should be called in any thread that has used stumpless
+          functions before it exits so that caches and other structures can be
+          cleaned up. It is not a substitute for stumpless_free_all, but is
+          called by it and can be left out if stumpless_free_all will be called
+          later in the same thread.
+        static: true
+        wrapped-function:
+          name: "stumpless_free_thread"
+          includes: "stumpless/memory.h"
       - name: "SetMalloc"
         doc: "Sets the function used by Stumpless to allocate memory."
         static: true
