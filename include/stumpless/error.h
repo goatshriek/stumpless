@@ -189,6 +189,8 @@ stumpless_get_error_id( const struct stumpless_error *err );
 /**
  * Gets the error string of the given error id.
  *
+ * This is a string literal that should not be modified or freed by the caller.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
  *

@@ -70,6 +70,8 @@ classes:
           output. Note that this means that if the read operation was successful
           but there was no message to read, the result will be 1 with a single
           NULL character being written to the read buffer.
+
+          Available since release v2.0.0.
         params:
           - name: "buffer"
             doc: "The buffer to write the message into."

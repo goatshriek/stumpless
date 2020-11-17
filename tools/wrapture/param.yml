@@ -61,8 +61,15 @@ classes:
           - name: "equivalent-struct-pointer"
     functions:
       - name: "GetName"
-        doc: |
+        doc: >
           The name of this Param.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         return:
@@ -76,8 +83,15 @@ classes:
           return:
             type: "const char *"
       - name: "GetValue"
-        doc: |
+        doc: >
           The value of this Param.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         return:
@@ -133,6 +147,8 @@ classes:
 
           The returned character buffer must be freed by the caller when it is
           no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
         return:
           doc: >
             The name and value of this Param in a human-readable string.

@@ -41,6 +41,8 @@ classes:
           cleaned up. It is not a substitute for stumpless_free_all, but is
           called by it and can be left out if stumpless_free_all will be called
           later in the same thread.
+
+          Available since release v2.0.0.
         static: true
         wrapped-function:
           name: "stumpless_free_thread"

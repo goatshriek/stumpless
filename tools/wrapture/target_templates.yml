@@ -8,6 +8,8 @@ templates:
 
           The returned character buffer must be freed by the caller when it is
           no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
         return:
           doc: "The default app name of this target."
           type: "const char *"
@@ -24,6 +26,8 @@ templates:
 
           The returned character buffer must be freed by the caller when it is
           no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
         return:
           doc: "The default msgid of this target."
           type: "const char *"
@@ -52,6 +56,8 @@ templates:
 
           The returned character buffer must be freed by the caller when it is
           no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
         return:
           doc: "The name of this Target."
           type: "const char *"

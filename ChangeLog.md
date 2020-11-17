@@ -30,7 +30,19 @@ fixes, check out the
    headers, respectively.
  - Functions that return strings now require the caller to free the string
    when it is no longer needed. Prior to this version these strings pointed
-   to internal character buffers that could not be modified.
+   to internal character buffers that could not be modified. The functions
+   affected by this are:
+    * `stumpless_get_element_name`
+    * `stumpless_get_entry_app_name`
+    * `stumpless_get_entry_message`
+    * `stumpless_get_entry_msgid`
+    * `stumpless_get_entry_param_value_by_index`
+    * `stumpless_get_entry_param_value_by_name`
+    * `stumpless_get_param_name`
+    * `stumpless_get_param_name_by_index`
+    * `stumpless_get_param_value`
+    * `stumpless_get_param_value_by_index`
+    * `stumpless_get_param_value_by_name`
  - The underlying buffer in buffer targets should no longer be read manually,
    but should instead use the new `stumpless_read_buffer` function as the only
    way to read messages.
