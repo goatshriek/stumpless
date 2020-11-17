@@ -8,7 +8,8 @@ features described by some GNU libc manual (find the relevant section
 
 In addition to thread safety, the async safety and async cancellation safety is
 also documented. However, most functions are not safe in either of these
-situations.
+situations. You can look at any function documentation in the public header
+files for examples of how this is formatted.
 
 ## Implementation Approach
 There are a number of ways to achieve thread safety, and stumpless uses a

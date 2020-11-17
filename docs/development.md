@@ -168,6 +168,15 @@ is public facing. Stumpless uses [doxygen](https://www.doxygen.nl/index.html) to
 generate its documentation from the header files. You can use the `docs` build
 target to generate them, provided that doxygen was installed when you ran cmake.
 
+As you look at other functions, you will see that each function documents its
+thread and async safety attributes in addition to its functionality. There is
+more detail about this in the [thread safety documentation](thread_safety.md),
+as well as the tools that are available to you to implement thread safety. While
+async safety and async cancellation safety are optional, you _must_ make your
+implementation thread safe. Look at other functions as examples, and don't be
+afraid to ask for help on the project
+[Gitter](https://gitter.im/stumpless/community) if you get stuck.
+
 In order to support being built as a DLL, stumpless has a `.def` file at
 `src/windows/stumpless.def`. If you are adding a new public function to
 stumpless, you will need to make sure to add it to the `.def` file so that the
