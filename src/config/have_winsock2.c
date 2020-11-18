@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include "private/config/have_winsock2.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"
@@ -96,6 +97,7 @@ fail:
 void
 winsock2_close_network_target( const struct network_target *target ) {
   closesocket( target->handle );
+  config_destroy_mutex( &target->socket_mutex );
 }
 
 void
@@ -126,6 +128,7 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
 void
 winsock2_init_network_target( struct network_target *target ) {
   target->handle = INVALID_SOCKET;
+  config_init_mutex( &target->socket_mutex );
 }
 
 struct network_target *
@@ -199,7 +202,7 @@ winsock2_open_udp6_target( struct network_target *target ) {
 struct network_target *
 winsock2_reopen_tcp4_target( struct network_target *target ) {
 
-  winsock2_close_network_target( target );
+  closesocket( target->handle );
   return winsock2_open_tcp4_target( target );
 
 }
@@ -207,7 +210,7 @@ winsock2_reopen_tcp4_target( struct network_target *target ) {
 struct network_target *
 winsock2_reopen_tcp6_target( struct network_target *target ) {
 
-  winsock2_close_network_target( target );
+  closesocket( target->handle );
   return winsock2_open_tcp6_target( target );
 
 }
@@ -215,7 +218,7 @@ winsock2_reopen_tcp6_target( struct network_target *target ) {
 struct network_target *
 winsock2_reopen_udp4_target( struct network_target *target ) {
 
-  winsock2_close_network_target( target );
+  closesocket( target->handle );
   return winsock2_open_udp4_target( target );
 
 }
@@ -223,7 +226,7 @@ winsock2_reopen_udp4_target( struct network_target *target ) {
 struct network_target *
 winsock2_reopen_udp6_target( struct network_target *target ) {
 
-  winsock2_close_network_target( target );
+  closesocket( target->handle );
   return winsock2_open_udp6_target( target );
 
 }
@@ -234,10 +237,12 @@ winsock2_sendto_target( struct network_target *target,
                         size_t msg_length ) {
   int result;
 
+  config_lock_mutex( &target->socket_mutex );
   result = send( target->handle,
                  msg,
                  cap_size_t_to_int( msg_length ),
                  0 );
+  config_unlock_mutex( &target->socket_mutex );
 
   if( result == SOCKET_ERROR ) {
     raise_socket_send_failure( L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE,

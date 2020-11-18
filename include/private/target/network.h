@@ -23,7 +23,9 @@
 #  include <stddef.h>
 #  include <stumpless/target.h>
 #  include <stumpless/target/network.h>
+#  include "private/config.h"
 #  include "private/config/wrapper.h"
+#  include "private/config/wrapper/thread_safety.h"
 
 struct network_target {
   const char *destination;
@@ -32,6 +34,15 @@ struct network_target {
   size_t max_msg_size;
   const char *port;
   config_socket_handle_t handle;
+#if !defined( HAVE_SYS_SOCKET_H ) && defined( HAVE_WINSOCK2_H )
+/**
+ * A mutex to coordinate writes to this target's socket. This is only needed in
+ * winsock-based network targets, where the send function is not thread-safe
+ * with the same descriptor on stream-oriented targets, which can lead to
+ * message interleaving.
+ */
+  config_mutex_t socket_mutex;
+#endif
 };
 
 void

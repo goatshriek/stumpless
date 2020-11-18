@@ -47,6 +47,10 @@ fixes, check out the
    but should instead use the new `stumpless_read_buffer` function as the only
    way to read messages.
 
+### Fixed
+ - Memory leak in opening of network targets on systems using `sys/socket.h`
+   for network services.
+
 ### Removed
  - `stumpless` and `vstumpless` functions (use `stump` and `vstump` instead).
 

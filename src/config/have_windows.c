@@ -64,7 +64,7 @@ windows_getpid( void ) {
 
 void
 windows_init_mutex( LPCRITICAL_SECTION mutex ) {
-  InitializeCriticalSection(mutex);
+  InitializeCriticalSection( mutex );
 }
 
 void
