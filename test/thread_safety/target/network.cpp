@@ -42,6 +42,8 @@ namespace {
       free( ( void * ) destination );
       free( ( void * ) port );
     }
+
+    stumpless_free_thread(  );
   }
 
   void
@@ -51,6 +53,8 @@ namespace {
       stumpless_set_transport_port( target, "514" );
       stumpless_set_udp_max_message_size( target, 3200 );
     }
+
+    stumpless_free_thread(  );
   }
 
   TEST( WriteConsistency, SimultaneousWrites ) {

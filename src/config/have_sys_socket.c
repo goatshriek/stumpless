@@ -74,6 +74,7 @@ sys_socket_open_socket( const char *destination,
     goto fail_connect;
   }
 
+  freeaddrinfo( addr_result );
   return handle;
 
 fail_connect:
