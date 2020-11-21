@@ -9,7 +9,6 @@ docs/html/*
 *.so
 *.swp
 .vs/*
-out/*
 CMakeSettings.json
 
 
