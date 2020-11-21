@@ -1,0 +1,16 @@
+name: "ci"
+on:
+  push:
+  pull-request:
+    branches:
+      - latest
+jobs:
+  basic-linux:
+    name: "basic linux build"
+    runs-on: "ubuntu-20.04"
+    steps:
+      uses: actions/checkout@v2
+      run: |
+        cmake .
+        make all
+        make check
