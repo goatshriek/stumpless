@@ -2,7 +2,6 @@
 
 **A C logging library built for high performance and a rich feature set.**
 
-[![Travis Build Status](https://travis-ci.com/goatshriek/stumpless.svg?branch=latest)](https://travis-ci.com/goatshriek/stumpless)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/uwied5cn5jujl4d2/branch/latest?svg=true)](https://ci.appveyor.com/project/goatshriek/stumpless)
 [![Coverage Report](https://codecov.io/gh/goatshriek/stumpless/branch/latest/graph/badge.svg)](https://codecov.io/gh/goatshriek/stumpless)
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=stumpless&metric=alert_status)](https://sonarcloud.io/dashboard?id=stumpless)
