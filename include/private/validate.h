@@ -50,4 +50,24 @@ bool validate_msgid_length(const char* msgid );
  */
 bool validate_msgid_format( const char* msgid );
 
+/**
+ * Checks the length of app name.
+ *
+ * @param the app name
+ *
+ * @return True if the app name is less than allowed length 
+ * (48 characters not including NULL terminating),otherwise
+ * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
+ */
+bool validate_app_name_length( const char* app_name);
+
+
+
+
+
+
+
+
+
+
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */

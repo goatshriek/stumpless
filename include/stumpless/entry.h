@@ -498,7 +498,7 @@ stumpless_set_element( struct stumpless_entry *entry,
  * entry. This will be copied in to the entry, and therefore may be modified
  * or freed after this call without affecting the entry. If this is NULL, then
  * a single '-' character will be used, as specified as the NILVALUE in RFC
- * 5424.
+ * 5424. The app name length is restricted to be 48 characters or less.
  *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -714,7 +714,8 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
  * \c STUMPLESS_SEVERITY value.
  *
  * @param app_name The app_name of the entry. If this is NULL, then it will be
- * blank in the entry (a single '-' character).
+ * blank in the entry (a single '-' character). The app name length is restricted
+ * to be 48 characters or less.
  *
  * @param msgid The message id of the entry. If this is NULL, then it will be
  * blank in the entry (a single '-' character).

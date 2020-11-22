@@ -548,20 +548,20 @@ namespace {
   }
 
   TEST_F( EntryTest, SetAppName ) {
-    struct stumpless_entry *entry;
-    const char *previous_app_name;
-    const char *new_app_name = "new-app-name";
+      struct stumpless_entry *entry;
+      const char *previous_app_name;
+      const char *new_app_name = "new-app-name";
 
-    size_t new_app_name_length = strlen( new_app_name );
+      size_t new_app_name_length = strlen( new_app_name );
 
-    previous_app_name = basic_entry->app_name;
+      previous_app_name = basic_entry->app_name;
 
-    entry = stumpless_set_entry_app_name( basic_entry, new_app_name );
-    EXPECT_NO_ERROR;
-    EXPECT_EQ( entry, basic_entry );
+      entry = stumpless_set_entry_app_name( basic_entry, new_app_name );
+      EXPECT_NO_ERROR;
+      EXPECT_EQ( entry, basic_entry );
 
-    ASSERT_EQ( new_app_name_length, basic_entry->app_name_length );
-    ASSERT_EQ( 0, memcmp( basic_entry->app_name, new_app_name, new_app_name_length ) );
+      ASSERT_EQ( new_app_name_length, basic_entry->app_name_length );
+      ASSERT_EQ( 0, memcmp( basic_entry->app_name, new_app_name, new_app_name_length ) );
   }
 
   TEST_F( EntryTest, SetAppNameMemoryFailure ) {
@@ -784,6 +784,30 @@ namespace {
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
+
+  TEST_F( EntryTest, SetAppNameRejected ) {
+     const struct stumpless_entry* result;
+     const struct stumpless_error* error;
+
+    result = stumpless_set_entry_app_name( basic_entry, "it-is-gonna-fail-because-length-exceeded-max-allowed" );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+  }
+
+  TEST_F( EntryTest, AppNameRejected ) {
+      const struct stumpless_error* error;
+      struct stumpless_entry* entry;
+
+      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+              STUMPLESS_SEVERITY_INFO,
+              "test-app-name-too-long-to-be-accepted-and-must-be-rejected",
+              "test-msgid",
+              "test message" );
+
+
+      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+  }
+
 
   TEST_F( EntryTest, SetParam ) {
     struct stumpless_param *new_param;
@@ -1275,6 +1299,30 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( NewEntryTest, MallocFailureOnAppName ) {
+      void *(*set_malloc_result)(size_t);
+      const char *app_name = "test-app-name-of-unique-length";
+      const char *msgid = "test-msgid";
+      const char *message = "test-message";
+      struct stumpless_entry *result;
+      const struct stumpless_error *error;
+
+      set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 31 ) );
+      ASSERT_NOT_NULL( set_malloc_result );
+
+      result = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+              STUMPLESS_SEVERITY_INFO,
+              app_name,
+              msgid,
+              message );
+
+      EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+      EXPECT_NULL( result );
+
+      set_malloc_result = stumpless_set_malloc( malloc );
+      EXPECT_TRUE( set_malloc_result == malloc );
   }
 
   TEST( NewEntryTest, MallocFailureOnSecond ) {
