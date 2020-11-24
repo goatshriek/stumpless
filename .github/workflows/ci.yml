@@ -9,8 +9,8 @@ jobs:
     name: "basic linux build"
     runs-on: "ubuntu-20.04"
     steps:
-      uses: actions/checkout@v2
-      run: |
-        cmake .
-        make all
-        make check
+      - uses: actions/checkout@v2
+      - run: |
+          cmake .
+          make all
+          make check
