@@ -15,3 +15,13 @@ jobs:
           make all
           make check
           make examples
+  basic-mac:
+    name: "basic mac os build"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          cmake .
+          make all
+          make check
+          make examples
