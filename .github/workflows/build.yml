@@ -4,17 +4,25 @@ on:
   pull_request:
     branches:
       - latest
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
 jobs:
   basic-linux:
     name: "basic linux build"
     runs-on: "ubuntu-20.04"
     steps:
       - uses: actions/checkout@v2
-      - name: Build and Test
+      - name: Configure
         run: |
           cmake -DCOVERAGE=ON .
+      - name: Build
+        run: |
           make all
+      - name: Test
+        run: |
           make check
+      - name: Run Examples
+        run: |
           make examples
       - name: Codecov Upload
         uses: codecov/codecov-action@v1
@@ -35,3 +43,14 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
+  basic-windows:
+    name: "basic windows build"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Build and Test"
+        run: |
+          cmake -G "Visual Studio 16 2019" .
+          msbuild stumpless.vcxproj
+          msbuild check.vcxproj
+          msbuild examples.vcxproj
