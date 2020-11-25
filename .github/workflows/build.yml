@@ -145,7 +145,7 @@ jobs:
           cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
       - name: Build
         run: |
-          msbuild stumpless.vcxproj
+          cmake --build . --config Debug
       - name: Test
         run: |
           msbuild check.vcxproj
@@ -164,7 +164,7 @@ jobs:
           cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
       - name: Build
         run: |
-          msbuild stumpless.vcxproj
+          cmake --build . --config Release
       - name: Test
         run: |
           msbuild check.vcxproj
