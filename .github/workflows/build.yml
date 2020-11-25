@@ -82,7 +82,7 @@ jobs:
           bundle install
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON -DCMAKE_ENABLE_CPP=ON -DCMAKE_BUILD_TYPE=Release .
+          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
       - name: Build
         run: |
           make all
@@ -93,6 +93,9 @@ jobs:
       - name: Run Examples
         run: |
           make examples
+      - name: Install
+        run: |
+          sudo make install
       - name: Codecov Upload
         uses: codecov/codecov-action@v1
         with:
