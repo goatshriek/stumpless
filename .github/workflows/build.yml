@@ -48,6 +48,8 @@ jobs:
     runs-on: "windows-2019"
     steps:
       - uses: actions/checkout@v2
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
       - name: "Build and Test"
         run: |
           cmake -G "Visual Studio 16 2019" .
