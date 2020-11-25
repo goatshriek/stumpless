@@ -548,20 +548,20 @@ namespace {
   }
 
   TEST_F( EntryTest, SetAppName ) {
-      struct stumpless_entry *entry;
-      const char *previous_app_name;
-      const char *new_app_name = "new-app-name";
+    struct stumpless_entry *entry;
+    const char *previous_app_name;
+    const char *new_app_name = "new-app-name";
 
-      size_t new_app_name_length = strlen( new_app_name );
+    size_t new_app_name_length = strlen( new_app_name );
 
-      previous_app_name = basic_entry->app_name;
+    previous_app_name = basic_entry->app_name;
 
-      entry = stumpless_set_entry_app_name( basic_entry, new_app_name );
-      EXPECT_NO_ERROR;
-      EXPECT_EQ( entry, basic_entry );
+    entry = stumpless_set_entry_app_name( basic_entry, new_app_name );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, basic_entry );
 
-      ASSERT_EQ( new_app_name_length, basic_entry->app_name_length );
-      ASSERT_EQ( 0, memcmp( basic_entry->app_name, new_app_name, new_app_name_length ) );
+    ASSERT_EQ( new_app_name_length, basic_entry->app_name_length );
+    ASSERT_EQ( 0, memcmp( basic_entry->app_name, new_app_name, new_app_name_length ) );
   }
 
   TEST_F( EntryTest, SetAppNameMemoryFailure ) {

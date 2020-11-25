@@ -61,13 +61,4 @@ bool validate_msgid_format( const char* msgid );
  */
 bool validate_app_name_length( const char* app_name);
 
-
-
-
-
-
-
-
-
-
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */

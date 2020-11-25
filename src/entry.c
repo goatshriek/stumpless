@@ -702,8 +702,6 @@ vstumpless_new_entry( int facility,
     goto fail_app_name;
   }
 
-  
-
   effective_msgid = msgid ? msgid : "-";
   if( !validate_msgid_length( effective_msgid ) || !validate_msgid_format( effective_msgid ) ) {
       goto fail_msgid;

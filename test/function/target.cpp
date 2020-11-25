@@ -23,7 +23,6 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "private/target/buffer.h"
-#include "private/validate.h"
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 
