@@ -148,10 +148,10 @@ jobs:
           cmake --build . --config Debug
       - name: Test
         run: |
-          msbuild check.vcxproj
+          cmake --build . --config Debug --target check
       - name: Run Examples
         run: |
-          msbuild examples.vcxproj
+          cmake --build . --config Debug --target examples
   windows-release:
     name: "windows, release"
     runs-on: "windows-2019"
@@ -170,7 +170,7 @@ jobs:
           cmake --build . --config Release --target check
       - name: Run Examples
         run: |
-          msbuild examples.vcxproj
+          cmake --build . --config Release --target examples
   basic-windows-all-disabled:
     name: "windows, all features disabled"
     runs-on: "windows-2019"
@@ -180,13 +180,13 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       - name: Configure
         run: |
-          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF .
+          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release .
       - name: Build
         run: |
-          msbuild stumpless.vcxproj
+          cmake --build . --config Release
       - name: Test
         run: |
-          msbuild check.vcxproj
+          cmake --build . --config Release --target check
       - name: Run Examples
         run: |
-          msbuild examples.vcxproj
+          cmake --build . --config Release --target examples
