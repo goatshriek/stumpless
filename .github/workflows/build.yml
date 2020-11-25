@@ -167,7 +167,7 @@ jobs:
           cmake --build . --config Release
       - name: Test
         run: |
-          msbuild check.vcxproj
+          cmake --build . --config Release --target check
       - name: Run Examples
         run: |
           msbuild examples.vcxproj
