@@ -180,7 +180,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       - name: Configure
         run: |
-          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF .
+          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF .
       - name: Build
         run: |
           msbuild stumpless.vcxproj
