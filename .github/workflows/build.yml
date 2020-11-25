@@ -11,10 +11,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          cmake .
+          cmake -DCOVERAGE=ON .
           make all
           make check
           make examples
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   basic-mac:
     name: "basic mac os build"
     runs-on: "macos-11.0"
