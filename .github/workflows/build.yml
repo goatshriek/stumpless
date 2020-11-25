@@ -7,14 +7,14 @@ on:
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
 jobs:
-  basic-linux:
-    name: "basic linux build"
+  linux-debug:
+    name: "linux, debug"
     runs-on: "ubuntu-20.04"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON .
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
       - name: Build
         run: |
           make all
@@ -28,31 +28,165 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
-  basic-mac:
-    name: "basic mac os build"
-    runs-on: "macos-11.0"
+  linux-release:
+    name: "linux, release"
+    runs-on: "ubuntu-20.04"
     steps:
       - uses: actions/checkout@v2
-      - name: Build and Test
+      - name: Configure
         run: |
-          cmake -DCOVERAGE=ON .
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
+      - name: Build
+        run: |
           make all
+      - name: Test
+        run: |
           make check
+      - name: Run Examples
+        run: |
           make examples
       - name: Codecov Upload
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
-  basic-windows:
-    name: "basic windows build"
+  linux-all-disabled:
+    name: "linux, all features disabled"
+    runs-on: "ubuntu-20.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF" .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+  mac-debug:
+    name: "mac, debug"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+  mac-release:
+    name: "mac, release"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+  mac-all-disabled:
+    name: "mac, all features disabled"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF" .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+  windows-debug:
+    name: "windows, debug"
     runs-on: "windows-2019"
     steps:
       - uses: actions/checkout@v2
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-      - name: "Build and Test"
+      - name: Configure
         run: |
-          cmake -G "Visual Studio 16 2019" .
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
           msbuild stumpless.vcxproj
+      - name: Test
+        run: |
           msbuild check.vcxproj
+      - name: Run Examples
+        run: |
+          msbuild examples.vcxproj
+  windows-release:
+    name: "windows, release"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
+      - name: Build
+        run: |
+          msbuild stumpless.vcxproj
+      - name: Test
+        run: |
+          msbuild check.vcxproj
+      - name: Run Examples
+        run: |
+          msbuild examples.vcxproj
+  basic-windows-all-disabled:
+    name: "windows, all features disabled"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF" .
+      - name: Build
+        run: |
+          msbuild stumpless.vcxproj
+      - name: Test
+        run: |
+          msbuild check.vcxproj
+      - name: Run Examples
+        run: |
           msbuild examples.vcxproj
