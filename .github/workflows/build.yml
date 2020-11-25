@@ -74,10 +74,10 @@ jobs:
     name: "linux, with c++"
     runs-on: "ubuntu-20.04"
     steps:
-      - name: Install Wrapture
-        run: |
-          gem install wrapture
       - uses: actions/checkout@v2
+      - name: Install Gems
+        run: |
+          bundle install
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DCMAKE_ENABLE_CPP=ON -DCMAKE_BUILD_TYPE=Release .
