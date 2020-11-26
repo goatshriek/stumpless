@@ -5,9 +5,10 @@ orbs:
 
 jobs:
   build:
-    docker:
+#    docker:
 #      - image: 'node:latest'
-       - image: cimg/base:2020.01
+#       - image: cimg/base:2020.01
+    machine: true
     steps:
       - checkout
       - run:
