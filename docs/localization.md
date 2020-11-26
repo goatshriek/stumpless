@@ -62,18 +62,10 @@ appears in the CMake build script to include the new header.
 
 The last step is to add new CI builds for the new locale to make sure that
 there are no immediate problems and catch any future ones that arise. This is
-done by updating the `.travis.yml` and `appveyor.yml` configuration files with
-a build profile for the new language.
-
-Updating the Travis CI build is simple: just copy the builds of a locale that
-is already defined and change the name and variables to match the new one. Be
-sure to add one for both Linux and Mac OS.
-
-The Appveyor configuration requires a little more attention. You will need to
-add an entry to the environment matrix first. However, since we only want to add
-one more test build for this language, you'll also need to add a number of
-exclusions for the build matrix. You can find examples of these in the exclusion
-portion of the configuration for other languages.
+done by updating the `.github/workflows/build.yml` configuration file with a
+build profile for the new language. This is relatively simple: just copy one of
+the existing jobs (for example `linux-es-es`) and update it to use your new
+locale.
 
 Finally, add a flag for the new locale to the project README (in the Key
 Features section) to show off your hard work to everyone else!
