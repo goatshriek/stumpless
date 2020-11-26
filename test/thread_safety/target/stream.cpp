@@ -30,7 +30,7 @@ namespace {
   const int THREAD_COUNT = 16;
   const int MESSAGE_COUNT = 100;
 
-  TEST( WriteConsistency, SimultaneousWrites ) {
+  TEST( StreamWriteConsistency, SimultaneousWrites ) {
     const char *filename = "stream_target_thread_safety.log";
     FILE *log_stream;
     struct stumpless_target *target;

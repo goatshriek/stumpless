@@ -30,4 +30,4 @@ jobs:
           name: Documentation
           command: |
             make docs
-      - sonarcloud/scan
+#      - sonarcloud/scan
