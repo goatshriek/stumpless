@@ -10,6 +10,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Check Headers
+          command: |
+             tools/check_headers/check_headers.rb "include/**/*.h*"
+             tools/check_headers/check_headers.rb "src/**/*.c"
+             tools/check_headers/check_headers.rb "test/**/*.cpp"
+      - run:
           name: Install Sonarcloud Build Wrapper
           command: |
             wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
