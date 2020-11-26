@@ -6,7 +6,6 @@ workflows:
   main:
     jobs:
       - build:
-          context: sonarcloud
 
 jobs:
   build:
