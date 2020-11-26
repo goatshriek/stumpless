@@ -111,6 +111,25 @@ jobs:
       - name: Test
         run: |
           make check
+  linux-fr-fr:
+    name: "linux, fr-fr"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "fr_FR.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"broke\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
 #  mac-debug:
 #    name: "mac, debug"
 #    runs-on: "macos-11.0"
