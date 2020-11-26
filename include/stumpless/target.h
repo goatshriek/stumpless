@@ -684,6 +684,7 @@ stumpless_set_option( struct stumpless_target *target, int option );
  * @param target The target to modify.
  *
  * @param app_name The new default app name, as a NULL-terminated string.
+ * The app name length is restricted to be 48 characters or less.
  *
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.

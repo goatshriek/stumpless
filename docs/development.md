@@ -181,27 +181,30 @@ In order to support being built as a DLL, stumpless has a `.def` file at
 `src/windows/stumpless.def`. If you are adding a new public function to
 stumpless, you will need to make sure to add it to the `.def` file so that the
 DLL will include it. Failing to do so will result in tests failing on Windows
-builds with a note that your new function is not defined. The AppVeyor CI builds
+builds with a note that your new function is not defined. The Windows CI builds
 typically catch this issue.
 
 Stumpless uses a custom tool to make sure that all required headers are included
 in a source file without any extras. The tool is called `check_headers` and is
 stored in the `tools/check_headers` folder. You can run this manually if you
 wish, by simply executing the script and passing it your source file (or files)
-as parameters. You will need Ruby to run it. It is also run as a part of Travis
-CI builds, so you can wait for it to run there instead of doing it yourself. For
-a one-liner command to catch issues, you can run the tool like this:
+as parameters. You will need Ruby to run it. It is also run during CircleCI
+builds, so you can wait for it to run there instead of doing it yourself. For a
+one-liner command to catch issues, you can run the tool like this:
 
 ```sh
 tools/check_headers/check_headers.rb "src/**/*.c" "include/**/*.h*" "test/**/*.cpp"
 ```
 
-However, if you have added a new function and you see Travis CI builds failing
-as a result of this tool claiming that an include file is unnecessary, then you
-probably need to add your function to the manifest that powers it. This is a
-simple YAML file at `tools/check_headers/stumpless.yml` with entries for each
-function. Adding your function and the associated header it is declared in will
-remove this error as the tool will now know why the include is required.
+However, if you have added a new function and you see CircleCI jobs failing
+in the Check Headers stage claiming that an include file is unnecessary, then
+you probably need to add your function to the manifest that powers it. There are
+a few simple YAML files named `tools/check_headers/stumpless.yml` and
+`tools/check_headers/stumpless_private.yml` with entries for each function. The
+first has functions and symbols that are publicly provided by the library, and
+the second has functions and symbols that are only used internally. Adding your
+function and the associated header it is declared in to the correct manifest
+will resolve this error as the tool will now know why the include is required.
 
 ## Continuous Integration Tools
 
@@ -209,21 +212,25 @@ Stumpless uses a number of CI tools to test builds and monitor code coverage
 and quality. These tools each have badges in the project
 [README](../README.md) that link to their respective pages.
 
-[Travis CI](https://travis-ci.com/github/goatshriek/stumpless) and
-[AppVeyor](https://ci.appveyor.com/project/goatshriek/stumpless) build the
-library in a variety of environments and with a variety of build options.
-They ensure that changes are portable and that no tests are failing. They also
-perform a number of other tests such as header checks and ensuring that the
-`install` target works. These must be passing on a change before it will be
-merged to the library.
+[Github Actions](https://github.com/goatshriek/stumpless/actions) are used to
+build the library in a variety of environments and with a variety of build
+options. They ensure that changes are portable and that no tests are failing.
+These must be passing on a change before it will be merged to the library. The
+[build](https://github.com/goatshriek/stumpless/actions?query=workflow%3Abuild)
+workflow runs these.
 
 [Codecov](https://codecov.io/gh/goatshriek/stumpless) provides a way to
-review and analyze code coverage from the test suite. It is fed by Travis CI
-builds, and will check pull requests for diff and total coverage. In some
-cases this gate may be failing and code will still be merged, but this is only
-in situations where coverage is not reasonably obtainable. For example if the
-only way to cover a failure branch is a very specific chain of memory or
+review and analyze code coverage from the test suite. It is fed by the Github
+Actions builds, and will check pull requests for diff and total coverage. In
+some cases this gate may be failing and code will still be merged, but this is
+only in situations where coverage is not reasonably obtainable. For example if
+the only way to cover a failure branch is a very specific chain of memory or
 system call failures, then the coverage requirement may be relaxed.
+
+[CircleCI](https://app.circleci.com/pipelines/github/goatshriek/stumpless) runs
+a smaller number of builds to overcome limitations in the Github Actions
+platform. This build feeds the Sonarcloud analysis, and also runs simpler checks
+like building the documentation and performing header checks.
 
 [Sonarcloud](https://sonarcloud.io/dashboard?id=stumpless) provides code quality
 reviews and static analysis. Changes should avoid introducing any new issues in
@@ -244,10 +251,11 @@ be run on requests from forks of the project (unlike Sonarcloud), and as such
 there is no risk of finding out an issue has been introduced after the fact.
 
 If you are making a documentation change or other update that won't affect the
-output of any of these tools, you may include `[skip ci]` in your commit message
-to bypass their builds and save some electricity. Travis CI and AppVeyor also
-support the targeted skip messages `[skip travis]` and `[skip appveyor]`,
-respectively.
+output of any of these tools, consider temporarily removing the
+`.circleci/config.yml` and `.github/workflows/build.yml` files from the project
+while you work on it, and adding them back before creating a pull request. This
+conserves build resources and will allow your pull request to pass its checks
+faster.
 
 ## Caching Google Test and Benchmark
 

@@ -486,6 +486,25 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( SetDefaultAppName, AppNameTargetRejected ) {
+      char buffer[100];
+      struct stumpless_target* target;
+      struct stumpless_target* target_result;
+      struct stumpless_error* error;
+
+      target = stumpless_open_buffer_target( "test target",
+              buffer,
+              sizeof( buffer ),
+              STUMPLESS_OPTION_NONE,
+              STUMPLESS_FACILITY_USER );
+      ASSERT_TRUE( target != NULL );
+
+
+      target_result = stumpless_set_target_default_app_name( target, "app-name-that-is-too-long-to-be-accepted-it-should-be-rejected1" );
+
+      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+  }
+
   TEST( SetDefaultFacility, Local1 ) {
     char buffer[100];
     struct stumpless_target *target_result;

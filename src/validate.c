@@ -50,3 +50,19 @@ bool validate_msgid_format( const char* msgid ) {
 
   return true;
 }
+
+bool validate_app_name_length( const char* app_name ) {
+    size_t max_app_name_length = 48;
+    size_t app_name_char_length = strlen( app_name );
+    bool validation_status = true;
+
+    if ( app_name_char_length > max_app_name_length ) {
+        raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
+                app_name_char_length,
+                L10N_STRING_LENGTH_ERROR_CODE_TYPE );
+
+        validation_status = false;
+    }
+
+    return validation_status;
+}

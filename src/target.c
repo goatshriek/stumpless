@@ -432,10 +432,13 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
 
+  if( !validate_app_name_length( app_name ) ) {
+    return NULL;
+  }
+
   new_name = copy_cstring_with_length( app_name, &new_length );
   if( !new_name ) {
     return NULL;
-
   }
 
   lock_target( target );
