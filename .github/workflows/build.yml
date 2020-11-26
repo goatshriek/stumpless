@@ -92,6 +92,25 @@ jobs:
 #      - name: Install
 #        run: |
 #          sudo make install
+  linux-de-de:
+    name: "linux, de-de"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "de_DE.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
   linux-es-es:
     name: "linux, es-es"
     runs-on: "ubuntu-20.04"
@@ -124,6 +143,25 @@ jobs:
       - name: Check Language
         run: |
           grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+  linux-sv-se:
+    name: "linux, sv-se"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "sv_SE.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
       - name: Build
         run: |
           make all
