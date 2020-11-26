@@ -5,9 +5,6 @@ orbs:
 
 jobs:
   build:
-#    docker:
-#      - image: 'node:latest'
-#       - image: cimg/base:2020.01
     machine:
       image: ubuntu-2004:202010-01
     steps:
@@ -23,5 +20,4 @@ jobs:
           command: |
             cmake -DCOVERAGE=ON .
             ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make -j 2 all
-            make -j 2 check
       - sonarcloud/scan
