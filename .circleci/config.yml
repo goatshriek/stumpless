@@ -16,8 +16,12 @@ jobs:
             unzip build-wrapper-linux-x86.zip
             cp build-wrapper-linux-x86/libinterceptor-x86_64.so build-wrapper-linux-x86/libinterceptor-haswell.so
       - run:
-          name: Build and Test
+          name: Build
           command: |
-            cmake -DCOVERAGE=ON .
+            cmake .
             ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make -j 2 all
+      - run:
+          name: Documentation
+          command: |
+            make docs
       - sonarcloud/scan
