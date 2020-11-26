@@ -102,6 +102,9 @@ jobs:
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"es-ES\""
       - name: Build
         run: |
           make all
