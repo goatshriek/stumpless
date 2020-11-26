@@ -8,7 +8,8 @@ jobs:
 #    docker:
 #      - image: 'node:latest'
 #       - image: cimg/base:2020.01
-    machine: true
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
       - run:
