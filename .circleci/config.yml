@@ -1,4 +1,12 @@
 version: 2.1
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.0
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context: sonarcloud
 
 jobs:
   build:
@@ -8,11 +16,3 @@ jobs:
     steps:
       - checkout
       - sonarcloud/scan
-orbs:
-  sonarcloud: sonarsource/sonarcloud@1.0.0
-
-workflows:
-  main:
-    jobs:
-      - build:
-          context: sonarcloud
