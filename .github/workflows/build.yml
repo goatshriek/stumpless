@@ -28,27 +28,30 @@ jobs:
 #        uses: codecov/codecov-action@v1
 #        with:
 #          fail_ci_if_error: true
-#  linux-release:
-#    name: "linux, release"
-#    runs-on: "ubuntu-20.04"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#      - name: Run Examples
-#        run: |
-#          make examples
-#      - name: Codecov Upload
-#        uses: codecov/codecov-action@v1
-#        with:
-#          fail_ci_if_error: true
+  linux-release:
+    name: "linux, release"
+    runs-on: "ubuntu-20.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Run Benchmark
+        run: |
+          make bench
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
 #  linux-all-disabled:
 #    name: "linux, all features disabled"
 #    runs-on: "ubuntu-20.04"
@@ -92,82 +95,82 @@ jobs:
 #      - name: Install
 #        run: |
 #          sudo make install
-  linux-de-de:
-    name: "linux, de-de"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "de_DE.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-  linux-es-es:
-    name: "linux, es-es"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "es_ES.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-  linux-fr-fr:
-    name: "linux, fr-fr"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "fr_FR.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-  linux-sv-se:
-    name: "linux, sv-se"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "sv_SE.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
+#  linux-de-de:
+#    name: "linux, de-de"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "de_DE.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#  linux-es-es:
+#    name: "linux, es-es"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "es_ES.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#  linux-fr-fr:
+#    name: "linux, fr-fr"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "fr_FR.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#  linux-sv-se:
+#    name: "linux, sv-se"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "sv_SE.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
 #  mac-debug:
 #    name: "mac, debug"
 #    runs-on: "macos-11.0"
