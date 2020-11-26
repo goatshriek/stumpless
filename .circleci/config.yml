@@ -1,11 +1,7 @@
 version: 2.1
+
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.0
-
-workflows:
-  main:
-    jobs:
-      - build:
 
 jobs:
   build:
