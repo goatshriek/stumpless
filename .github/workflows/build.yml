@@ -123,7 +123,7 @@ jobs:
           cmake -DCOVERAGE=ON .
       - name: Check Language
         run: |
-          grep -q "STUMPLESS_LANGUAGE \"broke\"" include/stumpless/config.h
+          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
       - name: Build
         run: |
           make all
