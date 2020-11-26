@@ -10,4 +10,17 @@ jobs:
        - image: cimg/base:2020.01
     steps:
       - checkout
+      - run:
+          name: Install Sonarcloud Build Wrapper
+          command: |
+            apt update && apt install -y curl
+            wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+            unzip build-wrapper-linux-x86.zip
+            cp build-wrapper-linux-x86/libinterceptor-x86_64.so build-wrapper-linux-x86/libinterceptor-haswell.so
+      - run:
+          name: Build and Test
+          command: |
+            cmake -DCOVERAGE=ON .
+            ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir /tmp make VERBOSE=1
+            make check
       - sonarcloud/scan
