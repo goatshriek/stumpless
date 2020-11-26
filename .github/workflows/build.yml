@@ -7,27 +7,30 @@ on:
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
 jobs:
-#  linux-debug:
-#    name: "linux, debug"
-#    runs-on: "ubuntu-20.04"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#      - name: Run Examples
-#        run: |
-#          make examples
-#      - name: Codecov Upload
-#        uses: codecov/codecov-action@v1
-#        with:
-#          fail_ci_if_error: true
+  linux-debug:
+    name: "linux, debug"
+    runs-on: "ubuntu-20.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Install
+        run: |
+          sudo make install
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
   linux-release:
     name: "linux, release"
     runs-on: "ubuntu-20.04"
@@ -48,150 +51,159 @@ jobs:
       - name: Run Benchmarks
         run: |
           make bench
+      - name: Install
+        run: |
+          sudo make install
       - name: Codecov Upload
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
-#  linux-all-disabled:
-#    name: "linux, all features disabled"
-#    runs-on: "ubuntu-20.04"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF .
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#      - name: Run Examples
-#        run: |
-#          make examples
-#      - name: Codecov Upload
-#        uses: codecov/codecov-action@v1
-#        with:
-#          fail_ci_if_error: true
-#  linux-cpp:
-#    name: "linux, with c++"
-#    runs-on: "ubuntu-20.04"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/setup-ruby@v1.1.2
-#      - name: Install Gems
-#        run: |
-#          gem install bundler
-#          bundle install
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check-cpp
-#      - name: Install
-#        run: |
-#          sudo make install
-#  linux-de-de:
-#    name: "linux, de-de"
-#    runs-on: "ubuntu-20.04"
-#    env:
-#      LANG: "de_DE.UTF-8"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON .
-#      - name: Check Language
-#        run: |
-#          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#  linux-es-es:
-#    name: "linux, es-es"
-#    runs-on: "ubuntu-20.04"
-#    env:
-#      LANG: "es_ES.UTF-8"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON .
-#      - name: Check Language
-#        run: |
-#          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#  linux-fr-fr:
-#    name: "linux, fr-fr"
-#    runs-on: "ubuntu-20.04"
-#    env:
-#      LANG: "fr_FR.UTF-8"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON .
-#      - name: Check Language
-#        run: |
-#          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#  linux-sv-se:
-#    name: "linux, sv-se"
-#    runs-on: "ubuntu-20.04"
-#    env:
-#      LANG: "sv_SE.UTF-8"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON .
-#      - name: Check Language
-#        run: |
-#          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#  mac-debug:
-#    name: "mac, debug"
-#    runs-on: "macos-11.0"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#      - name: Run Examples
-#        run: |
-#          make examples
-#      - name: Codecov Upload
-#        uses: codecov/codecov-action@v1
-#        with:
-#          fail_ci_if_error: true
+  linux-all-disabled:
+    name: "linux, all features disabled"
+    runs-on: "ubuntu-20.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Install
+        run: |
+          sudo make install
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+  linux-cpp:
+    name: "linux, with c++"
+    runs-on: "ubuntu-20.04"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1.1.2
+      - name: Install Gems
+        run: |
+          gem install bundler
+          bundle install
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check-cpp
+      - name: Install
+        run: |
+          sudo make install
+  linux-de-de:
+    name: "linux, de-de"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "de_DE.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+  linux-es-es:
+    name: "linux, es-es"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "es_ES.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+  linux-fr-fr:
+    name: "linux, fr-fr"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "fr_FR.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+  linux-sv-se:
+    name: "linux, sv-se"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "sv_SE.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+  mac-debug:
+    name: "mac, debug"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Install
+        run: |
+          sudo make install
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
   mac-release:
     name: "mac, release"
     runs-on: "macos-11.0"
@@ -212,70 +224,76 @@ jobs:
       - name: Run Benchmarks
         run: |
           make bench
+      - name: Install
+        run: |
+          sudo make install
       - name: Codecov Upload
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
-#  mac-all-disabled:
-#    name: "mac, all features disabled"
-#    runs-on: "macos-11.0"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF .
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check
-#      - name: Run Examples
-#        run: |
-#          make examples
-#      - name: Codecov Upload
-#        uses: codecov/codecov-action@v1
-#        with:
-#          fail_ci_if_error: true
-#  mac-cpp:
-#    name: "mac, with c++"
-#    runs-on: "macos-11.0"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/setup-ruby@v1.1.2
-#      - name: Install Gems
-#        run: |
-#          gem install bundler
-#          bundle install
-#      - name: Configure
-#        run: |
-#          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
-#      - name: Build
-#        run: |
-#          make all
-#      - name: Test
-#        run: |
-#          make check-cpp
-#      - name: Install
-#        run: |
-#          sudo make install
-#  windows-debug:
-#    name: "windows, debug"
-#    runs-on: "windows-2019"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
-#      - name: Build
-#        run: |
-#          cmake --build . --config Debug
-#      - name: Test
-#        run: |
-#          cmake --build . --config Debug --target check
-#      - name: Run Examples
-#        run: |
-#          cmake --build . --config Debug --target examples
+  mac-all-disabled:
+    name: "mac, all features disabled"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Install
+        run: |
+          sudo make install
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+  mac-cpp:
+    name: "mac, with c++"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1.1.2
+      - name: Install Gems
+        run: |
+          gem install bundler
+          bundle install
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check-cpp
+      - name: Install
+        run: |
+          sudo make install
+  windows-debug:
+    name: "windows, debug"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          cmake --build . --config Debug
+      - name: Test
+        run: |
+          cmake --build . --config Debug --target check
+      - name: Run Examples
+        run: |
+          cmake --build . --config Debug --target examples
   windows-release:
     name: "windows, release"
     runs-on: "windows-2019"
@@ -296,39 +314,39 @@ jobs:
       - name: Run Benchmarks
         run: |
           cmake --build . --config Release --target bench
-#  basic-windows-all-disabled:
-#    name: "windows, all features disabled"
-#    runs-on: "windows-2019"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release .
-#      - name: Build
-#        run: |
-#          cmake --build . --config Release
-#      - name: Test
-#        run: |
-#          cmake --build . --config Release --target check
-#      - name: Run Examples
-#        run: |
-#          cmake --build . --config Release --target examples
-#  windows-cpp:
-#    name: "windows, with c++"
-#    runs-on: "windows-2019"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/setup-ruby@v1.1.2
-#      - name: Install Gems
-#        run: |
-#          gem install bundler
-#          bundle install
-#      - name: Configure
-#        run: |
-#          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
-#      - name: Build
-#        run: |
-#          cmake --build . --config Release
-#      - name: Test
-#        run: |
-#          cmake --build . --config Release --target check-cpp
+  basic-windows-all-disabled:
+    name: "windows, all features disabled"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check
+      - name: Run Examples
+        run: |
+          cmake --build . --config Release --target examples
+  windows-cpp:
+    name: "windows, with c++"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1.1.2
+      - name: Install Gems
+        run: |
+          gem install bundler
+          bundle install
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check-cpp
