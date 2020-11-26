@@ -311,9 +311,6 @@ jobs:
       - name: Run Examples
         run: |
           cmake --build . --config Release --target examples
-      - name: Run Benchmarks
-        run: |
-          cmake --build . --config Release --target bench
   basic-windows-all-disabled:
     name: "windows, all features disabled"
     runs-on: "windows-2019"
