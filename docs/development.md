@@ -169,7 +169,7 @@ In order to support being built as a DLL, stumpless has a `.def` file at
 `src/windows/stumpless.def`. If you are adding a new public function to
 stumpless, you will need to make sure to add it to the `.def` file so that the
 DLL will include it. Failing to do so will result in tests failing on Windows
-builds with a note that your new function is not defined. The AppVeyor CI builds
+builds with a note that your new function is not defined. The Windows CI builds
 typically catch this issue.
 
 Stumpless uses a custom tool to make sure that all required headers are included
