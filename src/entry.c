@@ -448,6 +448,11 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
 
   effective_name = app_name ? app_name : "-";
+
+  if ( !validate_app_name_length( effective_name ) ) {
+      return NULL;
+  }
+
   temp_name = copy_cstring_with_length( effective_name, &temp_name_length );
   if( !temp_name ) {
     return NULL;
@@ -686,6 +691,10 @@ vstumpless_new_entry( int facility,
   }
 
   effective_app_name = app_name ? app_name : "-";
+  if ( !validate_app_name_length ( effective_app_name ) ) {
+      goto fail_app_name;
+  }
+
   app_name_length = &( entry->app_name_length );
   entry->app_name = copy_cstring_with_length( effective_app_name,
                                               app_name_length );
