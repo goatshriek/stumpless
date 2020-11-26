@@ -70,28 +70,44 @@ jobs:
 #        uses: codecov/codecov-action@v1
 #        with:
 #          fail_ci_if_error: true
-  linux-cpp:
-    name: "linux, with c++"
+#  linux-cpp:
+#    name: "linux, with c++"
+#    runs-on: "ubuntu-20.04"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-ruby@v1.1.2
+#      - name: Install Gems
+#        run: |
+#          gem install bundler
+#          bundle install
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check-cpp
+#      - name: Install
+#        run: |
+#          sudo make install
+  linux-es-es:
+    name: "linux, es-es"
     runs-on: "ubuntu-20.04"
+    env:
+      LANG: "es_ES.UTF-8"
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
-      - name: Install Gems
-        run: |
-          gem install bundler
-          bundle install
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+          cmake -DCOVERAGE=ON .
       - name: Build
         run: |
           make all
       - name: Test
         run: |
-          make check-cpp
-      - name: Install
-        run: |
-          sudo make install
+          make check
 #  mac-debug:
 #    name: "mac, debug"
 #    runs-on: "macos-11.0"
@@ -155,35 +171,33 @@ jobs:
 #        uses: codecov/codecov-action@v1
 #        with:
 #          fail_ci_if_error: true
-  mac-cpp:
-    name: "mac, with c++"
-    runs-on: "macos-11.0"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
-      - name: Install Gems
-        run: |
-          gem install bundler
-          bundle install
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check-cpp
-      - name: Install
-        run: |
-          sudo make install
+#  mac-cpp:
+#    name: "mac, with c++"
+#    runs-on: "macos-11.0"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-ruby@v1.1.2
+#      - name: Install Gems
+#        run: |
+#          gem install bundler
+#          bundle install
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check-cpp
+#      - name: Install
+#        run: |
+#          sudo make install
 #  windows-debug:
 #    name: "windows, debug"
 #    runs-on: "windows-2019"
 #    steps:
 #      - uses: actions/checkout@v2
-#      - name: Add msbuild to PATH
-#        uses: microsoft/setup-msbuild@v1.0.2
 #      - name: Configure
 #        run: |
 #          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
@@ -201,8 +215,6 @@ jobs:
 #    runs-on: "windows-2019"
 #    steps:
 #      - uses: actions/checkout@v2
-#      - name: Add msbuild to PATH
-#        uses: microsoft/setup-msbuild@v1.0.2
 #      - name: Configure
 #        run: |
 #          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
@@ -220,8 +232,6 @@ jobs:
 #    runs-on: "windows-2019"
 #    steps:
 #      - uses: actions/checkout@v2
-#      - name: Add msbuild to PATH
-#        uses: microsoft/setup-msbuild@v1.0.2
 #      - name: Configure
 #        run: |
 #          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release .
@@ -234,22 +244,22 @@ jobs:
 #      - name: Run Examples
 #        run: |
 #          cmake --build . --config Release --target examples
-  windows-cpp:
-    name: "windows, with c++"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
-      - name: Install Gems
-        run: |
-          gem install bundler
-          bundle install
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
-      - name: Build
-        run: |
-          cmake --build . --config Release
-      - name: Test
-        run: |
-          cmake --build . --config Release --target check-cpp
+#  windows-cpp:
+#    name: "windows, with c++"
+#    runs-on: "windows-2019"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-ruby@v1.1.2
+#      - name: Install Gems
+#        run: |
+#          gem install bundler
+#          bundle install
+#      - name: Configure
+#        run: |
+#          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
+#      - name: Build
+#        run: |
+#          cmake --build . --config Release
+#      - name: Test
+#        run: |
+#          cmake --build . --config Release --target check-cpp
