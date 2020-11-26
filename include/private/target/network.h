@@ -34,7 +34,9 @@ struct network_target {
   size_t max_msg_size;
   const char *port;
   config_socket_handle_t handle;
-#if !defined( HAVE_SYS_SOCKET_H ) && defined( HAVE_WINSOCK2_H )
+#if defined( STUMPLESS_THREAD_SAFETY_SUPPORTED ) \
+    && !defined( HAVE_SYS_SOCKET_H ) \
+    && defined( HAVE_WINSOCK2_H )
 /**
  * A mutex to coordinate writes to this target's socket. This is only needed in
  * winsock-based network targets, where the send function is not thread-safe
