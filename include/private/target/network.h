@@ -21,6 +21,7 @@
 
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/target.h>
 #  include <stumpless/target/network.h>
 #  include "private/config.h"
