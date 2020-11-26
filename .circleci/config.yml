@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Build and Test
           command: |
-            apt update && apt install -y cmake make gcc
+            sudo apt update && apt install -y cmake make gcc
             cmake -DCOVERAGE=ON .
             ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir /tmp make VERBOSE=1
             make check
