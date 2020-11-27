@@ -22,12 +22,14 @@ jobs:
           make docs
       - name: Sonarcloud Analysis
         run: |
-          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
           cmake .
           ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
-          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip -d .
+          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
+          ls
+          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
+          ls
           chmod +x sonar-scanner-cli-4.5.0.2216-linux/bin/sonar-scanner
           sonar-scanner-cli-4.5.0.2216-linux/bin/sonar-scanner
         env:
