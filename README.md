@@ -3,7 +3,6 @@
 **A C logging library built for high performance and a rich feature set.**
 
 [![Github Actions Build Status](https://github.com/goatshriek/stumpless/workflows/build/badge.svg)](https://github.com/goatshriek/stumpless/actions?query=workflow%3Abuild)
-[![CircleCI Build Status](https://circleci.com/gh/goatshriek/stumpless.svg?style=svg)](https://app.circleci.com/pipelines/github/goatshriek/stumpless)
 [![Coverage Report](https://codecov.io/gh/goatshriek/stumpless/branch/latest/graph/badge.svg)](https://codecov.io/gh/goatshriek/stumpless)
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=stumpless&metric=alert_status)](https://sonarcloud.io/dashboard?id=stumpless)
 [![CodeQL](https://github.com/goatshriek/stumpless/workflows/CodeQL/badge.svg)](https://github.com/goatshriek/stumpless/security/code-scanning)
