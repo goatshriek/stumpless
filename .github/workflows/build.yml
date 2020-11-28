@@ -377,26 +377,26 @@ jobs:
 #      - name: Install
 #        run: |
 #          sudo make install
-#  windows-debug:
-#    name: "windows, debug"
-#    runs-on: "windows-2019"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Configure
-#        run: |
-#          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
-#      - name: Build
-#        run: |
-#          cmake --build . --config Debug
-#      - name: Test
-#        run: |
-#          cmake --build . --config Debug --target check
-#      - name: Thread Safety Tests
-#        run: |
-#          cmake --build . --config Debug --target check-thread-safety
-#      - name: Run Examples
-#        run: |
-#          cmake --build . --config Debug --target examples
+  windows-debug:
+    name: "windows, debug"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          cmake --build . --config Debug
+      - name: Test
+        run: |
+          cmake --build . --config Debug --target check
+      - name: Thread Safety Tests
+        run: |
+          cmake --build . --config Debug --target check-thread-safety
+      - name: Run Examples
+        run: |
+          cmake --build . --config Debug --target examples
   windows-release:
     name: "windows, release"
     runs-on: "windows-2019"
