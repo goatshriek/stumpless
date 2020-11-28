@@ -55,6 +55,15 @@
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
 "volanie funkcie getaddrinfo vrátilo chybovú návratovú hodnotu"
 
+#  define L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE \
+"GETCOMPUTERNAME FAILED ERROR MESSAGE"
+
+#  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
+"GETHOSTNAME FAILED ERROR MESSAGE"
+
+#  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
+"GETLASTERROR ERROR CODE TYPE"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "neplatný index - index je priveľký na to aby bol reprezentovany ako datový typ int"
 

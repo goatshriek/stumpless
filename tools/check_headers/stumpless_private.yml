@@ -55,6 +55,7 @@
 "windows compare_exchange_bool": "private/config/have_windows.h"
 "windows_compare_exchange_ptr": "private/config/have_windows.h"
 "windows_destroy_mutex": "private/config/have_windows.h"
+"windows_gethostname": "private/config/have_windows.h"
 "windows_init_mutex": "private/config/have_windows.h"
 "windows_lock_mutex": "private/config/have_windows.h"
 "windows_unlock_mutex": "private/config/have_windows.h"

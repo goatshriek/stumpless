@@ -19,6 +19,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "private/config/have_windows.h"
+#include "private/config/locale/wrapper.h"
+#include "private/error.h"
+#include "private/inthelper.h"
 #include "private/windows_wrapper.h"
 
 bool
@@ -46,6 +49,26 @@ windows_compare_exchange_ptr( PVOID volatile *p,
 void
 windows_destroy_mutex( const CRITICAL_SECTION *mutex ){
   DeleteCriticalSection( ( LPCRITICAL_SECTION ) mutex );
+}
+
+int
+windows_gethostname( char *buffer, size_t namelen ) {
+  DWORD capped_namelen;
+  BOOL success;
+
+  capped_namelen = cap_size_t_to_int( namelen );
+  success = GetComputerNameEx( ComputerNameDnsFullyQualified,
+                               buffer,
+                               &capped_namelen );
+
+  if( !success ) {
+    raise_gethostname_failure( L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE,
+                               GetLastError(  ),
+                               L10N_GETLASTERROR_ERROR_CODE_TYPE );
+    return -1;
+  } else {
+    return 0;
+  }
 }
 
 size_t

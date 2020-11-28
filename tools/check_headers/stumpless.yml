@@ -408,7 +408,6 @@
 "windows_getpagesize": "private/config/have_windows.h"
 "windows_getpid": "private/config/have_windows.h"
 "winsock2_close_network_target": "private/config/have_winsock2.h"
-"winsock2_gethostname": "private/config/have_winsock2.h"
 "winsock2_init_network_target": "private/config/have_winsock2.h"
 "winsock2_network_free_all": "private/config/have_winsock2.h"
 "winsock2_open_tcp4_target": "private/config/have_winsock2.h"

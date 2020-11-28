@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018-2019 Joel E. Anderson
+* Copyright 2018-2020 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,10 +29,7 @@ winsock2_close_network_target( const struct network_target *target );
 void
 winsock2_cleanup( void );
 
-int
-winsock2_gethostname( char *buffer, size_t namelen );
-
-void
+struct network_target *
 winsock2_init_network_target( struct network_target *target );
 
 struct network_target *

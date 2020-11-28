@@ -47,17 +47,10 @@ winsock_open_socket( const char *destination,
   handle = socket( af, type, protocol );
 
   if( handle == INVALID_SOCKET ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      handle = socket( af, type, protocol );
-    }
-
-    if( handle == INVALID_SOCKET ) {
-      raise_socket_failure( L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE,
-                            WSAGetLastError(  ),
-                            L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
-      goto fail;
-    }
+    raise_socket_failure( L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE,
+                          WSAGetLastError(  ),
+                          L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
+    goto fail;
   }
 
   hints.ai_family = af;
@@ -97,6 +90,7 @@ fail:
 void
 winsock2_close_network_target( const struct network_target *target ) {
   closesocket( target->handle );
+  WSACleanup(  );
   config_destroy_mutex( &target->mutex );
 }
 
@@ -105,37 +99,15 @@ winsock2_cleanup( void ) {
   WSACleanup(  );
 }
 
-int
-winsock2_gethostname( char *buffer, size_t namelen ) {
-  int capped_namelen;
-  int result;
+struct network_target *
+winsock2_init_network_target( struct network_target *target ) {
   WSADATA wsa_data;
 
-  capped_namelen = cap_size_t_to_int( namelen );
-
-  result = gethostname( buffer, capped_namelen );
-
-  if( result == SOCKET_ERROR ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      result = gethostname( buffer, capped_namelen );
-    }
-  }
-
-  if( result == SOCKET_ERROR ) {
-    raise_gethostname_failure( L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE,
-                               WSAGetLastError(  ),
-                               L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
-    return -1;
-  } else {
-    return 0;
-  }
-}
-
-void
-winsock2_init_network_target( struct network_target *target ) {
+  WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
   target->handle = INVALID_SOCKET;
   config_init_mutex( &target->mutex );
+
+  return target;
 }
 
 struct network_target *

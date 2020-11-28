@@ -43,7 +43,7 @@ namespace {
     std::thread::id thread_id = std::this_thread::get_id(  );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
-      size_t index = i % THREAD_COUNT;
+      WORD index = i % THREAD_COUNT;
 
       copy = stumpless_copy_entry( entry );
 

@@ -36,6 +36,9 @@ windows_compare_exchange_ptr( PVOID volatile *p,
 void
 windows_destroy_mutex( const CRITICAL_SECTION *mutex );
 
+int
+windows_gethostname( char *buffer, size_t namelen );
+
 size_t
 windows_getpagesize( void );
 

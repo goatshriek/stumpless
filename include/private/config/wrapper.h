@@ -195,9 +195,9 @@
 #  ifdef HAVE_UNISTD_GETHOSTNAME
 #    include "private/config/have_unistd_gethostname.h"
 #    define config_gethostname(buffer, namelen) unistd_gethostname((buffer), (namelen))
-#  elif HAVE_WINSOCK2_H
-#    include "private/config/have_winsock2.h"
-#    define config_gethostname(buffer, namelen) winsock2_gethostname((buffer), (namelen))
+#  elif HAVE_WINDOWS_H
+#    include "private/config/have_windows.h"
+#    define config_gethostname(buffer, namelen) windows_gethostname((buffer), (namelen))
 #  else
 #    include "private/config/fallback.h"
 #    define config_gethostname(buffer, namelen) fallback_gethostname((buffer), (namelen))

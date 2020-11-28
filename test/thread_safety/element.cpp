@@ -111,8 +111,6 @@ namespace {
 
   void
   write_element_internal_params( struct stumpless_element *element ) {
-    struct stumpless_param *thread_param;
-
     std::thread::id thread_id = std::this_thread::get_id(  );
 
     std::ostringstream element_name_stream;
