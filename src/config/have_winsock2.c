@@ -231,7 +231,6 @@ winsock2_reopen_udp4_target( struct network_target *target ) {
                                         AF_INET,
                                         SOCK_DGRAM,
                                         IPPROTO_UDP );
-  target->handle = result;
   unlock_network_target( target );
 
   return target;
