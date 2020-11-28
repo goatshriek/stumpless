@@ -55,6 +55,9 @@
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
 "returneringskoden av det misslyckade getaddrinfo-anropet"
 
+#  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
+"GETHOSTNAME FAILED ERROR MESSAGE"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "det felaktiga indexedet, eller det -1 är för stort för att " \
 "representera med en int"
