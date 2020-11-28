@@ -2,11 +2,6 @@ cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 2.0.0)
 
-set(CMAKE_CXX_STANDARD 11)
-
-set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
-set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
-
 string(CONCAT enable_cpp_help_string
   "Build the C++ language binding library. The library will be added to the "
   "'all' target and will be installed via the 'install' target, alongside the "
@@ -183,7 +178,6 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
-        include/private/config/locale/sk-sk.h test/function/config/have_gmtime_r.cpp test/function/config/TestedUnit.cpp)
 
 
 # wrapture support
