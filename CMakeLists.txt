@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 2.0.0)
 
+set(CMAKE_CXX_STANDARD 11)
+
+set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
+
 string(CONCAT enable_cpp_help_string
   "Build the C++ language binding library. The library will be added to the "
   "'all' target and will be installed via the 'install' target, alongside the "
@@ -17,6 +22,7 @@ option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
+
 
 string(CONCAT default_facility_help_string
   "The facility code to use for messages where one is not explicitly provided."
@@ -146,6 +152,9 @@ elseif(LOCALE MATCHES "^de[_-]")
 elseif(LOCALE MATCHES "^sv[_-]")
   set(STUMPLESS_LANGUAGE "sv-SE")
   set(USE_LOCALE_SV_SE TRUE)
+elseif(LOCALE MATCHES "^sk[_-]")
+  set(STUMPLESS_LANGUAGE "sk-SK")
+  set(USE_LOCALE_SK_ SK TRUE)
 else()
   if(NOT LOCALE MATCHES "^en[_-]")
     message("building default language en-US")
@@ -174,7 +183,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
-)
+        include/private/config/locale/sk-sk.h test/function/config/have_gmtime_r.cpp test/function/config/TestedUnit.cpp)
 
 
 # wrapture support
@@ -446,22 +455,18 @@ endif(NOT ENABLE_SOCKET_TARGETS)
 
 
 # windows event log target support
-if(NOT ENABLE_WINDOWS_EVENT_LOG_TARGETS)
-  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
-elseif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
+if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
   message("windows event log targets are not supported without windows.h")
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
-else()
-  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
-endif()
 
-if(NOT STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/no_wel_templates.yml)
 
   add_function_test(wel_unsupported
     SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
   )
 else()
+  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
+
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
 
@@ -542,7 +547,7 @@ else()
     ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
     ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
   )
-endif()
+endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
 
 
 # shared library definition
