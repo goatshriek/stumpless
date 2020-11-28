@@ -1033,10 +1033,15 @@ strbuilder_append_app_name( struct strbuilder *builder,
 struct strbuilder *
 strbuilder_append_hostname( struct strbuilder *builder ) {
   char buffer[RFC_5424_MAX_HOSTNAME_LENGTH + 1];
+  int result;
 
-  config_gethostname( buffer, RFC_5424_MAX_HOSTNAME_LENGTH + 1 );
+  result = config_gethostname( buffer, RFC_5424_MAX_HOSTNAME_LENGTH + 1 );
 
-  return strbuilder_append_string( builder, buffer );
+  if( result == -1 ) {
+    return strbuilder_append_char( builder, '-' );
+  } else {
+    return strbuilder_append_string( builder, buffer );
+  }
 }
 
 struct strbuilder *
