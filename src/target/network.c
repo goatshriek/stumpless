@@ -27,6 +27,7 @@
 #include <stumpless/target/network.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/inthelper.h"
@@ -605,15 +606,14 @@ stumpless_set_destination( struct stumpless_target *target,
   net_target = target->id;
   old_destination = net_target->destination;
   net_target->destination = destination_copy;
+  clear_error(  );
 
   if( network_target_is_open( target ) ) {
     reopen_network_target( net_target );
   }
 
   unlock_target( target );
-
   free_mem( old_destination );
-  clear_error(  );
   return target;
 
 cleanup_and_fail:
@@ -646,6 +646,7 @@ stumpless_set_transport_port( struct stumpless_target *target,
   net_target = target->id;
   old_port = net_target->port;
   net_target->port = port_copy;
+  clear_error(  );
 
   if( network_target_is_open( target ) ) {
     reopen_network_target( net_target );
@@ -654,7 +655,6 @@ stumpless_set_transport_port( struct stumpless_target *target,
   unlock_target( target );
 
   free_mem( old_port );
-  clear_error(  );
   return target;
 
 cleanup_and_fail:
@@ -709,6 +709,11 @@ destroy_network_target( const struct network_target *target ) {
   free_mem( target->destination );
   free_mem( target->port );
   free_mem( target );
+}
+
+void
+lock_network_target( const struct network_target *target ) {
+  config_lock_mutex( &target->mutex );
 }
 
 void
@@ -821,4 +826,9 @@ sendto_network_target( struct network_target *target,
      return sendto_tcp_target( target, msg, msg_length );
 
   }
+}
+
+void
+unlock_network_target( const struct network_target *target ) {
+  config_unlock_mutex( &target->mutex );
 }

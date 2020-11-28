@@ -26,7 +26,7 @@
 
 namespace {
   const int THREAD_COUNT = 16;
-  const int MESSAGE_COUNT = 100;
+  const int MESSAGE_COUNT = 50;
 
   void
   read_network_target( const struct stumpless_target *target ) {
@@ -35,9 +35,13 @@ namespace {
 
     for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
       destination = stumpless_get_destination( target );
+      EXPECT_NO_ERROR;
       port = stumpless_get_transport_port( target );
+      EXPECT_NO_ERROR;
       stumpless_get_udp_max_message_size( target );
+      EXPECT_NO_ERROR;
       stumpless_target_is_open( target );
+      EXPECT_NO_ERROR;
 
       free( ( void * ) destination );
       free( ( void * ) port );
@@ -49,9 +53,12 @@ namespace {
   void
   write_network_target( struct stumpless_target *target ) {
     for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
-      stumpless_set_destination( target, "localhost" );
-      stumpless_set_transport_port( target, "514" );
-      stumpless_set_udp_max_message_size( target, 3200 );
+      stumpless_set_destination( target, "127.0.0.1" );
+      EXPECT_NO_ERROR;
+      //stumpless_set_transport_port( target, "514" );
+      //EXPECT_NO_ERROR;
+      //stumpless_set_udp_max_message_size( target, 3200 );
+      //EXPECT_NO_ERROR;
     }
 
     stumpless_free_thread(  );

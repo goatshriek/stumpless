@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <stumpless.h>
 #include <thread>
+#include "test/helper/assert.hpp"
 #include "test/helper/usage.hpp"
 
 void
@@ -28,6 +29,7 @@ add_messages( struct stumpless_target *target, size_t message_count ) {
                            "message number #%zd from thread #%d",
                            i,
                            std::this_thread::get_id(  ) );
+    EXPECT_NO_ERROR;
   }
 
   stumpless_free_thread(  );

@@ -181,10 +181,16 @@ sys_socket_reopen_tcp6_target( struct network_target *target ) {
 
 struct network_target *
 sys_socket_reopen_udp4_target( struct network_target *target ) {
+  lock_network_target( target );
+  close( target->handle );
+  target->handle = sys_socket_open_socket( target->destination,
+                                           target->port,
+                                           AF_INET,
+                                           SOCK_DGRAM,
+                                           0 );
+  unlock_network_target( target );
 
-  sys_socket_close_network_target( target );
-  return sys_socket_open_udp4_target( target );
-
+  return target;
 }
 
 struct network_target *
@@ -201,10 +207,12 @@ sys_socket_sendto_target( struct network_target *target,
                           size_t msg_length ) {
   int result;
 
+  lock_network_target( target );
   result = send( target->handle,
                  msg,
                  msg_length,
                  0 );
+  unlock_network_target( target );
 
   if( result == -1 ){
     raise_socket_send_failure( L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE,

@@ -24,7 +24,6 @@
 #  include <stumpless/config.h>
 #  include <stumpless/target.h>
 #  include <stumpless/target/network.h>
-#  include "private/config.h"
 #  include "private/config/wrapper.h"
 #  include "private/config/wrapper/thread_safety.h"
 
@@ -35,21 +34,27 @@ struct network_target {
   size_t max_msg_size;
   const char *port;
   config_socket_handle_t handle;
-#if defined( STUMPLESS_THREAD_SAFETY_SUPPORTED ) \
-    && !defined( HAVE_SYS_SOCKET_H ) \
-    && defined( HAVE_WINSOCK2_H )
+#ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
- * A mutex to coordinate writes to this target's socket. This is only needed in
- * winsock-based network targets, where the send function is not thread-safe
- * with the same descriptor on stream-oriented targets, which can lead to
- * message interleaving.
+ * A mutex to coordinate updates and writes to this target's socket. While the
+ * send function may be thread-safe on some platforms, this is still needed to
+ * prevent writes while a target is in the process of being re-opened during a
+ * modification to the destination or port.
+ *
+ * In winsock-based network targets, the send function is not thread-safe with
+ * the same descriptor on stream-oriented targets, which can lead to message
+ * interleaving. Therefore, this lock is needed on these systems even if the
+ * reopening/modification synchronization happens elsewhere.
  */
-  config_mutex_t socket_mutex;
+  config_mutex_t mutex;
 #endif
 };
 
 void
 destroy_network_target( const struct network_target *target );
+
+void
+lock_network_target( const struct network_target *target );
 
 void
 network_free_all( void );
@@ -73,5 +78,8 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length );
+
+void
+unlock_network_target( const struct network_target *target );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_NETWORK_H */
