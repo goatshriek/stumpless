@@ -146,6 +146,9 @@ elseif(LOCALE MATCHES "^de[_-]")
 elseif(LOCALE MATCHES "^sv[_-]")
   set(STUMPLESS_LANGUAGE "sv-SE")
   set(USE_LOCALE_SV_SE TRUE)
+elseif(LOCALE MATCHES "^sk[_-]")
+  set(STUMPLESS_LANGUAGE "sk-SK")
+  set(USE_LOCALE_SK_SK TRUE)
 else()
   if(NOT LOCALE MATCHES "^en[_-]")
     message("building default language en-US")
@@ -443,8 +446,6 @@ else()
     ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
   )
 endif(NOT ENABLE_SOCKET_TARGETS)
-
-
 # windows event log target support
 if(NOT ENABLE_WINDOWS_EVENT_LOG_TARGETS)
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
