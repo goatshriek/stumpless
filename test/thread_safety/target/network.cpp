@@ -64,7 +64,7 @@ namespace {
     stumpless_free_thread(  );
   }
 
-  TEST( WriteConsistency, SimultaneousWrites ) {
+  TEST( Udp4WriteConsistency, SimultaneousWrites ) {
     struct stumpless_target *target;
     size_t i;
     std::thread *threads[THREAD_COUNT*3];
