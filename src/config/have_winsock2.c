@@ -112,86 +112,110 @@ winsock2_init_network_target( struct network_target *target ) {
 
 struct network_target *
 winsock2_open_tcp4_target( struct network_target *target ) {
+  SOCKET result;
 
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET,
-                                        SOCK_STREAM,
-                                        IPPROTO_TCP );
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET,
+                                SOCK_STREAM,
+                                IPPROTO_TCP );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == INVALID_SOCKET ) {
+  if( result == INVALID_SOCKET ) {
     return NULL;
-
+  } else {
+    return target;
   }
-
-  return target;
 }
 
 struct network_target *
 winsock2_open_tcp6_target( struct network_target *target ) {
+  SOCKET result;
 
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET6,
+                                SOCK_STREAM,
+                                IPPROTO_TCP );
+  target->handle = result;
+  unlock_network_target( target );
+
+  if( result == INVALID_SOCKET ) {
+    return NULL;
+  } else {
+    return target;
+  }
+}
+
+struct network_target *
+winsock2_open_udp4_target( struct network_target *target ) {
+  SOCKET result;
+
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET,
+                                SOCK_DGRAM,
+                                IPPROTO_UDP );
+  target->handle = result;
+  unlock_network_target( target );
+
+  if( result == INVALID_SOCKET ) {
+    return NULL;
+  } else {
+    return target;
+  }
+}
+
+struct network_target *
+winsock2_open_udp6_target( struct network_target *target ) {
+  SOCKET result;
+
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET6,
+                                SOCK_DGRAM,
+                                IPPROTO_UDP );
+  target->handle = result;
+  unlock_network_target( target );
+
+  if( result == INVALID_SOCKET ) {
+    return NULL;
+  } else {
+    return target;
+  }
+}
+
+struct network_target *
+winsock2_reopen_tcp4_target( struct network_target *target ) {
+  lock_network_target( target );
+  closesocket( target->handle );
+  target->handle = winsock_open_socket( target->destination,
+                                        target->port,
+                                        AF_INET,
+                                        SOCK_STREAM,
+                                        IPPROTO_TCP );
+  unlock_network_target( target );
+
+  return target;
+}
+
+struct network_target *
+winsock2_reopen_tcp6_target( struct network_target *target ) {
+  lock_network_target( target );
+  closesocket( target->handle );
   target->handle = winsock_open_socket( target->destination,
                                         target->port,
                                         AF_INET6,
                                         SOCK_STREAM,
                                         IPPROTO_TCP );
-
-  if( target->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  }
+  unlock_network_target( target );
 
   return target;
-}
-
-struct network_target *
-winsock2_open_udp4_target( struct network_target *target ) {
-
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET,
-                                        SOCK_DGRAM,
-                                        IPPROTO_UDP );
-
-  if( target->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  }
-
-  return target;
-}
-
-struct network_target *
-winsock2_open_udp6_target( struct network_target *target ) {
-
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET6,
-                                        SOCK_DGRAM,
-                                        IPPROTO_UDP );
-
-  if( target->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  }
-
-  return target;
-}
-
-struct network_target *
-winsock2_reopen_tcp4_target( struct network_target *target ) {
-
-  closesocket( target->handle );
-  return winsock2_open_tcp4_target( target );
-
-}
-
-struct network_target *
-winsock2_reopen_tcp6_target( struct network_target *target ) {
-
-  closesocket( target->handle );
-  return winsock2_open_tcp6_target( target );
-
 }
 
 struct network_target *
@@ -210,10 +234,16 @@ winsock2_reopen_udp4_target( struct network_target *target ) {
 
 struct network_target *
 winsock2_reopen_udp6_target( struct network_target *target ) {
-
+  lock_network_target( target );
   closesocket( target->handle );
-  return winsock2_open_udp6_target( target );
+  target->handle = winsock_open_socket( target->destination,
+                                        target->port,
+                                        AF_INET6,
+                                        SOCK_DGRAM,
+                                        IPPROTO_UDP );
+  unlock_network_target( target );
 
+  return target;
 }
 
 int

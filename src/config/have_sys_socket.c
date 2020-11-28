@@ -88,11 +88,13 @@ fail:
 void
 sys_socket_close_network_target( const struct network_target *target ) {
   close( target->handle );
+  config_destroy_mutex( &target->mutex );
 }
 
 void
 sys_socket_init_network_target( struct network_target *target ) {
   target->handle = -1;
+  config_init_mutex( &target->mutex );
 }
 
 struct network_target *
