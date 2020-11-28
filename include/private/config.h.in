@@ -48,5 +48,6 @@
 #cmakedefine USE_LOCALE_DE_DE 1
 #cmakedefine USE_LOCALE_SV_SE 1
 #cmakedefine USE_LOCALE_EN_US 1
+#cmakedefine USE_LOCALE_SK_SK 1
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */
