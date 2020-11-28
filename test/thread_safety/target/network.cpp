@@ -71,7 +71,7 @@ namespace {
 
     // set up the target to log to
     target = stumpless_open_udp4_target( "test-target",
-                                         "127.0.0.1",
+                                         "192.168.0.1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_NO_ERROR;
