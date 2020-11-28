@@ -104,6 +104,8 @@ extern "C" {
   ERROR(STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE, 23)	\
 /** A provided encoding does not conform to the standard. */\
   ERROR(STUMPLESS_INVALID_ENCODING, 24) \
+/** The current hostname could not be retrieved. */\
+  ERROR(STUMPLESS_GETHOSTNAME_FAILURE, 25 )
 
 #define STUMPLESS_GENERATE_ENUM(ENUM, INDEX) ENUM = INDEX,
 

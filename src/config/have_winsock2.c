@@ -122,7 +122,14 @@ winsock2_gethostname( char *buffer, size_t namelen ) {
     }
   }
 
-  return result;
+  if( result == SOCKET_ERROR ) {
+    raise_gethostname_failure( L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE,
+                               result,
+                               L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
+    return -1;
+  } else {
+    return 0;
+  }
 }
 
 void

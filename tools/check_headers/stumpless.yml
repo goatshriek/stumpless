@@ -260,6 +260,7 @@
 "stumpless_get_transport_port": "stumpless/target/network.h"
 "stumpless_get_udp_max_message_size": "stumpless/target/network.h"
 "stumpless_get_wel_insertion_string": "stumpless/config/wel_supported.h"
+"STUMPLESS_GETHOSTNAME_FAILURE": "stumpless/error.h"
 "stumpless_has_error": "stumpless/error.h"
 "stumpless_id_t": "stumpless/id.h"
 "STUMPLESS_INDEX_OUT_OF_BOUNDS": "stumpless/error.h"

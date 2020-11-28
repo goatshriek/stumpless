@@ -55,6 +55,9 @@
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
 "return code of the failed getaddrinfo call"
 
+#  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
+"gethostname failed"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "the invalid index, or -1 of it is too large to represent as an int"
 
