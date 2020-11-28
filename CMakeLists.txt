@@ -18,7 +18,6 @@ option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
-
 string(CONCAT default_facility_help_string
   "The facility code to use for messages where one is not explicitly provided."
 )
@@ -178,7 +177,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
-
+)
 
 # wrapture support
 set(WRAPTURE_SPECS
@@ -446,13 +445,17 @@ else()
     ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
   )
 endif(NOT ENABLE_SOCKET_TARGETS)
-
-
 # windows event log target support
-if(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
+if(NOT ENABLE_WINDOWS_EVENT_LOG_TARGETS)
+  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
+elseif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
   message("windows event log targets are not supported without windows.h")
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
+endif()
 
+if(NOT STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/no_wel_templates.yml)
 
   add_function_test(wel_unsupported
@@ -541,7 +544,7 @@ else()
     ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
     ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
   )
-endif(ENABLE_WINDOWS_EVENT_LOG_TARGETS AND NOT HAVE_WINDOWS_H)
+endif()
 
 
 # shared library definition
