@@ -96,7 +96,7 @@ winsock2_close_network_target( const struct network_target *target ) {
 
 void
 winsock2_cleanup( void ) {
-  WSACleanup(  );
+  //WSACleanup(  );
 }
 
 struct network_target *

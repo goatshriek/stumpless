@@ -230,13 +230,13 @@ if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
 endif(HAVE_WINDOWS_H)
 
-if(HAVE_SYS_SOCKET_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
-  set(HAVE_WINSOCK2_H FALSE)
-elseif(HAVE_WINSOCK2_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
-  find_library(WINSOCK2 NAMES Ws2_32)
-endif()
+#if(HAVE_SYS_SOCKET_H)
+#  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
+#  set(HAVE_WINSOCK2_H FALSE)
+#elseif(HAVE_WINSOCK2_H)
+#  list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
+#  find_library(WINSOCK2 NAMES Ws2_32)
+#endif()
 
 if(WIN32)
   list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
@@ -303,6 +303,14 @@ else()
 
   list(APPEND STUMPLESS_SOURCES src/target/network.c)
   list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/network_target.yml)
+
+  if(HAVE_SYS_SOCKET_H)
+    list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
+    set(HAVE_WINSOCK2_H FALSE)
+  elseif(HAVE_WINSOCK2_H)
+    list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
+    find_library(WINSOCK2 NAMES Ws2_32)
+  endif()
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
