@@ -24,6 +24,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/target/network.h"
 
