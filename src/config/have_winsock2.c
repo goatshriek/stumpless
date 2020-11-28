@@ -123,11 +123,7 @@ winsock2_open_tcp4_target( struct network_target *target ) {
   target->handle = result;
   unlock_network_target( target );
 
-  if( result == INVALID_SOCKET ) {
-    return NULL;
-  } else {
-    return target;
-  }
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
@@ -143,11 +139,7 @@ winsock2_open_tcp6_target( struct network_target *target ) {
   target->handle = result;
   unlock_network_target( target );
 
-  if( result == INVALID_SOCKET ) {
-    return NULL;
-  } else {
-    return target;
-  }
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
@@ -163,11 +155,7 @@ winsock2_open_udp4_target( struct network_target *target ) {
   target->handle = result;
   unlock_network_target( target );
 
-  if( result == INVALID_SOCKET ) {
-    return NULL;
-  } else {
-    return target;
-  }
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
@@ -183,11 +171,7 @@ winsock2_open_udp6_target( struct network_target *target ) {
   target->handle = result;
   unlock_network_target( target );
 
-  if( result == INVALID_SOCKET ) {
-    return NULL;
-  } else {
-    return target;
-  }
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
