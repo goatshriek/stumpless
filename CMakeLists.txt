@@ -400,6 +400,7 @@ else()
     SOURCES
       test/thread_safety/target/network.cpp
       $<TARGET_OBJECTS:test_helper_usage>
+      $<TARGET_OBJECTS:test_helper_server>
   )
 
   add_performance_test(network

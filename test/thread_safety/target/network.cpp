@@ -22,7 +22,12 @@
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
+#include "test/helper/server.hpp"
 #include "test/helper/usage.hpp"
+
+#ifndef _WIN32
+#  include <sys/socket.h>
+#endif
 
 namespace {
   const int THREAD_COUNT = 16;
@@ -64,6 +69,10 @@ namespace {
     stumpless_free_thread(  );
   }
 
+#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
+                                 " ability to listen on a local socket to"     \
+                                 " receive messages."
+
   TEST( Udp4WriteConsistency, SimultaneousWrites ) {
     bool udp_fixtures_enabled = true;
     struct stumpless_target *target;
@@ -72,15 +81,15 @@ namespace {
     socket_handle_t handle;
 
     // setting up to receive the sent messages
-    handle = open_udp_server_socket( AF_INET, "127.0.0.1", port );
+    handle = open_udp_server_socket( AF_INET, "127.0.0.1", "514" );
     if( handle == BAD_HANDLE ) {
-      printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+      std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
       udp_fixtures_enabled = false;
     }
 
     // set up the target to log to
     target = stumpless_open_udp4_target( "test-target",
-                                         "192.168.0.1",
+                                         "127.0.0.1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_NO_ERROR;
