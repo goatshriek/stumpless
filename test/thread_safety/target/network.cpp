@@ -97,6 +97,7 @@ namespace {
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
       if( udp_fixtures_enabled ) {
+        std::cout << "using the server!" << std::endl;
         threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
       }
 
