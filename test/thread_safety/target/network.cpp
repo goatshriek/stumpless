@@ -65,9 +65,18 @@ namespace {
   }
 
   TEST( Udp4WriteConsistency, SimultaneousWrites ) {
+    bool udp_fixtures_enabled = true;
     struct stumpless_target *target;
     size_t i;
     std::thread *threads[THREAD_COUNT*3];
+    socket_handle_t handle;
+
+    // setting up to receive the sent messages
+    handle = open_udp_server_socket( AF_INET, "127.0.0.1", port );
+    if( handle == BAD_HANDLE ) {
+      printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+      udp_fixtures_enabled = false;
+    }
 
     // set up the target to log to
     target = stumpless_open_udp4_target( "test-target",
@@ -91,7 +100,8 @@ namespace {
     // cleanup after the test
     stumpless_close_network_target( target );
     EXPECT_NO_ERROR;
-
     stumpless_free_all(  );
+
+    close_server_socket( handle );
   }
 }
