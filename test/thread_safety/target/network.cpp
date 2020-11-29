@@ -96,14 +96,24 @@ namespace {
     ASSERT_NOT_NULL( target );
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
-      threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
-      threads[THREAD_COUNT+i] = new std::thread( read_network_target, target );
+      if( udp_fixtures_enabled ) {
+        threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
+      }
+
+      threads[THREAD_COUNT + i] = new std::thread( read_network_target, target );
       threads[THREAD_COUNT*2 + i] = new std::thread( write_network_target, target );
     }
 
-    for( i = 0; i < THREAD_COUNT*3; i++ ) {
-      threads[i]->join(  );
-      delete threads[i];
+    for( i = 0; i < THREAD_COUNT; i++ ) {
+      if( udp_fixtures_enabled ) {
+        threads[i]->join(  );
+        delete threads[i];
+      }
+
+      threads[THREAD_COUNT + i]->join(  );
+      delete threads[THREAD_COUNT + i];
+      threads[THREAD_COUNT*2 + i]->join(  );
+      delete threads[THREAD_COUNT*2 + i];
     }
 
     // cleanup after the test
