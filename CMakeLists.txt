@@ -396,6 +396,14 @@ else()
     LIBRARIES ${network_libraries}
   )
 
+  add_thread_safety_test(udp6
+    SOURCES
+      test/thread_safety/target/udp6.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
+  )
+
   add_performance_test(network
     SOURCES
       test/performance/target/network.cpp

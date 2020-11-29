@@ -55,7 +55,7 @@ namespace {
   void
   write_network_target( struct stumpless_target *target ) {
     for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
-      stumpless_set_destination( target, "127.0.0.1" );
+      stumpless_set_destination( target, "::1" );
       EXPECT_NO_ERROR;
       stumpless_set_transport_port( target, "514" );
       EXPECT_NO_ERROR;
@@ -66,7 +66,7 @@ namespace {
     stumpless_free_thread(  );
   }
 
-  TEST( Udp4WriteConsistency, SimultaneousWrites ) {
+  TEST( Udp6WriteConsistency, SimultaneousWrites ) {
     bool udp_fixtures_enabled = true;
     struct stumpless_target *target;
     size_t i;
@@ -74,16 +74,15 @@ namespace {
     socket_handle_t handle;
 
     // setting up to receive the sent messages
-    handle = open_udp4_server_socket( "127.0.0.1",
-                                      STUMPLESS_DEFAULT_TRANSPORT_PORT );
+    handle = open_udp6_server_socket( "::1", STUMPLESS_DEFAULT_TRANSPORT_PORT );
     if( handle == BAD_HANDLE ) {
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
       udp_fixtures_enabled = false;
     }
 
     // set up the target to log to
-    target = stumpless_open_udp4_target( "test-target",
-                                         "127.0.0.1",
+    target = stumpless_open_udp6_target( "test-target",
+                                         "::1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     EXPECT_NO_ERROR;
