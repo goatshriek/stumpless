@@ -94,11 +94,6 @@ winsock2_close_network_target( const struct network_target *target ) {
   config_destroy_mutex( &target->mutex );
 }
 
-void
-winsock2_cleanup( void ) {
-  //WSACleanup(  );
-}
-
 struct network_target *
 winsock2_init_network_target( struct network_target *target ) {
   WSADATA wsa_data;

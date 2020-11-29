@@ -230,14 +230,6 @@ if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
 endif(HAVE_WINDOWS_H)
 
-#if(HAVE_SYS_SOCKET_H)
-#  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
-#  set(HAVE_WINSOCK2_H FALSE)
-#elseif(HAVE_WINSOCK2_H)
-#  list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
-#  find_library(WINSOCK2 NAMES Ws2_32)
-#endif()
-
 if(WIN32)
   list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
 endif(WIN32)
@@ -396,9 +388,9 @@ else()
     LIBRARIES ${network_libraries}
   )
 
-  add_thread_safety_test(network
+  add_thread_safety_test(udp4
     SOURCES
-      test/thread_safety/target/network.cpp
+      test/thread_safety/target/udp4.cpp
       $<TARGET_OBJECTS:test_helper_usage>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}

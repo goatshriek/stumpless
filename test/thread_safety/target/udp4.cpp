@@ -26,10 +26,6 @@
 #include "test/helper/assert.hpp"
 #include "test/helper/usage.hpp"
 
-#ifndef _WIN32
-#  include <sys/socket.h>
-#endif
-
 namespace {
   const int THREAD_COUNT = 16;
   const int MESSAGE_COUNT = 50;
@@ -78,7 +74,7 @@ namespace {
     socket_handle_t handle;
 
     // setting up to receive the sent messages
-    handle = open_udp_server_socket( AF_INET, "127.0.0.1", "514" );
+    handle = open_udp4_server_socket( "127.0.0.1", "514" );
     if( handle == BAD_HANDLE ) {
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
       udp_fixtures_enabled = false;

@@ -51,7 +51,7 @@ namespace {
       struct stumpless_param *param;
 
       // setting up to receive the sent messages
-      handle = open_tcp_server_socket( AF_INET6, "::1", port );
+      handle = open_tcp6_server_socket( "::1", port );
       if( handle == BAD_HANDLE ) {
         printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
         tcp_fixtures_enabled = false;
@@ -278,7 +278,7 @@ namespace {
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
     } else {
-      port_handle = open_tcp_server_socket( AF_INET6, original_destination, "514" );
+      port_handle = open_tcp6_server_socket( original_destination, "514" );
 
       if( port_handle == BAD_HANDLE ) {
         printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
@@ -349,7 +349,7 @@ namespace {
     socket_handle_t accepted;
     socket_handle_t port_handle;
 
-    port_handle = open_tcp_server_socket( AF_INET6, destination, "514" );
+    port_handle = open_tcp6_server_socket( destination, "514" );
 
     if( port_handle == BAD_HANDLE ) {
       printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
@@ -414,8 +414,8 @@ namespace {
     socket_handle_t default_port_handle;
     socket_handle_t new_port_handle;
 
-    default_port_handle = open_tcp_server_socket( AF_INET6, "::1", "514" );
-    new_port_handle = open_tcp_server_socket( AF_INET6, "::1", new_port );
+    default_port_handle = open_tcp6_server_socket( "::1", "514" );
+    new_port_handle = open_tcp6_server_socket( "::1", new_port );
 
     if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
       target = stumpless_open_tcp6_target( "target-to-self",
@@ -483,8 +483,8 @@ namespace {
     socket_handle_t default_port_handle;
     socket_handle_t new_port_handle;
 
-    default_port_handle = open_tcp_server_socket( AF_INET6, destination, "514" );
-    new_port_handle = open_tcp_server_socket( AF_INET6, destination, new_port );
+    default_port_handle = open_tcp6_server_socket( destination, "514" );
+    new_port_handle = open_tcp6_server_socket( destination, new_port );
 
     if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
       target = stumpless_new_tcp6_target( "target-to-self" );

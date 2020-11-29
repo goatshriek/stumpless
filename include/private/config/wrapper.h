@@ -41,7 +41,6 @@
 #    define config_init_tcp6 sys_socket_init_network_target
 #    define config_init_udp4 sys_socket_init_network_target
 #    define config_init_udp6 sys_socket_init_network_target
-#    define config_network_cleanup() ( ( void ) 0 )
 #    define config_open_tcp4_target sys_socket_open_tcp4_target
 #    define config_open_tcp6_target sys_socket_open_tcp6_target
 #    define config_open_udp4_target sys_socket_open_udp4_target
@@ -69,7 +68,6 @@
 #    define config_init_tcp6 winsock2_init_network_target
 #    define config_init_udp4 winsock2_init_network_target
 #    define config_init_udp6 winsock2_init_network_target
-#    define config_network_cleanup() winsock2_cleanup()
 #    define config_open_tcp4_target winsock2_open_tcp4_target
 #    define config_open_tcp6_target winsock2_open_tcp6_target
 #    define config_open_udp4_target winsock2_open_udp4_target

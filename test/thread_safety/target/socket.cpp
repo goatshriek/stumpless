@@ -55,7 +55,7 @@ namespace {
     }
   }
 
-  TEST( WriteConsistency, SimultaneousWrites ) {
+  TEST( SocketWriteConsistency, SimultaneousWrites ) {
     struct sockaddr_un test_socket_addr;
     int test_socket;
     const char *socket_name = "sockettargettest";

@@ -52,8 +52,6 @@ extern "C" {
  * need to be allocated. If other functions are called, this function should be
  * called again before exit to ensure a memory leak does not exist.
  *
- * In a windows environment, this function will call WSACleanup.
- *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it destroys resources that other threads
  * might be using.

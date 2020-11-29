@@ -26,9 +26,6 @@
 void
 winsock2_close_network_target( const struct network_target *target );
 
-void
-winsock2_cleanup( void );
-
 struct network_target *
 winsock2_init_network_target( struct network_target *target );
 

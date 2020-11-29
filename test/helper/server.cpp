@@ -29,6 +29,26 @@
 #include <cstddef>
 #include "test/helper/server.hpp"
 
+socket_handle_t
+open_tcp4_server_socket( const char *dest, const char *port ) {
+  return open_tcp_server_socket( AF_INET, dest, port );
+}
+
+socket_handle_t
+open_tcp6_server_socket( const char *dest, const char *port ) {
+  return open_tcp_server_socket( AF_INET6, dest, port );
+}
+
+socket_handle_t
+open_udp4_server_socket( const char *dest, const char *port ) {
+  return open_udp_server_socket( AF_INET, dest, port );
+}
+
+socket_handle_t
+open_udp6_server_socket( const char *dest, const char *port ) {
+  return open_udp_server_socket( AF_INET6, dest, port );
+}
+
 #ifdef _WIN32
 socket_handle_t
 open_tcp_server_socket( int af, const char *dest, const char *port ){

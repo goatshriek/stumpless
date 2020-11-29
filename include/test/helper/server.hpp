@@ -35,6 +35,18 @@ typedef int socket_handle_t;
                                  " receive messages."
 
 socket_handle_t
+open_tcp4_server_socket( const char *dest, const char *port );
+
+socket_handle_t
+open_tcp6_server_socket( const char *dest, const char *port );
+
+socket_handle_t
+open_udp4_server_socket( const char *dest, const char *port );
+
+socket_handle_t
+open_udp6_server_socket( const char *dest, const char *port );
+
+socket_handle_t
 open_tcp_server_socket( int af, const char *dest, const char *port );
 
 socket_handle_t

@@ -111,8 +111,6 @@
 "new_target": "private/target.h"
 "new_wel_target": "private/target/wel.h"
 "no_vsnprintf_s_format_string": "private/config/no_vsnprintf_s.h"
-"open_tcp_server_socket": "test/helper/server.hpp"
-"open_udp_server_socket": "test/helper/server.hpp"
 "raise_address_failure": "private/error.h"
 "raise_argument_empty": "private/error.h"
 "raise_argument_too_big": "private/error.h"

@@ -55,7 +55,7 @@ namespace {
       struct stumpless_param *param;
 
       // setting up to receive the sent messages
-      handle = open_udp_server_socket( AF_INET6, "::1", port );
+      handle = open_udp6_server_socket( "::1", port );
       if( handle == BAD_HANDLE ) {
         printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
         udp_fixtures_enabled = false;
@@ -283,7 +283,7 @@ namespace {
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
     } else {
-      handle = open_udp_server_socket( AF_INET6, original_destination, "514" );
+      handle = open_udp6_server_socket( original_destination, "514" );
 
       target = stumpless_open_udp6_target( "target-to-self",
                                            original_destination,
@@ -341,7 +341,7 @@ namespace {
     int add_result;
     socket_handle_t handle;
 
-    handle = open_udp_server_socket( AF_INET6, destination, "514" );
+    handle = open_udp6_server_socket( destination, "514" );
 
     target = stumpless_new_udp6_target( "target-to-self" );
     ASSERT_TRUE( target != NULL );
@@ -400,7 +400,7 @@ namespace {
     char buffer[2048];
     socket_handle_t handle;
 
-    handle = open_udp_server_socket( AF_INET6, "::1", new_port );
+    handle = open_udp6_server_socket( "::1", new_port );
 
     target = stumpless_open_udp6_target( "target-to-self",
                                          "::1",
@@ -458,7 +458,7 @@ namespace {
     socket_handle_t handle;
     int add_result;
 
-    handle = open_udp_server_socket( AF_INET6, destination, new_port );
+    handle = open_udp6_server_socket( destination, new_port );
 
     target = stumpless_new_udp6_target( "target-to-self" );
     ASSERT_TRUE( target != NULL );
