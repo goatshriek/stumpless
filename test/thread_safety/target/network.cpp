@@ -16,18 +16,15 @@
  * limitations under the License.
  */
 
+#include "test/helper/server.hpp"
+
 #include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
-#include "test/helper/server.hpp"
 #include "test/helper/usage.hpp"
-
-#ifndef _WIN32
-#  include <sys/socket.h>
-#endif
 
 namespace {
   const int THREAD_COUNT = 16;

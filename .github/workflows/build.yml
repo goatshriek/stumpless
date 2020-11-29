@@ -88,6 +88,9 @@ jobs:
       - name: Test
         run: |
           make check
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -98,9 +101,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
+          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples
@@ -269,6 +270,9 @@ jobs:
       - name: Test
         run: |
           make check
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -279,9 +283,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
+          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples
@@ -306,6 +308,9 @@ jobs:
       - name: Test
         run: |
           make check
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -316,9 +321,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
+          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples
