@@ -388,17 +388,9 @@ else()
     LIBRARIES ${network_libraries}
   )
 
-  add_thread_safety_test(udp4
+  add_thread_safety_test(udp
     SOURCES
-      test/thread_safety/target/udp4.cpp
-      $<TARGET_OBJECTS:test_helper_usage>
-      $<TARGET_OBJECTS:test_helper_server>
-    LIBRARIES ${network_libraries}
-  )
-
-  add_thread_safety_test(udp6
-    SOURCES
-      test/thread_safety/target/udp6.cpp
+      test/thread_safety/target/udp.cpp
       $<TARGET_OBJECTS:test_helper_usage>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
