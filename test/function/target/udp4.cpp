@@ -33,10 +33,6 @@
 #  include <sys/socket.h>
 #endif
 
-#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
-                                 " ability to listen on a local socket to"     \
-                                 " receive messages."
-
 using::testing::EndsWith;
 using::testing::HasSubstr;
 using::testing::Not;

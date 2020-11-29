@@ -32,10 +32,6 @@
 #  include <sys/socket.h>
 #endif
 
-#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
-                                 " ability to listen on a local socket to"     \
-                                 " receive messages."
-
 namespace {
 
   class Tcp4TargetTest : public::testing::Test {

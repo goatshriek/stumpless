@@ -30,6 +30,10 @@ typedef int socket_handle_t;
 
 #  include <cstddef>
 
+#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
+                                 " ability to listen on a local socket to"     \
+                                 " receive messages."
+
 socket_handle_t
 open_tcp_server_socket( int af, const char *dest, const char *port );
 

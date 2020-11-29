@@ -70,10 +70,6 @@ namespace {
     stumpless_free_thread(  );
   }
 
-#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
-                                 " ability to listen on a local socket to"     \
-                                 " receive messages."
-
   TEST( Udp4WriteConsistency, SimultaneousWrites ) {
     bool udp_fixtures_enabled = true;
     struct stumpless_target *target;
