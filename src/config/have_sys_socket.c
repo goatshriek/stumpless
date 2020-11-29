@@ -164,15 +164,13 @@ sys_socket_open_udp6_target( struct network_target *target ) {
 
 struct network_target *
 sys_socket_reopen_tcp4_target( struct network_target *target ) {
-  int result;
-
   lock_network_target( target );
   close( target->handle );
-  result = sys_socket_open_socket( target->destination,
-                                   target->port,
-                                   AF_INET,
-                                   SOCK_STREAM,
-                                   0 );
+  target->handle = sys_socket_open_socket( target->destination,
+                                           target->port,
+                                           AF_INET,
+                                           SOCK_STREAM,
+                                           0 );
   unlock_network_target( target );
 
   return target;
