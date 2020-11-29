@@ -1,5 +1,4 @@
 "AF_INET":
-  - "test/helper/server.hpp"
   - "sys/socket.h"
   - "private/windows_wrapper.h"
   - "winsock2.h"

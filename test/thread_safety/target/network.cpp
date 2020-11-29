@@ -26,6 +26,10 @@
 #include "test/helper/assert.hpp"
 #include "test/helper/usage.hpp"
 
+#ifndef _WIN32
+#  include <sys/socket.h>
+#endif
+
 namespace {
   const int THREAD_COUNT = 16;
   const int MESSAGE_COUNT = 50;
