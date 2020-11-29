@@ -63,7 +63,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
+          sudo ./thread-safety-test-udp
       - name: Run Examples
         run: |
           make examples
@@ -101,7 +101,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
+          sudo ./thread-safety-test-udp
       - name: Run Examples
         run: |
           make examples
@@ -283,7 +283,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
+          sudo ./thread-safety-test-udp
       - name: Run Examples
         run: |
           make examples
@@ -321,7 +321,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
+          sudo ./thread-safety-test-udp
       - name: Run Examples
         run: |
           make examples
