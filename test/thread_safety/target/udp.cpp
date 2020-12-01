@@ -150,7 +150,6 @@ namespace {
     handle = open_tcp4_server_socket( target_destination,
                                       STUMPLESS_DEFAULT_TRANSPORT_PORT );
     if( handle == BAD_HANDLE ) {
-      std::cout << errno;
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
 
     } else {
