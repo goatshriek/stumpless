@@ -41,7 +41,6 @@ winsock_open_socket( const char *destination,
                       .ai_addr = NULL,
                       .ai_next = NULL };
   PADDRINFOA addr_result;
-  WSADATA wsa_data;
   int result;
 
   handle = socket( af, type, protocol );
@@ -172,56 +171,68 @@ winsock2_open_udp6_target( struct network_target *target ) {
 struct network_target *
 winsock2_reopen_tcp4_target( struct network_target *target ) {
   lock_network_target( target );
-  closesocket( target->handle );
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET,
-                                        SOCK_STREAM,
-                                        IPPROTO_TCP );
-  unlock_network_target( target );
 
+  if( winsock2_network_target_is_open( target ) ) {
+    closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET,
+                                          SOCK_STREAM,
+                                          IPPROTO_TCP );
+  }
+
+  unlock_network_target( target );
   return target;
 }
 
 struct network_target *
 winsock2_reopen_tcp6_target( struct network_target *target ) {
   lock_network_target( target );
-  closesocket( target->handle );
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET6,
-                                        SOCK_STREAM,
-                                        IPPROTO_TCP );
-  unlock_network_target( target );
 
+  if( winsock2_network_target_is_open( target ) ) {
+  closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET6,
+                                          SOCK_STREAM,
+                                          IPPROTO_TCP );
+  }
+
+  unlock_network_target( target );
   return target;
 }
 
 struct network_target *
 winsock2_reopen_udp4_target( struct network_target *target ) {
   lock_network_target( target );
-  closesocket( target->handle );
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET,
-                                        SOCK_DGRAM,
-                                        IPPROTO_UDP );
-  unlock_network_target( target );
 
+  if( winsock2_network_target_is_open( target ) ) {
+    closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET,
+                                          SOCK_DGRAM,
+                                          IPPROTO_UDP );
+  }
+
+  unlock_network_target( target );
   return target;
 }
 
 struct network_target *
 winsock2_reopen_udp6_target( struct network_target *target ) {
   lock_network_target( target );
-  closesocket( target->handle );
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET6,
-                                        SOCK_DGRAM,
-                                        IPPROTO_UDP );
-  unlock_network_target( target );
 
+  if( winsock2_network_target_is_open( target ) ) {
+    closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET6,
+                                          SOCK_DGRAM,
+                                          IPPROTO_UDP );
+  }
+
+  unlock_network_target( target );
   return target;
 }
 

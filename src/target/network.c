@@ -37,8 +37,8 @@
 #include "private/target/network.h"
 #include "private/validate.h"
 
-static char *tcp_send_buffer = NULL;
-static size_t tcp_send_buffer_length = 0;
+static CONFIG_THREAD_LOCAL_STORAGE char *tcp_send_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE size_t tcp_send_buffer_length = 0;
 
 static
 void
@@ -608,9 +608,7 @@ stumpless_set_destination( struct stumpless_target *target,
   net_target->destination = destination_copy;
   clear_error(  );
 
-  if( network_target_is_open( target ) ) {
-    reopen_network_target( net_target );
-  }
+  reopen_network_target( net_target );
 
   unlock_target( target );
   free_mem( old_destination );
@@ -648,12 +646,9 @@ stumpless_set_transport_port( struct stumpless_target *target,
   net_target->port = port_copy;
   clear_error(  );
 
-  if( network_target_is_open( target ) ) {
-    reopen_network_target( net_target );
-  }
+  reopen_network_target( net_target );
 
   unlock_target( target );
-
   free_mem( old_port );
   return target;
 
@@ -719,6 +714,7 @@ lock_network_target( const struct network_target *target ) {
 void
 network_free_all( void ) {
   free_mem( tcp_send_buffer );
+  tcp_send_buffer = NULL;
   tcp_send_buffer_length = 0;
 }
 

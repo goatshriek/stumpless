@@ -56,10 +56,10 @@ socket_handle_t
 accept_tcp_connection( socket_handle_t handle );
 
 #  ifdef _WIN32
-void
+bool
 recv_from_handle( socket_handle_t handle, char *buff, int buff_len );
 #  else
-void
+bool
 recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len );
 #endif
 
