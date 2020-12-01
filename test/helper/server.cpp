@@ -108,7 +108,7 @@ bool
 recv_from_handle( socket_handle_t handle, char *buff, int buff_len ) {
   int msg_len;
 
-  msg_len = recv( handle, buff, buff_len, 0 );
+  msg_len = recv( handle, buff, buff_len - 1, 0 );
   if( msg_len == SOCKET_ERROR || msg_len == 0 ) {
     buff[0] = '\0';
     return false;
@@ -174,7 +174,7 @@ bool
 recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len ) {
   ssize_t msg_len;
 
-  msg_len = recv( handle, buff, buff_len, 0 );
+  msg_len = recv( handle, buff, buff_len - 1, 0 );
   if( msg_len <= 0 ) {
     buff[0] = '\0';
     return false;

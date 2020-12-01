@@ -27,8 +27,8 @@
 #include "test/helper/usage.hpp"
 
 namespace {
-  const int THREAD_COUNT = 4;
-  const int MESSAGE_COUNT = 10;
+  const int THREAD_COUNT = 16;
+  const int MESSAGE_COUNT = 50;
 
   void
   read_network_target( const struct stumpless_target *target, bool is_udp ) {
@@ -60,8 +60,8 @@ namespace {
                         const char *destination,
                         bool is_udp ) {
     for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
-      //stumpless_set_destination( target, destination );
-      //EXPECT_NO_ERROR;
+      stumpless_set_destination( target, destination );
+      EXPECT_NO_ERROR;
       stumpless_set_transport_port( target,
                                     STUMPLESS_DEFAULT_TRANSPORT_PORT );
       EXPECT_NO_ERROR;
@@ -150,9 +150,10 @@ namespace {
     handle = open_tcp4_server_socket( target_destination,
                                       STUMPLESS_DEFAULT_TRANSPORT_PORT );
     if( handle == BAD_HANDLE ) {
+      std::cout << errno;
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
-    } else {
 
+    } else {
       listener_thread = new std::thread( listen_on_socket, handle );
 
       // set up the target to log to
