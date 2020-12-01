@@ -141,7 +141,6 @@ namespace {
   }
 
   TEST( Tcp4WriteConsistency, SimultaneousWrites ) {
-    bool fixture_enabled = true;
     struct stumpless_target *target;
     socket_handle_t handle;
     const char *target_destination = "127.0.0.1";
@@ -152,33 +151,31 @@ namespace {
                                       STUMPLESS_DEFAULT_TRANSPORT_PORT );
     if( handle == BAD_HANDLE ) {
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
-      fixture_enabled = false;
-    }
+    } else {
 
-    if( fixture_enabled ) {
       listener_thread = new std::thread( listen_on_socket, handle );
+
+      // set up the target to log to
+      target = stumpless_open_tcp4_target( "test-target",
+                                           target_destination,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+      EXPECT_NO_ERROR;
+      ASSERT_NOT_NULL( target );
+
+      // run the tests
+      run_network_target_tests( target,
+                                target_destination,
+                                true,
+                                false );
+
+      // cleanup after the test
+      stumpless_close_network_target( target );
+      EXPECT_NO_ERROR;
+      stumpless_free_all(  );
+
+      close_server_socket( handle );
     }
-
-    // set up the target to log to
-    target = stumpless_open_tcp4_target( "test-target",
-                                         target_destination,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
-    EXPECT_NO_ERROR;
-    ASSERT_NOT_NULL( target );
-
-    // run the tests
-    run_network_target_tests( target,
-                              target_destination,
-                              fixture_enabled,
-                              false );
-
-    // cleanup after the test
-    stumpless_close_network_target( target );
-    EXPECT_NO_ERROR;
-    stumpless_free_all(  );
-
-    close_server_socket( handle );
   }
 
   TEST( Udp4WriteConsistency, SimultaneousWrites ) {
