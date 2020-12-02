@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,19 @@ struct stumpless_version {
 };
 
 /**
- * Gets the version of code the library was built with.
+ * Gets the version of code the library was built with. This version must be
+ * freed by the caller when it is no longer needed to avoid a memory leak.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the version structure.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @return The version of code used by the library build.
  */
@@ -45,12 +57,24 @@ struct stumpless_version *
 stumpless_get_version( void );
 
 /**
- * Compares the version of two given stumpless_version struct. 
- * 
- * This function make use of a similar convention used by the standard library's strcmp function.
- * 
+ * Compares the version of two given stumpless_version struct.
+ *
+ * This function makes use of a similar convention used by the standard
+ * library's strcmp function.
+ *
+ * **Thread Safety: MT-Safe race:version_x race:version_y**
+ * This function is thread safe, as long as the versions to be compared are not
+ * modified by other threads during the call.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @param version_x,version_y Two given version(const) to be compared.
- * 
+ *
  * @return 0 if version numbers are the same,                           <br />
  *         1 if version_x->patch - version_y->patch > 0,    -1   if < 0 <br />
  *         10 if version_x->minor - version_y->minor > 0,   -10  if < 0 <br />
@@ -67,6 +91,20 @@ stumpless_version_cmp( const struct stumpless_version * version_x,
  *
  * This string will be NULL-terminated, and will appear in the standard
  * semantic versioning format of 'major.minor.patch'.
+ *
+ * This string must be freed by the caller when it is no longer needed. Failing
+ * to do so will result in a memory leak of the returned string.
+ *
+ * **Thread Safety: MT-Safe race:version**
+ * This function is thread safe, as long as the version is not modified by
+ * other threads during the call.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @param version The version to convert to a string.
  *

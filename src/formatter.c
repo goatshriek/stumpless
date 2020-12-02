@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ format_entry( const struct stumpless_entry *entry,
   // do this as soon as possible to be closer to invocation
   timestamp_size = config_get_now( timestamp );
 
+  lock_entry( entry );
+
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
   builder = strbuilder_append_int( builder, entry->prival );
@@ -59,6 +61,10 @@ format_entry( const struct stumpless_entry *entry,
     builder = strbuilder_append_char( builder, ' ' );
     builder = strbuilder_append_message( builder, entry );
   }
+
+  builder = strbuilder_append_char( builder, '\n' );
+
+  unlock_entry( entry );
 
   return builder;
 }

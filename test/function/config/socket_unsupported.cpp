@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 #include <stddef.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 namespace {
 
@@ -37,24 +38,19 @@ namespace {
 
   TEST( SocketTargetTest, GenericClose ) {
     struct stumpless_target target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target.type = STUMPLESS_SOCKET_TARGET;
 
     stumpless_close_target( &target );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
   }
 
   TEST( SocketTargetTest, Unsupported ) {
     struct stumpless_target target;
     struct stumpless_entry *entry;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     int result;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -69,9 +65,7 @@ namespace {
     result = stumpless_add_entry( &target, entry );
     EXPECT_LT( result, 0 );
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_TARGET_UNSUPPORTED );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
     stumpless_destroy_entry( entry );
   }

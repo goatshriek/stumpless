@@ -20,7 +20,7 @@
 #include "test/helper/fixture.hpp"
 
 struct stumpless_entry *
-create_entry( void ) {
+create_empty_entry( void ) {
   struct stumpless_entry *entry;
 
   entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -28,6 +28,15 @@ create_entry( void ) {
                                "fixture-app-name",
                                "fixture-msgid",
                                "fixture message" );
+
+  return entry;
+}
+
+struct stumpless_entry *
+create_entry( void ) {
+  struct stumpless_entry *entry;
+
+  entry = create_empty_entry(  );
 
   stumpless_add_new_element( entry, "fixture-element" );
 

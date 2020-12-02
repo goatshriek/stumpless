@@ -90,7 +90,7 @@ namespace {
 
     result = stumpless_add_entry( target, one_insertion_entry );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
   }
 
   TEST_F( WelTargetTest, AddEntryWithTwoInsertionStrings ) {
@@ -228,24 +228,19 @@ namespace {
   }
 
   TEST( WelTargetCloseTest, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_close_wel_target( NULL );
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelTargetOpenRemoteTest, NullName ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_remote_wel_target( "remote-server", NULL, 0 );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 }

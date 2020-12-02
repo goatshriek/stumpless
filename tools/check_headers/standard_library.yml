@@ -7,6 +7,7 @@
   - "private/windows_wrapper.h"
   - "winsock2.h"
 "AF_UNIX": "sys/socket.h"
+"atomic_uint": "stdatomic.h"
 "BOOL":
   - "windows.h"
   - "private/windows_wrapper.h"
@@ -54,6 +55,9 @@
   - "netdb.h"
   - "ws2tcpip.h"
   - "private/windows_wrapper.h"
+"GetCurrentProcessId":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "gethostname":
   - "unistd.h"
   - "winsock2.h"
@@ -63,6 +67,9 @@
   - "windows.h"
   - "private/windows_wrapper.h"
 "getpid": "unistd.h"
+"GetSystemInfo":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "gmtime": "time.h"
 "HANDLE":
   - "windows.h"
@@ -98,6 +105,11 @@
 "PSOCKADDR_IN":
   - "winsock2.h"
   - "private/windows_wrapper.h"
+"pthread_create": "pthread.h"
+"pthread_mutex_lock": "pthread.h"
+"pthread_mutex_t": "pthread.h"
+"pthread_mutex_unlock": "pthread.h"
+"pthread_self": "pthread.h"
 "realloc":
   - "cstdlib"
   - "stdlib.h"
@@ -131,7 +143,6 @@
 "socklen_t": "sys/socket.h"
 "sprintf_s": "stdio.h"
 "ssize_t": "sys/types.h"
-"std::cout": "iostream"
 "std::ifstream": "fstream"
 "std::regex": "regex"
 "stderr":

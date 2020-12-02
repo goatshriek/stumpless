@@ -28,7 +28,7 @@ struct wel_target {
   HANDLE handle;
 };
 
-void
+BOOL
 destroy_wel_target( struct wel_target *target );
 
 struct wel_target *

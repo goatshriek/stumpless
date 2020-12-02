@@ -16,9 +16,12 @@
  * limitations under the License.
  */
 
+#include <errno.h>
 #include <stddef.h>
 #include <unistd.h>
 #include "private/config/have_unistd_gethostname.h"
+#include "private/config/locale/wrapper.h"
+#include "private/error.h"
 
 int
 unistd_gethostname( char *buffer, size_t namelen ) {
@@ -26,6 +29,12 @@ unistd_gethostname( char *buffer, size_t namelen ) {
 
   result = gethostname( buffer, namelen );
   buffer[namelen - 1] = '\0';
+
+  if( result == -1 ) {
+    raise_gethostname_failure( L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE,
+                               errno,
+                               L10N_ERRNO_ERROR_CODE_TYPE );
+  }
 
   return result;
 }

@@ -24,6 +24,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/target/network.h"
 
@@ -74,6 +75,7 @@ sys_socket_open_socket( const char *destination,
     goto fail_connect;
   }
 
+  freeaddrinfo( addr_result );
   return handle;
 
 fail_connect:
@@ -87,111 +89,145 @@ fail:
 void
 sys_socket_close_network_target( const struct network_target *target ) {
   close( target->handle );
+  config_destroy_mutex( &target->mutex );
 }
 
 void
 sys_socket_init_network_target( struct network_target *target ) {
   target->handle = -1;
+  config_init_mutex( &target->mutex );
 }
 
 struct network_target *
 sys_socket_open_tcp4_target( struct network_target *target ) {
+  int result;
 
-  target->handle = sys_socket_open_socket( target->destination,
-                                           target->port,
-                                           AF_INET,
-                                           SOCK_STREAM,
-                                           0 );
+  lock_network_target( target );
+  result = sys_socket_open_socket( target->destination,
+                                   target->port,
+                                   AF_INET,
+                                   SOCK_STREAM,
+                                   0 );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == -1 ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == -1 ? NULL : target;
 }
 
 struct network_target *
 sys_socket_open_tcp6_target( struct network_target *target ) {
+  int result;
 
-  target->handle = sys_socket_open_socket( target->destination,
-                                           target->port,
-                                           AF_INET6,
-                                           SOCK_STREAM,
-                                           0 );
+  lock_network_target( target );
+  result = sys_socket_open_socket( target->destination,
+                                   target->port,
+                                   AF_INET6,
+                                   SOCK_STREAM,
+                                   0 );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == -1 ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == -1 ? NULL : target;
 }
 
 struct network_target *
 sys_socket_open_udp4_target( struct network_target *target ) {
+  int result;
 
-  target->handle = sys_socket_open_socket( target->destination,
-                                           target->port,
-                                           AF_INET,
-                                           SOCK_DGRAM,
-                                           0 );
+  lock_network_target( target );
+  result = sys_socket_open_socket( target->destination,
+                                   target->port,
+                                   AF_INET,
+                                   SOCK_DGRAM,
+                                   0 );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == -1 ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == -1 ? NULL : target;
 }
 
 struct network_target *
 sys_socket_open_udp6_target( struct network_target *target ) {
+  int result;
 
-  target->handle = sys_socket_open_socket( target->destination,
-                                           target->port,
-                                           AF_INET6,
-                                           SOCK_DGRAM,
-                                           0 );
+  lock_network_target( target );
+  result = sys_socket_open_socket( target->destination,
+                                   target->port,
+                                   AF_INET6,
+                                   SOCK_DGRAM,
+                                   0 );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == -1 ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == -1 ? NULL : target;
 }
 
 struct network_target *
 sys_socket_reopen_tcp4_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  sys_socket_close_network_target( target );
-  return sys_socket_open_tcp4_target( target );
+  if( sys_socket_network_target_is_open( target ) ) {
+    close( target->handle );
+    target->handle = sys_socket_open_socket( target->destination,
+                                             target->port,
+                                             AF_INET,
+                                             SOCK_STREAM,
+                                             0 );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 struct network_target *
 sys_socket_reopen_tcp6_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  sys_socket_close_network_target( target );
-  return sys_socket_open_tcp6_target( target );
+  if( sys_socket_network_target_is_open( target ) ) {
+    close( target->handle );
+    target->handle = sys_socket_open_socket( target->destination,
+                                             target->port,
+                                             AF_INET6,
+                                             SOCK_STREAM,
+                                             0 );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 struct network_target *
 sys_socket_reopen_udp4_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  sys_socket_close_network_target( target );
-  return sys_socket_open_udp4_target( target );
+  if( sys_socket_network_target_is_open( target ) ) {
+    close( target->handle );
+    target->handle = sys_socket_open_socket( target->destination,
+                                             target->port,
+                                             AF_INET,
+                                             SOCK_DGRAM,
+                                             0 );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 struct network_target *
 sys_socket_reopen_udp6_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  sys_socket_close_network_target( target );
-  return sys_socket_open_udp6_target( target );
+  if( sys_socket_network_target_is_open( target ) ) {
+    close( target->handle );
+    target->handle = sys_socket_open_socket( target->destination,
+                                             target->port,
+                                             AF_INET6,
+                                             SOCK_DGRAM,
+                                             0 );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 int
@@ -200,10 +236,12 @@ sys_socket_sendto_target( struct network_target *target,
                           size_t msg_length ) {
   int result;
 
+  lock_network_target( target );
   result = send( target->handle,
                  msg,
                  msg_length,
                  0 );
+  unlock_network_target( target );
 
   if( result == -1 ){
     raise_socket_send_failure( L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE,

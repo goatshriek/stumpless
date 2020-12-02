@@ -28,6 +28,7 @@
 #include <stumpless/target/stream.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -42,9 +43,12 @@
 #include "private/target/stream.h"
 #include "private/validate.h"
 
-static struct stumpless_target *current_target = NULL;
-static struct stumpless_entry *cached_entry = NULL;
-static struct stumpless_target *default_target = NULL;
+/* global static variables */
+static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
+static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
+
+/* per-thread static variables */
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
 
 static
 void
@@ -83,8 +87,6 @@ stumpless_add_entry( struct stumpless_target *target,
   const char *buffer;
   int result;
 
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
@@ -99,6 +101,8 @@ stumpless_add_entry( struct stumpless_target *target,
     raise_invalid_id(  );
     return -1;
   }
+
+  clear_error(  );
 
   // windows targets are not formatted in code
   // instead their formatting comes from message text files
@@ -218,68 +222,171 @@ stumpless_close_target( struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_get_current_target( void ) {
+  struct stumpless_target *result;
+
   clear_error(  );
 
-  if( !current_target ) {
-    current_target = stumpless_get_default_target(  );
+  result = config_read_ptr( &current_target );
+  if( result ) {
+    return result;
   }
 
-  return current_target;
+  result = stumpless_get_default_target(  );
+  config_compare_exchange_ptr( &current_target, NULL, result );
+
+  return result;
 }
 
 int
 stumpless_get_default_facility( const struct stumpless_target *target ) {
-  clear_error(  );
+  int prival;
 
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
   }
 
-  return get_facility( target->default_prival );
+  lock_target( target );
+  prival = target->default_prival;
+  unlock_target( target );
+
+  clear_error(  );
+  return get_facility( prival );
 }
 
 struct stumpless_target *
 stumpless_get_default_target( void ) {
+  struct stumpless_target *result;
+
   clear_error(  );
 
-  if( !default_target ) {
-    default_target = config_open_default_target(  );
+  result = config_read_ptr( &default_target );
+
+  while( !result ) {
+    result = config_open_default_target(  );
+
+    if( !config_compare_exchange_ptr( &default_target, NULL, result ) ) {
+      config_close_default_target( result );
+      result = config_read_ptr( &default_target );
+    }
   }
 
-  return default_target;
+  return result;
 }
 
 int
 stumpless_get_option( const struct stumpless_target *target, int option ) {
-  clear_error(  );
+  int options;
 
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return 0;
   }
 
-  return target->options & option;
+  lock_target( target );
+  options = target->options;
+  unlock_target( target );
+
+  clear_error(  );
+  return options & option;
+}
+
+const char *
+stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
+  char *name_copy = NULL;
+
+  VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
+
+  lock_target( target );
+  if( !target->default_app_name ) {
+    goto cleanup_and_return;
+  }
+
+
+  name_copy = alloc_mem( target->default_app_name_length + 1 );
+  if( !name_copy ) {
+    goto cleanup_and_return;
+  }
+
+  memcpy( name_copy,
+          target->default_app_name,
+          target->default_app_name_length + 1 );
+  clear_error(  );
+
+cleanup_and_return:
+  unlock_target( target );
+  return name_copy;
+}
+
+const char *
+stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
+  char *msgid_copy = NULL;
+
+  VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
+
+  lock_target( target );
+  if( !target->default_msgid ) {
+    goto cleanup_and_return;
+  }
+
+  msgid_copy = alloc_mem( target->default_msgid_length + 1 );
+  if( !msgid_copy ) {
+    goto cleanup_and_return;
+  }
+
+  memcpy( msgid_copy, target->default_msgid, target->default_msgid_length + 1 );
+  clear_error(  );
+
+cleanup_and_return:
+  unlock_target( target );
+  return msgid_copy;
+}
+
+const char *
+stumpless_get_target_name( const struct stumpless_target *target ) {
+  char *name_copy;
+
+  VALIDATE_ARG_NOT_NULL( target );
+
+  lock_target( target );
+  name_copy = alloc_mem( target->name_length + 1 );
+  if( !name_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( name_copy, target->name, target->name_length + 1 );
+  clear_error(  );
+
+cleanup_and_return:
+  unlock_target( target );
+  return name_copy;
 }
 
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target ) {
+  struct stumpless_target *result;
 
   VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    unlock_target( target );
     raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
     return NULL;
-
   }
-  clear_error(  );
-  return config_open_network_target( target );
+
+  result = config_open_network_target( target );
+  unlock_target( target );
+
+  return result;
 }
 
 void
 stumpless_set_current_target( struct stumpless_target *target ) {
   clear_error(  );
-  current_target = target;
+  config_write_ptr( &current_target, target );
 }
 
 struct stumpless_target *
@@ -291,62 +398,66 @@ stumpless_set_default_facility( struct stumpless_target *target,
 
   if( facility_is_invalid( default_facility ) ) {
     raise_invalid_facility( default_facility );
-    goto fail;
+    return NULL;
   }
 
-  clear_error(  );
+  lock_target( target );
   old_severity = get_severity( target->default_prival );
   target->default_prival = default_facility + old_severity;
-  return target;
+  unlock_target( target );
 
-fail:
-  return NULL;
+  clear_error(  );
+  return target;
 }
 
 struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option ) {
-
   VALIDATE_ARG_NOT_NULL( target );
 
-  clear_error(  );
+  lock_target( target );
   target->options |= option;
+  unlock_target( target );
+
+  clear_error(  );
   return target;
 }
 
 struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name ) {
-  size_t *app_name_length;
-  char *sized_name;
-
-  clear_error(  );
+  size_t new_length;
+  char *new_name;
+  const char *old_name;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
 
-  if ( !validate_app_name_length( app_name ) ) {
-      return NULL;
-  }
-
-  app_name_length = &( target->default_app_name_length );
-  sized_name = copy_cstring_with_length( app_name, app_name_length );
-  if( !sized_name ) {
+  if( !validate_app_name_length( app_name ) ) {
     return NULL;
-
-  } else {
-    target->default_app_name = sized_name;
-    return target;
-
   }
+
+  new_name = copy_cstring_with_length( app_name, &new_length );
+  if( !new_name ) {
+    return NULL;
+  }
+
+  lock_target( target );
+  old_name = target->default_app_name;
+  target->default_app_name = new_name;
+  target->default_app_name_length = new_length;
+  unlock_target( target );
+
+  free_mem( old_name );
+  clear_error(  );
+  return target;
 }
 
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid ) {
-  size_t *msgid_length;
-  char *sized_msgid;
-
-  clear_error(  );
+  size_t new_length;
+  char *new_msgid;
+  const char *old_msgid;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
@@ -355,51 +466,47 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
       return NULL;
   }
 
-  msgid_length = &( target->default_msgid_length );
-  sized_msgid = copy_cstring_with_length( msgid, msgid_length );
-  if( !sized_msgid ) {
+  new_msgid = copy_cstring_with_length( msgid, &new_length );
+  if( !new_msgid ) {
     return NULL;
-
-  } else {
-    target->default_msgid = sized_msgid;
-    return target;
-
   }
+
+  lock_target( target );
+  old_msgid = target->default_msgid;
+  target->default_msgid = new_msgid;
+  target->default_msgid_length = new_length;
+  unlock_target( target );
+
+  free_mem( old_msgid );
+  clear_error(  );
+  return target;
 }
 
 const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target ) {
-  int is_open;
-
-  clear_error(  );
+  int is_open = 1;
 
   VALIDATE_ARG_NOT_NULL( target );
+  clear_error(  );
 
+  lock_target( target );
   if( target->type == STUMPLESS_NETWORK_TARGET ) {
     is_open = config_network_target_is_open( target );
-
-  } else {
-    is_open = 1;
-
   }
+  unlock_target( target );
 
-  if( is_open ) {
-    return target;
-
-  } else {
-    return NULL;
-
-  }
+  return is_open ? target : NULL;
 }
 
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option ) {
-  clear_error(  );
-
   VALIDATE_ARG_NOT_NULL( target );
 
+  lock_target( target );
   target->options &= ~option;
+  unlock_target( target );
 
+  clear_error(  );
   return target;
 }
 
@@ -435,10 +542,6 @@ vstumpless_add_log( struct stumpless_target *target,
                     const char *message,
                     va_list subs ) {
   const struct stumpless_entry *set_result;
-  char *app_name;
-  char *msgid;
-
-  clear_error(  );
 
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
@@ -448,8 +551,8 @@ vstumpless_add_log( struct stumpless_target *target,
   if( !cached_entry ) {
     cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
-                                         "-",
-                                         "-",
+                                         target->default_app_name,
+                                         target->default_msgid,
                                          message,
                                          subs );
     if( !cached_entry ) {
@@ -462,37 +565,21 @@ vstumpless_add_log( struct stumpless_target *target,
       return -1;
     }
 
+    set_result = stumpless_set_entry_app_name( cached_entry,
+                                               target->default_app_name );
+    if( !set_result ) {
+      return -1;
+    }
+
+    set_result = stumpless_set_entry_msgid( cached_entry,
+                                            target->default_msgid );
+    if( !set_result ) {
+      return -1;
+    }
+
   }
 
   cached_entry->prival = priority;
-
-  if( target->default_app_name ) {
-    app_name = alloc_mem( target->default_app_name_length );
-    if( !app_name ) {
-      return -1;
-    }
-
-    free_mem( cached_entry->app_name );
-    memcpy( app_name,
-            target->default_app_name,
-            target->default_app_name_length );
-    cached_entry->app_name = app_name;
-    cached_entry->app_name_length = target->default_app_name_length;
-  }
-
-  if( target->default_msgid ) {
-    msgid = alloc_mem( target->default_msgid_length );
-    if( !msgid ) {
-      return -1;
-    }
-
-    free_mem( cached_entry->msgid );
-    memcpy( msgid,
-            target->default_msgid,
-            target->default_msgid_length );
-    cached_entry->msgid = msgid;
-    cached_entry->msgid_length = target->default_msgid_length;
-  }
 
   return stumpless_add_entry( target, cached_entry );
 }
@@ -501,8 +588,6 @@ int
 vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
                         va_list subs ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
@@ -515,14 +600,18 @@ vstumpless_add_message( struct stumpless_target *target,
 
 void
 destroy_target( const struct stumpless_target *target ) {
-  if( target == current_target ) {
-    current_target = NULL;
-  }
+  config_compare_exchange_ptr( &current_target, target, NULL );
 
+  config_destroy_mutex( TARGET_MUTEX( target ) );
   free_mem( target->default_app_name );
   free_mem( target->default_msgid );
   free_mem( target->name );
   free_mem( target );
+}
+
+void
+lock_target( const struct stumpless_target *target ) {
+  config_lock_mutex( TARGET_MUTEX( target ) );
 }
 
 struct stumpless_target *
@@ -533,15 +622,17 @@ new_target( enum stumpless_target_type type,
   struct stumpless_target *target;
   int default_prival;
 
-  target = alloc_mem( sizeof( *target ) );
+  target = alloc_mem( sizeof( *target ) + CONFIG_MUTEX_T_SIZE );
   if( !target ) {
     goto fail;
   }
 
-  target->name = copy_cstring( name );
+  target->name = copy_cstring_with_length( name, &target->name_length );
   if( !target->name ) {
     goto fail_name;
   }
+
+  config_init_mutex( TARGET_MUTEX( target ) );
 
   target->type = type;
   target->options = options;
@@ -595,12 +686,20 @@ sendto_unsupported_target( const struct stumpless_target *target,
 }
 
 void
-target_free_all( void ) {
+target_free_global( void ) {
+  config_close_default_target( config_read_ptr( &default_target ) );
+  config_write_ptr( &default_target, NULL );
+}
+
+void
+target_free_thread( void ) {
   stumpless_destroy_entry( cached_entry );
   cached_entry = NULL;
+}
 
-  config_close_default_target( default_target );
-  default_target = NULL;
+void
+unlock_target( const struct stumpless_target *target ) {
+  config_unlock_mutex( TARGET_MUTEX( target ) );
 }
 
 int

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
- * 
+ * Copyright 2018-2020 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
 
 namespace {
 
@@ -33,7 +34,7 @@ namespace {
     void (*result)(void *);
 
     result = stumpless_set_free( [](void *ptr){ return; } );
-    EXPECT_TRUE( result != NULL );
+    EXPECT_NOT_NULL( result );
 
     result = stumpless_set_free( free );
     ASSERT_TRUE( result == free );
@@ -41,28 +42,29 @@ namespace {
 
   TEST( SetFreeTest, NullFunction ) {
     void (*result)(void *);
+    const struct stumpless_error *error;
 
     result = stumpless_set_free( NULL );
-    ASSERT_EQ( NULL, result );
+    ASSERT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SetMallocTest, NullFunction ) {
     void * (*result)(size_t);
+    const struct stumpless_error *error;
 
     result = stumpless_set_malloc( NULL );
-    ASSERT_EQ( NULL, result );
+    ASSERT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SetReallocTest, NullFunction ) {
     void * (*result)(void *, size_t);
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     result = stumpless_set_realloc( NULL );
-    ASSERT_EQ( NULL, result );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
 }

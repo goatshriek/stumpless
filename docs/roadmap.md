@@ -5,14 +5,6 @@ or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
 ## 2.0.0 (next major and minor release)
- * [ADD] **Thread safety for all library calls and structures**
-   This is a critical feature for a logging library that needs to be run in a
-   huge variety of contexts with minimal overhead work to implement it. Adding
-   this feature will likely change how structures are interacted with in the
-   library, as things like direct struct access will need to have a thread-safe
-   alternative. This implementation will be done as granularly as possible, and
-   will not use any static library-wide locks in order to avoid throughput
-   issues in the future.
  * [DEPRECATE] **entry and element destructor synonyms**
    Currently, there are two forms of the destructors for these two structures:
    one that destroys the object itself, and one that destroys the object and all

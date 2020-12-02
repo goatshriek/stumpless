@@ -246,6 +246,18 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "name"
+      - name: "GetElementCount"
+        doc: "Returns the number of elements in this Entry."
+        return:
+          doc: "The number of elements this Entry has."
+          type:
+            name: "size_t"
+            includes: "stddef.h"
+        wrapped-function:
+          name: "stumpless_get_element_count"
+          includes: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
       - name: "GetElementIndex"
         doc: |
           Gets the index of the Element with the given name from this Entry.
@@ -353,9 +365,16 @@ classes:
             type: "struct stumpless_param *"
           use-template: "pointer-return-error-check"
       - name: "GetParamValue"
-        doc: |
+        doc: >
           Gets the value of the Param from the Element at the given index from
           this Entry.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         params:
@@ -384,7 +403,7 @@ classes:
             type: "const char *"
           use-template: "pointer-return-error-check"
       - name: "GetParamValue"
-        doc: |
+        doc: >
           Gets the value of the first Param from the Element with the given name
           from this Entry.
 
@@ -393,6 +412,13 @@ classes:
           instances with the same name. If you need the value of other Params
           with the same name in the Element, then you must loop through all
           Params using GetParam with an index, checking each name.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         params:

@@ -21,6 +21,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/stream.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
@@ -102,6 +103,7 @@ fail:
 
 void
 destroy_stream_target( const struct stream_target *target ) {
+  config_destroy_mutex( &target->stream_mutex );
   free_mem( target );
 }
 
@@ -114,6 +116,7 @@ new_stream_target( FILE *stream ) {
     return NULL;
   }
 
+  config_init_mutex( &target->stream_mutex );
   target->stream = stream;
 
   return target;
@@ -124,15 +127,12 @@ sendto_stream_target( struct stream_target *target,
                       const char *msg,
                       size_t msg_length ) {
   size_t fwrite_result;
-  int putc_result;
 
+  config_lock_mutex( &target->stream_mutex );
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
-  if( fwrite_result != msg_length ) {
-    goto write_failure;
-  }
+  config_unlock_mutex( &target->stream_mutex );
 
-  putc_result = fputc( '\n', target->stream );
-  if( putc_result != '\n' ) {
+  if( fwrite_result != msg_length ) {
     goto write_failure;
   }
 

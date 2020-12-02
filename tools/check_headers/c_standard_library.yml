@@ -1,2 +1,9 @@
+"atomic_compare_and_exchange_strong": "stdatomic.h"
+"atomic_load": "stdatomic.h"
+"atomic_store": "stdatomic.h"
+"atomic_uintptr_t": "stdatomic.h"
 "bool": "stdbool.h"
+"CRITICAL_SECTION":
+  - "private/windows_wrapper.h"
+  - "windows.h"
 "true": "stdbool.h"

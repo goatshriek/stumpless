@@ -27,6 +27,7 @@
 #include <stumpless/target/network.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/inthelper.h"
@@ -36,8 +37,8 @@
 #include "private/target/network.h"
 #include "private/validate.h"
 
-static char *tcp_send_buffer = NULL;
-static size_t tcp_send_buffer_length = 0;
+static CONFIG_THREAD_LOCAL_STORAGE char *tcp_send_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE size_t tcp_send_buffer_length = 0;
 
 static
 void
@@ -331,50 +332,76 @@ stumpless_close_network_target( const struct stumpless_target *target ) {
 const char *
 stumpless_get_destination( const struct stumpless_target *target ) {
   const struct network_target *net_target;
+  const char *destination_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
+    goto cleanup_and_return;
+  }
+
+  net_target = target->id;
+
+  if( !net_target->destination ) {
+    goto cleanup_and_return;
+  }
+
+  destination_copy = copy_cstring( net_target->destination );
+  if( !destination_copy ) {
+    goto cleanup_and_return;
   }
 
   clear_error(  );
-  net_target = target->id;
-  return net_target->destination;
 
-fail:
-  return NULL;
+cleanup_and_return:
+  unlock_target( target );
+  return destination_copy;
 }
 
 const char *
 stumpless_get_transport_port( const struct stumpless_target *target ) {
   const struct network_target *net_target;
+  const char *port_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
+    goto cleanup_and_return;
+  }
+
+  net_target = target->id;
+
+  if( !net_target->port ) {
+    goto cleanup_and_return;
+  }
+
+  port_copy = copy_cstring( net_target->port );
+  if( !port_copy ) {
+    goto cleanup_and_return;
   }
 
   clear_error(  );
-  net_target = target->id;
-  return net_target->port;
 
-fail:
-  return NULL;
+cleanup_and_return:
+  unlock_target( target );
+  return port_copy;
 }
 
 size_t
 stumpless_get_udp_max_message_size( const struct stumpless_target *target ) {
   const struct network_target *net_target;
+  size_t result;
 
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     goto fail;
   }
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     goto incompatible;
   }
@@ -384,10 +411,14 @@ stumpless_get_udp_max_message_size( const struct stumpless_target *target ) {
     goto incompatible;
   }
 
+  result = net_target->max_msg_size;
+  unlock_target( target );
+
   clear_error(  );
-  return net_target->max_msg_size;
+  return result;
 
 incompatible:
+  unlock_target( target );
   raise_target_incompatible( L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE );
 fail:
   return 0;
@@ -398,8 +429,6 @@ stumpless_new_network_target( const char *name,
                               enum stumpless_network_protocol network,
                               enum stumpless_transport_protocol transport ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   VALIDATE_ARG_NOT_NULL( name );
 
@@ -416,6 +445,7 @@ stumpless_new_network_target( const char *name,
     goto fail_id;
   }
 
+  clear_error(  );
   return target;
 
 fail_id:
@@ -460,8 +490,6 @@ stumpless_open_network_target( const char *name,
                                int options,
                                int default_facility ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( destination );
@@ -559,77 +587,74 @@ stumpless_set_destination( struct stumpless_target *target,
                            const char *destination ) {
   const char *destination_copy;
   struct network_target *net_target;
-  const struct network_target *result;
+  const char *old_destination;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( destination );
 
-  if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
-  }
-
   destination_copy = copy_cstring( destination );
   if( !destination_copy ) {
-    goto fail;
+    return NULL;
+  }
+
+  lock_target( target );
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE );
+    goto cleanup_and_fail;
   }
 
   net_target = target->id;
-
-  free_mem( net_target->destination );
+  old_destination = net_target->destination;
   net_target->destination = destination_copy;
-
-  if( network_target_is_open( target ) ) {
-    result = reopen_network_target( net_target );
-    if( !result ) {
-      goto fail;
-    }
-  }
-
   clear_error(  );
+
+  reopen_network_target( net_target );
+
+  unlock_target( target );
+  free_mem( old_destination );
   return target;
 
-fail:
+cleanup_and_fail:
+  unlock_target( target );
+  free_mem( destination_copy );
   return NULL;
 }
 
 struct stumpless_target *
 stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port ) {
-  struct network_target *net_target;
   const char *port_copy;
-  const struct network_target *result;
-
-  clear_error(  );
+  struct network_target *net_target;
+  const char *old_port;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( port );
 
-  if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
-    goto fail;
-  }
-
   port_copy = copy_cstring( port );
   if( !port_copy ) {
-    goto fail;
+    return NULL;
+  }
+
+  lock_target( target );
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE );
+    goto cleanup_and_fail;
   }
 
   net_target = target->id;
-
-  free_mem( net_target->port );
+  old_port = net_target->port;
   net_target->port = port_copy;
+  clear_error(  );
 
-  if( network_target_is_open( target ) ) {
-    result = reopen_network_target( net_target );
-    if( !result ) {
-      goto fail;
-    }
-  }
+  reopen_network_target( net_target );
 
+  unlock_target( target );
+  free_mem( old_port );
   return target;
 
-fail:
+cleanup_and_fail:
+  unlock_target( target );
+  free_mem( port_copy );
   return NULL;
 }
 
@@ -638,10 +663,9 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
                                     size_t max_msg_size ) {
   struct network_target *net_target;
 
-  clear_error(  );
-
   VALIDATE_ARG_NOT_NULL( target );
 
+  lock_target( target );
   if( target->type != STUMPLESS_NETWORK_TARGET ) {
     goto incompatible;
   }
@@ -653,10 +677,13 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
 
   net_target = target->id;
   net_target->max_msg_size = max_msg_size;
+  unlock_target( target );
 
+  clear_error(  );
   return target;
 
 incompatible:
+  unlock_target( target );
   raise_target_incompatible( L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE );
   return NULL;
 }
@@ -680,10 +707,15 @@ destroy_network_target( const struct network_target *target ) {
 }
 
 void
+lock_network_target( const struct network_target *target ) {
+  config_lock_mutex( &target->mutex );
+}
+
+void
 network_free_all( void ) {
   free_mem( tcp_send_buffer );
+  tcp_send_buffer = NULL;
   tcp_send_buffer_length = 0;
-  config_network_cleanup(  );
 }
 
 int
@@ -779,6 +811,8 @@ int
 sendto_network_target( struct network_target *target,
                        const char *msg,
                        size_t msg_length ) {
+  // leave off the newline
+  msg_length--;
 
   if( target->transport == STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
      return sendto_udp_target( target, msg, msg_length );
@@ -787,4 +821,9 @@ sendto_network_target( struct network_target *target,
      return sendto_tcp_target( target, msg, msg_length );
 
   }
+}
+
+void
+unlock_network_target( const struct network_target *target ) {
+  config_unlock_mutex( &target->mutex );
 }

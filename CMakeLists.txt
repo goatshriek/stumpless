@@ -13,6 +13,7 @@ option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
 option(BUILD_PYTHON "include the python libary" OFF)
 
+option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
@@ -74,10 +75,6 @@ set(LOCALE $ENV{LANG}
 )
 
 
-# looking for packages and programs
-find_package(Threads REQUIRED)
-
-
 # documentation and doxygen setup
 set(PROJECT_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
 find_program(HAVE_DOXYGEN NAMES doxygen)
@@ -109,6 +106,8 @@ include(tools/cmake/test.cmake)
 
 
 # building configuration
+check_include_files(pthread.h HAVE_PTHREAD_H)
+check_include_files(stdatomic.h HAVE_STDATOMIC_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(unistd.h HAVE_UNISTD_H)
@@ -209,6 +208,14 @@ if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
 endif(HAVE_GMTIME_R)
 
+if(HAVE_PTHREAD_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_pthread.c)
+endif()
+
+if(HAVE_STDATOMIC_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_stdatomic.c)
+endif()
+
 if(HAVE_UNISTD_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
@@ -222,14 +229,6 @@ endif(HAVE_VSNPRINTF_S)
 if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
 endif(HAVE_WINDOWS_H)
-
-if(HAVE_SYS_SOCKET_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
-  set(HAVE_WINSOCK2_H FALSE)
-elseif(HAVE_WINSOCK2_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
-  find_library(WINSOCK2 NAMES Ws2_32)
-endif()
 
 if(WIN32)
   list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
@@ -297,6 +296,14 @@ else()
   list(APPEND STUMPLESS_SOURCES src/target/network.c)
   list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/network_target.yml)
 
+  if(HAVE_SYS_SOCKET_H)
+    list(APPEND STUMPLESS_SOURCES src/config/have_sys_socket.c)
+    set(HAVE_WINSOCK2_H FALSE)
+  elseif(HAVE_WINSOCK2_H)
+    list(APPEND STUMPLESS_SOURCES src/config/have_winsock2.c)
+    find_library(WINSOCK2 NAMES Ws2_32)
+  endif()
+
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
     DESTINATION "include/stumpless/target"
@@ -310,7 +317,6 @@ else()
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
       $<TARGET_OBJECTS:test_helper_resolve>
-      $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
 
@@ -382,6 +388,14 @@ else()
     LIBRARIES ${network_libraries}
   )
 
+  add_thread_safety_test(network
+    SOURCES
+      test/thread_safety/target/network.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+      $<TARGET_OBJECTS:test_helper_server>
+    LIBRARIES ${network_libraries}
+  )
+
   add_performance_test(network
     SOURCES
       test/performance/target/network.cpp
@@ -440,6 +454,13 @@ else()
 
   add_function_test(socket_supported
     SOURCES test/function/config/socket_supported.cpp
+  )
+
+  add_thread_safety_test(socket
+    SOURCES
+      test/thread_safety/target/socket.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+      $<TARGET_OBJECTS:rfc5424_checker>
   )
 
   add_example(socket
@@ -525,6 +546,19 @@ else()
       ${PROJECT_BINARY_DIR}/events.rc
   )
 
+  add_thread_safety_test(wel
+    SOURCES
+      test/thread_safety/target/wel.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
+  add_thread_safety_test(wel_supported
+    SOURCES
+      test/thread_safety/config/wel_supported.cpp
+      ${PROJECT_BINARY_DIR}/events.rc
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
   ADD_CUSTOM_COMMAND(
@@ -545,6 +579,67 @@ else()
   )
 endif()
 
+# thread safety support
+if(NOT ENABLE_THREAD_SAFETY)
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+elseif(NOT HAVE_WINDOWS_H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
+  message("thread safety is not supported without either windows.h or both pthread.h and stdatomic.h")
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
+endif()
+
+if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
+  list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
+else()
+  # thread safety tests
+  add_thread_safety_test(buffer
+    SOURCES
+      test/thread_safety/target/buffer.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
+  add_thread_safety_test(element
+    SOURCES
+      test/thread_safety/element.cpp
+  )
+
+  add_thread_safety_test(entry
+    SOURCES
+      test/thread_safety/entry.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+
+  add_thread_safety_test(file
+    SOURCES
+      test/thread_safety/target/file.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
+  add_thread_safety_test(param
+    SOURCES
+      test/thread_safety/param.cpp
+  )
+
+  add_thread_safety_test(stream
+    SOURCES
+      test/thread_safety/target/stream.cpp
+      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
+  add_thread_safety_test(target
+    SOURCES
+      test/thread_safety/target.cpp
+  )
+
+  add_custom_target(check-thread-safety
+    DEPENDS ${STUMPLESS_THREAD_SAFETY_TEST_RUNNERS}
+  )
+endif()
+
 
 # shared library definition
 add_library(stumpless SHARED ${STUMPLESS_SOURCES})
@@ -553,6 +648,10 @@ set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 if(MINGW)
   target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
   set_target_properties(stumpless PROPERTIES PREFIX "")
+endif()
+
+if(HAVE_STDATOMIC_H AND NOT APPLE)
+  target_link_libraries(stumpless PRIVATE atomic)
 endif()
 
 if(HAVE_WINSOCK2_H)
@@ -628,6 +727,7 @@ include(tools/cmake/cpack.cmake)
 add_function_test(buffer
   SOURCES
     test/function/target/buffer.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 

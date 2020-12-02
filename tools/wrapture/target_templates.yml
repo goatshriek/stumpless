@@ -2,6 +2,42 @@ version: "0.4.0"
 templates:
   - name: "common-target-functions"
     value:
+      - name: "GetDefaultAppName"
+        doc: >
+          Returns the default app name used by this target.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The default app name of this target."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_target_default_app_name"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+      - name: "GetDefaultMsgid"
+        doc: >
+          Returns the default msgid used by this target.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The default msgid of this target."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_target_default_msgid"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
       - name: "GetDefaultFacility"
         doc: "Gets the default facility of this target."
         return:
@@ -14,6 +50,24 @@ templates:
             - value: "equivalent-struct-pointer"
           return:
             type: "int"
+      - name: "GetName"
+        doc: >
+          Returns the name of this target.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The name of this Target."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_target_name"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
       - name: "GetOption"
         doc: >
           Gets the given option for this target.

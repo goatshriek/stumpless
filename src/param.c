@@ -17,18 +17,26 @@
  */
 
 #include <stddef.h>
-#include <stumpless/param.h>
 #include <string.h>
+#include <stumpless/param.h>
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/param.h"
 #include "private/strhelper.h"
 #include "private/validate.h"
 
 struct stumpless_param *
 stumpless_copy_param( const struct stumpless_param *param ) {
+  struct stumpless_param *result;
+
   VALIDATE_ARG_NOT_NULL( param );
 
-  return stumpless_new_param( param->name, param->value );
+  lock_param( param );
+  result = stumpless_new_param( param->name, param->value );
+  unlock_param( param );
+
+  return result;
 }
 
 void
@@ -37,6 +45,7 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
     return;
   }
 
+  config_destroy_mutex( PARAM_MUTEX( param ) );
   free_mem( param->name );
   free_mem( param->value );
   free_mem( param );
@@ -44,18 +53,40 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
 
 const char *
 stumpless_get_param_name( const struct stumpless_param *param ) {
+  char *name_copy;
+
   VALIDATE_ARG_NOT_NULL( param );
 
+  lock_param( param );
+  name_copy = alloc_mem( param->name_length + 1 );
+  if( !name_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( name_copy, param->name, param->name_length + 1 );
   clear_error(  );
-  return param->name;
+
+cleanup_and_return:
+  unlock_param( param );
+  return name_copy;
 }
 
 const char *
 stumpless_get_param_value( const struct stumpless_param *param ) {
+  char *value_copy;
+
   VALIDATE_ARG_NOT_NULL( param );
 
+  lock_param( param );
+  value_copy = alloc_mem( param->value_length + 1 );
+  if( !value_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( value_copy, param->value, param->value_length + 1 );
   clear_error(  );
-  return param->value;
+
+cleanup_and_return:
+  unlock_param( param );
+  return value_copy;
 }
 
 struct stumpless_param *
@@ -65,7 +96,7 @@ stumpless_new_param( const char *name, const char *value ) {
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
-  param = alloc_mem( sizeof( *param ) );
+  param = alloc_mem( sizeof( *param ) + CONFIG_MUTEX_T_SIZE );
   if( !param ) {
     goto fail;
   }
@@ -79,6 +110,8 @@ stumpless_new_param( const char *name, const char *value ) {
   if( !param->value ) {
     goto fail_value;
   }
+
+  config_init_mutex( PARAM_MUTEX( param ) );
 
   clear_error(  );
   return param;
@@ -95,21 +128,25 @@ fail:
 
 struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
-  char *temp_name;
-  size_t temp_size;
+  char *new_name;
+  size_t new_size;
+  const char *old_name;
 
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( name );
 
-  temp_name = copy_cstring_with_length( name, &temp_size );
-  if( !temp_name ) {
+  new_name = copy_cstring_with_length( name, &new_size );
+  if( !new_name ) {
     goto fail;
   }
 
-  free_mem( param->name );
-  param->name = temp_name;
-  param->name_length = temp_size;
+  lock_param( param );
+  old_name = param->name;
+  param->name = new_name;
+  param->name_length = new_size;
+  unlock_param( param );
 
+  free_mem( old_name );
   clear_error(  );
   return param;
 
@@ -119,21 +156,25 @@ fail:
 
 struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
-  char *temp_value;
-  size_t temp_size;
+  char *new_value;
+  size_t new_size;
+  const char *old_value;
 
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( value );
 
-  temp_value = copy_cstring_with_length( value, &temp_size );
-  if( !temp_value ) {
+  new_value = copy_cstring_with_length( value, &new_size );
+  if( !new_value ) {
     goto fail;
   }
 
-  free_mem( param->value );
-  param->value = temp_value;
-  param->value_length = temp_size;
+  lock_param( param );
+  old_value = param->value;
+  param->value = new_value;
+  param->value_length = new_size;
+  unlock_param( param );
 
+  free_mem( old_value );
   clear_error(  );
   return param;
 
@@ -142,44 +183,57 @@ fail:
 }
 
 const char *
-stumpless_param_to_string(const struct stumpless_param * param) {
-
+stumpless_param_to_string( const struct stumpless_param *param ) {
     char *format;
     const char *name;
     const char *value;
     size_t value_len;
     size_t name_len;
 
-    VALIDATE_ARG_NOT_NULL(param);
+    VALIDATE_ARG_NOT_NULL( param );
 
-    name  = stumpless_get_param_name(param);
-    value = stumpless_get_param_value(param);
+    lock_param( param );
 
+    name  = param->name;
+    value = param->value;
     name_len = param->name_length;
     value_len = param->value_length;
 
     /* <name>:<value> */
-    format = alloc_mem(value_len + name_len + 6);
-    if (format == NULL)
-        goto fail;
-   
-    
+    format = alloc_mem( value_len + name_len + 6 );
+    if( !format ) {
+      goto fail;
+    }
+
+    memcpy(format + 1, name, name_len);
+    memcpy(format + name_len + 4, value, value_len);
+
+    unlock_param( param );
 
     format[0] = '<';
-    memcpy(format + 1, name, name_len);
     format[name_len + 1] = '>';
     format[name_len + 2] = ':';
     format[name_len + 3] = '<';
-    memcpy(format + name_len + 4, value, value_len);
     format[name_len + value_len + 4] = '>';
     format[name_len + value_len + 5] = '\0';
 
 
     clear_error( );
     return format;
-    
+
 fail:
+    unlock_param( param );
     return NULL;
 }
 
+/* private functions */
 
+void
+lock_param( const struct stumpless_param *param ) {
+  config_lock_mutex( PARAM_MUTEX( param ) );
+}
+
+void
+unlock_param( const struct stumpless_param *param ) {
+  config_unlock_mutex( PARAM_MUTEX( param ) );
+}

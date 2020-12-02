@@ -70,6 +70,15 @@ struct stumpless_entry {
 /** A pointer to a wel_fields structure. */
   void *wel_data;
 #  endif
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/*
+ * In thread-safe builds the memory at the end of the entry holds a mutex that
+ * is used to coordinate access to the entry. However the type info is not
+ * included in the struct definition in the public headers as it is
+ * configuration-specific and would complicate the public headers significantly
+ * if they were to stay portable.
+ */
+#  endif
 };
 
 /**
@@ -79,6 +88,20 @@ struct stumpless_entry {
  * Note that duplicate elements are not allowed in RFC 5424, and as such
  * attempts to add an element to an entry already having one with the same name
  * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param entry The entry to add the element to.
  *
@@ -98,6 +121,20 @@ stumpless_add_element( struct stumpless_entry *entry,
  * attempts to add an element to an entry already having one with the same name
  * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to add the new element to.
@@ -115,6 +152,20 @@ stumpless_add_new_element( struct stumpless_entry *entry,
  * Creates a new param and adds it to the given element in the given entry. If
  * an element with the given name does not exist in the given entry, then one
  * will be created with the new param added to it.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0.
  *
@@ -144,6 +195,20 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
  * elements or params of the original entry are destroyed, the equivalent ones
  * in this entry will still be valid.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the copy.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param entry The entry to copy.
  *
  * @return A new entry that is a deep copy of the original. If an error is
@@ -155,6 +220,20 @@ stumpless_copy_entry( const struct stumpless_entry *entry );
 /**
  * An alias for stumpless_destroy_entry_and_contents.
  *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
  * @param entry The entry to destroy.
  */
 void
@@ -163,6 +242,20 @@ stumpless_destroy_entry( const struct stumpless_entry *entry );
 /**
  * Destroys an entry as well as all elements and params that it contains,
  * freeing any allocated memory.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
  *
  * @param entry The entry to destroy.
  */
@@ -173,6 +266,20 @@ stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry );
  * Destroys an entry, freeing any allocated memory. Associated elements and
  * params are left untouched, and must be destroyed separately.
  *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
  * @param entry The entry to destroy.
  */
 void
@@ -180,6 +287,19 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry );
 
 /**
  * True if the given entry has an element with the given name, false otherwise.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *
@@ -198,6 +318,18 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
 /**
  * Returns the element at the given index in this Entry.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to search.
@@ -215,6 +347,19 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
 /**
  * Returns the element with the given name in this entry, if it is found.
  *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to search.
@@ -230,8 +375,46 @@ stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name );
 
 /**
+ * Returns the number of elements in the given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the entry.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.0.0
+ *
+ * @param entry The entry to get the element count of.
+ *
+ * @return The number of elements entry has. If there is an error, zero is
+ * returned and an error code is set appropriately.
+ */
+size_t
+stumpless_get_element_count( const struct stumpless_entry *entry );
+
+/**
  * Returns the index of the element with the given name in this entry, if it
  * is found.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not changed by
+ * another thread during execution. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *
@@ -248,7 +431,26 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name );
 
 /**
- * Returns the app name of the given entry.
+ * Returns the app name of the given entry. The character buffer returned must
+ * be freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0.
  *
@@ -264,6 +466,18 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry );
 /**
  * Returns the facility code of the given entry.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the entry.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to get the facility of.
@@ -275,10 +489,29 @@ int
 stumpless_get_entry_facility( const struct stumpless_entry *entry );
 
 /**
- * Returns the message of the given entry.
+ * Returns the message of the given entry. The character buffer returned must
+ * be freed by the caller when it is no longer needed to avoid memory leaks.
  *
  * Note that if this message was originally set using format specifiers, the
  * result will have them substituted, instead of the original placeholders.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0.
  *
@@ -292,7 +525,26 @@ const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry );
 
 /**
- * Returns the msgid of the given entry.
+ * Returns the msgid of the given entry. The character buffer returned must
+ * be freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0.
  *
@@ -307,6 +559,18 @@ stumpless_get_entry_msgid( const struct stumpless_entry *entry );
 
 /**
  * Gets the param from the element at the given index in an entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *
@@ -333,6 +597,19 @@ stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
  * the element, then you must loop through all params using
  * stumpless_get_entry_param_by_index, checking each name.
  *
+ * **Thread Safety: MT-Safe race:element_name race:param_name**
+ * This function is thread safe, of course assuming that the names are not
+ * changed by another thread during execution. A mutex is used to coordinate
+ * access to the entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to get the param from.
@@ -352,6 +629,24 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
 
 /**
  * Gets the value of the param from the element at the given index in an entry.
+ * The result character buffer must be freed by the caller when it is no longer
+ * needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate access to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *
@@ -372,13 +667,31 @@ stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
 
 /**
  * Gets the value of the first param from the element with the given name in an
- * entry.
+ * entry. The result character buffer must be freed by the caller when it is no
+ * longer needed to avoid memory leaks.
  *
  * Note that an element may contain as many instances of a param as desired
  * according to RFC 5424, and therefore there may be other param instances with
  * the same name. If you need the value of other params with the same name in
  * the element, then you must loop through all params using
  * stumpless_get_entry_param_by_index, checking each name.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe race:element_name race:param_name**
+ * This function is thread safe, of course assuming that the names are not
+ * changed by another thread during execution. A mutex is used to coordinate
+ * access to the entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v1.6.0.
  *
@@ -400,6 +713,18 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
 /**
  * Returns the prival of the given entry, as defined in RFC 5424.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the entry.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to get the prival of.
@@ -413,6 +738,18 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
 /**
  * Returns the severity code of the given entry.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the entry.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to get the severity of.
@@ -425,6 +762,18 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
 
 /**
  * Creates a new entry with the given characteristics.
+ *
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is thread safe, of course assuming that the string arguments
+ * are not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new element.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
@@ -473,6 +822,18 @@ stumpless_new_entry( int facility,
  * attempts to set an element of an entry which already contains another element
  * with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0
  *
  * @param entry The entry to set the element on.
@@ -492,6 +853,21 @@ stumpless_set_element( struct stumpless_entry *entry,
 /**
  * Sets the app name for an entry.
  *
+ * **Thread Safety: MT-Safe race:app_name**
+ * This function is thread safe, of course assuming that the name is not changed
+ * by any other threads during execution. A mutex is used to coordinate changes
+ * to the entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new name and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param entry The entry for which the app name will be set.
  *
  * @param app_name A NULL-terminated string holding the new app_name for the
@@ -510,6 +886,18 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 /**
  * Sets the facility of an entry.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to set the facility of.
@@ -525,6 +913,21 @@ stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
 
 /**
  * Sets the msgid for an entry.
+ *
+ * **Thread Safety: MT-Safe race:msgid**
+ * This function is thread safe, of course assuming that the msgid is not
+ * changed by any other threads during execution. A mutex is used to coordinate
+ * changes to the entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new msgid and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0.
  *
@@ -544,6 +947,20 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
 
 /**
  * Sets the message of a given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new message and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param entry The entry to modify.
  *
@@ -575,6 +992,20 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
  * param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error
  * is raised.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @since release v1.6.0
  *
  * @param entry The entry to set the param on.
@@ -596,6 +1027,21 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
 
 /**
  * Sets the value of the param in the element at the given index of an entry.
+ *
+ * **Thread Safety: MT-Safe race:value**
+ * This function is thread safe, of course assuming that value is not changed
+ * by any other threads during execution. A mutex is used to coordinate changes
+ * to the entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -630,6 +1076,21 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
  * stumpless_get_entry_param_by_index to find the params you want and then
  * set the value using stumpless_set_entry_param_value_by_index.
  *
+ * **Thread Safety: MT-Safe race:element_name race:param_name race:value**
+ * This function is thread safe, of course assuming that the names and value
+ * are not changed by any other threads during execution. A mutex is used to
+ * coordinate changes to the entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @since release v1.6.0
  *
  * @param entry The entry to set the param value on.
@@ -651,6 +1112,18 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
 
 /**
 * Sets the facility and severity of an entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
 *
 * @since release v1.6.0.
 *
@@ -673,6 +1146,18 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
 /**
  * Sets the prival of an entry, as defined in RFC 5424.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to set the prival of.
@@ -691,6 +1176,18 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 /**
  * Sets the severity of an entry.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @since release v1.6.0.
  *
  * @param entry The entry to set the severity of.
@@ -706,6 +1203,18 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
 
 /**
  * Creates a new entry with the given parameters.
+ *
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is thread safe, of course assuming that the string arguments
+ * are not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new element.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @param facility The facility code of the entry. This should be a
  * \c STUMPLESS_FACILITY value.
@@ -744,6 +1253,20 @@ vstumpless_new_entry( int facility,
 
 /**
  * Sets the message of a given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new message and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param entry The entry to modify.
  *

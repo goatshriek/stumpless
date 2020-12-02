@@ -18,6 +18,13 @@ directory and focus on causing the leak and detecting it. These tests do not
 necessarily verify correct functionality around the potential leak, as that is
 the focus of the more general functionality tests.
 
+## Thread Safety Tests
+Testing for thread safety is not as straightforward as for basic functionality,
+and therefore these tests are separated from the standard unit testing suite in
+the [`thread_safety`](./thread_safety) directory. These tests also use the
+Google Test library, but are used to test for thread safety to the extent
+possible.
+
 ## Performance Tests
 Any changes that are made to the library in the name of improving performance
 are measured by a performance test in the [`performance`](./performance)
@@ -34,4 +41,3 @@ therefore should not be duplicated in each of them. A good example of this is
 the existence of a network server that can listen for messages when testing
 the network logging targets. These implementations are kept in the
 [`helper`](./helper) directory of the test suite.
-

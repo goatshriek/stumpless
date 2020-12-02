@@ -23,6 +23,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
@@ -33,8 +34,6 @@
 
 void
 stumpless_close_file_target( struct stumpless_target *target ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
@@ -42,14 +41,13 @@ stumpless_close_file_target( struct stumpless_target *target ) {
 
   destroy_file_target( target->id );
   destroy_target( target );
+  clear_error(  );
 }
 
 struct stumpless_target *
 stumpless_open_file_target( const char *name,
                             int options, int default_facility ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   VALIDATE_ARG_NOT_NULL( name );
 
@@ -82,6 +80,7 @@ fail:
 
 void
 destroy_file_target( struct file_target *target ) {
+  config_destroy_mutex( &target->stream_mutex );
   fclose( target->stream );
   free_mem( target );
 }
@@ -108,6 +107,8 @@ new_file_target( const char *filename ) {
     goto fail_stream;
   }
 
+  config_init_mutex( &target->stream_mutex );
+
   return target;
 
 fail_stream:
@@ -121,15 +122,12 @@ sendto_file_target( struct file_target *target,
                     const char *msg,
                     size_t msg_length ) {
   size_t fwrite_result;
-  int putc_result;
 
+  config_lock_mutex( &target->stream_mutex );
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
-  if( fwrite_result != msg_length ) {
-    goto write_failure;
-  }
+  config_unlock_mutex( &target->stream_mutex );
 
-  putc_result = fputc( '\n', target->stream );
-  if( putc_result != '\n' ) {
+  if( fwrite_result != msg_length ) {
     goto write_failure;
   }
 

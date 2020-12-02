@@ -35,6 +35,29 @@
 
 #  define RFC_5424_NILVALUE '-'
 
+/**
+ * Creates a new strbuilder with the formatted message.
+ *
+ * A newline is added to the end of the message - it is up to functions that use
+ * this to decide whether they want to include this newline or not.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to ensure that the entry does
+ * not change while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to prevent changes during the read.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to format.
+ *
+ * @return A strbuilder with the formatted version of the entry, with a newline
+ * character added to the end.
+ */
 struct strbuilder *
 format_entry( const struct stumpless_entry *entry,
               struct stumpless_target *target );

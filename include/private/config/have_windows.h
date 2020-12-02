@@ -19,12 +19,39 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 
+#  include <stdbool.h>
 #  include <stddef.h>
+#  include "private/windows_wrapper.h"
+
+bool
+windows_compare_exchange_bool( LONG volatile *b,
+                               LONG expected,
+                               LONG replacement );
+
+bool
+windows_compare_exchange_ptr( PVOID volatile *p,
+                              const void *expected,
+                              PVOID replacement );
+
+void
+windows_destroy_mutex( const CRITICAL_SECTION *mutex );
+
+int
+windows_gethostname( char *buffer, size_t namelen );
 
 size_t
 windows_getpagesize( void );
 
 int
 windows_getpid( void );
+
+void
+windows_init_mutex( LPCRITICAL_SECTION mutex );
+
+void
+windows_lock_mutex( const CRITICAL_SECTION *mutex );
+
+void
+windows_unlock_mutex( const CRITICAL_SECTION *mutex );
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H */

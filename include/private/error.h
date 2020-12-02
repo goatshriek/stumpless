@@ -29,9 +29,6 @@ void
 clear_error( void );
 
 void
-error_free_all( void );
-
-void
 raise_address_failure( const char *message, int code, const char *code_type );
 
 void
@@ -57,6 +54,11 @@ raise_file_open_failure( void );
 
 void
 raise_file_write_failure( void );
+
+void
+raise_gethostname_failure( const char *message,
+                           size_t code,
+                           const char *code_type );
 
 void
 raise_index_out_of_bounds( const char *message, size_t index );

@@ -29,6 +29,26 @@
 #include <cstddef>
 #include "test/helper/server.hpp"
 
+socket_handle_t
+open_tcp4_server_socket( const char *dest, const char *port ) {
+  return open_tcp_server_socket( AF_INET, dest, port );
+}
+
+socket_handle_t
+open_tcp6_server_socket( const char *dest, const char *port ) {
+  return open_tcp_server_socket( AF_INET6, dest, port );
+}
+
+socket_handle_t
+open_udp4_server_socket( const char *dest, const char *port ) {
+  return open_udp_server_socket( AF_INET, dest, port );
+}
+
+socket_handle_t
+open_udp6_server_socket( const char *dest, const char *port ) {
+  return open_udp_server_socket( AF_INET6, dest, port );
+}
+
 #ifdef _WIN32
 socket_handle_t
 open_tcp_server_socket( int af, const char *dest, const char *port ){
@@ -84,15 +104,17 @@ accept_tcp_connection( socket_handle_t handle ) {
   return accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
 }
 
-void
+bool
 recv_from_handle( socket_handle_t handle, char *buff, int buff_len ) {
   int msg_len;
 
-  msg_len = recv( handle, buff, buff_len, 0 );
-  if( msg_len == SOCKET_ERROR ) {
+  msg_len = recv( handle, buff, buff_len - 1, 0 );
+  if( msg_len == SOCKET_ERROR || msg_len == 0 ) {
     buff[0] = '\0';
+    return false;
   } else {
     buff[msg_len] = '\0';
+    return true;
   }
 }
 
@@ -148,15 +170,17 @@ accept_tcp_connection( socket_handle_t handle ) {
   return accept( handle, ( struct sockaddr * ) &fromaddr, &fromaddr_len );
 }
 
-void
+bool
 recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len ) {
   ssize_t msg_len;
 
-  msg_len = recv( handle, buff, buff_len, 0 );
-  if( msg_len < 0 ) {
+  msg_len = recv( handle, buff, buff_len - 1, 0 );
+  if( msg_len <= 0 ) {
     buff[0] = '\0';
+    return false;
   } else {
     buff[msg_len] = '\0';
+    return true;
   }
 }
 

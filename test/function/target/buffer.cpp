@@ -17,24 +17,29 @@
  */
 
 #include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
-
-#define TEST_BUFFER_LENGTH 8192
+#include "test/helper/fixture.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
 
 namespace {
+
+  static const size_t TEST_BUFFER_LENGTH = 8192;
+  static const size_t READ_BUFFER_LENGTH = 1024;
 
   class
     BufferTargetTest:
     public::testing::Test {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
+    char read_buffer[READ_BUFFER_LENGTH];
     struct stumpless_target *target;
     struct stumpless_entry *basic_entry;
 
@@ -74,45 +79,61 @@ namespace {
   };
 
   TEST_F( BufferTargetTest, AddEntry ) {
-    int result;
+    int write_result;
+    size_t read_result;
 
     SCOPED_TRACE( "BufferTargetTest.AddEntry" );
 
-    result = stumpless_add_entry( target, basic_entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    write_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( write_result, 0 );
+    EXPECT_NO_ERROR;
 
-    EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_EQ( read_result, write_result );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( read_buffer,
+                 HasSubstr( std::to_string( basic_entry->prival ) ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "basic-element" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "basic-param-name" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "basic-param-value" ) );
 
     TestRFC5424Compliance(buffer);
   }
 
   TEST_F( BufferTargetTest, Basic ) {
-    int result;
+    int write_result;
+    size_t read_result;
 
     SCOPED_TRACE( "BufferTargetTest.Basic" );
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
-    result = stump( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    write_result = stump( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
+    EXPECT_GE( write_result, 0 );
+    EXPECT_NO_ERROR;
 
-    EXPECT_THAT( buffer, HasSubstr( std::to_string( target->default_prival ) ) );
-    EXPECT_THAT( buffer, HasSubstr( "buffer-target-test" ) );
-    EXPECT_THAT( buffer, HasSubstr( "default-message" ) );
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_EQ( read_result, write_result );
+    EXPECT_NO_ERROR;
 
-    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( read_buffer, HasSubstr( std::to_string( target->default_prival ) ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "buffer-target-test" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "default-message" ) );
+
+    TestRFC5424Compliance( read_buffer );
   }
 
   TEST_F( BufferTargetTest, EmptyMessage ) {
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
-    int result;
+    int write_result;
+    size_t read_result;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -121,11 +142,17 @@ namespace {
                                  NULL );
     ASSERT_TRUE( entry != NULL );
 
-    result = stumpless_add_entry( target, entry );
-    EXPECT_GE( result, 0 );
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_GE( write_result, 0 );
 
-    TestRFC5424Compliance( buffer );
-    EXPECT_NE( buffer[result-1], ' ' );
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_EQ( read_result, write_result );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( read_buffer );
+    EXPECT_NE( read_buffer[read_result-1], ' ' );
 
     stumpless_destroy_entry( entry );
   }
@@ -134,43 +161,88 @@ namespace {
     EXPECT_TRUE( stumpless_target_is_open( target ) );
   }
 
+  TEST_F( BufferTargetTest, NullReadBuffer ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_read_buffer( target, NULL, sizeof( read_buffer ) );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST_F( BufferTargetTest, OverFill ) {
     char test_string[TEST_BUFFER_LENGTH + 1];
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
 
     memset( test_string, 'g', TEST_BUFFER_LENGTH );
     test_string[TEST_BUFFER_LENGTH] = '\0';
-    ASSERT_EQ( -1, stump( test_string ) );
+    EXPECT_EQ( -1, stump( test_string ) );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+  }
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_TOO_BIG );
+  TEST_F( BufferTargetTest, ReadBufferSizeZero ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_read_buffer( target, read_buffer, 0 );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST_F( BufferTargetTest, ReadBufferOneCharacterTooSmall ) {
+    int write_result;
+    size_t read_size;
+    size_t read_result;
+
+    write_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GT( write_result, 0 );
+    EXPECT_NO_ERROR;
+
+    read_size = static_cast<size_t>( write_result ) - 1;
+    read_result = stumpless_read_buffer( target, read_buffer, read_size );
+    EXPECT_EQ( read_result, read_size );
+    EXPECT_EQ( read_buffer[read_result - 1], '\0' );
+  }
+
+  TEST_F( BufferTargetTest, ReadBufferWayTooSmall ) {
+    int write_result;
+    size_t read_result;
+
+    write_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GT( write_result, 0 );
+    EXPECT_NO_ERROR;
+
+    read_result = stumpless_read_buffer( target, read_buffer, 5 );
+    EXPECT_EQ( read_result, 5 );
+    EXPECT_EQ( read_buffer[4], '\0' );
   }
 
   TEST_F( BufferTargetTest, WrapAround ) {
-    size_t bytes_written=0, write_count=0, null_count=0, i;
     int result;
-
-    memset( buffer, 0, TEST_BUFFER_LENGTH );
+    size_t bytes_written = 0;
+    size_t write_count = 0;
+    size_t read_count = 0;
 
     while( bytes_written <= TEST_BUFFER_LENGTH ) {
       result = stumpless_add_entry( target, basic_entry );
-      EXPECT_GT( result, 0 );
-      EXPECT_EQ( NULL, stumpless_get_error(  ) );
+      EXPECT_GE( result, 0 );
+      EXPECT_NO_ERROR;
 
       write_count++;
       bytes_written += result;
     }
 
-    for( i=0; i < TEST_BUFFER_LENGTH; i++ ) {
-      if( buffer[i] == '\0' ) {
-        null_count++;
-      }
+    while( stumpless_read_buffer( target,
+                                  read_buffer,
+                                  READ_BUFFER_LENGTH ) > 1 ) {
+      EXPECT_NO_ERROR;
+      read_count++;
     }
 
-    ASSERT_EQ( null_count, write_count );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( read_count == write_count || read_count == write_count - 1 );
   }
 
   /* non-fixture tests */
@@ -201,13 +273,10 @@ namespace {
   }
 
   TEST( BufferTargetCloseTest, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_close_buffer_target( NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( BufferTargetOpenTest, Basic ) {
@@ -216,47 +285,62 @@ namespace {
 
     target = stumpless_open_buffer_target( "normal target",
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     EXPECT_EQ( target, stumpless_get_current_target(  ) );
 
     stumpless_close_buffer_target( target );
   }
 
-  TEST( BufferTargetOpenTest, NullBuffer ) {
+  TEST( BufferTargetOpenTest, MemoryAllocationFailure ) {
+    void * ( *set_malloc_result )( size_t );
+    char buffer[100];
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    target = stumpless_open_buffer_target( "malloc-fail-buffer",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( BufferTargetOpenTest, NullBuffer ) {
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "null-buffer",
                                            NULL,
                                            100,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( BufferTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     char buffer[100];
 
     target = stumpless_open_buffer_target( NULL,
                                            buffer,
-                                           100,
+                                           sizeof( buffer ),
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    ASSERT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( BufferTargetOpenTest, Open100Targets ) {
@@ -267,15 +351,78 @@ namespace {
     for( i=0; i < 100; i++ ) {
       targets[i] = stumpless_open_buffer_target( "many target test",
                                                  buffer,
-                                                 100,
+                                                 sizeof( buffer ),
                                                  STUMPLESS_OPTION_NONE,
                                                  STUMPLESS_FACILITY_USER );
-      ASSERT_TRUE( targets[i] != NULL );
-      ASSERT_EQ( NULL, stumpless_get_error(  ) );
+      EXPECT_NO_ERROR;
+      ASSERT_NOT_NULL( targets[i] );
     }
 
     for( i=0; i < 100; i++ ) {
       stumpless_close_buffer_target( targets[i] );
     }
+  }
+
+  TEST( BufferTargetReadTest, NullTarget ) {
+    char buffer[100];
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_read_buffer( NULL, buffer, sizeof( buffer ) );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( BufferTargetWriteTest, WrapAroundToEndOfPreviousMessage ) {
+    char buffer[TEST_BUFFER_LENGTH];
+    struct stumpless_target *target;
+    const struct stumpless_entry *entry;
+    int write_result;
+    char read_buffer[READ_BUFFER_LENGTH];
+    size_t read_result;
+
+    target = stumpless_open_buffer_target( "wrap-around-test",
+                                           buffer,
+                                           sizeof( buffer ),
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( write_result, 0 );
+
+    stumpless_close_buffer_target( target );
+
+    target = stumpless_open_buffer_target( "wrap-around-test",
+                                           buffer,
+                                           write_result + 2,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( write_result, 0 );
+
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( write_result, 0 );
+
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_NO_ERROR;
+    EXPECT_GT( read_result, 1 );
+
+    stumpless_close_buffer_target( target );
+    stumpless_destroy_entry( entry );
+    stumpless_free_all(  );
   }
 }

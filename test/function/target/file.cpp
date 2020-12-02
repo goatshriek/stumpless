@@ -100,13 +100,10 @@ namespace {
   }
 
   TEST( FileTargetCloseTest, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_close_file_target( NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( FileTargetFormat, NewlineSeparator ) {
@@ -154,37 +151,27 @@ namespace {
 
   TEST( FileTargetOpenTest, Directory ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
    
     target = stumpless_open_file_target( "/", 0, 0 );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_FILE_OPEN_FAILURE );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_FILE_OPEN_FAILURE );
   }
 
   TEST( FileTargetOpenTest, MallocFailure ) {
     const char *filename = "open-malloc-fail.log";
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
    
     target = stumpless_open_file_target( filename,
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
@@ -193,13 +180,10 @@ namespace {
 
   TEST( FileTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_file_target( NULL, 0, 0 );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 }

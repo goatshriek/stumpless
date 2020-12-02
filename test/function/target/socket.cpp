@@ -100,7 +100,7 @@ namespace {
 
   TEST_F( SocketTargetTest, AddEntry ) {
     stumpless_add_entry( target, basic_entry );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
     GetNextMessage(  );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
@@ -113,7 +113,7 @@ namespace {
 
   TEST_F( SocketTargetTest, AddEntryToBadIdTarget ) {
     struct stumpless_target target_copy;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     int result;
 
     ASSERT_TRUE( target != NULL );
@@ -123,9 +123,7 @@ namespace {
     result = stumpless_add_entry( &target_copy, basic_entry );
     EXPECT_LT( result, 0 );
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    EXPECT_EQ( error->id, STUMPLESS_INVALID_ID );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ID );
   }
 
   /* non-fixture tests */
@@ -153,7 +151,7 @@ namespace {
   TEST( SocketTargetAddTest, Uninitialized ) {
     struct stumpless_target target;
     struct stumpless_entry *entry;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     int result;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -167,25 +165,9 @@ namespace {
     result = stumpless_add_entry( &target, entry );
     EXPECT_LT( result, 0 );
 
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_INVALID_ID );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ID );
 
     stumpless_destroy_entry( entry );
-  }
-
-  TEST( SocketTargetCloseTest, BadIdTarget ) {
-    struct stumpless_target *target;
-
-    target = ( struct stumpless_target * ) malloc( sizeof( *target ) );
-    ASSERT_TRUE( target != NULL );
-
-    target->name = NULL;
-    target->default_app_name = NULL;
-    target->default_msgid = NULL;
-    target->id = NULL;
-
-    stumpless_close_socket_target( target );
   }
 
   TEST( SocketTargetCloseTest, Generic ) {
@@ -213,18 +195,14 @@ namespace {
   }
 
   TEST( SocketTargetCloseTest, NullTarget ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     stumpless_close_socket_target( NULL );
-    
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( SocketTargetOpenTest, Basic ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_target *target;
 
     target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
     EXPECT_NO_ERROR;
@@ -237,7 +215,7 @@ namespace {
   TEST( SocketTargetOpenTest, LocalSocketAlreadyExists ) {
     struct sockaddr_un local_socket_addr;
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     const char *local_socket_name = "taken";
     int local_socket;
 
@@ -247,20 +225,15 @@ namespace {
     bind(local_socket, (struct sockaddr *) &local_socket_addr, sizeof(local_socket_addr));
 
     target = stumpless_open_socket_target( "socket-taken-test", local_socket_name, 0, 0 );
-    EXPECT_EQ( NULL, target );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_SOCKET_BIND_FAILURE );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_SOCKET_BIND_FAILURE );
 
     close( local_socket );
     unlink( local_socket_name );
   }
 
   TEST( SocketTargetOpenTest, MemoryFailure ) {
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     struct stumpless_target *target;
     void *(*result)(size_t);
    
@@ -270,12 +243,7 @@ namespace {
     target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
     EXPECT_EQ( NULL, target );
 
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( result == malloc );
@@ -283,13 +251,10 @@ namespace {
 
   TEST( SocketTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_socket_target( NULL, NULL, 0, 0 );
-    ASSERT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
-    ASSERT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 }

@@ -30,6 +30,22 @@ typedef int socket_handle_t;
 
 #  include <cstddef>
 
+#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
+                                 " ability to listen on a local socket to"     \
+                                 " receive messages."
+
+socket_handle_t
+open_tcp4_server_socket( const char *dest, const char *port );
+
+socket_handle_t
+open_tcp6_server_socket( const char *dest, const char *port );
+
+socket_handle_t
+open_udp4_server_socket( const char *dest, const char *port );
+
+socket_handle_t
+open_udp6_server_socket( const char *dest, const char *port );
+
 socket_handle_t
 open_tcp_server_socket( int af, const char *dest, const char *port );
 
@@ -40,10 +56,10 @@ socket_handle_t
 accept_tcp_connection( socket_handle_t handle );
 
 #  ifdef _WIN32
-void
+bool
 recv_from_handle( socket_handle_t handle, char *buff, int buff_len );
 #  else
-void
+bool
 recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len );
 #endif
 

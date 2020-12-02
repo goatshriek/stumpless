@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 namespace {
 
@@ -63,24 +65,15 @@ namespace {
 
   TEST( GetVersion, MemoryFailure ) {
     struct stumpless_version *version;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     void *(*result)(size_t);
 
-    // cause a failure so that the error struct can be created
-    stumpless_new_param( NULL, NULL );
-   
-    result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( result != NULL );
+    result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( result );
 
     version = stumpless_get_version(  );
-    EXPECT_EQ( NULL, version );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_NULL( version );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
   }
@@ -154,36 +147,24 @@ namespace {
     void *(*malloc_result)(size_t);
     struct stumpless_version version = { 1, 5, 0};
     char *string_result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
-    malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( malloc_result != NULL );
+    malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( malloc_result );
 
     string_result = stumpless_version_to_string( &version );
-    EXPECT_TRUE( string_result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    }
+    EXPECT_NULL( string_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
   }
 
   TEST( VersionToString, NullVersion ) {
     char *result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     result = stumpless_version_to_string( NULL );
-    EXPECT_TRUE( result == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 }

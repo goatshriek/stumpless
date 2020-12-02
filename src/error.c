@@ -21,23 +21,27 @@
 #include <stdio.h>
 #include <stumpless/error.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
-#include "private/memory.h"
 
-static FILE *error_stream = NULL;
-static int error_stream_valid = 0;
-static struct stumpless_error *last_error = NULL;
-static bool error_valid = false;
+/* global static variables */
+static config_atomic_ptr_t error_stream = config_atomic_ptr_initializer;
+static config_atomic_bool_t error_stream_free = config_atomic_bool_true;
+static config_atomic_bool_t error_stream_valid = config_atomic_bool_false;
 
 static const char *stumpless_error_enum_to_string[] = {
   STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
 };
 
-struct stumpless_error *
+/* per-thread static variables */
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_error last_error;
+static CONFIG_THREAD_LOCAL_STORAGE bool error_valid = false;
+
+const struct stumpless_error *
 stumpless_get_error( void ) {
   if( error_valid )
-    return last_error;
+    return &last_error;
   else
     return NULL;
 }
@@ -60,12 +64,11 @@ stumpless_get_error_id_string( enum stumpless_error_id id) {
 
 FILE *
 stumpless_get_error_stream( void ) {
-  if( !error_stream_valid ) {
-    error_stream = stderr;
-    error_stream_valid = 1;
+  if( config_read_bool( &error_stream_valid ) ) {
+    return config_read_ptr( &error_stream );
+  } else {
+    return stderr;
   }
-
-  return error_stream;
 }
 
 bool
@@ -75,39 +78,44 @@ stumpless_has_error( void ) {
 
 void
 stumpless_perror( const char *prefix ) {
+  FILE *stream;
+  bool locked;
 
-  if( !error_stream_valid ) {
-    error_stream = stderr;
-    error_stream_valid = 1;
-  }
+  stream = stumpless_get_error_stream(  );
 
-  if( error_stream && error_valid ) {
+  if( stream && error_valid ) {
+
+    do {
+      locked = config_compare_exchange_bool( &error_stream_free, true, false );
+    } while( !locked );
 
     if( prefix ) {
-      fputs( prefix, error_stream );
-      fputc( ':', error_stream );
-      fputc( ' ', error_stream );
+      fputs( prefix, stream );
+      fputc( ':', stream );
+      fputc( ' ', stream );
     }
 
-    fputs( stumpless_get_error_id_string(last_error->id), error_stream );
-    fputc( ':', error_stream );
-    fputc( ' ', error_stream );
+    fputs( stumpless_get_error_id_string(last_error.id), stream );
+    fputc( ':', stream );
+    fputc( ' ', stream );
     
 
-    fputs( last_error->message, error_stream );
+    fputs( last_error.message, stream );
 
-    if( last_error->code_type ) {
-      fprintf( error_stream, " (%s: %d)", last_error->code_type, last_error->code );
+    if( last_error.code_type ) {
+      fprintf( stream, " (%s: %d)", last_error.code_type, last_error.code );
     }
 
-    fputc( '\n', error_stream );
+    fputc( '\n', stream );
   }
+
+  config_write_bool( &error_stream_free, true );
 }
 
 void
 stumpless_set_error_stream( FILE *stream ) {
-  error_stream = stream;
-  error_stream_valid = 1;
+  config_write_ptr( &error_stream, stream );
+  config_write_bool( &error_stream_valid, true );
 }
 
 /* private functions */
@@ -115,12 +123,6 @@ stumpless_set_error_stream( FILE *stream ) {
 void
 clear_error( void ) {
   error_valid = false;
-}
-
-void
-error_free_all( void ) {
-  free_mem( last_error );
-  last_error = NULL;
 }
 
 void
@@ -159,18 +161,10 @@ raise_error( enum stumpless_error_id id,
              const char *message,
              int code,
              const char *code_type ) {
-  if( !last_error ) {
-    last_error = alloc_mem( sizeof( struct stumpless_error ) );
-    if( !last_error ) {
-      error_valid = false;
-      return;
-    }
-  }
-
-  last_error->id = id;
-  last_error->message = message;
-  last_error->code = code;
-  last_error->code_type = code_type;
+  last_error.id = id;
+  last_error.message = message;
+  last_error.code = code;
+  last_error.code_type = code_type;
   error_valid = true;
 }
 
@@ -182,6 +176,13 @@ raise_file_open_failure( void ) {
 void
 raise_file_write_failure( void ) {
   raise_error( STUMPLESS_FILE_WRITE_FAILURE, NULL, 0, NULL );
+}
+
+void
+raise_gethostname_failure( const char *message,
+                           size_t code,
+                           const char *code_type ) {
+  raise_error( STUMPLESS_GETHOSTNAME_FAILURE, message, code, code_type );
 }
 
 void
@@ -215,10 +216,6 @@ raise_invalid_severity( int severity ) {
 
 void
 raise_memory_allocation_failure( void ) {
-  if( !last_error ) {
-    return;
-  }
-
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE, NULL, 0, NULL );
 }
 

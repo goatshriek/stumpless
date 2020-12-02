@@ -19,12 +19,24 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_H
 #  define __STUMPLESS_PRIVATE_TARGET_H
 
-#include <stddef.h>
-#include <stumpless/entry.h>
-#include <stumpless/target.h>
+#  include <stddef.h>
+#  include <stumpless/config.h>
+#  include <stumpless/entry.h>
+#  include <stumpless/target.h>
+#  include "private/config/wrapper/thread_safety.h"
+
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+#    define TARGET_MUTEX( TARGET ) \
+( ( config_mutex_t * ) ( ( char * ) ( TARGET ) + sizeof( *( TARGET ) ) ) )
+#  else
+#    define TARGET_MUTEX( TARGET ) NULL
+#  endif
 
 void
 destroy_target( const struct stumpless_target *target );
+
+void
+lock_target( const struct stumpless_target *target );
 
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
@@ -45,7 +57,13 @@ sendto_unsupported_target( const struct stumpless_target *target,
                            size_t msg_length );
 
 void
-target_free_all( void );
+target_free_global( void );
+
+void
+target_free_thread( void );
+
+void
+unlock_target( const struct stumpless_target *target );
 
 int
 unsupported_target_is_open( const struct stumpless_target *target );

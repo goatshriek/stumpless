@@ -26,15 +26,12 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/helper/assert.hpp"
 #include "test/helper/resolve.hpp"
 
 #ifndef _WIN32
 #  include <sys/socket.h>
 #endif
-
-#define BINDING_DISABLED_WARNING "some network tests will not run without the" \
-                                 " ability to listen on a local socket to"     \
-                                 " receive messages."
 
 using::testing::EndsWith;
 using::testing::HasSubstr;
@@ -58,7 +55,7 @@ namespace {
       struct stumpless_param *param;
 
       // setting up to receive the sent messages
-      handle = open_udp_server_socket( AF_INET6, "::1", port );
+      handle = open_udp6_server_socket( "::1", port );
       if( handle == BAD_HANDLE ) {
         printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
         udp_fixtures_enabled = false;
@@ -101,7 +98,7 @@ namespace {
 
   TEST_F( Udp6TargetTest, AddEntry ) {
     int result;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     if( !udp_fixtures_enabled ) {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
@@ -142,7 +139,7 @@ namespace {
   TEST_F( Udp6TargetTest, TruncatedMessage ) {
     int result;
     struct stumpless_entry *long_entry;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
     char *message;
     size_t max_msg_size;
     size_t my_msg_size;
@@ -181,7 +178,7 @@ namespace {
       error = stumpless_get_error( );
       EXPECT_TRUE( error != NULL );
       if( error ) {
-        EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_TOO_BIG );
+        EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
       }
 
       GetNextMessage(  );
@@ -209,7 +206,7 @@ namespace {
 
   TEST( NetworkTargetOpenTest, BadAddress ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( "bad-ipv6-address",
                                          "ff:fe::43::30:1",
@@ -220,13 +217,13 @@ namespace {
     error = stumpless_get_error(  );
     EXPECT_TRUE( error != NULL );
     if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ADDRESS_FAILURE );
+      EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
     }
   }
 
   TEST( NetworkTargetOpenTest, Basic ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( "target-to-self",
                                          "::1",
@@ -242,7 +239,7 @@ namespace {
 
   TEST( NetworkTargetOpenTest, NullDestination ) {
     struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( "no-name-provided",
                                          NULL,
@@ -254,32 +251,25 @@ namespace {
     EXPECT_TRUE( error != NULL );
 
     if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
+      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     }
   }
 
   TEST( NetworkTargetOpenTest, NullName ) {
-    struct stumpless_target *target;
-    struct stumpless_error *error;
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( NULL,
                                          "::1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_EQ( error->id, STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetSetDestination, OpenTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *original_destination = "::1";
     const char *new_destination = "localhost";
@@ -293,16 +283,14 @@ namespace {
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
     } else {
-      handle = open_udp_server_socket( AF_INET6, original_destination, "514" );
+      handle = open_udp6_server_socket( original_destination, "514" );
 
       target = stumpless_open_udp6_target( "target-to-self",
                                            original_destination,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );
       ASSERT_TRUE( target != NULL );
-
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error == NULL );
+      EXPECT_NO_ERROR;
 
       destination_result = stumpless_get_destination( target );
       EXPECT_TRUE( destination_result != NULL );
@@ -311,14 +299,10 @@ namespace {
       EXPECT_TRUE( stumpless_target_is_open( target ) );
       target_result = stumpless_set_destination( target, new_destination );
       EXPECT_TRUE( target_result != NULL );
-
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error == NULL );
+      EXPECT_NO_ERROR;
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
-
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error == NULL );
+      EXPECT_NO_ERROR;
 
       destination_result = stumpless_get_destination( target );
       EXPECT_TRUE( destination_result != NULL );
@@ -350,7 +334,6 @@ namespace {
   TEST( NetworkTargetSetDestination, PausedTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *destination = "::1";
     const char *destination_result;
@@ -358,13 +341,11 @@ namespace {
     int add_result;
     socket_handle_t handle;
 
-    handle = open_udp_server_socket( AF_INET6, destination, "514" );
+    handle = open_udp6_server_socket( destination, "514" );
 
     target = stumpless_new_udp6_target( "target-to-self" );
     ASSERT_TRUE( target != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     destination_result = stumpless_get_destination( target );
     EXPECT_TRUE( destination_result == NULL );
@@ -372,9 +353,7 @@ namespace {
     EXPECT_FALSE( stumpless_target_is_open( target ) );
     target_result = stumpless_set_destination( target, destination );
     EXPECT_TRUE( target_result != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
@@ -385,9 +364,7 @@ namespace {
     target_result = stumpless_open_target( target );
     ASSERT_TRUE( target_result != NULL );
     EXPECT_TRUE( target_result == target );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
 
@@ -416,7 +393,6 @@ namespace {
   TEST( NetworkTargetSetTransportPort, OpenTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
-    struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *new_port = "515";
     const char *default_port;
@@ -424,16 +400,14 @@ namespace {
     char buffer[2048];
     socket_handle_t handle;
 
-    handle = open_udp_server_socket( AF_INET6, "::1", new_port );
+    handle = open_udp6_server_socket( "::1", new_port );
 
     target = stumpless_open_udp6_target( "target-to-self",
                                          "::1",
                                          STUMPLESS_OPTION_NONE,
                                          STUMPLESS_FACILITY_USER );
     ASSERT_TRUE( target != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     default_port = stumpless_get_transport_port( target );
     EXPECT_TRUE( default_port != NULL );
@@ -442,9 +416,7 @@ namespace {
     EXPECT_TRUE( stumpless_target_is_open( target ) );
     result = stumpless_set_transport_port( target, new_port );
     EXPECT_TRUE( result != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
 
@@ -452,9 +424,7 @@ namespace {
     EXPECT_TRUE( current_port != NULL );
     EXPECT_TRUE( current_port != new_port );
     EXPECT_STREQ( new_port, current_port );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     if( handle != BAD_HANDLE ) {
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -479,7 +449,6 @@ namespace {
   TEST( NetworkTargetSetTransportPort, PausedTarget ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    struct stumpless_error *error;
     struct stumpless_entry *entry;
     const char *destination = "::1";
     const char *new_port = "515";
@@ -489,13 +458,11 @@ namespace {
     socket_handle_t handle;
     int add_result;
 
-    handle = open_udp_server_socket( AF_INET6, destination, new_port );
+    handle = open_udp6_server_socket( destination, new_port );
 
     target = stumpless_new_udp6_target( "target-to-self" );
     ASSERT_TRUE( target != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     default_port = stumpless_get_transport_port( target );
     EXPECT_TRUE( default_port != NULL );
@@ -504,9 +471,7 @@ namespace {
     EXPECT_FALSE( stumpless_target_is_open( target ) );
     target_result = stumpless_set_transport_port( target, new_port );
     EXPECT_TRUE( target_result != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
@@ -514,9 +479,7 @@ namespace {
     EXPECT_TRUE( current_port != NULL );
     EXPECT_TRUE( current_port != new_port );
     EXPECT_STREQ( new_port, current_port );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     target_result = stumpless_set_destination( target, destination );
     EXPECT_TRUE( target_result != NULL );
@@ -524,9 +487,7 @@ namespace {
     target_result = stumpless_open_target( target );
     ASSERT_TRUE( target_result != NULL );
     EXPECT_TRUE( target_result == target );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
 
@@ -538,9 +499,7 @@ namespace {
                                    "basic test message" );
       add_result = stumpless_add_entry( target, entry );
       EXPECT_GT( add_result, 0 );
-
-      error = stumpless_get_error(  );
-      EXPECT_TRUE( error == NULL );
+      EXPECT_NO_ERROR;
 
       recv_from_handle( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );

@@ -33,10 +33,6 @@ namespace {
     struct stumpless_target *target;
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_entry *entry;
-    struct stumpless_entry *result_entry;
-    struct stumpless_element *element;
-    struct stumpless_element *result_element;
-    struct stumpless_param *param;
     size_t i;
     int add_result;
 

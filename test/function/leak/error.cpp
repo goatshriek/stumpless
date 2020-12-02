@@ -26,15 +26,11 @@ NEW_MEMORY_COUNTER( free_all )
 namespace {
 
   TEST( ErrorLeakTest, FreeAllDeallocatesStaticError ) {
-    struct stumpless_error *error;
-
     INIT_MEMORY_COUNTER( free_all );
 
     // cause an error
     stumpless_new_param( NULL, NULL );
-
-    error = stumpless_get_error(  );
-    ASSERT_TRUE( error != NULL );
+    ASSERT_TRUE( stumpless_has_error(  ) );
 
     stumpless_free_all(  );
 

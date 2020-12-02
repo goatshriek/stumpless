@@ -104,6 +104,8 @@ extern "C" {
   ERROR(STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE, 23)	\
 /** A provided encoding does not conform to the standard. */\
   ERROR(STUMPLESS_INVALID_ENCODING, 24) \
+/** The current hostname could not be retrieved. */\
+  ERROR(STUMPLESS_GETHOSTNAME_FAILURE, 25 )
 
 #define STUMPLESS_GENERATE_ENUM(ENUM, INDEX) ENUM = INDEX,
 
@@ -134,18 +136,48 @@ struct stumpless_error {
 /**
  * Retrieves the error encountered by the last library call.
  *
+ * The returned error struct is only valid until the next call to a stumpless
+ * function. After this, it should not be referred to, and if the error of any
+ * subsequent call is needed another call to stumpless_get_error must be made.
+ *
  * Note that the id is the only field of the error that is guaranteed to be set.
  * Other members may or may not be set, depending on the context of the error.
  *
  * If the code_type is NULL, then the code is not valid and should be ignored.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. No synchronization primitives are used as the
+ * returned pointer is specific to the thread of execution. As a result, the
+ * result should not be shared between threads.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers. If you do so, note that
+ * if it is called before a stumpless library function in the handler itself
+ * the result will not be meaningful.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @return A stumpless_error struct describing the error encountered by the last
  * function call. If no error was encountered, this will be NULL.
  */
-struct stumpless_error *stumpless_get_error( void );
+const struct stumpless_error *
+stumpless_get_error( void );
 
 /**
  * Gets the error id of the given error.
+ *
+ * **Thread Safety: MT-Safe race:err**
+ * This function is thread safe, as long as err is not modifed by other threads
+ * during this call.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @since Release v1.5.0
  *
@@ -159,6 +191,18 @@ stumpless_get_error_id( const struct stumpless_error *err );
 /**
  * Gets the error string of the given error id.
  *
+ * This is a string literal that should not be modified or freed by the caller.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @since Release v1.6.0
  *
  * @param id The error id to get the error string from.
@@ -171,6 +215,17 @@ stumpless_get_error_id_string( enum stumpless_error_id id );
 /**
  * Gets the current stream that errors are written to.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the error stream.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
+ *
  * @return The current stream errors are written to.
  */
 FILE *
@@ -179,6 +234,19 @@ stumpless_get_error_stream( void );
 /**
  * True if the last call to a stumpless function encountered an error. To get
  * the error itself, use the stumpless_get_error function.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. No synchronization primitives are used as the
+ * returned flag is specific to the thread of execution.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers. If you do so, note that
+ * if it is called before a stumpless library function in the handler itself
+ * the result will not be meaningful.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @since release v1.6.0.
  *
@@ -200,6 +268,20 @@ stumpless_has_error( void );
  * If there is not currently an active error message, then nothing will be
  * printed (not even the prefix).
  *
+ * **Thread Safety: MT-Safe race:prefix**
+ * This function is thread safe, of course assuming that prefix is not changed
+ * by other threads during execution. A lock is used to coordinate accesses to
+ * the error stream.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers, as it uses a
+ * non-reentrant lock to synchronize access to the error stream.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock used to control access to the error stream may not
+ * be released after a cancellation.
+ *
  * @param prefix An optional prefix to print in front of the message. If this is
  * NULL then it will simply be ignored.
  */
@@ -212,6 +294,17 @@ stumpless_perror( const char *prefix );
  * This will be stderr by default, but can be set to any stream. If it is set
  * to NULL then error messages will not be printed (essentially skipping all
  * \c stumpless_perror calls).
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the error stream.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
  *
  * @param stream The stream to write errors to. If this is NULL then it will be
  * ignored.

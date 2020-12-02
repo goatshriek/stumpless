@@ -144,4 +144,12 @@ EXPORTS
   stumpless_set_param_value_by_name             @133
   stump                                         @134
   vstump                                        @135
+
+; added in v2.0.0
   stumpless_param_to_string                     @136
+  stumpless_free_thread                         @137
+  stumpless_get_element_count                   @138
+  stumpless_get_target_name                     @139
+  stumpless_get_target_default_app_name         @140
+  stumpless_get_target_default_msgid            @141
+  stumpless_read_buffer                         @142

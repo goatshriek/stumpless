@@ -1,14 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
- * 
+ * Copyright 2018-2020 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,13 +52,62 @@ extern "C" {
  * need to be allocated. If other functions are called, this function should be
  * called again before exit to ensure a memory leak does not exist.
  *
- * In a windows environment, this function will call WSACleanup.
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * might be using.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of the
+ * memory deallocation function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory deallocation function may not be AC-Safe itself.
  */
 void
 stumpless_free_all( void );
 
 /**
+ * Frees all memory allocated internally to the calling thread, and performs
+ * any other thread-specific cleanup.
+ *
+ * This function should be called in any thread that has used stumpless
+ * functions before it exits so that caches and other structures can be cleaned
+ * up. It is not a substitute for stumpless_free_all, but is called by it and
+ * can be left out if stumpless_free_all will be called later in the same
+ * thread.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as it only operates on thread-local resources.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of the
+ * memory deallocation function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory deallocation function may not be AC-Safe itself.
+ */
+void
+stumpless_free_thread( void );
+
+/**
  * Sets the function used by the library to allocate memory.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it changes the memory allocation
+ * scheme, which could cause an operation to use the old function for some
+ * allocation and the new function for others. If you need to set any of the
+ * memory management functions, it should be done before starting multiple
+ * threads with access to shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers for the same reason
+ * as it is not thread safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the assignment is not guaranteed to be atomic.
  *
  * @param malloc_func A pointer to the allocation function that is desired. This
  * function must have the same signature as the standard library \c malloc
@@ -73,6 +122,21 @@ void *
 /**
  * Sets the function used by the library to free memory.
  *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it changes the memory allocation
+ * scheme, which could cause an operation to use the old function for some
+ * allocation and the new function for others. If you need to set any of the
+ * memory management functions, it should be done before starting multiple
+ * threads with access to shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers for the same reason
+ * as it is not thread safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the assignment is not guaranteed to be atomic.
+ *
  * @param free_func A pointer to the memory deallocation function that is
  * desired. This function must have the same signature as the standard library
  * \c free function (which is the default if this is not called).
@@ -85,6 +149,21 @@ void
 
 /**
  * Sets the function used by the library to reallocate memory.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it changes the memory allocation
+ * scheme, which could cause an operation to use the old function for some
+ * allocation and the new function for others. If you need to set any of the
+ * memory management functions, it should be done before starting multiple
+ * threads with access to shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers for the same reason
+ * as it is not thread safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the assignment is not guaranteed to be atomic.
  *
  * @param realloc_func A pointer to the memory reallocation function that is
  * desired. This function must have the same signature as the standard library

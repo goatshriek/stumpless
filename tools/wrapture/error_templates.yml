@@ -31,7 +31,7 @@ templates:
               - "stumpless/StumplessException.hpp"
               - "stumpless/error.h"
             params:
-              - value: "stumpless_get_error(  )"
+              - value: "( struct stumpless_error * ) stumpless_get_error(  )"
   - name: "int-return-error-check"
     value:
       error-check:
@@ -47,7 +47,7 @@ templates:
               - "stumpless/StumplessException.hpp"
               - "stumpless/error.h"
             params:
-              - value: "stumpless_get_error()"
+              - value: "( struct stumpless_error * ) stumpless_get_error()"
   - name: "pointer-return-error-check"
     value:
       error-check:
@@ -63,4 +63,4 @@ templates:
               - "stumpless/StumplessException.hpp"
               - "stumpless/error.h"
             params:
-              - value: "stumpless_get_error()"
+              - value: "( struct stumpless_error * ) stumpless_get_error()"

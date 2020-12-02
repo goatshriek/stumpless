@@ -22,6 +22,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
 #include <stumpless/option.h>
@@ -31,6 +32,7 @@
 #include <stumpless/target/wel.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
@@ -70,6 +72,7 @@ set_wel_insertion_string( struct stumpless_entry *entry,
   param->name_length = 0;
   data->insertion_params[index] = param;
 
+  clear_error(  );
   return entry;
 
 
@@ -85,10 +88,13 @@ LPCSTR
 stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index ) {
   struct wel_data *data;
+  const struct stumpless_param *param;
+  char *value_copy;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   if( index >= data->insertion_count ) {
     raise_index_out_of_bounds(
        L10N_INVALID_INDEX_ERROR_MESSAGE( "insertion string" ),
@@ -97,10 +103,22 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
     goto fail;
   }
 
-  clear_error();
-  return data->insertion_params[index]->value;
+  param = data->insertion_params[index];
+  if( param->name ) {
+    value_copy = ( char * ) stumpless_get_param_value( param );
+  } else {
+    value_copy = alloc_mem( param->value_length + 1 );
+    if( !value_copy ) {
+      goto fail;
+    }
+    memcpy( value_copy, param->value, param->value_length + 1 );
+  }
+  unlock_wel_data( data );
+
+  return value_copy;
 
 fail:
+  unlock_wel_data( data );
   return NULL;
 }
 
@@ -111,7 +129,9 @@ stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   data->category = category;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -124,7 +144,9 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   data->event_id = event_id;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -140,13 +162,16 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( param );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   if( index >= data->insertion_count ) {
     if( !resize_insertion_params( entry, index ) ) {
+      unlock_wel_data( data );
       return NULL;
     }
   }
 
   data->insertion_params[index] = param;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -156,11 +181,19 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
+  struct wel_data *data;
+  struct stumpless_entry *result;
+
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( str );
 
   clear_error(  );
-  return set_wel_insertion_string( entry, index, str );
+  data = entry->wel_data;
+  lock_wel_data( data );
+  result = set_wel_insertion_string( entry, index, str );
+  unlock_wel_data( data );
+
+  return result;
 }
 
 struct stumpless_entry *
@@ -184,7 +217,9 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   data = entry->wel_data;
+  lock_wel_data( data );
   data->type = type;
+  unlock_wel_data( data );
 
   clear_error();
   return entry;
@@ -194,13 +229,15 @@ struct stumpless_entry *
 vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                       WORD count,
                                       va_list insertions ) {
+  struct wel_data *data;
   struct stumpless_entry *result;
   WORD i = 0;
   const char *arg;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  clear_error(  );
+  data = entry->wel_data;
+  lock_wel_data( data );
 
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
@@ -210,15 +247,18 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
       goto fail;
     }
 
-    result = stumpless_set_wel_insertion_string( entry, i, arg );
+    result = set_wel_insertion_string( entry, i, arg );
     if( !result ) {
       goto fail;
     }
   }
 
+  unlock_wel_data( data );
+  clear_error(  );
   return entry;
 
 fail:
+  unlock_wel_data( data );
   return NULL;
 }
 
@@ -234,11 +274,12 @@ copy_wel_data( struct stumpless_entry *destination,
   const struct stumpless_entry *result;
 
   if( !config_initialize_wel_data( destination ) ) {
-    goto fail;
+    return NULL;
   }
 
   dest_data = destination->wel_data;
   source_data = destination->wel_data;
+  lock_wel_data( source_data );
 
   dest_data->type = source_data->type;
   dest_data->category = source_data->category;
@@ -272,6 +313,8 @@ copy_wel_data( struct stumpless_entry *destination,
     }
   }
 
+  unlock_wel_data( source_data );
+  clear_error(  );
   return destination;
 
 fail_set_string:
@@ -279,13 +322,18 @@ fail_set_string:
 fail_params:
   free_mem( dest_data->insertion_strings );
 fail:
+  unlock_wel_data( source_data );
   return NULL;
 }
 
 void
 destroy_wel_data(const struct stumpless_entry* entry) {
-    destroy_insertion_params( entry );
-    free_mem( entry->wel_data );
+  struct wel_data *data;
+  data = ( struct wel_data * ) entry->wel_data;
+
+  config_destroy_mutex( &data->mutex );
+  destroy_insertion_params( entry );
+  free_mem( data );
 }
 
 void
@@ -321,9 +369,15 @@ initialize_wel_data( struct stumpless_entry *entry ) {
   data->insertion_strings = NULL;
   data->insertion_params = NULL;
   data->insertion_count = 0;
+  config_init_mutex( &data->mutex );
 
   entry->wel_data = data;
   return true;
+}
+
+void
+lock_wel_data( const struct wel_data *data ) {
+  config_lock_mutex( &data->mutex );
 }
 
 struct stumpless_param **
@@ -389,6 +443,11 @@ set_entry_wel_type( struct stumpless_entry *entry, int severity ) {
     default:
       data->type = EVENTLOG_SUCCESS;
   }
+}
+
+void
+unlock_wel_data( const struct wel_data *data ) {
+  config_unlock_mutex( &data->mutex );
 }
 
 struct stumpless_target *

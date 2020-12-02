@@ -20,14 +20,40 @@
 #  define __STUMPLESS_PRIVATE_ENTRY_H
 
 #  include <stdbool.h>
+#  include <stddef.h>
+#  include <stumpless/config.h>
+#  include <stumpless/element.h>
 #  include <stumpless/entry.h>
+#  include "private/config/wrapper/thread_safety.h"
 #  include "private/strbuilder.h"
+
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+#    define ENTRY_MUTEX( ENTRY ) \
+( ( config_mutex_t * ) ( ( char * ) ( ENTRY ) + sizeof( *( ENTRY ) ) ) )
+#  else
+#    define ENTRY_MUTEX( ENTRY ) NULL
+#  endif
 
 void
 entry_free_all( void );
 
 int
 get_prival( int facility, int severity );
+
+void
+lock_entry( const struct stumpless_entry *entry );
+
+struct stumpless_entry *
+locked_add_element( struct stumpless_entry *entry,
+                    struct stumpless_element *element );
+
+struct stumpless_element *
+locked_get_element_by_index( const struct stumpless_entry *entry,
+                             size_t index );
+
+struct stumpless_element *
+locked_get_element_by_name( const struct stumpless_entry *entry,
+                            const char *name );
 
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
@@ -57,5 +83,8 @@ unchecked_destroy_entry( const struct stumpless_entry *entry );
 bool
 unchecked_entry_has_element( const struct stumpless_entry *entry,
                              const char *name );
+
+void
+unlock_entry( const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */

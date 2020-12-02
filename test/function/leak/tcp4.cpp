@@ -16,11 +16,7 @@
  * limitations under the License.
  */
 
-#ifdef _WIN32
-#  include <winsock2.h>
-#else
-#  include <sys/socket.h>
-#endif
+#include "test/helper/server.hpp"
 
 #include <stddef.h>
 #include <stumpless.h>
@@ -28,7 +24,6 @@
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
-#include "test/helper/server.hpp"
 
 NEW_MEMORY_COUNTER( tcp4_leak )
 
@@ -37,18 +32,14 @@ namespace {
   TEST( Tcp4TargetLeakTest, TypicalUse ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    struct stumpless_entry *result_entry;
-    struct stumpless_element *element;
-    struct stumpless_element *result_element;
-    struct stumpless_param *param;
     size_t i;
-    int add_result;
     socket_handle_t handle;
     socket_handle_t accepted = BAD_HANDLE;
     char buffer[1024];
 
-    handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
+    handle = open_tcp4_server_socket( "127.0.0.1", "514" );
     if( handle != BAD_HANDLE ) {
+      INIT_MEMORY_COUNTER( tcp4_leak );
 
       target = stumpless_open_tcp4_target( "test-self",
                                            "127.0.0.1",
@@ -60,7 +51,7 @@ namespace {
       ASSERT_NOT_NULL( entry );
 
       for( i = 0; i < 1000; i++ ) {
-        add_result = stumpless_add_entry( target, entry );
+        stumpless_add_entry( target, entry );
         EXPECT_NO_ERROR;
 
         if( accepted == BAD_HANDLE ) {

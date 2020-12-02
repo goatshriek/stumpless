@@ -126,8 +126,15 @@ classes:
             - value: "param_name"
             - value: "param_value"
       - name: "GetName"
-        doc: |
+        doc: >
           The name of this Element.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         return:
@@ -246,8 +253,15 @@ classes:
           return:
             type: "size_t"
       - name: "GetParamName"
-        doc: |
+        doc: >
           Gets the name of the Param with the given index in this Element.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         params:
@@ -295,8 +309,15 @@ classes:
           return:
             type: "size_t"
       - name: "GetParamValue"
-        doc: |
+        doc: >
           Returns the value of the param at the given index in this Element.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         params:
@@ -317,13 +338,20 @@ classes:
           return:
             type: "const char *"
       - name: "GetParamValue"
-        doc: |
+        doc: >
           Returns the value of the first param with the given name in this
           Element.
 
           If you need to get the value of a param with the given name beyond
           the first one, then you will need to loop through all params in the
           element using GetParam with an index, checking each name.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          In versions prior to v2.0.0, the returned pointer was to the internal
+          buffer was not to be modified by the caller. This behavior changed in
+          v2.0.0 in order to avoid thread safety issues.
 
           Available since release v1.6.0.
         params:

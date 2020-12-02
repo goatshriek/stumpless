@@ -23,10 +23,11 @@
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
 #include <stumpless/param.h>
-#include <stumpless/error.h>
 #include "private/cache.h"
-#include "private/config/wrapper.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
+#include "private/element.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -42,32 +43,18 @@ static struct cache *entry_cache = NULL;
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
-  struct stumpless_element **new_elements;
-  size_t old_elements_size;
-  size_t new_elements_size;
+  struct stumpless_entry *result;
 
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( element );
 
-  if( unchecked_entry_has_element( entry, element->name ) ) {
-    raise_duplicate_element(  );
-    return NULL;
-  }
-
-  old_elements_size = sizeof( element ) * entry->element_count;
-  new_elements_size = old_elements_size + sizeof( element );
-
-  new_elements = realloc_mem( entry->elements, new_elements_size );
-  if( !new_elements ) {
-    return NULL;
-  }
-
-  new_elements[entry->element_count] = element;
-  entry->elements = new_elements;
-  entry->element_count++;
-
   clear_error(  );
-  return entry;
+
+  lock_entry( entry );
+  result = locked_add_element( entry, element );
+  unlock_entry( entry );
+
+  return result;
 }
 
 struct stumpless_entry *
@@ -99,11 +86,23 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
   bool element_created = false;
   const void *result;
 
-  element = stumpless_get_element_by_name( entry, element_name );
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    goto fail;
+  }
+
+  if( !element_name ) {
+    raise_argument_empty( "element_name is NULL" );
+    goto fail;
+  }
+
+  lock_entry( entry );
+
+  element = locked_get_element_by_name( entry, element_name );
   if( !element ) {
     element = stumpless_new_element( element_name );
     if( !element ) {
-      goto fail;
+      goto fail_locked;
     }
 
     element_created = true;
@@ -111,19 +110,21 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
 
   result = stumpless_add_new_param( element, param_name, param_value );
   if( !result ) {
-    goto fail_add;
+    goto fail_locked;
   }
 
   if( element_created ) {
-    result = stumpless_add_element( entry, element );
+    result = locked_add_element( entry, element );
     if( !result ) {
-      goto fail_add;
+      goto fail_locked;
     }
   }
 
+  unlock_entry( entry );
   return entry;
 
-fail_add:
+fail_locked:
+  unlock_entry( entry );
   if( element_created ) {
     stumpless_destroy_element_and_contents( element );
   }
@@ -140,13 +141,14 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
 
   VALIDATE_ARG_NOT_NULL( entry );
 
+  lock_entry( entry );
   copy = stumpless_new_entry( get_facility( entry->prival ),
                               get_severity( entry->prival ),
                               entry->app_name,
                               entry->msgid,
                               entry->message );
   if( !copy ) {
-    goto fail;
+    goto cleanup_and_fail;
   }
 
   copy->elements = alloc_mem( entry->element_count * sizeof( element_copy ) );
@@ -169,12 +171,14 @@ stumpless_copy_entry( const struct stumpless_entry *entry ) {
     goto fail_elements;
   }
 
+  unlock_entry( entry );
   clear_error(  );
   return copy;
 
 fail_elements:
   stumpless_destroy_entry_and_contents( copy );
-fail:
+cleanup_and_fail:
+  unlock_entry( entry );
   return NULL;
 }
 
@@ -210,6 +214,8 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
 bool
 stumpless_entry_has_element( const struct stumpless_entry *entry,
                              const char *name ) {
+  bool result;
+
   if( !entry ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return false;
@@ -220,13 +226,19 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
     return false;
   }
 
+  lock_entry( entry );
+  result = unchecked_entry_has_element( entry, name );
+  unlock_entry( entry );
+
   clear_error(  );
-  return unchecked_entry_has_element( entry, name );
+  return result;
 }
 
 struct stumpless_element *
 stumpless_get_element_by_index( const struct stumpless_entry *entry,
                                 size_t index ) {
+  struct stumpless_element *result;
+
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( index >= entry->element_count ) {
@@ -236,27 +248,60 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
   }
 
   clear_error(  );
-  return entry->elements[index];
+
+  lock_entry( entry );
+  result = locked_get_element_by_index( entry, index );
+  unlock_entry( entry );
+
+  return result;
 }
 
 struct stumpless_element *
 stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name ) {
-  size_t index;
+  struct stumpless_element *result;
 
-  index = stumpless_get_element_index( entry, name );
-
-  if( stumpless_has_error(  ) ) {
-    return NULL;
+  if( !entry ) {
+    raise_argument_empty( "entry is NULL" );
+    return 0;
   }
 
-  return entry->elements[index];
+  if( !name ) {
+    raise_argument_empty( "name is NULL" );
+    return 0;
+  }
+
+  clear_error(  );
+
+  lock_entry( entry );
+  result = locked_get_element_by_name( entry, name );
+  unlock_entry( entry );
+
+  return result;
+}
+
+size_t
+stumpless_get_element_count( const struct stumpless_entry *entry ) {
+  size_t count;
+
+  if( !entry ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
+    return 0;
+  }
+
+  lock_entry( entry );
+  count = entry->element_count;
+  unlock_entry( entry );
+
+  return count;
 }
 
 size_t
 stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name ) {
   size_t i;
+  const struct stumpless_element *element;
+  int cmp_result;
 
   if( !entry ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
@@ -268,50 +313,100 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
     return 0;
   }
 
+  lock_entry( entry );
   for( i = 0; i < entry->element_count; i++ ) {
-    if( strcmp( entry->elements[i]->name, name ) == 0 ) {
+    element = entry->elements[i];
+
+    lock_element( element );
+    cmp_result = strcmp( element->name, name );
+    unlock_element( element );
+
+    if( cmp_result == 0 ) {
       clear_error(  );
-      return i;
+      goto cleanup_and_return;
     }
   }
 
+  i = 0;
   raise_element_not_found(  );
-  return 0;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return i;
 }
 
 const char *
 stumpless_get_entry_app_name( const struct stumpless_entry *entry ) {
+  char *app_name_copy;
+
   VALIDATE_ARG_NOT_NULL( entry );
 
+  lock_entry( entry );
+  app_name_copy = alloc_mem( entry->app_name_length + 1 );
+  if( !app_name_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( app_name_copy, entry->app_name, entry->app_name_length + 1 );
   clear_error(  );
-  return entry->app_name;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return app_name_copy;
 }
 
 int
 stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
+  int prival;
+
   if( !entry ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
+  lock_entry( entry );
+  prival = entry->prival;
+  unlock_entry( entry );
+
   clear_error(  );
-  return get_facility( entry->prival );
+  return get_facility( prival );
 }
 
 const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
+  char *message_copy;
+
   VALIDATE_ARG_NOT_NULL( entry );
 
+  lock_entry( entry );
+  message_copy = alloc_mem( entry->message_length + 1 );
+  if( !message_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( message_copy, entry->message, entry->message_length + 1 );
   clear_error(  );
-  return entry->message;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return message_copy;
 }
 
 const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry ) {
+  char *msgid_copy;
+
   VALIDATE_ARG_NOT_NULL( entry );
 
+  lock_entry( entry );
+  msgid_copy = alloc_mem( entry->msgid_length + 1 );
+  if( !msgid_copy ) {
+    goto cleanup_and_return;
+  }
+  memcpy( msgid_copy, entry->msgid, entry->msgid_length + 1 );
   clear_error(  );
-  return entry->msgid;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return msgid_copy;
 }
 
 struct stumpless_param *
@@ -320,7 +415,12 @@ stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
                                     size_t param_index ) {
   const struct stumpless_element *element;
 
-  element = stumpless_get_element_by_index( entry, element_index );
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  lock_entry( entry );
+  element = locked_get_element_by_index( entry, element_index );
+  unlock_entry( entry );
+
   if( !element ) {
     return NULL;
   }
@@ -334,7 +434,14 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
                                    const char *param_name ) {
   const struct stumpless_element *element;
 
-  element = stumpless_get_element_by_name( entry, element_name );
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( element_name );
+  VALIDATE_ARG_NOT_NULL( param_name );
+
+  lock_entry( entry );
+  element = locked_get_element_by_name( entry, element_name );
+  unlock_entry( entry );
+
   if( !element ) {
     return NULL;
   }
@@ -348,7 +455,12 @@ stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
                                           size_t param_index ) {
   const struct stumpless_element *element;
 
-  element = stumpless_get_element_by_index( entry, element_index );
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  lock_entry( entry );
+  element = locked_get_element_by_index( entry, element_index );
+  unlock_entry( entry );
+
   if( !element ) {
     return NULL;
   }
@@ -362,7 +474,14 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
                                          const char *param_name ) {
   const struct stumpless_element *element;
 
-  element = stumpless_get_element_by_name( entry, element_name );
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( element_name );
+  VALIDATE_ARG_NOT_NULL( param_name );
+
+  lock_entry( entry );
+  element = locked_get_element_by_name( entry, element_name );
+  unlock_entry( entry );
+
   if( !element ) {
     return NULL;
   }
@@ -372,24 +491,36 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
 
 int
 stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
+  int prival;
+
   if( !entry ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
+  lock_entry( entry );
+  prival = entry->prival;
+  unlock_entry( entry );
+
   clear_error(  );
-  return entry->prival;
+  return prival;
 }
 
 int
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
+  int prival;
+
   if( !entry ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
+  lock_entry( entry );
+  prival = entry->prival;
+  unlock_entry( entry );
+
   clear_error(  );
-  return get_severity( entry->prival );
+  return get_severity( prival );
 }
 
 struct stumpless_entry *
@@ -418,50 +549,61 @@ struct stumpless_entry *
 stumpless_set_element( struct stumpless_entry *entry,
                        size_t index,
                        struct stumpless_element *element ) {
+  struct stumpless_entry *result = NULL;
+
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( element );
+
+  lock_entry( entry );
 
   if( index >= entry->element_count ) {
     raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
                                index );
-    return NULL;
+    goto cleanup_and_return;
   }
 
   if( unchecked_entry_has_element( entry, element->name ) ) {
     raise_duplicate_element(  );
-    return NULL;
+    goto cleanup_and_return;
   }
 
   entry->elements[index] = element;
 
+  result = entry;
   clear_error(  );
-  return entry;
+
+cleanup_and_return:
+  unlock_entry( entry );
+  return result;
 }
 
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
-  const char * effective_name;
-  size_t temp_name_length;
-  char *temp_name;
+  const char *effective_name;
+  char *new_name;
+  size_t new_name_length;
+  const char *old_name;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
   effective_name = app_name ? app_name : "-";
-
-  if ( !validate_app_name_length( effective_name ) ) {
-      return NULL;
-  }
-
-  temp_name = copy_cstring_with_length( effective_name, &temp_name_length );
-  if( !temp_name ) {
+  if( !validate_app_name_length( effective_name ) ) {
     return NULL;
   }
 
-  free_mem( entry->app_name );
-  entry->app_name = temp_name;
-  entry->app_name_length = temp_name_length;
+  new_name = copy_cstring_with_length( effective_name, &new_name_length );
+  if( !new_name ) {
+    return NULL;
+  }
 
+  lock_entry( entry );
+  old_name = entry->app_name;
+  entry->app_name = new_name;
+  entry->app_name_length = new_name_length;
+  unlock_entry( entry );
+
+  free_mem( old_name );
   clear_error(  );
   return entry;
 }
@@ -475,7 +617,9 @@ stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
     return NULL;
   }
 
+  lock_entry( entry );
   entry->prival = get_prival( facility, get_severity( entry->prival ) );
+  unlock_entry( entry );
 
   clear_error(  );
   return entry;
@@ -485,8 +629,9 @@ struct stumpless_entry *
 stumpless_set_entry_msgid( struct stumpless_entry *entry,
                            const char *msgid ) {
   const char *effective_msgid;
-  size_t temp_length;
-  char *temp_msgid;
+  char *new_msgid;
+  size_t new_msgid_length;
+  const char *old_msgid;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
@@ -495,15 +640,18 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
       return NULL;
   }
 
-  temp_msgid = copy_cstring_with_length( effective_msgid, &temp_length );
-  if( !temp_msgid ) {
+  new_msgid = copy_cstring_with_length( effective_msgid, &new_msgid_length );
+  if( !new_msgid ) {
     return NULL;
   }
 
-  free_mem( entry->msgid );
-  entry->msgid = temp_msgid;
-  entry->msgid_length = temp_length;
+  lock_entry( entry );
+  old_msgid = entry->msgid;
+  entry->msgid = new_msgid;
+  entry->msgid_length = new_msgid_length;
+  unlock_entry( entry );
 
+  free_mem( old_msgid );
   clear_error(  );
   return entry;
 }
@@ -532,13 +680,14 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
-                               element_index );
+  lock_entry( entry );
+  element = locked_get_element_by_index( entry, element_index );
+  unlock_entry( entry );
+
+  if( !element ) {
     return NULL;
   }
 
-  element = entry->elements[element_index];
   set_result = stumpless_set_param( element, param_index, param );
   if( !set_result ) {
     return NULL;
@@ -557,13 +706,14 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  if( element_index >= entry->element_count ) {
-    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
-                               element_index );
+  lock_entry( entry );
+  element = locked_get_element_by_index( entry, element_index );
+  unlock_entry( entry );
+
+  if( !element ) {
     return NULL;
   }
 
-  element = entry->elements[element_index];
   set_result = stumpless_set_param_value_by_index( element,
                                                    param_index,
                                                    value );
@@ -586,11 +736,13 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( element_name );
 
-  element = stumpless_get_element_by_name( entry, element_name );
+  lock_entry( entry );
+  element = locked_get_element_by_name( entry, element_name );
+
   if( !element ) {
     element = stumpless_new_element( element_name );
     if( !element ) {
-      goto fail;
+      goto cleanup_and_fail;
     }
 
     element_created = true;
@@ -602,19 +754,22 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
   }
 
   if( element_created ) {
-    result = stumpless_add_element( entry, element );
+    result = locked_add_element( entry, element );
     if( !result ) {
       goto fail_set;
     }
   }
 
+  unlock_entry( entry );
+  clear_error(  );
   return entry;
 
 fail_set:
   if( element_created ) {
     stumpless_destroy_element_and_contents( element );
   }
-fail:
+cleanup_and_fail:
+  unlock_entry( entry );
   return NULL;
 }
 
@@ -634,7 +789,9 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
     return NULL;
   }
 
+  lock_entry( entry );
   entry->prival = get_prival( facility, severity );
+  unlock_entry( entry );
 
   clear_error(  );
   return entry;
@@ -657,7 +814,9 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
     return NULL;
   }
 
+  lock_entry( entry );
   entry->prival = get_prival( get_facility( entry->prival ), severity );
+  unlock_entry( entry );
 
   clear_error(  );
   return entry;
@@ -678,7 +837,9 @@ vstumpless_new_entry( int facility,
   size_t *message_length;
 
   if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
+    entry_cache = cache_new( sizeof( *entry ) + CONFIG_MUTEX_T_SIZE,
+                             NULL,
+                             NULL );
 
     if( !entry_cache ) {
       goto fail;
@@ -733,6 +894,8 @@ vstumpless_new_entry( int facility,
   entry->elements = NULL;
   entry->element_count = 0;
 
+  config_init_mutex( ENTRY_MUTEX( entry ) );
+
   clear_error(  );
   return entry;
 
@@ -752,29 +915,30 @@ struct stumpless_entry *
 vstumpless_set_entry_message( struct stumpless_entry *entry,
                               const char *message,
                               va_list subs ) {
-  char *formatted_message;
+  const char *old_message;
+  char *new_message;
   size_t message_length;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( !message ) {
-    free_mem( entry->message );
-    entry->message = NULL;
-    entry->message_length = 0;
+    new_message = NULL;
+    message_length = 0;
 
   } else {
-    formatted_message = config_format_string( message, subs, &message_length );
-    if( !formatted_message ) {
+    new_message = config_format_string( message, subs, &message_length );
+    if( !new_message ) {
       return NULL;
-
-    } else {
-      free_mem( entry->message );
-      entry->message = formatted_message;
-      entry->message_length = message_length;
-
     }
   }
 
+  lock_entry( entry );
+  old_message = entry->message;
+  entry->message = new_message;
+  entry->message_length = message_length;
+  unlock_entry( entry );
+
+  free_mem( old_message );
   clear_error(  );
   return entry;
 }
@@ -792,6 +956,73 @@ get_prival( int facility, int severity ) {
   return facility | severity;
 }
 
+void
+lock_entry( const struct stumpless_entry *entry ) {
+  config_lock_mutex( ENTRY_MUTEX( entry ) );
+}
+
+struct stumpless_entry *
+locked_add_element( struct stumpless_entry *entry,
+                    struct stumpless_element *element ) {
+  struct stumpless_element **new_elements;
+  size_t old_elements_size;
+  size_t new_elements_size;
+
+  if( unchecked_entry_has_element( entry, element->name ) ) {
+    raise_duplicate_element(  );
+    return NULL;
+  }
+
+  old_elements_size = sizeof( element ) * entry->element_count;
+  new_elements_size = old_elements_size + sizeof( element );
+
+  new_elements = realloc_mem( entry->elements, new_elements_size );
+  if( !new_elements ) {
+    return NULL;
+  }
+
+  new_elements[entry->element_count] = element;
+  entry->elements = new_elements;
+  entry->element_count++;
+
+  return entry;
+}
+
+struct stumpless_element *
+locked_get_element_by_index( const struct stumpless_entry *entry,
+                             size_t index ) {
+  if( index >= entry->element_count ) {
+    raise_index_out_of_bounds( L10N_INVALID_INDEX_ERROR_MESSAGE( "element" ),
+                               index );
+    return NULL;
+  }
+
+  return entry->elements[index];
+}
+
+struct stumpless_element *
+locked_get_element_by_name( const struct stumpless_entry *entry,
+                            const char *name ) {
+  int i;
+  struct stumpless_element *element;
+  int cmp_result;
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    element = entry->elements[i];
+
+    lock_element( element );
+    cmp_result = strcmp( element->name, name );
+    unlock_element( element );
+
+    if( cmp_result == 0 ) {
+      return element;
+    }
+  }
+
+  raise_element_not_found(  );
+  return NULL;
+}
+
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry ) {
@@ -802,10 +1033,15 @@ strbuilder_append_app_name( struct strbuilder *builder,
 struct strbuilder *
 strbuilder_append_hostname( struct strbuilder *builder ) {
   char buffer[RFC_5424_MAX_HOSTNAME_LENGTH + 1];
+  int result;
 
-  config_gethostname( buffer, RFC_5424_MAX_HOSTNAME_LENGTH + 1 );
+  result = config_gethostname( buffer, RFC_5424_MAX_HOSTNAME_LENGTH + 1 );
 
-  return strbuilder_append_string( builder, buffer );
+  if( result == -1 ) {
+    return strbuilder_append_char( builder, '-' );
+  } else {
+    return strbuilder_append_string( builder, buffer );
+  }
 }
 
 struct strbuilder *
@@ -870,6 +1106,8 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
+  config_destroy_mutex( ENTRY_MUTEX( entry ) );
+
   config_destroy_wel_data( entry );
 
   free_mem( entry->elements );
@@ -892,4 +1130,9 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
   }
 
   return false;
+}
+
+void
+unlock_entry( const struct stumpless_entry *entry ) {
+  config_unlock_mutex( ENTRY_MUTEX( entry ) );
 }

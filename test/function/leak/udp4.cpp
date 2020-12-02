@@ -16,11 +16,7 @@
  * limitations under the License.
  */
 
-#ifdef _WIN32
-#  include <winsock2.h>
-#else
-#  include <sys/socket.h>
-#endif
+#include "test/helper/server.hpp"
 
 #include <stddef.h>
 #include <stumpless.h>
@@ -28,7 +24,6 @@
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
-#include "test/helper/server.hpp"
 
 NEW_MEMORY_COUNTER( set_port )
 NEW_MEMORY_COUNTER( udp4_leak )
@@ -60,16 +55,12 @@ namespace {
   TEST( Udp4TargetLeakTest, TypicalUse ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    struct stumpless_entry *result_entry;
-    struct stumpless_element *element;
-    struct stumpless_element *result_element;
-    struct stumpless_param *param;
     size_t i;
     int add_result;
     socket_handle_t handle;
     bool fixture_enabled = true;
 
-    handle = open_udp_server_socket( AF_INET, "127.0.0.1", "514" );
+    handle = open_udp4_server_socket( "127.0.0.1", "514" );
     if( handle == BAD_HANDLE ) {
       fixture_enabled = false;
     }
@@ -88,8 +79,8 @@ namespace {
     for( i = 0; i < 1000; i++ ) {
       add_result = stumpless_add_entry( target, entry );
       if( fixture_enabled ) {
-        EXPECT_NO_ERROR;
         EXPECT_GE( add_result, 0 );
+        EXPECT_NO_ERROR;
       }
     }
 

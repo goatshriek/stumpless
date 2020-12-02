@@ -7,6 +7,35 @@ on:
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
 jobs:
+  linux-analysis:
+    name: "code analysis"
+    runs-on: "ubuntu-20.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Headers
+        run: |
+          tools/check_headers/check_headers.rb "include/**/*.h*"
+          tools/check_headers/check_headers.rb "src/**/*.c"
+          tools/check_headers/check_headers.rb "test/**/*.cpp"
+      - name: Build Documentation
+        run: |
+          make docs
+      - name: Sonarcloud Analysis
+        run: |
+          wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          unzip build-wrapper-linux-x86.zip
+          cmake .
+          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
+          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
+          ls
+          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
+          ls
+          chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
+          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
   linux-debug:
     name: "linux, debug"
     runs-on: "ubuntu-20.04"
@@ -21,6 +50,9 @@ jobs:
       - name: Test
         run: |
           make check
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -31,6 +63,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples
@@ -55,6 +88,9 @@ jobs:
       - name: Test
         run: |
           make check
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -65,6 +101,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples
@@ -85,7 +122,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF .
+          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
       - name: Build
         run: |
           make all
@@ -233,6 +270,9 @@ jobs:
       - name: Test
         run: |
           make check
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -243,6 +283,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples
@@ -267,6 +308,9 @@ jobs:
       - name: Test
         run: |
           make check
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -277,6 +321,7 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples
@@ -297,7 +342,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF .
+          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
       - name: Build
         run: |
           make all
@@ -350,6 +395,9 @@ jobs:
       - name: Test
         run: |
           cmake --build . --config Debug --target check
+      - name: Thread Safety Tests
+        run: |
+          cmake --build . --config Debug --target check-thread-safety
       - name: Run Examples
         run: |
           cmake --build . --config Debug --target examples
@@ -367,6 +415,9 @@ jobs:
       - name: Test
         run: |
           cmake --build . --config Release --target check
+      - name: Thread Safety Tests
+        run: |
+          cmake --build . --config Release --target check-thread-safety
       - name: Run Examples
         run: |
           cmake --build . --config Release --target examples
@@ -377,7 +428,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Configure
         run: |
-          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release .
+          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
       - name: Build
         run: |
           cmake --build . --config Release

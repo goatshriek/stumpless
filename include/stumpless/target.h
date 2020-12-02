@@ -29,6 +29,7 @@
 
 #  include <stdarg.h>
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
 
@@ -58,7 +59,10 @@ enum stumpless_target_type {
 struct stumpless_target {
 /** A unique identifier of this target. */
   stumpless_id_t id;
-/** The type of this target. */
+/**
+ * The type of this target. The type of a target will not change over the
+ * lifetime of the target.
+ */
   enum stumpless_target_type type;
 /**
  * The name of this target.
@@ -70,6 +74,8 @@ struct stumpless_target {
  * The name of the target will be NULL-terminated.
  */
   char *name;
+/** The number of characters in the name. */
+  size_t name_length;
 /** A bitwise or of all options set on the target. */
   int options;
 /** The prival used for messages without a severity or facility provided. */
@@ -97,10 +103,38 @@ struct stumpless_target {
  * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
  */
   int mask;
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/*
+ * In thread-safe builds the memory at the end of the target holds a mutex that
+ * is used to coordinate access to the target. However the type info is not
+ * included in the struct definition in the public headers as it is
+ * configuration-specific and would complicate the public headers significantly
+ * if they were to stay portable.
+ */
+#  endif
 };
 
 /**
  * Logs a message to the default target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
@@ -124,6 +158,25 @@ int stump( const char *message, ... );
  * For detailed information on what the default target will be for a given
  * system, check the stumpless_get_default_target() function documentation.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
  *
@@ -138,7 +191,25 @@ void
 stumplog( int priority, const char *message, ... );
 
 /**
- * Adds an entry into a given target.
+ * Adds an entry into a given target. This is the primary logging function of
+ * stumpless; all other logging functions call this one after performing any
+ * setup specific to themselves.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked.
  *
  * @param target The target to send the message to.
  *
@@ -154,6 +225,25 @@ stumpless_add_entry( struct stumpless_target *target,
 
 /**
  * Adds a log message with a priority to a given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param target The target to send the message to.
  *
@@ -179,6 +269,25 @@ stumpless_add_log( struct stumpless_target *target,
 
 /**
  * Adds a message to a given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param target The target to send the message to.
  *
@@ -208,6 +317,20 @@ stumpless_add_message( struct stumpless_target *target,
  * is more efficient to call the specific close function if you know the type of
  * the target.
  *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
  * @param target The target to close.
  */
 void
@@ -228,6 +351,18 @@ stumpless_close_target( struct stumpless_target *target );
  * target used when no suitable current target exists. While these may be the
  * same in some cases, they will not always be.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic operations are used to work with the
+ * default target.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the
+ * possible use of memory management functions to create the default target.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
  * @return The current target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
@@ -236,6 +371,18 @@ stumpless_get_current_target( void );
 
 /**
  * Gets the default facility of a target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param target The target to get the facility from..
  *
@@ -273,6 +420,18 @@ stumpless_get_default_facility( const struct stumpless_target *target );
  * calling the appropriate modifiers on the target after retrieving it with this
  * function.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic operations are used to work with the
+ * default target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the
+ * possible use of memory management functions to create the default target.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
  * @return The default target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
@@ -284,6 +443,18 @@ stumpless_get_default_target( void );
  *
  * While the returned value is the option if it is set, code can also simply
  * check the truth value of the return to see if the provided option is set.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param target The target to get the option from.
  *
@@ -297,15 +468,113 @@ int
 stumpless_get_option( const struct stumpless_target *target, int option );
 
 /**
+ * Returns the default app name of the given target. The character buffer must
+ * be freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.0.0
+ *
+ * @param target The target to get the app name from.
+ *
+ * @return The default app name of the target, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_target_default_app_name( const struct stumpless_target *target );
+
+/**
+ * Returns the default msgid of the given target. The character buffer must be
+ * freed by the caller when it is no longer needed to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.0.0
+ *
+ * @param target The target to get the msgid from.
+ *
+ * @return The default msgid of the target, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+const char *
+stumpless_get_target_default_msgid( const struct stumpless_target *target );
+
+/**
+ * Returns the name of the given target. The character buffer must be freed by
+ * the caller when it is no longer needed to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.0.0
+ *
+ * @param target The target to get the name from.
+ *
+ * @return The name of target, if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+const char *
+stumpless_get_target_name( const struct stumpless_target *target );
+
+/**
  * Opens a target that has already been created and configured.
  *
  * Targets that have been created using the \c stumpless_new_*_target family of
  * functions need to be opened once they have been configured with all of the
- * desired parameters.
+ * desired parameters, or if a previous change caused them to pause.
  *
  * If the provided target has not had all mandatory settings configured or some
  * other error is encountered, then the operation will fail and the target will
  * remain in a paused state.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate accesses and
+ * updates to the current target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param target The target to open.
  *
@@ -324,6 +593,18 @@ stumpless_open_target( struct stumpless_target *target );
  * used by functions like stumplog() and stumpless() where a target is not
  * explicitly provided to the call.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic operations are used to work with the
+ * default target.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers as it only consists of
+ * an atomic read.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled, as it only consists of an atomic read.
+ *
  * @param target The target to use as the current target.
  */
 void
@@ -331,6 +612,18 @@ stumpless_set_current_target( struct stumpless_target *target );
 
 /**
  * Sets the default facility of a target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param target The target to modify.
  *
@@ -347,6 +640,18 @@ stumpless_set_default_facility( struct stumpless_target *target,
 /**
  * Sets an option on a target.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param target The target to modify.
  *
  * @param option The option to set on the target. This should be a
@@ -360,6 +665,21 @@ stumpless_set_option( struct stumpless_target *target, int option );
 
 /**
  * Sets the default app name for a given target.
+ *
+ * **Thread Safety: MT-Safe race:app_name**
+ * This function is thread safe, of course assuming that the name is not changed
+ * by any other threads during exeuction. A mutex is used to coordinate changes
+ * to the target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new name and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param target The target to modify.
  *
@@ -376,6 +696,21 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
 /**
  * Sets the default msgid for a given target.
  *
+ * **Thread Safety: MT-Safe race:msgid**
+ * This function is thread safe, of course assuming that the msgid is not
+ * changed by any other threads during exeuction. A mutex is used to coordinate
+ * changes to the target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new name and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param target The target to modify.
  *
  * @param msgid The new default msgid, as a NULL-terminated string.
@@ -383,7 +718,6 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
-
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid );
@@ -400,6 +734,18 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
  * change has been made that could not be validated, such as changing the port
  * on a TCP network target to one that does not respond on the server.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being accessed.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
  * @param target The target to check.
  *
  * @return The target if it is currently open, and NULL if not.
@@ -409,6 +755,18 @@ stumpless_target_is_open( const struct stumpless_target *target );
 
 /**
  * Unsets an option on a target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @param target The target to modify.
  *
@@ -423,6 +781,25 @@ stumpless_unset_option( struct stumpless_target *target, int option );
 
 /**
  * Logs a message to the default target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
@@ -447,6 +824,25 @@ vstump( const char *message, va_list subs );
  * For detailed information on what the default target will be for a given
  * system, check the stumpless_get_default_target() function documentation.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
  *
@@ -464,6 +860,25 @@ vstumplog( int priority, const char *message, va_list subs );
 
 /**
  * Adds a log message with a priority to a given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param target The target to send the message to.
  *
@@ -491,6 +906,25 @@ vstumpless_add_log( struct stumpless_target *target,
 
 /**
  * Adds a message to a given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
  * @param target The target to send the message to.
  *

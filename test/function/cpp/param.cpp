@@ -16,11 +16,7 @@
  * limitations under the License.
  */
 
-#include <cstddef>
 #include <gtest/gtest.h>
-#include <stumpless.hpp>
-
-using namespace stumpless;
 
 namespace {
 

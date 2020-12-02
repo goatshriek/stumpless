@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2020 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,23 @@
 
 #  include <stddef.h>
 #  include <stdio.h>
+#  include <stumpless/config.h>
 #  include <stumpless/target.h>
+#  include "private/config/wrapper/thread_safety.h"
 
+/**
+ * Internal representation of a file target.
+ */
 struct file_target {
+/** A stream for the file this target writes to. */
   FILE *stream;
+#ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/**
+ * Protects stream. This mutex must be locked by a thread before it can write
+ * to the stream.
+ */
+  config_mutex_t stream_mutex;
+#endif
 };
 
 void
@@ -36,6 +49,19 @@ file_open_default_target( void );
 struct file_target *
 new_file_target( const char *filename );
 
+/**
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. The stream_mutex is used to coordinate updates
+ * to the logged file.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate file writes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ */
 int
 sendto_file_target( struct file_target *target,
                     const char *msg,

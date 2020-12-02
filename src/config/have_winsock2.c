@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include "private/config/have_winsock2.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"
@@ -40,23 +41,15 @@ winsock_open_socket( const char *destination,
                       .ai_addr = NULL,
                       .ai_next = NULL };
   PADDRINFOA addr_result;
-  WSADATA wsa_data;
   int result;
 
   handle = socket( af, type, protocol );
 
   if( handle == INVALID_SOCKET ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      handle = socket( af, type, protocol );
-    }
-
-    if( handle == INVALID_SOCKET ) {
-      raise_socket_failure( L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE,
-                            WSAGetLastError(  ),
-                            L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
-      goto fail;
-    }
+    raise_socket_failure( L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE,
+                          WSAGetLastError(  ),
+                          L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
+    goto fail;
   }
 
   hints.ai_family = af;
@@ -96,136 +89,151 @@ fail:
 void
 winsock2_close_network_target( const struct network_target *target ) {
   closesocket( target->handle );
-}
-
-void
-winsock2_cleanup( void ) {
   WSACleanup(  );
+  config_destroy_mutex( &target->mutex );
 }
 
-int
-winsock2_gethostname( char *buffer, size_t namelen ) {
-  int capped_namelen;
-  int result;
+struct network_target *
+winsock2_init_network_target( struct network_target *target ) {
   WSADATA wsa_data;
 
-  capped_namelen = cap_size_t_to_int( namelen );
-
-  result = gethostname( buffer, capped_namelen );
-
-  if( result == SOCKET_ERROR ) {
-    if( WSAGetLastError(  ) == WSANOTINITIALISED ) {
-      WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-      result = gethostname( buffer, capped_namelen );
-    }
-  }
-
-  return result;
-}
-
-void
-winsock2_init_network_target( struct network_target *target ) {
+  WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
   target->handle = INVALID_SOCKET;
+  config_init_mutex( &target->mutex );
+
+  return target;
 }
 
 struct network_target *
 winsock2_open_tcp4_target( struct network_target *target ) {
+  SOCKET result;
 
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET,
-                                        SOCK_STREAM,
-                                        IPPROTO_TCP );
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET,
+                                SOCK_STREAM,
+                                IPPROTO_TCP );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
 winsock2_open_tcp6_target( struct network_target *target ) {
+  SOCKET result;
 
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET6,
-                                        SOCK_STREAM,
-                                        IPPROTO_TCP );
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET6,
+                                SOCK_STREAM,
+                                IPPROTO_TCP );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
 winsock2_open_udp4_target( struct network_target *target ) {
+  SOCKET result;
 
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET,
-                                        SOCK_DGRAM,
-                                        IPPROTO_UDP );
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET,
+                                SOCK_DGRAM,
+                                IPPROTO_UDP );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
 winsock2_open_udp6_target( struct network_target *target ) {
+  SOCKET result;
 
-  target->handle = winsock_open_socket( target->destination,
-                                        target->port,
-                                        AF_INET6,
-                                        SOCK_DGRAM,
-                                        IPPROTO_UDP );
+  lock_network_target( target );
+  result = winsock_open_socket( target->destination,
+                                target->port,
+                                AF_INET6,
+                                SOCK_DGRAM,
+                                IPPROTO_UDP );
+  target->handle = result;
+  unlock_network_target( target );
 
-  if( target->handle == INVALID_SOCKET ) {
-    return NULL;
-
-  }
-
-  return target;
+  return result == INVALID_SOCKET ? NULL : target;
 }
 
 struct network_target *
 winsock2_reopen_tcp4_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  winsock2_close_network_target( target );
-  return winsock2_open_tcp4_target( target );
+  if( winsock2_network_target_is_open( target ) ) {
+    closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET,
+                                          SOCK_STREAM,
+                                          IPPROTO_TCP );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 struct network_target *
 winsock2_reopen_tcp6_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  winsock2_close_network_target( target );
-  return winsock2_open_tcp6_target( target );
+  if( winsock2_network_target_is_open( target ) ) {
+  closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET6,
+                                          SOCK_STREAM,
+                                          IPPROTO_TCP );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 struct network_target *
 winsock2_reopen_udp4_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  winsock2_close_network_target( target );
-  return winsock2_open_udp4_target( target );
+  if( winsock2_network_target_is_open( target ) ) {
+    closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET,
+                                          SOCK_DGRAM,
+                                          IPPROTO_UDP );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 struct network_target *
 winsock2_reopen_udp6_target( struct network_target *target ) {
+  lock_network_target( target );
 
-  winsock2_close_network_target( target );
-  return winsock2_open_udp6_target( target );
+  if( winsock2_network_target_is_open( target ) ) {
+    closesocket( target->handle );
+    target->handle = winsock_open_socket( target->destination,
+                                          target->port,
+                                          AF_INET6,
+                                          SOCK_DGRAM,
+                                          IPPROTO_UDP );
+  }
 
+  unlock_network_target( target );
+  return target;
 }
 
 int
@@ -234,10 +242,12 @@ winsock2_sendto_target( struct network_target *target,
                         size_t msg_length ) {
   int result;
 
+  lock_network_target( target );
   result = send( target->handle,
                  msg,
                  cap_size_t_to_int( msg_length ),
                  0 );
+  unlock_network_target( target );
 
   if( result == SOCKET_ERROR ) {
     raise_socket_send_failure( L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE,

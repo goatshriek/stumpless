@@ -24,6 +24,7 @@
 #  define __STUMPLESS_PARAM_H
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 
 #  ifdef __cplusplus
 extern "C" {
@@ -50,7 +51,7 @@ struct stumpless_param {
  * versions.
  */
   char *name;
-/** The number of characters in name. */
+/** The number of characters in name (not including the NULL character). */
   size_t name_length;
 /**
  * The value may be any UTF-8 string.
@@ -67,12 +68,35 @@ struct stumpless_param {
  * versions.
  */
   char *value;
-/** The number of characters in value. */
+/** The number of characters in value (not including the NULL character). */
   size_t value_length;
+#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+/*
+ * In thread-safe builds the memory at the end of the param holds a mutex that
+ * is used to coordinate access to the param. However the type info is not
+ * included in the struct definition in the public headers as it is
+ * configuration-specific and would complicate the public headers significantly
+ * if they were to stay portable.
+ */
+#  endif
 };
 
 /**
  * Creates a copy of a param.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the copy.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @param param The param to copy.
  *
@@ -85,14 +109,46 @@ stumpless_copy_param( const struct stumpless_param *param );
 /**
  * Destroys a param, freeing any allocated memory.
  *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
  * @param param The param to destroy.
  */
 void
 stumpless_destroy_param( const struct stumpless_param *param );
 
 /**
- * Returns the name of the given param. The character buffer must not be
- * altered or freed by the caller.
+ * Returns the name of the given param. The character buffer must be freed by
+ * the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the name and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -105,8 +161,26 @@ const char *
 stumpless_get_param_name( const struct stumpless_param *param );
 
 /**
- * Returns the value of the given param. The character buffer must not be
- * altered or freed by the caller.
+ * Returns the value of the given param. The character buffer must be freed by
+ * the caller when it is no longer needed to avoid memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the value and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -121,6 +195,18 @@ stumpless_get_param_value( const struct stumpless_param *param );
 /**
  * Creates a new param with the given name and value.
  *
+ * **Thread Safety: MT-Safe race:name race:value**
+ * This function is thread safe, of course assuming that name and value are not
+ * changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new param.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
  * @param name The name of the new param.
  *
  * @param value The value of the new param.
@@ -133,6 +219,20 @@ stumpless_new_param( const char *name, const char *value );
 
 /**
  * Sets the name of the given param.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * param while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new name and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -148,6 +248,20 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name );
 
 /**
  * Sets the value of the given param.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * param while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new value and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
  *
  * @since release v1.6.0
  *
@@ -166,6 +280,22 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value );
  * Returns the name and the value from param as a formatted string.
  * The character buffer should be freed when no longer is needed by the caller.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.0.0
+ *
  * @param param The param to get the name and the value from.  
  *
  * @return The formatted string of <name>: <value> if no error is encountered.
@@ -173,7 +303,7 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value );
  */
 
 const char *
-stumpless_param_to_string(const struct stumpless_param * param);
+stumpless_param_to_string( const struct stumpless_param *param );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */
