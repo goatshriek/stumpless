@@ -21,6 +21,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
+#include <iostream>
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
@@ -81,17 +82,20 @@ namespace {
                             bool fixture_enabled,
                             bool is_udp ) {
     size_t i;
-    std::thread *threads[THREAD_COUNT*3];
+    std::thread *adder_threads[THREAD_COUNT];
+    std::thread *reader_threads[THREAD_COUNT];
+    std::thread *writer_threads[THREAD_COUNT];
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
       if( fixture_enabled ) {
-        threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
+        adder_threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
       }
 
-      threads[THREAD_COUNT + i] = new std::thread( read_network_target,
+      reader_threads[i] = new std::thread( read_network_target,
                                                    target,
                                                    is_udp );
-      threads[THREAD_COUNT*2 + i] = new std::thread( write_network_target,
+
+      writer_threads[i] = new std::thread( write_network_target,
                                                      target,
                                                      destination,
                                                      is_udp );
@@ -99,14 +103,15 @@ namespace {
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
       if( fixture_enabled ) {
-        threads[i]->join(  );
-        delete threads[i];
+        adder_threads[i]->join(  );
+        delete adder_threads[i];
       }
 
-      threads[THREAD_COUNT + i]->join(  );
-      delete threads[THREAD_COUNT + i];
-      threads[THREAD_COUNT*2 + i]->join(  );
-      delete threads[THREAD_COUNT*2 + i];
+      reader_threads[i]->join(  );
+      delete reader_threads[i];
+
+      writer_threads[i]->join(  );
+      delete writer_threads[i];
     }
   }
 
@@ -157,6 +162,44 @@ namespace {
 
       // set up the target to log to
       target = stumpless_open_tcp4_target( "test-target",
+                                           target_destination,
+                                           STUMPLESS_OPTION_NONE,
+                                           STUMPLESS_FACILITY_USER );
+      EXPECT_NO_ERROR;
+      ASSERT_NOT_NULL( target );
+
+      // run the tests
+      run_network_target_tests( target,
+                                target_destination,
+                                true,
+                                false );
+
+      // cleanup after the test
+      stumpless_close_network_target( target );
+      EXPECT_NO_ERROR;
+      stumpless_free_all(  );
+
+      close_server_socket( handle );
+    }
+  }
+
+  TEST( Tcp6WriteConsistency, SimultaneousWrites ) {
+    struct stumpless_target *target;
+    socket_handle_t handle;
+    const char *target_destination = "::1";
+    std::thread *listener_thread;
+
+    // setting up to receive the sent messages
+    handle = open_tcp6_server_socket( target_destination,
+                                      STUMPLESS_DEFAULT_TRANSPORT_PORT );
+    if( handle == BAD_HANDLE ) {
+      std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
+
+    } else {
+      listener_thread = new std::thread( listen_on_socket, handle );
+
+      // set up the target to log to
+      target = stumpless_open_tcp6_target( "test-target",
                                            target_destination,
                                            STUMPLESS_OPTION_NONE,
                                            STUMPLESS_FACILITY_USER );

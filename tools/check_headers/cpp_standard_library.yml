@@ -1,4 +1,5 @@
 "atomic_int": "atomic"
+"cout": "iostream"
 "get_id": "thread"
 "mutex": "mutex"
 "thread": "thread"
