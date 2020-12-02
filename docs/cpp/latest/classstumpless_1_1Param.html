@@ -106,6 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa4d5a914870ba80e1b1bb4f2239ded57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstumpless_1_1Param.html">Param</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1Param.html#aa4d5a914870ba80e1b1bb4f2239ded57">SetValue</a> (const char *value)</td></tr>
 <tr class="memdesc:aa4d5a914870ba80e1b1bb4f2239ded57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a>.  <a href="classstumpless_1_1Param.html#aa4d5a914870ba80e1b1bb4f2239ded57">More...</a><br /></td></tr>
 <tr class="separator:aa4d5a914870ba80e1b1bb4f2239ded57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a584280678fd68402846b618708f9c437"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1Param.html#a584280678fd68402846b618708f9c437">ToString</a> (void)</td></tr>
+<tr class="memdesc:a584280678fd68402846b618708f9c437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives a string representation of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a>.  <a href="classstumpless_1_1Param.html#a584280678fd68402846b618708f9c437">More...</a><br /></td></tr>
+<tr class="separator:a584280678fd68402846b618708f9c437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -244,7 +247,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The name of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a>. </p>
-<p>Available since release v1.6.0.</p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="section return"><dt>Returns</dt><dd>The name of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a>. </dd></dl>
 
 </div>
@@ -266,7 +269,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The value of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a>. </p>
-<p>Available since release v1.6.0.</p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="section return"><dt>Returns</dt><dd>The value of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a>. </dd></dl>
 
 </div>
@@ -327,6 +330,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a584280678fd68402846b618708f9c437"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a584280678fd68402846b618708f9c437">&#9670;&nbsp;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless::Param::ToString </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gives a string representation of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a>. </p>
+<p>This is not intended for parsing or formatted output, but simply gives a human-readable form. The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. Available since release v2.0.0.</p>
+<dl class="section return"><dt>Returns</dt><dd>The name and value of this <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> in a human-readable string. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a9bc4f7c305fa32b35cce9e83fd0d2343"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9bc4f7c305fa32b35cce9e83fd0d2343">&#9670;&nbsp;</a></span>equivalent</h2>
@@ -348,7 +373,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:25 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:45:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

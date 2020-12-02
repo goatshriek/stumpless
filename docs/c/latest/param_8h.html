@@ -70,6 +70,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
 </div>
 <p><a href="param_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -102,6 +103,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e57db902a7d1ddfc3ac101eeaac99d5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="param_8h.html#a7e57db902a7d1ddfc3ac101eeaac99d5">stumpless_set_param_value</a> (struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *param, const char *value)</td></tr>
 <tr class="memdesc:a7e57db902a7d1ddfc3ac101eeaac99d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the given param.  <a href="param_8h.html#a7e57db902a7d1ddfc3ac101eeaac99d5">More...</a><br /></td></tr>
 <tr class="separator:a7e57db902a7d1ddfc3ac101eeaac99d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ea11248c0e11472b4a68ac5f555569"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="param_8h.html#af4ea11248c0e11472b4a68ac5f555569">stumpless_param_to_string</a> (const struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *param)</td></tr>
+<tr class="memdesc:af4ea11248c0e11472b4a68ac5f555569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name and the value from param as a formatted string.  <a href="param_8h.html#af4ea11248c0e11472b4a68ac5f555569">More...</a><br /></td></tr>
+<tr class="separator:af4ea11248c0e11472b4a68ac5f555569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Types and functions for creating and modifying params. </p>
@@ -123,6 +127,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates a copy of a param. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the param with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the copy.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">param</td><td>The param to copy.</td></tr>
@@ -150,6 +157,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Destroys a param, freeing any allocated memory. </p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">param</td><td>The param to destroy. </td></tr>
@@ -176,7 +186,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the name of the given param. </p>
-<p>The character buffer must not be altered or freed by the caller.</p>
+<p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the param with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -205,7 +219,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the value of the given param. </p>
-<p>The character buffer must not be altered or freed by the caller.</p>
+<p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the param with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -244,6 +262,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates a new param with the given name and value. </p>
+<p><b>Thread Safety: MT-Safe race:name race:value</b> This function is thread safe, of course assuming that name and value are not changed by other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory management functions to create the new param.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the new param.</td></tr>
@@ -252,6 +273,40 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The created param, if no error is encountered. If an error is encountered, then NULL is returned and an error code set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="af4ea11248c0e11472b4a68ac5f555569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ea11248c0e11472b4a68ac5f555569">&#9670;&nbsp;</a></span>stumpless_param_to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless_param_to_string </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td>
+          <td class="paramname"><em>param</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the name and the value from param as a formatted string. </p>
+<p>The character buffer should be freed when no longer is needed by the caller.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the param with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.0.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">param</td><td>The param to get the name and the value from. <br  />
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The formatted string of &lt;name&gt;: </dd></dl>
+<p>if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </p>
 
 </div>
 </div>
@@ -282,6 +337,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the name of the given param. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the param while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -321,6 +379,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the value of the given param. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the param while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new value and free the old one.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -336,7 +397,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

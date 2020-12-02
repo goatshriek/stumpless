@@ -73,6 +73,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;stdarg.h&gt;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="entry_8h_source.html">stumpless/entry.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="id_8h_source.html">stumpless/id.h</a>&gt;</code><br />
 </div>
@@ -140,6 +141,15 @@ Functions</h2></td></tr>
 <tr class="memitem:aed16b4ce57d0bc6c489b0e67b7403a13"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aed16b4ce57d0bc6c489b0e67b7403a13">stumpless_get_option</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int option)</td></tr>
 <tr class="memdesc:aed16b4ce57d0bc6c489b0e67b7403a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a given option of a target.  <a href="target_8h.html#aed16b4ce57d0bc6c489b0e67b7403a13">More...</a><br /></td></tr>
 <tr class="separator:aed16b4ce57d0bc6c489b0e67b7403a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61798fafd6055275c7948757f15597f6"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a61798fafd6055275c7948757f15597f6">stumpless_get_target_default_app_name</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:a61798fafd6055275c7948757f15597f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default app name of the given target.  <a href="target_8h.html#a61798fafd6055275c7948757f15597f6">More...</a><br /></td></tr>
+<tr class="separator:a61798fafd6055275c7948757f15597f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2088153afde4d7fad973540ffc3de445"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a2088153afde4d7fad973540ffc3de445">stumpless_get_target_default_msgid</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:a2088153afde4d7fad973540ffc3de445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default msgid of the given target.  <a href="target_8h.html#a2088153afde4d7fad973540ffc3de445">More...</a><br /></td></tr>
+<tr class="separator:a2088153afde4d7fad973540ffc3de445"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6060d6b5a97fb47af3f05a61b344a7a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa6060d6b5a97fb47af3f05a61b344a7a">stumpless_get_target_name</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:aa6060d6b5a97fb47af3f05a61b344a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the given target.  <a href="target_8h.html#aa6060d6b5a97fb47af3f05a61b344a7a">More...</a><br /></td></tr>
+<tr class="separator:aa6060d6b5a97fb47af3f05a61b344a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a070986b2efb20440e2ae1ba8b0b7de07"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a070986b2efb20440e2ae1ba8b0b7de07">stumpless_open_target</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
 <tr class="memdesc:a070986b2efb20440e2ae1ba8b0b7de07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a target that has already been created and configured.  <a href="target_8h.html#a070986b2efb20440e2ae1ba8b0b7de07">More...</a><br /></td></tr>
 <tr class="separator:a070986b2efb20440e2ae1ba8b0b7de07"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,6 +281,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Logs a message to the default target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
@@ -309,6 +322,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Adds an entry into a given target. </p>
+<p>This is the primary logging function of stumpless; all other logging functions call this one after performing any setup specific to themselves.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
@@ -359,6 +376,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Adds a log message with a priority to a given target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
@@ -405,6 +425,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Adds a message to a given target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
@@ -435,6 +458,9 @@ Functions</h2></td></tr>
 
 <p>Closes a target. </p>
 <p>This function can be used when you'd like to avoid checking the type of the target and then calling the appropriate close function. Note that use of this doesn't actually avoid the check - it just does the check on your behalf. It is more efficient to call the specific close function if you know the type of the target.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to close. </td></tr>
@@ -464,6 +490,9 @@ Functions</h2></td></tr>
 <p>The current target is either the last target that was opened, set by a call to <a class="el" href="target_8h.html#a33ab9d3dd3d55f39c1df420dbc8327d4" title="Sets the target used when one is not provided.">stumpless_set_current_target()</a>, or the default target if neither of the former exists.</p>
 <p>If the target that is designated as the current target is closed, then the current target will be reset to the default target until another target is opened.</p>
 <p>Be careful not to confuse this target with the default target, which is the target used when no suitable current target exists. While these may be the same in some cases, they will not always be.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic operations are used to work with the default target.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the possible use of memory management functions to create the default target.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
 <dl class="section return"><dt>Returns</dt><dd>The current target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
 
 </div>
@@ -485,6 +514,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the default facility of a target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being read.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to get the facility from..</td></tr>
@@ -516,6 +548,9 @@ Functions</h2></td></tr>
 <p>Be careful not to confuse this target with the current target, which is the last target opened or set via <a class="el" href="target_8h.html#a33ab9d3dd3d55f39c1df420dbc8327d4" title="Sets the target used when one is not provided.">stumpless_set_current_target()</a>. While these will return the same target in some cases, such as if they are called before opening any targets, they are not equivalent.</p>
 <p>The default target type will change depending on the configuration of the system configuration. If Windows Event Log targets are supported, then the default target will log to an event log named <code>STUMPLESS_DEFAULT_TARGET_NAME</code>. If Windows Event Log targets are not supported and socket targets are, then the default target will point at the socket named in STUMPLESS_DEFAULT_SOCKET, which will be /var/run/syslog if it existed at build time, or else /dev/log. If neither of these target types are supported then a file target is opened to log to the file named in <code>STUMPLESS_DEFAULT_FILE</code>.</p>
 <p>The default target will not have any options set, and will have a default facility of <code>STUMPLESS_FACILITY_USER</code>. These settings may be modified by calling the appropriate modifiers on the target after retrieving it with this function.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic operations are used to work with the default target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the possible use of memory management functions to create the default target.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
 <dl class="section return"><dt>Returns</dt><dd>The default target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
 
 </div>
@@ -548,6 +583,9 @@ Functions</h2></td></tr>
 
 <p>Gets a given option of a target. </p>
 <p>While the returned value is the option if it is set, code can also simply check the truth value of the return to see if the provided option is set.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being read.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to get the option from.</td></tr>
@@ -556,6 +594,102 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The option if it is set on the target. If the option is not set, then zero is returned. If an error is encountered, then zero is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="a61798fafd6055275c7948757f15597f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61798fafd6055275c7948757f15597f6">&#9670;&nbsp;</a></span>stumpless_get_target_default_app_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless_get_target_default_app_name </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the default app name of the given target. </p>
+<p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.0.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to get the app name from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The default app name of the target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="a2088153afde4d7fad973540ffc3de445"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2088153afde4d7fad973540ffc3de445">&#9670;&nbsp;</a></span>stumpless_get_target_default_msgid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless_get_target_default_msgid </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the default msgid of the given target. </p>
+<p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.0.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to get the msgid from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The default msgid of the target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="aa6060d6b5a97fb47af3f05a61b344a7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6060d6b5a97fb47af3f05a61b344a7a">&#9670;&nbsp;</a></span>stumpless_get_target_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless_get_target_name </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the name of the given target. </p>
+<p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.0.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to get the name from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The name of target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
 
 </div>
 </div>
@@ -576,8 +710,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Opens a target that has already been created and configured. </p>
-<p>Targets that have been created using the <code>stumpless_new_*_target</code> family of functions need to be opened once they have been configured with all of the desired parameters.</p>
+<p>Targets that have been created using the <code>stumpless_new_*_target</code> family of functions need to be opened once they have been configured with all of the desired parameters, or if a previous change caused them to pause.</p>
 <p>If the provided target has not had all mandatory settings configured or some other error is encountered, then the operation will fail and the target will remain in a paused state.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate accesses and updates to the current target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to open.</td></tr>
@@ -606,6 +743,9 @@ Functions</h2></td></tr>
 
 <p>Sets the target used when one is not provided. </p>
 <p>Without being set, the current target will be the last one opened, or the default target if a target has not yet been opened. The current target is used by functions like <a class="el" href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df" title="Logs a message to the default target with the given priority.">stumplog()</a> and stumpless() where a target is not explicitly provided to the call.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic operations are used to work with the default target.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers as it only consists of an atomic read.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled, as it only consists of an atomic read.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to use as the current target. </td></tr>
@@ -642,6 +782,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the default facility of a target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to modify.</td></tr>
@@ -680,6 +823,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets an option on a target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to modify.</td></tr>
@@ -718,10 +864,13 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the default app name for a given target. </p>
+<p><b>Thread Safety: MT-Safe race:app_name</b> This function is thread safe, of course assuming that the name is not changed by any other threads during exeuction. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to modify.</td></tr>
-    <tr><td class="paramname">app_name</td><td>The new default app name, as a NULL-terminated string.</td></tr>
+    <tr><td class="paramname">app_name</td><td>The new default app name, as a NULL-terminated string. The app name length is restricted to be 48 characters or less.</td></tr>
   </table>
   </dd>
 </dl>
@@ -756,6 +905,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the default msgid for a given target. </p>
+<p><b>Thread Safety: MT-Safe race:msgid</b> This function is thread safe, of course assuming that the msgid is not changed by any other threads during exeuction. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to modify.</td></tr>
@@ -785,6 +937,9 @@ Functions</h2></td></tr>
 
 <p>Checks to see if the given target is open. </p>
 <p>For targets that are opened with a single <code>open</code> function call, they will likely be considered open as long as they are non-NULL, as the target creation would otherwise fail before it could be opened. Targets are be considered in a paused state if they were created but not opened yet, for example with <code>stumpless_new_network_target</code> as opposed to <code>stumpless_open_network_target</code>. Targets may also be paused if a settings change has been made that could not be validated, such as changing the port on a TCP network target to one that does not respond on the server.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being accessed.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to check.</td></tr>
@@ -822,6 +977,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Unsets an option on a target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to modify.</td></tr>
@@ -868,6 +1026,9 @@ Functions</h2></td></tr>
 <p>Logs a message to the default target with the given priority. </p>
 <p>This function can serve as a replacement for the traditional <code>syslog</code> function.</p>
 <p>For detailed information on what the default target will be for a given system, check the <a class="el" href="target_8h.html#a137ec6ade02951be14bff3572725f076" title="Gets the default target.">stumpless_get_default_target()</a> function documentation.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
@@ -906,6 +1067,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Logs a message to the default target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
@@ -956,6 +1120,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Adds a log message with a priority to a given target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
@@ -1002,6 +1169,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Adds a message to a given target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
@@ -1049,6 +1219,9 @@ Functions</h2></td></tr>
 <p>Logs a message to the default target with the given priority. </p>
 <p>Can serve as a replacement for the traditional <code>vsyslog</code> function.</p>
 <p>For detailed information on what the default target will be for a given system, check the <a class="el" href="target_8h.html#a137ec6ade02951be14bff3572725f076" title="Gets the default target.">stumpless_get_default_target()</a> function documentation.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
@@ -1063,7 +1236,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

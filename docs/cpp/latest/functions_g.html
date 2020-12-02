@@ -68,6 +68,13 @@ $(function() {
 <li>GetCurrent()
 : <a class="el" href="classstumpless_1_1Version.html#a0c69f33c417c828c43c9a4a082cd74e0">stumpless::Version</a>
 </li>
+<li>GetDefaultAppName()
+: <a class="el" href="classstumpless_1_1BufferTarget.html#a28eead9c74852f1189dfd8b5864c7107">stumpless::BufferTarget</a>
+, <a class="el" href="classstumpless_1_1FileTarget.html#a044698d8d3694c2fb451b24ef720a977">stumpless::FileTarget</a>
+, <a class="el" href="classstumpless_1_1NetworkTarget.html#a1192ce69b02ae5e96be400ea4cddfc94">stumpless::NetworkTarget</a>
+, <a class="el" href="classstumpless_1_1SocketTarget.html#a122e25bd2d79061f97d66d5f9d66dd71">stumpless::SocketTarget</a>
+, <a class="el" href="classstumpless_1_1StreamTarget.html#a445f8ad53f788097c786ddf61f17fe37">stumpless::StreamTarget</a>
+</li>
 <li>GetDefaultFacility()
 : <a class="el" href="classstumpless_1_1BufferTarget.html#ad0367cd504a0de8967be158bc4924704">stumpless::BufferTarget</a>
 , <a class="el" href="classstumpless_1_1FileTarget.html#a3aca8cacb5a296ce292a20581fed8195">stumpless::FileTarget</a>
@@ -75,11 +82,21 @@ $(function() {
 , <a class="el" href="classstumpless_1_1SocketTarget.html#acee3c903ebf51bf62a176bd1cde25f99">stumpless::SocketTarget</a>
 , <a class="el" href="classstumpless_1_1StreamTarget.html#a82342650d59f56a05f0ba66b1e669c70">stumpless::StreamTarget</a>
 </li>
+<li>GetDefaultMsgid()
+: <a class="el" href="classstumpless_1_1BufferTarget.html#a35b8615bdde46599a4fa02dffe02fde7">stumpless::BufferTarget</a>
+, <a class="el" href="classstumpless_1_1FileTarget.html#a8ce059351e7f6712931fdeafa485d712">stumpless::FileTarget</a>
+, <a class="el" href="classstumpless_1_1NetworkTarget.html#ab0a99362d78039886977a235cfbb7f03">stumpless::NetworkTarget</a>
+, <a class="el" href="classstumpless_1_1SocketTarget.html#aee860b661b33c07cfcbcf58e1cb2dbde">stumpless::SocketTarget</a>
+, <a class="el" href="classstumpless_1_1StreamTarget.html#a688a30bf431bbb439982f7a7412d5df0">stumpless::StreamTarget</a>
+</li>
 <li>GetDestination()
 : <a class="el" href="classstumpless_1_1NetworkTarget.html#a973508f11fd46caf8cd268edce2c1a71">stumpless::NetworkTarget</a>
 </li>
 <li>GetElement()
 : <a class="el" href="classstumpless_1_1Entry.html#a66a85566c36aab25013a1455260a48e8">stumpless::Entry</a>
+</li>
+<li>GetElementCount()
+: <a class="el" href="classstumpless_1_1Entry.html#a38aa83da0c8e0a1e38c763b836e11d7d">stumpless::Entry</a>
 </li>
 <li>GetElementIndex()
 : <a class="el" href="classstumpless_1_1Entry.html#a1473428705cb0bcfdefeebce3ada2223">stumpless::Entry</a>
@@ -91,8 +108,13 @@ $(function() {
 : <a class="el" href="classstumpless_1_1Entry.html#ae27d4a60a17921a4a641e082632fcfbc">stumpless::Entry</a>
 </li>
 <li>GetName()
-: <a class="el" href="classstumpless_1_1Element.html#af462ca02628b840eeeeee67039eb7dce">stumpless::Element</a>
+: <a class="el" href="classstumpless_1_1BufferTarget.html#a4be7942149212ff8a1e0b17f92a5ad00">stumpless::BufferTarget</a>
+, <a class="el" href="classstumpless_1_1Element.html#af462ca02628b840eeeeee67039eb7dce">stumpless::Element</a>
+, <a class="el" href="classstumpless_1_1FileTarget.html#a806073853558876f7f926518d7b34dd0">stumpless::FileTarget</a>
+, <a class="el" href="classstumpless_1_1NetworkTarget.html#af81839f37c69cc22dd5c424c3ca839de">stumpless::NetworkTarget</a>
 , <a class="el" href="classstumpless_1_1Param.html#a1e7dde8962854211b81e078341dec29a">stumpless::Param</a>
+, <a class="el" href="classstumpless_1_1SocketTarget.html#ace883ea22d8a71924286b31a022bd149">stumpless::SocketTarget</a>
+, <a class="el" href="classstumpless_1_1StreamTarget.html#a32b35def51771bc01c1faa84ec50647c">stumpless::StreamTarget</a>
 </li>
 <li>GetOption()
 : <a class="el" href="classstumpless_1_1BufferTarget.html#aa680005d8477d7472d521ded551d449e">stumpless::BufferTarget</a>
@@ -102,7 +124,7 @@ $(function() {
 , <a class="el" href="classstumpless_1_1StreamTarget.html#ae777994920976c5c2dca600459b89369">stumpless::StreamTarget</a>
 </li>
 <li>GetParam()
-: <a class="el" href="classstumpless_1_1Element.html#a481bf1be1975c03729ae4d3687e1f50d">stumpless::Element</a>
+: <a class="el" href="classstumpless_1_1Element.html#a639f6de21d1dfbb0df4dc0143f0f3e5f">stumpless::Element</a>
 , <a class="el" href="classstumpless_1_1Entry.html#a2b297f9b791fce86008d10b59e5d21dd">stumpless::Entry</a>
 </li>
 <li>GetParamCount()
@@ -140,7 +162,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:25 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:45:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

@@ -156,7 +156,10 @@ Functions</h2></td></tr>
 <tr class="separator:a37a4ea930c6b729188b07546e1294a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Network targets allow logs to be sent over a network to a remote log collector or relay. There are a number of popular options for the remote end including Splunk, rsyslog, and syslog-ng. Network targets can send messages to these and others, over both IPv4 and IPv6, TCP and UDP. </p>
+<div class="textblock"><p>Network targets allow logs to be sent over a network to a remote log collector or relay. There are a number of popular options for the remote end including Splunk, rsyslog, and syslog-ng. Network targets can send messages to these and others, over both IPv4 and IPv6, TCP and UDP.</p>
+<p><b>Thread Safety: MT-Safe</b> Logging to network targets is thread safe by virtue of using the network logging functions which are thread safe themselves.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to network targets is not signal safe, as a non-reentrant lock is used to coordinate the read of the entry with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to network targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for entries may not be completed. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a9cfd99b618e5ad004238bc53312fa99f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9cfd99b618e5ad004238bc53312fa99f">&#9670;&nbsp;</a></span>STUMPLESS_DEFAULT_TRANSPORT_PORT</h2>
@@ -256,6 +259,9 @@ Functions</h2></td></tr>
 
 <p>Closes a network target. </p>
 <p>This function closes the network connection associated with the target before destruction. It also destroys all memory allocated for the target, including the target struct itself.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The network target to close. </td></tr>
@@ -282,13 +288,19 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the destination of a network target. </p>
+<p>The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>If the network target has been created but not had a destination set yet, the result will be NULL.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the destination and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to get the destination from.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The current destination of the network target. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current destination of the network target, or NULL if one has not yet been set. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
 
 </div>
 </div>
@@ -309,6 +321,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the transport port number of a network target. </p>
+<p>The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>If the network target has been created but not had a destination set yet, the result will be a string holding the same string as in STUMPLESS_DEFAULT_TRANSPORT_PORT.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to get the port number from.</td></tr>
@@ -336,6 +353,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the current maximum message size of a UDP network target. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate access to the target with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to get the message size from.</td></tr>
@@ -380,7 +400,10 @@ Functions</h2></td></tr>
 
 <p>Creates a network target, but does not open it. </p>
 <p>A network target can be created with this function if the target needs to be created without initiating a network session. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change.</p>
-<p>The target will stay in a paused state until it is opened using the <code>stumpless_open_target</code> function.</p>
+<p>The target will stay in a paused state until it is opened using the stumpless_open_target function.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -411,7 +434,10 @@ Functions</h2></td></tr>
 
 <p>Creates a network target for logging over IPv4 and TCP, but does not open it. </p>
 <p>A network target can be created with this function if the target needs to be created without initiating a network session. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change.</p>
-<p>The target will stay in a paused state until it is opened using the <code>stumpless_open_target</code> function.</p>
+<p>The target will stay in a paused state until it is opened using the stumpless_open_target function.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -440,7 +466,10 @@ Functions</h2></td></tr>
 
 <p>Creates a network target for logging over IPv6 and TCP, but does not open it. </p>
 <p>A network target can be created with this function if the target needs to be created without initiating a network session. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change.</p>
-<p>The target will stay in a paused state until it is opened using the <code>stumpless_open_target</code> function.</p>
+<p>The target will stay in a paused state until it is opened using the stumpless_open_target function.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -469,7 +498,10 @@ Functions</h2></td></tr>
 
 <p>Creates a network target for logging over IPv4 and UDP, but does not open it. </p>
 <p>A network target can be created with this function if the target needs to be created without initiating a network session. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change.</p>
-<p>The target will stay in a paused state until it is opened using the <code>stumpless_open_target</code> function.</p>
+<p>The target will stay in a paused state until it is opened using the stumpless_open_target function.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -498,7 +530,10 @@ Functions</h2></td></tr>
 
 <p>Creates a network target for logging over IPv6 and UDP, but does not open it. </p>
 <p>A network target can be created with this function if the target needs to be created without initiating a network session. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change.</p>
-<p>The target will stay in a paused state until it is opened using the <code>stumpless_open_target</code> function.</p>
+<p>The target will stay in a paused state until it is opened using the stumpless_open_target function.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -560,7 +595,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Opens a network target. </p>
-<p>Network targets allow traditional syslog messages to be sent to a remote server. This function allows the type of network target to be specified by parameters, but if you know that you want a specific type then it is easier to use the simplified functions that specify the type by name, such as the <code>stumpless_open_udp4_target</code> function.</p>
+<p>Network targets allow traditional syslog messages to be sent to a remote server. This function allows the type of network target to be specified by parameters, but if you know that you want a specific type then it is easier to use the simplified functions that specify the type by name, such as the stumpless_open_udp4_target function.</p>
+<p><b>Thread Safety: MT-Safe race:name race:destination</b> This function is thread safe, of course assuming that name and destination are not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -616,6 +654,9 @@ Functions</h2></td></tr>
 
 <p>Opens a network target for remote logging over IPv4 and TCP. </p>
 <p>A TCP4 target will use Syslog over TCP, as defined in RFC 6587. Note that this includes the use of octet counting for transmission of messages, instead of a delimiter such as a newline character.</p>
+<p><b>Thread Safety: MT-Safe race:name race:destination</b> This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -669,6 +710,9 @@ Functions</h2></td></tr>
 
 <p>Opens a network target for remote logging over IPv6 and TCP. </p>
 <p>A TCP6 target will use Syslog over TCP, as defined in RFC 6587. Note that this includes the use of octet counting for transmission of messages, instead of a delimiter such as a newline character.</p>
+<p><b>Thread Safety: MT-Safe race:name race:destination</b> This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -722,6 +766,9 @@ Functions</h2></td></tr>
 
 <p>Opens a network target for remote logging over IPv4 and UDP. </p>
 <p>A UDP4 target will use Syslog over UDP, as defined in RFC 5426.</p>
+<p><b>Thread Safety: MT-Safe race:name race:destination</b> This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -775,6 +822,9 @@ Functions</h2></td></tr>
 
 <p>Opens a network target for remote logging over IPv6 and UDP. </p>
 <p>A UDP6 target will use Syslog over UDP, as defined in RFC 5426.</p>
+<p><b>Thread Safety: MT-Safe race:name race:destination</b> This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -815,7 +865,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the destination of a network target. </p>
-<p>If the target is already open when this function is called, then it will attempt to re-open the target after the destination is changed. If the target is in a paused state, then it will be left that way until an explicit call to <code>stumpless_open_target</code> is made.</p>
+<p>If the target is already open when this function is called, then it will attempt to re-open the target after the destination is changed. If the target is in a paused state, then it will be left that way until an explicit call to stumpless_open_target is made.</p>
+<p>Note that if the target cannot be re-opened, this will not be treated as an error condition. That is, the returned value will still be the target, and the destination will reflect the new value. Versions prior to 2.0.0 treated this as an error condition and returned NULL despite the destination being updated successfully.</p>
+<p><b>Thread Safety: MT-Safe race:destination</b> This function is thread safe, of course assuming that the destination string is not changed by any other threads during execution. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new destination and free the old one.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to be modified.</td></tr>
@@ -854,7 +908,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the transport port number of a network target. </p>
-<p>If the target is already open when this function is called, then it will attempt to re-open the target after the port is changed. If the target is in a paused state, then it will be left that way until an explicit call to <code>stumpless_open_target</code> is made.</p>
+<p>No validation is performed on the provided port number. The string can even contain non-numerical characters, and the target will be updated with the provided string. However, the target may not be able to successfully open if the port is invalid.</p>
+<p>If the target is already open when this function is called, then it will attempt to re-open the target after the port is changed. If the target is in a paused state, then it will be left that way until an explicit call to stumpless_open_target is made.</p>
+<p>Note that if the target cannot be re-opened, this will not be treated as an error condition. That is, the returned value will still be the target, and the port will reflect the new value. Versions prior to 2.0.0 treated this as an error condition and returned NULL despite the port being updated successfully.</p>
+<p><b>Thread Safety: MT-Safe race:port</b> This function is thread safe, of course assuming that the port string is not changed by any other threads during execution. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new destination and free the old one.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to be modified.</td></tr>
@@ -896,6 +955,9 @@ Functions</h2></td></tr>
 <p>Messages that are longer than the maximum size are truncated to this length. If the underlying transport for a network target can support a larger datagram and you need support for longer messages, then you can use this option to increase the size. Likewise, the option can be used to force smaller datagrams if needed, for example in the case of extra overhead in the IP header beyond the typical 20 bytes.</p>
 <p>Note that truncations due to the maximum size do not take UTF characters into account. If you have entries using multi-byte characters, then you need to be sure that these truncations do not cause parsing or security problems.</p>
 <p>Without calling this function, UDP targets start with a maximum message size set to <code>STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE</code>.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to be modified.</td></tr>
@@ -910,7 +972,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

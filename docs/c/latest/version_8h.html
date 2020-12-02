@@ -110,6 +110,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the version of code the library was built with. </p>
+<p>This version must be freed by the caller when it is no longer needed to avoid a memory leak.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory management functions to create the version structure.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
 <dl class="section return"><dt>Returns</dt><dd>The version of code used by the library build. </dd></dl>
 
 </div>
@@ -141,7 +145,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Compares the version of two given <a class="el" href="structstumpless__version.html" title="A description of a library version.">stumpless_version</a> struct. </p>
-<p>This function make use of a similar convention used by the standard library's strcmp function.</p>
+<p>This function makes use of a similar convention used by the standard library's strcmp function.</p>
+<p><b>Thread Safety: MT-Safe race:version_x race:version_y</b> This function is thread safe, as long as the versions to be compared are not modified by other threads during the call.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">version_x,version_y</td><td>Two given version(const) to be compared.</td></tr>
@@ -175,6 +182,10 @@ Functions</h2></td></tr>
 
 <p>Creates a string representation of the given version. </p>
 <p>This string will be NULL-terminated, and will appear in the standard semantic versioning format of 'major.minor.patch'.</p>
+<p>This string must be freed by the caller when it is no longer needed. Failing to do so will result in a memory leak of the returned string.</p>
+<p><b>Thread Safety: MT-Safe race:version</b> This function is thread safe, as long as the version is not modified by other threads during the call.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">version</td><td>The version to convert to a string.</td></tr>
@@ -188,7 +199,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

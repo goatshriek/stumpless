@@ -72,10 +72,10 @@ $(function() {
 <div class="title">wel_supported.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdarg.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;windows.h&gt;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="entry_8h_source.html">stumpless/entry.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="param_8h_source.html">stumpless/param.h</a>&gt;</code><br />
-<code>#include &lt;windows.h&gt;</code><br />
 </div>
 <p><a href="wel__supported_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -136,6 +136,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets an insertion string from a Windows Event Log entry. </p>
+<p>The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the string and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the entry's WEL data with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to retrieve the insertion string from.</td></tr>
@@ -175,6 +180,9 @@ Functions</h2></td></tr>
 
 <p>Sets the category of an entry for use with a Windows Event Log target. </p>
 <p>The category is used by a Windows Event Log target. Entries that are going to be sent to a Windows Event Log target must have the category specified before they are sent.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the entry's WEL data while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
@@ -214,6 +222,9 @@ Functions</h2></td></tr>
 
 <p>Sets the event id of an entry for use with a Windows Event Log target. </p>
 <p>The event id is used by a Windows Event Log target. Entries that are going to be sent to a Windows Event Log target must have the event id specified before they are sent.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the entry's WEL data while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
@@ -260,6 +271,9 @@ Functions</h2></td></tr>
 <p>Sets a param to use for string insertion in a Windows Event Log entry. </p>
 <p>Windows Events may include insertion strings that are replaced with a specific value provided when logged. This function maps a specific insertion string to a param. The value of the param will then be substituted for that insertion string when an event is logged. If the windows event does not have an insertion string correlating to the given index, it will simply be ignored.</p>
 <p>Note that insertion strings use the value of the param at log time. If the value changes between log entries, it will reflect these changes in the log itself as well. This also means that you should not destroy a param unless you are sure that no entries exist that are using it.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
@@ -307,6 +321,9 @@ Functions</h2></td></tr>
 <p>Sets a string to use for string insertion in a Windows Event Log entry. </p>
 <p>Windows Events may include insertion strings such as %1 or %3 that are replaced with a specific value provided when logged. This function maps a specific insertion string to a given string. The string will then be substituted for that insertion string when an event is logged. If the windows event does not have an insertion string correlating to the given index, it will simply be ignored.</p>
 <p>Note that the provided string is copied by the library, and therefore will always hold the value that was in str when this function was called, even if the string changes or is destroyed later.</p>
+<p><b>Thread Safety: MT-Safe race:str</b> This function is thread safe, of course assuming that the str is not changed by any other threads during execution. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
@@ -353,6 +370,9 @@ Functions</h2></td></tr>
 
 <p>Sets the insertion strings of a Windows Event Log entry. </p>
 <p>Instead of setting each insertion string separately via <code>stumpless_set_wel_insertion_string</code> this function can set the insertion strings all at the same time.</p>
+<p><b>Thread Safety: MT-Safe race:...</b> This function is thread safe, of course assuming that none of the supplied insertion strings are changed by any other threads during execution. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
@@ -393,6 +413,9 @@ Functions</h2></td></tr>
 
 <p>Sets the type of an entry for use with a Windows Event Log target. </p>
 <p>The type is used by a Windows Event Log target. Entries that are going to be sent to a Windows Event Log target must have the type specified before they are sent.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the entry's WEL data while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
@@ -438,6 +461,9 @@ Functions</h2></td></tr>
 
 <p>Sets the insertion strings of a Windows Even Log entry. </p>
 <p>Instead of setting the each insertion string separately via <code>stumpless_set_wel_insertion_string</code> this function can set the insertion strings all at the same time.</p>
+<p><b>Thread Safety: MT-Safe race:...</b> This function is thread safe, of course assuming that none of the supplied insertion strings are changed by any other threads during execution. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entry</td><td>The entry to modify.</td></tr>
@@ -453,7 +479,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

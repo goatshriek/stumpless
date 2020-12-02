@@ -87,7 +87,10 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Socket targets allow logs to be sent to a Unix domain socket.</p>
-<p>The most common use for socket targets is to send logs to the /dev/log socket or the /var/run/syslog where the syslog daemon is listening. </p>
+<p>The most common use for socket targets is to send logs to the /dev/log socket or the /var/run/syslog where the syslog daemon is listening.</p>
+<p><b>Thread Safety: MT-Safe</b> Logging to socket targets is thread safe by virtue of using the <code>sendto</code> function which is thread safe itself.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to socket targets is not signal safe, as a non-reentrant lock is used to coordinate the read of the entry with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to socket targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for entries may not be completed. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a71cbe2c33f5b48d1a0917c1cc5b0f2e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a71cbe2c33f5b48d1a0917c1cc5b0f2e0">&#9670;&nbsp;</a></span>stumpless_close_socket_target()</h2>
@@ -107,6 +110,9 @@ Functions</h2></td></tr>
 
 <p>Closes a socket target. </p>
 <p>This function closes the socket target, as well as the connection to the target socket.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The socket target to close. </td></tr>
@@ -155,6 +161,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Opens a socket target. </p>
+<p><b>Thread Safety: MT-Safe race:name race:local_socket</b> This function is thread safe, of course assuming that the target name and socket name are not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the socket target, and the socket to send logs to.</td></tr>
@@ -171,7 +180,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

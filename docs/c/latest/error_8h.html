@@ -121,7 +121,10 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905a91889792e71b9a05384c07860b5b18e3">STUMPLESS_TARGET_UNSUPPORTED</a> = 20, 
 <a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905ab7953c9acd5c9f0139e023879e3399c3">STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED</a> = 21, 
 <a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905a905b5b5e647ab9587e1fe99d8443446d">STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE</a> = 22, 
-<a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905aea927fecd2d7201e3d5057f597da644d">STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE</a> = 23
+<a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905aea927fecd2d7201e3d5057f597da644d">STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE</a> = 23, 
+<br />
+&#160;&#160;<a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905a9c3e80897e8fa96dc068a60da3fdc3dd">STUMPLESS_INVALID_ENCODING</a> = 24, 
+<a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905af6b3ff0716054911345e9f78591a36de">STUMPLESS_GETHOSTNAME_FAILURE</a> = 25
 <br />
  }</td></tr>
 <tr class="memdesc:ad1538b93b7b697991133c38d70a41905"><td class="mdescLeft">&#160;</td><td class="mdescRight">An (enum) identifier of the types of errors that might be encountered.  <a href="error_8h.html#ad1538b93b7b697991133c38d70a41905">More...</a><br /></td></tr>
@@ -129,9 +132,9 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a815feec2232597ca82bb6f6da314dceb"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__error.html">stumpless_error</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8h.html#a815feec2232597ca82bb6f6da314dceb">stumpless_get_error</a> (void)</td></tr>
-<tr class="memdesc:a815feec2232597ca82bb6f6da314dceb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the error encountered by the last library call.  <a href="error_8h.html#a815feec2232597ca82bb6f6da314dceb">More...</a><br /></td></tr>
-<tr class="separator:a815feec2232597ca82bb6f6da314dceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9454c627e3fe861fce0bc9e56f92fb97"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structstumpless__error.html">stumpless_error</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8h.html#a9454c627e3fe861fce0bc9e56f92fb97">stumpless_get_error</a> (void)</td></tr>
+<tr class="memdesc:a9454c627e3fe861fce0bc9e56f92fb97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the error encountered by the last library call.  <a href="error_8h.html#a9454c627e3fe861fce0bc9e56f92fb97">More...</a><br /></td></tr>
+<tr class="separator:a9454c627e3fe861fce0bc9e56f92fb97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeff69eb7387f0d1d0e461cdce10488be"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="error_8h.html#ad1538b93b7b697991133c38d70a41905">stumpless_error_id</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8h.html#aeff69eb7387f0d1d0e461cdce10488be">stumpless_get_error_id</a> (const struct <a class="el" href="structstumpless__error.html">stumpless_error</a> *err)</td></tr>
 <tr class="memdesc:aeff69eb7387f0d1d0e461cdce10488be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the error id of the given error.  <a href="error_8h.html#aeff69eb7387f0d1d0e461cdce10488be">More...</a><br /></td></tr>
 <tr class="separator:aeff69eb7387f0d1d0e461cdce10488be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -277,19 +280,23 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="ad1538b93b7b697991133c38d70a41905aea927fecd2d7201e3d5057f597da644d"></a>STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE&#160;</td><td class="fielddoc"><p>Could not open the Windows Event Log. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ad1538b93b7b697991133c38d70a41905a9c3e80897e8fa96dc068a60da3fdc3dd"></a>STUMPLESS_INVALID_ENCODING&#160;</td><td class="fielddoc"><p>A provided encoding does not conform to the standard. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad1538b93b7b697991133c38d70a41905af6b3ff0716054911345e9f78591a36de"></a>STUMPLESS_GETHOSTNAME_FAILURE&#160;</td><td class="fielddoc"><p>The current hostname could not be retrieved. </p>
+</td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a815feec2232597ca82bb6f6da314dceb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a815feec2232597ca82bb6f6da314dceb">&#9670;&nbsp;</a></span>stumpless_get_error()</h2>
+<a id="a9454c627e3fe861fce0bc9e56f92fb97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9454c627e3fe861fce0bc9e56f92fb97">&#9670;&nbsp;</a></span>stumpless_get_error()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__error.html">stumpless_error</a>* stumpless_get_error </td>
+          <td class="memname">const struct <a class="el" href="structstumpless__error.html">stumpless_error</a>* stumpless_get_error </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -299,8 +306,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retrieves the error encountered by the last library call. </p>
+<p>The returned error struct is only valid until the next call to a stumpless function. After this, it should not be referred to, and if the error of any subsequent call is needed another call to stumpless_get_error must be made.</p>
 <p>Note that the id is the only field of the error that is guaranteed to be set. Other members may or may not be set, depending on the context of the error.</p>
 <p>If the code_type is NULL, then the code is not valid and should be ignored.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. No synchronization primitives are used as the returned pointer is specific to the thread of execution. As a result, the result should not be shared between threads.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers. If you do so, note that if it is called before a stumpless library function in the handler itself the result will not be meaningful.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled.</p>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structstumpless__error.html" title="Information describing an error encountered by the library.">stumpless_error</a> struct describing the error encountered by the last function call. If no error was encountered, this will be NULL. </dd></dl>
 
 </div>
@@ -322,6 +333,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the error id of the given error. </p>
+<p><b>Thread Safety: MT-Safe race:err</b> This function is thread safe, as long as err is not modifed by other threads during this call.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled.</p>
 <dl class="section since"><dt>Since</dt><dd>Release v1.5.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -350,6 +364,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the error string of the given error id. </p>
+<p>This is a string literal that should not be modified or freed by the caller.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled.</p>
 <dl class="section since"><dt>Since</dt><dd>Release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -378,6 +396,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the current stream that errors are written to. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic variables are used to store and retrieve the error stream.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be ansynchronously cancelled.</p>
 <dl class="section return"><dt>Returns</dt><dd>The current stream errors are written to. </dd></dl>
 
 </div>
@@ -400,6 +421,9 @@ Functions</h2></td></tr>
 
 <p>True if the last call to a stumpless function encountered an error. </p>
 <p>To get the error itself, use the stumpless_get_error function.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. No synchronization primitives are used as the returned flag is specific to the thread of execution.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers. If you do so, note that if it is called before a stumpless library function in the handler itself the result will not be meaningful.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the last stumpless call had an error, false if not. </dd></dl>
 
@@ -425,6 +449,9 @@ Functions</h2></td></tr>
 <p>A prefix can be added to the information if desired. If one is provided then it will be followed by a colon character and a space, followed by the error information. If it is not provided then the colon and space characters will not be printed.</p>
 <p>The message will end with a newline.</p>
 <p>If there is not currently an active error message, then nothing will be printed (not even the prefix).</p>
+<p><b>Thread Safety: MT-Safe race:prefix</b> This function is thread safe, of course assuming that prefix is not changed by other threads during execution. A lock is used to coordinate accesses to the error stream.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers, as it uses a non-reentrant lock to synchronize access to the error stream.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the lock used to control access to the error stream may not be released after a cancellation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">prefix</td><td>An optional prefix to print in front of the message. If this is NULL then it will simply be ignored. </td></tr>
@@ -452,6 +479,9 @@ Functions</h2></td></tr>
 
 <p>Sets the stream to write errors to. </p>
 <p>This will be stderr by default, but can be set to any stream. If it is set to NULL then error messages will not be printed (essentially skipping all <code>stumpless_perror</code> calls).</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic variables are used to store and retrieve the error stream.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be ansynchronously cancelled.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stream</td><td>The stream to write errors to. If this is NULL then it will be ignored. </td></tr>
@@ -464,7 +494,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

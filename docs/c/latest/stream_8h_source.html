@@ -88,51 +88,51 @@ $(function() {
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef __STUMPLESS_TARGET_STREAM_H</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#  define __STUMPLESS_TARGET_STREAM_H</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#  include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="stream_8h.html#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">   43</a></span>&#160;<a class="code" href="stream_8h.html#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">stumpless_close_stream_target</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#ifndef __STUMPLESS_TARGET_STREAM_H</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#  define __STUMPLESS_TARGET_STREAM_H</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#  include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#  endif</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="stream_8h.html#aa648e70a44acefd1a417f05bbf410e1d">   61</a></span>&#160;<a class="code" href="stream_8h.html#aa648e70a44acefd1a417f05bbf410e1d">stumpless_open_stderr_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                              <span class="keywordtype">int</span> <a class="code" href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">options</a>,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                              <span class="keywordtype">int</span> default_facility );</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="stream_8h.html#a77e20d2c1af8de3e4cee648359af7673">   81</a></span>&#160;<a class="code" href="stream_8h.html#a77e20d2c1af8de3e4cee648359af7673">stumpless_open_stdout_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                              <span class="keywordtype">int</span> <a class="code" href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">options</a>,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                              <span class="keywordtype">int</span> default_facility );</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="stream_8h.html#a1e073738681b71755c56583381aebbe7">  110</a></span>&#160;<a class="code" href="stream_8h.html#a1e073738681b71755c56583381aebbe7">stumpless_open_stream_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                              FILE *stream,</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                              <span class="keywordtype">int</span> <a class="code" href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">options</a>,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                              <span class="keywordtype">int</span> default_facility );</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_STREAM_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="stream_8h.html#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">   69</a></span>&#160;<a class="code" href="stream_8h.html#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">stumpless_close_stream_target</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="stream_8h.html#aa648e70a44acefd1a417f05bbf410e1d">   99</a></span>&#160;<a class="code" href="stream_8h.html#aa648e70a44acefd1a417f05bbf410e1d">stumpless_open_stderr_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                              <span class="keywordtype">int</span> <a class="code" href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">options</a>,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                              <span class="keywordtype">int</span> default_facility );</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="stream_8h.html#a77e20d2c1af8de3e4cee648359af7673">  131</a></span>&#160;<a class="code" href="stream_8h.html#a77e20d2c1af8de3e4cee648359af7673">stumpless_open_stdout_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                              <span class="keywordtype">int</span> <a class="code" href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">options</a>,</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                              <span class="keywordtype">int</span> default_facility );</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="stream_8h.html#a1e073738681b71755c56583381aebbe7">  172</a></span>&#160;<a class="code" href="stream_8h.html#a1e073738681b71755c56583381aebbe7">stumpless_open_stream_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                              FILE *stream,</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                              <span class="keywordtype">int</span> <a class="code" href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">options</a>,</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                              <span class="keywordtype">int</span> default_facility );</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_STREAM_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astream_8h_html_a1e073738681b71755c56583381aebbe7"><div class="ttname"><a href="stream_8h.html#a1e073738681b71755c56583381aebbe7">stumpless_open_stream_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_stream_target(const char *name, FILE *stream, int options, int default_facility)</div><div class="ttdoc">Opens a stream target for the given stream.</div></div>
-<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:72</div></div>
-<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:58</div></div>
+<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:76</div></div>
+<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:59</div></div>
 <div class="ttc" id="astream_8h_html_ae3d3a8d4d1d96d9b06dc27a74bc4d6d4"><div class="ttname"><a href="stream_8h.html#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">stumpless_close_stream_target</a></div><div class="ttdeci">void stumpless_close_stream_target(const struct stumpless_target *target)</div><div class="ttdoc">Closes a stream target.</div></div>
 <div class="ttc" id="atarget_8h_html"><div class="ttname"><a href="target_8h.html">target.h</a></div></div>
 <div class="ttc" id="astream_8h_html_aa648e70a44acefd1a417f05bbf410e1d"><div class="ttname"><a href="stream_8h.html#aa648e70a44acefd1a417f05bbf410e1d">stumpless_open_stderr_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_stderr_target(const char *name, int options, int default_facility)</div><div class="ttdoc">Opens a stream target for the stderr stream.</div></div>
-<div class="ttc" id="astructstumpless__target_html_ab4036dc1c418541ec8c84233d0565e35"><div class="ttname"><a href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">stumpless_target::options</a></div><div class="ttdeci">int options</div><div class="ttdoc">A bitwise or of all options set on the target.</div><div class="ttdef"><b>Definition:</b> target.h:74</div></div>
+<div class="ttc" id="astructstumpless__target_html_ab4036dc1c418541ec8c84233d0565e35"><div class="ttname"><a href="structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35">stumpless_target::options</a></div><div class="ttdeci">int options</div><div class="ttdoc">A bitwise or of all options set on the target.</div><div class="ttdef"><b>Definition:</b> target.h:80</div></div>
 <div class="ttc" id="astream_8h_html_a77e20d2c1af8de3e4cee648359af7673"><div class="ttname"><a href="stream_8h.html#a77e20d2c1af8de3e4cee648359af7673">stumpless_open_stdout_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_stdout_target(const char *name, int options, int default_facility)</div><div class="ttdoc">Opens a stream target for the stdout stream.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

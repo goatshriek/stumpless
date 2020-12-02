@@ -85,9 +85,17 @@ Functions</h2></td></tr>
 <tr class="memitem:aa965271b20bea88e8bc63353023f9c98"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8h.html#aa965271b20bea88e8bc63353023f9c98">stumpless_open_buffer_target</a> (const char *name, char *buffer, size_t size, int options, int default_facility)</td></tr>
 <tr class="memdesc:aa965271b20bea88e8bc63353023f9c98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffer target for the given buffer.  <a href="buffer_8h.html#aa965271b20bea88e8bc63353023f9c98">More...</a><br /></td></tr>
 <tr class="separator:aa965271b20bea88e8bc63353023f9c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95b19f4eaa0fb9836f1d0f1ec7be5bf1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buffer_8h.html#a95b19f4eaa0fb9836f1d0f1ec7be5bf1">stumpless_read_buffer</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, char *buffer, size_t max_length)</td></tr>
+<tr class="memdesc:a95b19f4eaa0fb9836f1d0f1ec7be5bf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the next message from the provided buffer target and writes it into the given buffer.  <a href="buffer_8h.html#a95b19f4eaa0fb9836f1d0f1ec7be5bf1">More...</a><br /></td></tr>
+<tr class="separator:a95b19f4eaa0fb9836f1d0f1ec7be5bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Buffer targets provide an extremely simple capability to write logs into a plain character buffer. They must be completely synchronized with the code reading from the buffer, leading to usage limited to extremely simple applications and testing or troubleshooting. </p>
+<div class="textblock"><p>Buffer targets provide the simple capability to write logs into a character buffer.</p>
+<p>The interface for buffer targets is based on the Linux kernel log buffer interface. Interacting with the buffer should only be done using the provided functions, or corruption or loss of log messages may occur.</p>
+<p>The contents of the buffer itself may be modified at any time, and should not be read directly with any expectation of consistency or coherence.</p>
+<p><b>Thread Safety: MT-Safe</b> Logging to buffer targets is thread safe. A mutex is used to coordinate changes to the buffer with each other and reads.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to buffer targets is not signal safe, as a non-reentrant lock is used to coordinate accesses to the buffer.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to buffer targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="abbd81bd277432c5046046f2fd00445ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abbd81bd277432c5046046f2fd00445ef">&#9670;&nbsp;</a></span>stumpless_close_buffer_target()</h2>
@@ -107,6 +115,9 @@ Functions</h2></td></tr>
 
 <p>Closes a buffer target. </p>
 <p>Note that this will not release the buffer it was dynamically allocated. This must be done after the buffer target is closed to avoid invalid memory accesses.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The buffer target to close. </td></tr>
@@ -164,6 +175,9 @@ Functions</h2></td></tr>
 <p>Buffer targets will write messages to the given buffer, wrapping around when the end is reached. A NULL character will be written to the end of each message. Note that callers must handle the wrap-around case, and not assume that each read will end in a NULL character, in case a wrap-around occurs.</p>
 <p>Messages that are too large to fit into the buffer will be discarded.</p>
 <p>Messages are overwritten as new messages come in. If the user of the buffer target is not reading these, they will be lost.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -178,10 +192,60 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a95b19f4eaa0fb9836f1d0f1ec7be5bf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95b19f4eaa0fb9836f1d0f1ec7be5bf1">&#9670;&nbsp;</a></span>stumpless_read_buffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t stumpless_read_buffer </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads the next message from the provided buffer target and writes it into the given buffer. </p>
+<p>If the buffer has not been read from before messages have wrapped around, then you may only get the end of a message. To avoid this situation, you will need to read the buffer often enough to stay ahead of the written messages. Making sure that the log buffer is sufficiently sized may help with this.</p>
+<p>A terminating NULL character will always be written at the end of the output. Note that this means that if the read operation was successful but there was no message to read, the result will be 1 with a single NULL character being written to the read buffer.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate reads and writes of the message buffer.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as a lock may be left locked when a thread exits prematurely.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The buffer target to read from.</td></tr>
+    <tr><td class="paramname">buffer</td><td>The buffer to write the message in to.</td></tr>
+    <tr><td class="paramname">max_length</td><td>The maximum number of bytes to write into the provided buffer. If this is zero, then the read buffer will be considered an empty argument and an error will be raised.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of bytes written into buffer, including the terminating NULL character. In the event of an error, 0 is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

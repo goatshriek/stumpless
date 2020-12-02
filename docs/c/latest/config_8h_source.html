@@ -95,40 +95,31 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="config_8h.html#ae37eeba5eda204c4bb3637e52aab3b13">   38</a></span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define STUMPLESS_FALLBACK_PAGESIZE 4096</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="config_8h.html#a6ed0111426505fa8c9f5037ffaf1eb46">   41</a></span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define STUMPLESS_NETWORK_TARGETS_SUPPORTED 1</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="config_8h.html#abdb62062b7f177295fe1a9760712009d">   44</a></span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define STUMPLESS_SOCKET_TARGETS_SUPPORTED 1</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="config_8h.html#ab2413bd6075a1f0b7bc15cd1ee9334f8">   47</a></span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define STUMPLESS_SYSLOG_H_COMPATIBLE 1</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="config_8h.html#ac586c95e2a313b66042830b2bad89712">   50</a></span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">/* #undef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED */</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define STUMPLESS_MAJOR_VERSION 2</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="config_8h.html#a08b8d3b494c3b0117fd8a7f2664d5eee">   56</a></span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#define STUMPLESS_MINOR_VERSION 0</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="config_8h.html#add9d784358097bb7dcdb318148490601">   59</a></span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#define STUMPLESS_PATCH_VERSION 0</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="config_8h.html#aa732a24f731f1404f5ecc24a15d85306">   62</a></span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#define STUMPLESS_VERSION &quot;2.0.0&quot;</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="config_8h.html#a206a120f0880fed4e4e73ca6f7d13b4f">   69</a></span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment"> * According to Microsoft, windows.h should be included first in any sources, as</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment"> * it sets up definitions that need to be first. However, if our user has not</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"> * done this before including stumpless, we&#39;ll go ahead and include it here to</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"> * shield them from the responsibility.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#  ifndef _WINDOWS_</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#    define WIN32_LEAN_AND_MEAN</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#    include &lt;windows.h&gt;</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __STUMPLESS_CONFIG_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define STUMPLESS_LANGUAGE &quot;en-US&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="config_8h.html#a1f280cd91337c811c1140c628bdfcfd4">   44</a></span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define STUMPLESS_NETWORK_TARGETS_SUPPORTED 1</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="config_8h.html#abdb62062b7f177295fe1a9760712009d">   47</a></span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define STUMPLESS_SOCKET_TARGETS_SUPPORTED 1</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="config_8h.html#ab2413bd6075a1f0b7bc15cd1ee9334f8">   50</a></span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#define STUMPLESS_SYSLOG_H_COMPATIBLE 1</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="config_8h.html#ac586c95e2a313b66042830b2bad89712">   53</a></span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define STUMPLESS_THREAD_SAFETY_SUPPORTED 1</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="config_8h.html#acb1bc5c076ce6a6b7940fc799c8bb56d">   56</a></span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">/* #undef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED */</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#define STUMPLESS_MAJOR_VERSION 2</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="config_8h.html#a08b8d3b494c3b0117fd8a7f2664d5eee">   62</a></span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#define STUMPLESS_MINOR_VERSION 0</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="config_8h.html#add9d784358097bb7dcdb318148490601">   65</a></span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#define STUMPLESS_PATCH_VERSION 0</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="config_8h.html#aa732a24f731f1404f5ecc24a15d85306">   68</a></span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#define STUMPLESS_VERSION &quot;2.0.0&quot;</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="config_8h.html#a206a120f0880fed4e4e73ca6f7d13b4f">   75</a></span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __STUMPLESS_CONFIG_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

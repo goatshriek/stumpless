@@ -9,19 +9,6 @@ or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
 ## 2.0.0 (next major and minor release)
- * [ADD] **Thread safety for all library calls and structures**
-   This is a critical feature for a logging library that needs to be run in a
-   huge variety of contexts with minimal overhead work to implement it. Adding
-   this feature will likely change how structures are interacted with in the
-   library, as things like direct struct access will need to have a thread-safe
-   alternative. This implementation will be done as granularly as possible, and
-   will not use any static library-wide locks in order to avoid throughput
-   issues in the future.
- * [CHANGE] **`stumpless` function will be removed (use `stump` instead)**
-   As currently named, the function makes it impossible to create a C++
-   namespace named after the library itself. Renaming this function will give it
-   a more meaningful name and also allow a cleaner namespace in the C++
-   bindings.
  * [DEPRECATE] **entry and element destructor synonyms**
    Currently, there are two forms of the destructors for these two structures:
    one that destroys the object itself, and one that destroys the object and all
@@ -35,30 +22,11 @@ or want to make a suggestion, please submit an issue on the project's
    clear the error flags. Clearing them can especially cause confusion in other
    language bindings, where the calling of the destructor is not explicit and
    may be difficult to track down.
- - [CHANGE] **Error codes will be guaranteed to be a consistent value**
-   Error ids are currently defined by an enumeration without any values
-   specified, which means that they could change across builds. Setting these to
-   specific values will make them consistent across all builds, increasing
-   interoperability.
- * [CHANGE] **Facilities, severities, options, element functions, and param
-   functions will only be available in separate headers**
-   These items are all currently included in the `stumpless/entry.h` header,
-   which was originally getting too large. Separating these allowed for smaller,
-   more logically separate headers. While the roll-up header `stumpless.h` will
-   still include all of these, `stumpless/entry.h` will no longer included the
-   other headers. While the header split out was done in a minor release, the
-   removal of the headers from `stumpless/entry.h` is being delayed to a major
-   release as code that is including specific headers may break as a result of
-   this change.
  * [CHANGE] **Facilities and severities will be defined by enumerations**
    Enumerations are a cleaner way to represent the set values, and can be made
    compatible with the `syslog.h` values if their backing `int` values match.
    Because function signatures will change, this will be done in a major
    release.
- * [REMOVE] **Inclusion of windows.h in stumpless/config.h**
-   This inclusion, while convenient for some users, propogates inclusion
-   ordering problems. It will be removed so that such ordering concerns are only
-   on users of Windows, and not added to this library as well.
  * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
    Enumerations are preferred for working with these set values in C++, and this
    function was inadvertently left in the library during development.

@@ -91,9 +91,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a08dbb04503a18f17b0defa8c32190aae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FileTarget.html#a08dbb04503a18f17b0defa8c32190aae">~FileTarget</a> (void)</td></tr>
 <tr class="memdesc:a08dbb04503a18f17b0defa8c32190aae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes this target and releases all memory and other resources held by it.  <a href="classstumpless_1_1FileTarget.html#a08dbb04503a18f17b0defa8c32190aae">More...</a><br /></td></tr>
 <tr class="separator:a08dbb04503a18f17b0defa8c32190aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a044698d8d3694c2fb451b24ef720a977"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FileTarget.html#a044698d8d3694c2fb451b24ef720a977">GetDefaultAppName</a> (void)</td></tr>
+<tr class="memdesc:a044698d8d3694c2fb451b24ef720a977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default app name used by this target.  <a href="classstumpless_1_1FileTarget.html#a044698d8d3694c2fb451b24ef720a977">More...</a><br /></td></tr>
+<tr class="separator:a044698d8d3694c2fb451b24ef720a977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce059351e7f6712931fdeafa485d712"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FileTarget.html#a8ce059351e7f6712931fdeafa485d712">GetDefaultMsgid</a> (void)</td></tr>
+<tr class="memdesc:a8ce059351e7f6712931fdeafa485d712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default msgid used by this target.  <a href="classstumpless_1_1FileTarget.html#a8ce059351e7f6712931fdeafa485d712">More...</a><br /></td></tr>
+<tr class="separator:a8ce059351e7f6712931fdeafa485d712"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aca8cacb5a296ce292a20581fed8195"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29">Facility</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FileTarget.html#a3aca8cacb5a296ce292a20581fed8195">GetDefaultFacility</a> (void)</td></tr>
 <tr class="memdesc:a3aca8cacb5a296ce292a20581fed8195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default facility of this target.  <a href="classstumpless_1_1FileTarget.html#a3aca8cacb5a296ce292a20581fed8195">More...</a><br /></td></tr>
 <tr class="separator:a3aca8cacb5a296ce292a20581fed8195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a806073853558876f7f926518d7b34dd0"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FileTarget.html#a806073853558876f7f926518d7b34dd0">GetName</a> (void)</td></tr>
+<tr class="memdesc:a806073853558876f7f926518d7b34dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of this target.  <a href="classstumpless_1_1FileTarget.html#a806073853558876f7f926518d7b34dd0">More...</a><br /></td></tr>
+<tr class="separator:a806073853558876f7f926518d7b34dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fa361d0c7036f9c151ec433f4584a76"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FileTarget.html#a1fa361d0c7036f9c151ec433f4584a76">GetOption</a> (int option)</td></tr>
 <tr class="memdesc:a1fa361d0c7036f9c151ec433f4584a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the given option for this target.  <a href="classstumpless_1_1FileTarget.html#a1fa361d0c7036f9c151ec433f4584a76">More...</a><br /></td></tr>
 <tr class="separator:a1fa361d0c7036f9c151ec433f4584a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,6 +238,28 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a044698d8d3694c2fb451b24ef720a977"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a044698d8d3694c2fb451b24ef720a977">&#9670;&nbsp;</a></span>GetDefaultAppName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless::FileTarget::GetDefaultAppName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the default app name used by this target. </p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. Available since release v2.0.0.</p>
+<dl class="section return"><dt>Returns</dt><dd>The default app name of this target. </dd></dl>
+
+</div>
+</div>
 <a id="a3aca8cacb5a296ce292a20581fed8195"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3aca8cacb5a296ce292a20581fed8195">&#9670;&nbsp;</a></span>GetDefaultFacility()</h2>
 
@@ -247,6 +278,50 @@ Static Public Attributes</h2></td></tr>
 
 <p>Gets the default facility of this target. </p>
 <dl class="section return"><dt>Returns</dt><dd>The default facility of this target. </dd></dl>
+
+</div>
+</div>
+<a id="a8ce059351e7f6712931fdeafa485d712"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce059351e7f6712931fdeafa485d712">&#9670;&nbsp;</a></span>GetDefaultMsgid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless::FileTarget::GetDefaultMsgid </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the default msgid used by this target. </p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. Available since release v2.0.0.</p>
+<dl class="section return"><dt>Returns</dt><dd>The default msgid of this target. </dd></dl>
+
+</div>
+</div>
+<a id="a806073853558876f7f926518d7b34dd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a806073853558876f7f926518d7b34dd0">&#9670;&nbsp;</a></span>GetName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless::FileTarget::GetName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the name of this target. </p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. Available since release v2.0.0.</p>
+<dl class="section return"><dt>Returns</dt><dd>The name of this Target. </dd></dl>
 
 </div>
 </div>
@@ -659,7 +734,7 @@ Static Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:25 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:45:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

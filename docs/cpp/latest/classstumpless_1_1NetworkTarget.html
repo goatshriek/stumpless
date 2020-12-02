@@ -92,9 +92,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5e2683fad9ffe69ea2ab456a937f8958"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1NetworkTarget.html#a5e2683fad9ffe69ea2ab456a937f8958">~NetworkTarget</a> (void)</td></tr>
 <tr class="memdesc:a5e2683fad9ffe69ea2ab456a937f8958"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes this target and releases all memory and other resources held by it.  <a href="classstumpless_1_1NetworkTarget.html#a5e2683fad9ffe69ea2ab456a937f8958">More...</a><br /></td></tr>
 <tr class="separator:a5e2683fad9ffe69ea2ab456a937f8958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1192ce69b02ae5e96be400ea4cddfc94"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1NetworkTarget.html#a1192ce69b02ae5e96be400ea4cddfc94">GetDefaultAppName</a> (void)</td></tr>
+<tr class="memdesc:a1192ce69b02ae5e96be400ea4cddfc94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default app name used by this target.  <a href="classstumpless_1_1NetworkTarget.html#a1192ce69b02ae5e96be400ea4cddfc94">More...</a><br /></td></tr>
+<tr class="separator:a1192ce69b02ae5e96be400ea4cddfc94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0a99362d78039886977a235cfbb7f03"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1NetworkTarget.html#ab0a99362d78039886977a235cfbb7f03">GetDefaultMsgid</a> (void)</td></tr>
+<tr class="memdesc:ab0a99362d78039886977a235cfbb7f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default msgid used by this target.  <a href="classstumpless_1_1NetworkTarget.html#ab0a99362d78039886977a235cfbb7f03">More...</a><br /></td></tr>
+<tr class="separator:ab0a99362d78039886977a235cfbb7f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a815bfbded8e1e85ebc3563e1ff563d0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29">Facility</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1NetworkTarget.html#a815bfbded8e1e85ebc3563e1ff563d0f">GetDefaultFacility</a> (void)</td></tr>
 <tr class="memdesc:a815bfbded8e1e85ebc3563e1ff563d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default facility of this target.  <a href="classstumpless_1_1NetworkTarget.html#a815bfbded8e1e85ebc3563e1ff563d0f">More...</a><br /></td></tr>
 <tr class="separator:a815bfbded8e1e85ebc3563e1ff563d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af81839f37c69cc22dd5c424c3ca839de"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1NetworkTarget.html#af81839f37c69cc22dd5c424c3ca839de">GetName</a> (void)</td></tr>
+<tr class="memdesc:af81839f37c69cc22dd5c424c3ca839de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of this target.  <a href="classstumpless_1_1NetworkTarget.html#af81839f37c69cc22dd5c424c3ca839de">More...</a><br /></td></tr>
+<tr class="separator:af81839f37c69cc22dd5c424c3ca839de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1624c272c358aa6482b4092c3136fc85"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1NetworkTarget.html#a1624c272c358aa6482b4092c3136fc85">GetOption</a> (int option)</td></tr>
 <tr class="memdesc:a1624c272c358aa6482b4092c3136fc85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the given option for this target.  <a href="classstumpless_1_1NetworkTarget.html#a1624c272c358aa6482b4092c3136fc85">More...</a><br /></td></tr>
 <tr class="separator:a1624c272c358aa6482b4092c3136fc85"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,6 +311,28 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1192ce69b02ae5e96be400ea4cddfc94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1192ce69b02ae5e96be400ea4cddfc94">&#9670;&nbsp;</a></span>GetDefaultAppName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless::NetworkTarget::GetDefaultAppName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the default app name used by this target. </p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. Available since release v2.0.0.</p>
+<dl class="section return"><dt>Returns</dt><dd>The default app name of this target. </dd></dl>
+
+</div>
+</div>
 <a id="a815bfbded8e1e85ebc3563e1ff563d0f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a815bfbded8e1e85ebc3563e1ff563d0f">&#9670;&nbsp;</a></span>GetDefaultFacility()</h2>
 
@@ -323,6 +354,28 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ab0a99362d78039886977a235cfbb7f03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0a99362d78039886977a235cfbb7f03">&#9670;&nbsp;</a></span>GetDefaultMsgid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless::NetworkTarget::GetDefaultMsgid </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the default msgid used by this target. </p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. Available since release v2.0.0.</p>
+<dl class="section return"><dt>Returns</dt><dd>The default msgid of this target. </dd></dl>
+
+</div>
+</div>
 <a id="a973508f11fd46caf8cd268edce2c1a71"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a973508f11fd46caf8cd268edce2c1a71">&#9670;&nbsp;</a></span>GetDestination()</h2>
 
@@ -341,6 +394,28 @@ Static Public Attributes</h2></td></tr>
 
 <p>Gets the destination of the target. </p>
 <dl class="section return"><dt>Returns</dt><dd>The current destination of the target. </dd></dl>
+
+</div>
+</div>
+<a id="af81839f37c69cc22dd5c424c3ca839de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af81839f37c69cc22dd5c424c3ca839de">&#9670;&nbsp;</a></span>GetName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* stumpless::NetworkTarget::GetName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the name of this target. </p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. Available since release v2.0.0.</p>
+<dl class="section return"><dt>Returns</dt><dd>The name of this Target. </dd></dl>
 
 </div>
 </div>
@@ -1349,7 +1424,7 @@ Static Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:25 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:45:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

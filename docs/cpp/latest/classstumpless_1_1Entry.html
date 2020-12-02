@@ -112,6 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3cd21f0ff571fc319fac97897b3a384"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstumpless_1_1Element.html">Element</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1Entry.html#ad3cd21f0ff571fc319fac97897b3a384">GetElement</a> (const char *name)</td></tr>
 <tr class="memdesc:ad3cd21f0ff571fc319fac97897b3a384"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> with the given name from this <a class="el" href="classstumpless_1_1Entry.html" title="A log entry.">Entry</a>.  <a href="classstumpless_1_1Entry.html#ad3cd21f0ff571fc319fac97897b3a384">More...</a><br /></td></tr>
 <tr class="separator:ad3cd21f0ff571fc319fac97897b3a384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38aa83da0c8e0a1e38c763b836e11d7d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1Entry.html#a38aa83da0c8e0a1e38c763b836e11d7d">GetElementCount</a> (void)</td></tr>
+<tr class="memdesc:a38aa83da0c8e0a1e38c763b836e11d7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of elements in this <a class="el" href="classstumpless_1_1Entry.html" title="A log entry.">Entry</a>.  <a href="classstumpless_1_1Entry.html#a38aa83da0c8e0a1e38c763b836e11d7d">More...</a><br /></td></tr>
+<tr class="separator:a38aa83da0c8e0a1e38c763b836e11d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1473428705cb0bcfdefeebce3ada2223"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1Entry.html#a1473428705cb0bcfdefeebce3ada2223">GetElementIndex</a> (const char *name)</td></tr>
 <tr class="memdesc:a1473428705cb0bcfdefeebce3ada2223"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the index of the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> with the given name from this <a class="el" href="classstumpless_1_1Entry.html" title="A log entry.">Entry</a>.  <a href="classstumpless_1_1Entry.html#a1473428705cb0bcfdefeebce3ada2223">More...</a><br /></td></tr>
 <tr class="separator:a1473428705cb0bcfdefeebce3ada2223"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -508,6 +511,27 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a38aa83da0c8e0a1e38c763b836e11d7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38aa83da0c8e0a1e38c763b836e11d7d">&#9670;&nbsp;</a></span>GetElementCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t stumpless::Entry::GetElementCount </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of elements in this <a class="el" href="classstumpless_1_1Entry.html" title="A log entry.">Entry</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of elements this <a class="el" href="classstumpless_1_1Entry.html" title="A log entry.">Entry</a> has. </dd></dl>
+
+</div>
+</div>
 <a id="a1473428705cb0bcfdefeebce3ada2223"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1473428705cb0bcfdefeebce3ada2223">&#9670;&nbsp;</a></span>GetElementIndex()</h2>
 
@@ -664,8 +688,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the value of the first <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> from the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> with the given name from this <a class="el" href="classstumpless_1_1Entry.html" title="A log entry.">Entry</a>. </p>
-<p>Note that an <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> may contain as many instances of a <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> as desired according to RFC 5424, and therefore there may be other <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> instances with the same name. If you need the value of other Params with the same name in the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a>, then you must loop through all Params using GetParam with an index, checking each name.</p>
-<p>Available since release v1.6.0.</p>
+<p>Note that an <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> may contain as many instances of a <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> as desired according to RFC 5424, and therefore there may be other <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> instances with the same name. If you need the value of other Params with the same name in the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a>, then you must loop through all Params using GetParam with an index, checking each name. The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">element_name</td><td>The name of the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> to get the <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> from.</td></tr>
@@ -704,7 +727,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the value of the <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> from the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> at the given index from this <a class="el" href="classstumpless_1_1Entry.html" title="A log entry.">Entry</a>. </p>
-<p>Available since release v1.6.0.</p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">element_index</td><td>The index of the <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a> to get the <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> from.</td></tr>
@@ -1208,7 +1231,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:25 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:45:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

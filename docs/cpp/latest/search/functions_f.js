@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['unsetoption_388',['UnsetOption',['../classstumpless_1_1BufferTarget.html#ad663c0da17d993da9c8c261e9b7445c7',1,'stumpless::BufferTarget::UnsetOption()'],['../classstumpless_1_1FileTarget.html#a936b90e3c27443c2e431d4f4f545d540',1,'stumpless::FileTarget::UnsetOption()'],['../classstumpless_1_1NetworkTarget.html#a179052843538845fe7a13dc55ac04aca',1,'stumpless::NetworkTarget::UnsetOption()'],['../classstumpless_1_1SocketTarget.html#a2da53b6fa2fa1762479dd422996284d6',1,'stumpless::SocketTarget::UnsetOption()'],['../classstumpless_1_1StreamTarget.html#a9ce0fe42001747797b5db794f62dc15c',1,'stumpless::StreamTarget::UnsetOption()']]]
+  ['targetincompatible_394',['TargetIncompatible',['../classstumpless_1_1TargetIncompatible.html#acf46be09a87b27378574e7516fea6cf4',1,'stumpless::TargetIncompatible']]],
+  ['targetunsupported_395',['TargetUnsupported',['../classstumpless_1_1TargetUnsupported.html#a275a4eb41e3714523385c80f25ae8a92',1,'stumpless::TargetUnsupported']]],
+  ['tostring_396',['ToString',['../classstumpless_1_1Param.html#a584280678fd68402846b618708f9c437',1,'stumpless::Param::ToString()'],['../classstumpless_1_1Version.html#a7c743ce61c9821f3b71ea66b5a61a94b',1,'stumpless::Version::ToString()']]],
+  ['transportprotocolunsupported_397',['TransportProtocolUnsupported',['../classstumpless_1_1TransportProtocolUnsupported.html#ac85a873806f6388a2b6802f4a5f2e64c',1,'stumpless::TransportProtocolUnsupported']]]
 ];

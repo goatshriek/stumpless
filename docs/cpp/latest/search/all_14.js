@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['_7ebuffertarget_211',['~BufferTarget',['../classstumpless_1_1BufferTarget.html#a2a20d6019b27bc7e1e57611178052583',1,'stumpless::BufferTarget']]],
-  ['_7eelement_212',['~Element',['../classstumpless_1_1Element.html#a2801d3458d3999ba0373da03b05d53a4',1,'stumpless::Element']]],
-  ['_7eentry_213',['~Entry',['../classstumpless_1_1Entry.html#a89dfe910a3fb2162251d35c53d8375da',1,'stumpless::Entry']]],
-  ['_7efiletarget_214',['~FileTarget',['../classstumpless_1_1FileTarget.html#a08dbb04503a18f17b0defa8c32190aae',1,'stumpless::FileTarget']]],
-  ['_7enetworktarget_215',['~NetworkTarget',['../classstumpless_1_1NetworkTarget.html#a5e2683fad9ffe69ea2ab456a937f8958',1,'stumpless::NetworkTarget']]],
-  ['_7eparam_216',['~Param',['../classstumpless_1_1Param.html#ac81683d4ad115e9267f583bd620831b4',1,'stumpless::Param']]],
-  ['_7esockettarget_217',['~SocketTarget',['../classstumpless_1_1SocketTarget.html#a3b06f7ec8d1ebb622044fdec4ffae3b6',1,'stumpless::SocketTarget']]],
-  ['_7estreamtarget_218',['~StreamTarget',['../classstumpless_1_1StreamTarget.html#a16d43763ab0b89dc52dc0bae778a47f2',1,'stumpless::StreamTarget']]]
+  ['warning_209',['WARNING',['../namespacestumpless.html#af87f737294ef9fcbc6e3b97d1d7d5726a059e9861e0400dfbe05c98a841f3f96b',1,'stumpless']]],
+  ['windows_5fevent_5flog_5fclose_5ffailure_210',['WINDOWS_EVENT_LOG_CLOSE_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba6aeae189dc73676fda3d402b5935b2c9',1,'stumpless']]],
+  ['windows_5fevent_5flog_5fopen_5ffailure_211',['WINDOWS_EVENT_LOG_OPEN_FAILURE',['../namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba2916c979230601fac3c7f7bd90d1bf58',1,'stumpless']]],
+  ['windowseventlogclosefailure_212',['WindowsEventLogCloseFailure',['../classstumpless_1_1WindowsEventLogCloseFailure.html',1,'stumpless::WindowsEventLogCloseFailure'],['../classstumpless_1_1WindowsEventLogCloseFailure.html#a01c8013543f4fc3f04ebae2710819fb6',1,'stumpless::WindowsEventLogCloseFailure::WindowsEventLogCloseFailure()']]],
+  ['windowseventlogclosefailure_2ehpp_213',['WindowsEventLogCloseFailure.hpp',['../WindowsEventLogCloseFailure_8hpp.html',1,'']]],
+  ['windowseventlogopenfailure_214',['WindowsEventLogOpenFailure',['../classstumpless_1_1WindowsEventLogOpenFailure.html',1,'stumpless::WindowsEventLogOpenFailure'],['../classstumpless_1_1WindowsEventLogOpenFailure.html#aace17902666fe9afa5e36d0d45d74cfa',1,'stumpless::WindowsEventLogOpenFailure::WindowsEventLogOpenFailure()']]],
+  ['windowseventlogopenfailure_2ehpp_215',['WindowsEventLogOpenFailure.hpp',['../WindowsEventLogOpenFailure_8hpp.html',1,'']]]
 ];

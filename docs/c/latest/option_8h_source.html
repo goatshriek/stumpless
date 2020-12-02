@@ -91,42 +91,47 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">/* options defined in syslog.h */</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#    include &lt;syslog.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#    include &lt;syslog.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#  endif</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_PID    LOG_PID</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="option_8h.html#a98cb6445f06ce88c86d800648f9ff9d0">   35</a></span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_CONS   LOG_CONS</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="option_8h.html#a993bc5db10d96e5c8e65b1964b52783b">   37</a></span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NDELAY LOG_NDELAY</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="option_8h.html#a95453735e9adac27ede9f5e9f464a798">   39</a></span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_ODELAY LOG_ODELAY</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="option_8h.html#aa5e1ed49d636041b6fdf2eac33d04f51">   41</a></span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="option_8h.html#ab5c3143e2110614932dbff133f898303">   43</a></span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">/* options normally defined in syslog.h */</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_PID    LOG_PID</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="option_8h.html#a98cb6445f06ce88c86d800648f9ff9d0">   36</a></span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_PID    1</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_CONS   LOG_CONS</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="option_8h.html#a993bc5db10d96e5c8e65b1964b52783b">   43</a></span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_CONS   (1&lt;&lt;1)</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#  endif</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_PID    1</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_CONS   (1&lt;&lt;1)</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NDELAY (1&lt;&lt;2)</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NDELAY LOG_NDELAY</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="option_8h.html#a95453735e9adac27ede9f5e9f464a798">   50</a></span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NDELAY (1&lt;&lt;2)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#  endif</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_ODELAY (1&lt;&lt;3)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NOWAIT (1&lt;&lt;4)</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#  define STUMPLESS_OPTION_NONE 0</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="option_8h.html#aac7a81cb7d3afe8e655d191014ca7195">   62</a></span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __STUMPLESS_OPTION_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_ODELAY LOG_ODELAY</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="option_8h.html#aa5e1ed49d636041b6fdf2eac33d04f51">   57</a></span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_ODELAY (1&lt;&lt;3)</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="option_8h.html#ab5c3143e2110614932dbff133f898303">   64</a></span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#    define STUMPLESS_OPTION_NOWAIT (1&lt;&lt;4)</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#  define STUMPLESS_OPTION_NONE 0</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="option_8h.html#aac7a81cb7d3afe8e655d191014ca7195">   70</a></span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __STUMPLESS_OPTION_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

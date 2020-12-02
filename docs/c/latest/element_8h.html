@@ -71,6 +71,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="param_8h_source.html">stumpless/param.h</a>&gt;</code><br />
 </div>
 <p><a href="element_8h_source.html">Go to the source code of this file.</a></p>
@@ -120,7 +121,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a8fcc1fbe4d13fdcab7d7a16997f99b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the index of the first occurrence of a param with the given name in the given element.  <a href="element_8h.html#a8fcc1fbe4d13fdcab7d7a16997f99b10">More...</a><br /></td></tr>
 <tr class="separator:a8fcc1fbe4d13fdcab7d7a16997f99b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa955455cf880790264eeed278021471e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#aa955455cf880790264eeed278021471e">stumpless_get_param_name_by_index</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, size_t index)</td></tr>
-<tr class="memdesc:aa955455cf880790264eeed278021471e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name of the Param with the given index in this Element.  <a href="element_8h.html#aa955455cf880790264eeed278021471e">More...</a><br /></td></tr>
+<tr class="memdesc:aa955455cf880790264eeed278021471e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name of the param with the given index in this element.  <a href="element_8h.html#aa955455cf880790264eeed278021471e">More...</a><br /></td></tr>
 <tr class="separator:aa955455cf880790264eeed278021471e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae61ef0406ba4d283baa8b2d7dc324779"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">stumpless_get_param_name_count</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name)</td></tr>
 <tr class="memdesc:ae61ef0406ba4d283baa8b2d7dc324779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the number of params with the given name found in the given element.  <a href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">More...</a><br /></td></tr>
@@ -184,6 +185,9 @@ Functions</h2></td></tr>
 
 <p>Creates a new param and adds it to the given element. </p>
 <p>This is equivalent to calling stumpless_new_param and passing the result directly stumpless_add_param.</p>
+<p><b>Thread Safety: MT-Safe race:param_name race:param_value</b> This function is thread safe, of course assuming that the param name and value or not changed by other threads during execution. A mutex is used to coordinate updates to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the new param.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -224,6 +228,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Adds a param to an element. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate updates to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to adjust the array of params in the element.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">element</td><td>The element to add the param to.</td></tr>
@@ -253,6 +260,9 @@ Functions</h2></td></tr>
 
 <p>Creates a copy of an element. </p>
 <p>Copies of elements are 'deep' in that the copy also copies each of the params that the original element has, if any. This means that even if the params of the original element are destroyed, the equivalent ones in this element will still be valid.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the copy.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -281,6 +291,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>An alias for stumpless_destroy_element_and_contents. </p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
@@ -307,6 +320,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Destroys an element as well as all params that it contains, freeing any allocated memory. </p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
@@ -334,6 +350,9 @@ Functions</h2></td></tr>
 
 <p>Destroys an element, freeing any allocated memory. </p>
 <p>Associated params are left untouched, and must be destroyed separately.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
@@ -370,6 +389,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>True if the given element has a param with the given name, false otherwise. </p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -399,7 +421,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the name of the given element. </p>
-<p>The resulting character buffer must not be altered or freed by the caller.</p>
+<p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -438,6 +464,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the param in the given element at the specified index. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -478,6 +507,9 @@ Functions</h2></td></tr>
 
 <p>Returns the first occurrence of a param with the given name in element, if it is found. </p>
 <p>Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances with the same name. If you simply need a count of params with a given name, then you can use stumpless_get_param_name_count to find this. If you need a reference to any other params, then you must loop through all params in the element using stumpless_get_param_by_index, checking each name.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -507,6 +539,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the number of params in the given element. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -546,6 +581,9 @@ Functions</h2></td></tr>
 
 <p>Gives the index of the first occurrence of a param with the given name in the given element. </p>
 <p>Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances that this function does not recognize. If you simply need a count of params with a given name, then you can use stumpless_get_param_name_count to find this. If you need a reference to any other params, then you must loop through all params in the element using stumpless_get_param_by_index, checking each name.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -584,7 +622,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the name of the Param with the given index in this Element. </p>
+<p>Gets the name of the param with the given index in this element. </p>
+<p>The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -625,6 +668,9 @@ Functions</h2></td></tr>
 
 <p>Gives the number of params with the given name found in the given element. </p>
 <p>If you need to get an actual reference to any of these params beyond the first one, then you will need to loop through all params in the element using stumpless_get_param_by_index, checking each name.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -664,6 +710,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the value of the param at the given index in the given element. </p>
+<p>The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -703,6 +754,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the value of the first param with the given name in the given element. </p>
+<p>The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
+<p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <p>If you need to get the value of a param with the given name beyond the first one, then you will need to loop through all params in the element using stumpless_get_param_by_index, checking each name.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -733,6 +789,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates a new element with the given name. </p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory management functions to create the new element.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the new element.</td></tr>
@@ -770,6 +829,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the name of the given element. </p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -817,6 +879,9 @@ Functions</h2></td></tr>
 <p>Puts the param at the given index in the given element. </p>
 <p>The parameter previously at this position will be removed from the element, but it is NOT destroyed by this call. Callers must clean up this param separately.</p>
 <p>A param cannot be set at an index position that does not already hold a param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error is raised.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -863,6 +928,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the value of the param at the given index in the given element. </p>
+<p><b>Thread Safety: MT-Safe race:value</b> This function is thread safe, of course assuming that the value is not changed during execution by another thread. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -911,6 +979,9 @@ Functions</h2></td></tr>
 <p>Sets the value of the first param with the given name in the given element. </p>
 <p>If a param of the given name is not found in the element, one is created with the supplied name and value and added to the end of the element.</p>
 <p>If you need to set the value of a param with this name other than the first one, then you will need to loop through the params using stumpless_get_param_by_index to find the params you want and then set the value using stumpless_set_param_value.</p>
+<p><b>Thread Safety: MT-Safe race:name race:value</b> This function is thread safe, of course assuming that the name and value are not changed during execution by another thread.. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="section since"><dt>Since</dt><dd>release v1.6.0</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -927,7 +998,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

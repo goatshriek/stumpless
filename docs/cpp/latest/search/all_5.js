@@ -11,5 +11,6 @@ var searchData=
   ['filewritefailure_51',['FileWriteFailure',['../classstumpless_1_1FileWriteFailure.html',1,'stumpless::FileWriteFailure'],['../classstumpless_1_1FileWriteFailure.html#aa3342224e2e9e4878cf651192f73ee0b',1,'stumpless::FileWriteFailure::FileWriteFailure()']]],
   ['filewritefailure_2ehpp_52',['FileWriteFailure.hpp',['../FileWriteFailure_8hpp.html',1,'']]],
   ['freeall_53',['FreeAll',['../classstumpless_1_1MemoryManager.html#a4217f095072d7990b3f37ca74b3729ed',1,'stumpless::MemoryManager']]],
-  ['ftp_54',['FTP',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29ac728a49363c9a93a43a7e7f232b5a54a',1,'stumpless']]]
+  ['freethread_54',['FreeThread',['../classstumpless_1_1MemoryManager.html#a5f0e74987c896912d41f9ee259f52fb0',1,'stumpless::MemoryManager']]],
+  ['ftp_55',['FTP',['../namespacestumpless.html#abcdc81088b5d97d71023964bf1d5fc29ac728a49363c9a93a43a7e7f232b5a54a',1,'stumpless']]]
 ];

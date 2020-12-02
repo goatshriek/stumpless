@@ -123,6 +123,9 @@ Macros</h2></td></tr>
 <p>This function will be removed at compile time if STUMPLESS_DISABLE_ERR_LEVEL has been defined during build. If it is disabled, then this function is removed at compile time and will have no effect. Otherwise, it is equivalent to a call to stumpless_add_log with the provided message and calculated priority.</p>
 <p>Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen. Be sure that any side effects you rely on will not cause problems if they are left out during a build with err level calls disabled.</p>
 <p>This function will log the given message with a severity of STUMPLESS_SEVERITY_ERR, and the facility defined by the STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then you will need to use stumplog_er instead.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
@@ -164,6 +167,9 @@ Macros</h2></td></tr>
 <p>This function will be removed at compile time if STUMPLESS_DISABLE_ERR_LEVEL has been defined during build. If it is disabled, then this function is removed at compile time and will have no effect. Otherwise, it is equivalent to a call to stumplog with the provided message and calculated priority.</p>
 <p>Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen. Be sure that any side effects you rely on will not cause problems if they are left out during a build with err level calls disabled.</p>
 <p>This call does not override the severity of the entry itself. Rather, it is intended to allow logging calls to be removed at compile time if the severity is known ahead of time.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the entry to.</td></tr>
@@ -210,6 +216,9 @@ Macros</h2></td></tr>
 <p>Adds a message to a given target with the specified priority. </p>
 <p>This function will be removed at compile time if STUMPLESS_DISABLE_ERR_LEVEL has been defined during build. If it is disabled, then this function is removed at compile time and will have no effect. Otherwise, it is equivalent to a call to stumplog with the provided message and calculated priority.</p>
 <p>Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen. Be sure that any side effects you rely on will not cause problems if they are left out during a build with err level calls disabled.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the entry to.</td></tr>
@@ -256,6 +265,9 @@ Macros</h2></td></tr>
 <p>This function will be removed at compile time if STUMPLESS_DISABLE_ERR_LEVEL has been defined during build. If it is disabled, then this function is removed at compile time and will have no effect. Otherwise, it is equivalent to a call to stumpless_add_log with the provided message and calculated priority.</p>
 <p>Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen. Be sure that any side effects you rely on will not cause problems if they are left out during a build with err level calls disabled.</p>
 <p>This function will log the given message with a severity of STUMPLESS_SEVERITY_ERR, and the facility defined by the STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then you will need to use stump_er_log instead.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the entry to.</td></tr>
@@ -297,6 +309,9 @@ Macros</h2></td></tr>
 <p>Adds a message to the current target with the specified priority. </p>
 <p>This function will be removed at compile time if STUMPLESS_DISABLE_ERR_LEVEL has been defined during build. If it is disabled, then this function is removed at compile time and will have no effect. Otherwise, it is equivalent to a call to stumplog with the provided message and calculated priority.</p>
 <p>Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen. Be sure that any side effects you rely on will not cause problems if they are left out during a build with err level calls disabled.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
@@ -315,7 +330,7 @@ Macros</h2></td></tr>
 <div class="ttc" id="atarget_8h_html_aed281765c55ba37fd374f605aaff2227"><div class="ttname"><a href="target_8h.html#aed281765c55ba37fd374f605aaff2227">stumpless_get_current_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_get_current_target(void)</div><div class="ttdoc">Gets the current target.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

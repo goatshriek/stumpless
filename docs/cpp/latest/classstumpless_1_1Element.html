@@ -363,7 +363,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The name of this <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a>. </p>
-<p>Available since release v1.6.0.</p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="section return"><dt>Returns</dt><dd>The name of this <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a>. </dd></dl>
 
 </div>
@@ -493,7 +493,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the name of the <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> with the given index in this <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a>. </p>
-<p>Available since release v1.6.0.</p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>The index of the param to get the name of.</td></tr>
@@ -550,8 +550,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the value of the first param with the given name in this <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a>. </p>
-<p>If you need to get the value of a param with the given name beyond the first one, then you will need to loop through all params in the element using GetParam with an index, checking each name.</p>
-<p>Available since release v1.6.0.</p>
+<p>If you need to get the value of a param with the given name beyond the first one, then you will need to loop through all params in the element using GetParam with an index, checking each name. The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> to get the value of.</td></tr>
@@ -579,7 +578,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the value of the param at the given index in this <a class="el" href="classstumpless_1_1Element.html" title="An element of structured data.">Element</a>. </p>
-<p>Available since release v1.6.0.</p>
+<p>The returned character buffer must be freed by the caller when it is no longer needed to avoid memory leaks. In versions prior to v2.0.0, the returned pointer was to the internal buffer was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues. Available since release v1.6.0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>The index of the <a class="el" href="classstumpless_1_1Param.html" title="A parameter within a structured data element.">Param</a> to get the value of.</td></tr>
@@ -788,7 +787,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:24 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:45:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

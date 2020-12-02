@@ -93,7 +93,10 @@ Functions</h2></td></tr>
 <tr class="separator:a1e073738681b71755c56583381aebbe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Functions for working with stream targets (that is, FILE pointers). </p>
+<div class="textblock"><p>Functions for working with stream targets (that is, FILE pointers).</p>
+<p><b>Thread Safety: MT-Safe</b> Logging to stream targets is thread safe. A mutex is used to coordinate writes to the stream.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to stream targets is not signal safe, as a non-reentrant lock is used to coordinate writes to the stream.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to stream targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae3d3a8d4d1d96d9b06dc27a74bc4d6d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">&#9670;&nbsp;</a></span>stumpless_close_stream_target()</h2>
@@ -113,6 +116,9 @@ Functions</h2></td></tr>
 
 <p>Closes a stream target. </p>
 <p>This function does NOT close the stream associated with the target. It does destroy all memory allocated for the target, including the target struct itself.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The stream target to close. </td></tr>
@@ -155,6 +161,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Opens a stream target for the stderr stream. </p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -200,6 +209,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Opens a stream target for the stdout stream. </p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -253,6 +265,9 @@ Functions</h2></td></tr>
 <p>Opens a stream target for the given stream. </p>
 <p>Events logged to this target will be separated by a newline, just as with a file target. In fact, a stream target is equivalent to a file target with the difference being that the file must be opened and closed by the caller.</p>
 <p>A stream target can also be useful for logging to other streams, such as stdout and stderr, which is not possible with a file target.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
@@ -269,7 +284,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 16 2020 09:26:20 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>
