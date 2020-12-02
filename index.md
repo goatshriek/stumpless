@@ -18,7 +18,8 @@ easier:
  * can be adjusted or removed during compilation for zero runtime impact
  * interoperability with standard syslog daemons and library functions
  * an extensive unit testing suite and continuous integration
- * localized for multiple languages :de: :fr: :sweden: :slovakia:
+ * localized for multiple languages &#x1f1e9;&#x1f1ea; &#x1f1eb;&#x1f1f7;
+   &#x1f1f8;&#x1f1ea; &#x1f1f8;&#x1f1f0;
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
