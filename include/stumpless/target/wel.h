@@ -94,15 +94,11 @@ stumpless_close_wel_target( struct stumpless_target *target );
  * @param name The name of the target to open. This should match the name of the
  * Windows Event Source that the logs will be added to.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_local_wel_target( const char *name,
-                                 int options );
+stumpless_open_local_wel_target( const char *name );
 
 /**
  * Opens a Windows Event Log target on a remote machine.
@@ -134,9 +130,7 @@ stumpless_open_local_wel_target( const char *name,
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_remote_wel_target( const char *server,
-                                  const char *name,
-                                  int options );
+stumpless_open_remote_wel_target( const char *server, const char *name );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

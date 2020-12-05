@@ -394,12 +394,6 @@ stumpless_new_udp6_target( const char *name );
  *
  * @param transport The transport protocol to use.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
@@ -407,9 +401,7 @@ struct stumpless_target *
 stumpless_open_network_target( const char *name,
                                const char *destination,
                                enum stumpless_network_protocol network,
-                               enum stumpless_transport_protocol transport,
-                               int options,
-                               int default_facility );
+                               enum stumpless_transport_protocol transport );
 
 /**
  * Opens a network target for remote logging over IPv4 and TCP.
@@ -436,20 +428,11 @@ stumpless_open_network_target( const char *name,
  * @param destination The destination to send the messages to. This could be a
  * hostname or an IP address.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_tcp4_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility );
+stumpless_open_tcp4_target( const char *name, const char *destination );
 
 /**
  * Opens a network target for remote logging over IPv6 and TCP.
@@ -476,20 +459,11 @@ stumpless_open_tcp4_target( const char *name,
  * @param destination The destination to send the messages to. This could be a
  * hostname or an IP address.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_tcp6_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility );
+stumpless_open_tcp6_target( const char *name, const char *destination );
 
 /**
  * Opens a network target for remote logging over IPv4 and UDP.
@@ -514,20 +488,11 @@ stumpless_open_tcp6_target( const char *name,
  * @param destination The destination to send the messages to. This could be a
  * hostname or an IP address.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_udp4_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility );
+stumpless_open_udp4_target( const char *name, const char *destination );
 
 /**
  * Opens a network target for remote logging over IPv6 and UDP.
@@ -552,20 +517,11 @@ stumpless_open_udp4_target( const char *name,
  * @param destination The destination to send the messages to. This could be a
  * hostname or an IP address.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_udp6_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility );
+stumpless_open_udp6_target( const char *name, const char *destination );
 
 /**
  * Sets the destination of a network target.
