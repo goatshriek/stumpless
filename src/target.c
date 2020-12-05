@@ -19,8 +19,10 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
+#include <stumpless/config.h>
 #include <stumpless/entry.h>
 #include <stumpless/facility.h>
+#include <stumpless/option.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
@@ -615,8 +617,7 @@ lock_target( const struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-new_target( enum stumpless_target_type type,
-            const char *name ) {
+new_target( enum stumpless_target_type type, const char *name ) {
   struct stumpless_target *target;
 
   target = alloc_mem( sizeof( *target ) + CONFIG_MUTEX_T_SIZE );
@@ -632,7 +633,7 @@ new_target( enum stumpless_target_type type,
   config_init_mutex( TARGET_MUTEX( target ) );
 
   target->type = type;
-  target->options = STUMPLESS_OPTIONS_NONE;
+  target->options = STUMPLESS_OPTION_NONE;
   target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
                                        STUMPLESS_DEFAULT_SEVERITY );
   target->default_app_name = NULL;

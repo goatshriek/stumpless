@@ -17,16 +17,11 @@
  */
 
 #include <stddef.h>
-#include <stumpless/facility.h>
-#include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/config/socket_supported.h"
 
 struct stumpless_target *
 socket_open_default_target( void ) {
-  return stumpless_open_socket_target( STUMPLESS_DEFAULT_SOCKET,
-                                       NULL,
-                                       STUMPLESS_OPTION_NONE,
-                                       STUMPLESS_FACILITY_USER );
+  return stumpless_open_socket_target( STUMPLESS_DEFAULT_SOCKET, NULL );
 }

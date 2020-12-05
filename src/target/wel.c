@@ -21,7 +21,6 @@
 
 #include <stddef.h>
 #include <stumpless/entry.h>
-#include <stumpless/facility.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
 #include "private/config/locale/wrapper.h"
@@ -48,18 +47,14 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_open_local_wel_target( const char *name,
-                                 int options ) {
+stumpless_open_local_wel_target( const char *name ) {
   struct stumpless_target *target;
 
   clear_error(  );
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
-                       name,
-                       options,
-                       STUMPLESS_FACILITY_USER );
+  target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, name );
 
   if( !target ) {
     goto fail;
@@ -82,19 +77,14 @@ fail:
 
 
 struct stumpless_target *
-stumpless_open_remote_wel_target( const char *server,
-                                  const char *name,
-                                  int options ) {
+stumpless_open_remote_wel_target( const char *server, const char *name ) {
    struct stumpless_target *target;
 
    clear_error(  );
 
    VALIDATE_ARG_NOT_NULL( name );
 
-   target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET,
-                        name,
-                        options,
-                        STUMPLESS_FACILITY_USER );
+   target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, name );
 
    if( !target ) {
      goto fail;
