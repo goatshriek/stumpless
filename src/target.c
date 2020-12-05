@@ -616,11 +616,8 @@ lock_target( const struct stumpless_target *target ) {
 
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
-            const char *name,
-            int options,
-            int default_facility ) {
+            const char *name ) {
   struct stumpless_target *target;
-  int default_prival;
 
   target = alloc_mem( sizeof( *target ) + CONFIG_MUTEX_T_SIZE );
   if( !target ) {
@@ -635,9 +632,9 @@ new_target( enum stumpless_target_type type,
   config_init_mutex( TARGET_MUTEX( target ) );
 
   target->type = type;
-  target->options = options;
-  default_prival = get_prival( default_facility, STUMPLESS_SEVERITY_INFO );
-  target->default_prival = default_prival;
+  target->options = STUMPLESS_OPTIONS_NONE;
+  target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
+                                       STUMPLESS_DEFAULT_SEVERITY );
   target->default_app_name = NULL;
   target->default_app_name_length = 0;
   target->default_msgid = NULL;

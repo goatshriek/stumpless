@@ -40,9 +40,7 @@ lock_target( const struct stumpless_target *target );
 
 struct stumpless_target *
 new_target( enum stumpless_target_type type,
-            const char *name,
-            int options,
-            int default_facility );
+            const char *name );
 
 struct stumpless_target *
 open_unsupported_target( struct stumpless_target *target );
