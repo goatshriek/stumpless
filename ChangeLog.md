@@ -49,7 +49,7 @@ fixes, check out the
  - All target open functions no longer require an options or default facility
    parameter, resulting in much more concise code. If either of these fields
    need to be adjusted on a target, use the `stumpless_set_option` and
-   and `stumpless_set_default_facility` functions after the target has been
+   `stumpless_set_default_facility` functions after the target has been
    created.
 
 ### Fixed
