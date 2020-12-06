@@ -46,6 +46,11 @@ fixes, check out the
  - The underlying buffer in buffer targets should no longer be read manually,
    but should instead use the new `stumpless_read_buffer` function as the only
    way to read messages.
+ - All target open functions no longer require an options or default facility
+   parameter, resulting in much more concise code. If either of these fields
+   need to be adjusted on a target, use the `stumpless_set_option` and
+   and `stumpless_set_default_facility` functions after the target has been
+   created.
 
 ### Fixed
  - Memory leak in opening of network targets on systems using `sys/socket.h`

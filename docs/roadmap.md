@@ -23,12 +23,6 @@ or want to make a suggestion, please submit an issue on the project's
    compatible with the `syslog.h` values if their backing `int` values match.
    Because function signatures will change, this will be done in a major
    release.
- * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
-   Enumerations are preferred for working with these set values in C++, and this
-   function was inadvertently left in the library during development.
- * [REMOVE] **Options and default facility from all target constructors**
-   These are typically boilerplate, and if needed can be set with subsequent
-   calls. This will allow for less verbose code in most use cases.
 
 ## 2.1.0
  * [ADD] **journald logging target**
