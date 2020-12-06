@@ -117,20 +117,10 @@ namespace {
   }
 
   void
-  receive_from_client( socket_handle_t client_handle ) {
-    char buffer[1024];
-
-    while( recv_from_handle( client_handle, buffer, 1024 ) ){
-    };
-
-    close_server_socket( client_handle );
-  }
-
-  void
   listen_on_socket( socket_handle_t server_handle, int accept_count ) {
     int i = 0;
     socket_handle_t local_handle;
-    std::vector<std::thread *> threads;
+    char buffer[1024];
 
     while( i < accept_count ) {
       local_handle = accept_tcp_connection( server_handle );
@@ -138,13 +128,10 @@ namespace {
         break;
       }
 
-      threads.push_back(new std::thread(receive_from_client, local_handle));
-      i++;
-    }
+      while( recv_from_handle( local_handle, buffer, 1024 ) ){};
+      close_server_socket( local_handle );
 
-    for(auto it = threads.begin(); it != threads.end(); it++){
-      (*it)->join();
-      delete (*it);
+      i++;
     }
   }
 
