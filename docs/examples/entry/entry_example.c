@@ -30,9 +30,7 @@ main( int argc, char **argv ) {
 
   // creating a logging target for standard out to see the result of logging
   // each of the example entries
-  stdout_target = stumpless_open_stdout_target( "entry-example",
-                                                STUMPLESS_OPTION_NONE,
-                                                STUMPLESS_FACILITY_USER );
+  stdout_target = stumpless_open_stdout_target( "entry-example" );
 
 
   // creating a basic entry is done in a single call

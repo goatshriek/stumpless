@@ -7,9 +7,7 @@ substitutions and sends these to the last opened target. This means that you
 can start logging to a file with just two calls:
 
 ```c
-file_target = stumpless_open_file_target( "example.log",
-                                          STUMPLESS_OPTION_NONE,
-                                          STUMPLESS_FACILITY_USER );
+file_target = stumpless_open_file_target( "example.log" );
 stump( "The hello world of stumpless." );
 ```
 
@@ -23,10 +21,7 @@ If you need to have multiple targets open you can get the same functionality
 from the `stumpless_add_message` function:
 
 ```c
-net_target = stumpless_open_udp4_target( "network-target",
-                                         "example.com",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+net_target = stumpless_open_udp4_target( "network-target", "example.com" );
 stumpless_add_message( net_target,
                        "Login failed for username %s",
                        "example-username" );

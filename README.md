@@ -100,9 +100,8 @@ open the target that you need and start sending messages. For example, to log to
 a file named `example.log`:
 
 ```c
-target = stumpless_open_file_target( "example.log",
-                                     STUMPLESS_OPTION_NONE,
-                                     STUMPLESS_FACILITY_USER );
+target = stumpless_open_file_target( "example.log" );
+
 // uses the last opened target by default
 stump( "Login attempt failure #%d for user %s", count, username );
 ```
@@ -112,9 +111,7 @@ as easy:
 
 ```c
 target = stumpless_open_udp4_target( "send-to-splunk-example",
-                                     "mylogserver.com", // or use an IP
-                                     STUMPLESS_OPTION_NONE,
-                                     STUMPLESS_FACILITY_USER );
+                                     "mylogserver.com" ); // or use an IP
 stump( "Login attempt failure #%d for user %s", count, username );
 ```
 

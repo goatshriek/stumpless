@@ -27,9 +27,7 @@ main( int argc, char **argv ) {
 
 
   // opens a file target to example.log
-  file_target = stumpless_open_file_target( "example.log",
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+  file_target = stumpless_open_file_target( "example.log" );
 
 
   // logs to the last opened target
@@ -42,10 +40,7 @@ main( int argc, char **argv ) {
 
 #ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
   // opens a network target to example.com using UDP over IPv4
-  net_target = stumpless_open_udp4_target( "network-target",
-                                           "example.com",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+  net_target = stumpless_open_udp4_target( "network-target", "example.com" );
 
 
   // sends a message to the network target

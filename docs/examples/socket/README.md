@@ -10,10 +10,7 @@ the target as well as the socket to send logs to. You can ignore the second
 argument in most cases.
 
 ```c
-target = stumpless_open_socket_target( "/dev/log",
-                                       NULL,
-                                       STUMPLESS_OPTION_NONE,
-                                       STUMPLESS_FACILITY_USER );
+target = stumpless_open_socket_target( "/dev/log", NULL );
 ```
 
 This will create a local socket with a randomized name that sends logs to the
@@ -22,10 +19,7 @@ local socket that is created, then you can use the second argument to the open
 function to do this.
 
 ```c
-target = stumpless_open_socket_target( "/dev/log",
-                                       "my-local-socket"
-                                       STUMPLESS_OPTION_NONE,
-                                       STUMPLESS_FACILITY_USER );
+target = stumpless_open_socket_target( "/dev/log", "my-local-socket" );
 ```
 
 Once the target is created, logs are sent to it as usual:

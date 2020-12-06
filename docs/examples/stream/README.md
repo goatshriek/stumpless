@@ -11,7 +11,7 @@ with the `stumpless_open_stream_target` function call, like this:
 
 ```c
 my_file = fopen( "myfile.log", "w+" );
-myfile_target = stumpless_open_stream_target( "myfile", my_file, STUMPLESS_OPTION_NONE, STUMPLESS_FACILITY_USER );
+myfile_target = stumpless_open_stream_target( "myfile", my_file );
 ```
 
 Note that the file will need to be opened in write or append mode. If it is not,
@@ -21,10 +21,11 @@ If you would like to simply log to the stdout or stderr streams, there are
 convenience functions that allow you to open these targets:
 
 ```c
-// equivalent to stumpless_open_stream_target( "normal-stuff", stdout, 0, ...
-console_target = stumpless_open_stdout_target( "normal-stuff", 0, STUMPLESS_FACILITY_USER );
-// equivalent to stumpless_open_stream_target( "bad-stuff", stderr, 0, ...
-error_target = stumpless_open_stderr_target( "bad-stuff", 0, STUMPLESS_FACILITY_USER );
+// equivalent to stumpless_open_stream_target( "normal-stuff", stdout )
+console_target = stumpless_open_stdout_target( "normal-stuff" );
+
+// equivalent to stumpless_open_stream_target( "bad-stuff", stderr )
+error_target = stumpless_open_stderr_target( "bad-stuff" );
 ```
 
 Logging to a stream target is the same as any other target:

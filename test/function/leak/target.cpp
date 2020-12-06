@@ -37,9 +37,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "add-message-leak-testing",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     for( i = 0; i < 1000; i++ ) {

@@ -36,10 +36,7 @@ namespace {
 
     INIT_MEMORY_COUNTER( set_port );
 
-    target = stumpless_open_udp6_target( "set-port-leak",
-                                         "::1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp6_target( "set-port-leak", "::1" );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "6514" );
@@ -67,10 +64,7 @@ namespace {
 
     INIT_MEMORY_COUNTER( udp6_leak );
 
-    target = stumpless_open_udp6_target( "test-self",
-                                         "::1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp6_target( "test-self", "::1" );
     ASSERT_NOT_NULL( target );
 
     entry = create_entry(  );

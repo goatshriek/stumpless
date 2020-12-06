@@ -61,10 +61,7 @@ namespace {
         udp_fixtures_enabled = false;
       }
 
-      target = stumpless_open_udp4_target( "test-self",
-                                           "127.0.0.1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_udp4_target( "test-self", "127.0.0.1" );
 
       stumpless_set_target_default_app_name( target, "network-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -199,9 +196,7 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_udp4_target( "bad-ipv4-address",
-                                         "256.256.256.256",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         "256.256.256.256" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
   }
@@ -210,9 +205,7 @@ namespace {
     struct stumpless_target *target;
 
     target = stumpless_open_udp4_target( "target-to-self",
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         "127.0.0.1" );
     EXPECT_NOT_NULL( target );
     EXPECT_NO_ERROR;
 
@@ -223,10 +216,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_udp4_target( "no-name-provided",
-                                         NULL,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( "no-name-provided", NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -235,10 +225,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_udp4_target( NULL,
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( NULL, "127.0.0.1" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -262,9 +249,7 @@ namespace {
       handle = open_udp4_server_socket( original_destination, "514" );
 
       target = stumpless_open_udp4_target( "target-to-self",
-                                           original_destination,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           original_destination );
       ASSERT_TRUE( target != NULL );
       EXPECT_NO_ERROR;
 
@@ -379,9 +364,7 @@ namespace {
     handle = open_udp4_server_socket( "127.0.0.1", new_port );
 
     target = stumpless_open_udp4_target( "target-to-self",
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         "127.0.0.1" );
     ASSERT_TRUE( target != NULL );
 
     default_port = stumpless_get_transport_port( target );

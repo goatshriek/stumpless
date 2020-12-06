@@ -63,17 +63,11 @@ main( int argc, char **argv ) {
 
 
   // opening the target is straightforward
-  udp_target = stumpless_open_udp4_target( "udp4-example",
-                                            log_server,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+  udp_target = stumpless_open_udp4_target( "udp4-example", log_server );
 
 
   // if you wanted to use ipv6 instead, you would do this:
-  //udp_target = stumpless_open_udp6_target( "udp6-example",
-  //                                          log_server,
-  //                                          STUMPLESS_OPTION_NONE,
-  //                                          STUMPLESS_FACILITY_USER );
+  //udp_target = stumpless_open_udp6_target( "udp6-example", log_server );
 
 
   if( !udp_target ) {

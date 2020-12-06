@@ -36,10 +36,7 @@ namespace {
 
     INIT_MEMORY_COUNTER( set_port );
 
-    target = stumpless_open_udp4_target( "set-port-leak",
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( "set-port-leak", "127.0.0.1" );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "6514" );
@@ -67,10 +64,7 @@ namespace {
 
     INIT_MEMORY_COUNTER( udp4_leak );
 
-    target = stumpless_open_udp4_target( "test-self",
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( "test-self", "127.0.0.1" );
     ASSERT_NOT_NULL( target );
 
     entry = create_entry(  );

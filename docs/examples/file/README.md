@@ -9,9 +9,7 @@ The name of the target that is created will also be used as the filename. This
 should include any paths as well:
 
 ```c
-file_target = stumpless_open_file_target( "path/to/myfile.log",
-                                          STUMPLESS_OPTION_NONE,
-                                          STUMPLESS_FACILITY_USER );
+file_target = stumpless_open_file_target( "path/to/myfile.log" );
 ```
 
 Of course logging to file targets is done as with any other:

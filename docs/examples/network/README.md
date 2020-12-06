@@ -14,9 +14,7 @@ code below opens up a simple target to a UDP collector over IPv4:
 new_target = stumpless_open_network_target( "new-udp4-target",
                                             "example.com",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL );
 ```
 
 If you want to be a little more concise, then you can use the open function for
@@ -24,10 +22,7 @@ the network and transport protocol you've chosen. This is the approach that the
 UDP example uses.
 
 ```c
-new_target = stumpless_open_udp4_target( "new-udp4-target",
-                                         "example.com",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+new_target = stumpless_open_udp4_target( "new-udp4-target", "example.com" );
 ```
 
 Both of these functions create a target pointing to the `example.com` server.
@@ -36,10 +31,7 @@ the UDP, but TCP targets do. If you try to open a TCP target to a destination
 that isn't responding, it will fail.
 
 ```c
-new_target= stumpless_open_tcp4_target( "new-tcp4-target",
-                                        "example.com",
-                                        STUMPLESS_OPTION_NONE,
-                                        STUMPLESS_FACILITY_USER );
+new_target= stumpless_open_tcp4_target( "new-tcp4-target", "example.com" );
 if( !new_target ) {
   stumpless_perror( "dangit" ); // "getaddrinfo failed on name" might mean a DNS failure
                                 // "connect failed with socket" might mean no TCP response

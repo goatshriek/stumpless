@@ -64,9 +64,7 @@ main( int argc, char **argv ) {
                                                 // making this argument NULL
                                                 // means that a randomized local
                                                 // socket will be created
-                                                NULL,
-                                                STUMPLESS_OPTION_NONE,
-                                                STUMPLESS_FACILITY_USER );
+                                                NULL );
   if( !socket_target ) {
     stumpless_perror( "couldn't create a new socket target" );
     return EXIT_FAILURE;
@@ -75,10 +73,7 @@ main( int argc, char **argv ) {
 
   // if you want to specify the local socket used to connect to the target
   // socket, then you can specify it in the local_socket parameter
-  manual_target = stumpless_open_socket_target( socket,
-                                                "logfromthis",
-                                                STUMPLESS_OPTION_NONE,
-                                                STUMPLESS_FACILITY_USER );
+  manual_target = stumpless_open_socket_target( socket, "logfromthis" );
   if( !manual_target ) {
     stumpless_perror( "couldn't create a new socket target with a manual local"
                       " socket" );

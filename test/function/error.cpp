@@ -58,9 +58,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "small-buffer-target",
                                            buffer,
-                                           10,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -101,9 +99,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "small-buffer-target",
                                            buffer,
-                                           10,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) ) ;
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
