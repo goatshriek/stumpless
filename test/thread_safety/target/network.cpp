@@ -28,8 +28,10 @@
 #include "test/helper/usage.hpp"
 
 namespace {
-  const int THREAD_COUNT = 16;
+  const int THREAD_COUNT = 8;
   const int MESSAGE_COUNT = 50;
+  const int WRITE_COUNT = MESSAGE_COUNT / 10;
+  const int ACCEPT_COUNT = THREAD_COUNT * WRITE_COUNT * 2 + 1;
 
   void
   read_network_target( const struct stumpless_target *target, bool is_udp ) {
@@ -60,7 +62,7 @@ namespace {
   write_network_target( struct stumpless_target *target,
                         const char *destination,
                         bool is_udp ) {
-    for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
+    for( size_t i = 0; i < WRITE_COUNT; i++ ) {
       stumpless_set_destination( target, destination );
       EXPECT_NO_ERROR;
       stumpless_set_transport_port( target,
@@ -92,13 +94,13 @@ namespace {
       }
 
       reader_threads[i] = new std::thread( read_network_target,
-                                                   target,
-                                                   is_udp );
+                                           target,
+                                           is_udp );
 
       writer_threads[i] = new std::thread( write_network_target,
-                                                     target,
-                                                     destination,
-                                                     is_udp );
+                                           target,
+                                           destination,
+                                           is_udp );
     }
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
@@ -116,32 +118,21 @@ namespace {
   }
 
   void
-  receive_from_client( socket_handle_t client_handle ) {
+  listen_on_socket( socket_handle_t server_handle, int accept_count ) {
+    int i = 0;
+    socket_handle_t local_handle;
     char buffer[1024];
 
-    while( recv_from_handle( client_handle, buffer, 1024 ) ){
-    };
-
-    close_server_socket( client_handle );
-  }
-
-  void
-  listen_on_socket( socket_handle_t server_handle ) {
-    socket_handle_t local_handle;
-    std::vector<std::thread *> threads;
-
-    while( true ) {
+    while( i < accept_count ) {
       local_handle = accept_tcp_connection( server_handle );
       if( local_handle == -1 ) {
         break;
       }
 
-      threads.push_back(new std::thread(receive_from_client, local_handle));
-    }
+      while( recv_from_handle( local_handle, buffer, 1024 ) ){};
+      close_server_socket( local_handle );
 
-    for(auto it = threads.begin(); it != threads.end(); it++){
-      (*it)->join();
-      delete (*it);
+      i++;
     }
   }
 
@@ -158,7 +149,7 @@ namespace {
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
 
     } else {
-      listener_thread = new std::thread( listen_on_socket, handle );
+      listener_thread = new std::thread( listen_on_socket, handle, ACCEPT_COUNT );
 
       // set up the target to log to
       target = stumpless_open_tcp4_target( "test-target", target_destination );
@@ -193,7 +184,7 @@ namespace {
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
 
     } else {
-      listener_thread = new std::thread( listen_on_socket, handle );
+      listener_thread = new std::thread( listen_on_socket, handle, ACCEPT_COUNT );
 
       // set up the target to log to
       target = stumpless_open_tcp6_target( "test-target", target_destination );
