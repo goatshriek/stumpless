@@ -44,10 +44,7 @@ class Tcp4Fixture : public ::benchmark::Fixture {
     void SetUp( const ::benchmark::State& state ) {
       handle = open_tcp_server_socket( AF_INET, "127.0.0.1", "514" );
 
-      target = stumpless_open_tcp4_target( "tcp4-perf",
-                                           "127.0.0.1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp4_target( "tcp4-perf", "127.0.0.1" );
 
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                    STUMPLESS_SEVERITY_INFO,
@@ -102,10 +99,7 @@ class Tcp6Fixture : public ::benchmark::Fixture {
     void SetUp( const ::benchmark::State& state ) {
       handle = open_tcp_server_socket( AF_INET6, "::1", "514" );
 
-      target = stumpless_open_tcp6_target( "tcp6-perf",
-                                           "::1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp6_target( "tcp6-perf", "::1" );
 
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                    STUMPLESS_SEVERITY_INFO,
@@ -156,10 +150,7 @@ class Udp4Fixture : public ::benchmark::Fixture {
 
   public:
     void SetUp( const ::benchmark::State& state ) {
-      target = stumpless_open_udp4_target( "udp4-perf",
-                                           "127.0.0.1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_udp4_target( "udp4-perf", "127.0.0.1" );
 
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                    STUMPLESS_SEVERITY_INFO,
@@ -201,10 +192,7 @@ class Udp6Fixture : public ::benchmark::Fixture {
 
   public:
     void SetUp( const ::benchmark::State& state ) {
-      target = stumpless_open_udp6_target( "udp6-perf",
-                                           "::1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_udp6_target( "udp6-perf", "::1" );
 
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                    STUMPLESS_SEVERITY_INFO,

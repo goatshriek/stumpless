@@ -35,9 +35,7 @@ static void AddMessage(benchmark::State& state){
 
   target = stumpless_open_buffer_target( "add-message-perf",
                                          buffer,
-                                         sizeof( buffer ),
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         sizeof( buffer ) );
 
   for(auto _ : state){
     result = stumpless_add_message( target, "testing: %s, %d\n", "test-string", i++ );

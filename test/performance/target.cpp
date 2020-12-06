@@ -32,7 +32,9 @@ static void Stump(benchmark::State& state){
   stumpless_set_realloc( stump_memory_counter_realloc );
   stumpless_set_free( stump_memory_counter_free );
 
-  target = stumpless_open_buffer_target( "stump-perf", buffer, 1000, 0, 0 );
+  target = stumpless_open_buffer_target( "stump-perf",
+                                         buffer,
+                                         sizeof( buffer ) );
   stumpless_set_current_target( target );
 
   for(auto _ : state){
