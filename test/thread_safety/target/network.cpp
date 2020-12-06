@@ -28,9 +28,10 @@
 #include "test/helper/usage.hpp"
 
 namespace {
-  const int THREAD_COUNT = 16;
+  const int THREAD_COUNT = 8;
   const int MESSAGE_COUNT = 50;
-  const int ACCEPT_COUNT = THREAD_COUNT * MESSAGE_COUNT * 2 + 1;
+  const int WRITE_COUNT = MESSAGE_COUNT / 10;
+  const int ACCEPT_COUNT = THREAD_COUNT * WRITE_COUNT * 2 + 1;
 
   void
   read_network_target( const struct stumpless_target *target, bool is_udp ) {
@@ -61,7 +62,7 @@ namespace {
   write_network_target( struct stumpless_target *target,
                         const char *destination,
                         bool is_udp ) {
-    for( size_t i = 0; i < MESSAGE_COUNT; i++ ) {
+    for( size_t i = 0; i < WRITE_COUNT; i++ ) {
       stumpless_set_destination( target, destination );
       EXPECT_NO_ERROR;
       stumpless_set_transport_port( target,
@@ -93,13 +94,13 @@ namespace {
       }
 
       reader_threads[i] = new std::thread( read_network_target,
-                                                   target,
-                                                   is_udp );
+                                           target,
+                                           is_udp );
 
       writer_threads[i] = new std::thread( write_network_target,
-                                                     target,
-                                                     destination,
-                                                     is_udp );
+                                           target,
+                                           destination,
+                                           is_udp );
     }
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
