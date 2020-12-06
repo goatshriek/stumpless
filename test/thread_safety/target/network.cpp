@@ -30,6 +30,7 @@
 namespace {
   const int THREAD_COUNT = 16;
   const int MESSAGE_COUNT = 50;
+  const int ACCEPT_COUNT = THREAD_COUNT * MESSAGE_COUNT * 2 + 1;
 
   void
   read_network_target( const struct stumpless_target *target, bool is_udp ) {
@@ -126,17 +127,19 @@ namespace {
   }
 
   void
-  listen_on_socket( socket_handle_t server_handle ) {
+  listen_on_socket( socket_handle_t server_handle, int accept_count ) {
+    int i = 0;
     socket_handle_t local_handle;
     std::vector<std::thread *> threads;
 
-    while( true ) {
+    while( i < accept_count ) {
       local_handle = accept_tcp_connection( server_handle );
       if( local_handle == -1 ) {
         break;
       }
 
       threads.push_back(new std::thread(receive_from_client, local_handle));
+      i++;
     }
 
     for(auto it = threads.begin(); it != threads.end(); it++){
@@ -158,7 +161,7 @@ namespace {
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
 
     } else {
-      listener_thread = new std::thread( listen_on_socket, handle );
+      listener_thread = new std::thread( listen_on_socket, handle, ACCEPT_COUNT );
 
       // set up the target to log to
       target = stumpless_open_tcp4_target( "test-target",
@@ -196,7 +199,7 @@ namespace {
       std::cout << "WARNING: " BINDING_DISABLED_WARNING << std::endl;
 
     } else {
-      listener_thread = new std::thread( listen_on_socket, handle );
+      listener_thread = new std::thread( listen_on_socket, handle, ACCEPT_COUNT );
 
       // set up the target to log to
       target = stumpless_open_tcp6_target( "test-target",
