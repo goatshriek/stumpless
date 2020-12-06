@@ -19,7 +19,6 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 #include <stumpless.hpp>
-#include <stumpless/option.h>
 
 using namespace stumpless;
 
