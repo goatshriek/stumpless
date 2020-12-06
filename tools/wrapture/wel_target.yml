@@ -20,12 +20,6 @@ classes:
                 The name of the target to open. This should match the name of
                 the Windows Event Source that the logs will be added to.
               type: "const char *"
-            - name: "options"
-              doc: >
-                The options to use for this target. This should be a bit-wise or
-                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-                not need any options.
-              type: "int"
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
@@ -47,12 +41,6 @@ classes:
                 The name of the target to open. This should match the name of
                 the Windows Event Source that the logs will be added to.
               type: "const char *"
-            - name: "options"
-              doc: >
-                The options to use for this target. This should be a bit-wise or
-                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-                not need any options.
-              type: "int"
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"

@@ -43,10 +43,7 @@ namespace {
   };
 
   TEST_F( CppStreamTargetTest, AddMessage ) {
-    StreamTarget target( "test-stream",
-                         stream,
-                         STUMPLESS_OPTION_NONE,
-                         Facility::USER );
+    StreamTarget target( "test-stream", stream );
 
     target.Log( "this is a basic test of the stream target" );
   }

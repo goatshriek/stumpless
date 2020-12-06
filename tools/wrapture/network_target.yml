@@ -83,18 +83,6 @@ classes:
                 name: "TransportProtocol"
                 includes: "TransportProtocol.hpp"
               value: "static_cast<stumpless_transport_protocol>(transport_protocol)"
-            - name: "options"
-              doc: >
-                The options to use for this target. This should be a bit-wise or
-                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-                not need any options.
-              type: "int"
-            - name: "default_facility"
-              doc: >
-                The default facility to use on messages logged to this target
-                without a facility code of their own. This should be a
-                STUMPLESS_FACILITY value.
-              type: "int"
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"
@@ -266,18 +254,6 @@ classes:
               The destination to send messages to. This could be a hostname or
               an IP address.
             type: "const char *"
-          - name: "options"
-            doc: >
-              The options to use for this target. This should be a bit-wise or
-              of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-              not need any options.
-            type: "int"
-          - name: "default_facility"
-            doc: >
-              The default facility to use on messages logged to this target
-              without a facility code of their own. This should be a
-              STUMPLESS_FACILITY value.
-            type: "int"
         return:
           doc: "The newly created NetworkTarget."
           type: "NetworkTarget"
@@ -287,8 +263,6 @@ classes:
           params:
             - value: "name"
             - value: "destination"
-            - value: "options"
-            - value: "default_facility"
       - name: "OpenTcp6Target"
         doc: >
           Creates a new network network target using TCP over IPv6 with the
@@ -306,18 +280,6 @@ classes:
               The destination to send messages to. This could be a hostname or
               an IP address.
             type: "const char *"
-          - name: "options"
-            doc: >
-              The options to use for this target. This should be a bit-wise or
-              of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-              not need any options.
-            type: "int"
-          - name: "default_facility"
-            doc: >
-              The default facility to use on messages logged to this target
-              without a facility code of their own. This should be a
-              STUMPLESS_FACILITY value.
-            type: "int"
         return:
           doc: "The newly created NetworkTarget."
           type: "NetworkTarget"
@@ -327,8 +289,6 @@ classes:
           params:
             - value: "name"
             - value: "destination"
-            - value: "options"
-            - value: "default_facility"
       - name: "OpenUdp4Target"
         doc: >
           Creates a new network network target using UDP over IPv4 with the
@@ -346,18 +306,6 @@ classes:
               The destination to send messages to. This could be a hostname or
               an IP address.
             type: "const char *"
-          - name: "options"
-            doc: >
-              The options to use for this target. This should be a bit-wise or
-              of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-              not need any options.
-            type: "int"
-          - name: "default_facility"
-            doc: >
-              The default facility to use on messages logged to this target
-              without a facility code of their own. This should be a
-              STUMPLESS_FACILITY value.
-            type: "int"
         return:
           doc: "The newly created NetworkTarget."
           type: "NetworkTarget"
@@ -367,8 +315,6 @@ classes:
           params:
             - value: "name"
             - value: "destination"
-            - value: "options"
-            - value: "default_facility"
       - name: "OpenUdp6Target"
         doc: >
           Creates a new network network target using UDP over IPv6 with the
@@ -386,18 +332,6 @@ classes:
               The destination to send messages to. This could be a hostname or
               an IP address.
             type: "const char *"
-          - name: "options"
-            doc: >
-              The options to use for this target. This should be a bit-wise or
-              of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-              not need any options.
-            type: "int"
-          - name: "default_facility"
-            doc: >
-              The default facility to use on messages logged to this target
-              without a facility code of their own. This should be a
-              STUMPLESS_FACILITY value.
-            type: "int"
         return:
           doc: "The newly created NetworkTarget."
           type: "NetworkTarget"
@@ -407,8 +341,6 @@ classes:
           params:
             - value: "name"
             - value: "destination"
-            - value: "options"
-            - value: "default_facility"
       - name: "SetDestination"
         doc: >
           Sets the destination of the target.
