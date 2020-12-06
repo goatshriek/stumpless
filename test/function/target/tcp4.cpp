@@ -57,10 +57,7 @@ namespace {
         tcp_fixtures_enabled = false;
       }
 
-      target = stumpless_open_tcp4_target( "test-self",
-                                           "127.0.0.1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp4_target( "test-self", "127.0.0.1" );
 
       stumpless_set_target_default_app_name( target, "network-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -200,9 +197,7 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_tcp4_target( "bad-ipv4-address",
-                                         "256.256.256.256",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         "256.256.256.256" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
   }
@@ -211,10 +206,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_tcp4_target( "no-destination-provided",
-                                         NULL,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_tcp4_target( "no-destination-provided", NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -223,10 +215,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_tcp4_target( NULL,
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_tcp4_target( NULL, "127.0.0.1" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -257,9 +246,7 @@ namespace {
 
       } else {
         target = stumpless_open_tcp4_target( "target-to-self",
-                                             original_destination,
-                                             STUMPLESS_OPTION_NONE,
-                                             STUMPLESS_FACILITY_USER );
+                                             original_destination );
         EXPECT_NO_ERROR;
         ASSERT_NOT_NULL( target );
 
@@ -389,10 +376,7 @@ namespace {
     new_port_handle = open_tcp4_server_socket( "127.0.0.1", new_port );
 
     if( default_port_handle != BAD_HANDLE && new_port_handle != BAD_HANDLE ) {
-      target = stumpless_open_tcp4_target( "target-to-self",
-                                           "127.0.0.1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp4_target( "target-to-self", "127.0.0.1" );
       ASSERT_NOT_NULL( target );
 
       entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,

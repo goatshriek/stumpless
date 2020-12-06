@@ -51,9 +51,7 @@ namespace {
       buffer[0] = '\0';
       target = stumpless_open_buffer_target( "buffer target testing",
                                              buffer,
-                                             TEST_BUFFER_LENGTH,
-                                             STUMPLESS_OPTION_NONE,
-                                             STUMPLESS_FACILITY_USER );
+                                             TEST_BUFFER_LENGTH );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -254,9 +252,7 @@ namespace {
 
     target = stumpless_open_buffer_target( target_name,
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
     EXPECT_EQ( stumpless_get_current_target(  ), target );
@@ -285,9 +281,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "normal target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     EXPECT_EQ( target, stumpless_get_current_target(  ) );
@@ -306,9 +300,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "malloc-fail-buffer",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
@@ -322,9 +314,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "null-buffer",
                                            NULL,
-                                           100,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           100 );
     ASSERT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -336,9 +326,7 @@ namespace {
 
     target = stumpless_open_buffer_target( NULL,
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -351,9 +339,7 @@ namespace {
     for( i=0; i < 100; i++ ) {
       targets[i] = stumpless_open_buffer_target( "many target test",
                                                  buffer,
-                                                 sizeof( buffer ),
-                                                 STUMPLESS_OPTION_NONE,
-                                                 STUMPLESS_FACILITY_USER );
+                                                 sizeof( buffer ) );
       EXPECT_NO_ERROR;
       ASSERT_NOT_NULL( targets[i] );
     }
@@ -383,9 +369,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "wrap-around-test",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
@@ -401,9 +385,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "wrap-around-test",
                                            buffer,
-                                           write_result + 2,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           write_result + 2 );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
 

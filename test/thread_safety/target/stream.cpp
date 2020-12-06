@@ -41,10 +41,7 @@ namespace {
     ASSERT_NOT_NULL( log_stream );
 
     // set up the target to log to
-    target = stumpless_open_stream_target( filename,
-                                           log_stream,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+    target = stumpless_open_stream_target( filename, log_stream );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 

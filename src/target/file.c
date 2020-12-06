@@ -18,8 +18,6 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include <stumpless/facility.h>
-#include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
 #include "private/config/locale/wrapper.h"
@@ -45,18 +43,12 @@ stumpless_close_file_target( struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_open_file_target( const char *name,
-                            int options, int default_facility ) {
+stumpless_open_file_target( const char *name ) {
   struct stumpless_target *target;
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  target = new_target(
-    STUMPLESS_FILE_TARGET,
-    name,
-    options,
-    default_facility
-  );
+  target = new_target( STUMPLESS_FILE_TARGET, name );
 
   if( !target ) {
     goto fail;
@@ -87,9 +79,7 @@ destroy_file_target( struct file_target *target ) {
 
 struct stumpless_target *
 file_open_default_target( void ) {
-  return stumpless_open_file_target( STUMPLESS_DEFAULT_FILE,
-                                     STUMPLESS_OPTION_NONE,
-                                     STUMPLESS_FACILITY_USER );
+  return stumpless_open_file_target( STUMPLESS_DEFAULT_FILE );
 }
 
 struct file_target *

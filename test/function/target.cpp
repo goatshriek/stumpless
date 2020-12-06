@@ -45,18 +45,14 @@ namespace {
     SetUp( void ) {
       target = stumpless_open_buffer_target( target_name,
                                              buffer,
-                                             sizeof( buffer ),
-                                             STUMPLESS_OPTION_NONE,
-                                             STUMPLESS_FACILITY_USER );
+                                             sizeof( buffer ) );
 
       stumpless_set_target_default_app_name( target, default_app_name );
       stumpless_set_target_default_msgid( target, default_msgid );
 
       plain_target = stumpless_open_buffer_target( "plain-target",
                                                    plain_buffer,
-                                                   sizeof( plain_buffer ),
-                                                   STUMPLESS_OPTION_NONE,
-                                                   STUMPLESS_FACILITY_USER );
+                                                   sizeof( plain_buffer ) );
     }
 
     virtual void
@@ -176,9 +172,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "null entry testing",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
 
     result = stumpless_add_entry( target, NULL );
     EXPECT_LT( result, 0 );
@@ -214,9 +208,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "unsupported type testing",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
     // assuming this isn't a valid type
     target->type = ( enum stumpless_target_type ) -1;
@@ -271,9 +263,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
@@ -297,9 +287,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
     EXPECT_NO_ERROR;
 
@@ -392,9 +380,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_open_target( target );
@@ -414,9 +400,7 @@ namespace {
 
     target = stumpless_open_buffer_target( target_name,
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
@@ -441,9 +425,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
    
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
@@ -465,9 +447,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_target_default_app_name( target, NULL );
@@ -494,9 +474,7 @@ namespace {
 
       target = stumpless_open_buffer_target( "test target",
               buffer,
-              sizeof( buffer ),
-              STUMPLESS_OPTION_NONE,
-              STUMPLESS_FACILITY_USER );
+              sizeof( buffer ) );
       ASSERT_TRUE( target != NULL );
 
 
@@ -513,9 +491,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     target_result = stumpless_set_default_facility( target, STUMPLESS_FACILITY_LOCAL1 );
@@ -536,9 +512,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, 3 );
@@ -565,9 +539,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, 800 );
@@ -585,9 +557,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, -800 );
@@ -606,9 +576,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
    
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
@@ -630,9 +598,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_target_default_msgid( target, NULL );
@@ -661,9 +627,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
 
@@ -680,9 +644,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
 
@@ -708,9 +670,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
@@ -736,9 +696,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     result = stump( "test message" );
@@ -790,9 +748,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
     ASSERT_TRUE( stumpless_get_current_target(  ) == target );
 
@@ -813,9 +769,7 @@ namespace {
     buffer[0] = '\0';
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     ASSERT_TRUE( stumpless_get_current_target(  ) == target );
@@ -847,9 +801,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );

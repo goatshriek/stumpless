@@ -86,19 +86,11 @@ stumpless_close_stream_target( const struct stumpless_target *target );
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_stderr_target( const char *name,
-                              int options,
-                              int default_facility );
+stumpless_open_stderr_target( const char *name );
 
 /**
  * Opens a stream target for the stdout stream.
@@ -118,19 +110,11 @@ stumpless_open_stderr_target( const char *name,
  * @param name The name of the target to open. This is only used for
  * identification of the target.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_stdout_target( const char *name,
-                              int options,
-                              int default_facility );
+stumpless_open_stdout_target( const char *name );
 
 /**
  * Opens a stream target for the given stream.
@@ -159,20 +143,11 @@ stumpless_open_stdout_target( const char *name,
  *
  * @param stream The stream to log events to.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
-stumpless_open_stream_target( const char *name,
-                              FILE *stream,
-                              int options,
-                              int default_facility );
+stumpless_open_stream_target( const char *name, FILE *stream );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

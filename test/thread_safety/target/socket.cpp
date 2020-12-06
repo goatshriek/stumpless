@@ -98,9 +98,7 @@ namespace {
 
     // set up the target to log to
     target = stumpless_open_socket_target( socket_name,
-                                           "thread-safety-test-target-socket",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           "socket-for-thread-safety-test" );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 

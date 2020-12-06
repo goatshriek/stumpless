@@ -25,7 +25,6 @@
 #include <string.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
-#include <stumpless/option.h>
 #include <stumpless/param.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
@@ -452,6 +451,5 @@ unlock_wel_data( const struct wel_data *data ) {
 
 struct stumpless_target *
 wel_open_default_target( void ) {
-  return stumpless_open_local_wel_target( STUMPLESS_DEFAULT_TARGET_NAME,
-                                          STUMPLESS_OPTION_NONE );
+  return stumpless_open_local_wel_target( STUMPLESS_DEFAULT_TARGET_NAME );
 }

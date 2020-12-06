@@ -40,7 +40,7 @@ namespace {
 
       stream = fopen( filename, "w+" );
 
-      target = stumpless_open_stream_target( filename, stream, 0, 0 );
+      target = stumpless_open_stream_target( filename, stream );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -88,10 +88,7 @@ namespace {
     stream = fopen( filename, "w+" );
     ASSERT_NOT_NULL( stream );
 
-    target = stumpless_open_stream_target( filename,
-                                           stream,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+    target = stumpless_open_stream_target( filename, stream );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
     EXPECT_EQ( stumpless_get_current_target(  ), target );
@@ -127,7 +124,7 @@ namespace {
     stream = fopen( filename, "w+" );
     ASSERT_TRUE( stream != NULL );
 
-    target = stumpless_open_stream_target( filename, stream, 0, 0 );
+    target = stumpless_open_stream_target( filename, stream );
     ASSERT_TRUE( target != NULL );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -179,7 +176,7 @@ namespace {
     stream = fopen( filename, "w+" );
     EXPECT_NOT_NULL( stream );
 
-    target = stumpless_open_stream_target( filename, stream, 0, 0 );
+    target = stumpless_open_stream_target( filename, stream );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
@@ -199,7 +196,7 @@ namespace {
     stream = fopen( filename, "w+" );
     ASSERT_NOT_NULL( stream );
 
-    target = stumpless_open_stream_target( NULL, stream, 0, 0 );
+    target = stumpless_open_stream_target( NULL, stream );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
@@ -211,7 +208,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_stream_target( "no-stream-provided", NULL, 0, 0 );
+    target = stumpless_open_stream_target( "no-stream-provided", NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -220,7 +217,7 @@ namespace {
     const struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_stderr_target( NULL, 0, 0 );
+    target = stumpless_open_stderr_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -229,7 +226,7 @@ namespace {
     const struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_stdout_target( NULL, 0, 0 );
+    target = stumpless_open_stdout_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -255,7 +252,7 @@ namespace {
     stream = fopen( filename, "r" );
     ASSERT_TRUE( stream != NULL );
 
-    target = stumpless_open_stream_target( filename, stream, 0, 0 );
+    target = stumpless_open_stream_target( filename, stream );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_add_entry( target, basic_entry );

@@ -40,9 +40,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "buffer-leak-testing",
                                            buffer,
-                                           TEST_BUFFER_LENGTH,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           TEST_BUFFER_LENGTH );
     ASSERT_NOT_NULL( target );
 
     entry = create_entry(  );

@@ -58,9 +58,7 @@ namespace {
     // set up the target to log to
     target = stumpless_open_buffer_target( "thread-safety-test-buffer",
                                            log_buffer,
-                                           LOG_BUFFER_SIZE,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           LOG_BUFFER_SIZE );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 

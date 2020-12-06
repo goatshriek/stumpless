@@ -31,21 +31,6 @@ classes:
               doc: >
                 The path to the file to write logs to.
               type: "const char *"
-            - name: "options"
-              doc: >
-                The options to use for this target. This should be a bit-wise or
-                of STUMPLESS_OPTION values. Use STUMPLESS_OPTION_NONE if you do
-                not need any options.
-              type: "int"
-            - name: "default_facility"
-              doc: >
-                The default facility to use on messages logged to this target
-                without a facility code of their own. This should be a
-                STUMPLESS_FACILITY value.
-              type:
-                name: "Facility"
-                includes: "stumpless/Facility.hpp"
-              value: "static_cast<int>(default_facility)"
           return:
             type: "equivalent-struct-pointer"
           use-template: "pointer-return-error-check"

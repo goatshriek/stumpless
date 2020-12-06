@@ -41,10 +41,7 @@ namespace {
     if( handle != BAD_HANDLE ) {
       INIT_MEMORY_COUNTER( tcp6_leak );
 
-      target = stumpless_open_tcp6_target( "test-self",
-                                           "::1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp6_target( "test-self", "::1" );
       ASSERT_NOT_NULL( target );
 
       entry = create_entry(  );

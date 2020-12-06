@@ -37,9 +37,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "fake-network-target",
                                            unused_buffer,
-                                           100,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( unused_buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     result = stumpless_add_entry( target, entry );
@@ -59,9 +57,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "fake-network-target",
                                            unused_buffer,
-                                           100,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( unused_buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     stumpless_close_target( target );
@@ -79,9 +75,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "fake-network-target",
                                            unused_buffer,
-                                           100,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( unused_buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     result = stumpless_target_is_open( target );
@@ -100,9 +94,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "fake-network-target",
                                            unused_buffer,
-                                           100,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( unused_buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     result = stumpless_open_target( target );

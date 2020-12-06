@@ -61,10 +61,7 @@ namespace {
         udp_fixtures_enabled = false;
       }
 
-      target = stumpless_open_udp6_target( "test-self",
-                                           "::1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_udp6_target( "test-self", "::1" );
 
       stumpless_set_target_default_app_name( target, "network-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -209,9 +206,7 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( "bad-ipv6-address",
-                                         "ff:fe::43::30:1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         "ff:fe::43::30:1" );
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
@@ -225,10 +220,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_udp6_target( "target-to-self",
-                                         "::1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp6_target( "target-to-self", "::1" );
     EXPECT_TRUE( target != NULL );
 
     error = stumpless_get_error(  );
@@ -241,10 +233,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_udp6_target( "no-name-provided",
-                                         NULL,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp6_target( "no-name-provided", NULL );
     EXPECT_TRUE( target == NULL );
 
     error = stumpless_get_error(  );
@@ -259,10 +248,7 @@ namespace {
     const struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_udp6_target( NULL,
-                                         "::1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp6_target( NULL, "::1" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -286,9 +272,7 @@ namespace {
       handle = open_udp6_server_socket( original_destination, "514" );
 
       target = stumpless_open_udp6_target( "target-to-self",
-                                           original_destination,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           original_destination );
       ASSERT_TRUE( target != NULL );
       EXPECT_NO_ERROR;
 
@@ -402,10 +386,7 @@ namespace {
 
     handle = open_udp6_server_socket( "::1", new_port );
 
-    target = stumpless_open_udp6_target( "target-to-self",
-                                         "::1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp6_target( "target-to-self", "::1" );
     ASSERT_TRUE( target != NULL );
     EXPECT_NO_ERROR;
 

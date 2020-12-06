@@ -30,6 +30,7 @@
 #  include <stumpless/level/mask.h>
 
 #  ifndef STUMPLESS_DISABLE_EMERG_LEVEL
+#    include <stumpless/config.h>
 #    include <stumpless/severity.h>
 #    include <stumpless/target.h>
 #  endif

@@ -60,7 +60,8 @@ namespace {
  
         bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr));
 
-        target = stumpless_open_socket_target( socket_name, "test-function-target-socket", 0, 0 );
+        target = stumpless_open_socket_target( socket_name,
+                                               "test-function-target-socket" );
 
         basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                            STUMPLESS_SEVERITY_INFO,
@@ -133,10 +134,7 @@ namespace {
     int result;
     const struct stumpless_error *error;
 
-    target = stumpless_open_socket_target( "/dev/not/there",
-                                           NULL,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+    target = stumpless_open_socket_target( "/dev/not/there", NULL );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
@@ -174,10 +172,7 @@ namespace {
     const char *target_name = "generic-close-test";
     struct stumpless_target *target;
 
-    target = stumpless_open_socket_target( target_name,
-                                           NULL,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+    target = stumpless_open_socket_target( target_name, NULL );
 
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
@@ -204,7 +199,7 @@ namespace {
   TEST( SocketTargetOpenTest, Basic ) {
     const struct stumpless_target *target;
 
-    target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
+    target = stumpless_open_socket_target( "basic-socket-target", NULL );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
@@ -224,7 +219,8 @@ namespace {
     local_socket = socket(local_socket_addr.sun_family, SOCK_DGRAM, 0);
     bind(local_socket, (struct sockaddr *) &local_socket_addr, sizeof(local_socket_addr));
 
-    target = stumpless_open_socket_target( "socket-taken-test", local_socket_name, 0, 0 );
+    target = stumpless_open_socket_target( "socket-taken-test",
+                                           local_socket_name );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_SOCKET_BIND_FAILURE );
 
@@ -240,7 +236,7 @@ namespace {
     result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     EXPECT_TRUE( result != NULL );
 
-    target = stumpless_open_socket_target( "basic-socket-target", NULL, 0, 0 );
+    target = stumpless_open_socket_target( "basic-socket-target", NULL );
     EXPECT_EQ( NULL, target );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -253,7 +249,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_socket_target( NULL, NULL, 0, 0 );
+    target = stumpless_open_socket_target( NULL, NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }

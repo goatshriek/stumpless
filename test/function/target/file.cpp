@@ -36,9 +36,7 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      target = stumpless_open_file_target( filename,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_file_target( filename );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -81,9 +79,7 @@ namespace {
     struct stumpless_target *target;
 
     remove( filename );
-    target = stumpless_open_file_target( filename,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_file_target( filename );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
     EXPECT_EQ( stumpless_get_current_target(  ), target );
@@ -116,7 +112,7 @@ namespace {
     size_t i;
 
     remove( filename );
-    target = stumpless_open_file_target( filename, 0, 0 );
+    target = stumpless_open_file_target( filename );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -153,7 +149,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
    
-    target = stumpless_open_file_target( "/", 0, 0 );
+    target = stumpless_open_file_target( "/" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_FILE_OPEN_FAILURE );
   }
@@ -167,9 +163,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
     ASSERT_NOT_NULL( set_malloc_result );
    
-    target = stumpless_open_file_target( filename,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_file_target( filename );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
@@ -182,7 +176,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_file_target( NULL, 0, 0 );
+    target = stumpless_open_file_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }

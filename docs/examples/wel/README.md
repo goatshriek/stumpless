@@ -29,11 +29,10 @@ while the second attempts to open an Event Log on a remote server with a
 provided name.
 
 ```c
-local_wel_target = stumpless_open_local_wel_target( "Stumpless Example",
-                                                    STUMPLESS_OPTION_NONE );
+local_wel_target = stumpless_open_local_wel_target( "Stumpless Example" );
+
 remote_wel_target = stumpless_open_remote_wel_target( "\\RemoteServerName",
-                                                      "Stumpless Example",
-                                                      STUMPLESS_OPTION_NONE );
+                                                      "Stumpless Example" );
 ```
 
 Windows Event Log-compatible entries have three extra properties that standard

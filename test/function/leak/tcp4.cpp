@@ -41,10 +41,7 @@ namespace {
     if( handle != BAD_HANDLE ) {
       INIT_MEMORY_COUNTER( tcp4_leak );
 
-      target = stumpless_open_tcp4_target( "test-self",
-                                           "127.0.0.1",
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp4_target( "test-self", "127.0.0.1" );
       ASSERT_NOT_NULL( target );
 
       entry = create_entry(  );

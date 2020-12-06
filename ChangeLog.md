@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.0.0] - 2020-12-02
+## [2.0.0] - 2020-12-06
 ### Added
  - Localization framework for error messages and other library strings.
  - Thread safety for all functionality.
@@ -46,6 +46,11 @@ fixes, check out the
  - The underlying buffer in buffer targets should no longer be read manually,
    but should instead use the new `stumpless_read_buffer` function as the only
    way to read messages.
+ - All target open functions no longer require an options or default facility
+   parameter, resulting in much more concise code. If either of these fields
+   need to be adjusted on a target, use the `stumpless_set_option` and
+   `stumpless_set_default_facility` functions after the target has been
+   created.
 
 ### Fixed
  - Memory leak in opening of network targets on systems using `sys/socket.h`

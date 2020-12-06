@@ -42,31 +42,17 @@ stumpless_close_stream_target( const struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_open_stderr_target( const char *name,
-                              int options,
-                              int default_facility ) {
-  return stumpless_open_stream_target( name,
-                                       stderr,
-                                       options,
-                                       default_facility );
+stumpless_open_stderr_target( const char *name ) {
+  return stumpless_open_stream_target( name, stderr );
 }
 
 struct stumpless_target *
-stumpless_open_stdout_target( const char *name,
-                              int options,
-                              int default_facility ) {
-  return stumpless_open_stream_target( name,
-                                       stdout,
-                                       options,
-                                       default_facility );
-
+stumpless_open_stdout_target( const char *name ) {
+  return stumpless_open_stream_target( name, stdout );
 }
 
 struct stumpless_target *
-stumpless_open_stream_target( const char *name,
-                              FILE *stream,
-                              int options,
-                              int default_facility ) {
+stumpless_open_stream_target( const char *name, FILE *stream ) {
   struct stumpless_target *target;
 
   clear_error(  );
@@ -74,12 +60,7 @@ stumpless_open_stream_target( const char *name,
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( stream );
 
-  target = new_target(
-    STUMPLESS_STREAM_TARGET,
-    name,
-    options,
-    default_facility
-  );
+  target = new_target( STUMPLESS_STREAM_TARGET, name );
 
   if( !target ) {
     goto fail;

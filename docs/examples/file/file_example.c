@@ -34,10 +34,10 @@ main( int argc, char **argv ) {
 
   // building the entry is done as usual
   entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "example-app-name",
-                                     "example-msgid",
-                                     "This is an example message." );
+                               STUMPLESS_SEVERITY_INFO,
+                               "example-app-name",
+                               "example-msgid",
+                               "This is an example message." );
   if( !entry ) {
     stumpless_perror( "could not create a basic entry" );
     return EXIT_FAILURE;
@@ -60,9 +60,7 @@ main( int argc, char **argv ) {
 
 
   // the name of a file target is the file that it will log to
-  file_target = stumpless_open_file_target( filename,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+  file_target = stumpless_open_file_target( filename );
   if( !file_target ) {
     stumpless_perror( "couldn't create a new file target" );
     return EXIT_FAILURE;

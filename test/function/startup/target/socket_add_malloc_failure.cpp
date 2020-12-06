@@ -56,7 +56,7 @@ namespace {
  
     bind(test_socket, (struct sockaddr *) &test_socket_addr, sizeof(test_socket_addr));
 
-    target = stumpless_open_socket_target( socket_name, "test-function-target-socket", 0, 0 );
+    target = stumpless_open_socket_target( socket_name, "test-function-target-socket" );
     ASSERT_NOT_NULL( target );
 
     basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,

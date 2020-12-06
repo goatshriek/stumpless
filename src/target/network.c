@@ -21,15 +21,12 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <stumpless/facility.h>
-#include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
-#include "private/facility.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
@@ -432,10 +429,7 @@ stumpless_new_network_target( const char *name,
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  target = new_target( STUMPLESS_NETWORK_TARGET,
-                       name,
-                       STUMPLESS_OPTION_NONE,
-                       STUMPLESS_FACILITY_USER );
+  target = new_target( STUMPLESS_NETWORK_TARGET, name );
   if( !target ) {
     goto fail;
   }
@@ -486,23 +480,13 @@ struct stumpless_target *
 stumpless_open_network_target( const char *name,
                                const char *destination,
                                enum stumpless_network_protocol network,
-                               enum stumpless_transport_protocol transport,
-                               int options,
-                               int default_facility ) {
+                               enum stumpless_transport_protocol transport ) {
   struct stumpless_target *target;
 
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( destination );
 
-  if( facility_is_invalid( default_facility ) ) {
-    raise_invalid_facility( default_facility );
-    goto fail;
-  }
-
-  target = new_target( STUMPLESS_NETWORK_TARGET,
-                       name,
-                       options,
-                       default_facility );
+  target = new_target( STUMPLESS_NETWORK_TARGET, name );
 
   if( !target ) {
     goto fail;
@@ -523,63 +507,35 @@ fail:
 }
 
 struct stumpless_target *
-stumpless_open_tcp4_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility ) {
-
+stumpless_open_tcp4_target( const char *name, const char *destination ) {
   return stumpless_open_network_target( name,
                                         destination,
                                         STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                        STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                        options,
-                                        default_facility );
-
+                                        STUMPLESS_TCP_TRANSPORT_PROTOCOL );
 }
 
 struct stumpless_target *
-stumpless_open_tcp6_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility ) {
-
+stumpless_open_tcp6_target( const char *name, const char *destination ) {
   return stumpless_open_network_target( name,
                                         destination,
                                         STUMPLESS_IPV6_NETWORK_PROTOCOL,
-                                        STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                        options,
-                                        default_facility );
-
+                                        STUMPLESS_TCP_TRANSPORT_PROTOCOL );
 }
 
 struct stumpless_target *
-stumpless_open_udp4_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility ) {
-
+stumpless_open_udp4_target( const char *name, const char *destination ) {
   return stumpless_open_network_target( name,
                                         destination,
                                         STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                        STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                        options,
-                                        default_facility );
-
+                                        STUMPLESS_UDP_TRANSPORT_PROTOCOL );
 }
 
 struct stumpless_target *
-stumpless_open_udp6_target( const char *name,
-                            const char *destination,
-                            int options,
-                            int default_facility ) {
-
+stumpless_open_udp6_target( const char *name, const char *destination ) {
   return stumpless_open_network_target( name,
                                         destination,
                                         STUMPLESS_IPV6_NETWORK_PROTOCOL,
-                                        STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                        options,
-                                        default_facility );
-
+                                        STUMPLESS_UDP_TRANSPORT_PROTOCOL );
 }
 
 struct stumpless_target *

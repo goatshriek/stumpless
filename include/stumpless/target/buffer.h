@@ -108,21 +108,13 @@ stumpless_close_buffer_target( const struct stumpless_target *target );
  *
  * @param size The number of characters the provided buffer can hold.
  *
- * @param options The options to use for the logging target. This is a bit-wise
- * or of one or more \c STUMPLESS_OPTION values.
- *
- * @param default_facility The facility code to use for entries that do not have
- * a facility value set on them. This should be a \c STUMPLESS_FACILITY value.
- *
  * @return The new target if no error is encountered. In the event of an error,
  * NULL is returned and an error code is set appropriately.
  */
 struct stumpless_target *
 stumpless_open_buffer_target( const char *name,
                               char *buffer,
-                              size_t size,
-                              int options,
-                              int default_facility );
+                              size_t size );
 
 /**
  * Reads the next message from the provided buffer target and writes it into the

@@ -33,8 +33,7 @@ namespace {
     std::thread *threads[THREAD_COUNT];
 
     // set up the target to log to
-    target = stumpless_open_local_wel_target("wel-target-test",
-                                             STUMPLESS_OPTION_NONE );
+    target = stumpless_open_local_wel_target("wel-target-test" );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 

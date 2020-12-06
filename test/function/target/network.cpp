@@ -41,10 +41,7 @@ namespace {
     const char *target_name = "generic-close-test";
     struct stumpless_target *target;
 
-    target = stumpless_open_udp4_target( target_name,
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( target_name, "127.0.0.1" );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
     EXPECT_EQ( stumpless_get_current_target(  ), target );
@@ -84,9 +81,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-network-target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_get_destination( target );
@@ -113,9 +108,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_get_transport_port( target );
@@ -133,9 +126,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_get_udp_max_message_size( target );
@@ -241,9 +232,7 @@ namespace {
       target = stumpless_open_network_target( "bad-hostname",
                                               hostname,
                                               STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                              STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                              STUMPLESS_OPTION_NONE,
-                                              STUMPLESS_FACILITY_USER );
+                                              STUMPLESS_UDP_TRANSPORT_PROTOCOL );
       EXPECT_NULL( target );
       EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE);
     }
@@ -257,9 +246,7 @@ namespace {
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             // assuming this isn't a valid protocol
-                                            ( enum stumpless_transport_protocol ) -1,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+                                            ( enum stumpless_transport_protocol ) -1 );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
   }
@@ -272,9 +259,7 @@ namespace {
                                             "::1",
                                             STUMPLESS_IPV6_NETWORK_PROTOCOL,
                                             // assuming this isn't a valid protocol
-                                            ( enum stumpless_transport_protocol ) -1,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+                                            ( enum stumpless_transport_protocol ) -1 );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
   }
@@ -287,53 +272,9 @@ namespace {
                                             "127.0.0.1",
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_network_protocol ) -1,
-                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
-  }
-
-  TEST( NetworkTargetOpenTest, FacilityNotDivisibleBy8 ) {
-    struct stumpless_target *target;
-    const struct stumpless_error *error;
-
-    target = stumpless_open_network_target( "non-divisible-facility",
-                                            "127.0.0.1",
-                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            3 );
-    EXPECT_TRUE( target == NULL );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
-  }
-
-  TEST( NetworkTargetOpenTest, FacilityTooHigh ) {
-    struct stumpless_target *target;
-    const struct stumpless_error *error;
-
-    target = stumpless_open_network_target( "too-high-facility",
-                                            "127.0.0.1",
-                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            800 );
-    EXPECT_TRUE( target == NULL );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
-  }
-
-  TEST( NetworkTargetOpenTest, FacilityTooLow ) {
-    struct stumpless_target *target;
-    const struct stumpless_error *error;
-
-    target = stumpless_open_network_target( "too-low-facility",
-                                            "127.0.0.1",
-                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            -800 );
-    EXPECT_TRUE( target == NULL );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
   }
 
   TEST( NetworkTargetOpenTest, Hostname ) {
@@ -348,9 +289,7 @@ namespace {
       target = stumpless_open_network_target( "local-hostname",
                                               hostname,
                                               STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                              STUMPLESS_UDP_TRANSPORT_PROTOCOL,
-                                              STUMPLESS_OPTION_NONE,
-                                              STUMPLESS_FACILITY_USER );
+                                              STUMPLESS_UDP_TRANSPORT_PROTOCOL );
       EXPECT_NOT_NULL( target );
       EXPECT_NO_ERROR;
 
@@ -370,9 +309,7 @@ namespace {
     target = stumpless_open_network_target( "malloc-failure-target",
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
@@ -387,9 +324,7 @@ namespace {
     target = stumpless_open_network_target( NULL,
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -401,9 +336,7 @@ namespace {
     target = stumpless_open_network_target( "no-name-provided",
                                             NULL,
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
-                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL,
-                                            STUMPLESS_OPTION_NONE,
-                                            STUMPLESS_FACILITY_USER );
+                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -416,9 +349,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_set_destination( target, "localhost" );
@@ -437,9 +368,7 @@ namespace {
     void * ( *set_malloc_result ) ( size_t );
 
     target = stumpless_open_udp4_target( "target-to-self",
-                                         original_destination,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         original_destination );
     ASSERT_TRUE( target != NULL );
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
@@ -460,10 +389,7 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *result;
 
-    target = stumpless_open_udp4_target( "target-to-self",
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( "target-to-self", "127.0.0.1" );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_set_destination( target, NULL );
@@ -490,9 +416,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_set_transport_port( target, "5514" );
@@ -511,9 +435,7 @@ namespace {
     void * ( *set_malloc_result ) ( size_t );
 
     target = stumpless_open_udp4_target( "target-to-self",
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+                                         "127.0.0.1" );
     ASSERT_TRUE( target != NULL );
 
     default_port = stumpless_get_transport_port( target );
@@ -538,10 +460,7 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *result;
 
-    target = stumpless_open_udp4_target( "target-to-self",
-                                         "127.0.0.1",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( "target-to-self", "127.0.0.1" );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_set_transport_port( target, NULL );
@@ -568,9 +487,7 @@ namespace {
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
-                                           sizeof( buffer ),
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+                                           sizeof( buffer ) );
     ASSERT_TRUE( target != NULL );
 
     result = stumpless_set_udp_max_message_size( target, 1500 );

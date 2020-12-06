@@ -152,10 +152,7 @@ namespace {
       listener_thread = new std::thread( listen_on_socket, handle, ACCEPT_COUNT );
 
       // set up the target to log to
-      target = stumpless_open_tcp4_target( "test-target",
-                                           target_destination,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp4_target( "test-target", target_destination );
       EXPECT_NO_ERROR;
       ASSERT_NOT_NULL( target );
 
@@ -190,10 +187,7 @@ namespace {
       listener_thread = new std::thread( listen_on_socket, handle, ACCEPT_COUNT );
 
       // set up the target to log to
-      target = stumpless_open_tcp6_target( "test-target",
-                                           target_destination,
-                                           STUMPLESS_OPTION_NONE,
-                                           STUMPLESS_FACILITY_USER );
+      target = stumpless_open_tcp6_target( "test-target", target_destination );
       EXPECT_NO_ERROR;
       ASSERT_NOT_NULL( target );
 
@@ -227,10 +221,7 @@ namespace {
     }
 
     // set up the target to log to
-    target = stumpless_open_udp4_target( "test-target",
-                                         target_destination,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp4_target( "test-target", target_destination );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
@@ -263,10 +254,7 @@ namespace {
     }
 
     // set up the target to log to
-    target = stumpless_open_udp6_target( "test-target",
-                                         target_destination,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_udp6_target( "test-target", target_destination );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 

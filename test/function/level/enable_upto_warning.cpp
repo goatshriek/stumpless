@@ -43,9 +43,7 @@ namespace {
       buffer[0] = '\0';
       target = stumpless_open_buffer_target( "info level testing",
                                              buffer,
-                                             TEST_BUFFER_LENGTH,
-                                             STUMPLESS_OPTION_NONE,
-                                             STUMPLESS_FACILITY_USER );
+                                             TEST_BUFFER_LENGTH );
 
       stumpless_set_target_default_app_name( target, "info-level-test" );
       stumpless_set_target_default_msgid( target, "default-message" );

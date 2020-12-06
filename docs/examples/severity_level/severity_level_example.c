@@ -25,9 +25,7 @@ main( int argc, char **argv ) {
   struct stumpless_target *target;
 
   // setting up a target to the console for quick and easy results
-  target = stumpless_open_stdout_target( "severity level example",
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+  target = stumpless_open_stdout_target( "severity level example" );
 
 
   // this message will be logged with a severity level of INFO because there is

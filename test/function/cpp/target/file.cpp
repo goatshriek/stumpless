@@ -46,9 +46,7 @@ namespace {
     int i;
 
     remove( filename );
-    FileTarget test( filename,
-                     STUMPLESS_OPTION_NONE,
-                     Facility::USER );
+    FileTarget test( filename );
 
     test.Log( *basic_entry );
 
@@ -66,10 +64,9 @@ namespace {
   /* non-fixture tests */
 
   TEST( Constructor, NullName ) {
-    EXPECT_THROW( FileTarget test( NULL,
-                                   STUMPLESS_OPTION_NONE,
-                                   Facility::USER ),
-                  StumplessException * );
+    const char *filename = NULL;
+
+    EXPECT_THROW( FileTarget test( filename ), StumplessException * );
   }
 
   TEST( DefaultFileConstant, EqualToOriginal ) {
@@ -81,9 +78,7 @@ namespace {
 
     remove( filename );
 
-    FileTarget test( filename,
-                     STUMPLESS_OPTION_NONE,
-                     Facility::USER );
+    FileTarget test( filename );
 
     EXPECT_THROW( test.SetDefaultAppName( NULL ), StumplessException * );
 

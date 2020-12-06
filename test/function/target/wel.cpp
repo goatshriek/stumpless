@@ -40,7 +40,7 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      target = stumpless_open_local_wel_target( "wel-target-test", 0 );
+      target = stumpless_open_local_wel_target( "wel-target-test" );
 
       simple_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                           STUMPLESS_SEVERITY_INFO,
@@ -212,8 +212,7 @@ namespace {
     const char *target_name = "wel-target-test";
     struct stumpless_target *target;
 
-    target = stumpless_open_local_wel_target( target_name,
-                                              STUMPLESS_OPTION_NONE );
+    target = stumpless_open_local_wel_target( target_name );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
     EXPECT_EQ( stumpless_get_current_target(  ), target );
@@ -239,7 +238,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_remote_wel_target( "remote-server", NULL, 0 );
+    target = stumpless_open_remote_wel_target( "remote-server", NULL );
     ASSERT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }

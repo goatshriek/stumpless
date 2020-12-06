@@ -80,9 +80,7 @@ namespace {
 
     remove( filename );
 
-    target = stumpless_open_file_target( filename,
-                                         STUMPLESS_OPTION_NONE,
-                                         STUMPLESS_FACILITY_USER );
+    target = stumpless_open_file_target( filename );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 

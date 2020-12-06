@@ -47,9 +47,7 @@ stumpless_close_socket_target( const struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_open_socket_target( const char *name,
-                              const char *local_socket,
-                              int options,
-                              int default_facility ) {
+                              const char *local_socket ) {
   struct stumpless_target *target;
   size_t name_len;
   size_t local_socket_len;
@@ -58,12 +56,7 @@ stumpless_open_socket_target( const char *name,
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  target = new_target(
-    STUMPLESS_SOCKET_TARGET,
-    name,
-    options,
-    default_facility
-  );
+  target = new_target( STUMPLESS_SOCKET_TARGET, name );
 
   if( !target ) {
     goto fail;
