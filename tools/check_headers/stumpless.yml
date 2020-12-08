@@ -210,6 +210,7 @@
 "STUMPLESS_DEFAULT_TARGET_NAME": "stumpless/target.h"
 "STUMPLESS_DEFAULT_TRANSPORT_PORT": "stumpless/target/network.h"
 "STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE": "stumpless/target/network.h"
+"STUMPLESS_DEPRECATION_WARNINGS_ENABLED": "stumpless/config.h"
 "stumpless_destroy_element": "stumpless/element.h"
 "stumpless_destroy_element_and_contents": "stumpless/element.h"
 "stumpless_destroy_element_only": "stumpless/element.h"

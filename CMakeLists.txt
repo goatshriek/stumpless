@@ -19,6 +19,11 @@ option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 option(COVERAGE "Include coverage information" OFF)
 
+string(CONCAT enable_deprecation_warnings_help_string
+  "Print warnings to the standard output when deprecated functionality is used."
+)
+option(ENABLE_DEPRECATION_WARNINGS ${enable_deprecation_warnings_help_string} ON)
+
 string(CONCAT default_facility_help_string
   "The facility code to use for messages where one is not explicitly provided."
 )
@@ -125,6 +130,12 @@ check_symbol_exists(sysconf unistd.h HAVE_UNISTD_SYSCONF)
 check_symbol_exists(wcstombs_s windows.h HAVE_WCSTOMBS_S)
 
 find_program(HAVE_WRAPTURE NAMES wrapture)
+
+if(ENABLE_DEPRECATION_WARNINGS)
+  set(STUMPLESS_DEPRECATION_WARNINGS_ENABLED TRUE)
+else()
+  set(STUMPLESS_DEPRECATION_WARNINGS_ENABLED OFF)
+endif()
 
 if(EXISTS "/var/run/syslog")
   set(STUMPLESS_DEFAULT_SOCKET "/var/run/syslog")
