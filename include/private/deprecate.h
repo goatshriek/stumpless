@@ -19,6 +19,13 @@
 #ifndef __STUMPLESS_PRIVATE_DEPRECATE_H
 #  define __STUMPLESS_PRIVATE_DEPRECATE_H
 
+#  include <stumpless/config.h>
 
+#  ifdef STUMPLESS_DEPRECATION_WARNINGS_ENABLED
+#    include <stdio.h>
+#    define warn_of_deprecation( WARNING ) printf( WARNING )
+#  else
+#    define warn_of_deprecation( WARNING ) ( ( void ) 0 )
+#  endif
 
 #endif /* __STUMPLESS_PRIVATE_DEPRECATE_H */
