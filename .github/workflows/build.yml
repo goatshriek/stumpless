@@ -87,6 +87,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -128,6 +129,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Run Examples
         run: |
           make examples
@@ -179,6 +181,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-es-es:
     name: "linux, es-es"
     runs-on: "ubuntu-20.04"
@@ -198,6 +201,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-fr-fr:
     name: "linux, fr-fr"
     runs-on: "ubuntu-20.04"
@@ -217,6 +221,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sv-se:
     name: "linux, sv-se"
     runs-on: "ubuntu-20.04"
@@ -236,6 +241,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sk-sk:
     name: "linux, sk-sk"
     runs-on: "ubuntu-20.04"
@@ -255,6 +261,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   mac-debug:
     name: "mac, debug"
     runs-on: "macos-11.0"
@@ -269,6 +276,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -307,6 +315,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -348,6 +357,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Run Examples
         run: |
           make examples
