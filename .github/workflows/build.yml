@@ -48,7 +48,7 @@ jobs:
       - name: Test
         run: |
           make check
-          if [[ grep -q "DEPRECATED" Testing/Temporary/LastTest.log ]]; then exit 1; fi
+          if grep -q "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
