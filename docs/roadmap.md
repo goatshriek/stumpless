@@ -5,19 +5,6 @@ or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
 ## 2.0.0 (next major and minor release)
- * [DEPRECATE] **entry and element destructor synonyms**
-   Currently, there are two forms of the destructors for these two structures:
-   one that destroys the object itself, and one that destroys the object and all
-   of the ones that it contains. The former is named `destroy_..._only` while
-   the latter is named `destroy_..._and_contents`. The latter has a synonym
-   named simply `destroy`, which does not convey its behavior well. This alias
-   will be deprecated, and removed in the next major release in order to prevent
-   confusion and misuse of the two forms.
- * [CHANGE] **Destructors no longer clear errors**
-   As destruction functions do not throw any errors by design, they should not
-   clear the error flags. Clearing them can especially cause confusion in other
-   language bindings, where the calling of the destructor is not explicit and
-   may be difficult to track down.
  * [CHANGE] **Facilities and severities will be defined by enumerations**
    Enumerations are a cleaner way to represent the set values, and can be made
    compatible with the `syslog.h` values if their backing `int` values match.

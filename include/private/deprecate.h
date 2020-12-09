@@ -23,7 +23,7 @@
 
 #  ifdef STUMPLESS_DEPRECATION_WARNINGS_ENABLED
 #    include <stdio.h>
-#    define warn_of_deprecation( WARNING ) printf( WARNING )
+#    define warn_of_deprecation( WARNING ) printf( "DEPRECATED: " WARNING "\n" )
 #  else
 #    define warn_of_deprecation( WARNING ) ( ( void ) 0 )
 #  endif

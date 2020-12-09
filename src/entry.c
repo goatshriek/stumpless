@@ -27,6 +27,7 @@
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/deprecate.h"
 #include "private/element.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -184,6 +185,13 @@ cleanup_and_fail:
 
 void
 stumpless_destroy_entry( const struct stumpless_entry *entry ) {
+  warn_of_deprecation( "stumpless_destroy_entry has been deprecated in favor "
+                       "of the more descriptive and deliberate "
+                       "stumpless_destroy_entry_and_contents and "
+                       "stumpless_destroy_entry_only functions in order to "
+                       "avoid unintentional memory leaks and use-after-free "
+                       "mistakes" );
+
   stumpless_destroy_entry_and_contents( entry );
 }
 
