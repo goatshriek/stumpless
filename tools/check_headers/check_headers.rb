@@ -114,8 +114,7 @@ ARGV.each do |source_glob|
         used_terms << word if file_terms.key?(word)
 
         if $deprecated_terms.include?(word)
-          puts "#{source_filename}: deprecated term #{word} used"
-          return_code = 1
+          puts "warning: deprecated term #{word} used in #{source_filename}"
         end
       end
     end
