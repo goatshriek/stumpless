@@ -60,7 +60,7 @@ namespace {
 
     virtual void
     TearDown( void ) {
-      stumpless_destroy_entry( basic_entry );
+      stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_stream_target( target );
 
       fclose( stream );
@@ -146,7 +146,7 @@ namespace {
       stumpless_add_entry( target, entry );
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_close_stream_target( target );
     fclose( stream );
 
@@ -259,7 +259,7 @@ namespace {
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
 
-    stumpless_destroy_entry( basic_entry );
+    stumpless_destroy_entry_and_contents( basic_entry );
     fclose( stream );
     stumpless_close_stream_target( target );
 

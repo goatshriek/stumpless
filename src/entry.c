@@ -27,6 +27,7 @@
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/deprecate.h"
 #include "private/element.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -71,7 +72,7 @@ stumpless_add_new_element( struct stumpless_entry *entry,
   result = stumpless_add_element( entry, new_element );
 
   if( !result ) {
-    stumpless_destroy_element( new_element );
+    stumpless_destroy_element_only( new_element );
   }
 
   return result;
@@ -184,6 +185,13 @@ cleanup_and_fail:
 
 void
 stumpless_destroy_entry( const struct stumpless_entry *entry ) {
+  warn_of_deprecation( "stumpless_destroy_entry has been deprecated in favor "
+                       "of the more descriptive and deliberate "
+                       "stumpless_destroy_entry_and_contents and "
+                       "stumpless_destroy_entry_only functions in order to "
+                       "avoid unintentional memory leaks and use-after-free "
+                       "mistakes" );
+
   stumpless_destroy_entry_and_contents( entry );
 }
 
@@ -196,7 +204,7 @@ stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry ) {
   }
 
   for( i = 0; i < entry->element_count; i++ ) {
-    stumpless_destroy_element( entry->elements[i] );
+    stumpless_destroy_element_and_contents( entry->elements[i] );
   }
 
   unchecked_destroy_entry( entry );

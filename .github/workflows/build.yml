@@ -27,9 +27,7 @@ jobs:
           cmake .
           ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
           wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
-          ls
           unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
-          ls
           chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
           sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
         env:
@@ -50,6 +48,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -88,6 +87,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -129,6 +129,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Run Examples
         run: |
           make examples
@@ -180,6 +181,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-es-es:
     name: "linux, es-es"
     runs-on: "ubuntu-20.04"
@@ -199,6 +201,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-fr-fr:
     name: "linux, fr-fr"
     runs-on: "ubuntu-20.04"
@@ -218,6 +221,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sv-se:
     name: "linux, sv-se"
     runs-on: "ubuntu-20.04"
@@ -237,6 +241,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sk-sk:
     name: "linux, sk-sk"
     runs-on: "ubuntu-20.04"
@@ -256,6 +261,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   mac-debug:
     name: "mac, debug"
     runs-on: "macos-11.0"
@@ -270,6 +276,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -308,6 +315,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -349,6 +357,7 @@ jobs:
       - name: Test
         run: |
           make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Run Examples
         run: |
           make examples

@@ -57,6 +57,9 @@
 /** Defined if Windows Event Log targets are supported by this build. */
 #cmakedefine STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED 1
 
+/** Defined if deprecation warnings are printed to standard output. */
+#cmakedefine STUMPLESS_DEPRECATION_WARNINGS_ENABLED 1
+
 /** The major version of this stumpless build. */
 #define STUMPLESS_MAJOR_VERSION @PROJECT_VERSION_MAJOR@
 

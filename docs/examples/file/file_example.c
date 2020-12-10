@@ -80,7 +80,7 @@ main( int argc, char **argv ) {
 
 
   // destroying all the other resources before finishing up:
-  stumpless_destroy_entry( entry );
+  stumpless_destroy_entry_and_contents( entry );
   stumpless_free_all(  );
 
 

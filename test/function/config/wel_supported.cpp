@@ -61,8 +61,8 @@ namespace {
 
     virtual void
     TearDown( void ) {
-      stumpless_destroy_entry( simple_entry );
-      stumpless_destroy_entry( insertion_entry );
+      stumpless_destroy_entry_and_contents( simple_entry );
+      stumpless_destroy_entry_and_contents( insertion_entry );
     }
   };
 
@@ -198,7 +198,7 @@ namespace {
 
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_destroy_param( param );
   }
 
@@ -229,7 +229,7 @@ namespace {
     EXPECT_EQ( entry_result, entry );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_destroy_param( param_1 );
     stumpless_destroy_param( param_2 );
   }
@@ -261,7 +261,7 @@ namespace {
     EXPECT_EQ( entry_result, entry );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_destroy_param( param_1 );
     stumpless_destroy_param( param_2 );
   }
@@ -291,7 +291,7 @@ namespace {
 
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( WelSetInsertionStringTest, SetTwoStrings ) {
@@ -313,7 +313,7 @@ namespace {
     EXPECT_EQ( entry_result, entry );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( WelSetInsertionStringTest, SetTwoStringsOutOfOrder ) {
@@ -335,7 +335,7 @@ namespace {
     EXPECT_EQ( entry_result, entry );
     EXPECT_TRUE( stumpless_get_error(  ) == NULL );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( WelSetInsertionStringsTest, NullEntry ) {
@@ -363,7 +363,7 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( WelSetInsertionStringsTest, TwoStrings ) {
@@ -394,6 +394,6 @@ namespace {
     EXPECT_TRUE( insertion != second );
     EXPECT_STREQ( insertion, second );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 }

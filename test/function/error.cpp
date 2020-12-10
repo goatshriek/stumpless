@@ -74,7 +74,7 @@ namespace {
     error = stumpless_get_error(  );
     EXPECT_NOT_NULL( error );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_close_buffer_target( target );
     fflush( error_file );
 
@@ -115,7 +115,7 @@ namespace {
     error = stumpless_get_error(  );
     EXPECT_NOT_NULL( error );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_close_buffer_target( target );
     fflush( error_file );
 

@@ -67,6 +67,6 @@ namespace {
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 }

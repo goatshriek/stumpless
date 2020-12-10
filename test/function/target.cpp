@@ -196,7 +196,7 @@ namespace {
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( AddEntryTest, UnsupportedType ) {
@@ -225,7 +225,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
     stumpless_close_buffer_target( target );
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( AddLogTest, NullTarget ) {

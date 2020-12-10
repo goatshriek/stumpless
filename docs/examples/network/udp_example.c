@@ -109,7 +109,7 @@ main( int argc, char **argv ) {
 
 
   // destroying all the other resources before finishing up:
-  stumpless_destroy_entry( basic_entry );
+  stumpless_destroy_entry_and_contents( basic_entry );
   stumpless_free_all(  );
 
   return EXIT_SUCCESS;

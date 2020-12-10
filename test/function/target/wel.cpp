@@ -79,9 +79,9 @@ namespace {
     virtual void
     TearDown( void ) {
       stumpless_close_wel_target( target );
-      stumpless_destroy_entry( simple_entry );
-      stumpless_destroy_entry( one_insertion_entry );
-      stumpless_destroy_entry( two_insertion_entry );
+      stumpless_destroy_entry_and_contents( simple_entry );
+      stumpless_destroy_entry_and_contents( one_insertion_entry );
+      stumpless_destroy_entry_and_contents( two_insertion_entry );
     }
   };
 

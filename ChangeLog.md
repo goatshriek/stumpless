@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.0.0] - 2020-12-06
+## [2.0.0] - 2020-12-10
 ### Added
  - Localization framework for error messages and other library strings.
  - Thread safety for all functionality.
@@ -51,6 +51,16 @@ fixes, check out the
    need to be adjusted on a target, use the `stumpless_set_option` and
    `stumpless_set_default_facility` functions after the target has been
    created.
+
+### Deprecated
+ - `stumpless_destroy_entry` has been deprecated in favor of the more
+   descriptive and deliberate `stumpless_destroy_entry_and_contents` and
+   `stumpless_destroy_entry_only` functions in order to avoid unintentional
+   memory leaks and use-after-free mistakes.
+ - `stumpless_destroy_element` has been deprecated in favor of the more
+   descriptive and deliberate `stumpless_destroy_element_and_contents` and
+   `stumpless_destroy_element_only` functions in order to avoid
+   unintentional memory leaks and use-after-free mistakes.
 
 ### Fixed
  - Memory leak in opening of network targets on systems using `sys/socket.h`

@@ -77,7 +77,7 @@ namespace {
 
     virtual void
     TearDown( void ) {
-      stumpless_destroy_entry( basic_entry );
+      stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_network_target( target );
       close_server_socket( handle );
 
@@ -318,7 +318,7 @@ namespace {
         close_server_socket( accepted );
 
         stumpless_close_network_target( target );
-        stumpless_destroy_entry( entry );
+        stumpless_destroy_entry_and_contents( entry );
       }
 
       close_server_socket( port_handle );
@@ -382,7 +382,7 @@ namespace {
       close_server_socket( accepted );
 
       stumpless_close_network_target( target );
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
     }
 
     close_server_socket( port_handle );
@@ -443,7 +443,7 @@ namespace {
       recv_from_handle( accepted, buffer, 2048 );
       EXPECT_TRUE( buffer[0] != '\0' );
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
       close_server_socket( accepted );
       stumpless_close_network_target( target );
 
@@ -513,7 +513,7 @@ namespace {
       recv_from_handle( accepted, buffer, 2048 );
       EXPECT_TRUE( buffer[0] != '\0' );
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
       close_server_socket( accepted );
       stumpless_close_network_target( target );
 

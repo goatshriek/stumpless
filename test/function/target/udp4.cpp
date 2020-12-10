@@ -82,7 +82,7 @@ namespace {
 
     virtual void
     TearDown( void ) {
-      stumpless_destroy_entry( basic_entry );
+      stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_network_target( target );
       close_server_socket( handle );
     }
@@ -283,7 +283,7 @@ namespace {
         EXPECT_TRUE( buffer[0] != '\0' );
         TestRFC5424Compliance( buffer );
 
-        stumpless_destroy_entry( entry );
+        stumpless_destroy_entry_and_contents( entry );
       }
 
       close_server_socket( handle );
@@ -344,7 +344,7 @@ namespace {
       EXPECT_TRUE( buffer[0] != '\0' );
       TestRFC5424Compliance( buffer );
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
     }
 
     close_server_socket( handle );
@@ -397,7 +397,7 @@ namespace {
       EXPECT_TRUE( buffer[0] != '\0' );
       TestRFC5424Compliance( buffer );
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
     }
 
     close_server_socket( handle );
@@ -463,7 +463,7 @@ namespace {
       EXPECT_TRUE( buffer[0] != '\0' );
       TestRFC5424Compliance( buffer );
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
     }
 
     close_server_socket( handle );

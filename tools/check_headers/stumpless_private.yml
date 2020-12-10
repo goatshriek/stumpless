@@ -59,6 +59,7 @@
 "unlock_wel_data": "private/config/wel_supported.h"
 "USE_LOCALE_EN_US": "private/config.h"
 "VALIDATE_ARG_NOT_NULL": "private/validate.h"
+"warn_of_deprecation": "private/deprecate.h"
 "windows compare_exchange_bool": "private/config/have_windows.h"
 "windows_compare_exchange_ptr": "private/config/have_windows.h"
 "windows_destroy_mutex": "private/config/have_windows.h"

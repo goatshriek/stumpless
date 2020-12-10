@@ -198,6 +198,11 @@ stumpless_copy_element( const struct stumpless_element *element );
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
+ * @deprecated This function has been deprecated in favor of the more
+ * descriptive and deliberate stumpless_destroy_element_and_contents and
+ * stumpless_destroy_element_only functions in order to avoid unintentional
+ * memory leaks and use-after-free mistakes.
+ *
  * @param element The element to destroy.
  */
 void
