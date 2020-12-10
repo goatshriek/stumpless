@@ -32,23 +32,29 @@
 
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    include <syslog.h>
+/** Kernel message facility code value as defined by syslog.h. */
+#    define STUMPLESS_FACILITY_KERN_VALUE LOG_KERN
+/** User-level message facility code value as defined by syslog.h. */
+#    define STUMPLESS_FACILITY_USER_VALUE LOG_USER
+#  else
+/** Kernel message facility code value as defined by RFC 5424. */
+#    define STUMPLESS_FACILITY_KERN_VALUE 0
+/** User-level message facility code value as defined by RFC 5424. */
+#    define STUMPLESS_FACILITY_USER_VALUE ( 1 << 3 )
 #  endif
 
-enum stumpless_facility {
-/** Kernel messages. */
-#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-  STUMPLESS_FACILITY_KERN = LOG_KERN,
-#  else
-  STUMPLESS_FACILITY_KERN = 0,
-#  endif
+/**
+ * A macro function that runs the provided action once for each facility,
+ * providing the symbol and value. The action must take two arguments, the
+ * first being the symbol name of the facility, and the second the numeric
+ * value of the facility.
+ */
+#  define STUMPLESS_FOREACH_FACILITY( ACTION )                   \
+/** Kernel messages. */                                          \
+ACTION( STUMPLESS_FACILITY_KERN, STUMPLESS_FACILITY_KERN_VALUE ) \
+/** User-level messages. */                                      \
+ACTION( STUMPLESS_FACILITY_USER, STUMPLESS_FACILITY_USER_VALUE )
 
-/** User-level messages. */
-#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-  STUMPLESS_FACILITY_USER = LOG_USER
-#  else
-  STUMPLESS_FACILITY_USER = 1 << 3
-#  endif
-};
 
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 
