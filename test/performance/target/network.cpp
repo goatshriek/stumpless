@@ -65,7 +65,7 @@ class Tcp4Fixture : public ::benchmark::Fixture {
 
       close_server_socket( accepted );
       close_server_socket( handle );
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
       stumpless_close_network_target( target );
     }
 };
@@ -120,7 +120,7 @@ class Tcp6Fixture : public ::benchmark::Fixture {
 
       close_server_socket( accepted );
       close_server_socket( handle );
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
       stumpless_close_network_target( target );
     }
 };
@@ -168,7 +168,7 @@ class Udp4Fixture : public ::benchmark::Fixture {
       stumpless_set_realloc( realloc );
       stumpless_set_free( free );
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
       stumpless_close_network_target( target );
     }
 };
@@ -210,7 +210,7 @@ class Udp6Fixture : public ::benchmark::Fixture {
       stumpless_set_realloc( realloc );
       stumpless_set_free( free );
 
-      stumpless_destroy_entry( entry );
+      stumpless_destroy_entry_and_contents( entry );
       stumpless_close_network_target( target );
     }
 };

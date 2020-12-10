@@ -31,6 +31,7 @@ require 'yaml'
 
 # script globals
 $header_alternates = {}
+$deprecated_terms = []
 
 def load_manifest(filename, term_hash)
   file_path = File.join(__dir__, filename)
@@ -39,6 +40,11 @@ def load_manifest(filename, term_hash)
   if manifest_terms.key?('header-alternates')
     $header_alternates.merge!(manifest_terms['header-alternates'])
     manifest_terms.delete('header-alternates')
+  end
+
+  if manifest_terms.key?('deprecated-terms')
+    $deprecated_terms.concat(manifest_terms['deprecated-terms'])
+    manifest_terms.delete('deprecated-terms')
   end
 
   term_hash.merge!(manifest_terms)
@@ -106,6 +112,11 @@ ARGV.each do |source_glob|
       line_terms.each do |word|
         used_terms << 'L10N_' if word.start_with?('L10N_')
         used_terms << word if file_terms.key?(word)
+
+        if $deprecated_terms.include?(word)
+          puts "#{source_filename}: deprecated term #{word} used"
+          return_code = 1
+        end
       end
     end
 
