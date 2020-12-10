@@ -134,7 +134,7 @@ main( int argc, char **argv ) {
   stumpless_destroy_entry_only( logout_entry );
   stumpless_destroy_entry_only( refresh_entry );
   stumpless_destroy_element_and_contents( context );
- 
+
 
   // final call required to completely free all resources (caches, etc.)
   stumpless_free_all(  );
