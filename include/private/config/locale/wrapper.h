@@ -27,6 +27,8 @@
 #    include "private/config/locale/fr-fr.h"
 #  elif defined USE_LOCALE_DE_DE
 #	 include "private/config/locale/de-de.h"
+#  elif defined USE_LOCALE_IT_IT
+#    include "private/config/locale/it-it.h"
 #  elif defined USE_LOCALE_SV_SE
 #    include "private/config/locale/sv-se.h"
 #  elif defined USE_LOCALE_SK_SK
