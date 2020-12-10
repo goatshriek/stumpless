@@ -56,7 +56,7 @@ namespace {
 
     virtual void
     TearDown( void ) {
-      stumpless_destroy_entry( basic_entry );
+      stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_file_target( target );
       remove( filename );
     }
@@ -130,7 +130,7 @@ namespace {
       stumpless_add_entry( target, entry );
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_close_file_target( target );
 
     std::ifstream infile( filename );

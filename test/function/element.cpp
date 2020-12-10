@@ -753,7 +753,7 @@ namespace {
   }
 
   TEST( DestroyElementTest, NullElement ) {
-    stumpless_destroy_element( NULL );
+    stumpless_destroy_element_and_contents( NULL );
   }
 
   TEST( GetElementNameTest, NullElement ) {

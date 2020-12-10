@@ -703,7 +703,7 @@ namespace {
     EXPECT_NE( stumpless_get_element_by_index( basic_entry, 0 ),
                previous_element );
 
-    stumpless_destroy_element( previous_element );
+    stumpless_destroy_element_and_contents( previous_element );
   }
 
   TEST_F( EntryTest, SetElementDuplicateName ) {
@@ -723,7 +723,7 @@ namespace {
     EXPECT_EQ( stumpless_get_element_by_index( basic_entry, 0 ),
                previous_element );
 
-    stumpless_destroy_element( new_element );
+    stumpless_destroy_element_and_contents( new_element );
   }
 
   TEST_F( EntryTest, SetElementIndexOutOfBounds ) {
@@ -744,7 +744,7 @@ namespace {
     EXPECT_EQ( stumpless_get_element_by_index( basic_entry, 0 ),
                previous_element );
 
-    stumpless_destroy_element( new_element );
+    stumpless_destroy_element_and_contents( new_element );
   }
 
   TEST_F( EntryTest, SetElementNullElement ) {
@@ -1203,7 +1203,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     ASSERT_TRUE( entry == NULL );
 
-    stumpless_destroy_element( element );
+    stumpless_destroy_element_and_contents( element );
 
     stumpless_free_all(  );
   }
@@ -1265,7 +1265,7 @@ namespace {
   }
 
   TEST( DestroyEntryTest, NullEntry ) {
-    stumpless_destroy_entry( NULL );
+    stumpless_destroy_entry_and_contents( NULL );
   }
 
   TEST( GetElementByIndexTest, NullEntry ) {
@@ -1462,7 +1462,7 @@ namespace {
     EXPECT_EQ( entry->message_length, expected_message_length );
     EXPECT_EQ( 0, memcmp( entry->message, expected_message, entry->message_length ) );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
   }
@@ -1549,8 +1549,8 @@ namespace {
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
 
-    stumpless_destroy_entry( second_entry );
-    stumpless_destroy_entry( first_entry );
+    stumpless_destroy_entry_and_contents( second_entry );
+    stumpless_destroy_entry_and_contents( first_entry );
 
     stumpless_free_all(  );
   }
@@ -1574,7 +1574,7 @@ namespace {
     }
 
     for( i = 0; i < 500; i++ ) {
-      stumpless_destroy_entry( entry[i] );
+      stumpless_destroy_entry_and_contents( entry[i] );
     }
 
     stumpless_free_all(  );
@@ -1615,7 +1615,7 @@ namespace {
     ASSERT_NOT_NULL( entry->message );
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
   }
@@ -1639,7 +1639,7 @@ namespace {
       EXPECT_EQ( entry->app_name_length, 1 );
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
   }
@@ -1662,7 +1662,7 @@ namespace {
       EXPECT_EQ( entry->message_length, 0 );
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
   }
@@ -1686,7 +1686,7 @@ namespace {
       EXPECT_EQ( entry->msgid_length, 1 );
     }
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
   }
@@ -1731,7 +1731,7 @@ namespace {
 
     i--;
     while( i >= 0 ) {
-      stumpless_destroy_entry( entries[i] );
+      stumpless_destroy_entry_and_contents( entries[i] );
       i--;
     }
 
@@ -1761,7 +1761,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
 
-    stumpless_destroy_element( new_element );
+    stumpless_destroy_element_and_contents( new_element );
 
     stumpless_free_all(  );
   }
@@ -1818,7 +1818,7 @@ namespace {
     EXPECT_NULL( entry->message );
     EXPECT_EQ( 0, entry->message_length );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
   }

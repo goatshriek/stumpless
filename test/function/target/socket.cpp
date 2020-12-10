@@ -165,7 +165,7 @@ namespace {
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ID );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( SocketTargetCloseTest, Generic ) {

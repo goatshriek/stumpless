@@ -691,7 +691,7 @@ target_free_global( void ) {
 
 void
 target_free_thread( void ) {
-  stumpless_destroy_entry( cached_entry );
+  stumpless_destroy_entry_and_contents( cached_entry );
   cached_entry = NULL;
 }
 

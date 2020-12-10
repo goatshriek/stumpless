@@ -71,7 +71,7 @@ namespace {
 
     virtual void
     TearDown( void ) {
-      stumpless_destroy_entry( basic_entry );
+      stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_buffer_target( target );
     }
   };
@@ -152,7 +152,7 @@ namespace {
     TestRFC5424Compliance( read_buffer );
     EXPECT_NE( read_buffer[read_result-1], ' ' );
 
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST_F( BufferTargetTest, IsOpen ) {
@@ -404,7 +404,7 @@ namespace {
     EXPECT_GT( read_result, 1 );
 
     stumpless_close_buffer_target( target );
-    stumpless_destroy_entry( entry );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
 }
