@@ -29,18 +29,248 @@
 #  define __STUMPLESS_FACILITY_H
 
 #  include <stumpless/config.h>
+#  include <stumpless/generator.h>
 
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    include <syslog.h>
-/** Kernel message facility code value as defined by syslog.h. */
+#  endif
+
+/**
+ * Kernel message facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    define STUMPLESS_FACILITY_KERN_VALUE LOG_KERN
-/** User-level message facility code value as defined by syslog.h. */
+#  else
+#    define STUMPLESS_FACILITY_KERN_VALUE 0
+#  endif
+
+/**
+ * User-level message facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    define STUMPLESS_FACILITY_USER_VALUE LOG_USER
 #  else
-/** Kernel message facility code value as defined by RFC 5424. */
-#    define STUMPLESS_FACILITY_KERN_VALUE 0
-/** User-level message facility code value as defined by RFC 5424. */
 #    define STUMPLESS_FACILITY_USER_VALUE ( 1 << 3 )
+#  endif
+
+/**
+ * Mail system facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_MAIL_VALUE LOG_MAIL
+#  else
+#    define STUMPLESS_FACILITY_MAIL_VALUE ( 2 << 3 )
+#  endif
+
+/**
+ * System daemons facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_DAEMON_VALUE LOG_DAEMON
+#  else
+#    define STUMPLESS_FACILITY_DAEMON_VALUE ( 3 << 3 )
+#  endif
+
+/**
+ *
+ * Facility code value for security/authorization messages.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_AUTH_VALUE LOG_AUTH
+#  else
+#    define STUMPLESS_FACILITY_AUTH_VALUE ( 4 << 3 )
+#  endif
+
+/**
+ * Facility code value for messages generated internally by the logging daemon
+ * as defined by RFC 5424.
+ *
+ * @since release v2.0.0.
+ */
+#  define STUMPLESS_FACILITY_SYSLOG_VALUE ( 5 << 3 )
+
+/**
+ * Line printer subsystem facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LPR_VALUE LOG_LPR
+#  else
+#    define STUMPLESS_FACILITY_LPR_VALUE ( 6 << 3 )
+#  endif
+
+/**
+ * Network news subsystem facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_NEWS_VALUE LOG_NEWS
+#  else
+#    define STUMPLESS_FACILITY_NEWS_VALUE ( 7 << 3 )
+#  endif
+
+/**
+ * UUCP subsystem facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_UUCP_VALUE LOG_UUCP
+#  else
+#    define STUMPLESS_FACILITY_UUCP_VALUE ( 8 << 3 )
+#  endif
+
+/**
+ * Clock daemon facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_CRON_VALUE LOG_CRON
+#  else
+#    define STUMPLESS_FACILITY_CRON_VALUE ( 9 << 3 )
+#  endif
+
+/**
+ * Security/authorization messages facility code value as defined by RFC 5424.
+ *
+ * @since release v2.0.0.
+ */
+#  define STUMPLESS_FACILITY_AUTH2_VALUE ( 10 << 3 )
+
+/**
+ * FTP daemon facility code value as defined by RFC 5424.
+ *
+ * @since release v2.0.0.
+ */
+#  define STUMPLESS_FACILITY_FTP_VALUE ( 11 << 3 )
+
+/**
+ * NTP subsystem facility code value as defined by RFC 5424.
+ *
+ * @since release v2.0.0.
+ */
+#  define STUMPLESS_FACILITY_NTP_VALUE ( 12 << 3 )
+
+/**
+ * Log audit facility code value as defined by RFC 5424.
+ *
+ * @since release v2.0.0.
+ */
+#  define STUMPLESS_FACILITY_AUDIT_VALUE ( 13 << 3 )
+
+/**
+ * Log alert facility code value as defined by RFC 5424.
+ *
+ * @since release v2.0.0.
+ */
+#  define STUMPLESS_FACILITY_ALERT_VALUE ( 14 << 3 )
+
+/**
+ * Clock daemon facility code value as defined by RFC 5424.
+ *
+ * @since release v2.0.0.
+ */
+#  define STUMPLESS_FACILITY_CRON2_VALUE ( 15 << 3 )
+
+/**
+ * Local use 0 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL0_VALUE LOG_LOCAL0
+#  else
+#    define STUMPLESS_FACILITY_LOCAL0_VALUE ( 16 << 3 )
+#  endif
+
+/**
+ * Local use 1 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL1_VALUE LOG_LOCAL1
+#  else
+#    define STUMPLESS_FACILITY_LOCAL1_VALUE ( 17 << 3 )
+#  endif
+
+/**
+ * Local use 2 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL2_VALUE LOG_LOCAL2
+#  else
+#    define STUMPLESS_FACILITY_LOCAL2_VALUE ( 18 << 3 )
+#  endif
+
+/**
+ * Local use 3 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL3_VALUE LOG_LOCAL3
+#  else
+#    define STUMPLESS_FACILITY_LOCAL3_VALUE ( 19 << 3 )
+#  endif
+
+/**
+ * Local use 4 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL4_VALUE LOG_LOCAL4
+#  else
+#    define STUMPLESS_FACILITY_LOCAL4_VALUE ( 20 << 3 )
+#  endif
+
+/**
+ * Local use 5 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL5_VALUE LOG_LOCAL5
+#  else
+#    define STUMPLESS_FACILITY_LOCAL5_VALUE ( 21 << 3 )
+#  endif
+
+/**
+ * Local use 6 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL6_VALUE LOG_LOCAL6
+#  else
+#    define STUMPLESS_FACILITY_LOCAL6_VALUE ( 22 << 3 )
+#  endif
+
+/**
+ * Local use 7 facility code value.
+ *
+ * @since release v2.0.0.
+ */
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    define STUMPLESS_FACILITY_LOCAL7_VALUE LOG_LOCAL7
+#  else
+#    define STUMPLESS_FACILITY_LOCAL7_VALUE ( 23 << 3 )
 #  endif
 
 /**
@@ -48,132 +278,75 @@
  * providing the symbol and value. The action must take two arguments, the
  * first being the symbol name of the facility, and the second the numeric
  * value of the facility.
+ *
+ * @since release v2.0.0.
  */
-#  define STUMPLESS_FOREACH_FACILITY( ACTION )                   \
-/** Kernel messages. */                                          \
-ACTION( STUMPLESS_FACILITY_KERN, STUMPLESS_FACILITY_KERN_VALUE ) \
-/** User-level messages. */                                      \
-ACTION( STUMPLESS_FACILITY_USER, STUMPLESS_FACILITY_USER_VALUE )
+#  define STUMPLESS_FOREACH_FACILITY( ACTION )                       \
+/** Kernel messages. */                                              \
+ACTION( STUMPLESS_FACILITY_KERN, STUMPLESS_FACILITY_KERN_VALUE )     \
+/** User-level messages. */                                          \
+ACTION( STUMPLESS_FACILITY_USER, STUMPLESS_FACILITY_USER_VALUE )     \
+/** Mail system facility code value as defined by RFC 5424. */       \
+ACTION( STUMPLESS_FACILITY_MAIL, STUMPLESS_FACILITY_MAIL_VALUE )     \
+/** System daemons. */                                               \
+ACTION( STUMPLESS_FACILITY_DAEMON, STUMPLESS_FACILITY_DAEMON_VALUE ) \
+/** Security/authorization messages. */                              \
+ACTION( STUMPLESS_FACILITY_AUTH, STUMPLESS_FACILITY_AUTH_VALUE )     \
+/** Line printer subsystem. */                                       \
+ACTION( STUMPLESS_FACILITY_LPR, STUMPLESS_FACILITY_LPR_VALUE )       \
+/** Network news. */                                                 \
+ACTION( STUMPLESS_FACILITY_NEWS, STUMPLESS_FACILITY_NEWS_VALUE )     \
+/** UUCP subsystem. */                                               \
+ACTION( STUMPLESS_FACILITY_UUCP, STUMPLESS_FACILITY_UUCP_VALUE )     \
+/** Clock daemon. */                                                 \
+ACTION( STUMPLESS_FACILITY_CRON, STUMPLESS_FACILITY_CRON_VALUE )     \
+/** Security/authorization messages. */                              \
+ACTION( STUMPLESS_FACILITY_AUTH2, STUMPLESS_FACILITY_AUTH2_VALUE )   \
+/** FTP daemon. */                                                   \
+ACTION( STUMPLESS_FACILITY_FTP, STUMPLESS_FACILITY_FTP_VALUE )       \
+/** NTP subsystem. */                                                \
+ACTION( STUMPLESS_FACILITY_NTP, STUMPLESS_FACILITY_NTP_VALUE )       \
+/** Log audit. */                                                    \
+ACTION( STUMPLESS_FACILITY_AUDIT, STUMPLESS_FACILITY_AUDIT_VALUE )   \
+/** Log alert. */                                                    \
+ACTION( STUMPLESS_FACILITY_ALERT, STUMPLESS_FACILITY_ALERT_VALUE )   \
+/** Clock daemon. */                                                 \
+ACTION( STUMPLESS_FACILITY_CRON2, STUMPLESS_FACILITY_CRON2_VALUE )   \
+/** Local use 0. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL0, STUMPLESS_FACILITY_LOCAL0_VALUE ) \
+/** Local use 1. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL1, STUMPLESS_FACILITY_LOCAL1_VALUE ) \
+/** Local use 2. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL2, STUMPLESS_FACILITY_LOCAL2_VALUE ) \
+/** Local use 3. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL3, STUMPLESS_FACILITY_LOCAL3_VALUE ) \
+/** Local use 4. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL4, STUMPLESS_FACILITY_LOCAL4_VALUE ) \
+/** Local use 5. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL5, STUMPLESS_FACILITY_LOCAL5_VALUE ) \
+/** Local use 6. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL6, STUMPLESS_FACILITY_LOCAL6_VALUE ) \
+/** Local use 7. */                                                  \
+ACTION( STUMPLESS_FACILITY_LOCAL7, STUMPLESS_FACILITY_LOCAL7_VALUE )
 
-
-#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-
-/** Mail system. */
-#    define STUMPLESS_FACILITY_MAIL   LOG_MAIL
-
-/** System daemons. */
-#    define STUMPLESS_FACILITY_DAEMON LOG_DAEMON
-
-/** Security/authorization messages. */
-#    define STUMPLESS_FACILITY_AUTH   LOG_AUTH
-
-/** Line printer subsystem. */
-#    define STUMPLESS_FACILITY_LPR    LOG_LPR
-
-/** Network news subsystem. */
-#    define STUMPLESS_FACILITY_NEWS   LOG_NEWS
-
-/** UUCP subsystem. */
-#    define STUMPLESS_FACILITY_UUCP   LOG_UUCP
-
-/** Clock daemon. */
-#    define STUMPLESS_FACILITY_CRON   LOG_CRON
-
-/** Local use 0. */
-#    define STUMPLESS_FACILITY_LOCAL0 LOG_LOCAL0
-
-/** Local use 1. */
-#    define STUMPLESS_FACILITY_LOCAL1 LOG_LOCAL1
-
-/** Local use 2. */
-#    define STUMPLESS_FACILITY_LOCAL2 LOG_LOCAL2
-
-/** Local use 3. */
-#    define STUMPLESS_FACILITY_LOCAL3 LOG_LOCAL3
-
-/** Local use 4. */
-#    define STUMPLESS_FACILITY_LOCAL4 LOG_LOCAL4
-
-/** Local use 5. */
-#    define STUMPLESS_FACILITY_LOCAL5 LOG_LOCAL5
-
-/** Local use 6. */
-#    define STUMPLESS_FACILITY_LOCAL6 LOG_LOCAL6
-
-/** Local use 7. */
-#    define STUMPLESS_FACILITY_LOCAL7 LOG_LOCAL7
-
-/* facility codes as specified in RFC 5424*/
-#  else
-
-/** Mail system. */
-#    define STUMPLESS_FACILITY_MAIL   (2<<3)
-
-/** System daemons. */
-#    define STUMPLESS_FACILITY_DAEMON (3<<3)
-
-/** Security/authorization messages. */
-#    define STUMPLESS_FACILITY_AUTH   (4<<3)
-
-/** Line printer subsystem. */
-#    define STUMPLESS_FACILITY_LPR    (6<<3)
-
-/** Network news subsystem. */
-#    define STUMPLESS_FACILITY_NEWS   (7<<3)
-
-/** UUCP subsystem. */
-#    define STUMPLESS_FACILITY_UUCP   (8<<3)
-
-/** Clock daemon. */
-#    define STUMPLESS_FACILITY_CRON   (9<<3)
-
-/** Local use 0. */
-#    define STUMPLESS_FACILITY_LOCAL0 (16<<3)
-
-/** Local use 1. */
-#    define STUMPLESS_FACILITY_LOCAL1 (17<<3)
-
-/** Local use 2. */
-#    define STUMPLESS_FACILITY_LOCAL2 (18<<3)
-
-/** Local use 3. */
-#    define STUMPLESS_FACILITY_LOCAL3 (19<<3)
-
-/** Local use 4. */
-#    define STUMPLESS_FACILITY_LOCAL4 (20<<3)
-
-/** Local use 5. */
-#    define STUMPLESS_FACILITY_LOCAL5 (21<<3)
-
-/** Local use 6. */
-#    define STUMPLESS_FACILITY_LOCAL6 (22<<3)
-
-/** Local use 7. */
-#    define STUMPLESS_FACILITY_LOCAL7 (23<<3)
-
+#  ifdef __cplusplus
+extern "C" {
 #  endif
 
-/* remaining facility codes specified in RFC 5424 */
+/**
+ * All possible facility codes available to log entries.
+ *
+ * In versions prior to 2.0.0, these values were simply #define symbols. They
+ * have been changed to an enum to clearly convey proper usage.
+ *
+ * @since release v2.0.0.
+ */
+enum stumpless_facility {
+  STUMPLESS_FOREACH_FACILITY( STUMPLESS_GENERATE_ENUM )
+};
 
-/** Messages generated internally by logging daemon. */
-#  define STUMPLESS_FACILITY_SYSLOG (5<<3)
-
-/** Security/authorization messages. */
-#  define STUMPLESS_FACILITY_AUTH2  (10<<3)
-
-/** FTP daemon. */
-#  define STUMPLESS_FACILITY_FTP    (11<<3)
-
-/** NTP subsystem. */
-#  define STUMPLESS_FACILITY_NTP    (12<<3)
-
-/** Log audit. */
-#  define STUMPLESS_FACILITY_AUDIT  (13<<3)
-
-/** Log alert. */
-#  define STUMPLESS_FACILITY_ALERT  (14<<3)
-
-/** Clock daemon. */
-#  define STUMPLESS_FACILITY_CRON2  (15<<3)
+#  ifdef __cplusplus
+} /* extern "C" */
+#  endif
 
 #endif /* __STUMPLESS_FACILITY_H */

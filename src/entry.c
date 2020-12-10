@@ -362,7 +362,7 @@ cleanup_and_return:
   return app_name_copy;
 }
 
-int
+enum stumpless_facility
 stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
   int prival;
 
@@ -514,7 +514,7 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
   return prival;
 }
 
-int
+enum stumpless_severity
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
   int prival;
 
@@ -532,8 +532,8 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
 }
 
 struct stumpless_entry *
-stumpless_new_entry( int facility,
-                     int severity,
+stumpless_new_entry( enum stumpless_facility facility,
+                     enum stumpless_severity severity,
                      const char *app_name,
                      const char *msgid,
                      const char *message,

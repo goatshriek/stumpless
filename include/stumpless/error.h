@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <stumpless/generator.h>
 
 #  ifdef __cplusplus
 extern "C" {
@@ -107,7 +108,6 @@ extern "C" {
 /** The current hostname could not be retrieved. */\
   ERROR(STUMPLESS_GETHOSTNAME_FAILURE, 25 )
 
-#define STUMPLESS_GENERATE_ENUM(ENUM, INDEX) ENUM = INDEX,
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.

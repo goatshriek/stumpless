@@ -69,6 +69,7 @@ fixes, check out the
 
 ### Removed
  - `stumpless` and `vstumpless` functions (use `stump` and `vstump` instead).
+ - `STUMPLESS_SEVERITY_WARN` symbol.
 
 ## [1.6.0] - 2020-07-16
 ### Added

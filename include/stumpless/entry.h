@@ -28,8 +28,10 @@
 #  include <stddef.h>
 #  include <stumpless/config.h>
 #  include <stumpless/element.h>
+#  include <stumpless/facility.h>
 #  include <stumpless/id.h>
 #  include <stumpless/param.h>
+#  include <stumpless/severity.h>
 
 #  ifdef __cplusplus
 extern "C" {
@@ -471,6 +473,9 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry );
 /**
  * Returns the facility code of the given entry.
  *
+ * In versions prior to v2.0.0, this function returned an int, and -1 in the
+ * event of an error.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry while it is being read.
@@ -488,9 +493,10 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry );
  * @param entry The entry to get the facility of.
  *
  * @return The facility of the entry if no error is encountered. If an error
- * was encountered, then -1 is returned and an error code is set appropriately.
+ * was encountered, then an invalid facility is returned and an error code is
+ * set appropriately.
  */
-int
+enum stumpless_facility
 stumpless_get_entry_facility( const struct stumpless_entry *entry );
 
 /**
@@ -743,6 +749,9 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
 /**
  * Returns the severity code of the given entry.
  *
+ * In versions prior to v2.0.0, this function returned an int, and -1 in the
+ * event of an error.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry while it is being read.
@@ -760,13 +769,17 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
  * @param entry The entry to get the severity of.
  *
  * @return The severity of the entry if no error is encountered. If an error
- * was encountered, then -1 is returned and an error code is set appropriately.
+ * was encountered, then an invalid severity is returned and an error code is
+ * set appropriately.
  */
-int
+enum stumpless_severity
 stumpless_get_entry_severity( const struct stumpless_entry *entry );
 
 /**
  * Creates a new entry with the given characteristics.
+ *
+ * In versions prior to 2.0.0, the facility and severity parameters were int
+ * types instead of enums.
  *
  * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
  * This function is thread safe, of course assuming that the string arguments
@@ -805,8 +818,8 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_entry *
-stumpless_new_entry( int facility,
-                     int severity,
+stumpless_new_entry( enum stumpless_facility facility,
+                     enum stumpless_severity severity,
                      const char *app_name,
                      const char *msgid,
                      const char *message,
