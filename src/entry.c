@@ -22,7 +22,9 @@
 #include <string.h>
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
+#include <stumpless/facility.h>
 #include <stumpless/param.h>
+#include <stumpless/severity.h>
 #include "private/cache.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
