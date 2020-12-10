@@ -234,6 +234,11 @@ stumpless_copy_entry( const struct stumpless_entry *entry );
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
+ * @deprecated This function has been deprecated in favor of the more
+ * descriptive and deliberate stumpless_destroy_entry_and_contents and
+ * stumpless_destroy_entry_only functions in order to avoid unintentional
+ * memory leaks and use-after-free mistakes.
+ *
  * @param entry The entry to destroy.
  */
 void
