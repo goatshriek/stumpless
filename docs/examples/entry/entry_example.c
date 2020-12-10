@@ -26,6 +26,11 @@ main( int argc, char **argv ) {
   struct stumpless_entry *formatted_entry;
   struct stumpless_entry *failed_login_entry;
   struct stumpless_target *stdout_target;
+  struct stumpless_param *user;
+  struct stumpless_param *token;
+  struct stumpless_element *context;
+  struct stumpless_entry *refresh_entry;
+  struct stumpless_entry *logout_entry;
 
 
   // creating a logging target for standard out to see the result of logging
@@ -97,12 +102,39 @@ main( int argc, char **argv ) {
   // closing the target once we are finished
   stumpless_close_target( stdout_target );
 
-  // destroying all the resources before finishing up
-  stumpless_destroy_entry( basic_entry );
-  stumpless_destroy_entry( formatted_entry );
 
-  // we include the contents here to make sure the structured data is cleaned up
+  // destroying all the resources before finishing up
+  stumpless_destroy_entry_and_contents( basic_entry );
+  stumpless_destroy_entry_and_contents( formatted_entry );
   stumpless_destroy_entry_and_contents( failed_login_entry );
+
+
+  // creating two entries with shared elements and params
+  user = stumpless_new_param( "username", "thomas" );
+  token = stumpless_new_param( "token", "0xdeadbeef" );
+  context = stumpless_new_element( "context" );
+  stumpless_add_param( context, user );
+  stumpless_add_param( context, token );
+  refresh_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_NOTICE,
+                                       "company-web-portal",
+                                       "refresh-request",
+                                       "user requested a refresh" );
+  stumpless_add_element( refresh_entry, context );
+
+  logout_entry = stumpless_new_entry( STUMPLESS_FACILITY_AUTH,
+                                      STUMPLESS_SEVERITY_NOTICE,
+                                      "company-web-portal",
+                                      "logout",
+                                      "user logged out" );
+  stumpless_add_element( logout_entry, context );
+
+
+  // destroying the shared resources individually
+  stumpless_destroy_entry_only( logout_entry );
+  stumpless_destroy_entry_only( refresh_entry );
+  stumpless_destroy_element_and_contents( context );
+ 
 
   // final call required to completely free all resources (caches, etc.)
   stumpless_free_all(  );

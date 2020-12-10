@@ -79,3 +79,47 @@ stumpless_set_param_value_by_name_from_entry( entry, "user", "locked", locked );
 stumpless_set_param_value_by_name_from_entry( entry, "try", "number", try_num );
 stumpless_add_entry( aaa_target, entry );
 ```
+
+Be careful when you are destroying an entry, as there are two ways to do this.
+The first function, `stumpless_destroy_entry_and_contents`, destroys the entry
+as well as all elements and params in it. In most cases this is the simplest
+and fastest option.
+
+```c
+// everything must go!
+stumpless_destroy_entry_and_contents( entry );
+```
+
+However, if you're sharing elements or params between entries, then you will
+need to be a little more careful about destroying these to avoid double-free
+errors. For this reason, the `stumpless_destroy_entry_only` function will
+tear down the entry but leave all elements and params intact. These can then
+be destroyed individually.
+
+This snippet illustrates this concept, where two entries share a context element
+with details about a session. The individual entries are torn down separately,
+and the element is then destroyed on its own.
+
+```c
+// using the same context in any entry that needs it
+refresh_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_NOTICE,
+                                     "company-web-portal",
+                                     "refresh-request",
+                                     "user requested a refresh" );
+stumpless_add_element( refresh_entry, context );
+
+logout_entry = stumpless_new_entry( STUMPLESS_FACILITY_AUTH,
+                                    STUMPLESS_SEVERITY_NOTICE,
+                                    "company-web-portal",
+                                    "logout",
+                                    "user logged out" );
+stumpless_add_element( logout_entry, context );
+
+// the entries are used throughout the program...
+
+// cleanup is done separately to avoid double-free of the element
+stumpless_destroy_entry_only( logout_entry );
+stumpless_destroy_entry_only( refresh_entry );
+stumpless_destroy_element_and_contents( context );
+```

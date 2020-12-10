@@ -182,8 +182,8 @@ main( int argc, char **argv ) {
 
 
   // destroying all remaining resources
-  stumpless_destroy_entry( basic_entry );
-  stumpless_destroy_entry( entry_with_params );
+  stumpless_destroy_entry_and_contents( basic_entry );
+  stumpless_destroy_entry_and_contents( entry_with_params );
   stumpless_destroy_param( child_name );
   stumpless_destroy_param( tree_type );
 
