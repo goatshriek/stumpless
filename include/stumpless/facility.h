@@ -18,10 +18,11 @@
 
 /** @file
  * Facility codes for classifying log entries. See RFC 5424 section 6.2.1 for
- * details on these values. Facilities are defined to be compatible with the
- * syslog.h header if it is found on the system. Otherwise, they are defined as
- * closely as possible to the RFC 5425 specification. Some facilities do not
- * exist in the syslog.h header and as such are defined here in either case.
+ * details on these values. The underlying values of facilities are defined to
+ * be compatible with the syslog.h header if it is found on the system.
+ * Otherwise, they are defined as closely as possible to the RFC 5425
+ * specification. Some facilities do not exist in the syslog.h header and as
+ * such are always defined according to the RFC.
  */
 
 #ifndef __STUMPLESS_FACILITY_H
@@ -29,16 +30,27 @@
 
 #  include <stumpless/config.h>
 
-/* facility codes as set by syslog.h */
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-
 #    include <syslog.h>
+#  endif
 
+enum stumpless_facility {
 /** Kernel messages. */
-#    define STUMPLESS_FACILITY_KERN   LOG_KERN
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+  STUMPLESS_FACILITY_KERN = LOG_KERN,
+#  else
+  STUMPLESS_FACILITY_KERN = 0,
+#  endif
 
 /** User-level messages. */
-#    define STUMPLESS_FACILITY_USER   LOG_USER
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+  STUMPLESS_FACILITY_USER = LOG_USER
+#  else
+  STUMPLESS_FACILITY_USER = 1 << 3
+#  endif
+};
+
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 
 /** Mail system. */
 #    define STUMPLESS_FACILITY_MAIL   LOG_MAIL
@@ -87,12 +99,6 @@
 
 /* facility codes as specified in RFC 5424*/
 #  else
-
-/** Kernel messages. */
-#    define STUMPLESS_FACILITY_KERN   0
-
-/** User-level messages. */
-#    define STUMPLESS_FACILITY_USER   (1<<3)
 
 /** Mail system. */
 #    define STUMPLESS_FACILITY_MAIL   (2<<3)
