@@ -24,6 +24,8 @@
 #  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/entry.h>
+#  include <stumpless/facility.h>
+#  include <stumpless/severity.h>
 #  include "private/config/wrapper/thread_safety.h"
 #  include "private/strbuilder.h"
 
