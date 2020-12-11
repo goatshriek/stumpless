@@ -22,14 +22,14 @@ classes:
               type:
                 name: "Facility"
                 includes: "stumpless/Facility.hpp"
-              value: "static_cast<int>(facility)"
+              value: "static_cast<enum stumpless_facility>( static_cast<int>( facility ) )"
             - name: "severity"
               doc: |
                 The severity of the event this entry describes.
               type:
                 name: "Severity"
                 includes: "stumpless/Severity.hpp"
-              value: "static_cast<int>(severity)"
+              value: "static_cast<enum stumpless_severity>( static_cast<int>( severity ) )"
             - name: "app_name"
               doc: |
                 The app_name of the entry. If this is NULL, then it will be
@@ -575,7 +575,7 @@ classes:
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "static_cast<int>( facility )"
+            - value: "static_cast<enum stumpless_facility>( static_cast<int>( facility ) )"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
@@ -776,8 +776,8 @@ classes:
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "static_cast<int>( facility )"
-            - value: "static_cast<int>( severity )"
+            - value: "static_cast<enum stumpless_facility>( static_cast<int>( facility ) )"
+            - value: "static_cast<enum stumpless_severity>( static_cast<int>( severity ) )"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
@@ -821,7 +821,7 @@ classes:
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
-            - value: "static_cast<int>( severity )"
+            - value: "static_cast<enum stumpless_severity>( static_cast<int>( severity ) )"
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
