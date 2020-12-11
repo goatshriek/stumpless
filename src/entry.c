@@ -22,7 +22,9 @@
 #include <string.h>
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
+#include <stumpless/facility.h>
 #include <stumpless/param.h>
+#include <stumpless/severity.h>
 #include "private/cache.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
@@ -362,7 +364,7 @@ cleanup_and_return:
   return app_name_copy;
 }
 
-int
+enum stumpless_facility
 stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
   int prival;
 
@@ -514,7 +516,7 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
   return prival;
 }
 
-int
+enum stumpless_severity
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
   int prival;
 
@@ -532,8 +534,8 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
 }
 
 struct stumpless_entry *
-stumpless_new_entry( int facility,
-                     int severity,
+stumpless_new_entry( enum stumpless_facility facility,
+                     enum stumpless_severity severity,
                      const char *app_name,
                      const char *msgid,
                      const char *message,
@@ -617,7 +619,8 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
-stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
+stumpless_set_entry_facility( struct stumpless_entry *entry,
+                              enum stumpless_facility facility ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( facility_is_invalid( facility ) ) {
@@ -783,8 +786,8 @@ cleanup_and_fail:
 
 struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,
-                              int facility,
-                              int severity ) {
+                              enum stumpless_facility facility,
+                              enum stumpless_severity severity ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( facility_is_invalid( facility ) ) {
@@ -814,7 +817,8 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
-stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
+stumpless_set_entry_severity( struct stumpless_entry *entry,
+                              enum stumpless_severity severity ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( severity_is_invalid( severity ) ) {
@@ -831,8 +835,8 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
 }
 
 struct stumpless_entry *
-vstumpless_new_entry( int facility,
-                      int severity,
+vstumpless_new_entry( enum stumpless_facility facility,
+                      enum stumpless_severity severity,
                       const char *app_name,
                       const char *msgid,
                       const char *message,
@@ -960,7 +964,8 @@ entry_free_all( void ) {
 }
 
 int
-get_prival( int facility, int severity ) {
+get_prival( enum stumpless_facility facility,
+            enum stumpless_severity severity ) {
   return facility | severity;
 }
 

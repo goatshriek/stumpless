@@ -776,7 +776,7 @@ namespace {
     previous_facility = stumpless_get_entry_facility( basic_entry );
 
     result = stumpless_set_entry_facility( basic_entry,
-                                           -66 );
+                                           ( enum stumpless_facility ) -66 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
     EXPECT_EQ( error->code, -66 );
     EXPECT_NULL( result );
@@ -1126,7 +1126,7 @@ namespace {
     previous_prival = stumpless_get_entry_prival( basic_entry );
 
     result = stumpless_set_entry_priority( basic_entry,
-                                           -66,
+                                           ( enum stumpless_facility ) -66,
                                            STUMPLESS_SEVERITY_EMERG );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
     EXPECT_EQ( error->code, -66 );
@@ -1143,7 +1143,7 @@ namespace {
 
     result = stumpless_set_entry_priority( basic_entry,
                                            STUMPLESS_FACILITY_LOCAL5,
-                                           -66 );
+                                           ( enum stumpless_severity ) -66 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
     EXPECT_EQ( error->code, -66 );
     EXPECT_NULL( result );
@@ -1181,7 +1181,7 @@ namespace {
     previous_severity = stumpless_get_entry_severity( basic_entry );
 
     result = stumpless_set_entry_severity( basic_entry,
-                                           -66 );
+                                           ( enum stumpless_severity ) -66 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
     EXPECT_EQ( error->code, -66 );
     EXPECT_NULL( result );

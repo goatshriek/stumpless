@@ -4,14 +4,7 @@ See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
-## 2.0.0 (next major and minor release)
- * [CHANGE] **Facilities and severities will be defined by enumerations**
-   Enumerations are a cleaner way to represent the set values, and can be made
-   compatible with the `syslog.h` values if their backing `int` values match.
-   Because function signatures will change, this will be done in a major
-   release.
-
-## 2.1.0
+## 2.1.0 (next minor release)
  * [ADD] **journald logging target**
    Logging to systemd's journal system is should be relatively straightforward
    to implement, and is an important feature to support.
@@ -21,7 +14,7 @@ or want to make a suggestion, please submit an issue on the project's
    generic filter structure that can filter on a wide variety of properties of
    each log entry and even use custom functions to filter messages.
 
-## 3.0.0
+## 3.0.0 (next major release)
  * [REMOVE] **entry and element destructor synonyms**
    Removing previously deprecated feature.
  * [REMOVE] **Stream target constructor using `int` facility**

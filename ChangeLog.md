@@ -51,6 +51,7 @@ fixes, check out the
    need to be adjusted on a target, use the `stumpless_set_option` and
    `stumpless_set_default_facility` functions after the target has been
    created.
+ - Facilities and severities are now `enum`s instead of preprocessor symbols.
 
 ### Deprecated
  - `stumpless_destroy_entry` has been deprecated in favor of the more
@@ -68,6 +69,7 @@ fixes, check out the
 
 ### Removed
  - `stumpless` and `vstumpless` functions (use `stump` and `vstump` instead).
+ - `STUMPLESS_SEVERITY_WARN` symbol.
 
 ## [1.6.0] - 2020-07-16
 ### Added
