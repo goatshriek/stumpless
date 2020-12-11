@@ -962,7 +962,8 @@ entry_free_all( void ) {
 }
 
 int
-get_prival( int facility, int severity ) {
+get_prival( enum stumpless_facility facility,
+            enum stumpless_severity severity ) {
   return facility | severity;
 }
 
