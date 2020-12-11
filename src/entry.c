@@ -619,7 +619,8 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
-stumpless_set_entry_facility( struct stumpless_entry *entry, int facility ) {
+stumpless_set_entry_facility( struct stumpless_entry *entry,
+                              enum stumpless_facility facility ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( facility_is_invalid( facility ) ) {
@@ -785,8 +786,8 @@ cleanup_and_fail:
 
 struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,
-                              int facility,
-                              int severity ) {
+                              enum stumpless_facility facility,
+                              enum stumpless_severity severity ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( facility_is_invalid( facility ) ) {
@@ -816,7 +817,8 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
-stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
+stumpless_set_entry_severity( struct stumpless_entry *entry,
+                              enum stumpless_severity severity ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   if( severity_is_invalid( severity ) ) {
@@ -833,8 +835,8 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity ) {
 }
 
 struct stumpless_entry *
-vstumpless_new_entry( int facility,
-                      int severity,
+vstumpless_new_entry( enum stumpless_facility facility,
+                      enum stumpless_severity severity,
                       const char *app_name,
                       const char *msgid,
                       const char *message,

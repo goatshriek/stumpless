@@ -904,6 +904,9 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 /**
  * Sets the facility of an entry.
  *
+ * In versions prior to 2.0.0, the facility parameter was an int type instead
+ * of an enum.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry while it is being modified.
@@ -927,7 +930,8 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_entry *
-stumpless_set_entry_facility( struct stumpless_entry *entry, int facility );
+stumpless_set_entry_facility( struct stumpless_entry *entry,
+                              enum stumpless_facility facility );
 
 /**
  * Sets the msgid for an entry.
@@ -1129,7 +1133,10 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
                                          const char *value );
 
 /**
-* Sets the facility and severity of an entry.
+ * Sets the facility and severity of an entry.
+ *
+ * In versions prior to 2.0.0, the facility and severity parameters were int
+ * types instead of enums.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
@@ -1158,8 +1165,8 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
 */
 struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,
-                              int facility,
-                              int severity );
+                              enum stumpless_facility facility,
+                              enum stumpless_severity severity );
 
 /**
  * Sets the prival of an entry, as defined in RFC 5424.
@@ -1194,6 +1201,9 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 /**
  * Sets the severity of an entry.
  *
+ * In versions prior to 2.0.0, the severity parameter was an int type instead
+ * of an enum.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry while it is being modified.
@@ -1217,10 +1227,14 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_entry *
-stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
+stumpless_set_entry_severity( struct stumpless_entry *entry,
+                              enum stumpless_severity severity );
 
 /**
  * Creates a new entry with the given parameters.
+ *
+ * In versions prior to 2.0.0, the facility and severity parameters were int
+ * types instead of enums.
  *
  * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
  * This function is thread safe, of course assuming that the string arguments
@@ -1262,8 +1276,8 @@ stumpless_set_entry_severity( struct stumpless_entry *entry, int severity );
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_entry *
-vstumpless_new_entry( int facility,
-                      int severity,
+vstumpless_new_entry( enum stumpless_facility facility,
+                      enum stumpless_severity severity,
                       const char *app_name,
                       const char *msgid,
                       const char *message,
