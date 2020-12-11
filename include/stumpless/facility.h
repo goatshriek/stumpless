@@ -292,6 +292,8 @@ ACTION( STUMPLESS_FACILITY_MAIL, STUMPLESS_FACILITY_MAIL_VALUE )     \
 ACTION( STUMPLESS_FACILITY_DAEMON, STUMPLESS_FACILITY_DAEMON_VALUE ) \
 /** Security/authorization messages. */                              \
 ACTION( STUMPLESS_FACILITY_AUTH, STUMPLESS_FACILITY_AUTH_VALUE )     \
+/** Message generated internally by the logging daemon. */           \
+ACTION( STUMPLESS_FACILITY_SYSLOG, STUMPLESS_FACILITY_SYSLOG_VALUE ) \
 /** Line printer subsystem. */                                       \
 ACTION( STUMPLESS_FACILITY_LPR, STUMPLESS_FACILITY_LPR_VALUE )       \
 /** Network news. */                                                 \
