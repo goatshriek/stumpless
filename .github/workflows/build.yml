@@ -19,6 +19,7 @@ jobs:
           tools/check_headers/check_headers.rb "test/**/*.cpp"
       - name: Build Documentation
         run: |
+          cmake .
           make docs
       - name: Sonarcloud Analysis
         run: |
@@ -162,6 +163,9 @@ jobs:
       - name: Install
         run: |
           sudo make install
+      - name: Build Documentation
+        run: |
+          make docs-cpp
   linux-de-de:
     name: "linux, de-de"
     runs-on: "ubuntu-20.04"
@@ -390,6 +394,9 @@ jobs:
       - name: Install
         run: |
           sudo make install
+      - name: Build Documentation
+        run: |
+          make docs-cpp
   windows-debug:
     name: "windows, debug"
     runs-on: "windows-2019"

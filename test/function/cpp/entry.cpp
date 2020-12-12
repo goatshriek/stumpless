@@ -16,12 +16,46 @@
  * limitations under the License.
  */
 
+#include <cstdlib>
 #include <gtest/gtest.h>
 #include <stumpless.hpp>
 
 using namespace stumpless;
 
 namespace {
+
+  class CppEntryTest : public::testing::Test {
+  protected:
+    Entry *basic_entry;
+    const char *basic_app_name = "stumpless-cpp-testing";
+
+    virtual void
+    SetUp( void ) {
+      basic_entry = new Entry( Facility::USER,
+                               Severity::INFO,
+                               basic_app_name,
+                               "basic-msg",
+                               "This is a basic entry." );
+    }
+
+    virtual void
+    TearDown( void ) {
+      delete basic_entry;
+    }
+
+  };
+
+  TEST_F( CppEntryTest, GetAppName ) {
+    const char *result;
+
+    result = basic_entry->GetAppName(  );
+    EXPECT_STREQ( result, basic_app_name );
+
+    free( ( void * ) result );
+  }
+
+  /* non-fixture tests */
+
   TEST( BuildEntry, WithElement ) {
     Entry my_entry( Facility::USER,
                     Severity::INFO,

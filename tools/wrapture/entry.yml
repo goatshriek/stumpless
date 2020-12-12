@@ -1,4 +1,4 @@
-version: "0.4.2"
+version: "0.5.0"
 classes:
   - name: "Entry"
     doc: |
@@ -204,6 +204,25 @@ classes:
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
+      - name: "GetAppName"
+        doc: >
+          Gets the app name from this Entry.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The app name of this Entry."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_entry_app_name"
+          include: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+          use-template: "has-error-check"
       - name: "GetElement"
         doc: |
           Gets the Element at the given index in this Entry.
