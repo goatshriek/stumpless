@@ -153,6 +153,7 @@ jobs:
           gem install bundler
           bundle install
       - name: Install Packages
+        run: |
           sudo apt-get install doxygen
       - name: Configure
         run: |
@@ -386,6 +387,7 @@ jobs:
           gem install bundler
           bundle install
       - name: Install Packages
+        run: |
           sudo apt-get install doxygen
       - name: Configure
         run: |
