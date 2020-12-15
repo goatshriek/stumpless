@@ -28,6 +28,7 @@ namespace {
   protected:
     Entry *basic_entry;
     const char *basic_app_name = "stumpless-cpp-testing";
+    const char *basic_msgid = "basic-msgid";
     const char *basic_message = "This is a basic entry.";
 
     virtual void
@@ -35,7 +36,7 @@ namespace {
       basic_entry = new Entry( Facility::USER,
                                Severity::INFO,
                                basic_app_name,
-                               "basic-msg",
+                               basic_msgid,
                                "This is a basic entry." );
     }
 
@@ -60,6 +61,15 @@ namespace {
 
     result = basic_entry->GetMessage(  );
     EXPECT_STREQ( result, basic_message );
+
+    free( ( void * ) result );
+  }
+
+  TEST_F( CppEntryTest, GetMsgid ) {
+    const char *result;
+
+    result = basic_entry->GetMsgid(  );
+    EXPECT_STREQ( result, basic_msgid );
 
     free( ( void * ) result );
   }
