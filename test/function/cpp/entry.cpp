@@ -28,6 +28,7 @@ namespace {
   protected:
     Entry *basic_entry;
     const char *basic_app_name = "stumpless-cpp-testing";
+    const char *basic_message = "This is a basic entry.";
 
     virtual void
     SetUp( void ) {
@@ -50,6 +51,15 @@ namespace {
 
     result = basic_entry->GetAppName(  );
     EXPECT_STREQ( result, basic_app_name );
+
+    free( ( void * ) result );
+  }
+
+  TEST_F( CppEntryTest, GetMessage ) {
+    const char *result;
+
+    result = basic_entry->GetMessage(  );
+    EXPECT_STREQ( result, basic_message );
 
     free( ( void * ) result );
   }

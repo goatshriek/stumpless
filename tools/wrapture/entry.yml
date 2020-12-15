@@ -1,4 +1,4 @@
-version: "0.5.1"
+version: "0.5.0"
 classes:
   - name: "Entry"
     doc: |
@@ -329,6 +329,29 @@ classes:
             - value: "equivalent-struct-pointer"
           return:
             type: "int"
+      - name: "GetMessage"
+        doc: >
+          Gets the message from this Entry.
+
+          Note that if this message was originally set using format specifiers,
+          the result will have them substituted instead of the original
+          placeholders.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The message of this Entry."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_entry_message"
+          include: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
       - name: "GetParam"
         doc: |
           Gets the Param from the Element at the given index from this Entry.
