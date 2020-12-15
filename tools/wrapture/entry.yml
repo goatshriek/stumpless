@@ -1,4 +1,4 @@
-version: "0.5.0"
+version: "0.5.1"
 classes:
   - name: "Entry"
     doc: |
@@ -222,7 +222,7 @@ classes:
             - value: "equivalent-struct-pointer"
           return:
             type: "const char *"
-          use-template: "has-error-check"
+          use-template: "pointer-return-error-check"
       - name: "GetElement"
         doc: |
           Gets the Element at the given index in this Entry.
@@ -245,6 +245,9 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "index"
+          return:
+            type: "struct stumpless_element *"
+          use-template: "pointer-return-error-check"
       - name: "GetElement"
         doc: |
           Gets the Element with the given name from this Entry.
@@ -265,6 +268,9 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "name"
+          return:
+            type: "struct stumpless_element *"
+          use-template: "pointer-return-error-check"
       - name: "GetElementCount"
         doc: "Returns the number of elements in this Entry."
         return:
@@ -277,6 +283,11 @@ classes:
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
+          return:
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          use-template: "has-error-check"
       - name: "GetElementIndex"
         doc: |
           Gets the index of the Element with the given name from this Entry.
