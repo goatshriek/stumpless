@@ -388,7 +388,7 @@ jobs:
           bundle install
       - name: Install Packages
         run: |
-          sudo apt-get install doxygen
+          brew install doxygen
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
