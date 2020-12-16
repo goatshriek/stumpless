@@ -23,7 +23,7 @@
 "could not bind to the local unix socket"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
-"buffer is too small for the given message"
+"il memoria tampone è troppo piccolo per il messaggio"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "attempted to close an unsupported target type"
