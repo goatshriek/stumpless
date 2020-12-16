@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.0.0] - 2020-12-10
+## [2.0.0] - 2020-12-15
 ### Added
  - Localization framework for error messages and other library strings.
  - Thread safety for all functionality.
@@ -21,6 +21,11 @@ fixes, check out the
     * `stumpless_get_target_default_msgid`
     * `stumpless_param_to_string`
     * `stumpless_read_buffer`
+  - The following C++ function bindings:
+    * `Entry.GetAppName`
+    * `Entry.GetMessage`
+    * `Entry.GetMsgid`
+    * `Version.Compare`
 
 ### Changed
  - C++ namespace from `stumplesscpp` to `stumpless`.
