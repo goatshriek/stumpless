@@ -1,4 +1,4 @@
-version: "0.4.2"
+version: "0.5.0"
 classes:
   - name: "Entry"
     doc: |
@@ -204,6 +204,25 @@ classes:
           return:
             type: "struct stumpless_entry *"
           use-template: "pointer-return-error-check"
+      - name: "GetAppName"
+        doc: >
+          Gets the app name from this Entry.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The app name of this Entry."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_entry_app_name"
+          include: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
       - name: "GetElement"
         doc: |
           Gets the Element at the given index in this Entry.
@@ -226,6 +245,9 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "index"
+          return:
+            type: "struct stumpless_element *"
+          use-template: "pointer-return-error-check"
       - name: "GetElement"
         doc: |
           Gets the Element with the given name from this Entry.
@@ -246,6 +268,9 @@ classes:
           params:
             - value: "equivalent-struct-pointer"
             - value: "name"
+          return:
+            type: "struct stumpless_element *"
+          use-template: "pointer-return-error-check"
       - name: "GetElementCount"
         doc: "Returns the number of elements in this Entry."
         return:
@@ -258,6 +283,11 @@ classes:
           includes: "stumpless/entry.h"
           params:
             - value: "equivalent-struct-pointer"
+          return:
+            type:
+              name: "size_t"
+              includes: "stddef.h"
+          use-template: "has-error-check"
       - name: "GetElementIndex"
         doc: |
           Gets the index of the Element with the given name from this Entry.
@@ -299,6 +329,48 @@ classes:
             - value: "equivalent-struct-pointer"
           return:
             type: "int"
+      - name: "GetMessage"
+        doc: >
+          Gets the message from this Entry.
+
+          Note that if this message was originally set using format specifiers,
+          the result will have them substituted instead of the original
+          placeholders.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The message of this Entry."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_entry_message"
+          include: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
+      - name: "GetMsgid"
+        doc: >
+          Gets the msgid of this Entry.
+
+          The returned character buffer must be freed by the caller when it is
+          no longer needed to avoid memory leaks.
+
+          Available since release v2.0.0.
+        return:
+          doc: "The msgid of this Entry."
+          type: "const char *"
+        wrapped-function:
+          name: "stumpless_get_entry_msgid"
+          include: "stumpless/entry.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "const char *"
+          use-template: "pointer-return-error-check"
       - name: "GetParam"
         doc: |
           Gets the Param from the Element at the given index from this Entry.

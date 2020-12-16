@@ -1,4 +1,4 @@
-version: "0.4.0"
+version: "0.5.0"
 templates:
   - name: "error-class"
     value:
@@ -23,6 +23,22 @@ templates:
           - left-expression: "stumpless_get_error(  )"
             condition: "not-equals"
             right-expression: "NULL"
+        error-action:
+          name: "throw-exception"
+          constructor:
+            name: "StumplessException::newStumplessException"
+            includes:
+              - "stumpless/StumplessException.hpp"
+              - "stumpless/error.h"
+            params:
+              - value: "( struct stumpless_error * ) stumpless_get_error(  )"
+  - name: "has-error-check"
+    value:
+      error-check:
+        rules:
+          - left-expression: "stumpless_has_error(  )"
+            condition: "not-equals"
+            right-expression: "false"
         error-action:
           name: "throw-exception"
           constructor:
