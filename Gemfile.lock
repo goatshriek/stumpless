@@ -5,10 +5,9 @@ GEM
 
 PLATFORMS
   ruby
-  x86_64-linux
 
 DEPENDENCIES
   wrapture (~> 0.5.0)
 
 BUNDLED WITH
-   2.2.0
+   2.2.1
