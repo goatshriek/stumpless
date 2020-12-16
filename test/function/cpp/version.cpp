@@ -33,6 +33,22 @@ namespace {
     EXPECT_EQ( -100, old_version.Compare( new_version ) );
   }
 
+  TEST( Compare, MinorDifference ) {
+    Version old_version( 1, 5, 0 );
+    Version new_version( 1, 6, 0 );
+
+    EXPECT_EQ( 10, new_version.Compare( old_version ) );
+    EXPECT_EQ( -10, old_version.Compare( new_version ) );
+  }
+
+  TEST( Compare, PatchDifference ) {
+    Version old_version( 1, 6, 1 );
+    Version new_version( 1, 6, 2 );
+
+    EXPECT_EQ( 1, new_version.Compare( old_version ) );
+    EXPECT_EQ( -1, old_version.Compare( new_version ) );
+  }
+
   TEST( GetVersion, Function ) {
     Version current_version = Version::GetCurrent();
 
