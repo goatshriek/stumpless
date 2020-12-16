@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.0.0] - 2020-12-10
+## [2.0.0] - 2020-12-15
 ### Added
  - Localization framework for error messages and other library strings.
  - Thread safety for all functionality.
@@ -21,6 +21,11 @@ fixes, check out the
     * `stumpless_get_target_default_msgid`
     * `stumpless_param_to_string`
     * `stumpless_read_buffer`
+  - The following C++ function bindings:
+    * `Entry.GetAppName`
+    * `Entry.GetMessage`
+    * `Entry.GetMsgid`
+    * `Version.Compare`
 
 ### Changed
  - C++ namespace from `stumplesscpp` to `stumpless`.
@@ -51,6 +56,7 @@ fixes, check out the
    need to be adjusted on a target, use the `stumpless_set_option` and
    `stumpless_set_default_facility` functions after the target has been
    created.
+ - Facilities and severities are now `enum`s instead of preprocessor symbols.
 
 ### Deprecated
  - `stumpless_destroy_entry` has been deprecated in favor of the more
@@ -68,6 +74,7 @@ fixes, check out the
 
 ### Removed
  - `stumpless` and `vstumpless` functions (use `stump` and `vstump` instead).
+ - `STUMPLESS_SEVERITY_WARN` symbol.
 
 ## [1.6.0] - 2020-07-16
 ### Added

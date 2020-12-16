@@ -9,6 +9,7 @@
 "Facility": "stumpless/Facility.hpp"
 "FileTarget": "stumpless/FileTarget.hpp"
 "FreeAll": "stumpless/MemoryManager.hpp"
+"GetAppName": "stumpless/Entry.hpp"
 "MemoryManager": "stumpless/MemoryManager.hpp"
 "NetworkTarget": "stumpless/NetworkTarget.hpp"
 "Param": "stumpless/Param.hpp"

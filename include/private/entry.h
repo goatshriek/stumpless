@@ -24,6 +24,8 @@
 #  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/entry.h>
+#  include <stumpless/facility.h>
+#  include <stumpless/severity.h>
 #  include "private/config/wrapper/thread_safety.h"
 #  include "private/strbuilder.h"
 
@@ -38,7 +40,8 @@ void
 entry_free_all( void );
 
 int
-get_prival( int facility, int severity );
+get_prival( enum stumpless_facility facility,
+            enum stumpless_severity severity );
 
 void
 lock_entry( const struct stumpless_entry *entry );

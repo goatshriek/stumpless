@@ -1,4 +1,4 @@
-version: "0.3.0"
+version: "0.5.0"
 classes:
   - name: "Version"
     doc: "Describes this version of Stumpless."
@@ -21,6 +21,36 @@ classes:
         wrapped-function:
           name: "stumpless_get_version"
           includes: "stumpless/version.h"
+      - name: "Compare"
+        doc: >
+          Compares this Version with another one according to semantic
+          versioning rules.
+
+          Available since release v2.0.0.
+        params:
+          - name: "version"
+            doc: The Version to compare this one against.
+            type: "Version&"
+        return:
+          doc: >
+            0 if these each represent the same version number, a negative value
+            if this Version is lower (that is, older), and a postive value if
+            this Version is higher.
+
+            The magnitude of the return value will indicate the level that
+            differed, 1 denoting a patch level difference, 10 a minor version
+            number difference, and 100 a major version number difference.
+          type: "int"
+        wrapped-function:
+          name: "stumpless_version_cmp"
+          includes: "stumpless/version.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "version"
+              type: "struct stumpless_version *"
+          return:
+            type: "int"
+          use-template: "has-error-check"
       - name: "ToString"
         return:
           type: "std::string"
