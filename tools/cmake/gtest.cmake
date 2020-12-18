@@ -65,10 +65,16 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
     ${local_mock_static}
   )
 
+  if(CYGWIN)
+    set(gtest_cxx_flags "-std=gnu++11")
+  else()
+    set(gtest_cxx_flags "-std=c++11")
+  endif()
+
   ExternalProject_Add(gtest
-    URL https://github.com/google/googletest/archive/a781fe29bcf73003559a3583167fe3d647518464.zip
+    URL https://github.com/google/googletest/archive/18f8200e3079b0e54fa00cb7ac55d4c39dcf6da6.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-    CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_SH=${CMAKE_SH} -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS=-std=c++11
+    CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_SH=${CMAKE_SH} -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS=${gtest_cxx_flags}
     UPDATE_COMMAND ""
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${local_gtest_shared} ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy ${local_gtest_main_shared} ${CMAKE_CURRENT_BINARY_DIR}
