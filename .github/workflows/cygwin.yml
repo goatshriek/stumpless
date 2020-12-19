@@ -33,7 +33,7 @@ jobs:
           bash.exe -c "cmake -DCMAKE_BUILD_TYPE=Release -DGTEST_PATH=C:/gtest -DBENCHMARK_PATH=C:/benchmark ."
         shell: cmd
       - name: Build Google Test and Benchmark
-        if: steps.cache-google-libs.output.cache-hit != 'true'
+        if: steps.cache-google-libs.outputs.cache-hit != 'true'
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
           bash.exe -c "mkdir C:/gtest"
