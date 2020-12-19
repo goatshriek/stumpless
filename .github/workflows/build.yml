@@ -500,5 +500,6 @@ jobs:
       - name: Build and Test
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
+          where bash.exe
           bash.exe -c "cmake . && make check bench"
         shell: cmd
