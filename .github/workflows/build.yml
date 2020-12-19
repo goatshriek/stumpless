@@ -36,465 +36,461 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
-  linux-debug:
-    name: "linux, debug"
-    runs-on: "ubuntu-20.04"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
-      - name: Privileged Tests
-        run: |
-          sudo ./function-test-tcp4
-          sudo ./function-test-tcp4_leak
-          sudo ./function-test-tcp6
-          sudo ./function-test-tcp6_leak
-          sudo ./function-test-udp4
-          sudo ./function-test-udp4_leak
-          sudo ./function-test-udp6
-          sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
-      - name: Run Examples
-        run: |
-          make examples
-      - name: Install
-        run: |
-          sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-  linux-release:
-    name: "linux, release"
-    runs-on: "ubuntu-20.04"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
-      - name: Privileged Tests
-        run: |
-          sudo ./function-test-tcp4
-          sudo ./function-test-tcp4_leak
-          sudo ./function-test-tcp6
-          sudo ./function-test-tcp6_leak
-          sudo ./function-test-udp4
-          sudo ./function-test-udp4_leak
-          sudo ./function-test-udp6
-          sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
-      - name: Run Examples
-        run: |
-          make examples
-      - name: Run Benchmarks
-        run: |
-          make bench
-      - name: Install
-        run: |
-          sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-  linux-all-disabled:
-    name: "linux, all features disabled"
-    runs-on: "ubuntu-20.04"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Run Examples
-        run: |
-          make examples
-      - name: Install
-        run: |
-          sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-  linux-cpp:
-    name: "linux, with c++"
-    runs-on: "ubuntu-20.04"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
-      - name: Install Gems
-        run: |
-          gem install bundler
-          bundle install
-      - name: Install Packages
-        run: |
-          sudo apt-get install doxygen
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check-cpp
-      - name: Install
-        run: |
-          sudo make install
-      - name: Build Documentation
-        run: |
-          make docs-cpp
-  linux-de-de:
-    name: "linux, de-de"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "de_DE.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-es-es:
-    name: "linux, es-es"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "es_ES.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-fr-fr:
-    name: "linux, fr-fr"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "fr_FR.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-sv-se:
-    name: "linux, sv-se"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "sv_SE.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-sk-sk:
-    name: "linux, sk-sk"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "sk_SK.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"sk-SK\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  mac-debug:
-    name: "mac, debug"
-    runs-on: "macos-11.0"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
-      - name: Privileged Tests
-        run: |
-          sudo ./function-test-tcp4
-          sudo ./function-test-tcp4_leak
-          sudo ./function-test-tcp6
-          sudo ./function-test-tcp6_leak
-          sudo ./function-test-udp4
-          sudo ./function-test-udp4_leak
-          sudo ./function-test-udp6
-          sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
-      - name: Run Examples
-        run: |
-          make examples
-      - name: Install
-        run: |
-          sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-  mac-release:
-    name: "mac, release"
-    runs-on: "macos-11.0"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
-      - name: Privileged Tests
-        run: |
-          sudo ./function-test-tcp4
-          sudo ./function-test-tcp4_leak
-          sudo ./function-test-tcp6
-          sudo ./function-test-tcp6_leak
-          sudo ./function-test-udp4
-          sudo ./function-test-udp4_leak
-          sudo ./function-test-udp6
-          sudo ./function-test-udp6_leak
-          sudo ./thread-safety-test-network
-      - name: Run Examples
-        run: |
-          make examples
-      - name: Run Benchmarks
-        run: |
-          make bench
-      - name: Install
-        run: |
-          sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-  mac-all-disabled:
-    name: "mac, all features disabled"
-    runs-on: "macos-11.0"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Run Examples
-        run: |
-          make examples
-      - name: Install
-        run: |
-          sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-  mac-cpp:
-    name: "mac, with c++"
-    runs-on: "macos-11.0"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
-      - name: Install Gems
-        run: |
-          gem install bundler
-          bundle install
-      - name: Install Packages
-        run: |
-          brew install doxygen
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check-cpp
-      - name: Install
-        run: |
-          sudo make install
-      - name: Build Documentation
-        run: |
-          make docs-cpp
-  windows-debug:
-    name: "windows, debug"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
-      - name: Build
-        run: |
-          cmake --build . --config Debug
-      - name: Test
-        run: |
-          cmake --build . --config Debug --target check
-      - name: Thread Safety Tests
-        run: |
-          cmake --build . --config Debug --target check-thread-safety
-      - name: Run Examples
-        run: |
-          cmake --build . --config Debug --target examples
-  windows-release:
-    name: "windows, release"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
-      - name: Build
-        run: |
-          cmake --build . --config Release
-      - name: Test
-        run: |
-          cmake --build . --config Release --target check
-      - name: Thread Safety Tests
-        run: |
-          cmake --build . --config Release --target check-thread-safety
-      - name: Run Examples
-        run: |
-          cmake --build . --config Release --target examples
-  basic-windows-all-disabled:
-    name: "windows, all features disabled"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
-      - name: Build
-        run: |
-          cmake --build . --config Release
-      - name: Test
-        run: |
-          cmake --build . --config Release --target check
-      - name: Run Examples
-        run: |
-          cmake --build . --config Release --target examples
-  windows-cpp:
-    name: "windows, with c++"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
-      - name: Install Gems
-        run: |
-          gem install bundler
-          bundle install
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
-      - name: Build
-        run: |
-          cmake --build . --config Release
-      - name: Test
-        run: |
-          cmake --build . --config Release --target check-cpp
+#  linux-debug:
+#    name: "linux, debug"
+#    runs-on: "ubuntu-20.04"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#      - name: Thread Safety Tests
+#        run: |
+#          make check-thread-safety
+#      - name: Privileged Tests
+#        run: |
+#          sudo ./function-test-tcp4
+#          sudo ./function-test-tcp4_leak
+#          sudo ./function-test-tcp6
+#          sudo ./function-test-tcp6_leak
+#          sudo ./function-test-udp4
+#          sudo ./function-test-udp4_leak
+#          sudo ./function-test-udp6
+#          sudo ./function-test-udp6_leak
+#          sudo ./thread-safety-test-network
+#      - name: Run Examples
+#        run: |
+#          make examples
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Codecov Upload
+#        uses: codecov/codecov-action@v1
+#        with:
+#          fail_ci_if_error: true
+#  linux-release:
+#    name: "linux, release"
+#    runs-on: "ubuntu-20.04"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#      - name: Thread Safety Tests
+#        run: |
+#          make check-thread-safety
+#      - name: Privileged Tests
+#        run: |
+#          sudo ./function-test-tcp4
+#          sudo ./function-test-tcp4_leak
+#          sudo ./function-test-tcp6
+#          sudo ./function-test-tcp6_leak
+#          sudo ./function-test-udp4
+#          sudo ./function-test-udp4_leak
+#          sudo ./function-test-udp6
+#          sudo ./function-test-udp6_leak
+#          sudo ./thread-safety-test-network
+#      - name: Run Examples
+#        run: |
+#          make examples
+#      - name: Run Benchmarks
+#        run: |
+#          make bench
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Codecov Upload
+#        uses: codecov/codecov-action@v1
+#        with:
+#          fail_ci_if_error: true
+#  linux-all-disabled:
+#    name: "linux, all features disabled"
+#    runs-on: "ubuntu-20.04"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#      - name: Run Examples
+#        run: |
+#          make examples
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Codecov Upload
+#        uses: codecov/codecov-action@v1
+#        with:
+#          fail_ci_if_error: true
+#  linux-cpp:
+#    name: "linux, with c++"
+#    runs-on: "ubuntu-20.04"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-ruby@v1.1.2
+#      - name: Install Gems
+#        run: |
+#          gem install bundler
+#          bundle install
+#      - name: Install Packages
+#        run: |
+#          sudo apt-get install doxygen
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check-cpp
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Build Documentation
+#        run: |
+#          make docs-cpp
+#  linux-de-de:
+#    name: "linux, de-de"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "de_DE.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#  linux-es-es:
+#    name: "linux, es-es"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "es_ES.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#  linux-fr-fr:
+#    name: "linux, fr-fr"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "fr_FR.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#  linux-sv-se:
+#    name: "linux, sv-se"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "sv_SE.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#  linux-sk-sk:
+#    name: "linux, sk-sk"
+#    runs-on: "ubuntu-20.04"
+#    env:
+#      LANG: "sk_SK.UTF-8"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON .
+#      - name: Check Language
+#        run: |
+#          grep -q "STUMPLESS_LANGUAGE \"sk-SK\"" include/stumpless/config.h
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#  mac-debug:
+#    name: "mac, debug"
+#    runs-on: "macos-11.0"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#      - name: Thread Safety Tests
+#        run: |
+#          make check-thread-safety
+#      - name: Privileged Tests
+#        run: |
+#          sudo ./function-test-tcp4
+#          sudo ./function-test-tcp4_leak
+#          sudo ./function-test-tcp6
+#          sudo ./function-test-tcp6_leak
+#          sudo ./function-test-udp4
+#          sudo ./function-test-udp4_leak
+#          sudo ./function-test-udp6
+#          sudo ./function-test-udp6_leak
+#          sudo ./thread-safety-test-network
+#      - name: Run Examples
+#        run: |
+#          make examples
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Codecov Upload
+#        uses: codecov/codecov-action@v1
+#        with:
+#          fail_ci_if_error: true
+#  mac-release:
+#    name: "mac, release"
+#    runs-on: "macos-11.0"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#      - name: Thread Safety Tests
+#        run: |
+#          make check-thread-safety
+#      - name: Privileged Tests
+#        run: |
+#          sudo ./function-test-tcp4
+#          sudo ./function-test-tcp4_leak
+#          sudo ./function-test-tcp6
+#          sudo ./function-test-tcp6_leak
+#          sudo ./function-test-udp4
+#          sudo ./function-test-udp4_leak
+#          sudo ./function-test-udp6
+#          sudo ./function-test-udp6_leak
+#          sudo ./thread-safety-test-network
+#      - name: Run Examples
+#        run: |
+#          make examples
+#      - name: Run Benchmarks
+#        run: |
+#          make bench
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Codecov Upload
+#        uses: codecov/codecov-action@v1
+#        with:
+#          fail_ci_if_error: true
+#  mac-all-disabled:
+#    name: "mac, all features disabled"
+#    runs-on: "macos-11.0"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check
+#          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+#      - name: Run Examples
+#        run: |
+#          make examples
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Codecov Upload
+#        uses: codecov/codecov-action@v1
+#        with:
+#          fail_ci_if_error: true
+#  mac-cpp:
+#    name: "mac, with c++"
+#    runs-on: "macos-11.0"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-ruby@v1.1.2
+#      - name: Install Gems
+#        run: |
+#          gem install bundler
+#          bundle install
+#      - name: Install Packages
+#        run: |
+#          brew install doxygen
+#      - name: Configure
+#        run: |
+#          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+#      - name: Build
+#        run: |
+#          make all
+#      - name: Test
+#        run: |
+#          make check-cpp
+#      - name: Install
+#        run: |
+#          sudo make install
+#      - name: Build Documentation
+#        run: |
+#          make docs-cpp
+#  windows-debug:
+#    name: "windows, debug"
+#    runs-on: "windows-2019"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
+#      - name: Build
+#        run: |
+#          cmake --build . --config Debug
+#      - name: Test
+#        run: |
+#          cmake --build . --config Debug --target check
+#      - name: Thread Safety Tests
+#        run: |
+#          cmake --build . --config Debug --target check-thread-safety
+#      - name: Run Examples
+#        run: |
+#          cmake --build . --config Debug --target examples
+#  windows-release:
+#    name: "windows, release"
+#    runs-on: "windows-2019"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
+#      - name: Build
+#        run: |
+#          cmake --build . --config Release
+#      - name: Test
+#        run: |
+#          cmake --build . --config Release --target check
+#      - name: Thread Safety Tests
+#        run: |
+#          cmake --build . --config Release --target check-thread-safety
+#      - name: Run Examples
+#        run: |
+#          cmake --build . --config Release --target examples
+#  basic-windows-all-disabled:
+#    name: "windows, all features disabled"
+#    runs-on: "windows-2019"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Configure
+#        run: |
+#          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
+#      - name: Build
+#        run: |
+#          cmake --build . --config Release
+#      - name: Test
+#        run: |
+#          cmake --build . --config Release --target check
+#      - name: Run Examples
+#        run: |
+#          cmake --build . --config Release --target examples
+#  windows-cpp:
+#    name: "windows, with c++"
+#    runs-on: "windows-2019"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-ruby@v1.1.2
+#      - name: Install Gems
+#        run: |
+#          gem install bundler
+#          bundle install
+#      - name: Configure
+#        run: |
+#          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
+#      - name: Build
+#        run: |
+#          cmake --build . --config Release
+#      - name: Test
+#        run: |
+#          cmake --build . --config Release --target check-cpp
   cygwin:
     name: "cygwin"
     runs-on: "windows-2019"
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: C:\Users\runneradmin\AppData\Local\Temp\chocolatey
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}
       - name: Install Cygwin Base
         run: |
           choco install --no-progress cygwin
       - name: Install Cygwin Packages
         run: |
-          C:\tools\cygwin\cygwinsetup.exe -qgnNdO -R C:/tools/cygwin -s http://mirrors.kernel.org/sourceware/cygwin/ -P gcc-core,g++,make,cmake
+          C:\tools\cygwin\cygwinsetup.exe -qgnNdO -R C:/tools/cygwin -s http://mirrors.kernel.org/sourceware/cygwin/ -P gcc-core,gcc-g++,make,cmake
         shell: cmd
       - name: Build and Test
         run: |
