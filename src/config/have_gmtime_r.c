@@ -40,7 +40,10 @@ gmtime_r_get_now( char *buffer ) {
     return 0;
   }
 
-  written = strftime( buffer, RFC_5424_WHOLE_TIME_BUFFER_SIZE, "%FT%T", &now_tm );
+  written = strftime( buffer,
+                      RFC_5424_WHOLE_TIME_BUFFER_SIZE,
+                      "%FT%T",
+                      &now_tm );
   written += snprintf( buffer + written,
                        RFC_5424_TIME_SECFRAC_BUFFER_SIZE + 2,
                        ".%06ldZ",

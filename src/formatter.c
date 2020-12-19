@@ -27,7 +27,7 @@
 
 struct strbuilder *
 format_entry( const struct stumpless_entry *entry,
-              struct stumpless_target *target ) {
+              const struct stumpless_target *target ) {
   char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
   struct strbuilder *builder;
   size_t timestamp_size;

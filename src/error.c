@@ -53,12 +53,12 @@ stumpless_get_error_id( const struct stumpless_error *err ) {
 
 const char *
 stumpless_get_error_id_string( enum stumpless_error_id id) {
-  int error_id_upper_bound = 
-	  sizeof( stumpless_error_enum_to_string ) / sizeof( char * );
+  int error_id_upper_bound = sizeof( stumpless_error_enum_to_string ) /
+                             sizeof( char * );
   if ( id >= 0 && id < error_id_upper_bound ) {
     return stumpless_error_enum_to_string[id];
   }
-  
+
   return "NO_SUCH_ERROR_ID";
 }
 
@@ -98,7 +98,6 @@ stumpless_perror( const char *prefix ) {
     fputs( stumpless_get_error_id_string(last_error.id), stream );
     fputc( ':', stream );
     fputc( ' ', stream );
-    
 
     fputs( last_error.message, stream );
 
@@ -233,7 +232,9 @@ raise_param_not_found( void ) {
 }
 
 void
-raise_socket_bind_failure( const char *message, int code, const char *code_type ) {
+raise_socket_bind_failure( const char *message,
+                           int code,
+                           const char *code_type ) {
   raise_error( STUMPLESS_SOCKET_BIND_FAILURE, message, code, code_type );
 }
 
