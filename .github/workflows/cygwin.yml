@@ -50,18 +50,13 @@ jobs:
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
           bash.exe -c "make check"
         shell: cmd
-      - name: Thread Safety Tests
+      - name: Run Benchmarks
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
-          bash.exe -c "make check-thread-safety"
+          bash.exe -c "make bench"
         shell: cmd
       - name: Run Examples
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
           bash.exe -c "make examples"
-        shell: cmd
-      - name: Run Benchmarks
-        run: |
-          path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
-          bash.exe -c "make bench"
         shell: cmd
