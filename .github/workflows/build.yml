@@ -484,14 +484,17 @@ jobs:
     name: "cygwin"
     runs-on: "windows-2019"
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Cygwin Base
+      - uses: actions/checkout@v
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: path/to/dependencies
+          key: ${{ runner.os }}-${{ hashFiles('**/src') }}
+      - name: Install Cygwin Base and Packages
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           choco install --no-progress cygwin
-      - name: Install Cygwin Packages
-        run: |
           C:\tools\cygwin\cygwinsetup.exe -qgnNdO -R C:/tools/cygwin -s http://mirrors.kernel.org/sourceware/cygwin/ -P gcc-core,gcc-g++,make,cmake
-        shell: cmd
       - name: Build and Test
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
