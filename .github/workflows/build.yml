@@ -489,11 +489,13 @@ jobs:
 #        id: cache
 #        with:
 #          path: C:\tools\cygwin
-#          key: ${{ runner.os }}-${{ hashFiles('**/src') }}
-      - name: Install Cygwin Base and Packages
+#          key: ${{ runner.os }}
+      - name: Install Cygwin Base
 #        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           choco install --no-progress cygwin
+      - name: Install Cygwin Packages
+        run: |
           C:\tools\cygwin\cygwinsetup.exe -qgnNdO -R C:/tools/cygwin -s http://mirrors.kernel.org/sourceware/cygwin/ -P gcc-core,gcc-g++,make,cmake
       - name: Build and Test
         run: |
