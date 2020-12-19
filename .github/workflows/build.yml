@@ -7,35 +7,35 @@ on:
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
 jobs:
-  linux-analysis:
-    name: "code analysis"
-    runs-on: "ubuntu-20.04"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Check Headers
-        run: |
-          tools/check_headers/check_headers.rb "include/**/*.h*"
-          tools/check_headers/check_headers.rb "src/**/*.c"
-          tools/check_headers/check_headers.rb "test/**/*.cpp"
-      - name: Build Documentation
-        run: |
-          sudo apt-get install doxygen
-          cmake .
-          make docs
-      - name: Sonarcloud Analysis
-        run: |
-          wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-          unzip build-wrapper-linux-x86.zip
-          cmake .
-          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
-          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
-          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
-          chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
-          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
+#  linux-analysis:
+#    name: "code analysis"
+#    runs-on: "ubuntu-20.04"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Check Headers
+#        run: |
+#          tools/check_headers/check_headers.rb "include/**/*.h*"
+#          tools/check_headers/check_headers.rb "src/**/*.c"
+#          tools/check_headers/check_headers.rb "test/**/*.cpp"
+#      - name: Build Documentation
+#        run: |
+#          sudo apt-get install doxygen
+#          cmake .
+#          make docs
+#      - name: Sonarcloud Analysis
+#        run: |
+#          wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+#          unzip build-wrapper-linux-x86.zip
+#          cmake .
+#          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
+#          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
+#          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
+#          chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
+#          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
 #  linux-debug:
 #    name: "linux, debug"
 #    runs-on: "ubuntu-20.04"
@@ -485,13 +485,7 @@ jobs:
     runs-on: "windows-2019"
     steps:
       - uses: actions/checkout@v2
-#      - uses: actions/cache@v2
-#        id: cache
-#        with:
-#          path: C:\tools\cygwin
-#          key: ${{ runner.os }}
       - name: Install Cygwin Base
-#        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           choco install --no-progress cygwin
       - name: Install Cygwin Packages
