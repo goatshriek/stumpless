@@ -492,7 +492,7 @@ jobs:
           path: |
             C:/gtest
             C:/benchmark
-          key: ${{ runner.os }}-${{ hashFiles('**/cmake') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/gtest.cmake', '**/benchmark.cmake') }}
       - name: Install Cygwin Base
         run: |
           choco install --no-progress cygwin
