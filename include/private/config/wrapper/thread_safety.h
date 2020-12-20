@@ -43,27 +43,6 @@ typedef void * config_atomic_ptr_t;
 #    define config_unlock_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_write_bool( B, REPLACEMENT ) *( B ) = ( REPLACEMENT )
 #    define config_write_ptr( P, REPLACEMENT ) *( P ) = ( REPLACEMENT )
-#  elif defined HAVE_WINDOWS_H
-#    include "private/config/have_windows.h"
-#    include "private/windows_wrapper.h"
-typedef LONG volatile config_atomic_bool_t;
-typedef PVOID volatile config_atomic_ptr_t;
-typedef CRITICAL_SECTION config_mutex_t;
-#    define CONFIG_THREAD_LOCAL_STORAGE __declspec( thread )
-#    define config_atomic_bool_false false
-#    define config_atomic_bool_true true
-#    define config_atomic_ptr_initializer NULL
-#    define config_compare_exchange_bool windows_compare_exchange_bool
-#    define config_compare_exchange_ptr windows_compare_exchange_ptr
-#    define config_destroy_mutex windows_destroy_mutex
-#    define config_init_mutex windows_init_mutex
-#    define config_lock_mutex windows_lock_mutex
-#    define CONFIG_MUTEX_T_SIZE sizeof( config_mutex_t )
-#    define config_read_bool( B ) *( B )
-#    define config_read_ptr( P ) *( P )
-#    define config_unlock_mutex windows_unlock_mutex
-#    define config_write_bool( B, REPLACEMENT ) *( B ) = ( REPLACEMENT )
-#    define config_write_ptr( P, REPLACEMENT ) *( P ) = ( REPLACEMENT )
 #  elif defined HAVE_PTHREAD_H && defined HAVE_STDATOMIC_H
 #    include <pthread.h>
 #    include <stdatomic.h>
@@ -88,6 +67,27 @@ typedef pthread_mutex_t config_mutex_t;
 #    define config_unlock_mutex pthread_unlock_mutex
 #    define config_write_bool stdatomic_write_bool
 #    define config_write_ptr stdatomic_write_ptr
+#  elif defined HAVE_WINDOWS_H
+#    include "private/config/have_windows.h"
+#    include "private/windows_wrapper.h"
+typedef LONG volatile config_atomic_bool_t;
+typedef PVOID volatile config_atomic_ptr_t;
+typedef CRITICAL_SECTION config_mutex_t;
+#    define CONFIG_THREAD_LOCAL_STORAGE __declspec( thread )
+#    define config_atomic_bool_false false
+#    define config_atomic_bool_true true
+#    define config_atomic_ptr_initializer NULL
+#    define config_compare_exchange_bool windows_compare_exchange_bool
+#    define config_compare_exchange_ptr windows_compare_exchange_ptr
+#    define config_destroy_mutex windows_destroy_mutex
+#    define config_init_mutex windows_init_mutex
+#    define config_lock_mutex windows_lock_mutex
+#    define CONFIG_MUTEX_T_SIZE sizeof( config_mutex_t )
+#    define config_read_bool( B ) *( B )
+#    define config_read_ptr( P ) *( P )
+#    define config_unlock_mutex windows_unlock_mutex
+#    define config_write_bool( B, REPLACEMENT ) *( B ) = ( REPLACEMENT )
+#    define config_write_ptr( P, REPLACEMENT ) *( P ) = ( REPLACEMENT )
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_THREAD_SAFETY_H */

@@ -23,7 +23,9 @@
 #include "private/memory.h"
 
 char *
-no_vsnprintf_s_format_string( const char *format, va_list subs, size_t *length ) {
+no_vsnprintf_s_format_string( const char *format,
+                              va_list subs,
+                              size_t *length ) {
   char *buffer;
   size_t buffer_size = 128;
   int result;

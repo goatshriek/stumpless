@@ -172,7 +172,9 @@ strbuilder_new( void ) {
   size_t size;
 
   if( !strbuilder_cache ) {
-    strbuilder_cache = cache_new( sizeof( *builder ), strbuilder_init, strbuilder_teardown );
+    strbuilder_cache = cache_new( sizeof( *builder ),
+                                  strbuilder_init,
+                                  strbuilder_teardown );
 
     if( !strbuilder_cache ) {
       goto fail;

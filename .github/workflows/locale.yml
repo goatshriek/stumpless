@@ -1,0 +1,132 @@
+name: "Locale"
+
+on:
+  push:
+    branches: [ latest ]
+  pull_request:
+    branches: [ latest ]
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
+
+jobs:
+  linux-de-de:
+    name: "linux, de-de"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "de_DE.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-es-es:
+    name: "linux, es-es"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "es_ES.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-fr-fr:
+    name: "linux, fr-fr"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "fr_FR.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-it-it:
+    name: "linux, it-it"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "it_IT.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"it-IT\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-sk-sk:
+    name: "linux, sk-sk"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "sk_SK.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"sk-SK\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-sv-se:
+    name: "linux, sv-se"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "sv_SE.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
