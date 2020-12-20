@@ -1,11 +1,14 @@
 name: "build"
+
 on:
   push:
   pull_request:
     branches:
       - latest
+
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
+
 jobs:
   linux-analysis:
     name: "code analysis"
@@ -51,9 +54,6 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -64,6 +64,13 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
           sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
@@ -71,10 +78,6 @@ jobs:
       - name: Install
         run: |
           sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
   linux-release:
     name: "linux, release"
     runs-on: "ubuntu-20.04"
@@ -90,9 +93,6 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -103,6 +103,13 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
           sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
@@ -113,10 +120,6 @@ jobs:
       - name: Install
         run: |
           sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
   linux-all-disabled:
     name: "linux, all features disabled"
     runs-on: "ubuntu-20.04"
@@ -132,16 +135,16 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
       - name: Run Examples
         run: |
           make examples
       - name: Install
         run: |
           sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
   linux-cpp:
     name: "linux, with c++"
     runs-on: "ubuntu-20.04"
@@ -157,7 +160,7 @@ jobs:
           sudo apt-get install doxygen
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+          cmake -DENABLE_CPP=ON .
       - name: Build
         run: |
           make all
@@ -170,106 +173,6 @@ jobs:
       - name: Build Documentation
         run: |
           make docs-cpp
-  linux-de-de:
-    name: "linux, de-de"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "de_DE.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"de-DE\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-es-es:
-    name: "linux, es-es"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "es_ES.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"es-ES\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-fr-fr:
-    name: "linux, fr-fr"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "fr_FR.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"fr-FR\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-sv-se:
-    name: "linux, sv-se"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "sv_SE.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"sv-SE\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-  linux-sk-sk:
-    name: "linux, sk-sk"
-    runs-on: "ubuntu-20.04"
-    env:
-      LANG: "sk_SK.UTF-8"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -DCOVERAGE=ON .
-      - name: Check Language
-        run: |
-          grep -q "STUMPLESS_LANGUAGE \"sk-SK\"" include/stumpless/config.h
-      - name: Build
-        run: |
-          make all
-      - name: Test
-        run: |
-          make check
-          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   mac-debug:
     name: "mac, debug"
     runs-on: "macos-11.0"
@@ -285,9 +188,6 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -298,6 +198,13 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
           sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
@@ -305,10 +212,6 @@ jobs:
       - name: Install
         run: |
           sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
   mac-release:
     name: "mac, release"
     runs-on: "macos-11.0"
@@ -324,9 +227,6 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
       - name: Privileged Tests
         run: |
           sudo ./function-test-tcp4
@@ -337,6 +237,13 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
           sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
@@ -347,10 +254,6 @@ jobs:
       - name: Install
         run: |
           sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
   mac-all-disabled:
     name: "mac, all features disabled"
     runs-on: "macos-11.0"
@@ -366,16 +269,16 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
       - name: Run Examples
         run: |
           make examples
       - name: Install
         run: |
           sudo make install
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
   mac-cpp:
     name: "mac, with c++"
     runs-on: "macos-11.0"
@@ -391,7 +294,7 @@ jobs:
           brew install doxygen
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON -DENABLE_CPP=ON .
+          cmake -DENABLE_CPP=ON .
       - name: Build
         run: |
           make all

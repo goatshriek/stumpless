@@ -60,6 +60,6 @@
  */
 struct strbuilder *
 format_entry( const struct stumpless_entry *entry,
-              struct stumpless_target *target );
+              const struct stumpless_target *target );
 
 #endif /* __STUMPLESS_PRIVATE_FORMATTER_H */

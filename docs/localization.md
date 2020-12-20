@@ -62,7 +62,7 @@ appears in the CMake build script to include the new header.
 
 The last step is to add new CI builds for the new locale to make sure that
 there are no immediate problems and catch any future ones that arise. This is
-done by updating the `.github/workflows/build.yml` configuration file with a
+done by updating the `.github/workflows/locale.yml` configuration file with a
 build profile for the new language. This is relatively simple: just copy one of
 the existing jobs (for example `linux-es-es`) and update it to use your new
 locale.
