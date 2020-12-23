@@ -120,6 +120,10 @@ jobs:
       - name: Install
         run: |
           sudo make install
+      - name: Test Install
+        run: |
+          gcc docs/examples/basic/basic_example.c -lstumpless -o basic_example
+          ./basic_example
   linux-all-disabled:
     name: "linux, all features disabled"
     runs-on: "ubuntu-20.04"
