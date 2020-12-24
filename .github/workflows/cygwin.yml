@@ -30,7 +30,7 @@ jobs:
       - name: Configure
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
-          bash.exe -c "cmake -DCMAKE_BUILD_TYPE=Release -DGTEST_PATH=C:/gtest -DBENCHMARK_PATH=C:/benchmark ."
+          bash.exe -c "cmake -DCMAKE_BUILD_TYPE=Release -DGTEST_PATH=C:/gtest -DBENCHMARK_PATH=C:/benchmark -DCMAKE_INSTALL_PREFIX=/usr ."
         shell: cmd
       - name: Build Google Test and Benchmark
         if: steps.cache-google-libs.outputs.cache-hit != 'true'
@@ -59,4 +59,14 @@ jobs:
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
           bash.exe -c "make examples"
+        shell: cmd
+      - name: Install
+        run: |
+          path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
+          bash.exe -c "make install"
+        shell: cmd
+      - name: Test Build with Install
+        run: |
+          path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
+          bash.exe -c "gcc docs/examples/basic/basic_example.c -lstumpless -o run_example.exe && ./run_example.exe"
         shell: cmd
