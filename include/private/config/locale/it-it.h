@@ -38,8 +38,7 @@
 "la destinazione è solo valida per bersaglio rete"
 
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
-"an element with the provided name is already present in this entry"
-""
+"un elemento con il nome dato è già in questa voce"
 
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
 "an element with the specified characteristics could not be found"
@@ -113,8 +112,7 @@
 ""
 
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
-ARG_NAME " was NULL"
-""
+ARG_NAME " era NULL"
 
 #  define L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "tried to open an unsupported target type"
@@ -145,8 +143,7 @@ ARG_NAME " was NULL"
 ""
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
-"failed to open a socket"
-""
+"ha fallito aprire un socket"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "this target type is always open"
@@ -165,12 +162,11 @@ ARG_NAME " was NULL"
 ""
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
-"Windows Socket error code"
-""
+"il codice errore di Windows Socket"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a winsock2 socket"
-""
+"ha fallito aprire un socket winsock2"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "the result of WSAGetLastError after the failed call"
@@ -181,11 +177,9 @@ ARG_NAME " was NULL"
 ""
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"the length of the offending string"
-""
+"la lunghezza della stringa non valida"
 
 #  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"invalid " ARG " format"
-""
+"il formato di " ARG " era non valido"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_IT_IT_H */
