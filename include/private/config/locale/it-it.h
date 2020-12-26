@@ -26,8 +26,7 @@
 "il buffer è troppo piccolo per il messaggio"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"attempted to close an unsupported target type"
-""
+"ha provato chiudere un tipo di bersaglio non supportato"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "connect ha falluto con un socket sys/socket.h"
