@@ -102,7 +102,65 @@ make install
 sudo make install
 ```
 
-There is not currently an uninstall target supported, so removal of the library
+A simple way to make sure that your install is working as you expected is to
+compile one of the examples without using the built-in targets. If the target
+builds but your own compilation doesn't, then there is something wrong with
+your install.
+
+```sh
+# first we use the build target to make sure it works
+make example-entry && ./example-entry
+
+# next, we compile the same example manually
+gcc docs/examples/entry/entry_example.c -lstumpless -omanual_entry_example
+# this should work if everything was correct
+./manual_entry_example
+```
+
+If you do have issues, there are a few simple things for you to check. An easy
+issue is if the installed library is not in the system's library search path,
+which will usually lead to an error message of `cannot find -lstumpless` or
+similar. If you see this, check the current search path and if needed set
+appropriate environment variables or add compilation flags to add the location
+that stumpless was installed to the search path. Some examples are gcc's `-L`
+option, the `LD_LIBRARY_PATH` environment variable on many Linux systems, and
+the environment variable `LIBRARY_PATH` in Cygwin.
+
+If you find that stumpless has installed to unexpected locations and you want
+to modify this, use the `CMAKE_INSTALL_PREFIX` definition during the
+configuration step of the build. You can always re-run cmake to update this in
+an existing build tree if you need to change it.
+
+```sh
+# our initial build installed to /usr/local locations, which we didn't want
+cat install_manifest.txt
+# /usr/local/include/stumpless/target/network.h
+# /usr/local/include/stumpless/target/socket.h
+# /usr/local/lib/libstumpless.so.2.0.0
+# /usr/local/lib/libstumpless.so
+# /usr/local/include/stumpless.h
+# <output truncated>
+
+# re-run the configuration
+cmake -DCMAKE_INSTALL_PREFIX=/usr ../stumpless
+
+# re-do the install
+sudo make install
+
+# now we see things in the right place!
+cat install_manifest.txt
+# /usr/include/stumpless/target/network.h
+# /usr/include/stumpless/target/socket.h
+# /usr/lib/libstumpless.so.2.0.0
+# /usr/lib/libstumpless.so
+# /usr/include/stumpless.h
+# /usr/include/stumpless/config.h
+# <output truncated>
+```
+
+### Uninstalling
+
+There is currently no uninstall target supported, so removal of the library
 and its include files must be done manually if it is no longer needed. Please
 submit an issue on the project's Github site if you feel that you need a build
 target providing this feature. For the time being, you can run the contents
