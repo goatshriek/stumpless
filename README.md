@@ -55,8 +55,9 @@ make -j 4 all
 sudo make install
 ```
 
-Check out the [Installation Instructions](INSTALL.md) for more detail on building
-and installing stumpless.
+Check out the [Installation Instructions](INSTALL.md) for more detail on
+building and installing stumpless in different environments and/or with other
+toolchains.
 
 ## Basic Usage
 

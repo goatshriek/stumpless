@@ -21,7 +21,51 @@ make all
 ```
 
 Other environments should be built according to their normal style. For example
-Visual Studio provides a CMake menu that will display all available targets.
+Visual Studio provides a CMake menu in the IDE that will display all available
+targets.
+
+If you're unsure of the build commands for the toolchain on your system, then
+cmake can run these commands for you if you invoke it in build mode.
+
+```sh
+# build the `all` target using whatever toolchain cmake detected during the
+# configuration stage
+# the argument to the `--build` parameter is the root of the folder where we
+# ran the original cmake configuration command
+cmake --build . --target all
+
+# build and run the test suite the same way
+cmake --build . --target all
+```
+
+The type of build can be changed at configuation time by defining the
+`CMAKE_BUILD_TYPE` symbol during configuration.
+
+```sh
+# benchmark testing should always be done using Release builds
+cmake -DCMAKE_BUILD_TYPE=Release ../stumpless
+```
+
+However, some environments (Visual Studio being one) require the configuration
+to be passed in during build steps. In the above example, builds would still use
+the default build type, effectively ignoring the configuration step. To specify
+the build type you will need to provide a config to use during build:
+
+```sh
+# explicitly use the Release configuration we have in our toolchain
+cmake --build . --config x64-Release --target bench
+```
+
+In systems like this, it is easiest to use an IDE that does this work for you,
+for example Visual Studio. For more information on these build topics, refer to
+the CMake documentation on
+[build mode](https://cmake.org/cmake/help/latest/manual/cmake.1.html#build-a-project)
+and
+[multi-config generators](https://cmake.org/cmake/help/latest/prop_gbl/GENERATOR_IS_MULTI_CONFIG.html).
+
+The rest of this documentation uses make commands for simplicity, but for any
+target you can build it using cmake build mode if you need truly portable
+command line invocation.
 
 ## Verifying your Build
 
@@ -61,7 +105,13 @@ sudo make install
 There is not currently an uninstall target supported, so removal of the library
 and its include files must be done manually if it is no longer needed. Please
 submit an issue on the project's Github site if you feel that you need a build
-target providing this feature.
+target providing this feature. For the time being, you can run the contents
+of the `install_manifest.txt` file (generated during the install) through `rm`
+like this:
+
+```sh
+xargs rm < install_manifest.txt
+```
 
 ## C++ Library
 
