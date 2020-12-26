@@ -74,8 +74,7 @@
 ""
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
-"the invalid facility"
-""
+"il servizio non valido"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
 "facility codes must be defined in accordance with RFC 5424, after the" \
@@ -87,8 +86,7 @@
 ""
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
-"the invalid severity"
-""
+"la gravità non valida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "severity codes must be defined in accordance with RFC 5424: values between 0" \
@@ -146,8 +144,7 @@ ARG_NAME " era NULL"
 "ha fallito aprire un socket"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
-"this target type is always open"
-""
+"questo tipo di bersaglio è sempre aperto"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "transport ports are only valid for network targets"
@@ -165,7 +162,6 @@ ARG_NAME " era NULL"
 "il codice errore di Windows Socket"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
-"failed to open a winsock2 socket"
 "ha fallito aprire un socket winsock2"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
