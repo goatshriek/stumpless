@@ -29,10 +29,10 @@
 "ha provato chiudere un tipo di bersaglio non supportato"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"connect ha falluto con un socket sys/socket.h"
+"connect ha fallito con un socket sys/socket.h"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"connect ha falluto con un socket winsock2"
+"connect ha fallito con un socket winsock2"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "la destinazione è solo valida per bersaglio rete"
@@ -41,37 +41,31 @@
 "un elemento con il nome dato è già in questa voce"
 
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
-"an element with the specified characteristics could not be found"
-""
+"un elemento con le caratteristica date non ha potuto essere trovato"
 
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno dopo il fallimento"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"could not create a file with the chosen local socket name using mkstemp"
-""
+"non ha potuto costruire un file con il nome socket dato con mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
-"getaddrinfo failed on the provided hostname"
-""
+"getaddrinfo ha fallito con l'hostname dato"
 
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
-"return code of the failed getaddrinfo call"
-""
+"il codice ritornato del getaddrinfo"
 
 #  define L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE \
-"GetComputerName ha falluto"
+"GetComputerName ha fallito"
 
 #  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
-"gethostname ha falluto"
+"gethostname ha fallito"
 
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
-""
+"il risultato di GetLastError dopo il fallimento"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"the invalid index, or -1 of it is too large to represent as an int"
-""
+"l'indice non valido, oppure -1 se è troppo grande rappresentare come un int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "il servizio non valido"
@@ -82,8 +76,7 @@
 ""
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
-"invalid " INDEXED_THING " index"
-""
+"non valido " INDEXED_THING " indice"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "la gravità non valida"
@@ -113,32 +106,27 @@
 ARG_NAME " era NULL"
 
 #  define L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"tried to open an unsupported target type"
-""
+"ha provato aprire un tipo di bersaglio non supportato"
 
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "a param with the specified characteristics could not be found"
 ""
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"attempted to send an entry to an unsupported target type"
-""
+"ha provato mandare una voce a un tipo di bersaglio non supportato"
 
 #  define L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "attempted to send a message to an unsupported target type"
 ""
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"send failed with a sys/socket.h socket"
-""
+"send ha fallito con un socket sys/socket.h"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"sendto failed with a unix socket"
-""
+"sendto ha fallito con un socket unix"
 
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"send failed with a winsock2 socket"
-""
+"send ha fallito con un socket winsock2"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "ha fallito aprire un socket"
@@ -151,8 +139,7 @@ ARG_NAME " era NULL"
 ""
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"failed to open a unix socket with socket function"
-""
+"ha fallito aprire un socket unix usando la funzione socket"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "checked to see if an unsupported target type was open"
@@ -165,12 +152,10 @@ ARG_NAME " era NULL"
 "ha fallito aprire un socket winsock2"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
-"the result of WSAGetLastError after the failed call"
-""
+"il risultato di WSAGetLastError dopo il fallimento"
 
 #  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"length of string exceeded maximum limit"
-""
+"la lunghezza della stringa era troppo lunga"
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
 "la lunghezza della stringa non valida"
