@@ -41,7 +41,7 @@
 "un elemento con il nome dato è già in questa voce"
 
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
-"un elemento con le caratteristica date non ha potuto essere trovato"
+"un elemento con le caratteristiche date non ha potuto essere trovato"
 
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno dopo il fallimento"
@@ -71,9 +71,7 @@
 "il servizio non valido"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"facility codes must be defined in accordance with RFC 5424, after the" \
-" multiplication by 8"
-""
+"i codici servizio devono soddisfare RFC 5424, dopo la moltiplicazione con 8"
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "non valido " INDEXED_THING " indice"
@@ -82,25 +80,19 @@
 "la gravità non valida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"severity codes must be defined in accordance with RFC 5424: values between 0" \
-" and 7 inclusive"
-""
+"i codici gravità devono soddisfare RFC 5424: tra 0 e 7, compreso"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
-"max message size is only valid for UDP network targets"
-""
+"il massimo dimensione è solo valido per i bersagli reti UDP"
 
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"message is too large to be sent in a single datagram"
-""
+"il messaggio è troppo grande per mandare in unico datagram"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
-"the size of the message that was attempted to be sent"
-""
+"la dimensione del messagio"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
-"network targets are not supported by this build"
-""
+"i bersagli reti non sono supportato"
 
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
 ARG_NAME " era NULL"
@@ -109,15 +101,13 @@ ARG_NAME " era NULL"
 "ha provato aprire un tipo di bersaglio non supportato"
 
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
-"a param with the specified characteristics could not be found"
-""
+"un parametro con le caratteristiche date non ha potuto essere trovato"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "ha provato mandare una voce a un tipo di bersaglio non supportato"
 
 #  define L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"attempted to send a message to an unsupported target type"
-""
+"ha provato mandare un messaggio a un tipo di bersaglio non supportato"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "send ha fallito con un socket sys/socket.h"
@@ -135,15 +125,13 @@ ARG_NAME " era NULL"
 "questo tipo di bersaglio è sempre aperto"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
-"transport ports are only valid for network targets"
-""
+"i porti trasporti sono solo valido per bersagli reti"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "ha fallito aprire un socket unix usando la funzione socket"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
-"checked to see if an unsupported target type was open"
-""
+"ha controllato se un tipo di bersaglio non supportato era aperto"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "il codice errore di Windows Socket"
