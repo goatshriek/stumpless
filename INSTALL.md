@@ -1,9 +1,76 @@
-# Building Stumpless
+# Installing a Stumpless package
+If you just want to use stumpless and aren't looking to modify or otherwise
+develop it, the easiest path is to use one of the release packages. These are
+available for a few common platforms, and are attached to each
+[release](https://github.com/goatshriek/stumpless/releases) of stumpless. If you
+need a package format that is not available here, please submit an issue with a
+request for the format and the project team will see if this can be added.
 
-In order to compile Stumpless you will need cmake and a compatible build system
-such as the GNU toolchain or Microsoft Visual Studio. Given these dependencies
-building the library is very straightforward. The examples below show how to do
-this in a build environment using `make` from a fresh clone.
+Stumpless is not currently registered in any online package repositories such
+as Chocolatey or Debian. If you need the library in a location like this, please
+open an issue and the project team will see what we can do.
+
+
+## Debian Package
+A `.deb` package is provided for use in environments that support them, like
+Debian and Ubuntu. The package can be installed with the usual command:
+
+```sh
+# you might need sudo (or root privileges) to install
+dpkg -i stumpless-2.0.0.deb
+```
+
+
+## RPM Package
+A `.rpm` package is provided for use in Red Hat Linux environments. It can be
+installed in the traditional way as well:
+
+```sh
+# again, make sure you have the correct permissions
+yum install stumpless-2.0.0.rpm
+```
+
+
+## Generic Shell Installer
+CMake generates a shell script that can be used to install the library on
+systems lacking a more traditional package manager. Simply execute the script
+to install the library.
+
+```sh
+# you might need to do this with sudo!
+# make sure your permissions allow you to write to the install locations
+./stumpless-2.0.0.sh
+```
+
+
+## Windows Installer
+Still working on this. Will update once it's working.
+
+
+# Building Stumpless from the source
+In order to compile Stumpless you will at a bare minimum cmake and a compatible
+build system such as the GNU toolchain or Microsoft Visual Studio. While the
+source itself can be downloaded using a number of tools (wget, a browser, etc.)
+git is the recommended way to do this if you need to get specific release tags,
+branches, or make any changes yourself.
+
+
+## Prepping your System
+Since there are so many possible ways to set up an environment, stumpless does
+not provide any single way to do this. However, here are some one-liners that
+can get everything installed for you in some common environments.
+
+For systems with `apt` like Ubuntu or Debian, you can run the following to
+install a basic toolset including the GNU toolchain.
+```sh
+sudo apt-get install git cmake make gcc g++
+```
+
+
+## Building
+Once all of the build dependencies are available, actually building the library
+is straightforward. The examples below show how to do this in an environment
+using `make` from a fresh clone.
 
 ```sh
 # cloning the latest version of the source tree
@@ -89,7 +156,7 @@ will download and build the Google Benchmark library in order to run.
 make bench
 ```
 
-## Installing
+## Installing your Build
 
 You can use the install target to install the library on your machine after the
 build.
