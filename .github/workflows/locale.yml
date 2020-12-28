@@ -70,6 +70,26 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-it-it:
+    name: "linux, it-it"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "it_IT.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"it-IT\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sk-sk:
     name: "linux, sk-sk"
     runs-on: "ubuntu-20.04"
