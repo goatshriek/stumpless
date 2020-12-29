@@ -44,7 +44,10 @@ to install the library.
 
 
 ## Windows Installer
-Still working on this. Will update once it's working.
+A simple `.msi` installer is provided that puts the DLL, `.lib`, and include
+headers into a Program Files folder. Note that you may need to update search
+paths to locate these resources after installation, as the installer does not
+currently handle this.
 
 
 # Building Stumpless from the source
