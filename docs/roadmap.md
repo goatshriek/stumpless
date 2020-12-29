@@ -13,6 +13,14 @@ or want to make a suggestion, please submit an issue on the project's
    it through a target at runtime, this is limited and inflexible. Instead, a
    generic filter structure that can filter on a wide variety of properties of
    each log entry and even use custom functions to filter messages.
+ * [ADD] **Function callback logging target**
+   Logging to a generic function signature will allow easier extension by
+   library users, and can also serve as a good opportunity to streamline the
+   internal implementation for the actual logging functionality.
+ * [ADD] **Tracing call including source code information**
+   A tracing call that includes the line and file of the source code that it
+   appears in could be useful for some applications. This will be added as a
+   macro function so that the relevant information can be added.
 
 ## 3.0.0 (next major release)
  * [REMOVE] **entry and element destructor synonyms**
@@ -35,7 +43,6 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **Java language bindings**
  * [ADD] **Powershell language bindings**
  * [ADD] **Perl language bindings**
- * [ADD] **Function callback logging target**
  * [ADD] **AWS/S3 logging target**
  * [ADD] **Database logging target**
  * [ADD] **REST endpoint logging target**
@@ -51,7 +58,6 @@ or want to make a suggestion, please submit an issue on the project's
    socket to be hidden from the local filesystem. This has currently been left
    out due to portability issues, but using this capability when it is available
    would increase the 'cleanliness' of using socket targets.
- * [ADD] **Localization for italiano (it)**
 
 ## What you'll find here and what you wont
 
