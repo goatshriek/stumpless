@@ -33,8 +33,8 @@ yum install stumpless-2.0.0.rpm
 
 ## Generic Shell Installer
 CMake generates a shell script that can be used to install the library on
-systems lacking a more traditional package manager. Simply execute the script
-to install the library.
+systems lacking a more traditional package manager, for example Cygwin. Simply
+execute the script to install the library.
 
 ```sh
 # you might need to do this with sudo!
@@ -63,10 +63,20 @@ Since there are so many possible ways to set up an environment, stumpless does
 not provide any single way to do this. However, here are some one-liners that
 can get everything installed for you in some common environments.
 
-For systems with `apt` like Ubuntu or Debian, you can run the following to
-install a basic toolset including the GNU toolchain.
+For Linux systems with a package manager like `apt`, you can install the needed
+tools (for a GNU toolchain) with something like the following:
+
 ```sh
-sudo apt-get install git cmake make gcc g++
+sudo apt-get install git cmake make gcc g++ doxygen
+```
+
+Cygwin lacks a package manager in the environment itself, requiring packges to
+be installed using the setup script. You can install the needed packages in the
+GUI, or if you want to just do it via command line, you can do something like
+this:
+
+```sh
+setup-x86_64.exe -q -P git cmake make gcc g++ doxygen
 ```
 
 
@@ -251,8 +261,12 @@ gem installed for this to work. This can be done with a simple
 `gem install wrapture`, or you can use the `Gemfile` included in stumpless and
 simply do a `bundle install` to pull it in.
 
-After you have wrapture available, building and testing the C++ library can
-be done like this:
+If you need a ruby environment, we recommend using rvm to manage your versions
+and gemsets rather than a package manager. You can find more information on rvm
+on the [project website](https://rvm.io/).
+
+After you have a ruby environment and wrapture is available, building and
+testing the C++ library can be done like this:
 
 ```sh
 # in the build directory, modify the cmake to enable c++
