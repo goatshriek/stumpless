@@ -76,7 +76,7 @@ GUI, or if you want to just do it via command line, you can do something like
 this:
 
 ```sh
-setup-x86_64.exe -q -P git cmake make gcc g++ doxygen
+setup-x86_64.exe -q -P git,cmake,make,gcc-core,gcc-g++,doxygen
 ```
 
 
