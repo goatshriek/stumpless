@@ -223,7 +223,7 @@ install(TARGETS stumplesscpp
   RUNTIME DESTINATION "bin"
   LIBRARY DESTINATION "lib"
   PUBLIC_HEADER DESTINATION "include"
-  ARCHIVE DESTINATION "lib/static"
+  ARCHIVE DESTINATION "lib"
 )
 
 install(
