@@ -31,6 +31,7 @@ set(CPACK_DEBIAN_ARCHIVE_TYPE "gnutar")
 # WIX settings
 set(CPACK_WIX_PRODUCT_GUID "c0ac11a2-d1ab-4aa9-9f4f-b67d7c6db291")
 set(CPACK_WIX_UPGRADE_GUID "21affd82-0719-4144-9f54-5e893a08633d")
+set(CPACK_WIX_PRODUCT_ICON "${PROJECT_SOURCE_DIR}/assets/logo.ico")
 
 
 include(CPack)
