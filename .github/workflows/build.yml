@@ -397,4 +397,3 @@ jobs:
       - name: Run Example
         run: |
           cmake --build . --config Release --target run-example-cpp
-          example-cpp.exe
