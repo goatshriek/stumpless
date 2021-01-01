@@ -17,7 +17,7 @@ Debian and Ubuntu. The package can be installed with the usual command:
 
 ```sh
 # you might need sudo (or root privileges) to install
-dpkg -i stumpless-2.0.0.deb
+dpkg -i stumpless-2.0.0-amd64.deb
 ```
 
 
@@ -27,7 +27,7 @@ installed in the traditional way as well:
 
 ```sh
 # again, make sure you have the correct permissions
-yum install stumpless-2.0.0.rpm
+rpm -i stumpless-2.0.0-x86_64.rpm
 ```
 
 
@@ -48,6 +48,13 @@ A simple `.msi` installer is provided that puts the DLL, `.lib`, and include
 headers into a Program Files folder. Note that you may need to update search
 paths to locate these resources after installation, as the installer does not
 currently handle this.
+
+
+## C++ Installers
+For each provided package, there is also a C++ package (`stumpless-cpp`)
+that includes the C++ library. These packages also include the C library, so
+if you think you might need the C++ library at some point down the road you
+can use this one to install it at the same time as the base library.
 
 
 # Building Stumpless from the source
@@ -261,9 +268,10 @@ gem installed for this to work. This can be done with a simple
 `gem install wrapture`, or you can use the `Gemfile` included in stumpless and
 simply do a `bundle install` to pull it in.
 
-If you need a ruby environment, we recommend using rvm to manage your versions
-and gemsets rather than a package manager. You can find more information on rvm
-on the [project website](https://rvm.io/).
+If you need a ruby environment, we recommend using `rvm` to manage versions and
+gemsets. You can find more information on rvm on the
+[project website](https://rvm.io/). Other options are `rbenv`, your package
+manager's distribution of ruby, or RubyInstaller (for Windows).
 
 After you have a ruby environment and wrapture is available, building and
 testing the C++ library can be done like this:
