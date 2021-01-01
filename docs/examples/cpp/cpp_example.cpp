@@ -1,10 +1,7 @@
-#include <Element.hpp>
-#include <Entry.hpp>
-#include <Param.hpp>
-#include <FileTarget.hpp>
-#include <SocketTarget.hpp>
+#include <cstddef>
+#include <cstdlib>
 #include <stumpless.h>
-#include <StumplessException.hpp>
+#include <stumpless.hpp>
 #include <iostream>
 
 using namespace stumpless;
@@ -14,9 +11,7 @@ main( int argc, char **argv ) {
 
   // creates a log target for the file `cpp_example.log`
   // the file will be created if it does not exist
-  FileTarget file_logger( "cpp_example.log",
-                          STUMPLESS_OPTION_NONE,
-                          Facility::USER );
+  FileTarget file_logger( "cpp_example.log" );
 
   // logs the given message to the file
   file_logger.Log( "she just drank ANOTHER bloody mary" );

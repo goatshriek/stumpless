@@ -218,6 +218,21 @@ add_custom_target(check-cpp
 )
 
 
+add_no_run_example(cpp
+  ${PROJECT_SOURCE_DIR}/docs/examples/cpp/cpp_example.cpp
+)
+
+target_link_libraries(example-cpp
+  stumplesscpp
+)
+
+target_include_directories(example-cpp
+  PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_BINARY_DIR}/cpp-lib
+)
+
 # add c++ library to installation
 install(TARGETS stumplesscpp
   RUNTIME DESTINATION "bin"

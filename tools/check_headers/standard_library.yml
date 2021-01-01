@@ -32,7 +32,9 @@
   - "windows.h"
   - "private/windows_wrapper.h"
 "EXIT_FAILURE": "stdlib.h"
-"EXIT_SUCCESS": "stdlib.h"
+"EXIT_SUCCESS":
+ - "cstdlib"
+ - "stdlib.h"
 "fclose":
   - "cstdio"
   - "stdio.h"
