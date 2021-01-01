@@ -665,8 +665,11 @@ if(MINGW)
   set_target_properties(stumpless PROPERTIES PREFIX "")
 endif()
 
-if(HAVE_STDATOMIC_H AND NOT APPLE)
-  target_link_libraries(stumpless PRIVATE atomic)
+if(HAVE_STDATOMIC_H)
+  find_library(LIBATOMIC_FOUND atomic)
+  if(LIBATOMIC_FOUND)
+    target_link_libraries(stumpless PRIVATE atomic)
+  endif()
 endif()
 
 if(HAVE_WINSOCK2_H)
