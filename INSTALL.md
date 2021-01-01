@@ -34,7 +34,9 @@ rpm -i stumpless-2.0.0-x86_64.rpm
 ## Generic Shell Installer
 CMake generates a shell script that can be used to install the library on
 systems lacking a more traditional package manager, for example Cygwin. Simply
-execute the script from the prefix where you want to install the library.
+execute the script from the prefix where you want to install the library. The
+script is a self-extracting TGZ archive that provides the headers and library
+files.
 
 ```sh
 # you might need to do this with sudo!
