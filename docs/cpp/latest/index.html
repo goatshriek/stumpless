@@ -1,7 +1,7 @@
 ---
 title: C++ Documentation
-keywords: doxygen, stumpless, c++
-last_updated: December 2, 2020
+keywords: stumpless, logging, library, c++, doxygen
+last_updated: January 1, 2021
 summary: "Documentation for the latest version of C++ Stumpless."
 permalink: docs/cpp/latest/index.html
 ---
@@ -78,9 +78,11 @@ $(function() {
 Basic Usage</h1>
 <p>The following snippets show some usage patterns specific to C++. If you're looking for basic usage of the C library, check out the main project <a href="https://github.com/goatshriek/stumpless/blob/latest/README.md">readme</a> for a quick rundown of what you can do.</p>
 <p>Targets and entries can be created by instantiating the appropriate class, just as you might expect:</p>
-<div class="fragment"><div class="line">FileTarget myLogFile( <span class="stringliteral">&quot;logfile.log&quot;</span>,</div>
-<div class="line">                      STUMPLESS_OPTION_NONE,</div>
-<div class="line">                      Facility::USER );</div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stumpless.hpp&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ...</span></div>
+<div class="line"> </div>
+<div class="line">FileTarget myLogFile( <span class="stringliteral">&quot;logfile.log&quot;</span> );</div>
 <div class="line"> </div>
 <div class="line">Entry processStarting( Facility::USER,</div>
 <div class="line">                       Severity::INFO,</div>
@@ -94,7 +96,7 @@ Basic Usage</h1>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 1 2020 20:45:22 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 1 2021 16:15:57 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

@@ -1,12 +1,11 @@
 ---
 title: Stumpless
 keywords: stumpless, c, logging, library, syslog, splunk, rsyslog
-last_updated: December 2, 2020
+last_updated: January 1, 2021
 layout: default
 ---
 
 # Stumpless at a glance
-
 Stumpless is a C logging library built for high performance and a rich feature
 set. Check out our [vision](./vision.html) to see what we are all about!
 
@@ -17,9 +16,9 @@ easier:
  * completely thread safe
  * can be adjusted or removed during compilation for zero runtime impact
  * interoperability with standard syslog daemons and library functions
- * an extensive unit testing suite and continuous integration
+ * an extensive test suite is run continuously to ensure proper functionality
  * localized for multiple languages &#x1f1e9;&#x1f1ea; &#x1f1eb;&#x1f1f7;
-   &#x1f1f8;&#x1f1ea; &#x1f1f8;&#x1f1f0;
+   &#x1f1ee;&#x1f1f9; &#x1f1f8;&#x1f1ea; &#x1f1f8;&#x1f1f0;
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
@@ -29,8 +28,8 @@ easier:
 To see where we're heading in the near future, check out the project
 [roadmap](./roadmap.html).
 
-# More info
 
+# More info
 If you're just looking to start out, then take a look at some of the examples
 below. There is source code for each of these in the `docs/examples` folder of
 the repository if you want to actually compile and run them.
@@ -48,7 +47,13 @@ the repository if you want to actually compile and run them.
 Detailed documentation of each function is included in the header files, and is
 written using standard Doxygen syntax. You can generate the documentation
 yourself with the `docs` build target, or you can look at one of the online
-lists below:
+builds below:
 
  * [C Doxygen Documentation](./docs/c/latest/index.html)
  * [C++ Doxygen Documentation](./docs/cpp/latest/index.html)
+
+
+# Source and Contributing
+If you want to check out the source code and/or look into becoming a contributor
+to stumpless, head over to the project's
+[github repository](https://github.com/goatshriek/stumpless) to find out more!

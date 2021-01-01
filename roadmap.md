@@ -8,33 +8,7 @@ See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
-## 2.0.0 (next major and minor release)
- * [DEPRECATE] **entry and element destructor synonyms**
-   Currently, there are two forms of the destructors for these two structures:
-   one that destroys the object itself, and one that destroys the object and all
-   of the ones that it contains. The former is named `destroy_..._only` while
-   the latter is named `destroy_..._and_contents`. The latter has a synonym
-   named simply `destroy`, which does not convey its behavior well. This alias
-   will be deprecated, and removed in the next major release in order to prevent
-   confusion and misuse of the two forms.
- * [CHANGE] **Destructors no longer clear errors**
-   As destruction functions do not throw any errors by design, they should not
-   clear the error flags. Clearing them can especially cause confusion in other
-   language bindings, where the calling of the destructor is not explicit and
-   may be difficult to track down.
- * [CHANGE] **Facilities and severities will be defined by enumerations**
-   Enumerations are a cleaner way to represent the set values, and can be made
-   compatible with the `syslog.h` values if their backing `int` values match.
-   Because function signatures will change, this will be done in a major
-   release.
- * [DEPRECATE] **Stream target constructor using `int` instead of `Facility`**
-   Enumerations are preferred for working with these set values in C++, and this
-   function was inadvertently left in the library during development.
- * [REMOVE] **Options and default facility from all target constructors**
-   These are typically boilerplate, and if needed can be set with subsequent
-   calls. This will allow for less verbose code in most use cases.
-
-## 2.1.0
+## 2.1.0 (next minor release)
  * [ADD] **journald logging target**
    Logging to systemd's journal system is should be relatively straightforward
    to implement, and is an important feature to support.
@@ -43,8 +17,31 @@ or want to make a suggestion, please submit an issue on the project's
    it through a target at runtime, this is limited and inflexible. Instead, a
    generic filter structure that can filter on a wide variety of properties of
    each log entry and even use custom functions to filter messages.
+ * [ADD] **Function callback logging target**
+   Logging to a generic function signature will allow easier extension by
+   library users, and can also serve as a good opportunity to streamline the
+   internal implementation for the actual logging functionality.
+ * [ADD] **Tracing call including source code information**
+   A tracing call that includes the line and file of the source code that it
+   appears in could be useful for some applications. This will be added as a
+   macro function so that the relevant information can be added. It will use
+   the same severity as debug messages.
 
-## 3.0.0
+
+## 2.2.0
+ * [ADD] **Target chaining**
+   In some cases a log message needs to be sent to multiple destinations, such
+   as to a local file as well as a network server. Target chains will allow this
+   stream to be defined as a logging target, and a logging call only made to
+   this instead of manually logging to each target.
+ * [ADD] **Abstract socket support**
+   When creating a Unix socket target, an abstract socket name would allow the
+   socket to be hidden from the local filesystem. This has currently been left
+   out due to portability issues, but using this capability when it is available
+   would increase the 'cleanliness' of using socket targets.
+
+
+## 3.0.0 (next major release)
  * [REMOVE] **entry and element destructor synonyms**
    Removing previously deprecated feature.
  * [REMOVE] **Stream target constructor using `int` facility**
@@ -57,6 +54,12 @@ or want to make a suggestion, please submit an issue on the project's
    associated library bindings, replacing SWIG and removing the dependency. In
    the future, other language bindings will be added using Wrapture as they are
    added to the tool.
+ * [CHANGE] **Implement asynchronous logging modes**
+   Asynchronous logging can provide significantly less latency to the calling
+   application. This will provide more benefit to some targets than others,
+   most notably network-based targets. Because some error reporting mechanisms
+   may need to change to accomodate this, it will be done in a major release.
+
 
 ## Unallocated to a release
  * [ADD] **Ruby language bindings**
@@ -65,25 +68,22 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **Java language bindings**
  * [ADD] **Powershell language bindings**
  * [ADD] **Perl language bindings**
- * [ADD] **Function callback logging target**
  * [ADD] **AWS/S3 logging target**
  * [ADD] **Database logging target**
  * [ADD] **REST endpoint logging target**
  * [ADD] **Hyperledger/blockchain logging target**
- * [CHANGE] **Make network logging non-blocking**
- * [ADD] **Target chaining**
-   In some cases a log message needs to be sent to multiple destinations, such
-   as to a local file as well as a network server. Target chains will allow this
-   stream to be defined as a logging target, and a logging call only made to
-   this instead of manually logging to each target.
- * [ADD] **Abstract socket support**
-   When creating a Unix socket target, an abstract socket name would allow the
-   socket to be hidden from the local filesystem. This has currently been left
-   out due to portability issues, but using this capability when it is available
-   would increase the 'cleanliness' of using socket targets.
+ * [ADD] **Ability to limit the rate of logging (per message, per byte)**
+ * [ADD] **Logging target for Windows Debug log**
+ * [ADD] **Configuration file support**
+   Many other logging solutions provide a way to configure logging via a
+   separate configuration file that defines targets and their options. Stumpless
+   will likely not implement it's own format, but rather add the ability to load
+   the configuration files from other such tools to provide equivalent
+   capabilities. This will also need to include an ability to retrieve a target
+   by name, enforce uniqueness of names, and include other changes that require
+   it to be done in a major release.
 
 ## What you'll find here and what you wont
-
 Stumpless is under active development, and has a long list of new features and
 improvements waiting to be implemented. Some of these are detailed in the issues
 list on the project Github website, but this is certainly not a comprehensive
@@ -112,8 +112,8 @@ project team is not currently big enough to realistically make any promises, so
 timing is often left out to prevent folks from feeling cheated if something
 takes longer than expected.
 
-## A Note about Github issues and projects
 
+## A Note about Github issues and projects
 A fair question to ask is why the roadmap is not being managed within the issue
 and project features of Github itself, since this is where the project is
 currently hosted. Indeed, suggestions submitted by the community are tracked as
@@ -136,4 +136,3 @@ reasons that a separate roadmap is maintained:
    itself facilitates this, the same way that licensing and copyright
    notifications are traditionally bundled with code. And if you don't care,
    you can always ignore them.
-

@@ -1,7 +1,7 @@
 ---
 title: C Documentation
-keywords: doxygen, stumpless, c
-last_updated: December 2, 2020
+keywords: stumpless, logging, library, c, doxygen
+last_updated: January 1, 2021
 summary: "Documentation for the latest version of Stumpless."
 permalink: docs/c/latest/index.html
 ---
@@ -73,7 +73,7 @@ $(function() {
 <div class="title">stumpless Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__mnt_c_Users_reall_code_stumpless_README"></a><img src="assets/logo-and-name.png" alt="Stumpless logo" class="inline"/></p>
+<div class="textblock"><p><a class="anchor" id="md__mnt_c_Users_reall_code_stumpless-bak_README"></a><img src="assets/logo-and-name.png" alt="Stumpless logo" class="inline"/></p>
 <p><b>A C logging library built for high performance and a rich feature set.</b></p>
 <p><a href="https://github.com/goatshriek/stumpless/actions?query=workflow%3Abuild"><img src="https://github.com/goatshriek/stumpless/workflows/build/badge.svg" alt="Github Actions Build Status" style="pointer-events: none;" class="inline"/></a> <a href="https://codecov.io/gh/goatshriek/stumpless"><img src="https://codecov.io/gh/goatshriek/stumpless/branch/latest/graph/badge.svg" alt="Coverage Report" style="pointer-events: none;" class="inline"/></a> <a href="https://sonarcloud.io/dashboard?id=stumpless"><img src="https://sonarcloud.io/api/project_badges/measure?project=stumpless&amp;metric=alert_status" alt="SonarCloud Status" class="inline"/></a> <a href="https://github.com/goatshriek/stumpless/security/code-scanning"><img src="https://github.com/goatshriek/stumpless/workflows/CodeQL/badge.svg" alt="CodeQL" style="pointer-events: none;" class="inline"/></a> <a href="https://gitter.im/stumpless/community?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img src="https://badges.gitter.im/stumpless/community.svg" alt="Gitter" style="pointer-events: none;" class="inline"/></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Apache 2.0 License" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg" alt="Contributor Covenant" style="pointer-events: none;" class="inline"/></a></p>
 <p><a href="#key-features">Key Features</a> | <a href="#quick-build-and-install">Download and Build</a> | <a href="#basic-usage">Basic Usage</a> | <a href="#contributing">Contributing</a></p>
@@ -85,8 +85,8 @@ Key Features</h2>
 <li>completely thread safe</li>
 <li>can be adjusted or removed during compilation for zero runtime impact</li>
 <li>interoperability with standard syslog daemons and library functions</li>
-<li>an extensive unit testing suite and continuous integration</li>
-<li>localized for multiple languages &#x1f1e9;&#x1f1ea; &#x1f1eb;&#x1f1f7; &#x1f1f8;&#x1f1ea; &#x1f1f8;&#x1f1f0; (<a href="https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md">add yours!</a>)</li>
+<li>an extensive test suite is run continuously to ensure proper functionality</li>
+<li>localized for multiple languages &#x1f1e9;&#x1f1ea; &#x1f1eb;&#x1f1f7; &#x1f1ee;&#x1f1f9; &#x1f1f8;&#x1f1ea; &#x1f1f8;&#x1f1f0; (<a href="https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md">add yours!</a>)</li>
 <li>easy-access <a href="https://goatshriek.github.io/stumpless/docs/c/latest/index.html">documentation</a>, <a href="https://github.com/goatshriek/stumpless/tree/latest/docs/examples">examples</a>, and <a href="https://gitter.im/stumpless/community">support</a>.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md1"></a>
@@ -107,7 +107,7 @@ Quick Build and Install</h2>
 <div class="line"> </div>
 <div class="line"># install the library (you probably need sudo to do this)</div>
 <div class="line">sudo make install</div>
-</div><!-- fragment --><p>Check out the Installation Instructions for more detail on building and installing stumpless.</p>
+</div><!-- fragment --><p>Check out the Installation Instructions for more detail on building and installing stumpless in different environments and/or with other toolchains.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Basic Usage</h2>
 <p>The following code snippets show the most common ways to use stumpless.</p>
@@ -125,16 +125,13 @@ Basic Logging Functions</h3>
 </div><!-- fragment --><p>And of course, you can use format specifiers in both functions just as you would with <code>printf</code>:</p>
 <div class="fragment"><div class="line"><a class="code" href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">stump</a>( <span class="stringliteral">&quot;Login attempt failure #%d for user %s&quot;</span>, count, username );</div>
 </div><!-- fragment --><p>If you want to open a specific target rather than using the default, then just open the target that you need and start sending messages. For example, to log to a file named <code>example.log</code>:</p>
-<div class="fragment"><div class="line">target = <a class="code" href="file_8h.html#ac5136238d39059104bf538f92faefb50">stumpless_open_file_target</a>( <span class="stringliteral">&quot;example.log&quot;</span>,</div>
-<div class="line">                                     <a class="code" href="option_8h.html#aac7a81cb7d3afe8e655d191014ca7195">STUMPLESS_OPTION_NONE</a>,</div>
-<div class="line">                                     <a class="code" href="facility_8h.html#ae960e2009518c849de9f1a169d527248">STUMPLESS_FACILITY_USER</a> );</div>
+<div class="fragment"><div class="line">target = <a class="code" href="file_8h.html#a1f65745b96b50b2bde12bb99bb2878b3">stumpless_open_file_target</a>( <span class="stringliteral">&quot;example.log&quot;</span> );</div>
+<div class="line"> </div>
 <div class="line"><span class="comment">// uses the last opened target by default</span></div>
 <div class="line"><a class="code" href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">stump</a>( <span class="stringliteral">&quot;Login attempt failure #%d for user %s&quot;</span>, count, username );</div>
 </div><!-- fragment --><p>Sending messages over the network to something like Splunk or rsyslog is just as easy:</p>
-<div class="fragment"><div class="line">target = <a class="code" href="network_8h.html#af5fd4f635a3a04f067a850dd8d1ce1f8">stumpless_open_udp4_target</a>( <span class="stringliteral">&quot;send-to-splunk-example&quot;</span>,</div>
-<div class="line">                                     <span class="stringliteral">&quot;mylogserver.com&quot;</span>, <span class="comment">// or use an IP</span></div>
-<div class="line">                                     <a class="code" href="option_8h.html#aac7a81cb7d3afe8e655d191014ca7195">STUMPLESS_OPTION_NONE</a>,</div>
-<div class="line">                                     <a class="code" href="facility_8h.html#ae960e2009518c849de9f1a169d527248">STUMPLESS_FACILITY_USER</a> );</div>
+<div class="fragment"><div class="line">target = <a class="code" href="network_8h.html#ae8d345db6c184eeb762aa27d74e88840">stumpless_open_udp4_target</a>( <span class="stringliteral">&quot;send-to-splunk-example&quot;</span>,</div>
+<div class="line">                                     <span class="stringliteral">&quot;mylogserver.com&quot;</span> ); <span class="comment">// or use an IP</span></div>
 <div class="line"><a class="code" href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">stump</a>( <span class="stringliteral">&quot;Login attempt failure #%d for user %s&quot;</span>, count, username );</div>
 </div><!-- fragment --><p>If you have multiple targets, you can send messages to a chosen target like this:</p>
 <div class="fragment"><div class="line"><a class="code" href="target_8h.html#a6a6584fafc1a009fe10c7f92ec93f5bc">stumpless_add_message</a>( target,</div>
@@ -172,18 +169,16 @@ Further Documentation</h2>
 <p>If you're curious about how something in stumpless works that isn't explained here, you can check the appropriate section of the documentation, stored in the docs folder of the repository. Folders in the repository contain their own README files that detail what they contain and any other relevant information. If you still can't find an answer, submit an issue or head over to <a href="https://gitter.im/stumpless/community">gitter</a> and ask for some help. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
-<div class="ttc" id="anetwork_8h_html_af5fd4f635a3a04f067a850dd8d1ce1f8"><div class="ttname"><a href="network_8h.html#af5fd4f635a3a04f067a850dd8d1ce1f8">stumpless_open_udp4_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_udp4_target(const char *name, const char *destination, int options, int default_facility)</div><div class="ttdoc">Opens a network target for remote logging over IPv4 and UDP.</div></div>
-<div class="ttc" id="ainfo_8h_html_a17d6fc25c971a6c4ac3bd02c14ba48a5"><div class="ttname"><a href="info_8h.html#a17d6fc25c971a6c4ac3bd02c14ba48a5">stump_i</a></div><div class="ttdeci">#define stump_i(...)</div><div class="ttdoc">Logs a message to the current target with informational severity.</div><div class="ttdef"><b>Definition:</b> info.h:91</div></div>
-<div class="ttc" id="adebug_8h_html_a88301d0241ec06830d9cb1d6c43efaaa"><div class="ttname"><a href="debug_8h.html#a88301d0241ec06830d9cb1d6c43efaaa">stump_d</a></div><div class="ttdeci">#define stump_d(...)</div><div class="ttdoc">Logs a message to the current target with debug severity.</div><div class="ttdef"><b>Definition:</b> debug.h:91</div></div>
-<div class="ttc" id="afile_8h_html_ac5136238d39059104bf538f92faefb50"><div class="ttname"><a href="file_8h.html#ac5136238d39059104bf538f92faefb50">stumpless_open_file_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_file_target(const char *name, int options, int default_facility)</div><div class="ttdoc">Opens a file target.</div></div>
+<div class="ttc" id="anetwork_8h_html_ae8d345db6c184eeb762aa27d74e88840"><div class="ttname"><a href="network_8h.html#ae8d345db6c184eeb762aa27d74e88840">stumpless_open_udp4_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_udp4_target(const char *name, const char *destination)</div><div class="ttdoc">Opens a network target for remote logging over IPv4 and UDP.</div></div>
+<div class="ttc" id="ainfo_8h_html_a17d6fc25c971a6c4ac3bd02c14ba48a5"><div class="ttname"><a href="info_8h.html#a17d6fc25c971a6c4ac3bd02c14ba48a5">stump_i</a></div><div class="ttdeci">#define stump_i(...)</div><div class="ttdoc">Logs a message to the current target with informational severity.</div><div class="ttdef"><b>Definition:</b> info.h:92</div></div>
+<div class="ttc" id="adebug_8h_html_a88301d0241ec06830d9cb1d6c43efaaa"><div class="ttname"><a href="debug_8h.html#a88301d0241ec06830d9cb1d6c43efaaa">stump_d</a></div><div class="ttdeci">#define stump_d(...)</div><div class="ttdoc">Logs a message to the current target with debug severity.</div><div class="ttdef"><b>Definition:</b> debug.h:92</div></div>
+<div class="ttc" id="afile_8h_html_a1f65745b96b50b2bde12bb99bb2878b3"><div class="ttname"><a href="file_8h.html#a1f65745b96b50b2bde12bb99bb2878b3">stumpless_open_file_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_file_target(const char *name)</div><div class="ttdoc">Opens a file target.</div></div>
 <div class="ttc" id="atarget_8h_html_a020475261f73fba86caa8bb1f3d7f4df"><div class="ttname"><a href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df">stumplog</a></div><div class="ttdeci">void stumplog(int priority, const char *message,...)</div><div class="ttdoc">Logs a message to the default target with the given priority.</div></div>
 <div class="ttc" id="atarget_8h_html_a6a6584fafc1a009fe10c7f92ec93f5bc"><div class="ttname"><a href="target_8h.html#a6a6584fafc1a009fe10c7f92ec93f5bc">stumpless_add_message</a></div><div class="ttdeci">int stumpless_add_message(struct stumpless_target *target, const char *message,...)</div><div class="ttdoc">Adds a message to a given target.</div></div>
 <div class="ttc" id="atarget_8h_html_a2c81e0ae3ce13cd81ee7a464bfb1d751"><div class="ttname"><a href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">stump</a></div><div class="ttdeci">int stump(const char *message,...)</div><div class="ttdoc">Logs a message to the default target.</div></div>
-<div class="ttc" id="aoption_8h_html_aac7a81cb7d3afe8e655d191014ca7195"><div class="ttname"><a href="option_8h.html#aac7a81cb7d3afe8e655d191014ca7195">STUMPLESS_OPTION_NONE</a></div><div class="ttdeci">#define STUMPLESS_OPTION_NONE</div><div class="ttdoc">Empty option mask for explicit 'no option' use.</div><div class="ttdef"><b>Definition:</b> option.h:69</div></div>
-<div class="ttc" id="afacility_8h_html_ae960e2009518c849de9f1a169d527248"><div class="ttname"><a href="facility_8h.html#ae960e2009518c849de9f1a169d527248">STUMPLESS_FACILITY_USER</a></div><div class="ttdeci">#define STUMPLESS_FACILITY_USER</div><div class="ttdoc">User-level messages.</div><div class="ttdef"><b>Definition:</b> facility.h:41</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 1 2020 20:43:39 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 1 2021 15:43:36 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>
