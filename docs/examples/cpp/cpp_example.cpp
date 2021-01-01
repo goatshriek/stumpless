@@ -71,13 +71,13 @@ main( int argc, char **argv ) {
   }
 
   // use the same headers and values for support checks:
-  if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
-    // constants are added to relevant classes
-    // this gives them type safety and namespace scoping!
-    std::cout << "logging to " << SocketTarget::DEFAULT_SOCKET << " by default" << std::endl;
-  } else {
-    std::cout << "socket targets aren't supported by this build" << std::endl;
-  }
+#ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
+  // constants are added to relevant classes
+  // this gives them type safety and namespace scoping!
+  std::cout << "logging to " << SocketTarget::DEFAULT_SOCKET << " by default" << std::endl;
+#else
+  std::cout << "socket targets aren't supported by this build" << std::endl;
+#endif
 
   return EXIT_SUCCESS;
 }
