@@ -233,6 +233,11 @@ target_include_directories(example-cpp
   ${PROJECT_BINARY_DIR}/cpp-lib
 )
 
+add_custom_target(run-example-cpp
+  COMMAND "example-cpp"
+  DEPENDS example-cpp
+)
+
 # add c++ library to installation
 install(TARGETS stumplesscpp
   RUNTIME DESTINATION "bin"

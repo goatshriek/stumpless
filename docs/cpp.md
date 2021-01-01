@@ -17,9 +17,11 @@ Targets and entries can be created by instantiating the appropriate class, just
 as you might expect:
 
 ```cpp
-FileTarget myLogFile( "logfile.log",
-                      STUMPLESS_OPTION_NONE,
-                      Facility::USER );
+#include <stumpless.hpp>
+
+// ...
+
+FileTarget myLogFile( "logfile.log" );
 
 Entry processStarting( Facility::USER,
                        Severity::INFO,

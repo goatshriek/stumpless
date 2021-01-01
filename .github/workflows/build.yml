@@ -396,5 +396,5 @@ jobs:
           cmake --build . --config Release --target check-cpp
       - name: Run Example
         run: |
-          cmake --build . --config Release --target example-cpp
+          cmake --build . --config Release --target run-example-cpp
           example-cpp.exe
