@@ -20,18 +20,12 @@ target types from the C library. The constructors take the same parameters as
 the matching open target function in the C library. This example shows how to
 open a file target.
 
-Note that you will need to include the header for the class in order to use it.
-There is currently no roll-up header for the entire C++ library, though this is
-planned for an upcoming release in the project roadmap (see `docs/roadmap.md`).
-
 ```cpp
-#include <FileTarget.hpp>
+#include <stumpless.hpp>
 
 // ...
 
-FileTarget file_logger( "logfile.log",
-                        STUMPLESS_OPTION_NONE,
-                        Facility::USER );
+FileTarget file_logger( "logfile.log" );
 ```
 
 Logging to the target is done with the `Log` function, which has a few forms
@@ -123,9 +117,9 @@ library, you can check the same constants as before for them, though you will
 need to include the C header to do so.
 
 ```cpp
-if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
+#ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
   std::stdout << "logging to " << STUMPLESS_DEFAULT_SOCKET << " by default" << std::endl;
-}
+#endif
 ```
 
 However, for some (but not all) constants there is a matching constant that puts
@@ -133,9 +127,10 @@ these constants into a namespace:
 
 ```cpp
 // this check still has to use the C #define
-if( STUMPLESS_SOCKET_TARGETS_SUPPORTED ) {
+#ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
+  // this one has a constant that can be used instead
   std::stdout << "logging to " << SocketTarget::DEFAULT_SOCKET << " by default" << std::endl;
-}
+#endif
 ```
 
 ## Running this Example

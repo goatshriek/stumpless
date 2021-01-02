@@ -29,7 +29,6 @@ jobs:
         run: |
           wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
-          cmake .
           ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
           wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
           unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
@@ -171,6 +170,10 @@ jobs:
       - name: Test
         run: |
           make check-cpp
+      - name: Run Example
+        run: |
+          make example-cpp
+          ./example-cpp
       - name: Install
         run: |
           sudo make install
@@ -305,6 +308,10 @@ jobs:
       - name: Test
         run: |
           make check-cpp
+      - name: Run Example
+        run: |
+          make example-cpp
+          ./example-cpp
       - name: Install
         run: |
           sudo make install
@@ -387,3 +394,6 @@ jobs:
       - name: Test
         run: |
           cmake --build . --config Release --target check-cpp
+      - name: Run Example
+        run: |
+          cmake --build . --config Release --target run-example-cpp

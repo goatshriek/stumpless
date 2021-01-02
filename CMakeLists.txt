@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.2.3)
 
 project(stumpless VERSION 2.0.0)
+set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
 string(CONCAT enable_cpp_help_string
   "Build the C++ language binding library. The library will be added to the "
@@ -664,8 +665,11 @@ if(MINGW)
   set_target_properties(stumpless PROPERTIES PREFIX "")
 endif()
 
-if(HAVE_STDATOMIC_H AND NOT APPLE)
-  target_link_libraries(stumpless PRIVATE atomic)
+if(HAVE_STDATOMIC_H)
+  find_library(LIBATOMIC_FOUND atomic)
+  if(LIBATOMIC_FOUND)
+    target_link_libraries(stumpless PRIVATE atomic)
+  endif()
 endif()
 
 if(HAVE_WINSOCK2_H)
