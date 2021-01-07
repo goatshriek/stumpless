@@ -1,0 +1,162 @@
+name: "mac builds"
+
+on:
+  push:
+  pull_request:
+    branches:
+      - latest
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
+
+jobs:
+  debug:
+    # disabling mac builds due to instability
+    # https://github.com/actions/virtual-environments/issues/841
+    if: ${{ false }}
+    name: "debug"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Privileged Tests
+        run: |
+          sudo ./function-test-tcp4
+          sudo ./function-test-tcp4_leak
+          sudo ./function-test-tcp6
+          sudo ./function-test-tcp6_leak
+          sudo ./function-test-udp4
+          sudo ./function-test-udp4_leak
+          sudo ./function-test-udp6
+          sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
+          sudo ./thread-safety-test-network
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Install
+        run: |
+          sudo make install
+  release:
+    # disabling mac builds due to instability
+    # https://github.com/actions/virtual-environments/issues/841
+    if: ${{ false }}
+    name: "release"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Privileged Tests
+        run: |
+          sudo ./function-test-tcp4
+          sudo ./function-test-tcp4_leak
+          sudo ./function-test-tcp6
+          sudo ./function-test-tcp6_leak
+          sudo ./function-test-udp4
+          sudo ./function-test-udp4_leak
+          sudo ./function-test-udp6
+          sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
+          sudo ./thread-safety-test-network
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Run Benchmarks
+        run: |
+          make bench
+      - name: Install
+        run: |
+          sudo make install
+  all-features-disabled:
+    # disabling mac builds due to instability
+    # https://github.com/actions/virtual-environments/issues/841
+    if: ${{ false }}
+    name: "all features disabled"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Install
+        run: |
+          sudo make install
+  with-cpp:
+    # disabling mac builds due to instability
+    # https://github.com/actions/virtual-environments/issues/841
+    if: ${{ false }}
+    name: "with c++"
+    runs-on: "macos-11.0"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1.1.2
+      - name: Install Gems
+        run: |
+          gem install bundler
+          bundle install
+      - name: Install Packages
+        run: |
+          brew install doxygen
+      - name: Configure
+        run: |
+          cmake -DENABLE_CPP=ON .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check-cpp
+      - name: Run Example
+        run: |
+          make example-cpp
+          ./example-cpp
+      - name: Install
+        run: |
+          sudo make install
+      - name: Build Documentation
+        run: |
+          make docs-cpp
