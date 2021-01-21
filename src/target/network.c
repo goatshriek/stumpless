@@ -315,6 +315,11 @@ sendto_udp_target( struct network_target *target,
 
 void
 stumpless_close_network_target( const struct stumpless_target *target ) {
+  if( target->type != STUMPLESS_BUFFER_TARGET ) {
+    raise_target_incompatible( L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   clear_error(  );
 
   if( !target ) {

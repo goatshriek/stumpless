@@ -36,10 +36,20 @@ stumpless_close_stream_target( const struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_BUFFER_TARGET ) {
+    raise_target_incompatible( L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE( "Wrong Target Type. " ) );
+    return;
+  }
+
   clear_error(  );
   destroy_stream_target( target->id );
   destroy_target( target );
 }
+
+if( target->type != STUMPLESS_BUFFER_TARGET ) {
+    raise_target_incompatible( L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
 
 struct stumpless_target *
 stumpless_open_stderr_target( const char *name ) {

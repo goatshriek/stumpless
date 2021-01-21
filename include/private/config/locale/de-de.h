@@ -25,6 +25,9 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "Puffer ist zu klein für die gegebene Nachricht"
 
+#  define L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE \
+"INVALID TYPE OF TARGET"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "Es wurde versucht einen nicht unterstützen Zieltyp zu schließen"
 

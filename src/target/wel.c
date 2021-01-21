@@ -38,6 +38,11 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_BUFFER_TARGET ) {
+    raise_target_incompatible( L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   if( !destroy_wel_target( target->id ) ) {
     return;
   }

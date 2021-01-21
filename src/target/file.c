@@ -37,6 +37,11 @@ stumpless_close_file_target( struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_BUFFER_TARGET ) {
+    raise_target_incompatible( L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   destroy_file_target( target->id );
   destroy_target( target );
   clear_error(  );

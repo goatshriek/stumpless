@@ -25,6 +25,9 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "buffer je príliš malý pre tuto správu"
 
+#  define L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE \
+"INVALID TYPE OF TARGET"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "pokus o uzatvorenie cieľového súboru nepodporovaného typu"
 

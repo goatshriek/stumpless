@@ -25,6 +25,9 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "le tampon est trop petit pour le message donné"
 
+#  define L10N_CHECK_TARGET_TYPE_ERROR_MESSAGE \
+"INVALID TYPE OF TARGET"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "tentative de fermeture d'un type de cible no supporté"
 
