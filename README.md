@@ -25,7 +25,7 @@ easier:
  * can be adjusted or removed during compilation for zero runtime impact
  * interoperability with standard syslog daemons and library functions
  * an extensive test suite is run continuously to ensure proper functionality
- * localized for multiple languages :de: :fr: :it: :sweden: :slovakia:
+ * localized for multiple languages :de: :fr: :it: :sweden: :slovakia: :us:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
