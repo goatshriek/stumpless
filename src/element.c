@@ -131,18 +131,18 @@ stumpless_destroy_element( const struct stumpless_element *element ) {
 }
 
 void
-stumpless_destroy_element_and_contents( const struct stumpless_element *element ) {
+stumpless_destroy_element_and_contents( const struct stumpless_element *e ) {
   size_t i;
 
-  if( !element ) {
+  if( !e ) {
     return;
   }
 
-  for( i = 0; i < element->param_count; i++ ) {
-    stumpless_destroy_param( element->params[i] );
+  for( i = 0; i < e->param_count; i++ ) {
+    stumpless_destroy_param( e->params[i] );
   }
 
-  unchecked_destroy_element( element );
+  unchecked_destroy_element( e );
 }
 
 void

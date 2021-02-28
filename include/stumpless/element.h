@@ -226,10 +226,10 @@ stumpless_destroy_element( const struct stumpless_element *element );
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
- * @param element The element to destroy.
+ * @param e The element to destroy.
  */
 void
-stumpless_destroy_element_and_contents( const struct stumpless_element *element );
+stumpless_destroy_element_and_contents( const struct stumpless_element *e );
 
 /**
  * Destroys an element, freeing any allocated memory. Associated params are left

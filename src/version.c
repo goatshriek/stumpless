@@ -60,7 +60,7 @@ stumpless_version_cmp ( const struct stumpless_version * version_x,
 
   if( version_x->major != version_y->major ) {
     return ( version_x->major - version_y->major ) /
-	       abs( version_x->major - version_y->major ) * 100;
+           abs( version_x->major - version_y->major ) * 100;
   }
 
   if( version_y->minor != version_x->minor ) {
