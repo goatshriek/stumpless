@@ -129,9 +129,9 @@ two months will be labeled as stale, and a warning will be posted in the
 discussion. If another month passes with no response, then the item will be
 closed as stale.
 
-Stale items can always be reopened, so don't feel like the discussion is closed
-forever if something gets closed! We just want to keep all of our active work
-nice and tidy for everyone to quickly see what we're working and what we aren't.
+Stale items can always be reopened, so don't feel like the discussion is over
+forever if something gets closed! We just want to keep our active work nice
+and tidy for everyone to quickly see what we're working (and what we aren't).
 
 
 ## Thanks!
