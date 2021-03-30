@@ -131,7 +131,7 @@ closed as stale.
 
 Stale items can always be reopened, so don't feel like the discussion is over
 forever if something gets closed! We just want to keep our active work nice
-and tidy for everyone to quickly see what we're working (and what we aren't).
+and tidy for everyone to quickly see what we're doing (and what we aren't).
 
 
 ## Thanks!
