@@ -1,20 +1,19 @@
 ## Help Stumpless Do Better, Suck Less
-
 Stumpless aims to do a small thing well while staying as small as possible. If
 you've got a problem with the project, you have a great idea for a new feature,
 or you just want to find a way to contribute, then check out the guidelines
 below on how to get started. Also, please make sure that you adhere to the
 [Code of Conduct](CODE_OF_CONDUCT.md) however you participate.
 
-### **I know what I'm doing**
 
+### **I know what I'm doing**
 If you're a regular user of the library and know it pretty well, you can give
 back to the community just by helping out others who have a question. Head over
 to the project's [gitter](https://gitter.im/stumpless/community) room and if
 there is a question that you can help with, don't hesitate to jump in!
 
-### **It broke**
 
+### **It broke**
 If you've got a problem with the project, please make sure that you've done the
 following things before submitting an issue:
 
@@ -30,8 +29,8 @@ provided issue template with all information filled in.
 Even better: if you know how to fix the issue, go ahead and submit a pull
 request using the provided template, mentioning the corresponding issue number.
 
-### **I'm helping!**
 
+### **I'm helping!**
 Made some changes and want to share your work? Great! Submit a pull request and
 we'll review it for inclusion into the latest version. Make sure that you follow
 these guidelines:
@@ -56,8 +55,8 @@ these guidelines:
  * If a commit resolves or is otherwise related to a particular issue, include
    a reference to it in the body of the commit.
 
-### **It would be great if...** 
 
+### **It would be great if...**
 If you have a new feature that you think would be worthwhile, please open an
 issue on the github project using the 'Feature Request' template. If it fits
 with the project then you can begin working on a fork and submit a pull
@@ -65,8 +64,8 @@ request of your branch so that we can watch it progress and merge it in once
 it is complete. Or if you don't have time we will add it to the project
 [roadmap](roadmap.md) and eventually implement it depending on other priorities.
 
-### **I don't know where to start**
 
+### **I don't know where to start**
 If you'd like to contribute but aren't quite sure where to start, take a look at
 the issues and see if there is anything there that you think you can tackle! In
 particular, the 'help wanted' and 'good first issue' labels mark issues that
@@ -75,8 +74,8 @@ need attention and are relatively simple to fix, respectively.
 The [development notes](development.md) have a getting started section for
 newcomers to the project, and are worth a read.
 
-#### No, I mean I **really** don't know where to start
 
+#### No, I mean I **really** don't know where to start
 If you are brand new to the community at large and are looking for a little more
 detail on how to contribute, then this section should help you get started.
 
@@ -116,6 +115,27 @@ based on `latest` (or perhaps `release` depending on the circumstances), and
 when you are finished adding commits to it create a pull request back to the
 main repository.
 
-And thanks for giving back to the community!
+
+### You still there?
+The project team aims to be as responsive as we can, typically responding to
+new issues and pull requests within a few days. Asking for clarification on an
+issue or requesting changes to a pull request is fairly common, and often some
+back and forth is needed before something can be accepted.
+
+Unfortunately, sometimes these conversations stall and no progress is made. In
+cases where this happens and the project team is waiting for a response, the
+item will eventually be closed as stale. Items that have had no response for
+two months will be labeled as stale, and a warning will be posted in the
+discussion. If another month passes with no response, then the item will be
+closed as stale.
+
+Stale items can always be reopened, so don't feel like the discussion is over
+forever if something gets closed! We just want to keep our active work nice
+and tidy for everyone to quickly see what we're doing (and what we aren't).
+
+
+## Thanks!
+And no matter how you contribute, thanks for giving back to the community!
 
 Stumpless Team
+
