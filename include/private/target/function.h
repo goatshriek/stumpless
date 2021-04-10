@@ -32,7 +32,7 @@ struct function_target {
 };
 
 void
-destroy_function_target( struct function_target *target );
+destroy_function_target( const struct function_target *target );
 
 struct function_target *
 new_function_target( stumpless_log_func_t log_function );

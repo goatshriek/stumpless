@@ -48,7 +48,6 @@ stumpless_open_function_target( const char *name,
   VALIDATE_ARG_NOT_NULL( log_function );
 
   target = new_target( STUMPLESS_FUNCTION_TARGET, name );
-
   if( !target ) {
     goto fail;
   }
@@ -70,7 +69,7 @@ fail:
 /* private definitions */
 
 void
-destroy_function_target( struct function_target *target ) {
+destroy_function_target( const struct function_target *target ) {
   free_mem( target );
 }
 
@@ -91,13 +90,12 @@ new_function_target( stumpless_log_func_t log_function ) {
 int
 send_entry_to_function_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  struct function_target *func_target;
+  const struct function_target *func_target;
   int result;
 
   func_target = target->id;
 
   result = func_target->log_function( target, entry );
-
   if( result < 0 ) {
     raise_function_target_failure( result );
   }

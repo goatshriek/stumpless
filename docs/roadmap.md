@@ -1,8 +1,8 @@
 # The Future of Stumpless
-
 See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
+
 
 ## 2.1.0 (next minor release)
  * [ADD] **journald logging target**
