@@ -120,7 +120,7 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
-   
+
     target = stumpless_open_function_target( "function-target-malloc-failure",
                                              basic_log_function );
     EXPECT_NULL( target );
