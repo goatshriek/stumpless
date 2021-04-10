@@ -21,8 +21,26 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 namespace {
+  const int EXPECTED_FAILURE_VALUE = -66;
+  const int EXPECTED_RETURN_VALUE = 342;
+
+  int
+  basic_log_function( const struct stumpless_target *target,
+                      const struct stumpless_entry *entry ) {
+    EXPECT_NOT_NULL( target );
+    EXPECT_NOT_NULL( entry );
+    return EXPECTED_RETURN_VALUE;
+  }
+
+  int
+  failing_log_function( const struct stumpless_target *target,
+                        const struct stumpless_entry *entry ) {
+    return EXPECTED_FAILURE_VALUE;
+  }
+
   class FunctionTargetTest : public::testing::Test {
     protected:
       const char *target_name = "test-function-target";
@@ -34,7 +52,8 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      target = stumpless_open_function_target( target_name, [](const struct stumpless_target *target, const struct stumpless_entry *entry)->int{ return 1; } );
+      target = stumpless_open_function_target( target_name,
+                                               basic_log_function );
 
       stumpless_set_target_default_app_name( target, "function-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -65,8 +84,8 @@ namespace {
     SCOPED_TRACE( "EntryTargetTest.AddEntry" );
 
     result = stumpless_add_entry( target, basic_entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_EQ( result, EXPECTED_RETURN_VALUE );
+    EXPECT_NO_ERROR;
   }
 
   /* non-fixture tests */
@@ -78,15 +97,32 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( FunctionTargetFailureTest, FunctionFailure ) {
+    struct stumpless_target *target;
+    int result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_function_target( "failing-function-target",
+                                             failing_log_function );
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_add_message( target, "testing, 1, 2, 3..." );
+    EXPECT_EQ( result, EXPECTED_FAILURE_VALUE );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_FUNCTION_TARGET_FAILURE );
+
+    stumpless_close_function_target( target );
+  }
+
   TEST( FunctionTargetOpenTest, MallocFailure ) {
     struct stumpless_target *target;
     const struct stumpless_error *error;
-    void *(*set_malloc_result)(size_t);
+    void * ( *set_malloc_result )( size_t );
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
    
-    target = stumpless_open_function_target( "function-target-malloc-failure", [](const struct stumpless_target *target, const struct stumpless_entry *entry)->int{ return 1; } );
+    target = stumpless_open_function_target( "function-target-malloc-failure",
+                                             basic_log_function );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
@@ -107,7 +143,7 @@ namespace {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_function_target( NULL, [](const struct stumpless_target *target, const struct stumpless_entry *entry)->int{ return 1; } );
+    target = stumpless_open_function_target( NULL, basic_log_function );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }

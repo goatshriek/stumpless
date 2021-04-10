@@ -246,6 +246,7 @@
 "stumpless_free_all": "stumpless/memory.h"
 "stumpless_free_thread": "stumpless/memory.h"
 "STUMPLESS_FUNCTION_TARGET": "stumpless/target.h"
+"STUMPLESS_FUNCTION_TARGET_FAILURE": "stumpless/error.h"
 "STUMPLESS_GENERATE_ENUM": "stumpless/generator.h"
 "stumpless_get_current_target": "stumpless/target.h"
 "stumpless_get_default_facility": "stumpless/target.h"

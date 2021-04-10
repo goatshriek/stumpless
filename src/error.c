@@ -178,6 +178,14 @@ raise_file_write_failure( void ) {
 }
 
 void
+raise_function_target_failure( int code ) {
+  raise_error( STUMPLESS_FUNCTION_TARGET_FAILURE,
+               L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE,
+               code,
+               L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE );
+}
+
+void
 raise_gethostname_failure( const char *message,
                            size_t code,
                            const char *code_type ) {

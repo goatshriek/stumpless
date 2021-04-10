@@ -106,7 +106,13 @@ extern "C" {
 /** A provided encoding does not conform to the standard. */\
   ERROR(STUMPLESS_INVALID_ENCODING, 24) \
 /** The current hostname could not be retrieved. */\
-  ERROR(STUMPLESS_GETHOSTNAME_FAILURE, 25 )
+  ERROR(STUMPLESS_GETHOSTNAME_FAILURE, 25 ) \
+/**
+ * A call to a function target's log function failed.
+ *
+ * @since release v2.1.0
+ */\
+  ERROR(STUMPLESS_FUNCTION_TARGET_FAILURE, 26 )
 
 
 /**

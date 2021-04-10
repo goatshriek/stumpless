@@ -92,7 +92,15 @@ int
 send_entry_to_function_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
   struct function_target *func_target;
+  int result;
 
   func_target = target->id;
-  return func_target->log_function( target, entry );
+
+  result = func_target->log_function( target, entry );
+
+  if( result < 0 ) {
+    raise_function_target_failure( result );
+  }
+
+  return result;
 }

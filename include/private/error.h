@@ -56,6 +56,9 @@ void
 raise_file_write_failure( void );
 
 void
+raise_function_target_failure( int code );
+
+void
 raise_gethostname_failure( const char *message,
                            size_t code,
                            const char *code_type );
