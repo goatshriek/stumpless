@@ -188,6 +188,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target.c
   ${PROJECT_SOURCE_DIR}/src/target/buffer.c
   ${PROJECT_SOURCE_DIR}/src/target/file.c
+  ${PROJECT_SOURCE_DIR}/src/target/function.c
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
@@ -735,6 +736,7 @@ install(FILES
 install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/function.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h
   DESTINATION "include/stumpless/target"
 )
@@ -796,6 +798,10 @@ add_function_test(file
   SOURCES
     test/function/target/file.cpp
     $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_function_test(function
+  SOURCES test/function/target/function.cpp
 )
 
 add_function_test(get_error_stream

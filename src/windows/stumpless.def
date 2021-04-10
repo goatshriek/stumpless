@@ -153,3 +153,7 @@ EXPORTS
   stumpless_get_target_default_app_name         @140
   stumpless_get_target_default_msgid            @141
   stumpless_read_buffer                         @142
+
+; added in v2.1.0
+  stumpless_close_function_target               @143
+  stumpless_open_function_target                @144

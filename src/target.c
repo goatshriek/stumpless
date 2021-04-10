@@ -42,6 +42,7 @@
 #include "private/target.h"
 #include "private/target/buffer.h"
 #include "private/target/file.h"
+#include "private/target/function.h"
 #include "private/target/stream.h"
 #include "private/validate.h"
 
@@ -105,6 +106,11 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   clear_error(  );
+
+  // function targets are not formatted
+  if( target->type == STUMPLESS_FUNCTION_TARGET ) {
+    return send_entry_to_function_target( target, entry );
+  }
 
   // windows targets are not formatted in code
   // instead their formatting comes from message text files
