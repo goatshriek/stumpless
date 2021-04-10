@@ -34,7 +34,6 @@ stumpless_close_function_target( struct stumpless_target *target ) {
     return;
   }
 
-  destroy_function_target( target->id );
   destroy_target( target );
   clear_error(  );
 }
@@ -52,50 +51,26 @@ stumpless_open_function_target( const char *name,
     goto fail;
   }
 
-  target->id = new_function_target( log_function );
-  if( !target->id ) {
-    goto fail_id;
-  }
+  target->id = log_function;
 
   stumpless_set_current_target( target );
   return target;
 
-fail_id:
-  destroy_target( target );
 fail:
   return NULL;
 }
 
 /* private definitions */
 
-void
-destroy_function_target( const struct function_target *target ) {
-  free_mem( target );
-}
-
-struct function_target *
-new_function_target( stumpless_log_func_t log_function ) {
-  struct function_target *target;
-
-  target = alloc_mem( sizeof( *target ) );
-  if( !target ) {
-    return NULL;
-  }
-
-  target->log_function = log_function;
-
-  return target;
-}
-
 int
 send_entry_to_function_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  const struct function_target *func_target;
+  stumpless_log_func_t log_function;
   int result;
 
-  func_target = target->id;
+  log_function = target->id;
 
-  result = func_target->log_function( target, entry );
+  result = log_function( target, entry );
   if( result < 0 ) {
     raise_function_target_failure( result );
   }

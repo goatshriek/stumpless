@@ -23,20 +23,6 @@
 #  include <stumpless/target.h>
 #  include <stumpless/target/function.h>
 
-/**
- * Internal representation of a function target.
- */
-struct function_target {
-/** The function called for each entry sent. */
-  stumpless_log_func_t log_function;
-};
-
-void
-destroy_function_target( const struct function_target *target );
-
-struct function_target *
-new_function_target( stumpless_log_func_t log_function );
-
 int
 send_entry_to_function_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry );
