@@ -21,6 +21,11 @@
  * it possible to implement arbitrary functionality using this library as a
  * logging framework.
  *
+ * If a log function returns a negative value, it is passed on as the result of
+ * the library call, and a STUMPLESS_FUNCTION_TARGET_FAILURE error is raised.
+ * This allows error handling to use either return codes or the stumpless error
+ * types.
+ *
  * **Thread Safety: MT-Safe**
  * Logging to function targets is thread safe, dependent on the thread safety of
  * the function itself. No coordination is done by stumpless itself to ensure
