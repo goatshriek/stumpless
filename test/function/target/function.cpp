@@ -75,6 +75,7 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_function_target( target );
+      stumpless_free_all( );
     }
   };
 
@@ -95,6 +96,7 @@ namespace {
 
     stumpless_close_function_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all( );
   }
 
   TEST( FunctionTargetFailureTest, FunctionFailure ) {
@@ -111,6 +113,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_FUNCTION_TARGET_FAILURE );
 
     stumpless_close_function_target( target );
+    stumpless_free_all( );
   }
 
   TEST( FunctionTargetOpenTest, MallocFailure ) {
@@ -128,6 +131,7 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
+    stumpless_free_all( );
   }
 
   TEST( FunctionTargetOpenTest, NullFunction ) {
@@ -137,6 +141,7 @@ namespace {
     target = stumpless_open_function_target( "null-function-test", NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all( );
   }
 
   TEST( FunctionTargetOpenTest, NullName ) {
@@ -146,5 +151,6 @@ namespace {
     target = stumpless_open_function_target( NULL, basic_log_function );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all( );
   }
 }
