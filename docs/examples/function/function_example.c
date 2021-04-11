@@ -32,17 +32,21 @@ int
 count_balls( const struct stumpless_target *target,
              const struct stumpless_entry *entry ) {
   const char *color;
+  int result;
 
   color = stumpless_get_entry_param_value_by_name( entry, "ball", "color" );
   if( strcmp( color, "red" ) == 0 ) {
-    return ++red_count;
+    result = ++red_count;
   } else if( strcmp( color, "green" ) == 0 ) {
-    return ++green_count;
+    result = ++green_count;
   } else if( strcmp( color, "blue" ) == 0 ) {
-    return ++blue_count;
+    result = ++blue_count;
   } else {
-    return -1;
+    result = -1;
   }
+
+  free( ( void * ) color );
+  return result;
 }
 
 int
