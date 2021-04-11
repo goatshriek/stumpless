@@ -51,6 +51,7 @@ public:
     stumpless_set_free( free );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_close_function_target( target );
+    stumpless_free_all(  );
   }
 };
 

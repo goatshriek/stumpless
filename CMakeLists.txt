@@ -634,6 +634,12 @@ else()
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
+  add_thread_safety_test(function
+    SOURCES
+      test/thread_safety/target/function.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
   add_thread_safety_test(param
     SOURCES
       test/thread_safety/param.cpp
