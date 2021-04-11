@@ -11,7 +11,7 @@ colors is displayed. We'll use a custom function to keep track of them as they
 are logged, so that our ball processing logic can focus on whatever it's doing.
 
 First, we need to write our counting function itself. This is pretty
-straightforward for us - we grab the ball color from the entry, and increment
+straightforward - we grab the ball color from the entry, and increment
 the appropriate counter.
 
 ```c
@@ -32,3 +32,21 @@ count_balls( const struct stumpless_target *target,
   }
 }
 ```
+
+In our main application, we'll need to create a function target using our
+function to send logs to.
+
+```c
+target = stumpless_open_function_target( "ball-counter", count_balls );
+```
+
+And finally, whenever we process a ball we'll send an entry to our target. Each
+time this happens our function gets called, keeping track of the ball colors.
+
+```c
+stumpless_set_entry_param_value_by_name( entry, "ball", "color", color );
+stumpless_add_entry( target, entry );
+```
+
+And that's all there is to it! While function targets are very simple, they can
+be used for a lot of powerful things, and are handy to have available.
