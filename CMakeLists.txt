@@ -773,7 +773,9 @@ add_function_test(entry
 )
 
 add_function_test(entry_leak
-  SOURCES test/function/leak/entry.cpp
+  SOURCES
+    test/function/leak/entry.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(entry_memory_failure
