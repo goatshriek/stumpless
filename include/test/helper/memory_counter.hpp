@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,6 +85,13 @@ PREFIX##_memory_counter_free( void *mem ) {                                    \
   PREFIX##_memory_counter.free_total += PREFIX##_memory_counter_map[mem];      \
   free( mem );                                                                 \
 }
+
+#define SET_STATE_COUNTERS( S, P )                                             \
+(S).counters["CallsToAlloc"] = ( double ) P##_memory_counter.malloc_count;     \
+(S).counters["MemoryAllocated"] = ( double ) P##_memory_counter.alloc_total;   \
+(S).counters["CallsToRealloc"] = ( double ) P##_memory_counter.realloc_count;  \
+(S).counters["CallsToFree"] = ( double ) P##_memory_counter.free_count;        \
+(S).counters["MemoryFreed"] = ( double ) P##_memory_counter.free_total;
 
 #define ASSERT_NO_LEAK( PREFIX )                                               \
 ASSERT_EQ( PREFIX##_memory_counter.alloc_total,                                \

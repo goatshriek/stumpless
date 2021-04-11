@@ -22,7 +22,6 @@
 #include <stumpless/target/function.h>
 #include "private/config/locale/wrapper.h"
 #include "private/error.h"
-#include "private/memory.h"
 #include "private/target.h"
 #include "private/target/function.h"
 #include "private/validate.h"

@@ -21,7 +21,6 @@
 
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
-#  include <stumpless/target/function.h>
 
 int
 send_entry_to_function_target( const struct stumpless_target *target,

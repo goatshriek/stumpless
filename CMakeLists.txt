@@ -970,6 +970,12 @@ add_performance_test(entry
   SOURCES test/performance/entry.cpp
 )
 
+add_performance_test(function
+  SOURCES
+    test/performance/target/function.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+)
+
 add_performance_test(target
   SOURCES test/performance/target.cpp
 )
