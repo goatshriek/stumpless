@@ -23,6 +23,7 @@
 #include "test/helper/memory_counter.hpp"
 
 NEW_MEMORY_COUNTER( add_new_param )
+NEW_MEMORY_COUNTER( set_param_value_by_name )
 
 namespace {
 
@@ -46,6 +47,31 @@ namespace {
     stumpless_free_all(  );
 
     ASSERT_NO_LEAK( add_new_param );
+  }
+
+  TEST( SetParamValueByNameLeakTest, NewAndExisting ) {
+    struct stumpless_element *element;
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    INIT_MEMORY_COUNTER( set_param_value_by_name );
+
+    element = stumpless_new_element( "test-element" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( element );
+
+    result = stumpless_set_param_value_by_name( element, "name", "val-1" );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, element );
+
+    result = stumpless_set_param_value_by_name( element, "name", "val-2" );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, element );
+
+    stumpless_destroy_element_and_contents( element );
+    stumpless_free_all(  );
+
+    ASSERT_NO_LEAK( set_param_value_by_name );
   }
 
 }
