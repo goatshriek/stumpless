@@ -27,7 +27,7 @@
 #include "private/validate.h"
 
 void
-stumpless_close_function_target( struct stumpless_target *target ) {
+stumpless_close_function_target( const struct stumpless_target *target ) {
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;

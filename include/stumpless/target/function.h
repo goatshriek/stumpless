@@ -74,7 +74,7 @@ typedef int ( *stumpless_log_func_t )( const struct stumpless_target *,
  * @param target The function target to close.
  */
 void
-stumpless_close_function_target( struct stumpless_target *target );
+stumpless_close_function_target( const struct stumpless_target *target );
 
 /**
  * Opens a function target.
