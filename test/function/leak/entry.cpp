@@ -20,10 +20,12 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 
 NEW_MEMORY_COUNTER( add_new_element_leak )
 NEW_MEMORY_COUNTER( set_app_name_leak )
+NEW_MEMORY_COUNTER( set_param_value_by_name )
 
 namespace {
 
@@ -76,5 +78,35 @@ namespace {
     stumpless_free_all(  );
 
     ASSERT_NO_LEAK( set_app_name_leak );
+  }
+
+  TEST( SetParamValueByNameLeakTest, NewAndExisting ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+
+    INIT_MEMORY_COUNTER( set_param_value_by_name );
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_param_value_by_name( entry,
+                                                      "element-name",
+                                                      "param-name",
+                                                      "new-value-1" );
+    EXPECT_NO_ERROR;
+    ASSERT_EQ( result, entry );
+
+    result = stumpless_set_entry_param_value_by_name( entry,
+                                                      "element-name",
+                                                      "param-name",
+                                                      "new-value-2" );
+    EXPECT_NO_ERROR;
+    ASSERT_EQ( result, entry );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+
+    ASSERT_NO_LEAK( set_param_value_by_name );
   }
 }
