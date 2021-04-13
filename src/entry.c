@@ -648,7 +648,7 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
 
   effective_msgid = msgid ? msgid : "-";
   if( !validate_msgid_length( effective_msgid ) ||
-      !validate_msgid_format( effective_msgid ) ) {
+      !validate_printable_ascii( effective_msgid ) ) {
     return NULL;
   }
 
@@ -878,7 +878,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
 
   effective_msgid = msgid ? msgid : "-";
   if( !validate_msgid_length( effective_msgid ) ||
-      !validate_msgid_format( effective_msgid ) ) {
+      !validate_printable_ascii( effective_msgid ) ) {
     goto fail_msgid;
   }
 

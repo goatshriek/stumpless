@@ -713,7 +713,9 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
  *
  * @param target The target to modify.
  *
- * @param msgid The new default msgid, as a NULL-terminated string.
+ * @param msgid The new default msgid, as a NULL-terminated string. The string 
+ * must be in the ASCII printable range 33 <= character <= 126 as specified in 
+ * RFC5424.
  *
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.

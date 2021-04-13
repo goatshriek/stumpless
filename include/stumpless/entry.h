@@ -956,9 +956,11 @@ stumpless_set_entry_facility( struct stumpless_entry *entry,
  * @param entry The entry for which the msgid will be set.
  *
  * @param msgid A NULL-terminated string holding the new msgid for the entry.
- * This will be copied in to the entry, and therefore may be modified or freed
- * after this call without affecting the entry. If this is NULL, then a single
- * '-' character will be used, as specified as the NILVALUE in RFC 5424.
+ * The string must be in the ASCII printable range 33 <= character <= 126 as
+ * specified in RFC5424. This will be copied in to the entry, and therefore 
+ * may be modified or freed after this call without affecting the entry. If 
+ * this is NULL, then a single '-' character will be used, as specified as 
+ * the NILVALUE in RFC 5424.
  *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -1259,7 +1261,8 @@ stumpless_set_entry_severity( struct stumpless_entry *entry,
  * to be 48 characters or less.
  *
  * @param msgid The message id of the entry. If this is NULL, then it will be
- * blank in the entry (a single '-' character).
+ * blank in the entry (a single '-' character). The string must be in the 
+ * ASCII printable range 33 <= character <= 126 as specified in RFC5424.
  *
  * @param message The message in the entry. This message may contain any format
  * specifiers valid in \c printf. If this is NULL, then it will be blank in the

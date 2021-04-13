@@ -1188,6 +1188,21 @@ namespace {
     EXPECT_EQ( stumpless_get_entry_severity( basic_entry ), previous_severity );
   }
 
+    TEST_F( EntryTest, AppNameNotAscii ) {
+    struct stumpless_entry *bad_stump;
+    const struct stumpless_error *error;
+
+
+    const char bad_msgid[] = { 'b', 'a', 'd', '_', 0x5, 'n', 'a', 'm', 'e', '\0' };
+    bad_stump = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     basic_app_name,
+                                     bad_msgid,
+                                     basic_message );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
   /* non-fixture tests */
 
   TEST( AddElementTest, NullEntry ){

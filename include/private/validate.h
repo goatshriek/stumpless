@@ -41,14 +41,14 @@ if( ARG_NAME == NULL ) {                                            \
 bool validate_msgid_length(const char* msgid );
 
 /**
- * Checks the format of msgid.
+ * Checks that the passed in app_name contains only ASCII characters (33 <= char <= 126).
  *
- * @param the msgid.
+ * @param the app_name.
  *
- * @return True if the msgid has the correct format, otherwise
+ * @return True if the app_name has the correct format, otherwise
  * it will return false and raise STUMPLESS_INVALID_ENCODING error.
  */
-bool validate_msgid_format( const char* msgid );
+bool validate_printable_ascii( const char* str );
 
 /**
  * Checks the length of app name.
