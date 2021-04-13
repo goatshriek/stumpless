@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@
 #include "private/target.h"
 #include "private/target/buffer.h"
 #include "private/target/file.h"
+#include "private/target/function.h"
 #include "private/target/stream.h"
 #include "private/validate.h"
 
@@ -105,6 +106,11 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   clear_error(  );
+
+  // function targets are not formatted
+  if( target->type == STUMPLESS_FUNCTION_TARGET ) {
+    return send_entry_to_function_target( target, entry );
+  }
 
   // windows targets are not formatted in code
   // instead their formatting comes from message text files

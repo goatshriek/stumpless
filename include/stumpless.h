@@ -53,6 +53,7 @@
 #  include <stumpless/target.h>
 #  include <stumpless/target/buffer.h>
 #  include <stumpless/target/file.h>
+#  include <stumpless/target/function.h>
 #  include <stumpless/target/stream.h>
 #  include <stumpless/version.h>
 

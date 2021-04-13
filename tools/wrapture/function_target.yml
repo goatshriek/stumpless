@@ -1,0 +1,52 @@
+version: "0.5.0"
+classes:
+  - name: "FunctionTarget"
+    doc: >
+      A target allowing entries to be sent to a custom function.
+
+      Function targets provide a way to fully customize the behavior of a
+      target, defining any desired functionality and directly providing it to
+      the target. This can be used as a way to implement custom log targets such
+      as a specialized database table, or to take action if specific event types
+      are sent to the target.
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_target"
+      includes: "stumpless/target.h"
+    constructors:
+      - doc: "Creates a new target with the given function."
+        wrapped-function:
+          name: "stumpless_open_function_target"
+          includes: "stumpless/target/function.h"
+          params:
+            - name: "name"
+              doc: "The name of this target."
+              type: "const char *"
+            - name: "log_function"
+              doc: >
+                The function to use to log entries sent to the target.
+
+                This function will be called for each entry sent to the target,
+                and will be given a pointer to the target itself as well as the
+                entry passed to it. It returns an int where a non-negative
+                value indicates success and a negative value is returned in the
+                event of an error. The target and entry pointers passed to the
+                function are guaranteed to be non-NULL, since NULL pointers will
+                generate errors before the function is called.
+              type:
+                name: "stumpless_log_func_t"
+                includes: "stumpless/target/function.h"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+    destructor:
+      doc: >
+        Closes this target and releases all memory and other resources held by
+        it.
+      wrapped-function:
+        name: "stumpless_close_function_target"
+        includes: "stumpless/target/function.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - use-template: "common-target-functions"

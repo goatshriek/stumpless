@@ -188,6 +188,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target.c
   ${PROJECT_SOURCE_DIR}/src/target/buffer.c
   ${PROJECT_SOURCE_DIR}/src/target/file.c
+  ${PROJECT_SOURCE_DIR}/src/target/function.c
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
@@ -205,6 +206,7 @@ set(WRAPTURE_SPECS
   ${PROJECT_SOURCE_DIR}/tools/wrapture/error.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/facility.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/file_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/function_target.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/memory.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/param.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/severity.yml
@@ -633,6 +635,12 @@ else()
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
+  add_thread_safety_test(function
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/thread_safety/target/function.cpp
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
   add_thread_safety_test(param
     SOURCES
       test/thread_safety/param.cpp
@@ -735,6 +743,7 @@ install(FILES
 install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/function.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h
   DESTINATION "include/stumpless/target"
 )
@@ -798,6 +807,10 @@ add_function_test(file
   SOURCES
     test/function/target/file.cpp
     $<TARGET_OBJECTS:rfc5424_checker>
+)
+
+add_function_test(function
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/target/function.cpp
 )
 
 add_function_test(get_error_stream
@@ -944,6 +957,10 @@ add_example(file
   ${PROJECT_SOURCE_DIR}/docs/examples/file/file_example.c
 )
 
+add_example(function
+  ${PROJECT_SOURCE_DIR}/docs/examples/function/function_example.c
+)
+
 add_example(severity_level
   ${PROJECT_SOURCE_DIR}/docs/examples/severity_level/severity_level_example.c
 )
@@ -964,6 +981,12 @@ add_performance_test(element
 
 add_performance_test(entry
   SOURCES test/performance/entry.cpp
+)
+
+add_performance_test(function
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/performance/target/function.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(target

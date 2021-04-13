@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ extern "C" {
 enum stumpless_target_type {
   STUMPLESS_BUFFER_TARGET, /**< write to a character buffer */
   STUMPLESS_FILE_TARGET, /**< write to a file */
+  STUMPLESS_FUNCTION_TARGET, /**< call a custom function */
   STUMPLESS_NETWORK_TARGET, /**< send to a network endpoint */
   STUMPLESS_SOCKET_TARGET, /**< write to a Unix socket */
   STUMPLESS_STREAM_TARGET, /**< write to a FILE stream */

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,6 +54,9 @@ raise_file_open_failure( void );
 
 void
 raise_file_write_failure( void );
+
+void
+raise_function_target_failure( int code );
 
 void
 raise_gethostname_failure( const char *message,

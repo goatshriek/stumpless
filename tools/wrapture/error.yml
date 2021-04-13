@@ -34,6 +34,9 @@ enums:
       - name: "FILE_WRITE_FAILURE"
         doc: "Could not write to a file."
         value: "STUMPLESS_FILE_WRITE_FAILURE"
+      - name: "FUNCTION_TARGET_FAILURE"
+        doc: "A call to a function target's log function failed."
+        value: "STUMPLESS_FUNCTION_TARGET_FAILURE"
       - name: "INDEX_OUT_OF_BOUNDS"
         doc: "A provided index was not in a valid range."
         value: "STUMPLESS_INDEX_OUT_OF_BOUNDS"
@@ -161,6 +164,13 @@ classes:
       params:
         - name: "error-id"
           value: "STUMPLESS_FILE_WRITE_FAILURE"
+  - name: "FunctionTargetFailure"
+    doc: "A call to a function target's log function failed."
+    use-template:
+      name: "error-class"
+      params:
+        - name: "error-id"
+          value: "STUMPLESS_FUNCTION_TARGET_FAILURE"
   - name: "IndexOutOfBounds"
     doc: "A provided index was not in a valid range."
     use-template:

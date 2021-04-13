@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020 Joel E. Anderson
+* Copyright 2020-2021 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -45,6 +45,12 @@
 
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno dopo la chiamata fallita"
+
+#  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
+"il codice di ritorno della chiamata funzione fallita"
+
+#  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
+"la funzione per un target di funzione fallita"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
 "non è stato possibile creare un file con il nome scelto per la socket locale usando mkstemp"

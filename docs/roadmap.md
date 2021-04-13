@@ -1,8 +1,8 @@
 # The Future of Stumpless
-
 See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
+
 
 ## 2.1.0 (next minor release)
  * [ADD] **journald logging target**
@@ -13,10 +13,6 @@ or want to make a suggestion, please submit an issue on the project's
    it through a target at runtime, this is limited and inflexible. Instead, a
    generic filter structure that can filter on a wide variety of properties of
    each log entry and even use custom functions to filter messages.
- * [ADD] **Function callback logging target**
-   Logging to a generic function signature will allow easier extension by
-   library users, and can also serve as a good opportunity to streamline the
-   internal implementation for the actual logging functionality.
  * [ADD] **Tracing call including source code information**
    A tracing call that includes the line and file of the source code that it
    appears in could be useful for some applications. This will be added as a

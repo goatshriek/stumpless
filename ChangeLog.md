@@ -9,6 +9,10 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
+## [2.1.0] - 2021-04-13
+### Added
+ - Custom function logging targets.
+
 ## [2.0.0] - 2020-12-27
 ### Added
  - Localization framework for error messages and other library strings, and

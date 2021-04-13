@@ -16,6 +16,8 @@ set(GENERATED_CPP_LIB_HEADERS
   ${CMAKE_BINARY_DIR}/include/stumpless/FileOpenFailure.hpp
   ${CMAKE_BINARY_DIR}/include/stumpless/FileTarget.hpp
   ${CMAKE_BINARY_DIR}/include/stumpless/FileWriteFailure.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/FunctionTarget.hpp
+  ${CMAKE_BINARY_DIR}/include/stumpless/FunctionTargetFailure.hpp
   ${CMAKE_BINARY_DIR}/include/stumpless/IndexOutOfBounds.hpp
   ${CMAKE_BINARY_DIR}/include/stumpless/InvalidFacility.hpp
   ${CMAKE_BINARY_DIR}/include/stumpless/InvalidId.hpp
@@ -53,6 +55,8 @@ set(GENERATED_CPP_LIB_SOURCES
   ${CPP_LIB_BUILD_DIR}/FileOpenFailure.cpp
   ${CPP_LIB_BUILD_DIR}/FileTarget.cpp
   ${CPP_LIB_BUILD_DIR}/FileWriteFailure.cpp
+  ${CPP_LIB_BUILD_DIR}/FunctionTarget.cpp
+  ${CPP_LIB_BUILD_DIR}/FunctionTargetFailure.cpp
   ${CPP_LIB_BUILD_DIR}/IndexOutOfBounds.cpp
   ${CPP_LIB_BUILD_DIR}/InvalidFacility.cpp
   ${CPP_LIB_BUILD_DIR}/InvalidId.cpp
@@ -191,6 +195,10 @@ add_cpp_test(file
     ${PROJECT_SOURCE_DIR}/test/function/cpp/target/file.cpp
     ${PROJECT_SOURCE_DIR}/test/function/rfc5424.cpp
     ${PROJECT_SOURCE_DIR}/test/function/utf8.cpp
+)
+
+add_cpp_test(function
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/cpp/target/function.cpp
 )
 
 add_cpp_test(memory

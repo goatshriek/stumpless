@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020 Joel E. Anderson
+* Copyright 2020-2021 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -45,6 +45,12 @@
 
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno after the failed call"
+
+#  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
+"return code of the log handler function"
+
+#  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
+"the log handler for a function target failed"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
 "could not create a file with the chosen local socket name using mkstemp"
