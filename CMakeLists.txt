@@ -637,7 +637,7 @@ else()
 
   add_thread_safety_test(function
     SOURCES
-      test/thread_safety/target/function.cpp
+      ${PROJECT_SOURCE_DIR}/test/thread_safety/target/function.cpp
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
@@ -810,7 +810,7 @@ add_function_test(file
 )
 
 add_function_test(function
-  SOURCES test/function/target/function.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/target/function.cpp
 )
 
 add_function_test(get_error_stream
@@ -985,7 +985,7 @@ add_performance_test(entry
 
 add_performance_test(function
   SOURCES
-    test/performance/target/function.cpp
+    ${PROJECT_SOURCE_DIR}/test/performance/target/function.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 

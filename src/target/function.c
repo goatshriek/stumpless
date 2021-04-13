@@ -47,16 +47,13 @@ stumpless_open_function_target( const char *name,
 
   target = new_target( STUMPLESS_FUNCTION_TARGET, name );
   if( !target ) {
-    goto fail;
+    return NULL;
   }
 
   target->id = log_function;
 
   stumpless_set_current_target( target );
   return target;
-
-fail:
-  return NULL;
 }
 
 /* private definitions */

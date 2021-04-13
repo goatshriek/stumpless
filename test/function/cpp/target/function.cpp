@@ -56,6 +56,12 @@ namespace {
 
       target = new FunctionTarget( target_name, basic_function );
     }
+
+    virtual void
+    TearDown( void ) {
+      delete target;
+      delete basic_entry;
+    }
   };
 
   TEST_F( CppFunctionTargetTest, BasicLog ) {
