@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">2.0.0</span>
+   &#160;<span id="projectnumber">2.1.0</span>
    </div>
   </td>
  </tr>
@@ -105,6 +105,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FileWriteFailure.html">FileWriteFailure</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Could not write to a file.  <a href="classstumpless_1_1FileWriteFailure.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FunctionTarget.html">FunctionTarget</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A target allowing entries to be sent to a custom function.  <a href="classstumpless_1_1FunctionTarget.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1FunctionTargetFailure.html">FunctionTargetFailure</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A call to a function target's log function failed.  <a href="classstumpless_1_1FunctionTargetFailure.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1IndexOutOfBounds.html">IndexOutOfBounds</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A provided index was not in a valid range.  <a href="classstumpless_1_1IndexOutOfBounds.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,9 +177,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1Version.html">Version</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes this version of Stumpless.  <a href="classstumpless_1_1Version.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1WelTarget.html">WelTarget</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Windows Event Log (WEL) targets allow messages to be sent to the Windows event handling system.  <a href="classstumpless_1_1WelTarget.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstumpless_1_1WindowsEventLogCloseFailure.html">WindowsEventLogCloseFailure</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Could not close the Windows Event Log.  <a href="classstumpless_1_1WindowsEventLogCloseFailure.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,24 +195,25 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba7a508de76a69d4f7e2c848039adca208">ErrorId::ELEMENT_NOT_FOUND</a> = STUMPLESS_ELEMENT_NOT_FOUND, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baec7710e1f099fada7671d8b0f2d945f3">ErrorId::FILE_OPEN_FAILURE</a> = STUMPLESS_FILE_OPEN_FAILURE, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba59556651a8a1d4c0c6c2d8cd27af8822">ErrorId::FILE_WRITE_FAILURE</a> = STUMPLESS_FILE_WRITE_FAILURE, 
-<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0babdedbcff2baea4858a750be71f7e39e9">ErrorId::INDEX_OUT_OF_BOUNDS</a> = STUMPLESS_INDEX_OUT_OF_BOUNDS, 
+<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bae1c09b5aa1a28f8d793ac90529b208a4">ErrorId::FUNCTION_TARGET_FAILURE</a> = STUMPLESS_FUNCTION_TARGET_FAILURE, 
 <br />
-&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf51a0f11d20820fdfa07c755c4e9eef5">ErrorId::INVALID_FACILITY</a> = STUMPLESS_INVALID_FACILITY, 
+&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0babdedbcff2baea4858a750be71f7e39e9">ErrorId::INDEX_OUT_OF_BOUNDS</a> = STUMPLESS_INDEX_OUT_OF_BOUNDS, 
+<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf51a0f11d20820fdfa07c755c4e9eef5">ErrorId::INVALID_FACILITY</a> = STUMPLESS_INVALID_FACILITY, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba9acfdae2d16e2592e0c192805f9427d8">ErrorId::INVALID_ID</a> = STUMPLESS_INVALID_ID, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba9886387b050101f8b7d40aafb59b3554">ErrorId::INVALID_SEVERITY</a> = STUMPLESS_INVALID_SEVERITY, 
-<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf502d5c3c44c1abe4c0811882d504ad3">ErrorId::MEMORY_ALLOCATION_FAILURE</a> = STUMPLESS_MEMORY_ALLOCATION_FAILURE, 
 <br />
-&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bad52c3f751d0f2a5f060e3a119eed2e2a">ErrorId::NETWORK_PROTOCOL_UNSUPPORTED</a> = STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED, 
+&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf502d5c3c44c1abe4c0811882d504ad3">ErrorId::MEMORY_ALLOCATION_FAILURE</a> = STUMPLESS_MEMORY_ALLOCATION_FAILURE, 
+<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bad52c3f751d0f2a5f060e3a119eed2e2a">ErrorId::NETWORK_PROTOCOL_UNSUPPORTED</a> = STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba512a235f49cf2a40788050af18e87512">ErrorId::PARAM_NOT_FOUND</a> = STUMPLESS_SOCKET_BIND_FAILURE, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baff55f8f36c08c3e7cc042ab25d21e602">ErrorId::SOCKET_CONNECT_FAILURE</a> = STUMPLESS_SOCKET_CONNECT_FAILURE, 
-<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba3562f69744a0bd8da7a7445125aee3db">ErrorId::SOCKET_FAILURE</a> = STUMPLESS_SOCKET_FAILURE, 
 <br />
-&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bacc8c5928b9a91d01b153da9a62eb260c">ErrorId::SOCKET_SEND_FAILURE</a> = STUMPLESS_SOCKET_SEND_FAILURE, 
+&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba3562f69744a0bd8da7a7445125aee3db">ErrorId::SOCKET_FAILURE</a> = STUMPLESS_SOCKET_FAILURE, 
+<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bacc8c5928b9a91d01b153da9a62eb260c">ErrorId::SOCKET_SEND_FAILURE</a> = STUMPLESS_SOCKET_SEND_FAILURE, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0badb604f6f30e165e823e3b4984752b323">ErrorId::STREAM_WRITE_FAILURE</a> = STUMPLESS_STREAM_WRITE_FAILURE, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0baf0ca81452fb882204f8ac4de620d616a">ErrorId::TARGET_INCOMPATIBLE</a> = STUMPLESS_TARGET_INCOMPATIBLE, 
-<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba4ae202bdc496eb3aadd5f10b925ace54">ErrorId::TARGET_UNSUPPORTED</a> = STUMPLESS_TARGET_UNSUPPORTED, 
 <br />
-&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bafb1d67d576efad86d8f41b4a72827bb4">ErrorId::TRANSPORT_PROTOCOL_UNSUPPORTED</a> = STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED, 
+&#160;&#160;<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba4ae202bdc496eb3aadd5f10b925ace54">ErrorId::TARGET_UNSUPPORTED</a> = STUMPLESS_TARGET_UNSUPPORTED, 
+<a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0bafb1d67d576efad86d8f41b4a72827bb4">ErrorId::TRANSPORT_PROTOCOL_UNSUPPORTED</a> = STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba6aeae189dc73676fda3d402b5935b2c9">ErrorId::WINDOWS_EVENT_LOG_CLOSE_FAILURE</a> = STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE, 
 <a class="el" href="namespacestumpless.html#ab4a3347085e5b71ac50eeb029288fb0ba2916c979230601fac3c7f7bd90d1bf58">ErrorId::WINDOWS_EVENT_LOG_OPEN_FAILURE</a> = STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE
 <br />
@@ -312,6 +316,8 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ab4a3347085e5b71ac50eeb029288fb0baec7710e1f099fada7671d8b0f2d945f3"></a>FILE_OPEN_FAILURE&#160;</td><td class="fielddoc"><p>Could not open a file. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab4a3347085e5b71ac50eeb029288fb0ba59556651a8a1d4c0c6c2d8cd27af8822"></a>FILE_WRITE_FAILURE&#160;</td><td class="fielddoc"><p>Could not write to a file. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab4a3347085e5b71ac50eeb029288fb0bae1c09b5aa1a28f8d793ac90529b208a4"></a>FUNCTION_TARGET_FAILURE&#160;</td><td class="fielddoc"><p>A call to a function target's log function failed. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab4a3347085e5b71ac50eeb029288fb0babdedbcff2baea4858a750be71f7e39e9"></a>INDEX_OUT_OF_BOUNDS&#160;</td><td class="fielddoc"><p>A provided index was not in a valid range. </p>
 </td></tr>
@@ -530,7 +536,7 @@ Enumerations</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 1 2021 16:15:56 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 12 2021 21:42:45 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

@@ -1,7 +1,7 @@
 ---
 title: Stumpless
 keywords: stumpless, c, logging, library, syslog, splunk, rsyslog
-last_updated: January 1, 2021
+last_updated: April 11, 2021
 layout: default
 ---
 
@@ -42,6 +42,7 @@ the repository if you want to actually compile and run them.
  * [Unix Socket Targets](./examples/socket.html)
  * [Stream Targets](./examples/stream.html)
  * [Windows Event Log Targets](./examples/wel.html)
+ * [Custom Function Targets](./examples/function.html)
  * [C++ Bindings](./examples/cpp.html)
 
 Detailed documentation of each function is included in the header files, and is

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">2.0.0</span>
+   &#160;<span id="projectnumber">2.1.0</span>
    </div>
   </td>
  </tr>
@@ -181,10 +181,10 @@ $(function() {
 <div class="ttc" id="anetwork_8h_html_a5b139a777f3083b0a4e7974ca1b64df8"><div class="ttname"><a href="network_8h.html#a5b139a777f3083b0a4e7974ca1b64df8">stumpless_new_udp6_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_new_udp6_target(const char *name)</div><div class="ttdoc">Creates a network target for logging over IPv6 and UDP, but does not open it.</div></div>
 <div class="ttc" id="anetwork_8h_html_acc2ba0e8c1a69cf17d4a2aefae2ad5ec"><div class="ttname"><a href="network_8h.html#acc2ba0e8c1a69cf17d4a2aefae2ad5ec">stumpless_get_udp_max_message_size</a></div><div class="ttdeci">size_t stumpless_get_udp_max_message_size(const struct stumpless_target *target)</div><div class="ttdoc">Gets the current maximum message size of a UDP network target.</div></div>
 <div class="ttc" id="anetwork_8h_html_a4cdacdb8ee004600eb7ac47d48896f40"><div class="ttname"><a href="network_8h.html#a4cdacdb8ee004600eb7ac47d48896f40">stumpless_get_destination</a></div><div class="ttdeci">const char * stumpless_get_destination(const struct stumpless_target *target)</div><div class="ttdoc">Gets the destination of a network target.</div></div>
-<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:76</div></div>
+<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:77</div></div>
 <div class="ttc" id="anetwork_8h_html_a79166abc165a8cf9e6f688a61bad512e"><div class="ttname"><a href="network_8h.html#a79166abc165a8cf9e6f688a61bad512e">stumpless_open_tcp4_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_tcp4_target(const char *name, const char *destination)</div><div class="ttdoc">Opens a network target for remote logging over IPv4 and TCP.</div></div>
 <div class="ttc" id="anetwork_8h_html_ae8d345db6c184eeb762aa27d74e88840"><div class="ttname"><a href="network_8h.html#ae8d345db6c184eeb762aa27d74e88840">stumpless_open_udp4_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_udp4_target(const char *name, const char *destination)</div><div class="ttdoc">Opens a network target for remote logging over IPv4 and UDP.</div></div>
-<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:59</div></div>
+<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:60</div></div>
 <div class="ttc" id="anetwork_8h_html_acf165117100eec115d8a591072545984"><div class="ttname"><a href="network_8h.html#acf165117100eec115d8a591072545984">stumpless_new_network_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_new_network_target(const char *name, enum stumpless_network_protocol network, enum stumpless_transport_protocol transport)</div><div class="ttdoc">Creates a network target, but does not open it.</div></div>
 <div class="ttc" id="anetwork_8h_html_ae79ca498be39c06cd9287710f5e24436"><div class="ttname"><a href="network_8h.html#ae79ca498be39c06cd9287710f5e24436">stumpless_get_transport_port</a></div><div class="ttdeci">const char * stumpless_get_transport_port(const struct stumpless_target *target)</div><div class="ttdoc">Gets the transport port number of a network target.</div></div>
 <div class="ttc" id="anetwork_8h_html_a32bf4ddc523db9d8328f82dd0b928c46"><div class="ttname"><a href="network_8h.html#a32bf4ddc523db9d8328f82dd0b928c46">stumpless_open_network_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_network_target(const char *name, const char *destination, enum stumpless_network_protocol network, enum stumpless_transport_protocol transport)</div><div class="ttdoc">Opens a network target.</div></div>
@@ -204,7 +204,7 @@ $(function() {
 <div class="ttc" id="anetwork_8h_html_a519bd4578ddc0981507f0ff5b6b2f8be"><div class="ttname"><a href="network_8h.html#a519bd4578ddc0981507f0ff5b6b2f8be">stumpless_close_network_target</a></div><div class="ttdeci">void stumpless_close_network_target(const struct stumpless_target *target)</div><div class="ttdoc">Closes a network target.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 1 2021 15:43:35 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

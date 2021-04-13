@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">stumpless
-   &#160;<span id="projectnumber">2.0.0</span>
+   &#160;<span id="projectnumber">2.1.0</span>
    </div>
   </td>
  </tr>
@@ -96,9 +96,9 @@ Functions</h2></td></tr>
 <tr class="memitem:afde32c8772ca89cce0d3ee638d8ed67b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">stumpless_destroy_element</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
 <tr class="memdesc:afde32c8772ca89cce0d3ee638d8ed67b"><td class="mdescLeft">&#160;</td><td class="mdescRight">An alias for stumpless_destroy_element_and_contents.  <a href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">More...</a><br /></td></tr>
 <tr class="separator:afde32c8772ca89cce0d3ee638d8ed67b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5485ff12e4d45a2938ed5598f82205fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a5485ff12e4d45a2938ed5598f82205fc">stumpless_destroy_element_and_contents</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
-<tr class="memdesc:a5485ff12e4d45a2938ed5598f82205fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an element as well as all params that it contains, freeing any allocated memory.  <a href="element_8h.html#a5485ff12e4d45a2938ed5598f82205fc">More...</a><br /></td></tr>
-<tr class="separator:a5485ff12e4d45a2938ed5598f82205fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3293ce2407142a896c6ece0089cac33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#ab3293ce2407142a896c6ece0089cac33">stumpless_destroy_element_and_contents</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *e)</td></tr>
+<tr class="memdesc:ab3293ce2407142a896c6ece0089cac33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an element as well as all params that it contains, freeing any allocated memory.  <a href="element_8h.html#ab3293ce2407142a896c6ece0089cac33">More...</a><br /></td></tr>
+<tr class="separator:ab3293ce2407142a896c6ece0089cac33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26f6e8a9f3dc18d7dbffee19627fa331"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">stumpless_destroy_element_only</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
 <tr class="memdesc:a26f6e8a9f3dc18d7dbffee19627fa331"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an element, freeing any allocated memory.  <a href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">More...</a><br /></td></tr>
 <tr class="separator:a26f6e8a9f3dc18d7dbffee19627fa331"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,8 +304,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5485ff12e4d45a2938ed5598f82205fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5485ff12e4d45a2938ed5598f82205fc">&#9670;&nbsp;</a></span>stumpless_destroy_element_and_contents()</h2>
+<a id="ab3293ce2407142a896c6ece0089cac33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3293ce2407142a896c6ece0089cac33">&#9670;&nbsp;</a></span>stumpless_destroy_element_and_contents()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -314,7 +314,7 @@ Functions</h2></td></tr>
           <td class="memname">void stumpless_destroy_element_and_contents </td>
           <td>(</td>
           <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em></td><td>)</td>
+          <td class="paramname"><em>e</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -326,7 +326,7 @@ Functions</h2></td></tr>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
+    <tr><td class="paramname">e</td><td>The element to destroy. </td></tr>
   </table>
   </dd>
 </dl>
@@ -999,7 +999,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 1 2021 15:43:35 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>
