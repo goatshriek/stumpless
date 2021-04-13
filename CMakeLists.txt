@@ -206,6 +206,7 @@ set(WRAPTURE_SPECS
   ${PROJECT_SOURCE_DIR}/tools/wrapture/error.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/facility.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/file_target.yml
+  ${PROJECT_SOURCE_DIR}/tools/wrapture/function_target.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/memory.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/param.yml
   ${PROJECT_SOURCE_DIR}/tools/wrapture/severity.yml

@@ -125,6 +125,9 @@ templates:
             - value: "equivalent-struct-pointer"
             - value: "message"
             - value: "..."
+          return:
+            type: "int"
+          use-template: "int-return-error-check"
       - name: "Log"
         doc: "Writes a log message with the given priority to this target."
         params:
@@ -154,6 +157,9 @@ templates:
             - value: "priority"
             - value: "message"
             - value: "..."
+          return:
+            type: "int"
+          use-template: "int-return-error-check"
       - name: "Log"
         doc: >
           Writes a log message with the given facility and severity to this
@@ -187,6 +193,9 @@ templates:
             - value: "static_cast<int>(facility) | static_cast<int>(severity)"
             - value: "message"
             - value: "..."
+          return:
+            type: "int"
+          use-template: "int-return-error-check"
       - name: "Log"
         doc: "Writes an Entry to this target."
         params:

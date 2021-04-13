@@ -101,12 +101,12 @@ stumpless_close_function_target( const struct stumpless_target *target );
  *
  * @param log_function The function to use to log entries sent to the target.
  * This function will be called for each entry sent to the target, and will be
- * given a reference to the target itself as well as the entry passed to it. It
+ * given a pointer to the target itself as well as the entry passed to it. It
  * returns an int with the same semantics as stumpless_add_entry where a
  * non-negative value indicates success and a negative value is returned in
  * the event of an error. The target and entry pointers passed to the function
- * are guaranteed to be non-NULL, since NULL values will generate errors before
- * the function is called.
+ * are guaranteed to be non-NULL, since NULL pointers will generate errors
+ * before the function is called.
  *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
