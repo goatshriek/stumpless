@@ -162,16 +162,14 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
-    TEST_F( TargetTest, AppNameNotAscii ) {
+  TEST_F( TargetTest, MsgidNotAscii ) {
     struct stumpless_entry *bad_stump;
     const struct stumpless_error *error;
 
-
-    const char bad_msgid[] = { 'b', 'a', 'd', '_', 0x5, 'n', 'a', 'm', 'e', '\0' };
     bad_stump = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
                                      "basic-app-name",
-                                     bad_msgid,
+                                     "bad\nmsgid",
                                      "basic_message" );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
@@ -665,6 +663,22 @@ namespace {
 
 
     target_result = stumpless_set_target_default_msgid( target, "msgid-wro\ng-format" );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
+  TEST( SetDefaultAppName, AppNameSetTargetFormatRejected ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_target_default_app_name( target, "appname-wro\ng-format" );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }

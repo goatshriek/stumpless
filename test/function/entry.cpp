@@ -877,13 +877,22 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
-  TEST_F( EntryTest, SetAppNameRejected ) {
+  TEST_F( EntryTest, SetAppNameRejectedLen ) {
      const struct stumpless_entry* result;
      const struct stumpless_error* error;
 
     result = stumpless_set_entry_app_name( basic_entry, "it-is-gonna-fail-because-length-exceeded-max-allowed" );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+  }
+
+  TEST_F( EntryTest, SetAppNameRejectedFormat ) {
+     const struct stumpless_entry* result;
+     const struct stumpless_error* error;
+
+    result = stumpless_set_entry_app_name( basic_entry, "test-appname-wro\ng-format" );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
   TEST_F( EntryTest, AppNameRejected ) {
@@ -1188,19 +1197,19 @@ namespace {
     EXPECT_EQ( stumpless_get_entry_severity( basic_entry ), previous_severity );
   }
 
-    TEST_F( EntryTest, AppNameNotAscii ) {
+    TEST_F( EntryTest, AppNameFormatRejected ) {
     struct stumpless_entry *bad_stump;
     const struct stumpless_error *error;
 
-
-    const char bad_msgid[] = { 'b', 'a', 'd', '_', 0x5, 'n', 'a', 'm', 'e', '\0' };
     bad_stump = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
-                                     basic_app_name,
-                                     bad_msgid,
+                                     "bad\nappname",
+                                     basic_msgid,
                                      basic_message );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    EXPECT_NULL( bad_stump );
   }
 
   /* non-fixture tests */
