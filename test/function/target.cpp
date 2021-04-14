@@ -162,19 +162,6 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
-  TEST_F( TargetTest, MsgidNotAscii ) {
-    struct stumpless_entry *bad_stump;
-    const struct stumpless_error *error;
-
-    bad_stump = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "basic-app-name",
-                                     "bad\nmsgid",
-                                     "basic_message" );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
-  }
-
 
   /* non-fixture tests */
 
