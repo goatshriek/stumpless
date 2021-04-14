@@ -440,7 +440,7 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
 
-  if( !validate_app_name_length( app_name ) ) {
+  if( !validate_app_name_length( app_name ) | !validate_printable_ascii( app_name ) ) {
     return NULL;
   }
 
@@ -470,7 +470,7 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
 
-  if( !validate_msgid_length( msgid ) || !validate_msgid_format( msgid ) ) {
+  if( !validate_msgid_length( msgid ) || !validate_printable_ascii( msgid ) ) {
       return NULL;
   }
 

@@ -598,7 +598,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
 
   effective_name = app_name ? app_name : "-";
-  if( !validate_app_name_length( effective_name ) ) {
+  if( !validate_app_name_length( effective_name ) | !validate_printable_ascii( effective_name )) {
     return NULL;
   }
 
@@ -648,7 +648,7 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
 
   effective_msgid = msgid ? msgid : "-";
   if( !validate_msgid_length( effective_msgid ) ||
-      !validate_msgid_format( effective_msgid ) ) {
+      !validate_printable_ascii( effective_msgid ) ) {
     return NULL;
   }
 
@@ -865,7 +865,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
   }
 
   effective_app_name = app_name ? app_name : "-";
-  if ( !validate_app_name_length ( effective_app_name ) ) {
+  if ( !validate_app_name_length ( effective_app_name ) | !validate_printable_ascii( effective_app_name )) {
       goto fail_app_name;
   }
 
@@ -878,7 +878,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
 
   effective_msgid = msgid ? msgid : "-";
   if( !validate_msgid_length( effective_msgid ) ||
-      !validate_msgid_format( effective_msgid ) ) {
+      !validate_printable_ascii( effective_msgid ) ) {
     goto fail_msgid;
   }
 

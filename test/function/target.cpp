@@ -162,6 +162,7 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
+
   /* non-fixture tests */
 
   TEST( AddEntryTest, NullEntry ) {
@@ -649,6 +650,22 @@ namespace {
 
 
     target_result = stumpless_set_target_default_msgid( target, "msgid-wro\ng-format" );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
+  TEST( SetDefaultAppName, AppNameSetTargetFormatRejected ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    target_result = stumpless_set_target_default_app_name( target, "appname-wro\ng-format" );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }

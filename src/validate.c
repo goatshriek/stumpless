@@ -38,18 +38,19 @@ bool validate_msgid_length(const char* msgid ) {
   return validation_status;
 }
 
-bool validate_msgid_format( const char* msgid ) {
-  size_t msgid_length = strlen( msgid );
+bool validate_printable_ascii( const char* str ) {
+  size_t str_length = strlen( str );
 
-  for (size_t i = 0; i < msgid_length; ++i) {
-    if (msgid[i] < 33 || msgid[i] > 126) {
-      raise_invalid_encoding(L10N_FORMAT_ERROR_MESSAGE("msgid"));
+  for (size_t i = 0; i < str_length; i++) {
+    if (str[i] < 33 || str[i] > 126) {
+      raise_invalid_encoding(L10N_FORMAT_ERROR_MESSAGE("app name"));
       return false;
     }
   }
 
   return true;
 }
+
 
 bool validate_app_name_length( const char* app_name ) {
     size_t max_app_name_length = 48;
