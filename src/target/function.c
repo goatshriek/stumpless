@@ -33,6 +33,11 @@ stumpless_close_function_target( const struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_FUNCTION_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   destroy_target( target );
   clear_error(  );
 }

@@ -26,6 +26,14 @@
 #include "test/helper/assert.hpp"
 
 namespace {
+  int
+  basic_log_function( const struct stumpless_target *target,
+                      const struct stumpless_entry *entry ) {
+    EXPECT_NOT_NULL( target );
+    EXPECT_NOT_NULL( entry );
+    return 0;
+  }
+
   class StreamTargetTest : public::testing::Test {
     protected:
       const char *filename = "testfile.log";
@@ -109,6 +117,16 @@ namespace {
 
     stumpless_close_stream_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( StreamTargetCloseTest, WrongTargetType ) {
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_function_target( "not-a-stream-target", basic_log_function );
+    stumpless_close_stream_target( target );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
 
   TEST( StreamTargetFormat, NewlineSeparator ) {
