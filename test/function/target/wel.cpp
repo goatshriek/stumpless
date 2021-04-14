@@ -235,7 +235,7 @@ namespace {
   }
 
   TEST( WelTargetCloseTest, WrongTargetType ) {
-    const struct stumpless_target *target;
+    struct stumpless_target *target;
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-wel-target" );
