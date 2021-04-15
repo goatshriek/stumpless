@@ -322,6 +322,11 @@ stumpless_close_network_target( const struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   destroy_network_target( target->id );
   destroy_target( target );
 }

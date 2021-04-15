@@ -36,6 +36,11 @@ stumpless_close_buffer_target( const struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_BUFFER_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   clear_error(  );
 
   destroy_buffer_target( target->id );

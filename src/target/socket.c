@@ -39,6 +39,11 @@ stumpless_close_socket_target( const struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_SOCKET_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   destroy_socket_target( target->id );
   destroy_target( target );
 

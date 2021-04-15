@@ -99,6 +99,16 @@ namespace {
     stumpless_free_all( );
   }
 
+  TEST( FunctionTargetCloseTest, WrongTargetType ) {
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_stdout_target( "not-a-function-target" );
+    stumpless_close_function_target( target );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+  }
+
   TEST( FunctionTargetFailureTest, FunctionFailure ) {
     struct stumpless_target *target;
     int result;

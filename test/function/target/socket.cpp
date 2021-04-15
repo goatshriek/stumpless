@@ -196,6 +196,16 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( SocketTargetCloseTest, WrongTargetType ) {
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_stdout_target( "not-a-socket-target" );
+    stumpless_close_socket_target( target );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+  }
+
   TEST( SocketTargetOpenTest, Basic ) {
     const struct stumpless_target *target;
 
