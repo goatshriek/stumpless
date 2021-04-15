@@ -38,6 +38,11 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
     return;
   }
 
+  if( target->type != STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
   if( !destroy_wel_target( target->id ) ) {
     return;
   }
