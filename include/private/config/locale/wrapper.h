@@ -33,6 +33,8 @@
 #    include "private/config/locale/sv-se.h"
 #  elif defined USE_LOCALE_SK_SK
 #    include "private/config/locale/sk-sk.h"
+#  elif defined USE_LOCALE_BG_BG
+#    include "private/config/locale/bg-bg.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
