@@ -343,6 +343,7 @@ else()
   add_function_test(tcp4
     SOURCES
       test/function/target/tcp4.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:rfc5424_checker>
       $<TARGET_OBJECTS:test_helper_resolve>
       $<TARGET_OBJECTS:test_helper_server>
