@@ -130,3 +130,23 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-bg-bg:
+    name: "linux, bg-bg"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "bg_BG.UTF-8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"bg-BG\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
