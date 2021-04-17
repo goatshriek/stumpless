@@ -27,6 +27,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>
+#include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
@@ -204,6 +205,10 @@ stumpless_close_target( struct stumpless_target *target ) {
 
     case STUMPLESS_FILE_TARGET:
       stumpless_close_file_target( target );
+      break;
+
+    case STUMPLESS_FUNCTION_TARGET:
+      stumpless_close_function_target( target );
       break;
 
     case STUMPLESS_NETWORK_TARGET:

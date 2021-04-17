@@ -91,12 +91,21 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( FunctionTargetCloseTest, GenericCloseFunction ) {
+    struct stumpless_target *target;
+
+    target = stumpless_open_function_target( "basic-target", basic_log_function );
+    stumpless_close_target( target );
+    EXPECT_NO_ERROR;
+    stumpless_free_all(  );
+  }
+
   TEST( FunctionTargetCloseTest, NullTarget ) {
     const struct stumpless_error *error;
 
     stumpless_close_function_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    stumpless_free_all( );
+    stumpless_free_all(  );
   }
 
   TEST( FunctionTargetCloseTest, WrongTargetType ) {
