@@ -71,6 +71,8 @@ typedef int ( *stumpless_log_func_t )( const struct stumpless_target *,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory deallocation function may not be AC-Safe itself.
  *
+ * @since v2.1.0
+ *
  * @param target The function target to close.
  */
 void
@@ -96,6 +98,8 @@ stumpless_close_function_target( const struct stumpless_target *target );
  * **Async Cancel Safety: AC-Unsafe heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
+ * @since v2.1.0
  *
  * @param name The name of the logging target.
  *
