@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,56 +17,15 @@
  */
 
 #include <gmock/gmock.h>
-#include <gtest/gtest.h>
-#include <stumpless.h>
+#include "test/helper/fixture.hpp"
 #include "test/helper/level_disabled.hpp"
 #include "test/helper/level_enabled.hpp"
-
-#define TEST_BUFFER_LENGTH 8192
 
 using::testing::HasSubstr;
 
 namespace {
 
-  class LevelEnabledTest : public::testing::Test {
-  protected:
-    char buffer[TEST_BUFFER_LENGTH];
-    struct stumpless_target *target;
-    struct stumpless_entry *basic_entry;
-    const char *basic_message = "basic test message";
-
-    virtual void
-    SetUp( void ) {
-      struct stumpless_element *element;
-      struct stumpless_param *param;
-
-      buffer[0] = '\0';
-      target = stumpless_open_buffer_target( "info level testing",
-                                             buffer,
-                                             TEST_BUFFER_LENGTH );
-
-      stumpless_set_target_default_app_name( target, "info-level-test" );
-      stumpless_set_target_default_msgid( target, "default-message" );
-
-      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                        "stumpless-unit-test",
-                                        "basic-entry",
-                                        basic_message );
-
-      element = stumpless_new_element( "basic-element" );
-      stumpless_add_element( basic_entry, element );
-
-      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-      stumpless_add_param( element, param );
-    }
-
-    virtual void
-    TearDown( void ) {
-      stumpless_destroy_entry_and_contents( basic_entry );
-      stumpless_close_buffer_target( target );
-    }
-  };
+  BUFFER_TARGET_FIXTURE_CLASS( LevelEnabledTest );
 
   TEST_LEVEL_ENABLED( EMERG, em );
   TEST_LEVEL_ENABLED( ALERT, a );

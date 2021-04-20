@@ -1,5 +1,6 @@
 "add_messages": "test/helper/usage.hpp"
 "BINDING_DISABLED_WARNING": "test/helper/server.hpp"
+"BUFFER_TARGET_FIXTURE_CLASS": "test/helper/fixture.hpp"
 "config_atomic_ptr_t": "private/config/wrapper/thread_safety.h"
 "config_compare_exchange_ptr": "private/config/wrapper/thread_safety.h"
 "config_destroy_mutex": "private/config/wrapper/thread_safety.h"

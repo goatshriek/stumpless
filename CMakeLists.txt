@@ -353,6 +353,7 @@ else()
   add_function_test(tcp6
     SOURCES
       test/function/target/tcp6.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:rfc5424_checker>
       $<TARGET_OBJECTS:test_helper_resolve>
       $<TARGET_OBJECTS:test_helper_server>
@@ -822,91 +823,127 @@ add_function_test(get_error_stream
 )
 
 add_function_test(level_all_disabled
-  SOURCES test/function/level/all_disabled.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/all_disabled.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_ALL_LEVELS
 )
 
 add_function_test(level_all_enabled
-  SOURCES test/function/level/all_enabled.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/all_enabled.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(level_disabled_downto_alert
-  SOURCES test/function/level/enable_upto_emerg.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_emerg.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_ALERT
 )
 
 add_function_test(level_disabled_downto_emerg
-  SOURCES test/function/level/all_disabled.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/all_disabled.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_EMERG
 )
 
 add_function_test(level_disabled_downto_err
-  SOURCES test/function/level/enable_upto_crit.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_crit.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_ERR
 )
 
 add_function_test(level_disabled_downto_crit
-  SOURCES test/function/level/enable_upto_alert.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_alert.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_CRIT
 )
 
 add_function_test(level_disabled_downto_debug
-  SOURCES test/function/level/enable_upto_info.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_info.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_DEBUG
 )
 
 add_function_test(level_disabled_downto_info
-  SOURCES test/function/level/enable_upto_notice.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_notice.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_INFO
 )
 
 add_function_test(level_disabled_downto_notice
-  SOURCES test/function/level/enable_upto_warning.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_warning.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_NOTICE
 )
 
 add_function_test(level_disabled_downto_warning
-  SOURCES test/function/level/enable_upto_err.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_err.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_WARNING
 )
 
 add_function_test(level_enable_upto_alert
-  SOURCES test/function/level/enable_upto_alert.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_alert.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_ALERT
 )
 
 add_function_test(level_enable_upto_crit
-  SOURCES test/function/level/enable_upto_crit.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_crit.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_CRIT
 )
 
 add_function_test(level_enable_upto_debug
-  SOURCES test/function/level/all_enabled.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/all_enabled.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_DEBUG
 )
 
 add_function_test(level_enable_upto_emerg
-  SOURCES test/function/level/enable_upto_emerg.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_emerg.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_EMERG
 )
 
 add_function_test(level_enable_upto_err
-  SOURCES test/function/level/enable_upto_err.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_err.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_ERR
 )
 
 add_function_test(level_enable_upto_info
-  SOURCES test/function/level/enable_upto_info.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_info.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_INFO
 )
 
 add_function_test(level_enable_upto_notice
-  SOURCES test/function/level/enable_upto_notice.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_notice.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_NOTICE
 )
 
 add_function_test(level_enable_upto_warning
-  SOURCES test/function/level/enable_upto_warning.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_warning.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_WARNING
 )
 

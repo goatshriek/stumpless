@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -237,15 +237,11 @@ namespace {
         ASSERT_NOT_NULL( target );
 
         destination_result = stumpless_get_destination( target );
-        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_NOT_NULL( destination_result );
         EXPECT_STREQ( destination_result, original_destination );
 
-        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "stumpless-unit-test",
-                                     "basic-entry",
-                                     "basic test message" );
-        EXPECT_TRUE( entry != NULL );
+        entry = create_entry(  );
+        EXPECT_NOT_NULL( entry );
 
         add_result = stumpless_add_entry( target, entry );
         EXPECT_GE( add_result, 0 );
@@ -263,7 +259,7 @@ namespace {
         EXPECT_TRUE( stumpless_target_is_open( target ) );
 
         destination_result = stumpless_get_destination( target );
-        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_NOT_NULL( destination_result );
         EXPECT_STREQ( destination_result, new_destination );
 
         add_result = stumpless_add_entry( target, entry );
