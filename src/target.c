@@ -445,7 +445,8 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
 
-  if( !validate_app_name_length( app_name ) | !validate_printable_ascii( app_name ) ) {
+  if( !validate_app_name_length( app_name ) ||
+      !validate_printable_ascii( app_name ) ) {
     return NULL;
   }
 
