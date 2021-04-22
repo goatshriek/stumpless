@@ -118,7 +118,6 @@ namespace {
 
   TEST_F( Udp4TargetTest, TruncatedMessage ) {
     int result;
-    struct stumpless_entry *long_entry;
     const struct stumpless_error *error;
     char *message;
     size_t max_msg_size;
@@ -128,7 +127,7 @@ namespace {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
-      ASSERT_TRUE( target != NULL );
+      ASSERT_NOT_NULL( target );
       ASSERT_TRUE( stumpless_target_is_open( target ) );
 
       max_msg_size = stumpless_get_udp_max_message_size( target );
@@ -136,23 +135,13 @@ namespace {
 
       my_msg_size = max_msg_size + 10;
       message = ( char * ) malloc( my_msg_size );
-      ASSERT_TRUE( message != NULL );
+      ASSERT_NOT_NULL( message );
       memset( message, 'a', max_msg_size );
-      strncpy( message, "present", 7 );
-      message[7] = 'a';
-      strncpy( message + max_msg_size, "truncated", 10 );
+      memcpy( message, "present", 7 );
+      memcpy( message + max_msg_size, "truncated", 9 );
       message[my_msg_size-1] = '\0';
 
-      // due to the message header more than just the word 'truncated' will be
-      // taken from the message - this is just a basic test
-      long_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                        STUMPLESS_SEVERITY_INFO,
-                                        "stumpless-unit-test",
-                                        "basic-entry",
-                                        message );
-      ASSERT_TRUE( long_entry != NULL );
-
-      result = stumpless_add_entry( target, long_entry );
+      result = stumpless_add_message( target, message );
       EXPECT_GE( result, 0 );
       EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
 
