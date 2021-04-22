@@ -206,7 +206,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( NetworkTargetSetDestination, OpenTarget ) {
+  TEST( NetworkTargetSetDestination, OpenTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
@@ -278,7 +278,7 @@ namespace {
     }
   }
 
-  TEST( NetworkTargetSetDestination, PausedTarget ) {
+  TEST( NetworkTargetSetDestination, PausedTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
@@ -319,11 +319,7 @@ namespace {
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       EXPECT_NOT_NULL( entry );
 
       add_result = stumpless_add_entry( target, entry );
@@ -341,7 +337,7 @@ namespace {
     close_server_socket( port_handle );
   }
 
-  TEST( NetworkTargetSetTransportPort, OpenTarget ) {
+  TEST( NetworkTargetSetTransportPort, OpenTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_entry *entry;
@@ -361,11 +357,7 @@ namespace {
       target = stumpless_open_tcp4_target( "target-to-self", "127.0.0.1" );
       ASSERT_NOT_NULL( target );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       ASSERT_NOT_NULL( entry );
 
       add_result = stumpless_add_entry( target, entry );
@@ -406,7 +398,7 @@ namespace {
     close_server_socket( new_port_handle );
   }
 
-  TEST( NetworkTargetSetTransportPort, PausedTarget ) {
+  TEST( NetworkTargetSetTransportPort, PausedTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_entry *entry;
@@ -451,11 +443,7 @@ namespace {
       EXPECT_EQ( result, target );
       EXPECT_TRUE( stumpless_target_is_open( target ) );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       ASSERT_NOT_NULL( entry );
 
       add_result = stumpless_add_entry( target, entry );
@@ -469,7 +457,6 @@ namespace {
       stumpless_destroy_entry_and_contents( entry );
       close_server_socket( accepted );
       stumpless_close_network_target( target );
-
     }
 
     close_server_socket( default_port_handle );
