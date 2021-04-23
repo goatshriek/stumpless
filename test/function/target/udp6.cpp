@@ -142,7 +142,7 @@ namespace {
       message = ( char * ) malloc( my_msg_size );
       ASSERT_NOT_NULL( message );
       memset( message, 'a', max_msg_size );
-      memcpy( message, "present", 7 );
+      memcpy( message, "present-in-udp6", 15 );
       memcpy( message + max_msg_size, "truncated", 9 );
       message[my_msg_size-1] = '\0';
 
@@ -153,7 +153,7 @@ namespace {
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
       EXPECT_THAT( buffer, Not( EndsWith( "truncated" ) ) );
-      EXPECT_THAT( buffer, HasSubstr( "present" ) );
+      EXPECT_THAT( buffer, HasSubstr( "present-in-udp6" ) );
 
       free( message );
     }
@@ -161,7 +161,7 @@ namespace {
 
   /* non-fixture tests */
 
-  TEST( NetworkTargetNewTest, Basic ) {
+  TEST( NetworkTargetNewTest, BasicUdp6 ) {
     struct stumpless_target *target;
 
     target = stumpless_new_udp6_target( "my-udp6-target" );
