@@ -181,6 +181,8 @@ set_target_properties(test_function_target_udp
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
+add_dependencies(test_function_target_udp libgtest)
+
 target_include_directories(test_function_target_udp
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
@@ -196,6 +198,8 @@ set_target_properties(test_helper_fixture
   PROPERTIES
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
+
+add_dependencies(test_helper_fixture libgtest)
 
 target_include_directories(test_helper_fixture
     PRIVATE
