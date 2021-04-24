@@ -364,6 +364,7 @@ else()
     SOURCES
       test/function/target/udp4.cpp
       $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_function_target_udp>
       $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_resolve>
       $<TARGET_OBJECTS:test_helper_server>
@@ -374,6 +375,7 @@ else()
     SOURCES
       test/function/target/udp6.cpp
       $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_function_target_udp>
       $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_resolve>
       $<TARGET_OBJECTS:test_helper_server>

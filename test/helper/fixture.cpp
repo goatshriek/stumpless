@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,11 @@
 
 struct stumpless_entry *
 create_empty_entry( void ) {
-  struct stumpless_entry *entry;
-
-  entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                               STUMPLESS_SEVERITY_INFO,
-                               "fixture-app-name",
-                               "fixture-msgid",
-                               "fixture message" );
-
-  return entry;
+  return stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                              STUMPLESS_SEVERITY_INFO,
+                              "fixture-app-name",
+                              "fixture-msgid",
+                              "fixture message" );
 }
 
 struct stumpless_entry *

@@ -55,6 +55,7 @@
 "target_free_global": "private/target.h"
 "target_free_thread": "private/target.h"
 "TARGET_MUTEX": "private/target.h"
+"TestTruncatedMessage": "test/function/target/udp.hpp"
 "unlock_element": "private/element.h"
 "unlock_entry": "private/entry.h"
 "unlock_network_target": "private/target/network.h"

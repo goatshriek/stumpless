@@ -21,11 +21,11 @@
 #include <cstdlib>
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/function/target/udp.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/resolve.hpp"
@@ -88,9 +88,9 @@ namespace {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
-      ASSERT_TRUE( target != NULL );
+      ASSERT_NOT_NULL( target );
       ASSERT_TRUE( stumpless_target_is_open( target ) );
-      ASSERT_TRUE( basic_entry != NULL );
+      ASSERT_NOT_NULL( basic_entry );
 
       result = stumpless_add_entry( target, basic_entry );
       EXPECT_GE( result, 0 );
@@ -110,47 +110,22 @@ namespace {
     } else {
       port_result = stumpless_get_transport_port( target );
 
-      EXPECT_TRUE( port_result != NULL );
+      EXPECT_NOT_NULL( port_result );
       EXPECT_TRUE( port_result != port );
       EXPECT_STREQ( port_result, port );
     }
   }
 
   TEST_F( Udp4TargetTest, TruncatedMessage ) {
-    int result;
-    const struct stumpless_error *error;
-    char *message;
-    size_t max_msg_size;
-    size_t my_msg_size;
-
     if( !udp_fixtures_enabled ) {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
-      ASSERT_NOT_NULL( target );
-      ASSERT_TRUE( stumpless_target_is_open( target ) );
-
-      max_msg_size = stumpless_get_udp_max_message_size( target );
-      ASSERT_NE( max_msg_size, 0 );
-
-      my_msg_size = max_msg_size + 10;
-      message = ( char * ) malloc( my_msg_size );
-      ASSERT_NOT_NULL( message );
-      memset( message, 'a', max_msg_size );
-      memcpy( message, "present-in-udp4", 15 );
-      memcpy( message + max_msg_size, "truncated", 9 );
-      message[my_msg_size-1] = '\0';
-
-      result = stumpless_add_message( target, message );
-      EXPECT_GE( result, 0 );
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
-
+      TestTruncatedMessage( target );
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
       EXPECT_THAT( buffer, Not( EndsWith( "truncated" ) ) );
-      EXPECT_THAT( buffer, HasSubstr( "present-in-udp4" ) );
-
-      free( message );
+      EXPECT_THAT( buffer, HasSubstr( "begin" ) );
     }
   }
 

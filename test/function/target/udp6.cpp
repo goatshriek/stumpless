@@ -18,14 +18,13 @@
 
 #include "test/helper/server.hpp"
 
-#include <cstdlib>
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/function/target/udp.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/resolve.hpp"
@@ -122,40 +121,15 @@ namespace {
   }
 
   TEST_F( Udp6TargetTest, TruncatedMessage ) {
-    int result;
-    const struct stumpless_error *error;
-    char *message;
-    size_t max_msg_size;
-    size_t my_msg_size;
-
     if( !udp_fixtures_enabled ) {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
-      ASSERT_NOT_NULL( target );
-      ASSERT_TRUE( stumpless_target_is_open( target ) );
-
-      max_msg_size = stumpless_get_udp_max_message_size( target );
-      ASSERT_NE( max_msg_size, 0 );
-
-      my_msg_size = max_msg_size + 10;
-      message = ( char * ) malloc( my_msg_size );
-      ASSERT_NOT_NULL( message );
-      memset( message, 'a', max_msg_size );
-      memcpy( message, "present-in-udp6", 15 );
-      memcpy( message + max_msg_size, "truncated", 9 );
-      message[my_msg_size-1] = '\0';
-
-      result = stumpless_add_message( target, message );
-      EXPECT_GE( result, 0 );
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
-
+      TestTruncatedMessage( target );
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
       EXPECT_THAT( buffer, Not( EndsWith( "truncated" ) ) );
-      EXPECT_THAT( buffer, HasSubstr( "present-in-udp6" ) );
-
-      free( message );
+      EXPECT_THAT( buffer, HasSubstr( "begin" ) );
     }
   }
 

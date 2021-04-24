@@ -91,8 +91,12 @@
 "malloc":
   - "cstdlib"
   - "stdlib.h"
-"memcpy": "string.h"
-"memset": "string.h"
+"memcpy":
+  - "cstring"
+  - "string.h"
+"memset":
+  - "cstring"
+  - "string.h"
 "mkstemp": "stdlib.h"
 "NULL":
   - "cstddef"
