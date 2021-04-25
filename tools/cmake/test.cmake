@@ -171,6 +171,24 @@ target_include_directories(rfc5424_checker
 )
 
 # helper libraries
+add_library(test_function_target_udp
+  EXCLUDE_FROM_ALL
+  OBJECT ${PROJECT_SOURCE_DIR}/test/function/target/udp.cpp
+)
+
+set_target_properties(test_function_target_udp
+  PROPERTIES
+  COMPILE_FLAGS "${function_test_compile_flags}"
+)
+
+add_dependencies(test_function_target_udp libgtest)
+
+target_include_directories(test_function_target_udp
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)
+
 add_library(test_helper_fixture
   EXCLUDE_FROM_ALL
   OBJECT ${PROJECT_SOURCE_DIR}/test/helper/fixture.cpp
@@ -181,11 +199,14 @@ set_target_properties(test_helper_fixture
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
+add_dependencies(test_helper_fixture libgtest)
+
 target_include_directories(test_helper_fixture
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include
 )
+
 add_library(test_helper_resolve
   EXCLUDE_FROM_ALL
   OBJECT ${PROJECT_SOURCE_DIR}/test/helper/resolve.cpp

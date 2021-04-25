@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_TEST_FUNCTION_UTF8_HPP
-#  define __STUMPLESS_TEST_FUNCTION_UTF8_HPP
+#ifndef __STUMPLESS_TEST_FUNCTION_TARGET_UDP_HPP
+#  define __STUMPLESS_TEST_FUNCTION_TARGET_UDP_HPP
 
-void TestUTF8Compliance( const char *str );
+#  include <stumpless.h>
 
-#endif /* __STUMPLESS_TEST_FUNCTION_UTF8_HPP */
+void TestTruncatedMessage( struct stumpless_target *target );
+
+#endif /* __STUMPLESS_TEST_FUNCTION_TARGET_UDP_HPP */

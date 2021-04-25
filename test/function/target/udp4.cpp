@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,13 @@
 #include <cstdlib>
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
+#include "test/function/target/udp.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/resolve.hpp"
 
 #ifndef _WIN32
@@ -51,9 +52,6 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      struct stumpless_element *element;
-      struct stumpless_param *param;
-
       // setting up to receive the sent messages
       handle = open_udp4_server_socket( "127.0.0.1", port );
       if( handle == BAD_HANDLE ) {
@@ -67,17 +65,7 @@ namespace {
       stumpless_set_target_default_msgid( target, "default-message" );
       stumpless_set_udp_max_message_size( target, 500 );
 
-      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                         "stumpless-unit-test",
-                                         "basic-entry",
-                                         "basic test message" );
-
-      element = stumpless_new_element( "basic-element" );
-      stumpless_add_element( basic_entry, element );
-
-      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-      stumpless_add_param( element, param );
+      basic_entry = create_entry(  );
     }
 
     virtual void
@@ -100,9 +88,9 @@ namespace {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
-      ASSERT_TRUE( target != NULL );
+      ASSERT_NOT_NULL( target );
       ASSERT_TRUE( stumpless_target_is_open( target ) );
-      ASSERT_TRUE( basic_entry != NULL );
+      ASSERT_NOT_NULL( basic_entry );
 
       result = stumpless_add_entry( target, basic_entry );
       EXPECT_GE( result, 0 );
@@ -122,64 +110,28 @@ namespace {
     } else {
       port_result = stumpless_get_transport_port( target );
 
-      EXPECT_TRUE( port_result != NULL );
+      EXPECT_NOT_NULL( port_result );
       EXPECT_TRUE( port_result != port );
       EXPECT_STREQ( port_result, port );
     }
   }
 
   TEST_F( Udp4TargetTest, TruncatedMessage ) {
-    int result;
-    struct stumpless_entry *long_entry;
-    const struct stumpless_error *error;
-    char *message;
-    size_t max_msg_size;
-    size_t my_msg_size;
-
     if( !udp_fixtures_enabled ) {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
 
     } else {
-      ASSERT_TRUE( target != NULL );
-      ASSERT_TRUE( stumpless_target_is_open( target ) );
-
-      max_msg_size = stumpless_get_udp_max_message_size( target );
-      ASSERT_NE( max_msg_size, 0 );
-
-      my_msg_size = max_msg_size + 10;
-      message = ( char * ) malloc( my_msg_size );
-      ASSERT_TRUE( message != NULL );
-      memset( message, 'a', max_msg_size );
-      strncpy( message, "present", 7 );
-      message[7] = 'a';
-      strncpy( message + max_msg_size, "truncated", 10 );
-      message[my_msg_size-1] = '\0';
-
-      // due to the message header more than just the word 'truncated' will be
-      // taken from the message - this is just a basic test
-      long_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                        STUMPLESS_SEVERITY_INFO,
-                                        "stumpless-unit-test",
-                                        "basic-entry",
-                                        message );
-      ASSERT_TRUE( long_entry != NULL );
-
-      result = stumpless_add_entry( target, long_entry );
-      EXPECT_GE( result, 0 );
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
-
+      TestTruncatedMessage( target );
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
       EXPECT_THAT( buffer, Not( EndsWith( "truncated" ) ) );
-      EXPECT_THAT( buffer, HasSubstr( "present" ) );
-
-      free( message );
+      EXPECT_THAT( buffer, HasSubstr( "begin" ) );
     }
   }
 
   /* non-fixture tests */
 
-  TEST( NetworkTargetNewTest, Basic ) {
+  TEST( NetworkTargetNewTest, BasicUdp4 ) {
     struct stumpless_target *target;
 
     target = stumpless_new_udp4_target( "my-udp4-target" );
@@ -230,7 +182,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( NetworkTargetSetDestination, OpenTarget ) {
+  TEST( NetworkTargetSetDestination, OpenUdp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
@@ -250,31 +202,27 @@ namespace {
 
       target = stumpless_open_udp4_target( "target-to-self",
                                            original_destination );
-      ASSERT_TRUE( target != NULL );
+      ASSERT_NOT_NULL( target );
       EXPECT_NO_ERROR;
 
       destination_result = stumpless_get_destination( target );
-      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_NOT_NULL( destination_result );
       EXPECT_STREQ( destination_result, original_destination );
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
       target_result = stumpless_set_destination( target, new_destination );
-      EXPECT_TRUE( target_result != NULL );
+      EXPECT_NOT_NULL( target_result );
       EXPECT_NO_ERROR;
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
 
       destination_result = stumpless_get_destination( target );
-      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_NOT_NULL( destination_result );
       EXPECT_STREQ( destination_result, new_destination );
 
       if( handle != BAD_HANDLE ) {
-        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "stumpless-unit-test",
-                                     "basic-entry",
-                                     "basic test message" );
-        EXPECT_TRUE( entry != NULL );
+        entry = create_entry(  );
+        EXPECT_NOT_NULL( entry );
 
         add_result = stumpless_add_entry( target, entry );
         EXPECT_GE( add_result, 0 );
@@ -291,7 +239,7 @@ namespace {
     }
   }
 
-  TEST( NetworkTargetSetDestination, PausedTarget ) {
+  TEST( NetworkTargetSetDestination, PausedUdp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
@@ -304,38 +252,34 @@ namespace {
     handle = open_udp4_server_socket( destination, "514" );
 
     target = stumpless_new_udp4_target( "target-to-self" );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
     EXPECT_NO_ERROR;
 
     destination_result = stumpless_get_destination( target );
-    EXPECT_TRUE( destination_result == NULL );
+    EXPECT_NULL( destination_result );
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
     target_result = stumpless_set_destination( target, destination );
-    EXPECT_TRUE( target_result != NULL );
+    EXPECT_NOT_NULL( target_result );
     EXPECT_NO_ERROR;
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
     destination_result = stumpless_get_destination( target );
-    EXPECT_TRUE( destination_result != NULL );
+    EXPECT_NOT_NULL( destination_result );
     EXPECT_STREQ( destination_result, destination );
     free( ( void * ) destination_result );
 
     target_result = stumpless_open_target( target );
-    ASSERT_TRUE( target_result != NULL );
+    ASSERT_NOT_NULL( target_result );
     EXPECT_TRUE( target_result == target );
     EXPECT_NO_ERROR;
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
 
     if( handle != BAD_HANDLE ) {
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
-      EXPECT_TRUE( entry != NULL );
+      entry = create_entry(  );
+      EXPECT_NOT_NULL( entry );
 
       add_result = stumpless_add_entry( target, entry );
       EXPECT_GE( add_result, 0 );
@@ -351,7 +295,7 @@ namespace {
     stumpless_close_network_target( target );
   }
 
-  TEST( NetworkTargetSetTransportPort, OpenTarget ) {
+  TEST( NetworkTargetSetTransportPort, OpenUdp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_entry *entry;
@@ -365,33 +309,29 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1" );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     default_port = stumpless_get_transport_port( target );
-    EXPECT_TRUE( default_port != NULL );
+    EXPECT_NOT_NULL( default_port );
     ASSERT_STRNE( default_port, new_port );
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
     result = stumpless_set_transport_port( target, new_port );
-    EXPECT_TRUE( result != NULL );
+    EXPECT_NOT_NULL( result );
     EXPECT_NO_ERROR;
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
 
     current_port = stumpless_get_transport_port( target );
-    EXPECT_TRUE( current_port != NULL );
+    EXPECT_NOT_NULL( current_port );
     EXPECT_TRUE( current_port != new_port );
     EXPECT_STREQ( new_port, current_port );
     EXPECT_NO_ERROR;
 
     if( handle != BAD_HANDLE ) {
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       stumpless_add_entry( target, entry );
-      EXPECT_TRUE( result != NULL );
+      EXPECT_NOT_NULL( result );
 
       recv_from_handle( handle, buffer, 1024 );
       EXPECT_TRUE( buffer[0] != '\0' );
@@ -404,7 +344,7 @@ namespace {
     stumpless_close_network_target( target );
   }
 
-  TEST( NetworkTargetSetTransportPort, PausedTarget ) {
+  TEST( NetworkTargetSetTransportPort, PausedUdp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
@@ -419,42 +359,38 @@ namespace {
     handle = open_udp4_server_socket( destination, new_port );
 
     target = stumpless_new_udp4_target( "target-to-self" );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
     EXPECT_NO_ERROR;
 
     default_port = stumpless_get_transport_port( target );
-    EXPECT_TRUE( default_port != NULL );
+    EXPECT_NOT_NULL( default_port );
     ASSERT_STRNE( default_port, new_port );
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
     target_result = stumpless_set_transport_port( target, new_port );
-    EXPECT_TRUE( target_result != NULL );
+    EXPECT_NOT_NULL( target_result );
     EXPECT_NO_ERROR;
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
     current_port = stumpless_get_transport_port( target );
-    EXPECT_TRUE( current_port != NULL );
+    EXPECT_NOT_NULL( current_port );
     EXPECT_TRUE( current_port != new_port );
     EXPECT_STREQ( new_port, current_port );
     EXPECT_NO_ERROR;
 
     target_result = stumpless_set_destination( target, destination );
-    EXPECT_TRUE( target_result != NULL );
+    EXPECT_NOT_NULL( target_result );
 
     target_result = stumpless_open_target( target );
-    ASSERT_TRUE( target_result != NULL );
+    ASSERT_NOT_NULL( target_result );
     EXPECT_TRUE( target_result == target );
     EXPECT_NO_ERROR;
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
 
     if( handle != BAD_HANDLE ) {
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       add_result = stumpless_add_entry( target, entry );
       EXPECT_GT( add_result, 0 );
       EXPECT_NO_ERROR;

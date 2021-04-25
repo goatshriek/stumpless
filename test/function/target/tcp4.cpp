@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/resolve.hpp"
 
 #ifndef _WIN32
@@ -47,9 +48,6 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      struct stumpless_element *element;
-      struct stumpless_param *param;
-
       // setting up to receive the sent messages
       handle = open_tcp4_server_socket( "127.0.0.1", port );
       if( handle == BAD_HANDLE ) {
@@ -61,18 +59,7 @@ namespace {
 
       stumpless_set_target_default_app_name( target, "network-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
-
-      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                         "stumpless-unit-test",
-                                         "basic-entry",
-                                         "basic test message" );
-
-      element = stumpless_new_element( "basic-element" );
-      stumpless_add_element( basic_entry, element );
-
-      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-      stumpless_add_param( element, param );
+      basic_entry = create_entry(  );
     }
 
     virtual void
@@ -137,8 +124,7 @@ namespace {
 
     } else {
       port_result = stumpless_get_transport_port( target );
-
-      EXPECT_TRUE( port_result != NULL );
+      EXPECT_NOT_NULL( port_result );
       EXPECT_TRUE( port_result != port );
       EXPECT_STREQ( port_result, port );
     }
@@ -184,8 +170,8 @@ namespace {
     struct stumpless_target *target;
 
     target = stumpless_new_tcp4_target( "my-tcp4-target" );
-    EXPECT_TRUE( target != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NOT_NULL( target );
+    EXPECT_NO_ERROR;
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
@@ -220,7 +206,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( NetworkTargetSetDestination, OpenTarget ) {
+  TEST( NetworkTargetSetDestination, OpenTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
@@ -251,15 +237,11 @@ namespace {
         ASSERT_NOT_NULL( target );
 
         destination_result = stumpless_get_destination( target );
-        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_NOT_NULL( destination_result );
         EXPECT_STREQ( destination_result, original_destination );
 
-        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "stumpless-unit-test",
-                                     "basic-entry",
-                                     "basic test message" );
-        EXPECT_TRUE( entry != NULL );
+        entry = create_entry(  );
+        EXPECT_NOT_NULL( entry );
 
         add_result = stumpless_add_entry( target, entry );
         EXPECT_GE( add_result, 0 );
@@ -277,7 +259,7 @@ namespace {
         EXPECT_TRUE( stumpless_target_is_open( target ) );
 
         destination_result = stumpless_get_destination( target );
-        EXPECT_TRUE( destination_result != NULL );
+        EXPECT_NOT_NULL( destination_result );
         EXPECT_STREQ( destination_result, new_destination );
 
         add_result = stumpless_add_entry( target, entry );
@@ -296,7 +278,7 @@ namespace {
     }
   }
 
-  TEST( NetworkTargetSetDestination, PausedTarget ) {
+  TEST( NetworkTargetSetDestination, PausedTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
@@ -337,11 +319,7 @@ namespace {
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       EXPECT_NOT_NULL( entry );
 
       add_result = stumpless_add_entry( target, entry );
@@ -359,7 +337,7 @@ namespace {
     close_server_socket( port_handle );
   }
 
-  TEST( NetworkTargetSetTransportPort, OpenTarget ) {
+  TEST( NetworkTargetSetTransportPort, OpenTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_entry *entry;
@@ -379,11 +357,7 @@ namespace {
       target = stumpless_open_tcp4_target( "target-to-self", "127.0.0.1" );
       ASSERT_NOT_NULL( target );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       ASSERT_NOT_NULL( entry );
 
       add_result = stumpless_add_entry( target, entry );
@@ -424,7 +398,7 @@ namespace {
     close_server_socket( new_port_handle );
   }
 
-  TEST( NetworkTargetSetTransportPort, PausedTarget ) {
+  TEST( NetworkTargetSetTransportPort, PausedTcp4Target ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
     struct stumpless_entry *entry;
@@ -469,11 +443,7 @@ namespace {
       EXPECT_EQ( result, target );
       EXPECT_TRUE( stumpless_target_is_open( target ) );
 
-      entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                   STUMPLESS_SEVERITY_INFO,
-                                   "stumpless-unit-test",
-                                   "basic-entry",
-                                   "basic test message" );
+      entry = create_entry(  );
       ASSERT_NOT_NULL( entry );
 
       add_result = stumpless_add_entry( target, entry );
@@ -487,7 +457,6 @@ namespace {
       stumpless_destroy_entry_and_contents( entry );
       close_server_socket( accepted );
       stumpless_close_network_target( target );
-
     }
 
     close_server_socket( default_port_handle );

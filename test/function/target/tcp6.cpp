@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@
 #include <gtest/gtest.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/resolve.hpp"
 
 #ifndef _WIN32
@@ -47,9 +48,6 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      struct stumpless_element *element;
-      struct stumpless_param *param;
-
       // setting up to receive the sent messages
       handle = open_tcp6_server_socket( "::1", port );
       if( handle == BAD_HANDLE ) {
@@ -61,18 +59,7 @@ namespace {
 
       stumpless_set_target_default_app_name( target, "network-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
-
-      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                         "stumpless-unit-test",
-                                         "basic-entry",
-                                         "basic test message" );
-
-      element = stumpless_new_element( "basic-element" );
-      stumpless_add_element( basic_entry, element );
-
-      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-      stumpless_add_param( element, param );
+      basic_entry = create_entry(  );
     }
 
     virtual void
