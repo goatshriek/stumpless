@@ -301,6 +301,8 @@ else()
 endif()
 
 if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
+  list(APPEND STUMPLESS_SOURCES src/target/journald.c)
+
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/journald.h
     DESTINATION "include/stumpless/target"

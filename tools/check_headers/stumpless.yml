@@ -279,6 +279,7 @@
 "STUMPLESS_INVALID_ID": "stumpless/error.h"
 "STUMPLESS_INVALID_SEVERITY": "stumpless/error.h"
 "STUMPLESS_IPV4_NETWORK_PROTOCOL": "stumpless/target/network.h"
+"STUMPLESS_JOURNALD_TARGET": "stumpless/target.h"
 "STUMPLESS_LANGUAGE": "stumpless/config.h"
 "stumpless_log_func_t": "stumpless/target/function.h"
 "STUMPLESS_MAJOR_VERSION": "stumpless/config.h"
