@@ -54,9 +54,12 @@
 #  include <stumpless/target/buffer.h>
 #  include <stumpless/target/file.h>
 #  include <stumpless/target/function.h>
-#  include <stumpless/target/journald.h>
 #  include <stumpless/target/stream.h>
 #  include <stumpless/version.h>
+
+#  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
+#    include <stumpless/target/journald.h>
+#  endif
 
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include <stumpless/target/network.h>
