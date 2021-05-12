@@ -33,7 +33,6 @@
 #ifndef __STUMPLESS_TARGET_JOURNALD_H
 #  define __STUMPLESS_TARGET_JOURNALD_H
 
-#  include <stumpless/entry.h>
 #  include <stumpless/target.h>
 
 #  ifdef __cplusplus
