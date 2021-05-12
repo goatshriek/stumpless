@@ -15,9 +15,12 @@ option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 
 option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
+
+option(ENABLE_JOURNALD_TARGETS "support systemd journald service targets" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
+
 option(COVERAGE "Include coverage information" OFF)
 
 string(CONCAT enable_deprecation_warnings_help_string
@@ -116,6 +119,7 @@ check_include_files(pthread.h HAVE_PTHREAD_H)
 check_include_files(stdatomic.h HAVE_STDATOMIC_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
+check_include_files(systemd/sd-journal.h HAVE_SYSTEMD_SD_JOURNAL_H)
 check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
@@ -283,6 +287,24 @@ endif()
 
 if(NEED_FALLBACK)
   list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
+endif()
+
+
+# journald target support
+if(NOT ENABLE_JOURNALD_TARGETS)
+  set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED FALSE)
+elseif(ENABLE_JOURNALD_TARGETS AND NOT HAVE_SYSTEMD_SD_JOURNAL_H)
+  message("journald targets are not supported without systemd/sd-journal.h")
+  set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED TRUE)
+endif()
+
+if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/journald.h
+    DESTINATION "include/stumpless/target"
+  )
 endif()
 
 
