@@ -46,6 +46,12 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno after the failed call"
 
+#  define L10N_FILE_OPEN_FAILURE_MESSAGE \
+"could not open the specified file"
+
+#  define L10N_FILE_WRITE_FAILURE_MESSAGE \
+"could not write to the file"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "return code of the log handler function"
 

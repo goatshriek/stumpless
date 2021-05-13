@@ -46,6 +46,12 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno след неуспешно извикване"
 
+#  define L10N_FILE_OPEN_FAILURE_MESSAGE \
+"FILE OPEN FAILURE MESSAGE"
+
+#  define L10N_FILE_WRITE_FAILURE_MESSAGE \
+"FILE WRITE FAILURE MESSAGE"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "върната стойност от фунцията манипулатор на логове"
 

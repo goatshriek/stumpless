@@ -46,6 +46,12 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno dopo la chiamata fallita"
 
+#  define L10N_FILE_OPEN_FAILURE_MESSAGE \
+"non è stato possibile aprire un file con il nome scelto"
+
+#  define L10N_FILE_WRITE_FAILURE_MESSAGE \
+"non è stato possibile scrivere al file scelto"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "il codice di ritorno della chiamata funzione fallita"
 

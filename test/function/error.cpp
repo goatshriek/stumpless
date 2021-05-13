@@ -131,6 +131,15 @@ namespace {
     EXPECT_THAT( line, HasSubstr( error->code_type ) );
   }
 
+  TEST_F( PerrorTest, FileOpenFailure ) {
+    struct stumpless_target *target;
+
+    target = stumpless_open_file_target( "/" );
+    EXPECT_NULL( target );
+
+    stumpless_perror( "better not segfault" );
+  }
+
   TEST_F( PerrorTest, InvalidId ) {
     char buffer[10];
     struct stumpless_target *id_target;

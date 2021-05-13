@@ -169,12 +169,18 @@ raise_error( enum stumpless_error_id id,
 
 void
 raise_file_open_failure( void ) {
-  raise_error( STUMPLESS_FILE_OPEN_FAILURE, NULL, 0, NULL );
+  raise_error( STUMPLESS_FILE_OPEN_FAILURE,
+               L10N_FILE_OPEN_FAILURE_MESSAGE,
+               0,
+               NULL );
 }
 
 void
 raise_file_write_failure( void ) {
-  raise_error( STUMPLESS_FILE_WRITE_FAILURE, NULL, 0, NULL );
+  raise_error( STUMPLESS_FILE_WRITE_FAILURE,
+               L10N_FILE_WRITE_FAILURE_MESSAGE,
+               0,
+               NULL );
 }
 
 void
