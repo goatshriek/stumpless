@@ -82,6 +82,9 @@
 "Einrichtungscodes müssen in Übereinstimmung mit RFC 5424 definiert werden, " \
 "nach der Multiplikation mit 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"INVALID ID ERROR MESSAGE"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "Ungültiger " INDEXED_THING " index"
 

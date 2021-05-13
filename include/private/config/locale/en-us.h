@@ -80,6 +80,9 @@
 "facility codes must be defined in accordance with RFC 5424, after the" \
 " multiplication by 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"invalid target id"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "invalid " INDEXED_THING " index"
 

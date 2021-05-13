@@ -79,6 +79,9 @@
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
 "i codici di servizio devono essere definiti in osservanza del RFC 5424, dopo la moltiplicazione per 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"target id non valido"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "indice " INDEXED_THING " non valido"
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 
 using::testing::HasSubstr;
 
@@ -128,6 +129,27 @@ namespace {
     EXPECT_THAT( line, HasSubstr( error->message ) );
     EXPECT_THAT( line, HasSubstr( std::to_string( error->code ) ) );
     EXPECT_THAT( line, HasSubstr( error->code_type ) );
+  }
+
+  TEST_F( PerrorTest, InvalidId ) {
+    char buffer[10];
+    struct stumpless_target *id_target;
+    stumpless_id_t actual_id;
+    struct stumpless_entry *entry;
+
+    id_target = stumpless_open_buffer_target( "test-target",
+                                              buffer,
+                                              sizeof( buffer ) ) ;
+    actual_id = id_target->id;
+    id_target->id = NULL;
+
+    entry = create_entry(  );
+    stumpless_add_entry( id_target, entry );
+    stumpless_perror( "better not segfault" );
+
+    id_target->id = actual_id;
+    stumpless_close_target( id_target );
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST_F( PerrorTest, NoError ) {

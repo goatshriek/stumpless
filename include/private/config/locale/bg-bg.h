@@ -80,6 +80,9 @@
 "кодовете на съоръженията трябва да бъдат дефинирани в съответствие с RFC 5424," \
 " след умножаване по 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"INVALID ID ERROR MESSAGE"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "невалиден " INDEXED_THING " индекс"
 

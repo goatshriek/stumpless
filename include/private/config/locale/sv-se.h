@@ -81,6 +81,9 @@
 "facilitetskoder måste vara definierade i enlighet med RFC 5424 " \
 "efter multiplikation med 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"INVALID ID ERROR MESSAGE"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "ogiltig " INDEXED_THING " index"
 

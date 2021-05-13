@@ -80,6 +80,9 @@
 "les codes d'installations doivent être définis confirmément au RFC 5424, après la" \
 " multiplication par 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"INVALID ID ERROR MESSAGE"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "index " INDEXED_THING " invalide"
 

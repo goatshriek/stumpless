@@ -79,6 +79,9 @@
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
 "hodnota kódu zariadenia, po vydelení číslom 8, musí byť definovaná v súlade s protokolom RFC 5424"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"INVALID ID ERROR MESSAGE"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "neplatný index " INDEXED_THING
 

@@ -210,7 +210,10 @@ raise_invalid_facility( int facility ) {
 
 void
 raise_invalid_id( void ) {
-  raise_error( STUMPLESS_INVALID_ID, NULL, 0, NULL );
+  raise_error( STUMPLESS_INVALID_ID,
+               L10N_INVALID_ID_ERROR_MESSAGE,
+               0,
+               NULL );
 }
 
 void
