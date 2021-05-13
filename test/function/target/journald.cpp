@@ -53,10 +53,8 @@ namespace {
   TEST_F( JournaldTargetTest, AddEntry ) {
     int result;
 
-    SCOPED_TRACE( "EntryTargetTest.AddEntry" );
-
     result = stumpless_add_entry( target, basic_entry );
-    EXPECT_EQ( result, EXPECTED_RETURN_VALUE );
+    EXPECT_GE( result, 0 );
     EXPECT_NO_ERROR;
   }
 

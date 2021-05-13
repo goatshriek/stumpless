@@ -307,6 +307,12 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/journald.h
     DESTINATION "include/stumpless/target"
   )
+
+  add_function_test(journald
+    SOURCES
+      test/function/target/journald.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
 endif()
 
 
