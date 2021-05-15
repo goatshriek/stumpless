@@ -109,6 +109,9 @@
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "veľkosť správy, ktorá sa pokúsila odoslať je "
 
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
+
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "táto verzia nepodporuje sieťové cieľe"
 
@@ -147,6 +150,9 @@ ARG_NAME " mal hodnotu NULL"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "prenosové porty su platné len pre sieťové ciele"
+
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "zlyhanie otvárania unixového socketu pomocou soketovej funkcie"

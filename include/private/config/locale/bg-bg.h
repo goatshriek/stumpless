@@ -111,6 +111,9 @@
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "размер на съобщението, което беше опитано да се изпрати"
 
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
+
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "мрежови цели не се поддържат от тази компилация"
 
@@ -149,6 +152,9 @@ ARG_NAME " беше NULL"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "транспортните портове са валидни само за мрежови цели"
+
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно отваряне на unix сокет с функция socket"

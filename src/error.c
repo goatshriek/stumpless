@@ -241,7 +241,7 @@ raise_memory_allocation_failure( void ) {
 void
 raise_network_protocol_unsupported( void ) {
   raise_error( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED,
-               NULL,
+               L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE,
                0,
                NULL );
 }
@@ -301,7 +301,7 @@ raise_target_unsupported( const char *message ) {
 void
 raise_transport_protocol_unsupported( void ) {
   raise_error( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED,
-               NULL,
+               L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE,
                0,
                NULL );
 }

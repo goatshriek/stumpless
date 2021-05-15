@@ -112,6 +112,9 @@
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "storleken på meddelandet som försökte skickas"
 
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
+
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "nätverksmål är inte supporterat av denna build"
 
@@ -150,6 +153,9 @@ ARG_NAME " var NULL"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "transportportar är alltid giltiga för nätverksmål"
+
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "misslyckades att öppna en unix-Socket med socket-funktionen"

@@ -111,6 +111,9 @@
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "la taille du message qui a été tenté d'être envoyé"
 
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
+
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "les cibles réseaux ne sont pas supportés par cette build"
 
@@ -149,6 +152,9 @@ ARG_NAME " a été NULL"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "ports de transport valides uniquement pour les cibles réseaux"
+
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "échec d'ouverture d'un socket unix avec la fonction socket"

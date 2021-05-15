@@ -113,6 +113,9 @@
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "Die Größe der Nachricht, die versucht wurde, gesendet zu werden"
 
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
+
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "Netzwerkziele werden von diesem Build nicht unterstützt"
 
@@ -148,6 +151,9 @@ ARG_NAME " war NULL"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "Dieser Zieltyp ist immer offen"
+
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "Transportanschlüsse sind nur für Netzwerkziele gültig"
