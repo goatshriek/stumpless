@@ -46,10 +46,10 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno après l'échec d'appel"
 
-#  define L10N_FILE_OPEN_FAILURE_MESSAGE \
+#  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
 "FILE OPEN FAILURE MESSAGE"
 
-#  define L10N_FILE_WRITE_FAILURE_MESSAGE \
+#  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "FILE WRITE FAILURE MESSAGE"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
@@ -101,6 +101,9 @@
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "taille maximale des messages valide uniquement pour les cibles réseaux UDP"
+
+#  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
+"MEMORY ALLOCATION FAILURE MESSAGE"
 
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "message trop grand pour être envoyé en un seul datagramme"

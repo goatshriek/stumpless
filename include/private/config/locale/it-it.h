@@ -46,10 +46,10 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno dopo la chiamata fallita"
 
-#  define L10N_FILE_OPEN_FAILURE_MESSAGE \
+#  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
 "non è stato possibile aprire un file con il nome scelto"
 
-#  define L10N_FILE_WRITE_FAILURE_MESSAGE \
+#  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "non è stato possibile scrivere al file scelto"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
@@ -99,6 +99,9 @@
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "la dimensione massima del messaggio è solo valido per target di rete UDP"
+
+#  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
+"una chiamata di allocazione della memoria fallita"
 
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "il messaggio è troppo grande per essere inviato in unico datagram"

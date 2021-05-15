@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2021-05-13
+## [2.1.0] - 2021-05-15
 ### Added
  - Custom function logging targets.
 
@@ -18,6 +18,7 @@ fixes, check out the
     * `STUMPLESS_FILE_OPEN_ERROR`
     * `STUMPLESS_FILE_WRITE_ERROR`
     * `STUMPLESS_INVALID_ID`
+    * `STUMPLESS_MEMORY_ALLOCATION_FAILURE`
 
 ## [2.0.0] - 2020-12-27
 ### Added

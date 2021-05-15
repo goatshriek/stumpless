@@ -18,12 +18,14 @@
 
 #include <cstddef>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
 
@@ -159,6 +161,22 @@ namespace {
     id_target->id = actual_id;
     stumpless_close_target( id_target );
     stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( PerrorTest, MemoryAllocationFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_param *new_param;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    new_param = stumpless_new_param( "name", "value" );
+    EXPECT_NULL( new_param );
+
+    stumpless_perror( "expected memory failure" );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
   TEST_F( PerrorTest, NoError ) {
