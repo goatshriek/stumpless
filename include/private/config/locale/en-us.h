@@ -153,6 +153,12 @@ ARG_NAME " was NULL"
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "checked to see if an unsupported target type was open"
 
+#  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
+"could not close the Windows Event Log"
+
+#  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
+"could not open the Windows Event Log"
+
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket error code"
 

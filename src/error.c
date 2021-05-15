@@ -309,7 +309,7 @@ raise_transport_protocol_unsupported( void ) {
 void
 raise_wel_close_failure( void ) {
   raise_error( STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE,
-               NULL,
+               L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE,
                0,
                NULL );
 }
@@ -317,7 +317,7 @@ raise_wel_close_failure( void ) {
 void
 raise_wel_open_failure( void ) {
   raise_error( STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE,
-               NULL,
+               L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE,
                0,
                NULL );
 }

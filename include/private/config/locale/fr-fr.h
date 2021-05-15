@@ -153,6 +153,12 @@ ARG_NAME " a été NULL"
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "vérification pour voir si un type de cible non supporté a été ouvert"
 
+#  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
+"WEL CLOSE FAILURE ERROR MESSAGE"
+
+#  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
+"WEL OPEN FAILURE ERROR MESSAGE"
+
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Code d'erreur Windows Socket"
 
