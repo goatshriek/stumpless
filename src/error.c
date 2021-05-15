@@ -283,7 +283,7 @@ raise_socket_send_failure( const char *message,
 void
 raise_stream_write_failure( void ) {
   raise_error( STUMPLESS_STREAM_WRITE_FAILURE,
-               NULL,
+               L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE,
                0,
                NULL );
 }

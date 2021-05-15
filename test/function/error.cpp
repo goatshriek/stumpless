@@ -139,7 +139,7 @@ namespace {
     target = stumpless_open_file_target( "/" );
     EXPECT_NULL( target );
 
-    stumpless_perror( "better not segfault" );
+    stumpless_perror( "expected file open failure" );
   }
 
   TEST_F( PerrorTest, InvalidId ) {
@@ -156,7 +156,7 @@ namespace {
 
     entry = create_entry(  );
     stumpless_add_entry( id_target, entry );
-    stumpless_perror( "better not segfault" );
+    stumpless_perror( "expected invalid id" );
 
     id_target->id = actual_id;
     stumpless_close_target( id_target );
@@ -230,6 +230,33 @@ namespace {
     EXPECT_THAT( line, HasSubstr( stumpless_get_error_id_string(error->id) ) );
     EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
+  }
+
+  TEST_F( PerrorTest, StreamWriteFailure ) {
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+    const char *filename = "stream-write-failure.log";
+    FILE *stream;
+    int result;
+
+    stream = fopen( filename, "w+" );
+    fclose( stream );
+
+    stream = fopen( filename, "r" );
+    ASSERT_NOT_NULL( stream );
+
+    target = stumpless_open_stream_target( filename, stream );
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_add_message( target, "can i write?" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
+
+    stumpless_perror( "expected stream write failure" );
+
+    stumpless_close_stream_target( target );
+    fclose( stream );
+    remove( filename );
   }
 
   /* non-fixture tests */

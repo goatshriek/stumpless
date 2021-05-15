@@ -143,6 +143,9 @@ ARG_NAME " war NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "Konnte keinen Socket öffnen"
 
+#  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
+"STREAM WRITE FAILURE ERROR MESSAGE"
+
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "Dieser Zieltyp ist immer offen"
 

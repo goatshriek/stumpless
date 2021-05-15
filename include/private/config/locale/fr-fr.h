@@ -141,6 +141,9 @@ ARG_NAME " a été NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "échec d'ouverture d'un socket"
 
+#  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
+"STREAM WRITE FAILURE ERROR MESSAGE"
+
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "ce type de cible est toujours ouvert"
 

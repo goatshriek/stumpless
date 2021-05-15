@@ -141,6 +141,9 @@ ARG_NAME " беше NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно отваряне на сокет"
 
+#  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
+"STREAM WRITE FAILURE ERROR MESSAGE"
+
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "този целеви тип е винаги отворен"
 
