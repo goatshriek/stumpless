@@ -45,7 +45,7 @@ namespace {
     virtual void
     TearDown( void ) {
       stumpless_destroy_entry_and_contents( basic_entry );
-      stumpless_close_function_target( target );
+      stumpless_close_journald_target( target );
       stumpless_free_all( );
     }
   };
@@ -82,7 +82,7 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-journald-target" );
-    stumpless_close_function_target( target );
+    stumpless_close_journald_target( target );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }

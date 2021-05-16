@@ -211,6 +211,10 @@ stumpless_close_target( struct stumpless_target *target ) {
       stumpless_close_function_target( target );
       break;
 
+    case STUMPLESS_JOURNALD_TARGET:
+      stumpless_close_journald_target( target );
+      break;
+
     case STUMPLESS_NETWORK_TARGET:
       config_close_network_target( target );
       break;
