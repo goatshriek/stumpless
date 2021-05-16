@@ -30,14 +30,14 @@ jobs:
       - name: Configure
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
-          bash.exe -c "cmake -DCMAKE_BUILD_TYPE=Release -DGTEST_PATH=C:/gtest -DBENCHMARK_PATH=C:/benchmark -DCMAKE_INSTALL_PREFIX=/usr ."
+          bash.exe -c "cmake -DCMAKE_BUILD_TYPE=Release -DGTEST_PATH=/cygdrive/c/gtest -DBENCHMARK_PATH=/cygdrive/c/benchmark -DCMAKE_INSTALL_PREFIX=/usr ."
         shell: cmd
       - name: Build Google Test and Benchmark
         if: steps.cache-google-libs.outputs.cache-hit != 'true'
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
-          bash.exe -c "mkdir C:/gtest"
-          bash.exe -c "mkdir C:/benchmark"
+          bash.exe -c "mkdir /cygdrive/c/gtest"
+          bash.exe -c "mkdir /cygdrive/c/benchmark"
           bash.exe -c "make gtest benchmark export-gtest export-benchmark"
         shell: cmd
       - name: Build
