@@ -46,6 +46,12 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno след неуспешно извикване"
 
+#  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
+"FILE OPEN FAILURE MESSAGE"
+
+#  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
+"FILE WRITE FAILURE MESSAGE"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "върната стойност от фунцията манипулатор на логове"
 
@@ -80,6 +86,9 @@
 "кодовете на съоръженията трябва да бъдат дефинирани в съответствие с RFC 5424," \
 " след умножаване по 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"INVALID ID ERROR MESSAGE"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "невалиден " INDEXED_THING " индекс"
 
@@ -93,11 +102,17 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "максимален размер на съобщението е валиден само за UDP мрежови цели"
 
+#  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
+"MEMORY ALLOCATION FAILURE MESSAGE"
+
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "съобщението е твърде голямо, за да бъде изпратено в една дейтаграма"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "размер на съобщението, което беше опитано да се изпрати"
+
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "мрежови цели не се поддържат от тази компилация"
@@ -129,17 +144,29 @@ ARG_NAME " беше NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно отваряне на сокет"
 
+#  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
+"STREAM WRITE FAILURE ERROR MESSAGE"
+
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "този целеви тип е винаги отворен"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "транспортните портове са валидни само за мрежови цели"
 
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
+
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно отваряне на unix сокет с функция socket"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "проверете дали е отворен неподдържан целеви тип"
+
+#  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
+"WEL CLOSE FAILURE ERROR MESSAGE"
+
+#  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
+"WEL OPEN FAILURE ERROR MESSAGE"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket код на грешка"

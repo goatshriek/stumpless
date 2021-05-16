@@ -46,6 +46,12 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno efter det misslyckade anropet"
 
+#  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
+"FILE OPEN FAILURE MESSAGE"
+
+#  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
+"FILE WRITE FAILURE MESSAGE"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "FUNCTION TARGET FAILURE CODE TYPE"
 
@@ -81,6 +87,9 @@
 "facilitetskoder måste vara definierade i enlighet med RFC 5424 " \
 "efter multiplikation med 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"INVALID ID ERROR MESSAGE"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "ogiltig " INDEXED_THING " index"
 
@@ -94,11 +103,17 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "största meddelandestorlek är endast giltig för UDP-nätverksmål"
 
+#  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
+"MEMORY ALLOCATION FAILURE MESSAGE"
+
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "meddelandet är för stort för att skickas i ett enda datagram"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "storleken på meddelandet som försökte skickas"
+
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "nätverksmål är inte supporterat av denna build"
@@ -130,17 +145,29 @@ ARG_NAME " var NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "misslyckades med att öppna en Socket"
 
+#  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
+"STREAM WRITE FAILURE ERROR MESSAGE"
+
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "denna målstyp är alltid öppen"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "transportportar är alltid giltiga för nätverksmål"
 
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
+
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "misslyckades att öppna en unix-Socket med socket-funktionen"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "kollade ifall en osupporterad målstyp var öppen"
+
+#  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
+"WEL CLOSE FAILURE ERROR MESSAGE"
+
+#  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
+"WEL OPEN FAILURE ERROR MESSAGE"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket felkod"

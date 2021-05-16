@@ -46,6 +46,12 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno after the failed call"
 
+#  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
+"could not open the specified file"
+
+#  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
+"could not write to the file"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "return code of the log handler function"
 
@@ -80,6 +86,9 @@
 "facility codes must be defined in accordance with RFC 5424, after the" \
 " multiplication by 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"invalid target id"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "invalid " INDEXED_THING " index"
 
@@ -93,11 +102,17 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "max message size is only valid for UDP network targets"
 
+#  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
+"a memory allocation call failed"
+
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "message is too large to be sent in a single datagram"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "the size of the message that was attempted to be sent"
+
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"chosen network protocol is unsupported"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "network targets are not supported by this build"
@@ -129,17 +144,29 @@ ARG_NAME " was NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a socket"
 
+#  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
+"could not write to the stream"
+
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "this target type is always open"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "transport ports are only valid for network targets"
 
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"chosen transport protocol is unsupported"
+
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a unix socket with socket function"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "checked to see if an unsupported target type was open"
+
+#  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
+"could not close the Windows Event Log"
+
+#  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
+"could not open the Windows Event Log"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket error code"
