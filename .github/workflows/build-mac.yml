@@ -50,11 +50,8 @@ jobs:
         run: |
           sudo make install
   release:
-    # disabling mac builds due to instability
-    # https://github.com/actions/virtual-environments/issues/841
-    if: ${{ false }}
     name: "release"
-    runs-on: "macos-11.0"
+    runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
@@ -95,11 +92,8 @@ jobs:
         run: |
           sudo make install
   all-features-disabled:
-    # disabling mac builds due to instability
-    # https://github.com/actions/virtual-environments/issues/841
-    if: ${{ false }}
     name: "all features disabled"
-    runs-on: "macos-11.0"
+    runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
@@ -123,11 +117,8 @@ jobs:
         run: |
           sudo make install
   with-cpp:
-    # disabling mac builds due to instability
-    # https://github.com/actions/virtual-environments/issues/841
-    if: ${{ false }}
     name: "with c++"
-    runs-on: "macos-11.0"
+    runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-ruby@v1.1.2
