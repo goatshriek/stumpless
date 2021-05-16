@@ -48,6 +48,7 @@ namespace {
     TearDown( void ) {
       stumpless_set_error_stream( stderr );
       fclose( error_file );
+      stumpless_free_all(  );
     }
 
   };
