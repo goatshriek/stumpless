@@ -19,12 +19,12 @@
 ## Key Features
 Stumpless offers a robust set of features to make logging in C faster and
 easier:
- * cross-platform builds on Linux, Windows, Mac, Cygwin, and more
+ * both structured and unstructured logging to suit your needs
  * easy logging to network targets like Splunk or rsyslog servers
+ * interoperable with common log daemons and libraries
+ * cross-platform builds on Linux, Windows, Mac, Cygwin, and more
  * completely thread safe
  * can be adjusted or removed during compilation for zero runtime impact
- * interoperability with standard syslog daemons and library functions
- * a continuously-run extensive test suite to ensure proper functionality
  * localized for multiple languages :bulgaria: :de: :fr: :it: :sweden: :slovakia: :us:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
