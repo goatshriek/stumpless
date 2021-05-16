@@ -42,6 +42,9 @@ jobs:
     name: "linux, debug"
     runs-on: "ubuntu-20.04"
     steps:
+      - name: Install Prereqs
+        run: |
+          sudo apt install libsystemd-dev
       - uses: actions/checkout@v2
       - name: Configure
         run: |
