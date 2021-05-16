@@ -11,11 +11,8 @@ env:
 
 jobs:
   debug:
-    # disabling mac builds due to instability
-    # https://github.com/actions/virtual-environments/issues/841
-    if: ${{ false }}
     name: "debug"
-    runs-on: "macos-11.0"
+    runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
