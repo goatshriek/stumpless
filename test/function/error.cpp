@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,14 @@
 
 #include <cstddef>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
 
@@ -45,6 +48,7 @@ namespace {
     TearDown( void ) {
       stumpless_set_error_stream( stderr );
       fclose( error_file );
+      stumpless_free_all(  );
     }
 
   };
@@ -130,6 +134,52 @@ namespace {
     EXPECT_THAT( line, HasSubstr( error->code_type ) );
   }
 
+  TEST_F( PerrorTest, FileOpenFailure ) {
+    struct stumpless_target *target;
+
+    target = stumpless_open_file_target( "/" );
+    EXPECT_NULL( target );
+
+    stumpless_perror( "expected file open failure" );
+  }
+
+  TEST_F( PerrorTest, InvalidId ) {
+    char buffer[10];
+    struct stumpless_target *id_target;
+    stumpless_id_t actual_id;
+    struct stumpless_entry *entry;
+
+    id_target = stumpless_open_buffer_target( "test-target",
+                                              buffer,
+                                              sizeof( buffer ) ) ;
+    actual_id = id_target->id;
+    id_target->id = NULL;
+
+    entry = create_entry(  );
+    stumpless_add_entry( id_target, entry );
+    stumpless_perror( "expected invalid id" );
+
+    id_target->id = actual_id;
+    stumpless_close_target( id_target );
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( PerrorTest, MemoryAllocationFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_param *new_param;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    new_param = stumpless_new_param( "name", "value" );
+    EXPECT_NULL( new_param );
+
+    stumpless_perror( "expected memory failure" );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   TEST_F( PerrorTest, NoError ) {
     stumpless_perror( "this shouldn't show up" );
 
@@ -181,6 +231,33 @@ namespace {
     EXPECT_THAT( line, HasSubstr( stumpless_get_error_id_string(error->id) ) );
     EXPECT_THAT( line, HasSubstr( ": " ) );
     EXPECT_THAT( line, HasSubstr( error->message ) );
+  }
+
+  TEST_F( PerrorTest, StreamWriteFailure ) {
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+    const char *filename = "stream-write-failure.log";
+    FILE *stream;
+    int result;
+
+    stream = fopen( filename, "w+" );
+    fclose( stream );
+
+    stream = fopen( filename, "r" );
+    ASSERT_NOT_NULL( stream );
+
+    target = stumpless_open_stream_target( filename, stream );
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_add_message( target, "can i write?" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
+
+    stumpless_perror( "expected stream write failure" );
+
+    stumpless_close_stream_target( target );
+    fclose( stream );
+    remove( filename );
   }
 
   /* non-fixture tests */

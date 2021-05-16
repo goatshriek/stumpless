@@ -46,6 +46,12 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno dopo la chiamata fallita"
 
+#  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
+"non è stato possibile aprire un file con il nome scelto"
+
+#  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
+"non è stato possibile scrivere al file scelto"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "il codice di ritorno della chiamata funzione fallita"
 
@@ -79,6 +85,9 @@
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
 "i codici di servizio devono essere definiti in osservanza del RFC 5424, dopo la moltiplicazione per 8"
 
+#  define L10N_INVALID_ID_ERROR_MESSAGE \
+"target id non valido"
+
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "indice " INDEXED_THING " non valido"
 
@@ -91,11 +100,17 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "la dimensione massima del messaggio è solo valido per target di rete UDP"
 
+#  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
+"una chiamata di allocazione della memoria fallita"
+
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "il messaggio è troppo grande per essere inviato in unico datagram"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "la dimensione del messaggio che si è tentato di inviare"
+
+#  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"il protocollo di rete non è supportato"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "i target di rete non sono supportati in questa build"
@@ -127,17 +142,29 @@ ARG_NAME " era NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "fallita apertura di un socket"
 
+#  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
+"non è stato possibile scrivere al stream"
+
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "questo tipo di target è sempre aperto"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "le porte di trasporto sono solo valide per target di rete"
 
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"il protocollo di trasporto non è supportato"
+
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "fallita apertura di un socket unix usando la funzione socket"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "controllato se un tipo di target non supportato era aperto"
+
+#  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
+"non è stato possibile chiudere il Windows Event Log"
+
+#  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
+"non è stato possibile aprire il Windows Event Log"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "codice di errore di Windows Socket"

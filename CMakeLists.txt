@@ -831,7 +831,9 @@ add_function_test(entry_memory_failure
 )
 
 add_function_test(error
-  SOURCES test/function/error.cpp
+  SOURCES
+    test/function/error.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(error_leak

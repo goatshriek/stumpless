@@ -177,6 +177,7 @@ namespace {
                                            ( enum stumpless_transport_protocol ) -1 );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
+    stumpless_perror( "expected transport protocol unsupported error" );
   }
 
   TEST( NetworkTargetNewTest, BadNetworkProtocol ) {
@@ -189,6 +190,8 @@ namespace {
                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
     EXPECT_TRUE( target == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
+
+    stumpless_perror( "expected network protocol unsupported error" );
   }
 
   TEST( NetworkTargetIsOpen, NullTarget ) {
