@@ -19,6 +19,18 @@
 /** @file
  * Journald targets send messages to a systemd journald service.
  *
+ * Journald supports structured logging but does not use the same hierarchy as
+ * RFC 5424, instead providing a simple key/value pairing. To compensate for
+ * this, these targets perform a number of transformations to map the elements
+ * and params into the flatter structure. Element and param names are converted
+ * to uppercase and are joined together using underscores. The value of the
+ * param is then passed as the value of the field.
+ *
+ * Because RFC 5424 allows most printable ASCII characters while journald only
+ * allows letters and numbers, incompatible characters of the generated field
+ * name will be replaced with an underscore to comply with journald
+ * requirements.
+ *
  * **Thread Safety: MT-Safe**
  * Logging to journald targets is thread safe.
  *
