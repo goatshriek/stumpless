@@ -313,6 +313,12 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
       test/function/target/journald.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
   )
+else()
+  add_function_test(journald_unsupported
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/journald_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
 endif()
 
 
