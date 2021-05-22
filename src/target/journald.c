@@ -53,7 +53,7 @@ stumpless_open_journald_target( const char *name ) {
     return NULL;
   }
 
-  target->id = NULL;
+  target->id = target;
 
   stumpless_set_current_target( target );
   return target;
@@ -64,5 +64,5 @@ stumpless_open_journald_target( const char *name ) {
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  return -1;
+  return 1;
 }
