@@ -128,6 +128,7 @@
   - "windows.h"
   - "private/windows_wrapper.h"
 "_SC_PAGESIZE": "unistd.h"
+"sd_journal_sendv": "systemd/sd-journal.h"
 "sendto":
   - "sys/socket.h"
   - "private/windows_wrapper.h"
@@ -163,6 +164,7 @@
   - "string.h"
 "strncpy": "string.h"
 "struct addrinfo": "netdb.h"
+"struct iovec": "sys/uio.h"
 "struct timespec": "time.h"
 "struct tm": "time.h"
 "struct sockaddr": "sys/socket.h"

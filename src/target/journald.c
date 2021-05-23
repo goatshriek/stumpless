@@ -20,7 +20,10 @@
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/journald.h>
+#include <sys/uio.h>
+#include <systemd/sd-journal.h>
 #include "private/config/locale/wrapper.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/target.h"
 #include "private/target/journald.h"
@@ -64,5 +67,21 @@ stumpless_open_journald_target( const char *name ) {
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  return 1;
+  struct iovec fields[1];
+  char message_buffer[1024];
+
+  lock_entry( entry );
+  if( entry->message_length > 1024 ) {
+    unlock_entry( entry );
+    return -1;
+  }
+
+  memcpy( message_buffer, "MESSAGE=", 8 );
+  memcpy( message_buffer + 8, entry->message, entry->message_length );
+  fields[0].iov_len = entry->message_length + 8;
+  unlock_entry( entry );
+
+  fields[0].iov_base = message_buffer;
+
+  return sd_journal_sendv( fields, 1 );
 }
