@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+// keeps systemd from showing stumpless itself as the source of the entries
+#define SD_JOURNAL_SUPPRESS_LOCATION 1
+
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/entry.h>

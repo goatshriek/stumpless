@@ -16,9 +16,13 @@
  * limitations under the License.
  */
 
+#include <chrono>
+#include <random>
+#include <sstream>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stumpless.h>
+#include <systemd/sd-journal.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
@@ -51,11 +55,38 @@ namespace {
   };
 
   TEST_F( JournaldTargetTest, AddEntry ) {
+    unsigned seed;
     int result;
+    sd_journal *jrnl;
+    bool msg_found = false;
 
-    result = stumpless_add_entry( target, basic_entry );
+    seed = std::chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
+    std::default_random_engine gen( seed );
+    std::uniform_int_distribution<int> dist;
+    std::ostringstream message_stream;
+    message_stream << "test-stumpless-journald-message-" << dist( gen );
+    std::string message = message_stream.str(  );
+
+    result = stumpless_add_message( target, message.c_str(  ) );
     EXPECT_GE( result, 0 );
     EXPECT_NO_ERROR;
+
+    sleep( 1 );
+
+    std::ostringstream match_stream;
+    match_stream << "MESSAGE=" << message;
+    std::string message_match = match_stream.str(  );
+
+    result = sd_journal_open( &jrnl, 0 );
+    EXPECT_GE( result, 0 );
+    result = sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
+    EXPECT_GE( result, 0 );
+    SD_JOURNAL_FOREACH( jrnl ) {
+      msg_found = true;
+    }
+    sd_journal_close( jrnl );
+
+    EXPECT_TRUE( msg_found );
   }
 
   /* non-fixture tests */

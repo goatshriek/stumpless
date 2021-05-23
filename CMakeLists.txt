@@ -318,6 +318,8 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
     SOURCES
       test/function/target/journald.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
+    LIBRARIES
+      systemd
   )
 else()
   add_function_test(journald_unsupported
