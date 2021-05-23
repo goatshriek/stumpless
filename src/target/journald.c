@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/journald.h>
