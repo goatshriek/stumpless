@@ -71,20 +71,18 @@ namespace {
     EXPECT_GE( result, 0 );
     EXPECT_NO_ERROR;
 
-    sleep( 1 );
-
     std::ostringstream match_stream;
     match_stream << "MESSAGE=" << message;
     std::string message_match = match_stream.str(  );
 
-    result = sd_journal_open( &jrnl, 0 );
-    EXPECT_GE( result, 0 );
-    result = sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
-    EXPECT_GE( result, 0 );
-    SD_JOURNAL_FOREACH( jrnl ) {
-      msg_found = true;
+    for( int i = 0; i < 64 && !msg_found; i++ ) {
+      sd_journal_open( &jrnl, 0 );
+      sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
+      SD_JOURNAL_FOREACH( jrnl ) {
+        msg_found = true;
+      }
+      sd_journal_close( jrnl );
     }
-    sd_journal_close( jrnl );
 
     EXPECT_TRUE( msg_found );
   }
