@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <stumpless/memory.h>
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/journald.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
@@ -51,6 +52,7 @@ void
 stumpless_free_thread( void ) {
   clear_error(  );
 
+  config_journald_free_thread(  );
   target_free_thread(  );
 }
 

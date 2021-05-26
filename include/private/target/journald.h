@@ -22,6 +22,9 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
 
+void
+journald_free_thread( void );
+
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry );

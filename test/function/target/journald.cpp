@@ -87,6 +87,22 @@ namespace {
     EXPECT_TRUE( msg_found );
   }
 
+  TEST_F( JournaldTargetTest, AddEntryReallocFailure ) {
+    void * (*set_realloc_result)(void *, size_t);
+    int result;
+    const struct stumpless_error *error;
+
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
+    ASSERT_NOT_NULL( set_realloc_result );
+
+    result = stumpless_add_message( target, "expected realloc failure" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_realloc_result = stumpless_set_realloc( realloc );
+    EXPECT_TRUE( set_realloc_result == realloc );
+  }
+
   /* non-fixture tests */
 
   TEST( JournaldTargetCloseTest, GenericCloseFunction ) {
@@ -107,13 +123,15 @@ namespace {
   }
 
   TEST( JournaldTargetCloseTest, WrongTargetType ) {
-    const struct stumpless_target *target;
+    struct stumpless_target *target;
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-journald-target" );
     stumpless_close_journald_target( target );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+    stumpless_close_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( JournaldTargetOpenTest, MallocFailure ) {

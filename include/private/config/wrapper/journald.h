@@ -25,10 +25,12 @@
 #    include <stumpless/target/journald.h>
 #    include "private/target/journald.h"
 #    define config_close_journald_target stumpless_close_journald_target
+#    define config_journald_free_thread journald_free_thread
 #    define config_send_entry_to_journald_target send_entry_to_journald_target
 #  else
 #    include "private/target.h"
 #    define config_close_journald_target close_unsupported_target
+#    define config_journald_free_thread ( ( void ) 0 )
 #    define config_send_entry_to_journald_target send_entry_to_unsupported_target
 #  endif
 
