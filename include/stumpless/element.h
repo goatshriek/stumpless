@@ -762,6 +762,35 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
                                    const char *name,
                                    const char *value );
 
+/**
+ * Returns name and params from element as a formatted string.
+ * The character buffer should be freed when no longer is needed by the caller.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.1.0
+ *
+ * @param element The element to get the name and params from.  
+ *
+ * @return The formatted string of <name> or <name>:[param1,...] if no error is encountered.
+ * If an error is  encountered, then NULL is returned and an error code is set appropriately.
+ */
+const char *
+stumpless_element_to_string( const struct stumpless_element *element );
+
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
