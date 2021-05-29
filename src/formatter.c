@@ -39,7 +39,16 @@ format_entry( const struct stumpless_entry *entry,
 
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
-  builder = strbuilder_append_int( builder, entry->prival );
+
+  //builder = strbuilder_append_int( builder, entry->prival );
+  if( entry->prival >= 100 ) {
+    builder = strbuilder_append_char( builder, ( entry->prival / 100 ) + 48 );
+  }
+  if( entry->prival >= 10 ) {
+    builder = strbuilder_append_char( builder, ( entry->prival / 10 ) + 48 );
+  }
+  builder = strbuilder_append_char( builder, ( entry->prival % 10 ) + 48 );
+
   builder = strbuilder_append_string( builder, ">1 " );
   builder = strbuilder_append_buffer( builder, timestamp, timestamp_size );
   builder = strbuilder_append_char( builder, ' ' );
