@@ -75,11 +75,20 @@ namespace {
     match_stream << "MESSAGE=" << message;
     std::string message_match = match_stream.str(  );
 
+    std::ostringstream priority_stream;
+    priority_stream << "PRIORITY=" << STUMPLESS_DEFAULT_SEVERITY;
+    std::string expected_priority = priority_stream.str(  );
+
     for( int i = 0; i < 64 && !msg_found; i++ ) {
       sd_journal_open( &jrnl, 0 );
       sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
       SD_JOURNAL_FOREACH( jrnl ) {
+        const char *data;
+        size_t data_len;
         msg_found = true;
+        result = sd_journal_get_data( jrnl, "PRIORITY", ( const void ** )&data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_priority.c_str(  ) );
       }
       sd_journal_close( jrnl );
     }
