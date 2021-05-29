@@ -59,6 +59,7 @@ namespace {
     int result;
     sd_journal *jrnl;
     bool msg_found = false;
+    bool abort = false;
 
     seed = std::chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
     std::default_random_engine gen( seed );
@@ -79,21 +80,38 @@ namespace {
     priority_stream << "PRIORITY=" << STUMPLESS_DEFAULT_SEVERITY;
     std::string expected_priority = priority_stream.str(  );
 
-    for( int i = 0; i < 64 && !msg_found; i++ ) {
-      sd_journal_open( &jrnl, 0 );
+    std::ostringstream facility_stream;
+    int expected_facility_value = stumpless_get_default_facility( target ) >> 3;
+    facility_stream << "SYSLOG_FACILITY=" << expected_facility_value;
+    std::string expected_facility = facility_stream.str(  );
+
+    for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
+      result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
+      if( result < 0 ) {
+        SUCCEED(  ) << "could not open the journal to verify the write, failed with error code " << result;
+        abort = true;
+      }
+
       sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
       SD_JOURNAL_FOREACH( jrnl ) {
         const char *data;
         size_t data_len;
         msg_found = true;
-        result = sd_journal_get_data( jrnl, "PRIORITY", ( const void ** )&data, &data_len );
+
+        result = sd_journal_get_data( jrnl, "PRIORITY", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
         EXPECT_STREQ( data, expected_priority.c_str(  ) );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_FACILITY", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_facility.c_str(  ) );
       }
       sd_journal_close( jrnl );
     }
 
-    EXPECT_TRUE( msg_found );
+    if( !abort ) {
+      EXPECT_TRUE( msg_found );
+    }
   }
 
   TEST_F( JournaldTargetTest, AddEntryReallocFailure ) {
