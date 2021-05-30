@@ -7,8 +7,14 @@ measure execution time and other efficiency characteristics.
 
 Performance tests are named `performance-test-<item>` for various pieces of the
 library. You can use the `bench` target to build and execute all performance
-tests at once, or just the name of the executable if you only want to measure
-a single module.
+tests at once, or the name of the executable prefixed with `run-` if you only
+want to run a single module. These targets write their results to both the
+standard output as well as a json file in the `performance-output` directory of
+the build location, which you can use with the `compare.py` tool from the
+benchmark library. There is an example of using this tool in the walkthrough
+below. Of course, you can also directly execute the test executable itself if
+you want to set the parameters yourself. This is also demonstrated in the
+walkthrough.
 
 Performance tests are NOT intended to be an absolute measurement of the
 performance of a function or the library as a whole. They are only useful for
@@ -17,9 +23,9 @@ machine in the same environment. This is why you will not see performance
 test results posted in any documentation. The results are only useful when
 compared to one another, typically during development of some change.
 
-Benchmarks are run for Release CI builds, but should not be used as indicators
-of performance for this exact reason. They are only included in the CI process
-to make sure that they are not broken.
+Benchmarks are run during Release CI builds, but should not be used as
+indicators of performance for this exact reason. They are only included in the
+CI process to make sure that they are not broken.
 
 ## Walkthrough: Improving `stumpless_copy_element`
 
