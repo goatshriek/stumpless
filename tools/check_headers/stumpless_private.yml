@@ -52,6 +52,7 @@
 "stdatomic_read_ptr": "private/config/have_stdatomic.h"
 "stdatomic_write_flag": "private/config/have_stdatomic.h"
 "stdatomic_write_ptr": "private/config/have_stdatomic.h"
+"strbuilder_append_positive_int": "private/strbuilder.h"
 "target_free_global": "private/target.h"
 "target_free_thread": "private/target.h"
 "TARGET_MUTEX": "private/target.h"

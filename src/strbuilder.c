@@ -110,24 +110,19 @@ strbuilder_append_char( struct strbuilder *builder, char c ) {
 }
 
 struct strbuilder *
-strbuilder_append_int( struct strbuilder *builder, int i ) {
+strbuilder_append_positive_int( struct strbuilder *builder, int i ) {
   struct strbuilder *result = builder;
-  int running_val = i;
   char buffer[MAX_INT_SIZE];
   size_t digit_count = 0;
 
   if( i == 0 ) {
-    return strbuilder_append_char( result, '0' );
+    return strbuilder_append_char( builder, '0' );
   }
 
-  if( i < 0 ) {
-    result = strbuilder_append_char( result, '-' );
-  }
-
-  while( running_val != 0 ) {
-    buffer[digit_count] = ( running_val % 10 ) + 48;
+  while( i != 0 ) {
+    buffer[digit_count] = ( i % 10 ) + 48;
+    i /= 10;
     digit_count++;
-    running_val /= 10;
   }
 
   while( digit_count > 0 ) {
