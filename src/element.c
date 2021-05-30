@@ -553,6 +553,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
       if( i < param_count - 1 ) {
         format[pos_offset++] = ',';
       }
+      free_mem(params_format[i]);
     }
 
     unlock_element( element );
