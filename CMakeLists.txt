@@ -1040,6 +1040,10 @@ add_performance_test(target
   SOURCES test/performance/target.cpp
 )
 
+add_performance_test(version
+  SOURCES test/performance/version.cpp
+)
+
 add_custom_target(bench
   DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
 )
