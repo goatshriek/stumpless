@@ -1027,7 +1027,9 @@ add_performance_test(element
 )
 
 add_performance_test(entry
-  SOURCES test/performance/entry.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/performance/entry.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(function
@@ -1041,7 +1043,7 @@ add_performance_test(target
 )
 
 add_performance_test(version
-  SOURCES test/performance/version.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/performance/version.cpp
 )
 
 add_custom_target(bench
