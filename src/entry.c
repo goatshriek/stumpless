@@ -1052,7 +1052,7 @@ strbuilder_append_message( struct strbuilder *builder,
 
 struct strbuilder *
 strbuilder_append_procid( struct strbuilder *builder ) {
-  return strbuilder_append_int( builder, config_getpid(  ) );
+  return strbuilder_append_positive_int( builder, config_getpid(  ) );
 }
 
 struct strbuilder *
