@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,12 @@
 #  include <stumpless/param.h>
 #  include <stumpless/severity.h>
 
+/** The maximum length of an app name, as specified by RFC 5424. */
+#  define STUMPLESS_MAX_APP_NAME_LENGTH 48
+
+/** The maximum length of a msgid, as specified by RFC 5424. */
+#  define STUMPLESS_MAX_MSGID_LENGTH 32
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -53,7 +59,7 @@ struct stumpless_entry {
  */
   int prival;
 /** The app name of this entry, as a NULL-terminated string. */
-  char *app_name;
+  char app_name[STUMPLESS_MAX_APP_NAME_LENGTH + 1];
 /** The length of the app name, without the NULL terminator. */
   size_t app_name_length;
 /** The message of this entry, as a NULL-terminated string. */
@@ -61,7 +67,7 @@ struct stumpless_entry {
 /** The length of the message, without the NULL terminator. */
   size_t message_length;
 /** The message id of this entry, as a NULL-terminated string. */
-  char *msgid;
+  char msgid[STUMPLESS_MAX_MSGID_LENGTH + 1];
 /** The length of the message id, without the NULL terminator. */
   size_t msgid_length;
 /** An array holding the elements of this entry. */

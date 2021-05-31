@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -659,14 +659,13 @@ namespace {
   TEST_F( EntryTest, SetAppNameMemoryFailure ) {
     void *(*set_malloc_result)(size_t);
     const struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
-    result = stumpless_set_entry_app_name( basic_entry, "gonna-fail" );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    EXPECT_NULL( result );
+    result = stumpless_set_entry_app_name( basic_entry, "no-memory-required" );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
@@ -681,7 +680,6 @@ namespace {
     entry = stumpless_set_entry_app_name( basic_entry, NULL );
     EXPECT_NO_ERROR;
     EXPECT_EQ( entry, basic_entry );
-    EXPECT_NE( basic_entry->app_name, previous_app_name );
 
     EXPECT_EQ( basic_entry->app_name_length, 1 );
     EXPECT_EQ( 0, strcmp( basic_entry->app_name, "-" ) );
@@ -803,14 +801,13 @@ namespace {
   TEST_F( EntryTest, SetMsgidMemoryFailure ) {
     void *(*set_malloc_result)(size_t);
     const struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
-    result = stumpless_set_entry_msgid( basic_entry, "gonna-fail" );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    EXPECT_NULL( result );
+    result = stumpless_set_entry_msgid( basic_entry, "no-memory-required" );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
@@ -825,7 +822,6 @@ namespace {
     entry = stumpless_set_entry_msgid( basic_entry, NULL );
     EXPECT_NO_ERROR;
     EXPECT_EQ( entry, basic_entry );
-    EXPECT_NE( basic_entry->msgid, previous_msgid );
 
     EXPECT_EQ( basic_entry->msgid_length, 1 );
     EXPECT_EQ( 0, strcmp( basic_entry->msgid, "-" ) );
@@ -1497,7 +1493,6 @@ namespace {
     const char *msgid = "test-msgid-of-unique-length";
     const char *message = "test-message";
     struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 28 ) );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -1507,38 +1502,39 @@ namespace {
                                   app_name,
                                   msgid,
                                   message );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-    EXPECT_NULL( result );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
 
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
 
+    stumpless_destroy_entry_and_contents( result );
     stumpless_free_all(  );
   }
 
   TEST( NewEntryTest, MallocFailureOnAppName ) {
-      void *(*set_malloc_result)(size_t);
-      const char *app_name = "test-app-name-of-unique-length";
-      const char *msgid = "test-msgid";
-      const char *message = "test-message";
-      struct stumpless_entry *result;
-      const struct stumpless_error *error;
+    void *(*set_malloc_result)(size_t);
+    const char *app_name = "test-app-name-of-unique-length";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    struct stumpless_entry *result;
 
-      set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 31 ) );
-      ASSERT_NOT_NULL( set_malloc_result );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 31 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
 
-      result = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-              STUMPLESS_SEVERITY_INFO,
-              app_name,
-              msgid,
-              message );
+    result = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+            STUMPLESS_SEVERITY_INFO,
+            app_name,
+            msgid,
+            message );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
 
-      EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-      EXPECT_NULL( result );
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
 
-      set_malloc_result = stumpless_set_malloc( malloc );
-      EXPECT_TRUE( set_malloc_result == malloc );
+    stumpless_destroy_entry_and_contents( result );
+    stumpless_free_all(  );
   }
 
   TEST( NewEntryTest, MallocFailureOnSecond ) {

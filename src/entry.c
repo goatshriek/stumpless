@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@
 #include "private/formatter.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
-#include "private/strhelper.h"
 #include "private/memory.h"
 #include "private/validate.h"
 
@@ -591,9 +590,7 @@ struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
   const char *effective_name;
-  char *new_name;
   size_t new_name_length;
-  const char *old_name;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
@@ -603,18 +600,14 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
     return NULL;
   }
 
-  new_name = copy_cstring_with_length( effective_name, &new_name_length );
-  if( !new_name ) {
-    return NULL;
-  }
+  new_name_length = strlen( effective_name );
 
   lock_entry( entry );
-  old_name = entry->app_name;
-  entry->app_name = new_name;
   entry->app_name_length = new_name_length;
+  memcpy( entry->app_name, effective_name, new_name_length );
+  entry->app_name[new_name_length] = '\0';
   unlock_entry( entry );
 
-  free_mem( old_name );
   clear_error(  );
   return entry;
 }
@@ -641,9 +634,7 @@ struct stumpless_entry *
 stumpless_set_entry_msgid( struct stumpless_entry *entry,
                            const char *msgid ) {
   const char *effective_msgid;
-  char *new_msgid;
   size_t new_msgid_length;
-  const char *old_msgid;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
@@ -653,18 +644,14 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
     return NULL;
   }
 
-  new_msgid = copy_cstring_with_length( effective_msgid, &new_msgid_length );
-  if( !new_msgid ) {
-    return NULL;
-  }
+  new_msgid_length = strlen( effective_msgid );
 
   lock_entry( entry );
-  old_msgid = entry->msgid;
-  entry->msgid = new_msgid;
   entry->msgid_length = new_msgid_length;
+  memcpy( entry->msgid, effective_msgid, new_msgid_length );
+  entry->msgid[new_msgid_length] = '\0';
   unlock_entry( entry );
 
-  free_mem( old_msgid );
   clear_error(  );
   return entry;
 }
@@ -845,9 +832,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
                       va_list subs ) {
   struct stumpless_entry *entry;
   const char *effective_app_name;
-  size_t *app_name_length;
   const char *effective_msgid;
-  size_t *msgid_length;
   size_t *message_length;
 
   if( !entry_cache ) {
@@ -868,27 +853,22 @@ vstumpless_new_entry( enum stumpless_facility facility,
   effective_app_name = app_name ? app_name : "-";
   if ( !validate_app_name_length ( effective_app_name ) ||
        !validate_printable_ascii( effective_app_name ) ) {
-      goto fail_app_name;
+      goto fail_after_cache;
   }
 
-  app_name_length = &( entry->app_name_length );
-  entry->app_name = copy_cstring_with_length( effective_app_name,
-                                              app_name_length );
-  if( !entry->app_name ) {
-    goto fail_app_name;
-  }
+  entry->app_name_length = strlen( effective_app_name );
+  memcpy( entry->app_name, effective_app_name, entry->app_name_length );
+  entry->app_name[entry->app_name_length] = '\0';
 
   effective_msgid = msgid ? msgid : "-";
   if( !validate_msgid_length( effective_msgid ) ||
       !validate_printable_ascii( effective_msgid ) ) {
-    goto fail_msgid;
+    goto fail_after_cache;
   }
 
-  msgid_length = &( entry->msgid_length );
-  entry->msgid = copy_cstring_with_length( effective_msgid, msgid_length );
-  if( !entry->msgid ) {
-    goto fail_msgid;
-  }
+  entry->msgid_length = strlen( effective_msgid );
+  memcpy( entry->msgid, effective_msgid, entry->msgid_length );
+  entry->msgid[entry->msgid_length] = '\0';
 
   if( !message ) {
     entry->message = NULL;
@@ -897,7 +877,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
     message_length = &( entry->message_length );
     entry->message = config_format_string( message, subs, message_length );
     if( !entry->message ) {
-      goto fail_message;
+      goto fail_after_cache;
     }
   }
 
@@ -917,11 +897,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
 
 fail_wel_data:
   free_mem( entry->message );
-fail_message:
-  free_mem( entry->msgid );
-fail_msgid:
-  free_mem( entry->app_name );
-fail_app_name:
+fail_after_cache:
   cache_free( entry_cache, entry );
 fail:
   return NULL;
@@ -1128,8 +1104,6 @@ unchecked_destroy_entry( const struct stumpless_entry *entry ) {
   config_destroy_wel_data( entry );
 
   free_mem( entry->elements );
-  free_mem( entry->msgid );
-  free_mem( entry->app_name );
   free_mem( entry->message );
 
   cache_free( entry_cache, entry );
