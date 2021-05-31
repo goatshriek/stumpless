@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,15 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stumpless/entry.h>
 #include "private/error.h"
 #include "private/config/locale/wrapper.h"
 
 bool validate_msgid_length(const char* msgid ) {
-  size_t max_msgid_length = 32;
   size_t msgid_char_length = strlen( msgid );
   bool validation_status = true;
 
-  if( msgid_char_length > max_msgid_length ) {
+  if( msgid_char_length > STUMPLESS_MAX_MSGID_LENGTH ) {
     raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
                             msgid_char_length,
                             L10N_STRING_LENGTH_ERROR_CODE_TYPE );
@@ -53,16 +53,15 @@ bool validate_printable_ascii( const char* str ) {
 
 
 bool validate_app_name_length( const char* app_name ) {
-    size_t max_app_name_length = 48;
     size_t app_name_char_length = strlen( app_name );
     bool validation_status = true;
 
-    if ( app_name_char_length > max_app_name_length ) {
-        raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
-                app_name_char_length,
-                L10N_STRING_LENGTH_ERROR_CODE_TYPE );
+    if ( app_name_char_length > STUMPLESS_MAX_APP_NAME_LENGTH ) {
+      raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
+                              app_name_char_length,
+                              L10N_STRING_LENGTH_ERROR_CODE_TYPE );
 
-        validation_status = false;
+      validation_status = false;
     }
 
     return validation_status;
