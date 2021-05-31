@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,11 +88,11 @@ stumpless_version_to_string( const struct stumpless_version *version ) {
 
   builder = strbuilder_new(  );
 
-  aggregate = strbuilder_append_int( builder, version->major );
+  aggregate = strbuilder_append_positive_int( builder, version->major );
   aggregate = strbuilder_append_char( aggregate, '.' );
-  aggregate = strbuilder_append_int( aggregate, version->minor );
+  aggregate = strbuilder_append_positive_int( aggregate, version->minor );
   aggregate = strbuilder_append_char( aggregate, '.' );
-  aggregate = strbuilder_append_int( aggregate, version->patch );
+  aggregate = strbuilder_append_positive_int( aggregate, version->patch );
 
   version_string = strbuilder_to_string( aggregate );
 

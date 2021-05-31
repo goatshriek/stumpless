@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1076,7 +1076,7 @@ strbuilder_append_message( struct strbuilder *builder,
 
 struct strbuilder *
 strbuilder_append_procid( struct strbuilder *builder ) {
-  return strbuilder_append_int( builder, config_getpid(  ) );
+  return strbuilder_append_positive_int( builder, config_getpid(  ) );
 }
 
 struct strbuilder *

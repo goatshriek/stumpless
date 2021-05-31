@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ format_entry( const struct stumpless_entry *entry,
 
   builder = strbuilder_new(  );
   builder = strbuilder_append_char( builder, '<' );
-  builder = strbuilder_append_int( builder, entry->prival );
+  builder = strbuilder_append_positive_int( builder, entry->prival );
   builder = strbuilder_append_string( builder, ">1 " );
   builder = strbuilder_append_buffer( builder, timestamp, timestamp_size );
   builder = strbuilder_append_char( builder, ' ' );

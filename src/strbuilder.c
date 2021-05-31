@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  */
 
 #include <stddef.h>
-#include <stdio.h>
 #include <string.h>
 #include "private/cache.h"
 #include "private/config/wrapper.h"
@@ -111,15 +110,27 @@ strbuilder_append_char( struct strbuilder *builder, char c ) {
 }
 
 struct strbuilder *
-strbuilder_append_int( struct strbuilder *builder, int i ) {
+strbuilder_append_positive_int( struct strbuilder *builder, int i ) {
+  struct strbuilder *result = builder;
   char buffer[MAX_INT_SIZE];
+  size_t digit_count = 0;
 
-  if( !builder ) {
-    return NULL;
+  if( i == 0 ) {
+    return strbuilder_append_char( builder, '0' );
   }
 
-  snprintf( buffer, MAX_INT_SIZE, "%d", i );
-  return strbuilder_append_string( builder, buffer );
+  while( i != 0 ) {
+    buffer[digit_count] = ( i % 10 ) + 48;
+    i /= 10;
+    digit_count++;
+  }
+
+  while( digit_count > 0 ) {
+    digit_count--;
+    result = strbuilder_append_char( result, buffer[digit_count] );
+  }
+
+  return result;
 }
 
 struct strbuilder *
