@@ -284,6 +284,8 @@
 "STUMPLESS_LANGUAGE": "stumpless/config.h"
 "stumpless_log_func_t": "stumpless/target/function.h"
 "STUMPLESS_MAJOR_VERSION": "stumpless/config.h"
+"STUMPLESS_MAX_APP_NAME_LENGTH": "stumpless/entry.h"
+"STUMPLESS_MAX_MSGID_LENGTH": "stumpless/entry.h"
 "STUMPLESS_MINOR_VERSION": "stumpless/config.h"
 "stumpless_network_protocol": "stumpless/target/network.h"
 "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED": "stumpless/error.h"

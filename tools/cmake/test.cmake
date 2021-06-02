@@ -98,6 +98,9 @@ macro(add_thread_safety_test name)
   private_add_thread_safety_test(NAME ${name} ${ARGN})
 endmacro(add_thread_safety_test name)
 
+set(PERFORMANCE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/performance-output")
+file(MAKE_DIRECTORY ${PERFORMANCE_OUTPUT_DIR})
+
 function(private_add_performance_test)
   set(single_val_args NAME)
   set(multi_val_args SOURCES LIBRARIES)
@@ -139,7 +142,7 @@ function(private_add_performance_test)
   )
 
   add_custom_target(run-performance-test-${FUNCTION_PERF_ARG_NAME}
-    COMMAND "performance-test-${FUNCTION_PERF_ARG_NAME}"
+    COMMAND ${CMAKE_BINARY_DIR}/performance-test-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
     DEPENDS performance-test-${FUNCTION_PERF_ARG_NAME}
   )
 

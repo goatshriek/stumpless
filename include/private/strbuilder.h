@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,31 @@ strbuilder_append_buffer( struct strbuilder *builder,
 struct strbuilder *
 strbuilder_append_char( struct strbuilder *builder, char c );
 
+/**
+ * Appends an int value. The value is assumed to be greater than or equal to
+ * zero. If it is negative, a negative sign is NOT included in the sequence of
+ * appended characters.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is not thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the potential
+ * use of memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the potential use of memory management functions.
+ *
+ * @param builder The strbuilder to append the characters to.
+ *
+ * @param i The zero or positive value to append.
+ *
+ * @return The modified builder if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct strbuilder *
-strbuilder_append_int( struct strbuilder *builder, int i );
+strbuilder_append_positive_int( struct strbuilder *builder, int i );
 
 struct strbuilder *
 strbuilder_append_string( struct strbuilder *builder,
