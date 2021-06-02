@@ -719,6 +719,25 @@ namespace {
     EXPECT_NO_ERROR;
   }
 
+  TEST_F( ElementTest, ElementToStringMemoryFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_error *error;
+    const char *result;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_element_to_string( basic_element);
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   /* non-fixture tests */
 
   TEST( AddParamTest, NullElement ) {
@@ -893,4 +912,12 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( ElemenToStringTest, NullElement ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_to_string( NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
 }
