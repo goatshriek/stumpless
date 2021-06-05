@@ -709,13 +709,23 @@ namespace {
     EXPECT_NULL( result );
   }
 
-  TEST_F( ElementTest, GetElementToString) {
+  TEST_F( ElementTest, GetElementToStringWithParams) {
     const char *format;
 
     format = stumpless_element_to_string( element_with_params );
     ASSERT_NOT_NULL( format );
 
     EXPECT_STREQ( format, "<element-with-params>:[<param-1>:<value-1>,<param-2>:<value-2>]" );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST_F( ElementTest, GetElementToStringWithoutParams) {
+    const char *format;
+
+    format = stumpless_element_to_string( basic_element );
+    ASSERT_NOT_NULL( format );
+
+    EXPECT_STREQ( format, "<basic-element>" );
     EXPECT_NO_ERROR;
   }
 
