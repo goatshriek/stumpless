@@ -522,7 +522,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     // acc total format size
     format_len = name_len;
 
-    const char *params_format[param_count];
+    const char **params_format = alloc_mem(sizeof(char*) * param_count);
     for( size_t i = 0; i < param_count; i++ ) {
       params_format[i] = stumpless_param_to_string(params[i]);
       // does not count '\0' on purpose
@@ -555,6 +555,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
       }
       free_mem(params_format[i]);
     }
+    free_mem(params_format);
 
     unlock_element( element );
 
@@ -576,7 +577,6 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
 
     clear_error( );
     return format;
-
 fail:
     unlock_element( element );
     return NULL;
