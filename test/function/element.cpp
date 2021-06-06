@@ -709,6 +709,45 @@ namespace {
     EXPECT_NULL( result );
   }
 
+  TEST_F( ElementTest, GetElementToStringWithParams) {
+    const char *format;
+
+    format = stumpless_element_to_string( element_with_params );
+    ASSERT_NOT_NULL( format );
+
+    EXPECT_STREQ( format, "<element-with-params>:[<param-1>:<value-1>,<param-2>:<value-2>]" );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST_F( ElementTest, GetElementToStringWithoutParams) {
+    const char *format;
+
+    format = stumpless_element_to_string( basic_element );
+    ASSERT_NOT_NULL( format );
+
+    EXPECT_STREQ( format, "<basic-element>" );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST_F( ElementTest, ElementToStringMemoryFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_error *error;
+    const char *result;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_element_to_string( basic_element);
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   /* non-fixture tests */
 
   TEST( AddParamTest, NullElement ) {
@@ -883,4 +922,12 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( ElemenToStringTest, NullElement ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_to_string( NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
 }
