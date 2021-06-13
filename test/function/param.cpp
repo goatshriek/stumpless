@@ -386,6 +386,30 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetName, InvalidName) {
+    struct stumpless_param *param;
+    struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    param = stumpless_new_param( "param", "my-value" );
+    ASSERT_NOT_NULL( param );
+
+    result = stumpless_set_param_name( param, "par=am");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_set_param_name( param, "par]m");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_set_param_name( param, "param\"");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    
+    stumpless_destroy_param( param );
+    stumpless_free_all(  );
+  }
+
   TEST( SetValue, Basic ) {
     struct stumpless_param *param;
     const char *original_value = "first-value";
