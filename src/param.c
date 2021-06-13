@@ -139,6 +139,10 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( name );
 
+  if ( !validate_param_name( name ) ) {
+    goto fail;
+  }
+
   new_name = copy_cstring_with_length( name, &new_size );
   if( !new_name ) {
     goto fail;
