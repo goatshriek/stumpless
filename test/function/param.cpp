@@ -319,6 +319,25 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( NewParamTest, InvalidName ) {
+    struct stumpless_param *param;
+    const struct stumpless_error *error;
+
+    param = stumpless_new_param( "par=am", "test-value" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    param = stumpless_new_param( "param]", "test-value" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    param = stumpless_new_param( "p\"aram", "test-value" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    
+    stumpless_free_all(  );
+  }
+
   TEST( NewParamTest, NullValue ) {
     struct stumpless_param *param;
     const struct stumpless_error *error;
@@ -413,5 +432,4 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
-
 }
