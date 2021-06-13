@@ -61,4 +61,15 @@ bool validate_printable_ascii( const char* str );
  */
 bool validate_app_name_length( const char* app_name);
 
+/**
+ * Checks that the passed in param name contains only ASCII characters and
+ * also does not contain any of the following characters: '=',']','"'.
+ *
+ * @param the param name.
+ *
+ * @return True if the param name has the correct format, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ */
+bool validate_param_name( const char* str);
+
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */
