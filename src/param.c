@@ -96,6 +96,10 @@ stumpless_new_param( const char *name, const char *value ) {
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
+  if ( !validate_param_name( name ) ) {
+    goto fail; 
+  }
+
   param = alloc_mem( sizeof( *param ) + CONFIG_MUTEX_T_SIZE );
   if( !param ) {
     goto fail;
