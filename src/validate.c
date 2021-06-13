@@ -69,7 +69,7 @@ bool validate_param_name( const char* str) {
   size_t str_length = strlen( str );
   for (size_t i = 0; i < str_length; i++) {
     if (str[i] < 33 || str[i] > 126 || str[i] == '=' || str[i] == ']' || str[i] == '"') {
-      raise_invalid_encoding(L10N_FORMAT_ERROR_MESSAGE("param name"));
+      raise_invalid_encoding(L10N_FORMAT_ERROR_MESSAGE("invalid param name"));
       return false;
     }
   }
