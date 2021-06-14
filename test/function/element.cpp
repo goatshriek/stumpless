@@ -513,6 +513,23 @@ namespace {
     EXPECT_FALSE( result );
   }
 
+  TEST_F( ElementTest, HasParamInvalidName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_has_param( element_with_params, "par=am" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_element_has_param( element_with_params, "para]m" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_element_has_param( element_with_params, "pa\"ram" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
   TEST_F( ElementTest, SetNameMemoryFailure ) {
     void * (*set_malloc_result)(size_t);
     const char *new_name = "this-wont-work";
