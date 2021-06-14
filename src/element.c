@@ -171,6 +171,10 @@ stumpless_element_has_param( const struct stumpless_element *element,
     return false;
   }
 
+  if ( !validate_param_name( name ) ) {
+    return false; 
+  }
+
   clear_error(  );
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
