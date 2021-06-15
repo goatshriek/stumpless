@@ -108,6 +108,9 @@ namespace {
 
         result = sd_journal_get_data( jrnl, "SYSLOG_TIMESTAMP", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_PID", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
       }
       sd_journal_close( jrnl );
     }

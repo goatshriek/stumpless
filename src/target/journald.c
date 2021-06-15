@@ -33,6 +33,7 @@
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/formatter.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/severity.h"
 #include "private/target.h"
@@ -45,6 +46,7 @@ static CONFIG_THREAD_LOCAL_STORAGE size_t message_buffer_length = 0;
 static CONFIG_THREAD_LOCAL_STORAGE char *priority_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *facility_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *timestamp_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE char *pid_buffer = NULL;
 
 void
 stumpless_close_journald_target( const struct stumpless_target *target ) {
@@ -92,15 +94,21 @@ journald_free_thread( void ) {
   facility_buffer = NULL;
   free_mem( timestamp_buffer );
   timestamp_buffer = NULL;
+  free_mem( pid_buffer );
+  pid_buffer = NULL;
 }
 
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
   char *new_message_buffer;
-  struct iovec fields[4];
+  struct iovec fields[5];
   int facility_val;
   size_t timestamp_size;
+  int pid;
+  char pid_int_buffer[MAX_INT_SIZE];
+  size_t pid_size;
+  size_t pid_digit_count;
 
   if( !timestamp_buffer ) {
     timestamp_buffer = alloc_mem( 17 + RFC_5424_TIMESTAMP_BUFFER_SIZE );
@@ -110,8 +118,6 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     memcpy( timestamp_buffer, "SYSLOG_TIMESTAMP=", 17 );
   }
   timestamp_size = config_get_now( timestamp_buffer + 17 );
-  fields[3].iov_base = timestamp_buffer;
-  fields[3].iov_len = timestamp_size + 17;
 
   if( !priority_buffer ) {
     priority_buffer = alloc_mem( 10 );
@@ -127,6 +133,34 @@ send_entry_to_journald_target( const struct stumpless_target *target,
       return -1;
     }
     memcpy( facility_buffer, "SYSLOG_FACILITY=", 16 );
+  }
+
+  if( !pid_buffer ) {
+    pid_buffer = alloc_mem( 11 + MAX_INT_SIZE );
+    if( !pid_buffer ) {
+      return -1;
+    }
+    memcpy( pid_buffer, "SYSLOG_PID=", 11 );
+  }
+  pid = config_getpid();
+  if( pid == 0 ) {
+    pid_buffer[11] = '0';
+    pid_size = 12;
+  } else {
+    pid_size = 11;
+    pid_digit_count = 0;
+
+    while( pid != 0 ) {
+      pid_int_buffer[pid_digit_count] = ( pid % 10 ) + 48;
+      pid /= 10;
+      pid_digit_count++;
+    }
+
+    while( pid_digit_count > 0 ) {
+      pid_digit_count--;
+      pid_buffer[pid_size] = pid_int_buffer[pid_digit_count];
+      pid_size++;
+    }
   }
 
   lock_entry( entry );
@@ -162,6 +196,10 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   fields[1].iov_base = priority_buffer;
   fields[1].iov_len = 10;
   fields[2].iov_base = facility_buffer;
+  fields[3].iov_base = timestamp_buffer;
+  fields[3].iov_len = timestamp_size + 17;
+  fields[4].iov_base = pid_buffer;
+  fields[4].iov_len = pid_size;
 
-  return sd_journal_sendv( fields, 4 );
+  return sd_journal_sendv( fields, 5 );
 }
