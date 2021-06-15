@@ -27,10 +27,12 @@
 #include <sys/uio.h>
 #include <systemd/sd-journal.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
+#include "private/formatter.h"
 #include "private/memory.h"
 #include "private/severity.h"
 #include "private/target.h"
@@ -42,6 +44,7 @@ static CONFIG_THREAD_LOCAL_STORAGE char *message_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t message_buffer_length = 0;
 static CONFIG_THREAD_LOCAL_STORAGE char *priority_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *facility_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE char *timestamp_buffer = NULL;
 
 void
 stumpless_close_journald_target( const struct stumpless_target *target ) {
@@ -87,14 +90,28 @@ journald_free_thread( void ) {
   priority_buffer = NULL;
   free_mem( facility_buffer );
   facility_buffer = NULL;
+  free_mem( timestamp_buffer );
+  timestamp_buffer = NULL;
 }
 
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
   char *new_message_buffer;
-  struct iovec fields[3];
+  struct iovec fields[4];
   int facility_val;
+  size_t timestamp_size;
+
+  if( !timestamp_buffer ) {
+    timestamp_buffer = alloc_mem( 17 + RFC_5424_TIMESTAMP_BUFFER_SIZE );
+    if( !timestamp_buffer ) {
+      return -1;
+    }
+    memcpy( timestamp_buffer, "SYSLOG_TIMESTAMP=", 17 );
+  }
+  timestamp_size = config_get_now( timestamp_buffer + 17 );
+  fields[3].iov_base = timestamp_buffer;
+  fields[3].iov_len = timestamp_size + 17;
 
   if( !priority_buffer ) {
     priority_buffer = alloc_mem( 10 );
@@ -146,5 +163,5 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   fields[1].iov_len = 10;
   fields[2].iov_base = facility_buffer;
 
-  return sd_journal_sendv( fields, 3 );
+  return sd_journal_sendv( fields, 4 );
 }

@@ -105,6 +105,9 @@ namespace {
         result = sd_journal_get_data( jrnl, "SYSLOG_FACILITY", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
         EXPECT_STREQ( data, expected_facility.c_str(  ) );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_TIMESTAMP", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
       }
       sd_journal_close( jrnl );
     }
