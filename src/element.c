@@ -237,6 +237,10 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
+  if ( !validate_param_name( name ) ) {
+    return NULL; 
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     clear_error(  );

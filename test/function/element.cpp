@@ -326,6 +326,23 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_PARAM_NOT_FOUND );
   }
 
+  TEST_F( ElementTest, GetParamInvalidName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_by_name( element_with_params, "par=am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_by_name( element_with_params, "par]am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_by_name( element_with_params, "par\"am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
   TEST_F( ElementTest, GetParamCount ) {
     EXPECT_EQ( stumpless_get_param_count( basic_element ), 0 );
     EXPECT_NO_ERROR;
