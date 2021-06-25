@@ -400,11 +400,11 @@ namespace {
     EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
-    result = stumpless_get_param_index( element_with_params, "par=am" );
+    result = stumpless_get_param_index( element_with_params, "par]am" );
     EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
-    result = stumpless_get_param_index( element_with_params, "par=am" );
+    result = stumpless_get_param_index( element_with_params, "par\"am" );
     EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
@@ -437,6 +437,23 @@ namespace {
     result = stumpless_get_param_name_count( basic_element, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, 0 );
+  }
+
+  TEST_F( ElementTest, GetParamNameCountInvalidName ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_name_count( basic_element, "par=am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_name_count( basic_element, "par]am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_name_count( basic_element, "par\"am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
   TEST_F( ElementTest, GetParamNameByIndex ) {

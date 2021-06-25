@@ -338,6 +338,10 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
     return 0;
   }
 
+  if (!validate_param_name(name)) {
+    return 0;
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     count++;
