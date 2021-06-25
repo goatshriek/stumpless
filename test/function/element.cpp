@@ -326,7 +326,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_PARAM_NOT_FOUND );
   }
 
-  TEST_F( ElementTest, GetParamInvalidName ) {
+  TEST_F( ElementTest, GetParamByNameInvalidName ) {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
 
@@ -541,6 +541,23 @@ namespace {
     value = stumpless_get_param_value_by_name( element_with_params, NULL );
     EXPECT_NULL( value );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST_F( ElementTest, GetParamValueByNameInvalidName ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_value_by_name( element_with_params, "par=am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_value_by_name( element_with_params, "par]am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_value_by_name( element_with_params, "par\"am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
   TEST_F( ElementTest, HasParam ) {

@@ -370,6 +370,10 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
                                    const char *name ) {
   const struct stumpless_param *param;
 
+  if (name && !validate_param_name(name)) {
+    return NULL;
+  }
+
   param = stumpless_get_param_by_name( element, name );
   if( !param ) {
     return NULL;
