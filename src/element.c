@@ -172,7 +172,7 @@ stumpless_element_has_param( const struct stumpless_element *element,
   }
 
   if ( !validate_param_name( name ) ) {
-    return false; 
+    return false;
   }
 
   clear_error(  );
