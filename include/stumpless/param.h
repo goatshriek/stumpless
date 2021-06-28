@@ -207,7 +207,7 @@ stumpless_get_param_value( const struct stumpless_param *param );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of memory management functions.
  *
- * @param name The name of the new param.
+ * @param name The name of the new param. Restricted to printable ASCII characters different from '=', ']' and '"'.
  *
  * @param value The value of the new param.
  *
@@ -238,7 +238,7 @@ stumpless_new_param( const char *name, const char *value );
  *
  * @param param The param to set the name of.
  *
- * @param name The new name of param.
+ * @param name The new name of param. Restricted to printable ASCII characters different from '=', ']' and '"'. 
  *
  * @return The modified param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
