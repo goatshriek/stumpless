@@ -171,6 +171,10 @@ stumpless_element_has_param( const struct stumpless_element *element,
     return false;
   }
 
+  if ( !validate_param_name( name ) ) {
+    return false;
+  }
+
   clear_error(  );
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
@@ -233,6 +237,10 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
+  if ( !validate_param_name( name ) ) {
+    return NULL; 
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     clear_error(  );
@@ -281,6 +289,10 @@ stumpless_get_param_index( const struct stumpless_element *element,
     return 0;
   }
 
+  if  ( !validate_param_name(name) ) {
+    return 0;
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     clear_error(  );
@@ -326,6 +338,10 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
     return 0;
   }
 
+  if (!validate_param_name(name)) {
+    return 0;
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     count++;
@@ -353,6 +369,10 @@ const char *
 stumpless_get_param_value_by_name( const struct stumpless_element *element,
                                    const char *name ) {
   const struct stumpless_param *param;
+
+  if (name && !validate_param_name(name)) {
+    return NULL;
+  }
 
   param = stumpless_get_param_by_name( element, name );
   if( !param ) {
