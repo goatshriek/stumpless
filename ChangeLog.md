@@ -12,6 +12,7 @@ fixes, check out the
 ## [2.1.0] - 2021-05-16
 ### Added
  - Custom function logging targets.
+ - Localization for Spanish (es-ES :mx)
 
 ### Fixed
  - `stumpless_perror` segmentation faults after the following errors:
@@ -34,7 +35,6 @@ fixes, check out the
     * Italian (it-IT :it:)
     * Slovak (sk-SK :slovakia:)
     * Swedish (sv-SE :sweden:)
-    * Spanish (es-ES :mx)
  - Thread safety for all functionality.
  - The following functions:
     * `stumpless_free_thread`
