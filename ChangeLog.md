@@ -34,6 +34,7 @@ fixes, check out the
     * Italian (it-IT :it:)
     * Slovak (sk-SK :slovakia:)
     * Swedish (sv-SE :sweden:)
+    * Spanish (es-ES :mx)
  - Thread safety for all functionality.
  - The following functions:
     * `stumpless_free_thread`
