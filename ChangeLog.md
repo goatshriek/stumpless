@@ -12,7 +12,7 @@ fixes, check out the
 ## [2.1.0] - 2021-05-16
 ### Added
  - Custom function logging targets.
- - Localization for Spanish (es-ES :mx)
+ - Localization for Spanish (es-ES :es:)
 
 ### Fixed
  - `stumpless_perror` segmentation faults after the following errors:
