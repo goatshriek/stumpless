@@ -96,6 +96,10 @@ stumpless_new_param( const char *name, const char *value ) {
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
+  if ( !validate_param_name( name ) ) {
+    goto fail; 
+  }
+
   param = alloc_mem( sizeof( *param ) + CONFIG_MUTEX_T_SIZE );
   if( !param ) {
     goto fail;
@@ -134,6 +138,10 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
 
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( name );
+
+  if ( !validate_param_name( name ) ) {
+    goto fail;
+  }
 
   new_name = copy_cstring_with_length( name, &new_size );
   if( !new_name ) {

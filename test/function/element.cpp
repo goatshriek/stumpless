@@ -326,6 +326,23 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_PARAM_NOT_FOUND );
   }
 
+  TEST_F( ElementTest, GetParamByNameInvalidName ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_by_name( element_with_params, "par=am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_by_name( element_with_params, "par]am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_by_name( element_with_params, "par\"am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
   TEST_F( ElementTest, GetParamCount ) {
     EXPECT_EQ( stumpless_get_param_count( basic_element ), 0 );
     EXPECT_NO_ERROR;
@@ -375,6 +392,23 @@ namespace {
     EXPECT_EQ( result, 0 );
   }
 
+  TEST_F( ElementTest, GetParamIndexInvalidName ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_index( element_with_params, "par=am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_index( element_with_params, "par]am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_index( element_with_params, "par\"am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
   TEST_F( ElementTest, GetParamNameCount ) {
     size_t result;
 
@@ -403,6 +437,23 @@ namespace {
     result = stumpless_get_param_name_count( basic_element, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_EQ( result, 0 );
+  }
+
+  TEST_F( ElementTest, GetParamNameCountInvalidName ) {
+    size_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_name_count( basic_element, "par=am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_name_count( basic_element, "par]am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_name_count( basic_element, "par\"am" );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
   TEST_F( ElementTest, GetParamNameByIndex ) {
@@ -492,6 +543,23 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST_F( ElementTest, GetParamValueByNameInvalidName ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_value_by_name( element_with_params, "par=am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_value_by_name( element_with_params, "par]am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_param_value_by_name( element_with_params, "par\"am" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+
   TEST_F( ElementTest, HasParam ) {
     bool result;
 
@@ -511,6 +579,23 @@ namespace {
     result = stumpless_element_has_param( element_with_params, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_FALSE( result );
+  }
+
+  TEST_F( ElementTest, HasParamInvalidName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_has_param( element_with_params, "par=am" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_element_has_param( element_with_params, "para]m" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_element_has_param( element_with_params, "pa\"ram" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
   TEST_F( ElementTest, SetNameMemoryFailure ) {
@@ -709,6 +794,45 @@ namespace {
     EXPECT_NULL( result );
   }
 
+  TEST_F( ElementTest, GetElementToStringWithParams) {
+    const char *format;
+
+    format = stumpless_element_to_string( element_with_params );
+    ASSERT_NOT_NULL( format );
+
+    EXPECT_STREQ( format, "<element-with-params>:[<param-1>:<value-1>,<param-2>:<value-2>]" );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST_F( ElementTest, GetElementToStringWithoutParams) {
+    const char *format;
+
+    format = stumpless_element_to_string( basic_element );
+    ASSERT_NOT_NULL( format );
+
+    EXPECT_STREQ( format, "<basic-element>" );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST_F( ElementTest, ElementToStringMemoryFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_error *error;
+    const char *result;
+
+    // create the internal error struct
+    stumpless_get_element_name( NULL );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_element_to_string( basic_element);
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   /* non-fixture tests */
 
   TEST( AddParamTest, NullElement ) {
@@ -883,4 +1007,12 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( ElemenToStringTest, NullElement ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_to_string( NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
 }

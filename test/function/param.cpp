@@ -319,6 +319,25 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( NewParamTest, InvalidName ) {
+    struct stumpless_param *param;
+    const struct stumpless_error *error;
+
+    param = stumpless_new_param( "par=am", "test-value" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    param = stumpless_new_param( "param]", "test-value" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    param = stumpless_new_param( "p\"aram", "test-value" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    
+    stumpless_free_all(  );
+  }
+
   TEST( NewParamTest, NullValue ) {
     struct stumpless_param *param;
     const struct stumpless_error *error;
@@ -364,6 +383,30 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
+    stumpless_free_all(  );
+  }
+
+  TEST( SetName, InvalidName) {
+    struct stumpless_param *param;
+    struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    param = stumpless_new_param( "param", "my-value" );
+    ASSERT_NOT_NULL( param );
+
+    result = stumpless_set_param_name( param, "par=am");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_set_param_name( param, "par]m");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_set_param_name( param, "param\"");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    
+    stumpless_destroy_param( param );
     stumpless_free_all(  );
   }
 
@@ -413,5 +456,4 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
-
 }

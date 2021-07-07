@@ -37,7 +37,6 @@ bool validate_msgid_length(const char* msgid ) {
 
   return validation_status;
 }
-
 bool validate_printable_ascii( const char* str ) {
   size_t str_length = strlen( str );
 
@@ -50,7 +49,6 @@ bool validate_printable_ascii( const char* str ) {
 
   return true;
 }
-
 
 bool validate_app_name_length( const char* app_name ) {
     size_t app_name_char_length = strlen( app_name );
@@ -66,3 +64,16 @@ bool validate_app_name_length( const char* app_name ) {
 
     return validation_status;
 }
+
+bool validate_param_name( const char* str) {
+  size_t str_length = strlen( str );
+  for (size_t i = 0; i < str_length; i++) {
+    if (str[i] < 33 || str[i] > 126 || str[i] == '=' || str[i] == ']' || str[i] == '"') {
+      raise_invalid_encoding(L10N_FORMAT_ERROR_MESSAGE("invalid param name"));
+      return false;
+    }
+  }
+
+  return true;
+}
+

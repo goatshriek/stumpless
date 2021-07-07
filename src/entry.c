@@ -447,6 +447,10 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
 
+  if ( !validate_param_name( param_name ) ) {
+    return NULL;
+  }
+
   lock_entry( entry );
   element = locked_get_element_by_name( entry, element_name );
   unlock_entry( entry );
@@ -486,6 +490,10 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
+
+  if (!validate_param_name(param_name)) {
+      return NULL;
+  }
 
   lock_entry( entry );
   element = locked_get_element_by_name( entry, element_name );

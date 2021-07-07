@@ -171,6 +171,10 @@ stumpless_element_has_param( const struct stumpless_element *element,
     return false;
   }
 
+  if ( !validate_param_name( name ) ) {
+    return false;
+  }
+
   clear_error(  );
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
@@ -233,6 +237,10 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
+  if ( !validate_param_name( name ) ) {
+    return NULL; 
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     clear_error(  );
@@ -281,6 +289,10 @@ stumpless_get_param_index( const struct stumpless_element *element,
     return 0;
   }
 
+  if  ( !validate_param_name(name) ) {
+    return 0;
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     clear_error(  );
@@ -326,6 +338,10 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
     return 0;
   }
 
+  if (!validate_param_name(name)) {
+    return 0;
+  }
+
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
     count++;
@@ -353,6 +369,10 @@ const char *
 stumpless_get_param_value_by_name( const struct stumpless_element *element,
                                    const char *name ) {
   const struct stumpless_param *param;
+
+  if (name && !validate_param_name(name)) {
+    return NULL;
+  }
 
   param = stumpless_get_param_by_name( element, name );
   if( !param ) {
@@ -499,6 +519,87 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
   }
 
   return element;
+}
+
+const char *
+stumpless_element_to_string( const struct stumpless_element *element ) {
+    char *format;
+    const char *name;
+    size_t name_len;
+    size_t format_len;
+    size_t param_count;
+    struct stumpless_param **params;
+
+    VALIDATE_ARG_NOT_NULL( element );
+
+    lock_element( element );
+
+    name = element->name;
+    name_len = element->name_length;
+    params = element->params; 
+    param_count = element->param_count;
+
+    // acc total format size
+    format_len = name_len;
+
+    const char **params_format = alloc_mem(sizeof(char*) * param_count);
+    for( size_t i = 0; i < param_count; i++ ) {
+      params_format[i] = stumpless_param_to_string(params[i]);
+      // does not count '\0' on purpose
+      format_len += strlen(params_format[i]);
+    }
+
+    if( param_count != 0 ) {
+      // extra param list chars and commas
+      format_len += 6 + param_count - 1;
+    } else {
+      // no params, just name
+      format_len += 3;
+    }
+
+    format = alloc_mem( format_len );
+    if( !format ) {
+      goto fail;
+    }
+
+    memcpy( format + 1, name, name_len );
+
+    // build params list "param_1_to_string,param_2_to_string, ..."
+    size_t pos_offset = name_len + 4;
+    for( size_t i = 0; i < param_count; i++) {
+      // replace '\0' with ',' at the end of each string
+      memcpy( format + pos_offset, params_format[i], strlen(params_format[i]));
+      pos_offset += strlen(params_format[i]);
+      if( i < param_count - 1 ) {
+        format[pos_offset++] = ',';
+      }
+      free_mem(params_format[i]);
+    }
+    free_mem(params_format);
+
+    unlock_element( element );
+
+    format[0] = '<';
+    format[name_len + 1] = '>';
+
+    if (param_count != 0 ) {
+      // <name>:[param_1_to_string,param_2_to_string,etc.] (with params)
+      format[name_len + 2] = ':';
+      format[name_len + 3] = '[';
+      format[pos_offset] = ']';
+    } else {
+      // <name> (no params)
+      // pos_offset is name_len + 4 here 
+      pos_offset -= 3;
+    }
+
+    format[pos_offset + 1] = '\0';
+
+    clear_error( );
+    return format;
+fail:
+    unlock_element( element );
+    return NULL;
 }
 
 /* private functions */

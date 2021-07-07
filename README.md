@@ -26,7 +26,7 @@ easier:
  * cross-platform builds on Linux, Windows, Mac, Cygwin, and more
  * completely thread safe
  * can be adjusted or removed during compilation for zero runtime impact
- * localized for multiple languages :bulgaria: :de: :fr: :it: :sweden:
+ * localized for multiple languages :bulgaria: :de: :es: :fr: :it: :sweden:
    :slovakia: :us:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
