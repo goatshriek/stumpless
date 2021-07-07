@@ -85,6 +85,10 @@ namespace {
     facility_stream << "SYSLOG_FACILITY=" << expected_facility_value;
     std::string expected_facility = facility_stream.str(  );
 
+    std::ostringstream app_name_stream;
+    app_name_stream << "SYSLOG_IDENTIFIER=" << stumpless_get_target_default_app_name( target );
+    std::string expected_app_name = app_name_stream.str(  );
+
     for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
       result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
       if( result < 0 ) {
@@ -105,6 +109,10 @@ namespace {
         result = sd_journal_get_data( jrnl, "SYSLOG_FACILITY", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
         EXPECT_STREQ( data, expected_facility.c_str(  ) );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_IDENTIFIER", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_app_name.c_str(  ) );
 
         result = sd_journal_get_data( jrnl, "SYSLOG_TIMESTAMP", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );

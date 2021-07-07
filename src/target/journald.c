@@ -47,6 +47,7 @@ static CONFIG_THREAD_LOCAL_STORAGE char *priority_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *facility_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *timestamp_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *pid_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE char *app_name_buffer = NULL;
 
 void
 stumpless_close_journald_target( const struct stumpless_target *target ) {
@@ -102,7 +103,7 @@ int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
   char *new_message_buffer;
-  struct iovec fields[5];
+  struct iovec fields[6];
   int facility_val;
   size_t timestamp_size;
   int pid;
@@ -133,6 +134,14 @@ send_entry_to_journald_target( const struct stumpless_target *target,
       return -1;
     }
     memcpy( facility_buffer, "SYSLOG_FACILITY=", 16 );
+  }
+
+  if( !app_name_buffer ) {
+    app_name_buffer = alloc_mem( 18 + STUMPLESS_MAX_APP_NAME_LENGTH );
+    if( !app_name_buffer ) {
+      return -1;
+    }
+    memcpy( app_name_buffer, "SYSLOG_IDENTIFIER=", 18 );
   }
 
   if( !pid_buffer ) {
@@ -190,6 +199,9 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     fields[2].iov_len = 18;
   }
 
+  memcpy( app_name_buffer + 18, entry->app_name, entry->app_name_length );
+  fields[5].iov_len = entry->app_name_length + 18;
+
   unlock_entry( entry );
 
   fields[0].iov_base = message_buffer;
@@ -200,6 +212,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   fields[3].iov_len = timestamp_size + 17;
   fields[4].iov_base = pid_buffer;
   fields[4].iov_len = pid_size;
+  fields[5].iov_base = app_name_buffer;
 
-  return sd_journal_sendv( fields, 5 );
+  return sd_journal_sendv( fields, 6 );
 }
