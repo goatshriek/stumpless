@@ -76,10 +76,11 @@ struct stumpless_param {
   size_t value_length;
 #  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
 /** Gets the name to use for the journald field corresponding to this param. */
-  char * ( *get_journald_name )( const struct stumpless_entry *,
+  size_t ( *get_journald_name )( const struct stumpless_entry *,
                                  size_t,
                                  size_t,
-                                 size_t * );
+                                 char *,
+                                 size_t );
 #  endif
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /*
