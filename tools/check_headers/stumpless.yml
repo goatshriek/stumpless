@@ -244,6 +244,7 @@
 "STUMPLESS_FILE_OPEN_FAILURE": "stumpless/error.h"
 "STUMPLESS_FILE_TARGET": "stumpless/target.h"
 "STUMPLESS_FILE_WRITE_FAILURE": "stumpless/error.h"
+"stumpless_flatten_param_name": "stumpless/target/journald.h"
 "stumpless_free_all": "stumpless/memory.h"
 "stumpless_free_thread": "stumpless/memory.h"
 "STUMPLESS_FUNCTION_TARGET": "stumpless/target.h"

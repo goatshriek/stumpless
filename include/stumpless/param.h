@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,14 @@
 
 #  include <stddef.h>
 #  include <stumpless/config.h>
+#  include <stumpless/entry.h>
 
 #  ifdef __cplusplus
 extern "C" {
 #  endif
+
+// this is required due to the circular dependency with the entry header.
+struct stumpless_entry;
 
 /**
  * A parameter within a structured data element.
@@ -70,6 +74,13 @@ struct stumpless_param {
   char *value;
 /** The number of characters in value (not including the NULL character). */
   size_t value_length;
+#  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
+/** Gets the name to use for the journald field corresponding to this param. */
+  char * ( *get_journald_name )( const struct stumpless_entry *,
+                                 size_t,
+                                 size_t,
+                                 size_t * );
+#  endif
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /*
  * In thread-safe builds the memory at the end of the param holds a mutex that

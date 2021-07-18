@@ -45,6 +45,9 @@
 #ifndef __STUMPLESS_TARGET_JOURNALD_H
 #  define __STUMPLESS_TARGET_JOURNALD_H
 
+#  include <stdbool.h>
+#  include <stddef.h>
+#  include <stumpless/entry.h>
 #  include <stumpless/target.h>
 
 #  ifdef __cplusplus
@@ -72,6 +75,51 @@ extern "C" {
  */
 void
 stumpless_close_journald_target( const struct stumpless_target *target );
+
+/**
+ * Creates a name for the param by combining the element and param name. Both
+ * names are converted to all upper case and combined using underscore
+ * characters.
+ *
+ * **Thread Safety: MT-Safe race:dest race:length**
+ * This function is thread safe. It uses other thread-safe functions to
+ * access the element and param names it needs. This assumes that dest and
+ * length are not modified during the call.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since v2.1.0
+ *
+ * @param entry The entry that the param is part of.
+ *
+ * @param element_index The index of the element the param is part of.
+ *
+ * @param param_index The index of the param within the element.
+ *
+ * @param dest The buffer to write the name to. The buffer must be of at least
+ * size 1, to receive a NULL character.
+ *
+ * @param length On input, the size of the destination buffer. On output, the
+ * size of the string written to the buffer. If dest was too small, then this
+ * will instead have the size needed for the buffer, and dest will have a single
+ * NULL character written to it.
+ *
+ * @return True if the call succeeded, false if not.
+ */
+bool
+stumpless_flatten_param_name( const struct stumpless_entry *entry,
+                              size_t element_index,
+                              size_t param_index,
+                              char *dest,
+                              size_t *length );
 
 /**
  * Opens a journald target.
