@@ -41,6 +41,8 @@
 #include "private/validate.h"
 
 /* per-thread static variables */
+static CONFIG_THREAD_LOCAL_STORAGE struct iovec *fields = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE size_t fields_length = 0;
 static CONFIG_THREAD_LOCAL_STORAGE char *message_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t message_buffer_length = 0;
 static CONFIG_THREAD_LOCAL_STORAGE char *priority_buffer = NULL;
@@ -86,6 +88,9 @@ stumpless_open_journald_target( const char *name ) {
 
 void
 journald_free_thread( void ) {
+  free_mem( fields );
+  fields = NULL;
+  fields_length = 0;
   free_mem( message_buffer );
   message_buffer = NULL;
   message_buffer_length = 0;
@@ -102,14 +107,33 @@ journald_free_thread( void ) {
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
+  struct iovec *new_fields;
   char *new_message_buffer;
-  struct iovec fields[6];
   int facility_val;
   size_t timestamp_size;
   int pid;
   char pid_int_buffer[MAX_INT_SIZE];
   size_t pid_size;
   size_t pid_digit_count;
+  int field_count = 6;
+
+  if( !fields ) {
+    fields = alloc_mem( sizeof( *fields ) * field_count );
+    if( !fields ) {
+      return -1;
+    }
+
+    fields_length = field_count;
+
+  } else if( fields_length < field_count ) {
+    new_fields = realloc_mem( fields, sizeof( *fields ) * field_count );
+    if( !new_fields ) {
+      return -1;
+    }
+
+    fields = new_fields;
+    fields_length = field_count;
+  }
 
   if( !timestamp_buffer ) {
     timestamp_buffer = alloc_mem( 17 + RFC_5424_TIMESTAMP_BUFFER_SIZE );
@@ -214,5 +238,5 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   fields[4].iov_len = pid_size;
   fields[5].iov_base = app_name_buffer;
 
-  return sd_journal_sendv( fields, 6 );
+  return sd_journal_sendv( fields, field_count );
 }
