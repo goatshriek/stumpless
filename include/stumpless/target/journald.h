@@ -108,7 +108,7 @@ stumpless_close_journald_target( const struct stumpless_target *target );
  *
  * @param destination The buffer to write the name to.
  *
- * @param length The maximum number of bytes to write to the destination
+ * @param size The maximum number of bytes to write to the destination
  * buffer.
  *
  * @return The number of bytes needed to write the complete flattened name. If
@@ -119,7 +119,7 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
                               size_t element_index,
                               size_t param_index,
                               char *destination,
-                              size_t length );
+                              size_t size );
 
 /**
  * Opens a journald target.

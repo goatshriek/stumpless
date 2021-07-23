@@ -60,6 +60,86 @@ namespace {
     sd_journal *jrnl;
     bool msg_found = false;
     bool abort = false;
+    struct stumpless_entry *entry;
+
+    entry = create_entry(  );
+
+    seed = std::chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
+    std::default_random_engine gen( seed );
+    std::uniform_int_distribution<int> dist;
+    std::ostringstream message_stream;
+    message_stream << "test-stumpless-journald-entry-" << dist( gen );
+    std::string message = message_stream.str(  );
+    stumpless_set_entry_message( entry, message.c_str(  ) );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    std::ostringstream match_stream;
+    match_stream << "MESSAGE=" << message;
+    std::string message_match = match_stream.str(  );
+
+    std::ostringstream priority_stream;
+    priority_stream << "PRIORITY=" << STUMPLESS_DEFAULT_SEVERITY;
+    std::string expected_priority = priority_stream.str(  );
+
+    std::ostringstream facility_stream;
+    int expected_facility_value = stumpless_get_default_facility( target ) >> 3;
+    facility_stream << "SYSLOG_FACILITY=" << expected_facility_value;
+    std::string expected_facility = facility_stream.str(  );
+
+    std::ostringstream app_name_stream;
+    app_name_stream << "SYSLOG_IDENTIFIER=" << stumpless_get_entry_app_name( entry );
+    std::string expected_app_name = app_name_stream.str(  );
+
+    for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
+      result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
+      if( result < 0 ) {
+        SUCCEED(  ) << "could not open the journal to verify the write, failed with error code " << result;
+        abort = true;
+      }
+
+      sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
+      SD_JOURNAL_FOREACH( jrnl ) {
+        const char *data;
+        size_t data_len;
+        msg_found = true;
+
+        result = sd_journal_get_data( jrnl, "PRIORITY", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_priority.c_str(  ) );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_FACILITY", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_facility.c_str(  ) );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_IDENTIFIER", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_app_name.c_str(  ) );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_TIMESTAMP", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+
+        result = sd_journal_get_data( jrnl, "SYSLOG_PID", ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+      }
+      sd_journal_close( jrnl );
+    }
+
+    if( !abort ) {
+      EXPECT_TRUE( msg_found );
+    }
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( JournaldTargetTest, AddMessage ) {
+    unsigned seed;
+    int result;
+    sd_journal *jrnl;
+    bool msg_found = false;
+    bool abort = false;
 
     seed = std::chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
     std::default_random_engine gen( seed );
