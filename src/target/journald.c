@@ -21,7 +21,9 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <stumpless/element.h>
 #include <stumpless/entry.h>
+#include <stumpless/param.h>
 #include <stumpless/target.h>
 #include <stumpless/target/journald.h>
 #include <sys/uio.h>

@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_JOURNALD_H
 #  define __STUMPLESS_PRIVATE_TARGET_JOURNALD_H
 
+#  include <stddef.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
 
