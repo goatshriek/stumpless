@@ -44,6 +44,7 @@ jobs:
     steps:
       - name: Install Prereqs
         run: |
+          sudo apt udpate
           sudo apt install libsystemd-dev
       - uses: actions/checkout@v2
       - name: Configure
