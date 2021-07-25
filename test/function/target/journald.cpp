@@ -93,6 +93,11 @@ namespace {
     app_name_stream << "SYSLOG_IDENTIFIER=" << stumpless_get_entry_app_name( entry );
     std::string expected_app_name = app_name_stream.str(  );
 
+    const char *param_1_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_1";
+    const char *expected_param_1 = "FIXTURE_ELEMENT_FIXTURE_PARAM_1=fixture-value-1";
+    const char *param_2_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_2";
+    const char *expected_param_2 = "FIXTURE_ELEMENT_FIXTURE_PARAM_2=fixture-value-2";
+
     for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
       result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
       if( result < 0 ) {
@@ -123,6 +128,14 @@ namespace {
 
         result = sd_journal_get_data( jrnl, "SYSLOG_PID", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
+
+        result = sd_journal_get_data( jrnl, param_1_name, ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_param_1 );
+
+        result = sd_journal_get_data( jrnl, param_2_name, ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_STREQ( data, expected_param_2 );
       }
       sd_journal_close( jrnl );
     }

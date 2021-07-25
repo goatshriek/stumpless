@@ -22,6 +22,14 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
 
+/**
+ * Gets a journald-compliant field name from a given UTF-8 string.
+ *
+ * @return the number of bytes written to the flattened buffer.
+ */
+size_t
+get_journald_field_name( char *flattened, const char *raw, size_t size );
+
 void
 journald_free_thread( void );
 

@@ -21,6 +21,7 @@
 "ELEMENT_MUTEX": "private/element.h"
 "ENTRY_MUTEX": "private/entry.h"
 "FOR_EACH_PARAM_WITH_NAME": "private/element.h"
+"get_journald_field_name": "private/target/journald.h"
 "HAVE_PTHREAD_H": "private/config.h"
 "journald_free_thread": "private/target/journald.h"
 "L10N_": "private/config/locale/wrapper.h"

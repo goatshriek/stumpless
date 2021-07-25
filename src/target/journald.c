@@ -77,16 +77,26 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
                               size_t param_index,
                               char *destination,
                               size_t size ) {
+  const struct stumpless_element *element;
+  const struct stumpless_param *param;
   size_t required_size;
+  size_t used_size;
 
-  required_size = entry->elements[element_index]->name_length + 1 + entry->elements[element_index]->params[param_index]->name_length + 1;
+  element = entry->elements[element_index];
+  param = element->params[param_index];
+
+  required_size = element->name_length + param->name_length + param->value_length + 2;
 
   if( required_size > size ) {
     return required_size;
   }
 
-  memcpy( destination, "TE=", 3 );
-  return 3;
+  used_size = get_journald_field_name( destination, element->name, element->name_length );
+  destination[used_size++] = '_';
+  used_size += get_journald_field_name( destination + used_size, param->name, param->name_length );
+  destination[used_size++] = '=';
+  memcpy( destination + used_size, param->value, param->value_length );
+  return used_size + param->value_length;
 }
 
 struct stumpless_target *
@@ -107,6 +117,35 @@ stumpless_open_journald_target( const char *name ) {
 }
 
 /* private definitions */
+
+size_t
+get_journald_field_name( char *flattened, const char *raw, size_t size ) {
+  unsigned char current;
+  size_t raw_i = 0;
+  size_t flattened_i = 0;
+
+  while( raw_i < size ) {
+    current = raw[raw_i];
+    if( ( current >= 48 && current <= 57 ) // digit
+        || ( current >= 65 && current <= 90 ) ) { // uppercase letter
+      flattened[flattened_i] = current;
+    } else if( current >= 97 && current <= 122 ) { // lowercase letter
+      flattened[flattened_i] = current - 32;
+    } else {
+      flattened[flattened_i] = '_';
+    }
+
+    // skip over utf-8 multibyte characters
+    while( current >= 128 ) {
+      raw_i++;
+    }
+
+    raw_i++;
+    flattened_i++;
+  }
+
+  return flattened_i;
+}
 
 void
 journald_free_thread( void ) {
