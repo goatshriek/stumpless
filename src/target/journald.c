@@ -288,9 +288,8 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   sd_buffer_current = sd_buffer;
   for( i = 0; i < entry->element_count; i++ ) {
     fields[fields_offset].iov_base = sd_buffer_current;
-    fields[fields_offset].iov_len = entry->elements[i]->name_length + 1;
-    memcpy( sd_buffer_current, entry->elements[i]->name, entry->elements[i]->name_length );
-    sd_buffer_current[entry->elements[i]->name_length] = '=';
+    fields[fields_offset].iov_len = get_journald_field_name( sd_buffer_current, entry->elements[i]->name, entry->elements[i]->name_length ) + 1;
+    sd_buffer_current[fields[fields_offset].iov_len-1] = '=';
     sd_buffer_current += fields[fields_offset].iov_len;
     fields_offset++;
     for( j = 0; j < entry->elements[i]->param_count; j++ ) {

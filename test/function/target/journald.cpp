@@ -17,6 +17,7 @@
  */
 
 #include <chrono>
+#include <cstring>
 #include <random>
 #include <sstream>
 #include <stddef.h>
@@ -93,6 +94,8 @@ namespace {
     app_name_stream << "SYSLOG_IDENTIFIER=" << stumpless_get_entry_app_name( entry );
     std::string expected_app_name = app_name_stream.str(  );
 
+    const char *element_name = "FIXTURE_ELEMENT";
+    const char *expected_element = "FIXTURE_ELEMENT=";
     const char *param_1_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_1";
     const char *expected_param_1 = "FIXTURE_ELEMENT_FIXTURE_PARAM_1=fixture-value-1";
     const char *param_2_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_2";
@@ -128,6 +131,11 @@ namespace {
 
         result = sd_journal_get_data( jrnl, "SYSLOG_PID", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
+
+        result = sd_journal_get_data( jrnl, element_name, ( const void ** ) &data, &data_len );
+        EXPECT_GE( result, 0 );
+        EXPECT_EQ( data_len, strlen( expected_element ) );
+        EXPECT_EQ( 0, memcmp( data, expected_element, data_len ) );
 
         result = sd_journal_get_data( jrnl, param_1_name, ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
