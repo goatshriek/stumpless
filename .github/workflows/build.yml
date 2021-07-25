@@ -12,7 +12,7 @@ env:
 jobs:
   linux-analysis:
     name: "code analysis"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Check Headers
@@ -40,7 +40,7 @@ jobs:
           SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
   linux-debug:
     name: "linux, debug"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - name: Install Prereqs
         run: |
@@ -82,7 +82,7 @@ jobs:
           sudo make install
   linux-release:
     name: "linux, release"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
@@ -128,7 +128,7 @@ jobs:
           ./basic_example
   linux-all-disabled:
     name: "linux, all features disabled"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
@@ -153,7 +153,7 @@ jobs:
           sudo make install
   linux-cpp:
     name: "linux, with c++"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-ruby@v1.1.2
