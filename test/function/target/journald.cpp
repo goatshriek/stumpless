@@ -29,6 +29,17 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
 
+void TestData( sd_journal *jrnl, const char *name, const std::string &value ) {
+  const void *data;
+  size_t data_len;
+  int result = sd_journal_get_data( jrnl, name, &data, &data_len );
+  EXPECT_GE( result, 0 );
+
+  std::ostringstream data_stream;
+  data_stream << name << '=' << value;
+  EXPECT_EQ( 0, memcmp( data, data_stream.str(  ).c_str(  ), data_len ) );
+}
+
 namespace {
 
   class JournaldTargetTest : public::testing::Test {
@@ -81,14 +92,11 @@ namespace {
     match_stream << "MESSAGE=" << message;
     std::string message_match = match_stream.str(  );
 
-    std::ostringstream priority_stream;
-    priority_stream << "PRIORITY=" << STUMPLESS_DEFAULT_SEVERITY;
-    std::string expected_priority = priority_stream.str(  );
+    int severity_value = stumpless_get_entry_severity( entry );
+    std::string expected_priority = std::to_string( severity_value );
 
-    std::ostringstream facility_stream;
-    int expected_facility_value = stumpless_get_default_facility( target ) >> 3;
-    facility_stream << "SYSLOG_FACILITY=" << expected_facility_value;
-    std::string expected_facility = facility_stream.str(  );
+    int facility_value = stumpless_get_entry_facility( entry ) >> 3;
+    std::string expected_facility = std::to_string( facility_value );
 
     std::ostringstream app_name_stream;
     app_name_stream << "SYSLOG_IDENTIFIER=" << stumpless_get_entry_app_name( entry );
@@ -114,13 +122,8 @@ namespace {
         size_t data_len;
         msg_found = true;
 
-        result = sd_journal_get_data( jrnl, "PRIORITY", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_priority.c_str(  ) );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_FACILITY", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_facility.c_str(  ) );
+        TestData( jrnl, "PRIORITY", expected_priority );
+        TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
 
         result = sd_journal_get_data( jrnl, "SYSLOG_IDENTIFIER", ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
