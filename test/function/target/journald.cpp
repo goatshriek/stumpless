@@ -37,7 +37,15 @@ void TestData( sd_journal *jrnl, const char *name, const std::string &value ) {
 
   std::ostringstream data_stream;
   data_stream << name << '=' << value;
+  EXPECT_EQ( data_len, strlen( name ) + 1 + value.length(  ) );
   EXPECT_EQ( 0, memcmp( data, data_stream.str(  ).c_str(  ), data_len ) );
+}
+
+void TestDataExists( sd_journal *jrnl, const char *name ) {
+  const void *data;
+  size_t data_len;
+  int result = sd_journal_get_data( jrnl, name, &data, &data_len );
+  EXPECT_GE( result, 0 );
 }
 
 namespace {
@@ -84,13 +92,13 @@ namespace {
     std::string message = message_stream.str(  );
     stumpless_set_entry_message( entry, message.c_str(  ) );
 
-    result = stumpless_add_entry( target, entry );
-    EXPECT_GE( result, 0 );
-    EXPECT_NO_ERROR;
-
     std::ostringstream match_stream;
     match_stream << "MESSAGE=" << message;
     std::string message_match = match_stream.str(  );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
 
     int severity_value = stumpless_get_entry_severity( entry );
     std::string expected_priority = std::to_string( severity_value );
@@ -98,9 +106,8 @@ namespace {
     int facility_value = stumpless_get_entry_facility( entry ) >> 3;
     std::string expected_facility = std::to_string( facility_value );
 
-    std::ostringstream app_name_stream;
-    app_name_stream << "SYSLOG_IDENTIFIER=" << stumpless_get_entry_app_name( entry );
-    std::string expected_app_name = app_name_stream.str(  );
+    const char *app_name_value = stumpless_get_entry_app_name( entry );
+    std::string expected_app_name = std::string( app_name_value );
 
     const char *element_name = "FIXTURE_ELEMENT";
     const char *expected_element = "FIXTURE_ELEMENT=";
@@ -124,21 +131,10 @@ namespace {
 
         TestData( jrnl, "PRIORITY", expected_priority );
         TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_IDENTIFIER", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_app_name.c_str(  ) );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_TIMESTAMP", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_PID", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-
-        result = sd_journal_get_data( jrnl, element_name, ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_EQ( data_len, strlen( expected_element ) );
-        EXPECT_EQ( 0, memcmp( data, expected_element, data_len ) );
+        TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
+        TestData( jrnl, element_name, std::string(  ) );
+        TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
+        TestDataExists( jrnl, "SYSLOG_PID" );
 
         result = sd_journal_get_data( jrnl, param_1_name, ( const void ** ) &data, &data_len );
         EXPECT_GE( result, 0 );
@@ -172,13 +168,13 @@ namespace {
     message_stream << "test-stumpless-journald-message-" << dist( gen );
     std::string message = message_stream.str(  );
 
-    result = stumpless_add_message( target, message.c_str(  ) );
-    EXPECT_GE( result, 0 );
-    EXPECT_NO_ERROR;
-
     std::ostringstream match_stream;
     match_stream << "MESSAGE=" << message;
     std::string message_match = match_stream.str(  );
+
+    result = stumpless_add_message( target, message.c_str(  ) );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
 
     std::ostringstream priority_stream;
     priority_stream << "PRIORITY=" << STUMPLESS_DEFAULT_SEVERITY;
