@@ -29,13 +29,15 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
 
-void TestData( sd_journal *jrnl, const char *name, const std::string &value ) {
+using namespace std;
+
+void TestData( sd_journal *jrnl, const char *name, const string &value ) {
   const void *data;
   size_t data_len;
   int result = sd_journal_get_data( jrnl, name, &data, &data_len );
   EXPECT_GE( result, 0 );
 
-  std::ostringstream data_stream;
+  ostringstream data_stream;
   data_stream << name << '=' << value;
   EXPECT_EQ( data_len, strlen( name ) + 1 + value.length(  ) );
   EXPECT_EQ( 0, memcmp( data, data_stream.str(  ).c_str(  ), data_len ) );
@@ -84,30 +86,30 @@ namespace {
 
     entry = create_entry(  );
 
-    seed = std::chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
-    std::default_random_engine gen( seed );
-    std::uniform_int_distribution<int> dist;
-    std::ostringstream message_stream;
+    seed = chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
+    default_random_engine gen( seed );
+    uniform_int_distribution<int> dist;
+    ostringstream message_stream;
     message_stream << "test-stumpless-journald-entry-" << dist( gen );
-    std::string message = message_stream.str(  );
+    string message = message_stream.str(  );
     stumpless_set_entry_message( entry, message.c_str(  ) );
 
-    std::ostringstream match_stream;
+    ostringstream match_stream;
     match_stream << "MESSAGE=" << message;
-    std::string message_match = match_stream.str(  );
+    string message_match = match_stream.str(  );
 
     result = stumpless_add_entry( target, entry );
     EXPECT_GE( result, 0 );
     EXPECT_NO_ERROR;
 
     int severity_value = stumpless_get_entry_severity( entry );
-    std::string expected_priority = std::to_string( severity_value );
+    string expected_priority = to_string( severity_value );
 
     int facility_value = stumpless_get_entry_facility( entry ) >> 3;
-    std::string expected_facility = std::to_string( facility_value );
+    string expected_facility = to_string( facility_value );
 
     const char *app_name = stumpless_get_entry_app_name( entry );
-    std::string expected_app_name = std::string( app_name );
+    string expected_app_name = string( app_name );
 
     const char *element_name = "FIXTURE_ELEMENT";
     const char *param_1_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_1";
@@ -132,9 +134,9 @@ namespace {
         TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
         TestDataExists( jrnl, "SYSLOG_PID" );
 
-        TestData( jrnl, element_name, std::string(  ) );
-        TestData( jrnl, param_1_name, std::string( expected_param_1 ) );
-        TestData( jrnl, param_2_name, std::string( expected_param_2 ) );
+        TestData( jrnl, element_name, string(  ) );
+        TestData( jrnl, param_1_name, string( expected_param_1 ) );
+        TestData( jrnl, param_2_name, string( expected_param_2 ) );
       }
       sd_journal_close( jrnl );
     }
@@ -153,29 +155,29 @@ namespace {
     bool msg_found = false;
     bool abort = false;
 
-    seed = std::chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
-    std::default_random_engine gen( seed );
-    std::uniform_int_distribution<int> dist;
-    std::ostringstream message_stream;
+    seed = chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
+    default_random_engine gen( seed );
+    uniform_int_distribution<int> dist;
+    ostringstream message_stream;
     message_stream << "test-stumpless-journald-message-" << dist( gen );
-    std::string message = message_stream.str(  );
+    string message = message_stream.str(  );
 
-    std::ostringstream match_stream;
+    ostringstream match_stream;
     match_stream << "MESSAGE=" << message;
-    std::string message_match = match_stream.str(  );
+    string message_match = match_stream.str(  );
 
     result = stumpless_add_message( target, message.c_str(  ) );
     EXPECT_GE( result, 0 );
     EXPECT_NO_ERROR;
 
     int severity_value = STUMPLESS_DEFAULT_SEVERITY;
-    std::string expected_priority = std::to_string( severity_value );
+    string expected_priority = to_string( severity_value );
 
     int facility_value = stumpless_get_default_facility( target ) >> 3;
-    std::string expected_facility = std::to_string( facility_value );
+    string expected_facility = to_string( facility_value );
 
     const char *app_name = stumpless_get_target_default_app_name( target );
-    std::string expected_app_name = std::string( app_name );
+    string expected_app_name = string( app_name );
 
     for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
       result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
