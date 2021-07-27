@@ -29,6 +29,25 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
 
+#define FOR_JOURNALD_MATCH_BEGIN( MATCH )                   \
+for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {     \
+  result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY ); \
+  if( result < 0 ) {                                        \
+    SUCCEED(  ) << "could not open the journal to verify "  \
+                   "the write, failed with error code "     \
+                << result;                                  \
+    abort = true;                                           \
+  }                                                         \
+                                                            \
+  sd_journal_add_match( jrnl, ( MATCH ), 0 );               \
+  SD_JOURNAL_FOREACH( jrnl ) {
+
+#define FOR_JOURNALD_MATCH_END \
+  }                            \
+  sd_journal_close( jrnl );    \
+}
+
+
 using namespace std;
 
 void TestData( sd_journal *jrnl, const char *name, const string &value ) {
@@ -117,29 +136,19 @@ namespace {
     const char *param_2_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_2";
     const char *expected_param_2 = "fixture-value-2";
 
-    for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
-      result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
-      if( result < 0 ) {
-        SUCCEED(  ) << "could not open the journal to verify the write, failed with error code " << result;
-        abort = true;
-      }
+    FOR_JOURNALD_MATCH_BEGIN( message_match.c_str(  ) )
+      msg_found = true;
 
-      sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
-      SD_JOURNAL_FOREACH( jrnl ) {
-        msg_found = true;
+      TestData( jrnl, "PRIORITY", expected_priority );
+      TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
+      TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
+      TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
+      TestDataExists( jrnl, "SYSLOG_PID" );
 
-        TestData( jrnl, "PRIORITY", expected_priority );
-        TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
-        TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
-        TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
-        TestDataExists( jrnl, "SYSLOG_PID" );
-
-        TestData( jrnl, element_name, string(  ) );
-        TestData( jrnl, param_1_name, string( expected_param_1 ) );
-        TestData( jrnl, param_2_name, string( expected_param_2 ) );
-      }
-      sd_journal_close( jrnl );
-    }
+      TestData( jrnl, element_name, string(  ) );
+      TestData( jrnl, param_1_name, string( expected_param_1 ) );
+      TestData( jrnl, param_2_name, string( expected_param_2 ) );
+    FOR_JOURNALD_MATCH_END
 
     if( !abort ) {
       EXPECT_TRUE( msg_found );
@@ -179,25 +188,15 @@ namespace {
     const char *app_name = stumpless_get_target_default_app_name( target );
     string expected_app_name = string( app_name );
 
-    for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
-      result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
-      if( result < 0 ) {
-        SUCCEED(  ) << "could not open the journal to verify the write, failed with error code " << result;
-        abort = true;
-      }
+    FOR_JOURNALD_MATCH_BEGIN( message_match.c_str(  ) )
+      msg_found = true;
 
-      sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
-      SD_JOURNAL_FOREACH( jrnl ) {
-        msg_found = true;
-
-        TestData( jrnl, "PRIORITY", expected_priority );
-        TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
-        TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
-        TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
-        TestDataExists( jrnl, "SYSLOG_PID" );
-      }
-      sd_journal_close( jrnl );
-    }
+      TestData( jrnl, "PRIORITY", expected_priority );
+      TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
+      TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
+      TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
+      TestDataExists( jrnl, "SYSLOG_PID" );
+    FOR_JOURNALD_MATCH_END
 
     if( !abort ) {
       EXPECT_TRUE( msg_found );
