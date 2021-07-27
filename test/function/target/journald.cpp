@@ -106,15 +106,14 @@ namespace {
     int facility_value = stumpless_get_entry_facility( entry ) >> 3;
     std::string expected_facility = std::to_string( facility_value );
 
-    const char *app_name_value = stumpless_get_entry_app_name( entry );
-    std::string expected_app_name = std::string( app_name_value );
+    const char *app_name = stumpless_get_entry_app_name( entry );
+    std::string expected_app_name = std::string( app_name );
 
     const char *element_name = "FIXTURE_ELEMENT";
-    const char *expected_element = "FIXTURE_ELEMENT=";
     const char *param_1_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_1";
-    const char *expected_param_1 = "FIXTURE_ELEMENT_FIXTURE_PARAM_1=fixture-value-1";
+    const char *expected_param_1 = "fixture-value-1";
     const char *param_2_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_2";
-    const char *expected_param_2 = "FIXTURE_ELEMENT_FIXTURE_PARAM_2=fixture-value-2";
+    const char *expected_param_2 = "fixture-value-2";
 
     for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
       result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
@@ -125,24 +124,17 @@ namespace {
 
       sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
       SD_JOURNAL_FOREACH( jrnl ) {
-        const char *data;
-        size_t data_len;
         msg_found = true;
 
         TestData( jrnl, "PRIORITY", expected_priority );
         TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
         TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
-        TestData( jrnl, element_name, std::string(  ) );
         TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
         TestDataExists( jrnl, "SYSLOG_PID" );
 
-        result = sd_journal_get_data( jrnl, param_1_name, ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_param_1 );
-
-        result = sd_journal_get_data( jrnl, param_2_name, ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_param_2 );
+        TestData( jrnl, element_name, std::string(  ) );
+        TestData( jrnl, param_1_name, std::string( expected_param_1 ) );
+        TestData( jrnl, param_2_name, std::string( expected_param_2 ) );
       }
       sd_journal_close( jrnl );
     }
@@ -176,18 +168,14 @@ namespace {
     EXPECT_GE( result, 0 );
     EXPECT_NO_ERROR;
 
-    std::ostringstream priority_stream;
-    priority_stream << "PRIORITY=" << STUMPLESS_DEFAULT_SEVERITY;
-    std::string expected_priority = priority_stream.str(  );
+    int severity_value = STUMPLESS_DEFAULT_SEVERITY;
+    std::string expected_priority = std::to_string( severity_value );
 
-    std::ostringstream facility_stream;
-    int expected_facility_value = stumpless_get_default_facility( target ) >> 3;
-    facility_stream << "SYSLOG_FACILITY=" << expected_facility_value;
-    std::string expected_facility = facility_stream.str(  );
+    int facility_value = stumpless_get_default_facility( target ) >> 3;
+    std::string expected_facility = std::to_string( facility_value );
 
-    std::ostringstream app_name_stream;
-    app_name_stream << "SYSLOG_IDENTIFIER=" << stumpless_get_target_default_app_name( target );
-    std::string expected_app_name = app_name_stream.str(  );
+    const char *app_name = stumpless_get_target_default_app_name( target );
+    std::string expected_app_name = std::string( app_name );
 
     for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {
       result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY );
@@ -198,27 +186,13 @@ namespace {
 
       sd_journal_add_match( jrnl, message_match.c_str(  ), 0 );
       SD_JOURNAL_FOREACH( jrnl ) {
-        const char *data;
-        size_t data_len;
         msg_found = true;
 
-        result = sd_journal_get_data( jrnl, "PRIORITY", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_priority.c_str(  ) );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_FACILITY", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_facility.c_str(  ) );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_IDENTIFIER", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-        EXPECT_STREQ( data, expected_app_name.c_str(  ) );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_TIMESTAMP", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
-
-        result = sd_journal_get_data( jrnl, "SYSLOG_PID", ( const void ** ) &data, &data_len );
-        EXPECT_GE( result, 0 );
+        TestData( jrnl, "PRIORITY", expected_priority );
+        TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
+        TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
+        TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
+        TestDataExists( jrnl, "SYSLOG_PID" );
       }
       sd_journal_close( jrnl );
     }
