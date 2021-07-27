@@ -321,6 +321,12 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
     LIBRARIES
       systemd
   )
+
+  add_performance_test(journald
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/performance/target/journald.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
 else()
   add_function_test(journald_unsupported
     SOURCES
