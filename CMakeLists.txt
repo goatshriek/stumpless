@@ -289,6 +289,16 @@ if(NEED_FALLBACK)
   list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
 endif()
 
+# thread safety support check
+if(NOT ENABLE_THREAD_SAFETY)
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+elseif(NOT HAVE_WINDOWS_H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
+  message("thread safety is not supported without either windows.h or both pthread.h and stdatomic.h")
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
+endif()
+
 
 # journald target support
 if(NOT ENABLE_JOURNALD_TARGETS)
@@ -316,7 +326,7 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
 
   add_function_test(journald
     SOURCES
-      test/function/target/journald.cpp
+      ${PROJECT_SOURCE_DIR}/test/function/target/journald.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
     LIBRARIES
       systemd
@@ -327,6 +337,15 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
       ${PROJECT_SOURCE_DIR}/test/performance/target/journald.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
   )
+  if(STUMPLESS_THREAD_SAFETY_SUPPORTED)
+    add_thread_safety_test(journald
+      SOURCES
+        ${PROJECT_SOURCE_DIR}/test/thread_safety/target/journald.cpp
+        $<TARGET_OBJECTS:test_helper_usage>
+      LIBRARIES
+        systemd
+    )
+  endif()
 else()
   add_function_test(journald_unsupported
     SOURCES
@@ -656,15 +675,6 @@ else()
 endif()
 
 # thread safety support
-if(NOT ENABLE_THREAD_SAFETY)
-  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
-elseif(NOT HAVE_WINDOWS_H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
-  message("thread safety is not supported without either windows.h or both pthread.h and stdatomic.h")
-  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
-else()
-  set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
-endif()
-
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
   list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
 else()

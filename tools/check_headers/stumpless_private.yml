@@ -50,6 +50,7 @@
 "pthread_unlock_mutex": "private/config/have_pthread.h"
 "raise_function_target_failure": "private/error.h"
 "raise_gethostname_failure": "private/error.h"
+"repeat_add_entry": "test/helper/usage.hpp"
 "send_entry_to_function_target": "private/target/function.h"
 "send_entry_to_journald_target": "private/target/journald.h"
 "SET_STATE_COUNTERS": "test/helper/memory_counter.hpp"
