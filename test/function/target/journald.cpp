@@ -17,9 +17,7 @@
  */
 
 #include <chrono>
-#include <cstring>
 #include <random>
-#include <sstream>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stumpless.h>
@@ -56,10 +54,9 @@ void TestData( sd_journal *jrnl, const char *name, const string &value ) {
   int result = sd_journal_get_data( jrnl, name, &data, &data_len );
   EXPECT_GE( result, 0 );
 
-  ostringstream data_stream;
-  data_stream << name << '=' << value;
-  EXPECT_EQ( data_len, strlen( name ) + 1 + value.length(  ) );
-  EXPECT_EQ( 0, memcmp( data, data_stream.str(  ).c_str(  ), data_len ) );
+  string data_str = name + string( "=" ) + value;
+  EXPECT_EQ( data_len, data_str.length(  ) );
+  EXPECT_EQ( 0, memcmp( data, data_str.c_str(  ), data_len ) );
 }
 
 void TestDataExists( sd_journal *jrnl, const char *name ) {
@@ -108,14 +105,9 @@ namespace {
     seed = chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
     default_random_engine gen( seed );
     uniform_int_distribution<int> dist;
-    ostringstream message_stream;
-    message_stream << "test-stumpless-journald-entry-" << dist( gen );
-    string message = message_stream.str(  );
+    string message = "test-stumpless-journald-" + to_string( dist( gen ) );
     stumpless_set_entry_message( entry, message.c_str(  ) );
-
-    ostringstream match_stream;
-    match_stream << "MESSAGE=" << message;
-    string message_match = match_stream.str(  );
+    string message_match = "MESSAGE=" + message;
 
     result = stumpless_add_entry( target, entry );
     EXPECT_GE( result, 0 );
@@ -130,6 +122,8 @@ namespace {
     const char *app_name = stumpless_get_entry_app_name( entry );
     string expected_app_name = string( app_name );
 
+    string expected_msgid = string( stumpless_get_entry_msgid( entry ) );
+
     const char *element_name = "FIXTURE_ELEMENT";
     const char *param_1_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_1";
     const char *expected_param_1 = "fixture-value-1";
@@ -142,6 +136,7 @@ namespace {
       TestData( jrnl, "PRIORITY", expected_priority );
       TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
       TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
+      TestData( jrnl, "SYSLOG_MSGID", expected_msgid );
       TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
       TestDataExists( jrnl, "SYSLOG_PID" );
 
@@ -167,13 +162,8 @@ namespace {
     seed = chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
     default_random_engine gen( seed );
     uniform_int_distribution<int> dist;
-    ostringstream message_stream;
-    message_stream << "test-stumpless-journald-message-" << dist( gen );
-    string message = message_stream.str(  );
-
-    ostringstream match_stream;
-    match_stream << "MESSAGE=" << message;
-    string message_match = match_stream.str(  );
+    string message = "test-stumpless-journald-" + to_string( dist( gen ) );
+    string message_match = "MESSAGE=" + message;
 
     result = stumpless_add_message( target, message.c_str(  ) );
     EXPECT_GE( result, 0 );
@@ -188,12 +178,16 @@ namespace {
     const char *app_name = stumpless_get_target_default_app_name( target );
     string expected_app_name = string( app_name );
 
+    const char *msgid = stumpless_get_target_default_msgid( target );
+    string expected_msgid = string( msgid );
+
     FOR_JOURNALD_MATCH_BEGIN( message_match.c_str(  ) )
       msg_found = true;
 
       TestData( jrnl, "PRIORITY", expected_priority );
       TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
       TestData( jrnl, "SYSLOG_IDENTIFIER", expected_app_name );
+      TestData( jrnl, "SYSLOG_MSGID", expected_msgid );
       TestDataExists( jrnl, "SYSLOG_TIMESTAMP" );
       TestDataExists( jrnl, "SYSLOG_PID" );
     FOR_JOURNALD_MATCH_END
