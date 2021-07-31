@@ -47,16 +47,11 @@
 /* per-thread static variables */
 static CONFIG_THREAD_LOCAL_STORAGE struct iovec *fields = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t fields_length = 0;
-static CONFIG_THREAD_LOCAL_STORAGE char *sd_buffer = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE size_t sd_buffer_size = 0;
+static CONFIG_THREAD_LOCAL_STORAGE char *fixed_fields_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *message_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t message_buffer_length = 0;
-static CONFIG_THREAD_LOCAL_STORAGE char *priority_buffer = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE char *facility_buffer = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE char *timestamp_buffer = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE char *pid_buffer = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE char *app_name_buffer = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE char *msgid_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE char *sd_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE size_t sd_buffer_size = 0;
 
 void
 stumpless_close_journald_target( const struct stumpless_target *target ) {
@@ -155,24 +150,17 @@ journald_free_thread( void ) {
   free_mem( fields );
   fields = NULL;
   fields_length = 0;
-  free_mem( sd_buffer );
-  sd_buffer = NULL;
-  sd_buffer_size = 0;
+
+  free_mem( fixed_fields_buffer );
+  fixed_fields_buffer = NULL;
+
   free_mem( message_buffer );
   message_buffer = NULL;
   message_buffer_length = 0;
-  free_mem( priority_buffer );
-  priority_buffer = NULL;
-  free_mem( facility_buffer );
-  facility_buffer = NULL;
-  free_mem( timestamp_buffer );
-  timestamp_buffer = NULL;
-  free_mem( pid_buffer );
-  pid_buffer = NULL;
-  free_mem( app_name_buffer );
-  app_name_buffer = NULL;
-  free_mem( msgid_buffer );
-  msgid_buffer = NULL;
+
+  free_mem( sd_buffer );
+  sd_buffer = NULL;
+  sd_buffer_size = 0;
 }
 
 int
@@ -194,60 +182,28 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   char *sd_buffer_current;
   size_t fields_offset = 7;
 
-  if( !timestamp_buffer ) {
-    timestamp_buffer = alloc_mem( 17 + RFC_5424_TIMESTAMP_BUFFER_SIZE );
-    if( !timestamp_buffer ) {
+  if( !fixed_fields_buffer ) {
+    fixed_fields_buffer = alloc_mem( 100 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE + STUMPLESS_MAX_MSGID_LENGTH );
+    if( !fixed_fields_buffer ) {
       return -1;
     }
-    memcpy( timestamp_buffer, "SYSLOG_TIMESTAMP=", 17 );
-  }
-  timestamp_size = config_get_now( timestamp_buffer + 17 );
 
-  if( !priority_buffer ) {
-    priority_buffer = alloc_mem( 10 );
-    if( !priority_buffer ) {
-      return -1;
-    }
-    memcpy( priority_buffer, "PRIORITY=", 9 );
+    memcpy( fixed_fields_buffer, "PRIORITY=", 9 );
+    memcpy( fixed_fields_buffer + 10, "SYSLOG_FACILITY=", 16 );
+    memcpy( fixed_fields_buffer + 28, "SYSLOG_TIMESTAMP=", 17 );
+    memcpy( fixed_fields_buffer + 45 + RFC_5424_TIMESTAMP_BUFFER_SIZE, "SYSLOG_IDENTIFIER=", 18 );
+    memcpy( fixed_fields_buffer + 63 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH, "SYSLOG_PID=", 11 );
+    memcpy( fixed_fields_buffer + 74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE, "SYSLOG_MSGID=", 13 );
   }
 
-  if( !facility_buffer ) {
-    facility_buffer = alloc_mem( 18 );
-    if( !facility_buffer ) {
-      return -1;
-    }
-    memcpy( facility_buffer, "SYSLOG_FACILITY=", 16 );
-  }
+  timestamp_size = config_get_now( fixed_fields_buffer + 45 );
 
-  if( !app_name_buffer ) {
-    app_name_buffer = alloc_mem( 18 + STUMPLESS_MAX_APP_NAME_LENGTH );
-    if( !app_name_buffer ) {
-      return -1;
-    }
-    memcpy( app_name_buffer, "SYSLOG_IDENTIFIER=", 18 );
-  }
-
-  if( !msgid_buffer ) {
-    msgid_buffer = alloc_mem( 13 + STUMPLESS_MAX_MSGID_LENGTH );
-    if( !msgid_buffer ) {
-      return -1;
-    }
-    memcpy( msgid_buffer, "SYSLOG_MSGID=", 13 );
-  }
-
-  if( !pid_buffer ) {
-    pid_buffer = alloc_mem( 11 + MAX_INT_SIZE );
-    if( !pid_buffer ) {
-      return -1;
-    }
-    memcpy( pid_buffer, "SYSLOG_PID=", 11 );
-  }
   pid = config_getpid();
   if( pid == 0 ) {
-    pid_buffer[11] = '0';
+    fixed_fields_buffer[74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH] = '0';
     pid_size = 12;
   } else {
-    pid_size = 11;
+    pid_size = 0;
     pid_digit_count = 0;
 
     while( pid != 0 ) {
@@ -258,7 +214,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
 
     while( pid_digit_count > 0 ) {
       pid_digit_count--;
-      pid_buffer[pid_size] = pid_int_buffer[pid_digit_count];
+      fixed_fields_buffer[74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + pid_size] = pid_int_buffer[pid_digit_count];
       pid_size++;
     }
   }
@@ -314,49 +270,55 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     unlock_element( entry->elements[i] );
   }
 
-  fields[0].iov_len = entry->message_length + 8;
-  if( fields[0].iov_len > message_buffer_length ) {
-    new_message_buffer = realloc_mem( message_buffer, fields[0].iov_len );
+  fixed_fields_buffer[9] = get_severity( entry->prival ) + 48;
+
+  facility_val = get_facility( entry->prival ) >> 3;
+  if( facility_val <= 9 ) {
+    fixed_fields_buffer[26] = facility_val + 48;
+    fields[1].iov_len = 17;
+  } else {
+    fixed_fields_buffer[26] = ( facility_val / 10 ) + 48;
+    fixed_fields_buffer[27] = ( facility_val % 10 ) + 48;
+    fields[1].iov_len = 18;
+  }
+
+  memcpy( fixed_fields_buffer + 63 + RFC_5424_TIMESTAMP_BUFFER_SIZE, entry->app_name, entry->app_name_length );
+  fields[3].iov_len = entry->app_name_length + 18;
+
+  memcpy( fixed_fields_buffer + 87 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE, entry->msgid, entry->msgid_length );
+  fields[5].iov_len = entry->msgid_length + 13;
+
+  fields[6].iov_len = entry->message_length + 8;
+  if( fields[6].iov_len > message_buffer_length ) {
+    new_message_buffer = realloc_mem( message_buffer, fields[6].iov_len );
     if( !new_message_buffer ) {
       unlock_entry( entry );
       return -1;
     }
     message_buffer = new_message_buffer;
-    message_buffer_length = fields[0].iov_len;
+    message_buffer_length = fields[6].iov_len;
     memcpy( message_buffer, "MESSAGE=", 8 );
   }
   memcpy( message_buffer + 8, entry->message, entry->message_length );
 
-  priority_buffer[9] = get_severity( entry->prival ) + 48;
-
-  facility_val = get_facility( entry->prival ) >> 3;
-  if( facility_val <= 9 ) {
-    facility_buffer[16] = facility_val + 48;
-    fields[2].iov_len = 17;
-  } else {
-    facility_buffer[16] = ( facility_val / 10 ) + 48;
-    facility_buffer[17] = ( facility_val % 10 ) + 48;
-    fields[2].iov_len = 18;
-  }
-
-  memcpy( app_name_buffer + 18, entry->app_name, entry->app_name_length );
-  fields[5].iov_len = entry->app_name_length + 18;
-
-  memcpy( msgid_buffer + 13, entry->msgid, entry->msgid_length );
-  fields[6].iov_len = entry->msgid_length + 13;
-
   unlock_entry( entry );
 
-  fields[0].iov_base = message_buffer;
-  fields[1].iov_base = priority_buffer;
-  fields[1].iov_len = 10;
-  fields[2].iov_base = facility_buffer;
-  fields[3].iov_base = timestamp_buffer;
-  fields[3].iov_len = timestamp_size + 17;
-  fields[4].iov_base = pid_buffer;
-  fields[4].iov_len = pid_size;
-  fields[5].iov_base = app_name_buffer;
-  fields[6].iov_base = msgid_buffer;
+  fields[0].iov_base = fixed_fields_buffer;
+  fields[0].iov_len = 10;
+
+  fields[1].iov_base = fixed_fields_buffer + 10;
+
+  fields[2].iov_base = fixed_fields_buffer + 28;
+  fields[2].iov_len = timestamp_size + 17;
+
+  fields[3].iov_base = fixed_fields_buffer + 45 + RFC_5424_TIMESTAMP_BUFFER_SIZE;
+
+  fields[4].iov_base = fixed_fields_buffer + 63 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH;
+  fields[4].iov_len = 11 + pid_size;
+
+  fields[5].iov_base = fixed_fields_buffer + 74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE;
+
+  fields[6].iov_base = message_buffer;
 
   return sd_journal_sendv( fields, field_count );
 }
