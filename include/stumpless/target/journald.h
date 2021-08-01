@@ -76,9 +76,56 @@ void
 stumpless_close_journald_target( const struct stumpless_target *target );
 
 /**
+ * Creates a journald-compliant name for the element. All lower case letters are
+ * converted to upper case. Characters that are not alphanumeric are replaced
+ * with an underscore character. This includes any UTF-8 characters.
+ *
+ * If the destination buffer is too small to hold the complete name, then
+ * nothing is done. Callers can detect this by comparing the return value to
+ * the value provided in the length argument. If the return value is larger,
+ * then nothing was done by the call.
+ *
+ * **Thread Safety: MT-Safe race:dest race:length**
+ * This function is thread safe. It uses other thread-safe functions to
+ * access the element and param names it needs. This assumes that dest and
+ * length are not modified during the call.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks that could be left locked.
+ *
+ * @since v2.1.0
+ *
+ * @param entry The entry that the param is part of.
+ *
+ * @param element_index The index of the element in the entry.
+ *
+ * @param destination The buffer to write the name to.
+ *
+ * @param size The maximum number of bytes to write to the destination
+ * buffer.
+ *
+ * @return The number of bytes needed to write the complete flattened name, not
+ * including a NULL terminating character. If this is greater than size, then
+ * it signifies that nothing has been done.
+ */
+size_t
+stumpless_flatten_element_name( const struct stumpless_entry *entry,
+                                size_t element_index,
+                                char *destination,
+                                size_t size );
+
+/**
  * Creates a name for the param by combining the element and param name. Both
- * names are converted to all upper case and combined using underscore
- * characters.
+ * names are converted to all upper case and combined with an underscore
+ * character between them.
+ *
+ * Characters that are not alphanumeric are replaced with an underscore
+ * character. This includes any UTF-8 characters.
  *
  * If the destination buffer is too small to hold the complete name, then
  * nothing is done. Callers can detect this by comparing the return value to
@@ -111,8 +158,9 @@ stumpless_close_journald_target( const struct stumpless_target *target );
  * @param size The maximum number of bytes to write to the destination
  * buffer.
  *
- * @return The number of bytes needed to write the complete flattened name. If
- * this is larger than length, then it signifies that nothing has been done.
+ * @return The number of bytes needed to write the complete flattened name, not
+ * including a NULL terminating character. If this is greater than size, then
+ * it signifies that nothing has been done.
  */
 size_t
 stumpless_flatten_param_name( const struct stumpless_entry *entry,

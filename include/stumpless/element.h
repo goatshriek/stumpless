@@ -73,6 +73,15 @@ struct stumpless_element {
   struct stumpless_param **params;
 /** The number of params in the array. */
   size_t param_count;
+#ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
+/**
+ * Gets the name to use for the journald field corresponding to this element.
+ */
+  size_t ( *get_journald_name )( const struct stumpless_entry *,
+                                 size_t,
+                                 char *,
+                                 size_t );
+#endif
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /*
  * In thread-safe builds the memory at the end of the element holds a mutex that
@@ -782,7 +791,7 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
  *
  * @since release v2.1.0
  *
- * @param element The element to get the name and params from.  
+ * @param element The element to get the name and params from.
  *
  * @return The formatted string of <name> or <name>:[param1,...] if no error is encountered.
  * If an error is  encountered, then NULL is returned and an error code is set appropriately.

@@ -75,7 +75,9 @@ struct stumpless_param {
 /** The number of characters in value (not including the NULL character). */
   size_t value_length;
 #  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
-/** Gets the name to use for the journald field corresponding to this param. */
+/**
+ * Gets the name to use for the journald field corresponding to this param.
+ */
   size_t ( *get_journald_name )( const struct stumpless_entry *,
                                  size_t,
                                  size_t,
@@ -250,7 +252,7 @@ stumpless_new_param( const char *name, const char *value );
  *
  * @param param The param to set the name of.
  *
- * @param name The new name of param. Restricted to printable ASCII characters different from '=', ']' and '"'. 
+ * @param name The new name of param. Restricted to printable ASCII characters different from '=', ']' and '"'.
  *
  * @return The modified param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
@@ -308,7 +310,7 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value );
  *
  * @since release v2.0.0
  *
- * @param param The param to get the name and the value from.  
+ * @param param The param to get the name and the value from.
  *
  * @return The formatted string of <name>: <value> if no error is encountered.
  * If an error is  encountered, then NULL is returned and an error code is set appropriately.

@@ -69,6 +69,25 @@ stumpless_close_journald_target( const struct stumpless_target *target ) {
   clear_error(  );
 }
 
+  size_t
+  stumpless_flatten_element_name( const struct stumpless_entry *entry,
+                                 size_t element_index,
+                                 char *destination,
+                                 size_t size ) {
+  const struct stumpless_element *element;
+  size_t required_size;
+  size_t used_size;
+
+  element = entry->elements[element_index];
+  required_size = element->name_length;
+
+  if( required_size > size ) {
+    return required_size;
+  }
+
+  return get_journald_field_name( destination, element->name, element->name_length );
+}
+
 size_t
 stumpless_flatten_param_name( const struct stumpless_entry *entry,
                               size_t element_index,
