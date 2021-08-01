@@ -103,7 +103,7 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
   param = element->params[param_index];
 
   required_size = element->get_journald_name( entry, element_index, NULL, 0 )
-                  + param->name_length + param->value_length + 2;
+                  + 1 + param->name_length;
 
   if( required_size > size ) {
     return required_size;
@@ -113,9 +113,7 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
                                           required_size );
   destination[used_size++] = '_';
   used_size += get_journald_field_name( destination + used_size, param->name, param->name_length );
-  destination[used_size++] = '=';
-  memcpy( destination + used_size, param->value, param->value_length );
-  return used_size + param->value_length;
+  return used_size;
 }
 
 struct stumpless_target *
@@ -260,7 +258,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     field_count += entry->elements[i]->param_count;
     for( j = 0; j < entry->elements[i]->param_count; j++ ) {
       lock_param( entry->elements[i]->params[j] );
-      sd_buffer_size_needed += stumpless_flatten_param_name( entry, i, j, NULL, 0 );
+      sd_buffer_size_needed += stumpless_flatten_param_name( entry, i, j, NULL, 0 ) + 1 + entry->elements[i]->params[j]->value_length;
     }
   }
 
@@ -287,13 +285,16 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   sd_buffer_current = sd_buffer;
   for( i = 0; i < entry->element_count; i++ ) {
     fields[fields_offset].iov_base = sd_buffer_current;
-    fields[fields_offset].iov_len = entry->elements[i]->get_journald_name( entry, i, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) ) + 1;
-    sd_buffer_current[fields[fields_offset].iov_len-1] = '=';
+    fields[fields_offset].iov_len = entry->elements[i]->get_journald_name( entry, i, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
+    sd_buffer_current[fields[fields_offset].iov_len++] = '=';
     sd_buffer_current += fields[fields_offset].iov_len;
     fields_offset++;
     for( j = 0; j < entry->elements[i]->param_count; j++ ) {
       fields[fields_offset].iov_base = sd_buffer_current;
       fields[fields_offset].iov_len = entry->elements[i]->params[j]->get_journald_name( entry, i, j, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
+      sd_buffer_current[fields[fields_offset].iov_len++] = '=';
+      memcpy( sd_buffer_current + fields[fields_offset].iov_len, entry->elements[i]->params[j]->value, entry->elements[i]->params[j]->value_length );
+      fields[fields_offset].iov_len += entry->elements[i]->params[j]->value_length;
       sd_buffer_current += fields[fields_offset].iov_len;
       fields_offset++;
       unlock_param( entry->elements[i]->params[j] );

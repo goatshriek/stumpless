@@ -18,8 +18,8 @@
 
 #include <chrono>
 #include <random>
-#include <stddef.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstdlib>
 #include <stumpless.h>
 #include <systemd/sd-journal.h>
 #include <gtest/gtest.h>
@@ -37,7 +37,7 @@ for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {     \
     abort = true;                                           \
   }                                                         \
                                                             \
-  sd_journal_add_match( jrnl, ( MATCH ), 0 );               \
+  sd_journal_add_match( jrnl, ( MATCH ).c_str(  ), 0 );     \
   SD_JOURNAL_FOREACH( jrnl ) {
 
 #define FOR_JOURNALD_MATCH_END \
@@ -48,25 +48,72 @@ for( int i = 0; i < 64 && !msg_found && !abort; i++ ) {     \
 
 using namespace std;
 
-void TestData( sd_journal *jrnl, const char *name, const string &value ) {
-  const void *data;
-  size_t data_len;
-  int result = sd_journal_get_data( jrnl, name, &data, &data_len );
-  EXPECT_GE( result, 0 );
-
-  string data_str = name + string( "=" ) + value;
-  EXPECT_EQ( data_len, data_str.length(  ) );
-  EXPECT_EQ( 0, memcmp( data, data_str.c_str(  ), data_len ) );
-}
-
-void TestDataExists( sd_journal *jrnl, const char *name ) {
-  const void *data;
-  size_t data_len;
-  int result = sd_journal_get_data( jrnl, name, &data, &data_len );
-  EXPECT_GE( result, 0 );
-}
-
 namespace {
+
+  size_t
+  index_element_name( const struct stumpless_entry *entry,
+                      size_t element_index,
+                      char *destination,
+                      size_t size ) {
+    string name = "ELEMENT_" + to_string( element_index );
+
+    if( size >= name.length(  ) ) {
+      name.copy( destination, name.length(  ) );
+    }
+
+    return name.length(  );
+  }
+
+  size_t
+  index_param_name( const struct stumpless_entry *entry,
+                    size_t element_index,
+                    size_t param_index,
+                    char *destination,
+                    size_t size ) {
+    string name = "PARAM_" + to_string( element_index ) + "_" + to_string( param_index );
+
+    if( size >= name.length(  ) ) {
+      name.copy( destination, name.length(  ) );
+    }
+
+    return name.length(  );
+  }
+
+  string
+  GetSearchableMessage(  ){
+    unsigned seed;
+
+    seed = chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
+    default_random_engine gen( seed );
+    uniform_int_distribution<int> dist;
+    return "test-stumpless-journald-" + to_string( dist( gen ) );
+  }
+
+  void
+  TestData( sd_journal *jrnl, const char *name, const string &value ) {
+    const void *data;
+    size_t data_len;
+    int result = sd_journal_get_data( jrnl, name, &data, &data_len );
+    EXPECT_GE( result, 0 ) << "field name " << name << " did not exist in the journal";
+
+    if( result > 0 ) {
+      string expected_data_str = name + string( "=" ) + value;
+      EXPECT_EQ( data_len, expected_data_str.length(  ) );
+
+      string actual_data_str( ( const char * ) data, data_len );
+      EXPECT_EQ( actual_data_str, expected_data_str );
+    } else {
+
+    }
+  }
+
+  void
+  TestDataExists( sd_journal *jrnl, const char *name ) {
+    const void *data;
+    size_t data_len;
+    int result = sd_journal_get_data( jrnl, name, &data, &data_len );
+    EXPECT_GE( result, 0 );
+  }
 
   class JournaldTargetTest : public::testing::Test {
     protected:
@@ -93,7 +140,6 @@ namespace {
   };
 
   TEST_F( JournaldTargetTest, AddEntry ) {
-    unsigned seed;
     int result;
     sd_journal *jrnl;
     bool msg_found = false;
@@ -101,11 +147,7 @@ namespace {
     struct stumpless_entry *entry;
 
     entry = create_entry(  );
-
-    seed = chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
-    default_random_engine gen( seed );
-    uniform_int_distribution<int> dist;
-    string message = "test-stumpless-journald-" + to_string( dist( gen ) );
+    string message = GetSearchableMessage(  );
     stumpless_set_entry_message( entry, message.c_str(  ) );
     string message_match = "MESSAGE=" + message;
 
@@ -130,7 +172,7 @@ namespace {
     const char *param_2_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_2";
     const char *expected_param_2 = "fixture-value-2";
 
-    FOR_JOURNALD_MATCH_BEGIN( message_match.c_str(  ) )
+    FOR_JOURNALD_MATCH_BEGIN( message_match )
       msg_found = true;
 
       TestData( jrnl, "PRIORITY", expected_priority );
@@ -153,16 +195,11 @@ namespace {
   }
 
   TEST_F( JournaldTargetTest, AddMessage ) {
-    unsigned seed;
     int result;
     sd_journal *jrnl;
     bool msg_found = false;
     bool abort = false;
-
-    seed = chrono::system_clock::now(  ).time_since_epoch(  ).count(  );
-    default_random_engine gen( seed );
-    uniform_int_distribution<int> dist;
-    string message = "test-stumpless-journald-" + to_string( dist( gen ) );
+    string message = GetSearchableMessage(  );
     string message_match = "MESSAGE=" + message;
 
     result = stumpless_add_message( target, message.c_str(  ) );
@@ -181,7 +218,7 @@ namespace {
     const char *msgid = stumpless_get_target_default_msgid( target );
     string expected_msgid = string( msgid );
 
-    FOR_JOURNALD_MATCH_BEGIN( message_match.c_str(  ) )
+    FOR_JOURNALD_MATCH_BEGIN( message_match )
       msg_found = true;
 
       TestData( jrnl, "PRIORITY", expected_priority );
@@ -211,6 +248,45 @@ namespace {
 
     set_realloc_result = stumpless_set_realloc( realloc );
     EXPECT_TRUE( set_realloc_result == realloc );
+  }
+
+  TEST_F( JournaldTargetTest, CustomNameFunctions ) {
+    int result;
+    sd_journal *jrnl;
+    bool msg_found = false;
+    bool abort = false;
+    struct stumpless_entry *entry;
+
+    // set up the entry with our custom functions
+    entry = create_entry(  );
+    entry->elements[0]->get_journald_name = index_element_name;
+    entry->elements[0]->params[0]->get_journald_name = index_param_name;
+    entry->elements[0]->params[1]->get_journald_name = index_param_name;
+
+    string message = GetSearchableMessage(  );
+    stumpless_set_entry_message( entry, message.c_str(  ) );
+    string message_match = "MESSAGE=" + message;
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    const char *expected_param_1 = "fixture-value-1";
+    const char *expected_param_2 = "fixture-value-2";
+
+    FOR_JOURNALD_MATCH_BEGIN( message_match )
+      msg_found = true;
+
+      TestData( jrnl, "ELEMENT_0", string(  ) );
+      TestData( jrnl, "PARAM_0_0", string( expected_param_1 ) );
+      TestData( jrnl, "PARAM_0_1", string( expected_param_2 ) );
+    FOR_JOURNALD_MATCH_END
+
+    if( !abort ) {
+      EXPECT_TRUE( msg_found );
+    }
+
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   /* non-fixture tests */
