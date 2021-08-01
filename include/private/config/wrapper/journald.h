@@ -32,9 +32,9 @@
 #  else
 #    include "private/target.h"
 #    define config_close_journald_target close_unsupported_target
-#    define config_init_journald_element() ( ( void ) 0 )
-#    define config_init_journald_param() ( ( void ) 0 )
-#    define config_journald_free_thread() ( ( void ) 0 )
+#    define config_init_journald_element( ELEMENT ) ( ( void ) 0 )
+#    define config_init_journald_param( PARAM ) ( ( void ) 0 )
+#    define config_journald_free_thread(  ) ( ( void ) 0 )
 #    define config_send_entry_to_journald_target send_entry_to_unsupported_target
 #  endif
 
