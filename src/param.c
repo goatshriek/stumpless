@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/param.h>
+#include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
@@ -97,7 +98,7 @@ stumpless_new_param( const char *name, const char *value ) {
   VALIDATE_ARG_NOT_NULL( value );
 
   if ( !validate_param_name( name ) ) {
-    goto fail; 
+    goto fail;
   }
 
   param = alloc_mem( sizeof( *param ) + CONFIG_MUTEX_T_SIZE );
@@ -116,6 +117,7 @@ stumpless_new_param( const char *name, const char *value ) {
   }
 
   config_init_mutex( PARAM_MUTEX( param ) );
+  config_init_journald_param( param );
 
   clear_error(  );
   return param;

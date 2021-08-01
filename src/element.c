@@ -22,6 +22,7 @@
 #include <stumpless/element.h>
 #include <stumpless/param.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/deprecate.h"
 #include "private/element.h"
@@ -238,7 +239,7 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( name );
 
   if ( !validate_param_name( name ) ) {
-    return NULL; 
+    return NULL;
   }
 
   lock_element( element );
@@ -402,6 +403,7 @@ stumpless_new_element( const char *name ) {
   element->param_count = 0;
 
   config_init_mutex( ELEMENT_MUTEX( element ) );
+  config_init_journald_element( element );
 
   clear_error(  );
   return element;
@@ -536,7 +538,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
 
     name = element->name;
     name_len = element->name_length;
-    params = element->params; 
+    params = element->params;
     param_count = element->param_count;
 
     // acc total format size
@@ -589,7 +591,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
       format[pos_offset] = ']';
     } else {
       // <name> (no params)
-      // pos_offset is name_len + 4 here 
+      // pos_offset is name_len + 4 here
       pos_offset -= 3;
     }
 

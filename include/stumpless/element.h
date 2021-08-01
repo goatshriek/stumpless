@@ -26,11 +26,15 @@
 #  include <stdbool.h>
 #  include <stddef.h>
 #  include <stumpless/config.h>
+#  include <stumpless/entry.h>
 #  include <stumpless/param.h>
 
 #  ifdef __cplusplus
 extern "C" {
 #  endif
+
+// this is required due to the circular dependency with the entry header.
+struct stumpless_entry;
 
 /**
  * An element of structured data.

@@ -20,7 +20,9 @@
 #  define __STUMPLESS_PRIVATE_TARGET_JOURNALD_H
 
 #  include <stddef.h>
+#  include <stumpless/element.h>
 #  include <stumpless/entry.h>
+#  include <stumpless/param.h>
 #  include <stumpless/target.h>
 
 /**
@@ -30,6 +32,22 @@
  */
 size_t
 get_journald_field_name( char *flattened, const char *raw, size_t size );
+
+/**
+ * Initializes an element's journald fields.
+ *
+ * @param element The element to initialize.
+ */
+void
+journald_init_journald_element( struct stumpless_element *element );
+
+/**
+ * Initializes a param's journald fields.
+ *
+ * @param param The param to initialize.
+ */
+void
+journald_init_journald_param( struct stumpless_param *param );
 
 void
 journald_free_thread( void );

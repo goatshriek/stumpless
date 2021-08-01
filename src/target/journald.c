@@ -102,13 +102,15 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
   element = entry->elements[element_index];
   param = element->params[param_index];
 
-  required_size = element->name_length + param->name_length + param->value_length + 2;
+  required_size = element->get_journald_name( entry, element_index, NULL, 0 )
+                  + param->name_length + param->value_length + 2;
 
   if( required_size > size ) {
     return required_size;
   }
 
-  used_size = get_journald_field_name( destination, element->name, element->name_length );
+  used_size = element->get_journald_name( entry, element_index, destination,
+                                          required_size );
   destination[used_size++] = '_';
   used_size += get_journald_field_name( destination + used_size, param->name, param->name_length );
   destination[used_size++] = '=';
@@ -162,6 +164,16 @@ get_journald_field_name( char *flattened, const char *raw, size_t size ) {
   }
 
   return flattened_i;
+}
+
+void
+journald_init_journald_element( struct stumpless_element *element ) {
+  element->get_journald_name = stumpless_flatten_element_name;
+}
+
+void
+journald_init_journald_param( struct stumpless_param *param ) {
+  param->get_journald_name = stumpless_flatten_param_name;
 }
 
 void
@@ -275,13 +287,13 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   sd_buffer_current = sd_buffer;
   for( i = 0; i < entry->element_count; i++ ) {
     fields[fields_offset].iov_base = sd_buffer_current;
-    fields[fields_offset].iov_len = get_journald_field_name( sd_buffer_current, entry->elements[i]->name, entry->elements[i]->name_length ) + 1;
+    fields[fields_offset].iov_len = entry->elements[i]->get_journald_name( entry, i, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) ) + 1;
     sd_buffer_current[fields[fields_offset].iov_len-1] = '=';
     sd_buffer_current += fields[fields_offset].iov_len;
     fields_offset++;
     for( j = 0; j < entry->elements[i]->param_count; j++ ) {
       fields[fields_offset].iov_base = sd_buffer_current;
-      fields[fields_offset].iov_len = stumpless_flatten_param_name( entry, i, j, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
+      fields[fields_offset].iov_len = entry->elements[i]->params[j]->get_journald_name( entry, i, j, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
       sd_buffer_current += fields[fields_offset].iov_len;
       fields_offset++;
       unlock_param( entry->elements[i]->params[j] );
