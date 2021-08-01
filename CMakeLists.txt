@@ -337,6 +337,11 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
       ${PROJECT_SOURCE_DIR}/test/performance/target/journald.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
   )
+
+  add_example(journald
+    ${PROJECT_SOURCE_DIR}/docs/examples/journald/journald_example.c
+  )
+
   if(STUMPLESS_THREAD_SAFETY_SUPPORTED)
     add_thread_safety_test(journald
       SOURCES

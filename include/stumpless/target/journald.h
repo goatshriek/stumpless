@@ -122,7 +122,8 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
                               size_t size );
 
 /**
- * Opens a journald target.
+ * Opens a journald target. This target will send log entries to the local
+ * service.
  *
  * **Thread Safety: MT-Safe race:name**
  * This function is thread safe, of course assuming that name is not modified by
