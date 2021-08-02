@@ -44,10 +44,30 @@
 #include "private/target/journald.h"
 #include "private/validate.h"
 
+#define PRIORITY_PREFIX_SIZE 9
+#define FACILITY_PREFIX_SIZE 16
+#define TIMESTAMP_PREFIX_SIZE 17
+#define IDENTIFIER_PREFIX_SIZE 18
+#define PID_PREFIX_SIZE 11
+#define MSGID_PREFIX_SIZE 13
+
+/**
+ * Holds journald fields that are always present and have a fixed maximum
+ * length.
+ */
+struct fixed_fields {
+  char priority[PRIORITY_PREFIX_SIZE + 1];
+  char facility[FACILITY_PREFIX_SIZE + 2];
+  char timestamp[TIMESTAMP_PREFIX_SIZE + RFC_5424_TIMESTAMP_BUFFER_SIZE];
+  char identifier[IDENTIFIER_PREFIX_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH];
+  char pid[PID_PREFIX_SIZE + MAX_INT_SIZE];
+  char msgid[MSGID_PREFIX_SIZE + STUMPLESS_MAX_MSGID_LENGTH];
+};
+
 /* per-thread static variables */
 static CONFIG_THREAD_LOCAL_STORAGE struct iovec *fields = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t fields_length = 0;
-static CONFIG_THREAD_LOCAL_STORAGE char *fixed_fields_buffer = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE struct fixed_fields *fixed_fields = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE char *message_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t message_buffer_length = 0;
 static CONFIG_THREAD_LOCAL_STORAGE char *sd_buffer = NULL;
@@ -180,8 +200,8 @@ journald_free_thread( void ) {
   fields = NULL;
   fields_length = 0;
 
-  free_mem( fixed_fields_buffer );
-  fixed_fields_buffer = NULL;
+  free_mem( fixed_fields );
+  fixed_fields = NULL;
 
   free_mem( message_buffer );
   message_buffer = NULL;
@@ -211,25 +231,25 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   char *sd_buffer_current;
   size_t fields_offset = 7;
 
-  if( !fixed_fields_buffer ) {
-    fixed_fields_buffer = alloc_mem( 100 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE + STUMPLESS_MAX_MSGID_LENGTH );
-    if( !fixed_fields_buffer ) {
+  if( !fixed_fields ) {
+    fixed_fields = alloc_mem( sizeof( *fixed_fields ) );
+    if( !fixed_fields ) {
       return -1;
     }
 
-    memcpy( fixed_fields_buffer, "PRIORITY=", 9 );
-    memcpy( fixed_fields_buffer + 10, "SYSLOG_FACILITY=", 16 );
-    memcpy( fixed_fields_buffer + 28, "SYSLOG_TIMESTAMP=", 17 );
-    memcpy( fixed_fields_buffer + 45 + RFC_5424_TIMESTAMP_BUFFER_SIZE, "SYSLOG_IDENTIFIER=", 18 );
-    memcpy( fixed_fields_buffer + 63 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH, "SYSLOG_PID=", 11 );
-    memcpy( fixed_fields_buffer + 74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE, "SYSLOG_MSGID=", 13 );
+    memcpy( fixed_fields->priority, "PRIORITY=", PRIORITY_PREFIX_SIZE );
+    memcpy( fixed_fields->facility, "SYSLOG_FACILITY=", FACILITY_PREFIX_SIZE );
+    memcpy( fixed_fields->timestamp, "SYSLOG_TIMESTAMP=", TIMESTAMP_PREFIX_SIZE );
+    memcpy( fixed_fields->identifier, "SYSLOG_IDENTIFIER=", IDENTIFIER_PREFIX_SIZE );
+    memcpy( fixed_fields->pid, "SYSLOG_PID=", PID_PREFIX_SIZE );
+    memcpy( fixed_fields->msgid, "SYSLOG_MSGID=", MSGID_PREFIX_SIZE );
   }
 
-  timestamp_size = config_get_now( fixed_fields_buffer + 45 );
+  timestamp_size = config_get_now( fixed_fields->timestamp + TIMESTAMP_PREFIX_SIZE );
 
   pid = config_getpid();
   if( pid == 0 ) {
-    fixed_fields_buffer[74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH] = '0';
+    fixed_fields->pid[PID_PREFIX_SIZE] = '0';
     pid_size = 12;
   } else {
     pid_size = 0;
@@ -243,7 +263,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
 
     while( pid_digit_count > 0 ) {
       pid_digit_count--;
-      fixed_fields_buffer[74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + pid_size] = pid_int_buffer[pid_digit_count];
+      fixed_fields->pid[PID_PREFIX_SIZE + pid_size] = pid_int_buffer[pid_digit_count];
       pid_size++;
     }
   }
@@ -302,23 +322,23 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     unlock_element( entry->elements[i] );
   }
 
-  fixed_fields_buffer[9] = get_severity( entry->prival ) + 48;
+  fixed_fields->priority[PRIORITY_PREFIX_SIZE] = get_severity( entry->prival ) + 48;
 
   facility_val = get_facility( entry->prival ) >> 3;
   if( facility_val <= 9 ) {
-    fixed_fields_buffer[26] = facility_val + 48;
+    fixed_fields->facility[FACILITY_PREFIX_SIZE] = facility_val + 48;
     fields[1].iov_len = 17;
   } else {
-    fixed_fields_buffer[26] = ( facility_val / 10 ) + 48;
-    fixed_fields_buffer[27] = ( facility_val % 10 ) + 48;
+    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val / 10 ) + 48;
+    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val % 10 ) + 48;
     fields[1].iov_len = 18;
   }
 
-  memcpy( fixed_fields_buffer + 63 + RFC_5424_TIMESTAMP_BUFFER_SIZE, entry->app_name, entry->app_name_length );
-  fields[3].iov_len = entry->app_name_length + 18;
+  memcpy( fixed_fields->identifier + IDENTIFIER_PREFIX_SIZE, entry->app_name, entry->app_name_length );
+  fields[3].iov_len = IDENTIFIER_PREFIX_SIZE + entry->app_name_length;
 
-  memcpy( fixed_fields_buffer + 87 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE, entry->msgid, entry->msgid_length );
-  fields[5].iov_len = entry->msgid_length + 13;
+  memcpy( fixed_fields->msgid + MSGID_PREFIX_SIZE, entry->msgid, entry->msgid_length );
+  fields[5].iov_len = MSGID_PREFIX_SIZE + entry->msgid_length;
 
   fields[6].iov_len = entry->message_length + 8;
   if( fields[6].iov_len > message_buffer_length ) {
@@ -335,20 +355,20 @@ send_entry_to_journald_target( const struct stumpless_target *target,
 
   unlock_entry( entry );
 
-  fields[0].iov_base = fixed_fields_buffer;
+  fields[0].iov_base = fixed_fields->priority;
   fields[0].iov_len = 10;
 
-  fields[1].iov_base = fixed_fields_buffer + 10;
+  fields[1].iov_base = fixed_fields->facility;
 
-  fields[2].iov_base = fixed_fields_buffer + 28;
-  fields[2].iov_len = timestamp_size + 17;
+  fields[2].iov_base = fixed_fields->timestamp;
+  fields[2].iov_len = TIMESTAMP_PREFIX_SIZE + timestamp_size;
 
-  fields[3].iov_base = fixed_fields_buffer + 45 + RFC_5424_TIMESTAMP_BUFFER_SIZE;
+  fields[3].iov_base = fixed_fields->identifier;
 
-  fields[4].iov_base = fixed_fields_buffer + 63 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH;
-  fields[4].iov_len = 11 + pid_size;
+  fields[4].iov_base = fixed_fields->pid;
+  fields[4].iov_len = PID_PREFIX_SIZE + pid_size;
 
-  fields[5].iov_base = fixed_fields_buffer + 74 + RFC_5424_TIMESTAMP_BUFFER_SIZE + STUMPLESS_MAX_APP_NAME_LENGTH + MAX_INT_SIZE;
+  fields[5].iov_base = fixed_fields->msgid;
 
   fields[6].iov_base = message_buffer;
 
