@@ -50,6 +50,7 @@
 #define IDENTIFIER_PREFIX_SIZE 18
 #define PID_PREFIX_SIZE 11
 #define MSGID_PREFIX_SIZE 13
+#define MESSAGE_PREFIX_SIZE 8
 
 /**
  * Holds journald fields that are always present and have a fixed maximum
@@ -349,7 +350,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     }
     message_buffer = new_message_buffer;
     message_buffer_length = fields[6].iov_len;
-    memcpy( message_buffer, "MESSAGE=", 8 );
+    memcpy( message_buffer, "MESSAGE=", MESSAGE_PREFIX_SIZE );
   }
   memcpy( message_buffer + 8, entry->message, entry->message_length );
 
