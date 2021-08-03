@@ -303,7 +303,7 @@ namespace {
   TEST( JournaldTargetCloseTest, NullTarget ) {
     const struct stumpless_error *error;
 
-    stumpless_close_function_target( NULL );
+    stumpless_close_journald_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all(  );
   }
@@ -328,7 +328,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
-    target = stumpless_open_journald_target( "function-target-malloc-failure" );
+    target = stumpless_open_journald_target( "journald-target-malloc-failure" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
