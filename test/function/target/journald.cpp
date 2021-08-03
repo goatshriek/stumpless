@@ -289,6 +289,39 @@ namespace {
     stumpless_destroy_entry_and_contents( entry );
   }
 
+  TEST_F( JournaldTargetTest, TwoDigitFacility ) {
+    int result;
+    sd_journal *jrnl;
+    bool msg_found = false;
+    bool abort = false;
+    struct stumpless_entry *entry;
+
+    entry = create_entry(  );
+    stumpless_set_entry_facility( entry, STUMPLESS_FACILITY_LOCAL0 );
+    EXPECT_NO_ERROR;
+    string expected_facility = to_string( STUMPLESS_FACILITY_LOCAL0_VALUE );
+
+    string message = GetSearchableMessage(  );
+    stumpless_set_entry_message( entry, message.c_str(  ) );
+    string message_match = "MESSAGE=" + message;
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    FOR_JOURNALD_MATCH_BEGIN( message_match )
+      msg_found = true;
+
+      TestData( jrnl, "SYSLOG_FACILITY", expected_facility );
+    FOR_JOURNALD_MATCH_END
+
+    if( !abort ) {
+      EXPECT_TRUE( msg_found );
+    }
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   /* non-fixture tests */
 
   TEST( JournaldTargetCloseTest, GenericCloseFunction ) {
