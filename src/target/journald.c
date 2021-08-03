@@ -251,7 +251,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   pid = config_getpid();
   if( pid == 0 ) {
     fixed_fields->pid[PID_PREFIX_SIZE] = '0';
-    pid_size = 12;
+    pid_size = 1;
   } else {
     pid_size = 0;
     pid_digit_count = 0;
