@@ -297,6 +297,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   if( sd_buffer_size < sd_buffer_size_needed ) {
     new_sd_buffer = realloc_mem( sd_buffer, sd_buffer_size_needed );
     if( !new_sd_buffer ) {
+      unlock_entry( entry );
       return -1;
     }
 
