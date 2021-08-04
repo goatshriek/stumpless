@@ -236,31 +236,24 @@ namespace {
 
   TEST_F( JournaldTargetTest, AddLargeEntryReallocFailure ) {
     void * (*set_realloc_result)(void *, size_t);
-    struct stumpless_entry *entry;
+    const char *new_value = "better be longer than it was before";
     int result;
     const struct stumpless_error *error;
 
-    stumpless_add_message( target, "just to get it started" );
+    stumpless_add_entry( target, basic_entry );
     EXPECT_NO_ERROR;
 
-    entry = create_entry(  );
-    EXPECT_NO_ERROR;
-    stumpless_add_new_param_to_entry( entry, "E1", "open", "the door" );
-    stumpless_add_new_param_to_entry( entry, "E1", "get-on", "the floor" );
-    stumpless_add_new_param_to_entry( entry, "E2", "everybody", "walk" );
-    stumpless_add_new_param_to_entry( entry, "E2", "the", "dinosaur" );
+    stumpless_set_entry_param_value_by_index( basic_entry, 0, 0, new_value );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_NOT_NULL( set_realloc_result );
 
-    result = stumpless_add_entry( target, entry );
+    result = stumpless_add_entry( target, basic_entry );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_realloc_result = stumpless_set_realloc( realloc );
     EXPECT_TRUE( set_realloc_result == realloc );
-
-    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST_F( JournaldTargetTest, AddLargeMessageReallocFailure ) {
@@ -269,16 +262,19 @@ namespace {
     int result;
     const struct stumpless_error *error;
 
-    stumpless_add_message( target, "just to get it started" );
+    stumpless_add_entry( target, basic_entry );
+    EXPECT_NO_ERROR;
+
+    message = "expected realloc failure because this message is a lot larger "
+              "than any of the others and will therefore will trigger a "
+              "realloc which will then fail.";
+    stumpless_set_entry_message( basic_entry, message );
     EXPECT_NO_ERROR;
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_NOT_NULL( set_realloc_result );
 
-    message = "expected realloc failure because this message is a lot larger "
-              "than any of the others and will therefore will trigger a "
-              "realloc which will then fail.";
-    result = stumpless_add_message( target, message );
+    result = stumpless_add_entry( target, basic_entry );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
