@@ -240,6 +240,9 @@ namespace {
     int result;
     const struct stumpless_error *error;
 
+    stumpless_add_message( target, "just to get it started" );
+    EXPECT_NO_ERROR;
+
     entry = create_entry(  );
     EXPECT_NO_ERROR;
     stumpless_add_new_param_to_entry( entry, "E1", "open", "the door" );
@@ -265,6 +268,9 @@ namespace {
     const char *message;
     int result;
     const struct stumpless_error *error;
+
+    stumpless_add_message( target, "just to get it started" );
+    EXPECT_NO_ERROR;
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_NOT_NULL( set_realloc_result );
