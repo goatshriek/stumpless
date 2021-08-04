@@ -234,7 +234,53 @@ namespace {
     }
   }
 
-  TEST_F( JournaldTargetTest, AddEntryReallocFailure ) {
+  TEST_F( JournaldTargetTest, AddLargeEntryReallocFailure ) {
+    void * (*set_realloc_result)(void *, size_t);
+    struct stumpless_entry *entry;
+    int result;
+    const struct stumpless_error *error;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+    stumpless_add_new_param_to_entry( entry, "E1", "open", "the door" );
+    stumpless_add_new_param_to_entry( entry, "E1", "get-on", "the floor" );
+    stumpless_add_new_param_to_entry( entry, "E2", "everybody", "walk" );
+    stumpless_add_new_param_to_entry( entry, "E2", "the", "dinosaur" );
+
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
+    ASSERT_NOT_NULL( set_realloc_result );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_realloc_result = stumpless_set_realloc( realloc );
+    EXPECT_TRUE( set_realloc_result == realloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( JournaldTargetTest, AddLargeMessageReallocFailure ) {
+    void * (*set_realloc_result)(void *, size_t);
+    const char *message;
+    int result;
+    const struct stumpless_error *error;
+
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
+    ASSERT_NOT_NULL( set_realloc_result );
+
+    message = "expected realloc failure because this message is a lot larger "
+              "than any of the others and will therefore will trigger a "
+              "realloc which will then fail.";
+    result = stumpless_add_message( target, message );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_realloc_result = stumpless_set_realloc( realloc );
+    EXPECT_TRUE( set_realloc_result == realloc );
+  }
+
+  TEST_F( JournaldTargetTest, AddMessageReallocFailure ) {
     void * (*set_realloc_result)(void *, size_t);
     int result;
     const struct stumpless_error *error;

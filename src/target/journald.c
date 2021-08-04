@@ -286,6 +286,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   if( fields_length < field_count ) {
     new_fields = realloc_mem( fields, sizeof( *fields ) * field_count );
     if( !new_fields ) {
+      unlock_entry( entry );
       return -1;
     }
 
