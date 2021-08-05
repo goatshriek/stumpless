@@ -281,6 +281,7 @@
 "STUMPLESS_INVALID_ID": "stumpless/error.h"
 "STUMPLESS_INVALID_SEVERITY": "stumpless/error.h"
 "STUMPLESS_IPV4_NETWORK_PROTOCOL": "stumpless/target/network.h"
+"STUMPLESS_JOURNALD_FAILURE": "stumpless/error.h"
 "STUMPLESS_JOURNALD_TARGET": "stumpless/target.h"
 "STUMPLESS_JOURNALD_TARGETS_SUPPORTED": "stumpless/config.h"
 "STUMPLESS_LANGUAGE": "stumpless/config.h"

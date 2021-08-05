@@ -231,6 +231,14 @@ raise_invalid_severity( int severity ) {
 }
 
 void
+raise_journald_failure( int code ) {
+  raise_error( STUMPLESS_JOURNALD_FAILURE,
+               L10N_JOURNALD_FAILURE_ERROR_MESSAGE,
+               code,
+               L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE );
+}
+
+void
 raise_memory_allocation_failure( void ) {
   raise_error( STUMPLESS_MEMORY_ALLOCATION_FAILURE,
                L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE,

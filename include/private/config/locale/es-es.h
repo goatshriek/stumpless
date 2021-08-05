@@ -99,6 +99,12 @@
 "los códigos de severidad deben ser definidos de acuerdo al RFC 5424:" \
 " valores entre 0 y 7 inclusive"
 
+#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
+"JOURNALD FAILURE ERROR CODE"
+
+#  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
+"JOURNALD FAILURE ERROR MESSAGE"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "el tamaño máximo de mensaje sólo es válido para objetivos de red UDP"
 

@@ -101,6 +101,12 @@
 "Schweregrad-Codes müssen in Übereinstimmung mit RFC 5424 definiert werden: " \
 "Werte zwischen 0 und einschließlich 7"
 
+#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
+"JOURNALD FAILURE ERROR CODE"
+
+#  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
+"JOURNALD FAILURE ERROR MESSAGE"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "Die maximale Nachrichtengröße ist nur für UDP-Netzwerkziele gütlig"
 

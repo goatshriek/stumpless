@@ -231,6 +231,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   char *new_sd_buffer;
   char *sd_buffer_current;
   size_t fields_offset = 7;
+  int sendv_result;
 
   if( !fixed_fields ) {
     fixed_fields = alloc_mem( sizeof( *fixed_fields ) );
@@ -375,5 +376,10 @@ send_entry_to_journald_target( const struct stumpless_target *target,
 
   fields[6].iov_base = message_buffer;
 
-  return sd_journal_sendv( fields, field_count );
+  sendv_result = sd_journal_sendv( fields, field_count );
+  if( sendv_result != 0 ) {
+    raise_journald_failure( sendv_result );
+  }
+
+  return sendv_result;
 }

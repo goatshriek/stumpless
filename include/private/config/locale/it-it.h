@@ -97,6 +97,12 @@
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0 e 7, compreso"
 
+#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
+"il codice di ritorno della chiamata sd_journal_sendv"
+
+#  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
+"sd_journal_sendv fallita"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "la dimensione massima del messaggio è solo valido per target di rete UDP"
 
