@@ -51,6 +51,7 @@
 #define PID_PREFIX_SIZE 11
 #define MSGID_PREFIX_SIZE 13
 #define MESSAGE_PREFIX_SIZE 8
+#define SD_FIELDS_OFFSET 7
 
 /**
  * Holds journald fields that are always present and have a fixed maximum
@@ -230,7 +231,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   size_t sd_buffer_size_needed;
   char *new_sd_buffer;
   char *sd_buffer_current;
-  size_t fields_offset = 7;
+  size_t fields_offset = SD_FIELDS_OFFSET;
   int sendv_result;
 
   if( !fixed_fields ) {
