@@ -187,6 +187,53 @@ get_journald_field_name( char *flattened, const char *raw, size_t size ) {
 }
 
 void
+init_fields( size_t field_count ) {
+  struct iovec *new_fields;
+
+  new_fields = realloc_mem( fields, sizeof( *fields ) * field_count );
+  if( !new_fields ) {
+    return;
+  }
+
+  fields = new_fields;
+  fields_length = field_count;
+
+  fields[0].iov_base = fixed_fields->priority;
+  fields[0].iov_len = 10;
+  fields[1].iov_base = fixed_fields->facility;
+  fields[2].iov_base = fixed_fields->timestamp;
+  fields[3].iov_base = fixed_fields->identifier;
+  fields[4].iov_base = fixed_fields->pid;
+  fields[5].iov_base = fixed_fields->msgid;
+  fields[6].iov_base = message_buffer;
+}
+
+void
+init_fixed_fields( void ){
+  fixed_fields = alloc_mem( sizeof( *fixed_fields ) );
+  if( !fixed_fields ) {
+    return;
+  }
+
+  memcpy( fixed_fields->priority, "PRIORITY=", PRIORITY_PREFIX_SIZE );
+  memcpy( fixed_fields->facility, "SYSLOG_FACILITY=", FACILITY_PREFIX_SIZE );
+  memcpy( fixed_fields->timestamp, "SYSLOG_TIMESTAMP=", TIMESTAMP_PREFIX_SIZE );
+  memcpy( fixed_fields->identifier, "SYSLOG_IDENTIFIER=", IDENTIFIER_PREFIX_SIZE );
+  memcpy( fixed_fields->pid, "SYSLOG_PID=", PID_PREFIX_SIZE );
+  memcpy( fixed_fields->msgid, "SYSLOG_MSGID=", MSGID_PREFIX_SIZE );
+
+  if( fields ) {
+    fields[0].iov_base = fixed_fields->priority;
+    fields[0].iov_len = 10;
+    fields[1].iov_base = fixed_fields->facility;
+    fields[2].iov_base = fixed_fields->timestamp;
+    fields[3].iov_base = fixed_fields->identifier;
+    fields[4].iov_base = fixed_fields->pid;
+    fields[5].iov_base = fixed_fields->msgid;
+  }
+}
+
+void
 journald_init_journald_element( struct stumpless_element *element ) {
   element->get_journald_name = stumpless_flatten_element_name;
 }
@@ -214,10 +261,80 @@ journald_free_thread( void ) {
   sd_buffer_size = 0;
 }
 
+size_t
+load_sd_fields( const struct stumpless_entry *entry ) {
+  size_t i;
+  size_t j;
+  size_t sd_buffer_size_needed = 0;
+  char *new_sd_buffer;
+  char *sd_buffer_current;
+  size_t fields_offset = SD_FIELDS_OFFSET;
+  size_t field_count;
+
+  field_count = fields_offset + entry->element_count;
+  for( i = 0; i < entry->element_count; i++ ) {
+    lock_element( entry->elements[i] );
+    sd_buffer_size_needed += entry->elements[i]->name_length + 1;
+    field_count += entry->elements[i]->param_count;
+    for( j = 0; j < entry->elements[i]->param_count; j++ ) {
+      lock_param( entry->elements[i]->params[j] );
+      sd_buffer_size_needed += stumpless_flatten_param_name( entry, i, j, NULL, 0 ) + 1 + entry->elements[i]->params[j]->value_length;
+    }
+  }
+
+  if( fields_length < field_count ) {
+    init_fields( field_count );
+    if( fields_length < field_count ) {
+      goto fail;
+    }
+  }
+
+  if( sd_buffer_size < sd_buffer_size_needed ) {
+    new_sd_buffer = realloc_mem( sd_buffer, sd_buffer_size_needed );
+    if( !new_sd_buffer ) {
+      goto fail;
+    }
+
+    sd_buffer = new_sd_buffer;
+    sd_buffer_size = sd_buffer_size_needed;
+  }
+
+  sd_buffer_current = sd_buffer;
+  for( i = 0; i < entry->element_count; i++ ) {
+    fields[fields_offset].iov_base = sd_buffer_current;
+    fields[fields_offset].iov_len = entry->elements[i]->get_journald_name( entry, i, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
+    sd_buffer_current[fields[fields_offset].iov_len++] = '=';
+    sd_buffer_current += fields[fields_offset].iov_len;
+    fields_offset++;
+    for( j = 0; j < entry->elements[i]->param_count; j++ ) {
+      fields[fields_offset].iov_base = sd_buffer_current;
+      fields[fields_offset].iov_len = entry->elements[i]->params[j]->get_journald_name( entry, i, j, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
+      sd_buffer_current[fields[fields_offset].iov_len++] = '=';
+      memcpy( sd_buffer_current + fields[fields_offset].iov_len, entry->elements[i]->params[j]->value, entry->elements[i]->params[j]->value_length );
+      fields[fields_offset].iov_len += entry->elements[i]->params[j]->value_length;
+      sd_buffer_current += fields[fields_offset].iov_len;
+      fields_offset++;
+      unlock_param( entry->elements[i]->params[j] );
+    }
+    unlock_element( entry->elements[i] );
+  }
+
+  return field_count;
+
+fail:
+  for( i = 0; i < entry->element_count; i++ ) {
+    for( j = 0; j < entry->elements[i]->param_count; j++ ) {
+      unlock_param( entry->elements[i]->params[j] );
+    }
+    unlock_element( entry->elements[i] );
+  }
+
+  return 0;
+}
+
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  struct iovec *new_fields;
   char *new_message_buffer;
   int facility_val;
   size_t timestamp_size;
@@ -225,36 +342,13 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   char pid_int_buffer[MAX_INT_SIZE];
   size_t pid_size;
   size_t pid_digit_count;
-  int field_count;
-  size_t i;
-  size_t j;
-  size_t sd_buffer_size_needed;
-  char *new_sd_buffer;
-  char *sd_buffer_current;
-  size_t fields_offset = SD_FIELDS_OFFSET;
+  size_t field_count;
   int sendv_result;
 
   if( !fixed_fields ) {
-    fixed_fields = alloc_mem( sizeof( *fixed_fields ) );
+    init_fixed_fields(  );
     if( !fixed_fields ) {
-      return -1;
-    }
-
-    memcpy( fixed_fields->priority, "PRIORITY=", PRIORITY_PREFIX_SIZE );
-    memcpy( fixed_fields->facility, "SYSLOG_FACILITY=", FACILITY_PREFIX_SIZE );
-    memcpy( fixed_fields->timestamp, "SYSLOG_TIMESTAMP=", TIMESTAMP_PREFIX_SIZE );
-    memcpy( fixed_fields->identifier, "SYSLOG_IDENTIFIER=", IDENTIFIER_PREFIX_SIZE );
-    memcpy( fixed_fields->pid, "SYSLOG_PID=", PID_PREFIX_SIZE );
-    memcpy( fixed_fields->msgid, "SYSLOG_MSGID=", MSGID_PREFIX_SIZE );
-
-    if( fields ) {
-      fields[0].iov_base = fixed_fields->priority;
-      fields[0].iov_len = 10;
-      fields[1].iov_base = fixed_fields->facility;
-      fields[2].iov_base = fixed_fields->timestamp;
-      fields[3].iov_base = fixed_fields->identifier;
-      fields[4].iov_base = fixed_fields->pid;
-      fields[5].iov_base = fixed_fields->msgid;
+      goto fail;
     }
   }
 
@@ -283,67 +377,9 @@ send_entry_to_journald_target( const struct stumpless_target *target,
 
   lock_entry( entry );
 
-  field_count = fields_offset + entry->element_count;
-  sd_buffer_size_needed = 0;
-  for( i = 0; i < entry->element_count; i++ ) {
-    lock_element( entry->elements[i] );
-    sd_buffer_size_needed += entry->elements[i]->name_length + 1;
-    field_count += entry->elements[i]->param_count;
-    for( j = 0; j < entry->elements[i]->param_count; j++ ) {
-      lock_param( entry->elements[i]->params[j] );
-      sd_buffer_size_needed += stumpless_flatten_param_name( entry, i, j, NULL, 0 ) + 1 + entry->elements[i]->params[j]->value_length;
-    }
-  }
-
-  if( fields_length < field_count ) {
-    new_fields = realloc_mem( fields, sizeof( *fields ) * field_count );
-    if( !new_fields ) {
-      unlock_entry( entry );
-      return -1;
-    }
-
-    fields = new_fields;
-    fields_length = field_count;
-
-    fields[0].iov_base = fixed_fields->priority;
-    fields[0].iov_len = 10;
-    fields[1].iov_base = fixed_fields->facility;
-    fields[2].iov_base = fixed_fields->timestamp;
-    fields[3].iov_base = fixed_fields->identifier;
-    fields[4].iov_base = fixed_fields->pid;
-    fields[5].iov_base = fixed_fields->msgid;
-    fields[6].iov_base = message_buffer;
-  }
-
-  if( sd_buffer_size < sd_buffer_size_needed ) {
-    new_sd_buffer = realloc_mem( sd_buffer, sd_buffer_size_needed );
-    if( !new_sd_buffer ) {
-      unlock_entry( entry );
-      return -1;
-    }
-
-    sd_buffer = new_sd_buffer;
-    sd_buffer_size = sd_buffer_size_needed;
-  }
-
-  sd_buffer_current = sd_buffer;
-  for( i = 0; i < entry->element_count; i++ ) {
-    fields[fields_offset].iov_base = sd_buffer_current;
-    fields[fields_offset].iov_len = entry->elements[i]->get_journald_name( entry, i, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
-    sd_buffer_current[fields[fields_offset].iov_len++] = '=';
-    sd_buffer_current += fields[fields_offset].iov_len;
-    fields_offset++;
-    for( j = 0; j < entry->elements[i]->param_count; j++ ) {
-      fields[fields_offset].iov_base = sd_buffer_current;
-      fields[fields_offset].iov_len = entry->elements[i]->params[j]->get_journald_name( entry, i, j, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
-      sd_buffer_current[fields[fields_offset].iov_len++] = '=';
-      memcpy( sd_buffer_current + fields[fields_offset].iov_len, entry->elements[i]->params[j]->value, entry->elements[i]->params[j]->value_length );
-      fields[fields_offset].iov_len += entry->elements[i]->params[j]->value_length;
-      sd_buffer_current += fields[fields_offset].iov_len;
-      fields_offset++;
-      unlock_param( entry->elements[i]->params[j] );
-    }
-    unlock_element( entry->elements[i] );
+  field_count = load_sd_fields( entry );
+  if( field_count == 0 ) {
+    goto fail_locked;
   }
 
   fixed_fields->priority[PRIORITY_PREFIX_SIZE] = get_severity( entry->prival ) + 48;
@@ -364,19 +400,18 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   memcpy( fixed_fields->msgid + MSGID_PREFIX_SIZE, entry->msgid, entry->msgid_length );
   fields[5].iov_len = MSGID_PREFIX_SIZE + entry->msgid_length;
 
-  fields[6].iov_len = entry->message_length + 8;
+  fields[6].iov_len = entry->message_length + MESSAGE_PREFIX_SIZE;
   if( fields[6].iov_len > message_buffer_length ) {
     new_message_buffer = realloc_mem( message_buffer, fields[6].iov_len );
     if( !new_message_buffer ) {
-      unlock_entry( entry );
-      return -1;
+      goto fail_locked;
     }
     message_buffer = new_message_buffer;
     message_buffer_length = fields[6].iov_len;
     memcpy( message_buffer, "MESSAGE=", MESSAGE_PREFIX_SIZE );
     fields[6].iov_base = message_buffer;
   }
-  memcpy( message_buffer + 8, entry->message, entry->message_length );
+  memcpy( message_buffer + MESSAGE_PREFIX_SIZE, entry->message, entry->message_length );
 
   unlock_entry( entry );
 
@@ -389,4 +424,9 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   }
 
   return sendv_result;
+
+fail_locked:
+  unlock_entry( entry );
+fail:
+  return -1;
 }

@@ -33,6 +33,12 @@
 size_t
 get_journald_field_name( char *flattened, const char *raw, size_t size );
 
+void
+init_fields( size_t field_count );
+
+void
+init_fixed_fields( void );
+
 /**
  * Initializes an element's journald fields.
  *
@@ -51,6 +57,9 @@ journald_init_journald_param( struct stumpless_param *param );
 
 void
 journald_free_thread( void );
+
+size_t
+load_sd_fields( const struct stumpless_entry *entry );
 
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
