@@ -246,6 +246,16 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     memcpy( fixed_fields->identifier, "SYSLOG_IDENTIFIER=", IDENTIFIER_PREFIX_SIZE );
     memcpy( fixed_fields->pid, "SYSLOG_PID=", PID_PREFIX_SIZE );
     memcpy( fixed_fields->msgid, "SYSLOG_MSGID=", MSGID_PREFIX_SIZE );
+
+    if( fields ) {
+      fields[0].iov_base = fixed_fields->priority;
+      fields[0].iov_len = 10;
+      fields[1].iov_base = fixed_fields->facility;
+      fields[2].iov_base = fixed_fields->timestamp;
+      fields[3].iov_base = fixed_fields->identifier;
+      fields[4].iov_base = fixed_fields->pid;
+      fields[5].iov_base = fixed_fields->msgid;
+    }
   }
 
   timestamp_size = config_get_now( fixed_fields->timestamp + TIMESTAMP_PREFIX_SIZE );
@@ -294,6 +304,15 @@ send_entry_to_journald_target( const struct stumpless_target *target,
 
     fields = new_fields;
     fields_length = field_count;
+
+    fields[0].iov_base = fixed_fields->priority;
+    fields[0].iov_len = 10;
+    fields[1].iov_base = fixed_fields->facility;
+    fields[2].iov_base = fixed_fields->timestamp;
+    fields[3].iov_base = fixed_fields->identifier;
+    fields[4].iov_base = fixed_fields->pid;
+    fields[5].iov_base = fixed_fields->msgid;
+    fields[6].iov_base = message_buffer;
   }
 
   if( sd_buffer_size < sd_buffer_size_needed ) {
@@ -355,27 +374,14 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     message_buffer = new_message_buffer;
     message_buffer_length = fields[6].iov_len;
     memcpy( message_buffer, "MESSAGE=", MESSAGE_PREFIX_SIZE );
+    fields[6].iov_base = message_buffer;
   }
   memcpy( message_buffer + 8, entry->message, entry->message_length );
 
   unlock_entry( entry );
 
-  fields[0].iov_base = fixed_fields->priority;
-  fields[0].iov_len = 10;
-
-  fields[1].iov_base = fixed_fields->facility;
-
-  fields[2].iov_base = fixed_fields->timestamp;
   fields[2].iov_len = TIMESTAMP_PREFIX_SIZE + timestamp_size;
-
-  fields[3].iov_base = fixed_fields->identifier;
-
-  fields[4].iov_base = fixed_fields->pid;
   fields[4].iov_len = PID_PREFIX_SIZE + pid_size;
-
-  fields[5].iov_base = fixed_fields->msgid;
-
-  fields[6].iov_base = message_buffer;
 
   sendv_result = sd_journal_sendv( fields, field_count );
   if( sendv_result != 0 ) {
