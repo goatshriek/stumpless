@@ -312,21 +312,22 @@ load_sd_fields( const struct stumpless_entry *entry ) {
     vec = &fields[fields_offset++];
     vec->iov_base = pos;
     size_left = sd_buffer_size - ( pos - sd_buffer );
-    vec->iov_len = element->get_journald_name( entry, i, pos, size_left );
-    pos[vec->iov_len++] = '=';
-    pos += vec->iov_len;
+    pos += element->get_journald_name( entry, i, pos, size_left );
+    *( pos++ ) = '=';
+    vec->iov_len = pos - ( char * ) vec->iov_base;
     for( j = 0; j < entry->elements[i]->param_count; j++ ) {
       param = element->params[j];
       vec = &fields[fields_offset++];
       vec->iov_base = pos;
       size_left = sd_buffer_size - ( pos - sd_buffer );
-      vec->iov_len = param->get_journald_name( entry, i, j, pos, size_left );
-      pos[vec->iov_len++] = '=';
-      memcpy( pos + vec->iov_len, param->value, param->value_length );
-      vec->iov_len += param->value_length;
-      pos += vec->iov_len;
+      pos += param->get_journald_name( entry, i, j, pos, size_left );
+      *( pos++ ) = '=';
+      memcpy( pos, param->value, param->value_length );
+      pos += param->value_length;
       unlock_param( param );
+      vec->iov_len = pos - ( char * ) vec->iov_base;
     }
+
     unlock_element( element );
   }
 
