@@ -82,21 +82,19 @@ stumpless_close_journald_target( const struct stumpless_target *target );
  *
  * If the destination buffer is too small to hold the complete name, then
  * nothing is done. Callers can detect this by comparing the return value to
- * the value provided in the length argument. If the return value is larger,
- * then nothing was done by the call.
+ * the value provided in the size argument. If the return value is larger,
+ * then nothing was done.
  *
- * **Thread Safety: MT-Safe race:dest race:length**
- * This function is thread safe. It uses other thread-safe functions to
- * access the element and param names it needs. This assumes that dest and
- * length are not modified during the call.
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe. It reads fields of the entry and element
+ * without any synchronization.
  *
- * **Async Signal Safety: AS-Unsafe lock**
- * This function is not safe to call from signal handlers due to the use of
- * non-reentrant locks to coordinate access.
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
  *
- * **Async Cancel Safety: AC-Unsafe lock**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks that could be left locked.
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @since v2.1.0
  *
@@ -111,7 +109,7 @@ stumpless_close_journald_target( const struct stumpless_target *target );
  *
  * @return The number of bytes needed to write the complete flattened name, not
  * including a NULL terminating character. If this is greater than size, then
- * it signifies that nothing has been done.
+ * it signifies that nothing was done.
  */
 size_t
 stumpless_flatten_element_name( const struct stumpless_entry *entry,
@@ -129,21 +127,19 @@ stumpless_flatten_element_name( const struct stumpless_entry *entry,
  *
  * If the destination buffer is too small to hold the complete name, then
  * nothing is done. Callers can detect this by comparing the return value to
- * the value provided in the length argument. If the return value is larger,
+ * the value provided in the size argument. If the return value is larger,
  * then nothing was done by the call.
  *
- * **Thread Safety: MT-Safe race:dest race:length**
- * This function is thread safe. It uses other thread-safe functions to
- * access the element and param names it needs. This assumes that dest and
- * length are not modified during the call.
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe. It reads fields of the entry, element,
+ * and param without any synchronization.
  *
- * **Async Signal Safety: AS-Unsafe lock**
- * This function is not safe to call from signal handlers due to the use of
- * non-reentrant locks to coordinate access.
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
  *
- * **Async Cancel Safety: AC-Unsafe lock**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks that could be left locked.
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @since v2.1.0
  *
@@ -160,7 +156,7 @@ stumpless_flatten_element_name( const struct stumpless_entry *entry,
  *
  * @return The number of bytes needed to write the complete flattened name, not
  * including a NULL terminating character. If this is greater than size, then
- * it signifies that nothing has been done.
+ * it signifies that nothing was done.
  */
 size_t
 stumpless_flatten_param_name( const struct stumpless_entry *entry,

@@ -77,12 +77,47 @@ struct stumpless_param {
 #  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
 /**
  * Gets the name to use for the journald field corresponding to this param.
+ *
+ * If the destination buffer is too small to hold the complete name, then
+ * nothing should be done. Callers must be able to detect this by comparing
+ * the return value to the value provided in the size argument. If the return
+ * value is larger, then the name was not written into destination.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function need not be thread safe. It will be called when locks are
+ * already held on the entry, element, and param in question, and therefore
+ * should not use any functions that will attempt to lock any of these as this
+ * will result in deadlock.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function must be safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function must be safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @since v2.1.0
+ *
+ * @param entry The entry that the param is part of.
+ *
+ * @param element_index The index of the element in the entry.
+ *
+ * @param param_index The index of the param within the element.
+ *
+ * @param destination The buffer to write the name to.
+ *
+ * @param size The maximum number of bytes to write to the destination
+ * buffer.
+ *
+ * @return The number of bytes needed to write the complete name, not including
+ * a NULL terminating character. If this is greater than size, then it
+ * signifies that nothing was done.
  */
-  size_t ( *get_journald_name )( const struct stumpless_entry *,
-                                 size_t,
-                                 size_t,
-                                 char *,
-                                 size_t );
+  size_t ( *get_journald_name )( const struct stumpless_entry *entry,
+                                 size_t element_index,
+                                 size_t param_index,
+                                 char * destination,
+                                 size_t size );
 #  endif
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /*
