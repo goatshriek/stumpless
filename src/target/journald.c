@@ -263,22 +263,29 @@ journald_free_thread( void ) {
 
 size_t
 load_sd_fields( const struct stumpless_entry *entry ) {
-  size_t i;
-  size_t j;
-  size_t sd_buffer_size_needed = 0;
-  char *new_sd_buffer;
-  char *sd_buffer_current;
   size_t fields_offset = SD_FIELDS_OFFSET;
   size_t field_count;
+  size_t i;
+  const struct stumpless_element *element;
+  size_t size_needed = 0;
+  size_t j;
+  const struct stumpless_param *param;
+  char *new_sd_buffer;
+  char *pos;
+  struct iovec *vec;
+  size_t size_left;
 
   field_count = fields_offset + entry->element_count;
   for( i = 0; i < entry->element_count; i++ ) {
-    lock_element( entry->elements[i] );
-    sd_buffer_size_needed += entry->elements[i]->name_length + 1;
-    field_count += entry->elements[i]->param_count;
-    for( j = 0; j < entry->elements[i]->param_count; j++ ) {
-      lock_param( entry->elements[i]->params[j] );
-      sd_buffer_size_needed += stumpless_flatten_param_name( entry, i, j, NULL, 0 ) + 1 + entry->elements[i]->params[j]->value_length;
+    element = entry->elements[i];
+    lock_element( element );
+    size_needed += element->get_journald_name( entry, i, NULL, 0 ) + 1;
+    field_count += element->param_count;
+    for( j = 0; j < element->param_count; j++ ) {
+      param = element->params[j];
+      lock_param( param );
+      size_needed += param->get_journald_name( entry, i, j, NULL, 0 );
+      size_needed += 1 + param->value_length;
     }
   }
 
@@ -289,34 +296,38 @@ load_sd_fields( const struct stumpless_entry *entry ) {
     }
   }
 
-  if( sd_buffer_size < sd_buffer_size_needed ) {
-    new_sd_buffer = realloc_mem( sd_buffer, sd_buffer_size_needed );
+  if( sd_buffer_size < size_needed ) {
+    new_sd_buffer = realloc_mem( sd_buffer, size_needed );
     if( !new_sd_buffer ) {
       goto fail;
     }
 
     sd_buffer = new_sd_buffer;
-    sd_buffer_size = sd_buffer_size_needed;
+    sd_buffer_size = size_needed;
   }
 
-  sd_buffer_current = sd_buffer;
+  pos = sd_buffer;
   for( i = 0; i < entry->element_count; i++ ) {
-    fields[fields_offset].iov_base = sd_buffer_current;
-    fields[fields_offset].iov_len = entry->elements[i]->get_journald_name( entry, i, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
-    sd_buffer_current[fields[fields_offset].iov_len++] = '=';
-    sd_buffer_current += fields[fields_offset].iov_len;
-    fields_offset++;
+    element = entry->elements[i];
+    vec = &fields[fields_offset++];
+    vec->iov_base = pos;
+    size_left = sd_buffer_size - ( pos - sd_buffer );
+    vec->iov_len = element->get_journald_name( entry, i, pos, size_left );
+    pos[vec->iov_len++] = '=';
+    pos += vec->iov_len;
     for( j = 0; j < entry->elements[i]->param_count; j++ ) {
-      fields[fields_offset].iov_base = sd_buffer_current;
-      fields[fields_offset].iov_len = entry->elements[i]->params[j]->get_journald_name( entry, i, j, sd_buffer_current, sd_buffer_size - (sd_buffer_current - sd_buffer) );
-      sd_buffer_current[fields[fields_offset].iov_len++] = '=';
-      memcpy( sd_buffer_current + fields[fields_offset].iov_len, entry->elements[i]->params[j]->value, entry->elements[i]->params[j]->value_length );
-      fields[fields_offset].iov_len += entry->elements[i]->params[j]->value_length;
-      sd_buffer_current += fields[fields_offset].iov_len;
-      fields_offset++;
-      unlock_param( entry->elements[i]->params[j] );
+      param = element->params[j];
+      vec = &fields[fields_offset++];
+      vec->iov_base = pos;
+      size_left = sd_buffer_size - ( pos - sd_buffer );
+      vec->iov_len = param->get_journald_name( entry, i, j, pos, size_left );
+      pos[vec->iov_len++] = '=';
+      memcpy( pos + vec->iov_len, param->value, param->value_length );
+      vec->iov_len += param->value_length;
+      pos += vec->iov_len;
+      unlock_param( param );
     }
-    unlock_element( entry->elements[i] );
+    unlock_element( element );
   }
 
   return field_count;
@@ -326,6 +337,7 @@ fail:
     for( j = 0; j < entry->elements[i]->param_count; j++ ) {
       unlock_param( entry->elements[i]->params[j] );
     }
+
     unlock_element( entry->elements[i] );
   }
 
