@@ -36,6 +36,18 @@ extern "C" {
 // this is required due to the circular dependency with the entry header.
 struct stumpless_entry;
 
+#ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
+/**
+ * Gets the name to use for the journald field corresponding to this element.
+ */
+typedef
+size_t
+( *stumpless_element_namer_func_t )( const struct stumpless_entry *entry,
+                                     size_t element_index,
+                                     char *destination,
+                                     size_t size );
+#endif
+
 /**
  * An element of structured data.
  *
@@ -81,10 +93,7 @@ struct stumpless_element {
 /**
  * Gets the name to use for the journald field corresponding to this element.
  */
-  size_t ( *get_journald_name )( const struct stumpless_entry *,
-                                 size_t,
-                                 char *,
-                                 size_t );
+  stumpless_element_namer_func_t get_journald_name;
 #endif
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /*
