@@ -21,10 +21,10 @@
  *
  * Journald supports structured logging but does not use the same hierarchy as
  * RFC 5424, instead providing a simple key/value pairing. To compensate for
- * this, these targets perform a number of transformations to map the elements
- * and params into the flatter structure. Element and param names are converted
- * to uppercase and are joined together using underscores. The value of the
- * param is then passed as the value of the field.
+ * this these targets perform a number of transformations to map the elements
+ * and params into the flat hierarchy. By default element and param names are
+ * converted to uppercase and are joined together using underscores, but this
+ * behavior can be customized as needed.
  *
  * Because RFC 5424 allows most printable ASCII characters while journald only
  * allows letters and numbers, incompatible characters of the generated field

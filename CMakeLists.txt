@@ -318,6 +318,7 @@ endif()
 
 if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
   list(APPEND STUMPLESS_SOURCES src/target/journald.c)
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/journald_target.yml)
 
   install(FILES
     ${PROJECT_SOURCE_DIR}/include/stumpless/target/journald.h
