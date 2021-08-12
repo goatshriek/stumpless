@@ -84,6 +84,11 @@ set(GENERATED_CPP_LIB_SOURCES
 if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
   list(APPEND GENERATED_CPP_LIB_HEADERS ${CPP_LIB_BUILD_DIR}/JournaldTarget.hpp)
   list(APPEND GENERATED_CPP_LIB_SOURCES ${CPP_LIB_BUILD_DIR}/JournaldTarget.cpp)
+
+  add_cpp_test(journald
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/cpp/target/journald.cpp
+  )
 endif()
 
 
