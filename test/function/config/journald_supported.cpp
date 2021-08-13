@@ -65,4 +65,46 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetParamNamer, Basic ) {
+    struct stumpless_param *param = stumpless_new_param( "test", "val" );
+    stumpless_param_namer_func_t namer;
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    namer = stumpless_flatten_param_name;
+    result = stumpless_set_param_journald_namer( param, namer );
+    EXPECT_TRUE( result == param );
+    EXPECT_NO_ERROR;
+
+    stumpless_destroy_param( param );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetParamNamer, NullParam ) {
+    stumpless_param_namer_func_t namer;
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    namer = stumpless_flatten_param_name;
+
+    result = stumpless_set_param_journald_namer( NULL, namer );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetParamNamer, NullNamer ) {
+    struct stumpless_param *param = stumpless_new_param( "test", "val" );
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_param_journald_namer( param, NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_param( param );
+    stumpless_free_all(  );
+  }
+
 }

@@ -22,14 +22,27 @@
 #include "private/validate.h"
 
 stumpless_element_namer_func_t
-stumpless_get_element_journald_namer( struct stumpless_element *element ) {
+stumpless_get_element_journald_namer( const struct stumpless_element *e ) {
   stumpless_element_namer_func_t result;
 
-  VALIDATE_ARG_NOT_NULL( element );
+  VALIDATE_ARG_NOT_NULL( e );
 
-  lock_element( element );
-  result = element->get_journald_name;
-  unlock_element( element );
+  lock_element( e );
+  result = e->get_journald_name;
+  unlock_element( e );
+
+  return result;
+}
+
+stumpless_param_namer_func_t
+stumpless_get_param_journald_namer( const struct stumpless_param *param ) {
+  stumpless_param_namer_func_t result;
+
+  VALIDATE_ARG_NOT_NULL( param );
+
+  lock_param( param );
+  result = param->get_journald_name;
+  unlock_param( param );
 
   return result;
 }
@@ -45,4 +58,17 @@ stumpless_set_element_journald_namer( struct stumpless_element *element,
   unlock_element( element );
 
   return element;
+}
+
+struct stumpless_param *
+stumpless_set_param_journald_namer( struct stumpless_param *param,
+                                    stumpless_param_namer_func_t namer ) {
+  VALIDATE_ARG_NOT_NULL( param );
+  VALIDATE_ARG_NOT_NULL( namer );
+
+  lock_param( param );
+  param->get_journald_name = namer;
+  unlock_param( param );
+
+  return param;
 }
