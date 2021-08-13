@@ -191,10 +191,6 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
 struct stumpless_target *
 stumpless_open_journald_target( const char *name );
 
-struct stumpless_element *
-stumpless_set_element_journald_namer( struct stumpless_element *element,
-                                      stumpless_element_namer_func_t namer );
-
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif

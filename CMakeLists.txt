@@ -318,6 +318,7 @@ endif()
 
 if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
   list(APPEND STUMPLESS_SOURCES src/target/journald.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/journald_supported.c)
   list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/journald_target.yml)
 
   install(FILES
@@ -325,9 +326,22 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
     DESTINATION "include/stumpless/target"
   )
 
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/config/journald_supported.h
+    DESTINATION "include/stumpless/config"
+  )
+
   add_function_test(journald
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/target/journald.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+    LIBRARIES
+      systemd
+  )
+
+  add_function_test(journald_supported
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/journald_supported.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
     LIBRARIES
       systemd

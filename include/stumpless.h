@@ -58,6 +58,7 @@
 #  include <stumpless/version.h>
 
 #  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
+#    include <stumpless/config/journald_supported.h>
 #    include <stumpless/target/journald.h>
 #  endif
 
