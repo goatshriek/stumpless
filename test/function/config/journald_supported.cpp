@@ -23,6 +23,56 @@
 
 namespace {
 
+  TEST( GetElementNamer, Default ) {
+    const struct stumpless_element *element = stumpless_new_element( "test" );
+    stumpless_element_namer_func_t namer;
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    namer = stumpless_get_element_journald_namer( element );
+    EXPECT_TRUE( namer == stumpless_flatten_element_name );
+    EXPECT_NO_ERROR;
+
+    stumpless_destroy_element_and_contents( element );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetElementNamer, NullElement ) {
+    stumpless_element_namer_func_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_journald_namer( NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( GetParamNamer, Default ) {
+    const struct stumpless_param *param = stumpless_new_param( "test", "val" );
+    stumpless_param_namer_func_t namer;
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    namer = stumpless_get_param_journald_namer( param );
+    EXPECT_TRUE( namer == stumpless_flatten_param_name );
+    EXPECT_NO_ERROR;
+
+    stumpless_destroy_param( param );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetParamNamer, NullParam ) {
+    stumpless_param_namer_func_t result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_param_journald_namer( NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
+  }
+
   TEST( SetElementNamer, Basic ) {
     struct stumpless_element *element = stumpless_new_element( "test" );
     stumpless_element_namer_func_t namer;
