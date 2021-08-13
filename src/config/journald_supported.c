@@ -18,7 +18,9 @@
 
 #include <stumpless/config/journald_supported.h>
 #include <stumpless/element.h>
+#include <stumpless/param.h>
 #include "private/element.h"
+#include "private/param.h"
 #include "private/validate.h"
 
 stumpless_element_namer_func_t

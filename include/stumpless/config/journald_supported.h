@@ -25,6 +25,7 @@
 #  define __STUMPLESS_CONFIG_JOURNALD_SUPPORTED_H
 
 #  include <stumpless/element.h>
+#  include <stumpless/param.h>
 
 #  ifdef __cplusplus
 extern "C" {
