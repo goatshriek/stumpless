@@ -61,6 +61,7 @@
 "repeat_add_entry": "test/helper/usage.hpp"
 "send_entry_to_function_target": "private/target/function.h"
 "send_entry_to_journald_target": "private/target/journald.h"
+"set_field_bases": "private/target/journald.h"
 "SET_STATE_COUNTERS": "test/helper/memory_counter.hpp"
 "stdatomic_compare_exchange_bool": "private/config/have_stdatomic.h"
 "stdatomic_compare_exchange_ptr": "private/config/have_stdatomic.h"

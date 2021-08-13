@@ -197,15 +197,7 @@ init_fields( size_t field_count ) {
 
   fields = new_fields;
   fields_length = field_count;
-
-  fields[0].iov_base = fixed_fields->priority;
-  fields[0].iov_len = 10;
-  fields[1].iov_base = fixed_fields->facility;
-  fields[2].iov_base = fixed_fields->timestamp;
-  fields[3].iov_base = fixed_fields->identifier;
-  fields[4].iov_base = fixed_fields->pid;
-  fields[5].iov_base = fixed_fields->msgid;
-  fields[6].iov_base = message_buffer;
+  set_field_bases(  );
 }
 
 void
@@ -223,14 +215,9 @@ init_fixed_fields( void ){
   memcpy( fixed_fields->msgid, "SYSLOG_MSGID=", MSGID_PREFIX_SIZE );
 
   if( fields ) {
-    fields[0].iov_base = fixed_fields->priority;
-    fields[0].iov_len = 10;
-    fields[1].iov_base = fixed_fields->facility;
-    fields[2].iov_base = fixed_fields->timestamp;
-    fields[3].iov_base = fixed_fields->identifier;
-    fields[4].iov_base = fixed_fields->pid;
-    fields[5].iov_base = fixed_fields->msgid;
+    set_field_bases(  );
   }
+
 }
 
 void
@@ -442,4 +429,15 @@ fail_locked:
   unlock_entry( entry );
 fail:
   return -1;
+}
+
+void
+set_field_bases( void ) {
+  fields[0].iov_base = fixed_fields->priority;
+  fields[0].iov_len = 10;
+  fields[1].iov_base = fixed_fields->facility;
+  fields[2].iov_base = fixed_fields->timestamp;
+  fields[3].iov_base = fixed_fields->identifier;
+  fields[4].iov_base = fixed_fields->pid;
+  fields[5].iov_base = fixed_fields->msgid;
 }

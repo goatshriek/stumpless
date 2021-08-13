@@ -65,4 +65,7 @@ int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry );
 
+void
+set_field_bases( void );
+
 #endif /* __STUMPLESS_PRIVATE_TARGET_JOURNALD_H */
