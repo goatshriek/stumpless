@@ -221,16 +221,6 @@ init_fixed_fields( void ){
 }
 
 void
-journald_init_journald_element( struct stumpless_element *element ) {
-  element->get_journald_name = stumpless_flatten_element_name;
-}
-
-void
-journald_init_journald_param( struct stumpless_param *param ) {
-  param->get_journald_name = stumpless_flatten_param_name;
-}
-
-void
 journald_free_thread( void ) {
   free_mem( fields );
   fields = NULL;

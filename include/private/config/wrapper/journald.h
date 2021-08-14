@@ -23,6 +23,7 @@
 
 #  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
 #    include <stumpless/target/journald.h>
+#    include "private/config/journald_supported.h"
 #    include "private/target/journald.h"
 #    define config_close_journald_target stumpless_close_journald_target
 #    define config_init_journald_element journald_init_journald_element

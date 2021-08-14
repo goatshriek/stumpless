@@ -19,6 +19,8 @@
 #include <stumpless/config/journald_supported.h>
 #include <stumpless/element.h>
 #include <stumpless/param.h>
+#include <stumpless/target/journald.h>
+#include "private/config/journald_supported.h"
 #include "private/element.h"
 #include "private/param.h"
 #include "private/validate.h"
@@ -73,4 +75,16 @@ stumpless_set_param_journald_namer( struct stumpless_param *param,
   unlock_param( param );
 
   return param;
+}
+
+/* private definitions */
+
+void
+journald_init_journald_element( struct stumpless_element *element ) {
+  element->get_journald_name = stumpless_flatten_element_name;
+}
+
+void
+journald_init_journald_param( struct stumpless_param *param ) {
+  param->get_journald_name = stumpless_flatten_param_name;
 }

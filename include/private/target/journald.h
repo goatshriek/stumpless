@@ -20,9 +20,7 @@
 #  define __STUMPLESS_PRIVATE_TARGET_JOURNALD_H
 
 #  include <stddef.h>
-#  include <stumpless/element.h>
 #  include <stumpless/entry.h>
-#  include <stumpless/param.h>
 #  include <stumpless/target.h>
 
 /**
@@ -87,44 +85,6 @@ init_fields( size_t field_count );
  */
 void
 init_fixed_fields( void );
-
-/**
- * Initializes an element's journald fields.
- *
- * **Thread Safety: MT-Unsafe*
- * This function is not thread safe; it should only be used on elements that
- * are already locked by the caller.
- *
- * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
- *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be asynchronously
- * cancelled.
- *
- * @param element The element to initialize.
- */
-void
-journald_init_journald_element( struct stumpless_element *element );
-
-/**
- * Initializes a param's journald fields.
- *
- * **Thread Safety: MT-Unsafe*
- * This function is not thread safe; it should only be used on params that
- * are already locked by the caller.
- *
- * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
- *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be asynchronously
- * cancelled.
- *
- * @param param The param to initialize.
- */
-void
-journald_init_journald_param( struct stumpless_param *param );
 
 /**
  * Destroys all thread-specific resources created to support journald.
