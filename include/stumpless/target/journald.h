@@ -34,11 +34,11 @@
  * **Thread Safety: MT-Safe**
  * Logging to journald targets is thread safe.
  *
- * **Async Signal Safety: AS-Safe**
- * Logging to journald targets is signal safe.
+ * **Async Signal Safety: AS-Unsafe**
+ * Logging to journald targets is not signal safe.
  *
  * **Async Cancel Safety: AC-Unsafe**
- * Logging to journald targets is not async signal safe as it relies on
+ * Logging to journald targets is not async cancellation safe as it relies on
  * sd_journal_sendv which is not documented as such.
  */
 
