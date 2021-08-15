@@ -240,6 +240,30 @@ journald_free_thread( void ) {
   sd_buffer_size = 0;
 }
 
+void
+load_facility( const struct stumpless_entry *entry ) {
+  int facility_val;
+
+  facility_val = get_facility( entry->prival ) >> 3;
+  if( facility_val <= 9 ) {
+    fixed_fields->facility[FACILITY_PREFIX_SIZE] = facility_val + 48;
+    fields[1].iov_len = 17;
+  } else {
+    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val / 10 ) + 48;
+    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val % 10 ) + 48;
+    fields[1].iov_len = 18;
+  }
+
+}
+
+void
+load_identifier( const struct stumpless_entry *entry ) {
+  memcpy( fixed_fields->identifier + IDENTIFIER_PREFIX_SIZE,
+          entry->app_name,
+          entry->app_name_length );
+  fields[3].iov_len = IDENTIFIER_PREFIX_SIZE + entry->app_name_length;
+}
+
 char *
 load_message( const struct stumpless_entry *entry ) {
   char *new_message_buffer;
@@ -260,6 +284,14 @@ load_message( const struct stumpless_entry *entry ) {
           entry->message_length );
 
   return message_buffer;
+}
+
+void
+load_msgid( const struct stumpless_entry *entry ) {
+  memcpy( fixed_fields->msgid + MSGID_PREFIX_SIZE,
+          entry->msgid,
+          entry->msgid_length );
+  fields[5].iov_len = MSGID_PREFIX_SIZE + entry->msgid_length;
 }
 
 void
@@ -289,6 +321,14 @@ load_pid( void ) {
   }
 
   fields[4].iov_len = PID_PREFIX_SIZE + pid_size;
+}
+
+void
+load_priority( const struct stumpless_entry *entry ) {
+  char severity;
+
+  severity = get_severity( entry->prival ) + 48;
+  fixed_fields->priority[PRIORITY_PREFIX_SIZE] = severity;
 }
 
 size_t
@@ -386,8 +426,6 @@ load_timestamp( void ) {
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  char severity;
-  int facility_val;
   size_t field_count;
   int sendv_result;
 
@@ -408,32 +446,14 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     goto fail_locked;
   }
 
-  severity = get_severity( entry->prival ) + 48;
-  fixed_fields->priority[PRIORITY_PREFIX_SIZE] = severity;
-
-  facility_val = get_facility( entry->prival ) >> 3;
-  if( facility_val <= 9 ) {
-    fixed_fields->facility[FACILITY_PREFIX_SIZE] = facility_val + 48;
-    fields[1].iov_len = 17;
-  } else {
-    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val / 10 ) + 48;
-    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val % 10 ) + 48;
-    fields[1].iov_len = 18;
-  }
-
-  memcpy( fixed_fields->identifier + IDENTIFIER_PREFIX_SIZE,
-          entry->app_name,
-          entry->app_name_length );
-  fields[3].iov_len = IDENTIFIER_PREFIX_SIZE + entry->app_name_length;
-
-  memcpy( fixed_fields->msgid + MSGID_PREFIX_SIZE,
-          entry->msgid,
-          entry->msgid_length );
-  fields[5].iov_len = MSGID_PREFIX_SIZE + entry->msgid_length;
-
   if( !load_message( entry ) ) {
     goto fail_locked;
   }
+
+  load_priority( entry );
+  load_facility( entry );
+  load_identifier( entry );
+  load_msgid( entry );
 
   unlock_entry( entry );
 

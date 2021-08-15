@@ -105,12 +105,51 @@ void
 journald_free_thread( void );
 
 /**
- * Loads the message field according the entry.
+ * Loads the facility field according to an entry's facility.
  *
  * **Thread Safety: MT-Safe race:entry**
  * This function is thread safe, asssuming that the entry is already locked
- * by the caller. Elements and params within the entry are locked/unlocked
- * as needed.
+ * by the caller.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to journald targets is not signal safe due to the use of
+ * non-reentrant locks.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to journald targets is not async cancellation safe as it uses locks
+ * that may not be released if a thread is cancelled.
+ *
+ * @param entry The entry to load the facility from.
+ */
+void
+load_facility( const struct stumpless_entry *entry );
+
+/**
+ * Loads the identifier field according to an entry's app name.
+ *
+ * **Thread Safety: MT-Safe race:entry**
+ * This function is thread safe, asssuming that the entry is already locked
+ * by the caller.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to journald targets is not signal safe due to the use of
+ * non-reentrant locks.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to journald targets is not async cancellation safe as it uses locks
+ * that may not be released if a thread is cancelled.
+ *
+ * @param entry The entry to load the identifier from.
+ */
+void
+load_identifier( const struct stumpless_entry *entry );
+
+/**
+ * Loads the message field according to an entry.
+ *
+ * **Thread Safety: MT-Safe race:entry**
+ * This function is thread safe, asssuming that the entry is already locked
+ * by the caller.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * Logging to journald targets is not signal safe due to the use of
@@ -129,6 +168,26 @@ char *
 load_message( const struct stumpless_entry *entry );
 
 /**
+ * Loads the msgid field according to an entry's msgid.
+ *
+ * **Thread Safety: MT-Safe race:entry**
+ * This function is thread safe, asssuming that the entry is already locked
+ * by the caller.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to journald targets is not signal safe due to the use of
+ * non-reentrant locks.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to journald targets is not async cancellation safe as it uses locks
+ * that may not be released if a thread is cancelled.
+ *
+ * @param entry The entry to load the msgid from.
+ */
+void
+load_msgid( const struct stumpless_entry *entry );
+
+/**
  * Loads the pid field with the current pid.
  *
  * **Thread Safety: MT-Safe**
@@ -142,6 +201,26 @@ load_message( const struct stumpless_entry *entry );
  */
 void
 load_pid( void );
+
+/**
+ * Loads the priority field according to an entry's severity.
+ *
+ * **Thread Safety: MT-Safe race:entry**
+ * This function is thread safe, asssuming that the entry is already locked
+ * by the caller.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to journald targets is not signal safe due to the use of
+ * non-reentrant locks.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to journald targets is not async cancellation safe as it uses locks
+ * that may not be released if a thread is cancelled.
+ *
+ * @param entry The entry to load the priority from.
+ */
+void
+load_priority( const struct stumpless_entry *entry );
 
 /**
  * Loads the structured data fields according to those in the entry.
