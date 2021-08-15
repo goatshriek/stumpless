@@ -134,7 +134,8 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
   used_size = element->get_journald_name( entry, element_index, destination,
                                           required_size );
   destination[used_size++] = '_';
-  used_size += get_journald_field_name( destination + used_size, param->name, param->name_length );
+  used_size += get_journald_field_name( destination + used_size,
+                                        param->name, param->name_length );
   return used_size;
 }
 
@@ -210,7 +211,8 @@ init_fixed_fields( void ){
   memcpy( fixed_fields->priority, "PRIORITY=", PRIORITY_PREFIX_SIZE );
   memcpy( fixed_fields->facility, "SYSLOG_FACILITY=", FACILITY_PREFIX_SIZE );
   memcpy( fixed_fields->timestamp, "SYSLOG_TIMESTAMP=", TIMESTAMP_PREFIX_SIZE );
-  memcpy( fixed_fields->identifier, "SYSLOG_IDENTIFIER=", IDENTIFIER_PREFIX_SIZE );
+  memcpy( fixed_fields->identifier, "SYSLOG_IDENTIFIER=",
+          IDENTIFIER_PREFIX_SIZE );
   memcpy( fixed_fields->pid, "SYSLOG_PID=", PID_PREFIX_SIZE );
   memcpy( fixed_fields->msgid, "SYSLOG_MSGID=", MSGID_PREFIX_SIZE );
 
@@ -236,6 +238,57 @@ journald_free_thread( void ) {
   free_mem( sd_buffer );
   sd_buffer = NULL;
   sd_buffer_size = 0;
+}
+
+char *
+load_message( const struct stumpless_entry *entry ) {
+  char *new_message_buffer;
+
+  fields[6].iov_len = entry->message_length + MESSAGE_PREFIX_SIZE;
+  if( fields[6].iov_len > message_buffer_length ) {
+    new_message_buffer = realloc_mem( message_buffer, fields[6].iov_len );
+    if( !new_message_buffer ) {
+      return NULL;
+    }
+    message_buffer = new_message_buffer;
+    message_buffer_length = fields[6].iov_len;
+    memcpy( message_buffer, "MESSAGE=", MESSAGE_PREFIX_SIZE );
+    fields[6].iov_base = message_buffer;
+  }
+  memcpy( message_buffer + MESSAGE_PREFIX_SIZE,
+          entry->message,
+          entry->message_length );
+
+  return message_buffer;
+}
+
+void
+load_pid( void ) {
+  int pid;
+  char digits[MAX_INT_SIZE];
+  size_t pid_size;
+  size_t digit_count;
+
+  pid = config_getpid();
+  if( pid == 0 ) {
+    fixed_fields->pid[PID_PREFIX_SIZE] = '0';
+    pid_size = 1;
+  } else {
+    pid_size = 0;
+    digit_count = 0;
+
+    while( pid != 0 ) {
+      digits[digit_count++] = ( pid % 10 ) + 48;
+      pid /= 10;
+    }
+
+    while( digit_count > 0 ) {
+      fixed_fields->pid[PID_PREFIX_SIZE + pid_size] = digits[--digit_count];
+      pid_size++;
+    }
+  }
+
+  fields[4].iov_len = PID_PREFIX_SIZE + pid_size;
 }
 
 size_t
@@ -322,16 +375,19 @@ fail:
   return 0;
 }
 
+void
+load_timestamp( void ) {
+  char *timestamp;
+
+  timestamp = fixed_fields->timestamp + TIMESTAMP_PREFIX_SIZE;
+  fields[2].iov_len = TIMESTAMP_PREFIX_SIZE + config_get_now( timestamp );
+}
+
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  char *new_message_buffer;
+  char severity;
   int facility_val;
-  size_t timestamp_size;
-  int pid;
-  char pid_int_buffer[MAX_INT_SIZE];
-  size_t pid_size;
-  size_t pid_digit_count;
   size_t field_count;
   int sendv_result;
 
@@ -342,28 +398,8 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     }
   }
 
-  timestamp_size = config_get_now( fixed_fields->timestamp + TIMESTAMP_PREFIX_SIZE );
-
-  pid = config_getpid();
-  if( pid == 0 ) {
-    fixed_fields->pid[PID_PREFIX_SIZE] = '0';
-    pid_size = 1;
-  } else {
-    pid_size = 0;
-    pid_digit_count = 0;
-
-    while( pid != 0 ) {
-      pid_int_buffer[pid_digit_count] = ( pid % 10 ) + 48;
-      pid /= 10;
-      pid_digit_count++;
-    }
-
-    while( pid_digit_count > 0 ) {
-      pid_digit_count--;
-      fixed_fields->pid[PID_PREFIX_SIZE + pid_size] = pid_int_buffer[pid_digit_count];
-      pid_size++;
-    }
-  }
+  load_timestamp(  );
+  load_pid(  );
 
   lock_entry( entry );
 
@@ -372,7 +408,8 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     goto fail_locked;
   }
 
-  fixed_fields->priority[PRIORITY_PREFIX_SIZE] = get_severity( entry->prival ) + 48;
+  severity = get_severity( entry->prival ) + 48;
+  fixed_fields->priority[PRIORITY_PREFIX_SIZE] = severity;
 
   facility_val = get_facility( entry->prival ) >> 3;
   if( facility_val <= 9 ) {
@@ -384,29 +421,21 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     fields[1].iov_len = 18;
   }
 
-  memcpy( fixed_fields->identifier + IDENTIFIER_PREFIX_SIZE, entry->app_name, entry->app_name_length );
+  memcpy( fixed_fields->identifier + IDENTIFIER_PREFIX_SIZE,
+          entry->app_name,
+          entry->app_name_length );
   fields[3].iov_len = IDENTIFIER_PREFIX_SIZE + entry->app_name_length;
 
-  memcpy( fixed_fields->msgid + MSGID_PREFIX_SIZE, entry->msgid, entry->msgid_length );
+  memcpy( fixed_fields->msgid + MSGID_PREFIX_SIZE,
+          entry->msgid,
+          entry->msgid_length );
   fields[5].iov_len = MSGID_PREFIX_SIZE + entry->msgid_length;
 
-  fields[6].iov_len = entry->message_length + MESSAGE_PREFIX_SIZE;
-  if( fields[6].iov_len > message_buffer_length ) {
-    new_message_buffer = realloc_mem( message_buffer, fields[6].iov_len );
-    if( !new_message_buffer ) {
-      goto fail_locked;
-    }
-    message_buffer = new_message_buffer;
-    message_buffer_length = fields[6].iov_len;
-    memcpy( message_buffer, "MESSAGE=", MESSAGE_PREFIX_SIZE );
-    fields[6].iov_base = message_buffer;
+  if( !load_message( entry ) ) {
+    goto fail_locked;
   }
-  memcpy( message_buffer + MESSAGE_PREFIX_SIZE, entry->message, entry->message_length );
 
   unlock_entry( entry );
-
-  fields[2].iov_len = TIMESTAMP_PREFIX_SIZE + timestamp_size;
-  fields[4].iov_len = PID_PREFIX_SIZE + pid_size;
 
   sendv_result = sd_journal_sendv( fields, field_count );
   if( sendv_result != 0 ) {

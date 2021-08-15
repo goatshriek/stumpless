@@ -105,6 +105,45 @@ void
 journald_free_thread( void );
 
 /**
+ * Loads the message field according the entry.
+ *
+ * **Thread Safety: MT-Safe race:entry**
+ * This function is thread safe, asssuming that the entry is already locked
+ * by the caller. Elements and params within the entry are locked/unlocked
+ * as needed.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Logging to journald targets is not signal safe due to the use of
+ * non-reentrant locks.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * Logging to journald targets is not async cancellation safe as it uses locks
+ * that may not be released if a thread is cancelled.
+ *
+ * @param entry The entry to load the message from.
+ *
+ * @return A pointer to the buffer holding the message, or NULL if an error
+ * was encountered.
+ */
+char *
+load_message( const struct stumpless_entry *entry );
+
+/**
+ * Loads the pid field with the current pid.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not signal safe due to the use of a thread-local buffer.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * Logging to journald targets is async cancellation safe.
+ */
+void
+load_pid( void );
+
+/**
  * Loads the structured data fields according to those in the entry.
  *
  * **Thread Safety: MT-Safe race:entry**
@@ -122,11 +161,28 @@ journald_free_thread( void );
  *
  * @param entry The entry to load the fields from.
  *
- * @return The number of structured data fields loaded, or 0 if an error
- * was encountered.
+ * @return The total number of fields that will be logged with this entry,
+ * including the structured data fields, or 0 if an error was encountered. Note
+ * that a successful call will always be at least 6 as this number includes the
+ * fixed fields.
  */
 size_t
 load_sd_fields( const struct stumpless_entry *entry );
+
+/**
+ * Loads the timestamp field with the current field.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not signal safe due to the use of a thread-local buffer.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * Logging to journald targets is async cancellation safe.
+ */
+void
+load_timestamp( void );
 
 /**
  * Sends the given entry to the given target.
