@@ -37,6 +37,8 @@
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
+ * @since v2.1.0
+ *
  * @param flattened A buffer to write the flattened name to.
  *
  * @param raw The raw field name.
@@ -63,6 +65,8 @@ get_journald_field_name( char *flattened, const char *raw, size_t size );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
+ * @since v2.1.0
+ *
  * @param field_count The number of fields the buffer must have.
  */
 void
@@ -82,6 +86,8 @@ init_fields( size_t field_count );
  * **Async Cancel Safety: AC-Unsafe heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
+ * @since v2.1.0
  */
 void
 init_fixed_fields( void );
@@ -100,6 +106,8 @@ init_fixed_fields( void );
  * **Async Cancel Safety: AC-Unsafe heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory deallocation function may not be AC-Safe itself.
+ *
+ * @since v2.1.0
  */
 void
 journald_free_thread( void );
@@ -118,6 +126,8 @@ journald_free_thread( void );
  * **Async Cancel Safety: AC-Unsafe lock**
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
+ *
+ * @since v2.1.0
  *
  * @param entry The entry to load the facility from.
  */
@@ -139,6 +149,8 @@ load_facility( const struct stumpless_entry *entry );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
+ * @since v2.1.0
+ *
  * @param entry The entry to load the identifier from.
  */
 void
@@ -158,6 +170,8 @@ load_identifier( const struct stumpless_entry *entry );
  * **Async Cancel Safety: AC-Unsafe lock**
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
+ *
+ * @since v2.1.0
  *
  * @param entry The entry to load the message from.
  *
@@ -182,6 +196,8 @@ load_message( const struct stumpless_entry *entry );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
+ * @since v2.1.0
+ *
  * @param entry The entry to load the msgid from.
  */
 void
@@ -198,8 +214,12 @@ load_msgid( const struct stumpless_entry *entry );
  *
  * **Async Cancel Safety: AC-Safe**
  * Logging to journald targets is async cancellation safe.
+ *
+ * @since v2.1.0
+ *
+ * @return The size of the loaded pid, including the field prefix.
  */
-void
+size_t
 load_pid( void );
 
 /**
@@ -216,6 +236,8 @@ load_pid( void );
  * **Async Cancel Safety: AC-Unsafe lock**
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
+ *
+ * @since v2.1.0
  *
  * @param entry The entry to load the priority from.
  */
@@ -238,6 +260,8 @@ load_priority( const struct stumpless_entry *entry );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
+ * @since v2.1.0
+ *
  * @param entry The entry to load the fields from.
  *
  * @return The total number of fields that will be logged with this entry,
@@ -259,8 +283,12 @@ load_sd_fields( const struct stumpless_entry *entry );
  *
  * **Async Cancel Safety: AC-Safe**
  * Logging to journald targets is async cancellation safe.
+ *
+ * @since v2.1.0
+ *
+ * @return The size of the loaded timestamp, including the field prefix.
  */
-void
+size_t
 load_timestamp( void );
 
 /**
@@ -276,6 +304,8 @@ load_timestamp( void );
  * **Async Cancel Safety: AC-Unsafe**
  * Logging to journald targets is not async cancellation safe as it relies on
  * sd_journal_sendv which is not documented as such.
+ *
+ * @since v2.1.0
  *
  * @param target Where to send the entry.
  *
@@ -303,6 +333,8 @@ send_entry_to_journald_target( const struct stumpless_target *target,
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not async cancellation safe as it may leave the buffers in
  * an inconsistent state.
+ *
+ * @since v2.1.0
  */
 void
 set_field_bases( void );

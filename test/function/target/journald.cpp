@@ -244,7 +244,7 @@ namespace {
     const char *old_value;
     old_value = stumpless_get_entry_param_value_by_index( basic_entry, 0, 0 );
     string new_value = string( old_value ) + " and more!";
-    stumpless_set_entry_param_value_by_index( basic_entry, 0, 0, 
+    stumpless_set_entry_param_value_by_index( basic_entry, 0, 0,
                                               new_value.c_str(  ) );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );

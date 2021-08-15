@@ -2,13 +2,14 @@
 Journald targets provide a way to send logs to systemd's logging service of the
 same name. A discussion of all of the things that journald provides is outside
 the scope of this example, but can be found in the `systemd-journald.service`
-man page. This example shows how to send information to the service in both
-structured and unstructured ways, along with some basic commands to see what
-the data looks like once it's in journald.
+[man page](https://www.linux.org/docs/man8/systemd-journald.html). This
+example shows how to send information to the service in both structured and
+unstructured ways, along with some basic commands to see what the data looks
+like once it's in journald.
 
 Since the name implies a journal, we'll make log entries out of things that
-have happened in our day that are worthy of journaling about. First, we need
-to set up a target to our local service.
+have happened in our day that are worthy of remembering. First, we need to
+set up a target to our local service.
 
 ```c
 my_journal = stumpless_open_journald_target( "daily-journal" );
@@ -38,9 +39,10 @@ journalctl --identifier daily-journal
 # Jul 31 20:11:04 debian-10-9 daily-journal[763]: designed an engine with 64 mpg
 ```
 
-Okay, maybe that's not _all_ that there is to see. Journald offers structured
+Okay, maybe that's not _all_ that there is to see. Journald supports structured
 logging, and it would be handy if we could take advantage of that. Let's see how
-that looks by creating an entry and sending that to our target.
+that looks by creating an entry with a few fields and sending that to our
+target.
 
 ```c
 entry = stumpless_new_entry( STUMPLESS_FACILITY_DAEMON,
@@ -96,3 +98,7 @@ converted to uppercase and combined to be valid journald field names.
 }
 ```
 
+You can define your own functions to change the way the field names are
+generated if the default doesn't suit you. Just take a look at the documentation
+for `stumpless_set_element_journald_namer` and
+`stumpless_set_param_journald_namer` to see how that can be done.

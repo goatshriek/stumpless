@@ -294,7 +294,7 @@ load_msgid( const struct stumpless_entry *entry ) {
   fields[5].iov_len = MSGID_PREFIX_SIZE + entry->msgid_length;
 }
 
-void
+size_t
 load_pid( void ) {
   int pid;
   char digits[MAX_INT_SIZE];
@@ -320,7 +320,7 @@ load_pid( void ) {
     }
   }
 
-  fields[4].iov_len = PID_PREFIX_SIZE + pid_size;
+  return PID_PREFIX_SIZE + pid_size;
 }
 
 void
@@ -415,17 +415,19 @@ fail:
   return 0;
 }
 
-void
+size_t
 load_timestamp( void ) {
   char *timestamp;
 
   timestamp = fixed_fields->timestamp + TIMESTAMP_PREFIX_SIZE;
-  fields[2].iov_len = TIMESTAMP_PREFIX_SIZE + config_get_now( timestamp );
+  return TIMESTAMP_PREFIX_SIZE + config_get_now( timestamp );
 }
 
 int
 send_entry_to_journald_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
+  size_t timestamp_size;
+  size_t pid_size;
   size_t field_count;
   int sendv_result;
 
@@ -436,8 +438,8 @@ send_entry_to_journald_target( const struct stumpless_target *target,
     }
   }
 
-  load_timestamp(  );
-  load_pid(  );
+  timestamp_size = load_timestamp(  );
+  pid_size = load_pid(  );
 
   lock_entry( entry );
 
@@ -456,6 +458,9 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   load_msgid( entry );
 
   unlock_entry( entry );
+
+  fields[2].iov_len = timestamp_size;
+  fields[4].iov_len = pid_size;
 
   sendv_result = sd_journal_sendv( fields, field_count );
   if( sendv_result != 0 ) {

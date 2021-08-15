@@ -37,9 +37,9 @@ easier:
 
 ### What can it log to?
 A primary goal of this library is to provide a consistent logging interface to
-a wide variety of log targets. This means you just need focus on defining your
-events and where you want them to go, without finding separate SDKs or adding
-daemons and plugins to get them where you want. Stumpless can write logs to:
+a wide variety of log targets. This means you can focus on defining events
+and where you want them to go, without finding other SDKs or adding daemons
+and plugins to get them where you want. Stumpless can write logs to:
  * Simple character buffers
  * Files and Streams
  * Unix sockets (such as a local syslog daemon)
