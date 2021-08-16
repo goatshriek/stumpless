@@ -34,3 +34,15 @@ add_messages( struct stumpless_target *target, size_t message_count ) {
 
   stumpless_free_thread(  );
 }
+
+void
+repeat_add_entry( struct stumpless_target *target,
+           const struct stumpless_entry *entry,
+           size_t count ) {
+  for( size_t i = 0; i < count; i++ ) {
+    stumpless_add_entry( target, entry );
+    EXPECT_NO_ERROR;
+  }
+
+  stumpless_free_thread(  );
+}

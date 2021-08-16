@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,9 @@
 
 /** The language stumpless was built for, as an RFC 5646 language tag. */
 #define STUMPLESS_LANGUAGE "@STUMPLESS_LANGUAGE@"
+
+/** Defined if journald targets are supported by this build. */
+#cmakedefine STUMPLESS_JOURNALD_TARGETS_SUPPORTED 1
 
 /** Defined if network targets are supported by this build. */
 #cmakedefine STUMPLESS_NETWORK_TARGETS_SUPPORTED 1

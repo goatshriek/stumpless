@@ -99,6 +99,12 @@
 "нивата на тежест трябва да бъдат дефинирани в съответствие с RFC 5424: стойности между 0" \
 " и 7 включително"
 
+#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
+"JOURNALD FAILURE ERROR CODE"
+
+#  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
+"JOURNALD FAILURE ERROR MESSAGE"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "максимален размер на съобщението е валиден само за UDP мрежови цели"
 

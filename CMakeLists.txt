@@ -15,9 +15,12 @@ option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 
 option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
+
+option(ENABLE_JOURNALD_TARGETS "support systemd journald service targets" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
+
 option(COVERAGE "Include coverage information" OFF)
 
 string(CONCAT enable_deprecation_warnings_help_string
@@ -116,6 +119,7 @@ check_include_files(pthread.h HAVE_PTHREAD_H)
 check_include_files(stdatomic.h HAVE_STDATOMIC_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
+check_include_files(systemd/sd-journal.h HAVE_SYSTEMD_SD_JOURNAL_H)
 check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
@@ -283,6 +287,91 @@ endif()
 
 if(NEED_FALLBACK)
   list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
+endif()
+
+# thread safety support check
+if(NOT ENABLE_THREAD_SAFETY)
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+elseif(NOT HAVE_WINDOWS_H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
+  message("thread safety is not supported without either windows.h or both pthread.h and stdatomic.h")
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
+endif()
+
+
+# journald target support
+if(NOT ENABLE_JOURNALD_TARGETS)
+  set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED FALSE)
+elseif(ENABLE_JOURNALD_TARGETS AND NOT HAVE_SYSTEMD_SD_JOURNAL_H)
+  message("journald targets are not supported without systemd/sd-journal.h")
+  set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED FALSE)
+else()
+  find_library(LIBSYSTEMD_FOUND systemd)
+  if(LIBSYSTEMD_FOUND)
+    set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED TRUE)
+  else()
+    message("journald targets are not supported without libsystemd")
+    set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED FALSE)
+  endif()
+endif()
+
+if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
+  list(APPEND STUMPLESS_SOURCES src/target/journald.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/journald_supported.c)
+  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/journald_target.yml)
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/target/journald.h
+    DESTINATION "include/stumpless/target"
+  )
+
+  install(FILES
+    ${PROJECT_SOURCE_DIR}/include/stumpless/config/journald_supported.h
+    DESTINATION "include/stumpless/config"
+  )
+
+  add_function_test(journald
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/target/journald.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+    LIBRARIES
+      systemd
+  )
+
+  add_function_test(journald_supported
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/journald_supported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+    LIBRARIES
+      systemd
+  )
+
+  add_performance_test(journald
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/performance/target/journald.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+
+  add_example(journald
+    ${PROJECT_SOURCE_DIR}/docs/examples/journald/journald_example.c
+  )
+
+  if(STUMPLESS_THREAD_SAFETY_SUPPORTED)
+    add_thread_safety_test(journald
+      SOURCES
+        ${PROJECT_SOURCE_DIR}/test/thread_safety/target/journald.cpp
+        $<TARGET_OBJECTS:test_helper_usage>
+      LIBRARIES
+        systemd
+    )
+  endif()
+else()
+  add_function_test(journald_unsupported
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/journald_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
 endif()
 
 
@@ -606,15 +695,6 @@ else()
 endif()
 
 # thread safety support
-if(NOT ENABLE_THREAD_SAFETY)
-  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
-elseif(NOT HAVE_WINDOWS_H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
-  message("thread safety is not supported without either windows.h or both pthread.h and stdatomic.h")
-  set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
-else()
-  set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
-endif()
-
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
   list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
 else()
@@ -680,6 +760,10 @@ set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 if(MINGW)
   target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
   set_target_properties(stumpless PROPERTIES PREFIX "")
+endif()
+
+if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
+  target_link_libraries(stumpless PRIVATE systemd)
 endif()
 
 if(HAVE_STDATOMIC_H)

@@ -12,7 +12,7 @@ env:
 jobs:
   linux-analysis:
     name: "code analysis"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Check Headers
@@ -40,8 +40,12 @@ jobs:
           SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
   linux-debug:
     name: "linux, debug"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
+      - name: Install Prereqs
+        run: |
+          sudo apt-get update
+          sudo apt-get install libsystemd-dev
       - uses: actions/checkout@v2
       - name: Configure
         run: |
@@ -79,7 +83,7 @@ jobs:
           sudo make install
   linux-release:
     name: "linux, release"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
@@ -125,12 +129,12 @@ jobs:
           ./basic_example
   linux-all-disabled:
     name: "linux, all features disabled"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - name: Configure
         run: |
-          cmake -DCOVERAGE=ON -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
+          cmake -DCOVERAGE=ON -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
       - name: Build
         run: |
           make all
@@ -150,7 +154,7 @@ jobs:
           sudo make install
   linux-cpp:
     name: "linux, with c++"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-ruby@v1.1.2
@@ -227,7 +231,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Configure
         run: |
-          cmake -G "Visual Studio 16 2019" -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
+          cmake -G "Visual Studio 16 2019" -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
       - name: Build
         run: |
           cmake --build . --config Release

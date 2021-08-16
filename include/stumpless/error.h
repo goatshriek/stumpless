@@ -112,7 +112,13 @@ extern "C" {
  *
  * @since release v2.1.0
  */\
-  ERROR(STUMPLESS_FUNCTION_TARGET_FAILURE, 26 )
+  ERROR(STUMPLESS_FUNCTION_TARGET_FAILURE, 26 ) \
+/**
+ * A call to a systemd journald function failed.
+ *
+ * @since release v2.1.0
+ */\
+  ERROR( STUMPLESS_JOURNALD_FAILURE, 27 )
 
 
 /**

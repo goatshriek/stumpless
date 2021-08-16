@@ -4,5 +4,6 @@ nickname, or other shortening outweighs the increased clarity of spelling
 everything out. To help newcomers to the codebase cope with these situations,
 this document expands on these terms as they are used.
 
+ * init: initialize
  * l10n: localization ('l', 10 letters, 'n')
  * wel: Windows Event Log

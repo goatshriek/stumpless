@@ -31,6 +31,7 @@
 #include <stumpless/target/stream.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -111,6 +112,11 @@ stumpless_add_entry( struct stumpless_target *target,
   // function targets are not formatted
   if( target->type == STUMPLESS_FUNCTION_TARGET ) {
     return send_entry_to_function_target( target, entry );
+  }
+
+  // journald targets are not formatted
+  if( target->type == STUMPLESS_JOURNALD_TARGET ) {
+    return config_send_entry_to_journald_target( target, entry );
   }
 
   // windows targets are not formatted in code
@@ -209,6 +215,10 @@ stumpless_close_target( struct stumpless_target *target ) {
 
     case STUMPLESS_FUNCTION_TARGET:
       stumpless_close_function_target( target );
+      break;
+
+    case STUMPLESS_JOURNALD_TARGET:
+      config_close_journald_target( target );
       break;
 
     case STUMPLESS_NETWORK_TARGET:

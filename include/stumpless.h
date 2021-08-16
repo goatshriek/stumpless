@@ -57,6 +57,11 @@
 #  include <stumpless/target/stream.h>
 #  include <stumpless/version.h>
 
+#  ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
+#    include <stumpless/config/journald_supported.h>
+#    include <stumpless/target/journald.h>
+#  endif
+
 #  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
 #    include <stumpless/target/network.h>
 #  endif

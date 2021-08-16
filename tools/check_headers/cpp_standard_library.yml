@@ -1,5 +1,8 @@
 "atomic_int": "atomic"
+"chrono": "chrono"
 "cout": "iostream"
 "get_id": "thread"
 "mutex": "mutex"
 "thread": "thread"
+"uniform_int_distribution": "random"
+"unordered_set": "unordered_set"

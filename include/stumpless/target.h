@@ -48,6 +48,7 @@ enum stumpless_target_type {
   STUMPLESS_BUFFER_TARGET, /**< write to a character buffer */
   STUMPLESS_FILE_TARGET, /**< write to a file */
   STUMPLESS_FUNCTION_TARGET, /**< call a custom function */
+  STUMPLESS_JOURNALD_TARGET, /**< send to the systemd journald service */
   STUMPLESS_NETWORK_TARGET, /**< send to a network endpoint */
   STUMPLESS_SOCKET_TARGET, /**< write to a Unix socket */
   STUMPLESS_STREAM_TARGET, /**< write to a FILE stream */

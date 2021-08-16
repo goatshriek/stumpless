@@ -9,10 +9,11 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2021-05-16
+## [2.1.0] - 2021-08-16
 ### Added
  - Custom function logging targets.
  - Localization for Spanish (es-ES :es:)
+ - Systemd journal logging targets (journald).
 
 ### Fixed
  - `stumpless_perror` segmentation faults after the following errors:

@@ -97,6 +97,12 @@
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "kód služby musí byť definovaný v súlade s normou RFC 5424: hodnoty medzi 0 a 7 vrátane"
 
+#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
+"JOURNALD FAILURE ERROR CODE"
+
+#  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
+"JOURNALD FAILURE ERROR MESSAGE"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maximálna veľkosť správy je platná len pre UDP"
 

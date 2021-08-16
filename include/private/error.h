@@ -76,6 +76,9 @@ void
 raise_invalid_severity( int severity );
 
 void
+raise_journald_failure( int code );
+
+void
 raise_memory_allocation_failure( void );
 
 void

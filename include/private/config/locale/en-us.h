@@ -99,6 +99,12 @@
 "severity codes must be defined in accordance with RFC 5424: values between 0" \
 " and 7 inclusive"
 
+#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
+"return code of sd_journal_sendv"
+
+#  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
+"sd_journal_sendv failed"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "max message size is only valid for UDP network targets"
 

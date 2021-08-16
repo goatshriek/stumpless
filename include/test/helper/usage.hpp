@@ -25,4 +25,9 @@
 void
 add_messages( struct stumpless_target *target, size_t message_count );
 
+void
+repeat_add_entry( struct stumpless_target *target,
+                  const struct stumpless_entry *entry,
+                  size_t _count );
+
 #endif /* __STUMPLESS_TEST_HELPER_USAGE_HPP */
