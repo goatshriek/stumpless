@@ -25,6 +25,14 @@ are some exceptions to this. For example, memory leak testing is in the
 module are in the `test/function/startup` directory. But when looking for a
 test, the best place to start is just `test/function`.
 
+Individual tests should be focused on specific functionality of a given library
+feature. This focus is important to allow issues to be quickly identified when a
+test fails. Ideally, the category and name of the test should reveal exactly
+what has gone wrong, and if not then going to the assertion that has failed
+should make it immediately obvious. For example, write separate tests for
+functions even if the input and expected behavior is exactly the same so that
+a failure immediately points at which function has broken.
+
 There are two types of tests in Google Test, simple tests and fixture tests.
 Simple tests have two levels of names, the first is a category, and the second
 is the specific test. For example, for a test regarding setting params with a
