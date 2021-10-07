@@ -72,4 +72,14 @@ bool validate_app_name_length( const char* app_name);
  */
 bool validate_param_name( const char* str);
 
+/**
+ * Checks that the passed in element name contains only ASCII characters and
+ * also does not contain any of the following characters: '=',']','"'.
+ *
+ * @param the element name(string).
+ *
+ * @return True if the element name has the correct format, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ */
+bool validate_element_name( const char* str);
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */
