@@ -59,3 +59,11 @@ test, you can use the specific target for that test. These are named
 module. If you want to be even MORE focused, you can pass the `gtest_filter`
 option to the executable. For example, to run all `SetParam` tests, you could do
 `./function-test-entry --gtest_filter=SetParam`.
+
+There are special targets that group other types of tests as well.
+ * `check-cpp` runs the C++ bindings test suite
+ * `check-thread-safety` runs the thread safety test suite
+ * `run-thread-safety-test-<name>` builds and runs the thread safety test with
+   the given name
+ * `run-performance-test-<name>` builds and runs the benchmark with the given
+   name
