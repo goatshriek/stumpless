@@ -235,6 +235,10 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
     return false;
   }
 
+  if ( !validate_element_name( name ) ) {
+    return false;
+  }
+
   lock_entry( entry );
   result = unchecked_entry_has_element( entry, name );
   unlock_entry( entry );
@@ -280,6 +284,10 @@ stumpless_get_element_by_name( const struct stumpless_entry *entry,
     return 0;
   }
 
+  if ( !validate_element_name( name ) ) {
+    return 0;
+  }
+
   clear_error(  );
 
   lock_entry( entry );
@@ -319,6 +327,10 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
 
   if( !name ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
+    return 0;
+  }
+
+  if ( !validate_element_name( name ) ) {
     return 0;
   }
 
@@ -450,6 +462,10 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
   if ( !validate_param_name( param_name ) ) {
     return NULL;
   }
+  
+  if ( !validate_element_name( element_name ) ) {
+    return NULL;
+  }
 
   lock_entry( entry );
   element = locked_get_element_by_name( entry, element_name );
@@ -493,6 +509,10 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
 
   if (!validate_param_name(param_name)) {
       return NULL;
+  }
+
+  if ( !validate_element_name( element_name ) ) {
+    return NULL;
   }
 
   lock_entry( entry );

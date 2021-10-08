@@ -597,7 +597,7 @@ namespace {
     EXPECT_FALSE( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
-
+  
   TEST_F( ElementTest, SetNameMemoryFailure ) {
     void * (*set_malloc_result)(size_t);
     const char *new_name = "this-wont-work";
@@ -995,6 +995,25 @@ namespace {
 
     stumpless_free_all(  );
   }
+  
+  TEST( NewElementTest, InvalidName ) {
+    struct stumpless_element *element;
+    const struct stumpless_error *error;
+
+    element = stumpless_new_element( "ele=ment" );
+    EXPECT_NULL( element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    element = stumpless_new_element( "element]" );
+    EXPECT_NULL( element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    element = stumpless_new_element( "El\"ment" );
+    EXPECT_NULL( element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    
+    stumpless_free_all(  );
+  }
 
   TEST( SetElementNameTest, NullElement ) {
     const struct stumpless_element *result;
@@ -1007,6 +1026,30 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetElementNameTest, InvalidName) {
+    struct stumpless_element *element;
+    struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    element = stumpless_new_element( "element" );
+    ASSERT_NOT_NULL( element );
+
+    result = stumpless_set_element_name( element, "ele=ment");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_set_element_name( element, "eleme]nt");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_set_element_name( element, "element\"");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    
+    stumpless_destroy_element_and_contents( element );
+    stumpless_free_all(  );
+  }
+  
   TEST( ElemenToStringTest, NullElement ) {
     const char *result;
     const struct stumpless_error *error;

@@ -389,6 +389,10 @@ stumpless_new_element( const char *name ) {
 
   VALIDATE_ARG_NOT_NULL( name );
 
+  if ( !validate_element_name( name ) ) {
+    goto fail;
+  }
+
   element = alloc_mem( sizeof( *element ) + CONFIG_MUTEX_T_SIZE );
   if( !element ) {
     goto fail;
@@ -424,6 +428,10 @@ stumpless_set_element_name( struct stumpless_element *element,
 
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
+
+  if ( !validate_element_name( name ) ) {
+    goto fail;
+  }
 
   new_name = copy_cstring_with_length( name, &new_size );
   if( !new_name ) {
