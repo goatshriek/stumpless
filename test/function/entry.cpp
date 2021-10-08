@@ -570,15 +570,15 @@ namespace {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
 
-    result = stumpless_get_entry_param_by_name( basic_entry, "ele=ment", "par=am" );
+    result = stumpless_get_entry_param_by_name( basic_entry, "ele=ment", "param" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
-    result = stumpless_get_entry_param_by_name( basic_entry, "ele]ment", "par]am" );
+    result = stumpless_get_entry_param_by_name( basic_entry, "ele]ment", "param" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
-    result = stumpless_get_entry_param_by_name( basic_entry, "e-name\"", "par\"am" );
+    result = stumpless_get_entry_param_by_name( basic_entry, "e-name\"", "param" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
@@ -669,15 +669,15 @@ namespace {
     const char *result;
     const struct stumpless_error *error;
 
-    result = stumpless_get_entry_param_value_by_name( basic_entry, "e=name", "par=am" );
+    result = stumpless_get_entry_param_value_by_name( basic_entry, "e=name", "param" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
-    result = stumpless_get_entry_param_value_by_name( basic_entry, "e]name", "par]am" );
+    result = stumpless_get_entry_param_value_by_name( basic_entry, "e]name", "param" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
-    result = stumpless_get_entry_param_value_by_name( basic_entry, "\"e-name", "par\"am" );
+    result = stumpless_get_entry_param_value_by_name( basic_entry, "\"e-name", "param" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
