@@ -88,3 +88,18 @@ bool validate_element_name( const char* str) {
 
   return true;
 }
+
+bool validate_element_name_length( const char* name ) {
+    size_t length = strlen( name );
+    bool validation_status = true;
+
+    if ( length > STUMPLESS_MAX_ELEMENT_NAME_LENGTH ) {
+      raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
+                              length,
+                              L10N_STRING_LENGTH_ERROR_CODE_TYPE );
+
+      validation_status = false;
+    }
+
+    return validation_status;
+}
