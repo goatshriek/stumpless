@@ -549,7 +549,7 @@ namespace {
     EXPECT_NULL( result );
   }
 
-  TEST_F( EntryTest, GetParamByNameInvalidName ) {
+  TEST_F( EntryTest, GetParamByNameInvalidParamName ) {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
 
@@ -566,6 +566,23 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
+  TEST_F( EntryTest, GetParamByNameInvalidElementName ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_param_by_name( basic_entry, "ele=ment", "param" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_entry_param_by_name( basic_entry, "ele]ment", "param" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_entry_param_by_name( basic_entry, "e-name\"", "param" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+  
   TEST_F( EntryTest, GetParamValueByIndex ) {
     const char *result;
 
@@ -631,7 +648,7 @@ namespace {
     EXPECT_NULL( result );
   }
 
-  TEST_F( EntryTest, GetParamValueByNameInvalidName ) {
+  TEST_F( EntryTest, GetParamValueByNameInvalidParamName ) {
     const char *result;
     const struct stumpless_error *error;
 
@@ -648,6 +665,23 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
+  TEST_F( EntryTest, GetParamValueByNameInvalidElementName ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_entry_param_value_by_name( basic_entry, "e=name", "param" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_entry_param_value_by_name( basic_entry, "e]name", "param" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_entry_param_value_by_name( basic_entry, "\"e-name", "param" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+  
   TEST_F( EntryTest, HasElement ) {
     bool result;
 
@@ -671,6 +705,57 @@ namespace {
     result = stumpless_entry_has_element( basic_entry, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_FALSE( result );
+  }
+
+  TEST_F( EntryTest, HasElementInvalidName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_entry_has_element( basic_entry, "ele=ment" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_entry_has_element( basic_entry, "ele]ment" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_entry_has_element( basic_entry, "element\"" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+  
+  TEST_F( EntryTest, GetElementInvalidName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_by_name( basic_entry, "ele=ment" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_element_by_name( basic_entry, "ele]ment" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_element_by_name( basic_entry, "element\"" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+  }
+  
+  TEST_F( EntryTest, GetElementIdxInvalidName ) {
+    bool result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_element_index( basic_entry, "ele=ment" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_element_index( basic_entry, "ele]ment" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_get_element_index( basic_entry, "element\"" );
+    EXPECT_FALSE( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
 
   TEST_F( EntryTest, SetAppName ) {

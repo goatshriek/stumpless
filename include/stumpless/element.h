@@ -664,7 +664,8 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of memory management functions.
  *
- * @param name The name of the new element.
+ * @param name The new name of the element. Valid name should have printable
+ * ASCII charecters expect '=', ']' , '"'
  *
  * @return The created element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code set appropriately.
@@ -693,7 +694,8 @@ stumpless_new_element( const char *name );
  *
  * @param element The element to set the name of.
  *
- * @param name The new name of the element.
+ * @param name The new name of the element. Valid name should have printable
+ * ASCII charecters expect '=', ']' , '"'
  *
  * @return The modified element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
