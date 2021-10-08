@@ -58,6 +58,20 @@ and so on. If you find yourself writing something for your tests that would be
 useful for more than just one test module, consider putting it here for reuse.
 
 
+## Adding Tests to the Build
+Stumpless uses CMake for its build, and so adding tests is as simple as adding
+them to the `CMakeLists.txt` file. There are a number of CMake functions
+provided that take care of creating runner targets and adding tests to the
+appropriate aggregation targets like `check`. You'll find examples of each of
+these in the project already that you can use for specific examples. They are:
+ * `add_function_test` to create a unit test and add it to the `check` target
+ * `add_performance_test` to create a test and add it to the `bench` target
+ * `add_thread_safety_test` to create a test and add it to the
+   `check-thread-safety` target
+ * `add_cpp_test` to create a test for C++ functionality and add it to the
+   `check-cpp` target (examples in `tools/cmake/cpp.cmake`)
+
+
 ## Running Tests
 The easiest way to run all tests is to use the `check` target. You can run this
 target through whatever build system you're using, for example `make check` in a
