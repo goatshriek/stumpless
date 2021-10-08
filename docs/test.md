@@ -53,12 +53,18 @@ target through whatever build system you're using, for example `make check` in a
 makefile-based build. You can also use cmake to run the target using your build
 system in a more portable way like this: `cmake --build . --target check`.
 
+Using the `check` target prints a quick summary of the pass/fail status of
+all of the tests that ran. However, if you have failures you'll probably want to
+investigate exactly what failed. The output from the entire test will be written
+to `Testing/Temporary/LastTest.log`, so you can go through this to find the test
+that failed and start figuring out why.
+
 If you don't want to run the entire test suite every time you want to run a
 test, you can use the specific target for that test. These are named
 `function-test-<module>`, for example `function-test-entry` for the entry
 module. If you want to be even MORE focused, you can pass the `gtest_filter`
 option to the executable. For example, to run all `SetParam` tests, you could do
-`./function-test-entry --gtest_filter=SetParam`.
+`./function-test-entry --gtest_filter=SetParam*`.
 
 There are special targets that group other types of tests as well.
  * `check-cpp` runs the C++ bindings test suite
