@@ -47,6 +47,17 @@ For a good example of the various test styles, have a look at the
 `test/function/entry.cpp` module, which uses each of these techniques.
 
 
+## Common Test Code
+As with any development project, the need to write code that can be used across
+many tests will arise. The helper test modules exist for this purpose and are
+found in the `test/helper` directory of the project, with headers in the
+`include/test/helper` directory. There are already a number of utilities in
+these folders for things like adding cleaner assertion statements, tracking
+memory allocations and deallocations for leak testing, running network services,
+and so on. If you find yourself writing something for your tests that would be
+useful for more than just one test module, consider putting it here for reuse.
+
+
 ## Running Tests
 The easiest way to run all tests is to use the `check` target. You can run this
 target through whatever build system you're using, for example `make check` in a
