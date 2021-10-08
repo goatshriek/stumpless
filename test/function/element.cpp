@@ -1046,7 +1046,7 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
     
-    stumpless_destroy_element( element );
+    stumpless_destroy_element_and_contents( element );
     stumpless_free_all(  );
   }
   
