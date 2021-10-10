@@ -1,6 +1,6 @@
 # Testing with Stumpless
 Tests are an important part of any serious library. They provide assurance that
-it behaves as expected, and also gives some level of confidence to developers
+it behaves as expected, and also give some level of confidence to developers
 that changes have not caused unexpected breakage. Stumpless uses tests for
 exactly this purpose.
 
@@ -18,32 +18,32 @@ functionality is in the `test/function` directory, and if you're looking for the
 test for a particular function this is the best place to start.
 
 Tests are for the most part organized in a way that mirrors the structure of the
-source code for stumpless. For example, tests related to a function implemented
+source code for stumpless. For example, tests for a function implemented
 in `src/entry.c` will probably be located in `test/function/entry.cpp`. There
 are some exceptions to this. For example, memory leak testing is in the
-`test/function/leak` directory, and tests that must be the first test run in a
-module are in the `test/function/startup` directory. But when looking for a
-test, the best place to start is just `test/function`.
+`test/function/leak` directory, and tests that must have a clean state are in
+in the `test/function/startup` directory. But when looking for a test, the best
+place to start is just `test/function`.
 
-Individual tests should be focused on specific functionality of a given library
+Individual tests should be focused on specific functionality of a single library
 feature. This focus is important to allow issues to be quickly identified when a
-test fails. Ideally, the category and name of the test should reveal exactly
-what has gone wrong, and if not then going to the assertion that has failed
-should make it immediately obvious. For example, write separate tests for
-functions even if the input and expected behavior is exactly the same so that
-a failure immediately points at which function has broken.
+test fails. Ideally the category and name of the test should reveal exactly
+what went wrong, and if not then going to the assertion that has failed should
+make it immediately obvious. For example, write separate tests for different
+functions even if the input and expected behavior are exactly the same so that a
+failure immediately indicates which function has broken.
 
 There are two types of tests in Google Test, simple tests and fixture tests.
 Simple tests have two levels of names, the first is a category, and the second
 is the specific test. For example, for a test regarding setting params with a
-NULL value, you would use `TEST( SetParam, NullValue )`.
+NULL value, you would write `TEST( SetParam, NullValue )`.
 
 Fixture tests use `TEST_F` instead, and are paired with a class with `SetUp`
-and `TearDown` functions that are run before and after each test, along with
+and `TearDown` methods that are run before and after each test, along with
 other instance variables that can be used during the test. If you have a number
-of tests that need common setup, this is the best way to go.
+of tests that need common setup and cleanup, this is the way to go.
 
-For a good example of the various test styles, have a look at the
+For examples of the various test styles and idioms, have a look at the
 `test/function/entry.cpp` module, which uses each of these techniques.
 
 
@@ -52,14 +52,14 @@ As with any development project, the need to write code that can be used across
 many tests will arise. The helper test modules exist for this purpose and are
 found in the `test/helper` directory of the project, with headers in the
 `include/test/helper` directory. There are already a number of utilities in
-these folders for things like adding cleaner assertion statements, tracking
-memory allocations and deallocations for leak testing, running network services,
-and so on. If you find yourself writing something for your tests that would be
-useful for more than just one test module, consider putting it here for reuse.
+these folders for tasks like adding customr assertions, tracking memory
+allocations and deallocations for leak testing, running network services, and
+so on. If you find yourself writing something for your tests that would be
+useful for more than just one test suite, consider putting it here for reuse.
 
 
 ## Adding Tests to the Build
-Stumpless uses CMake for its build, and so adding tests is as simple as adding
+Stumpless uses CMake to build, and so adding new tests is as simple as adding
 them to the `CMakeLists.txt` file. There are a number of CMake functions
 provided that take care of creating runner targets and adding tests to the
 appropriate aggregation targets like `check`. You'll find examples of each of
@@ -76,11 +76,14 @@ these in the project already that you can use for specific examples. They are:
 The easiest way to run all tests is to use the `check` target. You can run this
 target through whatever build system you're using, for example `make check` in a
 makefile-based build. You can also use cmake to run the target using your build
-system in a more portable way like this: `cmake --build . --target check`.
+system in a more portable way like this: `cmake --build . --target check`. The
+tests themselves run pretty quickly, but may take a while to build, so be sure
+to use whatever parallel build processes you can to speed this up, for example
+the `-j` parameter for make.
 
 Using the `check` target prints a quick summary of the pass/fail status of
 all of the tests that ran. However, if you have failures you'll probably want to
-investigate exactly what failed. The output from the entire test will be written
+investigate exactly what failed. The output from the entire run will be written
 to `Testing/Temporary/LastTest.log`, so you can go through this to find the test
 that failed and start figuring out why.
 
