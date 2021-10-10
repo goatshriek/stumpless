@@ -146,6 +146,18 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
   }
+  
+  TEST_F( EntryTest, InvalidNameLength ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_add_new_param_to_entry( basic_entry,
+                                               "checking-valid-elemant-name-length",
+                                               "new-param-name",
+                                               "new-param-value" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+    EXPECT_NULL( result );
+  }
 
   TEST_F( EntryTest, AddNewParam ) {
     const struct stumpless_entry *result;

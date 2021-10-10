@@ -1014,7 +1014,18 @@ namespace {
     
     stumpless_free_all(  );
   }
+  
+  TEST( NewElementTest, InvalidNameLength ) {
+    struct stumpless_element *element;
+    const struct stumpless_error *error;
 
+    element = stumpless_new_element( "checking-valid-element-name-length" );
+    EXPECT_NULL( element );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
+    stumpless_free_all(  );
+  }
+  
   TEST( SetElementNameTest, NullElement ) {
     const struct stumpless_element *result;
     const struct stumpless_error *error;
@@ -1046,6 +1057,22 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
     
+    stumpless_destroy_element_and_contents( element );
+    stumpless_free_all(  );
+  }
+  
+  TEST( SetElementNameTest, InvalidNameLength) {
+    struct stumpless_element *element;
+    struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    element = stumpless_new_element( "element" );
+    ASSERT_NOT_NULL( element );
+
+    result = stumpless_set_element_name( element, "checking-valid-element-name-length");
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
     stumpless_destroy_element_and_contents( element );
     stumpless_free_all(  );
   }

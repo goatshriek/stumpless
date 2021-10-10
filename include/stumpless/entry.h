@@ -39,6 +39,9 @@
 /** The maximum length of a msgid, as specified by RFC 5424. */
 #  define STUMPLESS_MAX_MSGID_LENGTH 32
 
+/** The maximum length of an element name, as specified by RFC 5424. */
+#  define STUMPLESS_MAX_ELEMENT_NAME_LENGTH 32
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -180,7 +183,9 @@ stumpless_add_new_element( struct stumpless_entry *entry,
  * @param entry The entry to add the new param to.
  *
  * @param element_name The name of the element to add the param to. If an
- * element with this name is not found, it will be created.
+ * element with this name is not found, it will be created. Valid name should 
+ * have printable ASCII charecters expect '=', ']' , '"' and should be 32 
+ * charecters long 
  *
  * @param param_name The name of the new param to add.
  *

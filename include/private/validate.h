@@ -82,4 +82,15 @@ bool validate_param_name( const char* str);
  * it will return false and raise STUMPLESS_INVALID_ENCODING error.
  */
 bool validate_element_name( const char* str);
+
+/**
+ * Checks that the passed in element name is of valid length
+ *
+ * @param the element name(string).
+ *
+ * @return True if the element name is less than allowed length 
+ * (32 characters not including NULL terminating),otherwise
+ * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
+ */
+bool validate_element_name_length( const char* str);
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */
