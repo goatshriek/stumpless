@@ -76,6 +76,10 @@ A few other documents may be helpful for newcomers to glance through:
    source of stumpless.
  * [docs/style.md](style.md) has a basic set of style guidelines to follow when
    working on the source code itself.
+ * [docs/test.md](test.md) describes the testing framework used in stumpless to
+   write and run unit tests. This is important to understand if you're
+   implementing any new functionality, which will need tests to confirm it works
+   (and continues to work) correctly.
  * [docs/portability.md](portability.md) describes the framework used in
    stumpless to deal with differences between environments. If you are going
    to be working on something that may behave differently depending on the
