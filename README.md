@@ -27,7 +27,7 @@ easier:
  * completely thread safe
  * can be adjusted or removed during compilation for zero runtime impact
  * localized for multiple languages :bulgaria: :de: :es: :fr: :it: :sweden:
-   :slovakia: :us:
+   :slovakia: :us: :czech:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
