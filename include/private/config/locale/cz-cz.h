@@ -47,16 +47,16 @@
 "volání vrátilo číslo chyby (errno)"
 
 #  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
-"FILE OPEN CHYBOVÉ HLÁŠENÍ"
+"chybové hlášení- nepodařilo se otevřít soubor"
 
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
-"FILE WRITE CHYBOVÉ HLÁŠENÍ"
+"chybové hlášení- nepodařilo se zapísat"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
-"TYP KÓDU PORUCHY CÍLOVÉ FUNKCE"
+"návratový kód funkce obsluhy protokolu"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ SELHÁNÍ CÍLE FUNKCE"
+"obslužná rutina protokolu pro cíl funkce selhala"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
 "není možné vytvořit soubor s vybraným jménem lokálního socketu pomocí mkstemp"
@@ -68,13 +68,13 @@
 "volání funkce getaddrinfo vrátilo chybovou návratovou hodnotu"
 
 #  define L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ GETCOMPUTERNAME FAILED"
+"GetComputerName zlyhal"
 
 #  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ GETHOSTNAME FAILED"
+"gethostname zlyhal"
 
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
-"TYP CHYBOVÉHO KÓDU GETLASTERROR"
+"výsledek GetLastError po neúspěšném volání"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "neplatný index - index je příliš velký na to aby byl reprezentován jako datový typ int"
@@ -86,7 +86,7 @@
 "hodnota kódu zařízení, po vydělení číslem 8, musí být definována v souladu s protokolem RFC 5424"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ NEPLATNÉ ID"
+"neplatné cílové ID"
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "neplatný index " INDEXED_THING
@@ -98,16 +98,16 @@
 "kód služby musí být definován v souladu s normou RFC 5424: hodnoty mezi 0 a 7 včetně"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
-"CHYBOVÝ KÓD PORUCHY DENNÍKU"
+"návratový kód sd_journal_sendv"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
-"CHYBOVÝ KÓD PORUCHY DENNÍKU"
+"sd_journal_sendv zlyhal"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maximální velikost zprávy je platná pouze pro UDP"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
-"ZPRÁVA O SELHÁNÍ PŘIDĚLENÍ PAMĚTI"
+"volání alokace paměti se nezdařilo"
 
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "zpráva je příliš velká na to, aby byla poslána v jednom datagramu"
@@ -116,10 +116,10 @@
 "velikost zprávy, která se pokusila odeslat je "
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ NEPODPOROVANÁ SÍŤOVÝ PROTOKOL"
+"vybraný síťový protokol není podporován"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
-"tato verze nepodporuje síťové CÍLE"
+"cíle sítě nejsou podporovány tímto sestavením"
 
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
 ARG_NAME " měl hodnotu NULL"
@@ -149,7 +149,7 @@ ARG_NAME " měl hodnotu NULL"
 "otevření socketu selhalo"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ SELHÁNÍ ZÁPISU STREAMŮ"
+"nelze zapisovat do streamu"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "cíl danného typu je stále otevřený"
@@ -158,7 +158,7 @@ ARG_NAME " měl hodnotu NULL"
 "přenosové porty jsou platné pouze pro síťové cíle"
 
 #  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ NEPODPOROVANÝ PROTOKOL TRANSPORTU"
+"zvolený transportní protokol není podporován"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "selhání otevírání unixového socketu pomocí soketové funkce"
@@ -167,10 +167,10 @@ ARG_NAME " měl hodnotu NULL"
 "zkontrolování vyditeľnosti cílového souboru nepodporovaného typu"
 
 #  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
-"WEL CHYBOVÁ HLÁŠENÍ ZAVŘÍT PORUCHU"
+"nemohl zavřít protokol událostí systému Windows"
 
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ O PORUCHU OTEVŘETE"
+"Chybový kód Windows Socket"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "chybová návratová hodoty (error code) Windows socketu"
@@ -191,6 +191,6 @@ ARG_NAME " měl hodnotu NULL"
 "neplatný " ARG " formát"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"CHYBOVÁ HLÁŠENÍ TYPU CÍLE NEPLATNÁ"
+"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif //STUMPLESS_CZ_CZ_H
