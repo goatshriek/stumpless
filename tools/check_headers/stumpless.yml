@@ -237,6 +237,7 @@
 "STUMPLESS_DISABLE_ERR_LEVEL": "stumpless/level/mask.h"
 "STUMPLESS_DISABLE_INFO_LEVEL": "stumpless/level/mask.h"
 "STUMPLESS_DISABLE_NOTICE_LEVEL": "stumpless/level/mask.h"
+"STUMPLESS_DISABLE_TRACE_LEVEL": "stumpless/level/mask.h"
 "STUMPLESS_DISABLE_WARNING_LEVEL": "stumpless/level/mask.h"
 "STUMPLESS_DUPLICATE_ELEMENT": "stumpless/error.h"
 "stumpless_element_journald_namer_func_t": "stumpless/element.h"
