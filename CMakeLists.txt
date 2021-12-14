@@ -832,6 +832,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/info.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/mask.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/notice.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/trace.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/warning.h
   DESTINATION "include/stumpless/level"
 )

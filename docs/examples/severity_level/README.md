@@ -1,21 +1,24 @@
 # Severity Level Logging
 
 Severity levels exist in most logging APIs as a convenient way to categorize
-messages at a broad level. The severities in stumpless directly match those
+messages at a broad level. The severities in stumpless mostly match those
 specified in the syslog standard
 ([RFC 5424](https://tools.ietf.org/html/rfc5424)), which are common to most
-languages and platforms.
+languages and platforms. An additional convenience level (`TRACE`) is also
+included which maps to the debug severity level, but includes some extra
+information as well.
 
- | Name    | Shorthand | Description                      |
- |---------|-----------|----------------------------------|
- | EMERG   | em        | system is unusable               |
- | ALERT   | a         | action must be taken immediately |
- | CRIT    | c         | critical conditions              |
- | ERR     | er        | error conditions                 |
- | WARNING | w         | warning conditions               |
- | NOTICE  | n         | normal but significant condition |
- | INFO    | i         | informational messages           |
- | DEBUG   | d         | debug-level messages             |
+ | Name    | Shorthand | Description                                       |
+ |---------|-----------|---------------------------------------------------|
+ | EMERG   | em        | system is unusable                                |
+ | ALERT   | a         | action must be taken immediately                  |
+ | CRIT    | c         | critical conditions                               |
+ | ERR     | er        | error conditions                                  |
+ | WARNING | w         | warning conditions                                |
+ | NOTICE  | n         | normal but significant condition                  |
+ | INFO    | i         | informational messages                            |
+ | DEBUG   | d         | debug-level messages                              |
+ | TRACE   | t         | debug-level messages with source code information |
 
 Each of these can be referred to by the `STUMPLESS_SEVERITY_<NAME>` symbol
 in order to specify them whenever a severity is required. Because each severity
