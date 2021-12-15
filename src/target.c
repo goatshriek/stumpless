@@ -75,6 +75,21 @@ stump( const char *message, ... ) {
   return result;
 }
 
+int
+stump_trace( const char *file,
+             int line,
+             const char *func,
+             const char *message, ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstump( message, subs );
+  va_end( subs );
+
+  return result;
+}
+
 void
 stumplog( int priority, const char *message, ... ) {
   va_list subs;
@@ -164,6 +179,15 @@ stumpless_add_entry( struct stumpless_target *target,
 
   strbuilder_destroy( builder );
   return result;
+}
+
+int
+stumpless_trace_entry( struct stumpless_target *target,
+                       struct stumpless_entry *entry,
+                       const char *file,
+                       int line,
+                       const char *func ) {
+  stumpless_add_entry( target, entry );
 }
 
 int

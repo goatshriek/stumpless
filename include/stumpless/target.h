@@ -152,6 +152,54 @@ struct stumpless_target {
 int stump( const char *message, ... );
 
 /**
+ * Logs a message to the default target, along with the file, line, and function
+ * information specified in a structured data element.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @since release v2.1.0
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied to.
+ *
+ * @param func The name of the function that the message should be tied to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+stump_trace( const char *file,
+             int line,
+             const char *func,
+             const char *message, ... );
+
+/**
  * Logs a message to the default target with the given priority.
  *
  * This function can serve as a replacement for the traditional \c syslog
@@ -224,6 +272,50 @@ stumplog( int priority, const char *message, ... );
 int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry );
+
+/**
+ * Adds an entry into a given target. The entry has a structured data element
+ * added to it with the file, line, and function information specified.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to send the message to.
+ *
+ * @param entry The entry to send to the target.
+ *
+ * @param file The name of the source file the entry should be tied to.
+ *
+ * @param line The line in the source file that the entry should be tied
+ * to.
+ *
+ * @param func The name of the function that the entry should be tied to.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+stumpless_trace_entry( struct stumpless_target *target,
+                       struct stumpless_entry *entry,
+                       const char *file,
+                       int line,
+                       const char *func );
 
 /**
  * Adds a log message with a priority to a given target.

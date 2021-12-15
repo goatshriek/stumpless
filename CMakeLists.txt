@@ -1062,6 +1062,7 @@ add_function_test(stream
 add_function_test(target
   SOURCES
     test/function/target.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 

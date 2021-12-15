@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,15 @@
 #include <cstddef>
 #include <cstdlib>
 #include <regex>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
+
+using::testing::HasSubstr;
 
 namespace {
 
@@ -184,14 +188,11 @@ namespace {
 
   TEST( AddEntryTest, NullTarget ) {
     int result;
-    struct stumpless_entry *entry;
+    const struct stumpless_entry *entry;
     const struct stumpless_error *error;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "stumpless-unit-test",
-                                 "basic-entry",
-                                 "basic test message" );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_add_entry( NULL, entry );
     EXPECT_LT( result, 0 );
@@ -778,6 +779,51 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( StumpTrace, Basic ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    const char *filename = "fake_file.c";
+    const char *function_name = "fake_function";
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    result = stump_trace( filename, 377, function_name, "test message" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "377" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( StumpTrace, WithPreprocessorMacros ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    result = stump_trace( __FILE__, __LINE__, __func__, "test message" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( Stumplog, Basic ) {
     char buffer[1000];
     struct stumpless_target *target;
@@ -799,6 +845,46 @@ namespace {
     TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
+  }
+
+  TEST( TraceEntryTest, NullEntry ) {
+    int result;
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+    char buffer[10];
+
+    target = stumpless_open_buffer_target( "null entry testing",
+                                           buffer,
+                                           sizeof( buffer ) );
+
+    result = stumpless_trace_entry( target,
+                                    NULL,
+                                    __FILE__,
+                                    __LINE__,
+                                    __func__ );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( TraceEntryTest, NullTarget ) {
+    int result;
+    struct stumpless_entry *entry;
+    const struct stumpless_error *error;
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_trace_entry( NULL,
+                                    entry,
+                                    __FILE__,
+                                    __LINE__,
+                                    __func__ );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( UnsetOption, NullTarget ) {
