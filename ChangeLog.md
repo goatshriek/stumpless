@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2021-12-13
+## [2.1.0] - 2021-12-14
 ### Added
  - Custom function logging targets.
  - Localization for Spanish (es-ES :es:)
@@ -20,6 +20,10 @@ fixes, check out the
     * `stumpless_trace_log`
     * `stumpless_trace_message`
     * `stumplog_trace`
+    * `vstump_trace`
+    * `vstumpless_trace_log`
+    * `vstumpless_trace_message`
+    * `vstumplog_trace`
  - The TRACE log level severity shorthand function macros:
     * `stump_t`
     * `stump_t_entry`

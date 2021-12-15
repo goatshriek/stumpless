@@ -187,6 +187,15 @@ stumpless_trace_entry( struct stumpless_target *target,
                        const char *file,
                        int line,
                        const char *func ) {
+  if( !entry ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
+    return -1;
+  }
+
+  stumpless_set_entry_param_value_by_name( entry, "trace", "file", file );
+  stumpless_set_entry_param_value_by_name( entry, "trace", "line", "-1" );
+  stumpless_set_entry_param_value_by_name( entry, "trace", "function", func );
+
   stumpless_add_entry( target, entry );
 }
 

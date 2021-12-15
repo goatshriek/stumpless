@@ -147,7 +147,7 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
 #    define stump_t_entry( target, entry ) ( 0 )
 #  else
 #    define stump_t_entry( target, entry )                                     \
-stumpless_add_entry( ( target ), ( entry ) )
+stumpless_trace_entry( ( target ), ( entry ), __FILE__, __LINE__, __func__ )
 #  endif
 
 /**
