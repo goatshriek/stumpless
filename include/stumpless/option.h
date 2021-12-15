@@ -58,7 +58,13 @@
 #    define STUMPLESS_OPTION_ODELAY (1<<3)
 #  endif
 
-/** Not currently supported. */
+/** No need to wait for the child processes that may have 
+ *  been created while logging the messages.
+ *  (Stumpless does not spawn child processes because it 
+ *  slows down the process of logging, so essentially
+ *  this option is always set)
+ */
+
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    define STUMPLESS_OPTION_NOWAIT LOG_NOWAIT
 #  else
