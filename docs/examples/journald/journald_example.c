@@ -16,12 +16,8 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stumpless.h>
-#include <time.h>
 
 int
 main( void ) {
