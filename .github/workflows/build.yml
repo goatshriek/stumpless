@@ -20,6 +20,7 @@ jobs:
           tools/check_headers/check_headers.rb "include/**/*.h*"
           tools/check_headers/check_headers.rb "src/**/*.c"
           tools/check_headers/check_headers.rb "test/**/*.cpp"
+          tools/check_headers/check_headers.rb "docs/examples/**/*.c"
       - name: Build Documentation
         run: |
           sudo apt-get install doxygen
