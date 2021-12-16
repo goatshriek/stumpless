@@ -166,6 +166,30 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
+  TEST_F( TargetTest, TraceEntry ) {
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test.c";
+    const char *function_name = "TargetTest.TraceEntry";
+    int result;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    function_name );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "377" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
 
   /* non-fixture tests */
 
@@ -798,7 +822,7 @@ namespace {
 
     TestRFC5424Compliance( buffer );
     EXPECT_THAT( buffer, HasSubstr( filename ) );
-    //EXPECT_THAT( buffer, HasSubstr( "377" ) );
+    EXPECT_THAT( buffer, HasSubstr( "377" ) );
     EXPECT_THAT( buffer, HasSubstr( function_name ) );
 
     stumpless_close_buffer_target( target );

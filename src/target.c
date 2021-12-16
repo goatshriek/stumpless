@@ -37,6 +37,7 @@
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/formatter.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
@@ -187,16 +188,42 @@ stumpless_trace_entry( struct stumpless_target *target,
                        const char *file,
                        int line,
                        const char *func ) {
+  char digits[MAX_INT_SIZE];
+  char *line_str;
+
   if( !entry ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
     return -1;
   }
 
+  if( !file ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
+    return -1;
+  }
+
+  if( !func ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
+    return -1;
+  }
+
+  digits[MAX_INT_SIZE-1] = '\0';
+  line_str = digits + MAX_INT_SIZE - 1;
+  if( line == 0 ) {
+    line_str--;
+    *line_str = '0';
+  } else {
+    while( line != 0 ) {
+      line_str--;
+      *line_str = ( line % 10 ) + 48;
+      line /= 10;
+    }
+  }
+
   stumpless_set_entry_param_value_by_name( entry, "trace", "file", file );
-  stumpless_set_entry_param_value_by_name( entry, "trace", "line", "-1" );
+  stumpless_set_entry_param_value_by_name( entry, "trace", "line", line_str );
   stumpless_set_entry_param_value_by_name( entry, "trace", "function", func );
 
-  stumpless_add_entry( target, entry );
+  return stumpless_add_entry( target, entry );
 }
 
 int

@@ -277,6 +277,9 @@ stumpless_add_entry( struct stumpless_target *target,
  * Adds an entry into a given target. The entry has a structured data element
  * added to it with the file, line, and function information specified.
  *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
