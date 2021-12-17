@@ -780,6 +780,62 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( WithPerror, Perror) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[300];
+    char message_buffer[300];
+    int result;
+    //std::cmatch matches;
+    //std::regex pid_regex(RFC_5424_REGEX_STRING);
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    result = stump( "test message without perror" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    /*if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
+      FAIL(  ) << "produced invalid procid";
+    } else {
+      EXPECT_EQ( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
+    }*/
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_EQ( target_result, target );
+
+    result = stump( "test message with perror" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    /*if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
+      FAIL(  ) << "produced invalid procid";
+    } else {
+      EXPECT_NE( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
+    }*/
+
+    target_result = stumpless_unset_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_EQ( target_result, target );
+
+    result = stump( "test message without perror 2" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    /*if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
+      FAIL(  ) << "produced invalid procid";
+    } else {
+      EXPECT_EQ( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
+    }*/
+
+    stumpless_close_buffer_target( target );
+  }
+
 
   TEST( Stump, Basic ) {
     char buffer[1000];
