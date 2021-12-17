@@ -90,7 +90,8 @@ stumpless_add_entry( struct stumpless_target *target,
   struct strbuilder *builder;
   size_t builder_length;
   const char *buffer;
-  int result;
+  int result, error_result;
+  bool is_log_formatted = false;
 
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
@@ -108,61 +109,107 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   clear_error(  );
+ 
+  if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) == STUMPLESS_OPTION_PERROR ){
+	// setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR option is
+	// set, thus only checking this flag is enough for further checks
+	// NOTE : Calling the format_entry twice because if the buffer is for target who
+	// require unformatted entry would need not to call format_entry.
+	is_log_formatted = true;
+  	builder = format_entry( entry, target );
+  	if( !builder ) {
+    		return -1;
+  	}
+  	buffer = strbuilder_get_buffer( builder, &builder_length );
+  }
 
   // function targets are not formatted
-  if( target->type == STUMPLESS_FUNCTION_TARGET ) {
+  if( target->type == STUMPLESS_FUNCTION_TARGET ) {	
+    // Checking for the PERROR option
+    if( is_log_formatted ){
+    	error_result = stumpless_entry_to_errorstream( buffer, builder_length );    
+    	if(error_result == 0){
+	  return -1;
+	}
+    }
     return send_entry_to_function_target( target, entry );
   }
 
   // journald targets are not formatted
   if( target->type == STUMPLESS_JOURNALD_TARGET ) {
+    if( is_log_formatted ){
+    	error_result = stumpless_entry_to_errorstream( buffer, builder_length );
+    	if(error_result == 0)
+	  return -1;
+    }
     return config_send_entry_to_journald_target( target, entry );
   }
 
   // windows targets are not formatted in code
   // instead their formatting comes from message text files
   if( target->type == STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
+     if( is_log_formatted ){
+    	error_result = stumpless_entry_to_errorstream( buffer, builder_length );
+     	if(error_result == 0)
+  	  return -1;
+     }
     return config_send_entry_to_wel_target( target->id, entry );
   }
 
-  builder = format_entry( entry, target );
-  if( !builder ) {
-    return -1;
-  }
+  // entry was not formatted before
+  if( is_log_formatted == false){
+	builder = format_entry( entry, target );
+  	if( !builder ) {
+    		return -1;
+  	}
+  	buffer = strbuilder_get_buffer( builder, &builder_length );
 
-  buffer = strbuilder_get_buffer( builder, &builder_length );
-
+  }  
   switch ( target->type ) {
 
-    case STUMPLESS_BUFFER_TARGET:
+    case STUMPLESS_BUFFER_TARGET:     
+       if( is_log_formatted )
+    	error_result = stumpless_entry_to_errorstream( buffer, builder_length );
       result = sendto_buffer_target( target->id, buffer, builder_length );
       break;
 
     case STUMPLESS_FILE_TARGET:
+      if( is_log_formatted )
+	error_result = stumpless_entry_to_errorstream( buffer, builder_length );	
       result = sendto_file_target( target->id, buffer, builder_length );
       break;
 
     case STUMPLESS_NETWORK_TARGET:
+      if( is_log_formatted )
+	error_result = stumpless_entry_to_errorstream( buffer, builder_length );
       result = config_sendto_network_target( target->id,
                                              buffer,
                                              builder_length );
       break;
 
     case STUMPLESS_SOCKET_TARGET:
+      if( is_log_formatted )
+	error_result = stumpless_entry_to_errorstream( buffer, builder_length );
       result = config_sendto_socket_target( target->id,
                                             buffer,
                                             builder_length );
       break;
 
     case STUMPLESS_STREAM_TARGET:
+      if( is_log_formatted )
+	error_result = stumpless_entry_to_errorstream( buffer, builder_length );
       result = sendto_stream_target( target->id, buffer, builder_length );
       break;
 
     default:
+      if( is_log_formatted )
+	error_result = stumpless_entry_to_errorstream( buffer, builder_length );
       result = sendto_unsupported_target( target, buffer, builder_length );
   }
 
   strbuilder_destroy( builder );
+  if(result == -1 || error_result == 0)
+    return -1;
   return result;
 }
 
@@ -319,7 +366,7 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   char *name_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
-  clear_error(  );
+  error_result = clear_error(  );
 
   lock_target( target );
   if( !target->default_app_name ) {
@@ -727,5 +774,13 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
   ( void ) target;
 
   raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
+  return 0;
+}
+
+int 
+stumpless_entry_to_errorstream( char *buffer, int buffer_len ){
+  FILE *error_stream = stumpless_get_error_stream();
+  if( fwrite( buffer, 1, buffer_len, error_stream) == buffer_len )
+    return 1;
   return 0;
 }
