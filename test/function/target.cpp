@@ -701,6 +701,28 @@ namespace {
 
     stumpless_close_buffer_target( target );
   }
+  TEST( SetOption, Perror ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[100];
+    int option;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_FALSE( option );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_EQ( target_result, target );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_TRUE( option );
+
+    stumpless_close_buffer_target( target );
+  }
 
   TEST( WithPid, Pid) {
     struct stumpless_target *target;
@@ -757,6 +779,7 @@ namespace {
 
     stumpless_close_buffer_target( target );
   }
+
 
   TEST( Stump, Basic ) {
     char buffer[1000];
@@ -834,6 +857,35 @@ namespace {
     EXPECT_EQ( target_result, target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
+    EXPECT_FALSE( option );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( UnsetOption, Perror ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[100];
+    int option;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_FALSE( option );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_EQ( target_result, target );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_TRUE( option );
+
+    target_result = stumpless_unset_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_EQ( target_result, target );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
     EXPECT_FALSE( option );
 
     stumpless_close_buffer_target( target );

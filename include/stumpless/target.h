@@ -961,7 +961,7 @@ vstumpless_add_message( struct stumpless_target *target,
 
 */
 int
-stumpless_entry_to_errorstream( char *buffer, 
+stumpless_entry_to_errorstream( const char *buffer, 
 		  int buffer_len );
 
 #  ifdef __cplusplus

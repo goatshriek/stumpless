@@ -17,6 +17,8 @@
  */
 
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/config.h>
@@ -366,7 +368,7 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   char *name_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
-  error_result = clear_error(  );
+  clear_error(  );
 
   lock_target( target );
   if( !target->default_app_name ) {
@@ -778,7 +780,7 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
 }
 
 int 
-stumpless_entry_to_errorstream( char *buffer, int buffer_len ){
+stumpless_entry_to_errorstream( const char *buffer, int buffer_len ){
   FILE *error_stream = stumpless_get_error_stream();
   if( fwrite( buffer, 1, buffer_len, error_stream) == buffer_len )
     return 1;
