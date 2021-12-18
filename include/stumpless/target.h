@@ -950,19 +950,6 @@ vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
                         va_list subs );
 
-/* 
- Adds the message to the stream which is configured to be for stderr
-
- @param buffer pointer to the message to be sent to the error stream
-
- @param buffer_len length of the buffer to be transferred
-
- @return 0 if the data transfer is unsuccessful, 1 if successful
-
-*/
-int
-stumpless_entry_to_errorstream( const char *buffer, 
-		  int buffer_len );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

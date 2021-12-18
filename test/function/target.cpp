@@ -786,8 +786,6 @@ namespace {
     char buffer[300];
     char message_buffer[300];
     int result;
-    //std::cmatch matches;
-    //std::regex pid_regex(RFC_5424_REGEX_STRING);
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -799,11 +797,7 @@ namespace {
     EXPECT_GE( result, 0 );
 
     stumpless_read_buffer( target, message_buffer, 300 );
-    /*if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
-      FAIL(  ) << "produced invalid procid";
-    } else {
-      EXPECT_EQ( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
-    }*/
+    TestRFC5424Compliance( message_buffer );
 
     target_result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
     EXPECT_EQ( target_result, target );
@@ -813,12 +807,7 @@ namespace {
     EXPECT_GE( result, 0 );
 
     stumpless_read_buffer( target, message_buffer, 300 );
-    /*if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
-      FAIL(  ) << "produced invalid procid";
-    } else {
-      EXPECT_NE( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
-    }*/
-
+    TestRFC5424Compliance( message_buffer );
     target_result = stumpless_unset_option( target, STUMPLESS_OPTION_PERROR );
     EXPECT_EQ( target_result, target );
 
@@ -827,11 +816,7 @@ namespace {
     EXPECT_GE( result, 0 );
 
     stumpless_read_buffer( target, message_buffer, 300 );
-    /*if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
-      FAIL(  ) << "produced invalid procid";
-    } else {
-      EXPECT_EQ( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
-    }*/
+    TestRFC5424Compliance( message_buffer );
 
     stumpless_close_buffer_target( target );
   }

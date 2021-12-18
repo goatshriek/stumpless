@@ -318,6 +318,8 @@
 "stumpless_open_udp4_target": "stumpless/target/network.h"
 "STUMPLESS_OPTION_NONE": "stumpless/option.h"
 "STUMPLESS_OPTION_PID": "stumpless/option.h"
+"STUMPLESS_OPTION_NOWAIT" : "stumpless/option.h"
+"STUMPLESS_OPTION_PERROR" :  "stumpless/option.h"
 "STUMPLESS_PATCH_VERSION": "stumpless/config.h"
 "stumpless_param_journald_namer_func_t": "stumpless/param.h"
 "STUMPLESS_PARAM_NOT_FOUND": "stumpless/error.h"
