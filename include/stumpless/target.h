@@ -950,7 +950,6 @@ vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
                         va_list subs );
 
-
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif

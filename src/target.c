@@ -18,7 +18,6 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/config.h>
@@ -27,6 +26,7 @@
 #include <stumpless/option.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
+#include <stumpless/error.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
@@ -129,8 +129,7 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   // function targets are not formatted
-  if( target->type == STUMPLESS_FUNCTION_TARGET ) {	
-    // Checking for the PERROR option
+  if( target->type == STUMPLESS_FUNCTION_TARGET ) {
     return send_entry_to_function_target( target, entry );
   }
 
@@ -156,7 +155,7 @@ stumpless_add_entry( struct stumpless_target *target,
   }  
   switch ( target->type ) {
 
-    case STUMPLESS_BUFFER_TARGET:     
+    case STUMPLESS_BUFFER_TARGET:
       result = sendto_buffer_target( target->id, buffer, builder_length );
       break;
 
@@ -751,4 +750,3 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
   raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
 }
-
