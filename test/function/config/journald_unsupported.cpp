@@ -38,30 +38,44 @@ namespace {
   }
 
   TEST( JournaldTargetTest, GenericClose ) {
-    struct stumpless_target target;
+    struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target.type = STUMPLESS_JOURNALD_TARGET;
+    target = stumpless_open_stdout_target( "fake-journald-target" );
+    ASSERT_NOT_NULL( target );
 
-    stumpless_close_target( &target );
+    target->type = STUMPLESS_JOURNALD_TARGET;
+
+    stumpless_close_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
+
+    target->type = STUMPLESS_STREAM_TARGET;
+    stumpless_close_stream_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( JournaldTargetTest, Unsupported ) {
-    struct stumpless_target target;
     struct stumpless_entry *entry;
+    struct stumpless_target *target;
     const struct stumpless_error *error;
     int result;
 
     entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
-    target.type = STUMPLESS_JOURNALD_TARGET;
-    target.id = &target;
+    target = stumpless_open_stdout_target( "fake-journald-target" );
+    ASSERT_NOT_NULL( target );
 
-    result = stumpless_add_entry( &target, entry );
+    target->type = STUMPLESS_JOURNALD_TARGET;
+
+    result = stumpless_add_entry( target, entry );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
+    target->type = STUMPLESS_STREAM_TARGET;
+    stumpless_close_stream_target( target );
+
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 }
