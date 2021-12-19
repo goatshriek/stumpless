@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stumpless/config.h>
 #include <stumpless/entry.h>
+#include <stumpless/error.h>
 #include <stumpless/facility.h>
 #include <stumpless/option.h>
 #include <stumpless/severity.h>
