@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 
 using::testing::HasSubstr;
 
@@ -117,7 +118,7 @@ namespace {
     const struct stumpless_error *error;
     int result;
 
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
     memcpy( &target_copy, target, sizeof( *target ) );
     target_copy.id = NULL;
 
@@ -144,28 +145,6 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_SOCKET_SEND_FAILURE );
 
     stumpless_close_socket_target( target );
-  }
-
-  TEST( SocketTargetAddTest, Uninitialized ) {
-    struct stumpless_target target;
-    struct stumpless_entry *entry;
-    const struct stumpless_error *error;
-    int result;
-
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                "stumpless-unit-test",
-                                "basic-entry",
-                                "basic test message" );
-
-    target.type = STUMPLESS_SOCKET_TARGET;
-    target.id = NULL;
-    result = stumpless_add_entry( &target, entry );
-    EXPECT_LT( result, 0 );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ID );
-
-    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( SocketTargetCloseTest, Generic ) {
@@ -253,6 +232,32 @@ namespace {
 
     result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( result == malloc );
+  }
+
+  TEST( SocketTargetAddTest, NullId ) {
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
+    stumpless_id_t real_id;
+    const struct stumpless_error *error;
+    int result;
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_socket_target( "null-id", NULL );
+    ASSERT_NOT_NULL( target );
+
+    real_id = target->id;
+    target->id = NULL;
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ID );
+
+    target->id = real_id;
+    stumpless_close_socket_target( target );
+
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( SocketTargetOpenTest, NullName ) {
