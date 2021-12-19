@@ -701,6 +701,8 @@ endif()
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
   list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
 else()
+  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_supported.c)
+
   # thread safety tests
   add_thread_safety_test(buffer
     SOURCES

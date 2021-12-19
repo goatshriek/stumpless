@@ -82,13 +82,11 @@ struct stumpless_entry {
   void *wel_data;
 #  endif
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-/*
- * In thread-safe builds the memory at the end of the entry holds a mutex that
- * is used to coordinate access to the entry. However the type info is not
- * included in the struct definition in the public headers as it is
- * configuration-specific and would complicate the public headers significantly
- * if they were to stay portable.
+/**
+ * A pointer to a mutex which protects all entry fields. The exact type of
+ * this mutex depends on the build.
  */
+  void *mutex;
 #  endif
 };
 

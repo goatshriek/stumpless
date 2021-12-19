@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -394,7 +394,7 @@ stumpless_new_element( const char *name ) {
     goto fail;
   }
 
-  element = alloc_mem( sizeof( *element ) + CONFIG_MUTEX_T_SIZE );
+  element = alloc_mem( sizeof( *element ) );
   if( !element ) {
     goto fail;
   }
@@ -407,11 +407,18 @@ stumpless_new_element( const char *name ) {
   element->params = NULL;
   element->param_count = 0;
 
-  config_init_mutex( ELEMENT_MUTEX( element ) );
+  config_assign_cached_mutex( element->mutex );
+  if( !config_check_mutex_valid( element->mutex ) ) {
+    goto fail_mutex;
+  }
+
   config_init_journald_element( element );
 
   clear_error(  );
   return element;
+
+fail_mutex:
+  free_mem( element->name );
 
 fail_name:
   free_mem( element );
@@ -618,7 +625,7 @@ fail:
 
 void
 lock_element( const struct stumpless_element *element ) {
-  config_lock_mutex( ELEMENT_MUTEX( element ) );
+  config_lock_mutex( element->mutex );
 }
 
 struct stumpless_param *
@@ -634,7 +641,7 @@ locked_get_param_by_index( const struct stumpless_element *element,
 
 void
 unchecked_destroy_element( const struct stumpless_element *element ) {
-  config_destroy_mutex( ELEMENT_MUTEX( element ) );
+  config_destroy_cached_mutex( element->mutex );
   free_mem( element->params );
   free_mem( element->name );
   free_mem( element );
@@ -642,5 +649,5 @@ unchecked_destroy_element( const struct stumpless_element *element ) {
 
 void
 unlock_element( const struct stumpless_element *element ) {
-  config_unlock_mutex( ELEMENT_MUTEX( element ) );
+  config_unlock_mutex( element->mutex );
 }

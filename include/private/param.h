@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_PARAM_H
 #  define __STUMPLESS_PRIVATE_PARAM_H
 
-#  include <stddef.h>
-#  include <stumpless/config.h>
 #  include <stumpless/param.h>
-#  include "private/config/wrapper/thread_safety.h"
-
-#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-#    define PARAM_MUTEX( PARAM ) \
-( ( config_mutex_t * ) ( ( char * ) ( PARAM ) + sizeof( *( PARAM ) ) ) )
-#  else
-#    define PARAM_MUTEX( PARAM ) NULL
-#  endif
 
 void
 lock_param( const struct stumpless_param *param );

@@ -21,6 +21,7 @@
 #include <stumpless/memory.h>
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/journald.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/memory.h"
@@ -46,6 +47,7 @@ stumpless_free_all( void ) {
   entry_free_all(  );
   strbuilder_free_all(  );
   config_network_free_all(  );
+  config_thread_safety_free_all(  );
 }
 
 void
