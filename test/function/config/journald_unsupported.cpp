@@ -38,13 +38,20 @@ namespace {
   }
 
   TEST( JournaldTargetTest, GenericClose ) {
-    struct stumpless_target target;
+    struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target.type = STUMPLESS_JOURNALD_TARGET;
+    target = stumpless_open_stdout_target( "fake-journald-target" );
+    ASSERT_NOT_NULL( target );
 
-    stumpless_close_target( &target );
+    target->type = STUMPLESS_JOURNALD_TARGET;
+
+    stumpless_close_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
+
+    target->type = STUMPLESS_STREAM_TARGET;
+    stumpless_close_stream_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( JournaldTargetTest, Unsupported ) {
@@ -57,6 +64,8 @@ namespace {
     ASSERT_NOT_NULL( entry );
 
     target = stumpless_open_stdout_target( "fake-journald-target" );
+    ASSERT_NOT_NULL( target );
+
     target->type = STUMPLESS_JOURNALD_TARGET;
 
     result = stumpless_add_entry( target, entry );
@@ -67,5 +76,6 @@ namespace {
     stumpless_close_stream_target( target );
 
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 }
