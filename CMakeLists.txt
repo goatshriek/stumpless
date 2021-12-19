@@ -536,7 +536,10 @@ if(NOT ENABLE_SOCKET_TARGETS)
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
 
   add_function_test(socket_unsupported
-    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+    LIBRARIES ${network_libraries}
   )
 
 elseif(NOT HAVE_SYS_SOCKET_H)
@@ -544,7 +547,9 @@ elseif(NOT HAVE_SYS_SOCKET_H)
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
 
   add_function_test(socket_unsupported
-    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 
 else()
@@ -564,6 +569,7 @@ else()
     SOURCES
       test/function/target/socket.cpp
       $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 
   add_function_test(socket_add_malloc_failure
@@ -599,7 +605,9 @@ if(NOT STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/no_wel_templates.yml)
 
   add_function_test(wel_unsupported
-    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 else()
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
@@ -701,6 +709,8 @@ endif()
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
   list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
 else()
+  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_supported.c)
+
   # thread safety tests
   add_thread_safety_test(buffer
     SOURCES

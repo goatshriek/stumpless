@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 
 namespace {
 
@@ -37,36 +38,44 @@ namespace {
   }
 
   TEST( SocketTargetTest, GenericClose ) {
-    struct stumpless_target target;
+    struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target.type = STUMPLESS_SOCKET_TARGET;
+    target = stumpless_open_stdout_target( "fake-socket-target" );
+    ASSERT_NOT_NULL( target );
 
-    stumpless_close_target( &target );
+    target->type = STUMPLESS_SOCKET_TARGET;
 
+    stumpless_close_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
+
+    target->type = STUMPLESS_STREAM_TARGET;
+    stumpless_close_stream_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SocketTargetTest, Unsupported ) {
-    struct stumpless_target target;
+    struct stumpless_target *target;
     struct stumpless_entry *entry;
     const struct stumpless_error *error;
     int result;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                "stumpless-unit-test",
-                                "basic-entry",
-                                "basic test message" );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
-    target.type = STUMPLESS_SOCKET_TARGET;
-    target.id = &target;
+    target = stumpless_open_stdout_target( "fake-socket-target" );
+    ASSERT_NOT_NULL( target );
 
-    result = stumpless_add_entry( &target, entry );
+    target->type = STUMPLESS_SOCKET_TARGET;
+
+    result = stumpless_add_entry( target, entry );
     EXPECT_LT( result, 0 );
-
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
+    target->type = STUMPLESS_STREAM_TARGET;
+    stumpless_close_stream_target( target );
+
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 }

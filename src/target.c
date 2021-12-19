@@ -647,7 +647,7 @@ void
 destroy_target( const struct stumpless_target *target ) {
   config_compare_exchange_ptr( &current_target, target, NULL );
 
-  config_destroy_mutex( TARGET_MUTEX( target ) );
+  config_destroy_cached_mutex( target->mutex );
   free_mem( target->default_app_name );
   free_mem( target->default_msgid );
   free_mem( target->name );
@@ -656,14 +656,14 @@ destroy_target( const struct stumpless_target *target ) {
 
 void
 lock_target( const struct stumpless_target *target ) {
-  config_lock_mutex( TARGET_MUTEX( target ) );
+  config_lock_mutex( target->mutex );
 }
 
 struct stumpless_target *
 new_target( enum stumpless_target_type type, const char *name ) {
   struct stumpless_target *target;
 
-  target = alloc_mem( sizeof( *target ) + CONFIG_MUTEX_T_SIZE );
+  target = alloc_mem( sizeof( *target ) );
   if( !target ) {
     goto fail;
   }
@@ -673,7 +673,10 @@ new_target( enum stumpless_target_type type, const char *name ) {
     goto fail_name;
   }
 
-  config_init_mutex( TARGET_MUTEX( target ) );
+  config_assign_cached_mutex( target->mutex );
+  if( !config_check_mutex_valid( target->mutex ) ) {
+    goto fail_mutex;
+  }
 
   target->type = type;
   target->options = STUMPLESS_OPTION_NONE;
@@ -686,6 +689,8 @@ new_target( enum stumpless_target_type type, const char *name ) {
 
   return target;
 
+fail_mutex:
+  free_mem( target->name );
 fail_name:
   free_mem( target );
 fail:
@@ -740,7 +745,7 @@ target_free_thread( void ) {
 
 void
 unlock_target( const struct stumpless_target *target ) {
-  config_unlock_mutex( TARGET_MUTEX( target ) );
+  config_unlock_mutex( target->mutex );
 }
 
 int

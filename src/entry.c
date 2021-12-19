@@ -869,10 +869,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
   size_t *message_length;
 
   if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ) + CONFIG_MUTEX_T_SIZE,
-                             NULL,
-                             NULL );
-
+    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
     if( !entry_cache ) {
       goto fail;
     }
@@ -915,20 +912,23 @@ vstumpless_new_entry( enum stumpless_facility facility,
   }
 
   if( !config_initialize_wel_data( entry ) ) {
-    goto fail_wel_data;
+    goto fail_init;
   }
   config_set_entry_wel_type( entry, severity );
+
+  config_assign_cached_mutex( entry->mutex );
+  if( !config_check_mutex_valid( entry->mutex ) ) {
+    goto fail_init;
+  }
 
   entry->prival = get_prival( facility, severity );
   entry->elements = NULL;
   entry->element_count = 0;
 
-  config_init_mutex( ENTRY_MUTEX( entry ) );
-
   clear_error(  );
   return entry;
 
-fail_wel_data:
+fail_init:
   free_mem( entry->message );
 fail_after_cache:
   cache_free( entry_cache, entry );
@@ -984,7 +984,7 @@ get_prival( enum stumpless_facility facility,
 
 void
 lock_entry( const struct stumpless_entry *entry ) {
-  config_lock_mutex( ENTRY_MUTEX( entry ) );
+  config_lock_mutex( entry->mutex );
 }
 
 struct stumpless_entry *
@@ -1132,7 +1132,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
-  config_destroy_mutex( ENTRY_MUTEX( entry ) );
+  config_destroy_cached_mutex( entry->mutex );
 
   config_destroy_wel_data( entry );
 
@@ -1158,5 +1158,5 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
 
 void
 unlock_entry( const struct stumpless_entry *entry ) {
-  config_unlock_mutex( ENTRY_MUTEX( entry ) );
+  config_unlock_mutex( entry->mutex );
 }
