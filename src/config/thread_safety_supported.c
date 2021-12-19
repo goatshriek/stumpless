@@ -24,7 +24,7 @@
 static struct cache *mutex_cache = NULL;
 
 void
-thread_safety_destroy_mutex( config_mutex_t *mutex ) {
+thread_safety_destroy_mutex( const config_mutex_t *mutex ) {
   config_destroy_mutex( mutex );
   cache_free( mutex_cache, mutex );
 }

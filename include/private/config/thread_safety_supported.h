@@ -39,7 +39,7 @@
  * @param mutex The mutex to destroy.
  */
 void
-thread_safety_destroy_mutex( config_mutex_t *mutex );
+thread_safety_destroy_mutex( const config_mutex_t *mutex );
 
 /**
  * Frees all memory used for thread safety support.
