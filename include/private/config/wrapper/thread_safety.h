@@ -43,7 +43,7 @@ typedef void * config_atomic_ptr_t;
 #    define CONFIG_MUTEX_T_SIZE 0
 #    define config_read_bool( B ) *( B )
 #    define config_read_ptr( P ) *( P )
-#    define config_thread_safety_free_all ( ( void ) 0 )
+#    define config_thread_safety_free_all(  ) ( ( void ) 0 )
 #    define config_unlock_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_write_bool( B, REPLACEMENT ) *( B ) = ( REPLACEMENT )
 #    define config_write_ptr( P, REPLACEMENT ) *( P ) = ( REPLACEMENT )
