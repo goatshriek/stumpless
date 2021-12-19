@@ -685,7 +685,7 @@ vstump_trace( const char *file,
     return -1;
   }
 
-  return vstumpless_trace_message( file, line, func, target, message, subs );
+  return vstumpless_trace_message( target, file, line, func, message, subs );
 }
 
 int
