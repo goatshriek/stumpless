@@ -547,7 +547,9 @@ elseif(NOT HAVE_SYS_SOCKET_H)
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
 
   add_function_test(socket_unsupported
-    SOURCES ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 
 else()
