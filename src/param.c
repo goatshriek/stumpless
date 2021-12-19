@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
     return;
   }
 
-  config_destroy_mutex( PARAM_MUTEX( param ) );
+  config_destroy_cached_mutex( param->mutex );
   free_mem( param->name );
   free_mem( param->value );
   free_mem( param );
@@ -101,7 +101,7 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail;
   }
 
-  param = alloc_mem( sizeof( *param ) + CONFIG_MUTEX_T_SIZE );
+  param = alloc_mem( sizeof( *param ) );
   if( !param ) {
     goto fail;
   }
@@ -116,11 +116,18 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail_value;
   }
 
-  config_init_mutex( PARAM_MUTEX( param ) );
+  config_assign_cached_mutex( param->mutex );
+  if( !config_check_mutex_valid( param->mutex ) ) {
+    goto fail_mutex;
+  }
+
   config_init_journald_param( param );
 
   clear_error(  );
   return param;
+
+fail_mutex:
+  free_mem( param->value );
 
 fail_value:
   free_mem( param->name );
@@ -240,10 +247,10 @@ fail:
 
 void
 lock_param( const struct stumpless_param *param ) {
-  config_lock_mutex( PARAM_MUTEX( param ) );
+  config_lock_mutex( param->mutex );
 }
 
 void
 unlock_param( const struct stumpless_param *param ) {
-  config_unlock_mutex( PARAM_MUTEX( param ) );
+  config_unlock_mutex( param->mutex );
 }

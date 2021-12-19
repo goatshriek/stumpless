@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,9 @@
 
 #  include <stddef.h>
 #  include <string.h>
-#  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/param.h>
-#  include "private/config/wrapper/thread_safety.h"
 #  include "private/param.h"
-
-#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-#    define ELEMENT_MUTEX( ELEMENT ) \
-( ( config_mutex_t * ) ( ( char * ) ( ELEMENT ) + sizeof( *( ELEMENT ) ) ) )
-#  else
-#    define ELEMENT_MUTEX( ELEMENT ) NULL
-#  endif
 
 #  define FOR_EACH_PARAM_WITH_NAME( ELEMENT, NAME ) \
 for( i = 0; i < ( ELEMENT )->param_count; i++ ) {   \

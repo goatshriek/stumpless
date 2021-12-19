@@ -46,6 +46,7 @@ stumpless_free_all( void ) {
   entry_free_all(  );
   strbuilder_free_all(  );
   config_network_free_all(  );
+  config_thread_safety_free_all(  );
 }
 
 void

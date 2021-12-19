@@ -127,13 +127,11 @@ struct stumpless_param {
   stumpless_param_namer_func_t get_journald_name;
 #  endif
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-/*
- * In thread-safe builds the memory at the end of the param holds a mutex that
- * is used to coordinate access to the param. However the type info is not
- * included in the struct definition in the public headers as it is
- * configuration-specific and would complicate the public headers significantly
- * if they were to stay portable.
+/**
+ * A pointer to a mutex which protects all target fields. The exact type of
+ * this mutex depends on the build.
  */
+  void *mutex;
 #  endif
 };
 

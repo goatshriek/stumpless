@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,13 +129,11 @@ struct stumpless_element {
   stumpless_element_namer_func_t get_journald_name;
 #endif
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-/*
- * In thread-safe builds the memory at the end of the element holds a mutex that
- * is used to coordinate access to the element. However the type info is not
- * included in the struct definition in the public headers as it is
- * configuration-specific and would complicate the public headers significantly
- * if they were to stay portable.
+/**
+ * A pointer to a mutex which protects all element fields. The exact type of
+ * this mutex depends on the build.
  */
+  void *mutex;
 #endif
 };
 
