@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,8 @@
 #  define __STUMPLESS_PRIVATE_TARGET_H
 
 #  include <stddef.h>
-#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
-#  include "private/config/wrapper/thread_safety.h"
-
-#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
-#    define TARGET_MUTEX( TARGET ) \
-( ( config_mutex_t * ) ( ( char * ) ( TARGET ) + sizeof( *( TARGET ) ) ) )
-#  else
-#    define TARGET_MUTEX( TARGET ) NULL
-#  endif
 
 void
 destroy_target( const struct stumpless_target *target );
