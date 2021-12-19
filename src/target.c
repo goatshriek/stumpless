@@ -152,7 +152,7 @@ stumpless_add_entry( struct stumpless_target *target,
   	}
   	buffer = strbuilder_get_buffer( builder, &builder_length );
 
-  }  
+  }
   switch ( target->type ) {
 
     case STUMPLESS_BUFFER_TARGET:
