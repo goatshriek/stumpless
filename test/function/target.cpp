@@ -18,6 +18,7 @@
 
 #include <cstddef>
 #include <cstdlib>
+#include <cstdio>
 #include <regex>
 #include <gtest/gtest.h>
 #include <stumpless.h>
