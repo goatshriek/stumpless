@@ -988,6 +988,13 @@ add_function_test(level_disabled_downto_notice
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_NOTICE
 )
 
+add_function_test(level_disabled_downto_trace
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_debug.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_TRACE
+)
+
 add_function_test(level_disabled_downto_warning
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_err.cpp
@@ -1011,7 +1018,7 @@ add_function_test(level_enable_upto_crit
 
 add_function_test(level_enable_upto_debug
   SOURCES
-    ${PROJECT_SOURCE_DIR}/test/function/level/all_enabled.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_debug.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_DEBUG
 )
@@ -1042,6 +1049,13 @@ add_function_test(level_enable_upto_notice
     ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_notice.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_NOTICE
+)
+
+add_function_test(level_enable_upto_trace
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/all_enabled.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_TRACE
 )
 
 add_function_test(level_enable_upto_warning

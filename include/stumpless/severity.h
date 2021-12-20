@@ -137,6 +137,14 @@
 #  endif
 
 /**
+ * Equivalent to the DEBUG severity code value. Trace level messages include
+ * extra information, but do not have their own severity value in log entries.
+ *
+ * @since release v2.1.0
+ */
+#  define STUMPLESS_SEVERITY_TRACE_VALUE STUMPLESS_SEVERITY_DEBUG_VALUE
+
+/**
  * A macro function that runs the provided action once for each severity,
  * providing the symbol and value. The action must take two arguments, the
  * first being the symbol name of the severity, and the second the numeric
@@ -160,7 +168,9 @@ ACTION( STUMPLESS_SEVERITY_NOTICE, STUMPLESS_SEVERITY_NOTICE_VALUE )   \
 /** Informational: informational messages. */                          \
 ACTION( STUMPLESS_SEVERITY_INFO, STUMPLESS_SEVERITY_INFO_VALUE )       \
 /** Debug: debug-level messages. */                                    \
-ACTION( STUMPLESS_SEVERITY_DEBUG, STUMPLESS_SEVERITY_DEBUG_VALUE )
+ACTION( STUMPLESS_SEVERITY_DEBUG, STUMPLESS_SEVERITY_DEBUG_VALUE )     \
+/** Debug: debug-level messages. */                                    \
+ACTION( STUMPLESS_SEVERITY_TRACE, STUMPLESS_SEVERITY_TRACE_VALUE )
 
 #  ifdef __cplusplus
 extern "C" {
