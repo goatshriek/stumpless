@@ -160,4 +160,11 @@ EXPORTS
   stumpless_element_to_string                   @145
   stump_trace                                   @146
   stumpless_trace_entry                         @147
+  stumpless_trace_log                           @148
+  stumpless_trace_message                       @149
+  stumplog_trace                                @150
+  vstump_trace                                  @151
+  vstumpless_trace_log                          @152
+  vstumpless_trace_message                      @153
+  vstumplog_trace                               @154
 
