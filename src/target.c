@@ -53,6 +53,9 @@
 /* global static variables */
 static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
+static config_atomic_ptr_t cons_stream = config_atomic_ptr_initializer;
+static config_atomic_bool_t cons_stream_free = config_atomic_bool_true;
+static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 
 /* per-thread static variables */
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
@@ -754,4 +757,19 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
 
   raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
+}
+
+FILE *
+stumpless_get_cons_stream( void ) {
+  if( config_read_bool( &cons_stream_valid ) ) {
+	return config_read_ptr( &cons_stream );	 
+  } else {
+	return stdout;
+  }
+}
+
+void
+stumpless_set_cons_stream( FILE *stream) {
+  config_write_ptr( &cons_stream, stream );
+  config_write_bool( &cons_stream_valid, true );
 }
