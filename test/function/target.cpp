@@ -931,7 +931,6 @@ namespace {
 
     stumpless_close_buffer_target( target );
   }
-<<<<<<< HEAD
   TEST( ConsoleStream, StdoutDefault ) {
 	FILE *cons_stream = stumpless_get_cons_stream();
 	EXPECT_TRUE( cons_stream == stdout);
@@ -951,6 +950,4 @@ namespace {
 	EXPECT_TRUE( stumpless_get_cons_stream() == file );
 	fclose( file );
   } 
-=======
->>>>>>> latest
 }
