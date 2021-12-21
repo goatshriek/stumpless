@@ -950,11 +950,12 @@ vstumpless_add_message( struct stumpless_target *target,
                         va_list subs );
 
 /**
+ * @since v2.1.0
  *	Gets the current console stream where logs are written to. 	
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Atomic variables are used to store and
- * retrieve the error stream.
+ * retrieve the console stream.
  *
  * **Async Signal Safety: AS-Safe**
  * This function is safe to call from signal handlers.
@@ -970,14 +971,15 @@ FILE *
 stumpless_get_cons_stream( void );
 
 /**
+ * @since v2.1.0
  * Sets the console stream to write logs to.
  *
  * This will be stdout by default, but can be set to any stream. If it is set
- * to NULL then error messages will not be printed.
+ * to NULL then console messages will not be printed.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Atomic variables are used to store and
- * retrieve the error stream.
+ * retrieve the console stream.
  *
  * **Async Signal Safety: AS-Safe**
  * This function is safe to call from signal handlers.
@@ -986,8 +988,8 @@ stumpless_get_cons_stream( void );
  * This function is safe to call from threads that may be ansynchronously
  * cancelled.
  *
- * @param stream The stream to write logs to. If this is NULL then it will be
- * ignored
+ * @param stream The stream to write logs to. If this is NULL then the messages
+ *	intended for the console stream will be ignored.
  */
 void
 stumpless_set_cons_stream( FILE *stream );
