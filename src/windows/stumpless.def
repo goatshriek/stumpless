@@ -158,4 +158,6 @@ EXPORTS
   stumpless_close_function_target               @143
   stumpless_open_function_target                @144
   stumpless_element_to_string                   @145
+  stumpless_get_cons_stream                     @146
+  stumpless_set_cons_stream                     @147
 

@@ -18,6 +18,7 @@
 
 #include <cstddef>
 #include <cstdlib>
+#include <cstdio>
 #include <regex>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -931,4 +932,23 @@ namespace {
 
     stumpless_close_buffer_target( target );
   }
+  TEST( ConsoleStream, StdoutDefault ) {
+	FILE *cons_stream = stumpless_get_cons_stream();
+	EXPECT_TRUE( cons_stream == stdout);
+  }
+
+  TEST( ConsoleStream, NullStream ) {
+    FILE *cons_stream;
+	stumpless_set_cons_stream( NULL );
+	cons_stream = stumpless_get_cons_stream();
+	EXPECT_TRUE( cons_stream == NULL );	
+  }
+
+  TEST( ConsoleStream, FileStream ) {
+	const char *filename = "cons_stream.txt";
+	FILE *file = fopen(filename, "w+");
+    stumpless_set_cons_stream( file );
+	EXPECT_TRUE( stumpless_get_cons_stream() == file );
+	fclose( file );
+  } 
 }

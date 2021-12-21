@@ -318,8 +318,8 @@ stumpless_perror( const char *prefix );
  * This function is safe to call from threads that may be ansynchronously
  * cancelled.
  *
- * @param stream The stream to write errors to. If this is NULL then it will be
- * ignored.
+ * @param stream The stream to write errors to. If this is NULL then the messages
+ *	intended for the error stream will be ignored.
  */
 void
 stumpless_set_error_stream( FILE *stream );
