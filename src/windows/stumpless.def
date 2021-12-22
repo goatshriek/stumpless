@@ -160,4 +160,5 @@ EXPORTS
   stumpless_element_to_string                   @145
   stumpless_get_cons_stream                     @146
   stumpless_set_cons_stream                     @147
+  stumpless_log_to_error_stream                 @148
 

@@ -324,6 +324,35 @@ stumpless_perror( const char *prefix );
 void
 stumpless_set_error_stream( FILE *stream );
 
+/**
+ *  @since v2.1.0
+ *
+ *  Logs the message to the error stream, ignore the message if the 
+ *  error stream is NULL
+ * 
+ * **Thread Safety: MT-Safe race:prefix**
+ * This function is thread safe, of course assuming that prefix is not changed
+ * by other threads during execution. A lock is used to coordinate accesses to
+ * the error stream.
+*
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers, as it uses a
+ * non-reentrant lock to synchronize access to the error stream.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock used to control access to the error stream may not
+ * be released after a cancellation.
+* 
+ * @param buffer message to be logged on the error stream.
+ * @param buff_len length of the message to be logged.
+ * 
+ * @return value -1 if the write is unsuccesful, 0 if successful
+ */
+int
+stumpless_log_to_error_stream( const char *buffer, int buff_len );
+
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif

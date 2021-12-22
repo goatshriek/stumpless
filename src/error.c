@@ -334,3 +334,21 @@ void
 raise_invalid_encoding( const char *message ) {
   raise_error( STUMPLESS_INVALID_ENCODING, message, 0, NULL );
 }
+
+int
+stumpless_log_to_error_stream( const char* buffer, int buff_len ) {
+  FILE *error_stream = stumpless_get_error_stream();
+  int ret;
+  bool locked;
+  if( error_stream == NULL ) {
+	return 0;
+  }
+  do{
+    locked = config_compare_exchange_bool( &error_stream_free, true, false );
+  } while( !locked );
+  ret = fwrite( buffer, 1, buff_len, error_stream );
+  if( ret != buff_len ) {
+    return -1;
+  } 
+  return 0;
+}

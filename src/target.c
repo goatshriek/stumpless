@@ -126,10 +126,8 @@ stumpless_add_entry( struct stumpless_target *target,
     		return -1;
   	}
   	buffer = strbuilder_get_buffer( builder, &builder_length );
-	error_stream = stumpless_get_error_stream();
-  	if( fwrite( buffer, 1, builder_length, error_stream) != builder_length ){
-    	  return -1;
-	}
+	if( stumpless_log_to_error_stream( buffer, builder_length) == -1)
+      return -1;
   }
 
   // function targets are not formatted

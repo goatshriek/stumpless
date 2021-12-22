@@ -822,6 +822,47 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( WithPerror, NullTarget ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[300];
+    char message_buffer[300];
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    result = stump( "test message without perror" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    TestRFC5424Compliance( message_buffer );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
+    stumpless_set_error_stream( NULL );
+    EXPECT_EQ( target_result, target );
+
+    result = stump( "test message with perror and null error stream" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    TestRFC5424Compliance( message_buffer );
+    target_result = stumpless_unset_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_EQ( target_result, target );
+
+    result = stump( "test message without perror 2" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    TestRFC5424Compliance( message_buffer );
+
+    stumpless_close_buffer_target( target );
+  }  
 
   TEST( Stump, Basic ) {
     char buffer[1000];
