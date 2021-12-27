@@ -192,6 +192,71 @@ namespace {
     stumpless_destroy_entry_and_contents( entry );
   }
 
+  TEST_F( TargetTest, TraceEntryLineZero ) {
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test.c";
+    const char *function_name = "TargetTest.TraceEntry";
+    int result;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    0,
+                                    function_name );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"0\"" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryNullFile ) {
+    struct stumpless_entry *entry;
+    const char *function_name = "TargetTest.TraceEntry";
+    int result;
+    const struct stumpless_error *error;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    NULL,
+                                    377,
+                                    function_name );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryNullFunction ) {
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test.c";
+    int result;
+    const struct stumpless_error *error;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    NULL );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   /* non-fixture tests */
 
   TEST( AddEntryTest, NullEntry ) {
