@@ -94,9 +94,12 @@
 #    define stump_t( ... ) ( 0 )
 #  else
 #    define stump_t( ... )                                                     \
-stumpless_add_log( stumpless_get_current_target(  ),                           \
-                   STUMPLESS_SEVERITY_DEBUG | STUMPLESS_DEFAULT_FACILITY,      \
-                   __VA_ARGS__ )
+stumpless_trace_log( stumpless_get_current_target(  ),                         \
+                     STUMPLESS_SEVERITY_DEBUG | STUMPLESS_DEFAULT_FACILITY,    \
+                     __FILE__,                                                 \
+                     __LINE__,                                                 \
+                     __func__,                                                 \
+                     __VA_ARGS__ )
 #  endif
 
 /**
@@ -205,7 +208,12 @@ stumpless_trace_entry( ( target ), ( entry ), __FILE__, __LINE__, __func__ )
 #    define stump_t_log( target, priority, ... ) ( 0 )
 #  else
 #    define stump_t_log( target, priority, ... )                               \
-stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
+stumpless_trace_log( ( target ),                                               \
+                     ( priority ),                                             \
+                     __FILE__,                                                 \
+                     __LINE__,                                                 \
+                     __func__,                                                 \
+                     __VA_ARGS__ )
 #endif
 
 /**
@@ -265,9 +273,12 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
 #    define stump_t_message( target, ... ) ( 0 )
 #  else
 #    define stump_t_message( target, ... )                                     \
-stumpless_add_log( ( target ),                                                 \
-                   STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_DEBUG,      \
-                   __VA_ARGS__ )
+stumpless_trace_log( ( target ),                                               \
+                     STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_DEBUG,    \
+                     __FILE__,                                                 \
+                     __LINE__,                                                 \
+                     __func__,                                                 \
+                     __VA_ARGS__ )
 #  endif
 
 /**
@@ -317,7 +328,7 @@ stumpless_add_log( ( target ),                                                 \
 #    define stumplog_t( priority, ... ) ( ( void ) 0 )
 #  else
 #    define stumplog_t( priority, ... )                                        \
-stumplog( ( priority ), __VA_ARGS__ )
+stumplog_trace( ( priority ), __FILE__, __LINE__, __func__, __VA_ARGS__ )
 #  endif
 
 #endif /* __STUMPLESS_LEVEL_TRACE_H */

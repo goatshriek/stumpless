@@ -47,6 +47,7 @@ main( int argc, char **argv ) {
   stump_n( "notice" );
   stump_i( "informational" );
   stump_d( "debug" );
+  stump_t( "trace" );
 
 
   // the output of the above statements depends on what symbols are defined:
@@ -59,6 +60,7 @@ main( int argc, char **argv ) {
   // <13>1 2020-07-14T20:01:30.936486Z Angus - 6505 - - notice
   // <14>1 2020-07-14T20:01:30.937814Z Angus - 6505 - - informational
   // <15>1 2020-07-14T20:01:30.938356Z Angus - 6505 - - debug
+  // <15>1 2020-07-14T20:01:30.938627Z Angus - 6505 - [trace file="stumpless/docs/examples/severity_level/severity_level_example.c" line="50" function="main"] trace
 
   // if you define the following symbols:
   //    STUMPLESS_DISABLE_WARNING_LEVEL
@@ -70,6 +72,7 @@ main( int argc, char **argv ) {
   // <13>1 2020-07-14T20:07:41.090743Z Angus - 6680 - - notice
   // <14>1 2020-07-14T20:07:41.093912Z Angus - 6680 - - informational
   // <15>1 2020-07-14T20:07:41.094765Z Angus - 6680 - - debug
+  // <15>1 2020-07-14T20:07:41.094987Z Angus - 6505 - [trace file="stumpless/docs/examples/severity_level/severity_level_example.c" line="50" function="main"] trace
 
   // if you define the STUMPLESS_ENABLE_UPTO_INFO symbol (or the equivalent
   // STUMPLESS_DISABLE_DOWNTO_DEBUG symbol), this will result in these messages:

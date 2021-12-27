@@ -71,9 +71,9 @@ define the `STUMPLESS_ENABLE_UPTO_<LEVEL_NAME>` or
 `STUMPLESS_DISABLE_DOWNTO_<LEVEL_NAME>` symbols. These provide a faster way to
 disable one group of messages while leaving the others.
 
-It is important to note that not all of these functions result log a message
-with their severity when enabled. For example, the `stump_i_entry` function may
-log a message with severity EMERG if the provided entry has this severity set.
+It is important to note that not all of these functions log a message of their
+own severity when enabled. For example, the `stump_i_entry` function may log
+a message with severity EMERG if the provided entry has this severity set.
 Similarly, the `stumplog_a` function may log a message with DEBUG severity if
 this is provided as the first argument. Consult the documentation if you aren't
 sure what the severity will reflect, but you can generally assume that if the
@@ -102,6 +102,7 @@ stump_w( "warning!" );
 stump_n( "notice" );
 stump_i( "informational" );
 stump_d( "debug" );
+stump_t( "trace" );
 
 // without any extra symbols defined, this will result in these messages:
 // <8>1 2020-07-14T20:01:30.930277Z Angus - 6505 - - emergency!
@@ -112,6 +113,7 @@ stump_d( "debug" );
 // <13>1 2020-07-14T20:01:30.936486Z Angus - 6505 - - notice
 // <14>1 2020-07-14T20:01:30.937814Z Angus - 6505 - - informational
 // <15>1 2020-07-14T20:01:30.938356Z Angus - 6505 - - debug
+// <15>1 2020-07-14T20:01:30.938627Z Angus - 6505 - [trace file="stumpless/docs/examples/severity_level/severity_level_example.c" line="50" function="main"] trace
 
 // if you define the following symbols:
 //    STUMPLESS_DISABLE_WARNING_LEVEL
@@ -123,6 +125,7 @@ stump_d( "debug" );
 // <13>1 2020-07-14T20:07:41.090743Z Angus - 6680 - - notice
 // <14>1 2020-07-14T20:07:41.093912Z Angus - 6680 - - informational
 // <15>1 2020-07-14T20:07:41.094765Z Angus - 6680 - - debug
+// <15>1 2020-07-14T20:07:41.094987Z Angus - 6505 - [trace file="stumpless/docs/examples/severity_level/severity_level_example.c" line="50" function="main"] trace
 
 // if you define the STUMPLESS_ENABLE_UPTO_INFO symbol (or the equivalent
 // STUMPLESS_DISABLE_DOWNTO_DEBUG symbol), this will result in these messages:
