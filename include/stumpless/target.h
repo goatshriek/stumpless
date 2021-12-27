@@ -29,6 +29,7 @@
 
 #  include <stdarg.h>
 #  include <stddef.h>
+#  include <stdio.h>
 #  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
@@ -346,6 +347,28 @@ stumpless_add_message( struct stumpless_target *target,
 void
 stumpless_close_target( struct stumpless_target *target );
 
+/*
+ * Gets the current console stream where logs are written to.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the console stream.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
+ *
+ * @since v2.1.0
+ *
+ * @return The current stream where messages are logged to on setting the
+ * the CONS option.
+ */
+FILE *
+stumpless_get_cons_stream( void );
+
 /**
  * Gets the current target.
  *
@@ -594,6 +617,31 @@ stumpless_get_target_name( const struct stumpless_target *target );
  */
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target );
+
+/**
+ * Sets the console stream to write logs to.
+ *
+ * This will be stdout by default, but can be set to any stream. If it is set
+ * to NULL then console messages will not be printed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the console stream.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
+ *
+ * @since v2.1.0
+ *
+ * @param stream The stream to write logs to. If this is NULL then the messages
+ *	intended for the console stream will be ignored.
+ */
+void
+stumpless_set_cons_stream( FILE *stream );
 
 /**
  * Sets the target used when one is not provided.

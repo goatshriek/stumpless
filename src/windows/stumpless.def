@@ -158,13 +158,15 @@ EXPORTS
   stumpless_close_function_target               @143
   stumpless_open_function_target                @144
   stumpless_element_to_string                   @145
-  stump_trace                                   @146
-  stumpless_trace_entry                         @147
-  stumpless_trace_log                           @148
-  stumpless_trace_message                       @149
-  stumplog_trace                                @150
-  vstump_trace                                  @151
-  vstumpless_trace_log                          @152
-  vstumpless_trace_message                      @153
-  vstumplog_trace                               @154
+  stumpless_get_cons_stream                     @146
+  stumpless_set_cons_stream                     @147
+  stump_trace                                   @148
+  stumpless_trace_entry                         @149
+  stumpless_trace_log                           @150
+  stumpless_trace_message                       @151
+  stumplog_trace                                @152
+  vstump_trace                                  @153
+  vstumpless_trace_log                          @154
+  vstumpless_trace_message                      @155
+  vstumplog_trace                               @156
 

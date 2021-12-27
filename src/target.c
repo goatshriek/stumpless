@@ -17,6 +17,8 @@
  */
 
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/config.h>
@@ -26,6 +28,7 @@
 #include <stumpless/option.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
+#include <stumpless/error.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
@@ -53,6 +56,9 @@
 /* global static variables */
 static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
+static config_atomic_ptr_t cons_stream = config_atomic_ptr_initializer;
+static config_atomic_bool_t cons_stream_free = config_atomic_bool_true;
+static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 
 /* per-thread static variables */
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
@@ -98,8 +104,9 @@ stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry ) {
   struct strbuilder *builder;
   size_t builder_length;
-  const char *buffer;
+  const char *buffer = NULL;
   int result;
+  FILE *error_stream;
 
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
@@ -117,6 +124,22 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   clear_error(  );
+ 
+  if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) == STUMPLESS_OPTION_PERROR ){
+	// setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR option is
+	// set, thus only checking this flag is enough for further checks
+	// NOTE : Calling the format_entry twice because if the buffer is for target who
+	// require unformatted entry would need not to call format_entry.
+  	builder = format_entry( entry, target );
+  	if( !builder ) {
+    		return -1;
+  	}
+  	buffer = strbuilder_get_buffer( builder, &builder_length );
+	error_stream = stumpless_get_error_stream();
+  	if( fwrite( buffer, 1, builder_length, error_stream) != builder_length ){
+    	  return -1;
+	}
+  }
 
   // function targets are not formatted
   if( target->type == STUMPLESS_FUNCTION_TARGET ) {
@@ -134,13 +157,15 @@ stumpless_add_entry( struct stumpless_target *target,
     return config_send_entry_to_wel_target( target->id, entry );
   }
 
-  builder = format_entry( entry, target );
-  if( !builder ) {
-    return -1;
+  // entry was not formatted before
+  if( buffer == NULL ){
+	builder = format_entry( entry, target );
+  	if( !builder ) {
+    		return -1;
+  	}
+  	buffer = strbuilder_get_buffer( builder, &builder_length );
+
   }
-
-  buffer = strbuilder_get_buffer( builder, &builder_length );
-
   switch ( target->type ) {
 
     case STUMPLESS_BUFFER_TARGET:
@@ -969,4 +994,19 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
 
   raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
+}
+
+FILE *
+stumpless_get_cons_stream( void ) {
+  if( config_read_bool( &cons_stream_valid ) ) {
+	return config_read_ptr( &cons_stream );	 
+  } else {
+	return stdout;
+  }
+}
+
+void
+stumpless_set_cons_stream( FILE *stream) {
+  config_write_ptr( &cons_stream, stream );
+  config_write_bool( &cons_stream_valid, true );
 }

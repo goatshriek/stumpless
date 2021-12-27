@@ -71,6 +71,15 @@
 #    define STUMPLESS_OPTION_NOWAIT (1<<4)
 #  endif
 
+/** Log the message to the stderr as well as
+ *  to the target
+*/
+# ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#   define STUMPLESS_OPTION_PERROR LOG_PERROR
+# else
+#   define STUMPLESS_OPTION_PERROR (1 << 5)
+# endif
+
 /** Empty option mask for explicit 'no option' use. */
 #  define STUMPLESS_OPTION_NONE 0
 
