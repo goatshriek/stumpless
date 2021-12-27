@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2021-12-14
+## [2.1.0] - 2021-12-27
 ### Added
  - Custom function logging targets.
  - Localization for Spanish (es-ES :es:)
@@ -30,6 +30,10 @@ fixes, check out the
     * `stump_t_log`
     * `stump_t_message`
     * `stumplog_t`
+ - Macro `STUMPLESS_SEVERITY_TRACE_VALUE` as an alias for
+   `STUMPLESS_SEVERITY_DEBUG_VALUE`.
+ - Macro `STUMPLESS_SEVERITY_TRACE` for the new level as an alias for
+   the `STUMPLESS_SEVERITY_DEBUG` enum member.
 
 ### Fixed
  - `stumpless_perror` segmentation faults after the following errors:

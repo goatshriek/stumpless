@@ -138,7 +138,7 @@
 
 /**
  * Equivalent to the DEBUG severity code value. Trace level messages include
- * extra information, but do not have their own severity value in log entries.
+ * extra information, but do not have a distinct severity value in log entries.
  *
  * @since release v2.1.0
  */
@@ -169,8 +169,6 @@ ACTION( STUMPLESS_SEVERITY_NOTICE, STUMPLESS_SEVERITY_NOTICE_VALUE )   \
 ACTION( STUMPLESS_SEVERITY_INFO, STUMPLESS_SEVERITY_INFO_VALUE )       \
 /** Debug: debug-level messages. */                                    \
 ACTION( STUMPLESS_SEVERITY_DEBUG, STUMPLESS_SEVERITY_DEBUG_VALUE )     \
-/** Debug: debug-level messages. */                                    \
-ACTION( STUMPLESS_SEVERITY_TRACE, STUMPLESS_SEVERITY_TRACE_VALUE )
 
 #  ifdef __cplusplus
 extern "C" {
@@ -187,6 +185,14 @@ extern "C" {
 enum stumpless_severity {
   STUMPLESS_FOREACH_SEVERITY( STUMPLESS_GENERATE_ENUM )
 };
+
+/**
+ * Equivalent to the DEBUG severity. Trace level messages include extra
+ * information, but do not have a distinct severity value in log entries.
+ *
+ * @since release v2.1.0
+ */
+#  define STUMPLESS_SEVERITY_TRACE STUMPLESS_SEVERITY_DEBUG
 
 #  ifdef __cplusplus
 } /* extern "C" */
