@@ -1,5 +1,4 @@
 # Stumpless Coding Style
-
 Stumpless follows a fairly straightforward style, although it is not a
 well-known one such as the K&R standard. Because the formatting in the code base
 is admittedly not common, there will be some leniency in changes that do not
@@ -27,3 +26,9 @@ Here are a few other style points to follow in the code base:
    We recognize that there are many a heated conversation that can be had about
    the "tabs vs. spaces" war. Please respect this project's chosen convention
    and avoid the use of tabs.
+ * **Alphabetize items in sections** Functions in header files and test cases
+   are the big items here. There are cases where alphabetization makes something
+   less clear than some other order, and in those cases it's of course fine to
+   use the clearer order instead. But always default to inserting things in
+   alphabetical order unless there is some reason to do otherwise.
+
