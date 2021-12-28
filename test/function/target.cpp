@@ -186,7 +186,7 @@ namespace {
 
     TestRFC5424Compliance( buffer );
     EXPECT_THAT( buffer, HasSubstr( filename ) );
-    EXPECT_THAT( buffer, HasSubstr( "377" ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"377\"" ) );
     EXPECT_THAT( buffer, HasSubstr( function_name ) );
 
     stumpless_destroy_entry_and_contents( entry );
@@ -1021,6 +1021,34 @@ namespace {
     stumpless_close_buffer_target( target );
   }
 
+  TEST( StumplogTrace, Basic ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    int priority;
+    const char *filename = "stumplog-trace-file.c";
+    const char *function_name = "StumplogTrace.Basic";
+
+    buffer[0] = '\0';
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    stumplog_trace( priority, filename, 377, function_name, "test message" );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"377\"" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_close_buffer_target( target );
+  }
+
   TEST( TraceEntryTest, NullEntry ) {
     int result;
     struct stumpless_target *target;
@@ -1059,6 +1087,108 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST( TraceLogTest, NullTarget ) {
+    int priority;
+    int result;
+    const struct stumpless_error *error;
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    result = stumpless_trace_log( NULL,
+                                  priority,
+                                  __FILE__,
+                                  __LINE__,
+                                  __func__,
+                                  "test-trace-message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( TraceMessageTest, NullTarget ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_trace_message( NULL,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      "test-message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( TraceMessageTest, ReallocFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_realloc_result)(void *, size_t);
+    const char *long_message = "This message is longer than 128 characters, "
+                               "which is the starting buffer size in the "
+                               "format string function. If the call to realloc "
+                               "fails when it tries to increase the buffer "
+                               "size, then a memory allocation failure will be "
+                               "raised.";
+    int result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
+    EXPECT_NOT_NULL( set_realloc_result );
+
+    result = stumpless_trace_message( target,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      long_message );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_realloc( realloc );
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST( TraceMessageTest, SecondMemoryFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_malloc_result)(size_t);
+    void *(*set_realloc_result)(void *, size_t);
+    int result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_message( target,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      "test trace message" );
+    EXPECT_GE( result, 0 );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    EXPECT_NOT_NULL( set_malloc_result );
+
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
+    EXPECT_NOT_NULL( set_realloc_result );
+
+    result = stumpless_trace_message( target,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      "second test trace message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_malloc( malloc );
+    stumpless_set_realloc( realloc );
+    stumpless_close_buffer_target( target );
   }
 
   TEST( UnsetOption, NullTarget ) {
