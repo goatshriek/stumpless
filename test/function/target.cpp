@@ -217,6 +217,62 @@ namespace {
     stumpless_destroy_entry_and_contents( entry );
   }
 
+  TEST_F( TargetTest, TraceEntryMallocFailureOnFile ) {
+    void * ( *set_malloc_result )( size_t );
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test_malloc_failure.c";
+    const char *function_name = "TargetTest.TraceEntryMallocFailureOnFile";
+    int result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 34 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    function_name );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryMallocFailureOnFunction ) {
+    void * ( *set_malloc_result )( size_t );
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test_malloc_failure.c";
+    const char *function_name = "TargetTest.TraceEntryMallocFailureOnFunction";
+    int result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 45 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    function_name );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   TEST_F( TargetTest, TraceEntryNullFile ) {
     struct stumpless_entry *entry;
     const char *function_name = "TargetTest.TraceEntry";
