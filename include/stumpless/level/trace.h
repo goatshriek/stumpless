@@ -40,7 +40,12 @@
 #  endif
 
 /**
- * Logs a message to the current target with debug severity.
+ * Logs a message to the current target with debug severity, along with the
+ * file, line, and function of the invocation specified in a structured data
+ * element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * This function will be removed at compile time if
  * STUMPLESS_DISABLE_TRACE_LEVEL has been defined during build. If it is
@@ -103,7 +108,12 @@ stumpless_trace_log( stumpless_get_current_target(  ),                         \
 #  endif
 
 /**
- * Adds an entry to a given target with debug severity.
+ * Adds an entry to a given target with debug severity. The entry has a
+ * structured data element added to it with the file, line, and function of
+ * the invocation specified.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * This function will be removed at compile time if
  * STUMPLESS_DISABLE_TRACE_LEVEL has been defined during build. If it is
@@ -154,7 +164,12 @@ stumpless_trace_entry( ( target ), ( entry ), __FILE__, __LINE__, __func__ )
 #  endif
 
 /**
- * Adds a message to a given target with the specified priority.
+ * Adds a message to a given target with the specified priority, along with the
+ * file, line, and function of the invocation specified in a structured data
+ * element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * This function will be removed at compile time if
  * STUMPLESS_DISABLE_TRACE_LEVEL has been defined during build. If it is
@@ -217,7 +232,11 @@ stumpless_trace_log( ( target ),                                               \
 #endif
 
 /**
- * Adds a message to a given target with debug severity.
+ * Adds a message to a given target with debug severity, along with the file,
+ * line, and function of the invocation specified in a structured data element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * This function will be removed at compile time if
  * STUMPLESS_DISABLE_TRACE_LEVEL has been defined during build. If it is
@@ -282,7 +301,12 @@ stumpless_trace_log( ( target ),                                               \
 #  endif
 
 /**
- * Adds a message to the current target with the specified priority.
+ * Adds a message to the current target with the specified priority, along with
+ * the file, line, and function of the invocation specified in a structured data
+ * element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * This function will be removed at compile time if
  * STUMPLESS_DISABLE_TRACE_LEVEL has been defined during build. If it is
