@@ -61,9 +61,8 @@ static config_atomic_bool_t cons_stream_free = config_atomic_bool_true;
 static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 
 /* per-thread static variables */
-
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace = NULL;
 
 static
 void
@@ -790,32 +789,32 @@ vstumpless_trace_log( struct stumpless_target *target,
     return -1;
   }
 
-  if( !cached_entry ) {
-    cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
+  if( !cached_trace ) {
+    cached_trace = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
                                                STUMPLESS_SEVERITY_INFO,
                                                target->default_app_name,
                                                target->default_msgid,
                                                message,
                                                subs );
-    if( !cached_entry ) {
+    if( !cached_trace ) {
       return -1;
     }
 
   } else {
-    set_result = vstumpless_set_entry_message( cached_entry,
+    set_result = vstumpless_set_entry_message( cached_trace,
                                                message,
                                                subs );
     if( !set_result ) {
       return -1;
     }
 
-    set_result = stumpless_set_entry_app_name( cached_entry,
+    set_result = stumpless_set_entry_app_name( cached_trace,
                                                target->default_app_name );
     if( !set_result ) {
       return -1;
     }
 
-    set_result = stumpless_set_entry_msgid( cached_entry,
+    set_result = stumpless_set_entry_msgid( cached_trace,
                                             target->default_msgid );
     if( !set_result ) {
       return -1;
@@ -823,9 +822,9 @@ vstumpless_trace_log( struct stumpless_target *target,
 
   }
 
-  cached_entry->prival = priority;
+  cached_trace->prival = priority;
 
-  return stumpless_trace_entry( target, cached_entry, file, line, func );
+  return stumpless_trace_entry( target, cached_trace, file, line, func );
 }
 
 int
