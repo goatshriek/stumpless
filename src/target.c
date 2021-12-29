@@ -981,6 +981,9 @@ void
 target_free_thread( void ) {
   stumpless_destroy_entry_and_contents( cached_entry );
   cached_entry = NULL;
+
+  stumpless_destroy_entry_and_contents( cached_trace );
+  cached_trace = NULL;
 }
 
 void

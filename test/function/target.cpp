@@ -64,6 +64,8 @@ namespace {
     TearDown( void ) {
       stumpless_close_buffer_target( target );
       stumpless_close_buffer_target( plain_target );
+
+      stumpless_free_all(  );
     }
   };
 
@@ -330,6 +332,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( AddEntryTest, NullTarget ) {
@@ -345,6 +348,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 
   TEST( AddEntryTest, UnsupportedType ) {
@@ -374,6 +378,7 @@ namespace {
 
     stumpless_close_buffer_target( target );
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 
   TEST( AddLogTest, NullTarget ) {
@@ -385,6 +390,7 @@ namespace {
     result = stumpless_add_log( NULL, priority , "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( AddMessageTest, NullTarget ) {
@@ -394,6 +400,7 @@ namespace {
     result = stumpless_add_message( NULL, "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( AddMessageTest, ReallocFailure ) {
@@ -423,6 +430,7 @@ namespace {
 
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( AddMessageTest, SecondMemoryFailure ) {
@@ -455,6 +463,7 @@ namespace {
     stumpless_set_malloc( malloc );
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( CloseTarget, BadTargetType ) {
@@ -465,6 +474,7 @@ namespace {
 
     stumpless_close_target( &target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
+    stumpless_free_all(  );
   }
 
   TEST( CloseTarget, NullTarget ) {
@@ -472,11 +482,13 @@ namespace {
 
     stumpless_close_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( ConsoleStream, StdoutDefault ) {
 	FILE *cons_stream = stumpless_get_cons_stream();
 	EXPECT_TRUE( cons_stream == stdout);
+    stumpless_free_all(  );
   }
 
   TEST( ConsoleStream, NullStream ) {
@@ -484,6 +496,7 @@ namespace {
 	stumpless_set_cons_stream( NULL );
 	cons_stream = stumpless_get_cons_stream();
 	EXPECT_TRUE( cons_stream == NULL );
+    stumpless_free_all(  );
   }
 
   TEST( ConsoleStream, FileStream ) {
@@ -492,6 +505,7 @@ namespace {
     stumpless_set_cons_stream( file );
 	EXPECT_TRUE( stumpless_get_cons_stream() == file );
 	fclose( file );
+    stumpless_free_all(  );
   }
 
   TEST( GetDefaultAppName, NullTarget ) {
@@ -501,6 +515,7 @@ namespace {
     result = stumpless_get_target_default_app_name( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
+    stumpless_free_all(  );
   }
 
   TEST( GetDefaultFacility, NullTarget ) {
@@ -511,6 +526,7 @@ namespace {
     EXPECT_EQ( -1, facility );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( GetDefaultMsgid, NullTarget ) {
@@ -520,6 +536,7 @@ namespace {
     result = stumpless_get_target_default_msgid( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
+    stumpless_free_all(  );
   }
 
   TEST( GetName, NullTarget ) {
@@ -529,6 +546,7 @@ namespace {
     result = stumpless_get_target_name( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
+    stumpless_free_all(  );
   }
 
   TEST( GetOption, NullTarget ) {
@@ -538,6 +556,7 @@ namespace {
     option = stumpless_get_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_EQ( option, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( OpenTarget, AlreadyOpenTarget ) {
@@ -554,6 +573,7 @@ namespace {
     result = stumpless_open_target( target );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+    stumpless_free_all(  );
   }
 
   TEST( OpenTarget, MemoryFailureOnName ) {
@@ -573,6 +593,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
+    stumpless_free_all(  );
   }
 
   TEST( OpenTarget, NullTarget ) {
@@ -582,6 +603,7 @@ namespace {
     target = stumpless_open_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, MemoryFailure ) {
@@ -605,6 +627,7 @@ namespace {
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, NullName ) {
@@ -623,6 +646,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, NullTarget ) {
@@ -632,23 +656,28 @@ namespace {
     target_result = stumpless_set_target_default_app_name( NULL, "app-name" );
     EXPECT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, AppNameTargetRejected ) {
-      char buffer[100];
-      struct stumpless_target* target;
-      struct stumpless_target* target_result;
-      const struct stumpless_error* error;
+    char buffer[100];
+    struct stumpless_target* target;
+    struct stumpless_target* target_result;
+    const char *app_name = "app-name-that-is-too-long-to-be-accepted-it-should-"
+                           "be-rejected";
+    const struct stumpless_error* error;
 
-      target = stumpless_open_buffer_target( "test target",
-              buffer,
-              sizeof( buffer ) );
-      ASSERT_TRUE( target != NULL );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
 
+    target_result = stumpless_set_target_default_app_name( target, app_name );
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
 
-      target_result = stumpless_set_target_default_app_name( target, "app-name-that-is-too-long-to-be-accepted-it-should-be-rejected1" );
-
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, Local1 ) {
@@ -660,16 +689,17 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, STUMPLESS_FACILITY_LOCAL1 );
     EXPECT_EQ( target_result, target );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
 
     current_facility = stumpless_get_default_facility( target );
     EXPECT_EQ( current_facility, STUMPLESS_FACILITY_LOCAL1 );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, NotDivisibleBy8 ) {
@@ -688,6 +718,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, NullTarget ) {
@@ -697,6 +728,7 @@ namespace {
     target_result = stumpless_set_default_facility( NULL, STUMPLESS_FACILITY_USER );
     EXPECT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, TooHigh ) {
@@ -715,6 +747,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, TooLow ) {
@@ -733,6 +766,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, MemoryFailure ) {
@@ -756,6 +790,7 @@ namespace {
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, NullName ) {
@@ -774,6 +809,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, NullTarget ) {
@@ -785,6 +821,7 @@ namespace {
 
     error = stumpless_get_error(  );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, MsgIdTargetRejected ) {
@@ -796,12 +833,14 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
 
     target_result = stumpless_set_target_default_msgid( target, "msgid-that-is-too-long-to-be-accepted" );
-
+    ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, MsgidSetTargetFormatRejected ) {
@@ -813,12 +852,14 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
 
     target_result = stumpless_set_target_default_msgid( target, "msgid-wro\ng-format" );
-
+    ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, AppNameSetTargetFormatRejected ) {
@@ -830,11 +871,14 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_target_default_app_name( target, "appname-wro\ng-format" );
-
+    ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetOption, NullTarget ) {
@@ -844,6 +888,7 @@ namespace {
     result = stumpless_set_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetOption, Pid ) {
@@ -855,7 +900,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
     EXPECT_FALSE( option );
@@ -867,6 +912,7 @@ namespace {
     EXPECT_TRUE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
   TEST( SetOption, Perror ) {
     struct stumpless_target *target;
@@ -889,6 +935,7 @@ namespace {
     EXPECT_TRUE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( WithPid, Pid) {
@@ -945,6 +992,7 @@ namespace {
     }
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( WithPerror, Perror) {
@@ -986,6 +1034,7 @@ namespace {
     TestRFC5424Compliance( message_buffer );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
 
@@ -1007,6 +1056,7 @@ namespace {
     TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( StumpTrace, Basic ) {
@@ -1032,6 +1082,7 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( function_name ) );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( StumpTrace, WithPreprocessorMacros ) {
@@ -1052,6 +1103,7 @@ namespace {
     TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( Stumplog, Basic ) {
@@ -1069,12 +1121,12 @@ namespace {
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     stumplog( priority, "test message" );
-
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
 
     TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( StumplogTrace, Basic ) {
@@ -1103,6 +1155,40 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( function_name ) );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceEntryTest, MallocFailure ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
+    void *(*set_malloc_result)(size_t);
+    int result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "trace-fail-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    entry = create_entry(  );
+    EXPECT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    EXPECT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    __FILE__,
+                                    __LINE__,
+                                    __func__ );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_set_malloc( malloc );
+    stumpless_free_all(  );
   }
 
   TEST( TraceEntryTest, NullEntry ) {
@@ -1124,6 +1210,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( TraceEntryTest, NullTarget ) {
@@ -1143,6 +1230,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 
   TEST( TraceLogTest, NullTarget ) {
@@ -1159,6 +1247,7 @@ namespace {
                                   "test-trace-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( TraceMessageTest, NullTarget ) {
@@ -1172,6 +1261,7 @@ namespace {
                                       "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( TraceMessageTest, ReallocFailure ) {
@@ -1205,6 +1295,7 @@ namespace {
 
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( TraceMessageTest, SecondMemoryFailure ) {
@@ -1245,6 +1336,7 @@ namespace {
     stumpless_set_malloc( malloc );
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( UnsetOption, NullTarget ) {
@@ -1254,6 +1346,7 @@ namespace {
     result = stumpless_unset_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( UnsetOption, Pid ) {
@@ -1283,6 +1376,7 @@ namespace {
     EXPECT_FALSE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( UnsetOption, Perror ) {
@@ -1294,7 +1388,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
     EXPECT_FALSE( option );
@@ -1312,5 +1406,6 @@ namespace {
     EXPECT_FALSE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 }
