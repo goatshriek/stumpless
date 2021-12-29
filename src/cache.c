@@ -203,12 +203,13 @@ cache_new( size_t size,
 
   first_page = add_page( c );
   if( first_page != 0 ) {
-    goto fail_pages;
+    goto fail_add;
   }
 
   return c;
 
-
+fail_add:
+  free_mem( c->pages );
 fail_pages:
   free_mem( c );
 fail:

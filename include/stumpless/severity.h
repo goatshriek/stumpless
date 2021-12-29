@@ -137,6 +137,14 @@
 #  endif
 
 /**
+ * Equivalent to the DEBUG severity code value. Trace level messages include
+ * extra information, but do not have a distinct severity value in log entries.
+ *
+ * @since release v2.1.0
+ */
+#  define STUMPLESS_SEVERITY_TRACE_VALUE STUMPLESS_SEVERITY_DEBUG_VALUE
+
+/**
  * A macro function that runs the provided action once for each severity,
  * providing the symbol and value. The action must take two arguments, the
  * first being the symbol name of the severity, and the second the numeric
@@ -177,6 +185,14 @@ extern "C" {
 enum stumpless_severity {
   STUMPLESS_FOREACH_SEVERITY( STUMPLESS_GENERATE_ENUM )
 };
+
+/**
+ * Equivalent to the DEBUG severity. Trace level messages include extra
+ * information, but do not have a distinct severity value in log entries.
+ *
+ * @since release v2.1.0
+ */
+#  define STUMPLESS_SEVERITY_TRACE STUMPLESS_SEVERITY_DEBUG
 
 #  ifdef __cplusplus
 } /* extern "C" */

@@ -10,11 +10,6 @@ or want to make a suggestion, please submit an issue on the project's
    it through a target at runtime, this is limited and inflexible. Instead, a
    generic filter structure that can filter on a wide variety of properties of
    each log entry and even use custom functions to filter messages.
- * [ADD] **Tracing call including source code information**
-   A tracing call that includes the line and file of the source code that it
-   appears in could be useful for some applications. This will be added as a
-   macro function so that the relevant information can be added. It will use
-   the same severity as debug messages.
 
 
 ## 2.2.0

@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stumpless/config.h>
 #include <stumpless/entry.h>
+#include <stumpless/error.h>
 #include <stumpless/facility.h>
 #include <stumpless/option.h>
 #include <stumpless/severity.h>
@@ -40,6 +41,7 @@
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/formatter.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
@@ -60,6 +62,7 @@ static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 
 /* per-thread static variables */
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace = NULL;
 
 static
 void
@@ -81,13 +84,19 @@ stump( const char *message, ... ) {
   return result;
 }
 
-void
-stumplog( int priority, const char *message, ... ) {
+int
+stump_trace( const char *file,
+             int line,
+             const char *func,
+             const char *message, ... ) {
+  int result;
   va_list subs;
 
   va_start( subs, message );
-  vstumplog( priority, message, subs );
+  result = vstump_trace( file, line, func, message, subs );
   va_end( subs );
+
+  return result;
 }
 
 int
@@ -547,6 +556,102 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
   return is_open ? target : NULL;
 }
 
+int
+stumpless_trace_entry( struct stumpless_target *target,
+                       struct stumpless_entry *entry,
+                       const char *file,
+                       int line,
+                       const char *func ) {
+  char digits[MAX_INT_SIZE];
+  char *line_str;
+
+  if( !entry ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
+    return -1;
+  }
+
+  if( !file ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
+    return -1;
+  }
+
+  if( !func ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
+    return -1;
+  }
+
+  digits[MAX_INT_SIZE-1] = '\0';
+  line_str = digits + MAX_INT_SIZE - 1;
+  if( line == 0 ) {
+    line_str--;
+    *line_str = '0';
+  } else {
+    while( line != 0 ) {
+      line_str--;
+      *line_str = ( line % 10 ) + 48;
+      line /= 10;
+    }
+  }
+
+  stumpless_set_entry_param_value_by_name( entry, "trace", "file", file );
+  if( stumpless_has_error(  ) ) {
+    return -1;
+  }
+
+  stumpless_set_entry_param_value_by_name( entry, "trace", "line", line_str );
+  if( stumpless_has_error(  ) ) {
+    return -1;
+  }
+
+  stumpless_set_entry_param_value_by_name( entry, "trace", "function", func );
+  if( stumpless_has_error(  ) ) {
+    return -1;
+  }
+
+  return stumpless_add_entry( target, entry );
+}
+
+int
+stumpless_trace_log( struct stumpless_target *target,
+                     int priority,
+                     const char *file,
+                     int line,
+                     const char *func,
+                     const char *message,
+                     ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstumpless_trace_log( target,
+                                 priority,
+                                 file,
+                                 line,
+                                 func,
+                                 message,
+                                 subs );
+  va_end( subs );
+
+  return result;
+}
+
+int
+stumpless_trace_message( struct stumpless_target *target,
+                         const char *file,
+                         int line,
+                         const char *func,
+                         const char *message,
+                         ... ) {
+  int result;
+  va_list subs;
+
+  va_start( subs, message );
+  result = vstumpless_trace_message( target, file, line, func, message, subs );
+  va_end( subs );
+
+  return result;
+}
+
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option ) {
   VALIDATE_ARG_NOT_NULL( target );
@@ -557,6 +662,28 @@ stumpless_unset_option( struct stumpless_target *target, int option ) {
 
   clear_error(  );
   return target;
+}
+
+void
+stumplog( int priority, const char *message, ... ) {
+  va_list subs;
+
+  va_start( subs, message );
+  vstumplog( priority, message, subs );
+  va_end( subs );
+}
+
+void
+stumplog_trace( int priority,
+                const char *file,
+                int line,
+                const char *func,
+                const char *message, ... ) {
+  va_list subs;
+
+  va_start( subs, message );
+  vstumplog_trace( priority, file, line, func, message, subs );
+  va_end( subs );
 }
 
 int
@@ -571,18 +698,20 @@ vstump( const char *message, va_list subs ) {
   return vstumpless_add_message( target, message, subs );
 }
 
-void
-vstumplog( int priority, const char *message, va_list subs ) {
+int
+vstump_trace( const char *file,
+              int line,
+              const char *func,
+              const char *message,
+              va_list subs ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   target = stumpless_get_current_target(  );
   if( !target ) {
-    return;
+    return -1;
   }
 
-  vstumpless_add_log( target, priority, message, subs );
+  return vstumpless_trace_message( target, file, line, func, message, subs );
 }
 
 int
@@ -643,6 +772,113 @@ vstumpless_add_message( struct stumpless_target *target,
   }
 
   return vstumpless_add_log( target, target->default_prival, message, subs );
+}
+
+int
+vstumpless_trace_log( struct stumpless_target *target,
+                      int priority,
+                      const char *file,
+                      int line,
+                      const char *func,
+                      const char *message,
+                      va_list subs ) {
+  const struct stumpless_entry *set_result;
+
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return -1;
+  }
+
+  if( !cached_trace ) {
+    cached_trace = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                         target->default_app_name,
+                                         target->default_msgid,
+                                         message,
+                                         subs );
+    if( !cached_trace ) {
+      return -1;
+    }
+
+  } else {
+    set_result = vstumpless_set_entry_message( cached_trace,
+                                               message,
+                                               subs );
+    if( !set_result ) {
+      return -1;
+    }
+
+    set_result = stumpless_set_entry_app_name( cached_trace,
+                                               target->default_app_name );
+    if( !set_result ) {
+      return -1;
+    }
+
+    set_result = stumpless_set_entry_msgid( cached_trace,
+                                            target->default_msgid );
+    if( !set_result ) {
+      return -1;
+    }
+
+  }
+
+  cached_trace->prival = priority;
+
+  return stumpless_trace_entry( target, cached_trace, file, line, func );
+}
+
+int
+vstumpless_trace_message( struct stumpless_target *target,
+                          const char *file,
+                          int line,
+                          const char *func,
+                          const char *message,
+                          va_list subs ) {
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return -1;
+  }
+
+  return vstumpless_trace_log( target,
+                               target->default_prival,
+                               file,
+                               line,
+                               func,
+                               message,
+                               subs );
+}
+
+void
+vstumplog( int priority, const char *message, va_list subs ) {
+  struct stumpless_target *target;
+
+  clear_error(  );
+
+  target = stumpless_get_current_target(  );
+  if( !target ) {
+    return;
+  }
+
+  vstumpless_add_log( target, priority, message, subs );
+}
+
+void
+vstumplog_trace( int priority,
+                 const char * file,
+                 int line,
+                 const char *func,
+                 const char *message,
+                 va_list subs ) {
+  struct stumpless_target *target;
+
+  clear_error(  );
+
+  target = stumpless_get_current_target(  );
+  if( !target ) {
+    return;
+  }
+
+  vstumpless_trace_log( target, priority, file, line, func, message, subs );
 }
 
 /* private definitions */
@@ -745,6 +981,9 @@ void
 target_free_thread( void ) {
   stumpless_destroy_entry_and_contents( cached_entry );
   cached_entry = NULL;
+
+  stumpless_destroy_entry_and_contents( cached_trace );
+  cached_trace = NULL;
 }
 
 void

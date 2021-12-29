@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,15 @@
 #include <cstdlib>
 #include <cstdio>
 #include <regex>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
+
+using::testing::HasSubstr;
 
 namespace {
 
@@ -60,6 +64,8 @@ namespace {
     TearDown( void ) {
       stumpless_close_buffer_target( target );
       stumpless_close_buffer_target( plain_target );
+
+      stumpless_free_all(  );
     }
   };
 
@@ -163,6 +169,151 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
+  TEST_F( TargetTest, TraceEntry ) {
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test.c";
+    const char *function_name = "TargetTest.TraceEntry";
+    int result;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    function_name );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"377\"" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryLineZero ) {
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test.c";
+    const char *function_name = "TargetTest.TraceEntry";
+    int result;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    0,
+                                    function_name );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"0\"" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryMallocFailureOnFile ) {
+    void * ( *set_malloc_result )( size_t );
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test_malloc_failure.c";
+    const char *function_name = "TargetTest.TraceEntryMallocFailureOnFile";
+    int result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 34 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    function_name );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryMallocFailureOnFunction ) {
+    void * ( *set_malloc_result )( size_t );
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test_malloc_failure.c";
+    const char *function_name = "TargetTest.TraceEntryMallocFailureOnFunction";
+    int result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 45 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    function_name );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryNullFile ) {
+    struct stumpless_entry *entry;
+    const char *function_name = "TargetTest.TraceEntry";
+    int result;
+    const struct stumpless_error *error;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    NULL,
+                                    377,
+                                    function_name );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( TargetTest, TraceEntryNullFunction ) {
+    struct stumpless_entry *entry;
+    const char *filename = "trace_entry_test.c";
+    int result;
+    const struct stumpless_error *error;
+
+    entry = create_entry(  );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    filename,
+                                    377,
+                                    NULL );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
 
   /* non-fixture tests */
 
@@ -181,24 +332,23 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( AddEntryTest, NullTarget ) {
     int result;
-    struct stumpless_entry *entry;
+    const struct stumpless_entry *entry;
     const struct stumpless_error *error;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "stumpless-unit-test",
-                                 "basic-entry",
-                                 "basic test message" );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_add_entry( NULL, entry );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 
   TEST( AddEntryTest, UnsupportedType ) {
@@ -211,7 +361,7 @@ namespace {
     target = stumpless_open_buffer_target( "unsupported type testing",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
     // assuming this isn't a valid type
     target->type = ( enum stumpless_target_type ) -1;
 
@@ -226,8 +376,11 @@ namespace {
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
+    target->type = STUMPLESS_BUFFER_TARGET;
     stumpless_close_buffer_target( target );
+
     stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 
   TEST( AddLogTest, NullTarget ) {
@@ -239,6 +392,7 @@ namespace {
     result = stumpless_add_log( NULL, priority , "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( AddMessageTest, NullTarget ) {
@@ -248,6 +402,7 @@ namespace {
     result = stumpless_add_message( NULL, "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( AddMessageTest, ReallocFailure ) {
@@ -268,7 +423,7 @@ namespace {
                                            sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
-    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     EXPECT_NOT_NULL( set_realloc_result );
 
     result = stumpless_add_message( target, long_message );
@@ -277,6 +432,7 @@ namespace {
 
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( AddMessageTest, SecondMemoryFailure ) {
@@ -309,6 +465,7 @@ namespace {
     stumpless_set_malloc( malloc );
     stumpless_set_realloc( realloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( CloseTarget, BadTargetType ) {
@@ -319,6 +476,7 @@ namespace {
 
     stumpless_close_target( &target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
+    stumpless_free_all(  );
   }
 
   TEST( CloseTarget, NullTarget ) {
@@ -326,6 +484,30 @@ namespace {
 
     stumpless_close_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
+  TEST( ConsoleStream, StdoutDefault ) {
+	FILE *cons_stream = stumpless_get_cons_stream();
+	EXPECT_TRUE( cons_stream == stdout);
+    stumpless_free_all(  );
+  }
+
+  TEST( ConsoleStream, NullStream ) {
+    FILE *cons_stream;
+	stumpless_set_cons_stream( NULL );
+	cons_stream = stumpless_get_cons_stream();
+	EXPECT_TRUE( cons_stream == NULL );
+    stumpless_free_all(  );
+  }
+
+  TEST( ConsoleStream, FileStream ) {
+	const char *filename = "cons_stream.txt";
+	FILE *file = fopen(filename, "w+");
+    stumpless_set_cons_stream( file );
+	EXPECT_TRUE( stumpless_get_cons_stream() == file );
+	fclose( file );
+    stumpless_free_all(  );
   }
 
   TEST( GetDefaultAppName, NullTarget ) {
@@ -335,6 +517,7 @@ namespace {
     result = stumpless_get_target_default_app_name( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
+    stumpless_free_all(  );
   }
 
   TEST( GetDefaultFacility, NullTarget ) {
@@ -345,6 +528,7 @@ namespace {
     EXPECT_EQ( -1, facility );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( GetDefaultMsgid, NullTarget ) {
@@ -354,6 +538,7 @@ namespace {
     result = stumpless_get_target_default_msgid( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
+    stumpless_free_all(  );
   }
 
   TEST( GetName, NullTarget ) {
@@ -363,6 +548,7 @@ namespace {
     result = stumpless_get_target_name( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
+    stumpless_free_all(  );
   }
 
   TEST( GetOption, NullTarget ) {
@@ -372,6 +558,7 @@ namespace {
     option = stumpless_get_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_EQ( option, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( OpenTarget, AlreadyOpenTarget ) {
@@ -388,6 +575,9 @@ namespace {
     result = stumpless_open_target( target );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( OpenTarget, MemoryFailureOnName ) {
@@ -407,6 +597,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     stumpless_set_malloc( malloc );
+    stumpless_free_all(  );
   }
 
   TEST( OpenTarget, NullTarget ) {
@@ -416,6 +607,7 @@ namespace {
     target = stumpless_open_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, MemoryFailure ) {
@@ -439,6 +631,7 @@ namespace {
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, NullName ) {
@@ -457,6 +650,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, NullTarget ) {
@@ -466,23 +660,28 @@ namespace {
     target_result = stumpless_set_target_default_app_name( NULL, "app-name" );
     EXPECT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, AppNameTargetRejected ) {
-      char buffer[100];
-      struct stumpless_target* target;
-      struct stumpless_target* target_result;
-      const struct stumpless_error* error;
+    char buffer[100];
+    struct stumpless_target* target;
+    struct stumpless_target* target_result;
+    const char *app_name = "app-name-that-is-too-long-to-be-accepted-it-should-"
+                           "be-rejected";
+    const struct stumpless_error* error;
 
-      target = stumpless_open_buffer_target( "test target",
-              buffer,
-              sizeof( buffer ) );
-      ASSERT_TRUE( target != NULL );
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
 
+    target_result = stumpless_set_target_default_app_name( target, app_name );
+    EXPECT_NULL( target_result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
 
-      target_result = stumpless_set_target_default_app_name( target, "app-name-that-is-too-long-to-be-accepted-it-should-be-rejected1" );
-
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, Local1 ) {
@@ -494,16 +693,17 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_default_facility( target, STUMPLESS_FACILITY_LOCAL1 );
     EXPECT_EQ( target_result, target );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
 
     current_facility = stumpless_get_default_facility( target );
     EXPECT_EQ( current_facility, STUMPLESS_FACILITY_LOCAL1 );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, NotDivisibleBy8 ) {
@@ -522,6 +722,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, NullTarget ) {
@@ -531,6 +732,7 @@ namespace {
     target_result = stumpless_set_default_facility( NULL, STUMPLESS_FACILITY_USER );
     EXPECT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, TooHigh ) {
@@ -549,6 +751,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultFacility, TooLow ) {
@@ -567,6 +770,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_FACILITY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, MemoryFailure ) {
@@ -590,6 +794,7 @@ namespace {
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, NullName ) {
@@ -608,6 +813,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, NullTarget ) {
@@ -616,9 +822,9 @@ namespace {
 
     target_result = stumpless_set_target_default_msgid( NULL, "msgid" );
     EXPECT_NULL( target_result );
-
-    error = stumpless_get_error(  );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, MsgIdTargetRejected ) {
@@ -630,12 +836,15 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
 
     target_result = stumpless_set_target_default_msgid( target, "msgid-that-is-too-long-to-be-accepted" );
-
+    ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultMsgId, MsgidSetTargetFormatRejected ) {
@@ -647,12 +856,15 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
 
     target_result = stumpless_set_target_default_msgid( target, "msgid-wro\ng-format" );
-
+    ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetDefaultAppName, AppNameSetTargetFormatRejected ) {
@@ -664,11 +876,14 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     target_result = stumpless_set_target_default_app_name( target, "appname-wro\ng-format" );
-
+    ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( SetOption, NullTarget ) {
@@ -678,6 +893,7 @@ namespace {
     result = stumpless_set_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( SetOption, Pid ) {
@@ -689,7 +905,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
     EXPECT_FALSE( option );
@@ -701,6 +917,7 @@ namespace {
     EXPECT_TRUE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
   TEST( SetOption, Perror ) {
     struct stumpless_target *target;
@@ -723,6 +940,7 @@ namespace {
     EXPECT_TRUE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( WithPid, Pid) {
@@ -779,6 +997,7 @@ namespace {
     }
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( WithPerror, Perror) {
@@ -820,6 +1039,7 @@ namespace {
     TestRFC5424Compliance( message_buffer );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
 
@@ -841,6 +1061,54 @@ namespace {
     TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( StumpTrace, Basic ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    const char *filename = "fake_file.c";
+    const char *function_name = "fake_function";
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    result = stump_trace( filename, 377, function_name, "test message" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "377" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( StumpTrace, WithPreprocessorMacros ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    result = stump_trace( __FILE__, __LINE__, __func__, "test message" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( Stumplog, Basic ) {
@@ -858,12 +1126,222 @@ namespace {
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     stumplog( priority, "test message" );
-
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
 
     TestRFC5424Compliance( buffer );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( StumplogTrace, Basic ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    int priority;
+    const char *filename = "stumplog-trace-file.c";
+    const char *function_name = "StumplogTrace.Basic";
+
+    buffer[0] = '\0';
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    ASSERT_TRUE( stumpless_get_current_target(  ) == target );
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    stumplog_trace( priority, filename, 377, function_name, "test message" );
+
+    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"377\"" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceEntryTest, MallocFailure ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
+    void *(*set_malloc_result)(size_t);
+    int result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "trace-fail-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    entry = create_entry(  );
+    EXPECT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    EXPECT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_trace_entry( target,
+                                    entry,
+                                    __FILE__,
+                                    __LINE__,
+                                    __func__ );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_set_malloc( malloc );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceEntryTest, NullEntry ) {
+    int result;
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+    char buffer[10];
+
+    target = stumpless_open_buffer_target( "null entry testing",
+                                           buffer,
+                                           sizeof( buffer ) );
+
+    result = stumpless_trace_entry( target,
+                                    NULL,
+                                    __FILE__,
+                                    __LINE__,
+                                    __func__ );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceEntryTest, NullTarget ) {
+    int result;
+    struct stumpless_entry *entry;
+    const struct stumpless_error *error;
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_trace_entry( NULL,
+                                    entry,
+                                    __FILE__,
+                                    __LINE__,
+                                    __func__ );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceLogTest, NullTarget ) {
+    int priority;
+    int result;
+    const struct stumpless_error *error;
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    result = stumpless_trace_log( NULL,
+                                  priority,
+                                  __FILE__,
+                                  __LINE__,
+                                  __func__,
+                                  "test-trace-message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceMessageTest, NullTarget ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_trace_message( NULL,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      "test-message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceMessageTest, ReallocFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_realloc_result)(void *, size_t);
+    const char *long_message = "This message is longer than 128 characters, "
+                               "which is the starting buffer size in the "
+                               "format string function. If the call to realloc "
+                               "fails when it tries to increase the buffer "
+                               "size, then a memory allocation failure will be "
+                               "raised.";
+    int result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
+    EXPECT_NOT_NULL( set_realloc_result );
+
+    result = stumpless_trace_message( target,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      long_message );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_realloc( realloc );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceMessageTest, SecondMemoryFailure ) {
+    char buffer[1000];
+    struct stumpless_target *target;
+    void *(*set_malloc_result)(size_t);
+    void *(*set_realloc_result)(void *, size_t);
+    int result;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_trace_message( target,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      "test trace message" );
+    EXPECT_GE( result, 0 );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    EXPECT_NOT_NULL( set_malloc_result );
+
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
+    EXPECT_NOT_NULL( set_realloc_result );
+
+    result = stumpless_trace_message( target,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      "second test trace message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_malloc( malloc );
+    stumpless_set_realloc( realloc );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( UnsetOption, NullTarget ) {
@@ -873,6 +1351,7 @@ namespace {
     result = stumpless_unset_option( NULL, STUMPLESS_OPTION_PID );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
   }
 
   TEST( UnsetOption, Pid ) {
@@ -902,6 +1381,7 @@ namespace {
     EXPECT_FALSE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
 
   TEST( UnsetOption, Perror ) {
@@ -913,7 +1393,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
     EXPECT_FALSE( option );
@@ -931,24 +1411,6 @@ namespace {
     EXPECT_FALSE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
   }
-  TEST( ConsoleStream, StdoutDefault ) {
-	FILE *cons_stream = stumpless_get_cons_stream();
-	EXPECT_TRUE( cons_stream == stdout);
-  }
-
-  TEST( ConsoleStream, NullStream ) {
-    FILE *cons_stream;
-	stumpless_set_cons_stream( NULL );
-	cons_stream = stumpless_get_cons_stream();
-	EXPECT_TRUE( cons_stream == NULL );	
-  }
-
-  TEST( ConsoleStream, FileStream ) {
-	const char *filename = "cons_stream.txt";
-	FILE *file = fopen(filename, "w+");
-    stumpless_set_cons_stream( file );
-	EXPECT_TRUE( stumpless_get_cons_stream() == file );
-	fclose( file );
-  } 
 }

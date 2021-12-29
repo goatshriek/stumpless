@@ -9,11 +9,31 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2021-08-16
+## [2.1.0] - 2021-12-28
 ### Added
  - Custom function logging targets.
  - Localization for Spanish (es-ES :es:)
  - Systemd journal logging targets (journald).
+ - Log source file tracing functions:
+    * `stump_trace`
+    * `stumpless_trace_entry`
+    * `stumpless_trace_log`
+    * `stumpless_trace_message`
+    * `stumplog_trace`
+    * `vstump_trace`
+    * `vstumpless_trace_log`
+    * `vstumpless_trace_message`
+    * `vstumplog_trace`
+ - The TRACE log level severity shorthand function macros:
+    * `stump_t`
+    * `stump_t_entry`
+    * `stump_t_log`
+    * `stump_t_message`
+    * `stumplog_t`
+ - Macro `STUMPLESS_SEVERITY_TRACE_VALUE` as an alias for
+   `STUMPLESS_SEVERITY_DEBUG_VALUE`.
+ - Macro `STUMPLESS_SEVERITY_TRACE` for the new level as an alias for
+   the `STUMPLESS_SEVERITY_DEBUG` enum member.
 
 ### Fixed
  - `stumpless_perror` segmentation faults after the following errors:

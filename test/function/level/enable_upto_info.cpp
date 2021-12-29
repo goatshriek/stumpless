@@ -36,5 +36,6 @@ namespace {
   TEST_LEVEL_ENABLED( INFO, i );
 
   TEST_LEVEL_DISABLED( DEBUG, d );
+  TEST_LEVEL_DISABLED( TRACE, t );
 
 }

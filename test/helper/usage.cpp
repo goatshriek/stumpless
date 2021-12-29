@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,20 @@
 
 void
 add_messages( struct stumpless_target *target, size_t message_count ) {
-  for( size_t i = 0; i < message_count; i++ ) {
+  for( size_t i = 0; i < message_count; i += 2 ) {
     stumpless_add_message( target,
                            "message number #%zd from thread #%d",
                            i,
                            std::this_thread::get_id(  ) );
+    EXPECT_NO_ERROR;
+
+    stumpless_trace_message( target,
+                             __FILE__,
+                             __LINE__,
+                             __func__,
+                             "messge number #%zd (trace) from thread #%d",
+                             i + 1,
+                             std::this_thread::get_id(  ) );
     EXPECT_NO_ERROR;
   }
 
