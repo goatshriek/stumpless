@@ -361,7 +361,7 @@ namespace {
     target = stumpless_open_buffer_target( "unsupported type testing",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
     // assuming this isn't a valid type
     target->type = ( enum stumpless_target_type ) -1;
 
@@ -376,7 +376,9 @@ namespace {
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
 
+    target->type = STUMPLESS_BUFFER_TARGET;
     stumpless_close_buffer_target( target );
+
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
@@ -421,7 +423,7 @@ namespace {
                                            sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
-    set_realloc_result = stumpless_set_realloc( [](void *ptr, size_t size)->void *{ return NULL; } );
+    set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     EXPECT_NOT_NULL( set_realloc_result );
 
     result = stumpless_add_message( target, long_message );
@@ -573,6 +575,8 @@ namespace {
     result = stumpless_open_target( target );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_buffer_target( target );
     stumpless_free_all(  );
   }
 
@@ -818,9 +822,8 @@ namespace {
 
     target_result = stumpless_set_target_default_msgid( NULL, "msgid" );
     EXPECT_NULL( target_result );
-
-    error = stumpless_get_error(  );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
     stumpless_free_all(  );
   }
 
@@ -840,6 +843,7 @@ namespace {
     ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
 
+    stumpless_close_buffer_target( target );
     stumpless_free_all(  );
   }
 
@@ -859,6 +863,7 @@ namespace {
     ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
+    stumpless_close_buffer_target( target );
     stumpless_free_all(  );
   }
 

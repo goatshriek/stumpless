@@ -791,11 +791,11 @@ vstumpless_trace_log( struct stumpless_target *target,
 
   if( !cached_trace ) {
     cached_trace = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                               STUMPLESS_SEVERITY_INFO,
-                                               target->default_app_name,
-                                               target->default_msgid,
-                                               message,
-                                               subs );
+                                         STUMPLESS_SEVERITY_INFO,
+                                         target->default_app_name,
+                                         target->default_msgid,
+                                         message,
+                                         subs );
     if( !cached_trace ) {
       return -1;
     }
