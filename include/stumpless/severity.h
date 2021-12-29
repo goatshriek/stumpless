@@ -168,7 +168,7 @@ ACTION( STUMPLESS_SEVERITY_NOTICE, STUMPLESS_SEVERITY_NOTICE_VALUE )   \
 /** Informational: informational messages. */                          \
 ACTION( STUMPLESS_SEVERITY_INFO, STUMPLESS_SEVERITY_INFO_VALUE )       \
 /** Debug: debug-level messages. */                                    \
-ACTION( STUMPLESS_SEVERITY_DEBUG, STUMPLESS_SEVERITY_DEBUG_VALUE )     \
+ACTION( STUMPLESS_SEVERITY_DEBUG, STUMPLESS_SEVERITY_DEBUG_VALUE )
 
 #  ifdef __cplusplus
 extern "C" {
