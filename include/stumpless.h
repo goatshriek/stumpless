@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@
 #  include <stumpless/level/err.h>
 #  include <stumpless/level/info.h>
 #  include <stumpless/level/notice.h>
+#  include <stumpless/level/trace.h>
 #  include <stumpless/level/warning.h>
 #  include <stumpless/memory.h>
 #  include <stumpless/option.h>

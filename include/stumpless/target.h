@@ -151,13 +151,11 @@ struct stumpless_target {
 int stump( const char *message, ... );
 
 /**
- * Logs a message to the default target with the given priority.
+ * Logs a message to the default target, along with the file, line, and function
+ * information specified in a structured data element.
  *
- * This function can serve as a replacement for the traditional \c syslog
- * function.
- *
- * For detailed information on what the default target will be for a given
- * system, check the stumpless_get_default_target() function documentation.
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -178,18 +176,30 @@ int stump( const char *message, ... );
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
- * @param priority The priority of the message - this should be the bitwise or
- * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ * @since release v2.1.0
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied to.
+ *
+ * @param func The name of the function that the message should be tied to.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of specifiers
- * given.
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
  */
-void
-stumplog( int priority, const char *message, ... );
+int
+stump_trace( const char *file,
+             int line,
+             const char *func,
+             const char *message, ... );
 
 /**
  * Adds an entry into a given target. This is the primary logging function of
@@ -336,6 +346,28 @@ stumpless_add_message( struct stumpless_target *target,
  */
 void
 stumpless_close_target( struct stumpless_target *target );
+
+/*
+ * Gets the current console stream where logs are written to.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the console stream.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
+ *
+ * @since v2.1.0
+ *
+ * @return The current stream where messages are logged to on setting the
+ * the CONS option.
+ */
+FILE *
+stumpless_get_cons_stream( void );
 
 /**
  * Gets the current target.
@@ -587,6 +619,31 @@ struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target );
 
 /**
+ * Sets the console stream to write logs to.
+ *
+ * This will be stdout by default, but can be set to any stream. If it is set
+ * to NULL then console messages will not be printed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic variables are used to store and
+ * retrieve the console stream.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be ansynchronously
+ * cancelled.
+ *
+ * @since v2.1.0
+ *
+ * @param stream The stream to write logs to. If this is NULL then the messages
+ *	intended for the console stream will be ignored.
+ */
+void
+stumpless_set_cons_stream( FILE *stream );
+
+/**
  * Sets the target used when one is not provided.
  *
  * Without being set, the current target will be the last one opened, or the
@@ -757,6 +814,166 @@ const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target );
 
 /**
+ * Adds an entry into a given target. The entry has a structured data element
+ * added to it with the file, line, and function information specified.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to send the message to.
+ *
+ * @param entry The entry to send to the target.
+ *
+ * @param file The name of the source file the entry should be tied to.
+ *
+ * @param line The line in the source file that the entry should be tied
+ * to.
+ *
+ * @param func The name of the function that the entry should be tied to.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+stumpless_trace_entry( struct stumpless_target *target,
+                       struct stumpless_entry *entry,
+                       const char *file,
+                       int line,
+                       const char *func );
+
+/**
+ * Adds a log message with a priority to a given target, along with the file,
+ * line, and function information specified in a structured data element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param target The target to send the message to.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied
+ * to.
+ *
+ * @param func The name of the function that the message should be tied to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+stumpless_trace_log( struct stumpless_target *target,
+                     int priority,
+                     const char *file,
+                     int line,
+                     const char *func,
+                     const char *message,
+                     ... );
+
+/**
+ * Adds a message to a given target, along with the file, line, and function
+ * information specified in a structured data element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param target The target to send the message to.
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied
+ * to.
+ *
+ * @param func The name of the function that the message should be tied to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf. This may be NULL, in which case an event with
+ * no message is logged.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+stumpless_trace_message( struct stumpless_target *target,
+                         const char *file,
+                         int line,
+                         const char *func,
+                         const char *message,
+                         ... );
+
+/**
  * Unsets an option on a target.
  *
  * **Thread Safety: MT-Safe**
@@ -781,6 +998,103 @@ stumpless_target_is_open( const struct stumpless_target *target );
  */
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option );
+
+/**
+ * Logs a message to the default target with the given priority.
+ *
+ * This function can serve as a replacement for the traditional \c syslog
+ * function.
+ *
+ * For detailed information on what the default target will be for a given
+ * system, check the stumpless_get_default_target() function documentation.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of specifiers
+ * given.
+ */
+void
+stumplog( int priority, const char *message, ... );
+
+/**
+ * Logs a message to the default target with the given priority, along with the
+ * file, line, and function information specified in a structured data element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * This function can serve as a replacement for the traditional \c syslog
+ * function.
+ *
+ * For detailed information on what the default target will be for a given
+ * system, check the stumpless_get_default_target() function documentation.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param file The name of the source file the entry should be tied to.
+ *
+ * @param line The line in the source file that the entry should be tied
+ * to.
+ *
+ * @param func The name of the function that the entry should be tied to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of specifiers
+ * given.
+ */
+void
+stumplog_trace( int priority,
+                const char *file,
+                int line,
+                const char *func,
+                const char *message, ... );
 
 /**
  * Logs a message to the default target.
@@ -821,11 +1135,11 @@ int
 vstump( const char *message, va_list subs );
 
 /**
- * Logs a message to the default target with the given priority. Can serve as
- * a replacement for the traditional \c vsyslog function.
+ * Logs a message to the default target, along with the file, line, and function
+ * information specified in a structured data element.
  *
- * For detailed information on what the default target will be for a given
- * system, check the stumpless_get_default_target() function documentation.
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -846,8 +1160,11 @@ vstump( const char *message, va_list subs );
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
- * @param priority The priority of the message - this should be the bitwise or
- * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied to.
+ *
+ * @param func The name of the function that the message should be tied to.
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf.
@@ -857,9 +1174,17 @@ vstump( const char *message, va_list subs );
  * specifiers given. This list must be started via \c va_start before being
  * used, and \c va_end should be called afterwards, as this function does not
  * call it.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
  */
-void
-vstumplog( int priority, const char *message, va_list subs );
+int
+vstump_trace( const char *file,
+              int line,
+              const char *func,
+              const char *message,
+              va_list subs );
 
 /**
  * Adds a log message with a priority to a given target.
@@ -950,49 +1275,217 @@ vstumpless_add_message( struct stumpless_target *target,
                         va_list subs );
 
 /**
- * @since v2.1.0
- *	Gets the current console stream where logs are written to. 	
+ * Adds a log message with a priority to a given target, along with the file,
+ * line, and function information specified in a structured data element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. Atomic variables are used to store and
- * retrieve the console stream.
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
  *
- * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
  *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be ansynchronously
- * cancelled.
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
- * @return The current stream where messages are logged to on setting the
- *			the CONS option.
+ * @param target The target to send the message to.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied to.
+ *
+ * @param func The name of the function that the message should be tied to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
  */
-FILE *
-stumpless_get_cons_stream( void );
+int
+vstumpless_trace_log( struct stumpless_target *target,
+                      int priority,
+                      const char *file,
+                      int line,
+                      const char *func,
+                      const char *message,
+                      va_list subs );
 
 /**
- * @since v2.1.0
- * Sets the console stream to write logs to.
+ * Adds a message to a given target, along with the file, line, and function
+ * information specified in a structured data element.
  *
- * This will be stdout by default, but can be set to any stream. If it is set
- * to NULL then console messages will not be printed.
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. Atomic variables are used to store and
- * retrieve the console stream.
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
  *
- * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
  *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be ansynchronously
- * cancelled.
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
  *
- * @param stream The stream to write logs to. If this is NULL then the messages
- *	intended for the console stream will be ignored.
+ * @param target The target to send the message to.
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied to.
+ *
+ * @param func The name of the function that the message should be tied to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately.
+ */
+int
+vstumpless_trace_message( struct stumpless_target *target,
+                          const char *file,
+                          int line,
+                          const char *func,
+                          const char *message,
+                          va_list subs );
+
+/**
+ * Logs a message to the default target with the given priority. Can serve as
+ * a replacement for the traditional \c vsyslog function.
+ *
+ * For detailed information on what the default target will be for a given
+ * system, check the stumpless_get_default_target() function documentation.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
  */
 void
-stumpless_set_cons_stream( FILE *stream );
+vstumplog( int priority, const char *message, va_list subs );
+
+/**
+ * Logs a message to the default target with the given priority, along with the
+ * file, line, and function information specified in a structured data element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * This function can serve as a replacement for the traditional \c vsyslog
+ * function.
+ *
+ * For detailed information on what the default target will be for a given
+ * system, check the stumpless_get_default_target() function documentation.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied to.
+ *
+ * @param func The name of the function that the message should be tied to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call it.
+ */
+void
+vstumplog_trace( int priority,
+                 const char *file,
+                 int line,
+                 const char *func,
+                 const char *message,
+                 va_list subs );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

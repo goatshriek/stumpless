@@ -158,6 +158,13 @@ example, to log messages with a severity of INFO, you can do this:
 stump_i( "this gets logged as an info message" );
 ```
 
+And if you want to also see source file, line number, and function name info in
+each message you can do this:
+
+```c
+stump_t( "this is easy to trace to the source" );
+```
+
 Using these functions has the added benefit that they can be removed at
 compile time by simply defining the `STUMPLESS_ENABLE_UPTO` or
 `STUMPLESS_DISABLE_DOWNTO` symbols. This makes it easy to change logging levels

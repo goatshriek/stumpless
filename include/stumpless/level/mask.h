@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@
  * all levels up to and including the named one, and disables all of those below
  * it. For example, defining `STUMPLESS_ENABLE_UPTO_WARNING` will enable
  * `EMERG`, `ALERT`, `CRIT`, `ERR`, and `WARNING` level calls and will
- * disable `NOTICE`, `INFO`, and `DEBUG` level calls. Note that the semantics
- * of this mask closely resemble the `LOG_UPTO` macro provided in `syslog.h`
- * for runtime level filtering.
+ * disable `NOTICE`, `INFO`, `DEBUG`, and `TRACE` level calls. Note that the
+ * semantics of this mask closely resemble the `LOG_UPTO` macro provided in
+ * `syslog.h` for runtime level filtering.
  *
- * By this logic, defining `STUMPLESS_ENABLE_UPTO_DEBUG` enables all log levels.
+ * By this logic, defining `STUMPLESS_ENABLE_UPTO_TRACE` enables all log levels.
  * Since this is the default for stumpless, this definition is effectively
  * ignored.
  *
@@ -47,11 +47,11 @@
  * including the named one and enabling all of those above it. For example,
  * defining `STUMPLESS_DISABLE_DOWNTO_WARNING` will enable `EMERG`, `ALERT`,
  * `CRIT`, and `ERR` level calls and will disable `WARNING`, `NOTICE`, `INFO`,
- * and `DEBUG` level calls.
+ * `DEBUG`, and `TRACE` level calls.
  *
  * This means that defining `STUMPLESS_DISABLE_DOWNTO_EMERG` disables all
  * logging calls that can be removed during compile time. There is also a
- * synonym for this that is more descriptive of the intent:
+ * synonym for this which is more descriptive of the intent:
  * `STUMPLESS_DISABLE_ALL_LEVELS`.
  *
  * Note that for all of the above cases, the symbol must be defined _before_ the
@@ -65,15 +65,22 @@
 #ifndef __STUMPLESS_LEVEL_MASK_H
 #  define __STUMPLESS_LEVEL_MASK_H
 
+#  if defined( STUMPLESS_ENABLE_UPTO_DEBUG ) || \
+      defined( STUMPLESS_DISABLE_DOWNTO_TRACE )
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
+#  endif
+
 #  if defined( STUMPLESS_ENABLE_UPTO_INFO ) || \
       defined( STUMPLESS_DISABLE_DOWNTO_DEBUG )
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #  if defined( STUMPLESS_ENABLE_UPTO_NOTICE ) || \
       defined( STUMPLESS_DISABLE_DOWNTO_INFO )
 #    define STUMPLESS_DISABLE_INFO_LEVEL 1
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #  if defined( STUMPLESS_ENABLE_UPTO_WARNING ) || \
@@ -81,6 +88,7 @@
 #    define STUMPLESS_DISABLE_NOTICE_LEVEL 1
 #    define STUMPLESS_DISABLE_INFO_LEVEL 1
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #  if defined( STUMPLESS_ENABLE_UPTO_ERR ) || \
@@ -89,6 +97,7 @@
 #    define STUMPLESS_DISABLE_NOTICE_LEVEL 1
 #    define STUMPLESS_DISABLE_INFO_LEVEL 1
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #  if defined( STUMPLESS_ENABLE_UPTO_CRIT ) || \
@@ -98,6 +107,7 @@
 #    define STUMPLESS_DISABLE_NOTICE_LEVEL 1
 #    define STUMPLESS_DISABLE_INFO_LEVEL 1
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #  if defined( STUMPLESS_ENABLE_UPTO_ALERT ) || \
@@ -108,6 +118,7 @@
 #    define STUMPLESS_DISABLE_NOTICE_LEVEL 1
 #    define STUMPLESS_DISABLE_INFO_LEVEL 1
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #  if defined( STUMPLESS_ENABLE_UPTO_EMERG ) || \
@@ -119,6 +130,7 @@
 #    define STUMPLESS_DISABLE_NOTICE_LEVEL 1
 #    define STUMPLESS_DISABLE_INFO_LEVEL 1
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #  if defined( STUMPLESS_DISABLE_ALL_LEVELS ) || \
@@ -131,6 +143,7 @@
 #    define STUMPLESS_DISABLE_NOTICE_LEVEL 1
 #    define STUMPLESS_DISABLE_INFO_LEVEL 1
 #    define STUMPLESS_DISABLE_DEBUG_LEVEL 1
+#    define STUMPLESS_DISABLE_TRACE_LEVEL 1
 #  endif
 
 #endif /* __STUMPLESS_LEVEL_MASK_H */

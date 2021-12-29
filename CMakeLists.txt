@@ -842,6 +842,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/info.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/mask.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/notice.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/level/trace.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/level/warning.h
   DESTINATION "include/stumpless/level"
 )
@@ -987,6 +988,13 @@ add_function_test(level_disabled_downto_notice
   COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_NOTICE
 )
 
+add_function_test(level_disabled_downto_trace
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_debug.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+  COMPILE_DEFINITIONS STUMPLESS_DISABLE_DOWNTO_TRACE
+)
+
 add_function_test(level_disabled_downto_warning
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_err.cpp
@@ -1010,7 +1018,7 @@ add_function_test(level_enable_upto_crit
 
 add_function_test(level_enable_upto_debug
   SOURCES
-    ${PROJECT_SOURCE_DIR}/test/function/level/all_enabled.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_debug.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_DEBUG
 )
@@ -1043,6 +1051,13 @@ add_function_test(level_enable_upto_notice
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_NOTICE
 )
 
+add_function_test(level_enable_upto_trace
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/level/all_enabled.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+  COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_TRACE
+)
+
 add_function_test(level_enable_upto_warning
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_warning.cpp
@@ -1071,6 +1086,7 @@ add_function_test(stream
 add_function_test(target
   SOURCES
     test/function/target.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:rfc5424_checker>
 )
 
