@@ -17,7 +17,7 @@ jobs:
       - name: Install Prereqs
         run: |
           sudo apt-get update
-          sudo apt-get install libsystemd-dev
+          sudo apt-get install libsystemd-dev valgrind
       - uses: actions/checkout@v2
       - name: Configure
         run: |
