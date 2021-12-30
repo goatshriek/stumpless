@@ -89,7 +89,7 @@ main( int argc, char **argv ) {
 
   // destroying all remaining resources
   stumpless_destroy_entry_and_contents( basic_entry );
-
+  stumpless_free_all(  );
 
   return EXIT_SUCCESS;
 }
