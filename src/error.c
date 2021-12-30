@@ -24,6 +24,7 @@
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
+#include "private/strhelper.h"
 
 /* global static variables */
 static config_atomic_ptr_t error_stream = config_atomic_ptr_initializer;
@@ -31,7 +32,7 @@ static config_atomic_bool_t error_stream_free = config_atomic_bool_true;
 static config_atomic_bool_t error_stream_valid = config_atomic_bool_false;
 
 static const char *stumpless_error_enum_to_string[] = {
-  STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
+  STUMPLESS_FOREACH_ERROR( GENERATE_STRING )
 };
 
 /* per-thread static variables */
