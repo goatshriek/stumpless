@@ -24,14 +24,15 @@
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/inthelper.h"
+#include "private/strhelper.h"
 
 /* global static variables */
 static config_atomic_ptr_t error_stream = config_atomic_ptr_initializer;
 static config_atomic_bool_t error_stream_free = config_atomic_bool_true;
 static config_atomic_bool_t error_stream_valid = config_atomic_bool_false;
 
-static const char *stumpless_error_enum_to_string[] = {
-  STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
+static const char *error_enum_to_string[] = {
+  STUMPLESS_FOREACH_ERROR( GENERATE_STRING )
 };
 
 /* per-thread static variables */
@@ -53,10 +54,9 @@ stumpless_get_error_id( const struct stumpless_error *err ) {
 
 const char *
 stumpless_get_error_id_string( enum stumpless_error_id id) {
-  int error_id_upper_bound = sizeof( stumpless_error_enum_to_string ) /
-                             sizeof( char * );
+  int error_id_upper_bound = sizeof( error_enum_to_string ) / sizeof( char * );
   if ( id >= 0 && id < error_id_upper_bound ) {
-    return stumpless_error_enum_to_string[id];
+    return error_enum_to_string[id];
   }
 
   return "NO_SUCH_ERROR_ID";
