@@ -1,4 +1,4 @@
-name: "build"
+name: "Linux Builds"
 
 on:
   push:
@@ -10,40 +10,6 @@ env:
   CTEST_OUTPUT_ON_FAILURE: 1
 
 jobs:
-  linux-local-analysis:
-    name: "local code analysis"
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Check Headers
-        run: |
-          tools/check_headers/check_headers.rb "include/**/*.h*"
-          tools/check_headers/check_headers.rb "src/**/*.c"
-          tools/check_headers/check_headers.rb "test/**/*.cpp"
-          tools/check_headers/check_headers.rb "docs/examples/**/*.c"
-      - name: Build Documentation
-        run: |
-          sudo apt-get install doxygen
-          cmake .
-          make docs
-  sonarcloud-analysis:
-    name: "sonarcloud code analysis"
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Sonarcloud Analysis
-        run: |
-          wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-          unzip build-wrapper-linux-x86.zip
-          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
-          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
-          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
-          chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
-          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
   linux-debug:
     name: "linux, debug"
     runs-on: "ubuntu-latest"
@@ -190,82 +156,4 @@ jobs:
       - name: Build Documentation
         run: |
           make docs-cpp
-  windows-debug:
-    name: "windows, debug"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
-      - name: Build
-        run: |
-          cmake --build . --config Debug
-      - name: Test
-        run: |
-          cmake --build . --config Debug --target check
-      - name: Thread Safety Tests
-        run: |
-          cmake --build . --config Debug --target check-thread-safety
-      - name: Run Examples
-        run: |
-          cmake --build . --config Debug --target examples
-  windows-release:
-    name: "windows, release"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
-      - name: Build
-        run: |
-          cmake --build . --config Release
-      - name: Test
-        run: |
-          cmake --build . --config Release --target check
-      - name: Thread Safety Tests
-        run: |
-          cmake --build . --config Release --target check-thread-safety
-      - name: Run Examples
-        run: |
-          cmake --build . --config Release --target examples
-  basic-windows-all-disabled:
-    name: "windows, all features disabled"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
-      - name: Build
-        run: |
-          cmake --build . --config Release
-      - name: Test
-        run: |
-          cmake --build . --config Release --target check
-      - name: Run Examples
-        run: |
-          cmake --build . --config Release --target examples
-  windows-cpp:
-    name: "windows, with c++"
-    runs-on: "windows-2019"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
-      - name: Install Gems
-        run: |
-          gem install bundler
-          bundle install
-      - name: Configure
-        run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
-      - name: Build
-        run: |
-          cmake --build . --config Release
-      - name: Test
-        run: |
-          cmake --build . --config Release --target check-cpp
-      - name: Run Example
-        run: |
-          cmake --build . --config Release --target run-example-cpp
+

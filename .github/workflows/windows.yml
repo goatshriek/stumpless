@@ -1,0 +1,91 @@
+name: "Windows Builds"
+
+on:
+  push:
+  pull_request:
+    branches:
+      - latest
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
+
+jobs:
+  windows-debug:
+    name: "windows, debug"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          cmake --build . --config Debug
+      - name: Test
+        run: |
+          cmake --build . --config Debug --target check
+      - name: Thread Safety Tests
+        run: |
+          cmake --build . --config Debug --target check-thread-safety
+      - name: Run Examples
+        run: |
+          cmake --build . --config Debug --target examples
+  windows-release:
+    name: "windows, release"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check
+      - name: Thread Safety Tests
+        run: |
+          cmake --build . --config Release --target check-thread-safety
+      - name: Run Examples
+        run: |
+          cmake --build . --config Release --target examples
+  basic-windows-all-disabled:
+    name: "windows, all features disabled"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check
+      - name: Run Examples
+        run: |
+          cmake --build . --config Release --target examples
+  windows-cpp:
+    name: "windows, with c++"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1.1.2
+      - name: Install Gems
+        run: |
+          gem install bundler
+          bundle install
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check-cpp
+      - name: Run Example
+        run: |
+          cmake --build . --config Release --target run-example-cpp
