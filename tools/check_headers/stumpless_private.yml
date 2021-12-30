@@ -25,6 +25,7 @@
 "config_write_ptr": "private/config/wrapper/thread_safety.h"
 "create_empty_entry": "test/helper/fixture.hpp"
 "FOR_EACH_PARAM_WITH_NAME": "private/element.h"
+"GENERATE_STRING": "private/strhelper.h"
 "get_journald_field_name": "private/target/journald.h"
 "HAVE_PTHREAD_H": "private/config.h"
 "init_fields": "private/target/journald.h"
