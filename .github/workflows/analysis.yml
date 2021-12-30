@@ -2,7 +2,6 @@ name: "Static Analysis"
 
 on:
   push:
-    branches: [ latest ]
   pull_request:
     branches: [ latest ]
   schedule:
