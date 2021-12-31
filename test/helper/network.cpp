@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+#include "test/helper/server.hpp"
+
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
@@ -25,7 +27,6 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/network.hpp"
 #include "test/helper/rfc5424.hpp"
-#include "test/helper/server.hpp"
 
 void
 TestSetTransportPortOnPausedTarget( struct stumpless_target *target,
