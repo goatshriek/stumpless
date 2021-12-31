@@ -52,7 +52,7 @@ jobs:
           make examples
       - name: Valgrind Tests
         run: |
-          (for f in $(ls function-test-*); do valgrind --error-exitcode=1 --leak-check=yes ./$f || exit 1; done)
+          (for f in $(ls function-test-*); do valgrind --error-exitcode=1 --leak-check=yes --suppressions=tools/valgrind/journald.supp ./$f || exit 1; done)
       - name: Install
         run: |
           sudo make install
