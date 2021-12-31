@@ -23,6 +23,17 @@
 #  include "test/helper/server.hpp"
 
 void
+TestSetDestinationOnOpenTarget( struct stumpless_target *target,
+                                const char *original_destination,
+                                const char *new_destination,
+                                socket_handle_t new_dest_server );
+
+void
+TestSetDestinationOnPausedTarget( struct stumpless_target *target,
+                                  const char *new_destination,
+                                  socket_handle_t new_dest_server );
+
+void
 TestSetTransportPortOnOpenTarget( struct stumpless_target *target,
                                   const char *new_port,
                                   socket_handle_t new_port_server );

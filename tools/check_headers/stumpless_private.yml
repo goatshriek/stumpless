@@ -98,6 +98,8 @@
 "TEST_LEVEL_DISABLED": "test/helper/level_disabled.hpp"
 "TEST_LEVEL_ENABLED": "test/helper/level_enabled.hpp"
 "TestRFC5424Compliance": "test/helper/rfc5424.hpp"
+"TestSetDestinationOnOpenTarget": "test/helper/network.hpp"
+"TestSetDestinationOnPausedTarget": "test/helper/network.hpp"
 "TestSetTransportPortOnOpenTarget": "test/helper/network.hpp"
 "TestSetTransportPortOnPausedTarget": "test/helper/network.hpp"
 "TestTruncatedMessage": "test/helper/network.hpp"
