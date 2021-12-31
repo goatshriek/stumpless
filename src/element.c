@@ -389,7 +389,7 @@ stumpless_new_element( const char *name ) {
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_element_name( name ) || 
+  if ( !validate_element_name( name ) ||
        !validate_element_name_length( name )) {
     goto fail;
   }
@@ -437,7 +437,7 @@ stumpless_set_element_name( struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_element_name( name ) || 
+  if ( !validate_element_name( name ) ||
        !validate_element_name_length( name )) {
     goto fail;
   }
