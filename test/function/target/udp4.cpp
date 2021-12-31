@@ -28,6 +28,7 @@
 #include "test/function/target/udp.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
+#include "test/helper/network.hpp"
 #include "test/helper/resolve.hpp"
 
 #ifndef _WIN32

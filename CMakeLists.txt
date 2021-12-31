@@ -458,6 +458,7 @@ else()
       $<TARGET_OBJECTS:rfc5424_checker>
       $<TARGET_OBJECTS:test_function_target_udp>
       $<TARGET_OBJECTS:test_helper_fixture>
+      $<TARGET_OBJECTS:test_helper_network>
       $<TARGET_OBJECTS:test_helper_resolve>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
