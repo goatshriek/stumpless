@@ -381,6 +381,7 @@ namespace {
 
     TestSetTransportPortOnPausedTarget( target, destination, new_port, handle );
 
+    close_server_socket( handle );
     stumpless_close_network_target( target );
   }
 }

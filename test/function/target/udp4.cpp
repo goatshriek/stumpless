@@ -350,15 +350,9 @@ namespace {
 
   TEST( NetworkTargetSetTransportPort, PausedUdp4Target ) {
     struct stumpless_target *target;
-    struct stumpless_target *target_result;
-    struct stumpless_entry *entry;
     const char *destination = "127.0.0.1";
     const char *new_port = "515";
-    const char *default_port;
-    const char *current_port;
-    char buffer[2048];
     socket_handle_t handle;
-    int add_result;
 
     handle = open_udp4_server_socket( destination, new_port );
 
@@ -366,49 +360,9 @@ namespace {
     ASSERT_NOT_NULL( target );
     EXPECT_NO_ERROR;
 
-    default_port = stumpless_get_transport_port( target );
-    EXPECT_NOT_NULL( default_port );
-    ASSERT_STRNE( default_port, new_port );
-    free( ( void * ) default_port );
+    TestSetTransportPortOnPausedTarget( target, destination, new_port, handle );
 
-    EXPECT_FALSE( stumpless_target_is_open( target ) );
-    target_result = stumpless_set_transport_port( target, new_port );
-    EXPECT_NOT_NULL( target_result );
-    EXPECT_NO_ERROR;
-
-    EXPECT_FALSE( stumpless_target_is_open( target ) );
-
-    current_port = stumpless_get_transport_port( target );
-    EXPECT_NOT_NULL( current_port );
-    EXPECT_TRUE( current_port != new_port );
-    EXPECT_STREQ( new_port, current_port );
-    EXPECT_NO_ERROR;
-    free( ( void * ) current_port );
-
-    target_result = stumpless_set_destination( target, destination );
-    EXPECT_NOT_NULL( target_result );
-
-    target_result = stumpless_open_target( target );
-    ASSERT_NOT_NULL( target_result );
-    EXPECT_TRUE( target_result == target );
-    EXPECT_NO_ERROR;
-
-    EXPECT_TRUE( stumpless_target_is_open( target ) );
-
-    if( handle != BAD_HANDLE ) {
-      entry = create_entry(  );
-      add_result = stumpless_add_entry( target, entry );
-      EXPECT_GT( add_result, 0 );
-      EXPECT_NO_ERROR;
-
-      recv_from_handle( handle, buffer, 1024 );
-      EXPECT_TRUE( buffer[0] != '\0' );
-      TestRFC5424Compliance( buffer );
-
-      stumpless_destroy_entry_and_contents( entry );
-      close_server_socket( handle );
-    }
-
+    close_server_socket( handle );
     stumpless_close_network_target( target );
   }
 }
