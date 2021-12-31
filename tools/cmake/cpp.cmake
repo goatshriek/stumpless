@@ -204,7 +204,8 @@ add_cpp_test(entry
 add_cpp_test(file
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/cpp/target/file.cpp
-    $<TARGET_OBJECTS:test_helper_rfc5424>
+    ${PROJECT_SOURCE_DIR}/test/helper/rfc5424.cpp
+    ${PROJECT_SOURCE_DIR}/test/helper/utf8.cpp
 )
 
 add_cpp_test(function
