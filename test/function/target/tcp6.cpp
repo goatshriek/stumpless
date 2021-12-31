@@ -67,10 +67,7 @@ namespace {
       stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_network_target( target );
       close_server_socket( handle );
-
-      if( accepted != BAD_HANDLE ) {
-        close_server_socket( accepted );
-      }
+      close_server_socket( accepted );
     }
 
     void
@@ -306,9 +303,10 @@ namespace {
 
         stumpless_close_network_target( target );
         stumpless_destroy_entry_and_contents( entry );
+
+        close_server_socket( port_handle );
       }
 
-      close_server_socket( port_handle );
     }
   }
 
@@ -370,9 +368,9 @@ namespace {
 
       stumpless_close_network_target( target );
       stumpless_destroy_entry_and_contents( entry );
-    }
 
-    close_server_socket( port_handle );
+      close_server_socket( port_handle );
+    }
   }
 
   TEST( NetworkTargetSetTransportPort, OpenTarget ) {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,7 +120,9 @@ recv_from_handle( socket_handle_t handle, char *buff, int buff_len ) {
 
 void
 close_server_socket( socket_handle_t handle ) {
-  closesocket( handle );
+  if( handle != BAD_HANDLE ) {
+    closesocket( handle );
+  }
 }
 
 #else
@@ -136,6 +138,7 @@ open_tcp_server_socket( int domain, const char *dest, const char *port ) {
   setsockopt( handle, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof( int ) );
   getaddrinfo( dest, port, NULL, &addr_result );
   if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+    freeaddrinfo( addr_result );
     return BAD_HANDLE;
   }
 
@@ -153,6 +156,7 @@ open_udp_server_socket( int domain, const char *dest, const char *port ) {
   handle = socket( domain, SOCK_DGRAM, 0 );
   getaddrinfo( dest, port, NULL, &addr_result );
   if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
+    freeaddrinfo( addr_result );
     return BAD_HANDLE;
   }
 
@@ -186,6 +190,8 @@ recv_from_handle( socket_handle_t handle, char *buff, size_t buff_len ) {
 
 void
 close_server_socket( socket_handle_t handle ) {
-  close( handle );
+  if( handle != BAD_HANDLE ) {
+    close( handle );
+  }
 }
 #endif

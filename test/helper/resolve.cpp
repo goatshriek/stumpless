@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 
 #include <cstddef>
+#include <cstring>
 #include "test/helper/resolve.hpp"
 #ifdef _WIN32
 #  include <ws2tcpip.h>
@@ -33,6 +34,7 @@ name_resolves( const char *name, int domain ) {
   PADDRINFOA next;
   WSADATA wsa_data;
 
+  memset( &hints, 0, sizeof( hints ) );
   hints.ai_flags = 0;
   hints.ai_addrlen = 0;
   hints.ai_canonname = NULL;
@@ -63,6 +65,7 @@ name_resolves( const char *name, int domain ) {
   struct addrinfo hints;
   int result;
 
+  memset( &hints, 0, sizeof( hints ) );
   hints.ai_flags = 0;
   hints.ai_addrlen = 0;
   hints.ai_canonname = NULL;

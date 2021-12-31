@@ -164,6 +164,8 @@ namespace {
 
       EXPECT_STREQ( format, "<basic-name>:<basic-value>" );
       EXPECT_NO_ERROR;
+
+      free( ( void * ) format );
   }
 
   TEST_F( ParamTest, ParamToStringMemoryFailure ) {

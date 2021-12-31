@@ -123,10 +123,14 @@ namespace {
     const struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_function_target( "not-a-stream-target", basic_log_function );
-    stumpless_close_stream_target( target );
+    target = stumpless_open_function_target( "not-a-stream-target",
+                                             basic_log_function );
+    ASSERT_NOT_NULL( target );
 
+    stumpless_close_stream_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_function_target( target );
   }
 
   TEST( StreamTargetFormat, NewlineSeparator ) {

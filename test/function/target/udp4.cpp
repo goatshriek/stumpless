@@ -208,6 +208,7 @@ namespace {
       destination_result = stumpless_get_destination( target );
       EXPECT_NOT_NULL( destination_result );
       EXPECT_STREQ( destination_result, original_destination );
+      free( ( void * ) destination_result );
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
       target_result = stumpless_set_destination( target, new_destination );
@@ -219,6 +220,7 @@ namespace {
       destination_result = stumpless_get_destination( target );
       EXPECT_NOT_NULL( destination_result );
       EXPECT_STREQ( destination_result, new_destination );
+      free( ( void * ) destination_result );
 
       if( handle != BAD_HANDLE ) {
         entry = create_entry(  );
@@ -232,9 +234,9 @@ namespace {
         TestRFC5424Compliance( buffer );
 
         stumpless_destroy_entry_and_contents( entry );
+        close_server_socket( handle );
       }
 
-      close_server_socket( handle );
       stumpless_close_network_target( target );
     }
   }
@@ -314,6 +316,7 @@ namespace {
     default_port = stumpless_get_transport_port( target );
     EXPECT_NOT_NULL( default_port );
     ASSERT_STRNE( default_port, new_port );
+    free( ( void * ) default_port );
 
     EXPECT_TRUE( stumpless_target_is_open( target ) );
     result = stumpless_set_transport_port( target, new_port );
@@ -327,6 +330,7 @@ namespace {
     EXPECT_TRUE( current_port != new_port );
     EXPECT_STREQ( new_port, current_port );
     EXPECT_NO_ERROR;
+    free( ( void * ) current_port );
 
     if( handle != BAD_HANDLE ) {
       entry = create_entry(  );
@@ -338,9 +342,9 @@ namespace {
       TestRFC5424Compliance( buffer );
 
       stumpless_destroy_entry_and_contents( entry );
+      close_server_socket( handle );
     }
 
-    close_server_socket( handle );
     stumpless_close_network_target( target );
   }
 
@@ -365,6 +369,7 @@ namespace {
     default_port = stumpless_get_transport_port( target );
     EXPECT_NOT_NULL( default_port );
     ASSERT_STRNE( default_port, new_port );
+    free( ( void * ) default_port );
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
     target_result = stumpless_set_transport_port( target, new_port );
@@ -378,6 +383,7 @@ namespace {
     EXPECT_TRUE( current_port != new_port );
     EXPECT_STREQ( new_port, current_port );
     EXPECT_NO_ERROR;
+    free( ( void * ) current_port );
 
     target_result = stumpless_set_destination( target, destination );
     EXPECT_NOT_NULL( target_result );
@@ -400,9 +406,9 @@ namespace {
       TestRFC5424Compliance( buffer );
 
       stumpless_destroy_entry_and_contents( entry );
+      close_server_socket( handle );
     }
 
-    close_server_socket( handle );
     stumpless_close_network_target( target );
   }
 }

@@ -64,21 +64,12 @@ namespace {
         target = stumpless_open_socket_target( socket_name,
                                                "test-function-target-socket" );
 
-        basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                           STUMPLESS_SEVERITY_INFO,
-                                          "stumpless-unit-test",
-                                          "basic-entry",
-                                          "basic test message" );
-  
-        element = stumpless_new_element( "basic-element" );
-        stumpless_add_element( basic_entry, element );
-  
-        param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-        stumpless_add_param( element, param );
+        basic_entry = create_entry(  );
       }
 
       virtual void
       TearDown( void ) {
+        stumpless_destroy_entry_and_contents( basic_entry );
         stumpless_close_socket_target( target );
         close( test_socket );
         unlink( socket_name );
@@ -106,9 +97,11 @@ namespace {
     GetNextMessage(  );
 
     EXPECT_THAT( buffer, HasSubstr( std::to_string( basic_entry->prival ) ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-element" ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-param-name" ) );
-    EXPECT_THAT( buffer, HasSubstr( "basic-param-value" ) );
+    EXPECT_THAT( buffer, HasSubstr( "fixture-element" ) );
+    EXPECT_THAT( buffer, HasSubstr( "fixture-param-1" ) );
+    EXPECT_THAT( buffer, HasSubstr( "fixture-value-1" ) );
+    EXPECT_THAT( buffer, HasSubstr( "fixture-param-2" ) );
+    EXPECT_THAT( buffer, HasSubstr( "fixture-value-2" ) );
 
     TestRFC5424Compliance(buffer);
   }
@@ -180,9 +173,11 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-socket-target" );
-    stumpless_close_socket_target( target );
 
+    stumpless_close_socket_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_stream_target( target );
   }
 
   TEST( SocketTargetOpenTest, Basic ) {
