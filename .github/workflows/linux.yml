@@ -53,6 +53,7 @@ jobs:
       - name: Valgrind Tests
         run: |
           (for f in $(ls function-test-*); do valgrind --error-exitcode=1 --leak-check=yes --suppressions=tools/valgrind/journald.supp ./$f || exit 1; done)
+          (for f in $(ls example-*); do valgrind --error-exitcode=1 --leak-check=yes --suppressions=tools/valgrind/journald.supp ./$f || exit 1; done)
       - name: Install
         run: |
           sudo make install
@@ -127,8 +128,40 @@ jobs:
       - name: Install
         run: |
           sudo make install
-  linux-cpp:
-    name: "linux, with c++"
+  linux-cpp-debug:
+    name: "linux, with c++, debug"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1.1.2
+      - name: Install Gems
+        run: |
+          gem install bundler
+          bundle install
+      - name: Install Packages
+        run: |
+          sudo apt-get install doxygen valgrind
+      - name: Configure
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_CPP=ON .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check-cpp
+      - name: Run Example
+        run: |
+          make example-cpp
+          ./example-cpp
+      - name: Install
+        run: |
+          sudo make install
+      - name: Build Documentation
+        run: |
+          make docs-cpp
+  linux-cpp-release:
+    name: "linux, with c++, release"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
@@ -142,7 +175,7 @@ jobs:
           sudo apt-get install doxygen
       - name: Configure
         run: |
-          cmake -DENABLE_CPP=ON .
+          cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
       - name: Build
         run: |
           make all
