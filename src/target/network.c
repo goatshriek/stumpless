@@ -699,7 +699,7 @@ new_network_target( enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport ) {
   struct network_target *target;
   const char *port_copy;
-  struct network_target *init_result;
+  const struct network_target *init_result;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
