@@ -299,12 +299,8 @@ namespace {
 
   TEST( NetworkTargetSetTransportPort, OpenUdp4Target ) {
     struct stumpless_target *target;
-    struct stumpless_target *result;
     struct stumpless_entry *entry;
     const char *new_port = "515";
-    const char *default_port;
-    const char *current_port;
-    char buffer[2048];
     socket_handle_t handle;
 
     handle = open_udp4_server_socket( "127.0.0.1", new_port );
@@ -312,39 +308,11 @@ namespace {
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1" );
     ASSERT_NOT_NULL( target );
-
-    default_port = stumpless_get_transport_port( target );
-    EXPECT_NOT_NULL( default_port );
-    ASSERT_STRNE( default_port, new_port );
-    free( ( void * ) default_port );
-
-    EXPECT_TRUE( stumpless_target_is_open( target ) );
-    result = stumpless_set_transport_port( target, new_port );
-    EXPECT_NOT_NULL( result );
     EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( stumpless_target_is_open( target ) );
+    TestSetTransportPortOnOpenTarget( target, new_port, handle );
 
-    current_port = stumpless_get_transport_port( target );
-    EXPECT_NOT_NULL( current_port );
-    EXPECT_TRUE( current_port != new_port );
-    EXPECT_STREQ( new_port, current_port );
-    EXPECT_NO_ERROR;
-    free( ( void * ) current_port );
-
-    if( handle != BAD_HANDLE ) {
-      entry = create_entry(  );
-      stumpless_add_entry( target, entry );
-      EXPECT_NOT_NULL( result );
-
-      recv_from_handle( handle, buffer, 1024 );
-      EXPECT_TRUE( buffer[0] != '\0' );
-      TestRFC5424Compliance( buffer );
-
-      stumpless_destroy_entry_and_contents( entry );
-      close_server_socket( handle );
-    }
-
+    close_server_socket( handle );
     stumpless_close_network_target( target );
   }
 
