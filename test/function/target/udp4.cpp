@@ -18,9 +18,8 @@
 
 #include "test/helper/server.hpp"
 
-#include <cstdlib>
-#include <stddef.h>
-#include <stdio.h>
+#include <cstddef>
+#include <cstdio>
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
