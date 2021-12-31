@@ -46,6 +46,9 @@ fixes, check out the
     * `STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED`
     * `STUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE`
     * `STUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE`
+ - Several memory leaks:
+    * Object cache leak in some allocation failure scenarios
+    * Creating network target with unsupported protocols
 
 ## [2.0.0] - 2020-12-27
 ### Added

@@ -802,6 +802,8 @@ namespace {
 
     EXPECT_STREQ( format, "<element-with-params>:[<param-1>:<value-1>,<param-2>:<value-2>]" );
     EXPECT_NO_ERROR;
+
+    free( ( void * ) format );
   }
 
   TEST_F( ElementTest, GetElementToStringWithoutParams) {
@@ -812,6 +814,8 @@ namespace {
 
     EXPECT_STREQ( format, "<basic-element>" );
     EXPECT_NO_ERROR;
+
+    free( ( void * ) format );
   }
 
   TEST_F( ElementTest, ElementToStringMemoryFailure ) {

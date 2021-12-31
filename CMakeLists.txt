@@ -474,6 +474,11 @@ else()
     LIBRARIES ${network_libraries}
   )
 
+  add_function_test(network_leak
+    SOURCES
+      test/function/leak/network.cpp
+  )
+
   add_function_test(tcp4_leak
     SOURCES
       test/function/leak/tcp4.cpp
