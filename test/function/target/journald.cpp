@@ -163,8 +163,11 @@ namespace {
 
     const char *app_name = stumpless_get_entry_app_name( entry );
     string expected_app_name = string( app_name );
+    free( ( void * ) app_name );
 
-    string expected_msgid = string( stumpless_get_entry_msgid( entry ) );
+    const char *msgid = stumpless_get_entry_msgid( entry );
+    string expected_msgid = string( msgid );
+    free( ( void * ) msgid );
 
     const char *element_name = "FIXTURE_ELEMENT";
     const char *param_1_name = "FIXTURE_ELEMENT_FIXTURE_PARAM_1";
@@ -214,9 +217,11 @@ namespace {
 
     const char *app_name = stumpless_get_target_default_app_name( target );
     string expected_app_name = string( app_name );
+    free( ( void * ) app_name );
 
     const char *msgid = stumpless_get_target_default_msgid( target );
     string expected_msgid = string( msgid );
+    free( ( void * ) msgid );
 
     FOR_JOURNALD_MATCH_BEGIN( message_match )
       msg_found = true;

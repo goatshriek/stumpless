@@ -291,9 +291,9 @@ namespace {
       TestRFC5424Compliance( buffer );
 
       stumpless_destroy_entry_and_contents( entry );
+      close_server_socket( handle );
     }
 
-    close_server_socket( handle );
     stumpless_close_network_target( target );
   }
 

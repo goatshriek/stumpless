@@ -18,8 +18,9 @@
 
 #include "test/helper/server.hpp"
 
-#include <stddef.h>
-#include <stdio.h>
+#include <cstddef>
+#include <cstdio>
+#include <cstdlib>
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -114,9 +115,11 @@ namespace {
     } else {
       port_result = stumpless_get_transport_port( target );
 
-      EXPECT_TRUE( port_result != NULL );
+      EXPECT_NOT_NULL( port_result );
       EXPECT_TRUE( port_result != port );
       EXPECT_STREQ( port_result, port );
+
+      free( ( void * ) port_result );
     }
   }
 
@@ -139,8 +142,8 @@ namespace {
     struct stumpless_target *target;
 
     target = stumpless_new_udp6_target( "my-udp6-target" );
-    EXPECT_TRUE( target != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NOT_NULL( target );
+    EXPECT_NO_ERROR;
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
@@ -153,13 +156,8 @@ namespace {
 
     target = stumpless_open_udp6_target( "bad-ipv6-address",
                                          "ff:fe::43::30:1" );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-    if( error ) {
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
   }
 
   TEST( NetworkTargetOpenTest, Basic ) {
