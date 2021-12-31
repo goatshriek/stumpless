@@ -249,6 +249,7 @@ namespace {
     const char *old_value;
     old_value = stumpless_get_entry_param_value_by_index( basic_entry, 0, 0 );
     string new_value = string( old_value ) + " and more!";
+    free( ( void * ) old_value );
     stumpless_set_entry_param_value_by_index( basic_entry, 0, 0,
                                               new_value.c_str(  ) );
 
@@ -272,6 +273,7 @@ namespace {
 
     const char *message = stumpless_get_entry_message( basic_entry );
     string new_message = string( message ) + " and more!";
+    free( ( void * ) message );
     stumpless_set_entry_message( basic_entry, new_message.c_str(  ) );
     EXPECT_NO_ERROR;
 
