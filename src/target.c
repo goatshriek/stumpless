@@ -125,11 +125,11 @@ stumpless_add_entry( struct stumpless_target *target,
 
   clear_error(  );
  
-  if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) == STUMPLESS_OPTION_PERROR ){
-    // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR option is
-    // set, thus only checking this flag is enough for further checks
-    // NOTE : Calling the format_entry twice because if the buffer is for target who
-    // require unformatted entry would need not to call format_entry.
+  if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) ){
+    // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR
+    // option is set, thus only checking this flag is enough for further checks
+    // NOTE : Calling the format_entry twice because if the buffer is for target
+    // who require unformatted entry would need not to call format_entry.
     builder = format_entry( entry, target );
     if( !builder ) {
       return -1;
