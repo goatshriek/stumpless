@@ -28,4 +28,6 @@ TestSetTransportPortOnPausedTarget( struct stumpless_target *target,
                                     const char *new_port,
                                     socket_handle_t new_port_server );
 
+void TestTruncatedMessage( struct stumpless_target *target );
+
 #endif /* __STUMPLESS_TEST_HELPER_NETWORK_HPP */

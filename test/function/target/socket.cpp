@@ -26,9 +26,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
+#include "test/helper/rfc5424.hpp"
 
 using::testing::HasSubstr;
 

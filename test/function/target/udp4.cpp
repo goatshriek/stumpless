@@ -24,12 +24,11 @@
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include "test/function/rfc5424.hpp"
-#include "test/function/target/udp.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/network.hpp"
 #include "test/helper/resolve.hpp"
+#include "test/helper/rfc5424.hpp"
 
 #ifndef _WIN32
 #  include <sys/socket.h>
