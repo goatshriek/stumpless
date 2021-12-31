@@ -217,32 +217,30 @@ namespace {
 
       target = stumpless_open_udp6_target( "target-to-self",
                                            original_destination );
-      ASSERT_TRUE( target != NULL );
+      ASSERT_NOT_NULL( target );
       EXPECT_NO_ERROR;
 
       destination_result = stumpless_get_destination( target );
-      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_NOT_NULL( destination_result );
       EXPECT_STREQ( destination_result, original_destination );
+      free( ( void * ) destination_result );
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
       target_result = stumpless_set_destination( target, new_destination );
-      EXPECT_TRUE( target_result != NULL );
+      EXPECT_NOT_NULL( target_result );
       EXPECT_NO_ERROR;
 
       EXPECT_TRUE( stumpless_target_is_open( target ) );
       EXPECT_NO_ERROR;
 
       destination_result = stumpless_get_destination( target );
-      EXPECT_TRUE( destination_result != NULL );
+      EXPECT_NOT_NULL( destination_result );
       EXPECT_STREQ( destination_result, new_destination );
+      free( ( void * ) destination_result );
 
       if( handle != BAD_HANDLE ) {
-        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "stumpless-unit-test",
-                                     "basic-entry",
-                                     "basic test message" );
-        EXPECT_TRUE( entry != NULL );
+        entry = create_entry(  );
+        EXPECT_NOT_NULL( entry );
 
         add_result = stumpless_add_entry( target, entry );
         EXPECT_GE( add_result, 0 );
@@ -252,9 +250,9 @@ namespace {
         TestRFC5424Compliance( buffer );
 
         stumpless_destroy_entry_and_contents( entry );
+        close_server_socket( handle );
       }
 
-      close_server_socket( handle );
       stumpless_close_network_target( target );
     }
   }
