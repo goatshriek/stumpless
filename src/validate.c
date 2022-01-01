@@ -68,7 +68,11 @@ bool validate_app_name_length( const char* app_name ) {
 bool validate_param_name( const char* str) {
   size_t str_length = strlen( str );
   for (size_t i = 0; i < str_length; i++) {
-    if (str[i] < 33 || str[i] > 126 || str[i] == '=' || str[i] == ']' || str[i] == '"') {
+    if( str[i] < 33 ||
+        str[i] > 126 ||
+        str[i] == '=' ||
+        str[i] == ']' ||
+        str[i] == '"' ) {
       raise_invalid_encoding(L10N_FORMAT_ERROR_MESSAGE("param"));
       return false;
     }
@@ -80,7 +84,11 @@ bool validate_param_name( const char* str) {
 bool validate_element_name( const char* str) {
   size_t str_length = strlen( str );
   for (size_t i = 0; i < str_length; i++) {
-    if (str[i] < 33 || str[i] > 126 || str[i] == '=' || str[i] == ']' || str[i] == '"') {
+    if( str[i] < 33 ||
+        str[i] > 126 ||
+        str[i] == '=' ||
+        str[i] == ']' ||
+        str[i] == '"' ) {
       raise_invalid_encoding(L10N_FORMAT_ERROR_MESSAGE("element"));
       return false;
     }
