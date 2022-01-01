@@ -88,7 +88,10 @@ fail:
 
 void
 winsock2_close_network_target( const struct network_target *target ) {
-  closesocket( target->handle );
+  if( target->handle != INVALID_SOCKET ) {
+    closesocket( target->handle );
+  }
+
   WSACleanup(  );
   config_destroy_mutex( &target->mutex );
 }

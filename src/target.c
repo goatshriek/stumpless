@@ -125,20 +125,20 @@ stumpless_add_entry( struct stumpless_target *target,
 
   clear_error(  );
  
-  if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) == STUMPLESS_OPTION_PERROR ){
-	// setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR option is
-	// set, thus only checking this flag is enough for further checks
-	// NOTE : Calling the format_entry twice because if the buffer is for target who
-	// require unformatted entry would need not to call format_entry.
-  	builder = format_entry( entry, target );
-  	if( !builder ) {
-    		return -1;
-  	}
-  	buffer = strbuilder_get_buffer( builder, &builder_length );
-	error_stream = stumpless_get_error_stream();
-  	if( fwrite( buffer, 1, builder_length, error_stream) != builder_length ){
-    	  return -1;
-	}
+  if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) ){
+    // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR
+    // option is set, thus only checking this flag is enough for further checks
+    // NOTE : Calling the format_entry twice because if the buffer is for target
+    // who require unformatted entry would need not to call format_entry.
+    builder = format_entry( entry, target );
+    if( !builder ) {
+      return -1;
+    }
+    buffer = strbuilder_get_buffer( builder, &builder_length );
+    error_stream = stumpless_get_error_stream();
+    if( fwrite( buffer, 1, builder_length, error_stream) != builder_length ){
+      return -1;
+    }
   }
 
   // function targets are not formatted
@@ -159,11 +159,11 @@ stumpless_add_entry( struct stumpless_target *target,
 
   // entry was not formatted before
   if( buffer == NULL ){
-	builder = format_entry( entry, target );
-  	if( !builder ) {
-    		return -1;
-  	}
-  	buffer = strbuilder_get_buffer( builder, &builder_length );
+    builder = format_entry( entry, target );
+    if( !builder ) {
+      return -1;
+    }
+    buffer = strbuilder_get_buffer( builder, &builder_length );
 
   }
   switch ( target->type ) {
@@ -1002,9 +1002,9 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
 FILE *
 stumpless_get_cons_stream( void ) {
   if( config_read_bool( &cons_stream_valid ) ) {
-	return config_read_ptr( &cons_stream );	 
+    return config_read_ptr( &cons_stream );
   } else {
-	return stdout;
+    return stdout;
   }
 }
 

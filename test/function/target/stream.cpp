@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
-#include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
+#include "test/helper/rfc5424.hpp"
 
 namespace {
   int
@@ -123,10 +123,14 @@ namespace {
     const struct stumpless_target *target;
     const struct stumpless_error *error;
 
-    target = stumpless_open_function_target( "not-a-stream-target", basic_log_function );
-    stumpless_close_stream_target( target );
+    target = stumpless_open_function_target( "not-a-stream-target",
+                                             basic_log_function );
+    ASSERT_NOT_NULL( target );
 
+    stumpless_close_stream_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_function_target( target );
   }
 
   TEST( StreamTargetFormat, NewlineSeparator ) {

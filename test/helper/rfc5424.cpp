@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
- * 
+ * Copyright 2018-2021 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,8 @@
 #include <regex>
 #include <stdlib.h>
 #include <gtest/gtest.h>
-#include "test/function/rfc5424.hpp"
-#include "test/function/utf8.hpp"
+#include "test/helper/rfc5424.hpp"
+#include "test/helper/utf8.hpp"
 
 void TestRFC5424Compliance(const char *syslog_msg){
   std::cmatch matches;

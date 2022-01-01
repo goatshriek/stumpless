@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
+#include "test/helper/rfc5424.hpp"
 
 using::testing::HasSubstr;
 
@@ -280,9 +280,11 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-buffer-target" );
-    stumpless_close_buffer_target( target );
 
+    stumpless_close_buffer_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_stream_target( target );
   }
 
   TEST( BufferTargetOpenTest, Basic ) {

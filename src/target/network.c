@@ -699,6 +699,7 @@ new_network_target( enum stumpless_network_protocol network,
                     enum stumpless_transport_protocol transport ) {
   struct network_target *target;
   const char *port_copy;
+  const struct network_target *init_result;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
@@ -716,8 +717,15 @@ new_network_target( enum stumpless_network_protocol network,
   target->network = network;
   target->transport = transport;
 
-  return init_network_target( target );
+  init_result = init_network_target( target );
+  if( !init_result ) {
+    goto fail_init;
+  }
 
+  return target;
+
+fail_init:
+  free_mem( port_copy );
 fail_port:
   free_mem( target );
 fail:

@@ -1,0 +1,67 @@
+name: "Static Analysis"
+
+on:
+  push:
+  pull_request:
+    branches: [ latest ]
+  schedule:
+    - cron: '18 6 * * 2'
+
+jobs:
+  local-analysis:
+    name: "custom analysis"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Headers
+        run: |
+          tools/check_headers/check_headers.rb "include/**/*.h*"
+          tools/check_headers/check_headers.rb "src/**/*.c"
+          tools/check_headers/check_headers.rb "test/**/*.cpp"
+          tools/check_headers/check_headers.rb "docs/examples/**/*.c"
+      - name: Build Documentation
+        run: |
+          sudo apt-get install doxygen
+          cmake .
+          make docs
+  codeql-analysis:
+    name: "codeql analysis"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'cpp' ]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+  sonarcloud-analysis:
+    name: "sonarcloud analysis"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Configure
+        run: |
+          cmake .
+      - name: Sonarcloud Analysis
+        run: |
+          wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          unzip build-wrapper-linux-x86.zip
+          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
+          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
+          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
+          chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
+          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'

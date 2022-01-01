@@ -435,9 +435,9 @@ else()
   add_function_test(tcp4
     SOURCES
       test/function/target/tcp4.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
       $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_resolve>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
@@ -445,7 +445,7 @@ else()
   add_function_test(tcp6
     SOURCES
       test/function/target/tcp6.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_fixture>
       $<TARGET_OBJECTS:test_helper_resolve>
       $<TARGET_OBJECTS:test_helper_server>
@@ -455,10 +455,10 @@ else()
   add_function_test(udp4
     SOURCES
       test/function/target/udp4.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
-      $<TARGET_OBJECTS:test_function_target_udp>
       $<TARGET_OBJECTS:test_helper_fixture>
+      $<TARGET_OBJECTS:test_helper_network>
       $<TARGET_OBJECTS:test_helper_resolve>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
   )
@@ -466,12 +466,17 @@ else()
   add_function_test(udp6
     SOURCES
       test/function/target/udp6.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
-      $<TARGET_OBJECTS:test_function_target_udp>
       $<TARGET_OBJECTS:test_helper_fixture>
+      $<TARGET_OBJECTS:test_helper_network>
       $<TARGET_OBJECTS:test_helper_resolve>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_server>
     LIBRARIES ${network_libraries}
+  )
+
+  add_function_test(network_leak
+    SOURCES
+      test/function/leak/network.cpp
   )
 
   add_function_test(tcp4_leak
@@ -568,7 +573,7 @@ else()
   add_function_test(socket
     SOURCES
       test/function/target/socket.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_fixture>
   )
 
@@ -584,7 +589,7 @@ else()
     SOURCES
       test/thread_safety/target/socket.cpp
       $<TARGET_OBJECTS:test_helper_usage>
-      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
   )
 
   add_example(socket
@@ -715,7 +720,7 @@ else()
   add_thread_safety_test(buffer
     SOURCES
       test/thread_safety/target/buffer.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
@@ -733,7 +738,7 @@ else()
   add_thread_safety_test(file
     SOURCES
       test/thread_safety/target/file.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
@@ -751,7 +756,7 @@ else()
   add_thread_safety_test(stream
     SOURCES
       test/thread_safety/target/stream.cpp
-      $<TARGET_OBJECTS:rfc5424_checker>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
@@ -863,7 +868,7 @@ add_function_test(buffer
   SOURCES
     test/function/target/buffer.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
-    $<TARGET_OBJECTS:rfc5424_checker>
+    $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(buffer_leak
@@ -915,7 +920,7 @@ add_function_test(error_memory_failure
 add_function_test(file
   SOURCES
     test/function/target/file.cpp
-    $<TARGET_OBJECTS:rfc5424_checker>
+    $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(function
@@ -1080,14 +1085,14 @@ add_function_test(perror
 add_function_test(stream
   SOURCES
     test/function/target/stream.cpp
-    $<TARGET_OBJECTS:rfc5424_checker>
+    $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(target
   SOURCES
     test/function/target.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
-    $<TARGET_OBJECTS:rfc5424_checker>
+    $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(target_leak
