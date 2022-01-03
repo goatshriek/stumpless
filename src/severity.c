@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stddef.h>
 #include <stumpless/severity.h>
 #include "private/severity.h"
 #include "private/strhelper.h"
