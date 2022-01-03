@@ -340,6 +340,17 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( NewParamTest, InvalidNameLength ) {
+    struct stumpless_param *param;
+    const struct stumpless_error *error;
+
+    param = stumpless_new_param( "very-long-name-abcdefghijklmnopqrstuvwxyz", "test-value" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
+    stumpless_free_all(  );
+  }
+
   TEST( NewParamTest, NullValue ) {
     struct stumpless_param *param;
     const struct stumpless_error *error;
