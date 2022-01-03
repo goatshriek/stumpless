@@ -16,7 +16,24 @@
  * limitations under the License.
  */
 
+#include <stddef.h>
+#include <stumpless/severity.h>
 #include "private/severity.h"
+#include "private/strhelper.h"
+
+static char *severity_enum_to_string[] = {
+  STUMPLESS_FOREACH_SEVERITY( GENERATE_STRING )
+};
+
+const char *
+stumpless_get_severity_string( enum stumpless_severity severity ) {
+  size_t severity_upper_bound =
+    sizeof severity_enum_to_string / sizeof severity_enum_to_string[0];
+  if ( severity >= 0 && severity < severity_upper_bound ) {
+    return severity_enum_to_string[severity];
+  }
+  return "NO_SUCH_SEVERITY";
+}
 
 /* private functions */
 

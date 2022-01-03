@@ -1082,6 +1082,10 @@ add_function_test(perror
   SOURCES test/function/startup/perror.cpp
 )
 
+add_function_test(severity
+  SOURCES test/function/severity.cpp
+)
+
 add_function_test(stream
   SOURCES
     test/function/target/stream.cpp

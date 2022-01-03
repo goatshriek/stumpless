@@ -452,3 +452,4 @@
 "winsock2_network_target_is_open": "private/config/have_winsock2.h"
 "stumpless_get_cons_stream" : "stumpless/target.h"
 "stumpless_set_cons_stream" : "stumpless/target.h"
+"stumpless_get_severity_string" : "stumpless/severity.h"

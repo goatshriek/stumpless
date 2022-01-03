@@ -170,3 +170,4 @@ EXPORTS
   vstumpless_trace_message                      @155
   vstumplog_trace                               @156
 
+  stumpless_get_severity_string                 @157
