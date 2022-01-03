@@ -23,7 +23,8 @@
 #include "private/error.h"
 #include "private/config/locale/wrapper.h"
 
-bool validate_string_length( const char* str, size_t max_length ) {
+/* Helper function that can be used in other length validation routines */
+static bool validate_string_length( const char* str, size_t max_length ) {
   size_t length = strlen( str );
   bool validation_status = true;
 

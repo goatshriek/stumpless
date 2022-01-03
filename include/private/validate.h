@@ -73,6 +73,17 @@ bool validate_app_name_length( const char* app_name);
 bool validate_param_name( const char* str);
 
 /**
+ * Checks that the passed in param name is of valid length.
+ *
+ * @param the param name(string).
+ *
+ * @return True if the param name is less than allowed length 
+ * (32 characters not including NULL terminating), otherwise
+ * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
+ */
+bool validate_param_name_length( const char* str );
+
+/**
  * Checks that the passed in element name contains only ASCII characters and
  * also does not contain any of the following characters: '=',']','"'.
  *
