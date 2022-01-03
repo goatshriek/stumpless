@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stumpless/entry.h>
 #include "private/error.h"
+#include "private/validate.h"
 #include "private/config/locale/wrapper.h"
 
 /* Helper function that can be used in other length validation routines */
