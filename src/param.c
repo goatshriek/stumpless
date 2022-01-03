@@ -97,7 +97,8 @@ stumpless_new_param( const char *name, const char *value ) {
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
-  if ( !validate_param_name( name ) ) {
+  if ( !validate_param_name( name ) ||
+       !validate_param_name_length( name )) {
     goto fail;
   }
 
