@@ -423,6 +423,21 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetName, InvalidNameLength ) {
+    struct stumpless_param *param;
+    struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    param = stumpless_new_param( "param", "test-value" );
+
+    result = stumpless_set_param_name( param, "very-long-name-abcdefghijklmnopqrstuvwxyz" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
+    stumpless_destroy_param( param );
+    stumpless_free_all(  );
+  }
+
   TEST( SetValue, Basic ) {
     struct stumpless_param *param;
     const char *original_value = "first-value";
