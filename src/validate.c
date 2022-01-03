@@ -23,6 +23,20 @@
 #include "private/error.h"
 #include "private/config/locale/wrapper.h"
 
+bool validate_string_length( const char* str, size_t max_length ) {
+  size_t length = strlen( str );
+  bool validation_status = true;
+
+  if( length > max_length ) {
+    raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
+			    length,
+			    L10N_STRING_LENGTH_ERROR_CODE_TYPE );
+    validation_status = false;
+  }
+
+  return validation_status;
+}
+
 bool validate_msgid_length(const char* msgid ) {
   size_t msgid_char_length = strlen( msgid );
   bool validation_status = true;
@@ -79,6 +93,10 @@ bool validate_param_name( const char* str) {
   }
 
   return true;
+}
+
+bool validate_param_name_length( const char* name ) {
+  return validate_string_length( name, STUMPLESS_MAX_PARAM_NAME_LENGTH );
 }
 
 bool validate_element_name( const char* str) {
