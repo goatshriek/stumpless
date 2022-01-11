@@ -142,7 +142,7 @@ linux-sk-sk:
           cmake .
       - name: Check Language
         run: |
-          grep -q "STUMPLESS_LANGUAGE \"sk-SK\"" include/stumpless/config.h
+          grep -q "STUMPLESS_LANGUAGE \"pl-PL\"" include/stumpless/config.h
       - name: Build
         run: |
           make all
