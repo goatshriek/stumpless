@@ -37,6 +37,8 @@
 #    include "private/config/locale/bg-bg.h"
 #  elif defined USE_LOCALE_CZ_CZ
 #    include "private/config/locale/cz-cz.h"
+# elif defined USE_LOCALE_PL_PL
+#    include "private/config/locale/pl-pl.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
