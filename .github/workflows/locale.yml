@@ -130,7 +130,7 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-linux-sk-sk:
+linux-pl-pl:
     name: "linux, pl-pl"
     runs-on: "ubuntu-20.04"
     env:
