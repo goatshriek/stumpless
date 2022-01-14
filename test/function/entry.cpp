@@ -2041,4 +2041,30 @@ namespace {
 
     stumpless_free_all(  );
   }
+
+  TEST( AddParamTest, ParamNameTooLong ){
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_add_new_param_to_entry( entry,
+					       "new-element-name",
+					       "very-long-name-abcdefghijklmnopqrstuvwxyz",
+					       "test-value" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
 }

@@ -173,6 +173,9 @@ elseif(LOCALE MATCHES "^bg[_-]")
 elseif(LOCALE MATCHES "^cz[_-]")
   set(STUMPLESS_LANGUAGE "cz-CZ")
   set(USE_LOCALE_CZ_CZ TRUE)
+elseif(LOCALE MATCHES "^pl[_-]")
+  set(STUMPLESS_LANGUAGE "pl-PL")
+  set(USE_LOCALE_PL_PL TRUE)
 else()
   if(NOT LOCALE MATCHES "^en[_-]")
     message("building default language en-US")
@@ -1080,6 +1083,10 @@ add_function_test(param
 
 add_function_test(perror
   SOURCES test/function/startup/perror.cpp
+)
+
+add_function_test(severity
+  SOURCES test/function/severity.cpp
 )
 
 add_function_test(stream
