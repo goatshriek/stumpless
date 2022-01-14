@@ -154,44 +154,7 @@ macro(add_performance_test name)
   private_add_performance_test(NAME ${name} ${ARGN})
 endmacro(add_performance_test)
 
-# RFC 5424 checking tools
-add_library(rfc5424_checker
-  EXCLUDE_FROM_ALL
-  OBJECT ${PROJECT_SOURCE_DIR}/test/function/rfc5424.cpp ${PROJECT_SOURCE_DIR}/test/function/utf8.cpp
-)
-
-set_target_properties(rfc5424_checker
-  PROPERTIES
-  COMPILE_FLAGS "${function_test_compile_flags}"
-)
-
-add_dependencies(rfc5424_checker libgtest)
-
-target_include_directories(rfc5424_checker
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
-)
-
 # helper libraries
-add_library(test_function_target_udp
-  EXCLUDE_FROM_ALL
-  OBJECT ${PROJECT_SOURCE_DIR}/test/function/target/udp.cpp
-)
-
-set_target_properties(test_function_target_udp
-  PROPERTIES
-  COMPILE_FLAGS "${function_test_compile_flags}"
-)
-
-add_dependencies(test_function_target_udp libgtest)
-
-target_include_directories(test_function_target_udp
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
-)
-
 add_library(test_helper_fixture
   EXCLUDE_FROM_ALL
   OBJECT ${PROJECT_SOURCE_DIR}/test/helper/fixture.cpp
@@ -210,6 +173,24 @@ target_include_directories(test_helper_fixture
     ${CMAKE_BINARY_DIR}/include
 )
 
+add_library(test_helper_network
+  EXCLUDE_FROM_ALL
+  OBJECT ${PROJECT_SOURCE_DIR}/test/helper/network.cpp
+)
+
+set_target_properties(test_helper_network
+  PROPERTIES
+  COMPILE_FLAGS "${function_test_compile_flags}"
+)
+
+add_dependencies(test_helper_network libgtest)
+
+target_include_directories(test_helper_network
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)
+
 add_library(test_helper_resolve
   EXCLUDE_FROM_ALL
   OBJECT ${PROJECT_SOURCE_DIR}/test/helper/resolve.cpp
@@ -221,6 +202,23 @@ set_target_properties(test_helper_resolve
 )
 
 target_include_directories(test_helper_resolve
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+)
+add_library(test_helper_rfc5424
+  EXCLUDE_FROM_ALL
+  OBJECT ${PROJECT_SOURCE_DIR}/test/helper/rfc5424.cpp ${PROJECT_SOURCE_DIR}/test/helper/utf8.cpp
+)
+
+set_target_properties(test_helper_rfc5424
+  PROPERTIES
+  COMPILE_FLAGS "${function_test_compile_flags}"
+)
+
+add_dependencies(test_helper_rfc5424 libgtest)
+
+target_include_directories(test_helper_rfc5424
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/include

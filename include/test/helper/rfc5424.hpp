@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_TEST_FUNCTION_RFC5424_HPP
-#  define __STUMPLESS_TEST_FUNCTION_RFC5424_HPP
+#ifndef __STUMPLESS_TEST_HELPER_RFC5424_HPP
+#  define __STUMPLESS_TEST_HELPER_RFC5424_HPP
 
 /*
  * This format is specified in https://tools.ietf.org/html/rfc5424
@@ -128,4 +128,4 @@
 void TestRFC5424Compliance( const char *syslog_msg );
 void TestRFC5424StructuredData( const char *sd_elements );
 
-#endif /* __STUMPLESS_TEST_FUNCTION_RFC5424_HPP */
+#endif /* __STUMPLESS_TEST_HELPER_RFC5424_HPP */

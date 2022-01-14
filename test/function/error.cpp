@@ -282,20 +282,17 @@ namespace {
   }
 
   TEST( GetErrorId, NoSuchErrorId ) {
-    #define STUMPLESS_GENERATE_STRING( STRING, ENUM ) #STRING,
-    static const char *stumpless_error_enum_to_string[] = {
-      STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_STRING)
-    };
+    int error_count = 0;
+    const char *result;
 
-    int wrong_id_int = 
-	    sizeof( stumpless_error_enum_to_string ) / sizeof( char * ) + 1;
+    #define COUNT_ERRORS( STRING, ENUM ) error_count++;
+    STUMPLESS_FOREACH_ERROR( COUNT_ERRORS )
+
     stumpless_error_id wrong_id = 
-	    static_cast<stumpless_error_id>(wrong_id_int);
+	    static_cast<stumpless_error_id>(error_count + 1);
     
-    std::string result( stumpless_get_error_id_string( wrong_id ) );
-    
-    EXPECT_TRUE( result == "NO_SUCH_ERROR_ID" );
+    result = stumpless_get_error_id_string( wrong_id );
+    EXPECT_STREQ( result, "NO_SUCH_ERROR_ID" );
   }
-
 
 }

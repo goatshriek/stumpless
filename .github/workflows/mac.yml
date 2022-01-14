@@ -1,4 +1,4 @@
-name: "mac builds"
+name: "Mac"
 
 on:
   push:

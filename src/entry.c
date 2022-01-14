@@ -97,8 +97,8 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
     raise_argument_empty( "element_name is NULL" );
     goto fail;
   }
-  
-  if ( !validate_element_name( element_name ) || 
+
+  if ( !validate_element_name( element_name ) ||
        !validate_element_name_length( element_name )) {
     goto fail;
   }
@@ -467,7 +467,7 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
   if ( !validate_param_name( param_name ) ) {
     return NULL;
   }
-  
+
   if ( !validate_element_name( element_name ) ) {
     return NULL;
   }

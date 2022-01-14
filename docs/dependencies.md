@@ -30,6 +30,13 @@ library if it is needed.
 More information on the Google Benchmark framework may be found on the project
 [Github page](https://github.com/google/benchmark).
 
+Valgrind is used to check for memory leaks and perform other sanity tests for
+the library. These tests are invoked in the continuous integration tests for
+the Linux debug build, but can also be performed manually as needed.
+
+More information on Valgrind can be found on the project's
+[home page](https://valgrind.org/).
+
 ## Documentation
 General documentation of how functions behave is included as block comments in
 the public header files. Documentation can also be generated using `doxygen`.

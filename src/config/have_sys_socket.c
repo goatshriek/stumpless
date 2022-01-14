@@ -88,7 +88,10 @@ fail:
 
 void
 sys_socket_close_network_target( const struct network_target *target ) {
-  close( target->handle );
+  if( target->handle != -1 ) {
+    close( target->handle );
+  }
+
   config_destroy_mutex( &target->mutex );
 }
 

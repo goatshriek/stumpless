@@ -69,9 +69,11 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-network-target" );
-    stumpless_close_network_target( target );
 
+    stumpless_close_network_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_stream_target( target );
   }
 
   TEST( NetworkTargetGetDestination, NullTarget ) {
@@ -163,7 +165,7 @@ namespace {
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                            // assuming this isn't a valid protocol
                                            ( enum stumpless_transport_protocol ) -1 );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
   }
 
@@ -449,23 +451,24 @@ namespace {
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          "127.0.0.1" );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     default_port = stumpless_get_transport_port( target );
-    ASSERT_TRUE( default_port != NULL );
+    ASSERT_NOT_NULL( default_port );
     ASSERT_STRNE( default_port, new_port );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_transport_port( target, new_port );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
 
     stumpless_close_network_target( target );
+    free( ( void * ) default_port );
   }
 
   TEST( NetworkTargetSetTransportPort, NullPort ) {

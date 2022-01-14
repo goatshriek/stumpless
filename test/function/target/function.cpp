@@ -113,9 +113,11 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-function-target" );
-    stumpless_close_function_target( target );
 
+    stumpless_close_function_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_stream_target( target );
   }
 
   TEST( FunctionTargetFailureTest, FunctionFailure ) {

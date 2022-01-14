@@ -24,10 +24,10 @@
 #include <string.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
-#include "test/function/rfc5424.hpp"
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/resolve.hpp"
+#include "test/helper/rfc5424.hpp"
 
 #ifndef _WIN32
 #  include <sys/socket.h>
@@ -67,10 +67,7 @@ namespace {
       stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_network_target( target );
       close_server_socket( handle );
-
-      if( accepted != BAD_HANDLE ) {
-        close_server_socket( accepted );
-      }
+      close_server_socket( accepted );
     }
 
     void
@@ -272,9 +269,9 @@ namespace {
 
         stumpless_close_network_target( target );
         stumpless_destroy_entry_and_contents( entry );
-      }
 
-      close_server_socket( port_handle );
+        close_server_socket( port_handle );
+      }
     }
   }
 
@@ -332,9 +329,9 @@ namespace {
 
       stumpless_close_network_target( target );
       stumpless_destroy_entry_and_contents( entry );
-    }
 
-    close_server_socket( port_handle );
+      close_server_socket( port_handle );
+    }
   }
 
   TEST( NetworkTargetSetTransportPort, OpenTcp4Target ) {
@@ -391,7 +388,6 @@ namespace {
       stumpless_destroy_entry_and_contents( entry );
       close_server_socket( accepted );
       stumpless_close_network_target( target );
-
     }
 
     close_server_socket( default_port_handle );

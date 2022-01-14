@@ -104,7 +104,9 @@
 "ostringstream": "sstream"
 "perror": "stdio.h"
 "pid_t": "sys/types.h"
-"printf": "stdio.h"
+"printf":
+ - "cstdio"
+ - "stdio.h"
 "PSOCKADDR":
   - "winsock2.h"
   - "private/windows_wrapper.h"

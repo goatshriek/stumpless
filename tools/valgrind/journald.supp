@@ -1,0 +1,27 @@
+# uninitialized bytes are in fact dealt with properly before being passed on
+# these warnings come from the use of the fixed fields structure to pre-load
+# the prefixes of entries
+{
+   uninitialized_fixed_fields_conditional
+   Memcheck:Cond
+   fun:memchr
+   fun:sd_journal_sendv
+   fun:send_entry_to_journald_target
+   fun:stumpless_add_entry
+   ...
+}
+
+# uninitialized bytes are in fact dealt with properly before being passed on
+# these warnings come from the use of the fixed fields structure to pre-load
+# the prefixes of entries
+{
+   uninitialized_fixed_fields_parameter_use
+   Memcheck:Param
+   sendmsg(msg.msg_iov[2])
+   fun:sendmsg
+   fun:sd_journal_sendv
+   fun:send_entry_to_journald_target
+   fun:stumpless_add_entry
+   ...
+}
+

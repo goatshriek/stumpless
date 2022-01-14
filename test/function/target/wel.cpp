@@ -239,9 +239,12 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-wel-target" );
-    stumpless_close_wel_target( target );
+    ASSERT_NOT_NULL( target );
 
+    stumpless_close_wel_target( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_stream_target( target );
   }
 
   TEST( WelTargetOpenRemoteTest, NullName ) {

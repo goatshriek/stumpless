@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2021 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,10 +57,12 @@ namespace {
   
     version = stumpless_get_version();
   
-    ASSERT_TRUE(version != NULL);
-    ASSERT_TRUE(version->major >= 0);
-    ASSERT_TRUE(version->minor >= 0);
-    ASSERT_TRUE(version->patch >= 0);
+    ASSERT_NOT_NULL( version );
+    ASSERT_GE( version->major, 0 );
+    ASSERT_GE( version->minor, 0 );
+    ASSERT_GE( version->patch, 0 );
+
+    free( ( void * ) version );
   }
 
   TEST( GetVersion, MemoryFailure ) {
@@ -119,7 +121,7 @@ namespace {
     char *string_result;
 
     string_result = stumpless_version_to_string( &version );
-    EXPECT_TRUE( string_result != NULL );
+    EXPECT_NOT_NULL( string_result );
     EXPECT_STREQ( string_result, "1.5.0" );
 
     free( string_result );
@@ -131,10 +133,10 @@ namespace {
     std::ostringstream current_version;
 
     version = stumpless_get_version(  );
-    ASSERT_TRUE( version != NULL );
+    ASSERT_NOT_NULL( version );
 
     string_result = stumpless_version_to_string( version );
-    EXPECT_TRUE( string_result != NULL );
+    EXPECT_NOT_NULL( string_result );
 
     current_version << STUMPLESS_MAJOR_VERSION << "." << STUMPLESS_MINOR_VERSION << "." << STUMPLESS_PATCH_VERSION;
     EXPECT_STREQ( string_result, current_version.str(  ).c_str(  ) );
