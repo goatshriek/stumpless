@@ -12,7 +12,10 @@ fixes, check out the
 ## [2.1.0] - 2021-12-28
 ### Added
  - Custom function logging targets.
- - Localization for Spanish (es-ES :es:)
+ - Localizations for:
+    * Spanish (es-ES :es:)
+    * Czech (cz-CZ :czech_republic:)
+    * Polish (pl-PL :poland:)
  - Systemd journal logging targets (journald).
  - Log source file tracing functions:
     * `stump_trace`
