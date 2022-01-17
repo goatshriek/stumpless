@@ -106,6 +106,12 @@ struct stumpless_target {
  * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
  */
   int mask;
+/**
+ * A filter function used to determine if a given entry should be processed by
+ * this target or ignored. If this is NULL, then all entries sent to the target
+ * are accepted. By default, targets use a filter that
+ */
+bool ( *filter )( const struct stumpless_target *, struct stumpless_entry * );
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * A pointer to a mutex which protects all target fields. The exact type of
