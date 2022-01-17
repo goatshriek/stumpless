@@ -31,4 +31,3 @@ Here are a few other style points to follow in the code base:
    less clear than some other order, and in those cases it's of course fine to
    use the clearer order instead. But always default to inserting things in
    alphabetical order unless there is some reason to do otherwise.
-
