@@ -171,6 +171,8 @@ First, always make sure that you have documented your function, especially if it
 is public facing. Stumpless uses [doxygen](https://www.doxygen.nl/index.html) to
 generate its documentation from the header files. You can use the `docs` build
 target to generate them, provided that doxygen was installed when you ran cmake.
+Be sure to an include an `@since` tag with the current version of the library
+under work, so that it is clearn when it was introduced.
 
 As you look at other functions, you will see that each function documents its
 thread and async safety attributes in addition to its functionality. There is
