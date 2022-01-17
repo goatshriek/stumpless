@@ -28,6 +28,7 @@
 #  define __STUMPLESS_TARGET_H
 
 #  include <stdarg.h>
+#  include <stdbool.h>
 #  include <stddef.h>
 #  include <stdio.h>
 #  include <stumpless/config.h>
