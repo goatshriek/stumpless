@@ -830,6 +830,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/entry.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/error.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/facility.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/filter.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/generator.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
