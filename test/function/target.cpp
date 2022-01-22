@@ -541,6 +541,26 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( GetFilter, NullTarget ) {
+    const struct stumpless_error *error;
+    stumpless_filter_func_t result;
+
+    result = stumpless_get_target_filter( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetMask, NullTarget ) {
+    const struct stumpless_error *error;
+    int result;
+
+    result = stumpless_get_target_mask( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, 0 );
+    stumpless_free_all(  );
+  }
+
   TEST( GetName, NullTarget ) {
     const struct stumpless_error *error;
     const char *result;
@@ -883,6 +903,52 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetFilter, AlwaysAccept ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    stumpless_filter_func_t first_filter;
+    const struct stumpless_target *result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    first_filter = stumpless_get_target_filter( target );
+    EXPECT_NOT_NULL( first_filter );
+
+    result = stumpless_set_target_filter( target,
+      []( const struct stumpless_target *target,
+          const struct stumpless_entry *entry) -> bool { return true; } );
+    EXPECT_EQ( result, target );
+    EXPECT_NO_ERROR;
+
+    EXPECT_NE( stumpless_get_target_filter( target ), first_filter );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetFilter, NullTarget ) {
+    const struct stumpless_error *error;
+    const struct stumpless_target *result;
+
+    result = stumpless_set_target_filter( NULL, stumpless_mask_filter );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMask, NullTarget ) {
+    const struct stumpless_error *error;
+    const struct stumpless_target *result;
+
+    result = stumpless_set_target_mask( NULL, 0 );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all(  );
   }
 
