@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,26 @@ enum stumpless_target_type {
   STUMPLESS_WINDOWS_EVENT_LOG_TARGET /**< add to the Windows Event Log */
 };
 
+// needed so that we can define the filter function type before targets
+struct stumpless_target;
+
+/**
+ * A function that determines whether a given entry should be sent to a given
+ * target.
+ *
+ * Note that this function does not actually add the entry to the target, but
+ * only evaluates whether or not it should be sent.
+ *
+ * @param target The target that the entry will be sent to if it passes.
+ *
+ * @param entry The entry that is being submitted to the target.
+ *
+ * @return true if the entry should be sent to the target, false if not.
+ */
+typedef bool ( *stumpless_filter_func_t )(
+  const struct stumpless_target *target,
+  const struct stumpless_entry *entry );
+
 /**
  * A target that log entries can be sent to.
  */
@@ -111,8 +131,10 @@ struct stumpless_target {
  * A filter function used to determine if a given entry should be processed by
  * this target or ignored. If this is NULL, then all entries sent to the target
  * are accepted. By default, targets use a filter that
+ *
+ * @since release v2.1.0
  */
-bool ( *filter )( const struct stumpless_target *, struct stumpless_entry * );
+  stumpless_filter_func_t filter;
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * A pointer to a mutex which protects all target fields. The exact type of
@@ -566,6 +588,36 @@ const char *
 stumpless_get_target_default_msgid( const struct stumpless_target *target );
 
 /**
+ * Returns the current filter used by the given target to determine if entries
+ * should be allowed through it.
+ *
+ * Note that NULL is a valid return value from this function, indicating that
+ * the target does not currently have a filter set. In order to detect an
+ * error condition, use the `stumpless_has_error` function instead.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to get the filter from.
+ *
+ * @return The filter function in use by the target, or NULL if an error is
+ * encountered. If an error is encountered, an error code is set appropriately.
+ */
+stumpless_filter_func_t
+stumpless_get_target_filter( const struct stumpless_target *target );
+
+/**
  * Returns the name of the given target. The character buffer must be freed by
  * the caller when it is no longer needed to avoid memory leaks.
  *
@@ -788,6 +840,34 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid );
+
+/**
+ * Sets the filter used to determine whether entries should be logged by a
+ * given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param target The target to set the filter function for.
+ *
+ * @param filter The filter to be used by the target. This can be NULL if all
+ * entries should be logged by the target with no filtering.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_target_filter( struct stumpless_target *target,
+                             stumpless_filter_func_t filter );
 
 /**
  * Checks to see if the given target is open.
