@@ -401,6 +401,40 @@ cleanup_and_return:
   return msgid_copy;
 }
 
+stumpless_filter_func_t
+stumpless_get_target_filter( const struct stumpless_target *target ) {
+  stumpless_filter_func_t filter;
+
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return 0;
+  }
+
+  lock_target( target );
+  filter = target->filter;
+  unlock_target( target );
+
+  clear_error(  );
+  return filter;
+}
+
+int
+stumpless_get_target_mask( const struct stumpless_target *target ) {
+  int mask;
+
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return 0;
+  }
+
+  lock_target( target );
+  mask = target->mask;
+  unlock_target( target );
+
+  clear_error(  );
+  return mask;
+}
+
 const char *
 stumpless_get_target_name( const struct stumpless_target *target ) {
   char *name_copy;
@@ -536,6 +570,31 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   unlock_target( target );
 
   free_mem( old_msgid );
+  clear_error(  );
+  return target;
+}
+
+struct stumpless_target *
+stumpless_set_target_filter( struct stumpless_target *target,
+                             stumpless_filter_func_t filter ) {
+  VALIDATE_ARG_NOT_NULL( target );
+
+  lock_target( target );
+  target->filter = filter;
+  unlock_target( target );
+
+  clear_error(  );
+  return target;
+}
+
+struct stumpless_target *
+stumpless_set_target_mask( struct stumpless_target *target, int mask ) {
+  VALIDATE_ARG_NOT_NULL( target );
+
+  lock_target( target );
+  target->mask = mask;
+  unlock_target( target );
+
   clear_error(  );
   return target;
 }

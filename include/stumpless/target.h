@@ -67,6 +67,13 @@ struct stumpless_target;
  * Note that this function does not actually add the entry to the target, but
  * only evaluates whether or not it should be sent.
  *
+ * The safety attributes (thread, async, async-cancel) of a filter function
+ * come into play whenever an entry is sent to a target via stumpless_add_entry
+ * or another function that results in a call to this. If the function is not
+ * safe in conditions where the add function is, the target will need to be
+ * treated as though it is also unsafe in these conditions when entries are
+ * passed to it.
+ *
  * @param target The target that the entry will be sent to if it passes.
  *
  * @param entry The entry that is being submitted to the target.
@@ -120,12 +127,7 @@ struct stumpless_target {
   char *default_msgid;
 /** The number of characters in the default msgid. */
   size_t default_msgid_length;
-/**
- * The log mask used by the target.
- *
- * This member is currently not used. In the future it may be used in a similar
- * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
- */
+/** The log mask for the target. Used by the default target filter. */
   int mask;
 /**
  * A filter function used to determine if a given entry should be processed by
@@ -618,6 +620,34 @@ stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target );
 
 /**
+ * Gets the log mask of a target.
+ *
+ * The mask is a bit field of severities that this target will allow if the
+ * default mask-based filter is in use. These can be formed and checked using
+ * the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+ * combining them using bitwise or operations.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param target The target to get the mask from.
+ *
+ * @return The current mask of the target. If an error is encountered, then
+ * zero is returned and an error code is set appropriately.
+ */
+int
+stumpless_get_target_mask( const struct stumpless_target *target );
+
+/**
  * Returns the name of the given target. The character buffer must be freed by
  * the caller when it is no longer needed to avoid memory leaks.
  *
@@ -868,6 +898,36 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 struct stumpless_target *
 stumpless_set_target_filter( struct stumpless_target *target,
                              stumpless_filter_func_t filter );
+
+/**
+ * Sets the log mask of a target.
+ *
+ * The mask is a bit field of severities that this target will allow if the
+ * default mask-based filter is in use. These can be formed and checked using
+ * the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+ * combining them using bitwise or operations.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param target The target to modify.
+ *
+ * @param mask The mask to use with the target.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_target_mask( struct stumpless_target *target, int mask );
 
 /**
  * Checks to see if the given target is open.
