@@ -928,6 +928,12 @@ add_function_test(file
     $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
+add_function_test(filter
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/filter.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+)
+
 add_function_test(function
   SOURCES ${PROJECT_SOURCE_DIR}/test/function/target/function.cpp
 )
