@@ -25,6 +25,7 @@
 #include <stumpless/entry.h>
 #include <stumpless/error.h>
 #include <stumpless/facility.h>
+#include <stumpless/filter.h>
 #include <stumpless/option.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
@@ -102,6 +103,7 @@ stump_trace( const char *file,
 int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry ) {
+  stumpless_filter_func_t filter;
   struct strbuilder *builder;
   size_t builder_length;
   const char *buffer = NULL;
@@ -123,7 +125,10 @@ stumpless_add_entry( struct stumpless_target *target,
     return -1;
   }
 
-  clear_error(  );
+  filter = stumpless_get_target_filter( target );
+  if( filter && !filter( target, entry ) ) {
+    return 0;
+  }
  
   if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) ){
     // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR
@@ -985,6 +990,8 @@ new_target( enum stumpless_target_type type, const char *name ) {
   target->default_app_name_length = 0;
   target->default_msgid = NULL;
   target->default_msgid_length = 0;
+  target->mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_DEBUG_VALUE );
+  target->filter = stumpless_mask_filter;
 
   return target;
 

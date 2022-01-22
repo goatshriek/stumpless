@@ -191,6 +191,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/entry.c
   ${PROJECT_SOURCE_DIR}/src/error.c
   ${PROJECT_SOURCE_DIR}/src/facility.c
+  ${PROJECT_SOURCE_DIR}/src/filter.c
   ${PROJECT_SOURCE_DIR}/src/formatter.c
   ${PROJECT_SOURCE_DIR}/src/inthelper.c
   ${PROJECT_SOURCE_DIR}/src/memory.c

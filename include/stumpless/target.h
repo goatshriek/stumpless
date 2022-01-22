@@ -259,7 +259,8 @@ stump_trace( const char *file,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * will be returned.
  */
 int
 stumpless_add_entry( struct stumpless_target *target,

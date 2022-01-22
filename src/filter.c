@@ -16,10 +16,26 @@
  * limitations under the License.
  */
 
+#include <stdbool.h>
+#include <stumpless/entry.h>
 #include <stumpless/filter.h>
+#include <stumpless/target.h>
+#include "private/config/locale/wrapper.h"
+#include "private/error.h"
 
 bool
 stumpless_mask_filter( const struct stumpless_target *target,
                        const struct stumpless_entry *entry ) {
-  return true;
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return false;
+  }
+
+  if( !entry ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
+    return false;
+  }
+
+  return STUMPLESS_SEVERITY_MASK( stumpless_get_entry_severity( entry ) )
+           & stumpless_get_target_mask( target );
 }
