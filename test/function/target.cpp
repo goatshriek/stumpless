@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
 #include <regex>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -74,6 +75,8 @@ namespace {
     int result;
 
     ASSERT_NOT_NULL( target );
+
+    memset( buffer, 0, sizeof( buffer ) );
 
     stumpless_set_target_mask( target, 0 );
     EXPECT_NO_ERROR;
