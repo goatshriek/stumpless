@@ -29,29 +29,31 @@ namespace {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_target *target;
+    struct stumpless_entry *entry;
 
     virtual void
     SetUp( void ) {
       target = stumpless_open_buffer_target( "filter-target",
                                              buffer,
                                              sizeof( buffer ) );
+
+      entry = create_entry(  );
     }
 
     virtual void
     TearDown( void ) {
+      stumpless_destroy_entry_and_contents( entry );
       stumpless_close_buffer_target( target );
       stumpless_free_all(  );
     }
   };
 
   TEST_F( FilterTest, MaskFilterAccept ) {
-    struct stumpless_entry *entry;
     int mask;
 
-    entry = create_entry(  );
     ASSERT_NOT_NULL( entry );
-
     ASSERT_NOT_NULL( target );
+
     mask = STUMPLESS_SEVERITY_MASK( STUMPLESS_SEVERITY_INFO_VALUE );
     stumpless_set_target_mask( target, mask );
     EXPECT_NO_ERROR;
@@ -61,17 +63,15 @@ namespace {
 
     EXPECT_TRUE( stumpless_mask_filter( target, entry ) );
 
-    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST_F( FilterTest, MaskFilterReject ) {
     struct stumpless_entry *entry;
     int mask;
 
-    entry = create_entry(  );
     ASSERT_NOT_NULL( entry );
-
     ASSERT_NOT_NULL( target );
+
     mask = ~STUMPLESS_SEVERITY_MASK( STUMPLESS_SEVERITY_INFO_VALUE );
     stumpless_set_target_mask( target, mask );
     EXPECT_NO_ERROR;
@@ -80,7 +80,5 @@ namespace {
     EXPECT_NO_ERROR;
 
     EXPECT_FALSE( stumpless_mask_filter( target, entry ) );
-
-    stumpless_destroy_entry_and_contents( entry );
   }
 }
