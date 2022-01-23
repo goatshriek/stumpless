@@ -64,6 +64,9 @@ struct stumpless_target;
  * A function that determines whether a given entry should be sent to a given
  * target.
  *
+ * The two parameters are guaranteed not to be NULL whenever a filter function
+ * is called by the library itself, and so NULL checks are not necessary.
+ *
  * Note that this function does not actually add the entry to the target, but
  * only evaluates whether or not it should be sent.
  *
@@ -74,9 +77,11 @@ struct stumpless_target;
  * treated as though it is also unsafe in these conditions when entries are
  * passed to it.
  *
- * @param target The target that the entry will be sent to if it passes.
+ * @param target The target that the entry will be sent to if it passes. Will
+ * not be NULL when called during logging.
  *
- * @param entry The entry that is being submitted to the target.
+ * @param entry The entry that is being submitted to the target. Will not be
+ * NULL when called during logging.
  *
  * @return true if the entry should be sent to the target, false if not.
  */
