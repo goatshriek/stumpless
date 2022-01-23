@@ -182,7 +182,8 @@ struct stumpless_target {
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int stump( const char *message, ... );
 
@@ -229,7 +230,8 @@ int stump( const char *message, ... );
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stump_trace( const char *file,
@@ -265,7 +267,7 @@ stump_trace( const char *file,
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
  * appropriately. If the entry was rejected by the target's filter, then 0
- * will be returned.
+ * is returned.
  */
 int
 stumpless_add_entry( struct stumpless_target *target,
@@ -307,7 +309,8 @@ stumpless_add_entry( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_add_log( struct stumpless_target *target,
@@ -349,7 +352,8 @@ stumpless_add_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_add_message( struct stumpless_target *target,
@@ -1004,7 +1008,8 @@ stumpless_target_is_open( const struct stumpless_target *target );
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_trace_entry( struct stumpless_target *target,
@@ -1060,7 +1065,8 @@ stumpless_trace_entry( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_trace_log( struct stumpless_target *target,
@@ -1116,7 +1122,8 @@ stumpless_trace_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_trace_message( struct stumpless_target *target,
@@ -1282,7 +1289,8 @@ stumplog_trace( int priority,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstump( const char *message, va_list subs );
@@ -1330,7 +1338,8 @@ vstump( const char *message, va_list subs );
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstump_trace( const char *file,
@@ -1377,7 +1386,8 @@ vstump_trace( const char *file,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_add_log( struct stumpless_target *target,
@@ -1420,7 +1430,8 @@ vstumpless_add_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_add_message( struct stumpless_target *target,
@@ -1475,7 +1486,8 @@ vstumpless_add_message( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_trace_log( struct stumpless_target *target,
@@ -1531,7 +1543,8 @@ vstumpless_trace_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_trace_message( struct stumpless_target *target,
