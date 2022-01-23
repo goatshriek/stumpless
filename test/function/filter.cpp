@@ -67,7 +67,6 @@ namespace {
   }
 
   TEST_F( FilterTest, MaskFilterReject ) {
-    struct stumpless_entry *entry;
     int mask;
 
     ASSERT_NOT_NULL( entry );
