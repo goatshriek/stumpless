@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"

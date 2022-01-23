@@ -20,8 +20,6 @@
 #include <stumpless/entry.h>
 #include <stumpless/filter.h>
 #include <stumpless/target.h>
-#include "private/config/locale/wrapper.h"
-#include "private/error.h"
 
 bool
 stumpless_mask_filter( const struct stumpless_target *target,
