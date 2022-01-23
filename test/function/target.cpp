@@ -69,6 +69,21 @@ namespace {
     }
   };
 
+  TEST_F( TargetTest, FilterReject ) {
+    const char *message = "filter-reject-message";
+    int result;
+
+    ASSERT_NOT_NULL( target );
+
+    stumpless_set_target_mask( target, 0 );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_add_message( target, message );
+    EXPECT_EQ( result, 0 );
+
+    EXPECT_THAT( buffer, Not( HasSubstr( message ) ) );
+  }
+
   TEST_F( TargetTest, GetDefaultAppName ) {
     const char *result;
 
