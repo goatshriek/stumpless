@@ -399,6 +399,7 @@
 "stumplog_er": "stumpless/level/err.h"
 "stumplog_i": "stumpless/level/info.h"
 "stumplog_n": "stumpless/level/notice.h"
+"stumplog_set_mask": "stumpless/target.h"
 "stumplog_t": "stumpless/level/trace.h"
 "stumplog_trace": "stumpless/target.h"
 "stumplog_w": "stumpless/level/warning.h"

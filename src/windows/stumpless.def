@@ -175,3 +175,4 @@ EXPORTS
   stumpless_mask_filter                         @160
   stumpless_set_target_filter                   @161
   stumpless_set_target_mask                     @162
+  stumplog_set_mask                             @163

@@ -737,6 +737,11 @@ stumplog( int priority, const char *message, ... ) {
   va_end( subs );
 }
 
+int
+stumplog_set_mask( int mask ) {
+  return 0;
+}
+
 void
 stumplog_trace( int priority,
                 const char *file,

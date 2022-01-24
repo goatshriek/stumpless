@@ -1160,13 +1160,13 @@ struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option );
 
 /**
- * Logs a message to the default target with the given priority.
+ * Logs a message to the current target with the given priority.
  *
  * This function can serve as a replacement for the traditional \c syslog
  * function.
  *
- * For detailed information on what the default target will be for a given
- * system, check the stumpless_get_default_target() function documentation.
+ * For detailed information on what the current target will be for a given
+ * system, check the stumpless_get_current_target() function documentation.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -1199,6 +1199,41 @@ stumpless_unset_option( struct stumpless_target *target, int option );
  */
 void
 stumplog( int priority, const char *message, ... );
+
+/**
+ * Sets the log mask of the current target.
+ *
+ * The mask is a bit field of severities that this target will allow if the
+ * default mask-based filter is in use. These can be formed and checked using
+ * the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+ * combining them using bitwise or operations.
+ *
+ * This function can serve as a replacement for the traditional \c setlogmask
+ * function.
+ *
+ * For detailed information on what the current target will be for a given
+ * system, check the stumpless_get_current_target() function documentation.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param mask The mask to use with the target.
+ *
+ * @return The previous mask that was in use on the current target.
+ */
+int
+stumplog_set_mask( int mask );
 
 /**
  * Logs a message to the default target with the given priority, along with the
