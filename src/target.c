@@ -934,8 +934,6 @@ void
 vstumplog( int priority, const char *message, va_list subs ) {
   struct stumpless_target *target;
 
-  clear_error(  );
-
   target = stumpless_get_current_target(  );
   if( !target ) {
     return;
@@ -952,8 +950,6 @@ vstumplog_trace( int priority,
                  const char *message,
                  va_list subs ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   target = stumpless_get_current_target(  );
   if( !target ) {
