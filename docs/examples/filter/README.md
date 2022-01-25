@@ -18,12 +18,22 @@ masks if you're using them already.
 setlogmask( LOG_UPTO( LOG_ERROR ) );
 
 // the minimum change to use stumpless would look like this:
-stumplog_setmask( LOG_UPTO( LOG_ERROR ) );
+stumplog_set_mask( LOG_UPTO( LOG_ERROR ) );
 ```
 
 When a `syslog.h` header is available, most syslog calls have a matching call
 in stumpless that has the same signature and semantics. For `setlogmask`, that
 function is `stumplog_set_mask`. It sets the log mask for the current target,
-and returns the mask that was previously being used.
+and returns the mask that was previously being used. That's what allows us to
+make the substition in the above code so simple.
 
+If you want to write code that is portable to systems without the `syslog.h`
+header (Windows, for example), then you can remove the other syslog-specific
+macros with the stumpless lookalikes:
 
+```c
+// portable to any system that stumpless supports (which is a lot!)
+stumplog_set_mask( STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_ERROR ) );
+```
+
+Yes, this is a little more verbose, but it will work everyhere stumpless does.
