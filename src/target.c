@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -739,7 +739,20 @@ stumplog( int priority, const char *message, ... ) {
 
 int
 stumplog_set_mask( int mask ) {
-  return 0;
+  struct stumpless_target *target;
+  int old_mask;
+
+  target = stumpless_get_current_target(  );
+  if( !target ) {
+    return 0;
+  }
+
+  lock_target( target );
+  old_mask = target->mask;
+  target->mask = mask;
+  unlock_target( target );
+
+  return old_mask;
 }
 
 void

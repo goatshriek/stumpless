@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ namespace {
 
       stumpless_get_default_facility( target );
       stumpless_get_option( target, STUMPLESS_OPTION_PID );
+      stumpless_get_target_mask( target );
 
       stumpless_get_default_target(  );
 
@@ -64,6 +65,7 @@ namespace {
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
       stumpless_set_target_default_app_name( target, app_name.c_str(  ) );
       stumpless_set_target_default_msgid( target, msgid.c_str(  ) );
+      stumpless_set_target_mask( target, i % 256 );
 
       stumpless_set_default_facility( target, STUMPLESS_FACILITY_USER );
       stumpless_set_option( target, STUMPLESS_OPTION_PID );

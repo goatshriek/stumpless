@@ -1230,7 +1230,9 @@ stumplog( int priority, const char *message, ... );
  *
  * @param mask The mask to use with the target.
  *
- * @return The previous mask that was in use on the current target.
+ * @return The previous mask that was in use on the current target. If the
+ * mask could not be retrieved, 0 is returned and an error code is set
+ * appropriately.
  */
 int
 stumplog_set_mask( int mask );

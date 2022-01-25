@@ -1218,6 +1218,36 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( StumplogSetMask, Basic ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    int first_mask = 134;
+    const struct stumpless_target *target_result;
+    int second_mask = 245;
+    int int_result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    EXPECT_TRUE( stumpless_get_current_target(  ) == target );
+
+    target_result = stumpless_set_target_mask( target, first_mask );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
+
+    int_result = stumplog_set_mask( second_mask );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( int_result, first_mask );
+
+    int_result = stumpless_get_target_mask( target );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( int_result, second_mask );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
   TEST( StumplogTrace, Basic ) {
     char buffer[1000];
     struct stumpless_target *target;
