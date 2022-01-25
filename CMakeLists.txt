@@ -1137,6 +1137,10 @@ add_example(file
   ${PROJECT_SOURCE_DIR}/docs/examples/file/file_example.c
 )
 
+add_example(filter
+  ${PROJECT_SOURCE_DIR}/docs/examples/filter/filter_example.c
+)
+
 add_example(function
   ${PROJECT_SOURCE_DIR}/docs/examples/function/function_example.c
 )
