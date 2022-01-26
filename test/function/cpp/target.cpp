@@ -40,8 +40,23 @@ namespace {
 
   };
 
+  TEST_F( CppTargetTest, GetFilter ) {
+    target->GetFilter(  );
+  }
+
   TEST_F( CppTargetTest, GetMask ) {
     target->GetMask(  );
+  }
+
+  TEST_F( CppTargetTest, SetFilter ) {
+    stumpless_filter_func_t old_filter = target->GetFilter(  );
+
+    target->SetFilter( []( const struct stumpless_target *target,
+                           const struct stumpless_entry *entry ) -> bool {
+      return true;
+    } );
+
+    ASSERT_NE( target->GetFilter(  ), old_filter );
   }
 
   TEST_F( CppTargetTest, SetMask ) {

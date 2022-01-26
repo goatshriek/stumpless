@@ -899,6 +899,8 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
+ * @since release v2.1.0
+ *
  * @param target The target to set the filter function for.
  *
  * @param filter The filter to be used by the target. This can be NULL if all
