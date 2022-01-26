@@ -25,12 +25,6 @@ else()
   set(google_libs_static_suffix "a")
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(google_libs_debug_suffix "d")
-else()
-  set(google_libs_debug_suffix "")
-endif()
-
 if(CYGWIN)
   set(google_libs_cxx_flags "-std=gnu++11")
 else()
