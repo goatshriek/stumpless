@@ -63,6 +63,7 @@ jobs:
       - name: Test
         run: |
           make gtest
+          ls
           ls gtest/src/gtest-build/lib
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
