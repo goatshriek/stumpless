@@ -1,17 +1,16 @@
 # Runtime Filters
 Stumpless offers a number of functions that allow logging calls to be filtered
-out at compile time, meaning that there is zero performance impact to running
-workloads. However, sometimes you need the added flexibility to set and adjust
-these filters in an existing binary, and compile-time filters are not feasible.
-Fortunately, there is also a runtime filtering mechanism that you can use to
-do just that.
+out at compile time, causing zero performance impact to running workloads.
+However, sometimes you need the added flexibility to set and adjust filters
+in an existing binary, and compile-time filters are not feasible. Fortunately,
+there is also a runtime filtering mechanism that you can use to do just that.
 
 By default, all targets have a runtime filter set that inspects the severity
 mask that's been set on a target. These masks are set to allow any entry
 severity through by default, so if you haven't messed with them then it's like
 they aren't even there. This default filter mimics that available in the
-standard `syslog.h` `setlogmask` capability, and is even compatible with these
-masks if you're using them already.
+standard `syslog.h` `setlogmask` capability, and is compatible with these
+masks if you're using them already in standard syslog code.
 
 ```c
 // the syslog.h code would look like this:
@@ -28,15 +27,15 @@ the mask that was previously being used. That's what allows us to make the
 substition in the above code so simple.
 
 If you want to write code that is portable to systems without the `syslog.h`
-header (Windows, for example), then you can remove the other syslog-specific
+header (Windows, for example), then you can replace the other syslog-specific
 macros with the stumpless lookalikes:
 
 ```c
-// portable to any system that stumpless supports (which is a lot!)
+// portable to any system that stumpless supports, which is a lot!
 stumplog_set_mask( STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_ERR ) );
 ```
 
-Yes, this is a little more verbose, but it will work everyhere stumpless does.
+Yes this is a little more verbose, but it will work everyhere stumpless does.
 Of course, you can combine masks with bitwise ors and everything else you would
 expect from a mask as well.
 
@@ -46,7 +45,7 @@ stumplog_set_mask( STUMPLESS_SEVERITY_MASK( STUMPLESS_SEVERITY_DEBUG )
                      | STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_ERR ) );
 ```
 
-The default target filter will use the mask on the target to make these
+The default target filter will use the mask of the target to make these
 decisions. If you want to work with a specific target instead of just using the
 current one, you can use the `stumpless_get_target_mask` and
 `stumpless_set_target_mask` functions to do this.
@@ -85,9 +84,9 @@ stumpless_set_filter( target, ignore_element_filter );
 
 That's it! Now any messages sent through this target will use our filter
 function instead of the default mask filter. Just remember that if you want to
-combine filters, you'll need to call the previous ones in your own filter as
-well, using whatever logic you'd like. For example, if we wanted our filter to
-do both mask filtering and element name filtering, it would look like this:
+combine filters, you'll need to call all of them in your own filter, using
+whatever logic you'd like. For example, if we wanted our filter to do both mask
+filtering and element name filtering, it would look like this:
 
 ```c
 bool
