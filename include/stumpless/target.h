@@ -649,6 +649,8 @@ stumpless_get_target_filter( const struct stumpless_target *target );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
+ * @since release v2.1.0
+ *
  * @param target The target to get the mask from.
  *
  * @return The current mask of the target. If an error is encountered, then

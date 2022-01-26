@@ -50,6 +50,27 @@ templates:
             - value: "equivalent-struct-pointer"
           return:
             type: "int"
+      - name: "GetMask"
+        doc: >
+          Gets the log mask of this target.
+ 
+          The mask is a bit field of severities that this target will allow if the
+          default mask-based filter is in use. These can be formed and checked using
+          the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+          combining them using bitwise or operations.
+
+          Available since release v2.1.0.
+        return:
+          doc: "The current mask of this target."
+          type: "int"
+        wrapped-function:
+          name: "stumpless_get_target_mask"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+          return:
+            type: "int"
+          use-template: "error-code-check"
       - name: "GetName"
         doc: >
           Returns the name of this target.
@@ -274,6 +295,31 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
             - value: "msgid"
+          return:
+            type: "struct stumpless_target *"
+          use-template: "pointer-return-error-check"
+      - name: "SetMask"
+        doc: >
+          Sets the log mask of a target.
+ 
+          The mask is a bit field of severities that this target will allow if the
+          default mask-based filter is in use. These can be formed and checked using
+          the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+          combining them using bitwise or operations.
+
+          Available since release v2.1.0.
+        params:
+          - name: "mask"
+            doc: "The new mask to use for this target."
+            type: "int"
+        return:
+          doc: "The modified target."
+          type: "self-reference"
+        wrapped-function:
+          name: "stumpless_set_target_mask"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "mask"
           return:
             type: "struct stumpless_target *"
           use-template: "pointer-return-error-check"
