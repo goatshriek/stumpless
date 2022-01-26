@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stumpless.h>
 
