@@ -933,6 +933,8 @@ stumpless_set_target_filter( struct stumpless_target *target,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
+ * @since release v2.1.0
+ *
  * @param target The target to modify.
  *
  * @param mask The mask to use with the target.

@@ -54,7 +54,7 @@ templates:
         doc: >
           Returns the current filter used by this target to determine if
           entries should be allowed through it.
- 
+
           Note that NULL is a valid return value from this function, indicating
           that the target does not currently have a filter set.
 
@@ -73,7 +73,7 @@ templates:
       - name: "GetMask"
         doc: >
           Gets the log mask of this target.
- 
+
           The mask is a bit field of severities that this target will allow if
           the default mask-based filter is in use. These can be formed and
           checked using the STUMPLESS_SEVERITY_MASK and
@@ -323,7 +323,7 @@ templates:
         doc: >
           Sets the filter used by this target to determine whether entries
           should be logged to it.
- 
+
           Available since release v2.1.0.
         params:
           - name: "filter"
@@ -343,7 +343,7 @@ templates:
       - name: "SetMask"
         doc: >
           Sets the log mask of a target.
- 
+
           The mask is a bit field of severities that this target will allow if
           the default mask-based filter is in use. These can be formed and
           checked using the STUMPLESS_SEVERITY_MASK and
