@@ -21,11 +21,11 @@ setlogmask( LOG_UPTO( LOG_ERR ) );
 stumplog_set_mask( LOG_UPTO( LOG_ERR ) );
 ```
 
-When a `syslog.h` header is available, most syslog calls have a matching call
-in stumpless that has the same signature and semantics. For `setlogmask`, that
-function is `stumplog_set_mask`. It sets the log mask for the current target,
-and returns the mask that was previously being used. That's what allows us to
-make the substition in the above code so simple.
+When the `syslog.h` header is available, most syslog calls have a match in
+stumpless with the same signature and semantics. For `setlogmask`, that function
+is `stumplog_set_mask`. It sets the log mask for the current target, and returns
+the mask that was previously being used. That's what allows us to make the
+substition in the above code so simple.
 
 If you want to write code that is portable to systems without the `syslog.h`
 header (Windows, for example), then you can remove the other syslog-specific
