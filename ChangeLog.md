@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2021-12-31
+## [2.1.0] - 2022-01-26
 ### Added
  - Custom function logging targets.
  - Localizations for:
@@ -37,6 +37,14 @@ fixes, check out the
    `STUMPLESS_SEVERITY_DEBUG_VALUE`.
  - Macro `STUMPLESS_SEVERITY_TRACE` for the new level as an alias for
    the `STUMPLESS_SEVERITY_DEBUG` enum member.
+ - Runtime filtering mechanism, as well as default support for log masks, via
+   the following functions:
+    * `stumpless_get_target_filter`
+    * `stumpless_get_target_mask`
+    * `stumpless_mask_filter`
+    * `stumpless_set_target_filter`
+    * `stumpless_set_target_mask`
+    * `stumplog_set_mask`
 
 ### Fixed
  - `stumpless_perror` segmentation faults after the following errors:
