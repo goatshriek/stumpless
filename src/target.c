@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
 #include <stumpless/entry.h>
 #include <stumpless/error.h>
 #include <stumpless/facility.h>
+#include <stumpless/filter.h>
 #include <stumpless/option.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
@@ -102,6 +103,7 @@ stump_trace( const char *file,
 int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry ) {
+  stumpless_filter_func_t filter;
   struct strbuilder *builder;
   size_t builder_length;
   const char *buffer = NULL;
@@ -123,7 +125,10 @@ stumpless_add_entry( struct stumpless_target *target,
     return -1;
   }
 
-  clear_error(  );
+  filter = stumpless_get_target_filter( target );
+  if( filter && !filter( target, entry ) ) {
+    return 0;
+  }
  
   if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) ){
     // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR
@@ -401,6 +406,40 @@ cleanup_and_return:
   return msgid_copy;
 }
 
+stumpless_filter_func_t
+stumpless_get_target_filter( const struct stumpless_target *target ) {
+  stumpless_filter_func_t filter;
+
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return 0;
+  }
+
+  lock_target( target );
+  filter = target->filter;
+  unlock_target( target );
+
+  clear_error(  );
+  return filter;
+}
+
+int
+stumpless_get_target_mask( const struct stumpless_target *target ) {
+  int mask;
+
+  if( !target ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return 0;
+  }
+
+  lock_target( target );
+  mask = target->mask;
+  unlock_target( target );
+
+  clear_error(  );
+  return mask;
+}
+
 const char *
 stumpless_get_target_name( const struct stumpless_target *target ) {
   char *name_copy;
@@ -540,6 +579,31 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   return target;
 }
 
+struct stumpless_target *
+stumpless_set_target_filter( struct stumpless_target *target,
+                             stumpless_filter_func_t filter ) {
+  VALIDATE_ARG_NOT_NULL( target );
+
+  lock_target( target );
+  target->filter = filter;
+  unlock_target( target );
+
+  clear_error(  );
+  return target;
+}
+
+struct stumpless_target *
+stumpless_set_target_mask( struct stumpless_target *target, int mask ) {
+  VALIDATE_ARG_NOT_NULL( target );
+
+  lock_target( target );
+  target->mask = mask;
+  unlock_target( target );
+
+  clear_error(  );
+  return target;
+}
+
 const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target ) {
   int is_open = 1;
@@ -671,6 +735,24 @@ stumplog( int priority, const char *message, ... ) {
   va_start( subs, message );
   vstumplog( priority, message, subs );
   va_end( subs );
+}
+
+int
+stumplog_set_mask( int mask ) {
+  struct stumpless_target *target;
+  int old_mask;
+
+  target = stumpless_get_current_target(  );
+  if( !target ) {
+    return 0;
+  }
+
+  lock_target( target );
+  old_mask = target->mask;
+  target->mask = mask;
+  unlock_target( target );
+
+  return old_mask;
 }
 
 void
@@ -852,8 +934,6 @@ void
 vstumplog( int priority, const char *message, va_list subs ) {
   struct stumpless_target *target;
 
-  clear_error(  );
-
   target = stumpless_get_current_target(  );
   if( !target ) {
     return;
@@ -870,8 +950,6 @@ vstumplog_trace( int priority,
                  const char *message,
                  va_list subs ) {
   struct stumpless_target *target;
-
-  clear_error(  );
 
   target = stumpless_get_current_target(  );
   if( !target ) {
@@ -926,6 +1004,8 @@ new_target( enum stumpless_target_type type, const char *name ) {
   target->default_app_name_length = 0;
   target->default_msgid = NULL;
   target->default_msgid_length = 0;
+  target->mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_DEBUG_VALUE );
+  target->filter = stumpless_mask_filter;
 
   return target;
 

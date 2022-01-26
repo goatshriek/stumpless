@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@
 #  define __STUMPLESS_TARGET_H
 
 #  include <stdarg.h>
+#  include <stdbool.h>
 #  include <stddef.h>
 #  include <stdio.h>
 #  include <stumpless/config.h>
@@ -55,6 +56,38 @@ enum stumpless_target_type {
   STUMPLESS_STREAM_TARGET, /**< write to a FILE stream */
   STUMPLESS_WINDOWS_EVENT_LOG_TARGET /**< add to the Windows Event Log */
 };
+
+// needed so that we can define the filter function type before targets
+struct stumpless_target;
+
+/**
+ * A function that determines whether a given entry should be sent to a given
+ * target.
+ *
+ * The two parameters are guaranteed not to be NULL whenever a filter function
+ * is called by the library itself, and so NULL checks are not necessary.
+ *
+ * Note that this function does not actually add the entry to the target, but
+ * only evaluates whether or not it should be sent.
+ *
+ * The safety attributes (thread, async, async-cancel) of a filter function
+ * come into play whenever an entry is sent to a target via stumpless_add_entry
+ * or another function that results in a call to this. If the function is not
+ * safe in conditions where the add function is, the target will need to be
+ * treated as though it is also unsafe in these conditions when entries are
+ * passed to it.
+ *
+ * @param target The target that the entry will be sent to if it passes. Will
+ * not be NULL when called during logging.
+ *
+ * @param entry The entry that is being submitted to the target. Will not be
+ * NULL when called during logging.
+ *
+ * @return true if the entry should be sent to the target, false if not.
+ */
+typedef bool ( *stumpless_filter_func_t )(
+  const struct stumpless_target *target,
+  const struct stumpless_entry *entry );
 
 /**
  * A target that log entries can be sent to.
@@ -99,13 +132,16 @@ struct stumpless_target {
   char *default_msgid;
 /** The number of characters in the default msgid. */
   size_t default_msgid_length;
-/**
- * The log mask used by the target.
- *
- * This member is currently not used. In the future it may be used in a similar
- * manner to the masks used by \c setlogmask in syslog.h, or it may be removed.
- */
+/** The log mask for the target. Used by the default target filter. */
   int mask;
+/**
+ * A filter function used to determine if a given entry should be processed by
+ * this target or ignored. If this is NULL, then all entries sent to the target
+ * are accepted. By default, targets use a filter that
+ *
+ * @since release v2.1.0
+ */
+  stumpless_filter_func_t filter;
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * A pointer to a mutex which protects all target fields. The exact type of
@@ -146,7 +182,8 @@ struct stumpless_target {
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int stump( const char *message, ... );
 
@@ -193,7 +230,8 @@ int stump( const char *message, ... );
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stump_trace( const char *file,
@@ -228,7 +266,8 @@ stump_trace( const char *file,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_add_entry( struct stumpless_target *target,
@@ -270,7 +309,8 @@ stumpless_add_entry( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_add_log( struct stumpless_target *target,
@@ -312,7 +352,8 @@ stumpless_add_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_add_message( struct stumpless_target *target,
@@ -559,6 +600,66 @@ const char *
 stumpless_get_target_default_msgid( const struct stumpless_target *target );
 
 /**
+ * Returns the current filter used by the given target to determine if entries
+ * should be allowed through it.
+ *
+ * Note that NULL is a valid return value from this function, indicating that
+ * the target does not currently have a filter set. In order to detect an
+ * error condition, use the `stumpless_has_error` function instead.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to get the filter from.
+ *
+ * @return The filter function in use by the target, or NULL if an error is
+ * encountered. If an error is encountered, an error code is set appropriately.
+ */
+stumpless_filter_func_t
+stumpless_get_target_filter( const struct stumpless_target *target );
+
+/**
+ * Gets the log mask of a target.
+ *
+ * The mask is a bit field of severities that this target will allow if the
+ * default mask-based filter is in use. These can be formed and checked using
+ * the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+ * combining them using bitwise or operations.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to get the mask from.
+ *
+ * @return The current mask of the target. If an error is encountered, then
+ * zero is returned and an error code is set appropriately.
+ */
+int
+stumpless_get_target_mask( const struct stumpless_target *target );
+
+/**
  * Returns the name of the given target. The character buffer must be freed by
  * the caller when it is no longer needed to avoid memory leaks.
  *
@@ -783,6 +884,68 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid );
 
 /**
+ * Sets the filter used to determine whether entries should be logged by a
+ * given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to set the filter function for.
+ *
+ * @param filter The filter to be used by the target. This can be NULL if all
+ * entries should be logged by the target with no filtering.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_target_filter( struct stumpless_target *target,
+                             stumpless_filter_func_t filter );
+
+/**
+ * Sets the log mask of a target.
+ *
+ * The mask is a bit field of severities that this target will allow if the
+ * default mask-based filter is in use. These can be formed and checked using
+ * the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+ * combining them using bitwise or operations.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to modify.
+ *
+ * @param mask The mask to use with the target.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_set_target_mask( struct stumpless_target *target, int mask );
+
+/**
  * Checks to see if the given target is open.
  *
  * For targets that are opened with a single \c open function call, they will
@@ -851,7 +1014,8 @@ stumpless_target_is_open( const struct stumpless_target *target );
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_trace_entry( struct stumpless_target *target,
@@ -907,7 +1071,8 @@ stumpless_trace_entry( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_trace_log( struct stumpless_target *target,
@@ -963,7 +1128,8 @@ stumpless_trace_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 stumpless_trace_message( struct stumpless_target *target,
@@ -1000,13 +1166,13 @@ struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option );
 
 /**
- * Logs a message to the default target with the given priority.
+ * Logs a message to the current target with the given priority.
  *
  * This function can serve as a replacement for the traditional \c syslog
  * function.
  *
- * For detailed information on what the default target will be for a given
- * system, check the stumpless_get_default_target() function documentation.
+ * For detailed information on what the current target will be for a given
+ * system, check the stumpless_get_current_target() function documentation.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -1039,6 +1205,43 @@ stumpless_unset_option( struct stumpless_target *target, int option );
  */
 void
 stumplog( int priority, const char *message, ... );
+
+/**
+ * Sets the log mask of the current target.
+ *
+ * The mask is a bit field of severities that this target will allow if the
+ * default mask-based filter is in use. These can be formed and checked using
+ * the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
+ * combining them using bitwise or operations.
+ *
+ * This function can serve as a replacement for the traditional \c setlogmask
+ * function.
+ *
+ * For detailed information on what the current target will be for a given
+ * system, check the stumpless_get_current_target() function documentation.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
+ *
+ * @param mask The mask to use with the target.
+ *
+ * @return The previous mask that was in use on the current target. If the
+ * mask could not be retrieved, 0 is returned and an error code is set
+ * appropriately.
+ */
+int
+stumplog_set_mask( int mask );
 
 /**
  * Logs a message to the default target with the given priority, along with the
@@ -1129,7 +1332,8 @@ stumplog_trace( int priority,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstump( const char *message, va_list subs );
@@ -1177,7 +1381,8 @@ vstump( const char *message, va_list subs );
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstump_trace( const char *file,
@@ -1224,7 +1429,8 @@ vstump_trace( const char *file,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_add_log( struct stumpless_target *target,
@@ -1267,7 +1473,8 @@ vstumpless_add_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_add_message( struct stumpless_target *target,
@@ -1322,7 +1529,8 @@ vstumpless_add_message( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_trace_log( struct stumpless_target *target,
@@ -1378,7 +1586,8 @@ vstumpless_trace_log( struct stumpless_target *target,
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
- * appropriately.
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
  */
 int
 vstumpless_trace_message( struct stumpless_target *target,

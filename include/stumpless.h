@@ -36,6 +36,7 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/error.h>
 #  include <stumpless/facility.h>
+#  include <stumpless/filter.h>
 #  include <stumpless/generator.h>
 #  include <stumpless/id.h>
 #  include <stumpless/level/alert.h>

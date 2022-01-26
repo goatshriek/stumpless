@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
 #include <regex>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -68,6 +69,23 @@ namespace {
       stumpless_free_all(  );
     }
   };
+
+  TEST_F( TargetTest, FilterReject ) {
+    const char *message = "filter-reject-message";
+    int result;
+
+    ASSERT_NOT_NULL( target );
+
+    memset( buffer, 0, sizeof( buffer ) );
+
+    stumpless_set_target_mask( target, 0 );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_add_message( target, message );
+    EXPECT_EQ( result, 0 );
+
+    EXPECT_THAT( buffer, Not( HasSubstr( message ) ) );
+  }
 
   TEST_F( TargetTest, GetDefaultAppName ) {
     const char *result;
@@ -541,6 +559,26 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( GetFilter, NullTarget ) {
+    const struct stumpless_error *error;
+    stumpless_filter_func_t result;
+
+    result = stumpless_get_target_filter( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetMask, NullTarget ) {
+    const struct stumpless_error *error;
+    int result;
+
+    result = stumpless_get_target_mask( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_EQ( result, 0 );
+    stumpless_free_all(  );
+  }
+
   TEST( GetName, NullTarget ) {
     const struct stumpless_error *error;
     const char *result;
@@ -886,6 +924,52 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetFilter, AlwaysAccept ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    stumpless_filter_func_t first_filter;
+    const struct stumpless_target *result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    first_filter = stumpless_get_target_filter( target );
+    EXPECT_NOT_NULL( first_filter );
+
+    result = stumpless_set_target_filter( target,
+      []( const struct stumpless_target *target,
+          const struct stumpless_entry *entry) -> bool { return true; } );
+    EXPECT_EQ( result, target );
+    EXPECT_NO_ERROR;
+
+    EXPECT_NE( stumpless_get_target_filter( target ), first_filter );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetFilter, NullTarget ) {
+    const struct stumpless_error *error;
+    const struct stumpless_target *result;
+
+    result = stumpless_set_target_filter( NULL, stumpless_mask_filter );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMask, NullTarget ) {
+    const struct stumpless_error *error;
+    const struct stumpless_target *result;
+
+    result = stumpless_set_target_mask( NULL, 0 );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
   TEST( SetOption, NullTarget ) {
     const struct stumpless_error *error;
     const struct stumpless_target *result;
@@ -1129,6 +1213,36 @@ namespace {
     EXPECT_NO_ERROR;
 
     TestRFC5424Compliance( buffer );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( StumplogSetMask, Basic ) {
+    char buffer[100];
+    struct stumpless_target *target;
+    int first_mask = 134;
+    const struct stumpless_target *target_result;
+    int second_mask = 245;
+    int int_result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+    EXPECT_TRUE( stumpless_get_current_target(  ) == target );
+
+    target_result = stumpless_set_target_mask( target, first_mask );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
+
+    int_result = stumplog_set_mask( second_mask );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( int_result, first_mask );
+
+    int_result = stumpless_get_target_mask( target );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( int_result, second_mask );
 
     stumpless_close_buffer_target( target );
     stumpless_free_all(  );

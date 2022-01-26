@@ -4,14 +4,6 @@ or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
 
-## 2.1.0 (next minor release)
- * [ADD] **Filters**
-   While message severity codes can be used to filter which log messages make
-   it through a target at runtime, this is limited and inflexible. Instead, a
-   generic filter structure that can filter on a wide variety of properties of
-   each log entry and even use custom functions to filter messages.
-
-
 ## 2.2.0
  * [ADD] **Target chaining**
    In some cases a log message needs to be sent to multiple destinations, such

@@ -227,6 +227,11 @@ add_cpp_test(stream
     ${PROJECT_SOURCE_DIR}/test/function/cpp/target/stream.cpp
 )
 
+add_cpp_test(target
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/cpp/target.cpp
+)
+
 add_cpp_test(version
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/cpp/version.cpp

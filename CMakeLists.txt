@@ -191,6 +191,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/entry.c
   ${PROJECT_SOURCE_DIR}/src/error.c
   ${PROJECT_SOURCE_DIR}/src/facility.c
+  ${PROJECT_SOURCE_DIR}/src/filter.c
   ${PROJECT_SOURCE_DIR}/src/formatter.c
   ${PROJECT_SOURCE_DIR}/src/inthelper.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
@@ -830,6 +831,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/entry.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/error.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/facility.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/filter.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/generator.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
@@ -924,6 +926,12 @@ add_function_test(file
   SOURCES
     test/function/target/file.cpp
     $<TARGET_OBJECTS:test_helper_rfc5424>
+)
+
+add_function_test(filter
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/filter.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(function
@@ -1127,6 +1135,10 @@ add_example(entry
 
 add_example(file
   ${PROJECT_SOURCE_DIR}/docs/examples/file/file_example.c
+)
+
+add_example(filter
+  ${PROJECT_SOURCE_DIR}/docs/examples/filter/filter_example.c
 )
 
 add_example(function
