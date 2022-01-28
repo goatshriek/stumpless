@@ -71,9 +71,6 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
     CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_SH=${CMAKE_SH} -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS=${google_libs_cxx_flags}
     UPDATE_COMMAND ""
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_gtest_shared_dir} ${CMAKE_CURRENT_BINARY_DIR}
-    #INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${local_gtest_shared} ${CMAKE_CURRENT_BINARY_DIR}
-    #COMMAND ${CMAKE_COMMAND} -E copy ${local_gtest_main_shared} ${CMAKE_CURRENT_BINARY_DIR}
-    #COMMAND ${CMAKE_COMMAND} -E copy ${local_gmock_shared} ${CMAKE_CURRENT_BINARY_DIR}
     BUILD_BYPRODUCTS ${local_gtest_byproducts}
   )
 
