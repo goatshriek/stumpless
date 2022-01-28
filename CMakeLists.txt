@@ -811,6 +811,15 @@ target_include_directories(stumpless
 )
 
 
+# release build options
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+  if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+    target_compile_options(stumpless PRIVATE "-fvisibility=hidden")
+  endif()
+endif()
+
+
+
 # generating configuration files
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${PROJECT_BINARY_DIR}/include/private/config.h)
