@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <stumpless/config.h>
 #include <stumpless/generator.h>
 
 #  ifdef __cplusplus
@@ -174,6 +175,7 @@ struct stumpless_error {
  * @return A stumpless_error struct describing the error encountered by the last
  * function call. If no error was encountered, this will be NULL.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const struct stumpless_error *
 stumpless_get_error( void );
 
@@ -197,6 +199,7 @@ stumpless_get_error( void );
  *
  * @return The error id of the given error.
  */
+STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_error_id
 stumpless_get_error_id( const struct stumpless_error *err );
 
@@ -221,6 +224,7 @@ stumpless_get_error_id( const struct stumpless_error *err );
  *
  * @return The error string of the given error id.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_error_id_string( enum stumpless_error_id id );
 
@@ -240,6 +244,7 @@ stumpless_get_error_id_string( enum stumpless_error_id id );
  *
  * @return The current stream errors are written to.
  */
+STUMPLESS_PUBLIC_FUNCTION
 FILE *
 stumpless_get_error_stream( void );
 
@@ -264,6 +269,7 @@ stumpless_get_error_stream( void );
  *
  * @return True if the last stumpless call had an error, false if not.
  */
+STUMPLESS_PUBLIC_FUNCTION
 bool
 stumpless_has_error( void );
 
@@ -297,6 +303,7 @@ stumpless_has_error( void );
  * @param prefix An optional prefix to print in front of the message. If this is
  * NULL then it will simply be ignored.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_perror( const char *prefix );
 
@@ -321,6 +328,7 @@ stumpless_perror( const char *prefix );
  * @param stream The stream to write errors to. If this is NULL then the messages
  *	intended for the error stream will be ignored.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_set_error_stream( FILE *stream );
 
