@@ -27,6 +27,9 @@
 #ifndef __STUMPLESS_CONFIG_H
 #define __STUMPLESS_CONFIG_H
 
+/** Marks functions that are provided for use by the library. */
+#define STUMPLESS_PUBLIC_FUNCTION @PUBLIC_FUNCTION_DECORATION@
+
 /** The facility code to use when one is not supplied. */
 #define STUMPLESS_DEFAULT_FACILITY @DEFAULT_FACILITY@
 

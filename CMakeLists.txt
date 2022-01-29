@@ -812,6 +812,12 @@ target_include_directories(stumpless
 
 
 # release build options
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  set(PUBLIC_FUNCTION_DECORATION "__attribute__ ((visibility (\"default\")))")
+else()
+  set(PUBLIC_FUNCTION_DECORATION "")
+endif()
+
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
   if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
     target_compile_options(stumpless PRIVATE "-fvisibility=hidden")

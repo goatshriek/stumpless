@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@
 #  define __STUMPLESS_MEMORY_H
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 
 #  ifdef __cplusplus
 extern "C" {
@@ -64,6 +65,7 @@ extern "C" {
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory deallocation function may not be AC-Safe itself.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_free_all( void );
 

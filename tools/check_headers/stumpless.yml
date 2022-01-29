@@ -324,6 +324,7 @@
 "stumpless_param_journald_namer_func_t": "stumpless/param.h"
 "STUMPLESS_PARAM_NOT_FOUND": "stumpless/error.h"
 "stumpless_perror": "stumpless/error.h"
+"STUMPLESS_PUBLIC_FUNCTION": "stumpless/config.h"
 "stumpless_read_buffer": "stumpless/target/buffer.h"
 "stumpless_set_current_target": "stumpless/target.h"
 "stumpless_set_default_facility": "stumpless/target.h"
