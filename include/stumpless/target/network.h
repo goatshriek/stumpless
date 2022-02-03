@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@
 #  define __STUMPLESS_TARGET_NETWORK_H
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/target.h>
 
 /**
@@ -104,6 +105,7 @@ enum stumpless_transport_protocol {
  *
  * @param target The network target to close.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_network_target( const struct stumpless_target *target );
 
@@ -138,6 +140,7 @@ stumpless_close_network_target( const struct stumpless_target *target );
  * not yet been set. In the event of an error, NULL is returned and an error
  * code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_destination( const struct stumpless_target *target );
 
@@ -170,6 +173,7 @@ stumpless_get_destination( const struct stumpless_target *target );
  * NULL-terminated string. In the event of an error, NULL is returned and an
  * error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_transport_port( const struct stumpless_target *target );
 
@@ -194,6 +198,7 @@ stumpless_get_transport_port( const struct stumpless_target *target );
  * is encountered. In the event of an error, 0 is returned and an error code is
  * set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_get_udp_max_message_size( const struct stumpless_target *target );
 
@@ -230,6 +235,7 @@ stumpless_get_udp_max_message_size( const struct stumpless_target *target );
  * @return The new target if no error is encountered. In the event of an error,
  * NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_new_network_target( const char *name,
                               enum stumpless_network_protocol network,
@@ -264,6 +270,7 @@ stumpless_new_network_target( const char *name,
  * @return The new target if no error is encountered. In the event of an error,
  * NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_new_tcp4_target( const char *name );
 
@@ -296,6 +303,7 @@ stumpless_new_tcp4_target( const char *name );
  * @return The new target if no error is encountered. In the event of an error,
  * NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_new_tcp6_target( const char *name );
 
@@ -328,6 +336,7 @@ stumpless_new_tcp6_target( const char *name );
  * @return The new target if no error is encountered. In the event of an error,
  * NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_new_udp4_target( const char *name );
 
@@ -360,6 +369,7 @@ stumpless_new_udp4_target( const char *name );
  * @return The new target if no error is encountered. In the event of an error,
  * NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_new_udp6_target( const char *name );
 
@@ -397,6 +407,7 @@ stumpless_new_udp6_target( const char *name );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_network_target( const char *name,
                                const char *destination,
@@ -431,6 +442,7 @@ stumpless_open_network_target( const char *name,
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_tcp4_target( const char *name, const char *destination );
 
@@ -462,6 +474,7 @@ stumpless_open_tcp4_target( const char *name, const char *destination );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_tcp6_target( const char *name, const char *destination );
 
@@ -491,6 +504,7 @@ stumpless_open_tcp6_target( const char *name, const char *destination );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_udp4_target( const char *name, const char *destination );
 
@@ -520,6 +534,7 @@ stumpless_open_udp4_target( const char *name, const char *destination );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_udp6_target( const char *name, const char *destination );
 
@@ -560,6 +575,7 @@ stumpless_open_udp6_target( const char *name, const char *destination );
  * @return The modified target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_destination( struct stumpless_target *target,
                            const char *destination );
@@ -607,6 +623,7 @@ stumpless_set_destination( struct stumpless_target *target,
  * @return The modified target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_transport_port( struct stumpless_target *target,
                               const char *port );
@@ -647,6 +664,7 @@ stumpless_set_transport_port( struct stumpless_target *target,
  * @return The modified target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_udp_max_message_size( struct stumpless_target *target,
                                     size_t max_msg_size );

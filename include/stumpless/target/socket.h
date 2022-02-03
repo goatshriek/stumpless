@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@
 #ifndef __STUMPLESS_TARGET_SOCKET_H
 #  define __STUMPLESS_TARGET_SOCKET_H
 
+#  include <stumpless/config.h>
 #  include <stumpless/target.h>
 
 #  ifdef __cplusplus
@@ -67,6 +68,7 @@ extern "C" {
  *
  * @param target The socket target to close.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_socket_target( const struct stumpless_target *target );
 
@@ -95,6 +97,7 @@ stumpless_close_socket_target( const struct stumpless_target *target );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_socket_target( const char *name, const char *local_socket );
 

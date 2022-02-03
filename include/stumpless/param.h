@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,6 +157,7 @@ struct stumpless_param {
  * @return A new param that is a copy of the original. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_copy_param( const struct stumpless_param *param );
 
@@ -179,6 +180,7 @@ stumpless_copy_param( const struct stumpless_param *param );
  *
  * @param param The param to destroy.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_destroy_param( const struct stumpless_param *param );
 
@@ -211,6 +213,7 @@ stumpless_destroy_param( const struct stumpless_param *param );
  * @return The name of param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_param_name( const struct stumpless_param *param );
 
@@ -243,6 +246,7 @@ stumpless_get_param_name( const struct stumpless_param *param );
  * @return The value of param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_param_value( const struct stumpless_param *param );
 
@@ -268,6 +272,7 @@ stumpless_get_param_value( const struct stumpless_param *param );
  * @return The created param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_new_param( const char *name, const char *value );
 
@@ -297,6 +302,7 @@ stumpless_new_param( const char *name, const char *value );
  * @return The modified param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name );
 
@@ -326,6 +332,7 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name );
  * @return The modified param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_set_param_value( struct stumpless_param *param, const char *value );
 
@@ -355,7 +362,7 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value );
  * @return The formatted string of <name>: <value> if no error is encountered.
  * If an error is  encountered, then NULL is returned and an error code is set appropriately.
  */
-
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_param_to_string( const struct stumpless_param *param );
 

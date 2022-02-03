@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@
 
 #ifndef __STUMPLESS_VERSION_H
 #  define __STUMPLESS_VERSION_H
+
+#  include <stumpless/config.h>
 
 #  ifdef __cplusplus
 extern "C" {
@@ -53,6 +55,7 @@ struct stumpless_version {
  *
  * @return The version of code used by the library build.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_version *
 stumpless_get_version( void );
 
@@ -81,6 +84,7 @@ stumpless_get_version( void );
  *         100 if version_x->major - version_y->major > 0,  -100 if < 0 <br />
  *         INT_MAX if one of the version pointers is null.              <br />
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_version_cmp( const struct stumpless_version * version_x, 
                        const struct stumpless_version * version_y );
@@ -113,6 +117,7 @@ stumpless_version_cmp( const struct stumpless_version * version_x,
  * stumpless_set_free(). If an error is encountered, then NULL is returned
  * and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 char *
 stumpless_version_to_string( const struct stumpless_version *version );
 

@@ -185,6 +185,7 @@ struct stumpless_target {
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int stump( const char *message, ... );
 
 /**
@@ -233,6 +234,7 @@ int stump( const char *message, ... );
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stump_trace( const char *file,
              int line,
@@ -269,6 +271,7 @@ stump_trace( const char *file,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry );
@@ -312,6 +315,7 @@ stumpless_add_entry( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_add_log( struct stumpless_target *target,
                    int priority,
@@ -355,6 +359,7 @@ stumpless_add_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_add_message( struct stumpless_target *target,
                        const char *message,
@@ -385,6 +390,7 @@ stumpless_add_message( struct stumpless_target *target,
  *
  * @param target The target to close.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_target( struct stumpless_target *target );
 
@@ -407,6 +413,7 @@ stumpless_close_target( struct stumpless_target *target );
  * @return The current stream where messages are logged to on setting the
  * the CONS option.
  */
+STUMPLESS_PUBLIC_FUNCTION
 FILE *
 stumpless_get_cons_stream( void );
 
@@ -440,6 +447,7 @@ stumpless_get_cons_stream( void );
  * @return The current target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_get_current_target( void );
 
@@ -463,6 +471,7 @@ stumpless_get_current_target( void );
  * @return The default facility if no error is encountered. If an error is
  * encountered, then -1 is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_get_default_facility( const struct stumpless_target *target );
 
@@ -509,6 +518,7 @@ stumpless_get_default_facility( const struct stumpless_target *target );
  * @return The default target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_get_default_target( void );
 
@@ -538,6 +548,7 @@ stumpless_get_default_target( void );
  * then zero is returned. If an error is encountered, then zero is returned
  * and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_get_option( const struct stumpless_target *target, int option );
 
@@ -567,6 +578,7 @@ stumpless_get_option( const struct stumpless_target *target, int option );
  * error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_target_default_app_name( const struct stumpless_target *target );
 
@@ -596,6 +608,7 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target );
  * error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_target_default_msgid( const struct stumpless_target *target );
 
@@ -626,6 +639,7 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target );
  * @return The filter function in use by the target, or NULL if an error is
  * encountered. If an error is encountered, an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target );
 
@@ -656,6 +670,7 @@ stumpless_get_target_filter( const struct stumpless_target *target );
  * @return The current mask of the target. If an error is encountered, then
  * zero is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_get_target_mask( const struct stumpless_target *target );
 
@@ -684,6 +699,7 @@ stumpless_get_target_mask( const struct stumpless_target *target );
  * @return The name of target, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_target_name( const struct stumpless_target *target );
 
@@ -716,6 +732,7 @@ stumpless_get_target_name( const struct stumpless_target *target );
  * equal to the target argument). If an error was encountered, then NULL is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target );
 
@@ -741,6 +758,7 @@ stumpless_open_target( struct stumpless_target *target );
  * @param stream The stream to write logs to. If this is NULL then the messages
  *	intended for the console stream will be ignored.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_set_cons_stream( FILE *stream );
 
@@ -766,6 +784,7 @@ stumpless_set_cons_stream( FILE *stream );
  *
  * @param target The target to use as the current target.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_set_current_target( struct stumpless_target *target );
 
@@ -792,6 +811,7 @@ stumpless_set_current_target( struct stumpless_target *target );
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_default_facility( struct stumpless_target *target,
                                 int default_facility );
@@ -819,6 +839,7 @@ stumpless_set_default_facility( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option );
 
@@ -848,6 +869,7 @@ stumpless_set_option( struct stumpless_target *target, int option );
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name );
@@ -879,6 +901,7 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid );
@@ -909,6 +932,7 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_filter( struct stumpless_target *target,
                              stumpless_filter_func_t filter );
@@ -942,6 +966,7 @@ stumpless_set_target_filter( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_mask( struct stumpless_target *target, int mask );
 
@@ -973,6 +998,7 @@ stumpless_set_target_mask( struct stumpless_target *target, int mask );
  *
  * @return The target if it is currently open, and NULL if not.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target );
 
@@ -1017,6 +1043,7 @@ stumpless_target_is_open( const struct stumpless_target *target );
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_trace_entry( struct stumpless_target *target,
                        struct stumpless_entry *entry,
@@ -1074,6 +1101,7 @@ stumpless_trace_entry( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_trace_log( struct stumpless_target *target,
                      int priority,
@@ -1131,6 +1159,7 @@ stumpless_trace_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_trace_message( struct stumpless_target *target,
                          const char *file,
@@ -1162,6 +1191,7 @@ stumpless_trace_message( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option );
 
@@ -1203,6 +1233,7 @@ stumpless_unset_option( struct stumpless_target *target, int option );
  * number of substitutions provided must exactly match the number of specifiers
  * given.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumplog( int priority, const char *message, ... );
 
@@ -1240,6 +1271,7 @@ stumplog( int priority, const char *message, ... );
  * mask could not be retrieved, 0 is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumplog_set_mask( int mask );
 
@@ -1292,6 +1324,7 @@ stumplog_set_mask( int mask );
  * number of substitutions provided must exactly match the number of specifiers
  * given.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumplog_trace( int priority,
                 const char *file,
@@ -1335,6 +1368,7 @@ stumplog_trace( int priority,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstump( const char *message, va_list subs );
 
@@ -1384,6 +1418,7 @@ vstump( const char *message, va_list subs );
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstump_trace( const char *file,
               int line,
@@ -1432,6 +1467,7 @@ vstump_trace( const char *file,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_add_log( struct stumpless_target *target,
                     int priority,
@@ -1476,6 +1512,7 @@ vstumpless_add_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
@@ -1532,6 +1569,7 @@ vstumpless_add_message( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_trace_log( struct stumpless_target *target,
                       int priority,
@@ -1589,6 +1627,7 @@ vstumpless_trace_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_trace_message( struct stumpless_target *target,
                           const char *file,
@@ -1635,6 +1674,7 @@ vstumpless_trace_message( struct stumpless_target *target,
  * used, and \c va_end should be called afterwards, as this function does not
  * call it.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 vstumplog( int priority, const char *message, va_list subs );
 
@@ -1688,6 +1728,7 @@ vstumplog( int priority, const char *message, va_list subs );
  * used, and \c va_end should be called afterwards, as this function does not
  * call it.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 vstumplog_trace( int priority,
                  const char *file,
