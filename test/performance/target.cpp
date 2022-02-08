@@ -42,6 +42,7 @@ static void Stump(benchmark::State& state){
   }
 
   stumpless_close_buffer_target( target );
+  stumpless_free_all(  );
 
   state.counters["CallsToAlloc"] = ( double ) stump_memory_counter.malloc_count;
   state.counters["MemoryAllocated"] = ( double ) stump_memory_counter.alloc_total;
@@ -66,6 +67,8 @@ static void Stumplog( benchmark::State& state ) {
               "testing message %d\n",
               i++ );
   }
+
+  stumpless_free_all(  );
 
   state.counters["CallsToAlloc"] = ( double ) stumplog_memory_counter.malloc_count;
   state.counters["MemoryAllocated"] = ( double ) stumplog_memory_counter.alloc_total;
