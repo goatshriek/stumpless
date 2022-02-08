@@ -82,10 +82,6 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -143,10 +139,6 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
       - name: Run Examples
         run: |
           make examples
