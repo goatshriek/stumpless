@@ -18,6 +18,7 @@ function(private_add_cpp_test)
 
   set_target_properties(cpp-test-${CPP_TEST_ARG_NAME}
     PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
     OUTPUT_NAME cpp-test-${CPP_TEST_ARG_NAME}
     COMPILE_FLAGS "${cpp_test_compile_flags}"
   )
