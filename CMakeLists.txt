@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.2.3)
 project(stumpless VERSION 2.1.0)
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
 string(CONCAT enable_cpp_help_string
   "Build the C++ language binding library. The library will be added to the "
   "'all' target and will be installed via the 'install' target, alongside the "
@@ -775,8 +777,8 @@ else()
 endif()
 
 
-# shared library definition
-add_library(stumpless SHARED ${STUMPLESS_SOURCES})
+# library definition
+add_library(stumpless ${STUMPLESS_SOURCES})
 set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 if(MINGW)

@@ -94,6 +94,51 @@ jobs:
       - name: Install
         run: |
           sudo make install
+  release-static:
+    name: "release, static library"
+    runs-on: "macos-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make gtest
+          ls
+          ls gtest/src/gtest-build/lib
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Privileged Tests
+        run: |
+          sudo ./function-test-tcp4
+          sudo ./function-test-tcp4_leak
+          sudo ./function-test-tcp6
+          sudo ./function-test-tcp6_leak
+          sudo ./function-test-udp4
+          sudo ./function-test-udp4_leak
+          sudo ./function-test-udp6
+          sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
+          sudo ./thread-safety-test-network
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Run Benchmarks
+        run: |
+          make bench
+      - name: Install
+        run: |
+          sudo make install
   all-features-disabled:
     name: "all features disabled"
     runs-on: "macos-latest"

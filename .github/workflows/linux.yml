@@ -99,6 +99,48 @@ jobs:
         run: |
           gcc docs/examples/basic/basic_example.c -lstumpless -o basic_example
           ./basic_example
+  linux-release-static:
+    name: "linux, release, static library"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=OFF .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Privileged Tests
+        run: |
+          sudo ./function-test-tcp4
+          sudo ./function-test-tcp4_leak
+          sudo ./function-test-tcp6
+          sudo ./function-test-tcp6_leak
+          sudo ./function-test-udp4
+          sudo ./function-test-udp4_leak
+          sudo ./function-test-udp6
+          sudo ./function-test-udp6_leak
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
+          sudo ./thread-safety-test-network
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Run Benchmarks
+        run: |
+          make bench
+      - name: Install
+        run: |
+          sudo make install
+      - name: Test Install
+        run: |
+          gcc docs/examples/basic/basic_example.c -lstumpless -o basic_example
+          ./basic_example
   linux-all-disabled-debug:
     name: "linux, all features disabled, debug"
     runs-on: "ubuntu-latest"
