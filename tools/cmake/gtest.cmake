@@ -85,6 +85,7 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
   set_target_properties(libgtest PROPERTIES
     IMPORTED_LOCATION "${local_gtest_shared}"
     IMPORTED_IMPLIB "${local_gtest_static}"
+    IMPORTED_NO_SONAME TRUE
     INTERFACE_LINK_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 
@@ -94,6 +95,7 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
   set_target_properties(libgtestmain PROPERTIES
     IMPORTED_LOCATION "${local_gtest_main_shared}"
     IMPORTED_IMPLIB "${local_gtest_main_static}"
+    IMPORTED_NO_SONAME TRUE
     INTERFACE_LINK_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 
@@ -103,6 +105,7 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
   set_target_properties(libgmock PROPERTIES
     IMPORTED_LOCATION "${local_gmock_shared}"
     IMPORTED_IMPLIB "${local_gmock_static}"
+    IMPORTED_NO_SONAME TRUE
     INTERFACE_LINK_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
   )
 
