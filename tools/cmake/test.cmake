@@ -21,6 +21,7 @@ function(private_add_function_test)
 
   set_target_properties(function-test-${FUNCTION_TEST_ARG_NAME}
     PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
     OUTPUT_NAME function-test-${FUNCTION_TEST_ARG_NAME}
     COMPILE_FLAGS "${function_test_compile_flags}"
     COMPILE_DEFINITIONS "${FUNCTION_TEST_ARG_COMPILE_DEFINITIONS}"
