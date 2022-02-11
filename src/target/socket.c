@@ -153,13 +153,15 @@ new_socket_target( const char *dest,
     raise_socket_bind_failure( L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
                                L10N_ERRNO_ERROR_CODE_TYPE );
-    goto fail_socket;
+    goto fail_bind;
   }
 
   target->target_addr_len = sizeof( target->target_addr );
 
   return target;
 
+fail_bind:
+  close( target->local_socket );
 fail_socket:
   free_mem( target );
 fail:
