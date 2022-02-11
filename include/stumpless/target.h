@@ -481,7 +481,7 @@ stumpless_get_default_facility( const struct stumpless_target *target );
  * The default target is opened when a logging call is made with no target
  * open. It will not be opened until either this happens or a call to this
  * function is made. It will not be closed until a call to stumpless_free_all()
- * is made.
+ * is made. It should not be closed manually outside of the free all function.
  *
  * Be careful not to confuse this target with the current target, which is the
  * last target opened or set via stumpless_set_current_target(). While these

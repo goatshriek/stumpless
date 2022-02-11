@@ -326,6 +326,9 @@ stumpless_get_default_target( void ) {
 
   while( !result ) {
     result = config_open_default_target(  );
+    if( !result ) {
+      return NULL;
+    }
 
     if( !config_compare_exchange_ptr( &default_target, NULL, result ) ) {
       config_close_default_target( result );
