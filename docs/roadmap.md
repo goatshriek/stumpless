@@ -10,11 +10,6 @@ or want to make a suggestion, please submit an issue on the project's
    as to a local file as well as a network server. Target chains will allow this
    stream to be defined as a logging target, and a logging call only made to
    this instead of manually logging to each target.
- * [ADD] **Abstract socket support**
-   When creating a Unix socket target, an abstract socket name would allow the
-   socket to be hidden from the local filesystem. This has currently been left
-   out due to portability issues, but using this capability when it is available
-   would increase the 'cleanliness' of using socket targets.
 
 
 ## 3.0.0 (next major release)
