@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  */
 
 #include <stdbool.h>
-#include "private/config/no_thread_safety.h"
+#include "private/config/thread_safety_unsupported.h"
 #include "private/config/wrapper/thread_safety.h"
 
 bool

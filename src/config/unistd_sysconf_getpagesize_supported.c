@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 #include <stddef.h>
 #include <stumpless/config.h>
 #include <unistd.h>
-#include "private/config/support_unistd_sysconf_getpagesize.h"
+#include "private/config/unistd_sysconf_getpagesize_supported.h"
 
 size_t
 unistd_sysconf_getpagesize( void ) {

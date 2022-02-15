@@ -104,19 +104,30 @@ clear which configuration element they correlate to.
    assume that the header or function is _not_ available for use. These
    functions are named with a prefix of `no_xxx_`, again where xxx is the name
    of the symbol that is available.
- * `support_xxx.h` headers contain code that assumes that there is platform
+ * `xxx_supported.h` headers contain code that assumes that there is platform
    and/or library support for a given feature. For example, abstract sockets
    can only be used on Linux systems. Another case are network targets, which
    may be disabled in some builds. Functions in these headers start with a
-   prefix of `support_xxx_` with xxx substituted with the feature name.
- * Predictably, `no_support_xxx.h` headers contain code to deal with the case
+   prefix of `xxx_` with xxx substituted with the feature name. Note that
+   sometimes this prefix is the entire name of the function (without the
+   trailing underscore of course), if the supported feature is the function
+   itself.
+ * Predictably, `xxx_unsupported.h` headers contain code to deal with the case
    where a feature is not available. Functions in these headers start with the
-   prefix of `no_support_xxx_` with xxx filled in as the feature name. This can
-   be read as "no support for" to make it sound a little more natural.
+   prefix of `no_xxx_` with xxx filled in as the feature name.
 
-The function name prefixes may be broken for public functions, which must start
-with a prefix of `stumpless_` to conform to the overall library standard.
-Otherwise, these should be strictly adhered to in configuration-specific code.
+For all of these functions, the prefix designated is replaced with `config_` by
+the wrapper that designates the chosen one. Functions that don't have or need
+a `config_` wrapper function do not necessarily follow this naming convention.
+Public functions fall into this category, as they start with a prefix of
+`stumpless_` to conform to the overall library standard, and are not wrapped
+by any config header.
+
+The config header and source files may not necessarily live in the config
+directory if there is a better place. The most prominent example of this are
+target types that may not be available in a given configuration. These source
+files exist in the target directory along with the other target-related files
+rather than in the config directory.
 
 
 ## Other Wrapper Headers

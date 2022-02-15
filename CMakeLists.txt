@@ -275,7 +275,7 @@ endif(WIN32)
 
 if(HAVE_WINDOWS_H AND HAVE_SPRINTF_S)
   set(SUPPORT_WINDOWS_GET_NOW TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/support_windows_get_now.c)
+  list(APPEND STUMPLESS_SOURCES src/config/windows_get_now_supported.c)
 endif()
 
 if(HAVE_UNISTD_GETHOSTNAME)
@@ -287,7 +287,7 @@ endif()
 
 if(HAVE_UNISTD_SYSCONF AND HAVE_UNISTD_SC_PAGESIZE)
   set(SUPPORT_UNISTD_SYSCONF_GETPAGESIZE TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/support_unistd_sysconf_getpagesize.c)
+  list(APPEND STUMPLESS_SOURCES src/config/unistd_sysconf_getpagesize_supported.c)
 elseif(HAVE_UNISTD_GETPAGESIZE)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
 elseif(NOT HAVE_WINDOWS_H)
@@ -724,7 +724,7 @@ endif()
 
 # thread safety support
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
-  list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
+  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_unsupported.c)
 else()
   list(APPEND STUMPLESS_SOURCES src/config/thread_safety_supported.c)
 

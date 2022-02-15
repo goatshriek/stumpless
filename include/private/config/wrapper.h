@@ -204,7 +204,7 @@
 
 /* definition of config_getpagesize */
 #  ifdef SUPPORT_UNISTD_SYSCONF_GETPAGESIZE
-#    include "private/config/support_unistd_sysconf_getpagesize.h"
+#    include "private/config/unistd_sysconf_getpagesize_supported.h"
 #    define config_getpagesize unistd_sysconf_getpagesize
 #  elif HAVE_UNISTD_GETPAGESIZE
 #    include "private/config/have_unistd_getpagesize.h"
