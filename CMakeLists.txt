@@ -234,9 +234,11 @@ set(WRAPTURE_SPECS
 
 # configuration-specific source files
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-  # add in the support for abstract socket names
+  set(SUPPORT_ABSTRACT_SOCKET_NAMES TRUE)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/abstract_socket_names_supported.c)
 else()
-  # make sure that abstract socket names are disabled
+  set(SUPPORT_ABSTRACT_SOCKET_NAMES FALSE)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/abstract_socket_names_unsupported.c)
 endif()
 
 if(HAVE_FOPEN_S)

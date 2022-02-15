@@ -404,8 +404,6 @@
 "stumplog_t": "stumpless/level/trace.h"
 "stumplog_trace": "stumpless/target.h"
 "stumplog_w": "stumpless/level/warning.h"
-"SUPPORT_UNISTD_SYSCONF_GETPAGESIZE": "private/config.h"
-"SUPPORT_WINDOWS_GET_NOW": "private/config.h"
 "sys_socket_close_network_target": "private/config/have_sys_socket.h"
 "sys_socket_init_network_target": "private/config/have_sys_socket.h"
 "sys_socket_network_free_all": "private/config/have_sys_socket.h"
