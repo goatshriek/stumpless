@@ -184,7 +184,7 @@
 #    include "private/config/have_gmtime_r.h"
 #    define config_get_now gmtime_r_get_now
 #  elif SUPPORT_WINDOWS_GET_NOW
-#    include "private/config/support_windows_get_now.h"
+#    include "private/config/windows_get_now_supported.h"
 #    define config_get_now windows_get_now
 #  endif
 
