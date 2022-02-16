@@ -17,10 +17,11 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 #include "private/config/abstract_socket_names_unsupported.h"
 
 size_t
 no_abstract_socket_names_get_local_socket_name( char *name ) {
-  name[0] = '\0';
-  return 1;
+  memcpy( name, "stumpless-socket", 17 );
+  return 17;
 }

@@ -19,7 +19,19 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_SOCKET_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_SOCKET_H
 
+#  include <stumpless/config.h>
 #  include "private/config.h"
+
+#  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    include <stumpless/target/socket.h>
+#    include "private/target/socket.h"
+#    define config_close_socket_target stumpless_close_socket_target
+#    define config_sendto_socket_target sendto_socket_target
+#  else
+#    include "private/target.h"
+#    define config_close_socket_target close_unsupported_target
+#    define config_sendto_socket_target sendto_unsupported_target
+#  endif
 
 #  ifdef SUPPORT_ABSTRACT_SOCKET_NAMES
 #    include "private/config/abstract_socket_names_supported.h"

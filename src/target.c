@@ -37,6 +37,7 @@
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/journald.h"
+#include "private/config/wrapper/socket.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
