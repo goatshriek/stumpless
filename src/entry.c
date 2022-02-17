@@ -588,6 +588,15 @@ stumpless_new_entry( enum stumpless_facility facility,
 }
 
 struct stumpless_entry *
+stumpless_new_entry_str( enum stumpless_facility facility,
+                         enum stumpless_severity severity,
+                         const char *app_name,
+                         const char *msgid,
+                         const char *message ) {
+  return NULL;
+}
+
+struct stumpless_entry *
 stumpless_set_element( struct stumpless_entry *entry,
                        size_t index,
                        struct stumpless_element *element ) {
