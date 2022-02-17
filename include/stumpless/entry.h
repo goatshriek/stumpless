@@ -815,6 +815,12 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
  * In versions prior to 2.0.0, the facility and severity parameters were int
  * types instead of enums.
  *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_new_entry_str instead.
+ *
  * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
  * This function is thread safe, of course assuming that the string arguments
  * are not changed by other threads during execution.
@@ -840,9 +846,10 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
  * blank in the entry (a single '-' character).
  *
  * @param message The message in the entry. This message may contain any format
- * specifiers valid in \c printf. If this is NULL, then it will be blank in the
- * entry (no characters). This also means that characters such as % need to be
- * escaped as they would be in printf.
+ * specifiers valid in \c printf. This also means that characters such as % need
+ * to be escaped as they would be in printf. If this is NULL, then it will be
+ * blank in the entry (no characters). This must be a valid UTF-8 string in
+ * shortest form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of specifiers
@@ -859,6 +866,50 @@ stumpless_new_entry( enum stumpless_facility facility,
                      const char *msgid,
                      const char *message,
                      ... );
+
+/**
+ * Creates a new entry with the given characteristics.
+ *
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is thread safe, of course assuming that the string arguments
+ * are not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new element.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
+ * @since version v2.1.0
+ *
+ * @param facility The facility code of the event this entry describes. This
+ * should be a \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the event this entry describes. This
+ * should be a \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param message The message in the entry. If this is NULL, then it will be
+ * blank in the entry (no characters). This must be a valid UTF-8 string in
+ * shortest form.
+ *
+ * @return The created entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_new_entry_str( enum stumpless_facility facility,
+                         enum stumpless_severity severity,
+                         const char *app_name,
+                         const char *msgid,
+                         const char *message );
 
 /**
  * Puts the element at the given index in the given entry.
@@ -1011,6 +1062,12 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
 /**
  * Sets the message of a given entry.
  *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_set_entry_message_str instead.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry while it is being modified.
@@ -1030,7 +1087,8 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
  * @param message The new message to set on the entry. This message may contain
  * any format specifiers valid in \c printf. If this is NULL, then it will be
  * blank in the entry (no characters). This also means that characters such as %
- * need to be escaped as they would be in printf.
+ * need to be escaped as they would be in printf. This must be a valid UTF-8
+ * string in shortest form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of specifiers
@@ -1044,6 +1102,39 @@ struct stumpless_entry *
 stumpless_set_entry_message( struct stumpless_entry *entry,
                              const char *message,
                              ... );
+
+/**
+ * Sets the message of a given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new message and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.1.0
+ *
+ * @param entry The entry to modify.
+ *
+ * @param message The new message to set on the entry. If this is NULL, then it
+ * will be blank in the entry (no characters). This must be a valid UTF-8 string
+ * in shortest form.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_set_entry_message_str( struct stumpless_entry *entry,
+                                 const char *message );
 
 /**
  * Puts the param in the element at the given index of an entry.

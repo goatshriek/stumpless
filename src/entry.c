@@ -704,6 +704,12 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
+stumpless_set_entry_message_str( struct stumpless_entry *entry,
+                                 const char *message ) {
+  return NULL;
+}
+
+struct stumpless_entry *
 stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
                                     size_t element_index,
                                     size_t param_index,

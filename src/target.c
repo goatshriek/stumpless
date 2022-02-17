@@ -87,6 +87,11 @@ stump( const char *message, ... ) {
 }
 
 int
+stump_str( const char *message ) {
+  return -1;
+}
+
+int
 stump_trace( const char *file,
              int line,
              const char *func,
@@ -99,6 +104,14 @@ stump_trace( const char *file,
   va_end( subs );
 
   return result;
+}
+
+int
+stump_trace_str( const char *file,
+                 int line,
+                 const char *func,
+                 const char *message ) {
+  return -1;
 }
 
 int
@@ -222,6 +235,13 @@ stumpless_add_log( struct stumpless_target *target,
 }
 
 int
+stumpless_add_log_str( struct stumpless_target *target,
+                       int priority,
+                       const char *message ) {
+  return -1;
+}
+
+int
 stumpless_add_message( struct stumpless_target *target,
                        const char *message,
                        ... ) {
@@ -233,6 +253,12 @@ stumpless_add_message( struct stumpless_target *target,
   va_end( subs );
 
   return result;
+}
+
+int
+stumpless_add_message_str( struct stumpless_target *target,
+                           const char *message ) {
+  return -1;
 }
 
 void
@@ -704,6 +730,16 @@ stumpless_trace_log( struct stumpless_target *target,
 }
 
 int
+stumpless_trace_log_str( struct stumpless_target *target,
+                         int priority,
+                         const char *file,
+                         int line,
+                         const char *func,
+                         const char *message ) {
+  return -1;
+}
+
+int
 stumpless_trace_message( struct stumpless_target *target,
                          const char *file,
                          int line,
@@ -718,6 +754,15 @@ stumpless_trace_message( struct stumpless_target *target,
   va_end( subs );
 
   return result;
+}
+
+int
+stumpless_trace_message_str( struct stumpless_target *target,
+                             const char *file,
+                             int line,
+                             const char *func,
+                             const char *message ) {
+  return -1;
 }
 
 struct stumpless_target *
@@ -739,6 +784,11 @@ stumplog( int priority, const char *message, ... ) {
   va_start( subs, message );
   vstumplog( priority, message, subs );
   va_end( subs );
+}
+
+void
+stumplog_str( int priority, const char *message ) {
+  return;
 }
 
 int
@@ -770,6 +820,15 @@ stumplog_trace( int priority,
   va_start( subs, message );
   vstumplog_trace( priority, file, line, func, message, subs );
   va_end( subs );
+}
+
+void
+stumplog_trace_str( int priority,
+                    const char *file,
+                    int line,
+                    const char *func,
+                    const char *message ) {
+  return;
 }
 
 int

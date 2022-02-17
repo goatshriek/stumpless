@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2022-01-26
+## [2.1.0] - 2022-02-16
 ### Added
  - Custom function logging targets.
  - Localizations for:
@@ -45,6 +45,13 @@ fixes, check out the
     * `stumpless_set_target_filter`
     * `stumpless_set_target_mask`
     * `stumplog_set_mask`
+ - Safer and more performant `_str` versions of any function taking a format
+   specifier string and variable number of arguments.
+
+### Changed
+ - Auto-generated local socket names use abstract socket names if supported.
+ - Auto-generated local socket names are always `stumpless-socket` instead of
+   being generated using `mkstemp`.
 
 ### Fixed
  - `stumpless_perror` segmentation faults after the following errors:
