@@ -181,7 +181,8 @@ EXPORTS
   stumpless_add_message_str                     @166
   stumpless_add_log_str                         @167
   stumpless_new_entry_str                       @168
-  stumpless_trace_log_str                       @169
-  stumpless_trace_message_str                   @170
-  stumplog_str                                  @171
-  stumplog_trace_str                            @172
+  stumpless_set_entry_message_str               @169
+  stumpless_trace_log_str                       @170
+  stumpless_trace_message_str                   @171
+  stumplog_str                                  @172
+  stumplog_trace_str                            @173
