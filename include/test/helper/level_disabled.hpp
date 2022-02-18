@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,14 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##SideEffects ) {                   \
   EXPECT_EQ( before_val, 3 );                                                  \
 }                                                                              \
                                                                                \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Str ) {                           \
+  int result;                                                                  \
+  result = stump_##LEVEL_LETTER##_str( "simple message id: glorious kumquat" );\
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
 TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Entry ) {                         \
   int result;                                                                  \
                                                                                \
@@ -80,6 +88,18 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##LogSideEffects ) {                \
   EXPECT_EQ( before_val, 555 );                                                \
 }                                                                              \
                                                                                \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##LogStr ) {                        \
+  int result;                                                                  \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_log_str( target,                             \
+                                           STUMPLESS_FACILITY_KERN |           \
+                                           STUMPLESS_SEVERITY_INFO,            \
+                                           "message id: inchworm bingo" );     \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
 TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Message ) {                       \
   int result;                                                                  \
                                                                                \
@@ -103,6 +123,16 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##MessageSideEffects ) {            \
   EXPECT_EQ( before_val, 555 );                                                \
 }                                                                              \
                                                                                \
+TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##MessageStr ) {                    \
+  int result;                                                                  \
+                                                                               \
+  result = stump_##LEVEL_LETTER##_message_str( target,                         \
+                                               "message id: inchworm bingo" ); \
+  EXPECT_EQ( result, 0 );                                                      \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
+}                                                                              \
+                                                                               \
 TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME ) {                             \
   stumplog_##LEVEL_LETTER( STUMPLESS_FACILITY_KERN |                           \
                            STUMPLESS_SEVERITY_INFO,                            \
@@ -121,6 +151,14 @@ TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME##SideEffects ) {                \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \
   EXPECT_EQ( before_val, 555 );                                                \
+}                                                                              \
+                                                                               \
+TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME##Str ) {                        \
+  stumplog_##LEVEL_LETTER##_str( STUMPLESS_FACILITY_KERN |                     \
+                                 STUMPLESS_SEVERITY_INFO,                      \
+                                 "message id: inchworm bingo" );               \
+                                                                               \
+  EXPECT_TRUE( buffer[0] == '\0' );                                            \
 }
 
 #endif /* __STUMPLESS_TEST_HELPER_LEVEL_DISABLED_HPP */
