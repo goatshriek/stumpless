@@ -45,7 +45,7 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##SideEffects ) {                   \
                                                                                \
 TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Str ) {                           \
   int result;                                                                  \
-  result = stump_##LEVEL_LETTER##_str( "simple message id: glorious kumquat" );\
+  result = stump_##LEVEL_LETTER##_str( "100% message id: glorious kumquat" );  \
   EXPECT_EQ( result, 0 );                                                      \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \
@@ -94,7 +94,7 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##LogStr ) {                        \
   result = stump_##LEVEL_LETTER##_log_str( target,                             \
                                            STUMPLESS_FACILITY_KERN |           \
                                            STUMPLESS_SEVERITY_INFO,            \
-                                           "message id: inchworm bingo" );     \
+                                           "100% id: inchworm bingo" );        \
   EXPECT_EQ( result, 0 );                                                      \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \
@@ -127,7 +127,7 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##MessageStr ) {                    \
   int result;                                                                  \
                                                                                \
   result = stump_##LEVEL_LETTER##_message_str( target,                         \
-                                               "message id: inchworm bingo" ); \
+                                               "100% id: inchworm bingo" );    \
   EXPECT_EQ( result, 0 );                                                      \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \
@@ -156,7 +156,7 @@ TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME##SideEffects ) {                \
 TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME##Str ) {                        \
   stumplog_##LEVEL_LETTER##_str( STUMPLESS_FACILITY_KERN |                     \
                                  STUMPLESS_SEVERITY_INFO,                      \
-                                 "message id: inchworm bingo" );               \
+                                 "100% message id: inchworm bingo" );          \
                                                                                \
   EXPECT_TRUE( buffer[0] == '\0' );                                            \
 }

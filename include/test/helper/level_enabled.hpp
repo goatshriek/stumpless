@@ -48,7 +48,7 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##Str ) {                           \
   int expected_prival;                                                         \
   char prival[6];                                                              \
                                                                                \
-  result = stump_##LEVEL_LETTER##_str( "simple message id: glorious kumquat" );\
+  result = stump_##LEVEL_LETTER##_str( "100% message id: glorious kumquat" );  \
   EXPECT_NO_ERROR;                                                             \
   EXPECT_GE( result, 0 );                                                      \
                                                                                \
@@ -141,7 +141,7 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##LogStr ) {                        \
                                                                                \
   result = stump_##LEVEL_LETTER##_log_str( target,                             \
                                            logged_prival,                      \
-                                           "simple message: lost primitive" ); \
+                                           "100% message: lost primitive" );   \
   EXPECT_NO_ERROR;                                                             \
   EXPECT_GE( result, 0 );                                                      \
                                                                                \
@@ -193,7 +193,7 @@ TEST_F( LevelEnabledTest, Stump##LEVEL_NAME##MessageStr ) {                    \
   char prival[6];                                                              \
                                                                                \
   result = stump_##LEVEL_LETTER##_message_str( target,                         \
-                                               "message id: lost primitive" ); \
+                                               "100% id: lost primitive" );    \
   EXPECT_NO_ERROR;                                                             \
   EXPECT_GE( result, 0 );                                                      \
                                                                                \
@@ -237,7 +237,7 @@ TEST_F( LevelEnabledTest, Stumplog##LEVEL_NAME##Str ) {                        \
   char prival[6];                                                              \
                                                                                \
   stumplog_##LEVEL_LETTER##_str( logged_prival,                                \
-                                 "simple message id: lost primitive" );        \
+                                 "100% message id: lost primitive" );          \
   EXPECT_NO_ERROR;                                                             \
                                                                                \
   EXPECT_THAT( buffer, HasSubstr( "lost primitive" ) );                        \
