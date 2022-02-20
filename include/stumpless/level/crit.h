@@ -146,6 +146,8 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param message The message to log. This must be a valid UTF-8 string in
  * shortest form.
  *
@@ -158,7 +160,7 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
 #  ifdef STUMPLESS_DISABLE_CRIT_LEVEL
 #    define stump_c_str( message ) ( 0 )
 #  else
-#    define stump_c_str( messsage )                                            \
+#    define stump_c_str( message )                                             \
 stumpless_add_log_str( stumpless_get_current_target(  ),                       \
                        STUMPLESS_SEVERITY_CRIT | STUMPLESS_DEFAULT_FACILITY,   \
                        ( message ) )
@@ -313,6 +315,8 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param target The target to send the entry to.
  *
  * @param priority The priority of the message - this should be the bitwise or
@@ -441,6 +445,8 @@ stumpless_add_log( ( target ),                                                 \
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param target The target to send the entry to.
  *
  * @param message The message to log. This must be a valid UTF-8 string in
@@ -456,9 +462,9 @@ stumpless_add_log( ( target ),                                                 \
 #    define stump_c_message_str( target, message ) ( 0 )
 #  else
 #    define stump_c_message_str( target, message )                             \
-stumpless_add_log( ( target ),                                                 \
-                   STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_CRIT,       \
-                   ( message ) )
+stumpless_add_log_str( ( target ),                                             \
+                       STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_CRIT,   \
+                       ( message ) )
 #  endif
 
 /**
@@ -549,6 +555,8 @@ stumpless_add_log( ( target ),                                                 \
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
+ *
+ * @since release v2.1.0.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.

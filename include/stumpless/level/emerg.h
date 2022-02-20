@@ -140,6 +140,8 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param message The message to log. This must be a valid UTF-8 string in
  * shortest form.
  *
@@ -304,6 +306,8 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param target The target to send the entry to.
  *
  * @param priority The priority of the message - this should be the bitwise or
@@ -432,6 +436,8 @@ stumpless_add_log( ( target ),                                                 \
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param target The target to send the entry to.
  *
  * @param message The message to log. This must be a valid UTF-8 string in
@@ -538,6 +544,8 @@ stumpless_add_log_str( ( target ),                                             \
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
+ *
+ * @since release v2.1.0.
  *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
