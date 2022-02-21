@@ -335,7 +335,7 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
 #    define stump_c_log_str( target, priority, message ) ( 0 )
 #  else
 #    define stump_c_log_str( target, priority, message )                       \
-stumpless_add_log( ( target ), ( priority ), ( message ) )
+stumpless_add_log_str( ( target ), ( priority ), ( message ) )
 #endif
 
 /**
