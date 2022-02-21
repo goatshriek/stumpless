@@ -568,7 +568,7 @@ stumpless_add_log_str( ( target ),                                             \
 #    define stumplog_c_str( priority, message ) ( ( void ) 0 )
 #  else
 #    define stumplog_c_str( priority, message )                                \
-stumplog( ( priority ), ( message ) )
+stumplog_str( ( priority ), ( message ) )
 #  endif
 
 #endif /* __STUMPLESS_LEVEL_CRIT_H */
