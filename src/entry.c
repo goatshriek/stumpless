@@ -596,6 +596,7 @@ stumpless_new_entry_str( enum stumpless_facility facility,
                          const char *message ) {
   char *msg;
   size_t msg_length;
+  struct stumpless_entry *entry;
 
   if( message ) {
     msg = copy_cstring_with_length( message, &msg_length );
@@ -608,7 +609,13 @@ stumpless_new_entry_str( enum stumpless_facility facility,
     msg_length = 0;
   }
 
-  return new_entry( facility, severity, app_name, msgid, msg, msg_length );
+  entry = new_entry( facility, severity, app_name, msgid, msg, msg_length );
+
+  if( !entry ) {
+    free_mem( msg );
+  }
+
+  return entry;
 }
 
 struct stumpless_entry *
@@ -920,6 +927,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
                       va_list subs ) {
   char *msg;
   size_t msg_length;
+  struct stumpless_entry *entry;
 
   if( message ) {
     msg = config_format_string( message, subs, &msg_length );
@@ -932,7 +940,13 @@ vstumpless_new_entry( enum stumpless_facility facility,
     msg_length = 0;
   }
 
-  return new_entry( facility, severity, app_name, msgid, msg, msg_length );
+  entry = new_entry( facility, severity, app_name, msgid, msg, msg_length );
+
+  if( !entry ) {
+    free_mem( msg );
+  }
+
+  return entry;
 }
 
 struct stumpless_entry *
