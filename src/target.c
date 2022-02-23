@@ -75,60 +75,6 @@ close_unsupported_target( const struct stumpless_target *target ) {
 }
 
 int
-stump( const char *message, ... ) {
-  int result;
-  va_list subs;
-
-  va_start( subs, message );
-  result = vstump( message, subs );
-  va_end( subs );
-
-  return result;
-}
-
-int
-stump_str( const char *message ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  return stumpless_add_message( target, message );
-}
-
-int
-stump_trace( const char *file,
-             int line,
-             const char *func,
-             const char *message, ... ) {
-  int result;
-  va_list subs;
-
-  va_start( subs, message );
-  result = vstump_trace( file, line, func, message, subs );
-  va_end( subs );
-
-  return result;
-}
-
-int
-stump_trace_str( const char *file,
-                 int line,
-                 const char *func,
-                 const char *message ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  return stumpless_trace_message_str( target, file, line, func, message );
-}
-
-int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry ) {
   stumpless_filter_func_t filter;
@@ -885,102 +831,6 @@ stumpless_unset_option( struct stumpless_target *target, int option ) {
   return target;
 }
 
-void
-stumplog( int priority, const char *message, ... ) {
-  va_list subs;
-
-  va_start( subs, message );
-  vstumplog( priority, message, subs );
-  va_end( subs );
-}
-
-void
-stumplog_str( int priority, const char *message ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return;
-  }
-
-  stumpless_add_log_str( target, priority, message );
-}
-
-int
-stumplog_set_mask( int mask ) {
-  struct stumpless_target *target;
-  int old_mask;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return 0;
-  }
-
-  lock_target( target );
-  old_mask = target->mask;
-  target->mask = mask;
-  unlock_target( target );
-
-  return old_mask;
-}
-
-void
-stumplog_trace( int priority,
-                const char *file,
-                int line,
-                const char *func,
-                const char *message, ... ) {
-  va_list subs;
-
-  va_start( subs, message );
-  vstumplog_trace( priority, file, line, func, message, subs );
-  va_end( subs );
-}
-
-void
-stumplog_trace_str( int priority,
-                    const char *file,
-                    int line,
-                    const char *func,
-                    const char *message ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return;
-  }
-
-  stumpless_trace_log_str( target, priority, file, line, func, message );
-}
-
-int
-vstump( const char *message, va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  return vstumpless_add_message( target, message, subs );
-}
-
-int
-vstump_trace( const char *file,
-              int line,
-              const char *func,
-              const char *message,
-              va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  return vstumpless_trace_message( target, file, line, func, message, subs );
-}
-
 int
 vstumpless_add_log( struct stumpless_target *target,
                     int priority,
@@ -1113,35 +963,6 @@ vstumpless_trace_message( struct stumpless_target *target,
                                func,
                                message,
                                subs );
-}
-
-void
-vstumplog( int priority, const char *message, va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return;
-  }
-
-  vstumpless_add_log( target, priority, message, subs );
-}
-
-void
-vstumplog_trace( int priority,
-                 const char * file,
-                 int line,
-                 const char *func,
-                 const char *message,
-                 va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return;
-  }
-
-  vstumpless_trace_log( target, priority, file, line, func, message, subs );
 }
 
 /* private definitions */

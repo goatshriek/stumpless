@@ -196,6 +196,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/filter.c
   ${PROJECT_SOURCE_DIR}/src/formatter.c
   ${PROJECT_SOURCE_DIR}/src/inthelper.c
+  ${PROJECT_SOURCE_DIR}/src/log.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
   ${PROJECT_SOURCE_DIR}/src/param.c
   ${PROJECT_SOURCE_DIR}/src/severity.c
@@ -865,6 +866,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/filter.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/generator.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/log.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/option.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/param.h

@@ -48,6 +48,7 @@
 #  include <stumpless/level/notice.h>
 #  include <stumpless/level/trace.h>
 #  include <stumpless/level/warning.h>
+#  include <stumpless/log.h>
 #  include <stumpless/memory.h>
 #  include <stumpless/option.h>
 #  include <stumpless/param.h>
