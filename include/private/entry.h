@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,19 @@ locked_get_element_by_index( const struct stumpless_entry *entry,
 struct stumpless_element *
 locked_get_element_by_name( const struct stumpless_entry *entry,
                             const char *name );
+
+/**
+ * Creates a new entry with the given parameters.
+ *
+ * @since release v2.1.0.
+ */
+struct stumpless_entry *
+new_entry( enum stumpless_facility facility,
+           enum stumpless_severity severity,
+           const char *app_name,
+           const char *msgid,
+           char *message,
+           size_t message_length );
 
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,

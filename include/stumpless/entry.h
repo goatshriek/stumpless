@@ -70,7 +70,7 @@ struct stumpless_entry {
   size_t app_name_length;
 /** The message of this entry, as a NULL-terminated string. */
   char *message;
-/** The length of the message, without the NULL terminator. */
+/** The length of the message in bytes, without the NULL terminator. */
   size_t message_length;
 /** The message id of this entry, as a NULL-terminated string. */
   char msgid[STUMPLESS_MAX_MSGID_LENGTH + 1];

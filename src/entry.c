@@ -594,77 +594,21 @@ stumpless_new_entry_str( enum stumpless_facility facility,
                          const char *app_name,
                          const char *msgid,
                          const char *message ) {
-  struct stumpless_entry *entry;
-  const char *effective_app_name;
-  const char *effective_msgid;
-  size_t *message_length;
+  char *msg;
+  size_t msg_length;
 
-  if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
-    if( !entry_cache ) {
-      goto fail;
+  if( message ) {
+    msg = copy_cstring_with_length( message, &msg_length );
+    if( !msg ) {
+      return NULL;
     }
-  }
 
-  entry = cache_alloc( entry_cache );
-  if( !entry ) {
-    goto fail;
-  }
-
-  effective_app_name = app_name ? app_name : "-";
-  if ( !validate_app_name_length ( effective_app_name ) ||
-       !validate_printable_ascii( effective_app_name ) ) {
-      goto fail_after_cache;
-  }
-
-  entry->app_name_length = strlen( effective_app_name );
-  memcpy( entry->app_name, effective_app_name, entry->app_name_length );
-  entry->app_name[entry->app_name_length] = '\0';
-
-  effective_msgid = msgid ? msgid : "-";
-  if( !validate_msgid_length( effective_msgid ) ||
-      !validate_printable_ascii( effective_msgid ) ) {
-    goto fail_after_cache;
-  }
-
-  entry->msgid_length = strlen( effective_msgid );
-  memcpy( entry->msgid, effective_msgid, entry->msgid_length );
-  entry->msgid[entry->msgid_length] = '\0';
-
-  if( !message ) {
-    entry->message = NULL;
-    entry->message_length = 0;
   } else {
-    message_length = &( entry->message_length );
-    entry->message = copy_cstring_with_length( message, message_length );
-    if( !entry->message ) {
-      goto fail_after_cache;
-    }
+    msg = NULL;
+    msg_length = 0;
   }
 
-  if( !config_initialize_wel_data( entry ) ) {
-    goto fail_init;
-  }
-  config_set_entry_wel_type( entry, severity );
-
-  config_assign_cached_mutex( entry->mutex );
-  if( !config_check_mutex_valid( entry->mutex ) ) {
-    goto fail_init;
-  }
-
-  entry->prival = get_prival( facility, severity );
-  entry->elements = NULL;
-  entry->element_count = 0;
-
-  clear_error(  );
-  return entry;
-
-fail_init:
-  free_mem( entry->message );
-fail_after_cache:
-  cache_free( entry_cache, entry );
-fail:
-  return NULL;
+  return new_entry( facility, severity, app_name, msgid, msg, msg_length );
 }
 
 struct stumpless_entry *
@@ -974,77 +918,21 @@ vstumpless_new_entry( enum stumpless_facility facility,
                       const char *msgid,
                       const char *message,
                       va_list subs ) {
-  struct stumpless_entry *entry;
-  const char *effective_app_name;
-  const char *effective_msgid;
-  size_t *message_length;
+  char *msg;
+  size_t msg_length;
 
-  if( !entry_cache ) {
-    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
-    if( !entry_cache ) {
-      goto fail;
+  if( message ) {
+    msg = config_format_string( message, subs, &msg_length );
+    if( !msg ) {
+      return NULL;
     }
-  }
 
-  entry = cache_alloc( entry_cache );
-  if( !entry ) {
-    goto fail;
-  }
-
-  effective_app_name = app_name ? app_name : "-";
-  if ( !validate_app_name_length ( effective_app_name ) ||
-       !validate_printable_ascii( effective_app_name ) ) {
-      goto fail_after_cache;
-  }
-
-  entry->app_name_length = strlen( effective_app_name );
-  memcpy( entry->app_name, effective_app_name, entry->app_name_length );
-  entry->app_name[entry->app_name_length] = '\0';
-
-  effective_msgid = msgid ? msgid : "-";
-  if( !validate_msgid_length( effective_msgid ) ||
-      !validate_printable_ascii( effective_msgid ) ) {
-    goto fail_after_cache;
-  }
-
-  entry->msgid_length = strlen( effective_msgid );
-  memcpy( entry->msgid, effective_msgid, entry->msgid_length );
-  entry->msgid[entry->msgid_length] = '\0';
-
-  if( !message ) {
-    entry->message = NULL;
-    entry->message_length = 0;
   } else {
-    message_length = &( entry->message_length );
-    entry->message = config_format_string( message, subs, message_length );
-    if( !entry->message ) {
-      goto fail_after_cache;
-    }
+    msg = NULL;
+    msg_length = 0;
   }
 
-  if( !config_initialize_wel_data( entry ) ) {
-    goto fail_init;
-  }
-  config_set_entry_wel_type( entry, severity );
-
-  config_assign_cached_mutex( entry->mutex );
-  if( !config_check_mutex_valid( entry->mutex ) ) {
-    goto fail_init;
-  }
-
-  entry->prival = get_prival( facility, severity );
-  entry->elements = NULL;
-  entry->element_count = 0;
-
-  clear_error(  );
-  return entry;
-
-fail_init:
-  free_mem( entry->message );
-fail_after_cache:
-  cache_free( entry_cache, entry );
-fail:
-  return NULL;
+  return new_entry( facility, severity, app_name, msgid, msg, msg_length );
 }
 
 struct stumpless_entry *
@@ -1158,6 +1046,75 @@ locked_get_element_by_name( const struct stumpless_entry *entry,
 
   raise_element_not_found(  );
   return NULL;
+}
+
+struct stumpless_entry *
+new_entry( enum stumpless_facility facility,
+           enum stumpless_severity severity,
+           const char *app_name,
+           const char *msgid,
+           char *message,
+           size_t message_length ) {
+  struct stumpless_entry *entry;
+  const char *effective_app_name;
+  const char *effective_msgid;
+
+  if( !entry_cache ) {
+    entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
+    if( !entry_cache ) {
+      goto fail;
+    }
+  }
+
+  entry = cache_alloc( entry_cache );
+  if( !entry ) {
+    goto fail;
+  }
+
+  effective_app_name = app_name ? app_name : "-";
+  if ( !validate_app_name_length ( effective_app_name ) ||
+       !validate_printable_ascii( effective_app_name ) ) {
+      goto fail_after_cache;
+  }
+
+  entry->app_name_length = strlen( effective_app_name );
+  memcpy( entry->app_name, effective_app_name, entry->app_name_length );
+  entry->app_name[entry->app_name_length] = '\0';
+
+  effective_msgid = msgid ? msgid : "-";
+  if( !validate_msgid_length( effective_msgid ) ||
+      !validate_printable_ascii( effective_msgid ) ) {
+    goto fail_after_cache;
+  }
+
+  entry->msgid_length = strlen( effective_msgid );
+  memcpy( entry->msgid, effective_msgid, entry->msgid_length );
+  entry->msgid[entry->msgid_length] = '\0';
+
+  if( !config_initialize_wel_data( entry ) ) {
+    goto fail_after_cache;
+  }
+  config_set_entry_wel_type( entry, severity );
+
+  config_assign_cached_mutex( entry->mutex );
+  if( !config_check_mutex_valid( entry->mutex ) ) {
+    goto fail_after_cache;
+  }
+
+  entry->message = message;
+  entry->message_length = message_length;
+  entry->prival = get_prival( facility, severity );
+  entry->elements = NULL;
+  entry->element_count = 0;
+
+  clear_error(  );
+  return entry;
+
+fail_after_cache:
+  cache_free( entry_cache, entry );
+fail:
+  return NULL;
+
 }
 
 struct strbuilder *
