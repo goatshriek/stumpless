@@ -114,6 +114,7 @@
 "TestTruncatedMessage": "test/helper/network.hpp"
 "TestUTF8Compliance": "test/helper/utf8.hpp"
 "unistd_sysconf_getpagesize": "private/config/unistd_sysconf_getpagesize_supported.h"
+"unlikely": "private/config.h"
 "unlock_element": "private/element.h"
 "unlock_entry": "private/entry.h"
 "unlock_network_target": "private/target/network.h"

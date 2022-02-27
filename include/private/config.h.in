@@ -56,4 +56,8 @@
 #cmakedefine USE_LOCALE_BG_BG 1
 
 
+/* optimizations */
+#define unlikely( EXPRESSION )  @UNLIKELY_FUNCTION@
+
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */
