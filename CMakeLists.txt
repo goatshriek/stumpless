@@ -826,9 +826,11 @@ target_include_directories(stumpless
 if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   set(PUBLIC_FUNCTION_DECORATION "__attribute__ ((visibility (\"default\")))")
   set(UNLIKELY_FUNCTION "__builtin_expect( ( EXPRESSION ), 0 )")
+  set(COLD_FUNCTION "__attribute__ ((cold))")
 else()
   set(PUBLIC_FUNCTION_DECORATION "")
   set(UNLIKELY_FUNCTION "( EXPRESSION )")
+  set(COLD_FUNCTION "")
 endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")

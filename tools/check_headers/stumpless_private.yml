@@ -3,6 +3,7 @@
 "BINDING_DISABLED_WARNING": "test/helper/server.hpp"
 "BUFFER_TARGET_FIXTURE_CLASS": "test/helper/fixture.hpp"
 "close_unsupported_target": "private/target.h"
+"COLD_FUNCTION": "private/config.h"
 "config_assign_cached_mutex": "private/config/wrapper/thread_safety.h"
 "config_atomic_ptr_t": "private/config/wrapper/thread_safety.h"
 "config_check_mutex_valid": "private/config/wrapper/thread_safety.h"

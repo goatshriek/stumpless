@@ -21,105 +21,135 @@
 
 #  include <stddef.h>
 #  include <stumpless/error.h>
+#  include "private/config.h"
 
 void
 clear_error( void );
 
+COLD_FUNCTION
 void
 raise_address_failure( const char *message, int code, const char *code_type );
 
+COLD_FUNCTION
 void
 raise_argument_empty( const char *message );
 
+COLD_FUNCTION
 void
 raise_argument_too_big( const char *message, int code, const char *code_type );
 
+COLD_FUNCTION
 void
 raise_duplicate_element( void );
 
+COLD_FUNCTION
 void
 raise_element_not_found( void );
 
+COLD_FUNCTION
 void
 raise_error( enum stumpless_error_id id,
              const char *message,
              int code,
              const char *code_type );
 
+COLD_FUNCTION
 void
 raise_file_open_failure( void );
 
+COLD_FUNCTION
 void
 raise_file_write_failure( void );
 
+COLD_FUNCTION
 void
 raise_function_target_failure( int code );
 
+COLD_FUNCTION
 void
 raise_gethostname_failure( const char *message,
                            size_t code,
                            const char *code_type );
 
+COLD_FUNCTION
 void
 raise_index_out_of_bounds( const char *message, size_t index );
 
+COLD_FUNCTION
 void
 raise_invalid_facility( int facility );
 
+COLD_FUNCTION
 void
 raise_invalid_id( void );
 
+COLD_FUNCTION
 void
 raise_invalid_severity( int severity );
 
+COLD_FUNCTION
 void
 raise_journald_failure( int code );
 
+COLD_FUNCTION
 void
 raise_memory_allocation_failure( void );
 
+COLD_FUNCTION
 void
 raise_network_protocol_unsupported( void );
 
+COLD_FUNCTION
 void
 raise_param_not_found( void );
 
+COLD_FUNCTION
 void
 raise_socket_bind_failure( const char *message,
                            int code,
                            const char *code_type );
 
+COLD_FUNCTION
 void
 raise_socket_connect_failure( const char *message,
                               int code,
                               const char *code_type );
 
+COLD_FUNCTION
 void
 raise_socket_failure( const char *message, int code, const char *code_type );
 
+COLD_FUNCTION
 void
 raise_socket_send_failure( const char *message,
                            int code,
                            const char *code_type );
 
+COLD_FUNCTION
 void
 raise_stream_write_failure( void );
 
+COLD_FUNCTION
 void
 raise_target_incompatible( const char *message );
 
+COLD_FUNCTION
 void
 raise_target_unsupported( const char *message );
 
+COLD_FUNCTION
 void
 raise_transport_protocol_unsupported( void );
 
+COLD_FUNCTION
 void
 raise_wel_close_failure( void );
 
+COLD_FUNCTION
 void
 raise_wel_open_failure( void );
 
+COLD_FUNCTION
 void
 raise_invalid_encoding( const char *message );
 
