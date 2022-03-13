@@ -17,7 +17,7 @@ jobs:
       - name: Install Prereqs
         run: |
           sudo apt-get update
-          sudo apt-get install libsystemd-dev valgrind
+          sudo apt-get install doxygen libsystemd-dev valgrind
       - uses: actions/checkout@v2
       - name: Configure
         run: |
@@ -57,6 +57,9 @@ jobs:
       - name: Install
         run: |
           sudo make install
+      - name: Build Documentation
+        run: |
+          make docs
   linux-release:
     name: "linux, release"
     runs-on: "ubuntu-latest"
@@ -193,13 +196,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-ruby@v1.1.2
+      - name: Install Prereqs
+        run: |
+          sudo apt-get update
+          sudo apt-get install doxygen libsystemd-dev valgrind
       - name: Install Gems
         run: |
           gem install bundler
           bundle install
-      - name: Install Packages
-        run: |
-          sudo apt-get install doxygen valgrind
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_CPP=ON .
