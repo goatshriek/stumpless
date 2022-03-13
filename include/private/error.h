@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,9 +34,22 @@ COLD_FUNCTION
 void
 raise_argument_empty( const char *message );
 
+/**
+ * Raises an error indicating that an argument was too big to process.
+ *
+ * If the size is too big to represent in an int, then it is capped to INT_MAX.
+ *
+ * @param message A localized message describing the overall error.
+ *
+ * @param arg_size The size of the offending argument.
+ *
+ * @param arg_type A localized description of the argument that was too big.
+ */
 COLD_FUNCTION
 void
-raise_argument_too_big( const char *message, int code, const char *code_type );
+raise_argument_too_big( const char *message,
+                        size_t arg_size,
+                        const char *arg_type );
 
 COLD_FUNCTION
 void
@@ -68,7 +81,7 @@ raise_function_target_failure( int code );
 COLD_FUNCTION
 void
 raise_gethostname_failure( const char *message,
-                           size_t code,
+                           int code,
                            const char *code_type );
 
 COLD_FUNCTION

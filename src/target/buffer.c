@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -158,7 +158,7 @@ sendto_buffer_target( struct buffer_target *target,
 
   if( msg_length >= target->size ) {
     raise_argument_too_big( L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE,
-                            cap_size_t_to_int( msg_length ),
+                            msg_length,
                             L10N_MESSAGE_SIZE_ERROR_CODE_TYPE );
     return -1;
   }
