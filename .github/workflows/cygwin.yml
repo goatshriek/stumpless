@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ latest ]
 
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
+
 jobs:
   cygwin:
     name: "cygwin, release"
