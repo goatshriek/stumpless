@@ -836,12 +836,18 @@ endif()
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
   if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
     target_compile_options(stumpless
-      PRIVATE "-fvisibility=hidden"
-      PRIVATE "-flto")
+      PRIVATE "-fvisibility=hidden")
 
     target_link_libraries(stumpless
-      PRIVATE "-flto"
       PRIVATE "-s")
+
+    if(NOT CYGWIN)
+      target_compile_options(stumpless
+        PRIVATE "-flto")
+
+      target_link_libraries(stumpless
+        PRIVATE "-flto")
+    endif()
   endif()
 endif()
 
