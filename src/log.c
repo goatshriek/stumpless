@@ -42,7 +42,7 @@ stump_str( const char *message ) {
     return -1;
   }
 
-  return stumpless_add_message( target, message );
+  return stumpless_add_message_str( target, message );
 }
 
 int
