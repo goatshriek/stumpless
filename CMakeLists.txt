@@ -1124,6 +1124,11 @@ add_function_test(level_enable_upto_warning
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_WARNING
 )
 
+add_function_test(log
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/log.cpp
+)
+
 add_function_test(memory
   SOURCES test/function/memory.cpp
 )

@@ -1,10 +1,10 @@
 # Basic Usage
 
-Stumpless is designed to make very basic usage as easy as possible, while still
-allowing more complex usage to be added later. The most basic usage is the
-`stumpless` function, which simply takes a format string and any optional
-substitutions and sends these to the last opened target. This means that you
-can start logging to a file with just two calls:
+Stumpless is designed to make basic usage as easy as possible, while still
+allowing use of more complex features. The most basic usage is the `stump`
+function, which simply takes a format string and any optional substitutions
+and sends these to the last opened target. This means that you can start
+logging to a file with just two calls:
 
 ```c
 file_target = stumpless_open_file_target( "example.log" );
@@ -16,6 +16,27 @@ Using a format specifier to include extra information:
 ```c
 stump( "Login failed for username %s", "example-username" );
 ```
+
+If you don't need format specifiers, then you should use the `_str` version
+of the logging function you need. These are available for any function that
+supports a format specifier string and variable arguments, and simply take a
+raw string instead. This is both faster and safer, as you no longer need to
+worry about escaping format specifiers, a common cause of bugs and
+[vulnerabilities](https://owasp.org/www-community/attacks/Format_string_attack).
+
+```c
+// this can cause a (perhaps unexpected) problem
+stump( "Use of %s to print a string!" );
+
+// much safer!
+stump_str( "Use of %s to print a string!" );
+```
+
+Try to use the `_str` functions whenever you can. If you need to include
+information in your log message, consider using
+[structured data](../entry/README.md) to do this instead of format specifiers.
+This will improve the security and performance of your logging code, and likely
+improve the indexing/searchability of your logs as well.
 
 If you need to have multiple targets open you can get the same functionality
 from the `stumpless_add_message` function:
