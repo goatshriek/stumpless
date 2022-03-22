@@ -19,6 +19,8 @@
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
+#include "test/helper/rfc5424.hpp"
 
 namespace {
 
@@ -43,6 +45,8 @@ namespace {
 
       stumpless_set_target_default_app_name( target, default_app_name );
       stumpless_set_target_default_msgid( target, default_msgid );
+
+      buffer[0] = '\0';
     }
 
     virtual void
@@ -54,7 +58,13 @@ namespace {
   };
 
   TEST_F( LogTest, StumpStr ) {
-    ASSERT_TRUE( 1 );
+    int result;
+
+    result = stump_str("stump str test");
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
   }
 
 }

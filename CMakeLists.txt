@@ -1127,6 +1127,7 @@ add_function_test(level_enable_upto_warning
 add_function_test(log
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/log.cpp
+    $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(memory
