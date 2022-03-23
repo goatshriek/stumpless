@@ -103,7 +103,7 @@ stumpless_add_entry( struct stumpless_target *target,
   if( filter && !filter( target, entry ) ) {
     return 0;
   }
- 
+
   if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) ){
     // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR
     // option is set, thus only checking this flag is enough for further checks
