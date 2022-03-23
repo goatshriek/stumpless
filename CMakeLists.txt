@@ -938,7 +938,9 @@ add_function_test(element_leak
 )
 
 add_function_test(entry
-  SOURCES test/function/entry.cpp
+  SOURCES
+    test/function/entry.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(entry_leak

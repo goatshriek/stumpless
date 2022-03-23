@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
 
 using::testing::HasSubstr;
@@ -1714,12 +1715,7 @@ namespace {
     size_t i;
 
     for( i = 0; i < 500; i++ ) {
-      entry[i] = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                          STUMPLESS_SEVERITY_INFO,
-                                          app_name,
-                                          msgid,
-                                          message );
-
+      entry[i] = create_empty_entry(  );
       EXPECT_NO_ERROR;
       EXPECT_NOT_NULL( entry[i] );
     }
@@ -2065,13 +2061,63 @@ namespace {
     struct stumpless_entry *entry;
     const struct stumpless_entry *result;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "test-app-name",
-                                 "test-msgid",
-                                 "test-message" );
+    entry = create_empty_entry(  );
     EXPECT_NO_ERROR;
-    EXPECT_TRUE( entry != NULL );
+    EXPECT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_message( entry, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, result );
+
+    EXPECT_NULL( entry->message );
+    EXPECT_EQ( 0, entry->message_length );
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageStrTest, MallocFailureOnMessage ) {
+    void * (*set_malloc_result)(size_t);
+    struct stumpless_entry *entry;
+    const char *new_message = "nice and long to make sure it beats the first";
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 46 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_set_entry_message_str( entry, new_message );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageStrTest, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_message_str( NULL, "test-message" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageStrTest, NullMessage ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+
+    entry = create_empty_entry(  );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
 
     result = stumpless_set_entry_message( entry, NULL );
     EXPECT_NO_ERROR;
