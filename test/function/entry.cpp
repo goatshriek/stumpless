@@ -2097,6 +2097,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
 
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
 
