@@ -17,10 +17,13 @@
  */
 
 #include <cstddef>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/rfc5424.hpp"
+
+using::testing::HasSubstr;
 
 namespace {
 
@@ -58,13 +61,32 @@ namespace {
   };
 
   TEST_F( LogTest, StumpStr ) {
+    const char *message = "stump str test message";
     int result;
 
-    result = stump_str("stump str test");
+    result = stump_str( message );
     EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
 
     TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( message ) );
+  }
+
+  TEST_F( LogTest, StumpTraceStr ) {
+    const char *filename = "fake_file.c";
+    const char *function_name = "fake_function";
+    const char *message = "stump trace str test message";
+    int result;
+
+    result = stump_trace_str(filename, 377, function_name, message);
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( message ) );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "377" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
   }
 
 }
