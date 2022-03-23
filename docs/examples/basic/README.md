@@ -26,10 +26,10 @@ worry about escaping format specifiers, a common cause of bugs and
 
 ```c
 // this can cause a (perhaps unexpected) problem
-stump( "Use of %s to print a string!" );
+stump( "Detected the use of %s to print a string!" );
 
 // much safer!
-stump_str( "Use of %s to print a string!" );
+stump_str( "Detected the use of %s to print a string!" );
 ```
 
 Try to use the `_str` functions whenever you can. If you need to include
