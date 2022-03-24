@@ -47,6 +47,7 @@ fixes, check out the
     * `stumplog_set_mask`
  - Safer and more performant `_str` versions of any function taking a format
    specifier string and variable number of arguments.
+ - Default Windows Event Log messages that can be used when none are specified.
 
 ### Changed
  - Auto-generated local socket names use abstract socket names if supported.
