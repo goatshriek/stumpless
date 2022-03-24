@@ -38,7 +38,6 @@ namespace {
     const char *target_name = "test-target";
     const char *default_app_name = "target-default-app-name";
     const char *default_msgid = "target-default-msgid";
-    char plain_buffer[TEST_BUFFER_LENGTH];
 
     virtual void
     SetUp( void ) {
@@ -59,6 +58,85 @@ namespace {
       stumpless_free_all(  );
     }
   };
+
+  TEST_F( LogTest, Stumplog ) {
+    int priority;
+    const char *message_format = "Stumplog basic test: %s";
+    const char *test_string = "with format specifiers!";
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    stumplog( priority, message_format, test_string );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( test_string ) );
+  }
+
+  TEST_F( LogTest, StumplogSetMask ) {
+    int first_mask = 134;
+    const struct stumpless_target *target_result;
+    int second_mask = 245;
+    int int_result;
+
+    target_result = stumpless_set_target_mask( target, first_mask );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
+
+    int_result = stumplog_set_mask( second_mask );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( int_result, first_mask );
+
+    int_result = stumpless_get_target_mask( target );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( int_result, second_mask );
+  }
+
+  TEST_F( LogTest, StumplogStr ) {
+    int priority;
+    const char *message = "Stumplog basic test message";
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    stumplog_str( priority, message );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( message ) );
+  }
+
+  TEST_F( LogTest, StumplogTrace ) {
+    int priority;
+    const char *filename = "stumplog-trace-file.c";
+    const char *function_name = "LogTest.StumplogTrace";
+    const char *format = "Stumplog trace test: %s";
+    const char *str = "testing stumplog trace substitution!";
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    stumplog_trace( priority, filename, 377, function_name, format, str );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"377\"" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+    EXPECT_THAT( buffer, HasSubstr( str ) );
+  }
+
+  TEST_F( LogTest, StumplogTraceStr ) {
+    int priority;
+    const char *filename = "stumplog-trace-file.c";
+    const char *function_name = "LogTest.StumplogTrace";
+    const char *message = "Stumplot Trace str test message";
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    stumplog_trace_str( priority, filename, 377, function_name, message );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "line=\"377\"" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+    EXPECT_THAT( buffer, HasSubstr( message ) );
+  }
 
   TEST_F( LogTest, StumpStr ) {
     const char *message = "stump str test message";
