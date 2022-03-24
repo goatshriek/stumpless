@@ -59,6 +59,19 @@ namespace {
     }
   };
 
+  TEST_F( LogTest, Stump ) {
+    const char *format = "Stump test message: %s";
+    const char *str = "this is the format string";
+    int result;
+
+    result = stump( format, str );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( str ) );
+  }
+
   TEST_F( LogTest, Stumplog ) {
     int priority;
     const char *message_format = "Stumplog basic test: %s";
@@ -150,6 +163,24 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( message ) );
   }
 
+  TEST_F( LogTest, StumpTrace ) {
+    const char *filename = "fake_file.c";
+    const char *function_name = "fake_function";
+    const char *format = "stump_trace test message: %s";
+    const char *str = "stump_trace format string";
+    int result;
+
+    result = stump_trace( filename, 377, function_name, format, str );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( filename ) );
+    EXPECT_THAT( buffer, HasSubstr( "377" ) );
+    EXPECT_THAT( buffer, HasSubstr( function_name ) );
+    EXPECT_THAT( buffer, HasSubstr( str ) );
+  }
+
   TEST_F( LogTest, StumpTraceStr ) {
     const char *filename = "fake_file.c";
     const char *function_name = "fake_function";
@@ -165,6 +196,21 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( filename ) );
     EXPECT_THAT( buffer, HasSubstr( "377" ) );
     EXPECT_THAT( buffer, HasSubstr( function_name ) );
+  }
+
+  TEST_F( LogTest, StumpTraceWithPreprocessorMacros ) {
+    const char *format = "stump_trace test message: %s";
+    const char *str = "stump_trace format string";
+    int result;
+
+    result = stump_trace( __FILE__, __LINE__, __func__, format, str );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    TestRFC5424Compliance( buffer );
+    EXPECT_THAT( buffer, HasSubstr( __FILE__ ) );
+    EXPECT_THAT( buffer, HasSubstr( __func__ ) );
+    EXPECT_THAT( buffer, HasSubstr( str ) );
   }
 
 }
