@@ -1587,6 +1587,117 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( NewEntryStrTest, New ){
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    size_t app_name_length = strlen( app_name );
+    size_t msgid_length = strlen( msgid );
+    size_t message_length = strlen( message );
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     app_name,
+                                     msgid,
+                                     message );
+
+    EXPECT_NO_ERROR;
+
+    ASSERT_NOT_NULL( entry );
+    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
+    EXPECT_NULL( entry->elements );
+    EXPECT_EQ( 0, entry->element_count );
+
+    ASSERT_EQ( app_name_length, entry->app_name_length );
+    ASSERT_NOT_NULL( entry->app_name );
+    ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
+
+    ASSERT_EQ( msgid_length, entry->msgid_length );
+    ASSERT_NOT_NULL( entry->msgid );
+    ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
+
+    ASSERT_EQ( message_length, entry->message_length );
+    ASSERT_NOT_NULL( entry->message );
+    ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( NewEntryStrTest, NullAppName ) {
+    struct stumpless_entry *entry;
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     NULL,
+                                     msgid,
+                                     message );
+
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    if( entry ) {
+      EXPECT_EQ( entry->app_name[0], '-' );
+      EXPECT_EQ( entry->app_name_length, 1 );
+    }
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( NewEntryStrTest, NullMesssage ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     app_name,
+                                     msgid,
+                                     NULL );
+
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    if( entry ) {
+      EXPECT_EQ( entry->message_length, 0 );
+    }
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( NewEntryStrTest, NullMessageId ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     app_name,
+                                     NULL,
+                                     message );
+
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    if( entry ) {
+      EXPECT_EQ( entry->msgid[0], '-' );
+      EXPECT_EQ( entry->msgid_length, 1 );
+    }
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+  }
+
   TEST( NewEntryTest, FormatSpecifiers ) {
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
@@ -1881,117 +1992,6 @@ namespace {
       stumpless_destroy_entry_and_contents( entries[i] );
       i--;
     }
-
-    stumpless_free_all(  );
-  }
-
-  TEST( NewEntryTest, StrNew ){
-    struct stumpless_entry *entry;
-    const char *app_name = "test-app-name";
-    const char *msgid = "test-msgid";
-    const char *message = "test-message";
-
-    size_t app_name_length = strlen( app_name );
-    size_t msgid_length = strlen( msgid );
-    size_t message_length = strlen( message );
-
-    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     app_name,
-                                     msgid,
-                                     message );
-
-    EXPECT_NO_ERROR;
-
-    ASSERT_NOT_NULL( entry );
-    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
-    EXPECT_NULL( entry->elements );
-    EXPECT_EQ( 0, entry->element_count );
-
-    ASSERT_EQ( app_name_length, entry->app_name_length );
-    ASSERT_NOT_NULL( entry->app_name );
-    ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
-
-    ASSERT_EQ( msgid_length, entry->msgid_length );
-    ASSERT_NOT_NULL( entry->msgid );
-    ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
-
-    ASSERT_EQ( message_length, entry->message_length );
-    ASSERT_NOT_NULL( entry->message );
-    ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
-
-    stumpless_destroy_entry_and_contents( entry );
-
-    stumpless_free_all(  );
-  }
-
-  TEST( NewEntryTest, StrNullAppName ) {
-    struct stumpless_entry *entry;
-    const char *msgid = "test-msgid";
-    const char *message = "test-message";
-
-    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     NULL,
-                                     msgid,
-                                     message );
-
-    EXPECT_NO_ERROR;
-    EXPECT_NOT_NULL( entry );
-
-    if( entry ) {
-      EXPECT_EQ( entry->app_name[0], '-' );
-      EXPECT_EQ( entry->app_name_length, 1 );
-    }
-
-    stumpless_destroy_entry_and_contents( entry );
-
-    stumpless_free_all(  );
-  }
-
-  TEST( NewEntryTest, StrNullMesssage ) {
-    struct stumpless_entry *entry;
-    const char *app_name = "test-app-name";
-    const char *msgid = "test-msgid";
-
-    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     app_name,
-                                     msgid,
-                                     NULL );
-
-    EXPECT_NO_ERROR;
-    EXPECT_NOT_NULL( entry );
-
-    if( entry ) {
-      EXPECT_EQ( entry->message_length, 0 );
-    }
-
-    stumpless_destroy_entry_and_contents( entry );
-
-    stumpless_free_all(  );
-  }
-
-  TEST( NewEntryTest, StrNullMessageId ) {
-    struct stumpless_entry *entry;
-    const char *app_name = "test-app-name";
-    const char *message = "test-message";
-
-    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     app_name,
-                                     NULL,
-                                     message );
-
-    EXPECT_NO_ERROR;
-    EXPECT_NOT_NULL( entry );
-
-    if( entry ) {
-      EXPECT_EQ( entry->msgid[0], '-' );
-      EXPECT_EQ( entry->msgid_length, 1 );
-    }
-
-    stumpless_destroy_entry_and_contents( entry );
 
     stumpless_free_all(  );
   }
