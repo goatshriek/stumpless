@@ -1602,10 +1602,9 @@ namespace {
                                      app_name,
                                      msgid,
                                      message );
-
     EXPECT_NO_ERROR;
-
     ASSERT_NOT_NULL( entry );
+
     EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
@@ -1622,8 +1621,7 @@ namespace {
     ASSERT_NOT_NULL( entry->message );
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
-    stumpless_destroy_entry_and_contents( entry );
-
+    stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
   }
 
@@ -1838,7 +1836,7 @@ namespace {
     stumpless_free_all(  );
   }
 
-  TEST( NewEntryTest, New ){
+  TEST( NewEntryTest, NoFormat ){
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
@@ -1848,16 +1846,15 @@ namespace {
     size_t msgid_length = strlen( msgid );
     size_t message_length = strlen( message );
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_ALERT,
+                                 STUMPLESS_SEVERITY_ALERT,
                                  app_name,
                                  msgid,
                                  message );
-
     EXPECT_NO_ERROR;
-
     ASSERT_NOT_NULL( entry );
-    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
+
+    EXPECT_EQ( STUMPLESS_FACILITY_ALERT | STUMPLESS_SEVERITY_ALERT, entry->prival );
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
@@ -1873,8 +1870,7 @@ namespace {
     ASSERT_NOT_NULL( entry->message );
     ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
-    stumpless_destroy_entry_and_contents( entry );
-
+    stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
   }
 
