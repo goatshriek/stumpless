@@ -2120,7 +2120,7 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( entry );
 
-    result = stumpless_set_entry_message( entry, NULL );
+    result = stumpless_set_entry_message_str( entry, NULL );
     EXPECT_NO_ERROR;
     EXPECT_EQ( entry, result );
 
