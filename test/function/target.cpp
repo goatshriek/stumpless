@@ -1218,6 +1218,20 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( TraceMessageStrTest, NullTarget ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_trace_message_str( NULL,
+                                          __FILE__,
+                                          __LINE__,
+                                          __func__,
+                                          "test-message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
   TEST( TraceMessageTest, NullTarget ) {
     int result;
     const struct stumpless_error *error;
