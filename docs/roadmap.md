@@ -30,6 +30,9 @@ or want to make a suggestion, please submit an issue on the project's
    application. This will provide more benefit to some targets than others,
    most notably network-based targets. Because some error reporting mechanisms
    may need to change to accomodate this, it will be done in a major release.
+ * [CHANGE] **Error enum values start from 1 instead of 0**
+   This will allow function that return negative integers in error scenarios to
+   pass along a more meaningful return value.
 
 
 ## Unallocated to a release
