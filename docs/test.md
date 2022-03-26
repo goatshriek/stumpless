@@ -154,3 +154,16 @@ gcovr -r /path/to/stumpless --object-directory . -o coverage.html --html --html-
 This will generate a report file `coverage.html` that you can open in your
 browser to see overall percentage reports and inspect coverage of specific files
 in detail.
+
+There are a few caveats to keep in mind with coverage testing. First, it can
+slow down the test suite considerably due to the instrumentation inserted into
+the binaries. Don't default to enabling coverage with `-DCOVERAGE=ON` in all of
+your builds: only do this when you need to check coverage. The easiest way to do
+this is to have a separate build directory such as `build-coverage` that you go
+to when you need to run a coverage test.
+
+Second, note that the `clean` build target will _not_ remove coverage files from
+the build directory. If you have made changes and need to make sure that
+previously covered lines are still being covered, you will need to remove these
+yourself, either by manually deleting them or starting a fresh build directory
+entirely.
