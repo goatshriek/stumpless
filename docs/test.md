@@ -101,3 +101,56 @@ There are special targets that group other types of tests as well.
    the given name
  * `run-performance-test-<name>` builds and runs the benchmark with the given
    name
+
+
+## Test Coverage
+Stumpless uses test coverage to make sure that most of the lines in the code
+base are executed at least once during testing. While stumpless does not strive
+to reach 100% code coverage, you should try to cover all of your own code, only
+leaving out things that are difficult to recreate during a test.
+
+Coverage information is collected automatically on pull requests during the
+continuous integration testing, and
+[Codecov](https://app.codecov.io/gh/goatshriek/stumpless) will helpfully
+generate a report for the pull request or branch in question. This may be enough
+if you are confident that you have already covered everything and just need to
+double-check upon opening the pull request.
+
+However, if you'd like to test coverage yourself locally, you'll need to
+generate the report yourself. This isn't complicated, but does require a few key
+steps to make possible. There are multiple ways to generate reports from
+coverage data; we'll use `gcovr` on a Linux build here, but if you have another
+tool and/or environment you prefer you can use that instead.
+
+First, make sure you turn the `COVERAGE` flag on during the cmake configuration
+step, and use a Debug build to keep source-code alignment intact. So your cmake
+invocation would look something like this:
+
+```sh
+cmake -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=ON /path/to/stumpless
+```
+
+When you run the test suite, coverage data will be generated and placed
+alongside the object files. You can run individual tests if you want to see what
+they cover by themselves, but the easiest way to get a full report is to just
+invoke the `check` target, like this:
+
+```sh
+# you can change the  -j flag to build and run more/less threads in parallel
+make -j 4 check
+```
+
+You can then find coverage data in the form of `.gcda` and `.gcno` files in the
+`CMakeFiles/stumpless.dir/src` folder and subfolders. If you are using another
+generation tool, you can point it at these to do what you need. For `gcovr`, we
+don't need to worry about this though, since it can figure it out. We instead
+just need to pass the path to stumpless in to the `-r` flag, and ask for a
+detailed html report:
+
+```sh
+gcovr -r /path/to/stumpless --object-directory . -o coverage.html --html --html-details .
+```
+
+This will generate a report file `coverage.html` that you can open in your
+browser to see overall percentage reports and inspect coverage of specific files
+in detail.
