@@ -1609,17 +1609,15 @@ namespace {
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
-    ASSERT_EQ( app_name_length, entry->app_name_length );
-    ASSERT_NOT_NULL( entry->app_name );
-    ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
+    EXPECT_EQ( app_name_length, entry->app_name_length );
+    EXPECT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
 
-    ASSERT_EQ( msgid_length, entry->msgid_length );
-    ASSERT_NOT_NULL( entry->msgid );
-    ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
+    EXPECT_EQ( msgid_length, entry->msgid_length );
+    EXPECT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
 
-    ASSERT_EQ( message_length, entry->message_length );
-    ASSERT_NOT_NULL( entry->message );
-    ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
+    EXPECT_EQ( message_length, entry->message_length );
+    EXPECT_NOT_NULL( entry->message );
+    EXPECT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
     stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
@@ -1818,9 +1816,6 @@ namespace {
 
   TEST( NewEntryTest, MoreThan500Entries ) {
     struct stumpless_entry *entry[500];
-    const char *app_name = "test-app-name";
-    const char *msgid = "test-msgid";
-    const char *message = "test-message";
     size_t i;
 
     for( i = 0; i < 500; i++ ) {
@@ -1858,17 +1853,15 @@ namespace {
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
-    ASSERT_EQ( app_name_length, entry->app_name_length );
-    ASSERT_NOT_NULL( entry->app_name );
-    ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
+    EXPECT_EQ( app_name_length, entry->app_name_length );
+    EXPECT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
 
-    ASSERT_EQ( msgid_length, entry->msgid_length );
-    ASSERT_NOT_NULL( entry->msgid );
-    ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
+    EXPECT_EQ( msgid_length, entry->msgid_length );
+    EXPECT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
 
-    ASSERT_EQ( message_length, entry->message_length );
-    ASSERT_NOT_NULL( entry->message );
-    ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
+    EXPECT_EQ( message_length, entry->message_length );
+    EXPECT_NOT_NULL( entry->message );
+    EXPECT_EQ( 0, memcmp( entry->message, message, message_length ) );
 
     stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
