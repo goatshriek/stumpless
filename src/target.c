@@ -85,17 +85,10 @@ stumpless_add_entry( struct stumpless_target *target,
   int result;
   FILE *error_stream;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return -1;
-  }
-
-  if( !target->id ) {
+  if( unlikely( !target->id ) ) {
     raise_invalid_id(  );
     return -1;
   }
@@ -201,10 +194,7 @@ stumpless_add_log_str( struct stumpless_target *target,
                        const char *message ) {
   const struct stumpless_entry *set_result;
 
-  if( unlikely( !target ) ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   if( !cached_entry ) {
     cached_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
@@ -257,22 +247,19 @@ stumpless_add_message( struct stumpless_target *target,
 int
 stumpless_add_message_str( struct stumpless_target *target,
                            const char *message ) {
-  if( unlikely( !target ) ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   return stumpless_add_log_str( target, target->default_prival, message );
 }
 
 void
 stumpless_close_target( struct stumpless_target *target ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
+
+  clear_error(  );
 
   switch( target->type ) {
     case STUMPLESS_BUFFER_TARGET:
@@ -334,10 +321,7 @@ int
 stumpless_get_default_facility( const struct stumpless_target *target ) {
   int prival;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   lock_target( target );
   prival = target->default_prival;
@@ -399,7 +383,6 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
     goto cleanup_and_return;
   }
 
-
   name_copy = alloc_mem( target->default_app_name_length + 1 );
   if( !name_copy ) {
     goto cleanup_and_return;
@@ -408,7 +391,6 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   memcpy( name_copy,
           target->default_app_name,
           target->default_app_name_length + 1 );
-  clear_error(  );
 
 cleanup_and_return:
   unlock_target( target );
@@ -433,7 +415,6 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
   }
 
   memcpy( msgid_copy, target->default_msgid, target->default_msgid_length + 1 );
-  clear_error(  );
 
 cleanup_and_return:
   unlock_target( target );
@@ -444,10 +425,7 @@ stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target ) {
   stumpless_filter_func_t filter;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL( target ); 
 
   lock_target( target );
   filter = target->filter;
@@ -562,13 +540,13 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
 
-  if( !validate_app_name_length( app_name ) ||
-      !validate_printable_ascii( app_name ) ) {
+  if( unlikely( !validate_app_name_length( app_name ) ||
+                !validate_printable_ascii( app_name ) ) ) {
     return NULL;
   }
 
   new_name = copy_cstring_with_length( app_name, &new_length );
-  if( !new_name ) {
+  if( unlikely( !new_name ) ) {
     return NULL;
   }
 
@@ -593,12 +571,13 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
 
-  if( !validate_msgid_length( msgid ) || !validate_printable_ascii( msgid ) ) {
+  if( unlikely( !validate_msgid_length( msgid ) ||
+                !validate_printable_ascii( msgid ) ) ) {
       return NULL;
   }
 
   new_msgid = copy_cstring_with_length( msgid, &new_length );
-  if( !new_msgid ) {
+  if( unlikely( !new_msgid ) ) {
     return NULL;
   }
 
@@ -663,20 +642,9 @@ stumpless_trace_entry( struct stumpless_target *target,
   char digits[MAX_INT_SIZE];
   char *line_str;
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return -1;
-  }
-
-  if( !file ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
-    return -1;
-  }
-
-  if( !func ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( file );
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( func );
 
   digits[MAX_INT_SIZE-1] = '\0';
   line_str = digits + MAX_INT_SIZE - 1;
@@ -692,17 +660,17 @@ stumpless_trace_entry( struct stumpless_target *target,
   }
 
   stumpless_set_entry_param_value_by_name( entry, "trace", "file", file );
-  if( stumpless_has_error(  ) ) {
+  if( unlikely( stumpless_has_error(  ) ) ) {
     return -1;
   }
 
   stumpless_set_entry_param_value_by_name( entry, "trace", "line", line_str );
-  if( stumpless_has_error(  ) ) {
+  if( unlikely( stumpless_has_error(  ) ) ) {
     return -1;
   }
 
   stumpless_set_entry_param_value_by_name( entry, "trace", "function", func );
-  if( stumpless_has_error(  ) ) {
+  if( unlikely( stumpless_has_error(  ) ) ) {
     return -1;
   }
 
@@ -742,10 +710,7 @@ stumpless_trace_log_str( struct stumpless_target *target,
                          const char *message ) {
   const struct stumpless_entry *set_result;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   if( !cached_trace ) {
     cached_trace = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
@@ -753,7 +718,7 @@ stumpless_trace_log_str( struct stumpless_target *target,
                                             target->default_app_name,
                                             target->default_msgid,
                                             message );
-    if( !cached_trace ) {
+    if( unlikely( !cached_trace ) ) {
       return -1;
     }
 
@@ -779,7 +744,6 @@ stumpless_trace_log_str( struct stumpless_target *target,
   }
 
   cached_trace->prival = priority;
-
   return stumpless_trace_entry( target, cached_trace, file, line, func );
 }
 
@@ -806,10 +770,7 @@ stumpless_trace_message_str( struct stumpless_target *target,
                              int line,
                              const char *func,
                              const char *message ) {
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   return stumpless_trace_log_str( target,
                                   target->default_prival,
@@ -838,10 +799,7 @@ vstumpless_add_log( struct stumpless_target *target,
                     va_list subs ) {
   const struct stumpless_entry *set_result;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   if( !cached_entry ) {
     cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -850,7 +808,7 @@ vstumpless_add_log( struct stumpless_target *target,
                                          target->default_msgid,
                                          message,
                                          subs );
-    if( !cached_entry ) {
+    if( unlikely( !cached_entry ) ) {
       return -1;
     }
 
@@ -875,7 +833,6 @@ vstumpless_add_log( struct stumpless_target *target,
   }
 
   cached_entry->prival = priority;
-
   return stumpless_add_entry( target, cached_entry );
 }
 
@@ -883,10 +840,7 @@ int
 vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
                         va_list subs ) {
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   return vstumpless_add_log( target, target->default_prival, message, subs );
 }
@@ -901,10 +855,7 @@ vstumpless_trace_log( struct stumpless_target *target,
                       va_list subs ) {
   const struct stumpless_entry *set_result;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   if( !cached_trace ) {
     cached_trace = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -913,7 +864,7 @@ vstumpless_trace_log( struct stumpless_target *target,
                                          target->default_msgid,
                                          message,
                                          subs );
-    if( !cached_trace ) {
+    if( unlikely( !cached_trace ) ) {
       return -1;
     }
 
@@ -940,7 +891,6 @@ vstumpless_trace_log( struct stumpless_target *target,
   }
 
   cached_trace->prival = priority;
-
   return stumpless_trace_entry( target, cached_trace, file, line, func );
 }
 
@@ -951,10 +901,7 @@ vstumpless_trace_message( struct stumpless_target *target,
                           const char *func,
                           const char *message,
                           va_list subs ) {
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   return vstumpless_trace_log( target,
                                target->default_prival,
