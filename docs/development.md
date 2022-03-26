@@ -238,7 +238,9 @@ Actions builds, and will check pull requests for diff and total coverage. In
 some cases this gate may be failing and code will still be merged, but this is
 only in situations where coverage is not reasonably obtainable. For example if
 the only way to cover a failure branch is a very specific chain of memory or
-system call failures, then the coverage requirement may be relaxed.
+system call failures, then the coverage requirement may be relaxed. See the
+[testing](test.md) documentation for more information on test coverage and
+how to check this locally before opening a pull request to trigger Codecov.
 
 [Sonarcloud](https://sonarcloud.io/dashboard?id=stumpless) provides code quality
 reviews and static analysis. Changes should avoid introducing any new issues in

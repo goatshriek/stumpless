@@ -28,6 +28,27 @@
 
 using::testing::HasSubstr;
 
+static
+void
+confirm_entry_contents( const struct stumpless_entry *entry,
+                        const char *app_name,
+                        const char *msgid,
+                        const char *message ) {
+    size_t app_name_length = strlen( app_name );
+    size_t msgid_length = strlen( msgid );
+    size_t message_length = strlen( message );
+
+    EXPECT_EQ( app_name_length, entry->app_name_length );
+    EXPECT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
+
+    EXPECT_EQ( msgid_length, entry->msgid_length );
+    EXPECT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
+
+    EXPECT_EQ( message_length, entry->message_length );
+    EXPECT_NOT_NULL( entry->message );
+    EXPECT_EQ( 0, memcmp( entry->message, message, message_length ) );
+}
+
 namespace {
 
   class EntryTest : public::testing::Test {
@@ -1593,37 +1614,21 @@ namespace {
     const char *msgid = "test-msgid";
     const char *message = "test-message";
 
-    size_t app_name_length = strlen( app_name );
-    size_t msgid_length = strlen( msgid );
-    size_t message_length = strlen( message );
-
     entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
                                      app_name,
                                      msgid,
                                      message );
-
     EXPECT_NO_ERROR;
-
     ASSERT_NOT_NULL( entry );
+
     EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
-    ASSERT_EQ( app_name_length, entry->app_name_length );
-    ASSERT_NOT_NULL( entry->app_name );
-    ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
+    confirm_entry_contents( entry, app_name, msgid, message );
 
-    ASSERT_EQ( msgid_length, entry->msgid_length );
-    ASSERT_NOT_NULL( entry->msgid );
-    ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
-
-    ASSERT_EQ( message_length, entry->message_length );
-    ASSERT_NOT_NULL( entry->message );
-    ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
-
-    stumpless_destroy_entry_and_contents( entry );
-
+    stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
   }
 
@@ -1820,9 +1825,6 @@ namespace {
 
   TEST( NewEntryTest, MoreThan500Entries ) {
     struct stumpless_entry *entry[500];
-    const char *app_name = "test-app-name";
-    const char *msgid = "test-msgid";
-    const char *message = "test-message";
     size_t i;
 
     for( i = 0; i < 500; i++ ) {
@@ -1838,43 +1840,27 @@ namespace {
     stumpless_free_all(  );
   }
 
-  TEST( NewEntryTest, New ){
+  TEST( NewEntryTest, NoFormat ){
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
 
-    size_t app_name_length = strlen( app_name );
-    size_t msgid_length = strlen( msgid );
-    size_t message_length = strlen( message );
-
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_ALERT,
+                                 STUMPLESS_SEVERITY_ALERT,
                                  app_name,
                                  msgid,
                                  message );
-
     EXPECT_NO_ERROR;
-
     ASSERT_NOT_NULL( entry );
-    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry->prival );
+
+    EXPECT_EQ( STUMPLESS_FACILITY_ALERT | STUMPLESS_SEVERITY_ALERT, entry->prival );
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
-    ASSERT_EQ( app_name_length, entry->app_name_length );
-    ASSERT_NOT_NULL( entry->app_name );
-    ASSERT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
+    confirm_entry_contents( entry, app_name, msgid, message );
 
-    ASSERT_EQ( msgid_length, entry->msgid_length );
-    ASSERT_NOT_NULL( entry->msgid );
-    ASSERT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
-
-    ASSERT_EQ( message_length, entry->message_length );
-    ASSERT_NOT_NULL( entry->message );
-    ASSERT_EQ( 0, memcmp( entry->message, message, message_length ) );
-
-    stumpless_destroy_entry_and_contents( entry );
-
+    stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
   }
 
@@ -2120,7 +2106,7 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( entry );
 
-    result = stumpless_set_entry_message( entry, NULL );
+    result = stumpless_set_entry_message_str( entry, NULL );
     EXPECT_NO_ERROR;
     EXPECT_EQ( entry, result );
 

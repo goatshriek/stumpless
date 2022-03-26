@@ -120,7 +120,9 @@ namespace {
 
     result = stumpless_get_target_default_app_name( plain_target );
     EXPECT_NO_ERROR;
-    EXPECT_NULL( result );
+    EXPECT_NOT_NULL( result );
+
+    EXPECT_STREQ( result, "-" );
   }
 
   TEST_F( TargetTest, GetDefaultMsgid ) {
@@ -156,7 +158,7 @@ namespace {
 
     result = stumpless_get_target_default_msgid( plain_target );
     EXPECT_NO_ERROR;
-    EXPECT_NULL( result );
+    EXPECT_STREQ( result, "-" );
   }
 
   TEST_F( TargetTest, GetName ) {
@@ -401,13 +403,35 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( AddLogStrTest, NullTarget ) {
+    int priority;
+    int result;
+    const struct stumpless_error *error;
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    result = stumpless_add_log_str( NULL, priority , "test-message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
   TEST( AddLogTest, NullTarget ) {
     int priority;
     int result;
     const struct stumpless_error *error;
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
-    result = stumpless_add_log( NULL, priority , "test-message" );
+    result = stumpless_add_log( NULL, priority , "test-message-%s", "null" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
+  TEST( AddMessageStrTest, NullTarget ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_add_message_str( NULL, "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all(  );
@@ -417,7 +441,7 @@ namespace {
     int result;
     const struct stumpless_error *error;
 
-    result = stumpless_add_message( NULL, "test-message" );
+    result = stumpless_add_message( NULL, "test-message-%s", "null-target" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all(  );
@@ -664,8 +688,8 @@ namespace {
     ASSERT_NOT_NULL( set_malloc_result );
 
     target_result = stumpless_set_target_default_app_name( target, "app-name" );
-    EXPECT_NULL( target_result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
@@ -827,8 +851,8 @@ namespace {
     ASSERT_NOT_NULL( set_malloc_result );
 
     target_result = stumpless_set_target_default_msgid( target, "msgid" );
-    EXPECT_NULL( target_result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
@@ -1201,6 +1225,23 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( TraceLogStrTest, NullTarget ) {
+    int priority;
+    int result;
+    const struct stumpless_error *error;
+
+    priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
+    result = stumpless_trace_log_str( NULL,
+                                      priority,
+                                      __FILE__,
+                                      __LINE__,
+                                      __func__,
+                                      "test-trace-message" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
   TEST( TraceLogTest, NullTarget ) {
     int priority;
     int result;
@@ -1212,7 +1253,22 @@ namespace {
                                   __FILE__,
                                   __LINE__,
                                   __func__,
-                                  "test-trace-message" );
+                                  "test-trace-message-%s",
+                                  "null-target" );
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all(  );
+  }
+
+  TEST( TraceMessageStrTest, NullTarget ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_trace_message_str( NULL,
+                                          __FILE__,
+                                          __LINE__,
+                                          __func__,
+                                          "test-message" );
     EXPECT_LT( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all(  );

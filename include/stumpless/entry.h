@@ -53,8 +53,9 @@ extern "C" {
  * A log entry.
  *
  * Entries are the basic element of logging within the library. Note that
- * although many of the members are character strings, they are not NULL
- * terminated and should not be used with standard string functions.
+ * although many of the members are character strings, they are not
+ * guaranteed to be NULL terminated and should not be used with standard
+ * string functions.
  */
 struct stumpless_entry {
 /** A unique identifier of this entry. */

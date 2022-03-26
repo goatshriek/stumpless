@@ -119,17 +119,17 @@ struct stumpless_target {
 /**
  * The app name used for messages without one provided.
  *
- * The default app name will not be NULL-terminated.
+ * The default app name is not NULL-terminated.
  */
-  char *default_app_name;
+  char default_app_name[STUMPLESS_MAX_APP_NAME_LENGTH];
 /** The number of characters in the default app name. */
   size_t default_app_name_length;
 /**
  * The msgid used for messages without one provided.
  *
- * The default msgid will not be NULL-terminated.
+ * The default msgid is not NULL-terminated.
  */
-  char *default_msgid;
+  char default_msgid[STUMPLESS_MAX_MSGID_LENGTH];
 /** The number of characters in the default msgid. */
   size_t default_msgid_length;
 /** The log mask for the target. Used by the default target filter. */

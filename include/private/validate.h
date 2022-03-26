@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,33 @@
 
 #  include <stddef.h>
 #  include <stdbool.h>
+#  include <stumpless/error.h>
 #  include "private/config.h"
 #  include "private/config/locale/wrapper.h"
 #  include "private/error.h"
 
-#  define VALIDATE_ARG_NOT_NULL( ARG_NAME )                         \
-if( unlikely( ARG_NAME == NULL ) ) {                                \
-  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) ); \
-  return NULL;                                                      \
+/**
+ * Checks to see if the variable with the provided name is NULL, and if it is
+ * then raises an argument empty error and returns NULL.
+ */
+#  define VALIDATE_ARG_NOT_NULL( ARG_NAME )                                    \
+if( unlikely( ARG_NAME == NULL ) ) {                                           \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
+  return NULL;                                                                 \
+}
+
+/**
+ * Checks to see if the variable with the provided name is NULL, and if it is
+ * then raises an argument empty error and returns -STUMPLESS_ARGUMENT_EMPTY.
+ *
+ * This is nearly identical to VALIDATE_ARG_NOT_NULL, but is suitable for use in
+ * functions where the return value is an integer instead of a pointer, and a
+ * negative value is needed to signify failure.
+ */
+#  define VALIDATE_ARG_NOT_NULL_INT_RETURN( ARG_NAME )                         \
+if( unlikely( ARG_NAME == NULL ) ) {                                           \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
+  return -STUMPLESS_ARGUMENT_EMPTY;                                            \
 }
 
 /**
