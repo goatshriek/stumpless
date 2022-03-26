@@ -120,7 +120,9 @@ namespace {
 
     result = stumpless_get_target_default_app_name( plain_target );
     EXPECT_NO_ERROR;
-    EXPECT_NULL( result );
+    EXPECT_NOT_NULL( result );
+
+    EXPECT_STREQ( result, "-" );
   }
 
   TEST_F( TargetTest, GetDefaultMsgid ) {
@@ -156,7 +158,7 @@ namespace {
 
     result = stumpless_get_target_default_msgid( plain_target );
     EXPECT_NO_ERROR;
-    EXPECT_NULL( result );
+    EXPECT_STREQ( result, "-" );
   }
 
   TEST_F( TargetTest, GetName ) {
@@ -686,8 +688,8 @@ namespace {
     ASSERT_NOT_NULL( set_malloc_result );
 
     target_result = stumpless_set_target_default_app_name( target, "app-name" );
-    EXPECT_NULL( target_result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );
@@ -849,8 +851,8 @@ namespace {
     ASSERT_NOT_NULL( set_malloc_result );
 
     target_result = stumpless_set_target_default_msgid( target, "msgid" );
-    EXPECT_NULL( target_result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
 
     stumpless_set_malloc( malloc );
     stumpless_close_buffer_target( target );

@@ -107,7 +107,7 @@ namespace {
 
     SCOPED_TRACE( "BufferTargetTest.Basic" );
 
-    ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
+    ASSERT_NOT_NULL( stumpless_get_current_target(  ) );
 
     write_result = stump( "\xef\xbb\xbftesting 1 \xfc\x88\x81\x8f\x8f\x8f" );
     EXPECT_GE( write_result, 0 );

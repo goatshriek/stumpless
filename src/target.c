@@ -196,11 +196,14 @@ stumpless_add_log_str( struct stumpless_target *target,
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
   if( !cached_entry ) {
     cached_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                             STUMPLESS_SEVERITY_INFO,
-                                            target->default_app_name,
-                                            target->default_msgid,
+                                            NULL,
+                                            NULL,
                                             message );
     if( unlikely( !cached_entry ) ) {
       return -1;
@@ -211,22 +214,19 @@ stumpless_add_log_str( struct stumpless_target *target,
     if( unlikely( !set_result ) ) {
       return -1;
     }
-
-    set_result = stumpless_set_entry_app_name( cached_entry,
-                                               target->default_app_name );
-    if( unlikely( !set_result ) ) {
-      return -1;
-    }
-
-    set_result = stumpless_set_entry_msgid( cached_entry,
-                                            target->default_msgid );
-    if( unlikely( !set_result ) ) {
-      return -1;
-    }
-
   }
 
+  // we don't need to lock the cached entry since it is thread-local
   cached_entry->prival = priority;
+  memcpy( cached_entry->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_entry->app_name_length = target->default_app_name_length;
+  memcpy( cached_entry->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_entry->msgid_length = target->default_msgid_length;
+
   return stumpless_add_entry( target, cached_entry );
 }
 
@@ -376,7 +376,6 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   char *name_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
-  clear_error(  );
 
   lock_target( target );
   if( !target->default_app_name ) {
@@ -390,7 +389,9 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
 
   memcpy( name_copy,
           target->default_app_name,
-          target->default_app_name_length + 1 );
+          target->default_app_name_length );
+  name_copy[target->default_app_name_length] = '\0';
+  clear_error(  );
 
 cleanup_and_return:
   unlock_target( target );
@@ -402,7 +403,6 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
   char *msgid_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
-  clear_error(  );
 
   lock_target( target );
   if( !target->default_msgid ) {
@@ -414,7 +414,9 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
     goto cleanup_and_return;
   }
 
-  memcpy( msgid_copy, target->default_msgid, target->default_msgid_length + 1 );
+  memcpy( msgid_copy, target->default_msgid, target->default_msgid_length );
+  msgid_copy[target->default_msgid_length] = '\0';
+  clear_error(  );
 
 cleanup_and_return:
   unlock_target( target );
@@ -534,8 +536,6 @@ struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name ) {
   size_t new_length;
-  char *new_name;
-  const char *old_name;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
@@ -545,19 +545,17 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
     return NULL;
   }
 
-  new_name = copy_cstring_with_length( app_name, &new_length );
-  if( unlikely( !new_name ) ) {
-    return NULL;
-  }
+  clear_error(  );
+
+  // TODO this could be more efficient if the validation routine also returned
+  // the size as a byproduct
+  new_length = strlen( app_name );
 
   lock_target( target );
-  old_name = target->default_app_name;
-  target->default_app_name = new_name;
+  memcpy( target->default_app_name, app_name, new_length );
   target->default_app_name_length = new_length;
   unlock_target( target );
 
-  free_mem( old_name );
-  clear_error(  );
   return target;
 }
 
@@ -565,8 +563,6 @@ struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid ) {
   size_t new_length;
-  char *new_msgid;
-  const char *old_msgid;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
@@ -576,19 +572,17 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
       return NULL;
   }
 
-  new_msgid = copy_cstring_with_length( msgid, &new_length );
-  if( unlikely( !new_msgid ) ) {
-    return NULL;
-  }
+  clear_error(  );
+
+  // TODO this could be more efficient if the validation routine also returned
+  // the size as a byproduct
+  new_length = strlen( msgid );
 
   lock_target( target );
-  old_msgid = target->default_msgid;
-  target->default_msgid = new_msgid;
+  memcpy( target->default_msgid, msgid, new_length );
   target->default_msgid_length = new_length;
   unlock_target( target );
 
-  free_mem( old_msgid );
-  clear_error(  );
   return target;
 }
 
@@ -712,6 +706,9 @@ stumpless_trace_log_str( struct stumpless_target *target,
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
   if( !cached_trace ) {
     cached_trace = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                             STUMPLESS_SEVERITY_INFO,
@@ -725,25 +722,22 @@ stumpless_trace_log_str( struct stumpless_target *target,
   } else {
     set_result = stumpless_set_entry_message_str( cached_trace,
                                                   message );
-    if( !set_result ) {
+    if( unlikely( !set_result ) ) {
       return -1;
     }
-
-    set_result = stumpless_set_entry_app_name( cached_trace,
-                                               target->default_app_name );
-    if( !set_result ) {
-      return -1;
-    }
-
-    set_result = stumpless_set_entry_msgid( cached_trace,
-                                            target->default_msgid );
-    if( !set_result ) {
-      return -1;
-    }
-
   }
 
+  // we don't need to lock the cached entry since it is thread-local
   cached_trace->prival = priority;
+  memcpy( cached_trace->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_trace->app_name_length = target->default_app_name_length;
+  memcpy( cached_trace->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_trace->msgid_length = target->default_msgid_length;
+
   return stumpless_trace_entry( target, cached_trace, file, line, func );
 }
 
@@ -801,11 +795,14 @@ vstumpless_add_log( struct stumpless_target *target,
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
   if( !cached_entry ) {
     cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
-                                         target->default_app_name,
-                                         target->default_msgid,
+                                         NULL,
+                                         NULL,
                                          message,
                                          subs );
     if( unlikely( !cached_entry ) ) {
@@ -814,25 +811,22 @@ vstumpless_add_log( struct stumpless_target *target,
 
   } else {
     set_result = vstumpless_set_entry_message( cached_entry, message, subs );
-    if( !set_result ) {
+    if( unlikely( !set_result ) ) {
       return -1;
     }
-
-    set_result = stumpless_set_entry_app_name( cached_entry,
-                                               target->default_app_name );
-    if( !set_result ) {
-      return -1;
-    }
-
-    set_result = stumpless_set_entry_msgid( cached_entry,
-                                            target->default_msgid );
-    if( !set_result ) {
-      return -1;
-    }
-
   }
 
+  // we don't need to lock the cached entry since it is thread-local
   cached_entry->prival = priority;
+  memcpy( cached_entry->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_entry->app_name_length = target->default_app_name_length;
+  memcpy( cached_entry->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_entry->msgid_length = target->default_msgid_length;
+
   return stumpless_add_entry( target, cached_entry );
 }
 
@@ -857,11 +851,14 @@ vstumpless_trace_log( struct stumpless_target *target,
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
   if( !cached_trace ) {
     cached_trace = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
-                                         target->default_app_name,
-                                         target->default_msgid,
+                                         NULL,
+                                         NULL,
                                          message,
                                          subs );
     if( unlikely( !cached_trace ) ) {
@@ -875,22 +872,19 @@ vstumpless_trace_log( struct stumpless_target *target,
     if( !set_result ) {
       return -1;
     }
-
-    set_result = stumpless_set_entry_app_name( cached_trace,
-                                               target->default_app_name );
-    if( !set_result ) {
-      return -1;
-    }
-
-    set_result = stumpless_set_entry_msgid( cached_trace,
-                                            target->default_msgid );
-    if( !set_result ) {
-      return -1;
-    }
-
   }
 
+  // we don't need to lock the cached entry since it is thread-local
   cached_trace->prival = priority;
+  memcpy( cached_trace->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_trace->app_name_length = target->default_app_name_length;
+  memcpy( cached_trace->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_trace->msgid_length = target->default_msgid_length;
+
   return stumpless_trace_entry( target, cached_trace, file, line, func );
 }
 
@@ -919,8 +913,6 @@ destroy_target( const struct stumpless_target *target ) {
   config_compare_exchange_ptr( &current_target, target, NULL );
 
   config_destroy_cached_mutex( target->mutex );
-  free_mem( target->default_app_name );
-  free_mem( target->default_msgid );
   free_mem( target->name );
   free_mem( target );
 }
@@ -953,10 +945,10 @@ new_target( enum stumpless_target_type type, const char *name ) {
   target->options = STUMPLESS_OPTION_NONE;
   target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
                                        STUMPLESS_DEFAULT_SEVERITY );
-  target->default_app_name = NULL;
-  target->default_app_name_length = 0;
-  target->default_msgid = NULL;
-  target->default_msgid_length = 0;
+  target->default_app_name[0] = '-';
+  target->default_app_name_length = 1;
+  target->default_msgid[0] = '-';
+  target->default_msgid_length = 1;
   target->mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_DEBUG_VALUE );
   target->filter = stumpless_mask_filter;
 
