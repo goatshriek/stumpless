@@ -200,7 +200,7 @@ stumpless_add_log_str( struct stumpless_target *target,
                        const char *message ) {
   const struct stumpless_entry *set_result;
 
-  if( !target ) {
+  if( unlikely( !target ) ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
   }
@@ -211,32 +211,31 @@ stumpless_add_log_str( struct stumpless_target *target,
                                             target->default_app_name,
                                             target->default_msgid,
                                             message );
-    if( !cached_entry ) {
+    if( unlikely( !cached_entry ) ) {
       return -1;
     }
 
   } else {
     set_result = stumpless_set_entry_message_str( cached_entry, message );
-    if( !set_result ) {
+    if( unlikely( !set_result ) ) {
       return -1;
     }
 
     set_result = stumpless_set_entry_app_name( cached_entry,
                                                target->default_app_name );
-    if( !set_result ) {
+    if( unlikely( !set_result ) ) {
       return -1;
     }
 
     set_result = stumpless_set_entry_msgid( cached_entry,
                                             target->default_msgid );
-    if( !set_result ) {
+    if( unlikely( !set_result ) ) {
       return -1;
     }
 
   }
 
   cached_entry->prival = priority;
-
   return stumpless_add_entry( target, cached_entry );
 }
 
@@ -257,7 +256,7 @@ stumpless_add_message( struct stumpless_target *target,
 int
 stumpless_add_message_str( struct stumpless_target *target,
                            const char *message ) {
-  if( !target ) {
+  if( unlikely( !target ) ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return -1;
   }

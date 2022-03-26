@@ -28,6 +28,27 @@
 
 using::testing::HasSubstr;
 
+static
+void
+confirm_entry_contents( const struct stumpless_entry *entry,
+                        const char *app_name,
+                        const char *msgid,
+                        const char *message ) {
+    size_t app_name_length = strlen( app_name );
+    size_t msgid_length = strlen( msgid );
+    size_t message_length = strlen( message );
+
+    EXPECT_EQ( app_name_length, entry->app_name_length );
+    EXPECT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
+
+    EXPECT_EQ( msgid_length, entry->msgid_length );
+    EXPECT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
+
+    EXPECT_EQ( message_length, entry->message_length );
+    EXPECT_NOT_NULL( entry->message );
+    EXPECT_EQ( 0, memcmp( entry->message, message, message_length ) );
+}
+
 namespace {
 
   class EntryTest : public::testing::Test {
@@ -1593,10 +1614,6 @@ namespace {
     const char *msgid = "test-msgid";
     const char *message = "test-message";
 
-    size_t app_name_length = strlen( app_name );
-    size_t msgid_length = strlen( msgid );
-    size_t message_length = strlen( message );
-
     entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
                                      app_name,
@@ -1609,15 +1626,7 @@ namespace {
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
-    EXPECT_EQ( app_name_length, entry->app_name_length );
-    EXPECT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
-
-    EXPECT_EQ( msgid_length, entry->msgid_length );
-    EXPECT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
-
-    EXPECT_EQ( message_length, entry->message_length );
-    EXPECT_NOT_NULL( entry->message );
-    EXPECT_EQ( 0, memcmp( entry->message, message, message_length ) );
+    confirm_entry_contents( entry, app_name, msgid, message );
 
     stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
@@ -1837,10 +1846,6 @@ namespace {
     const char *msgid = "test-msgid";
     const char *message = "test-message";
 
-    size_t app_name_length = strlen( app_name );
-    size_t msgid_length = strlen( msgid );
-    size_t message_length = strlen( message );
-
     entry = stumpless_new_entry( STUMPLESS_FACILITY_ALERT,
                                  STUMPLESS_SEVERITY_ALERT,
                                  app_name,
@@ -1853,15 +1858,7 @@ namespace {
     EXPECT_NULL( entry->elements );
     EXPECT_EQ( 0, entry->element_count );
 
-    EXPECT_EQ( app_name_length, entry->app_name_length );
-    EXPECT_EQ( 0, memcmp( entry->app_name, app_name, app_name_length ) );
-
-    EXPECT_EQ( msgid_length, entry->msgid_length );
-    EXPECT_EQ( 0, memcmp( entry->msgid, msgid, msgid_length ) );
-
-    EXPECT_EQ( message_length, entry->message_length );
-    EXPECT_NOT_NULL( entry->message );
-    EXPECT_EQ( 0, memcmp( entry->message, message, message_length ) );
+    confirm_entry_contents( entry, app_name, msgid, message );
 
     stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
