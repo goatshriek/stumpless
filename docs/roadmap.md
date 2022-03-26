@@ -33,6 +33,8 @@ or want to make a suggestion, please submit an issue on the project's
  * [CHANGE] **Error enum values start from 1 instead of 0**
    This will allow function that return negative integers in error scenarios to
    pass along a more meaningful return value.
+ * [CHANGE] **Entry app name and msgid no longer NULL-terminated.**
+   Improve efficiency and memory safety by only using these as byte buffers.
 
 
 ## Unallocated to a release
