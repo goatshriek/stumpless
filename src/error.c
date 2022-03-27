@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,8 +135,13 @@ raise_argument_empty( const char *message ) {
 }
 
 void
-raise_argument_too_big( const char *message, int code, const char *code_type ) {
-  raise_error( STUMPLESS_ARGUMENT_TOO_BIG, message, code, code_type );
+raise_argument_too_big( const char *message,
+                        size_t arg_size,
+                        const char *arg_type ) {
+  raise_error( STUMPLESS_ARGUMENT_TOO_BIG,
+               message,
+               cap_size_t_to_int( arg_size ),
+               arg_type );
 }
 
 void
@@ -193,7 +198,7 @@ raise_function_target_failure( int code ) {
 
 void
 raise_gethostname_failure( const char *message,
-                           size_t code,
+                           int code,
                            const char *code_type ) {
   raise_error( STUMPLESS_GETHOSTNAME_FAILURE, message, code, code_type );
 }

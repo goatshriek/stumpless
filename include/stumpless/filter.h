@@ -27,6 +27,7 @@
 #  define __STUMPLESS_FILTER_H
 
 #  include <stdbool.h>
+#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
 
@@ -59,6 +60,7 @@ extern "C" {
  * @return true if the severity of the entry is set in the target's mask,
  * false otherwise.
  */
+STUMPLESS_PUBLIC_FUNCTION
 bool
 stumpless_mask_filter( const struct stumpless_target *target,
                        const struct stumpless_entry *entry );

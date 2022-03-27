@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,76 @@
 
 #  ifndef STUMPLESS_DISABLE_NOTICE_LEVEL
 #    include <stumpless/config.h>
+#    include <stumpless/log.h>
 #    include <stumpless/severity.h>
 #    include <stumpless/target.h>
+#  endif
+
+/**
+ * Logs a message to the current target with notice severity.
+ *
+ * This function will be removed at compile time if
+ * STUMPLESS_DISABLE_NOTICE_LEVEL has been defined during build. If it is
+ * disabled, then this function is removed at compile time and will have no
+ * effect. Otherwise, it is equivalent to a call to stumpless_add_log with the
+ * provided message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with notice level calls disabled.
+ *
+ * This function will log the given message with a severity of
+ * STUMPLESS_SEVERITY_NOTICE, and the facility defined by the
+ * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
+ * you will need to use stumplog_n instead.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stump_n_str instead.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
+ * form.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
+ */
+#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL
+#    define stump_n( ... ) ( 0 )
+#  else
+#    define stump_n( ... )                                                     \
+stumpless_add_log( stumpless_get_current_target(  ),                           \
+                   STUMPLESS_SEVERITY_NOTICE | STUMPLESS_DEFAULT_FACILITY,     \
+                   __VA_ARGS__ )
 #  endif
 
 /**
@@ -73,12 +141,10 @@
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
+ * @since release v2.1.0.
  *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
+ * @param message The message to log. This must be a valid UTF-8 string in
+ * shortest form.
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
@@ -87,12 +153,12 @@
  * function is disabled.
  */
 #  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL
-#    define stump_n( ... ) ( 0 )
+#    define stump_n_str( message ) ( 0 )
 #  else
-#    define stump_n( ... )                                                     \
-stumpless_add_log( stumpless_get_current_target(  ),                           \
-                   STUMPLESS_SEVERITY_NOTICE | STUMPLESS_DEFAULT_FACILITY,     \
-                   __VA_ARGS__ )
+#    define stump_n_str( message )                                             \
+stumpless_add_log_str( stumpless_get_current_target(  ),                       \
+                       STUMPLESS_SEVERITY_NOTICE | STUMPLESS_DEFAULT_FACILITY, \
+                       ( message ) )
 #  endif
 
 /**
@@ -160,6 +226,12 @@ stumpless_add_entry( ( target ), ( entry ) )
  * side effects you rely on will not cause problems if they are left out during
  * a build with notice level calls disabled.
  *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stump_n_log_str instead.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
@@ -185,7 +257,8 @@ stumpless_add_entry( ( target ), ( entry ) )
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
  *
  * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
+ * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
+ * form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
@@ -203,6 +276,131 @@ stumpless_add_entry( ( target ), ( entry ) )
 #    define stump_n_log( target, priority, ... )                               \
 stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
 #endif
+
+/**
+ * Adds a message to a given target with the specified priority.
+ *
+ * This function will be removed at compile time if
+ * STUMPLESS_DISABLE_NOTICE_LEVEL has been defined during build. If it is
+ * disabled, then this function is removed at compile time and will have no
+ * effect. Otherwise, it is equivalent to a call to stumplog with the provided
+ * message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with notice level calls disabled.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @since release v2.1.0.
+ *
+ * @param target The target to send the entry to.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param message The message to log. This must be a valid UTF-8 string in
+ * shortest form.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
+ */
+#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL
+#    define stump_n_log_str( target, priority, message ) ( 0 )
+#  else
+#    define stump_n_log_str( target, priority, message )                       \
+stumpless_add_log_str( ( target ), ( priority ), ( message ) )
+#endif
+
+/**
+ * Adds a message to a given target with notice severity.
+ *
+ * This function will be removed at compile time if
+ * STUMPLESS_DISABLE_NOTICE_LEVEL has been defined during build. If it is
+ * disabled, then this function is removed at compile time and will have no
+ * effect. Otherwise, it is equivalent to a call to stumpless_add_log with the
+ * provided message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with notice level calls disabled.
+ *
+ * This function will log the given message with a severity of
+ * STUMPLESS_SEVERITY_NOTICE, and the facility defined by the
+ * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
+ * you will need to use stump_n_log instead.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stump_n_message_str instead.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param target The target to send the entry to.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
+ * form.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately. If the function is disabled then the effective return value
+ * is zero, although a return value of zero does not guarantee that this
+ * function is disabled.
+ */
+#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL
+#    define stump_n_message( target, ... ) ( 0 )
+#  else
+#    define stump_n_message( target, ... )                                     \
+stumpless_add_log( ( target ),                                                 \
+                   STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_NOTICE,     \
+                   __VA_ARGS__ )
+#  endif
 
 /**
  * Adds a message to a given target with notice severity.
@@ -242,14 +440,12 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param target The target to send the entry to.
  *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
+ * @param message The message to log. This must be a valid UTF-8 string in
+ * shortest form.
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
@@ -258,12 +454,69 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * function is disabled.
  */
 #  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL
-#    define stump_n_message( target, ... ) ( 0 )
+#    define stump_n_message_str( target, message ) ( 0 )
 #  else
-#    define stump_n_message( target, ... )                                     \
-stumpless_add_log( ( target ),                                                 \
-                   STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_NOTICE,     \
-                   __VA_ARGS__ )
+#    define stump_n_message_str( target, message )                             \
+stumpless_add_log_str( ( target ),                                             \
+                       STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_NOTICE, \
+                       ( message ) )
+#  endif
+
+/**
+ * Adds a message to the current target with the specified priority.
+ *
+ * This function will be removed at compile time if
+ * STUMPLESS_DISABLE_NOTICE_LEVEL has been defined during build. If it is
+ * disabled, then this function is removed at compile time and will have no
+ * effect. Otherwise, it is equivalent to a call to stumplog with the provided
+ * message and calculated priority.
+ *
+ * Note that if this function is disabled, then the arguments will not be
+ * evaluated, meaning that any side effects will not happen. Be sure that any
+ * side effects you rely on will not cause problems if they are left out during
+ * a build with notice level calls disabled.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumplog_n_str instead.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param message The message to log, optionally containing any format
+ * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
+ * form.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given.
+ */
+#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL
+#    define stumplog_n( priority, ... ) ( ( void ) 0 )
+#  else
+#    define stumplog_n( priority, ... )                                        \
+stumplog( ( priority ), __VA_ARGS__ )
 #  endif
 
 /**
@@ -299,21 +552,19 @@ stumpless_add_log( ( target ),                                                 \
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0.
+ *
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
  *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
+ * @param message The message to log. This must be a valid UTF-8 string in
+ * shortest form.
  */
 #  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL
-#    define stumplog_n( priority, ... ) ( ( void ) 0 )
+#    define stumplog_n_str( priority, message ) ( ( void ) 0 )
 #  else
-#    define stumplog_n( priority, ... )                                        \
-stumplog( ( priority ), __VA_ARGS__ )
+#    define stumplog_n_str( priority, message )                                \
+stumplog_str( ( priority ), ( message ) )
 #  endif
 
 #endif /* __STUMPLESS_LEVEL_NOTICE_H */

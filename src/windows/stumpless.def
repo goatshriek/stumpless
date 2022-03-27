@@ -176,3 +176,13 @@ EXPORTS
   stumpless_set_target_filter                   @161
   stumpless_set_target_mask                     @162
   stumplog_set_mask                             @163
+  stump_str                                     @164
+  stump_trace_str                               @165
+  stumpless_add_message_str                     @166
+  stumpless_add_log_str                         @167
+  stumpless_new_entry_str                       @168
+  stumpless_set_entry_message_str               @169
+  stumpless_trace_log_str                       @170
+  stumpless_trace_message_str                   @171
+  stumplog_str                                  @172
+  stumplog_trace_str                            @173

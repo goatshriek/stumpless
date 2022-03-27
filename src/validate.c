@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ static bool validate_string_length( const char* str, size_t max_length ) {
 
   if( length > max_length ) {
     raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
-			    length,
-			    L10N_STRING_LENGTH_ERROR_CODE_TYPE );
+                            length,
+                            L10N_STRING_LENGTH_ERROR_CODE_TYPE );
     validation_status = false;
   }
 

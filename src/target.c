@@ -34,9 +34,11 @@
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
+#include "private/config.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/journald.h"
+#include "private/config/wrapper/socket.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
@@ -74,33 +76,6 @@ close_unsupported_target( const struct stumpless_target *target ) {
 }
 
 int
-stump( const char *message, ... ) {
-  int result;
-  va_list subs;
-
-  va_start( subs, message );
-  result = vstump( message, subs );
-  va_end( subs );
-
-  return result;
-}
-
-int
-stump_trace( const char *file,
-             int line,
-             const char *func,
-             const char *message, ... ) {
-  int result;
-  va_list subs;
-
-  va_start( subs, message );
-  result = vstump_trace( file, line, func, message, subs );
-  va_end( subs );
-
-  return result;
-}
-
-int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry ) {
   stumpless_filter_func_t filter;
@@ -110,17 +85,10 @@ stumpless_add_entry( struct stumpless_target *target,
   int result;
   FILE *error_stream;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return -1;
-  }
-
-  if( !target->id ) {
+  if( unlikely( !target->id ) ) {
     raise_invalid_id(  );
     return -1;
   }
@@ -129,7 +97,7 @@ stumpless_add_entry( struct stumpless_target *target,
   if( filter && !filter( target, entry ) ) {
     return 0;
   }
- 
+
   if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) ){
     // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR
     // option is set, thus only checking this flag is enough for further checks
@@ -221,6 +189,48 @@ stumpless_add_log( struct stumpless_target *target,
 }
 
 int
+stumpless_add_log_str( struct stumpless_target *target,
+                       int priority,
+                       const char *message ) {
+  const struct stumpless_entry *set_result;
+
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
+  if( !cached_entry ) {
+    cached_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                            STUMPLESS_SEVERITY_INFO,
+                                            NULL,
+                                            NULL,
+                                            message );
+    if( unlikely( !cached_entry ) ) {
+      return -1;
+    }
+
+  } else {
+    set_result = stumpless_set_entry_message_str( cached_entry, message );
+    if( unlikely( !set_result ) ) {
+      return -1;
+    }
+  }
+
+  // we don't need to lock the cached entry since it is thread-local
+  cached_entry->prival = priority;
+  memcpy( cached_entry->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_entry->app_name_length = target->default_app_name_length;
+  memcpy( cached_entry->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_entry->msgid_length = target->default_msgid_length;
+
+  return stumpless_add_entry( target, cached_entry );
+}
+
+int
 stumpless_add_message( struct stumpless_target *target,
                        const char *message,
                        ... ) {
@@ -234,14 +244,22 @@ stumpless_add_message( struct stumpless_target *target,
   return result;
 }
 
+int
+stumpless_add_message_str( struct stumpless_target *target,
+                           const char *message ) {
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+
+  return stumpless_add_log_str( target, target->default_prival, message );
+}
+
 void
 stumpless_close_target( struct stumpless_target *target ) {
-  clear_error(  );
-
   if( !target ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return;
   }
+
+  clear_error(  );
 
   switch( target->type ) {
     case STUMPLESS_BUFFER_TARGET:
@@ -303,10 +321,7 @@ int
 stumpless_get_default_facility( const struct stumpless_target *target ) {
   int prival;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   lock_target( target );
   prival = target->default_prival;
@@ -326,6 +341,9 @@ stumpless_get_default_target( void ) {
 
   while( !result ) {
     result = config_open_default_target(  );
+    if( !result ) {
+      return NULL;
+    }
 
     if( !config_compare_exchange_ptr( &default_target, NULL, result ) ) {
       config_close_default_target( result );
@@ -358,13 +376,11 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   char *name_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
-  clear_error(  );
 
   lock_target( target );
   if( !target->default_app_name ) {
     goto cleanup_and_return;
   }
-
 
   name_copy = alloc_mem( target->default_app_name_length + 1 );
   if( !name_copy ) {
@@ -373,7 +389,8 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
 
   memcpy( name_copy,
           target->default_app_name,
-          target->default_app_name_length + 1 );
+          target->default_app_name_length );
+  name_copy[target->default_app_name_length] = '\0';
   clear_error(  );
 
 cleanup_and_return:
@@ -386,7 +403,6 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
   char *msgid_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( target );
-  clear_error(  );
 
   lock_target( target );
   if( !target->default_msgid ) {
@@ -398,7 +414,8 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
     goto cleanup_and_return;
   }
 
-  memcpy( msgid_copy, target->default_msgid, target->default_msgid_length + 1 );
+  memcpy( msgid_copy, target->default_msgid, target->default_msgid_length );
+  msgid_copy[target->default_msgid_length] = '\0';
   clear_error(  );
 
 cleanup_and_return:
@@ -410,10 +427,7 @@ stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target ) {
   stumpless_filter_func_t filter;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL( target ); 
 
   lock_target( target );
   filter = target->filter;
@@ -522,30 +536,26 @@ struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name ) {
   size_t new_length;
-  char *new_name;
-  const char *old_name;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
 
-  if( !validate_app_name_length( app_name ) ||
-      !validate_printable_ascii( app_name ) ) {
+  if( unlikely( !validate_app_name_length( app_name ) ||
+                !validate_printable_ascii( app_name ) ) ) {
     return NULL;
   }
 
-  new_name = copy_cstring_with_length( app_name, &new_length );
-  if( !new_name ) {
-    return NULL;
-  }
+  clear_error(  );
+
+  // TODO this could be more efficient if the validation routine also returned
+  // the size as a byproduct
+  new_length = strlen( app_name );
 
   lock_target( target );
-  old_name = target->default_app_name;
-  target->default_app_name = new_name;
+  memcpy( target->default_app_name, app_name, new_length );
   target->default_app_name_length = new_length;
   unlock_target( target );
 
-  free_mem( old_name );
-  clear_error(  );
   return target;
 }
 
@@ -553,29 +563,26 @@ struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid ) {
   size_t new_length;
-  char *new_msgid;
-  const char *old_msgid;
 
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
 
-  if( !validate_msgid_length( msgid ) || !validate_printable_ascii( msgid ) ) {
+  if( unlikely( !validate_msgid_length( msgid ) ||
+                !validate_printable_ascii( msgid ) ) ) {
       return NULL;
   }
 
-  new_msgid = copy_cstring_with_length( msgid, &new_length );
-  if( !new_msgid ) {
-    return NULL;
-  }
+  clear_error(  );
+
+  // TODO this could be more efficient if the validation routine also returned
+  // the size as a byproduct
+  new_length = strlen( msgid );
 
   lock_target( target );
-  old_msgid = target->default_msgid;
-  target->default_msgid = new_msgid;
+  memcpy( target->default_msgid, msgid, new_length );
   target->default_msgid_length = new_length;
   unlock_target( target );
 
-  free_mem( old_msgid );
-  clear_error(  );
   return target;
 }
 
@@ -629,20 +636,9 @@ stumpless_trace_entry( struct stumpless_target *target,
   char digits[MAX_INT_SIZE];
   char *line_str;
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return -1;
-  }
-
-  if( !file ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
-    return -1;
-  }
-
-  if( !func ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "file" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( file );
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( func );
 
   digits[MAX_INT_SIZE-1] = '\0';
   line_str = digits + MAX_INT_SIZE - 1;
@@ -658,17 +654,17 @@ stumpless_trace_entry( struct stumpless_target *target,
   }
 
   stumpless_set_entry_param_value_by_name( entry, "trace", "file", file );
-  if( stumpless_has_error(  ) ) {
+  if( unlikely( stumpless_has_error(  ) ) ) {
     return -1;
   }
 
   stumpless_set_entry_param_value_by_name( entry, "trace", "line", line_str );
-  if( stumpless_has_error(  ) ) {
+  if( unlikely( stumpless_has_error(  ) ) ) {
     return -1;
   }
 
   stumpless_set_entry_param_value_by_name( entry, "trace", "function", func );
-  if( stumpless_has_error(  ) ) {
+  if( unlikely( stumpless_has_error(  ) ) ) {
     return -1;
   }
 
@@ -700,6 +696,52 @@ stumpless_trace_log( struct stumpless_target *target,
 }
 
 int
+stumpless_trace_log_str( struct stumpless_target *target,
+                         int priority,
+                         const char *file,
+                         int line,
+                         const char *func,
+                         const char *message ) {
+  const struct stumpless_entry *set_result;
+
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
+  if( !cached_trace ) {
+    cached_trace = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                            STUMPLESS_SEVERITY_INFO,
+                                            NULL,
+                                            NULL,
+                                            message );
+    if( unlikely( !cached_trace ) ) {
+      return -1;
+    }
+
+  } else {
+    set_result = stumpless_set_entry_message_str( cached_trace,
+                                                  message );
+    if( unlikely( !set_result ) ) {
+      return -1;
+    }
+  }
+
+  // we don't need to lock the cached entry since it is thread-local
+  cached_trace->prival = priority;
+  memcpy( cached_trace->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_trace->app_name_length = target->default_app_name_length;
+  memcpy( cached_trace->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_trace->msgid_length = target->default_msgid_length;
+
+  return stumpless_trace_entry( target, cached_trace, file, line, func );
+}
+
+int
 stumpless_trace_message( struct stumpless_target *target,
                          const char *file,
                          int line,
@@ -716,6 +758,22 @@ stumpless_trace_message( struct stumpless_target *target,
   return result;
 }
 
+int
+stumpless_trace_message_str( struct stumpless_target *target,
+                             const char *file,
+                             int line,
+                             const char *func,
+                             const char *message ) {
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+
+  return stumpless_trace_log_str( target,
+                                  target->default_prival,
+                                  file,
+                                  line,
+                                  func,
+                                  message );
+}
+
 struct stumpless_target *
 stumpless_unset_option( struct stumpless_target *target, int option ) {
   VALIDATE_ARG_NOT_NULL( target );
@@ -728,74 +786,6 @@ stumpless_unset_option( struct stumpless_target *target, int option ) {
   return target;
 }
 
-void
-stumplog( int priority, const char *message, ... ) {
-  va_list subs;
-
-  va_start( subs, message );
-  vstumplog( priority, message, subs );
-  va_end( subs );
-}
-
-int
-stumplog_set_mask( int mask ) {
-  struct stumpless_target *target;
-  int old_mask;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return 0;
-  }
-
-  lock_target( target );
-  old_mask = target->mask;
-  target->mask = mask;
-  unlock_target( target );
-
-  return old_mask;
-}
-
-void
-stumplog_trace( int priority,
-                const char *file,
-                int line,
-                const char *func,
-                const char *message, ... ) {
-  va_list subs;
-
-  va_start( subs, message );
-  vstumplog_trace( priority, file, line, func, message, subs );
-  va_end( subs );
-}
-
-int
-vstump( const char *message, va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  return vstumpless_add_message( target, message, subs );
-}
-
-int
-vstump_trace( const char *file,
-              int line,
-              const char *func,
-              const char *message,
-              va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return -1;
-  }
-
-  return vstumpless_trace_message( target, file, line, func, message, subs );
-}
-
 int
 vstumpless_add_log( struct stumpless_target *target,
                     int priority,
@@ -803,43 +793,39 @@ vstumpless_add_log( struct stumpless_target *target,
                     va_list subs ) {
   const struct stumpless_entry *set_result;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
   if( !cached_entry ) {
     cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
-                                         target->default_app_name,
-                                         target->default_msgid,
+                                         NULL,
+                                         NULL,
                                          message,
                                          subs );
-    if( !cached_entry ) {
+    if( unlikely( !cached_entry ) ) {
       return -1;
     }
 
   } else {
     set_result = vstumpless_set_entry_message( cached_entry, message, subs );
-    if( !set_result ) {
+    if( unlikely( !set_result ) ) {
       return -1;
     }
-
-    set_result = stumpless_set_entry_app_name( cached_entry,
-                                               target->default_app_name );
-    if( !set_result ) {
-      return -1;
-    }
-
-    set_result = stumpless_set_entry_msgid( cached_entry,
-                                            target->default_msgid );
-    if( !set_result ) {
-      return -1;
-    }
-
   }
 
+  // we don't need to lock the cached entry since it is thread-local
   cached_entry->prival = priority;
+  memcpy( cached_entry->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_entry->app_name_length = target->default_app_name_length;
+  memcpy( cached_entry->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_entry->msgid_length = target->default_msgid_length;
 
   return stumpless_add_entry( target, cached_entry );
 }
@@ -848,10 +834,7 @@ int
 vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
                         va_list subs ) {
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   return vstumpless_add_log( target, target->default_prival, message, subs );
 }
@@ -866,19 +849,19 @@ vstumpless_trace_log( struct stumpless_target *target,
                       va_list subs ) {
   const struct stumpless_entry *set_result;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
+  // TODO it would be better for the cached entry to be a static buffer instead
+  // of heap allocated. This can be done once a way to create an entry within a
+  // given buffer is exposed.
   if( !cached_trace ) {
     cached_trace = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
                                          STUMPLESS_SEVERITY_INFO,
-                                         target->default_app_name,
-                                         target->default_msgid,
+                                         NULL,
+                                         NULL,
                                          message,
                                          subs );
-    if( !cached_trace ) {
+    if( unlikely( !cached_trace ) ) {
       return -1;
     }
 
@@ -889,22 +872,18 @@ vstumpless_trace_log( struct stumpless_target *target,
     if( !set_result ) {
       return -1;
     }
-
-    set_result = stumpless_set_entry_app_name( cached_trace,
-                                               target->default_app_name );
-    if( !set_result ) {
-      return -1;
-    }
-
-    set_result = stumpless_set_entry_msgid( cached_trace,
-                                            target->default_msgid );
-    if( !set_result ) {
-      return -1;
-    }
-
   }
 
+  // we don't need to lock the cached entry since it is thread-local
   cached_trace->prival = priority;
+  memcpy( cached_trace->app_name,
+          target->default_app_name,
+          target->default_app_name_length );
+  cached_trace->app_name_length = target->default_app_name_length;
+  memcpy( cached_trace->msgid,
+          target->default_msgid,
+          target->default_msgid_length );
+  cached_trace->msgid_length = target->default_msgid_length;
 
   return stumpless_trace_entry( target, cached_trace, file, line, func );
 }
@@ -916,10 +895,7 @@ vstumpless_trace_message( struct stumpless_target *target,
                           const char *func,
                           const char *message,
                           va_list subs ) {
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
   return vstumpless_trace_log( target,
                                target->default_prival,
@@ -930,35 +906,6 @@ vstumpless_trace_message( struct stumpless_target *target,
                                subs );
 }
 
-void
-vstumplog( int priority, const char *message, va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return;
-  }
-
-  vstumpless_add_log( target, priority, message, subs );
-}
-
-void
-vstumplog_trace( int priority,
-                 const char * file,
-                 int line,
-                 const char *func,
-                 const char *message,
-                 va_list subs ) {
-  struct stumpless_target *target;
-
-  target = stumpless_get_current_target(  );
-  if( !target ) {
-    return;
-  }
-
-  vstumpless_trace_log( target, priority, file, line, func, message, subs );
-}
-
 /* private definitions */
 
 void
@@ -966,8 +913,6 @@ destroy_target( const struct stumpless_target *target ) {
   config_compare_exchange_ptr( &current_target, target, NULL );
 
   config_destroy_cached_mutex( target->mutex );
-  free_mem( target->default_app_name );
-  free_mem( target->default_msgid );
   free_mem( target->name );
   free_mem( target );
 }
@@ -1000,10 +945,10 @@ new_target( enum stumpless_target_type type, const char *name ) {
   target->options = STUMPLESS_OPTION_NONE;
   target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
                                        STUMPLESS_DEFAULT_SEVERITY );
-  target->default_app_name = NULL;
-  target->default_app_name_length = 0;
-  target->default_msgid = NULL;
-  target->default_msgid_length = 0;
+  target->default_app_name[0] = '-';
+  target->default_app_name_length = 1;
+  target->default_msgid[0] = '-';
+  target->default_msgid_length = 1;
   target->mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_DEBUG_VALUE );
   target->filter = stumpless_mask_filter;
 

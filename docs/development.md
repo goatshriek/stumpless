@@ -183,12 +183,18 @@ implementation thread safe. Look at other functions as examples, and don't be
 afraid to ask for help on the project
 [Gitter](https://gitter.im/stumpless/community) if you get stuck.
 
+If your function is public facing, be sure to use the
+`STUMPLESS_PUBLIC_FUNCTION` macro before its declaration to ensure that it is
+included in the resulting library. If you forget to do this, you'll see errors
+about undefined references when trying to use the library, for example during
+tests.
+
 In order to support being built as a DLL, stumpless has a `.def` file at
-`src/windows/stumpless.def`. If you are adding a new public function to
-stumpless, you will need to make sure to add it to the `.def` file so that the
-DLL will include it. Failing to do so will result in tests failing on Windows
-builds with a note that your new function is not defined. The Windows CI builds
-typically catch this issue.
+`src/windows/stumpless.def` in addition to the public function macro. If you
+are adding a new public function to stumpless, you will need to make sure to
+add it to the `.def` file so that the DLL will include it. Failing to do so
+will result in tests failing on Windows builds with a note that your new
+function is not defined. The Windows CI builds typically catch this issue.
 
 Stumpless uses a custom tool to make sure that all required headers are included
 in a source file without any extras. The tool is called `check_headers` and is
@@ -232,7 +238,9 @@ Actions builds, and will check pull requests for diff and total coverage. In
 some cases this gate may be failing and code will still be merged, but this is
 only in situations where coverage is not reasonably obtainable. For example if
 the only way to cover a failure branch is a very specific chain of memory or
-system call failures, then the coverage requirement may be relaxed.
+system call failures, then the coverage requirement may be relaxed. See the
+[testing](test.md) documentation for more information on test coverage and
+how to check this locally before opening a pull request to trigger Codecov.
 
 [Sonarcloud](https://sonarcloud.io/dashboard?id=stumpless) provides code quality
 reviews and static analysis. Changes should avoid introducing any new issues in

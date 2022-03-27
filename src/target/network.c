@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
-#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
 #include "private/target.h"
@@ -296,7 +295,7 @@ sendto_udp_target( struct network_target *target,
   if( msg_length > target->max_msg_size ) {
     effective_length = target->max_msg_size;
     raise_argument_too_big( L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE,
-                            cap_size_t_to_int( msg_length ),
+                            msg_length,
                             L10N_MESSAGE_SIZE_ERROR_CODE_TYPE );
   } else {
     effective_length = msg_length;

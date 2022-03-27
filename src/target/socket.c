@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,13 @@
 
 #include <errno.h>
 #include <stddef.h>
-#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
-#include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/socket.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/target.h"
@@ -56,8 +55,8 @@ stumpless_open_socket_target( const char *name,
   struct stumpless_target *target;
   size_t name_len;
   size_t local_socket_len;
-  char temp_name[16];
-  int temp_fd;
+  char temp_name[18];
+  size_t temp_name_len;
 
   VALIDATE_ARG_NOT_NULL( name );
 
@@ -70,19 +69,8 @@ stumpless_open_socket_target( const char *name,
   name_len = strlen( name );
 
   if( !local_socket ) {
-    memcpy( temp_name, "stumplessXXXXXX", 16 );
-    temp_fd = mkstemp( temp_name );
-    if( temp_fd == -1 ) {
-      raise_error( STUMPLESS_FILE_OPEN_FAILURE,
-                   L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE,
-                   errno,
-                   L10N_ERRNO_ERROR_CODE_TYPE );
-      goto fail_id;
-    }
-
-    close( temp_fd );
-    unlink( temp_name );
-    target->id = new_socket_target( name, name_len, temp_name, 16 );
+    temp_name_len = config_get_local_socket_name( temp_name );
+    target->id = new_socket_target( name, name_len, temp_name, temp_name_len );
   } else {
     local_socket_len = strlen( local_socket );
     target->id =
@@ -153,13 +141,15 @@ new_socket_target( const char *dest,
     raise_socket_bind_failure( L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
                                L10N_ERRNO_ERROR_CODE_TYPE );
-    goto fail_socket;
+    goto fail_bind;
   }
 
   target->target_addr_len = sizeof( target->target_addr );
 
   return target;
 
+fail_bind:
+  close( target->local_socket );
 fail_socket:
   free_mem( target );
 fail:

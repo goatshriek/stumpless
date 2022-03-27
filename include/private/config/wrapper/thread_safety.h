@@ -28,7 +28,7 @@
 typedef bool config_atomic_bool_t;
 typedef void * config_atomic_ptr_t;
 #    define CONFIG_THREAD_LOCAL_STORAGE
-#    include "private/config/no_thread_safety.h"
+#    include "private/config/thread_safety_unsupported.h"
 #    define config_assign_cached_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_atomic_bool_false false
 #    define config_atomic_bool_true true

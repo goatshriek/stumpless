@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2019-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,8 @@ main( int argc, char **argv ) {
   // logs a more complex message to the last target
   stump( "Login failed for username %s", username );
 
+  // uses the _str version of stump to avoid format specifier issues
+  stump_str( "Use of %s to print a value!" );
 
 #ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
   // opens a network target to example.com using UDP over IPv4

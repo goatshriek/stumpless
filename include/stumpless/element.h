@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,6 +169,7 @@ struct stumpless_element {
  * @return The modified element if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_add_new_param( struct stumpless_element *element,
                          const char *param_name,
@@ -198,6 +199,7 @@ stumpless_add_new_param( struct stumpless_element *element,
  * @return The modified element if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_add_param( struct stumpless_element *element,
                      struct stumpless_param *param );
@@ -231,6 +233,7 @@ stumpless_add_param( struct stumpless_element *element,
  * @return A new element that is a deep copy of the original. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_copy_element( const struct stumpless_element *element );
 
@@ -258,6 +261,7 @@ stumpless_copy_element( const struct stumpless_element *element );
  *
  * @param element The element to destroy.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_destroy_element( const struct stumpless_element *element );
 
@@ -281,6 +285,7 @@ stumpless_destroy_element( const struct stumpless_element *element );
  *
  * @param e The element to destroy.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_destroy_element_and_contents( const struct stumpless_element *e );
 
@@ -304,6 +309,7 @@ stumpless_destroy_element_and_contents( const struct stumpless_element *e );
  *
  * @param element The element to destroy.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_destroy_element_only( const struct stumpless_element *element );
 
@@ -333,6 +339,7 @@ stumpless_destroy_element_only( const struct stumpless_element *element );
  * param is not found or an error is encountered, then false is returned and
  * an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 bool
 stumpless_element_has_param( const struct stumpless_element *element,
                              const char *name );
@@ -366,6 +373,7 @@ stumpless_element_has_param( const struct stumpless_element *element,
  * @return The name of the element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_element_name( const struct stumpless_element *element );
 
@@ -393,6 +401,7 @@ stumpless_get_element_name( const struct stumpless_element *element );
  * @return The param if no error is encountered. If an error is encountered,
  * then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_get_param_by_index( const struct stumpless_element *element,
                               size_t index );
@@ -431,6 +440,7 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
  * error was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_get_param_by_name( const struct stumpless_element *element,
                              const char *name );
@@ -457,6 +467,7 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
  * @return The number of params element has. If there is an error, zero is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_get_param_count( const struct stumpless_element *element );
 
@@ -494,6 +505,7 @@ stumpless_get_param_count( const struct stumpless_element *element );
  * there is no such param or an error is encountered, NULL is returned and an
  * error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_get_param_index( const struct stumpless_element *element,
                            const char *name );
@@ -531,6 +543,7 @@ stumpless_get_param_index( const struct stumpless_element *element,
  * If an error is encountered, NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_param_name_by_index( const struct stumpless_element *element,
                                    size_t index );
@@ -565,6 +578,7 @@ stumpless_get_param_name_by_index( const struct stumpless_element *element,
  * If an error is encountered, zero is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_get_param_name_count( const struct stumpless_element *element,
                                 const char *name );
@@ -602,6 +616,7 @@ stumpless_get_param_name_count( const struct stumpless_element *element,
  * encountered. If an error is encountered, then NULL is returned and an error
  * code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_param_value_by_index( const struct stumpless_element *element,
                                     size_t index );
@@ -643,6 +658,7 @@ stumpless_get_param_value_by_index( const struct stumpless_element *element,
  * encountered. If an error is encountered, then NULL is returned and an error
  * code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_param_value_by_name( const struct stumpless_element *element,
                                    const char *name );
@@ -668,6 +684,7 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
  * @return The created element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_new_element( const char *name );
 
@@ -698,6 +715,7 @@ stumpless_new_element( const char *name );
  * @return The modified element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_set_element_name( struct stumpless_element *element,
                             const char *name );
@@ -736,6 +754,7 @@ stumpless_set_element_name( struct stumpless_element *element,
  * @return The modified element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_set_param( struct stumpless_element *element,
                      size_t index,
@@ -770,6 +789,7 @@ stumpless_set_param( struct stumpless_element *element,
  * @return The modified element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_set_param_value_by_index( struct stumpless_element *element,
                                     size_t index,
@@ -812,6 +832,7 @@ stumpless_set_param_value_by_index( struct stumpless_element *element,
  * @return The modified element, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_set_param_value_by_name( struct stumpless_element *element,
                                    const char *name,
@@ -842,6 +863,7 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
  * @return The formatted string of <name> or <name>:[param1,...] if no error is encountered.
  * If an error is  encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_element_to_string( const struct stumpless_element *element );
 

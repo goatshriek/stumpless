@@ -1,5 +1,4 @@
 # Portability in Stumpless
-
 Stumpless is built to be compact and efficient, making it an excellent option in
 embedded scenarios. This means that portability is a key factor of the design:
 in order to work in constrained environments it must be able to handle a variety
@@ -20,14 +19,14 @@ easy to maintain while remaining as portable as possible:
    absence. This can be as simple as raising a target unsupported error or
    filling in an unknown value with a reasonable guess.
 
-# Conventions
 
+# Conventions
 Stumpless has conventions for handling dependencies in a portable way, which can
 be used whenever the need for configuration-specific behavior arises. This is
 based on the `config` family of headers, sources, and symbols.
 
-## Config Headers and Wrappers
 
+## Config Headers and Wrappers
 Great care is taken to keep the impacts of configuration separate from other
 functionality within the library. There are two headers where information on
 the build is located: one for the information that describes features and other
@@ -61,8 +60,8 @@ symbols or use other preprocessor directives. In fact, there is another
 established convention for how to do this: the wrapper headers and `config`
 family of functions.
 
-## The Wrapper Header and `config` Functions
 
+## The Wrapper Header and `config` Functions
 One header in particular in the private include file list deserves special
 mention: `private/config/wrapper.h`. This file contains definitions of a number
 of functions and symbols all starting with `config_` that wrap configuration
@@ -94,8 +93,44 @@ defined as an alias for the `fopen` library call. Any library code that needs
 `fopen` functionality will then simply use `config_fopen` without needing to
 know which underlying call is being provided.
 
-## Other Wrapper Headers
+The header files and functions within follow a naming convention to make it
+clear which configuration element they correlate to.
 
+ * `have_xxx_.h` designates that the header or function named `xxx` is assumed
+   to be present in the code within it. Functions in headers named this way
+   always start with a prefix of `xxx_` where xxx is the name of the header or
+   function that is used.
+ * Headers of the form `no_xxx.h` are the opposite of the previous case: they
+   assume that the header or function is _not_ available for use. These
+   functions are named with a prefix of `no_xxx_`, again where xxx is the name
+   of the symbol that is available.
+ * `xxx_supported.h` headers contain code that assumes that there is platform
+   and/or library support for a given feature. For example, abstract sockets
+   can only be used on Linux systems. Another case are network targets, which
+   may be disabled in some builds. Functions in these headers start with a
+   prefix of `xxx_` with xxx substituted with the feature name. Note that
+   sometimes this prefix is the entire name of the function (without the
+   trailing underscore of course), if the supported feature is the function
+   itself.
+ * Predictably, `xxx_unsupported.h` headers contain code to deal with the case
+   where a feature is not available. Functions in these headers start with the
+   prefix of `no_xxx_` with xxx filled in as the feature name.
+
+For all of these functions, the prefix designated is replaced with `config_` by
+the wrapper that designates the chosen one. Functions that don't have or need
+a `config_` wrapper function do not necessarily follow this naming convention.
+Public functions fall into this category, as they start with a prefix of
+`stumpless_` to conform to the overall library standard, and are not wrapped
+by any config header.
+
+The config header and source files may not necessarily live in the config
+directory if there is a better place. The most prominent example of this are
+target types that may not be available in a given configuration. These source
+files exist in the target directory along with the other target-related files
+rather than in the config directory.
+
+
+## Other Wrapper Headers
 There are other wrapper headers that hide configuration-related details beyond
 `private/config/wrapper.h`. The most prominent of these is
 `private/config/locale/wrapper.h` which includes the correct set of localized
@@ -103,8 +138,8 @@ string definitions based on the locale chosen during the build configuration.
 Another example is `private/windows_wrapper.h` which includes Windows-related
 header files only if they are found and in the correct order.
 
-## Fallback Behavior
 
+## Fallback Behavior
 Stumpless is designed to work in a variety of environments, and can typically
 find a way to accomplish what it needs to if there is a possibility. However,
 in some environments the necessary capabilities are simply missing, and the

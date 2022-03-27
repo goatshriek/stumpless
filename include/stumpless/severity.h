@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -213,6 +213,7 @@ enum stumpless_severity {
  *
  * @return The string representation of the given severity.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_severity_string( enum stumpless_severity severity );
 

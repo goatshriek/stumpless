@@ -1,3 +1,4 @@
+"abs": "stdlib.h"
 "AF_INET":
   - "sys/socket.h"
   - "private/windows_wrapper.h"

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@
 #  define __STUMPLESS_TARGET_STREAM_H
 
 #  include <stdio.h>
+#  include <stumpless/config.h>
 #  include <stumpless/target.h>
 
 #  ifdef __cplusplus
@@ -65,6 +66,7 @@ extern "C" {
  *
  * @param target The stream target to close.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_stream_target( const struct stumpless_target *target );
 
@@ -89,6 +91,7 @@ stumpless_close_stream_target( const struct stumpless_target *target );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_stderr_target( const char *name );
 
@@ -113,6 +116,7 @@ stumpless_open_stderr_target( const char *name );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_stdout_target( const char *name );
 
@@ -146,6 +150,7 @@ stumpless_open_stdout_target( const char *name );
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_stream_target( const char *name, FILE *stream );
 

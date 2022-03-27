@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2021 Joel E. Anderson
+ * Copyright 2021-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@
 #  define __STUMPLESS_TARGET_JOURNALD_H
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
 
@@ -72,6 +73,7 @@ extern "C" {
  *
  * @param target The journald target to close.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_journald_target( const struct stumpless_target *target );
 
@@ -111,6 +113,7 @@ stumpless_close_journald_target( const struct stumpless_target *target );
  * including a NULL terminating character. If this is greater than size, then
  * it signifies that nothing was done.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_flatten_element_name( const struct stumpless_entry *entry,
                                 size_t element_index,
@@ -158,6 +161,7 @@ stumpless_flatten_element_name( const struct stumpless_entry *entry,
  * including a NULL terminating character. If this is greater than size, then
  * it signifies that nothing was done.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_flatten_param_name( const struct stumpless_entry *entry,
                               size_t element_index,
@@ -188,6 +192,7 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_journald_target( const char *name );
 

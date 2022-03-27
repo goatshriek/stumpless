@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.2.3)
 project(stumpless VERSION 2.1.0)
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
 string(CONCAT enable_cpp_help_string
   "Build the C++ language binding library. The library will be added to the "
   "'all' target and will be installed via the 'install' target, alongside the "
@@ -194,6 +196,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/filter.c
   ${PROJECT_SOURCE_DIR}/src/formatter.c
   ${PROJECT_SOURCE_DIR}/src/inthelper.c
+  ${PROJECT_SOURCE_DIR}/src/log.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
   ${PROJECT_SOURCE_DIR}/src/param.c
   ${PROJECT_SOURCE_DIR}/src/severity.c
@@ -231,6 +234,14 @@ set(WRAPTURE_SPECS
 
 
 # configuration-specific source files
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+  set(SUPPORT_ABSTRACT_SOCKET_NAMES TRUE)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/abstract_socket_names_supported.c)
+else()
+  set(SUPPORT_ABSTRACT_SOCKET_NAMES FALSE)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/abstract_socket_names_unsupported.c)
+endif()
+
 if(HAVE_FOPEN_S)
   list(APPEND STUMPLESS_SOURCES src/config/have_fopen_s.c)
 endif(HAVE_FOPEN_S)
@@ -267,7 +278,7 @@ endif(WIN32)
 
 if(HAVE_WINDOWS_H AND HAVE_SPRINTF_S)
   set(SUPPORT_WINDOWS_GET_NOW TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/support_windows_get_now.c)
+  list(APPEND STUMPLESS_SOURCES src/config/windows_get_now_supported.c)
 endif()
 
 if(HAVE_UNISTD_GETHOSTNAME)
@@ -279,7 +290,7 @@ endif()
 
 if(HAVE_UNISTD_SYSCONF AND HAVE_UNISTD_SC_PAGESIZE)
   set(SUPPORT_UNISTD_SYSCONF_GETPAGESIZE TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/support_unistd_sysconf_getpagesize.c)
+  list(APPEND STUMPLESS_SOURCES src/config/unistd_sysconf_getpagesize_supported.c)
 elseif(HAVE_UNISTD_GETPAGESIZE)
   list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
 elseif(NOT HAVE_WINDOWS_H)
@@ -716,7 +727,7 @@ endif()
 
 # thread safety support
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
-  list(APPEND STUMPLESS_SOURCES src/config/no_thread_safety.c)
+  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_unsupported.c)
 else()
   list(APPEND STUMPLESS_SOURCES src/config/thread_safety_supported.c)
 
@@ -775,8 +786,8 @@ else()
 endif()
 
 
-# shared library definition
-add_library(stumpless SHARED ${STUMPLESS_SOURCES})
+# library definition
+add_library(stumpless ${STUMPLESS_SOURCES})
 set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
 if(MINGW)
@@ -811,6 +822,37 @@ target_include_directories(stumpless
 )
 
 
+# optimization options
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  set(PUBLIC_FUNCTION_DECORATION "__attribute__ ((visibility (\"default\")))")
+  set(UNLIKELY_FUNCTION "__builtin_expect( ( EXPRESSION ), 0 )")
+  set(COLD_FUNCTION "__attribute__ ((cold))")
+else()
+  set(PUBLIC_FUNCTION_DECORATION "")
+  set(UNLIKELY_FUNCTION "( EXPRESSION )")
+  set(COLD_FUNCTION "")
+endif()
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+  if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+    target_compile_options(stumpless
+      PRIVATE "-fvisibility=hidden")
+
+    target_link_libraries(stumpless
+      PRIVATE "-s")
+
+    if(NOT CYGWIN)
+      target_compile_options(stumpless
+        PRIVATE "-flto")
+
+      target_link_libraries(stumpless
+        PRIVATE "-flto")
+    endif()
+  endif()
+endif()
+
+
+
 # generating configuration files
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${PROJECT_BINARY_DIR}/include/private/config.h)
@@ -834,6 +876,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/filter.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/generator.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/id.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/log.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/option.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/param.h
@@ -895,7 +938,9 @@ add_function_test(element_leak
 )
 
 add_function_test(entry
-  SOURCES test/function/entry.cpp
+  SOURCES
+    test/function/entry.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(entry_leak
@@ -1079,6 +1124,12 @@ add_function_test(level_enable_upto_warning
     ${PROJECT_SOURCE_DIR}/test/function/level/enable_upto_warning.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
   COMPILE_DEFINITIONS STUMPLESS_ENABLE_UPTO_WARNING
+)
+
+add_function_test(log
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/function/log.cpp
+    $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(memory

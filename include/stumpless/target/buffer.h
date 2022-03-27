@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@
 #  define __STUMPLESS_TARGET_BUFFER_H
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 #  include <stumpless/target.h>
 
 #  ifdef __cplusplus
@@ -73,6 +74,7 @@ extern "C" {
  *
  * @param target The buffer target to close.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_buffer_target( const struct stumpless_target *target );
 
@@ -111,6 +113,7 @@ stumpless_close_buffer_target( const struct stumpless_target *target );
  * @return The new target if no error is encountered. In the event of an error,
  * NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_buffer_target( const char *name,
                               char *buffer,
@@ -154,6 +157,7 @@ stumpless_open_buffer_target( const char *name,
  * NULL character. In the event of an error, 0 is returned and an error code
  * is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_read_buffer( struct stumpless_target *target,
                        char *buffer,

@@ -12,6 +12,7 @@ function(add_no_run_example name)
 
   set_target_properties(example-${name}
     PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
     COMPILE_FLAGS "${example_compile_flags}"
   )
 

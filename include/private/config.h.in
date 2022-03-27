@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@
 #cmakedefine HAVE_WCSTOMBS_S 1
 
 /* function support checks */
+#cmakedefine SUPPORT_ABSTRACT_SOCKET_NAMES 1
 #cmakedefine SUPPORT_UNISTD_SYSCONF_GETPAGESIZE 1
 #cmakedefine SUPPORT_WINDOWS_GET_NOW 1
 
@@ -53,6 +54,11 @@
 #cmakedefine USE_LOCALE_EN_US 1
 #cmakedefine USE_LOCALE_SK_SK 1
 #cmakedefine USE_LOCALE_BG_BG 1
+
+
+/* optimizations */
+#define unlikely( EXPRESSION )  @UNLIKELY_FUNCTION@
+#define COLD_FUNCTION @COLD_FUNCTION@
 
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_H */

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@
 #  define __STUMPLESS_MEMORY_H
 
 #  include <stddef.h>
+#  include <stumpless/config.h>
 
 #  ifdef __cplusplus
 extern "C" {
@@ -64,6 +65,7 @@ extern "C" {
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory deallocation function may not be AC-Safe itself.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_free_all( void );
 
@@ -88,6 +90,7 @@ stumpless_free_all( void );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory deallocation function may not be AC-Safe itself.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_free_thread( void );
 
@@ -115,6 +118,7 @@ stumpless_free_thread( void );
  *
  * @return The new allocation function.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void *
 ( *stumpless_set_malloc( void * ( *malloc_func )( size_t ) ) )
 ( size_t );
@@ -143,6 +147,7 @@ void *
  *
  * @return The new deallocation function.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 ( *stumpless_set_free( void ( *free_func )( void *) ) )
 ( void * );
@@ -171,6 +176,7 @@ void
  *
  * @return The new reallocation function.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void *
 ( *stumpless_set_realloc( void * ( *realloc_func ) ( void *, size_t) ) )
 ( void *, size_t );

@@ -50,7 +50,27 @@ jobs:
       - name: Run Examples
         run: |
           cmake --build . --config Release --target examples
-  basic-windows-all-disabled:
+  windows-release-static:
+    name: "windows, release, static library"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check
+      - name: Thread Safety Tests
+        run: |
+          cmake --build . --config Release --target check-thread-safety
+      - name: Run Examples
+        run: |
+          cmake --build . --config Release --target examples
+  windows-all-disabled:
     name: "windows, all features disabled"
     runs-on: "windows-2019"
     steps:

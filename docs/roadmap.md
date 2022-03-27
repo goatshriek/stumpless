@@ -10,11 +10,6 @@ or want to make a suggestion, please submit an issue on the project's
    as to a local file as well as a network server. Target chains will allow this
    stream to be defined as a logging target, and a logging call only made to
    this instead of manually logging to each target.
- * [ADD] **Abstract socket support**
-   When creating a Unix socket target, an abstract socket name would allow the
-   socket to be hidden from the local filesystem. This has currently been left
-   out due to portability issues, but using this capability when it is available
-   would increase the 'cleanliness' of using socket targets.
 
 
 ## 3.0.0 (next major release)
@@ -35,6 +30,11 @@ or want to make a suggestion, please submit an issue on the project's
    application. This will provide more benefit to some targets than others,
    most notably network-based targets. Because some error reporting mechanisms
    may need to change to accomodate this, it will be done in a major release.
+ * [CHANGE] **Error enum values start from 1 instead of 0**
+   This will allow function that return negative integers in error scenarios to
+   pass along a more meaningful return value.
+ * [CHANGE] **Entry app name and msgid no longer NULL-terminated.**
+   Improve efficiency and memory safety by only using these as byte buffers.
 
 
 ## Unallocated to a release

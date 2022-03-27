@@ -27,8 +27,8 @@ easier:
  * cross-platform builds on Linux, Windows, Mac, Cygwin, and more
  * completely thread safe
  * can be adjusted or removed during compilation for zero runtime impact
- * localized for multiple languages :bulgaria: :de: :es: :fr: :it: :sweden:
-   :slovakia: :us: :czech_republic: :poland:
+ * localized for multiple languages :bulgaria: :czech_republic: :de: :es: :fr:
+   :it: :poland: :sweden: :slovakia: :us:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
@@ -93,10 +93,10 @@ replacement for the standard library's `syslog` function:
 
 ```c
 // if you're used to doing this:
-syslog( LOG_INFO | LOG_USER, "My message" );
+syslog( LOG_INFO | LOG_USER, "My message #%d", count );
 
 // then you can start doing this:
-stumplog( LOG_INFO | LOG_USER, "My message" );
+stumplog( LOG_INFO | LOG_USER, "My message #%d", count );
 ```
 
 If you haven't opened a target, this will log messages to the default target for
@@ -109,7 +109,7 @@ If you want an even shorter function call, you can use the `stump` function
 to send a message to the current target:
 
 ```c
-stump( "My message" );
+stump( "My message #%d", count );
 ```
 
 And of course, you can use format specifiers in both functions just as you would
@@ -117,6 +117,13 @@ with `printf`:
 
 ```c
 stump( "Login attempt failure #%d for user %s", count, username );
+```
+
+If you don't need format specifiers, use one of the `_str` variants:
+it's both faster and safer!
+
+```c
+stump_str( "Login failure! See structured data for info." );
 ```
 
 If you want to open a specific target rather than using the default, then just

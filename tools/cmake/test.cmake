@@ -21,6 +21,7 @@ function(private_add_function_test)
 
   set_target_properties(function-test-${FUNCTION_TEST_ARG_NAME}
     PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
     OUTPUT_NAME function-test-${FUNCTION_TEST_ARG_NAME}
     COMPILE_FLAGS "${function_test_compile_flags}"
     COMPILE_DEFINITIONS "${FUNCTION_TEST_ARG_COMPILE_DEFINITIONS}"
@@ -62,6 +63,7 @@ function(private_add_thread_safety_test)
 
   set_target_properties(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
     OUTPUT_NAME thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     COMPILE_FLAGS "${function_test_compile_flags}"
     COMPILE_DEFINITIONS "${THREAD_SAFETY_TEST_ARG_COMPILE_DEFINITIONS}"
@@ -131,6 +133,7 @@ function(private_add_performance_test)
 
   set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
     PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
     COMPILE_FLAGS "${performance_test_compile_flags}"
     OUTPUT_NAME performance-test-${FUNCTION_PERF_ARG_NAME}
   )

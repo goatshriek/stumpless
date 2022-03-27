@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018-2020 Joel E. Anderson
+* Copyright 2018-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -112,6 +112,7 @@
 #    define config_open_default_target wel_open_default_target
 #    define config_close_default_target stumpless_close_wel_target
 #  elif STUMPLESS_SOCKET_TARGETS_SUPPORTED
+#    include <stumpless/target/socket.h>
 #    include "private/config/socket_supported.h"
 #    define config_open_default_target socket_open_default_target
 #    define config_close_default_target stumpless_close_socket_target
@@ -120,19 +121,6 @@
 #    include "private/target/file.h"
 #    define config_open_default_target file_open_default_target
 #    define config_close_default_target stumpless_close_file_target
-#  endif
-
-
-/* definition of config_sendto_socket_target */
-#  ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
-#    include <stumpless/target/socket.h>
-#    include "private/target/socket.h"
-#    define config_close_socket_target stumpless_close_socket_target
-#    define config_sendto_socket_target sendto_socket_target
-#  else
-#    include "private/target.h"
-#    define config_close_socket_target close_unsupported_target
-#    define config_sendto_socket_target sendto_unsupported_target
 #  endif
 
 
@@ -184,7 +172,7 @@
 #    include "private/config/have_gmtime_r.h"
 #    define config_get_now gmtime_r_get_now
 #  elif SUPPORT_WINDOWS_GET_NOW
-#    include "private/config/support_windows_get_now.h"
+#    include "private/config/windows_get_now_supported.h"
 #    define config_get_now windows_get_now
 #  endif
 
@@ -204,7 +192,7 @@
 
 /* definition of config_getpagesize */
 #  ifdef SUPPORT_UNISTD_SYSCONF_GETPAGESIZE
-#    include "private/config/support_unistd_sysconf_getpagesize.h"
+#    include "private/config/unistd_sysconf_getpagesize_supported.h"
 #    define config_getpagesize unistd_sysconf_getpagesize
 #  elif HAVE_UNISTD_GETPAGESIZE
 #    include "private/config/have_unistd_getpagesize.h"

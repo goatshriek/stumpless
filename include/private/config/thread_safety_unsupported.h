@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020 Joel E. Anderson
+* Copyright 2020-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 * limitations under the License.
 */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_NO_THREAD_SAFETY_H
-#  define __STUMPLESS_PRIVATE_CONFIG_NO_THREAD_SAFETY_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_THREAD_SAFETY_UNSUPPORTED_H
+#  define __STUMPLESS_PRIVATE_CONFIG_THREAD_SAFETY_UNSUPPORTED_H
 
 #  include <stdbool.h>
 #  include "private/config/wrapper/thread_safety.h"
@@ -32,4 +32,4 @@ no_thread_safety_compare_exchange_ptr( config_atomic_ptr_t *p,
                                        const void *expected,
                                        void *replacement );
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_NO_THREAD_SAFETY_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_THREAD_SAFETY_UNSUPPORTED_H */

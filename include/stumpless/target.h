@@ -119,17 +119,17 @@ struct stumpless_target {
 /**
  * The app name used for messages without one provided.
  *
- * The default app name will not be NULL-terminated.
+ * The default app name is not NULL-terminated.
  */
-  char *default_app_name;
+  char default_app_name[STUMPLESS_MAX_APP_NAME_LENGTH];
 /** The number of characters in the default app name. */
   size_t default_app_name_length;
 /**
  * The msgid used for messages without one provided.
  *
- * The default msgid will not be NULL-terminated.
+ * The default msgid is not NULL-terminated.
  */
-  char *default_msgid;
+  char default_msgid[STUMPLESS_MAX_MSGID_LENGTH];
 /** The number of characters in the default msgid. */
   size_t default_msgid_length;
 /** The log mask for the target. Used by the default target filter. */
@@ -150,94 +150,6 @@ struct stumpless_target {
   void *mutex;
 #  endif
 };
-
-/**
- * Logs a message to the default target.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. Different target types handle thread safety
- * differently, as some require per-target locks and others can rely on system
- * libraries to log safely, but all targets support thread safe logging in some
- * manner. For target-specific information on how thread safety is supported and
- * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers as some targets make
- * use of non-reentrant locks to coordinate access. It also may make memory
- * allocation calls to create internal cached structures, and memory allocation
- * may not be signal safe.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks in some targets that could be left locked
- * and the potential for memory allocation.
- *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
- *
- * @return A non-negative value if no error is encountered. If an error is
- * encountered, then a negative value is returned and an error code is set
- * appropriately. If the entry was rejected by the target's filter, then 0
- * is returned.
- */
-int stump( const char *message, ... );
-
-/**
- * Logs a message to the default target, along with the file, line, and function
- * information specified in a structured data element.
- *
- * The trace information is added in an element named `trace` with params named
- * `file`, `line`, and `function` for the respective pieces of information.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. Different target types handle thread safety
- * differently, as some require per-target locks and others can rely on system
- * libraries to log safely, but all targets support thread safe logging in some
- * manner. For target-specific information on how thread safety is supported and
- * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers as some targets make
- * use of non-reentrant locks to coordinate access. It also may make memory
- * allocation calls to create internal cached structures, and memory allocation
- * may not be signal safe.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks in some targets that could be left locked
- * and the potential for memory allocation.
- *
- * @since release v2.1.0
- *
- * @param file The name of the source file the message should be tied to.
- *
- * @param line The line in the source file that the message should be tied to.
- *
- * @param func The name of the function that the message should be tied to.
- *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
- *
- * @return A non-negative value if no error is encountered. If an error is
- * encountered, then a negative value is returned and an error code is set
- * appropriately. If the entry was rejected by the target's filter, then 0
- * is returned.
- */
-int
-stump_trace( const char *file,
-             int line,
-             const char *func,
-             const char *message, ... );
 
 /**
  * Adds an entry into a given target. This is the primary logging function of
@@ -269,12 +181,19 @@ stump_trace( const char *file,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry );
 
 /**
  * Adds a log message with a priority to a given target.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_add_log_str instead.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -301,7 +220,8 @@ stumpless_add_entry( struct stumpless_target *target,
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
  *
  * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
+ * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
+ * form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
@@ -312,6 +232,7 @@ stumpless_add_entry( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_add_log( struct stumpless_target *target,
                    int priority,
@@ -319,7 +240,56 @@ stumpless_add_log( struct stumpless_target *target,
                    ... );
 
 /**
+ * Adds a log message with a priority to a given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to send the message to.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param message The message to log. This must be a valid UTF-8 string in
+ * shortest form.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+int
+stumpless_add_log_str( struct stumpless_target *target,
+                       int priority,
+                       const char *message );
+
+/**
  * Adds a message to a given target.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_add_message_str instead.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -344,7 +314,7 @@ stumpless_add_log( struct stumpless_target *target,
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf. This may be NULL, in which case an event with
- * no message is logged.
+ * no message is logged. This must be a valid UTF-8 string in shortest form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
@@ -355,10 +325,51 @@ stumpless_add_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_add_message( struct stumpless_target *target,
                        const char *message,
                        ... );
+
+/**
+ * Adds a string message to a given target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to send the message to.
+ *
+ * @param message The message to log. This may be NULL, in which case an event
+ * with no message is logged. This must be a valid UTF-8 string in shortest
+ * form.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+int
+stumpless_add_message_str( struct stumpless_target *target,
+                           const char *message );
 
 /**
  * Closes a target.
@@ -385,6 +396,7 @@ stumpless_add_message( struct stumpless_target *target,
  *
  * @param target The target to close.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_target( struct stumpless_target *target );
 
@@ -407,6 +419,7 @@ stumpless_close_target( struct stumpless_target *target );
  * @return The current stream where messages are logged to on setting the
  * the CONS option.
  */
+STUMPLESS_PUBLIC_FUNCTION
 FILE *
 stumpless_get_cons_stream( void );
 
@@ -440,6 +453,7 @@ stumpless_get_cons_stream( void );
  * @return The current target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_get_current_target( void );
 
@@ -463,6 +477,7 @@ stumpless_get_current_target( void );
  * @return The default facility if no error is encountered. If an error is
  * encountered, then -1 is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_get_default_facility( const struct stumpless_target *target );
 
@@ -472,7 +487,7 @@ stumpless_get_default_facility( const struct stumpless_target *target );
  * The default target is opened when a logging call is made with no target
  * open. It will not be opened until either this happens or a call to this
  * function is made. It will not be closed until a call to stumpless_free_all()
- * is made.
+ * is made. It should not be closed manually outside of the free all function.
  *
  * Be careful not to confuse this target with the current target, which is the
  * last target opened or set via stumpless_set_current_target(). While these
@@ -509,6 +524,7 @@ stumpless_get_default_facility( const struct stumpless_target *target );
  * @return The default target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_get_default_target( void );
 
@@ -538,6 +554,7 @@ stumpless_get_default_target( void );
  * then zero is returned. If an error is encountered, then zero is returned
  * and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_get_option( const struct stumpless_target *target, int option );
 
@@ -567,6 +584,7 @@ stumpless_get_option( const struct stumpless_target *target, int option );
  * error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_target_default_app_name( const struct stumpless_target *target );
 
@@ -596,6 +614,7 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target );
  * error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_target_default_msgid( const struct stumpless_target *target );
 
@@ -626,6 +645,7 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target );
  * @return The filter function in use by the target, or NULL if an error is
  * encountered. If an error is encountered, an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target );
 
@@ -656,6 +676,7 @@ stumpless_get_target_filter( const struct stumpless_target *target );
  * @return The current mask of the target. If an error is encountered, then
  * zero is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_get_target_mask( const struct stumpless_target *target );
 
@@ -684,6 +705,7 @@ stumpless_get_target_mask( const struct stumpless_target *target );
  * @return The name of target, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_target_name( const struct stumpless_target *target );
 
@@ -716,6 +738,7 @@ stumpless_get_target_name( const struct stumpless_target *target );
  * equal to the target argument). If an error was encountered, then NULL is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_target( struct stumpless_target *target );
 
@@ -741,6 +764,7 @@ stumpless_open_target( struct stumpless_target *target );
  * @param stream The stream to write logs to. If this is NULL then the messages
  *	intended for the console stream will be ignored.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_set_cons_stream( FILE *stream );
 
@@ -766,6 +790,7 @@ stumpless_set_cons_stream( FILE *stream );
  *
  * @param target The target to use as the current target.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_set_current_target( struct stumpless_target *target );
 
@@ -792,6 +817,7 @@ stumpless_set_current_target( struct stumpless_target *target );
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_default_facility( struct stumpless_target *target,
                                 int default_facility );
@@ -819,6 +845,7 @@ stumpless_set_default_facility( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_option( struct stumpless_target *target, int option );
 
@@ -848,6 +875,7 @@ stumpless_set_option( struct stumpless_target *target, int option );
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_default_app_name( struct stumpless_target *target,
                                        const char *app_name );
@@ -879,6 +907,7 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_default_msgid( struct stumpless_target *target,
                                     const char *msgid );
@@ -909,6 +938,7 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_filter( struct stumpless_target *target,
                              stumpless_filter_func_t filter );
@@ -942,6 +972,7 @@ stumpless_set_target_filter( struct stumpless_target *target,
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_mask( struct stumpless_target *target, int mask );
 
@@ -973,6 +1004,7 @@ stumpless_set_target_mask( struct stumpless_target *target, int mask );
  *
  * @return The target if it is currently open, and NULL if not.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const struct stumpless_target *
 stumpless_target_is_open( const struct stumpless_target *target );
 
@@ -1017,6 +1049,7 @@ stumpless_target_is_open( const struct stumpless_target *target );
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_trace_entry( struct stumpless_target *target,
                        struct stumpless_entry *entry,
@@ -1030,6 +1063,12 @@ stumpless_trace_entry( struct stumpless_target *target,
  *
  * The trace information is added in an element named `trace` with params named
  * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_trace_log_str instead.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -1063,7 +1102,8 @@ stumpless_trace_entry( struct stumpless_target *target,
  * @param func The name of the function that the message should be tied to.
  *
  * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
+ * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
+ * form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
@@ -1074,6 +1114,7 @@ stumpless_trace_entry( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_trace_log( struct stumpless_target *target,
                      int priority,
@@ -1084,11 +1125,74 @@ stumpless_trace_log( struct stumpless_target *target,
                      ... );
 
 /**
+ * Adds a log message with a priority to a given target, along with the file,
+ * line, and function information specified in a structured data element.
+ *
+ * The trace information is added in an element named `trace` with params named
+ * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Different target types handle thread safety
+ * differently, as some require per-target locks and others can rely on system
+ * libraries to log safely, but all targets support thread safe logging in some
+ * manner. For target-specific information on how thread safety is supported and
+ * whether AS or AC safety can be assumed, refer to the documentation for the
+ * target's header file (in the `stumpless/target` include folder).
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access. It also may make memory
+ * allocation calls to create internal cached structures, and memory allocation
+ * may not be signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks in some targets that could be left locked
+ * and the potential for memory allocation.
+ *
+ * @since release v2.1.0
+ *
+ * @param target The target to send the message to.
+ *
+ * @param priority The priority of the message - this should be the bitwise or
+ * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
+ *
+ * @param file The name of the source file the message should be tied to.
+ *
+ * @param line The line in the source file that the message should be tied
+ * to.
+ *
+ * @param func The name of the function that the message should be tied to.
+ *
+ * @param message The message to log. This must be a valid UTF-8 string in
+ * shortest form.
+ *
+ * @return A non-negative value if no error is encountered. If an error is
+ * encountered, then a negative value is returned and an error code is set
+ * appropriately. If the entry was rejected by the target's filter, then 0
+ * is returned.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+int
+stumpless_trace_log_str( struct stumpless_target *target,
+                         int priority,
+                         const char *file,
+                         int line,
+                         const char *func,
+                         const char *message );
+
+/**
  * Adds a message to a given target, along with the file, line, and function
  * information specified in a structured data element.
  *
  * The trace information is added in an element named `trace` with params named
  * `file`, `line`, and `function` for the respective pieces of information.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_trace_message_str instead.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. Different target types handle thread safety
@@ -1120,7 +1224,7 @@ stumpless_trace_log( struct stumpless_target *target,
  *
  * @param message The message to log, optionally containing any format
  * specifiers valid in \c printf. This may be NULL, in which case an event with
- * no message is logged.
+ * no message is logged. This must be a valid UTF-8 string in shortest form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of
@@ -1131,6 +1235,7 @@ stumpless_trace_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_trace_message( struct stumpless_target *target,
                          const char *file,
@@ -1140,206 +1245,7 @@ stumpless_trace_message( struct stumpless_target *target,
                          ... );
 
 /**
- * Unsets an option on a target.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate changes to the
- * target while it is being modified.
- *
- * **Async Signal Safety: AS-Unsafe lock**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate changes.
- *
- * **Async Cancel Safety: AC-Unsafe lock**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked.
- *
- * @param target The target to modify.
- *
- * @param option The option to unset on the target. This should be a
- * STUMPLESS_OPTION value.
- *
- * @return The modified target if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-struct stumpless_target *
-stumpless_unset_option( struct stumpless_target *target, int option );
-
-/**
- * Logs a message to the current target with the given priority.
- *
- * This function can serve as a replacement for the traditional \c syslog
- * function.
- *
- * For detailed information on what the current target will be for a given
- * system, check the stumpless_get_current_target() function documentation.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. Different target types handle thread safety
- * differently, as some require per-target locks and others can rely on system
- * libraries to log safely, but all targets support thread safe logging in some
- * manner. For target-specific information on how thread safety is supported and
- * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers as some targets make
- * use of non-reentrant locks to coordinate access. It also may make memory
- * allocation calls to create internal cached structures, and memory allocation
- * may not be signal safe.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks in some targets that could be left locked
- * and the potential for memory allocation.
- *
- * @param priority The priority of the message - this should be the bitwise or
- * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
- *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of specifiers
- * given.
- */
-void
-stumplog( int priority, const char *message, ... );
-
-/**
- * Sets the log mask of the current target.
- *
- * The mask is a bit field of severities that this target will allow if the
- * default mask-based filter is in use. These can be formed and checked using
- * the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and
- * combining them using bitwise or operations.
- *
- * This function can serve as a replacement for the traditional \c setlogmask
- * function.
- *
- * For detailed information on what the current target will be for a given
- * system, check the stumpless_get_current_target() function documentation.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate changes to the
- * target while it is being modified.
- *
- * **Async Signal Safety: AS-Unsafe lock**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate changes.
- *
- * **Async Cancel Safety: AC-Unsafe lock**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked.
- *
- * @since release v2.1.0
- *
- * @param mask The mask to use with the target.
- *
- * @return The previous mask that was in use on the current target. If the
- * mask could not be retrieved, 0 is returned and an error code is set
- * appropriately.
- */
-int
-stumplog_set_mask( int mask );
-
-/**
- * Logs a message to the default target with the given priority, along with the
- * file, line, and function information specified in a structured data element.
- *
- * The trace information is added in an element named `trace` with params named
- * `file`, `line`, and `function` for the respective pieces of information.
- *
- * This function can serve as a replacement for the traditional \c syslog
- * function.
- *
- * For detailed information on what the default target will be for a given
- * system, check the stumpless_get_default_target() function documentation.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. Different target types handle thread safety
- * differently, as some require per-target locks and others can rely on system
- * libraries to log safely, but all targets support thread safe logging in some
- * manner. For target-specific information on how thread safety is supported and
- * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers as some targets make
- * use of non-reentrant locks to coordinate access. It also may make memory
- * allocation calls to create internal cached structures, and memory allocation
- * may not be signal safe.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks in some targets that could be left locked
- * and the potential for memory allocation.
- *
- * @param priority The priority of the message - this should be the bitwise or
- * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
- *
- * @param file The name of the source file the entry should be tied to.
- *
- * @param line The line in the source file that the entry should be tied
- * to.
- *
- * @param func The name of the function that the entry should be tied to.
- *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of specifiers
- * given.
- */
-void
-stumplog_trace( int priority,
-                const char *file,
-                int line,
-                const char *func,
-                const char *message, ... );
-
-/**
- * Logs a message to the default target.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. Different target types handle thread safety
- * differently, as some require per-target locks and others can rely on system
- * libraries to log safely, but all targets support thread safe logging in some
- * manner. For target-specific information on how thread safety is supported and
- * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers as some targets make
- * use of non-reentrant locks to coordinate access. It also may make memory
- * allocation calls to create internal cached structures, and memory allocation
- * may not be signal safe.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks in some targets that could be left locked
- * and the potential for memory allocation.
- *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param subs Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given. This list must be started via \c va_start before being
- * used, and \c va_end should be called afterwards, as this function does not
- * call it.
- *
- * @return A non-negative value if no error is encountered. If an error is
- * encountered, then a negative value is returned and an error code is set
- * appropriately. If the entry was rejected by the target's filter, then 0
- * is returned.
- */
-int
-vstump( const char *message, va_list subs );
-
-/**
- * Logs a message to the default target, along with the file, line, and function
+ * Adds a message to a given target, along with the file, line, and function
  * information specified in a structured data element.
  *
  * The trace information is added in an element named `trace` with params named
@@ -1364,32 +1270,60 @@ vstump( const char *message, va_list subs );
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
+ * @since release v2.1.0
+ *
+ * @param target The target to send the message to.
+ *
  * @param file The name of the source file the message should be tied to.
  *
- * @param line The line in the source file that the message should be tied to.
+ * @param line The line in the source file that the message should be tied
+ * to.
  *
  * @param func The name of the function that the message should be tied to.
  *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param subs Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given. This list must be started via \c va_start before being
- * used, and \c va_end should be called afterwards, as this function does not
- * call it.
+ * @param message The message to log. This may be NULL, in which case an event
+ * with no message is logged. This must be a valid UTF-8 string in shortest
+ * form.
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
-vstump_trace( const char *file,
-              int line,
-              const char *func,
-              const char *message,
-              va_list subs );
+stumpless_trace_message_str( struct stumpless_target *target,
+                             const char *file,
+                             int line,
+                             const char *func,
+                             const char *message );
+
+/**
+ * Unsets an option on a target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param target The target to modify.
+ *
+ * @param option The option to unset on the target. This should be a
+ * STUMPLESS_OPTION value.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_target *
+stumpless_unset_option( struct stumpless_target *target, int option );
 
 /**
  * Adds a log message with a priority to a given target.
@@ -1432,6 +1366,7 @@ vstump_trace( const char *file,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_add_log( struct stumpless_target *target,
                     int priority,
@@ -1476,6 +1411,7 @@ vstumpless_add_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_add_message( struct stumpless_target *target,
                         const char *message,
@@ -1532,6 +1468,7 @@ vstumpless_add_message( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_trace_log( struct stumpless_target *target,
                       int priority,
@@ -1589,6 +1526,7 @@ vstumpless_trace_log( struct stumpless_target *target,
  * appropriately. If the entry was rejected by the target's filter, then 0
  * is returned.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 vstumpless_trace_message( struct stumpless_target *target,
                           const char *file,
@@ -1596,105 +1534,6 @@ vstumpless_trace_message( struct stumpless_target *target,
                           const char *func,
                           const char *message,
                           va_list subs );
-
-/**
- * Logs a message to the default target with the given priority. Can serve as
- * a replacement for the traditional \c vsyslog function.
- *
- * For detailed information on what the default target will be for a given
- * system, check the stumpless_get_default_target() function documentation.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. Different target types handle thread safety
- * differently, as some require per-target locks and others can rely on system
- * libraries to log safely, but all targets support thread safe logging in some
- * manner. For target-specific information on how thread safety is supported and
- * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers as some targets make
- * use of non-reentrant locks to coordinate access. It also may make memory
- * allocation calls to create internal cached structures, and memory allocation
- * may not be signal safe.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks in some targets that could be left locked
- * and the potential for memory allocation.
- *
- * @param priority The priority of the message - this should be the bitwise or
- * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
- *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param subs Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given. This list must be started via \c va_start before being
- * used, and \c va_end should be called afterwards, as this function does not
- * call it.
- */
-void
-vstumplog( int priority, const char *message, va_list subs );
-
-/**
- * Logs a message to the default target with the given priority, along with the
- * file, line, and function information specified in a structured data element.
- *
- * The trace information is added in an element named `trace` with params named
- * `file`, `line`, and `function` for the respective pieces of information.
- *
- * This function can serve as a replacement for the traditional \c vsyslog
- * function.
- *
- * For detailed information on what the default target will be for a given
- * system, check the stumpless_get_default_target() function documentation.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. Different target types handle thread safety
- * differently, as some require per-target locks and others can rely on system
- * libraries to log safely, but all targets support thread safe logging in some
- * manner. For target-specific information on how thread safety is supported and
- * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers as some targets make
- * use of non-reentrant locks to coordinate access. It also may make memory
- * allocation calls to create internal cached structures, and memory allocation
- * may not be signal safe.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of locks in some targets that could be left locked
- * and the potential for memory allocation.
- *
- * @param priority The priority of the message - this should be the bitwise or
- * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
- *
- * @param file The name of the source file the message should be tied to.
- *
- * @param line The line in the source file that the message should be tied to.
- *
- * @param func The name of the function that the message should be tied to.
- *
- * @param message The message to log, optionally containing any format
- * specifiers valid in \c printf.
- *
- * @param subs Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given. This list must be started via \c va_start before being
- * used, and \c va_end should be called afterwards, as this function does not
- * call it.
- */
-void
-vstumplog_trace( int priority,
-                 const char *file,
-                 int line,
-                 const char *func,
-                 const char *message,
-                 va_list subs );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

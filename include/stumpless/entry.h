@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,8 +53,9 @@ extern "C" {
  * A log entry.
  *
  * Entries are the basic element of logging within the library. Note that
- * although many of the members are character strings, they are not NULL
- * terminated and should not be used with standard string functions.
+ * although many of the members are character strings, they are not
+ * guaranteed to be NULL terminated and should not be used with standard
+ * string functions.
  */
 struct stumpless_entry {
 /** A unique identifier of this entry. */
@@ -70,7 +71,7 @@ struct stumpless_entry {
   size_t app_name_length;
 /** The message of this entry, as a NULL-terminated string. */
   char *message;
-/** The length of the message, without the NULL terminator. */
+/** The length of the message in bytes, without the NULL terminator. */
   size_t message_length;
 /** The message id of this entry, as a NULL-terminated string. */
   char msgid[STUMPLESS_MAX_MSGID_LENGTH + 1];
@@ -122,6 +123,7 @@ struct stumpless_entry {
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element );
@@ -156,6 +158,7 @@ stumpless_add_element( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_add_new_element( struct stumpless_entry *entry,
                            const char *name );
@@ -195,6 +198,7 @@ stumpless_add_new_element( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
                                   const char *element_name,
@@ -228,6 +232,7 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
  * @return A new entry that is a deep copy of the original. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_copy_entry( const struct stumpless_entry *entry );
 
@@ -255,6 +260,7 @@ stumpless_copy_entry( const struct stumpless_entry *entry );
  *
  * @param entry The entry to destroy.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_destroy_entry( const struct stumpless_entry *entry );
 
@@ -278,6 +284,7 @@ stumpless_destroy_entry( const struct stumpless_entry *entry );
  *
  * @param entry The entry to destroy.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry );
 
@@ -301,6 +308,7 @@ stumpless_destroy_entry_and_contents( const struct stumpless_entry *entry );
  *
  * @param entry The entry to destroy.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_destroy_entry_only( const struct stumpless_entry *entry );
 
@@ -330,6 +338,7 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry );
  * element is not found or an error is encountered, then false is returned and
  * an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 bool
 stumpless_entry_has_element( const struct stumpless_entry *entry,
                              const char *name );
@@ -359,6 +368,7 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
  * error was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_get_element_by_index( const struct stumpless_entry *entry,
                                 size_t index );
@@ -389,6 +399,7 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
  * error was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name );
@@ -415,6 +426,7 @@ stumpless_get_element_by_name( const struct stumpless_entry *entry,
  * @return The number of elements entry has. If there is an error, zero is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_get_element_count( const struct stumpless_entry *entry );
 
@@ -445,6 +457,7 @@ stumpless_get_element_count( const struct stumpless_entry *entry );
  * was encountered or the element does not exist in the entry, then 0 is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name );
@@ -479,6 +492,7 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
  * was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_entry_app_name( const struct stumpless_entry *entry );
 
@@ -508,6 +522,7 @@ stumpless_get_entry_app_name( const struct stumpless_entry *entry );
  * was encountered, then an invalid facility is returned and an error code is
  * set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_facility
 stumpless_get_entry_facility( const struct stumpless_entry *entry );
 
@@ -544,6 +559,7 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry );
  * was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry );
 
@@ -577,6 +593,7 @@ stumpless_get_entry_message( const struct stumpless_entry *entry );
  * was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_entry_msgid( const struct stumpless_entry *entry );
 
@@ -606,6 +623,7 @@ stumpless_get_entry_msgid( const struct stumpless_entry *entry );
  * @return The param at the given index if no error is encountered. If an error
  * is encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
                                     size_t element_index,
@@ -645,6 +663,7 @@ stumpless_get_entry_param_by_index( const struct stumpless_entry *entry,
  * an error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
                                    const char *element_name,
@@ -683,6 +702,7 @@ stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
  * If an error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
                                           size_t element_index,
@@ -728,6 +748,7 @@ stumpless_get_entry_param_value_by_index( const struct stumpless_entry *entry,
  * encountered. If an error is encountered, then NULL is returned and an error
  * code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
                                          const char *element_name,
@@ -755,6 +776,7 @@ stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
  * @return The prival of the entry if no error is encountered. If an error
  * was encountered, then -1 is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_get_entry_prival( const struct stumpless_entry *entry );
 
@@ -784,6 +806,7 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
  * was encountered, then an invalid severity is returned and an error code is
  * set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_severity
 stumpless_get_entry_severity( const struct stumpless_entry *entry );
 
@@ -792,6 +815,12 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
  *
  * In versions prior to 2.0.0, the facility and severity parameters were int
  * types instead of enums.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_new_entry_str instead.
  *
  * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
  * This function is thread safe, of course assuming that the string arguments
@@ -818,9 +847,10 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
  * blank in the entry (a single '-' character).
  *
  * @param message The message in the entry. This message may contain any format
- * specifiers valid in \c printf. If this is NULL, then it will be blank in the
- * entry (no characters). This also means that characters such as % need to be
- * escaped as they would be in printf.
+ * specifiers valid in \c printf. This also means that characters such as % need
+ * to be escaped as they would be in printf. If this is NULL, then it will be
+ * blank in the entry (no characters). This must be a valid UTF-8 string in
+ * shortest form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of specifiers
@@ -829,6 +859,7 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry );
  * @return The created entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_new_entry( enum stumpless_facility facility,
                      enum stumpless_severity severity,
@@ -836,6 +867,50 @@ stumpless_new_entry( enum stumpless_facility facility,
                      const char *msgid,
                      const char *message,
                      ... );
+
+/**
+ * Creates a new entry with the given characteristics.
+ *
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is thread safe, of course assuming that the string arguments
+ * are not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new element.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
+ * @since version v2.1.0
+ *
+ * @param facility The facility code of the event this entry describes. This
+ * should be a \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the event this entry describes. This
+ * should be a \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param message The message in the entry. If this is NULL, then it will be
+ * blank in the entry (no characters). This must be a valid UTF-8 string in
+ * shortest form.
+ *
+ * @return The created entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_new_entry_str( enum stumpless_facility facility,
+                         enum stumpless_severity severity,
+                         const char *app_name,
+                         const char *msgid,
+                         const char *message );
 
 /**
  * Puts the element at the given index in the given entry.
@@ -875,6 +950,7 @@ stumpless_new_entry( enum stumpless_facility facility,
  * @return The modified entry, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_element( struct stumpless_entry *entry,
                        size_t index,
@@ -909,6 +985,7 @@ stumpless_set_element( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name );
@@ -941,6 +1018,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_facility( struct stumpless_entry *entry,
                               enum stumpless_facility facility );
@@ -977,12 +1055,19 @@ stumpless_set_entry_facility( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_msgid( struct stumpless_entry *entry,
                            const char *msgid );
 
 /**
  * Sets the message of a given entry.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_set_entry_message_str instead.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
@@ -1003,7 +1088,8 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
  * @param message The new message to set on the entry. This message may contain
  * any format specifiers valid in \c printf. If this is NULL, then it will be
  * blank in the entry (no characters). This also means that characters such as %
- * need to be escaped as they would be in printf.
+ * need to be escaped as they would be in printf. This must be a valid UTF-8
+ * string in shortest form.
  *
  * @param ... Substitutions for any format specifiers provided in message. The
  * number of substitutions provided must exactly match the number of specifiers
@@ -1012,10 +1098,44 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_message( struct stumpless_entry *entry,
                              const char *message,
                              ... );
+
+/**
+ * Sets the message of a given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new message and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.1.0
+ *
+ * @param entry The entry to modify.
+ *
+ * @param message The new message to set on the entry. If this is NULL, then it
+ * will be blank in the entry (no characters). This must be a valid UTF-8 string
+ * in shortest form.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_set_entry_message_str( struct stumpless_entry *entry,
+                                 const char *message );
 
 /**
  * Puts the param in the element at the given index of an entry.
@@ -1055,6 +1175,7 @@ stumpless_set_entry_message( struct stumpless_entry *entry,
  * @return The modified entry, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
                                     size_t element_index,
@@ -1092,6 +1213,7 @@ stumpless_set_entry_param_by_index( struct stumpless_entry *entry,
  * @return The modified entry, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
                                           size_t element_index,
@@ -1140,6 +1262,7 @@ stumpless_set_entry_param_value_by_index( struct stumpless_entry *entry,
  * @return The modified entry, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
                                          const char *element_name,
@@ -1177,6 +1300,7 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
 * @return The modified entry if no error is encountered. If an error is
 * encountered, then NULL is returned and an error code is set appropriately.
 */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,
                               enum stumpless_facility facility,
@@ -1208,6 +1332,7 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_prival( struct stumpless_entry *entry,
                             int prival );
@@ -1240,6 +1365,7 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry,
                               enum stumpless_severity severity );
@@ -1290,6 +1416,7 @@ stumpless_set_entry_severity( struct stumpless_entry *entry,
  * @return The created entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 vstumpless_new_entry( enum stumpless_facility facility,
                       enum stumpless_severity severity,
@@ -1331,6 +1458,7 @@ vstumpless_new_entry( enum stumpless_facility facility,
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 vstumpless_set_entry_message( struct stumpless_entry *entry,
                               const char *message,
