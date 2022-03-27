@@ -123,6 +123,8 @@ namespace {
     EXPECT_NOT_NULL( result );
 
     EXPECT_STREQ( result, "-" );
+
+    free( ( void * ) result );
   }
 
   TEST_F( TargetTest, GetDefaultMsgid ) {
@@ -159,6 +161,8 @@ namespace {
     result = stumpless_get_target_default_msgid( plain_target );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( result, "-" );
+
+    free( ( void * ) result );
   }
 
   TEST_F( TargetTest, GetName ) {

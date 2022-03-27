@@ -712,8 +712,8 @@ stumpless_trace_log_str( struct stumpless_target *target,
   if( !cached_trace ) {
     cached_trace = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                             STUMPLESS_SEVERITY_INFO,
-                                            target->default_app_name,
-                                            target->default_msgid,
+                                            NULL,
+                                            NULL,
                                             message );
     if( unlikely( !cached_trace ) ) {
       return -1;

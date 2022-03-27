@@ -138,7 +138,7 @@ namespace {
     int priority;
     const char *filename = "stumplog-trace-file.c";
     const char *function_name = "LogTest.StumplogTrace";
-    const char *message = "Stumplot Trace str test message";
+    const char *message = "Stumplog Trace str test message";
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     stumplog_trace_str( priority, filename, 377, function_name, message );
