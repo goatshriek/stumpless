@@ -427,7 +427,7 @@ stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target ) {
   stumpless_filter_func_t filter;
 
-  VALIDATE_ARG_NOT_NULL( target ); 
+  VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
   filter = target->filter;
