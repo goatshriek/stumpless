@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018-2020 Joel E. Anderson
+* Copyright 2018-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -42,24 +42,29 @@ struct wel_data {
   DWORD event_id;
   /**
    * The number of insertion strings this entry has. This can be used as the
-   * length of both the wel_insertion_strings array and the wel_insertion_params
-   * array.
+   * length of both the wel_insertion_strings and wel_insertion_params arrays.
    */
   WORD insertion_count;
   /**
-   * A buffer to hold insertion strings during the process of sending this entry
-   * to an Event log. This field should not be referred to for insertion string
-   * values as it is not updated until an event is logged: the actual values are
-   * stored as the values of params in wel_insertion_params.
+   * An array of insertion strings used during the process of sending this entry
+   * to an Event log. Items in this array are only guaranteed to be non-NULL
+   * for insertion strings that have been set with
+   * `stumpless_set_wel_insertion_string`. For insertion strings that were set
+   * with `stumpless_set_wel_insertion_param`, the authoritative place to check
+   * is the corresponding index in the insertion_params field instead.
+   *
+   * In versions prior to 2.1.0, this was an array of LPCSTR instead.
    */
-  LPCSTR* insertion_strings;
+  LPCWSTR* insertion_strings;
   /**
-   * An array of params of which the values can be used as insertion strings with
-   * Windows Event Log calls. Params in this list may not have name fields and
-   * should not be used with other functions for using params. They should only
-   * be interacted with using the Windows Event Log stumpless functions.
+   * An array of params of which the values can be used as insertion strings
+   * with Windows Event Log calls. The value of the param will be used for the
+   * insertion string in the same index.
+   *
+   * The value will be converted to a wide character string at the time of the
+   * logging call, as parameter values are stored as UTF-8 multibyte strings.
    */
-  struct stumpless_param** insertion_params;
+  struct stumpless_param const ** insertion_params;
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
   /**
    * Protects all of the data in this structure. This mutex must be locked

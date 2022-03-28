@@ -86,6 +86,9 @@
 "LPCSTR":
   - "windows.h"
   - "private/windows_wrapper.h"
+"LPCWSTR":
+  - "windows.h"
+  - "private/windows_wrapper.h"
 "LOG_INFO": "syslog.h"
 "LOG_PID": "syslog.h"
 "LOG_USER": "syslog.h"

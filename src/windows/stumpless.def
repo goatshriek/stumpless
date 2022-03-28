@@ -186,3 +186,7 @@ EXPORTS
   stumpless_trace_message_str                   @171
   stumplog_str                                  @172
   stumplog_trace_str                            @173
+  stumpless_get_wel_insertion_string_w          @174
+  stumpless_set_wel_insertion_string_w          @175
+  stumpless_set_wel_insertion_strings_w         @176
+  vstumpless_set_wel_insertion_strings_w        @177

@@ -167,15 +167,15 @@ send_entry_to_wel_target( const struct wel_target *target,
     }
   }
 
-  success = ReportEvent( target->handle,
-                         data->type,
-                         data->category,
-                         data->event_id,
-                         NULL,
-                         data->insertion_count,
-                         0,
-                         data->insertion_strings,
-                         NULL );
+  success = ReportEventW( target->handle,
+                          data->type,
+                          data->category,
+                          data->event_id,
+                          NULL,
+                          data->insertion_count,
+                          0,
+                          data->insertion_strings,
+                          NULL );
 
   unlock_wel_data( data );
 

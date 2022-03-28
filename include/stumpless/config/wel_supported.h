@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
 #  define __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 
 /*
+ * TODO citation needed
  * According to Microsoft, windows.h should be included first in any sources, as
  * it sets up definitions that need to be first.
  */
@@ -65,13 +66,59 @@ extern "C" {
  *
  * @param index The index of the insertion string to retrieve.
  *
- * @return The specified insertion string if no error is encountered. In the
- * event of an error, then NULL will be returned and an error code is set
- * appropriately.
+ * @return The specified insertion string. If the provided index is in range
+ * but has not yet been assigned, then NULL is returned. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ * The returned string will be a UTF-8 multibyte string.
+ *
+ * Because insertion strings are stored as wide character strings, they are
+ * converted to multibyte for this return value. If you assign an insertion
+ * string or param and then call this function, the result may not have the
+ * exact same bytes as the original depending on the original value due to
+ * changes made during the encoding conversions. If this is a problem, consider
+ * using the `_w` variants of functions in this header.
  */
 LPCSTR
 stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index );
+
+/**
+ * Gets an insertion string from a Windows Event Log entry. The character buffer
+ * returned must be freed by the caller when it is no longer needed to avoid
+ * memory leaks.
+ *
+ * In versions prior to v2.0.0, the returned pointer was to the internal buffer
+ * used to store the string and was not to be modified by the caller. This
+ * behavior changed in v2.0.0 in order to avoid thread safety issues.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * entry's WEL data with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @param entry The entry to retrieve the insertion string from.
+ *
+ * @param index The index of the insertion string to retrieve.
+ *
+ * @return 
+ *
+ * @return The specified insertion string. If the provided index is in range
+ * but has not yet been assigned, then NULL is returned. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ * The returned string will be a wide character string.
+ */
+LPCWSTR
+stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
+                                      WORD index );
 
 /**
  * Sets the category of an entry for use with a Windows Event Log target.
@@ -168,7 +215,8 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
  * message.
  *
  * @param param The param to use for the insertion strings. The value of the
- * param will be used during logging.
+ * param will be used during logging. Prior to version v2.1.0, this parameter
+ * was not const.
  *
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
@@ -176,7 +224,7 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
 struct stumpless_entry *
 stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
                                    WORD index,
-                                   struct stumpless_param *param );
+                                   const struct stumpless_param *param );
 
 /**
  * Sets a string to use for string insertion in a Windows Event Log entry.
@@ -191,6 +239,10 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
  * Note that the provided string is copied by the library, and therefore will
  * always hold the value that was in str when this function was called, even
  * if the string changes or is destroyed later.
+ *
+ * This function performs a multibyte to wide character conversion in order to
+ * support unicode characters. If you have a wide character string already, use
+ * stumpless_set_wel_insertion_string_w to avoid this unnecessary conversion.
  *
  * **Thread Safety: MT-Safe race:str**
  * This function is thread safe, of course assuming that the str is not changed
@@ -211,7 +263,8 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
  * values are greater than or equal to 0, with 0 being the first string in a
  * message.
  *
- * @param str The string to use for the insertion string.
+ * @param str The string to use for the insertion string. This must be a
+ * NULL-terminated UTF-8 multibyte string.
  *
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
@@ -222,11 +275,64 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     LPCSTR str );
 
 /**
+ * Sets a string to use for string insertion in a Windows Event Log entry.
+ *
+ * Windows Events may include insertion strings such as %1 or %3 that are
+ * replaced with a specific value provided when logged. This function maps a
+ * specific insertion string to a given string. The string will then be
+ * substituted for that insertion string when an event is logged. If the windows
+ * event does not have an insertion string correlating to the given index, it
+ * will simply be ignored.
+ *
+ * Note that the provided string is copied by the library, and therefore will
+ * always hold the value that was in str when this function was called, even
+ * if the string changes or is destroyed later.
+ *
+ * This function avoids a multibyte to wide conversion that must be performed by
+ * stumpless_set_wel_insertion_string. If you already have a wide character
+ * string, use this function as it will be more performant. Otherwise, use the
+ * non-wide version as it will perform the conversion for you.
+ *
+ * **Thread Safety: MT-Safe race:str**
+ * This function is thread safe, of course assuming that the str is not changed
+ * by any other threads during execution. A mutex is used to coordinate changes
+ * to the entry's WEL data with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to modify.
+ *
+ * @param index The index of the insertion string to use the param for. Valid
+ * values are greater than or equal to 0, with 0 being the first string in a
+ * message.
+ *
+ * @param str The string to use for the insertion string. This must be a
+ * NULL-terminated wide char string.
+ *
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_wel_insertion_string_w( struct stumpless_entry *entry,
+                                      WORD index,
+                                      LPCWSTR str );
+
+/**
  * Sets the insertion strings of a Windows Event Log entry.
  *
  * Instead of setting each insertion string separately via
  * \c stumpless_set_wel_insertion_string this function can set the insertion
  * strings all at the same time.
+ *
+ * This function performs multibyte to wide character conversions in order to
+ * support unicode characters. If you have wide character strings already, use
+ * stumpless_set_wel_insertion_strings_w to avoid these unnecessary conversions.
  *
  * **Thread Safety: MT-Safe race:...**
  * This function is thread safe, of course assuming that none of the supplied
@@ -247,7 +353,8 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
  * @param count The number of insertion strings that will be provided.
  *
  * @param ... The insertion strings to set on the entry. These must be
- * NULL-terminated strings in the same order as they appear in the message.
+ * NULL-terminated UTF-8 multibyte strings in the same order as they appear in
+ * the message.
  *
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
@@ -256,6 +363,48 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                      WORD count,
                                      ... );
+
+/**
+ * Sets the insertion strings of a Windows Event Log entry.
+ *
+ * Instead of setting each insertion string separately via
+ * \c stumpless_set_wel_insertion_string this function can set the insertion
+ * strings all at the same time.
+ *
+ * This function avoids multibyte to wide conversions that must be performed by
+ * stumpless_set_wel_insertion_strings. If you already have a wide character
+ * string, use this function as it will be more performant. Otherwise, use the
+ * non-wide version as it will perform the conversion for you.
+ *
+ * **Thread Safety: MT-Safe race:...**
+ * This function is thread safe, of course assuming that none of the supplied
+ * insertion strings are changed by any other threads during execution. A
+ * mutex is used to coordinate changes to the entry's WEL data with other
+ * accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to modify.
+ *
+ * @param count The number of insertion strings that will be provided.
+ *
+ * @param ... The insertion strings to set on the entry. These must be
+ * NULL-terminated wide character strings in the same order as they appear in
+ * the message.
+ *
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+stumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
+                                       WORD count,
+                                       ... );
 
 /**
  * Sets the type of an entry for use with a Windows Event Log target.
@@ -294,6 +443,11 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
  * \c stumpless_set_wel_insertion_string this function can set the insertion
  * strings all at the same time.
  *
+ * This function performs multibyte to wide character conversions in order to
+ * support unicode characters. If you have wide character strings already, use
+ * vstumpless_set_wel_insertion_strings_w to avoid these unnecessary
+ * conversions.
+ *
  * **Thread Safety: MT-Safe race:...**
  * This function is thread safe, of course assuming that none of the supplied
  * insertion strings are changed by any other threads during execution. A
@@ -313,9 +467,10 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
  * @param count The number of insertion strings that will be provided.
  *
  * @param insertions The insertion strings to set on the entry. These must be
- * NULL-terminated strings in the same order as they appear in the message. This
- * list must be started via \c va_start before being used, and \c va_end should
- * be called afterwards, as this function does not call them.
+ * NULL-terminated UTF-8 multibyte strings in the same order as they appear in
+ * the message. This list must be started via \c va_start before being used,
+ * and \c va_end should be called afterwards, as this function does not call
+ * them.
  *
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
@@ -324,6 +479,50 @@ struct stumpless_entry *
 vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                       WORD count,
                                       va_list insertions );
+
+/**
+ * Sets the insertion strings of a Windows Even Log entry.
+ *
+ * Instead of setting the each insertion string separately via
+ * \c stumpless_set_wel_insertion_string this function can set the insertion
+ * strings all at the same time.
+ *
+ * This function avoids multibyte to wide conversions that must be performed by
+ * vstumpless_set_wel_insertion_strings. If you already have a wide character
+ * string, use this function as it will be more performant. Otherwise, use the
+ * non-wide version as it will perform the conversion for you.
+ *
+ * **Thread Safety: MT-Safe race:...**
+ * This function is thread safe, of course assuming that none of the supplied
+ * insertion strings are changed by any other threads during execution. A
+ * mutex is used to coordinate changes to the entry's WEL data with other
+ * accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to modify.
+ *
+ * @param count The number of insertion strings that will be provided.
+ *
+ * @param insertions The insertion strings to set on the entry. These must be
+ * NULL-terminated wide character strings in the same order as they appear in
+ * the message. This list must be started via \c va_start before being used,
+ * and \c va_end should be called afterwards, as this function does not call
+ * them.
+ *
+ * @return The modified entry if no error is encountered. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+vstumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
+                                        WORD count,
+                                        va_list insertions );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

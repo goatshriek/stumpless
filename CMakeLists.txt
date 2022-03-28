@@ -690,6 +690,13 @@ else()
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp
       ${PROJECT_BINARY_DIR}/events.rc
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+
+  add_function_test(wel_supported_leak
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/leak/wel_supported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 
   add_thread_safety_test(wel
@@ -702,6 +709,12 @@ else()
     SOURCES
       test/thread_safety/config/wel_supported.cpp
       ${PROJECT_BINARY_DIR}/events.rc
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+
+  add_performance_test(wel
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/performance/target/wel.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
   )
 

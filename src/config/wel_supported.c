@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,7 +88,7 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index ) {
   struct wel_data *data;
   const struct stumpless_param *param;
-  char *value_copy;
+  LPCSTR str_copy = NULL;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
@@ -99,25 +99,27 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
        L10N_INVALID_INDEX_ERROR_MESSAGE( "insertion string" ),
        index
     );
-    goto fail;
+    goto cleanup_and_return;
   }
 
   param = data->insertion_params[index];
-  if( param->name ) {
-    value_copy = ( char * ) stumpless_get_param_value( param );
-  } else {
-    value_copy = alloc_mem( param->value_length + 1 );
-    if( !value_copy ) {
-      goto fail;
-    }
-    memcpy( value_copy, param->value, param->value_length + 1 );
+  if( param ) {
+    // convert the param value to multibyte and return copy
+  } else if( data->insertion_strings[index] ) {
+    // copy the insertion string and return and return copy
   }
-  unlock_wel_data( data );
+  // otherwise we return NULL
 
-  return value_copy;
-
-fail:
+cleanup_and_return:
   unlock_wel_data( data );
+  return str_copy;
+}
+
+LPCWSTR
+stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
+                                      WORD index ) {
+  VALIDATE_ARG_NOT_NULL( entry );
+
   return NULL;
 }
 
@@ -154,7 +156,7 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
 struct stumpless_entry *
 stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
                                    WORD index,
-                                   struct stumpless_param *param ) {
+                                   const struct stumpless_param *param ) {
   struct wel_data *data;
 
   VALIDATE_ARG_NOT_NULL( entry );
@@ -348,13 +350,15 @@ destroy_insertion_params( const struct stumpless_entry *entry ) {
   free_mem( data->insertion_params );
 }
 
-void
-destroy_insertion_string_param( const struct stumpless_param *param ) {
-  if( param && !param->name ) {
-    free_mem( param->value );
-    free_mem( param );
-  }
-}
+/*
+ * message id format:
+
+  3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
+  1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+ +---+-+-+-----------------------+-------------------------------+
+ |Sev|C|R|     Facility          |               Code            |
+ +---+-+-+-----------------------+-------------------------------+
+*/
 
 bool
 initialize_wel_data( struct stumpless_entry *entry ) {
@@ -381,13 +385,15 @@ lock_wel_data( const struct wel_data *data ) {
 
 struct stumpless_param **
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index ) {
+  size_t new_max_index;
   size_t new_size;
   struct wel_data *data;
   struct stumpless_param **new_params;
-  LPCSTR *new_strings;
+  LPCWSTR *new_strings;
   WORD i;
 
-  new_size = sizeof( *new_params ) * ( max_index + 1 );
+  new_max_index = ( ( size_t ) max_index ) + 1;
+  new_size = sizeof( *new_params ) * new_max_index;
   data = entry->wel_data;
   new_params = realloc_mem( data->insertion_params, new_size );
   if( !new_params ) {
@@ -402,7 +408,7 @@ resize_insertion_params( struct stumpless_entry *entry, WORD max_index ) {
 
   }
 
-  new_size = sizeof( LPCSTR ) * ( max_index + 1 );
+  new_size = sizeof( LPCSTR ) * new_max_index;
   new_strings = realloc_mem( ( void * ) data->insertion_strings, new_size );
   if( !new_strings ) {
     return NULL;
