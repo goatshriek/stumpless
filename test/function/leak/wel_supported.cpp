@@ -38,6 +38,7 @@ namespace {
     ASSERT_NOT_NULL( entry );
 
     stumpless_set_wel_insertion_string( entry, 0, "testing" );
+    EXPECT_NO_ERROR;
 
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );

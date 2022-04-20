@@ -65,6 +65,25 @@ namespace {
     }
   };
 
+  TEST_F( WelSupportedTest, CopyEntry ) {
+    const struct stumpless_entry *copy;
+
+    copy = stumpless_copy_entry( simple_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( copy );
+
+    EXPECT_EQ( stumpless_get_wel_category( copy ),
+               stumpless_get_wel_category( simple_entry ) );
+
+    EXPECT_EQ( stumpless_get_wel_event_id( copy ),
+               stumpless_get_wel_event_id( simple_entry ) );
+
+    EXPECT_EQ( stumpless_get_wel_type( copy ),
+               stumpless_get_wel_type( simple_entry ) );
+
+    stumpless_destroy_entry_only( copy );
+  }
+
   TEST_F( WelSupportedTest, GetInsertionStringIndexTooHigh ) {
     LPCSTR result;
     WORD index = 4;

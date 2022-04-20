@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2020-2022 Joel E. Anderson
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_IT_IT_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_IT_IT_H
@@ -106,6 +106,12 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "la dimensione massima del messaggio è solo valido per target di rete UDP"
 
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
+"non è stato possibile convertire una stringa multibyte a una stringa \"wide\""
+
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
+"il risultato di GetLastError dopo la chiamata fallita"
+
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "una chiamata di allocazione della memoria fallita"
 
@@ -171,6 +177,12 @@ ARG_NAME " era NULL"
 
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "non è stato possibile aprire il Windows Event Log"
+
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"il risultato di GetLastError dopo la chiamata fallita"
+
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
+"non è stato possibile convertire una stringa \"wide\" a una stringa multibyte"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "codice di errore di Windows Socket"

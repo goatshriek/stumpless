@@ -161,9 +161,7 @@ send_entry_to_wel_target( const struct wel_target *target,
 
   for( i = 0; i < data->insertion_count; i++ ) {
     if( data->insertion_params[i] ) {
-      data->insertion_strings[i] = data->insertion_params[i]->value;
-    } else {
-      data->insertion_strings[i] = NULL;
+      // todo copy wide string of param value
     }
   }
 

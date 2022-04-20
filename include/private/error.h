@@ -90,6 +90,10 @@ raise_index_out_of_bounds( const char *message, size_t index );
 
 COLD_FUNCTION
 void
+raise_invalid_encoding( const char* message );
+
+COLD_FUNCTION
+void
 raise_invalid_facility( int facility );
 
 COLD_FUNCTION
@@ -103,6 +107,16 @@ raise_invalid_severity( int severity );
 COLD_FUNCTION
 void
 raise_journald_failure( int code );
+
+/**
+ * Raises an error indicating that a conversion from a multibyte string to a
+ * wide character string failed.
+ *
+ * @param code The result of GetLastError after the failed conversion.
+ */
+COLD_FUNCTION
+void
+raise_mb_conversion_failure( int code );
 
 COLD_FUNCTION
 void
@@ -162,8 +176,14 @@ COLD_FUNCTION
 void
 raise_wel_open_failure( void );
 
+/**
+ * Raises an error indicating that a conversion from a wide string to a
+ * multibyte string failed.
+ *
+ * @param code The result of GetLastError after the failed conversion.
+ */
 COLD_FUNCTION
 void
-raise_invalid_encoding( const char *message );
+raise_wide_conversion_failure( int code );
 
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

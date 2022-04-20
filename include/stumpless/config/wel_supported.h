@@ -40,6 +40,89 @@ extern "C" {
 #  endif
 
 /**
+ * Gets the category of an entry used with Windows Event Log targets.
+ *
+ * The category is used by a Windows Event Log target. Entries that are going to
+ * be sent to a Windows Event Log target must have the category specified before
+ * they are sent.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry's WEL data while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to get the category from.
+ *
+ * @return The entry category. In the event of an error, then zero is
+ * returned and an error code is set appropriately.
+ */
+WORD
+stumpless_get_wel_category( const struct stumpless_entry *entry );
+
+/**
+ * Gets the event id of an entry used with Windows Event Log targets.
+ *
+ * The event id is used by a Windows Event Log target. Entries that are going to
+ * be sent to a Windows Event Log target must have the event id specified before
+ * they are sent.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry's WEL data while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to get the event id from.
+ *
+ * @return The entry event id. In the event of an error, then zero is
+ * returned and an error code is set appropriately.
+ */
+WORD
+stumpless_get_wel_event_id( const struct stumpless_entry *entry );
+
+/**
+ * Gets an insertion param from a Windows Event Log entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * entry's WEL data with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @param entry The entry to retrieve the insertion param from.
+ *
+ * @param index The index of the insertion param to retrieve.
+ *
+ * @return The specified insertion param. If the provided index is in range
+ * but has not yet been assigned, then NULL is returned. In the event of an
+ * error, then NULL will be returned and an error code is set appropriately.
+ */
+struct stumpless_param *
+stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
+                                   WORD index );
+
+/**
  * Gets an insertion string from a Windows Event Log entry. The character buffer
  * returned must be freed by the caller when it is no longer needed to avoid
  * memory leaks.
@@ -119,6 +202,33 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
 LPCWSTR
 stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
                                       WORD index );
+
+/**
+ * Gets the type of an entry used with Windows Event Log targets.
+ *
+ * The type is used by a Windows Event Log target. Entries that are going to
+ * be sent to a Windows Event Log target must have the type specified before
+ * they are sent.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry's WEL data while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param entry The entry to get the type from.
+ *
+ * @return The entry type. In the event of an error, then zero is
+ * returned and an error code is set appropriately.
+ */
+WORD
+stumpless_get_wel_type( const struct stumpless_entry *entry );
 
 /**
  * Sets the category of an entry for use with a Windows Event Log target.

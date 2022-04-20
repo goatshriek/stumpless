@@ -119,6 +119,18 @@ stumpless_set_error_stream( FILE *stream ) {
 
 /* private functions */
 
+/**
+ * Clears the internal error state. This must be called at some point in all
+ * public functions to make sure that residual errors don't stick around.
+ *
+ * If a public function calls another public function internally, it can skip
+ * calling this function as the called public function will clear the error if
+ * it succeeds, and should pass the error on if not.
+ *
+ * Ideally, this should be called directly after the last possible failure point
+ * in the function to avoid unnecessary clears, but before other code in case a
+ * non-fatal error is raised and needs to be visible upon return.
+ */
 void
 clear_error( void ) {
   error_valid = false;
@@ -212,6 +224,11 @@ raise_index_out_of_bounds( const char *message, size_t index ) {
 }
 
 void
+raise_invalid_encoding( const char *message ) {
+  raise_error( STUMPLESS_INVALID_ENCODING, message, 0, NULL );
+}
+
+void
 raise_invalid_facility( int facility ) {
   raise_error( STUMPLESS_INVALID_FACILITY,
                L10N_INVALID_FACILITY_ERROR_MESSAGE,
@@ -241,6 +258,14 @@ raise_journald_failure( int code ) {
                L10N_JOURNALD_FAILURE_ERROR_MESSAGE,
                code,
                L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE );
+}
+
+void
+raise_mb_conversion_failure( int code ) {
+  raise_error( STUMPLESS_INVALID_ENCODING,
+               L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE,
+               code,
+               L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE );
 }
 
 void
@@ -336,6 +361,9 @@ raise_wel_open_failure( void ) {
 }
 
 void
-raise_invalid_encoding( const char *message ) {
-  raise_error( STUMPLESS_INVALID_ENCODING, message, 0, NULL );
+raise_wide_conversion_failure( int code ) {
+  raise_error( STUMPLESS_INVALID_ENCODING,
+    L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE,
+    code,
+    L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE );
 }

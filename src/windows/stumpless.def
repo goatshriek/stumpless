@@ -186,7 +186,11 @@ EXPORTS
   stumpless_trace_message_str                   @171
   stumplog_str                                  @172
   stumplog_trace_str                            @173
-  stumpless_get_wel_insertion_string_w          @174
-  stumpless_set_wel_insertion_string_w          @175
-  stumpless_set_wel_insertion_strings_w         @176
-  vstumpless_set_wel_insertion_strings_w        @177
+  stumpless_get_wel_category                    @174
+  stumpless_get_wel_event_id                    @175
+  stumpless_get_wel_insertion_param             @176
+  stumpless_get_wel_insertion_string_w          @177
+  stumpless_get_wel_type                        @178
+  stumpless_set_wel_insertion_string_w          @179
+  stumpless_set_wel_insertion_strings_w         @180
+  vstumpless_set_wel_insertion_strings_w        @181

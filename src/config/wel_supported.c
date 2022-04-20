@@ -31,55 +31,181 @@
 #include <stumpless/target/wel.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
+#include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/strhelper.h"
-#include "private/config/wrapper.h"
 #include "private/validate.h"
 
+/**
+ * Creates a copy of a NULL terminated multibyte string in wide string format.
+ *
+ * @param str A multibyte string to copy, in UTF-8 format.
+ *
+ * @return A copy of the given string in wide string format, or NULL if an
+ * error is encountered.
+ */
+static
+LPCWSTR
+copy_cstring_to_lpcwstr( LPCSTR str ) {
+  int needed_wchar_length;
+  LPCWSTR str_copy;
+  int conversion_result;
+
+  needed_wchar_length = MultiByteToWideChar( CP_UTF8,
+                                             MB_ERR_INVALID_CHARS |
+                                               MB_PRECOMPOSED,
+                                             str,
+                                             -1,
+                                             NULL,
+                                             0 );
+
+  if( needed_wchar_length == 0 ) {
+    raise_mb_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  str_copy = alloc_mem( needed_wchar_length * sizeof( WCHAR ) );
+  if( !str_copy ) {
+    return NULL;
+  }
+
+  conversion_result = MultiByteToWideChar( CP_UTF8,
+                                           MB_ERR_INVALID_CHARS |
+                                             MB_PRECOMPOSED,
+                                           str,
+                                           -1,
+                                           str_copy,
+                                           needed_wchar_length );
+
+  if( conversion_result == 0 ) {
+    free_mem( str_copy );
+    raise_mb_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  return str_copy;
+}
+
+/**
+ * Sets the insertion string at the given index to the provided wide string,
+ * freeing the previous one if it existed.
+*
+* @param entry The entry to set the insertion string of. Must not be NULL.
+*
+* @param index The index of the insertion string.
+*
+* @param str The wide string to use as the insertion string. Must not be NULL.
+*
+* @return The modified entry, or NULL if an error is encountered.
+ */
+static
+struct stumpless_entry *
+swap_wel_insertion_string( struct stumpless_entry *entry,
+                           WORD index,
+                           LPCWSTR str ) {
+  struct wel_data *data;
+
+  data = entry->wel_data;
+
+  lock_wel_data( data );
+  if( index >= data->insertion_count ) {
+    if( !resize_insertion_params( entry, index ) ) {
+      unlock_wel_data( data );
+      return NULL;
+    }
+  } else {
+    free_mem( data->insertion_strings[index] );
+  }
+
+  data->insertion_strings[index] = str;
+  unlock_wel_data( data );
+
+  return entry;
+}
+
+/**
+* Sets the insertion string at the given index to the provided UTF-8 string.
+*
+* A copy of the string is created in wide character format.
+*
+* If the index is higher than the current max, then the insertion string arrays
+* are expanded to accomodate it.
+*
+* @param entry The entry to set the insertion string of. Must not be NULL.
+*
+* @param index The index of the insertion string.
+*
+* @param str The UTF-8 string to use as the insertion string. Must not be NULL.
+*
+* @return The modified entry, or NULL if an error is encountered.
+*/
 static
 struct stumpless_entry *
 set_wel_insertion_string( struct stumpless_entry *entry,
                           WORD index,
                           LPCSTR str ) {
-  size_t *str_length;
-  struct stumpless_param *param;
-  struct wel_data *data;
+  LPCWSTR str_copy;
 
-  param = alloc_mem( sizeof( *param ) );
-  if( !param ) {
-    goto fail;
+  str_copy = copy_cstring_to_lpcwstr( str );
+  if( !str_copy ) {
+    return NULL;
   }
 
-  str_length = &( param->value_length );
-  param->value = copy_cstring_with_length( str, str_length );
-  if( !param->value ) {
-    goto fail_str;
+  return swap_wel_insertion_string( entry, index, str_copy );
+}
+
+/**
+* Sets the insertion string at the given index to the provided wide string.
+*
+* A copy of the string is created in wide character format.
+*
+* If the index is higher than the current max, then the insertion string arrays
+* are expanded to accomodate it.
+*
+* @param entry The entry to set the insertion string of. Must not be NULL.
+*
+* @param index The index of the insertion string.
+*
+* @param str The wide string to use as the insertion string. Must not be NULL.
+*
+* @return The modified entry, or NULL if an error is encountered.
+*/
+static
+struct stumpless_entry *
+  set_wel_insertion_string_w( struct stumpless_entry *entry,
+                              WORD index,
+                              LPCWSTR str ) {
+  int needed_wchar_length;
+  LPCWSTR str_copy;
+  int conversion_result;
+  struct stumpless_entry *set_result;
+
+  needed_wchar_length = wcslen( str );
+
+  str_copy = alloc_mem( sizeof( WCHAR ) * needed_wchar_length );
+  if( !str_copy ) {
+    return NULL;
   }
 
-  data = entry->wel_data;
-  if( index >= data->insertion_count ) {
-    if( !resize_insertion_params( entry, index ) ) {
-      goto fail_resize;
-    }
-  }
+  wcscpy( str_copy, str );
+  return swap_wel_insertion_string( entry, index, str_copy );
+}
 
-  destroy_insertion_string_param( data->insertion_params[index] );
+WORD
+stumpless_get_wel_category( const struct stumpless_entry *entry ) {
+  return 0;
+}
 
-  param->name = NULL;
-  param->name_length = 0;
-  data->insertion_params[index] = param;
+WORD
+stumpless_get_wel_event_id( const struct stumpless_entry *entry ) {
+  return 0;
+}
 
-  clear_error(  );
-  return entry;
-
-
-fail_resize:
-  free_mem( param->value );
-fail_str:
-  free_mem( param );
-fail:
+struct stumpless_param *
+stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
+                                   WORD index ) {
   return NULL;
 }
 
@@ -88,7 +214,9 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index ) {
   struct wel_data *data;
   const struct stumpless_param *param;
-  LPCSTR str_copy = NULL;
+  char *str_copy = NULL;
+  int needed_mb_length;
+  int conversion_result;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
@@ -102,13 +230,52 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
     goto cleanup_and_return;
   }
 
+  clear_error(  );
   param = data->insertion_params[index];
   if( param ) {
-    // convert the param value to multibyte and return copy
+    str_copy = alloc_mem( param->value_length + 1 );
+    if( !str_copy ) {
+      goto cleanup_and_return;
+    }
+    memcpy( str_copy, param->value, param->value_length );
+    str_copy[param->value_length] = '\0';
+
   } else if( data->insertion_strings[index] ) {
-    // copy the insertion string and return and return copy
+    needed_mb_length = WideCharToMultiByte( CP_UTF8,
+                                            WC_ERR_INVALID_CHARS |
+                                              WC_NO_BEST_FIT_CHARS,
+                                            data->insertion_strings[index],
+                                            -1,
+                                            NULL,
+                                            0,
+                                            NULL,
+                                            NULL );
+    if( needed_mb_length == 0 ) {
+      raise_wide_conversion_failure( GetLastError(  ) );
+      goto cleanup_and_return;
+    }
+
+    str_copy = alloc_mem( needed_mb_length  );
+    if( !str_copy ) {
+      goto cleanup_and_return;
+    }
+
+    conversion_result = WideCharToMultiByte( CP_UTF8,
+                                             WC_ERR_INVALID_CHARS |
+                                               WC_NO_BEST_FIT_CHARS,
+                                             data->insertion_strings[index],
+                                             -1,
+                                             str_copy,
+                                             needed_mb_length,
+                                             NULL,
+                                             NULL );
+    if( conversion_result == 0 ) {
+      free_mem( str_copy );
+      str_copy = NULL;
+      raise_wide_conversion_failure( GetLastError(  ) );
+      goto cleanup_and_return;
+    }
   }
-  // otherwise we return NULL
 
 cleanup_and_return:
   unlock_wel_data( data );
@@ -118,9 +285,75 @@ cleanup_and_return:
 LPCWSTR
 stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
                                       WORD index ) {
+  struct wel_data *data;
+  const struct stumpless_param *param;
+  char *str_copy = NULL;
+  int needed_wchar_length;
+  size_t needed_wchar_count;
+  int conversion_result;
+
   VALIDATE_ARG_NOT_NULL( entry );
 
-  return NULL;
+  data = entry->wel_data;
+  lock_wel_data( data );
+  if( index >= data->insertion_count ) {
+    raise_index_out_of_bounds(
+       L10N_INVALID_INDEX_ERROR_MESSAGE( "insertion string" ),
+       index
+    );
+    goto cleanup_and_return;
+  }
+
+  clear_error(  );
+  param = data->insertion_params[index];
+  if( param ) {
+    needed_wchar_length = MultiByteToWideChar( CP_UTF8,
+                                               MB_ERR_INVALID_CHARS |
+                                                 MB_PRECOMPOSED,
+                                               param->value,
+                                               param->value_length,
+                                               NULL,
+                                               0 );
+
+  if( needed_wchar_length == 0 ) {
+    raise_mb_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  needed_wchar_count = ( ( size_t ) needed_wchar_length ) + 1;
+  str_copy = alloc_mem( needed_wchar_count * sizeof( WCHAR ) );
+  if( !str_copy ) {
+    return NULL;
+  }
+
+  conversion_result = MultiByteToWideChar( CP_UTF8,
+                                           MB_ERR_INVALID_CHARS |
+                                             MB_PRECOMPOSED,
+                                           param->value,
+                                           param->value_length,
+                                           str_copy,
+                                           needed_wchar_length );
+
+  if( conversion_result == 0 ) {
+    free_mem( str_copy );
+    raise_mb_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  str_copy[needed_wchar_length] = L'\0';
+
+  } else if( data->insertion_strings[index] ) {
+    str_copy = copy_cstring_w( data->insertion_strings[index] );
+  }
+
+cleanup_and_return:
+  unlock_wel_data( data );
+  return str_copy;
+}
+
+WORD
+stumpless_get_wel_type( const struct stumpless_entry *entry ) {
+  return 0;
 }
 
 struct stumpless_entry *
@@ -171,10 +404,10 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
     }
   }
 
+  clear_error();
+
   data->insertion_params[index] = param;
   unlock_wel_data( data );
-
-  clear_error();
   return entry;
 }
 
@@ -183,18 +416,27 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
   struct wel_data *data;
-  struct stumpless_entry *result;
+  int needed_wchar_length;
+  LPCWSTR str_copy;
+  int conversion_result;
+  struct stumpless_entry *set_result;
 
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( str );
 
   clear_error(  );
-  data = entry->wel_data;
-  lock_wel_data( data );
-  result = set_wel_insertion_string( entry, index, str );
-  unlock_wel_data( data );
+  return set_wel_insertion_string( entry, index, str );
+}
 
-  return result;
+struct stumpless_entry *
+stumpless_set_wel_insertion_string_w( struct stumpless_entry *entry,
+                                      WORD index,
+                                      LPCWSTR str ) {
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( str );
+
+  clear_error(  );
+  return set_wel_insertion_string_w( entry, index, str );
 }
 
 struct stumpless_entry *
@@ -209,6 +451,13 @@ stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
   va_end( insertions );
 
   return result;
+}
+
+struct stumpless_entry *
+  stumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
+                                         WORD count,
+                                         ... ) {
+  return NULL;
 }
 
 struct stumpless_entry *
@@ -263,6 +512,13 @@ fail:
   return NULL;
 }
 
+struct stumpless_entry *
+vstumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
+                                        WORD count,
+                                        va_list insertions ) {
+  return NULL;
+}
+
 /* private definitions */
 
 struct stumpless_entry *
@@ -278,50 +534,53 @@ copy_wel_data( struct stumpless_entry *destination,
     return NULL;
   }
 
+  source_data = source->wel_data;
   dest_data = destination->wel_data;
-  source_data = destination->wel_data;
   lock_wel_data( source_data );
 
   dest_data->type = source_data->type;
   dest_data->category = source_data->category;
   dest_data->event_id = source_data->event_id;
 
-  dest_data->insertion_strings = alloc_mem( sizeof( LPCSTR ) * source_data->insertion_count );
-  if( !dest_data->insertion_strings) {
-    goto fail;
-  }
 
-  dest_data->insertion_params = alloc_mem( sizeof( struct stumpless_param * ) * source_data->insertion_count );
-  if( !dest_data->insertion_params) {
-    goto fail_params;
-  }
-
-  dest_data->insertion_count = source_data->insertion_count;
-  for( i = 0; i < source_data->insertion_count; i++ ) {
-    dest_data->insertion_params[i] = NULL;
-  }
-
-  for( i = 0; i < source_data->insertion_count; i++ ) {
-    param = source_data->insertion_params[i];
-    if( param && !param->value ) {
-      result = set_wel_insertion_string( destination, i, param->value );
-      if( !result ) {
-        goto fail_set_string;
-      }
-
-    } else {
-      dest_data->insertion_params[i] = param;
+  if( source_data->insertion_count > 0 ) {
+    dest_data->insertion_params = alloc_mem( sizeof( struct stumpless_param * ) * source_data->insertion_count );
+    if( !dest_data->insertion_params) {
+      goto fail;
     }
+
+    dest_data->insertion_strings = alloc_mem( sizeof( LPCSTR ) * source_data->insertion_count );
+    if( !dest_data->insertion_strings) {
+      goto fail_strings;
+    }
+
+    for( i = 0; i < source_data->insertion_count; i++ ) {
+      dest_data->insertion_params[i] = source_data->insertion_params[i];
+      if( source_data->insertion_strings[i] ){
+        dest_data->insertion_strings[i] = copy_cstring_w( source_data->insertion_strings[i] );
+        if( !dest_data->insertion_strings[i] ) {
+          goto fail_set_strings;
+        }
+      } else {
+        dest_data->insertion_strings[i] = NULL;
+      }
+    }
+
+    dest_data->insertion_count = source_data->insertion_count;
   }
 
   unlock_wel_data( source_data );
   clear_error(  );
   return destination;
 
-fail_set_string:
-  destroy_insertion_params( destination );
-fail_params:
+fail_set_strings:
+  while( i > 0 ) {
+    i -= 1;
+    free_mem( dest_data->insertion_strings[i] );
+  }
   free_mem( dest_data->insertion_strings );
+fail_strings:
+  free_mem( dest_data->insertion_params );
 fail:
   unlock_wel_data( source_data );
   return NULL;
@@ -330,35 +589,19 @@ fail:
 void
 destroy_wel_data(const struct stumpless_entry* entry) {
   struct wel_data *data;
-  data = ( struct wel_data * ) entry->wel_data;
-
-  config_destroy_mutex( &data->mutex );
-  destroy_insertion_params( entry );
-  free_mem( data );
-}
-
-void
-destroy_insertion_params( const struct stumpless_entry *entry ) {
-  struct wel_data *data;
   WORD i;
 
   data = ( struct wel_data * ) entry->wel_data;
+  config_destroy_mutex( &data->mutex );
+
   for( i = 0; i < data->insertion_count; i++ ) {
-    destroy_insertion_string_param( data->insertion_params[i] );
+    free_mem( data->insertion_strings[i] );
   }
 
+  free_mem( data->insertion_strings );
   free_mem( data->insertion_params );
+  free_mem( data );
 }
-
-/*
- * message id format:
-
-  3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
-  1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
- +---+-+-+-----------------------+-------------------------------+
- |Sev|C|R|     Facility          |               Code            |
- +---+-+-+-----------------------+-------------------------------+
-*/
 
 bool
 initialize_wel_data( struct stumpless_entry *entry ) {
