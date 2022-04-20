@@ -31,9 +31,6 @@
 char *
 copy_cstring( const char *str );
 
-wchar_t *
-copy_cstring_w( const wchar_t *str );
-
 char *
 copy_cstring_with_length( const char *str, size_t *length );
 

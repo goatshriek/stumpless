@@ -35,7 +35,6 @@
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/strhelper.h"
 #include "private/validate.h"
 
 /**
@@ -85,6 +84,32 @@ copy_cstring_to_lpcwstr( LPCSTR str ) {
     return NULL;
   }
 
+  return str_copy;
+}
+
+/**
+ * Creates a copy of a NULL terminated wide character string.
+ *
+ * @param str A wide character string to copy.
+ *
+ * @return A copy of the given wide character string, or NULL if an error is
+ * encountered.
+ */
+static
+LPCWSTR
+copy_lpcwstr( LPCWSTR str ) {
+  size_t str_len;
+  size_t str_size;
+  LPCWSTR str_copy;
+
+  str_len = wcslen( str );
+  str_size = ( str_len + 1 ) * sizeof( WCHAR );
+  str_copy = alloc_mem( str_size );
+  if( !str_copy ) {
+    return NULL;
+  }
+
+  memcpy( str_copy, str, str_size );
   return str_copy;
 }
 
@@ -177,19 +202,13 @@ struct stumpless_entry *
   set_wel_insertion_string_w( struct stumpless_entry *entry,
                               WORD index,
                               LPCWSTR str ) {
-  int needed_wchar_length;
   LPCWSTR str_copy;
-  int conversion_result;
-  struct stumpless_entry *set_result;
 
-  needed_wchar_length = wcslen( str );
-
-  str_copy = alloc_mem( sizeof( WCHAR ) * needed_wchar_length );
+  str_copy = copy_lpcwstr( str );
   if( !str_copy ) {
     return NULL;
   }
 
-  wcscpy( str_copy, str );
   return swap_wel_insertion_string( entry, index, str_copy );
 }
 
@@ -343,7 +362,7 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
   str_copy[needed_wchar_length] = L'\0';
 
   } else if( data->insertion_strings[index] ) {
-    str_copy = copy_cstring_w( data->insertion_strings[index] );
+    str_copy = copy_lpcwstr( data->insertion_strings[index] );
   }
 
 cleanup_and_return:
@@ -557,7 +576,7 @@ copy_wel_data( struct stumpless_entry *destination,
     for( i = 0; i < source_data->insertion_count; i++ ) {
       dest_data->insertion_params[i] = source_data->insertion_params[i];
       if( source_data->insertion_strings[i] ){
-        dest_data->insertion_strings[i] = copy_cstring_w( source_data->insertion_strings[i] );
+        dest_data->insertion_strings[i] = copy_lpcwstr( source_data->insertion_strings[i] );
         if( !dest_data->insertion_strings[i] ) {
           goto fail_set_strings;
         }
