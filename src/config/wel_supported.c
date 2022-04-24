@@ -34,6 +34,7 @@
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/validate.h"
 
@@ -49,7 +50,7 @@ static
 LPCWSTR
 copy_cstring_to_lpcwstr( LPCSTR str ) {
   int needed_wchar_length;
-  LPCWSTR str_copy;
+  LPWSTR str_copy;
   int conversion_result;
 
   needed_wchar_length = MultiByteToWideChar( CP_UTF8,
@@ -96,11 +97,11 @@ copy_cstring_to_lpcwstr( LPCSTR str ) {
  * encountered.
  */
 static
-LPCWSTR
+LPWSTR
 copy_lpcwstr( LPCWSTR str ) {
   size_t str_len;
   size_t str_size;
-  LPCWSTR str_copy;
+  LPWSTR str_copy;
 
   str_len = wcslen( str );
   str_size = ( str_len + 1 ) * sizeof( WCHAR );
@@ -306,9 +307,10 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
                                       WORD index ) {
   struct wel_data *data;
   const struct stumpless_param *param;
-  char *str_copy = NULL;
+  LPWSTR str_copy = NULL;
   int needed_wchar_length;
   size_t needed_wchar_count;
+  int value_length_int;
   int conversion_result;
 
   VALIDATE_ARG_NOT_NULL( entry );
@@ -326,11 +328,13 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
   clear_error(  );
   param = data->insertion_params[index];
   if( param ) {
+    value_length_int = cap_size_t_to_int( param->value_length );
+
     needed_wchar_length = MultiByteToWideChar( CP_UTF8,
                                                MB_ERR_INVALID_CHARS |
                                                  MB_PRECOMPOSED,
                                                param->value,
-                                               param->value_length,
+                                               value_length_int,
                                                NULL,
                                                0 );
 
@@ -349,7 +353,7 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
                                            MB_ERR_INVALID_CHARS |
                                              MB_PRECOMPOSED,
                                            param->value,
-                                           param->value_length,
+                                           value_length_int,
                                            str_copy,
                                            needed_wchar_length );
 
@@ -434,12 +438,6 @@ struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
                                     LPCSTR str ) {
-  struct wel_data *data;
-  int needed_wchar_length;
-  LPCWSTR str_copy;
-  int conversion_result;
-  struct stumpless_entry *set_result;
-
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( str );
 
@@ -546,8 +544,6 @@ copy_wel_data( struct stumpless_entry *destination,
   struct wel_data *dest_data;
   struct wel_data* source_data;
   WORD i;
-  struct stumpless_param *param;
-  const struct stumpless_entry *result;
 
   if( !config_initialize_wel_data( destination ) ) {
     return NULL;

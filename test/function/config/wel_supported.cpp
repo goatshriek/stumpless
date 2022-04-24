@@ -27,8 +27,8 @@
 namespace {
   class WelSupportedTest : public::testing::Test {
     protected:
-      struct stumpless_entry *simple_entry;
-      struct stumpless_entry *insertion_entry;
+      struct stumpless_entry *simple_entry = NULL;
+      struct stumpless_entry *insertion_entry = NULL;
       LPCSTR first_insertion = "message #1";
       LPCSTR second_insertion = "message #2";
       LPCWSTR first_insertion_w = L"message #1";
