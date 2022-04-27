@@ -33,6 +33,7 @@ namespace {
     protected:
       struct stumpless_target *target;
       struct stumpless_entry *simple_entry;
+      LPCWSTR simple_entry_message_w = L"This is a simple log message.";
       struct stumpless_entry *one_insertion_entry;
       struct stumpless_entry *two_insertion_entry;
       const char *insertion_string_1 = "insertion-string-1";
@@ -115,15 +116,14 @@ namespace {
     event_log_handle = OpenEventLog( NULL, "wel-target-test" );
     ASSERT_NOT_NULL( event_log_handle );
 
-    success = ReadEventLogW(
-      event_log_handle,
-      EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
-      0,
-      record_buffer,
-      1000,
-      &bytes_read,
-      &minimum_bytes_to_read
-    );
+    success = ReadEventLogW( event_log_handle,
+                             EVENTLOG_SEQUENTIAL_READ |
+                               EVENTLOG_BACKWARDS_READ,
+                             0,
+                             record_buffer,
+                             1000,
+                             &bytes_read,
+                             &minimum_bytes_to_read );
     EXPECT_TRUE( success );
 
     record = ( PEVENTLOGRECORD ) record_buffer;
@@ -145,15 +145,14 @@ namespace {
     insertion_strings[1] = ( LPCWSTR ) ( insertion_strings[0] + string_1_length + 1 );
     EXPECT_EQ( wcslen( insertion_strings[1] ), strlen( insertion_string_2 ) );
 
-    format_result = FormatMessageW(
-      FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_ARGUMENT_ARRAY,
-      resource_dll,
-      record->EventID,
-      0,
-      message_buffer,
-      1000,
-      ( va_list * )( insertion_strings )
-    );
+    format_result = FormatMessageW( FORMAT_MESSAGE_FROM_HMODULE |
+                                      FORMAT_MESSAGE_ARGUMENT_ARRAY,
+                                    resource_dll,
+                                    record->EventID,
+                                    0,
+                                    message_buffer,
+                                    1000,
+                                    ( va_list * )( insertion_strings ) );
     EXPECT_NE( format_result, 0 );
 
     EXPECT_NOT_NULL( wcsstr( message_buffer, insertion_strings[0] ) );
@@ -166,51 +165,52 @@ namespace {
     int result;
     HANDLE event_log_handle;
     BOOL success;
-    BYTE buffer[1000];
+    BYTE record_buffer[1000];
     DWORD format_result;
     DWORD bytes_read = 0;
     DWORD minimum_bytes_to_read = 0;
     HMODULE resource_dll;
     PEVENTLOGRECORD record;
-    LPTSTR message_buffer;
+    WCHAR message_buffer[1000];
 
     result = stumpless_add_entry( target, simple_entry );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
 
     // read from the event log and find the entry
     event_log_handle = OpenEventLog( NULL, "wel-target-test" );
-    ASSERT_TRUE( event_log_handle != NULL );
+    ASSERT_NOT_NULL( event_log_handle );
 
-    success = ReadEventLog(
-      event_log_handle,
-      EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
-      0,
-      buffer,
-      1000,
-      &bytes_read,
-      &minimum_bytes_to_read
-    );
+    success = ReadEventLogW( event_log_handle,
+                             EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
+                             0,
+                             record_buffer,
+                             1000,
+                             &bytes_read,
+                             &minimum_bytes_to_read );
     EXPECT_TRUE( success );
 
-    record = ( PEVENTLOGRECORD )buffer;
+    record = ( PEVENTLOGRECORD ) record_buffer;
     EXPECT_EQ( record->EventID, MSG_SIMPLE );
     EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
     EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
 
-    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME, NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
-    EXPECT_TRUE( resource_dll != NULL );
+    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME,
+                                  NULL,
+                                  LOAD_LIBRARY_AS_IMAGE_RESOURCE |
+                                    LOAD_LIBRARY_AS_DATAFILE );
+    EXPECT_NOT_NULL( resource_dll );
 
-    format_result = FormatMessage(
-      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE,
-      resource_dll,
-      record->EventID,
-      0,
-      (LPTSTR)&message_buffer,
-      1000,
-      NULL
-    );
+    format_result = FormatMessageW( FORMAT_MESSAGE_FROM_HMODULE,
+                                    resource_dll,
+                                    record->EventID,
+                                    0,
+                                    message_buffer,
+                                    1000,
+                                    NULL );
     EXPECT_NE( format_result, 0 );
+
+    EXPECT_NOT_NULL( wcsstr( message_buffer, simple_entry_message_w ) );
 
     CloseEventLog( event_log_handle );
   }
