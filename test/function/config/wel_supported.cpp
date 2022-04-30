@@ -84,6 +84,14 @@ namespace {
     stumpless_destroy_entry_only( copy );
   }
 
+  TEST_F( WelSupportedTest, GetCategory ) {
+    WORD result;
+
+    result = stumpless_get_wel_category( simple_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, CATEGORY_TEST );
+  }
+
   TEST_F( WelSupportedTest, GetInsertionStringIndexTooHigh ) {
     LPCSTR result;
     WORD index = 4;
@@ -251,6 +259,15 @@ namespace {
 
     entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
     EXPECT_NULL( entry );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelGetEntryCategoryTest, NullEntry ) {
+    WORD result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_wel_category( NULL );
+    EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 

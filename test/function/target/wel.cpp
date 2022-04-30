@@ -31,13 +31,13 @@ using::testing::HasSubstr;
 namespace {
   class WelTargetTest : public::testing::Test {
     protected:
-      struct stumpless_target *target;
-      struct stumpless_entry *simple_entry;
+      struct stumpless_target *target = NULL;
+      struct stumpless_entry *simple_entry = NULL;
       LPCWSTR simple_entry_message_w = L"This is a simple log message.";
-      struct stumpless_entry *one_insertion_entry;
-      struct stumpless_entry *two_insertion_entry;
-      struct stumpless_entry *one_insertion_param_entry;
-      struct stumpless_param *insertion_param;
+      struct stumpless_entry *one_insertion_entry = NULL;
+      struct stumpless_entry *two_insertion_entry = NULL;
+      struct stumpless_entry *one_insertion_param_entry = NULL;
+      struct stumpless_param *insertion_param = NULL;
       const char *insertion_string_1 = "insertion-string-1";
       const char *insertion_string_2 = "insertion-string-2";
 

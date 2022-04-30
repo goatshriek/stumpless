@@ -207,7 +207,21 @@ struct stumpless_entry *
 
 WORD
 stumpless_get_wel_category( const struct stumpless_entry *entry ) {
-  return 0;
+  const struct wel_data *data;
+  WORD category;
+
+  if( !entry ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
+    return 0;
+  }
+
+  clear_error(  );
+  data = entry->wel_data;
+  lock_wel_data( data );
+  category = data->category;
+  unlock_wel_data( data );
+
+  return category;
 }
 
 WORD
