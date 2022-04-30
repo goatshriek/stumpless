@@ -152,16 +152,24 @@ fail:
 int
 send_entry_to_wel_target( const struct wel_target *target,
                           const struct stumpless_entry *entry ) {
-  BOOL success;
+  BOOL success = FALSE;
   WORD i;
   struct wel_data *data;
+  LPCWSTR insertion_str;
 
   data = entry->wel_data;
   lock_wel_data( data );
 
   for( i = 0; i < data->insertion_count; i++ ) {
     if( data->insertion_params[i] ) {
-      // todo copy wide string of param value
+      insertion_str = copy_param_value_to_lpwstr( data->insertion_params[i] );
+      if( !insertion_str ) {
+        goto cleanup_and_return;
+      }
+
+      if( !unsafe_swap_wel_insertion_string( entry, i, insertion_str ) ) {
+        goto cleanup_and_return;
+      }
     }
   }
 
@@ -175,8 +183,8 @@ send_entry_to_wel_target( const struct wel_target *target,
                           data->insertion_strings,
                           NULL );
 
+cleanup_and_return:
   unlock_wel_data( data );
-
   if( success ) {
     return 1;
   } else {

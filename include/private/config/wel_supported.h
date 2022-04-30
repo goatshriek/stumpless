@@ -74,18 +74,22 @@ struct wel_data {
 #  endif
 };
 
+/**
+ * Creates a new wide character string from the param value.
+ *
+ * @param param The param to copy the value from.
+ *
+ * @return a copy of the param value as a NULL terminated wide character string.
+ */
+LPCWSTR
+copy_param_value_to_lpwstr( const struct stumpless_param *param );
+
 struct stumpless_entry *
 copy_wel_data( struct stumpless_entry *destination,
                const struct stumpless_entry *source );
 
 void
 destroy_wel_data( const struct stumpless_entry *entry );
-
-void
-destroy_insertion_params( const struct stumpless_entry *entry );
-
-void
-destroy_insertion_string_param( const struct stumpless_param *param );
 
 bool
 initialize_wel_data( struct stumpless_entry *entry );
@@ -101,6 +105,26 @@ set_entry_wel_type( struct stumpless_entry *entry, int severity );
 
 void
 unlock_wel_data( const struct wel_data *data );
+
+/**
+ * Sets the insertion string at the given index to the provided wide string,
+ * freeing the previous one if it existed.
+ *
+ * Does not lock the entry or wel data structures. They need to be locked
+ * separately before calling this function.
+ *
+ * @param entry The entry to set the insertion string of. Must not be NULL.
+ *
+ * @param index The index of the insertion string.
+ *
+ * @param str The wide string to use as the insertion string. Must not be NULL.
+ *
+ * @return The modified entry, or NULL if an error is encountered.
+ */
+struct stumpless_entry *
+unsafe_swap_wel_insertion_string( struct stumpless_entry *entry,
+                                  WORD index,
+                                  LPCWSTR str );
 
 struct stumpless_target *
 wel_open_default_target( void );
