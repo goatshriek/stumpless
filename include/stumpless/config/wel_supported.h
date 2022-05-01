@@ -90,7 +90,7 @@ stumpless_get_wel_category( const struct stumpless_entry *entry );
  * @return The entry event id. In the event of an error, then zero is
  * returned and an error code is set appropriately.
  */
-WORD
+DWORD
 stumpless_get_wel_event_id( const struct stumpless_entry *entry );
 
 /**

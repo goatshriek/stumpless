@@ -93,6 +93,14 @@ namespace {
     EXPECT_EQ( result, CATEGORY_TEST );
   }
 
+  TEST_F( WelSupportedTest, GetEventId ) {
+    DWORD result;
+
+    result = stumpless_get_wel_event_id( simple_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, MSG_SIMPLE );
+  }
+
   TEST_F( WelSupportedTest, GetInsertionStringIndexTooHigh ) {
     LPCSTR result;
     WORD index = 4;
@@ -195,6 +203,14 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST_F( WelSupportedTest, GetType ) {
+    WORD result;
+
+    result = stumpless_get_wel_type( simple_entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( result, EVENTLOG_SUCCESS );
+  }
+
   TEST_F( WelSupportedTest, SetNullInsertionParam ) {
     const struct stumpless_entry *entry_result;
     const struct stumpless_param *param_result;
@@ -277,6 +293,15 @@ namespace {
     const struct stumpless_error *error;
 
     result = stumpless_get_wel_category( NULL );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelGetEntryEventIdTest, NullEntry ) {
+    WORD result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_wel_event_id( NULL );
     EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -416,6 +441,15 @@ namespace {
     EXPECT_NULL( result );
 
     stumpless_destroy_entry_only( entry );
+  }
+
+  TEST( WelGetEntryTypeTest, NullEntry ) {
+    DWORD result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_wel_type( NULL );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelSetEntryInsertionParamTest, NullEntry ) {

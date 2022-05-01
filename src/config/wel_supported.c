@@ -221,9 +221,20 @@ stumpless_get_wel_category( const struct stumpless_entry *entry ) {
   return category;
 }
 
-WORD
+DWORD
 stumpless_get_wel_event_id( const struct stumpless_entry *entry ) {
-  return 0;
+  const struct wel_data *data;
+  DWORD event_id;
+
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
+
+  clear_error(  );
+  data = entry->wel_data;
+  lock_wel_data( data );
+  event_id = data->event_id;
+  unlock_wel_data( data );
+
+  return event_id;
 }
 
 struct stumpless_param *
@@ -340,7 +351,18 @@ cleanup_and_return:
 
 WORD
 stumpless_get_wel_type( const struct stumpless_entry *entry ) {
-  return 0;
+  const struct wel_data *data;
+  WORD type;
+
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
+
+  clear_error(  );
+  data = entry->wel_data;
+  lock_wel_data( data );
+  type = data->type;
+  unlock_wel_data( data );
+
+  return type;
 }
 
 struct stumpless_entry *
