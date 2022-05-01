@@ -51,6 +51,20 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
 }
 
 /**
+ * Checks to see if the variable with the provided name is NULL, and if it is
+ * then raises an argument empty error and returns 0.
+ *
+ * This is nearly identical to VALIDATE_ARG_NOT_NULL, but is suitable for use in
+ * functions where the return value is an unsigned integer instead of a pointer,
+ * and zero is needed to signify failure.
+ */
+#  define VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( ARG_NAME )                    \
+if( unlikely( ARG_NAME == NULL ) ) {                                           \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
+  return 0;                                                                    \
+}
+
+/**
  * Checks the char length of msgid.
  *
  * @param the msgid.

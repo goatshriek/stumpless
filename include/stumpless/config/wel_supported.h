@@ -306,6 +306,12 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
  * itself as well. This also means that you should not destroy a param unless
  * you are sure that no entries exist that are using it.
  *
+ * Insertion params always take precedence over a insertion string. If an
+ * insertion string was set at the same index as a param when it is set, it will
+ * effectively be removed and the param value used from then on. If the param
+ * value is removed, then the insertion string will be unset, and the previous
+ * string will _not_ be restored.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry's WEL data with other accesses and modifications.
@@ -326,7 +332,8 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
  *
  * @param param The param to use for the insertion strings. The value of the
  * param will be used during logging. Prior to version v2.1.0, this parameter
- * was not const.
+ * was not const. If this is NULL, then the insertion string will be cleared
+ * at the given index.
  *
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.

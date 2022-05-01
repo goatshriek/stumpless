@@ -210,10 +210,7 @@ stumpless_get_wel_category( const struct stumpless_entry *entry ) {
   const struct wel_data *data;
   WORD category;
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
 
   clear_error(  );
   data = entry->wel_data;
@@ -381,9 +378,9 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
                                    WORD index,
                                    const struct stumpless_param *param ) {
   struct wel_data *data;
+  LPCWSTR old_str;
 
   VALIDATE_ARG_NOT_NULL( entry );
-  VALIDATE_ARG_NOT_NULL( param );
 
   data = entry->wel_data;
   lock_wel_data( data );
@@ -397,7 +394,11 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
   clear_error();
 
   data->insertion_params[index] = param;
+  old_str = data->insertion_strings[index];
+  data->insertion_strings[index] = NULL;
   unlock_wel_data( data );
+
+  free_mem( old_str );
   return entry;
 }
 

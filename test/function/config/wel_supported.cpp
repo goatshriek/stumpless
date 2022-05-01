@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
+#include <cstddef>
+#include <cstdlib>
 #include <gtest/gtest.h>
-#include <stddef.h>
 #include <stumpless.h>
 #include <windows.h>
 #include "test/helper/assert.hpp"
@@ -195,12 +196,21 @@ namespace {
   }
 
   TEST_F( WelSupportedTest, SetNullInsertionParam ) {
-    const struct stumpless_error *error;
     const struct stumpless_entry *entry_result;
+    const struct stumpless_param *param_result;
+    LPCSTR str_result;
 
     entry_result = stumpless_set_wel_insertion_param( simple_entry, 0, NULL );
-    EXPECT_NULL( entry_result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( entry_result == simple_entry );
+
+    param_result = stumpless_get_wel_insertion_param( simple_entry, 0 );
+    EXPECT_NO_ERROR;
+    EXPECT_NULL( param_result );
+
+    str_result = stumpless_get_wel_insertion_string( simple_entry, 0 );
+    EXPECT_NO_ERROR;
+    EXPECT_NULL( str_result );
   }
 
   TEST_F( WelSupportedTest, SetNullInsertionString ) {
@@ -269,6 +279,107 @@ namespace {
     result = stumpless_get_wel_category( NULL );
     EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelGetEntryInsertionStringTest, AfterParamSetAndUnset ) {
+    struct stumpless_entry *entry;
+    const char *str_value = "str value";
+    LPCSTR str_result;
+    const char *param_value = "param value";
+    struct stumpless_param *param;
+    const struct stumpless_entry *set_result;
+
+    entry = create_empty_entry(  );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+   set_result =  stumpless_set_wel_insertion_string( entry, 1, str_value );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( set_result == entry );
+
+    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( str_result );
+    EXPECT_STREQ( str_result, str_value );
+    free( ( void * ) str_result );
+
+    param = stumpless_new_param( "insertion-string", param_value );
+    ASSERT_NOT_NULL( param );
+
+    set_result = stumpless_set_wel_insertion_param( entry, 1, param );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( set_result == entry );
+
+    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( str_result );
+    EXPECT_STREQ( str_result, param_value );
+    free( ( void * ) str_result );
+
+    set_result = stumpless_set_wel_insertion_param( entry, 1, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( set_result == entry );
+
+    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    EXPECT_NO_ERROR;
+    EXPECT_NULL( str_result );
+
+    stumpless_destroy_param( param );
+    stumpless_destroy_entry_only( entry );
+  }
+
+  TEST( WelGetEntryInsertionStringTest, AfterParamSetAndLogAndUnset ) {
+    struct stumpless_entry *entry;
+    const char *str_value = "str value";
+    LPCSTR str_result;
+    const char *param_value = "param value";
+    struct stumpless_param *param;
+    const struct stumpless_entry *set_result;
+
+    entry = create_empty_entry(  );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    stumpless_set_wel_category( entry, CATEGORY_TEST );
+    stumpless_set_wel_event_id( entry, MSG_SIMPLE );
+    stumpless_set_wel_type( entry, EVENTLOG_SUCCESS );
+
+   set_result =  stumpless_set_wel_insertion_string( entry, 1, str_value );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( set_result == entry );
+
+    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( str_result );
+    EXPECT_STREQ( str_result, str_value );
+    free( ( void * ) str_result );
+
+    param = stumpless_new_param( "insertion-string", param_value );
+    ASSERT_NOT_NULL( param );
+
+    set_result = stumpless_set_wel_insertion_param( entry, 1, param );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( set_result == entry );
+
+    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( str_result );
+    EXPECT_STREQ( str_result, param_value );
+    free( ( void * ) str_result );
+
+    stumpless_add_entry( stumpless_get_current_target(  ), entry );
+    EXPECT_NO_ERROR;
+
+    set_result = stumpless_set_wel_insertion_param( entry, 1, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( set_result == entry );
+
+    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    EXPECT_NO_ERROR;
+    EXPECT_NULL( str_result );
+
+    stumpless_destroy_param( param );
+    stumpless_destroy_entry_only( entry );
   }
 
   TEST( WelGetEntryInsertionStringTest, NotYetAssigned ) {

@@ -34,6 +34,15 @@ destroy_wel_target( struct wel_target *target );
 struct wel_target *
 new_wel_target( LPCSTR server_name, LPCSTR source_name );
 
+/**
+ * Sends the provided entry to the WEL target provided.
+ *
+ * @param target The WEL target to send the entry to. Must not be NULL.
+ *
+ * @param entry The entry to send to the target. Must not be NULL.
+ *
+ * @return 1 upon success, -1 upon error.
+ */
 int
 send_entry_to_wel_target( const struct wel_target *target,
                           const struct stumpless_entry *entry );

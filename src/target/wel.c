@@ -167,7 +167,12 @@ send_entry_to_wel_target( const struct wel_target *target,
         goto cleanup_and_return;
       }
 
-      if( !unsafe_swap_wel_insertion_string( entry, i, insertion_str ) ) {
+      // We drop the const qualifier here so that the param's value can be set
+      // as the insertion string. This doesn't modify the effective value of the
+      // entry, but does require dropping the const internally.
+      if( !unsafe_swap_wel_insertion_string( ( struct stumpless_entry * ) entry,
+                                             i,
+                                             insertion_str ) ) {
         goto cleanup_and_return;
       }
     }
