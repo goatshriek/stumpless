@@ -132,6 +132,7 @@
 "USE_LOCALE_EN_US": "private/config.h"
 "VALIDATE_ARG_NOT_NULL": "private/validate.h"
 "VALIDATE_ARG_NOT_NULL_INT_RETURN": "private/validate.h"
+"VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN": "private/validate.h"
 "warn_of_deprecation": "private/deprecate.h"
 "windows compare_exchange_bool": "private/config/have_windows.h"
 "windows_compare_exchange_ptr": "private/config/have_windows.h"
