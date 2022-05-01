@@ -40,12 +40,12 @@ namespace {
     public::testing::Test {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
-    struct stumpless_target *target;
+    struct stumpless_target *target = NULL;
     const char *target_name = "test-target";
     const char *default_app_name = "target-default-app-name";
     const char *default_msgid = "target-default-msgid";
     char plain_buffer[TEST_BUFFER_LENGTH];
-    struct stumpless_target *plain_target;
+    struct stumpless_target *plain_target = NULL;
 
     virtual void
     SetUp( void ) {
@@ -680,7 +680,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
     target = stumpless_open_buffer_target( "test target",
@@ -843,7 +842,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
     target = stumpless_open_buffer_target( "test target",

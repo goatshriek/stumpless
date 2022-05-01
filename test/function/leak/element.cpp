@@ -52,7 +52,6 @@ namespace {
   TEST( SetParamValueByNameLeakTest, NewAndExisting ) {
     struct stumpless_element *element;
     const struct stumpless_element *result;
-    const struct stumpless_error *error;
 
     INIT_MEMORY_COUNTER( set_param_value_by_name );
 

@@ -43,12 +43,12 @@ namespace {
   class Udp6TargetTest : public::testing::Test {
 
     protected:
-      struct stumpless_target *target;
-      struct stumpless_entry *basic_entry;
+      struct stumpless_target *target = NULL;
+      struct stumpless_entry *basic_entry = NULL;
       bool udp_fixtures_enabled = true;
       char buffer[2048];
       const char *port = "514";
-      socket_handle_t handle;
+      socket_handle_t handle = BAD_HANDLE;
 
     virtual void
     SetUp( void ) {
@@ -199,13 +199,8 @@ namespace {
 
   TEST( NetworkTargetSetDestination, OpenTarget ) {
     struct stumpless_target *target;
-    struct stumpless_target *target_result;
-    struct stumpless_entry *entry;
     const char *original_destination = "::1";
     const char *new_destination = "localhost";
-    const char *destination_result;
-    char buffer[2048];
-    int add_result;
     socket_handle_t handle;
 
     if( !name_resolves( new_destination, AF_INET6 ) ) {
@@ -232,12 +227,7 @@ namespace {
 
   TEST( NetworkTargetSetDestination, PausedTarget ) {
     struct stumpless_target *target;
-    struct stumpless_target *target_result;
-    struct stumpless_entry *entry;
     const char *destination = "::1";
-    const char *destination_result;
-    char buffer[2048];
-    int add_result;
     socket_handle_t handle;
 
     handle = open_udp6_server_socket( destination, "514" );
@@ -254,12 +244,7 @@ namespace {
 
   TEST( NetworkTargetSetTransportPort, OpenTarget ) {
     struct stumpless_target *target;
-    struct stumpless_target *result;
-    struct stumpless_entry *entry;
     const char *new_port = "515";
-    const char *default_port;
-    const char *current_port;
-    char buffer[2048];
     socket_handle_t handle;
 
     handle = open_udp6_server_socket( "::1", new_port );
