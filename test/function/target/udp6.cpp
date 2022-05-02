@@ -46,7 +46,7 @@ namespace {
       struct stumpless_target *target = NULL;
       struct stumpless_entry *basic_entry = NULL;
       bool udp_fixtures_enabled = true;
-      char buffer[2048];
+      char buffer[2048] = {};
       const char *port = "514";
       socket_handle_t handle = BAD_HANDLE;
 
