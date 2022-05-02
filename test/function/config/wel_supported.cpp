@@ -30,6 +30,8 @@ namespace {
     protected:
       struct stumpless_entry *simple_entry = NULL;
       struct stumpless_entry *insertion_entry = NULL;
+      struct stumpless_entry *one_insertion_param_entry = NULL;
+      struct stumpless_param *insertion_param = NULL;
       LPCSTR first_insertion = "message #1";
       LPCSTR second_insertion = "message #2";
       LPCWSTR first_insertion_w = L"message #1";
@@ -57,12 +59,29 @@ namespace {
                                            2,
                                            first_insertion,
                                            second_insertion );
+
+      one_insertion_param_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                                       STUMPLESS_SEVERITY_INFO,
+                                                       "stumpless-wel-unit-test",
+                                                       "one-insertion-param-entry",
+                                                       "message with one insertion param" );
+
+      stumpless_set_wel_category( one_insertion_param_entry, CATEGORY_TEST );
+      stumpless_set_wel_event_id( one_insertion_param_entry, MSG_ONE_INSERTION );
+      stumpless_set_wel_type( one_insertion_param_entry, EVENTLOG_SUCCESS );
+
+      insertion_param = stumpless_new_param( "index-0", first_insertion );
+      stumpless_set_wel_insertion_param( one_insertion_param_entry,
+                                         0,
+                                         insertion_param );
     }
 
     virtual void
     TearDown( void ) {
       stumpless_destroy_entry_only( simple_entry );
       stumpless_destroy_entry_only( insertion_entry );
+      stumpless_destroy_entry_and_contents( one_insertion_param_entry );
+      stumpless_destroy_param( insertion_param );
     }
   };
 
@@ -99,6 +118,34 @@ namespace {
     result = stumpless_get_wel_event_id( simple_entry );
     EXPECT_NO_ERROR;
     EXPECT_EQ( result, MSG_SIMPLE );
+  }
+
+  TEST_F( WelSupportedTest, GetInsertionParam ) {
+    const struct stumpless_param *result;
+
+    result = stumpless_get_wel_insertion_param( one_insertion_param_entry, 0 );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result == insertion_param );
+  }
+
+  TEST_F( WelSupportedTest, GetInsertionParamIndexTooHigh ) {
+    const struct stumpless_param *result;
+    WORD index = 4;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_wel_insertion_param( one_insertion_param_entry, index );
+    EXPECT_NULL( result );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+    EXPECT_EQ( error->code, index );
+  }
+
+  TEST_F( WelSupportedTest, GetInsertionParamStringSetInstead ) {
+    const struct stumpless_param *result;
+
+    result = stumpless_get_wel_insertion_param( insertion_entry, 0 );
+    EXPECT_NO_ERROR;
+    EXPECT_NULL( result );
   }
 
   TEST_F( WelSupportedTest, GetInsertionStringIndexTooHigh ) {
@@ -304,6 +351,33 @@ namespace {
     result = stumpless_get_wel_event_id( NULL );
     EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelGetEntryInsertionParamTest, NullEntry ) {
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_wel_insertion_param( NULL, 0 );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelGetEntryInsertionParamTest, EmptyEntry ) {
+    const struct stumpless_entry *entry;
+    WORD index = 0;
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_get_wel_insertion_param( entry, 0 );
+    EXPECT_NULL( result );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+    EXPECT_EQ( error->code, index );
+
+    stumpless_destroy_entry_only( entry );
   }
 
   TEST( WelGetEntryInsertionStringTest, AfterParamSetAndUnset ) {

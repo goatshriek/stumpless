@@ -240,7 +240,27 @@ stumpless_get_wel_event_id( const struct stumpless_entry *entry ) {
 struct stumpless_param *
 stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
                                    WORD index ) {
-  return NULL;
+  const struct wel_data *data;
+  struct stumpless_param *param = NULL;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  data = entry->wel_data;
+  lock_wel_data( data );
+  if( index >= data->insertion_count ) {
+    raise_index_out_of_bounds(
+       L10N_INVALID_INDEX_ERROR_MESSAGE( "insertion string" ),
+       index
+    );
+    goto cleanup_and_return;
+  }
+
+  clear_error(  );
+  param = data->insertion_params[index];
+
+cleanup_and_return:
+  unlock_wel_data( data );
+  return param;
 }
 
 LPCSTR

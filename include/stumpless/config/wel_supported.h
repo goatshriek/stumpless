@@ -115,8 +115,9 @@ stumpless_get_wel_event_id( const struct stumpless_entry *entry );
  * @param index The index of the insertion param to retrieve.
  *
  * @return The specified insertion param. If the provided index is in range
- * but has not yet been assigned, then NULL is returned. In the event of an
- * error, then NULL will be returned and an error code is set appropriately.
+ * but has not yet been assigned a param, then NULL is returned. In the event
+ * of an error, then NULL will be returned and an error code is set
+ * appropriately.
  */
 struct stumpless_param *
 stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
