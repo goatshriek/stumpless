@@ -256,7 +256,7 @@ stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
   }
 
   clear_error(  );
-  param = data->insertion_params[index];
+  param = ( struct stumpless_param * ) data->insertion_params[index];
 
 cleanup_and_return:
   unlock_wel_data( data );
@@ -484,7 +484,14 @@ struct stumpless_entry *
   stumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
                                          WORD count,
                                          ... ) {
-  return NULL;
+  va_list insertions;
+  struct stumpless_entry *result;
+
+  va_start( insertions, count );
+  result = vstumpless_set_wel_insertion_strings_w( entry, count, insertions );
+  va_end( insertions );
+
+  return result;
 }
 
 struct stumpless_entry *
@@ -543,6 +550,36 @@ struct stumpless_entry *
 vstumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
                                         WORD count,
                                         va_list insertions ) {
+  struct wel_data *data;
+  struct stumpless_entry *result;
+  WORD i = 0;
+  LPCWSTR arg;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  data = entry->wel_data;
+  lock_wel_data( data );
+
+  for( i = 0; i < count; i++ ) {
+    arg = va_arg( insertions, LPCWSTR );
+
+    if( !arg ) {
+      raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "insertion string" ) );
+      goto fail;
+    }
+
+    result = set_wel_insertion_string_w( entry, i, arg );
+    if( !result ) {
+      goto fail;
+    }
+  }
+
+  unlock_wel_data( data );
+  clear_error(  );
+  return entry;
+
+fail:
+  unlock_wel_data( data );
   return NULL;
 }
 

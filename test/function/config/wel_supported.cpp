@@ -736,4 +736,57 @@ namespace {
 
     stumpless_destroy_entry_only( entry );
   }
+
+  TEST( WelSetInsertionStringsWTest, NullEntry ) {
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_wel_insertion_strings_w( NULL, 1, L"add me!" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( WelSetInsertionStringsWTest, NullString ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    entry = create_empty_entry();
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_set_wel_insertion_strings_w( entry, 1, NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_destroy_entry_only( entry );
+  }
+
+  TEST( WelSetInsertionStringsWTest, TwoStrings ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    LPCWSTR first = L"tik";
+    LPCWSTR second = L"tok";
+    LPCWSTR insertion;
+
+    entry = create_empty_entry();
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_set_wel_insertion_strings_w( entry, 2, first, second );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result == entry );
+
+    insertion = stumpless_get_wel_insertion_string_w( entry, 0 );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( insertion != first );
+    EXPECT_EQ( wcscmp( insertion, first ), 0 );
+
+    insertion = stumpless_get_wel_insertion_string_w( entry, 1 );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( insertion != second );
+    EXPECT_EQ( wcscmp( insertion, second ), 0 );
+
+    stumpless_destroy_entry_only( entry );
+  }
 }
