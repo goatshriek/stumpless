@@ -28,11 +28,17 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "Es wurde versucht einen nicht unterstützen Zieltyp zu schließen"
 
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"L10N MISSING COMMIT TRANSACTION FAILED ERROR MESSAGE"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "Verbindung mit einem sys/socket.h-Socket fehlgeschlagen"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "Verbindung mit einem winsock2 fehlgeschlagen"
+
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"L10N MISSING CREATE TRANSACTION FAILED ERROR MESSAGE"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "Ziel ist nur für Netzwerkziele gültig"
@@ -140,6 +146,9 @@ ARG_NAME " war NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "Ein Parameter mit den angegebenen Eigenschaften konnte nicht gefunden werden"
 
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"L10N MISSING REGISTRY SUBKEY CREATION FAILED ERROR MESSAGE"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "Es wurde versucht einen Eintrag an einen nicht unterstützten Zieltyp zu senden"
 
@@ -187,6 +196,9 @@ ARG_NAME " war NULL"
 
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "L10N MISSING WIDE TO MB CONVERSION ERROR MESSAGE"
+
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"L10N MISSING WINDOWS RETURN ERROR CODE TYPE"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket Fehler Code"

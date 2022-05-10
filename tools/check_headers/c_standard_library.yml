@@ -3,6 +3,7 @@
 "atomic_store": "stdatomic.h"
 "atomic_uintptr_t": "stdatomic.h"
 "bool": "stdbool.h"
+"CreateTransaction": "ktmw32.h"
 "CRITICAL_SECTION":
   - "private/windows_wrapper.h"
   - "windows.h"

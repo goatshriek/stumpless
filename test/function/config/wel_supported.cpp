@@ -335,6 +335,20 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( WelEventSource, Installation ) {
+    DWORD result;
+    const struct stumpless_error *error;
+
+    result = stumpless_add_default_wel_event_source(  );
+    error = stumpless_get_error(  );
+    if( error != NULL && error->code == ERROR_ACCESS_DENIED ) {
+      SUCCEED(  ) << "not enough permissions to install, skipping test";
+    } else {
+      EXPECT_NO_ERROR;
+      EXPECT_EQ( result, ERROR_SUCCESS );
+    }
+  }
+
   TEST( WelGetEntryCategoryTest, NullEntry ) {
     WORD result;
     const struct stumpless_error *error;
@@ -345,7 +359,7 @@ namespace {
   }
 
   TEST( WelGetEntryEventIdTest, NullEntry ) {
-    WORD result;
+    DWORD result;
     const struct stumpless_error *error;
 
     result = stumpless_get_wel_event_id( NULL );

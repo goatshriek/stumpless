@@ -28,11 +28,17 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "pokus o uzatvorenie cieľového súboru nepodporovaného typu"
 
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"L10N MISSING COMMIT TRANSACTION FAILED ERROR MESSAGE"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "zlyhanie spojenie so sys/socket.h socketom"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "zlyhanie spojenie s winsock socketom"
+
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"L10N MISSING CREATE TRANSACTION FAILED ERROR MESSAGE"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "daný cieľový súbor je platný len pre sieťové ciele"
@@ -136,6 +142,9 @@ ARG_NAME " mal hodnotu NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "špecifikovaný parameter nebol nájdený"
 
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"L10N MISSING REGISTRY SUBKEY CREATION FAILED ERROR MESSAGE"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "pokus o poslanie vstupu nepodporovaného typu na cieľ"
 
@@ -183,6 +192,9 @@ ARG_NAME " mal hodnotu NULL"
 
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "L10N MISSING WIDE TO MB CONVERSION ERROR MESSAGE"
+
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"L10N MISSING WINDOWS RETURN ERROR CODE TYPE"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "chybová návratová hodota (error code) Windows Socketu"

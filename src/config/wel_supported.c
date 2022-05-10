@@ -19,6 +19,7 @@
 /* this must be included first to avoid errors */
 #include "private/windows_wrapper.h"
 
+#include <ktmw32.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -203,6 +204,73 @@ struct stumpless_entry *
   }
 
   return swap_wel_insertion_string( entry, index, str_copy );
+}
+
+/* public definitions */
+
+DWORD
+stumpless_add_default_wel_event_source( void ) {
+  HANDLE trans;
+  DWORD result = ERROR_SUCCESS;
+  LPCWSTR subkey = L"SYSTEM\\CurrentControlSet\\Services\\EventLog\\" \
+                   L"Application\\Stumpless";
+  HKEY subkey_handle;
+  LSTATUS reg_result;
+  BOOL commit_result;
+
+  clear_error(  );
+  
+  trans = CreateTransaction( NULL,
+                             0,
+                             0,
+                             0,
+                             0,
+                             0,
+                             L"Registration of Stumpless Event Source" );
+
+  if( trans == INVALID_HANDLE_VALUE ) {
+    result = GetLastError(  );
+    raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+    return result;
+  }
+
+  reg_result = RegCreateKeyTransactedW( HKEY_LOCAL_MACHINE,
+                                        subkey,
+                                        0,
+                                        NULL,
+                                        REG_OPTION_NON_VOLATILE,
+                                        KEY_CREATE_SUB_KEY | KEY_SET_VALUE,
+                                        NULL,
+                                        &subkey_handle,
+                                        NULL,
+                                        trans,
+                                        NULL );
+  if( reg_result != ERROR_SUCCESS ) {
+    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    result = reg_result;
+    goto cleanup_and_return;
+  }
+
+  commit_result = CommitTransaction( trans );
+  if( commit_result == 0 ) {
+    result = GetLastError(  );
+    raise_windows_failure( L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+  }
+
+cleanup_and_return:
+  CloseHandle( trans );
+  return result;
+}
+
+DWORD
+stumpless_add_wel_event_source( void ) {
+  return ERROR_SUCCESS;
 }
 
 WORD

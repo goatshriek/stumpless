@@ -80,6 +80,7 @@
 "raise_journald_failure": "private/error.h"
 "raise_mb_conversion_failure": "private/error.h"
 "raise_wide_conversion_failure": "private/error.h"
+"raise_windows_failure": "private/error.h"
 "repeat_add_entry": "test/helper/usage.hpp"
 "RFC_5424_FULL_DATE_BUFFER_SIZE": "private/formatter.h"
 "RFC_5424_FULL_TIME_BUFFER_SIZE": "private/formatter.h"

@@ -812,6 +812,10 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
   target_link_libraries(stumpless PRIVATE systemd)
 endif()
 
+if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+  target_link_libraries(stumpless PRIVATE KtmW32)
+endif()
+
 if(HAVE_STDATOMIC_H)
   find_library(LIBATOMIC_FOUND atomic)
   if(LIBATOMIC_FOUND)

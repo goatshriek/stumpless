@@ -28,11 +28,17 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "tentativo di chiusura di un target non supportato"
 
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CommitTransaction fallita"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "connect fallita con un socket sys/socket.h"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "connect fallita con un socket winsock2"
+
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CreateTransaction fallita"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "la destinazione è valida solo per target di rete"
@@ -136,6 +142,9 @@ ARG_NAME " era NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "non è stato possibile trovare un parametro con le caratteristiche definite"
 
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"non è stato possibile creare una chiave nel registro"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "tentativo di invio di una voce a un tipo di target non supportato"
 
@@ -183,6 +192,9 @@ ARG_NAME " era NULL"
 
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "non è stato possibile convertire una stringa \"wide\" a una stringa multibyte"
+
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"il codice di errore di ritorno della chiamata fallita"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "codice di errore di Windows Socket"

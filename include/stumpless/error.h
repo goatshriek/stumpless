@@ -119,7 +119,14 @@ extern "C" {
  *
  * @since release v2.1.0
  */\
-  ERROR( STUMPLESS_JOURNALD_FAILURE, 27 )
+  ERROR( STUMPLESS_JOURNALD_FAILURE, 27 ) \
+/**
+ * A general failure of a Windows API call. Details on what call failed and
+ * why are provided in the error details.
+ *
+ * @since release v2.1.0
+ */\
+  ERROR( STUMPLESS_WINDOWS_FAILURE, 28 )
 
 
 /**

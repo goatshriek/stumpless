@@ -32,12 +32,33 @@
 #  include <windows.h>
 
 #  include <stdarg.h>
+#  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/param.h>
 
 #  ifdef __cplusplus
 extern "C" {
 #  endif
+
+/**
+ * Creates the registry entries and message file for default entries.
+ *
+ * Specifically, the following registry subkey is created:
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Application\Stumpless
+ *
+ * This new key is given the following registry values:
+ * 
+ *
+ * See https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources for
+ * more information on the event source registration process this function
+ * follows.
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or the result of
+ * GetLastError if an error was encountered.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+DWORD
+stumpless_add_default_wel_event_source( void );
 
 /**
  * Gets the category of an entry used with Windows Event Log targets.
@@ -63,6 +84,7 @@ extern "C" {
  * @return The entry category. In the event of an error, then zero is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 WORD
 stumpless_get_wel_category( const struct stumpless_entry *entry );
 
@@ -90,6 +112,7 @@ stumpless_get_wel_category( const struct stumpless_entry *entry );
  * @return The entry event id. In the event of an error, then zero is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 DWORD
 stumpless_get_wel_event_id( const struct stumpless_entry *entry );
 
@@ -119,6 +142,7 @@ stumpless_get_wel_event_id( const struct stumpless_entry *entry );
  * of an error, then NULL will be returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
                                    WORD index );
@@ -162,6 +186,7 @@ stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
  * changes made during the encoding conversions. If this is a problem, consider
  * using the `_w` variants of functions in this header.
  */
+STUMPLESS_PUBLIC_FUNCTION
 LPCSTR
 stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                     WORD index );
@@ -200,6 +225,7 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
  * error, then NULL will be returned and an error code is set appropriately.
  * The returned string will be a wide character string.
  */
+STUMPLESS_PUBLIC_FUNCTION
 LPCWSTR
 stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
                                       WORD index );
@@ -228,6 +254,7 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
  * @return The entry type. In the event of an error, then zero is
  * returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 WORD
 stumpless_get_wel_type( const struct stumpless_entry *entry );
 
@@ -259,6 +286,7 @@ stumpless_get_wel_type( const struct stumpless_entry *entry );
  * error, then NULL will be returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_category( struct stumpless_entry *entry, WORD category );
 
@@ -289,6 +317,7 @@ stumpless_set_wel_category( struct stumpless_entry *entry, WORD category );
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
 
@@ -339,6 +368,7 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id );
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
                                    WORD index,
@@ -387,6 +417,7 @@ stumpless_set_wel_insertion_param( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
                                     WORD index,
@@ -436,6 +467,7 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_insertion_string_w( struct stumpless_entry *entry,
                                       WORD index,
@@ -477,6 +509,7 @@ stumpless_set_wel_insertion_string_w( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                      WORD count,
@@ -519,6 +552,7 @@ stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
                                        WORD count,
@@ -551,6 +585,7 @@ stumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
 
@@ -593,6 +628,7 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type );
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                       WORD count,
@@ -637,6 +673,7 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
  * @return The modified entry if no error is encountered. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 vstumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
                                         WORD count,

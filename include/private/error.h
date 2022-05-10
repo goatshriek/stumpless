@@ -186,4 +186,19 @@ COLD_FUNCTION
 void
 raise_wide_conversion_failure( int code );
 
+/**
+ * Raises an error indicating a general failure of a Windows API call. Details
+ * on what call failed and why must be provided.
+ *
+ * @param message A localized description of the failure that occurred,
+ * including a function name or operation type that failed.
+ *
+ * @param code An error code.
+ *
+ * @param code_type A localized description of what the code type is.
+ */
+COLD_FUNCTION
+void
+raise_windows_failure( const char *message, int code, const char *code_type );
+
 #endif /* __STUMPLESS_PRIVATE_ERROR_H */

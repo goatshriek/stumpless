@@ -28,11 +28,17 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba zamknięcia pliku docelowego nieobsługiwanego typu"
 
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"L10N MISSING COMMIT TRANSACTION FAILED ERROR MESSAGE"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "awaria połączenia z gniazdem sys/socket.h socketem"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "Awaria połączenia winsock socketem"
+
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"L10N MISSING CREATE TRANSACTION FAILED ERROR MESSAGE"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "podany plik docelowy jest ważny tylko dla miejsc docelowych w sieci"
@@ -136,6 +142,9 @@ ARG_NAME " miał wartość NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "określony parametr nie został znaleziony"
 
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"L10N MISSING REGISTRY SUBKEY CREATION FAILED ERROR MESSAGE"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba wysłania nieobsługiwanego typu danych wejściowych do celu"
 
@@ -186,6 +195,9 @@ ARG_NAME " miał wartość NULL"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "błąd zwracane wartości (error code) Windows socketu"
+
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"L10N MISSING WINDOWS RETURN ERROR CODE TYPE"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "awaria otwierania winsock2 socketu"

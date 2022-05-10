@@ -367,3 +367,8 @@ raise_wide_conversion_failure( int code ) {
     code,
     L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE );
 }
+
+void
+raise_windows_failure( const char *message, int code, const char *code_type ) {
+  raise_error( STUMPLESS_WINDOWS_FAILURE, message, code, code_type );
+}
