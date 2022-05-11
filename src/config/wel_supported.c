@@ -210,6 +210,9 @@ struct stumpless_entry *
 
 DWORD
 stumpless_add_default_wel_event_source( void ) {
+  HMODULE this_module;
+  WCHAR library_path[MAX_PATH];
+  DWORD library_path_size;
   HANDLE trans;
   DWORD result = ERROR_SUCCESS;
   LPCWSTR subkey = L"SYSTEM\\CurrentControlSet\\Services\\EventLog\\" \
@@ -217,10 +220,38 @@ stumpless_add_default_wel_event_source( void ) {
   HKEY subkey_handle;
   LSTATUS reg_result;
   DWORD dword_val;
-  BOOL commit_result;
+  BOOL bool_result;
 
   clear_error(  );
-  
+
+  // get the path to this library
+  bool_result = GetModuleHandleExW( GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | 
+                                      GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                                    ( LPCWSTR ) &stumpless_add_default_wel_event_source,
+                                    &this_module ) ;
+  if( bool_result == 0 ) {
+    result = GetLastError(  );
+    raise_windows_failure( "GetModuleHandleExW failed",
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+    return result;
+  }
+
+  // TODO need to handle long path names at some point (of form `//?/`)
+  library_path_size = GetModuleFileNameW( this_module, library_path, MAX_PATH );
+  if( library_path_size == 0 ) {
+    result = GetLastError(  );
+    raise_windows_failure( "GetModuleFileNameW failed",
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+    return result;
+  }
+
+  if( library_path_size != MAX_PATH ) {
+    library_path_size += 1;
+  }
+  library_path_size *= sizeof( WCHAR );
+
   trans = CreateTransaction( NULL,
                              0,
                              0,
@@ -256,7 +287,7 @@ stumpless_add_default_wel_event_source( void ) {
     goto cleanup_transaction;
   }
 
-  dword_val = 2; // TODO need to get this properly
+  dword_val = 8; // one for each severity
   reg_result = RegSetValueExW( subkey_handle,
                                L"CategoryCount",
                                0,
@@ -271,6 +302,49 @@ stumpless_add_default_wel_event_source( void ) {
     goto cleanup_key;
   }
 
+  reg_result = RegSetValueExW( subkey_handle,
+                               L"CategoryMessageFile",
+                               0,
+                               REG_SZ,
+                               &library_path,
+                               library_path_size );
+  if( reg_result != ERROR_SUCCESS ) {
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    result = reg_result;
+    goto cleanup_key;
+  }
+
+  reg_result = RegSetValueExW( subkey_handle,
+                               L"EventMessageFile",
+                               0,
+                               REG_SZ,
+                               &library_path,
+                               library_path_size );
+  if( reg_result != ERROR_SUCCESS ) {
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    result = reg_result;
+    goto cleanup_key;
+  }
+
+  reg_result = RegSetValueExW( subkey_handle,
+                               L"ParameterMessageFile",
+                               0,
+                               REG_SZ,
+                               &library_path,
+                               library_path_size );
+  if( reg_result != ERROR_SUCCESS ) {
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    result = reg_result;
+    goto cleanup_key;
+  }
+
+  // all of the possible types
   dword_val = EVENTLOG_AUDIT_FAILURE |
                 EVENTLOG_AUDIT_SUCCESS |
                 EVENTLOG_ERROR_TYPE |
@@ -290,8 +364,8 @@ stumpless_add_default_wel_event_source( void ) {
     goto cleanup_key;
   }
 
-  commit_result = CommitTransaction( trans );
-  if( commit_result == 0 ) {
+  bool_result = CommitTransaction( trans );
+  if( bool_result == 0 ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE,
                            result,

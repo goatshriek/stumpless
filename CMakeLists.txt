@@ -655,6 +655,34 @@ else()
     set(MESSAGE_COMPILER_EXE mc)
   endif()
 
+  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/stumpless/windows")
+  ADD_CUSTOM_COMMAND(
+     OUTPUT
+       "${PROJECT_BINARY_DIR}/include/stumpless/windows/default_events.h"
+       "${PROJECT_BINARY_DIR}/default_events.rc"
+     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
+       -r "${PROJECT_BINARY_DIR}"
+       -h "${PROJECT_BINARY_DIR}/include/stumpless/windows"
+       "${PROJECT_SOURCE_DIR}/src/windows/default_events.mc"
+     DEPENDS "${PROJECT_SOURCE_DIR}/src/windows/default_events.mc"
+     COMMENT "Generating default stumpless events"
+  )
+
+  add_library(default_events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/default_events.rc")
+  set_target_properties(default_events PROPERTIES LINKER_LANGUAGE "C" )
+  set_target_properties(default_events PROPERTIES VERSION ${PROJECT_VERSION})
+  set_target_properties(default_events PROPERTIES SOVERSION 0)
+  if(MSVC)
+    set_target_properties(default_events PROPERTIES LINK_FLAGS "/NOENTRY" )
+  endif()
+
+  list(APPEND STUMPLESS_SOURCES "${PROJECT_BINARY_DIR}/default_events.rc")
+
+  install(FILES
+    "${PROJECT_BINARY_DIR}/include/stumpless/windows/default_events.h"
+    DESTINATION "include/stumpless/windows"
+  )
+
   file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
   ADD_CUSTOM_COMMAND(
      OUTPUT
@@ -814,6 +842,7 @@ endif()
 
 if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
   target_link_libraries(stumpless PRIVATE KtmW32)
+  add_dependencies(stumpless default_events)
 endif()
 
 if(HAVE_STDATOMIC_H)

@@ -39,12 +39,61 @@ LanguageNames=(English=0x0409:MSG00409)
 MessageIdTypedef=WORD
 
 MessageId=0x1
-SumbolicName=STUMPLESS_EVENT
+SymbolicName=STUMPLESS_EMERGENCY_EVENT
 Language=English
-Stumpless Event
+Stumpless Emergency Event
+.
+
+MessageId=0x2
+SymbolicName=STUMPLESS_ALERT_EVENT
+Language=English
+Stumpless Alert Event
+.
+
+MessageId=0x3
+SymbolicName=STUMPLESS_CRITICAL_EVENT
+Language=English
+Stumpless Critical Event
+.
+
+MessageId=0x4
+SymbolicName=STUMPLESS_ERR_EVENT
+Language=English
+Stumpless Error Event
+.
+
+MessageId=0x5
+SymbolicName=STUMPLESS_WARNING_EVENT
+Language=English
+Stumpless Warning Event
+.
+
+MessageId=0x6
+SymbolicName=STUMPLESS_NOTICE_EVENT
+Language=English
+Stumpless Notice Event
+.
+
+MessageId=0x7
+SymbolicName=STUMPLESS_INFO_EVENT
+Language=English
+Stumpless Informational Event
+.
+
+MessageId=0x8
+SymbolicName=STUMPLESS_DEBUG_EVENT
+Language=English
+Stumpless Debug Event
 .
 
 ; // message definitions
 
 MessageIdTypedef=DWORD
 
+MessageId=0x11
+Severity=Success
+Facility=Kernel
+SymbolicName=STUMPLESS_MSG_SUCCESS_KERNEL
+Language=English
+Stumpless Kernel Success message: %1.
+.
