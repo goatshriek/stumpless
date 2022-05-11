@@ -213,9 +213,10 @@ stumpless_add_default_wel_event_source( void ) {
   HANDLE trans;
   DWORD result = ERROR_SUCCESS;
   LPCWSTR subkey = L"SYSTEM\\CurrentControlSet\\Services\\EventLog\\" \
-                   L"Application\\Stumpless";
+                     L"Application\\Stumpless";
   HKEY subkey_handle;
   LSTATUS reg_result;
+  DWORD dword_val;
   BOOL commit_result;
 
   clear_error(  );
@@ -241,7 +242,7 @@ stumpless_add_default_wel_event_source( void ) {
                                         0,
                                         NULL,
                                         REG_OPTION_NON_VOLATILE,
-                                        KEY_CREATE_SUB_KEY | KEY_SET_VALUE,
+                                        KEY_SET_VALUE,
                                         NULL,
                                         &subkey_handle,
                                         NULL,
@@ -252,7 +253,41 @@ stumpless_add_default_wel_event_source( void ) {
                            reg_result,
                            L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     result = reg_result;
-    goto cleanup_and_return;
+    goto cleanup_transaction;
+  }
+
+  dword_val = 2; // TODO need to get this properly
+  reg_result = RegSetValueExW( subkey_handle,
+                               L"CategoryCount",
+                               0,
+                               REG_DWORD,
+                               &dword_val,
+                               sizeof( DWORD ) );
+  if( reg_result != ERROR_SUCCESS ) {
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    result = reg_result;
+    goto cleanup_key;
+  }
+
+  dword_val = EVENTLOG_AUDIT_FAILURE |
+                EVENTLOG_AUDIT_SUCCESS |
+                EVENTLOG_ERROR_TYPE |
+                EVENTLOG_INFORMATION_TYPE |
+                EVENTLOG_WARNING_TYPE;
+  reg_result = RegSetValueExW( subkey_handle,
+                               L"TypesSupported",
+                               0,
+                               REG_DWORD,
+                               &dword_val,
+                               sizeof( DWORD ) );
+  if( reg_result != ERROR_SUCCESS ) {
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    result = reg_result;
+    goto cleanup_key;
   }
 
   commit_result = CommitTransaction( trans );
@@ -263,7 +298,9 @@ stumpless_add_default_wel_event_source( void ) {
                            L10N_GETLASTERROR_ERROR_CODE_TYPE );
   }
 
-cleanup_and_return:
+cleanup_key:
+  RegCloseKey( subkey_handle );
+cleanup_transaction:
   CloseHandle( trans );
   return result;
 }

@@ -338,6 +338,8 @@ namespace {
   TEST( WelEventSource, Installation ) {
     DWORD result;
     const struct stumpless_error *error;
+    LSTATUS query_result;
+    HKEY created_key;
 
     result = stumpless_add_default_wel_event_source(  );
     error = stumpless_get_error(  );
@@ -346,6 +348,14 @@ namespace {
     } else {
       EXPECT_NO_ERROR;
       EXPECT_EQ( result, ERROR_SUCCESS );
+
+      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                                    L"SYSTEM\\CurrentControlSet\\Services\\"\
+                                      L"EventLog\\Application\\Stumpless",
+                                    0,
+                                    READ_CONTROL,
+                                    &created_key );
+      ASSERT_EQ( query_result, ERROR_SUCCESS );
     }
   }
 
