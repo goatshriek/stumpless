@@ -91,6 +91,16 @@ copy_wel_data( struct stumpless_entry *destination,
 void
 destroy_wel_data( const struct stumpless_entry *entry );
 
+/**
+ * Sets the Windows Event Log data structures to initial values.
+ *
+ * Assumes that the entry has not yet been provided for multithreaded
+ * operations and therefore does not need to be locked.
+ *
+ * @param entry The entry to initialize.
+ *
+ * @return true if initialization succeeded, false if not.
+ */
 bool
 initialize_wel_data( struct stumpless_entry *entry );
 

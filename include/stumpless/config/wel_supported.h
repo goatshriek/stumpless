@@ -44,14 +44,35 @@ extern "C" {
  * Creates the registry entries and message file for default entries.
  *
  * Specifically, the following registry subkey is created:
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Application\Stumpless
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
  *
  * This new key is given the following registry values:
- * 
+ * Sources: "Stumpless" as a REG_MULTI_SIZE.
  *
- * See https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources for
- * more information on the event source registration process this function
+ * A subkey is also created within this key named "Stumpless", with the
+ * following values set in it:
+ * CategoryCount: 8 (one category is present for each severity in RFC 5424)
+ * CategoryMessageFile: Points to the executing stumpless DLL.
+ * EventMessageFile: Points to the executing stumpless DLL.
+ * TypesSupported: 0x1f (all event types are allowed)
+ *
+ * Any existing keys are opened and existing values are overwritten.
+ *
+ * Because the current path to the Stumpless DLL is used during installation,
+ * this function should only be used by an installed library. Moving the library
+ * afterwards will invalidate the paths and cause problems in the Event Viewer.
+ *
+ * See https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources and
+ * https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-even/ac5ffa75-d036-4302-b008-ce9e0bcd60e3
+ * for more information on the event source registration process this function
  * follows.
+ *
+ * If the Event Viewer does not have an entry for the application or message or
+ * category descriptions are not displayed properly, you may need to restart the
+ * Event Viewer for this to take effect. Also, be aware that permissions set on
+ * the folder where the DLL resides may have an effect; see
+ * https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log
+ * for one such issue.
  *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
  * GetLastError if an error was encountered.

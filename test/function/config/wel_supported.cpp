@@ -303,9 +303,13 @@ namespace {
     ASSERT_NOT_NULL( target );
 
     EXPECT_EQ( target->type, STUMPLESS_WINDOWS_EVENT_LOG_TARGET );
-    EXPECT_STREQ( target->name, STUMPLESS_DEFAULT_TARGET_NAME );
+    EXPECT_STREQ( target->name, "Stumpless" );
 
     stumpless_free_all(  );
+  }
+
+  TEST( WelDefaultEvents, Message ) {
+    stump_str( "Default message for Stumpless" );
   }
 
   TEST( WelEntryCategoryTest, NullEntry ) {
@@ -351,7 +355,7 @@ namespace {
 
       query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
                                     L"SYSTEM\\CurrentControlSet\\Services\\"\
-                                      L"EventLog\\Application\\Stumpless",
+                                      L"EventLog\\Stumpless\\Stumpless",
                                     0,
                                     READ_CONTROL,
                                     &created_key );

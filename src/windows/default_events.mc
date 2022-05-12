@@ -95,5 +95,13 @@ Severity=Success
 Facility=Kernel
 SymbolicName=STUMPLESS_MSG_SUCCESS_KERNEL
 Language=English
-Stumpless Kernel Success message: %1.
+Stumpless Kernel Success message.
+.
+
+MessageId=0x17
+Severity=Success
+Facility=User
+SymbolicName=STUMPLESS_MSG_SUCCESS_USER
+Language=English
+Stumpless User Success message.
 .
