@@ -930,8 +930,8 @@ initialize_wel_data( struct stumpless_entry *entry ) {
   }
 
 
-  data->category = STUMPLESS_INFO_EVENT; // TODO just for testing, should be: get_severity( entry->prival ) + 1;
-  data->event_id = STUMPLESS_MSG_SUCCESS_KERNEL; // TODO just for testing
+  data->category = get_severity( entry->prival ) + 1;
+  data->event_id = STUMPLESS_WEL_MSG_SUCCESS_KERN; // TODO just for testing
   data->type = EVENTLOG_SUCCESS; // TODO just for testing
   data->insertion_strings = NULL;
   data->insertion_params = NULL;
