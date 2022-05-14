@@ -118,49 +118,6 @@ copy_lpcwstr( LPCWSTR str ) {
 }
 
 /**
- * Gets the type that should be used for the given prival.
- *
- * @param prival The prival to calculate the type for.
- *
- * @return The type that should be used for a message of the given prival.
- */
-static
-WORD
-get_type( int prival ) {
-  switch( get_severity( prival ) ) {
-    case STUMPLESS_SEVERITY_DEBUG_VALUE:
-      return EVENTLOG_SUCCESS;
-
-    case STUMPLESS_SEVERITY_NOTICE_VALUE:
-    case STUMPLESS_SEVERITY_INFO_VALUE:
-      return EVENTLOG_INFORMATION_TYPE;
-
-    case STUMPLESS_SEVERITY_WARNING_VALUE:
-      return EVENTLOG_WARNING_TYPE;
-
-    case STUMPLESS_SEVERITY_EMERG_VALUE:
-    case STUMPLESS_SEVERITY_ALERT_VALUE:
-    case STUMPLESS_SEVERITY_CRIT_VALUE:
-    case STUMPLESS_SEVERITY_ERR_VALUE:
-    default:
-      return EVENTLOG_ERROR_TYPE;
-  }
-}
-
-/**
- * Gets the event id that should be used for the given prival.
- *
- * @param prival The prival to calculate the event ID for.
- *
- * @return The event id that should be used for a message of the given prival.
- */
-static
-DWORD
-get_event_id( int prival ) {
-  return ( get_facility( prival ) >> 3 ) + ( get_type( prival ) * 23 ) + 1;
-}
-
-/**
  * Sets the insertion string at the given index to the provided wide string,
  * freeing the previous one if it existed.
  *
@@ -457,14 +414,20 @@ stumpless_add_wel_event_source( void ) {
 WORD
 stumpless_get_wel_category( const struct stumpless_entry *entry ) {
   const struct wel_data *data;
+  int prival;
   WORD category;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
 
-  clear_error(  );
   data = entry->wel_data;
+
   lock_wel_data( data );
-  category = data->category;
+  if( data->category_set ) {
+    category = data->category;
+  } else {
+    prival = stumpless_get_entry_prival( entry );
+    category = get_category( prival );
+  }
   unlock_wel_data( data );
 
   return category;
@@ -473,14 +436,20 @@ stumpless_get_wel_category( const struct stumpless_entry *entry ) {
 DWORD
 stumpless_get_wel_event_id( const struct stumpless_entry *entry ) {
   const struct wel_data *data;
+  int prival;
   DWORD event_id;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
 
-  clear_error(  );
   data = entry->wel_data;
+
   lock_wel_data( data );
-  event_id = data->event_id;
+  if( data->event_id_set ) {
+    event_id = data->event_id;
+  } else {
+    prival = stumpless_get_entry_prival( entry );
+    event_id = get_event_id( prival );
+  }
   unlock_wel_data( data );
 
   return event_id;
@@ -621,14 +590,20 @@ cleanup_and_return:
 WORD
 stumpless_get_wel_type( const struct stumpless_entry *entry ) {
   const struct wel_data *data;
+  int prival;
   WORD type;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
 
-  clear_error(  );
   data = entry->wel_data;
+
   lock_wel_data( data );
-  type = data->type;
+  if( data->type_set ) {
+    type = data->type;
+  } else {
+    prival = stumpless_get_entry_prival( entry );
+    type = get_type( prival );
+  }
   unlock_wel_data( data );
 
   return type;
@@ -643,6 +618,7 @@ stumpless_set_wel_category( struct stumpless_entry *entry, WORD category ) {
   data = entry->wel_data;
   lock_wel_data( data );
   data->category = category;
+  data->category_set = TRUE;
   unlock_wel_data( data );
 
   clear_error();
@@ -658,6 +634,7 @@ stumpless_set_wel_event_id( struct stumpless_entry *entry, DWORD event_id ) {
   data = entry->wel_data;
   lock_wel_data( data );
   data->event_id = event_id;
+  data->event_id_set = TRUE;
   unlock_wel_data( data );
 
   clear_error();
@@ -752,6 +729,7 @@ stumpless_set_wel_type( struct stumpless_entry *entry, WORD type ) {
   data = entry->wel_data;
   lock_wel_data( data );
   data->type = type;
+  data->type_set = TRUE;
   unlock_wel_data( data );
 
   clear_error();
@@ -898,8 +876,11 @@ copy_wel_data( struct stumpless_entry *destination,
   lock_wel_data( source_data );
 
   dest_data->type = source_data->type;
+  dest_data->type_set = source_data->type_set;
   dest_data->category = source_data->category;
+  dest_data->category_set = source_data->category_set;
   dest_data->event_id = source_data->event_id;
+  dest_data->event_id_set = source_data->event_id_set;
 
 
   if( source_data->insertion_count > 0 ) {
@@ -962,6 +943,38 @@ destroy_wel_data(const struct stumpless_entry* entry) {
   free_mem( data );
 }
 
+WORD
+get_category( int prival ) {
+  return get_severity( prival ) + 1;
+}
+
+DWORD
+get_event_id( int prival ) {
+  return ( get_facility( prival ) >> 3 ) + ( get_type( prival ) * 23 ) + 1;
+}
+
+WORD
+get_type( int prival ) {
+  switch( get_severity( prival ) ) {
+    case STUMPLESS_SEVERITY_DEBUG_VALUE:
+      return EVENTLOG_SUCCESS;
+
+    case STUMPLESS_SEVERITY_NOTICE_VALUE:
+    case STUMPLESS_SEVERITY_INFO_VALUE:
+      return EVENTLOG_INFORMATION_TYPE;
+
+    case STUMPLESS_SEVERITY_WARNING_VALUE:
+      return EVENTLOG_WARNING_TYPE;
+
+    case STUMPLESS_SEVERITY_EMERG_VALUE:
+    case STUMPLESS_SEVERITY_ALERT_VALUE:
+    case STUMPLESS_SEVERITY_CRIT_VALUE:
+    case STUMPLESS_SEVERITY_ERR_VALUE:
+    default:
+      return EVENTLOG_ERROR_TYPE;
+  }
+}
+
 bool
 initialize_wel_data( struct stumpless_entry *entry ) {
   struct wel_data *data;
@@ -972,9 +985,9 @@ initialize_wel_data( struct stumpless_entry *entry ) {
   }
 
 
-  data->category = get_severity( entry->prival ) + 1;
-  data->event_id = get_event_id( entry->prival );
-  data->type = get_type( entry-> prival );
+  data->category_set = FALSE;
+  data->event_id_set = FALSE;
+  data->type_set = FALSE;
   data->insertion_strings = NULL;
   data->insertion_params = NULL;
   data->insertion_count = 0;

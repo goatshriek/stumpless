@@ -36,10 +36,25 @@
 struct wel_data {
   /** The type of this entry, for use with Windows Event Log calls. */
   WORD type;
+  /**
+   * TRUE if the type has been set manually, FALSE if a default should be
+   * calculated.
+   */
+  BOOL type_set;
   /** The category of this entry, for use with Windows Event Log calls. */
   WORD category;
+  /**
+   * TRUE if the category has been set manually, FALSE if a default should be
+   * calculated.
+   */
+  BOOL category_set;
   /** The event id of this entry, for use with Windows Event Log calls. */
   DWORD event_id;
+  /**
+   * TRUE if the event_id has been set manually, FALSE if a default should be
+   * calculated.
+   */
+  BOOL event_id_set;
   /**
    * The number of insertion strings this entry has. This can be used as the
    * length of both the wel_insertion_strings and wel_insertion_params arrays.
@@ -90,6 +105,36 @@ copy_wel_data( struct stumpless_entry *destination,
 
 void
 destroy_wel_data( const struct stumpless_entry *entry );
+
+/**
+ * Gets the category that should be used for the given prival.
+ *
+ * @param prival The prival to calculate the category for.
+ *
+ * @return The category that should be used for a message of the given prival.
+ */
+WORD
+get_category( int prival );
+
+/**
+ * Gets the event id that should be used for the given prival.
+ *
+ * @param prival The prival to calculate the event ID for.
+ *
+ * @return The event id that should be used for a message of the given prival.
+ */
+DWORD
+get_event_id( int prival );
+
+/**
+ * Gets the type that should be used for the given prival.
+ *
+ * @param prival The prival to calculate the type for.
+ *
+ * @return The type that should be used for a message of the given prival.
+ */
+WORD
+get_type( int prival );
 
 /**
  * Sets the Windows Event Log data structures to initial values.

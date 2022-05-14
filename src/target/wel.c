@@ -159,6 +159,10 @@ sendto_wel_target( const struct wel_target *target,
   WORD i;
   struct wel_data *data;
   LPCWSTR insertion_str;
+  int prival;
+  WORD category;
+  WORD type;
+  DWORD event_id;
 
   data = entry->wel_data;
   lock_wel_data( data );
@@ -181,10 +185,30 @@ sendto_wel_target( const struct wel_target *target,
     }
   }
 
+  prival = stumpless_get_entry_prival( entry );
+
+  if( data->type_set ) {
+    type = data->type;
+  } else {
+    type = get_type( prival );
+  }
+
+  if( data->category_set ) {
+    category = data->category;
+  } else {
+    category = get_category( prival );
+  }
+
+  if( data->event_id_set ) {
+    event_id = data->event_id;
+  } else {
+    event_id = get_event_id( prival );
+  }
+
   success = ReportEventW( target->handle,
-                          data->type,
-                          data->category,
-                          data->event_id,
+                          type,
+                          category,
+                          event_id,
                           NULL,
                           data->insertion_count,
                           cap_size_t_to_int( msg_size ),

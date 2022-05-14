@@ -17,7 +17,13 @@
  */
 
 /** @file
- * Functions for working with Windows Event Log targets.
+ * Functions for working with Windows Event Log (WEL) targets.
+ *
+ * WEL targets submit events using ReportEvent to a Windows system. By default,
+ * the category, message id, and type will use values based on the severity and
+ * facility of the logged event for messages included in Stumpless itself. If
+ * you need to use your own message files, use the functions in
+ * stumpless/config/wel_supported.h to specifically set these values.
  *
  * This header will not be available in builds where Windows Event Log targets
  * are not supported.
