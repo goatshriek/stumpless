@@ -22,6 +22,7 @@
 #  include <stddef.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
+#  include "private/config.h"
 
 void
 destroy_target( const struct stumpless_target *target );
@@ -32,13 +33,23 @@ lock_target( const struct stumpless_target *target );
 struct stumpless_target *
 new_target( enum stumpless_target_type type, const char *name );
 
+COLD_FUNCTION
 struct stumpless_target *
 open_unsupported_target( struct stumpless_target *target );
 
+COLD_FUNCTION
+int
+send_entry_and_msg_to_unsupported_target( const struct stumpless_target *target,
+                                          const struct stumpless_entry *entry,
+                                          const char *msg,
+                                          size_t msg_size );
+
+COLD_FUNCTION
 int
 send_entry_to_unsupported_target( const struct stumpless_target *target,
                                   const struct stumpless_entry *entry );
 
+COLD_FUNCTION
 int
 sendto_unsupported_target( const struct stumpless_target *target,
                            const char *msg,
@@ -53,6 +64,7 @@ target_free_thread( void );
 void
 unlock_target( const struct stumpless_target *target );
 
+COLD_FUNCTION
 int
 unsupported_target_is_open( const struct stumpless_target *target );
 

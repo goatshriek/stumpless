@@ -39,49 +39,49 @@ LanguageNames=(English=0x0409:MSG00409)
 MessageIdTypedef=WORD
 
 MessageId=0x1
-SymbolicName=STUMPLESS_WEL_EMERGENCY_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_EMERGENCY
 Language=English
 Stumpless Emergency Event
 .
 
 MessageId=0x2
-SymbolicName=STUMPLESS_WEL_ALERT_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_ALERT
 Language=English
 Stumpless Alert Event
 .
 
 MessageId=0x3
-SymbolicName=STUMPLESS_WEL_CRITICAL_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_CRITICAL
 Language=English
 Stumpless Critical Event
 .
 
 MessageId=0x4
-SymbolicName=STUMPLESS_WEL_ERR_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_ERR
 Language=English
 Stumpless Error Event
 .
 
 MessageId=0x5
-SymbolicName=STUMPLESS_WEL_WARNING_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_WARNING
 Language=English
 Stumpless Warning Event
 .
 
 MessageId=0x6
-SymbolicName=STUMPLESS_WEL_NOTICE_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_NOTICE
 Language=English
 Stumpless Notice Event
 .
 
 MessageId=0x7
-SymbolicName=STUMPLESS_WEL_INFO_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_INFO
 Language=English
 Stumpless Informational Event
 .
 
 MessageId=0x8
-SymbolicName=STUMPLESS_WEL_DEBUG_EVENT
+SymbolicName=STUMPLESS_WEL_EVENT_DEBUG
 Language=English
 Stumpless Debug Event
 .

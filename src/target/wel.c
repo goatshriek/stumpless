@@ -26,6 +26,7 @@
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/wel.h"
@@ -150,8 +151,10 @@ fail:
 }
 
 int
-send_entry_to_wel_target( const struct wel_target *target,
-                          const struct stumpless_entry *entry ) {
+sendto_wel_target( const struct wel_target *target,
+                   const struct stumpless_entry *entry,
+                   const char *msg,
+                   size_t msg_size ) {
   BOOL success = FALSE;
   WORD i;
   struct wel_data *data;
@@ -184,9 +187,9 @@ send_entry_to_wel_target( const struct wel_target *target,
                           data->event_id,
                           NULL,
                           data->insertion_count,
-                          0,
+                          cap_size_t_to_int( msg_size ),
                           data->insertion_strings,
-                          NULL );
+                          ( LPVOID ) msg );
 
 cleanup_and_return:
   unlock_wel_data( data );

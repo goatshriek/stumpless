@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,14 @@
 #ifndef __STUMPLESS_PRIVATE_SEVERITY_H
 #  define __STUMPLESS_PRIVATE_SEVERITY_H
 
+/**
+ * Gets the value of the severity from the given prival. This will be equivalent
+ * to the STUMPLESS_SEVERITY_*_VALUE constant for the severity.
+ *
+ * @param prival The prival to extract the severity from.
+ *
+ * @return the severity of the prival, as an integer.
+ */
 int
 get_severity( int prival );
 

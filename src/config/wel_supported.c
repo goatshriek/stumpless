@@ -35,13 +35,12 @@
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/severity.h"
 #include "private/validate.h"
 
-
-#include "stumpless/windows/default_events.h"
 /**
  * Creates a copy of a NULL terminated multibyte string in wide string format.
  *
@@ -116,6 +115,49 @@ copy_lpcwstr( LPCWSTR str ) {
 
   memcpy( str_copy, str, str_size );
   return str_copy;
+}
+
+/**
+ * Gets the type that should be used for the given prival.
+ *
+ * @param prival The prival to calculate the type for.
+ *
+ * @return The type that should be used for a message of the given prival.
+ */
+static
+WORD
+get_type( int prival ) {
+  switch( get_severity( prival ) ) {
+    case STUMPLESS_SEVERITY_DEBUG_VALUE:
+      return EVENTLOG_SUCCESS;
+
+    case STUMPLESS_SEVERITY_NOTICE_VALUE:
+    case STUMPLESS_SEVERITY_INFO_VALUE:
+      return EVENTLOG_INFORMATION_TYPE;
+
+    case STUMPLESS_SEVERITY_WARNING_VALUE:
+      return EVENTLOG_WARNING_TYPE;
+
+    case STUMPLESS_SEVERITY_EMERG_VALUE:
+    case STUMPLESS_SEVERITY_ALERT_VALUE:
+    case STUMPLESS_SEVERITY_CRIT_VALUE:
+    case STUMPLESS_SEVERITY_ERR_VALUE:
+    default:
+      return EVENTLOG_ERROR_TYPE;
+  }
+}
+
+/**
+ * Gets the event id that should be used for the given prival.
+ *
+ * @param prival The prival to calculate the event ID for.
+ *
+ * @return The event id that should be used for a message of the given prival.
+ */
+static
+DWORD
+get_event_id( int prival ) {
+  return ( get_facility( prival ) >> 3 ) + ( get_type( prival ) * 23 ) + 1;
 }
 
 /**
@@ -931,8 +973,8 @@ initialize_wel_data( struct stumpless_entry *entry ) {
 
 
   data->category = get_severity( entry->prival ) + 1;
-  data->event_id = STUMPLESS_WEL_MSG_SUCCESS_KERN; // TODO just for testing
-  data->type = EVENTLOG_SUCCESS; // TODO just for testing
+  data->event_id = get_event_id( entry->prival );
+  data->type = get_type( entry-> prival );
   data->insertion_strings = NULL;
   data->insertion_params = NULL;
   data->insertion_count = 0;

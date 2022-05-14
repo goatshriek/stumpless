@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,14 @@
 #ifndef __STUMPLESS_PRIVATE_FACILITY_H
 #  define __STUMPLESS_PRIVATE_FACILITY_H
 
+/**
+ * Gets the value of the facility from the given prival. This will be equivalent
+ * to the STUMPLESS_FACILITY_*_VALUE constant for the facility.
+ *
+ * @param prival The prival to extract the facility from.
+ *
+ * @return the facility of the prival, as an integer.
+ */
 int
 get_facility( int prival );
 
