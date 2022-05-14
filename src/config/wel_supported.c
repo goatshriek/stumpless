@@ -41,6 +41,9 @@
 #include "private/severity.h"
 #include "private/validate.h"
 
+static LPCWSTR default_source_subkey = L"SYSTEM\\CurrentControlSet\\" \
+                                         L"Services\\EventLog\\Stumpless";
+
 /**
  * Creates a copy of a NULL terminated multibyte string in wide string format.
  *
@@ -217,8 +220,6 @@ stumpless_add_default_wel_event_source( void ) {
   DWORD library_path_size;
   HANDLE trans;
   DWORD result = ERROR_SUCCESS;
-  LPCWSTR subkey = L"SYSTEM\\CurrentControlSet\\Services\\EventLog\\" \
-                     L"Stumpless";
   WCHAR sources_value[] = { L'S', L't', L'u', L'm', L'p', L'l', L'e', L's',
                             L's', L'\0', L'\0' };
   LPCWSTR source_name = L"Stumpless";
@@ -275,7 +276,7 @@ stumpless_add_default_wel_event_source( void ) {
   }
 
   reg_result = RegCreateKeyTransactedW( HKEY_LOCAL_MACHINE,
-                                        subkey,
+                                        default_source_subkey,
                                         0,
                                         NULL,
                                         REG_OPTION_NON_VOLATILE,
@@ -286,10 +287,10 @@ stumpless_add_default_wel_event_source( void ) {
                                         trans,
                                         NULL );
   if( reg_result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
-                           reg_result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     goto cleanup_transaction;
   }
 
@@ -300,10 +301,10 @@ stumpless_add_default_wel_event_source( void ) {
                                ( const BYTE * ) sources_value,
                                sizeof( sources_value ) );
   if( reg_result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           reg_result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     goto cleanup_key;
   }
 
@@ -319,10 +320,10 @@ stumpless_add_default_wel_event_source( void ) {
                                         trans,
                                         NULL );
   if( reg_result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
-                           reg_result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     goto cleanup_key;
   }
 
@@ -334,10 +335,10 @@ stumpless_add_default_wel_event_source( void ) {
                                ( const BYTE * ) &dword_val,
                                sizeof( DWORD ) );
   if( reg_result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           reg_result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     goto cleanup_source;
   }
 
@@ -362,10 +363,10 @@ stumpless_add_default_wel_event_source( void ) {
                                ( const BYTE * ) &library_path,
                                library_path_size );
   if( reg_result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           reg_result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     goto cleanup_source;
   }
 
@@ -382,10 +383,10 @@ stumpless_add_default_wel_event_source( void ) {
                                ( const BYTE * ) &dword_val,
                                sizeof( DWORD ) );
   if( reg_result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           reg_result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
     goto cleanup_source;
   }
 
@@ -408,6 +409,7 @@ cleanup_transaction:
 
 DWORD
 stumpless_add_wel_event_source( void ) {
+  // TODO implement and document
   return ERROR_SUCCESS;
 }
 
@@ -607,6 +609,22 @@ stumpless_get_wel_type( const struct stumpless_entry *entry ) {
   unlock_wel_data( data );
 
   return type;
+}
+
+DWORD
+stumpless_remove_default_wel_event_source( void ) {
+  DWORD result = ERROR_SUCCESS;
+  LSTATUS reg_result;
+
+  reg_result = RegDeleteTreeW( HKEY_LOCAL_MACHINE, default_source_subkey );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+  }
+
+  return result;
 }
 
 struct stumpless_entry *

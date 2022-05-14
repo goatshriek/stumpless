@@ -41,7 +41,7 @@ extern "C" {
 #  endif
 
 /**
- * Creates the registry entries and message file for default entries.
+ * Creates the registry entries for default WEL entries.
  *
  * Specifically, the following registry subkey is created:
  * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
@@ -278,6 +278,19 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
 STUMPLESS_PUBLIC_FUNCTION
 WORD
 stumpless_get_wel_type( const struct stumpless_entry *entry );
+
+/**
+ * Removes the registry entries for default WEL entries.
+ *
+ * Specifically, the following registry subkey and all subkeys are deleted:
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or the result of
+ * GetLastError if an error was encountered.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+DWORD
+stumpless_remove_default_wel_event_source( void );
 
 /**
  * Sets the category of an entry for use with a Windows Event Log target.

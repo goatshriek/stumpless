@@ -23,7 +23,14 @@
  * the category, message id, and type will use values based on the severity and
  * facility of the logged event for messages included in Stumpless itself. If
  * you need to use your own message files, use the functions in
- * stumpless/config/wel_supported.h to specifically set these values.
+ * stumpless/config/wel_supported.h to specifically set these values. The
+ * formatted syslog message is included as the event binary data.
+ *
+ * Note that if the event source is not installed the Event Viewer will not be
+ * able to display the messages or category text for received events. If you'd
+ * like to use the default messages included in Stumpless, use the
+ * stumpless_add_default_wel_event_source function to install it on the calling
+ * system.
  *
  * This header will not be available in builds where Windows Event Log targets
  * are not supported.

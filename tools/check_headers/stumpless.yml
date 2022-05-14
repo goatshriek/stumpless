@@ -334,6 +334,7 @@
 "stumpless_perror": "stumpless/error.h"
 "STUMPLESS_PUBLIC_FUNCTION": "stumpless/config.h"
 "stumpless_read_buffer": "stumpless/target/buffer.h"
+"stumpless_remove_default_wel_event_source": "stumpless/config/wel_supported.h"
 "stumpless_set_current_target": "stumpless/target.h"
 "stumpless_set_default_facility": "stumpless/target.h"
 "stumpless_set_destination": "stumpless/target/network.h"
