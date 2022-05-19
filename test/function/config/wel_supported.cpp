@@ -361,9 +361,9 @@ namespace {
                                     &created_key );
       ASSERT_EQ( query_result, ERROR_SUCCESS );
 
-      result = stumpless_remove_default_wel_event_source(  );
-      EXPECT_NO_ERROR;
-      EXPECT_EQ( result, ERROR_SUCCESS );
+      //result = stumpless_remove_default_wel_event_source(  );
+      //EXPECT_NO_ERROR;
+      //EXPECT_EQ( result, ERROR_SUCCESS );
 
       // TODO check key doesn't exist
     }

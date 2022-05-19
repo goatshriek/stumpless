@@ -220,8 +220,8 @@ stumpless_add_default_wel_event_source( void ) {
   DWORD library_path_size;
   HANDLE trans;
   DWORD result = ERROR_SUCCESS;
-  WCHAR sources_value[] = { L'S', L't', L'u', L'm', L'p', L'l', L'e', L's',
-                            L's', L'\0', L'\0' };
+  LPCWSTR sources_value = L"Stumpless\0";
+  DWORD sources_value_size = 22;
   LPCWSTR source_name = L"Stumpless";
   HKEY subkey_handle;
   HKEY source_key_handle;
@@ -299,7 +299,7 @@ stumpless_add_default_wel_event_source( void ) {
                                0,
                                REG_MULTI_SZ,
                                ( const BYTE * ) sources_value,
-                               sizeof( sources_value ) );
+                               sources_value_size );
   if( reg_result != ERROR_SUCCESS ) {
     result = reg_result;
     raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
