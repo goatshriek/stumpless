@@ -476,3 +476,4 @@
 "stumpless_get_cons_stream" : "stumpless/target.h"
 "stumpless_set_cons_stream" : "stumpless/target.h"
 "stumpless_get_severity_string" : "stumpless/severity.h"
+"stumpless_get_facility_string" : "stumpless/facility.h"
