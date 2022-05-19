@@ -967,6 +967,10 @@ add_function_test(error_memory_failure
   SOURCES test/function/startup/error_memory_failure.cpp
 )
 
+add_function_test(facility
+  SOURCES test/function/facility.cpp
+)
+
 add_function_test(file
   SOURCES
     test/function/target/file.cpp

@@ -186,3 +186,4 @@ EXPORTS
   stumpless_trace_message_str                   @171
   stumplog_str                                  @172
   stumplog_trace_str                            @173
+  stumpless_get_facility_string                 @174
