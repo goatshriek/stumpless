@@ -16,8 +16,23 @@
  * limitations under the License.
  */
 
+#include <stddef.h>
+#include <stumpless/facility.h>
 #include "private/facility.h"
+#include "private/strhelper.h"
 
+static char *facility_enum_to_string[] = {
+  STUMPLESS_FOREACH_FACILITY( GENERATE_STRING )
+};
+
+const char *
+stumpless_get_facility_string( enum stumpless_facility facility ) {
+  size_t facility_upper_bound = sizeof facility_enum_to_string;
+  if ( !facility_is_invalid(facility) ) {
+    return facility_enum_to_string[facility/ sizeof facility_enum_to_string[0]];
+  }
+  return "NO_SUCH_FACILITY";
+}
 /* private functions */
 
 int
