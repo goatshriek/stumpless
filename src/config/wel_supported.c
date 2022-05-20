@@ -259,6 +259,13 @@ stumpless_add_default_wel_event_source( void ) {
   }
   library_path_size *= sizeof( WCHAR );
 
+  // before the modification transaction starts, we open the main key to see if it exists
+  reg_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                              default_source_subkey,
+                              KEY_QUERY_VALUE, NULL,
+                              &subkey_handle );
+  // TODO check result and query value
+
   trans = CreateTransaction( NULL,
                              0,
                              0,
