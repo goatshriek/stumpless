@@ -53,6 +53,7 @@ jobs:
         run: |
           cmake .
       - name: Sonarcloud Analysis
+        if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
         run: |
           wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
