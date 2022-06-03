@@ -150,6 +150,12 @@ ARG_NAME " was NULL"
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
 "a registry subkey could not be deleted"
 
+#  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be opened"
+
+#  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
+"a registry value could not be read"
+
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
 "a registry value could not be set"
 

@@ -148,6 +148,12 @@ ARG_NAME " era NULL"
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
 "non è stato possibile eliminare una chiave nel registro"
 
+#  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
+"non è stato possibile aprire una chiave nel registro"
+
+#  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
+"non è stato possibile leggere un valore nel registro"
+
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
 "non è stato possibile assegnare un valore nel registro"
 

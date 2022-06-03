@@ -121,6 +121,202 @@ copy_lpcwstr( LPCWSTR str ) {
 }
 
 /**
+ * Creates the given event source registry subkey, under the assumption that
+ * it does not currently exist. The source will be put in the registry under
+ * SYSTEM\CurrentControlSet\Services\EventLog.
+ * 
+ * @param source_name The event source to create. This string must be
+ * terminated by _two_ NULL characters, to allow its use in a REG_MULTI_SZ
+ * registry value.
+ *
+ * @param source_name_size The size of source_name in bytes, including the two
+ * terminating NULL characters. This must not be greater than 512, which is the
+ * maximum registry key name size including a NULL terminator. Must be greater
+ * than 2.
+ *
+ * @param message_file_path The path of the message file to use for the event
+ * source.
+ *
+ * @param message_file_path_size The size of message_file_path in bytes,
+ * including the terminating NULL character.
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or the result of
+ * GetLastError if an error was encountered.
+ */
+static
+DWORD
+create_event_source_subkey( LPCWSTR source_name,
+                            DWORD source_name_size,
+                            LPCWSTR message_file_path,
+                            DWORD message_file_path_size ) {
+  // length of array is the length of the prefix (43) plus the maximum registry
+  // key name length of 255 NULL terminating character, according to
+  // https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-element-size-limits
+  WCHAR source_subkey[299] =  { L'S', L'Y', L'S', L'T', L'E', L'M', L'\\', L'C',
+                                L'u', L'r', L'r', L'e', L'n', L't', L'C', L'o',
+                                L'n', L't', L'r', L'o', L'l', L'S', L'e', L't',
+                                L'\\', L'S', L'e', L'r', L'v', L'i', L'c', L'e',
+                                L's', L'\\', L'E', L'v', L'e', L'n', L't', L'L',
+                                L'o', L'g', L'\\' };
+  HANDLE trans;
+  DWORD result  = ERROR_SUCCESS;
+  LSTATUS reg_result;
+  HKEY subkey_handle;
+  HKEY source_key_handle;
+  DWORD dword_val;
+  BOOL bool_result;
+
+  trans = CreateTransaction( NULL,
+                           0,
+                           0,
+                           0,
+                           0,
+                           0,
+                           L"Registration of Stumpless Event Source" ); // TODO need to localize
+
+  if( trans == INVALID_HANDLE_VALUE ) {
+    result = GetLastError(  );
+    raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+    return result;
+  }
+
+  memcpy( source_subkey + 43, source_name, source_name_size - 2 );
+
+  reg_result = RegCreateKeyTransactedW( HKEY_LOCAL_MACHINE,
+                                        source_subkey,
+                                        0,
+                                        NULL,
+                                        REG_OPTION_NON_VOLATILE,
+                                        KEY_CREATE_SUB_KEY | KEY_SET_VALUE,
+                                        NULL,
+                                        &subkey_handle,
+                                        NULL,
+                                        trans,
+                                        NULL );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_transaction;
+  }
+
+  reg_result = RegSetValueExW( subkey_handle,
+                               L"Sources",
+                               0,
+                               REG_MULTI_SZ,
+                               ( const BYTE * ) source_name,
+                               source_name_size );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_key;
+  }
+
+  reg_result = RegCreateKeyTransactedW( subkey_handle,
+                                        source_name,
+                                        0,
+                                        NULL,
+                                        REG_OPTION_NON_VOLATILE,
+                                        KEY_SET_VALUE,
+                                        NULL,
+                                        &source_key_handle,
+                                        NULL,
+                                        trans,
+                                        NULL );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_key;
+  }
+
+  dword_val = 8; // one for each severity
+  reg_result = RegSetValueExW( source_key_handle,
+                               L"CategoryCount",
+                               0,
+                               REG_DWORD,
+                               ( const BYTE * ) &dword_val,
+                               sizeof( dword_val ) );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_source;
+  }
+
+  reg_result = RegSetValueExW( source_key_handle,
+                               L"CategoryMessageFile",
+                               0,
+                               REG_SZ,
+                               ( const BYTE * ) message_file_path,
+                               message_file_path_size );
+  if( reg_result != ERROR_SUCCESS ) {
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    result = reg_result;
+    goto cleanup_source;
+  }
+
+  reg_result = RegSetValueExW( source_key_handle,
+                               L"EventMessageFile",
+                               0,
+                               REG_SZ,
+                               ( const BYTE * ) message_file_path,
+                               message_file_path_size );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_source;
+  }
+
+  // all of the possible types
+  dword_val = EVENTLOG_AUDIT_FAILURE |
+                EVENTLOG_AUDIT_SUCCESS |
+                EVENTLOG_ERROR_TYPE |
+                EVENTLOG_INFORMATION_TYPE |
+                EVENTLOG_WARNING_TYPE;
+  reg_result = RegSetValueExW( source_key_handle,
+                               L"TypesSupported",
+                               0,
+                               REG_DWORD,
+                               ( const BYTE * ) &dword_val,
+                               sizeof( DWORD ) );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_source;
+  }
+
+  bool_result = CommitTransaction( trans );
+  if( bool_result == 0 ) {
+    result = GetLastError(  );
+    raise_windows_failure( L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+  }
+
+cleanup_source:
+  RegCloseKey( source_key_handle );
+cleanup_key:
+  RegCloseKey( subkey_handle );
+cleanup_transaction:
+  CloseHandle( trans );
+  return result;
+}
+
+/**
  * Sets the insertion string at the given index to the provided wide string,
  * freeing the previous one if it existed.
  *
@@ -198,9 +394,9 @@ set_wel_insertion_string( struct stumpless_entry *entry,
 */
 static
 struct stumpless_entry *
-  set_wel_insertion_string_w( struct stumpless_entry *entry,
-                              WORD index,
-                              LPCWSTR str ) {
+set_wel_insertion_string_w( struct stumpless_entry *entry,
+                            WORD index,
+                            LPCWSTR str ) {
   LPCWSTR str_copy;
 
   str_copy = copy_lpcwstr( str );
@@ -218,16 +414,16 @@ stumpless_add_default_wel_event_source( void ) {
   HMODULE this_module;
   WCHAR library_path[MAX_PATH];
   DWORD library_path_size;
-  HANDLE trans;
   DWORD result = ERROR_SUCCESS;
-  LPCWSTR sources_value = L"Stumpless\0";
-  DWORD sources_value_size = 22;
-  LPCWSTR source_name = L"Stumpless";
+  LPCWSTR source_name = L"Stumpless\0";
+  DWORD source_name_size = 22;
   HKEY subkey_handle;
-  HKEY source_key_handle;
   LSTATUS reg_result;
-  DWORD dword_val;
   BOOL bool_result;
+  DWORD value_type;
+  WCHAR sources_value_buffer[256];
+  DWORD value_size = sizeof( sources_value_buffer );
+  LPWSTR sources_value = sources_value_buffer;
 
   clear_error(  );
 
@@ -238,7 +434,7 @@ stumpless_add_default_wel_event_source( void ) {
                                     &this_module ) ;
   if( bool_result == 0 ) {
     result = GetLastError(  );
-    raise_windows_failure( "GetModuleHandleExW failed",
+    raise_windows_failure( "GetModuleHandleExW failed", // TODO need to localize
                            result,
                            L10N_GETLASTERROR_ERROR_CODE_TYPE );
     return result;
@@ -248,7 +444,7 @@ stumpless_add_default_wel_event_source( void ) {
   library_path_size = GetModuleFileNameW( this_module, library_path, MAX_PATH );
   if( library_path_size == 0 ) {
     result = GetLastError(  );
-    raise_windows_failure( "GetModuleFileNameW failed",
+    raise_windows_failure( "GetModuleFileNameW failed", // TODO need to localize
                            result,
                            L10N_GETLASTERROR_ERROR_CODE_TYPE );
     return result;
@@ -264,153 +460,61 @@ stumpless_add_default_wel_event_source( void ) {
                               default_source_subkey,
                               KEY_QUERY_VALUE, NULL,
                               &subkey_handle );
-  // TODO check result and query value
-
-  trans = CreateTransaction( NULL,
-                             0,
-                             0,
-                             0,
-                             0,
-                             0,
-                             L"Registration of Stumpless Event Source" );
-
-  if( trans == INVALID_HANDLE_VALUE ) {
-    result = GetLastError(  );
-    raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
-    return result;
-  }
-
-  reg_result = RegCreateKeyTransactedW( HKEY_LOCAL_MACHINE,
-                                        default_source_subkey,
-                                        0,
-                                        NULL,
-                                        REG_OPTION_NON_VOLATILE,
-                                        KEY_CREATE_SUB_KEY | KEY_SET_VALUE,
-                                        NULL,
-                                        &subkey_handle,
-                                        NULL,
-                                        trans,
-                                        NULL );
   if( reg_result != ERROR_SUCCESS ) {
-    result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_transaction;
+    if( reg_result == ERROR_FILE_NOT_FOUND ) {
+      // if the key doesn't exist at all, we can simply create it
+      return create_event_source_subkey( source_name,
+                                         source_name_size,
+                                         library_path,
+                                         library_path_size );
+    } else {
+      result = reg_result;
+      raise_windows_failure( L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE,
+                             result,
+                             L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+      return result;
+    }
   }
 
-  reg_result = RegSetValueExW( subkey_handle,
+  // if the key already exists, we need to check the sources list to see if the
+  // source name already exists
+  reg_result = RegGetValueW( subkey_handle,
+                             NULL,
+                             L"Sources",
+                             RRF_RT_REG_MULTI_SZ,
+                             &value_type,
+                             sources_value,
+                             &value_size );
+
+  if( reg_result == ERROR_MORE_DATA ) {
+    // allocate a new buffer and call again
+    sources_value = alloc_mem( value_size );
+    if( !sources_value ) {
+      result = ERROR_NOT_ENOUGH_MEMORY;
+      goto cleanup;
+    }
+
+    reg_result = RegGetValueW( subkey_handle,
+                               NULL,
                                L"Sources",
-                               0,
-                               REG_MULTI_SZ,
-                               ( const BYTE * ) sources_value,
-                               sources_value_size );
+                               RRF_RT_REG_MULTI_SZ,
+                               &value_type,
+                               sources_value,
+                               &value_size );
+  }
+
   if( reg_result != ERROR_SUCCESS ) {
     result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+    raise_windows_failure( L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE,
                            result,
                            L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_key;
+    goto cleanup;
   }
 
-  reg_result = RegCreateKeyTransactedW( subkey_handle,
-                                        source_name,
-                                        0,
-                                        NULL,
-                                        REG_OPTION_NON_VOLATILE,
-                                        KEY_SET_VALUE,
-                                        NULL,
-                                        &source_key_handle,
-                                        NULL,
-                                        trans,
-                                        NULL );
-  if( reg_result != ERROR_SUCCESS ) {
-    result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_key;
-  }
+  // TODO search for source name in this list, should probably be a helper function
 
-  dword_val = 8; // one for each severity
-  reg_result = RegSetValueExW( source_key_handle,
-                               L"CategoryCount",
-                               0,
-                               REG_DWORD,
-                               ( const BYTE * ) &dword_val,
-                               sizeof( DWORD ) );
-  if( reg_result != ERROR_SUCCESS ) {
-    result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_source;
-  }
-
-  reg_result = RegSetValueExW( source_key_handle,
-                               L"CategoryMessageFile",
-                               0,
-                               REG_SZ,
-                               ( const BYTE * ) &library_path,
-                               library_path_size );
-  if( reg_result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           reg_result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    result = reg_result;
-    goto cleanup_source;
-  }
-
-  reg_result = RegSetValueExW( source_key_handle,
-                               L"EventMessageFile",
-                               0,
-                               REG_SZ,
-                               ( const BYTE * ) &library_path,
-                               library_path_size );
-  if( reg_result != ERROR_SUCCESS ) {
-    result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_source;
-  }
-
-  // all of the possible types
-  dword_val = EVENTLOG_AUDIT_FAILURE |
-                EVENTLOG_AUDIT_SUCCESS |
-                EVENTLOG_ERROR_TYPE |
-                EVENTLOG_INFORMATION_TYPE |
-                EVENTLOG_WARNING_TYPE;
-  reg_result = RegSetValueExW( source_key_handle,
-                               L"TypesSupported",
-                               0,
-                               REG_DWORD,
-                               ( const BYTE * ) &dword_val,
-                               sizeof( DWORD ) );
-  if( reg_result != ERROR_SUCCESS ) {
-    result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_source;
-  }
-
-  bool_result = CommitTransaction( trans );
-  if( bool_result == 0 ) {
-    result = GetLastError(  );
-    raise_windows_failure( L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
-  }
-
-cleanup_source:
-  RegCloseKey( source_key_handle );
-cleanup_key:
+cleanup:
   RegCloseKey( subkey_handle );
-cleanup_transaction:
-  CloseHandle( trans );
   return result;
 }
 
