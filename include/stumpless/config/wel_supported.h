@@ -43,11 +43,16 @@ extern "C" {
 /**
  * Creates the registry entries for default WEL entries.
  *
- * Specifically, the following registry subkey is created:
+ * Specifically, the following registry subkey is created, or modified if it
+ * already exists:
  * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
  *
- * This new key is given the following registry values:
- * Sources: "Stumpless" as a REG_MULTI_SIZE.
+ * This key is given the following registry values:
+ * Sources: "Stumpless" as an entry, assuming it is a REG_MULTI_SZ.
+ *
+ * If Sources is not correctly formatted with NULL terminating characters as
+ * required by a MULTI_SZ, then this call fails and returns
+ * ERROR_INVALID_PARAMETER.
  *
  * A subkey is also created within this key named "Stumpless", with the
  * following values set in it:
@@ -74,8 +79,10 @@ extern "C" {
  * https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log
  * for one such issue.
  *
- * @return ERROR_SUCCESS if the operation was successful, or the result of
- * GetLastError if an error was encountered.
+ * @return ERROR_SUCCESS if the operation was successful, or a Windows error
+ * code result if an error was encountered. Note that the error code may not
+ * necessarily correspond to a call to GetLastError after this, for example in
+ * the case where a registry value was not correctly formed.
  */
 STUMPLESS_PUBLIC_FUNCTION
 DWORD

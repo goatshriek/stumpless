@@ -317,6 +317,34 @@ cleanup_transaction:
 }
 
 /**
+ * Detects if a given string is in a MULTI_SZ registry value.
+ *
+ * @param val The MULTI_SZ registry key value.
+ *
+ * @param str The string to search for in the entry.
+ *
+ * @return true if the string is present, false otherwise.
+ */
+static
+bool
+multi_sz_contains( const WCHAR *value, LPCWSTR str ){
+  LPCWSTR current = value;
+  size_t str_size;
+
+  str_size = wcslen( str ) + 1;
+
+  while( *current != L'\0' ) {
+    if( wcsncmp(current, str, str_size ) == 0 ) {
+      return true;
+    }
+
+    current += wcslen( current ) + 1;
+  }
+
+  return false;
+}
+
+/**
  * Sets the insertion string at the given index to the provided wide string,
  * freeing the previous one if it existed.
  *
@@ -416,7 +444,7 @@ stumpless_add_default_wel_event_source( void ) {
   DWORD library_path_size;
   DWORD result = ERROR_SUCCESS;
   LPCWSTR source_name = L"Stumpless\0";
-  DWORD source_name_size = 22;
+  DWORD source_name_size = 22; // includes both NULL terminators
   HKEY subkey_handle;
   LSTATUS reg_result;
   BOOL bool_result;
@@ -424,6 +452,8 @@ stumpless_add_default_wel_event_source( void ) {
   WCHAR sources_value_buffer[256];
   DWORD value_size = sizeof( sources_value_buffer );
   LPWSTR sources_value = sources_value_buffer;
+  LPWSTR new_sources_value;
+  DWORD new_sources_size;
 
   clear_error(  );
 
@@ -458,7 +488,8 @@ stumpless_add_default_wel_event_source( void ) {
   // before the modification transaction starts, we open the main key to see if it exists
   reg_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
                               default_source_subkey,
-                              KEY_QUERY_VALUE, NULL,
+                              0,
+                              KEY_QUERY_VALUE | KEY_SET_VALUE,
                               &subkey_handle );
   if( reg_result != ERROR_SUCCESS ) {
     if( reg_result == ERROR_FILE_NOT_FOUND ) {
@@ -508,11 +539,52 @@ stumpless_add_default_wel_event_source( void ) {
     raise_windows_failure( L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE,
                            result,
                            L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup;
+    goto cleanup_sources;
   }
 
-  // TODO search for source name in this list, should probably be a helper function
+  // TODO need to handle if the value does not have the proper NULL terminators
+  if( sources_value[0] != L'\0' &&
+      !( sources_value[value_size-2] == L'\0' &&
+         sources_value[value_size-1] == L'\0' ) ) {
+    raise_invalid_encoding( "the Sources MULTI_SZ registry value was neither empty nor terminated with two NULL characters" ); // TODO need to localize
+    result = ERROR_INVALID_PARAMETER;
+  }
 
+  if( !multi_sz_contains( sources_value, source_name ) ) {
+    new_sources_size = value_size + source_name_size - 1;
+
+    new_sources_value = alloc_mem( new_sources_size );
+    if( !new_sources_value ) {
+      result = ERROR_NOT_ENOUGH_MEMORY;
+      goto cleanup;
+    }
+
+    memcpy( new_sources_value, sources_value, value_size - 2 );
+    memcpy( ( ( char * ) new_sources_value ) + value_size - 2,
+            source_name,
+            source_name_size );
+
+    reg_result = RegSetValueExW( subkey_handle,
+                                 L"Sources",
+                                 0,
+                                 REG_MULTI_SZ,
+                                 ( const BYTE * ) new_sources_value,
+                                 new_sources_size );
+    if( reg_result != ERROR_SUCCESS ) {
+      result = reg_result;
+      raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                             result,
+                             L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+      goto cleanup_sources;
+    }
+  }
+
+  // TODO overwrite the subkey with our updated values
+
+cleanup_sources:
+  if( sources_value != sources_value_buffer ) {
+    free_mem( sources_value );
+  }
 cleanup:
   RegCloseKey( subkey_handle );
   return result;
