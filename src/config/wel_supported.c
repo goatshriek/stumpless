@@ -49,12 +49,15 @@ static LPCWSTR default_source_subkey = L"SYSTEM\\CurrentControlSet\\" \
  *
  * @param str A multibyte string to copy, in UTF-8 format.
  *
+ * @param copy_length The length of the copy, in characters. If this is NULL
+ * or the function fails, then it is ignored.
+ *
  * @return A copy of the given string in wide string format, or NULL if an
  * error is encountered.
  */
 static
 LPCWSTR
-copy_cstring_to_lpcwstr( LPCSTR str ) {
+copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
   int needed_wchar_length;
   LPWSTR str_copy;
   int conversion_result;
@@ -91,6 +94,10 @@ copy_cstring_to_lpcwstr( LPCSTR str ) {
     return NULL;
   }
 
+  if( copy_length ) {
+    *copy_length = conversion_result;
+  }
+
   return str_copy;
 }
 
@@ -123,10 +130,25 @@ copy_lpcwstr( LPCWSTR str ) {
 /**
  * Creates the values for an event source in the provided subkey.
  *
- * @param message_file_path The path of the message file to use for the event
- * source.
+ * @param category_file A path to the resource file containing the categories
+ * used for this source, as a wide string. If NULL, then the CategoryMessageFile
+ * registry value will not be created.
  *
- * @param message_file_path_size The size of message_file_path in bytes,
+ * @param category_file_size The size of category_file path string in bytes,
+ * including the terminating NULL character.
+ *
+ * @param event_file A path to the resource file containing the messages used
+ * for this source, as a wide string. If NULL, then the EventMessageFile
+ * registry value will not be created.
+ *
+ * @param event_file_size The size of event_file path string in bytes,
+ * including the terminating NULL character.
+ *
+ * @param parameter_file A path to the resource file containing the messages
+ * used as parameters for this source, as a wide string. If NULL, then the
+ * ParameterMessageFile registry value will not be created.
+ *
+ * @param parameter_file_size The size of parameter_file path string in bytes,
  * including the terminating NULL character.
  *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
@@ -135,8 +157,12 @@ copy_lpcwstr( LPCWSTR str ) {
 static
 DWORD
 populate_event_source_subkey( HKEY subkey,
-                              LPCWSTR message_file_path,
-                              DWORD message_file_path_size ) {
+                              LPCWSTR category_file,
+                              DWORD category_file_size,
+                              LPCWSTR event_file,
+                              DWORD event_file_size,
+                              LPCWSTR parameter_file,
+                              DWORD parameter_file_size ) {
   DWORD dword_val;
   DWORD result;
 
@@ -154,30 +180,49 @@ populate_event_source_subkey( HKEY subkey,
     return result;
   }
 
-  result = RegSetValueExW( subkey,
-                           L"CategoryMessageFile",
-                           0,
-                           REG_SZ,
-                           ( const BYTE * ) message_file_path,
-                           message_file_path_size );
-  if( result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    return result;
+  if( category_file ) {
+    result = RegSetValueExW( subkey,
+                             L"CategoryMessageFile",
+                             0,
+                             REG_SZ,
+                             ( const BYTE * ) category_file,
+                             category_file_size );
+    if( result != ERROR_SUCCESS ) {
+      raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                             result,
+                             L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+      return result;
+    }
   }
 
-  result = RegSetValueExW( subkey,
-                           L"EventMessageFile",
-                           0,
-                           REG_SZ,
-                           ( const BYTE * ) message_file_path,
-                           message_file_path_size );
-  if( result != ERROR_SUCCESS ) {
-    raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    return result;
+  if( event_file ) {
+    result = RegSetValueExW( subkey,
+                             L"EventMessageFile",
+                             0,
+                             REG_SZ,
+                             ( const BYTE * ) event_file,
+                             event_file_size );
+    if( result != ERROR_SUCCESS ) {
+      raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                             result,
+                             L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+      return result;
+    }
+  }
+
+  if( parameter_file ) {
+    result = RegSetValueExW( subkey,
+                             L"ParameterMessageFile",
+                             0,
+                             REG_SZ,
+                             ( const BYTE * ) parameter_file,
+                             parameter_file_size );
+    if( result != ERROR_SUCCESS ) {
+      raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                             result,
+                             L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+      return result;
+    }
   }
 
   // all of the possible types
@@ -216,10 +261,25 @@ populate_event_source_subkey( HKEY subkey,
  * maximum registry key name size including a NULL terminator. Must be greater
  * than 2.
  *
- * @param message_file_path The path of the message file to use for the event
- * source.
+ * @param category_file A path to the resource file containing the categories
+ * used for this source, as a wide string. If NULL, then the CategoryMessageFile
+ * registry value will not be created.
  *
- * @param message_file_path_size The size of message_file_path in bytes,
+ * @param category_file_size The size of category_file path string in bytes,
+ * including the terminating NULL character.
+ *
+ * @param event_file A path to the resource file containing the messages used
+ * for this source, as a wide string. If NULL, then the EventMessageFile
+ * registry value will not be created.
+ *
+ * @param event_file_size The size of event_file path string in bytes,
+ * including the terminating NULL character.
+ *
+ * @param parameter_file A path to the resource file containing the messages
+ * used as parameters for this source, as a wide string. If NULL, then the
+ * ParameterMessageFile registry value will not be created.
+ *
+ * @param parameter_file_size The size of parameter_file path string in bytes,
  * including the terminating NULL character.
  *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
@@ -229,8 +289,12 @@ static
 DWORD
 create_event_source_subkey( LPCWSTR source_name,
                             DWORD source_name_size,
-                            LPCWSTR message_file_path,
-                            DWORD message_file_path_size ) {
+                            LPCWSTR category_file,
+                            DWORD category_file_size,
+                            LPCWSTR event_file,
+                            DWORD event_file_size,
+                            LPCWSTR parameter_file,
+                            DWORD parameter_file_size ) {
   // length of array is the length of the prefix (43) plus the maximum registry
   // key name length of 255 NULL terminating character, according to
   // https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-element-size-limits
@@ -317,8 +381,12 @@ create_event_source_subkey( LPCWSTR source_name,
   }
 
   result = populate_event_source_subkey( source_key_handle,
-                                         message_file_path,
-                                         message_file_path_size );
+                                         category_file,
+                                         category_file_size,
+                                         event_file,
+                                         event_file_size,
+                                         parameter_file,
+                                         parameter_file_size );
   if( result != ERROR_SUCCESS ) {
     goto cleanup_source;
   }
@@ -420,7 +488,7 @@ set_wel_insertion_string( struct stumpless_entry *entry,
                           LPCSTR str ) {
   LPCWSTR str_copy;
 
-  str_copy = copy_cstring_to_lpcwstr( str );
+  str_copy = copy_cstring_to_lpcwstr( str, NULL );
   if( !str_copy ) {
     return NULL;
   }
@@ -523,7 +591,11 @@ stumpless_add_default_wel_event_source( void ) {
       return create_event_source_subkey( source_name,
                                          source_name_size,
                                          library_path,
-                                         library_path_size );
+                                         library_path_size,
+                                         library_path,
+                                         library_path_size,
+                                         NULL,
+                                         NULL );
     } else {
       result = reg_result;
       raise_windows_failure( L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE,
@@ -568,7 +640,6 @@ stumpless_add_default_wel_event_source( void ) {
     goto cleanup_sources;
   }
 
-  // TODO need to handle if the value does not have the proper NULL terminators
   if( sources_value[0] != L'\0' &&
       !( sources_value[(value_size / sizeof( WCHAR) ) - 2] == L'\0' &&
          sources_value[(value_size / sizeof( WCHAR) ) - 1] == L'\0' ) ) {
@@ -615,7 +686,7 @@ stumpless_add_default_wel_event_source( void ) {
                            0,
                            0,
                            0,
-                           L"Stumpless registration of Event Source" ); // TODO need to localize
+                           L"stumpless_add_wel_event_source registration of Event Source" ); // TODO need to localize
   if( trans == INVALID_HANDLE_VALUE ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
@@ -645,7 +716,11 @@ stumpless_add_default_wel_event_source( void ) {
 
   result = populate_event_source_subkey( source_subkey_handle,
                                          library_path,
-                                         library_path_size );
+                                         library_path_size,
+                                         library_path,
+                                         library_path_size,
+                                         NULL,
+                                         NULL );
   if( result != ERROR_SUCCESS ) {
     goto cleanup_source_subkey;
   }
@@ -672,9 +747,63 @@ cleanup:
 }
 
 DWORD
-stumpless_add_wel_event_source( void ) {
-  // TODO implement and document
-  return ERROR_SUCCESS;
+stumpless_add_wel_event_source( LPCSTR source_name,
+                                DWORD category_count,
+                                LPCSTR category_file,
+                                LPCSTR event_file,
+                                LPCSTR parameter_file,
+                                DWORD types_supported ) {
+  DWORD result = ERROR_SUCCESS;
+  DWORD category_file_length;
+  LPCWSTR category_file_w = NULL;
+  DWORD event_file_length;
+  LPCWSTR event_file_w = NULL;
+  DWORD parameter_file_length;
+  LPCWSTR parameter_file_w = NULL;
+
+  VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
+
+  if( category_file ) {
+    category_file_w = copy_cstring_to_lpcwstr( category_file,
+                                               &category_file_length );
+    if( !category_file_w ) {
+      if( stumpless_get_error_id == STUMPLESS_MEMORY_ALLOCATION_FAILURE ) {
+        result = ERROR_NOT_ENOUGH_MEMORY;
+      } else {
+        result = GetLastError(  );
+      }
+      goto finish;
+    }
+  }
+
+  if( event_file ) {
+    event_file_w = copy_cstring_to_lpcwstr( event_file,
+                                            &event_file_length );
+    if( !event_file_w ) {
+      if( stumpless_get_error_id == STUMPLESS_MEMORY_ALLOCATION_FAILURE ) {
+        result = ERROR_NOT_ENOUGH_MEMORY;
+      } else {
+        result = GetLastError(  );
+      }
+      goto finish;
+    }
+  }
+
+  if( parameter_file ) {
+    parameter_file_w = copy_cstring_to_lpcwstr( parameter_file,
+                                                &parameter_file_length );
+    if( !parameter_file_w ) {
+      if( stumpless_get_error_id == STUMPLESS_MEMORY_ALLOCATION_FAILURE ) {
+        result = ERROR_NOT_ENOUGH_MEMORY;
+      } else {
+        result = GetLastError(  );
+      }
+      goto finish;
+    }
+  }
+
+finish:
+  return result;
 }
 
 WORD

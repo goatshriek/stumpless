@@ -41,7 +41,8 @@ extern "C" {
 #  endif
 
 /**
- * Creates the registry entries for default WEL entries.
+ * Creates the registry entries for displaying default WEL entries in the
+ * Windows Event Log.
  *
  * Specifically, the following registry subkey is created, or modified if it
  * already exists:
@@ -61,23 +62,12 @@ extern "C" {
  * EventMessageFile: Points to the executing stumpless DLL.
  * TypesSupported: 0x1f (all event types are allowed)
  *
- * Any existing keys are opened and existing values are overwritten.
- *
- * Because the current path to the Stumpless DLL is used during installation,
- * this function should only be used by an installed library. Moving the library
- * afterwards will invalidate the paths and cause problems in the Event Viewer.
- *
- * See https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources and
- * https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-even/ac5ffa75-d036-4302-b008-ce9e0bcd60e3
- * for more information on the event source registration process this function
- * follows.
- *
- * If the Event Viewer does not have an entry for the application or message or
- * category descriptions are not displayed properly, you may need to restart the
- * Event Viewer for this to take effect. Also, be aware that permissions set on
- * the folder where the DLL resides may have an effect; see
- * https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log
- * for one such issue.
+ * This call is semantically equivalent to stumpless_add_wel_event_source(
+ * "Stumpless", 8, "stumpless.dll", "stumpless.dll", NULL,
+ * EVENTLOG_AUDIT_FAILURE | EVENTLOG_AUDIT_SUCCESS | EVENTLOG_ERROR_TYPE |
+ * EVENTLOG_INFORMATION_TYPE | EVENTLOG_WARNING_TYPE); where
+ * "stumpless.dll" is the full path to the current stumpless.dll module
+ * loaded.
  *
  * @return ERROR_SUCCESS if the operation was successful, or a Windows error
  * code result if an error was encountered. Note that the error code may not
@@ -87,6 +77,65 @@ extern "C" {
 STUMPLESS_PUBLIC_FUNCTION
 DWORD
 stumpless_add_default_wel_event_source( void );
+
+/**
+ * Creates or updates the registry entries for displaying log entries in the
+ * Windows Event Log for a new event source. Any existing keys are opened and
+ * existing values are overwritten.
+ *
+ * For Microsoft documentation on each of the parameters listed below, see
+ * https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources and
+ * https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-even/ac5ffa75-d036-4302-b008-ce9e0bcd60e3
+ * which describe the semantics these registry values.
+ *
+ * If the Event Viewer does not have an entry for the application or message or
+ * category descriptions are not displayed properly, you may need to restart the
+ * Event Viewer for this to take effect. Also, be aware that permissions set on
+ * the folder where the DLL resides may have an effect; see
+ * https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log
+ * for one such issue.
+ *
+ * @param subkey_name The name of the subkey that the source should be added to,
+ * as a UTF-8 NULL terminated string. This subkey will be created under
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog.
+ *
+ * @param source_name The name of the event source, as a UTF-8 NULL terminated
+ * string. This will be added to the "Sources" value of the subkey, and created
+ * as a subkey under it as well. An error is raised if this is NULL. If the
+ * value "Sources" already exists and is not a properly formatted MULTI_SZ
+ * value, then this function fails and returns ERROR_INVALID_PARAMETER.
+ *
+ * @param category_count The number of categories present in the message file.
+ * This is used for the CategoryCount registry value.
+ *
+ * @param category_file A path to the resource file containing the categories
+ * used for this source, as a UTF-8 NULL terminated string. If NULL, then the
+ * CategoryMessageFile registry value will not be created.
+ *
+ * @param event_file A path to the resource file containing the messages used
+ * for this source, as a UTF-8 NULL terminated string. If NULL, then the
+ * EventMessageFile registry value will not be created.
+ *
+ * @param parameter_file A path to the resource file containing the messages
+ * used as parameters for this source, as a UTF-8 NULL terminated string. If
+ * NULL, then the ParameterMessageFile registry value will not be created.
+ *
+ * @param types_supported An set of flags designating the event types that are
+ * supported by this source. This is used for the TypesSupported registry value.
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or a Windows error
+ * code result if an error was encountered. Note that the error code may not
+ * necessarily correspond to a call to GetLastError after this, for example in
+ * the case where a registry value was not correctly formed.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+DWORD
+stumpless_add_wel_event_source( LPCSTR source_name,
+                                DWORD category_count,
+                                LPCSTR category_file,
+                                LPCSTR event_file,
+                                LPCSTR parameter_file,
+                                DWORD types_supported );
 
 /**
  * Gets the category of an entry used with Windows Event Log targets.

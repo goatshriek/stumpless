@@ -23,11 +23,29 @@
 #  include "private/windows_wrapper.h"
 
 #  include <stdbool.h>
+#  include <stddef.h>
 #  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/param.h>
 #  include <stumpless/target.h>
+#  include "private/config.h"
+#  include "private/config/locale/wrapper.h"
 #  include "private/config/wrapper/thread_safety.h"
+#  include "private/error.h"
+
+/**
+ * Checks to see if the variable with the provided name is NULL, and if it is
+ * then raises an argument empty error and returns ERROR_BAD_ARGUMENTS.
+ *
+ * This is nearly identical to VALIDATE_ARG_NOT_NULL, but is suitable for use in
+ * functions where the return value needs to be resolved as a Windows error
+ * code.
+ */
+#  define VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( ARG_NAME )                     \
+if( unlikely( ARG_NAME == NULL ) ) {                                           \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
+  return ERROR_BAD_ARGUMENTS;                                                  \
+}
 
 /**
  * The extra fields needed in an entry to provide information for Windows Event
