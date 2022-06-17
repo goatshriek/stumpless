@@ -130,6 +130,10 @@ copy_lpcwstr( LPCWSTR str ) {
 /**
  * Creates the values for an event source in the provided subkey.
  *
+ * @param subkey A handle to the subkey to populate.
+ *
+ * @param category_count The number of categories included in the category file.
+ *
  * @param category_file A path to the resource file containing the categories
  * used for this source, as a wide string. If NULL, then the CategoryMessageFile
  * registry value will not be created.
@@ -151,28 +155,30 @@ copy_lpcwstr( LPCWSTR str ) {
  * @param parameter_file_size The size of parameter_file path string in bytes,
  * including the terminating NULL character.
  *
+ * @param types_supported The flags used for the TypesSupported value.
+ *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
  * GetLastError if an error was encountered.
  */
 static
 DWORD
 populate_event_source_subkey( HKEY subkey,
+                              DWORD category_count,
                               LPCWSTR category_file,
                               DWORD category_file_size,
                               LPCWSTR event_file,
                               DWORD event_file_size,
                               LPCWSTR parameter_file,
-                              DWORD parameter_file_size ) {
-  DWORD dword_val;
+                              DWORD parameter_file_size,
+                              DWORD types_supported ) {
   DWORD result;
 
-  dword_val = 8; // one for each severity
   result = RegSetValueExW( subkey,
                            L"CategoryCount",
                            0,
                            REG_DWORD,
-                           ( const BYTE * ) &dword_val,
-                           sizeof( dword_val ) );
+                           ( const BYTE * ) &category_count,
+                           sizeof( category_count ) );
   if( result != ERROR_SUCCESS ) {
     raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
                            result,
@@ -225,18 +231,12 @@ populate_event_source_subkey( HKEY subkey,
     }
   }
 
-  // all of the possible types
-  dword_val = EVENTLOG_AUDIT_FAILURE |
-                EVENTLOG_AUDIT_SUCCESS |
-                EVENTLOG_ERROR_TYPE |
-                EVENTLOG_INFORMATION_TYPE |
-                EVENTLOG_WARNING_TYPE;
   result = RegSetValueExW( subkey,
                            L"TypesSupported",
                            0,
                            REG_DWORD,
-                           ( const BYTE * ) &dword_val,
-                           sizeof( DWORD ) );
+                           ( const BYTE * ) &types_supported,
+                           sizeof( types_supported ) );
   if( result != ERROR_SUCCESS ) {
     raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
                            result,
@@ -251,7 +251,10 @@ populate_event_source_subkey( HKEY subkey,
  * Creates the given event source registry subkey, under the assumption that
  * it does not currently exist. The source will be put in the registry under
  * SYSTEM\CurrentControlSet\Services\EventLog.
- * 
+ *
+ * @param subkey_name The name of the registry subkey that the source should be
+ * created under, as a NULL terminated wide character string.
+ *
  * @param source_name The event source to create. This string must be
  * terminated by _two_ NULL characters, to allow its use in a REG_MULTI_SZ
  * registry value.
@@ -260,6 +263,9 @@ populate_event_source_subkey( HKEY subkey,
  * terminating NULL characters. This must not be greater than 512, which is the
  * maximum registry key name size including a NULL terminator. Must be greater
  * than 2.
+ *
+ * @param category_count The number of categories present in the message file.
+ * This is used for the CategoryCount registry value.
  *
  * @param category_file A path to the resource file containing the categories
  * used for this source, as a wide string. If NULL, then the CategoryMessageFile
@@ -282,28 +288,25 @@ populate_event_source_subkey( HKEY subkey,
  * @param parameter_file_size The size of parameter_file path string in bytes,
  * including the terminating NULL character.
  *
+ * @param types_supported A set of flags designating the event types that are
+ * supported by this source. This is used for the TypesSupported registry value.
+ *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
  * GetLastError if an error was encountered.
  */
 static
 DWORD
-create_event_source_subkey( LPCWSTR source_name,
+create_event_source_subkey( LPCWSTR subkey_name,
+                            LPCWSTR source_name,
                             DWORD source_name_size,
+                            DWORD category_count,
                             LPCWSTR category_file,
                             DWORD category_file_size,
                             LPCWSTR event_file,
                             DWORD event_file_size,
                             LPCWSTR parameter_file,
-                            DWORD parameter_file_size ) {
-  // length of array is the length of the prefix (43) plus the maximum registry
-  // key name length of 255 NULL terminating character, according to
-  // https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-element-size-limits
-  WCHAR source_subkey[299] =  { L'S', L'Y', L'S', L'T', L'E', L'M', L'\\', L'C',
-                                L'u', L'r', L'r', L'e', L'n', L't', L'C', L'o',
-                                L'n', L't', L'r', L'o', L'l', L'S', L'e', L't',
-                                L'\\', L'S', L'e', L'r', L'v', L'i', L'c', L'e',
-                                L's', L'\\', L'E', L'v', L'e', L'n', L't', L'L',
-                                L'o', L'g', L'\\' };
+                            DWORD parameter_file_size,
+                            DWORD types_supported ) {
   HANDLE trans;
   DWORD result  = ERROR_SUCCESS;
   LSTATUS reg_result;
@@ -326,10 +329,8 @@ create_event_source_subkey( LPCWSTR source_name,
     return result;
   }
 
-  memcpy( source_subkey + 43, source_name, source_name_size - 2 );
-
   reg_result = RegCreateKeyTransactedW( HKEY_LOCAL_MACHINE,
-                                        source_subkey,
+                                        subkey_name,
                                         0,
                                         NULL,
                                         REG_OPTION_NON_VOLATILE,
@@ -381,12 +382,14 @@ create_event_source_subkey( LPCWSTR source_name,
   }
 
   result = populate_event_source_subkey( source_key_handle,
+                                         category_count,
                                          category_file,
                                          category_file_size,
                                          event_file,
                                          event_file_size,
                                          parameter_file,
-                                         parameter_file_size );
+                                         parameter_file_size,
+                                         types_supported );
   if( result != ERROR_SUCCESS ) {
     goto cleanup_source;
   }
@@ -527,19 +530,26 @@ set_wel_insertion_string_w( struct stumpless_entry *entry,
   return swap_wel_insertion_string( entry, index, str_copy );
 }
 
-/* public definitions */
-
+/**
+ * Creates the registry entries to install an event source with the given
+ * specifications.
+ */
+static
 DWORD
-stumpless_add_default_wel_event_source( void ) {
-  HMODULE this_module;
-  WCHAR library_path[MAX_PATH];
-  DWORD library_path_size;
-  DWORD result = ERROR_SUCCESS;
-  LPCWSTR source_name = L"Stumpless\0";
-  DWORD source_name_size = 22; // includes both NULL terminators
-  HKEY subkey_handle;
+add_event_source( LPCWSTR subkey_name,
+                  LPCWSTR source_name,
+                  DWORD source_name_size,
+                  DWORD category_count,
+                  LPCWSTR category_file,
+                  DWORD category_file_size,
+                  LPCWSTR event_file,
+                  DWORD event_file_size,
+                  LPCWSTR parameter_file,
+                  DWORD parameter_file_size,
+                  DWORD types_supported ) {
+  HANDLE subkey_handle;
   LSTATUS reg_result;
-  BOOL bool_result;
+  DWORD result = ERROR_SUCCESS;
   DWORD value_type;
   WCHAR sources_value_buffer[256];
   DWORD value_size = sizeof( sources_value_buffer );
@@ -548,39 +558,10 @@ stumpless_add_default_wel_event_source( void ) {
   DWORD new_sources_size;
   HKEY source_subkey_handle;
   HANDLE trans;
-
-  clear_error(  );
-
-  // get the path to this library
-  bool_result = GetModuleHandleExW( GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | 
-                                      GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                                    ( LPCWSTR ) &stumpless_add_default_wel_event_source,
-                                    &this_module ) ;
-  if( bool_result == 0 ) {
-    result = GetLastError(  );
-    raise_windows_failure( "GetModuleHandleExW failed", // TODO need to localize
-                           result,
-                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
-    return result;
-  }
-
-  // TODO need to handle long path names at some point (of form `//?/`)
-  library_path_size = GetModuleFileNameW( this_module, library_path, MAX_PATH );
-  if( library_path_size == 0 ) {
-    result = GetLastError(  );
-    raise_windows_failure( "GetModuleFileNameW failed", // TODO need to localize
-                           result,
-                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
-    return result;
-  }
-
-  if( library_path_size != MAX_PATH ) {
-    library_path_size += 1;
-  }
-  library_path_size *= sizeof( WCHAR );
+  BOOL bool_result;
 
   // before the modification transaction starts, we open the main key to see if it exists
-  reg_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+  reg_result = RegOpenKeyExW( subkey_name,
                               default_source_subkey,
                               0,
                               KEY_QUERY_VALUE | KEY_SET_VALUE | KEY_CREATE_SUB_KEY,
@@ -588,14 +569,17 @@ stumpless_add_default_wel_event_source( void ) {
   if( reg_result != ERROR_SUCCESS ) {
     if( reg_result == ERROR_FILE_NOT_FOUND ) {
       // if the key doesn't exist at all, we can simply create it
-      return create_event_source_subkey( source_name,
+      return create_event_source_subkey( default_source_subkey,
+                                         source_name,
                                          source_name_size,
-                                         library_path,
-                                         library_path_size,
-                                         library_path,
-                                         library_path_size,
-                                         NULL,
-                                         NULL );
+                                         category_count,
+                                         category_file,
+                                         category_file_size,
+                                         event_file,
+                                         event_file_size,
+                                         parameter_file,
+                                         parameter_file_size,
+                                         types_supported );
     } else {
       result = reg_result;
       raise_windows_failure( L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE,
@@ -715,12 +699,14 @@ stumpless_add_default_wel_event_source( void ) {
   }
 
   result = populate_event_source_subkey( source_subkey_handle,
-                                         library_path,
-                                         library_path_size,
-                                         library_path,
-                                         library_path_size,
-                                         NULL,
-                                         NULL );
+                                         category_count,
+                                         category_file,
+                                         category_file_size,
+                                         event_file,
+                                         event_file_size,
+                                         parameter_file,
+                                         parameter_file_size,
+                                         types_supported );
   if( result != ERROR_SUCCESS ) {
     goto cleanup_source_subkey;
   }
@@ -746,8 +732,72 @@ cleanup:
   return result;
 }
 
+/* public definitions */
+
 DWORD
-stumpless_add_wel_event_source( LPCSTR source_name,
+stumpless_add_default_wel_event_source( void ) {
+  HMODULE this_module;
+  WCHAR library_path[MAX_PATH];
+  DWORD library_path_size;
+  DWORD result = ERROR_SUCCESS;
+  LPCWSTR source_name = L"Stumpless\0";
+  DWORD source_name_size = 22; // includes both NULL terminators
+  BOOL bool_result;
+
+  clear_error(  );
+
+  // get the path to this library
+  bool_result = GetModuleHandleExW( GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                                      GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                                    ( LPCWSTR ) &stumpless_add_default_wel_event_source,
+                                    &this_module ) ;
+  if( bool_result == 0 ) {
+    result = GetLastError(  );
+    raise_windows_failure( "GetModuleHandleExW failed", // TODO need to localize
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+    return result;
+  }
+
+  // TODO need to handle long path names at some point (of form `//?/`)
+  library_path_size = GetModuleFileNameW( this_module, library_path, MAX_PATH );
+  if( library_path_size == 0 ) {
+    result = GetLastError(  );
+    raise_windows_failure( "GetModuleFileNameW failed", // TODO need to localize
+                           result,
+                           L10N_GETLASTERROR_ERROR_CODE_TYPE );
+    goto cleanup_module;
+  }
+
+  if( library_path_size != MAX_PATH ) {
+    library_path_size += 1;
+  }
+  library_path_size *= sizeof( WCHAR );
+
+  result = add_event_source( default_source_subkey,
+                             source_name,
+                             source_name_size,
+                             8,
+                             library_path,
+                             library_path_size,
+                             library_path,
+                             library_path_size,
+                             NULL,
+                             NULL,
+                             EVENTLOG_AUDIT_FAILURE |
+                               EVENTLOG_AUDIT_SUCCESS |
+                               EVENTLOG_ERROR_TYPE |
+                               EVENTLOG_INFORMATION_TYPE |
+                               EVENTLOG_WARNING_TYPE; );
+
+cleanup_module:
+  FreeLibrary( this_module );
+  return result;
+}
+
+DWORD
+stumpless_add_wel_event_source( LPCSTR subkey_name,
+                                LPCSTR source_name,
                                 DWORD category_count,
                                 LPCSTR category_file,
                                 LPCSTR event_file,
@@ -761,6 +811,7 @@ stumpless_add_wel_event_source( LPCSTR source_name,
   DWORD parameter_file_length;
   LPCWSTR parameter_file_w = NULL;
 
+  VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
 
   if( category_file ) {
@@ -801,6 +852,8 @@ stumpless_add_wel_event_source( LPCSTR source_name,
       goto finish;
     }
   }
+
+  result = add_event_source(  );
 
 finish:
   return result;

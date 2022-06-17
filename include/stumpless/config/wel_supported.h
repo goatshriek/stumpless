@@ -120,7 +120,7 @@ stumpless_add_default_wel_event_source( void );
  * used as parameters for this source, as a UTF-8 NULL terminated string. If
  * NULL, then the ParameterMessageFile registry value will not be created.
  *
- * @param types_supported An set of flags designating the event types that are
+ * @param types_supported A set of flags designating the event types that are
  * supported by this source. This is used for the TypesSupported registry value.
  *
  * @return ERROR_SUCCESS if the operation was successful, or a Windows error
@@ -130,7 +130,8 @@ stumpless_add_default_wel_event_source( void );
  */
 STUMPLESS_PUBLIC_FUNCTION
 DWORD
-stumpless_add_wel_event_source( LPCSTR source_name,
+stumpless_add_wel_event_source( LPCSTR subkey_name,
+                                LPCSTR source_name,
                                 DWORD category_count,
                                 LPCSTR category_file,
                                 LPCSTR event_file,
