@@ -836,7 +836,7 @@ stumpless_add_default_wel_event_source( void ) {
                                     &this_module ) ;
   if( bool_result == 0 ) {
     result = GetLastError(  );
-    raise_windows_failure( "GetModuleHandleExW failed", // TODO need to localize
+    raise_windows_failure( L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE,
                            result,
                            L10N_GETLASTERROR_ERROR_CODE_TYPE );
     return result;
@@ -846,7 +846,7 @@ stumpless_add_default_wel_event_source( void ) {
   library_path_size = GetModuleFileNameW( this_module, library_path, MAX_PATH );
   if( library_path_size == 0 ) {
     result = GetLastError(  );
-    raise_windows_failure( "GetModuleFileNameW failed", // TODO need to localize
+    raise_windows_failure( L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE,
                            result,
                            L10N_GETLASTERROR_ERROR_CODE_TYPE );
     goto cleanup_module;

@@ -82,6 +82,12 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "il risultato di GetLastError dopo la chiamata fallita"
 
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW fallita"
+
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW fallita"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "l'indice non valido, oppure -1 se è troppo grande da rappresentare con un int"
 

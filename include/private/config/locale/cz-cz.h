@@ -82,6 +82,12 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "výsledek GetLastError po neúspěšném volání"
 
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW zlyhal"
+
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW zlyhal"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "neplatný index - index je příliš velký na to aby byl reprezentován jako datový typ int"
 

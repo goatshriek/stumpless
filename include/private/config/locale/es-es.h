@@ -82,6 +82,12 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "el resultado de GetLastError despues de la llamada fallida"
 
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"L10N MISSING GETMODULEFILENAMEW FAILED ERROR MESSAGE"
+
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"L10N MISSING GETMODULEHANDLEEXW FAILED ERROR MESSAGE"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "el índice no válido, o -1 por lo que es deamasiado largo para representarse como entero"
 

@@ -82,6 +82,12 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "the result of GetLastError after the failed call"
 
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW failed"
+
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW failed"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "the invalid index, or -1 of it is too large to represent as an int"
 
