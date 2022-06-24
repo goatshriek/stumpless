@@ -97,7 +97,8 @@ stumpless_add_default_wel_event_source( void );
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a UTF-8 NULL terminated string. This subkey will be created under
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog.
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
+ * contain backslashes to nest the key under other subkeys.
  *
  * @param source_name The name of the event source, as a UTF-8 NULL terminated
  * string. This will be added to the "Sources" value of the subkey, and created

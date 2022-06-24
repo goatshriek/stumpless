@@ -26,6 +26,7 @@
 #include <string.h>
 #include <stumpless/config/wel_supported.h>
 #include <stumpless/entry.h>
+#include <stumpless/error.h>
 #include <stumpless/param.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
@@ -41,16 +42,51 @@
 #include "private/severity.h"
 #include "private/validate.h"
 
+/** The base subkey used for event sources, including a trailing backslash. */
+static LPCWSTR base_source_subkey = L"SYSTEM\\CurrentControlSet\\Services\\" \
+                                      L"EventLog\\";
+
+/** The size of the base subkey in bytes, including the NULL terminator. */
+DWORD base_source_subkey_size = 88;
+
+/** The full base subkey used for the default source installation. */
 static LPCWSTR default_source_subkey = L"SYSTEM\\CurrentControlSet\\" \
                                          L"Services\\EventLog\\Stumpless";
+
+/**
+ * Returns a Windows error code for the current Stumpless error. This may not
+ * be equivalent to the result of GetLastError, for example if a memory
+ * allocation failure occurred.
+ *
+ * @return A Windows error code reflecting the last error, or ERROR_SUCCESS
+ * if there is not one.
+ */
+static
+DWORD
+get_windows_error_code( void ) {
+  const struct stumpless_error *error;
+  enum stumpless_error_id id;
+
+  error = stumpless_get_error(  );
+  if( !error ) {
+    return ERROR_SUCCESS;
+  }
+
+  id = stumpless_get_error_id( error );
+  if( id == STUMPLESS_MEMORY_ALLOCATION_FAILURE ) {
+    return ERROR_NOT_ENOUGH_MEMORY;
+  } else {
+    return GetLastError(  );
+  }
+}
 
 /**
  * Creates a copy of a NULL terminated multibyte string in wide string format.
  *
  * @param str A multibyte string to copy, in UTF-8 format.
  *
- * @param copy_length The length of the copy, in characters. If this is NULL
- * or the function fails, then it is ignored.
+ * @param copy_length The length of the copy including the NULL terminator, in
+ * characters. If this is NULL or the function fails, then it is ignored.
  *
  * @return A copy of the given string in wide string format, or NULL if an
  * error is encountered.
@@ -252,8 +288,8 @@ populate_event_source_subkey( HKEY subkey,
  * it does not currently exist. The source will be put in the registry under
  * SYSTEM\CurrentControlSet\Services\EventLog.
  *
- * @param subkey_name The name of the registry subkey that the source should be
- * created under, as a NULL terminated wide character string.
+ * @param subkey_name The complete name of the registry subkey that the source
+  * should be created under, as a NULL terminated wide character string.
  *
  * @param source_name The event source to create. This string must be
  * terminated by _two_ NULL characters, to allow its use in a REG_MULTI_SZ
@@ -533,10 +569,44 @@ set_wel_insertion_string_w( struct stumpless_entry *entry,
 /**
  * Creates the registry entries to install an event source with the given
  * specifications.
+ *
+ * @param subkey_name The name of the subkey that the source should be added to,
+ * as a wide char string. This subkey will be created under
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog.
+ *
+ * @param source_name The name of the event source, as a double-NULL terminated
+ * wide char string. This will be added to the "Sources" value of the subkey,
+ * and created as a subkey under it as well. An error is raised if this is NULL.
+ * If the value "Sources" already exists and is not a properly formatted
+ * MULTI_SZ value, then this function fails and returns ERROR_INVALID_PARAMETER.
+ *
+ * @param category_count The number of categories present in the message file.
+ * This is used for the CategoryCount registry value.
+ *
+ * @param category_file A path to the resource file containing the categories
+ * used for this source, as a wide char string. If NULL, then the
+ * CategoryMessageFile registry value will not be created.
+ *
+ * @param event_file A path to the resource file containing the messages used
+ * for this source, as a wide char string. If NULL, then the
+ * EventMessageFile registry value will not be created.
+ *
+ * @param parameter_file A path to the resource file containing the messages
+ * used as parameters for this source, as a wide char string. If
+ * NULL, then the ParameterMessageFile registry value will not be created.
+ *
+ * @param types_supported A set of flags designating the event types that are
+ * supported by this source. This is used for the TypesSupported registry value.
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or a Windows error
+ * code result if an error was encountered. Note that the error code may not
+ * necessarily correspond to a call to GetLastError after this, for example in
+ * the case where a registry value was not correctly formed.
  */
 static
 DWORD
 add_event_source( LPCWSTR subkey_name,
+                  DWORD subkey_name_size,
                   LPCWSTR source_name,
                   DWORD source_name_size,
                   DWORD category_count,
@@ -547,7 +617,8 @@ add_event_source( LPCWSTR subkey_name,
                   LPCWSTR parameter_file,
                   DWORD parameter_file_size,
                   DWORD types_supported ) {
-  HANDLE subkey_handle;
+  LPWSTR complete_subkey;
+  HKEY subkey_handle;
   LSTATUS reg_result;
   DWORD result = ERROR_SUCCESS;
   DWORD value_type;
@@ -560,16 +631,25 @@ add_event_source( LPCWSTR subkey_name,
   HANDLE trans;
   BOOL bool_result;
 
+  // build the complete source subkey
+  complete_subkey = alloc_mem( base_source_subkey_size + subkey_name_size - sizeof( WCHAR ) );
+  if( !complete_subkey ) {
+      result = ERROR_NOT_ENOUGH_MEMORY;
+      goto cleanup;
+  }
+  memcpy( complete_subkey, base_source_subkey, base_source_subkey_size - sizeof( WCHAR ) );
+  memcpy( ( ( char * ) complete_subkey ) + base_source_subkey_size - sizeof( WCHAR ), subkey_name, subkey_name_size );
+
   // before the modification transaction starts, we open the main key to see if it exists
-  reg_result = RegOpenKeyExW( subkey_name,
-                              default_source_subkey,
+  reg_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                              complete_subkey,
                               0,
                               KEY_QUERY_VALUE | KEY_SET_VALUE | KEY_CREATE_SUB_KEY,
                               &subkey_handle );
   if( reg_result != ERROR_SUCCESS ) {
     if( reg_result == ERROR_FILE_NOT_FOUND ) {
       // if the key doesn't exist at all, we can simply create it
-      return create_event_source_subkey( default_source_subkey,
+      return create_event_source_subkey( complete_subkey,
                                          source_name,
                                          source_name_size,
                                          category_count,
@@ -585,7 +665,7 @@ add_event_source( LPCWSTR subkey_name,
       raise_windows_failure( L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE,
                              result,
                              L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-      return result;
+      goto cleanup_complete_subkey;
     }
   }
 
@@ -604,7 +684,7 @@ add_event_source( LPCWSTR subkey_name,
     sources_value = alloc_mem( value_size );
     if( !sources_value ) {
       result = ERROR_NOT_ENOUGH_MEMORY;
-      goto cleanup;
+      goto cleanup_subkey;
     }
 
     reg_result = RegGetValueW( subkey_handle,
@@ -638,7 +718,7 @@ add_event_source( LPCWSTR subkey_name,
     new_sources_value = alloc_mem( new_sources_size );
     if( !new_sources_value ) {
       result = ERROR_NOT_ENOUGH_MEMORY;
-      goto cleanup;
+      goto cleanup_sources;
     }
 
     memcpy( new_sources_value, sources_value, value_size - 2 );
@@ -727,8 +807,11 @@ cleanup_sources:
   if( sources_value != sources_value_buffer ) {
     free_mem( sources_value );
   }
-cleanup:
+cleanup_subkey:
   RegCloseKey( subkey_handle );
+cleanup_complete_subkey:
+  free_mem( complete_subkey );
+cleanup:
   return result;
 }
 
@@ -774,7 +857,8 @@ stumpless_add_default_wel_event_source( void ) {
   }
   library_path_size *= sizeof( WCHAR );
 
-  result = add_event_source( default_source_subkey,
+  result = add_event_source( source_name,
+                             source_name_size,
                              source_name,
                              source_name_size,
                              8,
@@ -783,12 +867,12 @@ stumpless_add_default_wel_event_source( void ) {
                              library_path,
                              library_path_size,
                              NULL,
-                             NULL,
+                             0,
                              EVENTLOG_AUDIT_FAILURE |
                                EVENTLOG_AUDIT_SUCCESS |
                                EVENTLOG_ERROR_TYPE |
                                EVENTLOG_INFORMATION_TYPE |
-                               EVENTLOG_WARNING_TYPE; );
+                               EVENTLOG_WARNING_TYPE );
 
 cleanup_module:
   FreeLibrary( this_module );
@@ -804,26 +888,67 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
                                 LPCSTR parameter_file,
                                 DWORD types_supported ) {
   DWORD result = ERROR_SUCCESS;
-  DWORD category_file_length;
+  DWORD subkey_name_length = 0;
+  LPCWSTR subkey_name_w;
+  DWORD source_name_length = 0;
+  LPWSTR source_name_w;
+  DWORD conversion_result;
+  DWORD category_file_length = 0;
   LPCWSTR category_file_w = NULL;
-  DWORD event_file_length;
+  DWORD event_file_length = 0;
   LPCWSTR event_file_w = NULL;
-  DWORD parameter_file_length;
+  DWORD parameter_file_length = 0;
   LPCWSTR parameter_file_w = NULL;
 
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
 
+  subkey_name_w = copy_cstring_to_lpcwstr( subkey_name, &subkey_name_length );
+  if( !subkey_name_w ) {
+    result = get_windows_error_code(  );
+    goto finish;
+  }
+
+  source_name_length = MultiByteToWideChar( CP_UTF8,
+                                             MB_ERR_INVALID_CHARS |
+                                               MB_PRECOMPOSED,
+                                             source_name,
+                                             -1,
+                                             NULL,
+                                             0 );
+
+  if( source_name_length == 0 ) {
+    raise_mb_conversion_failure( GetLastError(  ) );
+   goto cleanup_subkey;
+  }
+
+  source_name_length++; // make room for the double NULL termination
+  source_name_w = alloc_mem( source_name_length * sizeof( WCHAR ) );
+  if( !source_name_w ) {
+    result = ERROR_NOT_ENOUGH_MEMORY;
+    goto cleanup_subkey;
+  }
+
+  conversion_result = MultiByteToWideChar( CP_UTF8,
+                                           MB_ERR_INVALID_CHARS |
+                                             MB_PRECOMPOSED,
+                                           source_name,
+                                           -1,
+                                           source_name_w,
+                                           source_name_length );
+
+  if( conversion_result == 0 ) {
+    raise_mb_conversion_failure( GetLastError(  ) );
+    goto cleanup_source;
+  }
+  source_name_w[source_name_length-1] = L'\0';
+
   if( category_file ) {
     category_file_w = copy_cstring_to_lpcwstr( category_file,
                                                &category_file_length );
     if( !category_file_w ) {
-      if( stumpless_get_error_id == STUMPLESS_MEMORY_ALLOCATION_FAILURE ) {
-        result = ERROR_NOT_ENOUGH_MEMORY;
-      } else {
-        result = GetLastError(  );
-      }
-      goto finish;
+      result = get_windows_error_code(  );
+      goto cleanup_source;
     }
   }
 
@@ -831,12 +956,8 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
     event_file_w = copy_cstring_to_lpcwstr( event_file,
                                             &event_file_length );
     if( !event_file_w ) {
-      if( stumpless_get_error_id == STUMPLESS_MEMORY_ALLOCATION_FAILURE ) {
-        result = ERROR_NOT_ENOUGH_MEMORY;
-      } else {
-        result = GetLastError(  );
-      }
-      goto finish;
+      result = get_windows_error_code(  );
+      goto cleanup_category;
     }
   }
 
@@ -844,17 +965,33 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
     parameter_file_w = copy_cstring_to_lpcwstr( parameter_file,
                                                 &parameter_file_length );
     if( !parameter_file_w ) {
-      if( stumpless_get_error_id == STUMPLESS_MEMORY_ALLOCATION_FAILURE ) {
-        result = ERROR_NOT_ENOUGH_MEMORY;
-      } else {
-        result = GetLastError(  );
-      }
-      goto finish;
+      result = get_windows_error_code(  );
+      goto cleanup_event;
     }
   }
 
-  result = add_event_source(  );
+  result = add_event_source( subkey_name_w,
+                             subkey_name_length * sizeof( WCHAR ),
+                             source_name_w,
+                             source_name_length * sizeof( WCHAR ),
+                             category_count,
+                             category_file_w,
+                             category_file_length * sizeof( WCHAR ),
+                             event_file_w,
+                             event_file_length * sizeof( WCHAR ),
+                             parameter_file_w,
+                             parameter_file_length * sizeof( WCHAR ),
+                             types_supported );
 
+  free_mem( parameter_file_w );
+cleanup_event:
+  free_mem( event_file_w );
+cleanup_category:
+  free_mem( category_file_w );
+cleanup_source:
+  free_mem( source_name_w );
+cleanup_subkey:
+  free_mem( subkey_name_w );
 finish:
   return result;
 }
