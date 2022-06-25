@@ -733,7 +733,7 @@ add_event_source( LPCWSTR subkey_name,
                                  ( const BYTE * ) new_sources_value,
                                  new_sources_size );
 
-    free_mem( new_sources_value ); // TODO candidate to move to alloca
+    free_mem( new_sources_value ); // candidate for alloca
 
     if( reg_result != ERROR_SUCCESS ) {
       result = reg_result;
@@ -820,6 +820,7 @@ cleanup:
 DWORD
 stumpless_add_default_wel_event_source( void ) {
   HMODULE this_module;
+  // this array does not support long path names (`//?/`) as is
   WCHAR library_path[MAX_PATH];
   DWORD library_path_size;
   DWORD result = ERROR_SUCCESS;
@@ -842,7 +843,6 @@ stumpless_add_default_wel_event_source( void ) {
     return result;
   }
 
-  // TODO need to handle long path names at some point (of form `//?/`)
   library_path_size = GetModuleFileNameW( this_module, library_path, MAX_PATH );
   if( library_path_size == 0 ) {
     result = GetLastError(  );
