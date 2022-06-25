@@ -104,6 +104,9 @@
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "invalid " INDEXED_THING " index"
 
+#  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL characters"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "the invalid severity"
 
@@ -182,6 +185,9 @@ ARG_NAME " was NULL"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a socket"
+
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+L"Stumpless registration of Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "could not write to the stream"

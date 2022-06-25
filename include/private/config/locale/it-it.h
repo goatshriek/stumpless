@@ -103,6 +103,9 @@
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "indice " INDEXED_THING " non valido"
 
+#  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
+"un valore MULTI_SZ nel registro non è nè vuoto nè terminato con due caratteri nullo"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "gravità non valida"
 
@@ -180,6 +183,9 @@ ARG_NAME " era NULL"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "fallita apertura di un socket"
+
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+L"la registrazione per Stumpless di Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "non è stato possibile scrivere al stream"

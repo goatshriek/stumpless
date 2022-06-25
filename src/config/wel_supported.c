@@ -356,7 +356,7 @@ create_event_source_subkey( LPCWSTR subkey_name,
                            0,
                            0,
                            0,
-                           L"Stumpless registration of Event Source" ); // TODO need to localize
+                           L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
   if( trans == INVALID_HANDLE_VALUE ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
@@ -707,7 +707,7 @@ add_event_source( LPCWSTR subkey_name,
   if( sources_value[0] != L'\0' &&
       !( sources_value[(value_size / sizeof( WCHAR) ) - 2] == L'\0' &&
          sources_value[(value_size / sizeof( WCHAR) ) - 1] == L'\0' ) ) {
-    raise_invalid_encoding( "the Sources MULTI_SZ registry value was neither empty nor terminated with two NULL characters" ); // TODO need to localize
+    raise_invalid_encoding( L10N_INVALID_MULTI_SZ_ERROR_MESSAGE );
     result = ERROR_INVALID_PARAMETER;
     goto cleanup_sources;
   }
@@ -750,7 +750,7 @@ add_event_source( LPCWSTR subkey_name,
                            0,
                            0,
                            0,
-                           L"stumpless_add_wel_event_source registration of Event Source" ); // TODO need to localize
+                           L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
   if( trans == INVALID_HANDLE_VALUE ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
