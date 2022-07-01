@@ -44,10 +44,10 @@
 
 /** The base subkey used for event sources, including a trailing backslash. */
 static LPCWSTR base_source_subkey = L"SYSTEM\\CurrentControlSet\\Services\\" \
-                                      L"EventLog\\";
+                                      L"EventLog";
 
 /** The size of the base subkey in bytes, including the NULL terminator. */
-DWORD base_source_subkey_size = 88;
+DWORD base_source_subkey_size = 86;
 
 /** The full base subkey used for the default source installation. */
 static LPCWSTR default_source_subkey = L"SYSTEM\\CurrentControlSet\\" \
@@ -190,7 +190,7 @@ join_keys( LPCWSTR base_key, DWORD base_key_size, LPCWSTR subkey, DWORD subkey_s
       return NULL;
   }
   memcpy( key, base_key, base_key_size - sizeof( WCHAR ) );
-  *( key + base_key_size - sizeof( WCHAR ) ) = L'\\';
+  *( ( LPWSTR ) ( key + base_key_size - sizeof( WCHAR ) ) ) = L'\\';
   memcpy( key + base_key_size, subkey, subkey_size );
 
   return ( LPWSTR ) key;
@@ -892,7 +892,7 @@ stumpless_add_default_wel_event_source( void ) {
   library_path_size *= sizeof( WCHAR );
 
   result = add_event_source( source_name,
-                             source_name_size,
+                             source_name_size - sizeof( WCHAR ),
                              source_name,
                              source_name_size,
                              8,
@@ -944,12 +944,12 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   }
 
   source_name_length = MultiByteToWideChar( CP_UTF8,
-                                             MB_ERR_INVALID_CHARS |
-                                               MB_PRECOMPOSED,
-                                             source_name,
-                                             -1,
-                                             NULL,
-                                             0 );
+                                            MB_ERR_INVALID_CHARS |
+                                              MB_PRECOMPOSED,
+                                            source_name,
+                                            -1,
+                                            NULL,
+                                            0 );
 
   if( source_name_length == 0 ) {
     raise_mb_conversion_failure( GetLastError(  ) );
