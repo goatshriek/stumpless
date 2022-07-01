@@ -339,7 +339,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( WelEventSource, AddAndRemove ) {
+  TEST( WelEventSource, AddAndRemoveDefault ) {
     DWORD result;
     const struct stumpless_error *error;
     LSTATUS query_result;
@@ -360,12 +360,19 @@ namespace {
                                     READ_CONTROL,
                                     &created_key );
       ASSERT_EQ( query_result, ERROR_SUCCESS );
+      CloseHandle( created_key );
 
-      //result = stumpless_remove_default_wel_event_source(  );
-      //EXPECT_NO_ERROR;
-      //EXPECT_EQ( result, ERROR_SUCCESS );
+      result = stumpless_remove_default_wel_event_source(  );
+      EXPECT_NO_ERROR;
+      EXPECT_EQ( result, ERROR_SUCCESS );
 
-      // TODO check key doesn't exist
+      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                                    L"SYSTEM\\CurrentControlSet\\Services\\"\
+                                      L"EventLog\\Stumpless\\Stumpless",
+                                    0,
+                                    READ_CONTROL,
+                                    &created_key );
+      ASSERT_EQ( query_result, ERROR_FILE_NOT_FOUND );
     }
   }
 

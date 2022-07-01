@@ -1348,8 +1348,9 @@ stumpless_remove_wel_event_source( LPCSTR subkey_name,
       raise_windows_failure( L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE,
                              result,
                              L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-      goto cleanup_sources;
     }
+
+    goto cleanup_sources;
   }
 
   // otherwise, modify the Sources value to remove this one and delete only the given Source
