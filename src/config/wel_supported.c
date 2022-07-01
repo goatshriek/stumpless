@@ -164,6 +164,39 @@ copy_lpcwstr( LPCWSTR str ) {
 }
 
 /**
+ * Joins two provided registry keys together with a backslash character in a
+ * new string. The result must be freed when it is no longer needed.
+ *
+ * @param base_key The base key.
+ *
+ * @param base_key_size The size of the base key in bytes, including the
+ * terminating NULL character.
+ *
+ * @param subkey The subkey of the base key.
+ *
+ * @param subkey_size The size of the subkey in bytes, including the
+ * terminating NULL character.
+ *
+ * @return A new string with the joined registry key, or NULL if memory could
+ * not be allocated for it.
+ */
+static
+LPWSTR
+join_keys( LPCWSTR base_key, DWORD base_key_size, LPCWSTR subkey, DWORD subkey_size ) {
+  char *key;
+
+  key = alloc_mem( base_key_size + subkey_size );
+  if( !key ) {
+      return NULL;
+  }
+  memcpy( key, base_key, base_key_size - sizeof( WCHAR ) );
+  *( key + base_key_size - sizeof( WCHAR ) ) = L'\\';
+  memcpy( key + base_key_size, subkey, subkey_size );
+
+  return ( LPWSTR ) key;
+}
+
+/**
  * Creates the values for an event source in the provided subkey.
  *
  * @param subkey A handle to the subkey to populate.
@@ -632,13 +665,14 @@ add_event_source( LPCWSTR subkey_name,
   BOOL bool_result;
 
   // build the complete source subkey
-  complete_subkey = alloc_mem( base_source_subkey_size + subkey_name_size - sizeof( WCHAR ) );
+  complete_subkey = join_keys( base_source_subkey,
+                               base_source_subkey_size,
+                               subkey_name,
+                               subkey_name_size );
   if( !complete_subkey ) {
       result = ERROR_NOT_ENOUGH_MEMORY;
       goto cleanup;
   }
-  memcpy( complete_subkey, base_source_subkey, base_source_subkey_size - sizeof( WCHAR ) );
-  memcpy( ( ( char * ) complete_subkey ) + base_source_subkey_size - sizeof( WCHAR ), subkey_name, subkey_name_size );
 
   // before the modification transaction starts, we open the main key to see if it exists
   reg_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
@@ -713,7 +747,7 @@ add_event_source( LPCWSTR subkey_name,
   }
 
   if( !multi_sz_contains( sources_value, source_name ) ) {
-    new_sources_size = value_size + source_name_size - 1;
+    new_sources_size = value_size + source_name_size - sizeof( WCHAR );
 
     new_sources_value = alloc_mem( new_sources_size );
     if( !new_sources_value ) {
@@ -721,8 +755,8 @@ add_event_source( LPCWSTR subkey_name,
       goto cleanup_sources;
     }
 
-    memcpy( new_sources_value, sources_value, value_size - 2 );
-    memcpy( ( ( char * ) new_sources_value ) + value_size - 2,
+    memcpy( new_sources_value, sources_value, value_size - sizeof( WCHAR ) );
+    memcpy( ( ( char * ) new_sources_value ) + value_size - sizeof( WCHAR ),
             source_name,
             source_name_size );
 
@@ -745,12 +779,12 @@ add_event_source( LPCWSTR subkey_name,
   }
 
   trans = CreateTransaction( NULL,
-                           0,
-                           0,
-                           0,
-                           0,
-                           0,
-                           L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
+                             0,
+                             0,
+                             0,
+                             0,
+                             0,
+                             L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
   if( trans == INVALID_HANDLE_VALUE ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
@@ -1196,10 +1230,174 @@ stumpless_get_wel_type( const struct stumpless_entry *entry ) {
 
 DWORD
 stumpless_remove_default_wel_event_source( void ) {
+  return stumpless_remove_wel_event_source( "Stumpless", "Stumpless" );
+}
+
+DWORD
+stumpless_remove_wel_event_source( LPCSTR subkey_name,
+                                   LPCSTR source_name ) {
+  DWORD subkey_name_length;
+  LPCWSTR subkey_name_w;
+  LPCWSTR complete_subkey;
+  HKEY subkey_handle;
+  DWORD source_name_length;
+  LPCWSTR source_name_w;
   DWORD result = ERROR_SUCCESS;
   LSTATUS reg_result;
+  DWORD value_type;
+  WCHAR sources_value_buffer[256];
+  DWORD value_size = sizeof( sources_value_buffer );
+  LPWSTR sources_value = sources_value_buffer;
+  LPWSTR new_sources_value;
+  DWORD new_sources_size;
+  LPCWSTR sources_current;
+  LPWSTR current;
 
-  reg_result = RegDeleteTreeW( HKEY_LOCAL_MACHINE, default_source_subkey );
+  VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
+  VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
+
+  clear_error(  );
+
+  subkey_name_w = copy_cstring_to_lpcwstr( subkey_name, &subkey_name_length );
+  if( !subkey_name_w ) {
+    result = get_windows_error_code(  );
+    goto finish;
+  }
+
+  // build the complete source subkey
+  complete_subkey = join_keys( base_source_subkey,
+                               base_source_subkey_size,
+                               subkey_name_w,
+                               subkey_name_length * sizeof( WCHAR ) );
+  if( !complete_subkey ) {
+      result = ERROR_NOT_ENOUGH_MEMORY;
+      goto cleanup_subkey;
+  }
+
+  reg_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                              complete_subkey,
+                              0,
+                              KEY_QUERY_VALUE |
+                                KEY_SET_VALUE |
+                                DELETE |
+                                KEY_ENUMERATE_SUB_KEYS,
+                              &subkey_handle );
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_complete_subkey;
+  }
+  
+  source_name_w = copy_cstring_to_lpcwstr( source_name, &source_name_length );
+  if( !source_name_w ) {
+    result = get_windows_error_code(  );
+    goto cleanup_subkey_handle;
+  }
+
+  reg_result = RegGetValueW( subkey_handle,
+                             NULL,
+                             L"Sources",
+                             RRF_RT_REG_MULTI_SZ,
+                             &value_type,
+                             sources_value,
+                             &value_size );
+
+  if( reg_result == ERROR_MORE_DATA ) {
+    // allocate a new buffer and call again
+    sources_value = alloc_mem( value_size );
+    if( !sources_value ) {
+      result = ERROR_NOT_ENOUGH_MEMORY;
+      goto cleanup_subkey_handle;
+    }
+
+    reg_result = RegGetValueW( subkey_handle,
+                               NULL,
+                               L"Sources",
+                               RRF_RT_REG_MULTI_SZ,
+                               &value_type,
+                               sources_value,
+                               &value_size );
+  }
+
+  if( reg_result != ERROR_SUCCESS ) {
+    result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE,
+                           result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    goto cleanup_sources;
+  }
+
+  if( sources_value[0] != L'\0' &&
+      !( sources_value[(value_size / sizeof( WCHAR) ) - 2] == L'\0' &&
+         sources_value[(value_size / sizeof( WCHAR) ) - 1] == L'\0' ) ) {
+    raise_invalid_encoding( L10N_INVALID_MULTI_SZ_ERROR_MESSAGE );
+    result = ERROR_INVALID_PARAMETER;
+    goto cleanup_sources;
+  }
+
+  // if Sources only contains the specified Source or is empty, simply remove the whole tree
+  if( sources_value[0] == L'\0' ||
+      value_size == ( ( source_name_length + 1 ) * sizeof( WCHAR ) ) && 
+      wcscmp( sources_value, source_name_w ) == 0 ) {
+
+    reg_result = RegDeleteTreeW( HKEY_LOCAL_MACHINE, complete_subkey );
+    if( reg_result != ERROR_SUCCESS ) {
+      result = reg_result;
+      raise_windows_failure( L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE,
+                             result,
+                             L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+      goto cleanup_sources;
+    }
+  }
+
+  // otherwise, modify the Sources value to remove this one and delete only the given Source
+  if( multi_sz_contains( sources_value, source_name_w ) ) {
+    new_sources_size = value_size - ( source_name_length * sizeof( WCHAR ) );
+
+    new_sources_value = alloc_mem( new_sources_size );
+    if( !new_sources_value ) {
+      result = ERROR_NOT_ENOUGH_MEMORY;
+      goto cleanup_sources;
+    }
+
+    sources_current = sources_value;
+    current = new_sources_value;
+    while( *sources_current != L'\0' ) {
+      if( wcsncmp( sources_current, source_name_w, source_name_length ) != 0 ) {
+        wcscpy_s( current,
+                  ( new_sources_size / sizeof( WCHAR ) ) - ( current - new_sources_value ),
+                  sources_current );
+        current += wcslen( sources_current);
+        *current = L'\0';
+        current++;
+      }
+
+      sources_current += wcslen( sources_current ) + 1;
+    }
+    *current = L'\0';
+
+    reg_result = RegSetValueExW( subkey_handle,
+                                 L"Sources",
+                                 0,
+                                 REG_MULTI_SZ,
+                                 ( const BYTE * ) new_sources_value,
+                                 new_sources_size );
+
+    free_mem( new_sources_value ); // candidate for alloca
+
+    if( reg_result != ERROR_SUCCESS ) {
+      result = reg_result;
+      raise_windows_failure( L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE,
+                             result,
+                             L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+      goto cleanup_sources;
+    }
+  }
+
+  // delete source subkey
+  reg_result = RegDeleteTreeW( subkey_handle, source_name_w );
   if( reg_result != ERROR_SUCCESS ) {
     result = reg_result;
     raise_windows_failure( L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE,
@@ -1207,6 +1405,17 @@ stumpless_remove_default_wel_event_source( void ) {
                            L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
   }
 
+cleanup_sources:
+  if( sources_value != sources_value_buffer ) {
+    free_mem( sources_value );
+  }
+cleanup_subkey_handle:
+  CloseHandle( subkey_handle );
+cleanup_complete_subkey:
+  free_mem( complete_subkey );
+cleanup_subkey:
+  free_mem( subkey_name_w );
+finish:
   return result;
 }
 

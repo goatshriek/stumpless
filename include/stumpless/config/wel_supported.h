@@ -63,9 +63,9 @@ extern "C" {
  * TypesSupported: 0x1f (all event types are allowed)
  *
  * This call is semantically equivalent to stumpless_add_wel_event_source(
- * "Stumpless", 8, "stumpless.dll", "stumpless.dll", NULL,
+ * "Stumpless", "Stumpless", 8, "stumpless.dll", "stumpless.dll", NULL,
  * EVENTLOG_AUDIT_FAILURE | EVENTLOG_AUDIT_SUCCESS | EVENTLOG_ERROR_TYPE |
- * EVENTLOG_INFORMATION_TYPE | EVENTLOG_WARNING_TYPE); where
+ * EVENTLOG_INFORMATION_TYPE | EVENTLOG_WARNING_TYPE) where
  * "stumpless.dll" is the full path to the current stumpless.dll module
  * loaded.
  *
@@ -338,10 +338,13 @@ WORD
 stumpless_get_wel_type( const struct stumpless_entry *entry );
 
 /**
- * Removes the registry entries for default WEL entries.
+ * Removes the registry entries for the event source for default WEL entries.
  *
  * Specifically, the following registry subkey and all subkeys are deleted:
  * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
+ *
+ * This call is semantically equivalent to
+ * stumpless_remove_wel_event_source( "Stumpless", "Stumpless" ).
  *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
  * GetLastError if an error was encountered.
@@ -349,6 +352,26 @@ stumpless_get_wel_type( const struct stumpless_entry *entry );
 STUMPLESS_PUBLIC_FUNCTION
 DWORD
 stumpless_remove_default_wel_event_source( void );
+
+/**
+ * Removes the registry entries for an event source for the Windows Event Log.
+ *
+ * @param subkey_name The name of the subkey that the source is installed in,
+ * as a UTF-8 NULL terminated string. This subkey will be looked for under
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
+ * contain backslashes to nest the key under other subkeys.
+ *
+ * @param source_name The name of the event source, as a UTF-8 NULL terminated
+ * string. This will be removed from the "Sources" value of the subkey, and then
+ * a the subkey of the same name under the provided subkey is deleted.
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or the result of
+ * GetLastError if an error was encountered.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+DWORD
+stumpless_remove_wel_event_source( LPCSTR subkey_name,
+                                   LPCSTR source_name );
 
 /**
  * Sets the category of an entry for use with a Windows Event Log target.
