@@ -937,6 +937,8 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
 
+  clear_error(  );
+
   subkey_name_w = copy_cstring_to_lpcwstr( subkey_name, &subkey_name_length );
   if( !subkey_name_w ) {
     result = get_windows_error_code(  );

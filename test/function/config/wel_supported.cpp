@@ -25,6 +25,8 @@
 #include "test/helper/fixture.hpp"
 #include "test/function/windows/events.h"
 
+#define BASE_KEY L"SYSTEM\\CurrentControlSet\\Services\\EventLog"
+
 namespace {
   class WelSupportedTest : public::testing::Test {
     protected:
@@ -339,6 +341,57 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( WelEventSource, AddAndRemove ) {
+    LPCSTR subkey_name = "StumplessTestSubkey";
+    LPCWSTR subkey_name_w = L"StumplessTestSubkey";
+    LPCSTR source_name = "StumplessTestSource";
+    LPCWSTR source_name_w = L"StumplessTestSource";
+    DWORD category_count = 5;
+    LPCSTR category_file = "";
+    LPCSTR event_file = NULL;
+    LPCSTR parameter_file = "";
+    DWORD types_supported = 0;
+    DWORD result;
+    const struct stumpless_error *error;
+    LPCWSTR full_key = BASE_KEY L"\\StumplessTestSubkey\\StumplessTestSource";
+    LSTATUS query_result;
+    HKEY created_key;
+
+    result = stumpless_add_wel_event_source( subkey_name,
+                                             source_name,
+                                             category_count,
+                                             category_file,
+                                             event_file,
+                                             parameter_file,
+                                             types_supported );
+    error = stumpless_get_error(  );
+    if( error != NULL && error->code == ERROR_ACCESS_DENIED ) {
+      SUCCEED(  ) << "not enough permissions to install, skipping test";
+    } else {
+      EXPECT_NO_ERROR;
+      EXPECT_EQ( result, ERROR_SUCCESS );
+
+      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                                    full_key,
+                                    0,
+                                    READ_CONTROL,
+                                    &created_key );
+      ASSERT_EQ( query_result, ERROR_SUCCESS );
+      CloseHandle( created_key );
+
+      result = stumpless_remove_wel_event_source( subkey_name, source_name );
+      EXPECT_NO_ERROR;
+      EXPECT_EQ( result, ERROR_SUCCESS );
+
+      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                                    full_key,
+                                    0,
+                                    READ_CONTROL,
+                                    &created_key );
+      ASSERT_EQ( query_result, ERROR_FILE_NOT_FOUND );
+    }
+  }
+
   TEST( WelEventSource, AddAndRemoveDefault ) {
     DWORD result;
     const struct stumpless_error *error;
@@ -354,8 +407,7 @@ namespace {
       EXPECT_EQ( result, ERROR_SUCCESS );
 
       query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-                                    L"SYSTEM\\CurrentControlSet\\Services\\"\
-                                      L"EventLog\\Stumpless\\Stumpless",
+                                    BASE_KEY L"\\Stumpless\\Stumpless",
                                     0,
                                     READ_CONTROL,
                                     &created_key );
@@ -367,8 +419,7 @@ namespace {
       EXPECT_EQ( result, ERROR_SUCCESS );
 
       query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-                                    L"SYSTEM\\CurrentControlSet\\Services\\"\
-                                      L"EventLog\\Stumpless\\Stumpless",
+                                    BASE_KEY L"\\Stumpless\\Stumpless",
                                     0,
                                     READ_CONTROL,
                                     &created_key );
