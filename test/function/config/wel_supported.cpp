@@ -27,6 +27,24 @@
 
 #define BASE_KEY L"SYSTEM\\CurrentControlSet\\Services\\EventLog"
 
+static
+bool
+registry_key_exists( LPCWSTR key ) {
+  LSTATUS query_result;
+  HKEY key_handle;
+  bool result;
+
+  query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+                                key,
+                                0,
+                                READ_CONTROL,
+                                &key_handle );
+  result = query_result != ERROR_FILE_NOT_FOUND;
+  CloseHandle( key_handle );
+
+  return result;
+}
+
 namespace {
   class WelSupportedTest : public::testing::Test {
     protected:
@@ -353,9 +371,8 @@ namespace {
     DWORD types_supported = 0;
     DWORD result;
     const struct stumpless_error *error;
+    LPCWSTR subkey = BASE_KEY L"\\StumplessTestSubkey";
     LPCWSTR full_key = BASE_KEY L"\\StumplessTestSubkey\\StumplessTestSource";
-    LSTATUS query_result;
-    HKEY created_key;
 
     result = stumpless_add_wel_event_source( subkey_name,
                                              source_name,
@@ -370,33 +387,18 @@ namespace {
     } else {
       EXPECT_NO_ERROR;
       EXPECT_EQ( result, ERROR_SUCCESS );
-
-      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-                                    full_key,
-                                    0,
-                                    READ_CONTROL,
-                                    &created_key );
-      ASSERT_EQ( query_result, ERROR_SUCCESS );
-      CloseHandle( created_key );
+      EXPECT_TRUE( registry_key_exists( full_key ) );
 
       result = stumpless_remove_wel_event_source( subkey_name, source_name );
       EXPECT_NO_ERROR;
       EXPECT_EQ( result, ERROR_SUCCESS );
-
-      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-                                    full_key,
-                                    0,
-                                    READ_CONTROL,
-                                    &created_key );
-      ASSERT_EQ( query_result, ERROR_FILE_NOT_FOUND );
+      EXPECT_FALSE( registry_key_exists( full_key ) );
     }
   }
 
   TEST( WelEventSource, AddAndRemoveDefault ) {
     DWORD result;
     const struct stumpless_error *error;
-    LSTATUS query_result;
-    HKEY created_key;
 
     result = stumpless_add_default_wel_event_source(  );
     error = stumpless_get_error(  );
@@ -405,25 +407,12 @@ namespace {
     } else {
       EXPECT_NO_ERROR;
       EXPECT_EQ( result, ERROR_SUCCESS );
-
-      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-                                    BASE_KEY L"\\Stumpless\\Stumpless",
-                                    0,
-                                    READ_CONTROL,
-                                    &created_key );
-      ASSERT_EQ( query_result, ERROR_SUCCESS );
-      CloseHandle( created_key );
+      EXPECT_TRUE( registry_key_exists( BASE_KEY L"\\Stumpless\\Stumpless" ) );
 
       result = stumpless_remove_default_wel_event_source(  );
       EXPECT_NO_ERROR;
       EXPECT_EQ( result, ERROR_SUCCESS );
-
-      query_result = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-                                    BASE_KEY L"\\Stumpless\\Stumpless",
-                                    0,
-                                    READ_CONTROL,
-                                    &created_key );
-      ASSERT_EQ( query_result, ERROR_FILE_NOT_FOUND );
+      EXPECT_FALSE( registry_key_exists( BASE_KEY L"\\Stumpless\\Stumpless" ) );
     }
   }
 
