@@ -28,6 +28,23 @@
 #define BASE_KEY L"SYSTEM\\CurrentControlSet\\Services\\EventLog"
 
 static
+std::vector<std::wstring> *
+multi_sz_to_vector( LPCWSTR multi_sz ) {
+  std::vector<std::wstring> *vec;
+  LPCWSTR current = multi_sz;
+
+  vec = new std::vector<std::wstring>();
+  while( *current != L'\0' ) {
+    vec->push_back( std::wstring( current ) );
+
+    current += wcslen( current );
+    current++;
+  }
+
+  return vec;
+}
+
+static
 bool
 registry_key_exists( LPCWSTR key ) {
   LSTATUS query_result;
@@ -363,7 +380,7 @@ namespace {
     LPCSTR subkey_name = "StumplessTestSubkey";
     LPCWSTR subkey_name_w = L"StumplessTestSubkey";
     LPCSTR source_name = "StumplessTestSource";
-    LPCWSTR source_name_w = L"StumplessTestSource";
+    std::wstring source_name_w( L"StumplessTestSource" );
     DWORD category_count = 5;
     LPCSTR category_file = "";
     LPCSTR event_file = NULL;
@@ -371,8 +388,13 @@ namespace {
     DWORD types_supported = 0;
     DWORD result;
     const struct stumpless_error *error;
-    LPCWSTR subkey = BASE_KEY L"\\StumplessTestSubkey";
     LPCWSTR full_key = BASE_KEY L"\\StumplessTestSubkey\\StumplessTestSource";
+    LPCWSTR subkey = BASE_KEY L"\\StumplessTestSubkey";
+    WCHAR sources[1024]{};
+    DWORD sources_size = 2048;
+    LSTATUS reg_result;
+    std::vector<std::wstring> *sources_vec;
+    int source_name_count;
 
     result = stumpless_add_wel_event_source( subkey_name,
                                              source_name,
@@ -388,6 +410,22 @@ namespace {
       EXPECT_NO_ERROR;
       EXPECT_EQ( result, ERROR_SUCCESS );
       EXPECT_TRUE( registry_key_exists( full_key ) );
+
+      reg_result = RegGetValueW( HKEY_LOCAL_MACHINE,
+                                 subkey,
+                                 L"Sources",
+                                 RRF_RT_REG_MULTI_SZ,
+                                 NULL,
+                                 sources,
+                                 &sources_size );
+      EXPECT_EQ( reg_result, ERROR_SUCCESS );
+
+      sources_vec = multi_sz_to_vector( sources );
+      source_name_count = std::count( sources_vec->begin(  ),
+                                      sources_vec->end(  ),
+                                      source_name_w );
+      EXPECT_EQ( source_name_count, 1 );
+      delete sources_vec;
 
       result = stumpless_remove_wel_event_source( subkey_name, source_name );
       EXPECT_NO_ERROR;
