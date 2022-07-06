@@ -99,8 +99,7 @@ copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
   int conversion_result;
 
   needed_wchar_length = MultiByteToWideChar( CP_UTF8,
-                                             MB_ERR_INVALID_CHARS |
-                                               MB_PRECOMPOSED,
+                                             MB_ERR_INVALID_CHARS,
                                              str,
                                              -1,
                                              NULL,
@@ -117,8 +116,7 @@ copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
   }
 
   conversion_result = MultiByteToWideChar( CP_UTF8,
-                                           MB_ERR_INVALID_CHARS |
-                                             MB_PRECOMPOSED,
+                                           MB_ERR_INVALID_CHARS,
                                            str,
                                            -1,
                                            str_copy,
@@ -259,7 +257,7 @@ populate_event_source_subkey( HKEY subkey,
     result = RegSetValueExW( subkey,
                              L"CategoryMessageFile",
                              0,
-                             REG_SZ,
+                             REG_EXPAND_SZ,
                              ( const BYTE * ) category_file,
                              category_file_size );
     if( result != ERROR_SUCCESS ) {
@@ -274,7 +272,7 @@ populate_event_source_subkey( HKEY subkey,
     result = RegSetValueExW( subkey,
                              L"EventMessageFile",
                              0,
-                             REG_SZ,
+                             REG_EXPAND_SZ,
                              ( const BYTE * ) event_file,
                              event_file_size );
     if( result != ERROR_SUCCESS ) {
@@ -289,7 +287,7 @@ populate_event_source_subkey( HKEY subkey,
     result = RegSetValueExW( subkey,
                              L"ParameterMessageFile",
                              0,
-                             REG_SZ,
+                             REG_EXPAND_SZ,
                              ( const BYTE * ) parameter_file,
                              parameter_file_size );
     if( result != ERROR_SUCCESS ) {
@@ -946,8 +944,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   }
 
   source_name_length = MultiByteToWideChar( CP_UTF8,
-                                            MB_ERR_INVALID_CHARS |
-                                              MB_PRECOMPOSED,
+                                            MB_ERR_INVALID_CHARS,
                                             source_name,
                                             -1,
                                             NULL,
@@ -966,8 +963,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   }
 
   conversion_result = MultiByteToWideChar( CP_UTF8,
-                                           MB_ERR_INVALID_CHARS |
-                                             MB_PRECOMPOSED,
+                                           MB_ERR_INVALID_CHARS,
                                            source_name,
                                            -1,
                                            source_name_w,

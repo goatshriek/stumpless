@@ -27,6 +27,9 @@
 
 #define BASE_KEY L"SYSTEM\\CurrentControlSet\\Services\\EventLog"
 
+// this is required to allow UTF-8 strings to naturally exist in the tests
+#pragma execution_character_set("utf-8")
+
 static
 std::vector<std::wstring> *
 multi_sz_to_vector( LPCWSTR multi_sz ) {
@@ -382,54 +385,100 @@ namespace {
     LPCSTR source_name = "StumplessTestSource";
     std::wstring source_name_w( L"StumplessTestSource" );
     DWORD category_count = 5;
-    LPCSTR category_file = "";
+    LPCSTR category_file = "%APPDATA%\\è\\category.dll";
+    LPCWSTR category_file_w = L"%APPDATA%\\è\\category.dll";
     LPCSTR event_file = NULL;
     LPCSTR parameter_file = "";
-    DWORD types_supported = 0;
-    DWORD result;
+    LPCWSTR parameter_file_w = L"";
+    DWORD types_supported = EVENTLOG_ERROR_TYPE | 
+                              EVENTLOG_INFORMATION_TYPE |
+                              EVENTLOG_WARNING_TYPE;
     const struct stumpless_error *error;
     LPCWSTR full_key = BASE_KEY L"\\StumplessTestSubkey\\StumplessTestSource";
     LPCWSTR subkey = BASE_KEY L"\\StumplessTestSubkey";
-    WCHAR sources[1024]{};
-    DWORD sources_size = 2048;
+    WCHAR lpcwstr_result[1024]{};
     LSTATUS reg_result;
     std::vector<std::wstring> *sources_vec;
-    int source_name_count;
+    ptrdiff_t source_name_count;
+    DWORD dword_result;
+    DWORD result_size;
 
-    result = stumpless_add_wel_event_source( subkey_name,
-                                             source_name,
-                                             category_count,
-                                             category_file,
-                                             event_file,
-                                             parameter_file,
-                                             types_supported );
+    dword_result = stumpless_add_wel_event_source( subkey_name,
+                                                   source_name,
+                                                   category_count,
+                                                   category_file,
+                                                   event_file,
+                                                   parameter_file,
+                                                   types_supported );
     error = stumpless_get_error(  );
     if( error != NULL && error->code == ERROR_ACCESS_DENIED ) {
       SUCCEED(  ) << "not enough permissions to install, skipping test";
     } else {
       EXPECT_NO_ERROR;
-      EXPECT_EQ( result, ERROR_SUCCESS );
+      EXPECT_EQ( dword_result, ERROR_SUCCESS );
       EXPECT_TRUE( registry_key_exists( full_key ) );
 
+      result_size = sizeof( lpcwstr_result );
       reg_result = RegGetValueW( HKEY_LOCAL_MACHINE,
                                  subkey,
                                  L"Sources",
                                  RRF_RT_REG_MULTI_SZ,
                                  NULL,
-                                 sources,
-                                 &sources_size );
+                                 lpcwstr_result,
+                                 &result_size );
       EXPECT_EQ( reg_result, ERROR_SUCCESS );
 
-      sources_vec = multi_sz_to_vector( sources );
+      sources_vec = multi_sz_to_vector( lpcwstr_result );
       source_name_count = std::count( sources_vec->begin(  ),
                                       sources_vec->end(  ),
                                       source_name_w );
       EXPECT_EQ( source_name_count, 1 );
       delete sources_vec;
 
-      result = stumpless_remove_wel_event_source( subkey_name, source_name );
+      result_size = sizeof( dword_result );
+      reg_result = RegGetValueW( HKEY_LOCAL_MACHINE,
+                                 full_key,
+                                 L"CategoryCount",
+                                 RRF_RT_REG_DWORD,
+                                 NULL,
+                                 &dword_result,
+                                 &result_size );
+      EXPECT_EQ( reg_result, ERROR_SUCCESS );
+      EXPECT_EQ( result_size, sizeof( DWORD ) );
+      EXPECT_EQ( dword_result, category_count );
+
+      result_size = sizeof( lpcwstr_result );
+      reg_result = RegGetValueW( HKEY_LOCAL_MACHINE,
+                                 full_key,
+                                 L"CategoryMessageFile",
+                                 RRF_RT_REG_SZ |
+                                   RRF_RT_REG_EXPAND_SZ |
+                                   RRF_NOEXPAND,
+                                 NULL,
+                                 lpcwstr_result,
+                                 &result_size );
+      EXPECT_EQ( reg_result, ERROR_SUCCESS );
+      EXPECT_EQ( result_size,
+                 ( wcslen( category_file_w ) + 1 ) * sizeof( WCHAR ) );
+      EXPECT_STREQ( lpcwstr_result, category_file_w );
+
+
+      result_size = sizeof( dword_result );
+      reg_result = RegGetValueW( HKEY_LOCAL_MACHINE,
+                                 full_key,
+                                 L"TypesSupported",
+                                 RRF_RT_REG_DWORD,
+                                 NULL,
+                                 &dword_result,
+                                 &result_size );
+      EXPECT_EQ( reg_result, ERROR_SUCCESS );
+      EXPECT_EQ( result_size, sizeof( DWORD ) );
+      EXPECT_EQ( dword_result, types_supported );
+
+      dword_result = stumpless_remove_wel_event_source( subkey_name,
+                                                        source_name );
       EXPECT_NO_ERROR;
-      EXPECT_EQ( result, ERROR_SUCCESS );
+      EXPECT_EQ( dword_result, ERROR_SUCCESS );
       EXPECT_FALSE( registry_key_exists( full_key ) );
     }
   }
