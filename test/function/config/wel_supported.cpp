@@ -387,15 +387,16 @@ namespace {
     DWORD category_count = 5;
     LPCSTR category_file = "%APPDATA%\\è\\category.dll";
     LPCWSTR category_file_w = L"%APPDATA%\\è\\category.dll";
-    LPCSTR event_file = NULL;
-    LPCSTR parameter_file = "";
-    LPCWSTR parameter_file_w = L"";
+    LPCSTR parameter_file = "%APPDATA%\\è\\parameter.dll";
+    LPCWSTR parameter_file_w = L"%APPDATA%\\è\\parameter.dll";
     DWORD types_supported = EVENTLOG_ERROR_TYPE | 
                               EVENTLOG_INFORMATION_TYPE |
                               EVENTLOG_WARNING_TYPE;
     const struct stumpless_error *error;
     LPCWSTR full_key = BASE_KEY L"\\StumplessTestSubkey\\StumplessTestSource";
     LPCWSTR subkey = BASE_KEY L"\\StumplessTestSubkey";
+    LPCWSTR event_subkey = BASE_KEY L"\\StumplessTestSubkey"\
+                            L"\\StumplessTestSource\\EventMessageFile";
     WCHAR lpcwstr_result[1024]{};
     LSTATUS reg_result;
     std::vector<std::wstring> *sources_vec;
@@ -407,7 +408,7 @@ namespace {
                                                    source_name,
                                                    category_count,
                                                    category_file,
-                                                   event_file,
+                                                   NULL,
                                                    parameter_file,
                                                    types_supported );
     error = stumpless_get_error(  );
@@ -462,6 +463,22 @@ namespace {
                  ( wcslen( category_file_w ) + 1 ) * sizeof( WCHAR ) );
       EXPECT_STREQ( lpcwstr_result, category_file_w );
 
+      EXPECT_FALSE( registry_key_exists( event_subkey ) );
+
+      result_size = sizeof( lpcwstr_result );
+      reg_result = RegGetValueW( HKEY_LOCAL_MACHINE,
+                                 full_key,
+                                 L"ParameterMessageFile",
+                                 RRF_RT_REG_SZ |
+                                   RRF_RT_REG_EXPAND_SZ |
+                                   RRF_NOEXPAND,
+                                 NULL,
+                                 lpcwstr_result,
+                                 &result_size );
+      EXPECT_EQ( reg_result, ERROR_SUCCESS );
+      EXPECT_EQ( result_size,
+                 ( wcslen( parameter_file_w ) + 1 ) * sizeof( WCHAR ) );
+      EXPECT_STREQ( lpcwstr_result, parameter_file_w );
 
       result_size = sizeof( dword_result );
       reg_result = RegGetValueW( HKEY_LOCAL_MACHINE,
