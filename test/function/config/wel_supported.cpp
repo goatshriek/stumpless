@@ -385,10 +385,10 @@ namespace {
     LPCSTR source_name = "StumplessTestSource";
     std::wstring source_name_w( L"StumplessTestSource" );
     DWORD category_count = 5;
-    LPCSTR category_file = "%APPDATA%\\è\\category.dll";
-    LPCWSTR category_file_w = L"%APPDATA%\\è\\category.dll";
-    LPCSTR parameter_file = "%APPDATA%\\è\\parameter.dll";
-    LPCWSTR parameter_file_w = L"%APPDATA%\\è\\parameter.dll";
+    LPCSTR category_file = "%APPDATA%\\Ã¨\\category.dll";
+    LPCWSTR category_file_w = L"%APPDATA%\\Ã¨\\category.dll";
+    LPCSTR parameter_file = "%APPDATA%\\Ã¨\\parameter.dll";
+    LPCWSTR parameter_file_w = L"%APPDATA%\\Ã¨\\parameter.dll";
     DWORD types_supported = EVENTLOG_ERROR_TYPE | 
                               EVENTLOG_INFORMATION_TYPE |
                               EVENTLOG_WARNING_TYPE;
@@ -505,8 +505,8 @@ namespace {
     LPCWSTR subkey_name = L"StumplessTestSubkeyW";
     std::wstring source_name( L"StumplessTestSourceW" );
     DWORD category_count = 5;
-    LPCWSTR category_file = L"%APPDATA%\\è\\category.dll";
-    LPCWSTR parameter_file = L"%APPDATA%\\è\\parameter.dll";
+    LPCWSTR category_file = L"%APPDATA%\\Ã¨\\category.dll";
+    LPCWSTR parameter_file = L"%APPDATA%\\Ã¨\\parameter.dll";
     DWORD types_supported = EVENTLOG_ERROR_TYPE |
                               EVENTLOG_INFORMATION_TYPE |
                               EVENTLOG_WARNING_TYPE;
