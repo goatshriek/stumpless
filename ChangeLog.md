@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2022-03-27
+## [2.1.0] - 2022-07-07
 ### Added
  - Custom function logging targets.
  - Localizations for:
@@ -49,8 +49,14 @@ fixes, check out the
    specifier string and variable number of arguments.
  - Default Windows Event Log messages that can be used when none are specified.
  - Full unicode support with Windows Event Log targets, along with the following
-   wide character functions:
+   new functions:
+    * `stumpless_add_default_wel_event_source`
+    * `stumpless_add_wel_event_source`
+    * `stumpless_add_wel_event_source_w`
     * `stumpless_get_wel_insertion_string_w`
+    * `stumpless_remove_default_wel_event_source`
+    * `stumpless_remove_wel_event_source`
+    * `stumpless_remove_wel_event_source_w`
     * `stumpless_set_wel_insertion_string_w`
     * `stumpless_set_wel_insertion_strings_w`
     * `vstumpless_set_wel_insertion_strings_w`

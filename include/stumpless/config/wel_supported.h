@@ -140,6 +140,67 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
                                 DWORD types_supported );
 
 /**
+ * Creates or updates the registry entries for displaying log entries in the
+ * Windows Event Log for a new event source. Any existing keys are opened and
+ * existing values are overwritten.
+ *
+ * For Microsoft documentation on each of the parameters listed below, see
+ * https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources and
+ * https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-even/ac5ffa75-d036-4302-b008-ce9e0bcd60e3
+ * which describe the semantics these registry values.
+ *
+ * If the Event Viewer does not have an entry for the application or message or
+ * category descriptions are not displayed properly, you may need to restart the
+ * Event Viewer for this to take effect. Also, be aware that permissions set on
+ * the folder where the DLL resides may have an effect; see
+ * https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log
+ * for one such issue.
+ *
+ * @param subkey_name The name of the subkey that the source should be added to,
+ * as a wide char NULL terminated string. This subkey will be created under
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
+ * contain backslashes to nest the key under other subkeys.
+ *
+ * @param source_name The name of the event source, as a wide char NULL
+ * terminated string. This will be added to the "Sources" value of the subkey,
+ * and created as a subkey under it as well. An error is raised if this is NULL.
+ * If the value "Sources" already exists and is not a properly formatted
+ * MULTI_SZ value, then this function fails and returns ERROR_INVALID_PARAMETER.
+ *
+ * @param category_count The number of categories present in the message file.
+ * This is used for the CategoryCount registry value.
+ *
+ * @param category_file A path to the resource file containing the categories
+ * used for this source, as a wide char NULL terminated string. If NULL, then
+ * the CategoryMessageFile registry value will not be created.
+ *
+ * @param event_file A path to the resource file containing the messages used
+ * for this source, as a wide char NULL terminated string. If NULL, then the
+ * EventMessageFile registry value will not be created.
+ *
+ * @param parameter_file A path to the resource file containing the messages
+ * used as parameters for this source, as a wide char NULL terminated string. If
+ * NULL, then the ParameterMessageFile registry value will not be created.
+ *
+ * @param types_supported A set of flags designating the event types that are
+ * supported by this source. This is used for the TypesSupported registry value.
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or a Windows error
+ * code result if an error was encountered. Note that the error code may not
+ * necessarily correspond to a call to GetLastError after this, for example in
+ * the case where a registry value was not correctly formed.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+DWORD
+stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
+                                  LPCWSTR source_name,
+                                  DWORD category_count,
+                                  LPCWSTR category_file,
+                                  LPCWSTR event_file,
+                                  LPCWSTR parameter_file,
+                                  DWORD types_supported );
+
+/**
  * Gets the category of an entry used with Windows Event Log targets.
  *
  * The category is used by a Windows Event Log target. Entries that are going to
@@ -372,6 +433,27 @@ STUMPLESS_PUBLIC_FUNCTION
 DWORD
 stumpless_remove_wel_event_source( LPCSTR subkey_name,
                                    LPCSTR source_name );
+
+/**
+ * Removes the registry entries for an event source for the Windows Event Log.
+ *
+ * @param subkey_name The name of the subkey that the source is installed in,
+ * as a wide char NULL terminated string. This subkey will be looked for under
+ * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
+ * contain backslashes to nest the key under other subkeys.
+ *
+ * @param source_name The name of the event source, as a wide char NULL
+ * terminated string. This will be removed from the "Sources" value of the
+ * subkey, and then a the subkey of the same name under the provided subkey is
+ * deleted.
+ *
+ * @return ERROR_SUCCESS if the operation was successful, or the result of
+ * GetLastError if an error was encountered.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+DWORD
+stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
+                                     LPCWSTR source_name );
 
 /**
  * Sets the category of an entry for use with a Windows Event Log target.
