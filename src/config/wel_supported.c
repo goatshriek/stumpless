@@ -54,6 +54,23 @@ static LPCWSTR default_source_subkey = L"SYSTEM\\CurrentControlSet\\" \
                                          L"Services\\EventLog\\Stumpless";
 
 /**
+ * Converts a size_t to a DWORD, returning the maximum value if the size_t is
+ * higher than the DWORD can hold.
+ *
+ * @param val The size_t to convert.
+ *
+ * @return The provided val as a DWORD.
+ */
+DWORD
+cap_size_t_to_dword( size_t val ){
+  if( val > MAXDWORD ) {
+    return MAXDWORD;
+  } else {
+    return ( DWORD ) val;
+  }
+}
+
+/**
  * Returns a Windows error code for the current Stumpless error. This may not
  * be equivalent to the result of GetLastError, for example if a memory
  * allocation failure occurred.
@@ -92,7 +109,7 @@ get_windows_error_code( void ) {
  * error is encountered.
  */
 static
-LPCWSTR
+LPWSTR
 copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
   int needed_wchar_length;
   LPWSTR str_copy;
@@ -180,7 +197,10 @@ copy_lpcwstr( LPCWSTR str ) {
  */
 static
 LPWSTR
-join_keys( LPCWSTR base_key, DWORD base_key_size, LPCWSTR subkey, DWORD subkey_size ) {
+join_keys( LPCWSTR base_key,
+           size_t base_key_size,
+           LPCWSTR subkey,
+           size_t subkey_size ) {
   char *key;
 
   key = alloc_mem( base_key_size + subkey_size );
@@ -499,7 +519,7 @@ cleanup_sources:
  */
 static
 bool
-multi_sz_contains( const WCHAR *value, LPCWSTR str ){
+multi_sz_contains( LPCWSTR value, LPCWSTR str ){
   LPCWSTR current = value;
   size_t str_size;
 
@@ -947,7 +967,6 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   LPCWSTR subkey_name_w;
   DWORD source_name_length = 0;
   LPWSTR source_name_w;
-  DWORD conversion_result;
   DWORD category_file_length = 0;
   LPCWSTR category_file_w = NULL;
   DWORD event_file_length = 0;
@@ -1033,11 +1052,11 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
                                   LPCWSTR event_file,
                                   LPCWSTR parameter_file,
                                   DWORD types_supported ) {
-  DWORD subkey_name_size;
-  DWORD source_name_size;
-  DWORD category_file_size = 0;
-  DWORD event_file_size = 0;
-  DWORD parameter_file_size = 0;
+  size_t subkey_name_size;
+  size_t source_name_size;
+  size_t category_file_size = 0;
+  size_t event_file_size = 0;
+  size_t parameter_file_size = 0;
 
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
@@ -1060,16 +1079,16 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
   }
 
   return add_event_source( subkey_name,
-                           subkey_name_size,
+                           cap_size_t_to_dword( subkey_name_size ),
                            source_name,
-                           source_name_size,
+                           cap_size_t_to_dword( source_name_size ),
                            category_count,
                            category_file,
-                           category_file_size,
+                           cap_size_t_to_dword( category_file_size ),
                            event_file,
-                           event_file_size,
+                           cap_size_t_to_dword( event_file_size ),
                            parameter_file,
-                           parameter_file_size,
+                           cap_size_t_to_dword( parameter_file_size ),
                            types_supported );
 }
 
@@ -1313,10 +1332,10 @@ finish:
 DWORD
 stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
                                      LPCWSTR source_name ) {
-  DWORD subkey_name_size;
+  size_t subkey_name_size;
   LPCWSTR complete_subkey;
   HKEY subkey_handle;
-  DWORD source_name_size;
+  size_t source_name_size;
   DWORD result = ERROR_SUCCESS;
   LSTATUS reg_result;
   DWORD value_type;
@@ -1324,7 +1343,7 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
   DWORD value_size = sizeof( sources_value_buffer );
   LPWSTR sources_value = sources_value_buffer;
   LPWSTR new_sources_value;
-  DWORD new_sources_size;
+  size_t new_sources_size;
   LPCWSTR sources_current;
   LPWSTR current;
 
@@ -1338,7 +1357,7 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
   complete_subkey = join_keys( base_source_subkey,
                                base_source_subkey_size,
                                subkey_name,
-                               subkey_name_size );
+                               cap_size_t_to_dword( subkey_name_size ) );
   if( !complete_subkey ) {
       result = ERROR_NOT_ENOUGH_MEMORY;
       goto finish;
@@ -1449,7 +1468,7 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
                                  0,
                                  REG_MULTI_SZ,
                                  ( const BYTE * ) new_sources_value,
-                                 new_sources_size );
+                                 cap_size_t_to_dword( new_sources_size ) );
 
     free_mem( new_sources_value ); // candidate for alloca
 
