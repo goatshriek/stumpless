@@ -83,6 +83,8 @@ stumpless_add_entry( struct stumpless_target *target,
   size_t builder_length;
   const char *buffer = NULL;
   int result;
+  int option_cons;
+  FILE *cons_stream; 
   FILE *error_stream;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
@@ -167,6 +169,17 @@ stumpless_add_entry( struct stumpless_target *target,
 
     default:
       result = sendto_unsupported_target( target, buffer, builder_length );
+  }
+
+  /* STUMPLESS_OPTION_CONS: if target write fails, write to system console.
+   * Important: use unchecked_ to preserve the error from the failed target.
+   * Ignore any further errors; more important to return the original result.
+   */
+  if ( result < 0 && unchecked_get_option( target, STUMPLESS_OPTION_CONS ) ) {
+    cons_stream = stumpless_get_cons_stream( );
+    if ( cons_stream ) {
+      fwrite( buffer, sizeof( char ), builder_length, cons_stream );
+    }
   }
 
   strbuilder_destroy( builder );
@@ -355,6 +368,21 @@ stumpless_get_default_target( void ) {
 }
 
 int
+unchecked_get_option( const struct stumpless_target *target, int option ) {
+  int options;
+
+  if ( !target ) {
+    return 0;
+  }
+
+  lock_target( target );
+  options = target->options;
+  unlock_target( target );
+
+  return options & option;
+}
+
+int
 stumpless_get_option( const struct stumpless_target *target, int option ) {
   int options;
 
@@ -363,12 +391,10 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
     return 0;
   }
 
-  lock_target( target );
-  options = target->options;
-  unlock_target( target );
+  options = unchecked_get_option( target, option );
 
   clear_error(  );
-  return options & option;
+  return options;
 }
 
 const char *
@@ -1034,7 +1060,7 @@ stumpless_get_cons_stream( void ) {
 }
 
 void
-stumpless_set_cons_stream( FILE *stream) {
+stumpless_set_cons_stream( FILE *stream ) {
   config_write_ptr( &cons_stream, stream );
   config_write_bool( &cons_stream_valid, true );
 }

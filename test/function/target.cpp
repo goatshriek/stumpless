@@ -535,7 +535,7 @@ namespace {
 
   TEST( ConsoleStream, StdoutDefault ) {
 	FILE *cons_stream = stumpless_get_cons_stream();
-	EXPECT_TRUE( cons_stream == stdout);
+	EXPECT_TRUE( cons_stream == stdout );
     stumpless_free_all(  );
   }
 
@@ -687,7 +687,7 @@ namespace {
                                            buffer,
                                            sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
-   
+
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
@@ -850,7 +850,7 @@ namespace {
                                            buffer,
                                            sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
-   
+
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
@@ -998,6 +998,30 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetOption, Cons ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[100];
+    int option;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_TRUE( target != NULL );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_CONS );
+    EXPECT_FALSE( option );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_CONS );
+    EXPECT_EQ( target_result, target );
+
+    option = stumpless_get_option( target, STUMPLESS_OPTION_CONS );
+    EXPECT_TRUE( option );
+
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
   TEST( SetOption, NullTarget ) {
     const struct stumpless_error *error;
     const struct stumpless_target *result;
@@ -1031,6 +1055,7 @@ namespace {
     stumpless_close_buffer_target( target );
     stumpless_free_all(  );
   }
+
   TEST( SetOption, Perror ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
@@ -1052,6 +1077,197 @@ namespace {
     EXPECT_TRUE( option );
 
     stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( WithCons, ConsDisabled ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    const struct stumpless_error *error;
+    struct stumpless_entry *basic_entry;
+
+    int result;
+
+    const char *ro_filename = "cons-ro-stream.log";
+    const char *cons_filename = "cons-stream.log";
+
+    FILE *ro_stream;
+    FILE *cons_stream;
+
+    char buffer[300];
+    // Ensure that the buffer is cleared
+    memset( buffer, 0, 300 );
+
+    // Create the temporary file, then open as read only
+    ro_stream = fopen( ro_filename, "w+" );
+    fclose( ro_stream );
+
+    ro_stream = fopen( ro_filename, "r" );
+    ASSERT_TRUE( ro_stream != NULL );
+
+    // Open fallback to capture output
+    cons_stream = fopen( cons_filename, "w+" );
+    ASSERT_TRUE( cons_stream != NULL );
+
+    // Use this to capture the fallback output
+    stumpless_set_cons_stream( cons_stream );
+    ASSERT_TRUE( cons_stream == stumpless_get_cons_stream( ) );
+
+    target = stumpless_open_stream_target( ro_filename, ro_stream );
+    ASSERT_TRUE( target != NULL );
+
+    basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       "stumpless-unit-test",
+                                       "basic-entry",
+                                       "STUMPLESS_OPTION_CONS::01" );
+    ASSERT_TRUE( basic_entry != NULL );
+    result = stumpless_add_entry( target, basic_entry );
+
+    // Expect the write to fail and underlying error preserved
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
+
+    // Confirm that we didn't write to the console stream
+    ASSERT_TRUE( fgets( buffer, 300, cons_stream ) == NULL );
+    EXPECT_STREQ( buffer, "" );
+    EXPECT_GT( feof( cons_stream ), 0 );
+
+    stumpless_destroy_entry_and_contents( basic_entry );
+
+    fclose( ro_stream );
+    fclose( cons_stream );
+
+    stumpless_close_stream_target( target );
+
+    remove( ro_filename );
+    remove( cons_filename );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( WithCons, ConsEnabled ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    const struct stumpless_error *error;
+    struct stumpless_entry *basic_entry;
+
+    const char *message = "STUMPLESS_OPTION_CONS::enabled";
+    char buffer[300];
+    int result;
+
+    const char *ro_filename = "cons-ro-stream.log";
+    const char *cons_filename = "cons-stream.log";
+
+    FILE *ro_stream;
+    FILE *cons_stream;
+
+    // Create the temporary file, then open as read only
+    ro_stream = fopen( ro_filename, "w+" );
+    fclose( ro_stream );
+
+    ro_stream = fopen( ro_filename, "r" );
+    ASSERT_TRUE( ro_stream != NULL );
+
+    cons_stream = fopen( cons_filename, "w+" );
+    ASSERT_TRUE( cons_stream != NULL );
+
+    // Use this to capture the fallback output
+    stumpless_set_cons_stream( cons_stream );
+    ASSERT_TRUE( cons_stream == stumpless_get_cons_stream( ) );
+
+    target = stumpless_open_stream_target( ro_filename, ro_stream );
+    ASSERT_TRUE( target != NULL );
+
+    // Enable the CONS option, which will use the console stream as a
+    // fallback if logging to the target failed
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_CONS );
+    EXPECT_EQ( target_result, target );
+
+    basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       "stumpless-unit-test",
+                                       "basic-entry",
+                                       message );
+    ASSERT_TRUE( basic_entry != NULL );
+    result = stumpless_add_entry( target, basic_entry );
+
+    // Write should fail because the target is read only!
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
+
+    // Ensure that the buffer is cleared
+    memset( buffer, 0, 300 );
+    rewind( cons_stream );
+
+    // Confirm that the cons_stream is empty
+    ASSERT_TRUE( fgets( buffer, 300, cons_stream ) != NULL );
+    EXPECT_THAT( buffer, HasSubstr( message ) );
+    EXPECT_EQ( feof( cons_stream ), 0 );
+
+    stumpless_destroy_entry_and_contents( basic_entry );
+
+    fclose( ro_stream );
+
+    stumpless_close_stream_target( target );
+
+    remove( ro_filename );
+    remove( cons_filename );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( WithCons, ConsNull ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    const struct stumpless_error *error;
+    struct stumpless_entry *basic_entry;
+
+    const char *message = "STUMPLESS_OPTION_CONS::null";
+    const char *ro_filename = "cons-ro-stream.log";
+    int result;
+
+    FILE *ro_stream;
+
+    // Create the temporary file, then open as read only
+    ro_stream = fopen( ro_filename, "w+" );
+    fclose( ro_stream );
+
+    ro_stream = fopen( ro_filename, "r" );
+    ASSERT_TRUE( ro_stream != NULL );
+
+    // Use this to capture the fallback output
+    stumpless_set_cons_stream( NULL );
+
+    target = stumpless_open_stream_target( ro_filename, ro_stream );
+    ASSERT_TRUE( target != NULL );
+
+    // Enable the CONS option, which will use the console stream as a
+    // fallback if logging to the target failed
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_CONS );
+    EXPECT_EQ( target_result, target );
+
+    basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       "stumpless-unit-test",
+                                       "basic-entry",
+                                       message );
+    ASSERT_TRUE( basic_entry != NULL );
+    result = stumpless_add_entry( target, basic_entry );
+
+    // Write should fail because the target is read only!
+    EXPECT_LT( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
+
+    // Confirm that our custom console is null (but did not segfault)
+    ASSERT_TRUE( NULL == stumpless_get_cons_stream( ) );
+
+    stumpless_close_stream_target( target );
+    stumpless_destroy_entry_and_contents( basic_entry );
+
+    fclose( ro_stream );
+    remove( ro_filename );
+
     stumpless_free_all(  );
   }
 
