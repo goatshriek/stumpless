@@ -283,195 +283,195 @@ Stumpless Local7 Success message.
 .
 
 MessageId=0x29
-Severity=Informational
+Severity=Error
 Facility=Kernel
-SymbolicName=STUMPLESS_WEL_MSG_INFO_KERN
+SymbolicName=STUMPLESS_WEL_MSG_ERR_KERN
 Language=English
-Stumpless Kernel Informational message.
+Stumpless Kernel Error message.
 .
 
 MessageId=0x2a
-Severity=Informational
+Severity=Error
 Facility=User
-SymbolicName=STUMPLESS_WEL_MSG_INFO_USER
+SymbolicName=STUMPLESS_WEL_MSG_ERR_USER
 Language=English
-Stumpless User Informational message.
+Stumpless User Error message.
 .
 
 MessageId=0x2b
-Severity=Informational
+Severity=Error
 Facility=Mail
-SymbolicName=STUMPLESS_WEL_MSG_INFO_MAIL
+SymbolicName=STUMPLESS_WEL_MSG_ERR_MAIL
 Language=English
-Stumpless Mail Informational message.
+Stumpless Mail Error message.
 .
 
 MessageId=0x2c
-Severity=Informational
+Severity=Error
 Facility=Daemon
-SymbolicName=STUMPLESS_WEL_MSG_INFO_DAEMON
+SymbolicName=STUMPLESS_WEL_MSG_ERR_DAEMON
 Language=English
-Stumpless Daemon Informational message.
+Stumpless Daemon Error message.
 .
 
 MessageId=0x2d
-Severity=Informational
+Severity=Error
 Facility=LogAuth
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOG_AUTH
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOG_AUTH
 Language=English
-Stumpless LogAuth Informational message.
+Stumpless LogAuth Error message.
 .
 
 MessageId=0x2e
-Severity=Informational
+Severity=Error
 Facility=Syslog
-SymbolicName=STUMPLESS_WEL_MSG_INFO_SYSLOG
+SymbolicName=STUMPLESS_WEL_MSG_ERR_SYSLOG
 Language=English
-Stumpless Syslog Informational message.
+Stumpless Syslog Error message.
 .
 
 MessageId=0x2f
-Severity=Informational
+Severity=Error
 Facility=Lpr
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LPR
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LPR
 Language=English
-Stumpless Lpr Informational message.
+Stumpless Lpr Error message.
 .
 
 MessageId=0x30
-Severity=Informational
+Severity=Error
 Facility=News
-SymbolicName=STUMPLESS_WEL_MSG_INFO_NEWS
+SymbolicName=STUMPLESS_WEL_MSG_ERR_NEWS
 Language=English
-Stumpless News Informational message.
+Stumpless News Error message.
 .
 
 MessageId=0x31
-Severity=Informational
+Severity=Error
 Facility=Uucp
-SymbolicName=STUMPLESS_WEL_MSG_INFO_UUCP
+SymbolicName=STUMPLESS_WEL_MSG_ERR_UUCP
 Language=English
-Stumpless Uucp Informational message.
+Stumpless Uucp Error message.
 .
 
 MessageId=0x32
-Severity=Informational
+Severity=Error
 Facility=Cron
-SymbolicName=STUMPLESS_WEL_MSG_INFO_CRON
+SymbolicName=STUMPLESS_WEL_MSG_ERR_CRON
 Language=English
-Stumpless Cron Informational message.
+Stumpless Cron Error message.
 .
 
 MessageId=0x33
-Severity=Informational
+Severity=Error
 Facility=Auth2
-SymbolicName=STUMPLESS_WEL_MSG_INFO_AUTH2
+SymbolicName=STUMPLESS_WEL_MSG_ERR_AUTH2
 Language=English
-Stumpless Auth2 Informational message.
+Stumpless Auth2 Error message.
 .
 
 MessageId=0x34
-Severity=Informational
+Severity=Error
 Facility=Ftp
-SymbolicName=STUMPLESS_WEL_MSG_INFO_FTP
+SymbolicName=STUMPLESS_WEL_MSG_ERR_FTP
 Language=English
-Stumpless Ftp Informational message.
+Stumpless Ftp Error message.
 .
 
 MessageId=0x35
-Severity=Informational
+Severity=Error
 Facility=Ntp
-SymbolicName=STUMPLESS_WEL_MSG_INFO_NTP
+SymbolicName=STUMPLESS_WEL_MSG_ERR_NTP
 Language=English
-Stumpless Ntp Informational message.
+Stumpless Ntp Error message.
 .
 
 MessageId=0x36
-Severity=Informational
+Severity=Error
 Facility=Audit
-SymbolicName=STUMPLESS_WEL_MSG_INFO_AUDIT
+SymbolicName=STUMPLESS_WEL_MSG_ERR_AUDIT
 Language=English
-Stumpless Audit Informational message.
+Stumpless Audit Error message.
 .
 
 MessageId=0x37
-Severity=Informational
+Severity=Error
 Facility=Alert
-SymbolicName=STUMPLESS_WEL_MSG_INFO_ALERT
+SymbolicName=STUMPLESS_WEL_MSG_ERR_ALERT
 Language=English
-Stumpless Alert Informational message.
+Stumpless Alert Error message.
 .
 
 MessageId=0x38
-Severity=Informational
+Severity=Error
 Facility=Cron2
-SymbolicName=STUMPLESS_WEL_MSG_INFO_CRON2
+SymbolicName=STUMPLESS_WEL_MSG_ERR_CRON2
 Language=English
-Stumpless Cron2 Informational message.
+Stumpless Cron2 Error message.
 .
 
 MessageId=0x39
-Severity=Informational
+Severity=Error
 Facility=Local0
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL0
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL0
 Language=English
-Stumpless Local0 Informational message.
+Stumpless Local0 Error message.
 .
 
 MessageId=0x3a
-Severity=Informational
+Severity=Error
 Facility=Local1
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL1
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL1
 Language=English
-Stumpless Local1 Informational message.
+Stumpless Local1 Error message.
 .
 
 MessageId=0x3b
-Severity=Informational
+Severity=Error
 Facility=Local2
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL2
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL2
 Language=English
-Stumpless Local2 Informational message.
+Stumpless Local2 Error message.
 .
 
 MessageId=0x3c
-Severity=Informational
+Severity=Error
 Facility=Local3
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL3
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL3
 Language=English
-Stumpless Local3 Informational message.
+Stumpless Local3 Error message.
 .
 
 MessageId=0x3d
-Severity=Informational
+Severity=Error
 Facility=Local4
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL4
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL4
 Language=English
-Stumpless Local4 Informational message.
+Stumpless Local4 Error message.
 .
 
 MessageId=0x3e
-Severity=Informational
+Severity=Error
 Facility=Local5
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL5
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL5
 Language=English
-Stumpless Local5 Informational message.
+Stumpless Local5 Error message.
 .
 
 MessageId=0x3f
-Severity=Informational
+Severity=Error
 Facility=Local6
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL6
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL6
 Language=English
-Stumpless Local6 Informational message.
+Stumpless Local6 Error message.
 .
 
 MessageId=0x40
-Severity=Informational
+Severity=Error
 Facility=Local7
-SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL7
+SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL7
 Language=English
-Stumpless Local7 Informational message.
+Stumpless Local7 Error message.
 .
 
 MessageId=0x41
@@ -667,193 +667,193 @@ Stumpless Local7 Warning message.
 .
 
 MessageId=0x59
-Severity=Error
+Severity=Informational
 Facility=Kernel
-SymbolicName=STUMPLESS_WEL_MSG_ERR_KERN
+SymbolicName=STUMPLESS_WEL_MSG_INFO_KERN
 Language=English
-Stumpless Kernel Error message.
+Stumpless Kernel Informational message.
 .
 
 MessageId=0x5a
-Severity=Error
+Severity=Informational
 Facility=User
-SymbolicName=STUMPLESS_WEL_MSG_ERR_USER
+SymbolicName=STUMPLESS_WEL_MSG_INFO_USER
 Language=English
-Stumpless User Error message.
+Stumpless User Informational message.
 .
 
 MessageId=0x5b
-Severity=Error
+Severity=Informational
 Facility=Mail
-SymbolicName=STUMPLESS_WEL_MSG_ERR_MAIL
+SymbolicName=STUMPLESS_WEL_MSG_INFO_MAIL
 Language=English
-Stumpless Mail Error message.
+Stumpless Mail Informational message.
 .
 
 MessageId=0x5c
-Severity=Error
+Severity=Informational
 Facility=Daemon
-SymbolicName=STUMPLESS_WEL_MSG_ERR_DAEMON
+SymbolicName=STUMPLESS_WEL_MSG_INFO_DAEMON
 Language=English
-Stumpless Daemon Error message.
+Stumpless Daemon Informational message.
 .
 
 MessageId=0x5d
-Severity=Error
+Severity=Informational
 Facility=LogAuth
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOG_AUTH
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOG_AUTH
 Language=English
-Stumpless LogAuth Error message.
+Stumpless LogAuth Informational message.
 .
 
 MessageId=0x5e
-Severity=Error
+Severity=Informational
 Facility=Syslog
-SymbolicName=STUMPLESS_WEL_MSG_ERR_SYSLOG
+SymbolicName=STUMPLESS_WEL_MSG_INFO_SYSLOG
 Language=English
-Stumpless Syslog Error message.
+Stumpless Syslog Informational message.
 .
 
 MessageId=0x5f
-Severity=Error
+Severity=Informational
 Facility=Lpr
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LPR
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LPR
 Language=English
-Stumpless Lpr Error message.
+Stumpless Lpr Informational message.
 .
 
 MessageId=0x60
-Severity=Error
+Severity=Informational
 Facility=News
-SymbolicName=STUMPLESS_WEL_MSG_ERR_NEWS
+SymbolicName=STUMPLESS_WEL_MSG_INFO_NEWS
 Language=English
-Stumpless News Error message.
+Stumpless News Informational message.
 .
 
 MessageId=0x61
-Severity=Error
+Severity=Informational
 Facility=Uucp
-SymbolicName=STUMPLESS_WEL_MSG_ERR_UUCP
+SymbolicName=STUMPLESS_WEL_MSG_INFO_UUCP
 Language=English
-Stumpless Uucp Error message.
+Stumpless Uucp Informational message.
 .
 
 MessageId=0x62
-Severity=Error
+Severity=Informational
 Facility=Cron
-SymbolicName=STUMPLESS_WEL_MSG_ERR_CRON
+SymbolicName=STUMPLESS_WEL_MSG_INFO_CRON
 Language=English
-Stumpless Cron Error message.
+Stumpless Cron Informational message.
 .
 
 MessageId=0x63
-Severity=Error
+Severity=Informational
 Facility=Auth2
-SymbolicName=STUMPLESS_WEL_MSG_ERR_AUTH2
+SymbolicName=STUMPLESS_WEL_MSG_INFO_AUTH2
 Language=English
-Stumpless Auth2 Error message.
+Stumpless Auth2 Informational message.
 .
 
 MessageId=0x64
-Severity=Error
+Severity=Informational
 Facility=Ftp
-SymbolicName=STUMPLESS_WEL_MSG_ERR_FTP
+SymbolicName=STUMPLESS_WEL_MSG_INFO_FTP
 Language=English
-Stumpless Ftp Error message.
+Stumpless Ftp Informational message.
 .
 
 MessageId=0x65
-Severity=Error
+Severity=Informational
 Facility=Ntp
-SymbolicName=STUMPLESS_WEL_MSG_ERR_NTP
+SymbolicName=STUMPLESS_WEL_MSG_INFO_NTP
 Language=English
-Stumpless Ntp Error message.
+Stumpless Ntp Informational message.
 .
 
 MessageId=0x66
-Severity=Error
+Severity=Informational
 Facility=Audit
-SymbolicName=STUMPLESS_WEL_MSG_ERR_AUDIT
+SymbolicName=STUMPLESS_WEL_MSG_INFO_AUDIT
 Language=English
-Stumpless Audit Error message.
+Stumpless Audit Informational message.
 .
 
 MessageId=0x67
-Severity=Error
+Severity=Informational
 Facility=Alert
-SymbolicName=STUMPLESS_WEL_MSG_ERR_ALERT
+SymbolicName=STUMPLESS_WEL_MSG_INFO_ALERT
 Language=English
-Stumpless Alert Error message.
+Stumpless Alert Informational message.
 .
 
 MessageId=0x68
-Severity=Error
+Severity=Informational
 Facility=Cron2
-SymbolicName=STUMPLESS_WEL_MSG_ERR_CRON2
+SymbolicName=STUMPLESS_WEL_MSG_INFO_CRON2
 Language=English
-Stumpless Cron2 Error message.
+Stumpless Cron2 Informational message.
 .
 
 MessageId=0x69
-Severity=Error
+Severity=Informational
 Facility=Local0
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL0
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL0
 Language=English
-Stumpless Local0 Error message.
+Stumpless Local0 Informational message.
 .
 
 MessageId=0x6a
-Severity=Error
+Severity=Informational
 Facility=Local1
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL1
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL1
 Language=English
-Stumpless Local1 Error message.
+Stumpless Local1 Informational message.
 .
 
 MessageId=0x6b
-Severity=Error
+Severity=Informational
 Facility=Local2
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL2
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL2
 Language=English
-Stumpless Local2 Error message.
+Stumpless Local2 Informational message.
 .
 
 MessageId=0x6c
-Severity=Error
+Severity=Informational
 Facility=Local3
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL3
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL3
 Language=English
-Stumpless Local3 Error message.
+Stumpless Local3 Informational message.
 .
 
 MessageId=0x6d
-Severity=Error
+Severity=Informational
 Facility=Local4
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL4
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL4
 Language=English
-Stumpless Local4 Error message.
+Stumpless Local4 Informational message.
 .
 
 MessageId=0x6e
-Severity=Error
+Severity=Informational
 Facility=Local5
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL5
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL5
 Language=English
-Stumpless Local5 Error message.
+Stumpless Local5 Informational message.
 .
 
 MessageId=0x6f
-Severity=Error
+Severity=Informational
 Facility=Local6
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL6
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL6
 Language=English
-Stumpless Local6 Error message.
+Stumpless Local6 Informational message.
 .
 
 MessageId=0x70
-Severity=Error
+Severity=Informational
 Facility=Local7
-SymbolicName=STUMPLESS_WEL_MSG_ERR_LOCAL7
+SymbolicName=STUMPLESS_WEL_MSG_INFO_LOCAL7
 Language=English
-Stumpless Local7 Error message.
+Stumpless Local7 Informational message.
 .

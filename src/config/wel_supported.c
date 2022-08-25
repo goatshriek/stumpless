@@ -1843,7 +1843,7 @@ get_category( int prival ) {
 
 DWORD
 get_event_id( int prival ) {
-  return ( get_facility( prival ) >> 3 ) + ( get_type( prival ) * 23 ) + 1;
+  return ( get_facility( prival ) >> 3 ) + ( get_type_index( prival ) * 24 ) + 0x11;
 }
 
 WORD
@@ -1865,6 +1865,28 @@ get_type( int prival ) {
     case STUMPLESS_SEVERITY_ERR_VALUE:
     default:
       return EVENTLOG_ERROR_TYPE;
+  }
+}
+
+WORD
+get_type_index( int prival ) {
+  switch( get_severity( prival ) ) {
+    case STUMPLESS_SEVERITY_DEBUG_VALUE:
+      return 0;
+
+    case STUMPLESS_SEVERITY_NOTICE_VALUE:
+    case STUMPLESS_SEVERITY_INFO_VALUE:
+      return 3;
+
+    case STUMPLESS_SEVERITY_WARNING_VALUE:
+      return 2;
+
+    case STUMPLESS_SEVERITY_EMERG_VALUE:
+    case STUMPLESS_SEVERITY_ALERT_VALUE:
+    case STUMPLESS_SEVERITY_CRIT_VALUE:
+    case STUMPLESS_SEVERITY_ERR_VALUE:
+    default:
+      return 1;
   }
 }
 

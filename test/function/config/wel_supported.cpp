@@ -647,6 +647,25 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( WelGetEntryEventIdTest, DefaultEventId ) {
+    const struct stumpless_entry *entry;
+    DWORD result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "wel-supported-test-suite",
+                                 "default-event-id-test",
+                                 "testing the default event id" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_get_wel_event_id( entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( STUMPLESS_WEL_MSG_INFO_USER, result );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   TEST( WelGetEntryEventIdTest, NullEntry ) {
     DWORD result;
     const struct stumpless_error *error;

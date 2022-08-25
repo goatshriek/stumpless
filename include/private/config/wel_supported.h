@@ -155,6 +155,19 @@ WORD
 get_type( int prival );
 
 /**
+ * Gets the index of the type that should be used for the given prival.
+ *
+ * The index of a type is used to calculate the message id.
+ *
+ * @param prival The prival to calculate the type for.
+ *
+ * @return The index of the type that should be used for a message of the
+ * given prival.
+ */
+WORD
+get_type_index( int prival );
+
+/**
  * Sets the Windows Event Log data structures to initial values.
  *
  * Assumes that the entry has not yet been provided for multithreaded
