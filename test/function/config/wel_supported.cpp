@@ -651,11 +651,11 @@ namespace {
     const struct stumpless_entry *entry;
     DWORD result;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "wel-supported-test-suite",
-                                 "default-event-id-test",
-                                 "testing the default event id" );
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "wel-supported-test-suite",
+                                     "default-event-id-test",
+                                     "testing the default event id" );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
 
