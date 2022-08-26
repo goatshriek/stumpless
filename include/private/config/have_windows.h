@@ -33,6 +33,20 @@ windows_compare_exchange_ptr( PVOID volatile *p,
                               const void *expected,
                               PVOID replacement );
 
+/**
+ * Creates a copy of a NULL terminated multibyte string in wide string format.
+ *
+ * @param str A multibyte string to copy, in UTF-8 format.
+ *
+ * @param copy_length The length of the copy including the NULL terminator, in
+ * characters. If this is NULL or the function fails, then it is ignored.
+ *
+ * @return A copy of the given string in wide string format, or NULL if an
+ * error is encountered.
+ */
+LPWSTR
+windows_copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length );
+
 void
 windows_destroy_mutex( const CRITICAL_SECTION *mutex );
 

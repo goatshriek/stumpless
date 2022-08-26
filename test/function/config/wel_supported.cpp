@@ -638,6 +638,44 @@ namespace {
     }
   }
 
+  TEST( WelGetEntryCategoryTest, DefaultAlertUserCategory ) {
+    const struct stumpless_entry *entry;
+    WORD result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_ALERT,
+                                     "wel-supported-test-suite",
+                                     "default-event-id-test",
+                                     "testing the default event id" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_get_wel_category( entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( STUMPLESS_WEL_EVENT_ALERT, result );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST( WelGetEntryCategoryTest, DefaultInfoUserCategory ) {
+    const struct stumpless_entry *entry;
+    WORD result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "wel-supported-test-suite",
+                                     "default-event-id-test",
+                                     "testing the default event id" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_get_wel_category( entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( STUMPLESS_WEL_EVENT_INFO, result );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   TEST( WelGetEntryCategoryTest, NullEntry ) {
     WORD result;
     const struct stumpless_error *error;
@@ -647,7 +685,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( WelGetEntryEventIdTest, DefaultEventId ) {
+  TEST( WelGetEntryEventIdTest, DefaultInfoUserEventId ) {
     const struct stumpless_entry *entry;
     DWORD result;
 

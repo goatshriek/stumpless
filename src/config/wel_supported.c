@@ -31,6 +31,7 @@
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
+#include "private/config/have_windows.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
 #include "private/config/wrapper.h"
@@ -95,61 +96,6 @@ get_windows_error_code( void ) {
   } else {
     return GetLastError(  );
   }
-}
-
-/**
- * Creates a copy of a NULL terminated multibyte string in wide string format.
- *
- * @param str A multibyte string to copy, in UTF-8 format.
- *
- * @param copy_length The length of the copy including the NULL terminator, in
- * characters. If this is NULL or the function fails, then it is ignored.
- *
- * @return A copy of the given string in wide string format, or NULL if an
- * error is encountered.
- */
-static
-LPWSTR
-copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
-  int needed_wchar_length;
-  LPWSTR str_copy;
-  int conversion_result;
-
-  needed_wchar_length = MultiByteToWideChar( CP_UTF8,
-                                             MB_ERR_INVALID_CHARS,
-                                             str,
-                                             -1,
-                                             NULL,
-                                             0 );
-
-  if( needed_wchar_length == 0 ) {
-    raise_mb_conversion_failure( GetLastError(  ) );
-    return NULL;
-  }
-
-  str_copy = alloc_mem( needed_wchar_length * sizeof( WCHAR ) );
-  if( !str_copy ) {
-    return NULL;
-  }
-
-  conversion_result = MultiByteToWideChar( CP_UTF8,
-                                           MB_ERR_INVALID_CHARS,
-                                           str,
-                                           -1,
-                                           str_copy,
-                                           needed_wchar_length );
-
-  if( conversion_result == 0 ) {
-    free_mem( str_copy );
-    raise_mb_conversion_failure( GetLastError(  ) );
-    return NULL;
-  }
-
-  if( copy_length ) {
-    *copy_length = conversion_result;
-  }
-
-  return str_copy;
 }
 
 /**
@@ -588,7 +534,7 @@ set_wel_insertion_string( struct stumpless_entry *entry,
                           LPCSTR str ) {
   LPCWSTR str_copy;
 
-  str_copy = copy_cstring_to_lpcwstr( str, NULL );
+  str_copy = windows_copy_cstring_to_lpcwstr( str, NULL );
   if( !str_copy ) {
     return NULL;
   }
@@ -960,7 +906,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
                                 DWORD category_count,
                                 LPCSTR category_file,
                                 LPCSTR event_file,
-                                LPCSTR parameter_file,
+                                LPCSTR param_file,
                                 DWORD types_supported ) {
   DWORD result = ERROR_SUCCESS;
   DWORD subkey_name_length = 0;
@@ -971,29 +917,31 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   LPCWSTR category_file_w = NULL;
   DWORD event_file_length = 0;
   LPCWSTR event_file_w = NULL;
-  DWORD parameter_file_length = 0;
-  LPCWSTR parameter_file_w = NULL;
+  DWORD param_file_length = 0;
+  LPCWSTR param_file_w = NULL;
 
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
 
   clear_error(  );
 
-  subkey_name_w = copy_cstring_to_lpcwstr( subkey_name, &subkey_name_length );
+  subkey_name_w = windows_copy_cstring_to_lpcwstr( subkey_name,
+                                                   &subkey_name_length );
   if( !subkey_name_w ) {
     result = get_windows_error_code(  );
     goto finish;
   }
 
-  source_name_w = copy_cstring_to_lpcwstr( source_name, &source_name_length );
+  source_name_w = windows_copy_cstring_to_lpcwstr( source_name,
+                                                   &source_name_length );
   if( !source_name_w ) {
     result = get_windows_error_code(  );
     goto cleanup_subkey;
   }
 
   if( category_file ) {
-    category_file_w = copy_cstring_to_lpcwstr( category_file,
-                                               &category_file_length );
+    category_file_w = windows_copy_cstring_to_lpcwstr( category_file,
+                                                       &category_file_length );
     if( !category_file_w ) {
       result = get_windows_error_code(  );
       goto cleanup_source;
@@ -1001,18 +949,18 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   }
 
   if( event_file ) {
-    event_file_w = copy_cstring_to_lpcwstr( event_file,
-                                            &event_file_length );
+    event_file_w = windows_copy_cstring_to_lpcwstr( event_file,
+                                                    &event_file_length );
     if( !event_file_w ) {
       result = get_windows_error_code(  );
       goto cleanup_category;
     }
   }
 
-  if( parameter_file ) {
-    parameter_file_w = copy_cstring_to_lpcwstr( parameter_file,
-                                                &parameter_file_length );
-    if( !parameter_file_w ) {
+  if( param_file ) {
+    param_file_w = windows_copy_cstring_to_lpcwstr( param_file,
+                                                    &param_file_length );
+    if( !param_file_w ) {
       result = get_windows_error_code(  );
       goto cleanup_event;
     }
@@ -1027,11 +975,11 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
                              category_file_length * sizeof( WCHAR ),
                              event_file_w,
                              event_file_length * sizeof( WCHAR ),
-                             parameter_file_w,
-                             parameter_file_length * sizeof( WCHAR ),
+                             param_file_w,
+                             param_file_length * sizeof( WCHAR ),
                              types_supported );
 
-  free_mem( parameter_file_w );
+  free_mem( param_file_w );
 cleanup_event:
   free_mem( event_file_w );
 cleanup_category:
@@ -1050,13 +998,13 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
                                   DWORD category_count,
                                   LPCWSTR category_file,
                                   LPCWSTR event_file,
-                                  LPCWSTR parameter_file,
+                                  LPCWSTR param_file,
                                   DWORD types_supported ) {
   size_t subkey_name_size;
   size_t source_name_size;
   size_t category_file_size = 0;
   size_t event_file_size = 0;
-  size_t parameter_file_size = 0;
+  size_t param_file_size = 0;
 
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
@@ -1074,8 +1022,8 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
     event_file_size = ( wcslen( event_file ) + 1 ) * sizeof( WCHAR );
   }
 
-  if( parameter_file ) {
-    parameter_file_size = ( wcslen( parameter_file ) + 1 ) * sizeof( WCHAR );
+  if( param_file ) {
+    param_file_size = ( wcslen( param_file ) + 1 ) * sizeof( WCHAR );
   }
 
   return add_event_source( subkey_name,
@@ -1087,8 +1035,8 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
                            cap_size_t_to_dword( category_file_size ),
                            event_file,
                            cap_size_t_to_dword( event_file_size ),
-                           parameter_file,
-                           cap_size_t_to_dword( parameter_file_size ),
+                           param_file,
+                           cap_size_t_to_dword( param_file_size ),
                            types_supported );
 }
 
@@ -1307,13 +1255,13 @@ stumpless_remove_wel_event_source( LPCSTR subkey_name,
 
   clear_error(  );
 
-  subkey_name_w = copy_cstring_to_lpcwstr( subkey_name, NULL );
+  subkey_name_w = windows_copy_cstring_to_lpcwstr( subkey_name, NULL );
   if( !subkey_name_w ) {
     result = get_windows_error_code(  );
     goto finish;
   }
 
-  source_name_w = copy_cstring_to_lpcwstr( source_name, NULL );
+  source_name_w = windows_copy_cstring_to_lpcwstr( source_name, NULL );
   if( !source_name_w ) {
     result = get_windows_error_code(  );
     goto cleanup_subkey;
@@ -1843,7 +1791,6 @@ get_category( int prival ) {
 
 DWORD
 get_event_id( int prival ) {
-  //return ( get_facility( prival ) >> 3 ) + ( get_type_index( prival ) * 24 ) + 0x11;
   int type_index;
   int facility;
   int wel_severity;

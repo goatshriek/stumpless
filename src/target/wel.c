@@ -23,8 +23,10 @@
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
+#include "private/config/have_windows.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
@@ -163,6 +165,9 @@ sendto_wel_target( const struct wel_target *target,
   WORD category;
   WORD type;
   DWORD event_id;
+  WORD insertion_string_count;
+  LPCWSTR *insertion_strings;
+  LPCWSTR msg_insertion_strings[1];
 
   data = entry->wel_data;
   lock_wel_data( data );
@@ -201,8 +206,16 @@ sendto_wel_target( const struct wel_target *target,
 
   if( data->event_id_set ) {
     event_id = data->event_id;
+    insertion_string_count = data->insertion_count;
+    insertion_strings = data->insertion_strings;
   } else {
     event_id = get_event_id( prival );
+    insertion_string_count = 1;
+    lock_entry( entry );
+    msg_insertion_strings[0] = windows_copy_cstring_to_lpcwstr( entry->message,
+                                                                NULL );
+    unlock_entry( entry );
+    insertion_strings = msg_insertion_strings;
   }
 
   success = ReportEventW( target->handle,
@@ -210,9 +223,9 @@ sendto_wel_target( const struct wel_target *target,
                           category,
                           event_id,
                           NULL,
-                          data->insertion_count,
+                          insertion_string_count,
                           cap_size_t_to_int( msg_size ),
-                          data->insertion_strings,
+                          insertion_strings,
                           ( LPVOID ) msg );
 
 cleanup_and_return:

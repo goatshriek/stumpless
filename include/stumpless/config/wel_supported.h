@@ -117,7 +117,7 @@ stumpless_add_default_wel_event_source( void );
  * for this source, as a UTF-8 NULL terminated string. If NULL, then the
  * EventMessageFile registry value will not be created.
  *
- * @param parameter_file A path to the resource file containing the messages
+ * @param param_file A path to the resource file containing the messages
  * used as parameters for this source, as a UTF-8 NULL terminated string. If
  * NULL, then the ParameterMessageFile registry value will not be created.
  *
@@ -136,7 +136,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
                                 DWORD category_count,
                                 LPCSTR category_file,
                                 LPCSTR event_file,
-                                LPCSTR parameter_file,
+                                LPCSTR param_file,
                                 DWORD types_supported );
 
 /**
@@ -178,7 +178,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
  * for this source, as a wide char NULL terminated string. If NULL, then the
  * EventMessageFile registry value will not be created.
  *
- * @param parameter_file A path to the resource file containing the messages
+ * @param param_file A path to the resource file containing the messages
  * used as parameters for this source, as a wide char NULL terminated string. If
  * NULL, then the ParameterMessageFile registry value will not be created.
  *
@@ -197,7 +197,7 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
                                   DWORD category_count,
                                   LPCWSTR category_file,
                                   LPCWSTR event_file,
-                                  LPCWSTR parameter_file,
+                                  LPCWSTR param_file,
                                   DWORD types_supported );
 
 /**

@@ -144,6 +144,7 @@
 "warn_of_deprecation": "private/deprecate.h"
 "windows compare_exchange_bool": "private/config/have_windows.h"
 "windows_compare_exchange_ptr": "private/config/have_windows.h"
+"windows_copy_cstring_to_lpcwstr": "private/config/have_windows.h"
 "windows_destroy_mutex": "private/config/have_windows.h"
 "windows_get_now": "private/config/windows_get_now_supported.h"
 "windows_gethostname": "private/config/have_windows.h"
