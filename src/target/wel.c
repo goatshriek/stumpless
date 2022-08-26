@@ -166,8 +166,8 @@ sendto_wel_target( const struct wel_target *target,
   WORD type;
   DWORD event_id;
   WORD insertion_string_count;
-  LPCWSTR *insertion_strings;
   LPCWSTR msg_insertion_strings[1];
+  LPCWSTR *insertion_strings;
 
   data = entry->wel_data;
   lock_wel_data( data );
@@ -230,6 +230,9 @@ sendto_wel_target( const struct wel_target *target,
 
 cleanup_and_return:
   unlock_wel_data( data );
+  if( insertion_strings == msg_insertion_strings ) {
+    free_mem( msg_insertion_strings[0] );
+  }
   if( success ) {
     return 1;
   } else {
