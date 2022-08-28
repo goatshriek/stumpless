@@ -645,8 +645,8 @@ namespace {
     entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_ALERT,
                                      "wel-supported-test-suite",
-                                     "default-event-id-test",
-                                     "testing the default event id" );
+                                     "default-category-alert-test",
+                                     "testing the default category" );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
 
@@ -664,8 +664,8 @@ namespace {
     entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
                                      "wel-supported-test-suite",
-                                     "default-event-id-test",
-                                     "testing the default event id" );
+                                     "default-category-info-test",
+                                     "testing the default category" );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
 
@@ -685,6 +685,25 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( WelGetEntryEventIdTest, DefaultAlertUserEventId ) {
+    const struct stumpless_entry *entry;
+    DWORD result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_ALERT,
+                                     "wel-supported-test-suite",
+                                     "default-event-id-alert-test",
+                                     "testing the default event id" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_get_wel_event_id( entry );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( STUMPLESS_WEL_MSG_ERR_USER, result );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   TEST( WelGetEntryEventIdTest, DefaultInfoUserEventId ) {
     const struct stumpless_entry *entry;
     DWORD result;
@@ -692,7 +711,7 @@ namespace {
     entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
                                      STUMPLESS_SEVERITY_INFO,
                                      "wel-supported-test-suite",
-                                     "default-event-id-test",
+                                     "default-event-id-info-test",
                                      "testing the default event id" );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
