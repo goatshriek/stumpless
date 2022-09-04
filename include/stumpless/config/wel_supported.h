@@ -358,8 +358,6 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
  *
  * @param index The index of the insertion string to retrieve.
  *
- * @return 
- *
  * @return The specified insertion string. If the provided index is in range
  * but has not yet been assigned, then NULL is returned. In the event of an
  * error, then NULL will be returned and an error code is set appropriately.

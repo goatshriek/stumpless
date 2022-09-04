@@ -1371,7 +1371,7 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
   // if Sources only contains the specified Source or is empty, simply remove the whole tree
   source_name_size = ( wcslen( source_name ) + 1 ) * sizeof( WCHAR );
   if( sources_value[0] == L'\0' ||
-      ( value_size == ( source_name_size + sizeof( WCHAR ) ) && 
+      ( value_size == ( source_name_size + sizeof( WCHAR ) ) &&
         wcscmp( sources_value, source_name ) == 0 ) ) {
 
     reg_result = RegDeleteTreeW( HKEY_LOCAL_MACHINE, complete_subkey );
