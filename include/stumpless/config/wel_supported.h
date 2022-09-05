@@ -25,9 +25,8 @@
 #  define __STUMPLESS_CONFIG_WEL_SUPPORTED_H
 
 /*
- * TODO citation needed
- * According to Microsoft, windows.h should be included first in any sources, as
- * it sets up definitions that need to be first.
+ * We always include windows.h first, as it sets up definitions that often cause
+ * problems if they aren't first.
  */
 #  include <windows.h>
 
@@ -41,8 +40,8 @@ extern "C" {
 #  endif
 
 /**
- * Creates the registry entries for displaying default WEL entries in the
- * Windows Event Log.
+ * Creates the registry entries for displaying default entries in the Windows
+ * Event Log.
  *
  * Specifically, the following registry subkey is created, or modified if it
  * already exists:
@@ -51,23 +50,24 @@ extern "C" {
  * This key is given the following registry values:
  * Sources: "Stumpless" as an entry, assuming it is a REG_MULTI_SZ.
  *
- * If Sources is not correctly formatted with NULL terminating characters as
- * required by a MULTI_SZ, then this call fails and returns
- * ERROR_INVALID_PARAMETER.
+ * If an existing Sources key is already present and is not correctly formatted
+ * with NULL terminating characters as required by a MULTI_SZ, then this call
+ * fails and returns ERROR_INVALID_PARAMETER.
  *
  * A subkey is also created within this key named "Stumpless", with the
  * following values set in it:
  * CategoryCount: 8 (one category is present for each severity in RFC 5424)
- * CategoryMessageFile: Points to the executing stumpless DLL.
- * EventMessageFile: Points to the executing stumpless DLL.
- * TypesSupported: 0x1f (all event types are allowed)
+ * CategoryMessageFile: Points to the image containing stumpless.
+ * EventMessageFile: Points to the image containing stumpless.
+ * TypesSupported: 0x1f (all event types are allowed).
  *
- * This call is semantically equivalent to stumpless_add_wel_event_source(
- * "Stumpless", "Stumpless", 8, "stumpless.dll", "stumpless.dll", NULL,
+ * This call is semantically equivalent to stumpless_add_wel_event_source_w(
+ * L"Stumpless", L"Stumpless", 8, L"stumpless.dll", L"stumpless.dll", NULL,
  * EVENTLOG_AUDIT_FAILURE | EVENTLOG_AUDIT_SUCCESS | EVENTLOG_ERROR_TYPE |
  * EVENTLOG_INFORMATION_TYPE | EVENTLOG_WARNING_TYPE) where
- * "stumpless.dll" is the full path to the current stumpless.dll module
- * loaded.
+ * L"stumpless.dll" is the full path to the current stumpless module loaded.
+ * Note that this may be a DLL or EXE, depending on how the library was compiled
+ * in the currently running process.
  *
  * @return ERROR_SUCCESS if the operation was successful, or a Windows error
  * code result if an error was encountered. Note that the error code may not

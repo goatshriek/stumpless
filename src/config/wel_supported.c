@@ -43,12 +43,14 @@
 #include "private/severity.h"
 #include "private/validate.h"
 
+/* static definitions */
+
 /** The base subkey used for event sources, including a trailing backslash. */
 static LPCWSTR base_source_subkey = L"SYSTEM\\CurrentControlSet\\Services\\" \
                                       L"EventLog";
 
 /** The size of the base subkey in bytes, including the NULL terminator. */
-DWORD base_source_subkey_size = 86;
+static DWORD base_source_subkey_size = 86;
 
 /** The full base subkey used for the default source installation. */
 static LPCWSTR default_source_subkey = L"SYSTEM\\CurrentControlSet\\" \
@@ -57,6 +59,16 @@ static LPCWSTR default_source_subkey = L"SYSTEM\\CurrentControlSet\\" \
 /**
  * Converts a size_t to a DWORD, returning the maximum value if the size_t is
  * higher than the DWORD can hold.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @param val The size_t to convert.
  *
@@ -75,6 +87,9 @@ cap_size_t_to_dword( size_t val ){
  * Returns a Windows error code for the current Stumpless error. This may not
  * be equivalent to the result of GetLastError, for example if a memory
  * allocation failure occurred.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
  *
  * @return A Windows error code reflecting the last error, or ERROR_SUCCESS
  * if there is not one.
@@ -127,6 +142,18 @@ copy_lpcwstr( LPCWSTR str ) {
 /**
  * Joins two provided registry keys together with a backslash character in a
  * new string. The result must be freed when it is no longer needed.
+ *
+ * **Thread Safety: MT-Safe race:base_key race:subkey**
+ * This function is thread safe, of course assuming that base_key and subkey
+ * are not changed during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the joined key.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @param base_key The base key.
  *
@@ -1661,6 +1688,7 @@ copy_param_value_to_lpwstr( const struct stumpless_param *param ) {
   int value_length_int;
   int conversion_result;
 
+  lock_param( param );
   value_length_int = cap_size_t_to_int( param->value_length );
 
   needed_wchar_length = MultiByteToWideChar( CP_UTF8,
@@ -1673,13 +1701,13 @@ copy_param_value_to_lpwstr( const struct stumpless_param *param ) {
 
   if( needed_wchar_length == 0 ) {
     raise_mb_conversion_failure( GetLastError(  ) );
-    return NULL;
+    goto fail;
   }
 
   needed_wchar_count = ( ( size_t ) needed_wchar_length ) + 1;
   str_copy = alloc_mem( needed_wchar_count * sizeof( WCHAR ) );
   if( !str_copy ) {
-    return NULL;
+    goto fail;
   }
 
   conversion_result = MultiByteToWideChar( CP_UTF8,
@@ -1691,14 +1719,20 @@ copy_param_value_to_lpwstr( const struct stumpless_param *param ) {
                                            needed_wchar_length );
 
   if( conversion_result == 0 ) {
-    free_mem( str_copy );
     raise_mb_conversion_failure( GetLastError(  ) );
-    return NULL;
+    goto fail_second_conversion;
   }
 
+  unlock_param( param );
   str_copy[needed_wchar_length] = L'\0';
 
   return str_copy;
+
+fail_second_conversion:
+  free_mem( str_copy );
+fail:
+  unlock_param( param );
+  return NULL;
 }
 
 struct stumpless_entry *

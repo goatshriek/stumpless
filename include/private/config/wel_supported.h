@@ -110,6 +110,20 @@ struct wel_data {
 /**
  * Creates a new wide character string from the param value.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the copy.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param param The param to copy the value from.
  *
  * @return a copy of the param value as a NULL terminated wide character string.
@@ -127,6 +141,16 @@ destroy_wel_data( const struct stumpless_entry *entry );
 /**
  * Gets the category that should be used for the given prival.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @param prival The prival to calculate the category for.
  *
  * @return The category that should be used for a message of the given prival.
@@ -137,6 +161,16 @@ get_category( int prival );
 /**
  * Gets the event id that should be used for the given prival.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @param prival The prival to calculate the event ID for.
  *
  * @return The event id that should be used for a message of the given prival.
@@ -146,6 +180,16 @@ get_event_id( int prival );
 
 /**
  * Gets the type that should be used for the given prival.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @param prival The prival to calculate the type for.
  *
@@ -158,6 +202,16 @@ get_type( int prival );
  * Gets the index of the type that should be used for the given prival.
  *
  * The index of a type is used to calculate the message id.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
  *
  * @param prival The prival to calculate the type for.
  *
@@ -172,6 +226,17 @@ get_type_index( int prival );
  *
  * Assumes that the entry has not yet been provided for multithreaded
  * operations and therefore does not need to be locked.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe when called on the same entry.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the new wel data structure.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @param entry The entry to initialize.
  *
@@ -198,6 +263,22 @@ unlock_wel_data( const struct wel_data *data );
  *
  * Does not lock the entry or wel data structures. They need to be locked
  * separately before calling this function.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe. Locks of the entry and wel data must be
+ * held before using it.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to expand the insertion string array if needed,
+ * and free an existing insertion string. If neither of these cases occurs, then
+ * this function can be considered AS-Safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the possible use of memory management functions. If both
+ * of the cases outlined in the Async Signal Safety section are guaranteed not
+ * to happen, then this function may be considered AC-Safe.
  *
  * @param entry The entry to set the insertion string of. Must not be NULL.
  *

@@ -38,6 +38,20 @@ new_wel_target( LPCSTR server_name, LPCSTR source_name );
 /**
  * Sends the provided entry and formatted message to the WEL target provided.
  *
+ * **Thread Safety: MT-Safe race:msg**
+ * This function is thread safe, using mutexes to coordinate accesses to the
+ * target and entry. The msg is assumed to stay constant during the operation.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to update internal structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
  * @param target The WEL target to send the entry to. Must not be NULL.
  *
  * @param entry The entry to send to the target. Must not be NULL.

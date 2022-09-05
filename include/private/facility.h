@@ -23,6 +23,16 @@
  * Gets the value of the facility from the given prival. This will be equivalent
  * to the STUMPLESS_FACILITY_*_VALUE constant for the facility.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @param prival The prival to extract the facility from.
  *
  * @return the facility of the prival, as an integer.
