@@ -36,10 +36,12 @@
 #include "private/config/wel_supported.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
+#include "private/param.h"
 #include "private/severity.h"
 #include "private/validate.h"
 
@@ -91,6 +93,14 @@ cap_size_t_to_dword( size_t val ){
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
  *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
+ *
  * @return A Windows error code reflecting the last error, or ERROR_SUCCESS
  * if there is not one.
  */
@@ -115,6 +125,18 @@ get_windows_error_code( void ) {
 
 /**
  * Creates a copy of a NULL terminated wide character string.
+ *
+ * **Thread Safety: MT-Safe race:str**
+ * This function is thread safe, of course assuming that str is not changed
+ * during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the copy of string.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
  *
  * @param str A wide character string to copy.
  *
@@ -189,6 +211,17 @@ join_keys( LPCWSTR base_key,
 
 /**
  * Creates the values for an event source in the provided subkey.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
  *
  * @param subkey A handle to the subkey to populate.
  *
@@ -312,8 +345,23 @@ populate_event_source_subkey( HKEY subkey,
  * it does not currently exist. The source will be put in the registry under
  * SYSTEM\CurrentControlSet\Services\EventLog.
  *
+ * The key is created an populated as part of a single transaction, and
+ * therefore will either succeed in all of this or fail entirely. That is, a
+ * partially populated subkey will not be created.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
+ *
  * @param subkey_name The complete name of the registry subkey that the source
-  * should be created under, as a NULL terminated wide character string.
+ * should be created under, as a NULL terminated wide character string.
  *
  * @param source_name The event source to create as a NULL terminated wide
  * character string.
@@ -383,12 +431,12 @@ create_event_source_subkey( LPCWSTR subkey_name,
   *( ( LPWSTR ) ( sources_value + source_name_size ) ) = L'\0';
 
   trans = CreateTransaction( NULL,
-                           0,
-                           0,
-                           0,
-                           0,
-                           0,
-                           L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
+                             0,
+                             0,
+                             0,
+                             0,
+                             0,
+                             L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
   if( trans == INVALID_HANDLE_VALUE ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
@@ -484,6 +532,17 @@ cleanup_sources:
 /**
  * Detects if a given string is in a MULTI_SZ registry value.
  *
+ * **Thread Safety: MT-Safe race:value race:str**
+ * This function is thread safe, of course assuming that value and str are not
+ * changed during execution.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
  * @param val The MULTI_SZ registry key value.
  *
  * @param str The string to search for in the entry.
@@ -513,6 +572,22 @@ multi_sz_contains( LPCWSTR value, LPCWSTR str ){
  * Sets the insertion string at the given index to the provided wide string,
  * freeing the previous one if it existed.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. The locks of the entry and the wel data
+ * structure are acquired (and later released) during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to expand the insertion string array if needed,
+ * and free an existing insertion string. If neither of these cases occurs, then
+ * this function can be considered AS-Safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the possible use of memory management functions. If both
+ * of the cases outlined in the Async Signal Safety section are guaranteed not
+ * to happen, then this function may be considered AC-Safe.
+ *
  * @param entry The entry to set the insertion string of. Must not be NULL.
  *
  * @param index The index of the insertion string.
@@ -529,31 +604,48 @@ swap_wel_insertion_string( struct stumpless_entry *entry,
   struct wel_data *data;
   struct stumpless_entry *result;
 
+  lock_entry( entry );
   data = entry->wel_data;
-
   lock_wel_data( data );
+
   result = unsafe_swap_wel_insertion_string( entry, index, str );
+
   unlock_wel_data( data );
+  unlock_entry( entry );
 
   return result;
 }
 
 /**
-* Sets the insertion string at the given index to the provided UTF-8 string.
-*
-* A copy of the string is created in wide character format.
-*
-* If the index is higher than the current max, then the insertion string arrays
-* are expanded to accomodate it.
-*
-* @param entry The entry to set the insertion string of. Must not be NULL.
-*
-* @param index The index of the insertion string.
-*
-* @param str The UTF-8 string to use as the insertion string. Must not be NULL.
-*
-* @return The modified entry, or NULL if an error is encountered.
-*/
+ * Sets the insertion string at the given index to the provided UTF-8 string.
+ *
+ * A copy of the string is created in wide character format.
+ *
+ * If the index is higher than the current max, then the insertion string arrays
+ * are expanded to accomodate it.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. The locks of the entry and the wel data
+ * structure are acquired (and later released) during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * non-reentrant locks to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks that could be left locked as well as
+ * memory management functions.
+ *
+ * @param entry The entry to set the insertion string of. Must not be NULL.
+ *
+ * @param index The index of the insertion string.
+ *
+ * @param str The UTF-8 string to use as the insertion string. Must not be NULL.
+ *
+ * @return The modified entry, or NULL if an error is encountered.
+ */
 static
 struct stumpless_entry *
 set_wel_insertion_string( struct stumpless_entry *entry,
@@ -570,21 +662,35 @@ set_wel_insertion_string( struct stumpless_entry *entry,
 }
 
 /**
-* Sets the insertion string at the given index to the provided wide string.
-*
-* A copy of the string is created in wide character format.
-*
-* If the index is higher than the current max, then the insertion string arrays
-* are expanded to accomodate it.
-*
-* @param entry The entry to set the insertion string of. Must not be NULL.
-*
-* @param index The index of the insertion string.
-*
-* @param str The wide string to use as the insertion string. Must not be NULL.
-*
-* @return The modified entry, or NULL if an error is encountered.
-*/
+ * Sets the insertion string at the given index to the provided wide string.
+ *
+ * A copy of the string is created in wide character format.
+ *
+ * If the index is higher than the current max, then the insertion string arrays
+ * are expanded to accomodate it.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. The locks of the entry and the wel data
+ * structure are acquired (and later released) during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * non-reentrant locks to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks that could be left locked as well as
+ * memory management functions.
+ *
+ * @param entry The entry to set the insertion string of. Must not be NULL.
+ *
+ * @param index The index of the insertion string.
+ *
+ * @param str The wide string to use as the insertion string. Must not be NULL.
+ *
+ * @return The modified entry, or NULL if an error is encountered.
+ */
 static
 struct stumpless_entry *
 set_wel_insertion_string_w( struct stumpless_entry *entry,
@@ -603,6 +709,19 @@ set_wel_insertion_string_w( struct stumpless_entry *entry,
 /**
  * Creates the registry entries to install an event source with the given
  * specifications.
+ *
+ * **Thread Safety: MT-Safe race:subkey_name race:source_name race:category_file
+ * race:event_file race:parameter:file**
+ * This function is thread safe, of course assuming that the string parameters
+ * are not changed during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a wide char string. This subkey will be created under
@@ -1608,37 +1727,28 @@ struct stumpless_entry *
 vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                       WORD count,
                                       va_list insertions ) {
-  struct wel_data *data;
   struct stumpless_entry *result;
   WORD i = 0;
   const char *arg;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  data = entry->wel_data;
-  lock_wel_data( data );
-
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
 
     if( !arg ) {
       raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "insertion string" ) );
-      goto fail;
+      return NULL;
     }
 
     result = set_wel_insertion_string( entry, i, arg );
     if( !result ) {
-      goto fail;
+      return NULL;
     }
   }
 
-  unlock_wel_data( data );
   clear_error(  );
   return entry;
-
-fail:
-  unlock_wel_data( data );
-  return NULL;
 }
 
 struct stumpless_entry *

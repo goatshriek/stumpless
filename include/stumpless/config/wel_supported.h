@@ -69,6 +69,17 @@ extern "C" {
  * Note that this may be a DLL or EXE, depending on how the library was compiled
  * in the currently running process.
  *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
+ *
  * @return ERROR_SUCCESS if the operation was successful, or a Windows error
  * code result if an error was encountered. Note that the error code may not
  * necessarily correspond to a call to GetLastError after this, for example in
@@ -94,6 +105,21 @@ stumpless_add_default_wel_event_source( void );
  * the folder where the DLL resides may have an effect; see
  * https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log
  * for one such issue.
+ *
+ * **Thread Safety: MT-Safe race:subkey_name race:source_name race:category_file
+ * race:event_file race:parameter:file**
+ * This function is thread safe, of course assuming that the string parameters
+ * are not changed during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors, as well as memory management
+ * functions to create wide strings for unicode support.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors, as
+ * well as memory management functions.
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a UTF-8 NULL terminated string. This subkey will be created under
@@ -155,6 +181,19 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
  * the folder where the DLL resides may have an effect; see
  * https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log
  * for one such issue.
+ *
+ * **Thread Safety: MT-Safe race:subkey_name race:source_name race:category_file
+ * race:event_file race:parameter:file**
+ * This function is thread safe, of course assuming that the string parameters
+ * are not changed during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a wide char NULL terminated string. This subkey will be created under
@@ -403,7 +442,18 @@ stumpless_get_wel_type( const struct stumpless_entry *entry );
  * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
  *
  * This call is semantically equivalent to
- * stumpless_remove_wel_event_source( "Stumpless", "Stumpless" ).
+ * stumpless_remove_wel_event_source_w( L"Stumpless", L"Stumpless" ).
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
  *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
  * GetLastError if an error was encountered.
@@ -414,6 +464,20 @@ stumpless_remove_default_wel_event_source( void );
 
 /**
  * Removes the registry entries for an event source for the Windows Event Log.
+ *
+ * **Thread Safety: MT-Safe race:subkey_name race:source_name**
+ * This function is thread safe, of course assuming that the string parameters
+ * are not changed during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors, as well as memory management
+ * functions to create wide strings for unicode support.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors, as
+ * well as memory management functions.
  *
  * @param subkey_name The name of the subkey that the source is installed in,
  * as a UTF-8 NULL terminated string. This subkey will be looked for under
@@ -434,6 +498,18 @@ stumpless_remove_wel_event_source( LPCSTR subkey_name,
 
 /**
  * Removes the registry entries for an event source for the Windows Event Log.
+ *
+ * **Thread Safety: MT-Safe race:subkey_name race:source_name**
+ * This function is thread safe, of course assuming that the string parameters
+ * are not changed during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
  *
  * @param subkey_name The name of the subkey that the source is installed in,
  * as a wide char NULL terminated string. This subkey will be looked for under
