@@ -289,7 +289,7 @@ unlock_wel_data( const struct wel_data *data );
  * @return The modified entry, or NULL if an error is encountered.
  */
 struct stumpless_entry *
-unsafe_swap_wel_insertion_string( struct stumpless_entry *entry,
+locked_swap_wel_insertion_string( struct stumpless_entry *entry,
                                   WORD index,
                                   LPCWSTR str );
 

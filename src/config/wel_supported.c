@@ -608,7 +608,7 @@ swap_wel_insertion_string( struct stumpless_entry *entry,
   data = entry->wel_data;
   lock_wel_data( data );
 
-  result = unsafe_swap_wel_insertion_string( entry, index, str );
+  result = locked_swap_wel_insertion_string( entry, index, str );
 
   unlock_wel_data( data );
   unlock_entry( entry );
@@ -2101,7 +2101,7 @@ unlock_wel_data( const struct wel_data *data ) {
 }
 
 struct stumpless_entry *
-unsafe_swap_wel_insertion_string( struct stumpless_entry *entry,
+locked_swap_wel_insertion_string( struct stumpless_entry *entry,
                                   WORD index,
                                   LPCWSTR str ) {
   struct wel_data *data;

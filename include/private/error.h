@@ -78,7 +78,7 @@ raise_element_not_found( void );
  * cancelled, due to the use of a thread-global structure to store the error.
  *
  * @param id The type of error to raise.
- * 
+ *
  * @param message The message to assign to the error.
  *
  * @param code A more specific subtype of the error, or a secondary error code
