@@ -49,6 +49,13 @@ namespace {
 
       insertion_string_1 = stumpless_get_wel_insertion_string( entry, index );
 
+      // TODO add invocations of:
+      // stumpless_get_wel_category
+      // stumpless_get_wel_event_id
+      // stumpless_get_wel_type
+      // stumpless_get_wel_insertion_param
+      // stumpless_get_wel_insertion_string_w
+
       stumpless_destroy_entry_and_contents( copy );
       free( ( void * ) insertion_string_1 );
     }

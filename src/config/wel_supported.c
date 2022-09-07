@@ -1728,7 +1728,7 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                       WORD count,
                                       va_list insertions ) {
   struct stumpless_entry *result;
-  WORD i = 0;
+  WORD i;
   const char *arg;
 
   VALIDATE_ARG_NOT_NULL( entry );
@@ -1757,7 +1757,7 @@ vstumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
                                         va_list insertions ) {
   struct wel_data *data;
   struct stumpless_entry *result;
-  WORD i = 0;
+  WORD i;
   LPCWSTR arg;
 
   VALIDATE_ARG_NOT_NULL( entry );

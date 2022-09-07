@@ -9,7 +9,7 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2022-07-07
+## [2.1.0] - 2022-09-06
 ### Added
  - Custom function logging targets.
  - Localizations for:
@@ -53,7 +53,11 @@ fixes, check out the
     * `stumpless_add_default_wel_event_source`
     * `stumpless_add_wel_event_source`
     * `stumpless_add_wel_event_source_w`
+    * `stumpless_get_wel_category`
+    * `stumpless_get_wel_event_id`
+    * `stumpless_get_wel_insertion_param`
     * `stumpless_get_wel_insertion_string_w`
+    * `stumpless_get_wel_type`
     * `stumpless_remove_default_wel_event_source`
     * `stumpless_remove_wel_event_source`
     * `stumpless_remove_wel_event_source_w`
