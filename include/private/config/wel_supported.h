@@ -102,6 +102,13 @@ struct wel_data {
   /**
    * Protects all of the data in this structure. This mutex must be locked
    * before reading or writing any of the fields.
+   *
+   * Because the location of the wel data of an entry will not change after it
+   * is created, the mutex of the entry does not need to be held before the wel
+   * data mutex is acquired. However, if the entry itself needs to be locked for
+   * an operation, this must be done _before_ the wel data structure is locked.
+   * Attempting to lock the entry while holding the mutex of the wel data
+   * structure may cause a deadlock to occur.
    */
   config_mutex_t mutex;
 #  endif

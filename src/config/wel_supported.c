@@ -1199,11 +1199,12 @@ stumpless_get_wel_category( const struct stumpless_entry *entry ) {
   lock_wel_data( data );
   if( data->category_set ) {
     category = data->category;
+    unlock_wel_data( data );
   } else {
+    unlock_wel_data( data );
     prival = stumpless_get_entry_prival( entry );
     category = get_category( prival );
   }
-  unlock_wel_data( data );
 
   return category;
 }
@@ -1216,16 +1217,18 @@ stumpless_get_wel_event_id( const struct stumpless_entry *entry ) {
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
 
+  clear_error(  );
   data = entry->wel_data;
 
   lock_wel_data( data );
   if( data->event_id_set ) {
     event_id = data->event_id;
+    unlock_wel_data( data );
   } else {
+    unlock_wel_data( data );
     prival = stumpless_get_entry_prival( entry );
     event_id = get_event_id( prival );
   }
-  unlock_wel_data( data );
 
   return event_id;
 }
@@ -1369,17 +1372,19 @@ stumpless_get_wel_type( const struct stumpless_entry *entry ) {
   WORD type;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
-
+  
+  clear_error(  );
   data = entry->wel_data;
 
   lock_wel_data( data );
   if( data->type_set ) {
     type = data->type;
+    unlock_wel_data( data );
   } else {
+    unlock_wel_data( data );
     prival = stumpless_get_entry_prival( entry );
     type = get_type( prival );
   }
-  unlock_wel_data( data );
 
   return type;
 }

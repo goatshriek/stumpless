@@ -38,26 +38,31 @@ namespace {
   void
   read_entry_wel_data( const struct stumpless_entry *entry ) {
     const struct stumpless_entry *copy;
-    const char *insertion_string_1;
+    WORD index;
+    WORD category;
+    DWORD event_id;
+    WORD type;
+    const struct stumpless_param *insertion_param;
+    LPCSTR insertion_string;
+    LPCWSTR insertion_string_w;
 
     std::thread::id thread_id = std::this_thread::get_id(  );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
-      WORD index = i % THREAD_COUNT;
+      index = i % THREAD_COUNT;
 
       copy = stumpless_copy_entry( entry );
 
-      insertion_string_1 = stumpless_get_wel_insertion_string( entry, index );
-
-      // TODO add invocations of:
-      // stumpless_get_wel_category
-      // stumpless_get_wel_event_id
-      // stumpless_get_wel_type
-      // stumpless_get_wel_insertion_param
-      // stumpless_get_wel_insertion_string_w
+      category = stumpless_get_wel_category( entry );
+      event_id = stumpless_get_wel_event_id( entry );
+      type = stumpless_get_wel_type( entry );
+      insertion_param = stumpless_get_wel_insertion_param( entry, index );
+      insertion_string = stumpless_get_wel_insertion_string( entry, index );
+      insertion_string_w = stumpless_get_wel_insertion_string_w( entry, index );
 
       stumpless_destroy_entry_and_contents( copy );
-      free( ( void * ) insertion_string_1 );
+      free( ( void * ) insertion_string );
+      free( ( void * ) insertion_string_w );
     }
 
     stumpless_free_thread(  );
@@ -91,6 +96,8 @@ namespace {
                                           index,
                                           insertion_string_1.c_str(  ) );
 
+      // TODO add call to stumpless_set_wel_insertion_string_w
+
       stumpless_set_wel_insertion_param( entry,
                                          ( index + 1 ) % THREAD_COUNT,
                                          param );
@@ -99,6 +106,8 @@ namespace {
                                            2,
                                            insertion_string_1.c_str(  ),
                                            insertion_string_2.c_str(  ) );
+
+      // TODO add call to stumpless_set_wel_insertion_strings_w
 
       stumpless_set_wel_category( entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( entry, MSG_SIMPLE );
