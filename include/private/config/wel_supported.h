@@ -255,6 +255,19 @@ initialize_wel_data( struct stumpless_entry *entry );
 void
 lock_wel_data( const struct wel_data *data );
 
+/**
+ * Resizes the insertion parameters for the given wel data structure to hold
+ * the specified maximum.
+ *
+ * Requires the wel data structure to be locked before calling.
+ *
+ * @param entry The entry to resize insertion parameters in.
+ *
+ * @param max_index The new maximum index to support.
+ *
+ * @return The new array of insertion parameters upon success, or NULL on
+ * failure.
+ */
 struct stumpless_param **
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index );
 
@@ -272,8 +285,8 @@ unlock_wel_data( const struct wel_data *data );
  * separately before calling this function.
  *
  * **Thread Safety: MT-Unsafe**
- * This function is not thread safe. Locks of the entry and wel data must be
- * held before using it.
+ * This function is not thread safe. The lock of the wel data must be held
+ * before using it.
  *
  * **Async Signal Safety: AS-Unsafe heap**
  * This function is not safe to call from signal handlers due to the use of

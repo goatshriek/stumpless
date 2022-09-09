@@ -75,10 +75,14 @@ namespace {
     std::ostringstream insertion_string_1_stream;
     insertion_string_1_stream << "insertion-string-1-" << thread_id;
     std::string insertion_string_1( insertion_string_1_stream.str(  ) );
+    std::wstring insertion_string_1_w( insertion_string_1.begin(  ),
+                                       insertion_string_1.end(  ) );
 
     std::ostringstream insertion_string_2_stream;
     insertion_string_2_stream << "insertion-string-2-" << thread_id;
     std::string insertion_string_2( insertion_string_2_stream.str(  ) );
+    std::wstring insertion_string_2_w( insertion_string_2.begin(  ),
+                                       insertion_string_2.end(  ) );
 
     std::ostringstream param_name_stream;
     param_name_stream << "param-name-" << thread_id;
@@ -96,7 +100,9 @@ namespace {
                                           index,
                                           insertion_string_1.c_str(  ) );
 
-      // TODO add call to stumpless_set_wel_insertion_string_w
+      stumpless_set_wel_insertion_string_w( entry,
+                                            index,
+                                            insertion_string_1_w.c_str(  ) );
 
       stumpless_set_wel_insertion_param( entry,
                                          ( index + 1 ) % THREAD_COUNT,
@@ -107,7 +113,10 @@ namespace {
                                            insertion_string_1.c_str(  ),
                                            insertion_string_2.c_str(  ) );
 
-      // TODO add call to stumpless_set_wel_insertion_strings_w
+      stumpless_set_wel_insertion_strings_w( entry,
+                                             2,
+                                             insertion_string_1_w.c_str(  ),
+                                             insertion_string_2_w.c_str(  ) );
 
       stumpless_set_wel_category( entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( entry, MSG_SIMPLE );

@@ -36,7 +36,6 @@
 #include "private/config/wel_supported.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
-#include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/inthelper.h"
@@ -573,8 +572,8 @@ multi_sz_contains( LPCWSTR value, LPCWSTR str ){
  * freeing the previous one if it existed.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. The locks of the entry and the wel data
- * structure are acquired (and later released) during execution.
+ * This function is thread safe. The lock of the wel data structure is
+ * acquired (and later released) during execution.
  *
  * **Async Signal Safety: AS-Unsafe heap**
  * This function is not safe to call from signal handlers due to the use of
@@ -604,14 +603,12 @@ swap_wel_insertion_string( struct stumpless_entry *entry,
   struct wel_data *data;
   struct stumpless_entry *result;
 
-  lock_entry( entry );
   data = entry->wel_data;
   lock_wel_data( data );
 
   result = locked_swap_wel_insertion_string( entry, index, str );
 
   unlock_wel_data( data );
-  unlock_entry( entry );
 
   return result;
 }
@@ -625,8 +622,53 @@ swap_wel_insertion_string( struct stumpless_entry *entry,
  * are expanded to accomodate it.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. The locks of the entry and the wel data
- * structure are acquired (and later released) during execution.
+ * This function is thread safe. The lock of the wel data structure must be held
+ * during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * non-reentrant locks to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of locks that could be left locked as well as
+ * memory management functions.
+ *
+ * @param entry The entry to set the insertion string of. Must not be NULL.
+ *
+ * @param index The index of the insertion string.
+ *
+ * @param str The UTF-8 string to use as the insertion string. Must not be NULL.
+ *
+ * @return The modified entry, or NULL if an error is encountered.
+ */
+static
+struct stumpless_entry *
+locked_set_wel_insertion_string( struct stumpless_entry *entry,
+                                 WORD index,
+                                 LPCSTR str ) {
+  LPCWSTR str_copy;
+
+  str_copy = windows_copy_cstring_to_lpcwstr( str, NULL );
+  if( !str_copy ) {
+    return NULL;
+  }
+
+  return locked_swap_wel_insertion_string( entry, index, str_copy );
+}
+
+/**
+ * Sets the insertion string at the given index to the provided UTF-8 string.
+ *
+ * A copy of the string is created in wide character format.
+ *
+ * If the index is higher than the current max, then the insertion string arrays
+ * are expanded to accomodate it.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. The lock of the wel data structure are acquired
+ * (and later released) during execution.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers due to the use of
@@ -659,6 +701,49 @@ set_wel_insertion_string( struct stumpless_entry *entry,
   }
 
   return swap_wel_insertion_string( entry, index, str_copy );
+}
+
+/**
+ * Sets the insertion string at the given index to the provided wide string.
+ *
+ * A copy of the string is created in wide character format.
+ *
+ * If the index is higher than the current max, then the insertion string arrays
+ * are expanded to accomodate it.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe. The locks of the wel data structure must be
+ * held during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
+ * @param entry The entry to set the insertion string of. Must not be NULL.
+ *
+ * @param index The index of the insertion string.
+ *
+ * @param str The wide string to use as the insertion string. Must not be NULL.
+ *
+ * @return The modified entry, or NULL if an error is encountered.
+ */
+static
+struct stumpless_entry *
+locked_set_wel_insertion_string_w( struct stumpless_entry *entry,
+                                   WORD index,
+                                   LPCWSTR str ) {
+  LPCWSTR str_copy;
+
+  str_copy = copy_lpcwstr( str );
+  if( !str_copy ) {
+    return NULL;
+  }
+
+  return locked_swap_wel_insertion_string( entry, index, str_copy );
 }
 
 /**
@@ -1732,11 +1817,15 @@ struct stumpless_entry *
 vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
                                       WORD count,
                                       va_list insertions ) {
+  struct wel_data *data;
   struct stumpless_entry *result;
   WORD i;
   const char *arg;
 
   VALIDATE_ARG_NOT_NULL( entry );
+
+  data = entry->wel_data;
+  lock_wel_data( data );
 
   for( i = 0; i < count; i++ ) {
     arg = va_arg( insertions, char * );
@@ -1752,8 +1841,13 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
     }
   }
 
+  unlock_wel_data( data );
   clear_error(  );
   return entry;
+
+fail:
+  unlock_wel_data( data );
+  return NULL;
 }
 
 struct stumpless_entry *
@@ -1778,7 +1872,7 @@ vstumpless_set_wel_insertion_strings_w( struct stumpless_entry *entry,
       goto fail;
     }
 
-    result = set_wel_insertion_string_w( entry, i, arg );
+    result = locked_set_wel_insertion_string_w( entry, i, arg );
     if( !result ) {
       goto fail;
     }
