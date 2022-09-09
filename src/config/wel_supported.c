@@ -36,6 +36,7 @@
 #include "private/config/wel_supported.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/inthelper.h"
@@ -1274,47 +1275,48 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
 WORD
 stumpless_get_wel_category( const struct stumpless_entry *entry ) {
   const struct wel_data *data;
-  int prival;
   WORD category;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
+  clear_error(  );
 
   data = entry->wel_data;
-
+  lock_entry( entry );
   lock_wel_data( data );
+
   if( data->category_set ) {
     category = data->category;
     unlock_wel_data( data );
   } else {
     unlock_wel_data( data );
-    prival = stumpless_get_entry_prival( entry );
-    category = get_category( prival );
+    category = get_category( entry->prival );
   }
 
+  unlock_entry( entry );
   return category;
 }
 
 DWORD
 stumpless_get_wel_event_id( const struct stumpless_entry *entry ) {
   const struct wel_data *data;
-  int prival;
   DWORD event_id;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
-
   clear_error(  );
-  data = entry->wel_data;
 
+  data = entry->wel_data;
+  lock_entry( entry );
   lock_wel_data( data );
+
   if( data->event_id_set ) {
     event_id = data->event_id;
     unlock_wel_data( data );
   } else {
     unlock_wel_data( data );
-    prival = stumpless_get_entry_prival( entry );
-    event_id = get_event_id( prival );
+    event_id = get_event_id( entry->prival );
   }
-
+  
+  unlock_entry( entry );
   return event_id;
 }
 
@@ -1325,9 +1327,11 @@ stumpless_get_wel_insertion_param( const struct stumpless_entry *entry,
   struct stumpless_param *param = NULL;
 
   VALIDATE_ARG_NOT_NULL( entry );
+  clear_error(  );
 
   data = entry->wel_data;
   lock_wel_data( data );
+
   if( index >= data->insertion_count ) {
     raise_index_out_of_bounds(
        L10N_INVALID_INDEX_ERROR_MESSAGE( "insertion string" ),
@@ -1453,24 +1457,24 @@ cleanup_and_return:
 WORD
 stumpless_get_wel_type( const struct stumpless_entry *entry ) {
   const struct wel_data *data;
-  int prival;
   WORD type;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
-  
   clear_error(  );
-  data = entry->wel_data;
 
+  data = entry->wel_data;
+  lock_entry( entry );
   lock_wel_data( data );
+
   if( data->type_set ) {
     type = data->type;
     unlock_wel_data( data );
   } else {
     unlock_wel_data( data );
-    prival = stumpless_get_entry_prival( entry );
-    type = get_type( prival );
+    type = get_type( entry->prival );
   }
 
+  unlock_entry( entry );
   return type;
 }
 
@@ -1832,12 +1836,12 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
 
     if( !arg ) {
       raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "insertion string" ) );
-      return NULL;
+      goto fail;
     }
 
     result = set_wel_insertion_string( entry, i, arg );
     if( !result ) {
-      return NULL;
+      goto fail;
     }
   }
 

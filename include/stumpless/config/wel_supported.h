@@ -248,7 +248,7 @@ stumpless_add_wel_event_source_w( LPCWSTR subkey_name,
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
- * entry's WEL data while it is being modified.
+ * entry and its WEL data while it is being modified.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * This function is not safe to call from signal handlers due to the use of a
@@ -276,7 +276,7 @@ stumpless_get_wel_category( const struct stumpless_entry *entry );
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
- * entry's WEL data while it is being modified.
+ * entry and its WEL data while it is being modified.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * This function is not safe to call from signal handlers due to the use of a
@@ -416,7 +416,7 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
- * entry's WEL data while it is being modified.
+ * entry and its WEL data while it is being modified.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * This function is not safe to call from signal handlers due to the use of a
