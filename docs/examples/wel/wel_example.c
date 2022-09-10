@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,9 @@
 
 int
 main( int argc, char **argv ) {
-  struct stumpless_target *wel_target;
   struct stumpless_entry *basic_entry;
+  DWORD register_result;
+  struct stumpless_target *wel_target;
   struct stumpless_entry *entry_with_params;
   struct stumpless_entry *result;
   struct stumpless_param *child_name;
@@ -32,24 +33,59 @@ main( int argc, char **argv ) {
   int log_result;
 
 
-  // opening a Windows Event Log target in the "KidsAndTrees" log
-  wel_target = stumpless_open_local_wel_target( "KidsAndTrees" );
-  if( !wel_target ) {
-    stumpless_perror( "could not open the local Windows Event Log" );
+  // creating a basic entry
+  basic_entry = stumpless_new_entry(
+    STUMPLESS_FACILITY_USER,
+    STUMPLESS_SEVERITY_INFO,
+    "tree-identifier-app",
+    "tree-identified-by-child",
+    "a child found a tree!"
+  );
+  if( !basic_entry ) {
+    stumpless_perror( "could not create the basic entry" );
     return EXIT_FAILURE;
   }
 
 
-  // creating a basic entry
-  basic_entry = stumpless_new_entry(
-    STUMPLESS_FACILITY_USER,     // will be unused by wel target
-    STUMPLESS_SEVERITY_INFO,     // will be unused by wel target
-    "tree-identifier-app",       // will be unused by wel target
-    "tree-identified-by-child",  // will be unused by wel target
-    "a child found a tree!"      // will be unused by wel target
-  );
-  if( !basic_entry ) {
-    stumpless_perror( "could not create the basic entry" );
+  // attempting to register the default event source
+  register_result = stumpless_add_default_wel_event_source(  );
+  if( register_result != ERROR_SUCCESS ) {
+    stumpless_perror( "WARNING - couldn't register the default source" );
+    // we wont fail our example if this happens, just warn the user
+  }
+
+
+  // opening an explicit Windows Event Log target to the default source
+  wel_target = stumpless_open_local_wel_target( "Stumpless" );
+  if( !wel_target ) {
+    stumpless_perror( "could not open the default Windows Event Log" );
+    return EXIT_FAILURE;
+  }
+
+
+  // sending an entry with default values to the default target
+  // if the registration function succeeded, then this entry will be visible
+  // in the Event Viewer under the Stumpless application
+  log_result = stumpless_add_entry( wel_target, basic_entry );
+  if( log_result < 0 ) {
+    stumpless_perror( "could not log a default entry" );
+    return EXIT_FAILURE;
+  }
+
+
+  // clean up by closing the target and unregistering the default source
+  stumpless_close_wel_target( wel_target );
+  register_result = stumpless_remove_default_wel_event_source(  );
+  if( register_result != ERROR_SUCCESS ) {
+    stumpless_perror( "WARNING - couldn't unregister the default source" );
+    // again, we wont fail in this scenario either
+  }
+
+
+  // opening a Windows Event Log target in the "KidsAndTrees" log
+  wel_target = stumpless_open_local_wel_target( "KidsAndTrees" );
+  if( !wel_target ) {
+    stumpless_perror( "could not open the local Windows Event Log" );
     return EXIT_FAILURE;
   }
 
@@ -61,7 +97,8 @@ main( int argc, char **argv ) {
     return EXIT_FAILURE;
   }
 
-  result = stumpless_set_wel_event_id( basic_entry, MSG_TREE_IDENTIFIED_BY_CHILD );
+  result = stumpless_set_wel_event_id( basic_entry,
+                                       MSG_TREE_IDENTIFIED_BY_CHILD );
   if( !result ) {
     stumpless_perror( "could not set the basic entry event id" );
     return EXIT_FAILURE;
@@ -85,18 +122,18 @@ main( int argc, char **argv ) {
   // setting the insertion strings on the entry
   result = stumpless_set_wel_insertion_string( basic_entry, 0, "cynthia" );
   if( !result ) {
-    stumpless_perror( "could not set the first insertion string of a basic entry" );
+    stumpless_perror( "could not set the first insertion string of an entry" );
     return EXIT_FAILURE;
   }
 
   result = stumpless_set_wel_insertion_string( basic_entry, 1, "oak" );
   if( !result ) {
-    stumpless_perror( "could not set the second insertion string of a basic entry" );
+    stumpless_perror( "could not set the second insertion string of an entry" );
     return EXIT_FAILURE;
   }
 
-  // the previous two strings could have been set with the following single call:
-  // result = stumpless_set_wel_insertion_strings( basic_entry, 2, "cynthia", "oak" );
+  // the previous two strings could have been set with the following call:
+  // stumpless_set_wel_insertion_strings( basic_entry, 2, "cynthia", "oak" );
 
 
   // logging the entry with insertion strings set
@@ -110,11 +147,11 @@ main( int argc, char **argv ) {
 
   // creating another entry
   entry_with_params = stumpless_new_entry(
-    STUMPLESS_FACILITY_USER,     // will be unused by wel target
-    STUMPLESS_SEVERITY_INFO,     // will be unused by wel target
-    "tree-identifier-app",       // will be unused by wel target
-    "tree-identified-by-child",  // will be unused by wel target
-    "a child found a tree!"      // will be unused by wel target
+    STUMPLESS_FACILITY_USER,
+    STUMPLESS_SEVERITY_INFO,
+    "tree-identifier-app",
+    "tree-identified-by-child",
+    "a child found a tree!"
   );
   if( !entry_with_params ) {
     stumpless_perror( "could not create the second entry" );
@@ -129,7 +166,8 @@ main( int argc, char **argv ) {
     return EXIT_FAILURE;
   }
 
-  result = stumpless_set_wel_event_id( entry_with_params, MSG_TREE_IDENTIFIED_BY_CHILD );
+  result = stumpless_set_wel_event_id( entry_with_params,
+                                       MSG_TREE_IDENTIFIED_BY_CHILD );
   if( !result ) {
     stumpless_perror( "could not set the second entry event id" );
     return EXIT_FAILURE;
@@ -151,7 +189,7 @@ main( int argc, char **argv ) {
 
   result = stumpless_set_wel_insertion_param( basic_entry, 0, child_name );
   if( !result ) {
-    stumpless_perror( "could not set the first insertion string of a basic entry" );
+    stumpless_perror( "could not set the first insertion string of an entry" );
     return EXIT_FAILURE;
   }
 
@@ -163,7 +201,7 @@ main( int argc, char **argv ) {
 
   result = stumpless_set_wel_insertion_param( basic_entry, 1, tree_type );
   if( !result ) {
-    stumpless_perror( "could not set the second insertion string of a basic entry" );
+    stumpless_perror( "could not set the second insertion string of an entry" );
     return EXIT_FAILURE;
   }
 
