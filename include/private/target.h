@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,5 +55,34 @@ unlock_target( const struct stumpless_target *target );
 
 int
 unsupported_target_is_open( const struct stumpless_target *target );
+
+/**
+ * Writes a message to the error stream. This is ignored if the error stream
+ * is NULL.
+ *
+ * This function does not update or modify the per-thread error code. Failures
+ * are silently ignored.
+ * 
+ * **Thread Safety: MT-Safe race:prefix**
+ * This function is thread safe. A lock is used to coordinate writes to the
+ * error stream.
+*
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers, as it uses a
+ * non-reentrant lock to synchronize access to the error stream.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock used to control access to the error stream may not
+ * be released after a cancellation.
+ *
+ * @since v2.1.0.
+ *
+ * @param msg The message to be written to the error stream.
+ *
+ * @param msg_size The size of the message to be written in bytes.
+ */
+void
+write_to_error_stream( const char *msg, size_t msg_size );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_H */

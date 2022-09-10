@@ -339,3 +339,23 @@ void
 raise_invalid_encoding( const char *message ) {
   raise_error( STUMPLESS_INVALID_ENCODING, message, 0, NULL );
 }
+
+void
+write_to_error_stream( const char *msg, size_t msg_size ) {
+  FILE *error_stream;
+  size_t write_result;
+  bool locked;
+
+  error_stream = stumpless_get_error_stream(  );
+  if( !error_stream ) {
+    return;
+  }
+
+  do{
+    locked = config_compare_exchange_bool( &error_stream_free, true, false );
+  } while( !locked );
+
+  fwrite( msg, sizeof( *msg ), msg_size, error_stream );
+
+  config_write_bool( &error_stream_free, true );
+}

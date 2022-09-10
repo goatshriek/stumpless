@@ -79,7 +79,7 @@ int
 stumpless_add_entry( struct stumpless_target *target,
                      const struct stumpless_entry *entry ) {
   stumpless_filter_func_t filter;
-  struct strbuilder *builder;
+  struct strbuilder *builder = NULL;
   size_t builder_length;
   const char *buffer = NULL;
   int result;
@@ -99,46 +99,42 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   if( stumpless_get_option( target, STUMPLESS_OPTION_PERROR ) ){
-    // setting is_log_formatted true concludes that STUMPLESS_OPTION_PERROR
-    // option is set, thus only checking this flag is enough for further checks
-    // NOTE : Calling the format_entry twice because if the buffer is for target
-    // who require unformatted entry would need not to call format_entry.
     builder = format_entry( entry, target );
     if( !builder ) {
       return -1;
     }
     buffer = strbuilder_get_buffer( builder, &builder_length );
-    error_stream = stumpless_get_error_stream();
-    if( fwrite( buffer, 1, builder_length, error_stream) != builder_length ){
-      return -1;
-    }
+    write_to_error_stream( buffer, builder_length );
   }
 
   // function targets are not formatted
   if( target->type == STUMPLESS_FUNCTION_TARGET ) {
-    return send_entry_to_function_target( target, entry );
+    result = send_entry_to_function_target( target, entry );
+    goto finish;
   }
 
   // journald targets are not formatted
   if( target->type == STUMPLESS_JOURNALD_TARGET ) {
-    return config_send_entry_to_journald_target( target, entry );
+    result = config_send_entry_to_journald_target( target, entry );
+    goto finish;
   }
 
   // windows targets are not formatted in code
   // instead their formatting comes from message text files
   if( target->type == STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
-    return config_send_entry_to_wel_target( target->id, entry );
+    result = config_send_entry_to_wel_target( target->id, entry );
+    goto finish;
   }
 
   // entry was not formatted before
-  if( buffer == NULL ){
+  if( !buffer ){
     builder = format_entry( entry, target );
     if( !builder ) {
       return -1;
     }
     buffer = strbuilder_get_buffer( builder, &builder_length );
-
   }
+
   switch ( target->type ) {
 
     case STUMPLESS_BUFFER_TARGET:
@@ -169,7 +165,10 @@ stumpless_add_entry( struct stumpless_target *target,
       result = sendto_unsupported_target( target, buffer, builder_length );
   }
 
-  strbuilder_destroy( builder );
+finish:
+  if( builder ) {
+    strbuilder_destroy( builder );
+  }
   return result;
 }
 
