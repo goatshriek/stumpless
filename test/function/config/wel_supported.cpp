@@ -771,7 +771,7 @@ namespace {
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
 
-   set_result =  stumpless_set_wel_insertion_string( entry, 1, str_value );
+    set_result =  stumpless_set_wel_insertion_string( entry, 1, str_value );
     EXPECT_NO_ERROR;
     EXPECT_TRUE( set_result == entry );
 
@@ -822,11 +822,11 @@ namespace {
     stumpless_set_wel_event_id( entry, MSG_SIMPLE );
     stumpless_set_wel_type( entry, EVENTLOG_SUCCESS );
 
-   set_result =  stumpless_set_wel_insertion_string( entry, 1, str_value );
+    set_result =  stumpless_set_wel_insertion_string( entry, 2, str_value );
     EXPECT_NO_ERROR;
     EXPECT_TRUE( set_result == entry );
 
-    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    str_result = stumpless_get_wel_insertion_string( entry, 2 );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( str_result );
     EXPECT_STREQ( str_result, str_value );
@@ -835,11 +835,11 @@ namespace {
     param = stumpless_new_param( "insertion-string", param_value );
     ASSERT_NOT_NULL( param );
 
-    set_result = stumpless_set_wel_insertion_param( entry, 1, param );
+    set_result = stumpless_set_wel_insertion_param( entry, 2, param );
     EXPECT_NO_ERROR;
     EXPECT_TRUE( set_result == entry );
 
-    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    str_result = stumpless_get_wel_insertion_string( entry, 2 );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( str_result );
     EXPECT_STREQ( str_result, param_value );
@@ -848,11 +848,11 @@ namespace {
     stumpless_add_entry( stumpless_get_current_target(  ), entry );
     EXPECT_NO_ERROR;
 
-    set_result = stumpless_set_wel_insertion_param( entry, 1, NULL );
+    set_result = stumpless_set_wel_insertion_param( entry, 2, NULL );
     EXPECT_NO_ERROR;
     EXPECT_TRUE( set_result == entry );
 
-    str_result = stumpless_get_wel_insertion_string( entry, 1 );
+    str_result = stumpless_get_wel_insertion_string( entry, 2 );
     EXPECT_NO_ERROR;
     EXPECT_NULL( str_result );
 
