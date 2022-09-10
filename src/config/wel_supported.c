@@ -2139,12 +2139,12 @@ lock_wel_data( const struct wel_data *data ) {
   config_lock_mutex( &data->mutex );
 }
 
-struct stumpless_param **
+struct stumpless_entry *
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index ) {
   size_t new_max_index;
   size_t new_size;
   struct wel_data *data;
-  struct stumpless_param **new_params;
+  const struct stumpless_param **new_params;
   LPCWSTR *new_strings;
   WORD i;
 
@@ -2179,7 +2179,7 @@ resize_insertion_params( struct stumpless_entry *entry, WORD max_index ) {
   }
 
   data->insertion_count = max_index + 1;
-  return new_params;
+  return entry;
 }
 
 void

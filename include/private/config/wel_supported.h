@@ -265,10 +265,9 @@ lock_wel_data( const struct wel_data *data );
  *
  * @param max_index The new maximum index to support.
  *
- * @return The new array of insertion parameters upon success, or NULL on
- * failure.
+ * @return The modified entry upon success, or NULL on failure.
  */
-struct stumpless_param **
+struct stumpless_entry *
 resize_insertion_params( struct stumpless_entry *entry, WORD max_index );
 
 void
