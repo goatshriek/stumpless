@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.2.3)
 
-cmake_policy(SET CMP0135 NEW)
+if(POLICY CMP0135)
+  cmake_policy(SET CMP0135 NEW)
+endif()
 
 project(stumpless VERSION 2.1.0)
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
