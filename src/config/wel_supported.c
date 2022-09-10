@@ -530,6 +530,93 @@ cleanup_sources:
 }
 
 /**
+ * Gets the values of the Sources subkey from the provided handle.
+ *
+ * The returned buffer must be freed by the caller when it is no longer needed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors, as well as the use of memory
+ * management functions to create the new buffer.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors as
+ * well as memory management functions.
+ *
+ * @param subkey_handle A handle to the subkey to get the Sources value of.
+ *
+ * @param value_size A pointer to a DWORD that will hold the size of the value.
+ *
+ * @param result A pointer to a DWORD which is updated with a failure result in
+ * the case of a failure.
+ *
+ * @return A buffer holding the value of the sources key, or NULL upon failure.
+ */
+static
+LPWSTR
+get_sources_value( HKEY subkey_handle, LPDWORD value_size, LPDWORD result ) {
+  DWORD value_type;
+  LPWSTR sources_value;
+  LSTATUS reg_result;
+
+  *value_size = 256;
+  sources_value = alloc_mem( *value_size );
+  if( !sources_value ) {
+    return NULL;
+  }
+
+  reg_result = RegGetValueW( subkey_handle,
+                             NULL,
+                             L"Sources",
+                             RRF_RT_REG_MULTI_SZ,
+                             &value_type,
+                             sources_value,
+                             value_size );
+
+  if( reg_result == ERROR_MORE_DATA ) {
+    // allocate a new buffer and call again
+    free_mem( sources_value );
+    sources_value = alloc_mem( *value_size );
+    if( !sources_value ) {
+      *result = ERROR_NOT_ENOUGH_MEMORY;
+      return NULL;
+    }
+
+    reg_result = RegGetValueW( subkey_handle,
+                               NULL,
+                               L"Sources",
+                               RRF_RT_REG_MULTI_SZ,
+                               &value_type,
+                               sources_value,
+                               value_size );
+  }
+
+  if( reg_result != ERROR_SUCCESS ) {
+    free_mem( sources_value );
+    *result = reg_result;
+    raise_windows_failure( L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE,
+                           reg_result,
+                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
+    return NULL;
+  }
+
+  if( sources_value[0] != L'\0' &&
+      !( sources_value[(*value_size / sizeof( WCHAR) ) - 2] == L'\0' &&
+         sources_value[(*value_size / sizeof( WCHAR) ) - 1] == L'\0' ) ) {
+    free_mem( sources_value );
+    *result = ERROR_INVALID_PARAMETER;
+    raise_invalid_encoding( L10N_INVALID_MULTI_SZ_ERROR_MESSAGE );
+    return NULL;
+  }
+
+  return sources_value;
+}
+
+/**
  * Detects if a given string is in a MULTI_SZ registry value.
  *
  * **Thread Safety: MT-Safe race:value race:str**
@@ -875,10 +962,8 @@ add_event_source( LPCWSTR subkey_name,
   HKEY subkey_handle;
   LSTATUS reg_result;
   DWORD result = ERROR_SUCCESS;
-  DWORD value_type;
-  WCHAR sources_value_buffer[256];
-  DWORD value_size = sizeof( sources_value_buffer );
-  LPWSTR sources_value = sources_value_buffer;
+  DWORD value_size;
+  LPWSTR sources_value;
   BYTE *new_sources_value;
   DWORD new_sources_size;
   HKEY source_subkey_handle;
@@ -926,45 +1011,9 @@ add_event_source( LPCWSTR subkey_name,
 
   // if the key already exists, we need to check the sources list to see if the
   // source name already exists
-  reg_result = RegGetValueW( subkey_handle,
-                             NULL,
-                             L"Sources",
-                             RRF_RT_REG_MULTI_SZ,
-                             &value_type,
-                             sources_value,
-                             &value_size );
-
-  if( reg_result == ERROR_MORE_DATA ) {
-    // allocate a new buffer and call again
-    sources_value = alloc_mem( value_size );
-    if( !sources_value ) {
-      result = ERROR_NOT_ENOUGH_MEMORY;
-      goto cleanup_subkey;
-    }
-
-    reg_result = RegGetValueW( subkey_handle,
-                               NULL,
-                               L"Sources",
-                               RRF_RT_REG_MULTI_SZ,
-                               &value_type,
-                               sources_value,
-                               &value_size );
-  }
-
-  if( reg_result != ERROR_SUCCESS ) {
-    result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_sources;
-  }
-
-  if( sources_value[0] != L'\0' &&
-      !( sources_value[(value_size / sizeof( WCHAR) ) - 2] == L'\0' &&
-         sources_value[(value_size / sizeof( WCHAR) ) - 1] == L'\0' ) ) {
-    raise_invalid_encoding( L10N_INVALID_MULTI_SZ_ERROR_MESSAGE );
-    result = ERROR_INVALID_PARAMETER;
-    goto cleanup_sources;
+  sources_value = get_sources_value( subkey_handle, &value_size, &result );
+  if( !sources_value ) {
+    goto cleanup_subkey;
   }
 
   if( !multi_sz_contains( sources_value, source_name ) ) {
@@ -1057,9 +1106,7 @@ cleanup_source_subkey:
 cleanup_trans:
   CloseHandle( trans );
 cleanup_sources:
-  if( sources_value != sources_value_buffer ) {
-    free_mem( sources_value );
-  }
+  free_mem( sources_value );
 cleanup_subkey:
   RegCloseKey( subkey_handle );
 cleanup_complete_subkey:
@@ -1526,10 +1573,8 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
   size_t source_name_size;
   DWORD result = ERROR_SUCCESS;
   LSTATUS reg_result;
-  DWORD value_type;
-  WCHAR sources_value_buffer[256];
-  DWORD value_size = sizeof( sources_value_buffer );
-  LPWSTR sources_value = sources_value_buffer;
+  DWORD value_size;
+  LPWSTR sources_value;
   LPWSTR new_sources_value;
   size_t new_sources_size;
   LPCWSTR sources_current;
@@ -1567,45 +1612,9 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
     goto cleanup_complete_subkey;
   }
 
-  reg_result = RegGetValueW( subkey_handle,
-                             NULL,
-                             L"Sources",
-                             RRF_RT_REG_MULTI_SZ,
-                             &value_type,
-                             sources_value,
-                             &value_size );
-
-  if( reg_result == ERROR_MORE_DATA ) {
-    // allocate a new buffer and call again
-    sources_value = alloc_mem( value_size );
-    if( !sources_value ) {
-      result = ERROR_NOT_ENOUGH_MEMORY;
-      goto cleanup_subkey_handle;
-    }
-
-    reg_result = RegGetValueW( subkey_handle,
-                               NULL,
-                               L"Sources",
-                               RRF_RT_REG_MULTI_SZ,
-                               &value_type,
-                               sources_value,
-                               &value_size );
-  }
-
-  if( reg_result != ERROR_SUCCESS ) {
-    result = reg_result;
-    raise_windows_failure( L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE,
-                           result,
-                           L10N_WINDOWS_RETURN_ERROR_CODE_TYPE );
-    goto cleanup_sources;
-  }
-
-  if( sources_value[0] != L'\0' &&
-      !( sources_value[(value_size / sizeof( WCHAR) ) - 2] == L'\0' &&
-         sources_value[(value_size / sizeof( WCHAR) ) - 1] == L'\0' ) ) {
-    raise_invalid_encoding( L10N_INVALID_MULTI_SZ_ERROR_MESSAGE );
-    result = ERROR_INVALID_PARAMETER;
-    goto cleanup_sources;
+  sources_value = get_sources_value( subkey_handle, &value_size, &result );
+  if( !sources_value ) {
+    goto cleanup_subkey_handle;
   }
 
   // if Sources only contains the specified Source or is empty, simply remove the whole tree
@@ -1679,9 +1688,7 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
   }
 
 cleanup_sources:
-  if( sources_value != sources_value_buffer ) {
-    free_mem( sources_value );
-  }
+  free_mem( sources_value );
 cleanup_subkey_handle:
   CloseHandle( subkey_handle );
 cleanup_complete_subkey:
