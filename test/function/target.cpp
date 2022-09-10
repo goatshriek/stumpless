@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <fstream>
 #include <regex>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -674,6 +675,101 @@ namespace {
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all(  );
+  }
+
+  TEST( PerrorOption, FileErrorStream ) {
+    char log_buffer[100];
+    struct stumpless_target *target;
+    const struct stumpless_target *target_result;
+    const char *error_filename = "target_with_perror.log";
+    FILE *error_stream;
+    int result;
+    size_t line_count;
+
+    // set up the error stream
+    error_stream = fopen( error_filename, "w+" );
+    ASSERT_NOT_NULL( error_stream );
+
+    stumpless_set_error_stream( error_stream );
+
+    // set up the target to log to
+    target = stumpless_open_buffer_target( "function-test-buffer-perror",
+                                           log_buffer,
+                                           sizeof( log_buffer) );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target_result );
+
+    result = stumpless_add_message( target, "message with perror" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    // cleanup after the test
+    stumpless_set_error_stream( stderr );
+    fclose( error_stream );
+    stumpless_close_buffer_target( target );
+    EXPECT_NO_ERROR;
+
+    // checking the perror file for consistency
+    std::ifstream error_file( error_filename );
+    std::string line;
+    line_count = 0;
+    while( std::getline( error_file, line ) ) {
+      TestRFC5424Compliance( line.c_str() );
+      line_count++;
+    }
+    EXPECT_EQ( line_count, 1 );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( PerrorOption, NullErrorStream ) {
+    struct stumpless_target *target;
+    struct stumpless_target *target_result;
+    char buffer[300];
+    char message_buffer[300];
+    int result;
+
+    target = stumpless_open_buffer_target( "test target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_add_message( target, "message without perror" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    TestRFC5424Compliance( message_buffer );
+
+    target_result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( target_result, target );
+
+    stumpless_set_error_stream( NULL );
+    result = stumpless_add_message( target,
+                                    "message with perror and null stream" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    TestRFC5424Compliance( message_buffer );
+
+    target_result = stumpless_unset_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_EQ( target_result, target );
+
+    result = stumpless_add_message( target, "message without perror again" );
+    EXPECT_NO_ERROR;
+    EXPECT_GE( result, 0 );
+
+    stumpless_read_buffer( target, message_buffer, 300 );
+    TestRFC5424Compliance( message_buffer );
+
+    stumpless_close_buffer_target( target );
   }
 
   TEST( SetDefaultAppName, MemoryFailure ) {
