@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include <wchar.h>
 #include <windows.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"

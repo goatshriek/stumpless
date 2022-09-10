@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless.h>
+#include <wchar.h>
 #include <windows.h>
 #include "test/function/windows/events.h"
 #include "test/helper/assert.hpp"

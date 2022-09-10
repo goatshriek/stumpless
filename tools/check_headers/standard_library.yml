@@ -190,6 +190,7 @@
 "va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
+"wcslen": "wchar.h"
 "WIN32_LEAN_AND_MEAN":
   - "windows.h"
   - "private/windows_wrapper.h"
