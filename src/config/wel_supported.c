@@ -1850,7 +1850,7 @@ vstumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
       goto fail;
     }
 
-    result = set_wel_insertion_string( entry, i, arg );
+    result = locked_set_wel_insertion_string( entry, i, arg );
     if( !result ) {
       goto fail;
     }
