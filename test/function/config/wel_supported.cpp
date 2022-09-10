@@ -401,7 +401,7 @@ namespace {
     WCHAR lpcwstr_result[1024]{};
     LSTATUS reg_result;
     std::vector<std::wstring> *sources_vec;
-    ptrdiff_t source_name_count;
+    size_t source_name_count;
     DWORD dword_result;
     DWORD result_size;
 
@@ -413,7 +413,7 @@ namespace {
                                                    parameter_file,
                                                    types_supported );
     error = stumpless_get_error(  );
-    if( error != NULL && error->code == ERROR_ACCESS_DENIED ) {
+    if( error && error->code == ERROR_ACCESS_DENIED ) {
       SUCCEED(  ) << "not enough permissions to install, skipping test";
     } else {
       EXPECT_NO_ERROR;
@@ -431,9 +431,15 @@ namespace {
       EXPECT_EQ( reg_result, ERROR_SUCCESS );
 
       sources_vec = multi_sz_to_vector( lpcwstr_result );
-      source_name_count = std::count( sources_vec->begin(  ),
-                                      sources_vec->end(  ),
-                                      source_name_w );
+
+      // std::count would be cleaner, but may not be available
+      source_name_count = 0;
+      for( std::wstring str : *sources_vec ) {
+        if( str.compare( source_name_w ) == 0 ) {
+          source_name_count++;
+        }
+      }
+
       EXPECT_EQ( source_name_count, 1 );
       delete sources_vec;
       ASSERT_EQ( source_name_count, 1 );
@@ -519,7 +525,7 @@ namespace {
     WCHAR lpcwstr_result[1024]{};
     LSTATUS reg_result;
     std::vector<std::wstring> *sources_vec;
-    ptrdiff_t source_name_count;
+    size_t source_name_count;
     DWORD dw_result;
     DWORD result_size;
 
@@ -531,7 +537,7 @@ namespace {
                                                   parameter_file,
                                                   types_supported );
     error = stumpless_get_error(  );
-    if( error != NULL && error->code == ERROR_ACCESS_DENIED ) {
+    if( error && error->code == ERROR_ACCESS_DENIED ) {
       SUCCEED(  ) << "not enough permissions to install, skipping test";
     } else {
       EXPECT_NO_ERROR;
@@ -549,9 +555,15 @@ namespace {
       EXPECT_EQ( reg_result, ERROR_SUCCESS );
 
       sources_vec = multi_sz_to_vector( lpcwstr_result );
-      source_name_count = std::count( sources_vec->begin(  ),
-                                      sources_vec->end(  ),
-                                      source_name );
+
+      // std::count would be cleaner, but may not be available
+      source_name_count = 0;
+      for( std::wstring str : *sources_vec ) {
+        if( str.compare( source_name ) == 0 ) {
+          source_name_count++;
+        }
+      }
+
       EXPECT_EQ( source_name_count, 1 );
       delete sources_vec;
 
