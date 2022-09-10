@@ -342,12 +342,11 @@ raise_invalid_encoding( const char *message ) {
 
 void
 write_to_error_stream( const char *msg, size_t msg_size ) {
-  FILE *error_stream;
-  size_t write_result;
+  FILE *stream;
   bool locked;
 
-  error_stream = stumpless_get_error_stream(  );
-  if( !error_stream ) {
+  stream = stumpless_get_error_stream(  );
+  if( !stream ) {
     return;
   }
 
@@ -355,7 +354,7 @@ write_to_error_stream( const char *msg, size_t msg_size ) {
     locked = config_compare_exchange_bool( &error_stream_free, true, false );
   } while( !locked );
 
-  fwrite( msg, sizeof( *msg ), msg_size, error_stream );
+  fwrite( msg, sizeof( *msg ), msg_size, stream );
 
   config_write_bool( &error_stream_free, true );
 }

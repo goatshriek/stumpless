@@ -83,7 +83,6 @@ stumpless_add_entry( struct stumpless_target *target,
   size_t builder_length;
   const char *buffer = NULL;
   int result;
-  FILE *error_stream;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
