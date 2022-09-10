@@ -80,6 +80,8 @@ extern "C" {
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a thread-global structure to store errors.
  *
+ * @since release v2.1.0.
+ *
  * @return ERROR_SUCCESS if the operation was successful, or a Windows error
  * code result if an error was encountered. Note that the error code may not
  * necessarily correspond to a call to GetLastError after this, for example in
@@ -120,6 +122,8 @@ stumpless_add_default_wel_event_source( void );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a thread-global structure to store errors, as
  * well as memory management functions.
+ *
+ * @since release v2.1.0.
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a UTF-8 NULL terminated string. This subkey will be created under
@@ -194,6 +198,8 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a thread-global structure to store errors.
+ *
+ * @since release v2.1.0.
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a wide char NULL terminated string. This subkey will be created under
@@ -286,6 +292,8 @@ stumpless_get_wel_category( const struct stumpless_entry *entry );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
+ * @since release v2.1.0.
+ *
  * @param entry The entry to get the event id from.
  *
  * @return The entry event id. In the event of an error, then zero is
@@ -311,6 +319,8 @@ stumpless_get_wel_event_id( const struct stumpless_entry *entry );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked as well as
  * memory management functions.
+ *
+ * @since release v2.1.0.
  *
  * @param entry The entry to retrieve the insertion param from.
  *
@@ -393,6 +403,8 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
  * cancelled, due to the use of a lock that could be left locked as well as
  * memory management functions.
  *
+ * @since release v2.1.0.
+ *
  * @param entry The entry to retrieve the insertion string from.
  *
  * @param index The index of the insertion string to retrieve.
@@ -426,6 +438,8 @@ stumpless_get_wel_insertion_string_w( const struct stumpless_entry *entry,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
+ * @since release v2.1.0.
+ *
  * @param entry The entry to get the type from.
  *
  * @return The entry type. In the event of an error, then zero is
@@ -455,6 +469,8 @@ stumpless_get_wel_type( const struct stumpless_entry *entry );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a thread-global structure to store errors.
  *
+ * @since release v2.1.0.
+ *
  * @return ERROR_SUCCESS if the operation was successful, or the result of
  * GetLastError if an error was encountered.
  */
@@ -478,6 +494,8 @@ stumpless_remove_default_wel_event_source( void );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a thread-global structure to store errors, as
  * well as memory management functions.
+ *
+ * @since release v2.1.0.
  *
  * @param subkey_name The name of the subkey that the source is installed in,
  * as a UTF-8 NULL terminated string. This subkey will be looked for under
@@ -510,6 +528,8 @@ stumpless_remove_wel_event_source( LPCSTR subkey_name,
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a thread-global structure to store errors.
+ *
+ * @since release v2.1.0.
  *
  * @param subkey_name The name of the subkey that the source is installed in,
  * as a wide char NULL terminated string. This subkey will be looked for under
@@ -726,6 +746,8 @@ stumpless_set_wel_insertion_string( struct stumpless_entry *entry,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
+ * @since release v2.1.0.
+ *
  * @param entry The entry to modify.
  *
  * @param index The index of the insertion string to use the param for. Valid
@@ -811,6 +833,8 @@ stumpless_set_wel_insertion_strings( struct stumpless_entry *entry,
  * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0.
  *
  * @param entry The entry to modify.
  *
