@@ -1580,6 +1580,7 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
   size_t new_sources_size;
   LPCWSTR sources_current;
   LPWSTR current;
+  size_t source_len;
 
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( source_name );
@@ -1635,7 +1636,8 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
     goto cleanup_sources;
   }
 
-  // otherwise, modify the Sources value to remove this one and delete only the given Source
+  // otherwise, modify the Sources value to remove this one and delete only the
+  // given Source
   if( multi_sz_contains( sources_value, source_name ) ) {
     new_sources_size = value_size - source_name_size;
 
@@ -1648,11 +1650,12 @@ stumpless_remove_wel_event_source_w( LPCWSTR subkey_name,
     sources_current = sources_value;
     current = new_sources_value;
     while( *sources_current != L'\0' ) {
-      if( wcsncmp( sources_current, source_name, source_name_size / sizeof( WCHAR ) ) != 0 ) {
-        wcscpy_s( current,
-                  ( new_sources_size / sizeof( WCHAR ) ) - ( current - new_sources_value ),
-                  sources_current );
-        current += wcslen( sources_current);
+      if( wcsncmp( sources_current,
+                   source_name,
+                   source_name_size / sizeof( WCHAR ) ) != 0 ) {
+        source_len = wcslen( sources_current );
+        memcpy( current, sources_current, source_len * sizeof( WCHAR ) );
+        current += source_len;
         *current = L'\0';
         current++;
       }
