@@ -372,3 +372,22 @@ void
 raise_windows_failure( const char *message, int code, const char *code_type ) {
   raise_error( STUMPLESS_WINDOWS_FAILURE, message, code, code_type );
 }
+
+void
+write_to_error_stream( const char *msg, size_t msg_size ) {
+  FILE *stream;
+  bool locked;
+
+  stream = stumpless_get_error_stream(  );
+  if( !stream ) {
+    return;
+  }
+
+  do{
+    locked = config_compare_exchange_bool( &error_stream_free, true, false );
+  } while( !locked );
+
+  fwrite( msg, sizeof( *msg ), msg_size, stream );
+
+  config_write_bool( &error_stream_free, true );
+}

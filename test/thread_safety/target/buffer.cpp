@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2021 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 
 #include <atomic>
 #include <cstddef>
+#include <cstdio>
+#include <fstream>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <thread>
@@ -48,19 +50,11 @@ namespace {
     }
   }
 
-  TEST( BufferConsistency, SimultaneousReadsAndWrites ) {
-    char log_buffer[LOG_BUFFER_SIZE];
-    struct stumpless_target *target;
+  void
+  read_and_write_target( struct stumpless_target *target ) {
     size_t i;
     std::thread *writer_threads[THREAD_COUNT];
     std::thread *reader_threads[THREAD_COUNT * READ_WRITE_RATIO];
-
-    // set up the target to log to
-    target = stumpless_open_buffer_target( "thread-safety-test-buffer",
-                                           log_buffer,
-                                           LOG_BUFFER_SIZE );
-    EXPECT_NO_ERROR;
-    ASSERT_NOT_NULL( target );
 
     read_count = 0;
     for( i = 0; i < THREAD_COUNT * READ_WRITE_RATIO; i++ ) {
@@ -80,11 +74,74 @@ namespace {
       reader_threads[i]->join(  );
       delete reader_threads[i];
     }
+  }
+
+  TEST( BufferConsistency, SimultaneousReadsAndWrites ) {
+    char log_buffer[LOG_BUFFER_SIZE];
+    struct stumpless_target *target;
+
+    // set up the target to log to
+    target = stumpless_open_buffer_target( "thread-safety-test-buffer",
+                                           log_buffer,
+                                           LOG_BUFFER_SIZE );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
+
+    read_and_write_target( target );
 
     // cleanup after the test
     stumpless_close_buffer_target( target );
     EXPECT_NO_ERROR;
 
+    stumpless_free_all(  );
+  }
+
+  TEST( BufferConsistency, SimultaneousReadsAndWritesWithPerror ) {
+    char log_buffer[LOG_BUFFER_SIZE];
+    struct stumpless_target *target;
+    const struct stumpless_target *result;
+    const char *error_filename = "buffer_target_perror.log";
+    FILE *error_stream;
+    size_t line_count;
+
+    // set up the error stream
+    error_stream = fopen( error_filename, "w+" );
+    ASSERT_NOT_NULL( error_stream );
+
+    stumpless_set_error_stream( error_stream );
+
+    // set up the target to log to
+    target = stumpless_open_buffer_target( "thread-safety-test-buffer-perror",
+                                           log_buffer,
+                                           LOG_BUFFER_SIZE );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target ); 
+
+    result = stumpless_set_option( target, STUMPLESS_OPTION_PERROR );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( result );
+
+    // do the reads and writes
+    read_and_write_target( target );
+
+    // cleanup after the test
+    stumpless_set_error_stream( stderr );
+    fclose( error_stream );
+    stumpless_close_buffer_target( target );
+    EXPECT_NO_ERROR;
+
+    // checking the perror file for consistency
+    std::ifstream error_file( error_filename );
+    std::string line;
+    line_count = 0;
+    while( std::getline( error_file, line ) ) {
+      TestRFC5424Compliance( line.c_str() );
+      line_count++;
+    }
+    EXPECT_EQ( line_count, THREAD_COUNT * MESSAGE_COUNT );
+
+    // final cleanup
+    remove( error_filename );
     stumpless_free_all(  );
   }
 }

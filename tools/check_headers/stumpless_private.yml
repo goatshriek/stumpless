@@ -151,4 +151,5 @@
 "windows_init_mutex": "private/config/have_windows.h"
 "windows_lock_mutex": "private/config/have_windows.h"
 "windows_unlock_mutex": "private/config/have_windows.h"
+"write_to_error_stream": "private/error.h"
 "validate_param_name_length": "private/validate.h"

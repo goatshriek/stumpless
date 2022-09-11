@@ -165,6 +165,9 @@ struct stumpless_error {
  *
  * If the code_type is NULL, then the code is not valid and should be ignored.
  *
+ * This function does _not_ clear or update the per-thread error code for
+ * stumpless, as it is involved in the error handling process itself.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. No synchronization primitives are used as the
  * returned pointer is specific to the thread of execution. As a result, the
