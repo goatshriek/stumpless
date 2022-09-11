@@ -31,3 +31,16 @@ Here are a few other style points to follow in the code base:
    less clear than some other order, and in those cases it's of course fine to
    use the clearer order instead. But always default to inserting things in
    alphabetical order unless there is some reason to do otherwise.
+
+
+## Naming Conventions
+There are a few standard prefixes, suffixes, and other naming standards that
+are followed in the functions and variables in the source code. Understanding
+these will help you follow the logic of code and understand how to choose names
+in your own additions.
+
+ * **`config_` prefix** Functions that start with `config_` are dependent on the
+   build configuration of the project. They may resolve to a different function
+   when built on different platforms or with different flags, but will always
+   have the same semantics. See the [portability guide](portability.md) for more
+   information on how portability is handled in function and header names.
