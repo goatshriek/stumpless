@@ -44,3 +44,16 @@ in your own additions.
    when built on different platforms or with different flags, but will always
    have the same semantics. See the [portability guide](portability.md) for more
    information on how portability is handled in function and header names.
+ * **`locked_` prefix** Functions that start with `locked_` make the assumption
+   that some or all of their parameters are protected by holding a mutex before
+   they are called. They are not thread safe on their own, so it is up to the
+   caller to lock the resources. These are useful when you need to perform an
+   operation, but using a thread-safe version would cause deadlock by trying to
+   get a mutex that is already held. Often, the version of the function without
+   the locked prefix simply acquires the locks, and then calls the `locked_`
+   version.
+ * **`unchecked_` prefix** Some functions start with `unsafe_` to mark that they
+   do not perform any checking on their arguments. These allow callers to avoid
+   NULL checks and other checks that would be redundant because the checks have
+   already been performed elsewhere. Of course, the caller needs to make sure
+   that they do any necessary checks before calling these.
