@@ -57,9 +57,9 @@ in your own additions.
    get a mutex that is already held. Often, the version of the function without
    the locked prefix simply acquires the locks, and then calls the `locked_`
    version.
- * **`unchecked_` prefix** Some functions start with `unsafe_` to mark that they
-   do not perform any checking on their arguments. These allow callers to avoid
-   NULL checks and other checks that would be redundant because the checks have
+ * **`unchecked_` prefix** Some functions start with `unchecked_` to mark that
+   they do not perform any checks on their arguments. These allow callers to
+   avoid NULL checks and other checks that would be redundant because they have
    already been performed elsewhere. Of course, the caller needs to make sure
    that they do any necessary checks before calling these.
  * **`_w` suffix** Functions that end with `_w` have arguments that are wide
