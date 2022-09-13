@@ -75,7 +75,8 @@ A few other documents may be helpful for newcomers to glance through:
  * [docs/acronyms.md](acronyms.md) lists acronyms and initialisms used in the
    source of stumpless.
  * [docs/style.md](style.md) has a basic set of style guidelines to follow when
-   working on the source code itself.
+   working on the source code itself, including formatting and naming
+   conventions the project follows.
  * [docs/test.md](test.md) describes the testing framework used in stumpless to
    write and run unit tests. This is important to understand if you're
    implementing any new functionality, which will need tests to confirm it works
