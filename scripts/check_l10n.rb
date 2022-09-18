@@ -21,6 +21,8 @@
 #   - multiline string literals (lines ending with " \) do not have a space
 #     at the end of the first string, and do have a space as the first character
 #     of the following lines
+#   - l10n strings marked as needing translation (via a preceding comment of
+#     "// todo translate") have the english translation as their value
 
 
 return_code = 0
