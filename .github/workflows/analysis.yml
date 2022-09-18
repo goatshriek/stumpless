@@ -64,7 +64,7 @@ jobs:
           wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
           unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
           chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
-          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
+          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner -Dproject.settings=tools/sonar/sonar-project.properties
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
