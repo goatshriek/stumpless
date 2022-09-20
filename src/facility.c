@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/facility.h>
 #include "private/facility.h"
 #include "private/strhelper.h"
@@ -33,6 +34,15 @@ stumpless_get_facility_string( enum stumpless_facility facility ) {
   }
   return "NO_SUCH_FACILITY";
 }
+
+enum stumpless_facility
+stumpless_get_facility_enum( const char *facility_string ) {
+  for (int i = 0; i < sizeof facility_enum_to_string / sizeof facility_enum_to_string[0]; i++)
+    if (strcmp(facility_string, facility_enum_to_string[i]) == 0)
+      return i * sizeof facility_enum_to_string[0];
+  return -1;
+}
+
 /* private functions */
 
 int

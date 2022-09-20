@@ -24,6 +24,8 @@ namespace {
   class FacilityTest : public::testing::Test {
   };
 
+  // TODO: add stumpless_get_facility_enum test
+
   TEST( GetFacilityString, EachValidFacility ) {
     int facility_count = 0;
     const char *result;

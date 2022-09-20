@@ -24,6 +24,8 @@ namespace {
   class SeverityTest : public::testing::Test {
   };
 
+  // TODO: add stumpless_get_severity_enum test
+
   TEST( GetSeverityString, EachValidSeverity ) {
     int severity_count = 0;
     const char *result;

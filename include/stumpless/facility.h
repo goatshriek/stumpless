@@ -372,6 +372,31 @@ STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_facility_string( enum stumpless_facility facility );
 
+  /**
+ * Gets the enum value corresponding to the given facility string.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @param facility_string The facility name to get the enum from.
+ *
+ * @return The enum integer corresponding to the given facility or -1 if
+ * the string is not a valid facility name.
+ *
+ * TODO: is this correct?
+ * @since release v2.1.0.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+enum stumpless_facility
+stumpless_get_facility_enum( const char *facility_string );
+
 #  ifdef __cplusplus
 } /* extern "C" */
 #  endif
