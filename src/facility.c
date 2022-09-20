@@ -30,7 +30,7 @@ const char *
 stumpless_get_facility_string( enum stumpless_facility facility ) {
   size_t facility_upper_bound = sizeof facility_enum_to_string;
   if ( !facility_is_invalid(facility) ) {
-    return facility_enum_to_string[facility/ sizeof facility_enum_to_string[0]];
+    return facility_enum_to_string[facility >> 3];
   }
   return "NO_SUCH_FACILITY";
 }
@@ -39,7 +39,7 @@ enum stumpless_facility
 stumpless_get_facility_enum( const char *facility_string ) {
   for (int i = 0; i < sizeof facility_enum_to_string / sizeof facility_enum_to_string[0]; i++)
     if (strcmp(facility_string, facility_enum_to_string[i]) == 0)
-      return i * sizeof facility_enum_to_string[0];
+      return i << 3;
   return -1;
 }
 

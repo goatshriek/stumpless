@@ -362,11 +362,11 @@ enum stumpless_facility {
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
+ * @since release v2.1.0.
+ *
  * @param facility The facility to get the string from.
  *
  * @return The string representation of the given facility.
- *
- * @since release v2.1.0.
  */
 STUMPLESS_PUBLIC_FUNCTION
 const char *
@@ -385,13 +385,12 @@ stumpless_get_facility_string( enum stumpless_facility facility );
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
+ * @since release v2.1.0.
+ *
  * @param facility_string The facility name to get the enum from.
  *
  * @return The enum integer corresponding to the given facility or -1 if
  * the string is not a valid facility name.
- *
- * TODO: is this correct?
- * @since release v2.1.0.
  */
 STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_facility

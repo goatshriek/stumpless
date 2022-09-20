@@ -230,13 +230,12 @@ stumpless_get_severity_string( enum stumpless_severity severity );
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
+ * @since release v2.1.0.
+ *
  * @param severity_string The severity name to get the enum from.
  *
  * @return The enum integer corresponding to the given severity or -1 if
  * the string is not a valid severity name.
- *
- * TODO: is this correct?
- * @since release v2.1.0.
  */
 STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_severity
