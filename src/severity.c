@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 #include <stumpless/severity.h>
 #include "private/severity.h"
 #include "private/strhelper.h"
@@ -33,6 +34,14 @@ stumpless_get_severity_string( enum stumpless_severity severity ) {
     return severity_enum_to_string[severity];
   }
   return "NO_SUCH_SEVERITY";
+}
+
+enum stumpless_severity
+stumpless_get_severity_enum( const char *severity_string ) {
+  for (int i = 0; i < sizeof severity_enum_to_string / sizeof severity_enum_to_string[0]; i++)
+    if (strcmp(severity_string, severity_enum_to_string[i]) == 0)
+      return i;
+  return -1;
 }
 
 /* private functions */

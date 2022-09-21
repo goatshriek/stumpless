@@ -48,4 +48,22 @@ namespace {
     EXPECT_STREQ( result, "NO_SUCH_SEVERITY" );
   }
 
+  TEST( GetSeverityEnum, EachValidSeverity ) {
+    int severity_count = 0;
+    int result;
+
+    #define CHECK_SEVERITY_ENUM( STRING, ENUM ) \
+      result = stumpless_get_severity_enum( #STRING ); \
+      EXPECT_EQ( result, ENUM );
+    STUMPLESS_FOREACH_SEVERITY( CHECK_SEVERITY_ENUM )
+  }
+
+  TEST( GetSeverityEnum, NoSuchSeverity ) {
+    int severity_count = 0;
+    int result;
+
+    result = stumpless_get_severity_enum( "an_invalid_severity" );
+    EXPECT_EQ( result, -1 );
+  }
+
 }

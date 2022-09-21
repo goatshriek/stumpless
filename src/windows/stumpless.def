@@ -187,3 +187,5 @@ EXPORTS
   stumplog_str                                  @172
   stumplog_trace_str                            @173
   stumpless_get_facility_string                 @174
+  stumpless_get_facility_enum                   @175
+  stumpless_get_severity_enum                   @176

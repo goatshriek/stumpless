@@ -33,7 +33,7 @@ namespace {
       EXPECT_STREQ( result, #STRING );
     STUMPLESS_FOREACH_FACILITY( CHECK_FACILITY )
   }
-  
+
   TEST( GetFacilityString, NoSuchFacility ) {
     int facility_count = 0;
     const char *result;
@@ -46,6 +46,24 @@ namespace {
 
     result = stumpless_get_facility_string( wrong_facility );
     EXPECT_STREQ( result, "NO_SUCH_FACILITY" );
+  }
+
+  TEST( GetFacilityEnum, EachValidFacility ) {
+    int facility_count = 0;
+    int result;
+
+    #define CHECK_FACILITY_ENUM( STRING, ENUM ) \
+      result = stumpless_get_facility_enum( #STRING ); \
+      EXPECT_EQ( result, ENUM );
+    STUMPLESS_FOREACH_FACILITY( CHECK_FACILITY_ENUM )
+  }
+
+  TEST( GetFacilityEnum, NoSuchFacility ) {
+    int facility_count = 0;
+    int result;
+
+    result = stumpless_get_facility_enum( "an_invalid_facility" );
+    EXPECT_EQ( result, -1 );
   }
 
 }
