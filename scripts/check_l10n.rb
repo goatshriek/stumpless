@@ -27,7 +27,7 @@
 #     "// todo translate") have the english translation as their value. This
 #     is only done if the english locale file is one of those checked.
 
-return_code = 0
+errors = []
 header_defines = {}
 defaults_header = 'en-us.h'
 defaults = nil
@@ -35,23 +35,29 @@ defaults = nil
 ARGV.each do |source_glob|
   Dir.glob(source_glob) do |source_filename|
     file_defines = {}
+    last_l10n = ''
     current_l10n = nil
     str = String.new
 
     File.open(source_filename).each do |line|
-      m = line.match(/^"(.*)"/)
-      if current_l10n && m
-        str << m[1]
+      str_match = line.match(/^"(.*)"/)
+      if current_l10n && str_match
+        str << str_match[1]
 
         unless line.end_with?('\\')
+          if (last_l10n <=> current_l10n) > 0
+            errors << "#{source_filename}: #{current_l10n} not defined in alphabetic order"
+          end
+
           file_defines[current_l10n] = str
+          last_l10n = current_l10n
           current_l10n = nil
           str = String.new
         end
       end
 
-      m = line.match(/#\s*define\s*L10N_(\w*)\s/)
-      current_l10n = m[1] if m
+      define_match = line.match(/#\s*define\s*L10N_(\w*)(\s|\()/)
+      current_l10n = define_match[1] if define_match
     end
 
     header_defines[source_filename] = file_defines
@@ -59,4 +65,23 @@ ARGV.each do |source_glob|
   end
 end
 
-exit return_code
+header_defines.each_pair do |filename, file_defines|
+  if file_defines.keys.sort != defaults.keys.sort
+    missing_keys = file_defines.keys - defaults.keys
+    unless missing_keys.empty?
+      errors << "#{filename}: missing strings defined in #{defaults_header}: #{missing_keys}"
+    end
+
+    extra_keys = defaults.keys - file_defines.keys
+    unless extra_keys.empty?
+      errors << "#{filename}: extra strings defined in #{defaults_header}: #{extra_keys}"
+    end
+  end
+end
+
+if errors.empty?
+  exit 0
+else
+  errors.each { |err| puts err }
+  exit errors.size
+end
