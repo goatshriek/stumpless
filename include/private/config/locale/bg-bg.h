@@ -48,7 +48,7 @@
 
 // todo translate
 #  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
-"FILE OPEN FAILURE MESSAGE"
+"could not open the specified file"
 
 // todo translate
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \

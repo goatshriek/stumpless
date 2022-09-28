@@ -31,6 +31,8 @@ errors = []
 header_defines = {}
 defaults_header = 'en-us.h'
 defaults = nil
+todo = false
+todo_list = []
 
 ARGV.each do |source_glob|
   Dir.glob(source_glob) do |source_filename|
@@ -40,6 +42,8 @@ ARGV.each do |source_glob|
     str = String.new
 
     File.open(source_filename).each do |line|
+      todo = true if line.rstrip.end_with?('// todo translate')
+
       str_match = line.match(/^"(.*)"/)
       if current_l10n && str_match
         str << str_match[1]
@@ -49,10 +53,15 @@ ARGV.each do |source_glob|
             errors << "#{source_filename}: #{current_l10n} not defined in alphabetic order"
           end
 
+          if todo
+            todo_list << [source_filename, current_l10n]
+          end
+
           file_defines[current_l10n] = str
           last_l10n = current_l10n
           current_l10n = nil
           str = String.new
+          todo = false
         end
       end
 
@@ -76,6 +85,13 @@ header_defines.each_pair do |filename, file_defines|
     unless extra_keys.empty?
       errors << "#{filename}: extra strings defined in #{defaults_header}: #{extra_keys}"
     end
+  end
+end
+
+todo_list.each do |todo_tuple|
+  filename, define = *todo_tuple
+  if header_defines[filename][define] != defaults[define]
+    errors << "#{filename}: untranslated string #{define} not set to default value `#{defaults[define]}`"
   end
 end
 
