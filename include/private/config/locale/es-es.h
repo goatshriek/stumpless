@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
+* Copyright 2020-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -52,14 +52,14 @@
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "no se pudo escribir en el archivo"
 
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"formato " ARG " no válido"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "código de retorno de la función manager log"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "el manejo del log para el objetivo de la función ha fallado"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"no se pudo crear un archivo con el nombre de socket local elegido usando mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo ha fallado en el hostname proporcionado"
@@ -99,11 +99,19 @@
 "los códigos de severidad deben ser definidos de acuerdo al RFC 5424:" \
 " valores entre 0 y 7 inclusive"
 
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"mensaje de error por tipo de objetivo no válido"
+
+// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "JOURNALD FAILURE ERROR CODE"
 
+// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "JOURNALD FAILURE ERROR MESSAGE"
+
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"no se pudo crear un archivo con el nombre de socket local elegido usando mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "el tamaño máximo de mensaje sólo es válido para objetivos de red UDP"
@@ -111,11 +119,11 @@
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "el alojamiento de memoria para una llamada ha fallado"
 
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"el mensaje es demasiado largo para ser enviado en un datagrama simple"
-
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "el tamaño del mensaje que se ha intentado enviar"
+
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"el mensaje es demasiado largo para ser enviado en un datagrama simple"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "protocolo de red elegido no soportado"
@@ -132,6 +140,9 @@ ARG_NAME " fue NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "un parámetro con las características especificadas no fue encontrado"
 
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"se ha fallado al enviar con socket unix"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "se ha intentado enviar una entrada a un tipo de objetivo no soportado"
 
@@ -141,9 +152,6 @@ ARG_NAME " fue NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "se ha fallado al enviar con socket sys/socket.h"
 
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"se ha fallado al enviar con socket unix"
-
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "se ha fallado al enviar con socket winsock2"
 
@@ -152,6 +160,12 @@ ARG_NAME " fue NULL"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "no se pudo escribir en el stream"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"el largo de la cadena infractora"
+
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"el largo de la cadena ha excedido el límite máximo"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "este tipo de objetivo siempre permanece abierto"
@@ -182,17 +196,5 @@ ARG_NAME " fue NULL"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "el resultado de WSAGetLastError despues que la llamada fallara"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"el largo de la cadena ha excedido el límite máximo"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"el largo de la cadena infractora"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"formato " ARG " no válido"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"MENSAJE DE ERROR POR TIPO DE OBJETIVO NO VÁLIDO"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_ES_ES_H */

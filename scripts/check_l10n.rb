@@ -82,6 +82,7 @@ end
 if errors.empty?
   exit 0
 else
+  puts "#{errors.size} errors found"
   errors.each { |err| puts err }
   exit errors.size
 end

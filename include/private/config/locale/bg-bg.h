@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
+* Copyright 2020-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -46,20 +46,22 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno след неуспешно извикване"
 
+// todo translate
 #  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
 "FILE OPEN FAILURE MESSAGE"
 
+// todo translate
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "FILE WRITE FAILURE MESSAGE"
+
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"невалиден " ARG " формат"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "върната стойност от фунцията манипулатор на логове"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "манипулаторът на логове за целевата фукция е неуспешен"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"не можа да създаде файл с избраното име на локален сокет, използвайки mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo не успя с посоченото име на хост"
@@ -86,6 +88,7 @@
 "кодовете на съоръженията трябва да бъдат дефинирани в съответствие с RFC 5424," \
 " след умножаване по 8"
 
+// todo translate
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "INVALID ID ERROR MESSAGE"
 
@@ -99,24 +102,35 @@
 "нивата на тежест трябва да бъдат дефинирани в съответствие с RFC 5424: стойности между 0" \
 " и 7 включително"
 
+// todo translate
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"INVALID TARGET TYPE ERROR MESSAGE"
+
+// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "JOURNALD FAILURE ERROR CODE"
 
+// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "JOURNALD FAILURE ERROR MESSAGE"
+
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"не можа да създаде файл с избраното име на локален сокет, използвайки mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "максимален размер на съобщението е валиден само за UDP мрежови цели"
 
+// todo translate
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "MEMORY ALLOCATION FAILURE MESSAGE"
-
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"съобщението е твърде голямо, за да бъде изпратено в една дейтаграма"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "размер на съобщението, което беше опитано да се изпрати"
 
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"съобщението е твърде голямо, за да бъде изпратено в една дейтаграма"
+
+// todo translate
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
@@ -132,6 +146,9 @@ ARG_NAME " беше NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "не може да бъде намерен параметър с посочените характеристики"
 
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"sendto не успя с unix сокет"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "опит да се изпрати запис до неподдържан целеви тип"
 
@@ -141,17 +158,21 @@ ARG_NAME " беше NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно изпращане със sys/socket.h сокет"
 
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"sendto не успя с unix сокет"
-
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно изпращане с winsock2 сокет"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно отваряне на сокет"
 
+// todo translate
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "STREAM WRITE FAILURE ERROR MESSAGE"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"дължината на нарушаващия низ"
+
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"дължината на низа надвишава максималната граница"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "този целеви тип е винаги отворен"
@@ -159,6 +180,7 @@ ARG_NAME " беше NULL"
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "транспортните портове са валидни само за мрежови цели"
 
+// todo translate
 #  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
 
@@ -168,9 +190,11 @@ ARG_NAME " беше NULL"
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "проверете дали е отворен неподдържан целеви тип"
 
+// todo translate
 #  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
 "WEL CLOSE FAILURE ERROR MESSAGE"
 
+// todo translate
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "WEL OPEN FAILURE ERROR MESSAGE"
 
@@ -182,17 +206,5 @@ ARG_NAME " беше NULL"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "резултатът от WSAGetLastError след неуспешното извикване"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"дължината на низа надвишава максималната граница"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"дължината на нарушаващия низ"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"невалиден " ARG " формат"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_BG_BG_H */
