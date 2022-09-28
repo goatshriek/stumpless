@@ -31,11 +31,11 @@ If you are making a change that requires a new error message or other string
 that needs to be localized, you will need to add it to all defined locales. It
 is _required_ that the `en-us` locale include a meaningful definition of the
 symbol. Others may be added as a placeholder value, for later translation by
-someone with the necessary knowledge. The conventional placeholder for this
-situation is a string containing the name of the symbol, minus the `L10N_`
-prefix and with spaces instead of underscores. For example, for the
-`L10N_INVALID_SEVERITY_ERROR_MESSAGE` symbol this would be
-`"INVALID SEVERITY ERROR MESSAGE"`.
+someone with the necessary knowledge. For any string that is not translated,
+a comment of `// todo translate` must be added before the definition, and the
+value of the string must be equal to the `en-us` value as a fallback. This can
+be checked using the `scripts/check_l10n.rb` script, which is also run during
+integration tests on all headers.
 
 
 ## Defining a New Locale
