@@ -77,13 +77,15 @@
 "výsledek GetLastError po neúspěšném volání"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"neplatný index - index je příliš velký na to aby byl reprezentován jako datový typ int"
+"neplatný index - index je příliš velký na to aby byl reprezentován jako" \
+" datový typ int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "nekompatibilní zařízení"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"hodnota kódu zařízení, po vydělení číslem 8, musí být definována v souladu s protokolem RFC 5424"
+"hodnota kódu zařízení, po vydělení číslem 8, musí být definována v souladu s" \
+" protokolem RFC 5424"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "neplatné cílové ID"
@@ -95,11 +97,12 @@
 "neplatná služba"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"kód služby musí být definován v souladu s normou RFC 5424: hodnoty mezi 0 a 7 včetně"
+"kód služby musí být definován v souladu s normou RFC 5424: hodnoty mezi 0 a" \
+" 7 včetně"
 
 // todo translate
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
+"target type is incompatible with this operation"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "návratový kód sd_journal_sendv"

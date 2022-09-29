@@ -77,13 +77,15 @@
 "wynik GetLastError po nieudanym wywołaniu"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany jako typ danych int"
+"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany" \
+" jako typ danych int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "niezgodne urządzenie"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować zgodnie z protokołem RFC 5424"
+"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować zgodnie" \
+" z protokołem RFC 5424"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "nieprawidłowy cel ID"
@@ -95,11 +97,12 @@
 "nieprawidłowa usługa"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"kod serwisowy musi być zdefiniowany zgodnie ze standardem RFC 5424: wartości pomiędzy 0 a 7 łącznie z"
+"kod serwisowy musi być zdefiniowany zgodnie ze standardem RFC 5424:" \
+" wartości pomiędzy 0 a 7 łącznie z"
 
 // todo translate
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
+"target type is incompatible with this operation"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "kod powrotu sd_journal_sendv"
@@ -108,7 +111,8 @@
 "sd_journal_sendv przegrany"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"nie jest możliwe utworzenie pliku z wybraną nazwą gniazda lokalnego przy użyciu mkstemp"
+"nie jest możliwe utworzenie pliku z wybraną nazwą gniazda lokalnego" \
+" przy użyciu mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maksymalny rozmiar wiadomości obowiązuje tylko dla UDP"

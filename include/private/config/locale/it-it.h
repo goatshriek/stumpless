@@ -83,7 +83,8 @@
 "il servizio non valido"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"i codici di servizio devono essere definiti in osservanza del RFC 5424, dopo la moltiplicazione per 8"
+"i codici di servizio devono essere definiti in osservanza del RFC 5424," \
+" dopo la moltiplicazione per 8"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "target id non valido"
@@ -95,7 +96,8 @@
 "gravità non valida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0 e 7, compreso"
+"i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0" \
+" e 7, compreso"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "il tipo di target è incompatibile con questa operazione"
@@ -107,7 +109,8 @@
 "sd_journal_sendv fallita"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"non è stato possibile creare un file con il nome scelto per la socket locale usando mkstemp"
+"non è stato possibile creare un file con il nome scelto per la socket" \
+" locale usando mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "la dimensione massima del messaggio è solo valido per target di rete UDP"

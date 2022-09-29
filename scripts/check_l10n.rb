@@ -20,9 +20,6 @@
 #   - the l10n string definitions all occur in alphabetical order
 #   - all headers have the same l10n strings defined
 #   - lines do not go longer than 80 characters
-#   - multiline string literals (lines ending with " \) do not have a space
-#     at the end of the first string, and do have a space as the first character
-#     of the following lines
 #   - l10n strings marked as needing translation (via a preceding comment of
 #     "// todo translate") have the english translation as their value. This
 #     is only done if the english locale file is one of those checked.
@@ -42,6 +39,10 @@ ARGV.each do |source_glob|
     str = String.new
 
     File.open(source_filename).each do |line|
+      if line.rstrip.length > 80
+        errors << "#{source_filename}: line `#{line}` is longer than 80 characters"
+      end
+
       todo = true if line.rstrip.end_with?('// todo translate')
 
       str_match = line.match(/^"(.*)"/)

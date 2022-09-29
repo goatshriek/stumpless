@@ -77,7 +77,8 @@
 "el resultado de GetLastError despues de la llamada fallida"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"el índice no válido, o -1 por lo que es deamasiado largo para representarse como entero"
+"el índice no válido, o -1 por lo que es deamasiado largo para representarse" \
+" como entero"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "facilidad no válida"
@@ -104,14 +105,15 @@
 
 // todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
-"JOURNALD FAILURE ERROR CODE"
+"return code of sd_journal_sendv"
 
 // todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
-"JOURNALD FAILURE ERROR MESSAGE"
+"sd_journal_sendv failed"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"no se pudo crear un archivo con el nombre de socket local elegido usando mkstemp"
+"no se pudo crear un archivo con el nombre de socket local elegido usando" \
+" mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "el tamaño máximo de mensaje sólo es válido para objetivos de red UDP"
