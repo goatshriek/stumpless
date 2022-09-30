@@ -54,9 +54,7 @@ ARGV.each do |source_glob|
             errors << "#{source_filename}: #{current_l10n} not defined in alphabetic order"
           end
 
-          if todo
-            todo_list << [source_filename, current_l10n]
-          end
+          todo_list << [source_filename, current_l10n] if todo
 
           file_defines[current_l10n] = str
           last_l10n = current_l10n

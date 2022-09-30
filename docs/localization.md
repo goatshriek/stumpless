@@ -33,9 +33,9 @@ is _required_ that the `en-us` locale include a meaningful definition of the
 symbol. Others may be added as a placeholder value, for later translation by
 someone with the necessary knowledge. For any string that is not translated,
 a comment of `// todo translate` must be added before the definition, and the
-value of the string must be equal to the `en-us` value as a fallback. This can
-be checked using the `scripts/check_l10n.rb` script, which is also run during
-integration tests on all headers.
+value of the string must be equal to the `en-us` value as a fallback. The
+`scripts/check_l10n.rb` script can check this, and is run during integration
+tests on all headers.
 
 
 ## Defining a New Locale
