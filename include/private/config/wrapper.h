@@ -87,25 +87,6 @@
 #  endif
 
 
-/* definition of network target support */
-#  ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
-#    include <stumpless/target/network.h>
-#    include "private/target/network.h"
-#    define config_close_network_target stumpless_close_network_target
-#    define config_network_free_all network_free_all
-#    define config_network_target_is_open network_target_is_open
-#    define config_open_network_target open_network_target
-#    define config_sendto_network_target sendto_network_target
-#  else
-#    include "private/target.h"
-#    define config_close_network_target close_unsupported_target
-#    define config_network_free_all() ( ( void ) 0 )
-#    define config_network_target_is_open unsupported_target_is_open
-#    define config_open_network_target open_unsupported_target
-#    define config_sendto_network_target sendto_unsupported_target
-#  endif
-
-
 /* definition of config_open_default_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include "private/config/wel_supported.h"
