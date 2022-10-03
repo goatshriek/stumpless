@@ -301,6 +301,7 @@
 "stumpless_network_protocol": "stumpless/target/network.h"
 "STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED": "stumpless/error.h"
 "STUMPLESS_NETWORK_TARGET": "stumpless/target.h"
+"STUMPLESS_NETWORK_TARGETS_SUPPORTED": "stumpless/config.h"
 "stumpless_new_element": "stumpless/element.h"
 "stumpless_new_entry": "stumpless/entry.h"
 "stumpless_new_entry_str": "stumpless/entry.h"
