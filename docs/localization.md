@@ -37,6 +37,17 @@ value of the string must be equal to the `en-us` value as a fallback. The
 `scripts/check_l10n.rb` script can check this, and is run during integration
 tests on all headers.
 
+The `scripts/add_l10n_scripts.rb` provides a quick way to do this for new
+strings. Run it with the name of the new string and the english translation,
+and it will insert placeholders into all locale headers. Here's an example
+invocation
+
+```sh
+# this will result in a string of L10N_TEST_STR being added to all locale
+# headers
+ruby scripts/add_l10n_scripts.rb TEST_STR this is a test string
+```
+
 
 ## Defining a New Locale
 Adding a new locale to the library only requires the addition of the new header
