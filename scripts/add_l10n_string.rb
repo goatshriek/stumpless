@@ -27,12 +27,11 @@ if ARGV.length < 2
 end
 
 define_name = 'L10N_' + ARGV[0]
-english_str = ARGV.drop(1)
 
+# building the string literal
+english_str = ARGV.drop(1).join(' ')
 english_lines = ["\"#{english_str}\""]
-
-# 80 characters minus the two quotes
-if english_str.length > 78
+if english_str.length > 78 # 80 characters minus the two quotes
   english_lines = []
   current_line = String.new
 
@@ -47,19 +46,46 @@ if english_str.length > 78
 
   english_lines << "\"#{current_line}\""
 end
+define_lines = ["#  define #{define_name} \\", english_lines].flatten
 
 root_dir = File.expand_path('..', __dir__)
 locale_dir = File.join(root_dir, 'include', 'private', 'config', 'locale')
 Dir.new(locale_dir).reject { |file| %w[wrapper.h . ..].include?(file) }.each do |file|
-  new_lines = []
+  new_file_lines = []
+  line_buffer = []
+  inserted = false
 
-  File.open(file, 'r').each do |line|
-    define_match = line.match(/#\s*define\s*L10N_(\w*)(\s|\()/)
-    if define_match
-      define_name = define_match[1]
-      
-    else
-      
+  absolute_file = File.join(locale_dir, file)
+  File.open(absolute_file, 'r').each do |line|
+    line_buffer << line
+
+    if line.strip.empty?
+      new_file_lines.concat(line_buffer)
+      line_buffer = []
+    end
+
+    unless inserted
+      define_match = line.match(/#\s*define\s*(L10N_\w*)(\s|\()/)
+      if define_match
+        matched_define = define_match[1]
+        if matched_define > define_name
+          new_file_lines.concat(define_lines)
+          new_file_lines << "\n"
+          inserted = true
+        end
+      end
+
+      end_match = line.match(/\s*#\s*endif/)
+      if end_match && !inserted
+        new_file_lines.concat(define_lines)
+        new_file_lines << "\n"
+        inserted = true
+      end
     end
   end
+
+  new_file_lines.each {|l| puts l}
+  new_file = File.new(absolute_file, 'w')
+  new_file_lines.each { |line| new_file.write(line + "\n") }
+  new_file.close
 end
