@@ -30,14 +30,14 @@ define_name = 'L10N_' + ARGV[0]
 
 # building the string literal
 english_str = ARGV.drop(1).join(' ')
-english_lines = ["\"#{english_str}\""]
+english_lines = ["\"#{english_str}\"\n"]
 if english_str.length > 78 # 80 characters minus the two quotes
   english_lines = []
   current_line = String.new
 
   english_str.split(' ').each do |word|
     if current_line.length + word.length > 77
-      english_lines << "\"#{current_line}\" \\"
+      english_lines << "\"#{current_line}\" \\\n"
       current_line = String.new
     end
 
@@ -46,7 +46,7 @@ if english_str.length > 78 # 80 characters minus the two quotes
 
   english_lines << "\"#{current_line}\""
 end
-define_lines = ["#  define #{define_name} \\", english_lines].flatten
+define_lines = ["#  define #{define_name} \\\n", english_lines].flatten
 
 root_dir = File.expand_path('..', __dir__)
 locale_dir = File.join(root_dir, 'include', 'private', 'config', 'locale')
@@ -84,8 +84,7 @@ Dir.new(locale_dir).reject { |file| %w[wrapper.h . ..].include?(file) }.each do 
     end
   end
 
-  new_file_lines.each {|l| puts l}
   new_file = File.new(absolute_file, 'w')
-  new_file_lines.each { |line| new_file.write(line + "\n") }
+  new_file_lines.each { |line| new_file.write(line) }
   new_file.close
 end
