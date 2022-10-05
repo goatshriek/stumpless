@@ -37,15 +37,40 @@ value of the string must be equal to the `en-us` value as a fallback. The
 `scripts/check_l10n.rb` script can check this, and is run during integration
 tests on all headers.
 
-The `scripts/add_l10n_scripts.rb` provides a quick way to do this for new
+The `scripts/add_l10n_scripts.rb` provides a quick way to do all of this for new
 strings. Run it with the name of the new string and the english translation,
 and it will insert placeholders into all locale headers. Here's an example
-invocation
+invocation:
 
 ```sh
 # this will result in a string of L10N_TEST_STR being added to all locale
-# headers
+# headers with the english translation of "this is a test string"
 ruby scripts/add_l10n_scripts.rb TEST_STR this is a test string
+```
+
+
+## Finding Strings to Translate
+Strings that need to be translated are marked with a `// todo translate` comment
+in the localization headers. This means that you can easily find how many
+strings need to be translated in any locale, despite stumpless not currently
+having any integrations with translation frameworks. The following grep
+invocation will give a count of how many untranslated strings exist:
+
+```sh
+grep -r -c "// todo translate" include/private/config/locale/
+
+# output looks like this:
+# include/private/config/locale/bg-bg.h:12
+# include/private/config/locale/cz-cz.h:1
+# include/private/config/locale/de-de.h:20
+# include/private/config/locale/el-gr.h:0
+# include/private/config/locale/en-us.h:0
+# include/private/config/locale/es-es.h:2
+# include/private/config/locale/fr-fr.h:20
+# include/private/config/locale/it-it.h:0
+# include/private/config/locale/pl-pl.h:1
+# include/private/config/locale/sk-sk.h:17
+# include/private/config/locale/sv-se.h:20
 ```
 
 

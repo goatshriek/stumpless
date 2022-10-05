@@ -69,7 +69,7 @@ Dir.new(locale_dir).reject { |file| %w[wrapper.h . ..].include?(file) }.each do 
       if define_match
         matched_define = define_match[1]
         if matched_define > define_name
-          new_file_lines << "//todo translate\n" unless file == "en-us.h"
+          new_file_lines << "// todo translate\n" unless file == "en-us.h"
           new_file_lines.concat(define_lines)
           new_file_lines << "\n"
           inserted = true
@@ -78,7 +78,7 @@ Dir.new(locale_dir).reject { |file| %w[wrapper.h . ..].include?(file) }.each do 
 
       end_match = line.match(/\s*#\s*endif/)
       if end_match && !inserted
-        new_file_lines << "//todo translate\n" unless file == "en-us.h"
+        new_file_lines << "// todo translate\n" unless file == "en-us.h"
         new_file_lines.concat(define_lines)
         new_file_lines << "\n"
         inserted = true
