@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
+* Copyright 2020-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -52,14 +52,14 @@
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "could not write to the file"
 
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"invalid " ARG " format"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "return code of the log handler function"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "the log handler for a function target failed"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"could not create a file with the chosen local socket name using mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo failed on the provided hostname"
@@ -99,11 +99,17 @@
 "severity codes must be defined in accordance with RFC 5424: values between 0" \
 " and 7 inclusive"
 
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"target type is incompatible with this operation"
+
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "return code of sd_journal_sendv"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "sd_journal_sendv failed"
+
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"could not create a file with the chosen local socket name using mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "max message size is only valid for UDP network targets"
@@ -111,11 +117,11 @@
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "a memory allocation call failed"
 
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"message is too large to be sent in a single datagram"
-
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "the size of the message that was attempted to be sent"
+
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"message is too large to be sent in a single datagram"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "chosen network protocol is unsupported"
@@ -132,6 +138,9 @@ ARG_NAME " was NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "a param with the specified characteristics could not be found"
 
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"sendto failed with a unix socket"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "attempted to send an entry to an unsupported target type"
 
@@ -141,9 +150,6 @@ ARG_NAME " was NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "send failed with a sys/socket.h socket"
 
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"sendto failed with a unix socket"
-
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "send failed with a winsock2 socket"
 
@@ -152,6 +158,12 @@ ARG_NAME " was NULL"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "could not write to the stream"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"the length of the offending string"
+
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"length of string exceeded maximum limit"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "this target type is always open"
@@ -182,17 +194,5 @@ ARG_NAME " was NULL"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "the result of WSAGetLastError after the failed call"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"length of string exceeded maximum limit"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"the length of the offending string"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"invalid " ARG " format"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */

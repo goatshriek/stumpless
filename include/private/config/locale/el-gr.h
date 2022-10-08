@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
+* Copyright 2020-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -52,14 +52,14 @@
 # define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "αδυναμία εγγραφής στο αρχείο"
 
+# define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"Μη έγκυρο μορφή" ARG
+
 # define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "κωδικός της συνάρτησης χειριστής των καταγραφών"
 
 # define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "αποτυχία χειριστής καταγραφών για μία συνάρτηση στόχου"
-
-# define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"αδυναμία δημιουργίας ενός αρχείου με το επιλεγόμενο όνομα υποδοχέα και την χρήση του mkstemp"
 
 # define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "αποτυχία του getaddrinfo στο δοθέν hostname"
@@ -77,13 +77,15 @@
 "αποτέλεσμα του GetLastError εφόσον της αποτυχημένης κλήσης της συνάρτησης"
 
 # define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"μη έγκυρη δείκτης, ή το αποτέλεσμα της αφαίρεση του δείκτη κατά 1 είναι υπερβολικά μεγάλο για να αναπαρασταθεί ως int"
+"μη έγκυρη δείκτης, ή το αποτέλεσμα της αφαίρεση του δείκτη κατά 1 είναι" \
+" υπερβολικά μεγάλο για να αναπαρασταθεί ως int"
 
 # define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "μη έγκυρο εγκατάσταση"
 
 # define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"ο κωδικός εγκατάστασης πρέπει να είναι καθορισμένο σε σχέση με το RFC 5424, εφόσον πολλαπλασιαστεί με το 8"
+"ο κωδικός εγκατάστασης πρέπει να είναι καθορισμένο σε σχέση με το RFC" \
+" 5424, εφόσον πολλαπλασιαστεί με το 8"
 
 # define L10N_INVALID_ID_ERROR_MESSAGE \
 "μη έγκυρη ταυτότητα στόχου"
@@ -95,7 +97,11 @@
 "μη έγκυρη σοβαρότητα"
 
 # define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"οι κωδικοί σοβαρότητας πρέπει να είναι καθορισμένοι με βάση το RFC 5424 και οι τιμές να είναι στο εύρος 0 έως 7"
+"οι κωδικοί σοβαρότητας πρέπει να είναι καθορισμένοι με βάση το RFC 5424" \
+" και οι τιμές να είναι στο εύρος 0 έως 7"
+
+# define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"ΣΦΑΛΜΑ: ΜΗ ΕΓΚΥΡΟΣ ΤΥΠΟΣ ΣΤΟΧΟΥ"
 
 # define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "κωδικός επιστροφής της sd_journal_sendv"
@@ -103,17 +109,22 @@
 # define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "αποτυχία sd_journal_sendv"
 
+# define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"αδυναμία δημιουργίας ενός αρχείου με το επιλεγόμενο όνομα υποδοχέα και την" \
+" χρήση του mkstemp"
+
 # define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "το μέγιστο μέγεθος μηνυμάτων είναι έγκυρο μόνο για στόχους UDP"
 
 # define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "αποτυχία συνάρτησης τροποποίησης μνήμης"
 
-# define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"το μέγεθος του μηνύματος είναι υπερβολικά μεγάλο για να σταλθεί σε ένα διάγραμμα"
-
 # define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "το μέγεθος του μηνύματος που επιχειρήθηκε να σταλθεί"
+
+# define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"το μέγεθος του μηνύματος είναι υπερβολικά μεγάλο για να σταλθεί σε ένα" \
+" διάγραμμα"
 
 # define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "το πρωτόκολλο του δικτύου που επιλέχθηκε δεν υποστηρίζεται"
@@ -130,6 +141,9 @@ ARG_NAME " κατέχει την τιμή NULL"
 # define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "αδυναμία εύρεσης παράμετρος με τα καθορισμένα χαρακτηριστικά"
 
+# define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"αποτυχία συνάρτησης sendto σε υποδοχέα unix"
+
 # define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "προσπάθεια αποστολής μίας εγγραφής σε μη υποστηριζόμενο τύπο στόχου"
 
@@ -139,9 +153,6 @@ ARG_NAME " κατέχει την τιμή NULL"
 # define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "αποτυχία συνάρτησης send σε υποδοχέα sys/socket.h"
 
-# define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"αποτυχία συνάρτησης sendto σε υποδοχέα unix"
-
 # define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "αποτυχία συνάρτησης send σε υποδοχέα winsock2"
 
@@ -150,6 +161,12 @@ ARG_NAME " κατέχει την τιμή NULL"
 
 # define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "αδυναμία εγγραφής στη ροή δεδομένων (stream)"
+
+# define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"το μήκος της παραπάνω συμβολοσειράς"
+
+# define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"το μήκος της συμβολοσειράς υπερβαίνει το ανώτερο μήκος"
 
 # define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "ο στόχος είναι πάντα ανοικτός"
@@ -180,17 +197,5 @@ ARG_NAME " κατέχει την τιμή NULL"
 
 # define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "το αποτέλεσμα της WSAGetLastError εφόσον απότυχε η κλήση της συνάρτησης"
-
-# define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"το μήκος της συμβολοσειράς υπερβαίνει το ανώτερο μήκος"
-
-# define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"το μήκος της παραπάνω συμβολοσειράς"
-
-# define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"Μη έγκυρο μορφή" ARG
-
-# define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"ΣΦΑΛΜΑ: ΜΗ ΕΓΚΥΡΟΣ ΤΥΠΟΣ ΣΤΟΧΟΥ"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */

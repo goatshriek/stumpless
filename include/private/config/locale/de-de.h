@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
+* Copyright 2020-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -46,21 +46,25 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "Errno nach dem fehlgeschlagenen Aufruf"
 
+// todo translate
 #  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
-"FILE OPEN FAILURE MESSAGE"
+"could not open the specified file"
 
+// todo translate
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
-"FILE WRITE FAILURE MESSAGE"
+"could not write to the file"
 
+// todo translate
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"invalid " ARG " format"
+
+// todo translate
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
-"FUNCTION TARGET FAILURE CODE TYPE"
+"return code of the log handler function"
 
+// todo translate
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
-"FUNCTION TARGET FAILURE ERROR MESSAGE"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"Konnte mit mksetmp keine Datei mit dem gewählten lokalen " \
-"Socket-Namen erzeugen"
+"the log handler for a function target failed"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo schlug bei dem angegebenen Hostnamen fehl"
@@ -68,14 +72,17 @@
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
 "Rückgabewert des fehlgeschlagegen getaddrinfo-Aufrufs"
 
+// todo translate
 #  define L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE \
-"GETCOMPUTERNAME FAILED ERROR MESSAGE"
+"GetComputerName failed"
 
+// todo translate
 #  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
-"GETHOSTNAME FAILED ERROR MESSAGE"
+"gethostname failed"
 
+// todo translate
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
-"GETLASTERROR ERROR CODE TYPE"
+"the result of GetLastError after the failed call"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "Der ungültige Index, oder -1 davon ist zu groß, um ihn als int" \
@@ -88,8 +95,9 @@
 "Einrichtungscodes müssen in Übereinstimmung mit RFC 5424 definiert werden, " \
 "nach der Multiplikation mit 8"
 
+// todo translate
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
-"INVALID ID ERROR MESSAGE"
+"invalid target id"
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "Ungültiger " INDEXED_THING " index"
@@ -101,26 +109,38 @@
 "Schweregrad-Codes müssen in Übereinstimmung mit RFC 5424 definiert werden: " \
 "Werte zwischen 0 und einschließlich 7"
 
-#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
-"JOURNALD FAILURE ERROR CODE"
+// todo translate
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"target type is incompatible with this operation"
 
+// todo translate
+#  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
+"return code of sd_journal_sendv"
+
+// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
-"JOURNALD FAILURE ERROR MESSAGE"
+"sd_journal_sendv failed"
+
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"Konnte mit mksetmp keine Datei mit dem gewählten lokalen " \
+"Socket-Namen erzeugen"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "Die maximale Nachrichtengröße ist nur für UDP-Netzwerkziele gütlig"
 
+// todo translate
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
-"MEMORY ALLOCATION FAILURE MESSAGE"
-
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"Die Nachricht ist zu groß um in einem einzigen Diagramm gesendet zu werden"
+"a memory allocation call failed"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "Die Größe der Nachricht, die versucht wurde, gesendet zu werden"
 
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"Die Nachricht ist zu groß um in einem einzigen Diagramm gesendet zu werden"
+
+// todo translate
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"NETWORK PROTOCOL UNSUPPORTED ERROR MESSAGE"
+"chosen network protocol is unsupported"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "Netzwerkziele werden von diesem Build nicht unterstützt"
@@ -134,6 +154,9 @@ ARG_NAME " war NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "Ein Parameter mit den angegebenen Eigenschaften konnte nicht gefunden werden"
 
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"sendto mti einem Unix-Socket fehlgeschlagen"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "Es wurde versucht einen Eintrag an einen nicht unterstützten Zieltyp zu senden"
 
@@ -143,26 +166,33 @@ ARG_NAME " war NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "Senden mit einem sys/socket.h-Socket fehlgeschlagen"
 
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"sendto mti einem Unix-Socket fehlgeschlagen"
-
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "Senden mit einem winsock2-Socket fehlgeschlagen"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "Konnte keinen Socket öffnen"
 
+// todo translate
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
-"STREAM WRITE FAILURE ERROR MESSAGE"
+"could not write to the stream"
+
+// todo translate
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"the length of the offending string"
+
+// todo translate
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"length of string exceeded maximum limit"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "Dieser Zieltyp ist immer offen"
 
-#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"TRANSPORT PROTOCOL UNSUPPORTED ERROR MESSAGE"
-
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "Transportanschlüsse sind nur für Netzwerkziele gültig"
+
+// todo translate
+#  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
+"chosen transport protocol is unsupported"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "Es konnte kein Unix-Socket mit der Socket-Funktion geöffnet werden"
@@ -170,11 +200,13 @@ ARG_NAME " war NULL"
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "Überprüft, ob ein nicht unterstützer Zieltyp geöffnet war"
 
+// todo translate
 #  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
-"WEL CLOSE FAILURE ERROR MESSAGE"
+"could not close the Windows Event Log"
 
+// todo translate
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
-"WEL OPEN FAILURE ERROR MESSAGE"
+"could not open the Windows Event Log"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket Fehler Code"
@@ -184,17 +216,5 @@ ARG_NAME " war NULL"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "Das Ergebnis von WSAGetLastError nach dem fehlgeschlagenen Aufruf"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"STRING TOO LONG"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"STRING LENGTH ERROR CODE TYPE"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"invalid " ARG " format"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_DE_DE_H */

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
+* Copyright 2020-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -52,14 +52,14 @@
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "chybové hlášení- nepodařilo se zapísat"
 
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"neplatný " ARG " formát"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "návratový kód funkce obsluhy protokolu"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "obslužná rutina protokolu pro cíl funkce selhala"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"není možné vytvořit soubor s vybraným jménem lokálního socketu pomocí mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "funkce getaddrinfor selhala během poskytování hostname"
@@ -77,13 +77,15 @@
 "výsledek GetLastError po neúspěšném volání"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"neplatný index - index je příliš velký na to aby byl reprezentován jako datový typ int"
+"neplatný index - index je příliš velký na to aby byl reprezentován jako" \
+" datový typ int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "nekompatibilní zařízení"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"hodnota kódu zařízení, po vydělení číslem 8, musí být definována v souladu s protokolem RFC 5424"
+"hodnota kódu zařízení, po vydělení číslem 8, musí být definována v souladu s" \
+" protokolem RFC 5424"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "neplatné cílové ID"
@@ -95,7 +97,12 @@
 "neplatná služba"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"kód služby musí být definován v souladu s normou RFC 5424: hodnoty mezi 0 a 7 včetně"
+"kód služby musí být definován v souladu s normou RFC 5424: hodnoty mezi 0 a" \
+" 7 včetně"
+
+// todo translate
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"target type is incompatible with this operation"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "návratový kód sd_journal_sendv"
@@ -103,17 +110,20 @@
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "sd_journal_sendv zlyhal"
 
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"není možné vytvořit soubor s vybraným jménem lokálního socketu pomocí mkstemp"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maximální velikost zprávy je platná pouze pro UDP"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "volání alokace paměti se nezdařilo"
 
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"zpráva je příliš velká na to, aby byla poslána v jednom datagramu"
-
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "velikost zprávy, která se pokusila odeslat je "
+
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"zpráva je příliš velká na to, aby byla poslána v jednom datagramu"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "vybraný síťový protokol není podporován"
@@ -130,6 +140,9 @@ ARG_NAME " měl hodnotu NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "specifikován parametr nebyl nalezen"
 
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"odesílání unixových socketu (unix socket) selhalo"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "pokus o poslání vstupu nepodporovaného typu na cíl"
 
@@ -139,9 +152,6 @@ ARG_NAME " měl hodnotu NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "odesílání systémového socketu (sys/socket.h) selhalo"
 
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"odesílání unixových socketu (unix socket) selhalo"
-
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "odesílání winsock2 socketu selhalo"
 
@@ -150,6 +160,12 @@ ARG_NAME " měl hodnotu NULL"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "nelze zapisovat do streamu"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"délka problémový řetězce je"
+
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"délka řetězce přesáhla maximální limit"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "cíl danného typu je stále otevřený"
@@ -180,17 +196,5 @@ ARG_NAME " měl hodnotu NULL"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "výsledek WSAGetLastError po selhání volání"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"délka řetězce přesáhla maximální limit"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"délka problémový řetězce je"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"neplatný " ARG " formát"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif //STUMPLESS_CZ_CZ_H
