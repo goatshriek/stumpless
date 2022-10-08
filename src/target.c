@@ -370,10 +370,6 @@ int
 unchecked_get_option( const struct stumpless_target *target, int option ) {
   int options;
 
-  if ( !target ) {
-    return 0;
-  }
-
   lock_target( target );
   options = target->options;
   unlock_target( target );

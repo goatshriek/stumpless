@@ -1103,7 +1103,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_CONS );
     EXPECT_FALSE( option );
@@ -1161,7 +1161,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PERROR );
     EXPECT_FALSE( option );
@@ -1199,25 +1199,25 @@ namespace {
     fclose( ro_stream );
 
     ro_stream = fopen( ro_filename, "r" );
-    ASSERT_TRUE( ro_stream != NULL );
+    ASSERT_NOT_NULL( ro_stream );
 
     // Open fallback to capture output
     cons_stream = fopen( cons_filename, "w+" );
-    ASSERT_TRUE( cons_stream != NULL );
+    ASSERT_NOT_NULL( cons_stream );
 
     // Use this to capture the fallback output
     stumpless_set_cons_stream( cons_stream );
     ASSERT_TRUE( cons_stream == stumpless_get_cons_stream( ) );
 
     target = stumpless_open_stream_target( ro_filename, ro_stream );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                        STUMPLESS_SEVERITY_INFO,
                                        "stumpless-unit-test",
                                        "basic-entry",
                                        "STUMPLESS_OPTION_CONS::01" );
-    ASSERT_TRUE( basic_entry != NULL );
+    ASSERT_NOT_NULL( basic_entry );
     result = stumpless_add_entry( target, basic_entry );
 
     // Expect the write to fail and underlying error preserved
@@ -1225,7 +1225,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
 
     // Confirm that we didn't write to the console stream
-    ASSERT_TRUE( fgets( buffer, 300, cons_stream ) == NULL );
+    ASSERT_NULL( fgets( buffer, 300, cons_stream ) );
     EXPECT_STREQ( buffer, "" );
     EXPECT_GT( feof( cons_stream ), 0 );
 
@@ -1263,17 +1263,17 @@ namespace {
     fclose( ro_stream );
 
     ro_stream = fopen( ro_filename, "r" );
-    ASSERT_TRUE( ro_stream != NULL );
+    ASSERT_NOT_NULL( ro_stream );
 
     cons_stream = fopen( cons_filename, "w+" );
-    ASSERT_TRUE( cons_stream != NULL );
+    ASSERT_NOT_NULL( cons_stream );
 
     // Use this to capture the fallback output
     stumpless_set_cons_stream( cons_stream );
     ASSERT_TRUE( cons_stream == stumpless_get_cons_stream( ) );
 
     target = stumpless_open_stream_target( ro_filename, ro_stream );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     // Enable the CONS option, which will use the console stream as a
     // fallback if logging to the target failed
@@ -1285,7 +1285,7 @@ namespace {
                                        "stumpless-unit-test",
                                        "basic-entry",
                                        message );
-    ASSERT_TRUE( basic_entry != NULL );
+    ASSERT_NOT_NULL( basic_entry );
     result = stumpless_add_entry( target, basic_entry );
 
     // Write should fail because the target is read only!
@@ -1296,8 +1296,8 @@ namespace {
     memset( buffer, 0, 300 );
     rewind( cons_stream );
 
-    // Confirm that the cons_stream is empty
-    ASSERT_TRUE( fgets( buffer, 300, cons_stream ) != NULL );
+    // Confirm that the cons_stream is not empty
+    ASSERT_NOT_NULL( fgets( buffer, 300, cons_stream ) );
     EXPECT_THAT( buffer, HasSubstr( message ) );
     EXPECT_EQ( feof( cons_stream ), 0 );
 
@@ -1330,13 +1330,13 @@ namespace {
     fclose( ro_stream );
 
     ro_stream = fopen( ro_filename, "r" );
-    ASSERT_TRUE( ro_stream != NULL );
+    ASSERT_NOT_NULL( ro_stream );
 
     // Use this to capture the fallback output
     stumpless_set_cons_stream( NULL );
 
     target = stumpless_open_stream_target( ro_filename, ro_stream );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     // Enable the CONS option, which will use the console stream as a
     // fallback if logging to the target failed
@@ -1348,7 +1348,7 @@ namespace {
                                        "stumpless-unit-test",
                                        "basic-entry",
                                        message );
-    ASSERT_TRUE( basic_entry != NULL );
+    ASSERT_NOT_NULL( basic_entry );
     result = stumpless_add_entry( target, basic_entry );
 
     // Write should fail because the target is read only!
@@ -1356,7 +1356,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_STREAM_WRITE_FAILURE );
 
     // Confirm that our custom console is null (but did not segfault)
-    ASSERT_TRUE( NULL == stumpless_get_cons_stream( ) );
+    ASSERT_NULL( stumpless_get_cons_stream( ) );
 
     stumpless_close_stream_target( target );
     stumpless_destroy_entry_and_contents( basic_entry );
@@ -1379,7 +1379,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stump( "test message" );
     EXPECT_NO_ERROR;
@@ -1434,7 +1434,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stump( "test message without perror" );
     EXPECT_NO_ERROR;
@@ -1698,7 +1698,7 @@ namespace {
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     option = stumpless_get_option( target, STUMPLESS_OPTION_PID );
     EXPECT_FALSE( option );
