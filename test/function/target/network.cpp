@@ -112,7 +112,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( NetworkTargetGetTransportProtocol, BadTargetType ) {
+  TEST( NetworkTargetGetTransportPort, BadTargetType ) {
     const char *result;
     const struct stumpless_error *error;
     struct stumpless_target *target;
@@ -520,5 +520,87 @@ namespace {
     result = stumpless_set_udp_max_message_size( NULL, 1500 );
     EXPECT_TRUE( result == NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST ( NetworkTargetGetNetworkProtocol, Generic ) {
+    enum stumpless_network_protocol result;
+    const struct stumpless_target *target;
+    const char *target_name = "get-network-protocol-test";
+
+    target = stumpless_open_udp4_target( target_name, "127.0.0.1" );
+
+    result = stumpless_get_network_protocol( target );
+    EXPECT_NO_ERROR;
+    ASSERT_TRUE( result == STUMPLESS_IPV4_NETWORK_PROTOCOL );
+
+    stumpless_close_network_target( target );
+  }
+
+  TEST ( NetworkTargetGetNetworkProtocol, NullTarget ) {
+    enum stumpless_network_protocol result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_network_protocol(NULL);
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == -1 );
+  }
+
+  TEST ( NetworkTargetGetNetworkProtocol, BadTargetType ) {
+    enum stumpless_network_protocol result;
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( "not-a-udp-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_get_network_protocol( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+    EXPECT_TRUE( result == -1 );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST ( NetworkTargetGetTransportProtocol, Generic ) {
+    enum stumpless_transport_protocol result;
+    const struct stumpless_target *target;
+    const char *target_name = "get-network-protocol-test";
+
+    target = stumpless_open_udp4_target( target_name, "127.0.0.1" );
+
+    result = stumpless_get_transport_protocol( target );
+    EXPECT_NO_ERROR;
+    ASSERT_TRUE( result == STUMPLESS_UDP_TRANSPORT_PROTOCOL );
+
+    stumpless_close_network_target( target );
+  }
+
+  TEST ( NetworkTargetGetTransportProtocol, NullTarget ) {
+    enum stumpless_transport_protocol result;
+    const struct stumpless_error *error;
+
+    result = stumpless_get_transport_protocol(NULL);
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_TRUE( result == -1 );
+  }
+
+  TEST ( NetworkTargetGetTransportProtocol, BadTargetType ) {
+    enum stumpless_transport_protocol result;
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    char buffer[100];
+
+    target = stumpless_open_buffer_target( "not-a-udp-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_get_transport_protocol( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+    EXPECT_TRUE( result == -1 );
+
+    stumpless_close_buffer_target( target );
   }
 }

@@ -189,3 +189,5 @@ EXPORTS
   stumpless_get_facility_string                 @174
   stumpless_get_facility_enum                   @175
   stumpless_get_severity_enum                   @176
+  stumpless_get_network_protocol                @177
+  stumpless_get_transport_protocol              @178
