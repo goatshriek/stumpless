@@ -25,7 +25,7 @@ easier:
    journald, the Windows Event Log, and more!
  * interoperable with common log daemons and libraries
  * cross-platform builds on Linux, Windows, Mac, Cygwin, and more
- * completely thread safe
+ * completely thread-safe
  * can be adjusted or removed during compilation for zero runtime impact
  * localized for multiple languages :bulgaria: :czech_republic: :de: :es: :fr:
    :it: :poland: :sweden: :slovakia: :us: :greece:
@@ -56,7 +56,7 @@ with your request and we'll work it into our
 
 
 ## Quick Build and Install
-Stumpless only requires cmake and a cmake-supported build toolchain (like GCC
+Stumpless only requires CMake and a CMake-supported build toolchain (like GCC
 or Visual Studio) to build. For a system using the standard GNU make toolchain,
 you can simply do:
 
@@ -100,7 +100,7 @@ stumplog( LOG_INFO | LOG_USER, "My message #%d", count );
 ```
 
 If you haven't opened a target, this will log messages to the default target for
-the platform: on Linux this is `/dev/log`, on a Mac system this will be
+the platform: on Linux, this is `/dev/log`, on a Mac system this will be
 `/var/run/syslog`, and on a Windows machine it is the Windows Event Log. If you
 open a target or a few before calling `stumplog`, then logs will be sent to the
 most recently opened target.
